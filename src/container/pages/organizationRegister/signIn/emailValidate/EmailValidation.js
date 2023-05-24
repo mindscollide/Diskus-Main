@@ -134,7 +134,7 @@ const EmailValidation = () => {
     let RememberPasswordLocal = JSON.parse(
       localStorage.getItem("remeberPassword")
     );
-    let reLang=localStorage.getItem("i18nextLng");
+    let reLang = localStorage.getItem("i18nextLng");
     if (RememberEmailLocal === true && RememberPasswordLocal === true) {
       console.log("RememberEmailLocal 1");
       let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
@@ -143,7 +143,7 @@ const EmailValidation = () => {
         "rememberPasswordValue"
       );
       localStorage.clear();
-      if(reLang!=undefined&&reLang!=null){
+      if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
       localStorage.setItem("remeberPassword", RememberPasswordLocal);
@@ -158,7 +158,7 @@ const EmailValidation = () => {
       console.log("RememberEmailLocal 1");
       let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
       localStorage.clear();
-      if(reLang!=undefined&&reLang!=null){
+      if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
       localStorage.setItem("rememberEmail", RememberEmailLocal);
@@ -172,7 +172,7 @@ const EmailValidation = () => {
         "rememberPasswordValue"
       );
       localStorage.clear();
-      if(reLang!=undefined&&reLang!=null){
+      if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
       localStorage.setItem("remeberPassword", RememberPasswordLocal);
@@ -181,7 +181,7 @@ const EmailValidation = () => {
       setErrorBar(false);
     } else {
       localStorage.clear();
-      if(reLang!=undefined&&reLang!=null){
+      if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
       localStorage.setItem("rememberEmail", false);
@@ -428,7 +428,7 @@ const EmailValidation = () => {
                         onChange={rememberChangeEmail}
                         className={styles["RememberEmail"]}
                       />
-                      <span className="Remember_checkbox_styles">
+                      <span className="Remember_checkbox_styles Arabicstyles_Subtotal_Not_include_taxes">
                         {t("Remeber-email")}
                       </span>
                     </Col>

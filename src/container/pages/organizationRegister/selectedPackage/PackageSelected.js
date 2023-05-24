@@ -527,7 +527,9 @@ const PackageSelected = () => {
                           </p>
                         </Col>
                         <Col sm={8}>
-                          <p>{packageSelectedData.Country}</p>
+                          <p className="details-user-signup MontserratRegular">
+                            {packageSelectedData.Country}
+                          </p>
                         </Col>
                       </Row>
                       <Row className={styles["selected_package_details"]}>

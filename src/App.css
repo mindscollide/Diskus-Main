@@ -1056,7 +1056,9 @@ body[dir="rtl"] svg.DatePickerIcon {
   /* border-bottom   : 1px solid !important;
   padding            : 0.5rem 0.5rem !important; */
 }
-
+body[dir="rtl"] .ant-table-thead > tr * {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .ant-table-row {
   background-color: #f6f6f6 !important;
 }
@@ -3342,10 +3344,18 @@ li.valid {
   margin-top: -5px !important;
 }
 
+body[dir="rtl"] .invalid span {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
 .valid span {
   font-weight: bold;
   color: #6172d6 !important;
   margin-top: -5px !important;
+}
+
+body[dir="rtl"] .valid span {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 span.userstatus-signal-enabled {
@@ -3491,6 +3501,9 @@ i.edit-icon-adminmeeting {
   font-size: 18px !important;
 }
 
+body[dir="rtl"] .card-title.h5 {
+}
+
 p.card-text {
   font-size: 12px !important;
 }
@@ -3507,6 +3520,10 @@ span.RememberEmail {
   font-size: calc(16px - 20%) !important;
 }
 
+body[dir="rtl"] .Enter-Code-Label label {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
 h4.selected-amount {
   font-size: calc(27px - 20%) !important;
 }
@@ -3515,26 +3532,45 @@ p.details-labels {
   font-size: calc(17px - 22%);
 }
 
+body[dir="rtl"] .details-labels {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 p.details-user-signup {
   font-size: calc(14px - 20%);
+}
+
+body[dir="rtl"] .details-user-signup {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 h6.Satisfaction-Guaranteed {
   font-size: calc(20px - 20%);
 }
 
+body[dir="rtl"] .Satisfaction-Guaranteed {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
 p.Satisfaction-Message {
   font-size: calc(14px - 20%);
 }
 
+body[dir="rtl"] .Satisfaction-Message {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .Subtotal-Text {
   font-size: calc(22px - 20%);
 }
-
+body[dir="rtl"] .Subtotal-Text {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 .Subtotal-Value {
   font-size: calc(36px - 20%) !important;
 }
-
+body[dir="rtl"] .Subtotal-Value {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .label-changepassword {
   font-size: 14px !important;
   font-weight: 600 !important;
@@ -3633,7 +3669,9 @@ input[placeholder] {
   font-family: "MontserratMedium";
   box-shadow: none !important;
 }
-
+body[dir="rtl"] input[placeholder] {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 select[placeholder] {
   font-size: 12px !important;
   font-family: "MontserratMedium" !important;
@@ -3716,6 +3754,9 @@ label.organization-labels {
   color: #5a5a5a;
 }
 
+body[dir="rtl"] label.organization-labels {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 .css-1s2u09g-control {
   margin-top: -4px !important;
 }
@@ -3891,6 +3932,10 @@ body[dir="rtl"] .radio-cancelsub-modal label.form-check-label {
 
 .font-sizepaymentmethodcaption {
   font-size: 8px;
+}
+
+body[dir="rtl"] .font-sizepaymentmethodcaption {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .border-radius-4 {
@@ -4946,7 +4991,9 @@ span.css-1u9des2-indicatorSeparator {
   font-family: "MontserratSemiBold";
   color: #a2a2a2 !important;
 }
-
+body[dir="rtl"] .select-dropdowns-height .css-13cymwt-control {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .select-dropdowns-height-DataRoom .css-13cymwt-control {
   height: 39px !important;
   border-radius: 4px !important;
@@ -5314,4 +5361,24 @@ span.package-icon-style {
 
 .rbc-overlay {
   max-width: 100px !important;
+}
+
+body[dir="rtl"] .SignupOrganization input.form-control {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+body[dir="rtl"] .Arabicstyles {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
+
+body[dir="rtl"] .Arabicstyles_Subtotal_Not_include_taxes {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+body[dir="rtl"] .Saved_money_Tagline {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"] .FontArabicRegular {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }

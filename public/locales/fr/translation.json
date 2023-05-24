@@ -83,7 +83,7 @@
   "Schedule-Meeting": "Planifier une réunion",
   "Search-Title-Name-Placeholder": "Nom du titre",
   "Search-Host-Name-Placeholder": "Nom d'hôte",
-  "Title": "Titre",
+  "Title": "Title",
   "Status": "Statut",
   "Organizer": "Organisateur",
   "Date-Or-Time": "Date/Heure",
@@ -570,5 +570,13 @@
   "Files-deleted-successfully": "Files Deleted Successfully",
   "Failed-to-delete-any-file": "Failed to delete any file",
   "Files-shared-successfully": "Files Shared Successfully",
-  "Failed-to-share-file": "Failed to Share File"
+  "Failed-to-share-file": "Failed to Share File",
+  "Renews-December-2023-for-Rs-$35/mo-($420 total)": "Renews December 2023 for Rs$35/mo ($420 total)",
+  "Send-again": "Send Again",
+  "Opting-to": "Opting to",
+  "Delete-the-organization": "DELETE THE ORGANIZATION",
+  "Will-delete-and-remove-all-relevant-data-including-but-not": "will delete and remove all relevant data including but not limited to Users, Meetings, Documents related to your organization account. Please make sure that we do not retain any backup of data and will not be able to entertain backup recovery request.",
+  "It-is-requested-that-you-please-make-backup-of-all-your-data": " It is requested that you please make backup of all your data before proceeding to delete the account. Please proceed with caution and at your own risk.",
+  "Proceed-to-deletion": "Proceed to Deletion",
+  "Delete-organization": "Delete Organization"
 }

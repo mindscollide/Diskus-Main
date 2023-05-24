@@ -14,13 +14,17 @@
   border: 1px solid #e1e1e1 !important;
 }
 
+body[dir="rtl"] .create-Group-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .create-Group-btn:hover,
 .create-Group-btn:active,
 .create-Group-btn:focus,
 .create-Group-btn:focus-visible {
   padding: 12px 80px !important;
   font-size: 12px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
@@ -40,12 +44,16 @@
   align-items: center;
 }
 
+body[dir="rtl"] .Archived-Group-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .Archived-Group-btn:hover,
 .Archived-Group-btn:focus-visible,
 .Archived-Group-btn:focus,
 .Archived-Group-btn:active {
   font-size: 12px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;

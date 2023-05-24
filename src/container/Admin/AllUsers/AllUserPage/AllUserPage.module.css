@@ -67,6 +67,7 @@
 body[dir="rtl"] .Edit-Main-Heading {
   margin-left: auto;
   margin-right: -10px;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 @font-face {
@@ -125,7 +126,9 @@ body[dir="rtl"] .Edit-Main-Heading {
   font-size: 12px;
   margin-bottom: 20px !important;
 }
-
+body[dir="rtl"] .icon-modal-ResetBtn {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .icon-modal-ResetBtn:hover,
 .icon-modal-ResetBtn:active,
 .icon-modal-ResetBtn:focus {
@@ -150,6 +153,10 @@ body[dir="rtl"] .Edit-Main-Heading {
   margin-right: 15px;
   font-family: "MontserratMedium-500";
   font-size: 12px;
+}
+
+body[dir="rtl"] .icon-modal-SearchBtn {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .icon-modal-SearchBtn:hover,
@@ -218,7 +225,10 @@ body[dir="rtl"] .icon-modal-SearchBtn:hover {
   width: 100% !important;
   border-color: #e1e1e1 !important;
 }
-
+body[dir="rtl"] .formcontrol-fieldselectfor-filtermodal {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  color: #5a5a5a !important;
+}
 .formcontrol-Phone-field {
   margin-top: 20px;
   /* margin-left: 20px !important; */
@@ -273,7 +283,7 @@ body[dir="rtl"] .AddUser-btn {
   border: 1px solid #e1e1e1;
   border-radius: 4px;
   color: #ffff !important;
-  font-family: "MontserratBold-600";
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
   font-size: 12px;
   margin-top: 5px;
   margin-left: -12px;
@@ -303,7 +313,9 @@ body[dir="rtl"] .AddUser-btn:hover {
   white-space: nowrap !important;
   overflow: hidden;
 }
-
+body[dir="rtl"] .userName {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 .userEmail {
   width: 120px !important;
   text-overflow: ellipsis !important;
@@ -319,7 +331,9 @@ body[dir="rtl"] .AddUser-btn:hover {
   overflow: hidden;
   margin: 0;
 }
-
+body[dir="rtl"] .userOrganization {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 .userDesgination {
   width: 120px !important;
   text-overflow: ellipsis !important;
@@ -327,7 +341,9 @@ body[dir="rtl"] .AddUser-btn:hover {
   overflow: hidden;
   margin: 0;
 }
-
+body[dir="rtl"] .userDesgination {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 .errorMessage-AllUser {
   margin: 2px;
   height: 13px;
@@ -349,4 +365,8 @@ body[dir="rtl"] .AddUser-btn:hover {
   white-space: nowrap;
   overflow: hidden;
   font-family: "MontserratSemiBold";
+}
+
+body[dir="rtl"] .User-title-col {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }

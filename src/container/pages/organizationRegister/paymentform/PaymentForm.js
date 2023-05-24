@@ -26,7 +26,7 @@ const PaymentForm = () => {
   const [annualPackageShow, setAnnualPackageShow] = useState(false);
   const [monthlyPackageShow, setMonthlyPackageShow] = useState(true);
   const { Authreducer } = useSelector((state) => state);
-  console.log("AuthreducerAuthreducer", Authreducer)
+  console.log("AuthreducerAuthreducer", Authreducer);
   const [isSelectedPacakage, setSelectedPackage] = useState({
     PackageCategory: "",
     MonthlyAmount: "",
@@ -250,8 +250,8 @@ const PaymentForm = () => {
                     <span
                       className={
                         annualPackageShow
-                          ? "MontserratBold-700 fs-3 visible color-5a5a5a "
-                          : "MontserratBold-700 fs-4 invisible   "
+                          ? "MontserratBold-700 fs-3 visible color-5a5a5a Arabicstyles "
+                          : "MontserratBold-700 fs-4 invisible Arabicstyles  "
                       }
                     >
                       $35/
@@ -262,8 +262,8 @@ const PaymentForm = () => {
                     <span
                       className={
                         annualPackageShow
-                          ? "MontserratBold-700 fs-6 text-decoration-line-through color-5a5a5a "
-                          : "MontserratBold-700 fs-4 color-5a5a5a"
+                          ? "MontserratBold-700 fs-6 text-decoration-line-through color-5a5a5a Arabicstyles  "
+                          : "MontserratBold-700 fs-4 color-5a5a5a Arabicstyles"
                       }
                     >
                       $40/
@@ -279,11 +279,14 @@ const PaymentForm = () => {
                           styles["disount_per"]
                         } ${"MontserratMedium-500 text-center border w-25 mx-auto mb-3 fs-4"}`}
                       >
-                        <span>13% {t("off")}</span>
+                        <span className={styles["Arabic_Styles_Percent"]}>
+                          13% {t("off")}
+                        </span>
                       </div>
                       <div className={styles["descriptionline"]}>
                         <p className={styles["descriptiontext"]}>
-                          Renews December 2023 for Rs $35/mo ($420 total) <X />
+                          {t("Renews-December-2023-for-Rs-$35/mo-($420 total)")}
+                          <X />
                         </p>
                       </div>
                     </>
@@ -329,7 +332,7 @@ const PaymentForm = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className="MontserratMedium-500 text-center small "
+                    className="MontserratMedium-500 text-center small Arabicstyles_Subtotal_Not_include_taxes"
                   >
                     {t("Subtotal-does-not-include-applicable-taxes")}
                   </Col>
@@ -397,7 +400,7 @@ const PaymentForm = () => {
                     </Row>
                   </Col>
                   <Col
-                    className="MontserratSemiBold-600 text-center mt-2"
+                    className="MontserratSemiBold-600 text-center mt-2 Saved_money_Tagline"
                     style={{ color: "5a5a5a" }}
                     md={12}
                     sm={12}

@@ -23,6 +23,10 @@
   margin-top: 10px !important;
 }
 
+body[dir="rtl"] .deleteModal-message {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .allowModalIcon {
   color: #f16b6b;
   border: none !important;
@@ -34,4 +38,8 @@
   font-family: "MontserratBold";
   color: #5a5a5a;
   font-size: 16px;
+}
+
+body[dir="rtl"] .PaymentActivitySubtitle {
+  font-family: "IBMPlexSansArabic-Bold" !important;
 }

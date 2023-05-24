@@ -371,7 +371,7 @@ const TwoFacSendEmail = () => {
                           className="d-flex justify-content-center"
                         >
                           <Button
-                            text="SEND CODE"
+                            text={t("Send-code")}
                             className="Next_button_EmailVerifySendEmail_sendCode"
                             onClick={onClickSendOnDevice}
                             disableBtn={

@@ -208,6 +208,10 @@ const initialState = {
   talkSocketGroupCreation: {
     groupCreatedData: null,
   },
+
+  talkSocketUnreadMessageCount: {
+    unreadMessageData: null,
+  },
 }
 
 const talkReducer = (state = initialState, action) => {
@@ -1126,6 +1130,15 @@ const talkReducer = (state = initialState, action) => {
         ...state,
         talkSocketGroupCreation: {
           groupCreatedData: action.response,
+        },
+      }
+
+    case actions.MQTT_UNREAD_MESSAGE_COUNT:
+      console.log('MQTT_UNREAD_MESSAGE_COUNT', action.response)
+      return {
+        ...state,
+        talkSocketUnreadMessageCount: {
+          unreadMessageData: action.response,
         },
       }
 

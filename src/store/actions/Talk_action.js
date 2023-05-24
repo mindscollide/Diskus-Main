@@ -180,6 +180,15 @@ const mqttGroupCreated = (response) => {
   }
 }
 
+//Unread Message Count
+const mqttUnreadMessageCount = (response) => {
+  console.log('responseresponseresponse', response)
+  return {
+    type: actions.MQTT_UNREAD_MESSAGE_COUNT,
+    response: response,
+  }
+}
+
 //get all user chat init
 const getAllUserChatsInit = (response) => {
   return {
@@ -2931,6 +2940,7 @@ export {
   mqttStarMessage,
   mqttUnstarMessage,
   mqttGroupCreated,
+  mqttUnreadMessageCount,
   GetAllUserChats,
   GetOTOUserMessages,
   GetOTOUserUndeliveredMessages,

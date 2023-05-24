@@ -60,7 +60,7 @@ const Header2 = () => {
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [show, setShow] = useState(false);
   const { t, i18n } = useTranslation();
-  
+
   useEffect(() => {
     if (Blur != undefined) {
       console.log("Blur", Blur);
@@ -96,15 +96,12 @@ const Header2 = () => {
     }
   }, [UserProfileData]);
 
-
-
-
   const [language, setLanguage] = useState(currentLanguage);
 
   const forgotPasswordCheck = () => {
     localStorage.setItem("globalPassowrdChecker", true);
   };
-  
+
   const handleChangeLocale = (e) => {
     const lang = e.target.value;
     setLanguage(lang);
@@ -131,8 +128,6 @@ const Header2 = () => {
       // document.body.classList.remove("blur-background");
     }
   };
-
- 
 
   // userProfile handler
   const modalUserProfileHandler = (e) => {
@@ -455,9 +450,9 @@ const Header2 = () => {
               >
                 <img src={DiskusHeaderInfo} width={28} />
               </Nav.Link>
-                <Nav.Link className="me-2" as={Link} to="setting">
-                  <img src={DiskusHeaderSetting} width={28} />
-                </Nav.Link>
+              <Nav.Link className="me-2" as={Link} to="setting">
+                <img src={DiskusHeaderSetting} width={28} />
+              </Nav.Link>
             </Nav>
           </Container>
         </Navbar>
