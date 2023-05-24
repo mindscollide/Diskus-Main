@@ -20,6 +20,7 @@ import {
   mqttStarMessage,
   mqttUnstarMessage,
   mqttGroupCreated,
+  mqttUnreadMessageCount,
 } from '../../store/actions/Talk_action'
 import Paho from 'paho-mqtt'
 import Helper from '../../commen/functions/history_logout'
@@ -557,6 +558,18 @@ const Dashboard = () => {
           message: `You have been added in a group ${data.payload.data[0].fullName}`,
         })
         dispatch(mqttGroupCreated(data.payload))
+        setNotificationID(id)
+      } else if (
+        data.payload.message.toLowerCase() ===
+        'UNREAD_MESSAGES_COUNT'.toLowerCase()
+      ) {
+        console.log('UNREAD_MESSAGES_COUNT', data.payload.data)
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `UNREAD_MESSAGES_COUNT`,
+        })
+        dispatch(mqttUnreadMessageCount(data.payload))
         setNotificationID(id)
       }
     }

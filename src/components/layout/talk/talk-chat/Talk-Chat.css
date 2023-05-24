@@ -960,7 +960,7 @@ body[dir="rtl"] span.securityicon-box {
 
 .message-inbox,
 .message-outbox {
-  padding: 10px 10px 10px 10px;
+  padding: 6px 10px 6px 10px;
   display: inline-block;
   width: 80%;
   border-radius: 8px;
@@ -998,7 +998,7 @@ body[dir="rtl"] span.securityicon-box {
 
 span.direct-chat-body {
   font-family: "MontserratRegular";
-  font-size: 15px;
+  font-size: 14px;
 }
 
 span.chat-datetime {

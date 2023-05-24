@@ -24,6 +24,11 @@ import {
   activeChatID,
   activeMessageID,
 } from '../../../../store/actions/Talk_action'
+import {
+  newTimeFormaterAsPerUTCTalkTime,
+  newTimeFormaterAsPerUTCTalkDate,
+  newTimeFormaterAsPerUTCTalkDateTime,
+} from './../../../../commen/functions/date_formater'
 import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col, Container, Form } from 'react-bootstrap'
 import { Select, Checkbox } from 'antd'
@@ -99,10 +104,28 @@ const TalkChat = () => {
   const { talkStateData } = useSelector((state) => state)
 
   //Current Date Time in variable
-  var currentDateTime = moment().format('YYYYMMDDHHmmss')
-  var currentDateYesterday = moment().subtract(1, 'days').format('YYYYMMDD')
-  var currentDate = moment().format('YYYYMMDD')
-  var currentTime = moment().format('HHmmss')
+  // var currentDateTime = moment().format('YYYYMMDDHHmmss')
+  // var currentDateYesterday = moment().subtract(1, 'days').format('YYYYMMDD')
+  // var currentDate = moment().format('YYYYMMDD')
+  // var currentTime = moment().format('HHmmss')
+
+  const date = new Date()
+
+  //CURRENT DATE TIME UTC
+  let currentDateTime = new Date()
+  let changeDateFormatCurrent = moment(currentDateTime).utc()
+  let currentDateTimeUtc = moment(changeDateFormatCurrent).format(
+    'YYYYMMDDHHmmss',
+  )
+
+  let currentUtcDate = currentDateTimeUtc.slice(0, 8)
+  let currentUtcTime = currentDateTimeUtc.slice(8, 15)
+
+  //YESTERDAY'S DATE
+  let yesterdayDate = new Date()
+  yesterdayDate.setDate(yesterdayDate.getDate() - 1) // Subtract 1 day
+  let changeDateFormatYesterday = moment(yesterdayDate).utc()
+  let yesterdayDateUtc = moment(changeDateFormatYesterday).format('YYYYMMDD')
 
   //Opening Chat States
   const [activeChat, setActiveChat] = useState([])
@@ -317,6 +340,9 @@ const TalkChat = () => {
 
   //message click data
   const [messageClickData, setMessageClickData] = useState([])
+
+  //Unread Message Count State MQTT
+  const [mqttUnreadMessageData, setMqttUnreadMessageData] = useState([])
 
   const [showEditGroupField, setShowEditGroupField] = useState(false)
 
@@ -1687,8 +1713,18 @@ const TalkChat = () => {
         uid: '',
       }
       let allChatNewMessageOtoData = {
-        id: mqttInsertOtoMessageData.receiverID,
-        fullName: mqttInsertOtoMessageData.receiverName,
+        id:
+          parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
+            ? mqttInsertOtoMessageData.receiverID
+            : parseInt(currentUserId) === mqttInsertOtoMessageData.receiverID
+            ? mqttInsertOtoMessageData.senderID
+            : null,
+        fullName:
+          parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
+            ? mqttInsertOtoMessageData.receiverName
+            : parseInt(currentUserId) === mqttInsertOtoMessageData.receiverID
+            ? mqttInsertOtoMessageData.senderName
+            : null,
         imgURL: 'O.jpg',
         messageBody: mqttInsertOtoMessageData.messageBody,
         messageDate: mqttInsertOtoMessageData.sentDate,
@@ -1732,9 +1768,32 @@ const TalkChat = () => {
             updatedArray.length > 0 &&
             updatedArray[0].hasOwnProperty('messageBody')
           ) {
-            updatedArray[0] = allChatNewMessageOtoData
+            const index = updatedArray.findIndex(
+              (item) => item.id === allChatNewMessageOtoData.id,
+            )
+            if (index !== -1) {
+              updatedArray[index] = allChatNewMessageOtoData
+            } else {
+              updatedArray[0] = allChatNewMessageOtoData
+            }
           }
           setAllChatData(updatedArray)
+          // console.log('All Chat Data IF CHECK')
+          // setAllOtoMessages((prevState) => {
+          //   const updatedMessages = [...prevState]
+          //   updatedMessages[
+          //     updatedMessages.length - 1
+          //   ] = insertMqttOtoMessageData
+          //   return updatedMessages
+          // })
+          // let updatedArray = [...allChatData]
+          // if (
+          //   updatedArray.length > 0 &&
+          //   updatedArray[0].hasOwnProperty('messageBody')
+          // ) {
+          //   updatedArray[0] = allChatNewMessageOtoData
+          // }
+          // setAllChatData(updatedArray)
         } else if (
           insertMqttOtoMessageData !== undefined &&
           insertMqttOtoMessageData !== null &&
@@ -1749,16 +1808,35 @@ const TalkChat = () => {
           insertMqttOtoMessageData.messageBody !==
             allOtoMessages[allOtoMessages.length - 1].messageBody
         ) {
-          setAllOtoMessages([...allOtoMessages, insertMqttOtoMessageData])
+          setAllOtoMessages((prevState) => {
+            const updatedMessages = [...prevState]
+            updatedMessages[
+              updatedMessages.length - 1
+            ] = insertMqttOtoMessageData
+            return updatedMessages
+          })
           let updatedArray = [...allChatData]
           if (
             updatedArray.length > 0 &&
-            updatedArray[0].hasOwnProperty('messageBody') &&
-            updatedArray[0].messageBody === allChatData[0].messageBody
+            updatedArray[0].hasOwnProperty('messageBody')
           ) {
             updatedArray[0] = allChatNewMessageOtoData
           }
           setAllChatData(updatedArray)
+          // console.log('All Chat Data Before Setting Updated Array', allChatData)
+          // setAllOtoMessages([...allOtoMessages, insertMqttOtoMessageData])
+          // let updatedArray = [...allChatData]
+          // console.log('All Chat Data Updated Array', updatedArray)
+          // if (
+          //   updatedArray.length > 0 &&
+          //   updatedArray[0].hasOwnProperty('messageBody') &&
+          //   updatedArray[0].messageBody !== allChatData[0].messageBody
+          // ) {
+          //   updatedArray[0] = allChatNewMessageOtoData
+          //   console.log('All Chat Data Check working or not', allChatData)
+          // }
+          // setAllChatData(updatedArray)
+          // console.log('All Chat Data After Setting Updated Array', allChatData)
         }
       } else {
         let allotomessages =
@@ -1794,6 +1872,7 @@ const TalkChat = () => {
         }
       }
     }
+    //
   }, [talkStateData.talkSocketData.socketInsertOTOMessageData])
 
   useEffect(() => {
@@ -2190,7 +2269,7 @@ const TalkChat = () => {
           sentDate: '',
           receivedDate: '',
           seenDate: '',
-          currDate: currentDateTime,
+          currDate: currentDateTimeUtc,
           messageStatus: 'Undelivered',
           fileGeneratedName: '',
           fileName: '',
@@ -2326,7 +2405,7 @@ const TalkChat = () => {
           attachmentLocation: messageSendData.AttachmentLocation,
           blockCount: 0,
           broadcastName: '',
-          currDate: currentDateTime,
+          currDate: currentDateTimeUtc,
           fileGeneratedName: messageSendData.FileGeneratedName,
           fileName: messageSendData.FileName,
           frMessages: 'Direct Message',
@@ -2412,7 +2491,7 @@ const TalkChat = () => {
   // console.log('Talk State Data', talkStateData)
   // console.log('messagesChecked', messagesChecked, messagesChecked.length)
 
-  console.log('All Chat Data', allChatData)
+  // console.log('All Chat Data', allChatData)
   console.log('All OTO MESSAGES', allOtoMessages)
   console.log('All GROUP MESSAGES', allGroupMessages)
   console.log('messageInfoData', messageInfoData)
@@ -2640,26 +2719,32 @@ const TalkChat = () => {
                             </p>
                             <p className="chat-date m-0">
                               {dataItem.messageDate.slice(0, 8) ===
-                              currentDate ? (
+                              currentUtcDate ? (
                                 <>
-                                  {moment(
+                                  {/* {moment(
                                     dataItem.messageDate.slice(8, 15),
                                     'hhmmss',
-                                  ).format('hh:mm a')}
+                                  ).format('hh:mm a')} */}
+                                  {newTimeFormaterAsPerUTCTalkTime(
+                                    dataItem.messageDate,
+                                  )}
                                 </>
                               ) : dataItem.messageDate.slice(0, 8) ===
-                                currentDateYesterday ? (
+                                yesterdayDateUtc ? (
                                 <>
-                                  {moment(
+                                  {/* {moment(
                                     dataItem.messageDate.slice(0, 8),
-                                  ).format('DD-MMM-YYYY')}{' '}
+                                  ).format('DD-MMM-YYYY')} */}
+                                  {newTimeFormaterAsPerUTCTalkDate(
+                                    dataItem.messageDate,
+                                  )}
                                   | Yesterday
                                 </>
                               ) : (
                                 <>
-                                  {moment(
-                                    dataItem.messageDate.slice(0, 8),
-                                  ).format('DD-MMM-YYYY')}{' '}
+                                  {newTimeFormaterAsPerUTCTalkDate(
+                                    dataItem.messageDate,
+                                  )}
                                 </>
                               )}
                             </p>
@@ -2833,26 +2918,32 @@ const TalkChat = () => {
                               className="chat-date m-0"
                             >
                               {dataItem.messageDate.slice(0, 8) ===
-                              currentDate ? (
+                              currentUtcDate ? (
                                 <>
-                                  {moment(
+                                  {/* {moment(
                                     dataItem.messageDate.slice(8, 15),
                                     'hhmmss',
-                                  ).format('hh:mm a')}
+                                  ).format('hh:mm a')} */}
+                                  {newTimeFormaterAsPerUTCTalkTime(
+                                    dataItem.messageDate,
+                                  )}
                                 </>
                               ) : dataItem.messageDate.slice(0, 8) ===
-                                currentDateYesterday ? (
+                                yesterdayDateUtc ? (
                                 <>
-                                  {moment(
+                                  {/* {moment(
                                     dataItem.messageDate.slice(0, 8),
-                                  ).format('DD-MMM-YYYY')}{' '}
+                                  ).format('DD-MMM-YYYY')}{' '} */}
+                                  {newTimeFormaterAsPerUTCTalkDate(
+                                    dataItem.messageDate,
+                                  )}
                                   | Yesterday
                                 </>
                               ) : (
                                 <>
-                                  {moment(
-                                    dataItem.messageDate.slice(0, 8),
-                                  ).format('DD-MMM-YYYY')}{' '}
+                                  {newTimeFormaterAsPerUTCTalkDate(
+                                    dataItem.messageDate,
+                                  )}
                                 </>
                               )}
                             </p>
@@ -3055,26 +3146,25 @@ const TalkChat = () => {
                               className="chat-date m-0"
                             >
                               {dataItem.messageDate.slice(0, 8) ===
-                              currentDate ? (
+                              currentUtcDate ? (
                                 <>
-                                  {moment(
-                                    dataItem.messageDate.slice(8, 15),
-                                    'hhmmss',
-                                  ).format('hh:mm a')}
+                                  {newTimeFormaterAsPerUTCTalkTime(
+                                    dataItem.messageDate,
+                                  )}
                                 </>
                               ) : dataItem.messageDate.slice(0, 8) ===
-                                currentDateYesterday ? (
+                                yesterdayDateUtc ? (
                                 <>
-                                  {moment(
-                                    dataItem.messageDate.slice(0, 8),
-                                  ).format('DD-MMM-YYYY')}{' '}
+                                  {newTimeFormaterAsPerUTCTalkDate(
+                                    dataItem.messageDate,
+                                  )}
                                   | Yesterday
                                 </>
                               ) : (
                                 <>
-                                  {moment(
-                                    dataItem.messageDate.slice(0, 8),
-                                  ).format('DD-MMM-YYYY')}{' '}
+                                  {newTimeFormaterAsPerUTCTalkDate(
+                                    dataItem.messageDate,
+                                  )}
                                 </>
                               )}
                             </p>
@@ -3193,8 +3283,8 @@ const TalkChat = () => {
                           </Col>
                           <Col lg={4} md={4} sm={4} className="text-end">
                             <p className="date starred-message m-0">
-                              {moment(dataItem.sentDate.slice(0, 8)).format(
-                                'DD-MMM-YYYY',
+                              {newTimeFormaterAsPerUTCTalkDate(
+                                dataItem.sentDate,
                               )}
                             </p>
                           </Col>
@@ -3210,10 +3300,13 @@ const TalkChat = () => {
                                 <p className="m-0">
                                   {' '}
                                   {dataItem.sentDate !== ''
-                                    ? moment(
-                                        dataItem.sentDate.slice(0, 8),
-                                      ).format('DD-MMM-YYYY')
-                                    : ''}
+                                    ? newTimeFormaterAsPerUTCTalkDate(
+                                        dataItem.sentDate,
+                                      )
+                                    : // moment(
+                                      //     dataItem.sentDate.slice(0, 8),
+                                      //   ).format('DD-MMM-YYYY')
+                                      ''}
                                 </p>
                               </div>
                             </div>
@@ -3815,32 +3908,38 @@ const TalkChat = () => {
                                   className="chat-date m-0"
                                 >
                                   {dataItem.messageDate.slice(0, 8) ===
-                                    currentDate &&
+                                    currentUtcDate &&
                                   dataItem.messageDate !== '' &&
                                   dataItem.messageDate !== undefined ? (
                                     <>
-                                      {moment(
+                                      {/* {moment(
                                         dataItem.messageDate.slice(8, 15),
                                         'hhmmss',
-                                      ).format('hh:mm a')}
+                                      ).format('hh:mm a')} */}
+                                      {newTimeFormaterAsPerUTCTalkTime(
+                                        dataItem.messageDate,
+                                      )}
                                     </>
                                   ) : dataItem.messageDate.slice(0, 8) ===
-                                      currentDateYesterday &&
+                                      yesterdayDateUtc &&
                                     dataItem.messageDate !== '' &&
                                     dataItem.messageDate !== undefined ? (
                                     <>
-                                      {moment(
+                                      {/* {moment(
                                         dataItem.messageDate.slice(0, 8),
-                                      ).format('DD-MMM-YYYY')}{' '}
+                                      ).format('DD-MMM-YYYY')}{' '} */}
+                                      {newTimeFormaterAsPerUTCTalkDate(
+                                        dataItem.messageDate,
+                                      )}
                                       | Yesterday
                                     </>
                                   ) : (
                                     <>
                                       {dataItem.messageDate !== '' &&
                                       dataItem.messageDate !== undefined
-                                        ? moment(
-                                            dataItem.messageDate.slice(0, 8),
-                                          ).format('DD-MMM-YYYY')
+                                        ? newTimeFormaterAsPerUTCTalkDate(
+                                            dataItem.messageDate,
+                                          )
                                         : ''}
                                     </>
                                   )}
@@ -4212,40 +4311,49 @@ const TalkChat = () => {
                                                 {messageData.sentDate.slice(
                                                   0,
                                                   8,
-                                                ) === currentDate ? (
+                                                ) === currentUtcDate ? (
                                                   <>
-                                                    {moment(
+                                                    {/* {moment(
                                                       messageData.sentDate.slice(
                                                         8,
                                                         15,
                                                       ),
                                                       'hhmmss',
-                                                    ).format('hh:mm a')}
+                                                    ).format('hh:mm a')} */}
+                                                    {newTimeFormaterAsPerUTCTalkTime(
+                                                      messageData.sentDate,
+                                                    )}
                                                   </>
                                                 ) : messageData.sentDate.slice(
                                                     0,
                                                     8,
-                                                  ) === currentDateYesterday ? (
+                                                  ) === yesterdayDateUtc ? (
                                                   <>
-                                                    {moment(
+                                                    {/* {moment(
                                                       messageData.sentDate.slice(
                                                         0,
                                                         8,
                                                       ),
                                                     ).format(
                                                       'DD-MMM-YYYY',
-                                                    )}{' '}
+                                                    )}{' '} */}
+                                                    {newTimeFormaterAsPerUTCTalkDate(
+                                                      messageData.sentDate,
+                                                    )}
                                                     | Yesterday
                                                   </>
                                                 ) : messageData.sentDate ===
                                                   '' ? null : (
                                                   <>
-                                                    {moment(
+                                                    {/* {moment(
                                                       messageData.sentDate.slice(
                                                         0,
                                                         8,
                                                       ),
-                                                    ).format('DD-MMM-YYYY')}
+                                                    ).format('DD-MMM-YYYY')} */}
+                                                    {newTimeFormaterAsPerUTCTalkDate(
+                                                      messageData.sentDate,
+                                                    )}
                                                   </>
                                                 )}
                                               </span>
@@ -4437,37 +4545,40 @@ const TalkChat = () => {
                                               {messageData.sentDate.slice(
                                                 0,
                                                 8,
-                                              ) === currentDate ? (
+                                              ) === currentUtcDate ? (
                                                 <>
-                                                  {moment(
+                                                  {/* {moment(
                                                     messageData.sentDate.slice(
                                                       8,
                                                       15,
                                                     ),
                                                     'hhmmss',
-                                                  ).format('hh:mm a')}
+                                                  ).format('hh:mm a')} */}
+                                                  {newTimeFormaterAsPerUTCTalkTime(
+                                                    messageData.sentDate,
+                                                  )}
                                                 </>
                                               ) : messageData.sentDate.slice(
                                                   0,
                                                   8,
-                                                ) === currentDateYesterday ? (
+                                                ) === yesterdayDateUtc ? (
                                                 <>
-                                                  {moment(
+                                                  {/* {moment(
                                                     messageData.sentDate.slice(
                                                       0,
                                                       8,
                                                     ),
-                                                  ).format('DD-MMM-YYYY')}{' '}
+                                                  ).format('DD-MMM-YYYY')}{' '} */}
+                                                  {newTimeFormaterAsPerUTCTalkDate(
+                                                    messageData.sentDate,
+                                                  )}
                                                   | Yesterday
                                                 </>
                                               ) : (
                                                 <>
-                                                  {moment(
-                                                    messageData.sentDate.slice(
-                                                      0,
-                                                      8,
-                                                    ),
-                                                  ).format('DD-MMM-YYYY')}{' '}
+                                                  {newTimeFormaterAsPerUTCTalkDate(
+                                                    messageData.sentDate,
+                                                  )}
                                                 </>
                                               )}
                                             </span>
@@ -4603,37 +4714,40 @@ const TalkChat = () => {
                                               {messageData.sentDate.slice(
                                                 0,
                                                 8,
-                                              ) === currentDate ? (
+                                              ) === currentUtcDate ? (
                                                 <>
-                                                  {moment(
+                                                  {/* {moment(
                                                     messageData.sentDate.slice(
                                                       8,
                                                       15,
                                                     ),
                                                     'hhmmss',
-                                                  ).format('hh:mm a')}
+                                                  ).format('hh:mm a')} */}
+                                                  {newTimeFormaterAsPerUTCTalkTime(
+                                                    messageData.sentDate,
+                                                  )}
                                                 </>
                                               ) : messageData.sentDate.slice(
                                                   0,
                                                   8,
-                                                ) === currentDateYesterday ? (
+                                                ) === yesterdayDateUtc ? (
                                                 <>
-                                                  {moment(
+                                                  {/* {moment(
                                                     messageData.sentDate.slice(
                                                       0,
                                                       8,
                                                     ),
-                                                  ).format('DD-MMM-YYYY')}{' '}
+                                                  ).format('DD-MMM-YYYY')}{' '} */}
+                                                  {newTimeFormaterAsPerUTCTalkDate(
+                                                    messageData.sentDate,
+                                                  )}
                                                   | Yesterday
                                                 </>
                                               ) : (
                                                 <>
-                                                  {moment(
-                                                    messageData.sentDate.slice(
-                                                      0,
-                                                      8,
-                                                    ),
-                                                  ).format('DD-MMM-YYYY')}{' '}
+                                                  {newTimeFormaterAsPerUTCTalkDate(
+                                                    messageData.sentDate,
+                                                  )}
                                                 </>
                                               )}
                                             </span>
@@ -4826,37 +4940,40 @@ const TalkChat = () => {
                                               {messageData.sentDate.slice(
                                                 0,
                                                 8,
-                                              ) === currentDate ? (
+                                              ) === currentUtcDate ? (
                                                 <>
-                                                  {moment(
+                                                  {/* {moment(
                                                     messageData.sentDate.slice(
                                                       8,
                                                       15,
                                                     ),
                                                     'hhmmss',
-                                                  ).format('hh:mm a')}
+                                                  ).format('hh:mm a')} */}
+                                                  {newTimeFormaterAsPerUTCTalkTime(
+                                                    messageData.sentDate,
+                                                  )}
                                                 </>
                                               ) : messageData.sentDate.slice(
                                                   0,
                                                   8,
-                                                ) === currentDateYesterday ? (
+                                                ) === yesterdayDateUtc ? (
                                                 <>
-                                                  {moment(
+                                                  {/* {moment(
                                                     messageData.sentDate.slice(
                                                       0,
                                                       8,
                                                     ),
-                                                  ).format('DD-MMM-YYYY')}{' '}
+                                                  ).format('DD-MMM-YYYY')}{' '} */}
+                                                  {newTimeFormaterAsPerUTCTalkDate(
+                                                    messageData.sentDate,
+                                                  )}
                                                   | Yesterday
                                                 </>
                                               ) : (
                                                 <>
-                                                  {moment(
-                                                    messageData.sentDate.slice(
-                                                      0,
-                                                      8,
-                                                    ),
-                                                  ).format('DD-MMM-YYYY')}{' '}
+                                                  {newTimeFormaterAsPerUTCTalkDate(
+                                                    messageData.sentDate,
+                                                  )}
                                                 </>
                                               )}
                                             </span>
@@ -5459,8 +5576,11 @@ const TalkChat = () => {
                         {messageInfoData.sentDate === undefined ? (
                           <p className="m-0">No Date Available</p>
                         ) : (
-                          moment(messageInfoData.sentDate.slice(0, 8)).format(
-                            'DD-MMM-YYYY',
+                          // moment(messageInfoData.sentDate.slice(0, 8)).format(
+                          //   'DD-MMM-YYYY',
+                          // )
+                          newTimeFormaterAsPerUTCTalkDate(
+                            messageInfoData.sentDate,
                           )
                         )}
                       </div>
@@ -5474,9 +5594,12 @@ const TalkChat = () => {
                         {messageInfoData.receivedDate === undefined ? (
                           <p className="m-0">No Date Available</p>
                         ) : (
-                          moment(
-                            messageInfoData.receivedDate.slice(0, 8),
-                          ).format('DD-MMM-YYYY')
+                          // moment(
+                          //   messageInfoData.receivedDate.slice(0, 8),
+                          // ).format('DD-MMM-YYYY')
+                          newTimeFormaterAsPerUTCTalkDate(
+                            messageInfoData.receivedDate,
+                          )
                         )}
                       </div>
                     </div>
@@ -5489,8 +5612,11 @@ const TalkChat = () => {
                         {messageInfoData.seenDate === undefined ? (
                           <p className="m-0">No Date Available</p>
                         ) : (
-                          moment(messageInfoData.seenDate.slice(0, 8)).format(
-                            'DD-MMM-YYYY',
+                          // moment(messageInfoData.seenDate.slice(0, 8)).format(
+                          //   'DD-MMM-YYYY',
+                          // )
+                          newTimeFormaterAsPerUTCTalkDate(
+                            messageInfoData.seenDate,
                           )
                         )}
                       </div>
@@ -5641,10 +5767,13 @@ const TalkChat = () => {
                         {groupInfoData === undefined ||
                         groupInfoData.length === 0
                           ? ''
-                          : moment(
-                              groupInfoData[0].createdOn,
-                              'YYYYMMDDkkmmss',
-                            ).format('h:mm A, Do MMM, YYYY')}
+                          : // moment(
+                            //     groupInfoData[0].createdOn,
+                            //     'YYYYMMDDkkmmss',
+                            //   ).format('h:mm A, Do MMM, YYYY')}
+                            newTimeFormaterAsPerUTCTalkDateTime(
+                              messageInfoData.seenDate,
+                            )}
                       </p>
                     </Col>
                     <Col lg={2} md={2} sm={12} className="text-end"></Col>
