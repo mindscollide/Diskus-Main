@@ -25,7 +25,7 @@ body[dir="rtl"] .create-Resolution-btn {
 .create-Resolution-btn:focus-visible {
   padding: 6px 12px !important;
   font-size: 12pt !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-family: "MontserratSemiBold";
   border-radius: 4px !important;
@@ -75,7 +75,7 @@ body[dir="rtl"] .Resolution-All-btn_Active {
 .Resolution-All-btn_Active:focus-visible {
   padding: 6px 12px !important;
   font-size: 12px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold";
@@ -109,7 +109,7 @@ body[dir="rtl"] .Resolution-vote-btn {
   width: 60px !important;
   height: 29px !important;
   font-size: 12px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
@@ -167,7 +167,7 @@ body[dir="rtl"] .Resolution-closed-btn_Active {
   padding: 6px 12px !important;
   font-size: 12px !important;
   font-family: "MontserratSemiBold";
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   border-radius: 4px !important;
   border: none !important;
@@ -221,7 +221,7 @@ body[dir="rtl"] .Resolution-Current-btn_Active {
   padding: 6px 12px !important;
   font-size: 12px !important;
   font-family: "MontserratSemiBold";
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   border-radius: 4px !important;
   border: none !important;

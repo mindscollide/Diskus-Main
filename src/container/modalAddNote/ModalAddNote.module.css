@@ -205,9 +205,10 @@ body[dir="rtl"] .star-addnote-modal{
 }
 
 .errorNotesMessage_description {
-  margin: 7% 4px 4px 4px;
+  margin: 7% 4px 4px 0px;
   height: 7px;
   color: #f16b6b;
+
   visibility: visible !important;
 }
 .errorNotesMessage_hidden_description {

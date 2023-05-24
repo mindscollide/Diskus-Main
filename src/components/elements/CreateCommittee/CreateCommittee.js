@@ -381,7 +381,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       if (Object.keys(assignees.user).length > 0) {
         setMeetingAttendeesList(assignees.user);
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [assignees.user]);
 
   useEffect(() => {
@@ -538,7 +538,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           <p
                             className={
                               erorbar &&
-                                createCommitteeDetails.CommitteesTitle === ""
+                              createCommitteeDetails.CommitteesTitle === ""
                                 ? styles["errorMessage"]
                                 : styles["errorMessage_hidden"]
                             }
@@ -573,7 +573,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           <p
                             className={
                               erorbar &&
-                                createCommitteeDetails.CommitteesDescription ===
+                              createCommitteeDetails.CommitteesDescription ===
                                 ""
                                 ? styles["errorMessage"]
                                 : styles["errorMessage_hidden"]
@@ -627,7 +627,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                       </Row>
 
                       <Row>
-                        <Col className="d-flex justify-content-end">
+                        <Col className={styles["Committee_error_coloumn"]}>
                           <p
                             className={
                               erorbar && committeeTypeValue === ""
@@ -674,7 +674,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                           sm={7}
                                           className={
                                             styles[
-                                            "group-head-info-Create-Committee"
+                                              "group-head-info-Create-Committee"
                                             ]
                                           }
                                         >
@@ -683,7 +683,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                               <span
                                                 className={
                                                   styles[
-                                                  "name-create-Committee"
+                                                    "name-create-Committee"
                                                   ]
                                                 }
                                               >
@@ -696,7 +696,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                               <span
                                                 className={
                                                   styles[
-                                                  "Designation-create-Committee"
+                                                    "Designation-create-Committee"
                                                   ]
                                                 }
                                               >
@@ -709,7 +709,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                               <span
                                                 className={
                                                   styles[
-                                                  "email-create-Committee"
+                                                    "email-create-Committee"
                                                   ]
                                                 }
                                               >
@@ -779,7 +779,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                           sm={7}
                                           className={
                                             styles[
-                                            "group-head-info-Create-Committee"
+                                              "group-head-info-Create-Committee"
                                             ]
                                           }
                                         >
@@ -788,7 +788,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                               <span
                                                 className={
                                                   styles[
-                                                  "name-create-Committee"
+                                                    "name-create-Committee"
                                                   ]
                                                 }
                                               >
@@ -801,7 +801,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                               <span
                                                 className={
                                                   styles[
-                                                  "Designation-create-Committee"
+                                                    "Designation-create-Committee"
                                                   ]
                                                 }
                                               >
@@ -814,7 +814,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                               <span
                                                 className={
                                                   styles[
-                                                  "email-create-Committee"
+                                                    "email-create-Committee"
                                                   ]
                                                 }
                                               >
@@ -904,7 +904,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                 option={committeeMemberRolesValues}
                                 value={participantRoleName}
                                 change={changeHandlerCommitteeMemberRole}
-                              // change={assigntRoleAttendies}
+                                // change={assigntRoleAttendies}
                               />
                             </Col>
                             <Col
@@ -934,107 +934,107 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               {" "}
                               {meetingAttendeesList.length > 0
                                 ? meetingAttendeesList.map(
-                                  (attendeelist, index) => {
-                                    return (
-                                      <Row className="mt-4" key={index}>
-                                        <Col lg={12} md={12} sm={12}>
-                                          <Row className="d-flex gap-2">
-                                            <Col lg={2} md={2} sm={12}>
-                                              <img
-                                                src={Newprofile}
-                                                width={50}
-                                              />
-                                            </Col>
-                                            <Col
-                                              lg={7}
-                                              md={7}
-                                              sm={12}
-                                              className={
-                                                styles[
-                                                "group-head-info-Add-Members-Create-Committee"
-                                                ]
-                                              }
-                                            >
-                                              <Row className="mt-1">
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                      "name-create-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {attendeelist.name}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                      "Designation-create-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    Designer
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                      "email-create-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    <a>
-                                                      {
-                                                        attendeelist.emailAddress
-                                                      }
-                                                    </a>
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                            <Col
-                                              lg={2}
-                                              md={2}
-                                              sm={12}
-                                              className="mt-2 "
-                                            >
-                                              <Checkbox
-                                                // checked={rememberEmail}
-                                                checked={
-                                                  attendees.includes(
-                                                    attendeelist.pK_UID
-                                                  )
-                                                    ? true
-                                                    : false
-                                                }
-                                                classNameDiv=""
-                                                onChange={() =>
-                                                  checkAttendeeBox(
-                                                    attendeelist,
-                                                    attendeelist.pK_UID,
-                                                    index
-                                                  )
-                                                }
+                                    (attendeelist, index) => {
+                                      return (
+                                        <Row className="mt-4" key={index}>
+                                          <Col lg={12} md={12} sm={12}>
+                                            <Row className="d-flex gap-2">
+                                              <Col lg={2} md={2} sm={12}>
+                                                <img
+                                                  src={Newprofile}
+                                                  width={50}
+                                                />
+                                              </Col>
+                                              <Col
+                                                lg={7}
+                                                md={7}
+                                                sm={12}
                                                 className={
                                                   styles[
-                                                  "RememberEmail-Create-Committee"
+                                                    "group-head-info-Add-Members-Create-Committee"
                                                   ]
                                                 }
-                                              />
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                      </Row>
-                                    );
-                                  }
-                                )
+                                              >
+                                                <Row className="mt-1">
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "name-create-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {attendeelist.name}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "Designation-create-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      Designer
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "email-create-Committee"
+                                                        ]
+                                                      }
+                                                    >
+                                                      <a>
+                                                        {
+                                                          attendeelist.emailAddress
+                                                        }
+                                                      </a>
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                              <Col
+                                                lg={2}
+                                                md={2}
+                                                sm={12}
+                                                className="mt-2 "
+                                              >
+                                                <Checkbox
+                                                  // checked={rememberEmail}
+                                                  checked={
+                                                    attendees.includes(
+                                                      attendeelist.pK_UID
+                                                    )
+                                                      ? true
+                                                      : false
+                                                  }
+                                                  classNameDiv=""
+                                                  onChange={() =>
+                                                    checkAttendeeBox(
+                                                      attendeelist,
+                                                      attendeelist.pK_UID,
+                                                      index
+                                                    )
+                                                  }
+                                                  className={
+                                                    styles[
+                                                      "RememberEmail-Create-Committee"
+                                                    ]
+                                                  }
+                                                />
+                                              </Col>
+                                            </Row>
+                                          </Col>
+                                        </Row>
+                                      );
+                                    }
+                                  )
                                 : null}
                             </Col>
                           </Row>

@@ -342,3 +342,17 @@ body[dir="rtl"] .Leftpolygon {
 body[dir="rtl"] .CheckBoxalign {
   margin-right: -20px !important;
 }
+
+.errorMessage {
+  margin: 3px;
+  height: 7px;
+  color: #f16b6b;
+  visibility: visible !important;
+}
+
+.errorMessage_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 7px;
+  color: #f16b6b !important;
+}
