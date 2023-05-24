@@ -9,6 +9,10 @@
   border: none !important;
 }
 
+body[dir="rtl"] .create-Resolution-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .create-Resolution-btn::before {
   content: "\002B";
   font-size: 18px !important;
@@ -61,6 +65,10 @@
   border: none !important;
 }
 
+body[dir="rtl"] .Resolution-All-btn_Active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .Resolution-All-btn_Active:hover,
 .Resolution-All-btn_Active:focus,
 .Resolution-All-btn_Active:active,
@@ -88,6 +96,10 @@
   align-items: center;
   margin: 0 auto !important;
   cursor: pointer !important;
+}
+
+body[dir="rtl"] .Resolution-vote-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .Resolution-vote-btn:hover,
@@ -144,6 +156,10 @@
   text-align: center !important;
 }
 
+body[dir="rtl"] .Resolution-closed-btn_Active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .Resolution-closed-btn_Active:hover,
 .Resolution-closed-btn_Active:active,
 .Resolution-closed-btn_Active:focus-visible,
@@ -192,6 +208,10 @@
   border-radius: 4px !important;
   border: none !important;
   text-align: center !important;
+}
+
+body[dir="rtl"] .Resolution-Current-btn_Active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .Resolution-Current-btn_Active:hover,

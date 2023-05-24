@@ -70,6 +70,10 @@
   border: none !important;
 }
 
+body[dir="rtl"] .Voters_Btn_Createresolution_Active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .Non_Voters_Btn_Createresolution_Active {
   padding: 6px 12px !important;
   font-size: 12px !important;
@@ -79,6 +83,11 @@
   border-radius: 4px !important;
   border: none !important;
 }
+
+body[dir="rtl"] .Non_Voters_Btn_Createresolution_Active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .Non_Voters_Btn_Createresolution {
   padding: 6px 12px !important;
   font-size: 12px !important;

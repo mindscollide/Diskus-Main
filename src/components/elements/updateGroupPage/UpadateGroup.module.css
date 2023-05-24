@@ -93,6 +93,10 @@
   height: 39px !important;
 }
 
+body[dir="rtl"] .ADD-Group-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .ADD-Group-btn:hover,
 .ADD-Group-btn:active,
 .ADD-Group-btn:focus,

@@ -559,6 +559,10 @@ body[dir="rtl"] .Add-User-Create {
   filter: grayscale(0.5);
 }
 
+body[dir="rtl"] .Add-User-Create[disabled] {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
 .Add-User-Create:hover {
   background-color: #6172d6 !important;
   color: #fff !important;

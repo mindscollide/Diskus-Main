@@ -97,6 +97,10 @@
   border: none !important;
 }
 
+body[dir="rtl"] .ADD-Update-Committee-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .ADD-Update-Committee-btn:hover,
 .ADD-Update-Committee-btn:active,
 .ADD-Update-Committee-btn:focus,

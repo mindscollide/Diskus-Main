@@ -17,6 +17,10 @@
   align-items: center;
 }
 
+body[dir="rtl"] .create-Committee-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .create-Committee-btn:active,
 .create-Committee-btn:focus-visible,
 .create-Committee-btn:focus,
@@ -59,6 +63,10 @@ body[dir="rtl"] .PLusICon {
   justify-content: space-between;
   gap: 10px;
   align-items: center;
+}
+
+body[dir="rtl"] .Archived-Group-btn-Committee-section {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .Archived-Group-btn-Committee-section:active,

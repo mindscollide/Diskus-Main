@@ -89,13 +89,17 @@
 .ADD-Committee-btn {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   height: 39px !important;
   font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   margin-top: 2px !important;
   border: 1px solid #e1e1e1 !important;
+}
+
+body[dir="rtl"] .ADD-Committee-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .ADD-Committee-btn:hover,
