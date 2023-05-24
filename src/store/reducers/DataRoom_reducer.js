@@ -93,6 +93,7 @@ const DataRoomReducer = (state = initialState, action) => {
             }
         }
         case actions.GET_FOLDER_DOCUMENTS_DATAROOM_SUCCESS: {
+            console.log(action)
             return {
                 ...state,
                 Loading: false,

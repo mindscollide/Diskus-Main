@@ -14,7 +14,6 @@ import { createFolderApi, FolderisExist } from "../../../store/actions/DataRoom_
 
 const ModalAddFolder = ({ addfolder, setAddfolder }) => {
   const { t } = useTranslation();
-  const [parentFolderID, setParentFolderID] = useState(0)
   const [FolderName, setFolderName] = useState({
     content: "",
     errorMessage: "",
@@ -26,7 +25,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
   };
   const handleAddFolder = () => {
     if (FolderName.content !== "") {
-      dispatch(FolderisExist(FolderName.content, parentFolderID, t, setAddfolder))
+      dispatch(FolderisExist(FolderName.content, t, setAddfolder))
     } else {
       setFolderName({
         content: "",
