@@ -8,7 +8,9 @@
   padding: auto 0;
   font-family: "MontserratSemiBold-600";
 }
-
+body[dir="rtl"] .adminNavbar {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 nav.adminNavbar.navbar.navbar-expand-lg.navbar-light {
   padding: 0px 0px;
 }
@@ -57,10 +59,14 @@ nav.adminNavbar.navbar.navbar-expand-lg.navbar-light {
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%);
   color: #fff !important;
 }
+body[dir="rtl"] .DiskusAdminNavBar > .dropdown-menu .dropdown-item {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 
 body[dir="rtl"] .DiskusAdminNavBar > .dropdown-menu .dropdown-item:hover {
   background: linear-gradient(to right, #4adede 0%, #6172d6 100%);
   color: #fff !important;
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .DiskusAdminNavBar {
@@ -80,6 +86,9 @@ body[dir="rtl"] .DiskusAdminNavBar > .dropdown-menu .dropdown-item:hover {
   background-color: transparent;
   cursor: pointer;
   border: none !important;
+}
+body[dir="rtl"] .DiskusAdminNavBar a:nth-child(1) {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .DiskusAdminNavBar .dropdown-menu a {

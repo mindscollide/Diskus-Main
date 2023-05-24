@@ -21,6 +21,10 @@
   font-family: "MontserratSemiBold";
 }
 
+body[dir="rtl"] .selectedpackagepage_heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .selected_package_details {
   margin: 10px 0;
   border-bottom: 1px solid #ccc;
@@ -30,6 +34,10 @@
   font-family: "MontserratSemiBold";
   font-size: 30px;
   color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .selectPackage_title {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .selected_package_Container {
@@ -47,6 +55,9 @@
   color: #000;
   border: 1px solid #ccc !important;
   position: relative;
+}
+body[dir="rtl"] .goBack_SelectedPackage {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .goBack_SelectedPackage:hover,
@@ -70,6 +81,9 @@
   font-size: calc(17px - 20%);
 }
 
+body[dir="rtl"] .ProcessToPayment_SelectedPackage {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .ProcessToPayment_SelectedPackage:hover,
 .ProcessToPayment_SelectedPackage:active,
 .ProcessToPayment_SelectedPackage:visited,
@@ -229,6 +243,10 @@ body[dir="rtl"] .selectedPackage_priceDetails {
   text-transform: capitalize;
 }
 
+body[dir="rtl"] .packagecard_disoucntprice h4 {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .packagecard_two {
   box-shadow: 0px 0px 12px -2px rgba(0, 0, 0, 0.46);
   visibility: visible;
@@ -262,7 +280,9 @@ body[dir="rtl"] .selectedPackage_priceDetails {
   text-transform: capitalize;
   font-family: "MontserratMedium" !important;
 }
-
+body[dir="rtl"] .selectedpackagecard_disoucntprice_para {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .packagecard_usersallows {
   width: 100%;
   margin: 0 auto;
@@ -270,17 +290,22 @@ body[dir="rtl"] .selectedPackage_priceDetails {
   text-align: center;
 }
 
-.packagecard_usersallows+p {
+.packagecard_usersallows + p {
   font-size: 12px;
 }
 
+body[dir="rtl"] .packagecard_usersallows + p {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
 .packagecard_usersallows_heading {
   text-transform: uppercase;
   color: #5a5a5a;
   font-size: calc(20px - 20%);
   /* font-family   : "MontserratBold"; */
 }
-
+body[dir="rtl"] .packagecard_usersallows_heading {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
 .packagecard_usersallows_members {
   padding: 8px 0;
   font-size: 11px;
@@ -316,14 +341,16 @@ body[dir="rtl"] .selectedPackage_priceDetails {
 }
 
 .selected-package-text {
-  padding: 0 15px;
-  text-align: center;
+  padding: 0 25px;
+  /* text-align: center; */
   /* height: auto; */
   overflow: hidden;
   margin-top: 10px;
   height: 145px;
 }
-
+body[dir="rtl"] .selected-package-text {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
 .ExecutiveMembersRange {
   width: 100%;
   margin: 0;
@@ -348,8 +375,9 @@ body[dir="rtl"] .selectedPackage_priceDetails {
   font-family: "MontserratMedium";
   /* border     : 1px solid #ccc; */
 }
-body[dir="rtl"] .package_membersHeading{
+body[dir="rtl"] .package_membersHeading {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 /* .package_membersHeading {
     border: none !important;
@@ -369,7 +397,9 @@ body[dir="rtl"] .package_membersHeading{
   border-end-start-radius: 3px;
   border-end-end-radius: 3px;
 }
-
+body[dir="rtl"] .package_membersHeading_values {
+  font-family: "IBMPlexSansArabic-Bold" !important;
+}
 .span {
   width: 100%;
   background-color: none;
@@ -415,14 +445,14 @@ body[dir="rtl"] .package_membersHeading{
   padding: 0 50px !important;
   z-index: 9999;
   height: 2.9em !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
   border-radius: 4px;
 }
 body[dir="rtl"] .select-language-signin {
   right: 71.4%;
-} 
+}
 .language_options {
   -webkit-appearance: none !important;
   -mox-appearance: none !important;
@@ -433,7 +463,7 @@ body[dir="rtl"] .select-language-signin {
 .select-language-signin:focus,
 .select-language-signin:focus-within,
 .select-language-signin:focus-visible {
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
   outline: none !important;
 }

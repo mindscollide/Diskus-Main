@@ -551,7 +551,6 @@ const PackageSelection = () => {
                                     ${data.FirstYearDiscountedPrice}/
                                   </p>
                                   <p className={styles["packageAnuallyMonth"]}>
-                                    {" "}
                                     {t("Month")}
                                   </p>
                                 </h4>
@@ -662,7 +661,7 @@ const PackageSelection = () => {
                         </Row>
                         <Row>
                           {isHTML(data.PackageDescription) ? (
-                            <Col className={styles["selected-package-text"]}>
+                            <Col className={styles["selected-package-texts"]}>
                               <p
                                 dangerouslySetInnerHTML={{
                                   __html: data.PackageDescription,

@@ -65,6 +65,10 @@
   font-family: "MontserratSemiBold-600" !important;
 }
 
+body[dir="rtl"] .Edit-Main-Heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .successfull-label {
   text-align: center !important;
   font-size: 14px;
@@ -231,6 +235,10 @@ body[dir="rtl"] .filterModal {
   font-size: 12px;
 }
 
+body[dir="rtl"] .icon-PaymentHistory-ResetBtn {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
 .icon-PaymentHistory-ResetBtn:hover {
   width: 128px !important;
   height: 46px !important;
@@ -253,6 +261,10 @@ body[dir="rtl"] .filterModal {
   margin-right: 30px;
   font-family: "MontserratMedium-500";
   font-size: 12px;
+}
+
+body[dir="rtl"] .icon-PaymentHistory-SearchBtn {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 .icon-PaymentHistory-SearchBtn:hover,
@@ -303,6 +315,10 @@ body[dir="rtl"] .icon-PaymentHistory-SearchBtn:hover {
 .surcharge {
   font-size: 11px !important;
   font-weight: 600 !important;
+}
+
+body[dir="rtl"] .surcharge {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .icon-PaymentHistory-DeleteBtn {
@@ -391,6 +407,10 @@ body[dir="rtl"] .icon-PaymentHistory-SearchBtn:hover {
   font-family: "MontserratMedium-500";
   color: #000000;
   opacity: 32%;
+}
+
+body[dir="rtl"] .paymenthistory_searchbar::placeholder {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 .paymenthistory_searchbar:hover,
 .paymenthistory_searchbar:focus {

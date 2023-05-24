@@ -104,7 +104,7 @@ const Organization = () => {
     ShowNotificationonparticipantJoining: false,
     DormatInactiveUsersforDays: 0,
     MaximumMeetingDuration: 0,
-    Is2FAVerification: false
+    Is2FAVerification: false,
   });
 
   //Reset handler for organization
@@ -121,10 +121,13 @@ const Organization = () => {
           userProfileData.pushNotificationOnNewMeeting,
         PushNotificationOnEditMeeting:
           userProfileData.pushNotificationOnEditMeeting,
-          PushNotificationOnCancelledMeeting: userProfileData.pushNotificationonCancelledMeeting,
+        PushNotificationOnCancelledMeeting:
+          userProfileData.pushNotificationonCancelledMeeting,
         ShowNotificationonparticipantJoining:
           userProfileData.showNotificationOnParticipantJoining,
-        DormatInactiveUsersforDays: parseInt(userProfileData.dormantInactiveUsersForDays),
+        DormatInactiveUsersforDays: parseInt(
+          userProfileData.dormantInactiveUsersForDays
+        ),
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
         Is2FAVerification: userProfileData.is2FAEnabled,
         EmailOnCancelledMeeting: userProfileData.emailOnCancelledMeeting,
@@ -135,21 +138,20 @@ const Organization = () => {
         value: userProfileData.countryCode.pK_CCID,
       };
       setCountryCodeValue(countryCode);
-      setWorldCountryID(userProfileData.worldCountry.fK_WorldCountryID)
+      setWorldCountryID(userProfileData.worldCountry.fK_WorldCountryID);
       let timeZoneCode = {
         label: userProfileData.timeZones.gmtOffset,
         value: userProfileData.timeZones.pK_TZID,
       };
       setTimeZoneValue(timeZoneCode);
     }
-
   };
 
   const [timeZoneValue, setTimeZoneValue] = useState({
     label: "",
     value: "",
   });
-  const [worldCountryID, setWorldCountryID] = useState(0)
+  const [worldCountryID, setWorldCountryID] = useState(0);
   const [timezone, setTimeZone] = useState([]);
   const [countrycode, setCountryCode] = useState([]);
   const [countryCodeValue, setCountryCodeValue] = useState({
@@ -237,15 +239,16 @@ const Organization = () => {
         organizationStates.PushNotificationOnEditMeeting,
       ShowNotificationOnParticipantJoining:
         organizationStates.ShowNotificationonparticipantJoining,
-      DormantInactiveUsersForDays:
-        parseInt(organizationStates.DormatInactiveUsersforDays),
+      DormantInactiveUsersForDays: parseInt(
+        organizationStates.DormatInactiveUsersforDays
+      ),
       FK_OrganizationID: organizationID,
       FK_WorldCountryID: worldCountryID,
       Is2FAEnabled: organizationStates.Is2FAVerification,
       DisableMeetingScheduling: organizationStates.DisableMeetingScheduling,
-      PushNotificationonCancelledMeeting: organizationStates.PushNotificationOnCancelledMeeting,
-      EmailOnCancelledMeeting: organizationStates.EmailOnCancelledMeeting
-
+      PushNotificationonCancelledMeeting:
+        organizationStates.PushNotificationOnCancelledMeeting,
+      EmailOnCancelledMeeting: organizationStates.EmailOnCancelledMeeting,
     };
     dispatch(updateOrganizationLevelSetting(organizationSettings, t));
   };
@@ -253,14 +256,14 @@ const Organization = () => {
     let newCountryCode = [];
     let array = Object.keys(countryName);
     array.map((data, index) => {
-      console.log("datadatadata", data)
+      console.log("datadatadata", data);
       return newCountryCode.push({
         label: data,
-        value: data
-      })
-    })
-    setCountryCode(newCountryCode)
-  }, [])
+        value: data,
+      });
+    });
+    setCountryCode(newCountryCode);
+  }, []);
   // Time Zone Change Handler
   const timezoneChangeHandler = (event) => {
     setTimeZoneValue({
@@ -273,17 +276,15 @@ const Organization = () => {
     let a = Object.values(countryName).find((obj) => {
       return obj.primary == event.label;
     });
-    console.log(a, "countryCode")
-    setWorldCountryID(a.id)
+    console.log(a, "countryCode");
+    setWorldCountryID(a.id);
     setCountryCodeValue({
       label: event.label,
       value: event.value,
     });
-
   };
 
   const hoursHandler = (event) => {
-
     setOrganizationStates({
       ...organizationStates,
       MaximumMeetingDuration: event.value,
@@ -294,7 +295,7 @@ const Organization = () => {
       ...organizationStates,
       Is2FAVerification: checked,
     });
-  }
+  };
   // Time Zones set in values
   useEffect(() => {
     let TimeZone = settingReducer.TimeZone;
@@ -329,13 +330,15 @@ const Organization = () => {
           userProfileData.pushNotificationOnNewMeeting,
         PushNotificationOnEditMeeting:
           userProfileData.pushNotificationOnEditMeeting,
-        PushNotificationOnCancelledMeeting: userProfileData.pushNotificationonCancelledMeeting,
+        PushNotificationOnCancelledMeeting:
+          userProfileData.pushNotificationonCancelledMeeting,
         ShowNotificationonparticipantJoining:
           userProfileData.showNotificationOnParticipantJoining,
-        DormatInactiveUsersforDays: parseInt(userProfileData.dormantInactiveUsersForDays),
+        DormatInactiveUsersforDays: parseInt(
+          userProfileData.dormantInactiveUsersForDays
+        ),
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
         Is2FAVerification: userProfileData.is2FAEnabled,
-        
       };
       setOrganizationStates(settingData);
       let countryCode = {
@@ -343,7 +346,7 @@ const Organization = () => {
         value: userProfileData.worldCountry?.fK_WorldCountryID,
       };
       setCountryCodeValue(countryCode);
-      setWorldCountryID(userProfileData.worldCountry?.fK_WorldCountryID)
+      setWorldCountryID(userProfileData.worldCountry?.fK_WorldCountryID);
       let timeZoneCode = {
         label: userProfileData.timeZones?.gmtOffset,
         value: userProfileData.timeZones?.pK_TZID,
@@ -398,7 +401,9 @@ const Organization = () => {
                     md={6}
                     sm={12}
                     xs={12}
-                    className={"d-flex justify-content-end organization-timezone-col"}
+                    className={
+                      "d-flex justify-content-end organization-timezone-col FontArabicRegular"
+                    }
                   >
                     <Select
                       options={timezone}
@@ -468,7 +473,9 @@ const Organization = () => {
                     md={6}
                     sm={12}
                     xs={12}
-                    className={"d-flex justify-content-end organization-timezone-col"}
+                    className={
+                      "d-flex justify-content-end organization-timezone-col"
+                    }
                   >
                     <Select
                       options={timedurationValues}
@@ -531,7 +538,9 @@ const Organization = () => {
                     xs={12}
                     className="d-flex justify-content-start "
                   >
-                    <label className="organization-labels">{t("Is-2fa-verification")}</label>
+                    <label className="organization-labels">
+                      {t("Is-2fa-verification")}
+                    </label>
                   </Col>
                   <Col
                     lg={2}
@@ -793,7 +802,7 @@ const Organization = () => {
                     md={2}
                     sm={12}
                     xs={12}
-                    className="d-flex justify-content-end"
+                    className="d-flex justify-content-end FontArabicRegular"
                   >
                     <TextField
                       type="number"

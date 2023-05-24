@@ -58,7 +58,7 @@ const VerificationCodeOne = () => {
   const handleChange = (e) => {
     setOtpCode(e.toUpperCase());
   };
-  console.log("worldCountryIDSworldCountryIDS",worldCountryIDS,phoneNumber)
+  console.log("worldCountryIDSworldCountryIDS", worldCountryIDS, phoneNumber);
   useEffect(() => {
     // if value was cleared, set key to re-render the element
     if (otpCode.length === 0) {
@@ -317,9 +317,9 @@ const VerificationCodeOne = () => {
                   </Col>
                 </Row>
                 <Row className="mt-4">
-                  <Col sm={12} md={12} lg={12}>
+                  <Col sm={12} md={12} lg={12} className="Enter-Code-Label">
                     <VerificationInputField
-                      label="Enter Code"
+                      label={t("Enter-code")}
                       fields={6}
                       applyClass="OTPInput"
                       change={handleChange}

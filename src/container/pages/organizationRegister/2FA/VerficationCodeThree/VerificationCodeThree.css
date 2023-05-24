@@ -290,6 +290,7 @@ body[dir="rtl"] .mobile_image {
   border: none !important;
   font-family: "MontserratSemiBold";
 }
+
 .Next_button_EmailVerify_For_openyourrealmextra:disabled {
   filter: grayscale(0.5);
 }
@@ -378,7 +379,9 @@ body[dir="rtl"] .mobile_image {
   border: none !important;
   font-family: "MontserratSemiBold";
 }
-
+body[dir="rtl"] .Next_button_EmailVerify_For_openyourrealmextra {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .Next_button_EmailVerify_For_openyourrealmextra:focus-visible {
   width: 280px;
   border-radius: 4px;
@@ -400,6 +403,9 @@ body[dir="rtl"] .mobile_image {
   display: flex;
   justify-content: center;
   font-family: "MontserratRegular";
+}
+body[dir="rtl"] .forogt_email_link_for_openrealmextra {
+  font-family: "IBMPlexSansArabic-Regular";
 }
 .forogt_email_link_for_openrealmextra a {
   color: #5a5a5a;
@@ -531,15 +537,17 @@ body[dir="rtl"] .MainHeading_InnerHeading {
 }
 
 body[dir="rtl"] .List_Components-verification {
-  font-size: 16px !important;
-  font-family: "MontserratRegular";
-  color: #5a5a5a;
+  font-family: "IBMPlexSansArabic-Regular";
 }
 
 .anchor_tag_text {
   font-family: "MontserratSemiBold";
   color: #6172d6;
   margin-left: 3px !important;
+}
+
+body[dir="rtl"] .anchor_tag_text {
+  font-family: "IBMPlexSansArabic-SemiBold";
 }
 .space {
   margin-left: 5px !important;
@@ -554,6 +562,9 @@ body[dir="rtl"] .Un_Ordered_List {
   width: 184px !important;
 }
 
+body[dir="rtl"] .OTPCounter_for_openrealmextra {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 .text-cemter-ur {
   text-align: center;
   width: 100% !important;
@@ -566,6 +577,10 @@ body[dir="rtl"] .Un_Ordered_List {
   font-size: 24px !important;
   padding: 0;
   margin: 0;
+}
+
+body[dir="rtl"] .Heading-Style {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .roundspinner-image {
@@ -582,6 +597,11 @@ body[dir="rtl"] .roundspinner-image {
   font-family: "MontserratBold";
   color: #5a5a5a;
   margin-left: 6px !important;
+}
+
+body[dir="rtl"] .deviceName {
+  font-family: "IBMPlexSansArabic-Bold";
+  margin-right: 6px !important;
 }
 
 .class-mobile {

@@ -271,7 +271,7 @@ const VerificationCodeThree = () => {
                         {t("Notification")}
                       </li>
                       <li className="List_Components-verification">
-                        {t("Click-on")}{" "}
+                        {t("Click-on")}
                         <span className="anchor_tag_text">{t("Yes")}</span>
                         <span className="space"></span>
                         {t("to-sign-in")}
@@ -331,12 +331,7 @@ const VerificationCodeThree = () => {
 
           <Col md={7} lg={7} sm={12} className="">
             <Row>
-              <Col
-                sm={12}
-                md={6}
-                lg={6}
-                className="position-relative"
-              >
+              <Col sm={12} md={6} lg={6} className="position-relative">
                 <img
                   src={img9}
                   alt="auth_icon"
