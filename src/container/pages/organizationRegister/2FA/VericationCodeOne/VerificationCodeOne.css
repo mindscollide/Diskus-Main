@@ -13,16 +13,30 @@
   font-size: calc(35px - 20%) !important;
 }
 
+body[dir="rtl"] .TwoFa_heading {
+  font-family: "IBMPlexSansArabic-SemiBold";
+  font-size: calc(35px - 10%) !important;
+}
+
 .verify_heading_line1 {
-  font-family: 'MontserratBold-700' !important;
+  font-family: "MontserratBold-700" !important;
   margin: 0;
   color: #5a5a5a;
   font-size: calc(16px - 20%);
 }
+body[dir="rtl"] .verify_heading_line1 {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-size: calc(16px - 20%);
+}
 .verify_heading_line2 {
-  font-family: 'MontserratBold-700' !important;
+  font-family: "MontserratBold-700" !important;
   margin: 0;
   color: #5a5a5a;
+  font-size: calc(16px - 20%);
+}
+
+body[dir="rtl"] .verify_heading_line2 {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
   font-size: calc(16px - 20%);
 }
 
@@ -40,6 +54,11 @@
   letter-spacing: 1px;
   font-weight: 600;
   background-color: #6172d6 !important;
+}
+
+body[dir="rtl"] .subscribNow_button_EmailVerify {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-size: 20px !important;
 }
 
 .subscribNow_button_EmailVerify:hover {
@@ -102,6 +121,11 @@
   text-decoration: underline !important;
 }
 
+body[dir="rtl"] .resendCode_btn {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-size: 16px !important;
+}
+
 .resendCode_btn:disabled {
   opacity: 30%;
   color: #000;
@@ -122,6 +146,10 @@
   user-select: none !important;
 }
 
+body[dir="rtl"] .OTPCounter {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-size: 16px !important;
+}
 .GoBackBtn {
   color: #000 !important;
   text-decoration: underline !important;
@@ -137,6 +165,10 @@
   text-decoration: underline;
   font-family: "MontserratRegular";
   color: #5a5a5a !important;
+}
+body[dir="rtl"] .Go_back_link_VerifyCodeOne a {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+  font-size: 16px !important;
 }
 
 .Auth_Icon1_VerifyCodeOne {
@@ -164,10 +196,10 @@
   padding: 0 50px !important;
   z-index: 9999;
   height: 2.9em !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: 'MontserratSemiBold-600' !important;
-	border-radius :4px;
+  font-family: "MontserratSemiBold-600" !important;
+  border-radius: 4px;
   outline: none !important;
 }
 
@@ -181,11 +213,11 @@
 .select-language-signin_2FAverificationotp:focus,
 .select-language-signin_2FAverificationotp:focus-within,
 .select-language-signin_2FAverificationotp:focus-visible {
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
   outline: none !important;
 }
-body[dir="rtl"] .select-language-signin_2FAverificationotp{
+body[dir="rtl"] .select-language-signin_2FAverificationotp {
   right: 80%;
 }
 .languageIcon_2FAverificationotp {

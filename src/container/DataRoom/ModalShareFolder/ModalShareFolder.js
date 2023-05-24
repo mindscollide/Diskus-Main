@@ -31,7 +31,7 @@ import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { shareFoldersApi } from "../../../store/actions/DataRoom_actions";
 
 
-const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId }) => {
+const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId, folderName }) => {
   const [showaccessrequest, setShowaccessrequest] = useState(false);
   const { assignees } = useSelector(state => state)
   const [showrequestsend, setShowrequestsend] = useState(false);
@@ -446,7 +446,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId })
                     <Row>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Share_folder_modal_Heading"]}>
-                          {t("Share")} <span>"folder 1"</span>
+                          {t("Share")} <span>{folderName}</span>
                         </span>
                       </Col>
                     </Row>

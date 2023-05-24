@@ -196,7 +196,7 @@ const UpdateGroupModal = ({ ModalTitle, updateGroup, setUpadategroup }) => {
                             "btn btn-outline-primary isAgenda-Schedule-top-btn-Outline"
                           }
                           variant={"Primary"}
-                          text={t("ADD")}
+                          text={t("Add")}
                         />
                       </Col>
                     </Row>

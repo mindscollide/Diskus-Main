@@ -33,8 +33,10 @@ const saveFilesApi = (data, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let createrID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
+    let folderID = JSON.parse(localStorage.getItem("folderID"));
+    console.log(folderID, "folderIDfolderIDfolderID")
     let Data = {
-        FolderID: 0,
+        FolderID: folderID !== null ? folderID : 0,
         Files: [
             {
                 DisplayFileName: data.displayFileName,
@@ -65,7 +67,12 @@ const saveFilesApi = (data, t) => {
                 if (response.data.responseResult.isExecuted === true) {
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase())) {
                         await dispatch(saveFiles_success(response.data.responseMessage, t("Files-saved-successfully")))
-                        await dispatch(getDocumentsAndFolderApi(1, t))
+                        if (folderID !== null) {
+                            await dispatch(getFolderDocumentsApi(folderID, t))
+                        } else {
+                            await dispatch(getDocumentsAndFolderApi(1, t))
+                        }
+                        localStorage.removeItem("folderID")
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase())) {
                         dispatch(saveFiles_fail(t("Failed-to-save-any-file")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase())) {
@@ -241,6 +248,7 @@ const getFolerDocuments_init = () => {
         type: actions.GET_FOLDER_DOCUMENTS_DATAROOM_INIT
     }
 }
+
 // Get Folder Documents Success
 const getFolerDocuments_success = (response, message) => {
     return {
@@ -249,6 +257,7 @@ const getFolerDocuments_success = (response, message) => {
         message: message
     }
 }
+
 // Get Folder Documents Fail
 const getFolerDocuments_fail = (message) => {
     return {
@@ -256,6 +265,7 @@ const getFolerDocuments_fail = (message) => {
         message: message
     }
 }
+
 // Get Folder Documents Api
 const getFolderDocumentsApi = (FolderId, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
@@ -263,7 +273,7 @@ const getFolderDocumentsApi = (FolderId, t) => {
     return (dispatch) => {
         dispatch(getFolerDocuments_init())
         let form = new FormData();
-        form.append("RequestMethod", getDocumentsAndFolderRequestMethod.RequestMethod);
+        form.append("RequestMethod", getFolderDocumentsRequestMethod.RequestMethod);
         form.append("RequestData", JSON.stringify(Data));
         axios({
             method: "post",
@@ -274,11 +284,12 @@ const getFolderDocumentsApi = (FolderId, t) => {
             },
         }).then((response) => {
             if (response.data.responseCode === 417) {
-                dispatch(RefreshToken())
+                dispatch(RefreshToken(t))
+                dispatch(getFolderDocumentsApi(FolderId, t))
             } else if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetFolderDocuments_01".toLowerCase())) {
-                        dispatch(getFolerDocuments_success(response.data.responseResult, t("Data-available")))
+                        dispatch(getFolerDocuments_success(response.data.responseResult.data, t("Data-available")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetFolderDocuments_02".toLowerCase())) {
                         dispatch(getFolerDocuments_fail(t("No-record-found")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomManager_GetFolderDocuments_03".toLowerCase())) {
@@ -302,6 +313,7 @@ const createFolder_init = () => {
         type: actions.CREATE_FOLDER_DATAROOM_INIT
     }
 }
+
 // Create Folder Success
 const createFolder_success = (response, message) => {
     return {
@@ -310,6 +322,7 @@ const createFolder_success = (response, message) => {
         message: message
     }
 }
+
 // Create Folder Fail
 const createFolder_fail = (message) => {
     return {
@@ -317,16 +330,18 @@ const createFolder_fail = (message) => {
         message: message
     }
 }
+
 // Create Folder API
-const createFolderApi = (folder, parentFolderID, t, setAddfolder) => {
+const createFolderApi = (folder, t, setAddfolder) => {
     let createrID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
     let token = JSON.parse(localStorage.getItem("token"));
+    let folderID = JSON.parse(localStorage.getItem("folderID"));
     let Data = {
         FolderName: folder,
         UserID: parseInt(createrID),
         OrganizationID: parseInt(OrganizationID),
-        ParentFolderID: parentFolderID
+        ParentFolderID: folderID !== null ? folderID : 0
     }
     return (dispatch) => {
         dispatch(createFolder_init())
@@ -349,6 +364,7 @@ const createFolderApi = (folder, parentFolderID, t, setAddfolder) => {
                         await dispatch(createFolder_success(response.data.responseResult, t("Folder-created-successfully")))
                         dispatch(getDocumentsAndFolderApi(3, t))
                         setAddfolder(false)
+                        localStorage.removeItem("folderID")
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_02".toLowerCase())) {
                         dispatch(createFolder_fail(t("Failed-to-create-folder")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_03".toLowerCase())) {
@@ -372,6 +388,7 @@ const getDocumentsAndFolders_init = () => {
         type: actions.GETALLDOCUMENTSANDFOLDER_DATAROOM_INIT
     }
 }
+
 // Get Documents and Folders Success
 const getDocumentsAndFolders_success = (response, message) => {
     return {
@@ -380,6 +397,7 @@ const getDocumentsAndFolders_success = (response, message) => {
         message: message
     }
 }
+
 // Get Documents and Folders Fail
 const getDocumentsAndFolders_fail = (message) => {
     return {
@@ -387,6 +405,7 @@ const getDocumentsAndFolders_fail = (message) => {
         message: message
     }
 }
+
 // Get Documents And Folder API
 const getDocumentsAndFolderApi = (statusID, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
@@ -416,7 +435,8 @@ const getDocumentsAndFolderApi = (statusID, t) => {
             },
         }).then((response) => {
             if (response.data.responseCode === 417) {
-                dispatch(RefreshToken())
+                dispatch(RefreshToken(t))
+                dispatch(getDocumentsAndFolderApi(statusID, t))
             } else if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
                     if (response.data.responseResult.responseMessage.toLowerCase() === "DataRoom_DataRoomManager_GetDocumentsAndFolders_01".toLowerCase()) {
@@ -445,6 +465,7 @@ const shareFiles_init = () => {
         type: actions.SHAREFILES_DATAROOM_INIT
     }
 }
+
 // Share Files Success
 const shareFiles_success = (response, message) => {
     return {
@@ -453,6 +474,7 @@ const shareFiles_success = (response, message) => {
         message: message
     }
 }
+
 // Share Files Fail
 const shareFiles_fail = (message) => {
     return {
@@ -462,13 +484,13 @@ const shareFiles_fail = (message) => {
 }
 
 // Share Files Api
-const shareFilesApi = () => {
+const shareFilesApi = (FileData, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
-    let Data = {}
     return (dispatch) => {
+        dispatch(shareFiles_init())
         let form = new FormData();
         form.append("RequestMethod", shareFilesRequestMethod.RequestMethod);
-        form.append("RequestData", JSON.stringify(Data));
+        form.append("RequestData", JSON.stringify(FileData));
         axios({
             method: "post",
             url: dataRoomApi,
@@ -478,9 +500,26 @@ const shareFilesApi = () => {
             },
         }).then((response) => {
             if (response.data.responseCode === 417) {
-
+                dispatch(RefreshToken(t))
+                dispatch(shareFilesApi(FileData, t))
+            } else if (response.data.responseCode === 200) {
+                if (response.data.responseResult.isExecuted === true) {
+                    if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_ShareFiles_01".toLowerCase())) {
+                        dispatch(shareFiles_success(response.data.responseResult, t("Files-shared-successfully")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_ShareFiles_02".toLowerCase())) {
+                        dispatch(shareFiles_fail(t("Failed-to-share-file")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_ShareFiles_03".toLowerCase())) {
+                        dispatch(shareFiles_fail(t("Something-went-wrong")))
+                    }
+                } else {
+                    dispatch(shareFiles_fail(t("Something-went-wrong")))
+                }
+            } else {
+                dispatch(shareFiles_fail(t("Something-went-wrong")))
             }
-        }).catch((error) => { })
+        }).catch((error) => {
+            dispatch(shareFiles_fail(t("Something-went-wrong")))
+        })
     }
 }
 
@@ -490,6 +529,7 @@ const shareFolders_init = () => {
         type: actions.SHAREFOLDERS_DATAROOM_INIT
     }
 }
+
 // Share Folders Success
 const shareFolders_success = (response, message) => {
     return {
@@ -498,6 +538,7 @@ const shareFolders_success = (response, message) => {
         message: message
     }
 }
+
 // Share Folders Fail
 const shareFolders_fail = (message) => {
     return {
@@ -505,6 +546,7 @@ const shareFolders_fail = (message) => {
         message: message
     }
 }
+
 // Share Folders Api
 const shareFoldersApi = (FolderData, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
@@ -555,6 +597,7 @@ const deleteFileDataroom_init = () => {
 
 // Delete file success
 const deleteFileDataroom_success = (response, message) => {
+    console.log(response, message)
     return {
         type: actions.DELETEFILE_DATAROOM_SUCCESS,
         response: response,
@@ -571,10 +614,13 @@ const deleteFileDataroom_fail = (message) => {
 }
 
 // Delete file API
-const deleteFileDataroom = () => {
+const deleteFileDataroom = (id, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
-    let Data = { File: [] }
+    let data = []
+    data.push(id)
+    let Data = { FileID: data }
     return (dispatch) => {
+        dispatch(deleteFileDataroom_init())
         let form = new FormData();
         form.append("RequestMethod", deleteFileRequestMethod.RequestMethod);
         form.append("RequestData", JSON.stringify(Data));
@@ -587,9 +633,29 @@ const deleteFileDataroom = () => {
             },
         }).then((response) => {
             if (response.data.responseCode === 417) {
-
+                dispatch(RefreshToken(t))
+                dispatch(deleteFileDataroom(id, t))
+            } else if (response.data.responseCode === 200) {
+                if (response.data.responseResult.isExecuted === true) {
+                    if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_DeleteFile_01".toLowerCase())) {
+                        console.log("hello")
+                        dispatch(getDocumentsAndFolderApi(3, t))
+                        dispatch(deleteFileDataroom_success(response.data.responseResult, t("Files-deleted-successfully")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_DeleteFile_02".toLowerCase())) {
+                        console.log("hello")
+                        dispatch(deleteFileDataroom_fail(t("Failed-to-delete-any-file")))
+                    } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_DeleteFile_03".toLowerCase())) {
+                        dispatch(deleteFileDataroom_fail(t("Something-went-wrong")))
+                    }
+                } else {
+                    dispatch(deleteFileDataroom_fail(t("Something-went-wrong")))
+                }
+            } else {
+                dispatch(deleteFileDataroom_fail(t("Something-went-wrong")))
             }
-        }).catch((error) => { })
+        }).catch((error) => {
+            dispatch(deleteFileDataroom_fail(t("Something-went-wrong")))
+        })
     }
 }
 
@@ -689,12 +755,13 @@ const FolderisExist_fail = (message) => {
 }
 
 // Folder Exist API
-const FolderisExist = (FolderName, parentFolderID, t, setAddfolder) => {
+const FolderisExist = (FolderName, t, setAddfolder) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let createrID = localStorage.getItem("userID");
+    let folderID = JSON.parse(localStorage.getItem("folderID"));
     let Data = {
         UserID: JSON.parse(createrID),
-        ParentFolderID: 0,
+        ParentFolderID: folderID !== null ? folderID : 0,
         FolderName: FolderName
     }
     return (dispatch) => {
@@ -719,7 +786,7 @@ const FolderisExist = (FolderName, parentFolderID, t, setAddfolder) => {
                         dispatch(FolderisExist_fail(t("Folder-already-exist")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_02".toLowerCase())) {
                         await dispatch(FolderisExist_success(t("No-folder-exist")))
-                        dispatch(createFolderApi(FolderName, parentFolderID, t, setAddfolder))
+                        dispatch(createFolderApi(FolderName, t, setAddfolder))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_03".toLowerCase())) {
                         dispatch(FolderisExist_fail(t("Something-went-wrong")))
                     }

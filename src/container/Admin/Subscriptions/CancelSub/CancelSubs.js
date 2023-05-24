@@ -325,7 +325,7 @@ const CancelSubs = () => {
                         <Col sm={12}>
                           <Row>
                             <Col sm={12} md={12} lg={12}>
-                              <p className="MontserratSemiBold-600 text-uppercase font-16 color-5a5a5a">
+                              <p className="MontserratSemiBold-600 text-uppercase font-16 color-5a5a5a Saved_money_Tagline">
                                 {t("Users")}
                               </p>
                             </Col>
@@ -340,7 +340,7 @@ const CancelSubs = () => {
                               sm={12}
                               md={12}
                               lg={12}
-                              className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
+                              className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
                             >
                               {isPackageDetail.UsersRangeAdmin} {t("To")}{" "}
                               {maxAdminUser} {t("Admin-users")}
@@ -356,7 +356,7 @@ const CancelSubs = () => {
                               sm={12}
                               md={12}
                               lg={12}
-                              className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
+                              className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
                             >
                               {isPackageDetail.UsersRangeBoardMembers} {t("To")}{" "}
                               {maxBoardMembers} {t("Board-members")}
@@ -372,7 +372,7 @@ const CancelSubs = () => {
                               sm={12}
                               md={12}
                               lg={12}
-                              className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
+                              className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
                             >
                               {isPackageDetail.OtherUsersRange} {t("To")}{" "}
                               {maxOtherUsers} {t("Board-members")}
@@ -501,7 +501,7 @@ const CancelSubs = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="text-center text-uppercase fw-bold my-2"
+                      className="text-center text-uppercase fw-bold my-2 FontArabicRegular"
                     >
                       {t("Users")}
                     </Col>
@@ -517,7 +517,7 @@ const CancelSubs = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
+                      className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
                     >
                       {isPackageDetail.UsersRangeAdmin} {t("Of")} {maxAdminUser}{" "}
                       {t("Admin-users")}
@@ -533,7 +533,7 @@ const CancelSubs = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
+                      className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
                     >
                       {isPackageDetail.UsersRangeBoardMembers} {t("To")}{" "}
                       {maxBoardMembers} {t("Board-members")}
@@ -549,7 +549,7 @@ const CancelSubs = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className="MontserratSemiBold-600 text-start color-949494 font-11 p-0"
+                      className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
                     >
                       {isPackageDetail.OtherUsersRange} {t("To")}{" "}
                       {maxOtherUsers} {t("Board-members")}
@@ -572,7 +572,7 @@ const CancelSubs = () => {
                       sm={12}
                       md={12}
                       lg={12}
-                      className=" my-4 d-flex justify-content-center"
+                      className=" my-4 d-flex justify-content-center FontArabicRegular"
                     >
                       <WarningMessageBox
                         text={
@@ -580,7 +580,7 @@ const CancelSubs = () => {
                             ? "You have selected for cancellation of subscription at the end of your term which is at “ 18-Dec-23 ”. You can always opt out by selecting the revoke Cancellation Option from the same screen."
                             : "You have selected for immediate cancellation. Please note that all associated services will also be terminated along with this subscription immediately. Please take backups of all your data as any loss of data on cancellation will not be a responsibility of DiskUS."
                         }
-                        textClass="fw-bold font-12 margin-top-5"
+                        textClass="fw-bold font-12 margin-top-5 "
                       />
                     </Col>
                     <Col
@@ -595,7 +595,7 @@ const CancelSubs = () => {
                       <Form.Group className={styles["reason-lines"]}>
                         <Form.Check
                           type="radio"
-                          className="radio-cancelsub-modal color-5a5a5a user-select-none my-2"
+                          className="radio-cancelsub-modal color-5a5a5a user-select-none my-2 Arabicstyles_Subtotal_Not_include_taxes"
                           label={t("Its-too-costly")}
                           name="reason"
                           onClick={() => setEnableTextArea(false)}
@@ -604,7 +604,7 @@ const CancelSubs = () => {
                         />
                         <Form.Check
                           type="radio"
-                          className="radio-cancelsub-modal user-select-none my-2"
+                          className="radio-cancelsub-modal user-select-none my-2 Arabicstyles_Subtotal_Not_include_taxes"
                           label={t(
                             "I-found-another-product-that-fulfills-my-needs"
                           )}
@@ -617,7 +617,7 @@ const CancelSubs = () => {
                         />
                         <Form.Check
                           type="radio"
-                          className="radio-cancelsub-modal color-5a5a5a user-select-none my-2"
+                          className="radio-cancelsub-modal color-5a5a5a user-select-none my-2 Arabicstyles_Subtotal_Not_include_taxes"
                           label={t("I-dont-use-it-enough")}
                           name="reason"
                           onClick={() => setEnableTextArea(false)}
@@ -626,7 +626,7 @@ const CancelSubs = () => {
                         />
                         <Form.Check
                           type="radio"
-                          className="radio-cancelsub-modal color-5a5a5a user-select-none my-2"
+                          className="radio-cancelsub-modal color-5a5a5a user-select-none my-2 Arabicstyles_Subtotal_Not_include_taxes"
                           label={t("Others")}
                           onClick={() => setEnableTextArea(!enableTextArea)}
                           name="reason"

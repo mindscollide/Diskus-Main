@@ -409,6 +409,7 @@ body[dir="rtl"]
   .ant-table-column-sorters {
   text-align: right !important;
   float: right !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 body[dir="rtl"] i.edit-icon-adminmeeting {

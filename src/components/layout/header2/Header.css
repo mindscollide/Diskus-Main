@@ -282,6 +282,10 @@ button.dropdown-toggle.dropdown-toggle.btn.btn-primary:has(p.user-name) {
   white-space: nowrap;
 }
 
+body[dir="rtl"] .user-name {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .dropdown-toggle {
   margin: 0;
   padding: 5px 10px;
@@ -492,6 +496,13 @@ a.text-black.nav-link {
   color: #5a5a5a;
 }
 
+body[dir="rtl"] a.text-black.nav-link {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+body[dir="rtl"] .title-className {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 a.SignOutOptionMenu.text-black.border-none.nav-link {
   border-bottom: none !important;
 }
@@ -528,7 +539,7 @@ body[dir="rtl"] .header2-container {
   margin-top: -3px;
 }
 
-.modal-header-logout{
+.modal-header-logout {
   display: none !important;
   /* margin-top: 40px !important; */
 }

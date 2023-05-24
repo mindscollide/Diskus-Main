@@ -43,7 +43,6 @@ const PayOutstanding = () => {
   }, []);
   return (
     <>
-
       <Fragment>
         <Row className="my-3 m-0">
           <Col sm={12} md={4} lg={4} className="mx-auto">
@@ -156,7 +155,6 @@ const PayOutstanding = () => {
         </Row>
       </Fragment>
       {OrganizationBillingReducer.Loading ? <Loader /> : null}
-
     </>
   );
 };
