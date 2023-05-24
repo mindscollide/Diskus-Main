@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import styles from "./ModalShareFolder.module.css";
+import styles from "./ModalShareFile.module.css";
 import newprofile from "../../../assets/images/Mask Group 67.svg";
 import clock from "../../../assets/images/Icon metro-alarm.svg";
 import DeleteiCon from "../../../assets/images/Icon material-delete.svg";
 import userImage from "../../../assets/images/user.png";
 import crossIcon from "../../../assets/images/CrossIcon.svg";
-import arabic from "react-date-object/calendars/arabic";
-import arabic_ar from "react-date-object/locales/arabic_ar";
 import download from "../../../assets/images/Icon feather-download.svg";
 import star from "../../../assets/images/startd.png";
 import pdf from "../../../assets/images/222.svg";
@@ -24,14 +22,13 @@ import {
   TextField,
   InputSearchFilter,
 } from "../../../components/elements";
-import { style } from "@mui/system";
 import ParticipantInfoShareFolder from "../../../components/elements/ParticipantInfoShareFolder/ParticipantInfoShareFolder";
 import EditIconNote from "../../../assets/images/EditIconNotes.svg";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
-import { shareFoldersApi } from "../../../store/actions/DataRoom_actions";
+import { shareFilesApi } from "../../../store/actions/DataRoom_actions";
 
 
-const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId, folderName }) => {
+const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileName }) => {
   const [showaccessrequest, setShowaccessrequest] = useState(false);
   const { assignees } = useSelector(state => state)
   const [showrequestsend, setShowrequestsend] = useState(false);
@@ -40,10 +37,10 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId, f
   const [expirationheader, setExpirationheader] = useState(false);
   const [calenderdate, setCalenderdate] = useState(false);
   const [inviteedit, setInviteedit] = useState(false);
-  const [folderData, setFolderData] = useState({
-    Folders: [],
+  const [fileData, setFileData] = useState({
+    Files: [],
   })
-  console.log(folderData, "datadatadata")
+  console.log(fileData, "datadatadata")
   const dispatch = useDispatch()
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -159,17 +156,17 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId, f
     console.log("hnbhaiclicktuhorahahy");
 
     setShowrequestsend(true);
-    dispatch(shareFoldersApi(folderData, t))
+    dispatch(shareFilesApi(fileData, t))
   };
   const openAccessRequestModalClick = () => {
     setShowaccessrequest(true);
   };
 
   const handleAddMember = () => {
-    let findIndexData = folderData.Folders.findIndex((listData, index) => listData.FK_UserID === taskAssignedTo)
+    let findIndexData = fileData.Files.findIndex((listData, index) => listData.FK_UserID === taskAssignedTo)
     if (findIndexData === -1) {
       let Data = {
-        FK_FolderID: folderId,
+        FK_FileID: folderId,
         FK_PermissionID: JSON.parse(permissionID),
         FK_UserID: taskAssignedTo
       }
@@ -182,8 +179,8 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId, f
           })
         }
       }
-      setFolderData((prev) => {
-        return { ...prev, Folders: [...prev.Folders, Data] }
+      setFileData((prev) => {
+        return { ...prev, Files: [...prev.Files, Data] }
       })
     } else {
       alert("User is already add")
@@ -197,7 +194,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId, f
 
   const { t } = useTranslation();
   const closebtn = async () => {
-    setSharefolder(false);
+    setShareFile(false);
   };
   useEffect(() => {
     dispatch(allAssignessList(t));
@@ -206,17 +203,17 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId, f
     <>
       <Container>
         <Modal
-          show={sharefolder}
+          show={shareFile}
           onHide={() => {
-            setSharefolder(false);
+            setShareFile(false);
           }}
-          setShow={setSharefolder}
+          setShow={setShareFile}
           ButtonTitle={ModalTitle}
           modalFooterClassName="d-block"
           modalTitleClassName={styles["ModalHeader"]}
           modalHeaderClassName={styles["ModalRequestHeader"]}
           centered
-          size={sharefolder === true ? "lg" : "md"}
+          size={shareFile === true ? "lg" : "md"}
           ModalTitle={
             <>
               {expirationheader ? (
@@ -446,7 +443,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId, f
                     <Row>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Share_folder_modal_Heading"]}>
-                          {t("Share")} <span>{folderName}</span>
+                          {t("Share")} <span>{fileName}</span>
                         </span>
                       </Col>
                     </Row>
@@ -508,23 +505,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId, f
                             )
                           })
                             : null}
-
-
-                          {/* <Col lg={4} md={4} sm={4}>
-                            <ParticipantInfoShareFolder
-                              participantname="Saad Fudda"
-                              particiapantdesignation="Owner"
-                              icon={
-                                <img
-                                  src={crossIcon}
-                                  height="14px"
-                                  width="14px"
-                                />
-                              }
-                            />
-                          </Col> */}
                         </Row>
-
                       </Col>
                     </Row>
                     <Row className="mt-2">
@@ -708,4 +689,4 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId, f
   );
 };
 
-export default ModalShareFolder;
+export default ModalShareFile;

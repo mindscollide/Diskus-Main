@@ -114,7 +114,6 @@
   "Cancelled": "ألغيت",
   "Reset": "إعاده ضبط",
   "Ok": "حسناً",
-
   "Didnt-receive-the-code": "لم يصلك الرمز؟",
   "On-start": "عند البدأ",
   "Lets-get-started-by-clicking-here": "لنبدأ بالضغط هنا",
@@ -179,7 +178,6 @@
   "Payment-history": "تاريخ الدفع",
   "Email-should-be-in-email-format": "يجب أن يكون البريد الإلكتروني بتنسيق البريد الإلكتروني",
   "Please-fill-fields": "الرجاء تعبئة جميع الحقول",
-
   "All-user": "جميع المستخدمين",
   "All-meeting": "كل الاجتماع",
   "Configurations": "التكوينات",
@@ -190,7 +188,6 @@
   "Invoice-payment-history": "سجل تاريخ دفع الفاتورة",
   "Proceed-to-payment": "الشروع في دفع",
   "Subscriptions": "الاشتراكات",
-
   "Company-name": "اسم الشركة",
   "Select-roles": "حدد الأدوار",
   "Attendee": "حاضر",
@@ -249,7 +246,6 @@
   "Your-password-has-been-changed-successfully": "تم تغيير كلمة المرور الخاصة بك بنجاح",
   "Save": "يحفظ",
   "My-profile": "ملفي",
-
   "You-have": "لديك ",
   "3-meetings-today": "3 اجتماعات اليوم, ",
   "And": "و",

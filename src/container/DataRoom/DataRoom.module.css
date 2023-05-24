@@ -57,7 +57,7 @@
 }
 
 .Data_room_paper {
-  width: 1429px !important;
+  width: 100% !important;
   height: 740px !important;
   padding: 30px 30px !important;
 }
@@ -670,9 +670,7 @@ body[dir="rtl"] .Drop_down_Documents {
   width: 137px !important;
 }
 
-.DataRoom_Table {
-  overflow-y: auto;
-}
+
 
 .dataFolderRow {
   display: flex;
@@ -680,4 +678,9 @@ body[dir="rtl"] .Drop_down_Documents {
   gap: 10px;
   justify-content: flex-start;
   height: 22px !important;
+  cursor: pointer;
+}
+
+.dataroom_location {
+  white-space: nowrap !important;
 }

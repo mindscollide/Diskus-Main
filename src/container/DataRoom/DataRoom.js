@@ -45,6 +45,7 @@ import PDFICON from "../../assets/images/pdf_icon.svg";
 import { Paper } from "@material-ui/core";
 import styles from "./DataRoom.module.css";
 
+
 import {
   Button,
   TextField,
@@ -62,15 +63,17 @@ import ModalOptions from "./ModalUploadOptions/ModalOptions";
 import ModalCancelUpload from "./ModalCancelUpload/ModalCancelUpload";
 import ModalShareFolder from "./ModalShareFolder/ModalShareFolder";
 import ModalrequestingAccess from "./ModalrequestingAccess/ModalrequestingAccess";
+import ModalShareFile from "./ModalShareFile/ModalShareFile";
 import Dragger from "../../components/elements/Dragger/Dragger";
 import ModalCancelDownload from "./ModalCancelDownload/ModalCancelDownload";
 import ModalRenameFolder from "./ModalRenameFolder/ModalRenameFolder";
-import { clearDataResponseMessage, FileisExist, getDocumentsAndFolderApi, getSharedFilesandFolderApi, uploadDocumentsApi } from "../../store/actions/DataRoom_actions";
+import { clearDataResponseMessage, deleteFileDataroom, FileisExist, getDocumentsAndFolderApi, getFolderDocumentsApi, getSharedFilesandFolderApi, uploadDocumentsApi } from "../../store/actions/DataRoom_actions";
 import sharedIcon from "../../assets/images/shared_icon.svg";
 import UploadDataFolder from "../../components/elements/Dragger/UploadFolder";
 import { _justShowDateformat } from "../../commen/functions/date_formater";
 import CustomCheckbox from "../../components/elements/check_box/Checkbox";
 import FileIcon, { defaultStyles } from "react-file-icon";
+import GridViewDataRoom from "./GridViewDataRoom/GridViewDataRoom";
 const DataRoom = () => {
   // tooltip
   const [showbarupload, setShowbarupload] = useState(false);
@@ -81,8 +84,8 @@ const DataRoom = () => {
   const eventClickHandler = () => { };
   const { t } = useTranslation();
   const { uploadReducer, DataRoomReducer } = useSelector((state) => state);
-  console.log(DataRoomReducer, "DataRoomReducerDataRoomReducerDataRoomReducer");
   let currentLanguage = localStorage.getItem("i18nextLng");
+  const [shareFileModal, setShareFileModal] = useState(false)
   const [foldermodal, setFolderModal] = useState(false);
   const [uploadOptionsmodal, setUploadOptionsmodal] = useState(false);
   const [canceluploadmodal, setCanceluploadmodal] = useState(false);
@@ -91,7 +94,7 @@ const DataRoom = () => {
   const [searchbarsearchoptions, setSearchbarsearchoptions] = useState(false);
   const [searchoptions, setSearchoptions] = useState(false);
   const [gridbtnactive, setGridbtnactive] = useState(false);
-  const [listviewactive, setListviewactive] = useState(false);
+  const [listviewactive, setListviewactive] = useState(true);
   const [optionsthreedoticon, setOptionsthreedoticon] = useState(false);
   const [actionundonenotification, setActionundonenotification] =
     useState(false);
@@ -112,13 +115,24 @@ const DataRoom = () => {
   const [remainingTime, setRemainingTime] = useState(null);
   const [data, setData] = useState([]);
   const [folderId, setFolderId] = useState(0)
+  const [fileName, setFileName] = useState("")
+  const [folderName, setFolderName] = useState("")
   const [filterVal, setFilterVal] = useState("");
   const dispatch = useDispatch()
   const [folderID, setFolderID] = useState([])
-  console.log(filterVal, "filterValfilterVal");
   const [rows, setRow] = useState([]);
   const [getAllData, setGetAllData] = useState([])
   const [showsubmenu, setShowsubmenu] = useState(false);
+  const [selectionType, setSelectionType] = useState("checkbox")
+  const [searchModalOptions, setSearchModalOptions] = useState({
+    Location: "",
+    DateModified: "",
+    ItemName: "",
+    OwnerType: "",
+    LocationValue: "",
+    OwnerTypeValue: "",
+    EnterMember: ""
+  })
   const [open, setOpen] = useState({
     open: false,
     message: ""
@@ -392,7 +406,6 @@ const DataRoom = () => {
   const optionsPeople = [{ value: "Viewer", label: "Viewer" }];
   const optionsLastmodified = [
     { value: "Today", label: "Today" },
-
     { value: "Last 7 days", label: "Last 7 days" },
     { value: "Last 30 days", label: "Last 30 days" },
     { value: "This year (2023)", label: "This year (2023)" },
@@ -448,12 +461,20 @@ const DataRoom = () => {
     setSearchbarsearchoptions(true);
   };
 
-  const showShareFolderModal = (id) => {
+  const showShareFolderModal = (id, name) => {
     setFolderId(id)
+    setFolderName(name)
     setSharefoldermodal(true);
     setSharehoverstyle(true);
     setDeltehoverstyle(false);
   };
+  const showShareFileModal = (id, name) => {
+    setFolderId(id)
+    setFileName(name)
+    setShareFileModal(true);
+    setSharehoverstyle(true);
+    setDeltehoverstyle(false);
+  }
   const handleGridView = () => {
     setGridbtnactive(true);
     setListviewactive(false);
@@ -496,6 +517,16 @@ const DataRoom = () => {
     setFolderModal(true);
   };
 
+  const getFolderDocuments = (folderid) => {
+    localStorage.setItem("folderID", folderid)
+    dispatch(getFolderDocumentsApi(folderid, t))
+  }
+
+  useEffect(() => {
+    if (DataRoomReducer.getFolderDocumentResponse.length !== null && DataRoomReducer.getFolderDocumentResponse.length !== undefined) {
+      setGetAllData(DataRoomReducer.getFolderDocumentResponse)
+    }
+  }, [DataRoomReducer.getFolderDocumentResponse])
 
   useEffect(() => {
     if (uploadReducer.uploadDocumentsList !== null) {
@@ -582,17 +613,17 @@ const DataRoom = () => {
         console.log(data, "21212")
         if (data.isShared) {
           if (data.isFolder) {
-            return <div className={`${styles["dataFolderRow"]}`}><CustomCheckbox checked={folderID.includes(data.id) ? true : false} onChange={() => foldersHandler(data.id, data)} /><span className="me-2">{text} <img src={sharedIcon} /></span></div>
+            return <div className={`${styles["dataFolderRow"]}`}><CustomCheckbox checked={folderID.includes(data.id) ? true : false} onChange={() => foldersHandler(data.id, data)} /><span className="me-2" onClick={() => getFolderDocuments(data.id)}>{text} <img src={sharedIcon} /></span></div>
           } else {
             let findExt = text.split(".").pop();
-            return <span className="d-flex align-items-center gap-2"><FileIcon size={22} extension={findExt} />{text} <img src={sharedIcon} /></span>
+            return <span className="d-flex align-items-center cursor-pointer gap-2"><FileIcon size={22} extension={findExt} />{text} <img src={sharedIcon} /></span>
           }
         } else {
           if (data.isFolder) {
-            return <div className={`${styles["dataFolderRow"]}`}><CustomCheckbox checked={folderID.includes(data.id) ? true : false} onChange={() => foldersHandler(data.id, data)} /><span className="me-2">{text} </span></div>
+            return <div className={`${styles["dataFolderRow"]}`}><CustomCheckbox checked={folderID.includes(data.id) ? true : false} onChange={() => foldersHandler(data.id, data)} /><span className="me-2" onClick={() => getFolderDocuments(data.id)}>{text} </span></div>
           } else {
             let findExt = text.split(".").pop();
-            return <span className="d-flex align-items-center gap-2"><FileIcon size={22} extension={findExt} />{text}</span>
+            return <span className="d-flex align-items-center cursor-pointer gap-2"><FileIcon size={22} extension={findExt} />{text}</span>
           }
         }
       }
@@ -608,7 +639,7 @@ const DataRoom = () => {
       title: t("Last_modified"),
       dataIndex: "modifiedDate",
       key: "modifiedDate",
-      width: "90px",
+      width: "110px",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
         return <span>{_justShowDateformat(text)}</span>
@@ -622,7 +653,7 @@ const DataRoom = () => {
       sortDirections: ["descend", "ascend"],
     },
     {
-      title: t("Location"),
+      title: <span className={styles["dataroom_location"]}>{t("Location")}</span>,
       dataIndex: "location",
       key: "location",
       width: "90px",
@@ -644,29 +675,41 @@ const DataRoom = () => {
                 sm={12}
                 className="d-flex justify-content-end gap-2"
               >
-                {sharehoverstyle ? (
-                  <>
-                    <Tooltip placement="topLeft" title={text}>
-                      <img
-                        src={addone}
-                        height="10.71px"
-                        width="15.02px"
-                        className={styles["HoverStyle"]}
-                      />
-                    </Tooltip>
-                  </>
-                ) : (
-                  <>
-                    <Tooltip placement="topLeft" title={text}>
-                      <img
-                        src={add}
-                        height="10.71px"
-                        width="15.02px"
-                        onClick={() => showShareFolderModal(data.id)}
-                      />
-                    </Tooltip>
-                  </>
-                )}
+                <>
+                  <Tooltip placement="topLeft" title={text}>
+                    <img
+                      src={addone}
+                      height="10.71px"
+                      width="15.02px"
+                      className={styles["HoverStyle"]}
+                      onClick={() => {
+                        if (data.isFolder) {
+                          showShareFolderModal(data.id, data.name)
+                        } else {
+                          showShareFileModal(data.id, data.name)
+                        }
+                      }
+                      }
+                    />
+                  </Tooltip>
+                </>
+                {/* <>
+                  <Tooltip placement="topLeft" title={text}>
+                    <img
+                      src={add}
+                      height="10.71px"
+                      width="15.02px"
+                      onClick={() => {
+                        if (data.isFolder) {
+                          showShareFolderModal(data.id)
+                        } else {
+                          showShareFileModal(data.id)
+                        }
+                      }
+                      }
+                    />
+                  </Tooltip>
+                </> */}
 
                 <img
                   src={download}
@@ -682,6 +725,7 @@ const DataRoom = () => {
                         height="10.71px"
                         width="15.02px"
                         className={styles["Deletehover"]}
+                        onClick={() => dispatch(deleteFileDataroom(data.id, t))}
                       />
                     </Tooltip>
                   </>
@@ -692,7 +736,7 @@ const DataRoom = () => {
                         src={del}
                         height="10.71px"
                         width="15.02px"
-                        onClick={deleteafterhover}
+                        onClick={() => dispatch(deleteFileDataroom(data.id, t))}
                       />
                     </Tooltip>
                   </>
@@ -929,7 +973,6 @@ const DataRoom = () => {
     },
   ];
 
-
   const [isOpen, setIsOpen] = useState(false);
 
   const handleChange = (Selectoptions) => {
@@ -951,8 +994,19 @@ const DataRoom = () => {
     console.log("handleOpen", isOpen);
     setIsOpen(true);
   };
+
+  const onChange = () => { }
+  // rowSelection object indicates the need for row selection
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+    onSelect: (record, selected, selectedRows) => {
+      console.log(record, selected, selectedRows);
+    },
+  };
   useEffect(() => {
-    if (DataRoomReducer.ResponseMessage !== "") {
+    if (DataRoomReducer.ResponseMessage !== "" && DataRoomReducer.ResponseMessage !== t("Data-available")) {
       setOpen({
         open: true,
         message: DataRoomReducer.ResponseMessage
@@ -1149,6 +1203,7 @@ const DataRoom = () => {
                       options={optionsLastmodified}
                       placeholder={t("Data-modified")}
                       closeMenuOnSelect={false}
+                      value={searchModalOptions.DateModified}
                     />
                   </Col>
                 </Row>
@@ -1158,6 +1213,7 @@ const DataRoom = () => {
                       options={optionsLocations}
                       placeholder={t("Location")}
                       closeMenuOnSelect={false}
+                      value={searchModalOptions.LocationValue}
                     />
                   </Col>
                   <Col
@@ -1169,6 +1225,7 @@ const DataRoom = () => {
                     <TextField
                       placeholder="Item name"
                       labelClass="textFieldSearch d-none"
+                      value={searchModalOptions.ItemName}
                     />
                   </Col>
                 </Row>
@@ -1177,6 +1234,7 @@ const DataRoom = () => {
                     <TextField
                       placeholder="Enter a team the matches part of the file name"
                       labelClass="textFieldSearch d-none"
+                      value={searchModalOptions.EnterMember}
                     />
                   </Col>
                 </Row>
@@ -1186,6 +1244,7 @@ const DataRoom = () => {
                       options={OptionsOwner}
                       placeholder={t("Owner")}
                       closeMenuOnSelect={false}
+                      value={searchModalOptions.OwnerTypeValue}
                     />
                   </Col>
                 </Row>
@@ -1199,6 +1258,7 @@ const DataRoom = () => {
                     <Button
                       text={t("Cancel")}
                       className={styles["cancell_Search_button_Dataroom"]}
+                      onClick={SearchiconClickOptionsHide}
                     />
                     <Button
                       text={t("Search")}
@@ -1715,13 +1775,149 @@ const DataRoom = () => {
                         <Col lg={12} sm={12} md={12}>
                           {getAllData.length > 0 &&
                             getAllData !== undefined &&
-                            getAllData !== null ? (
+                            getAllData !== null && gridbtnactive ? (
+
+                            <>
+                              <GridViewDataRoom data={getAllData} />
+
+                              {showbarupload ? (
+                                <>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className={
+                                        styles["Back_ground_For_uploader"]
+                                      }
+                                    >
+                                      <Row>
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className={styles["Blue_Strip"]}
+                                        >
+                                          <Row className="mt-2">
+                                            <Col
+                                              lg={9}
+                                              md={9}
+                                              sm={9}
+                                              className="d-flex justify-content-start gap-3"
+                                            >
+                                              <span
+                                                className={styles["Uploading"]}
+                                              >
+                                                {t("Uploading")} {uploadCounter}{" "}
+                                                {t("items")}
+                                              </span>
+                                              <Space
+                                                className={
+                                                  styles["Progress_bar"]
+                                                }
+                                              >
+                                                {parseInt(progress) + "%"}
+                                              </Space>
+                                              <Space
+                                                className={
+                                                  styles["Progress_bar"]
+                                                }
+                                              >
+                                                {remainingTime +
+                                                  t("Sec-remaining")}
+                                              </Space>
+                                            </Col>
+
+                                            <Col
+                                              lg={3}
+                                              md={3}
+                                              sm={3}
+                                              className="d-flex justify-content-end gap-2 mt-1"
+                                            >
+                                              <img
+                                                src={chevdown}
+                                                width={9}
+
+                                              // width="8.49px"
+                                              // height="4.46px"
+                                              />
+                                              <img
+                                                src={Cancellicon}
+                                                width={9}
+                                                onClick={closeSearchBar}
+                                              // width="6.94px"
+                                              // height="6.71px"
+                                              />
+                                            </Col>
+                                          </Row>
+                                        </Col>
+                                      </Row>
+                                      <Row>
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className={
+                                            styles["Scroller_bar_of_BarUploder"]
+                                          }
+                                        >
+                                          {Object.values(tasksAttachments).length > 0
+                                            ? Object.values(tasksAttachments).map(
+                                              (data, index) => {
+                                                console.log(
+                                                  data,
+                                                  "datadatadatadatadatadatadatadatadata"
+                                                );
+                                                return (
+                                                  <>
+                                                    <Col
+                                                      lg={12}
+                                                      md={12}
+                                                      sm={12}
+                                                      className="d-flex gap-1 mt-2 flex-column"
+                                                    >
+                                                      <Space direction="vertical" className="d-flex flex-row">
+                                                        <img
+                                                          src={PDFICON}
+                                                          height="16px"
+                                                          width="16px"
+                                                          className={styles["Icon_in_Bar"]}
+                                                        />
+                                                        <span
+                                                          className={styles["name_of_life_in_Bar"]}
+                                                        >
+                                                          {data.name}
+                                                        </span>
+                                                      </Space>
+                                                      {progress > 0 && (
+                                                        <Progress
+                                                          percent={progress}
+                                                        />
+                                                      )}
+                                                    </Col>
+                                                  </>
+                                                );
+                                              }
+                                            )
+                                            : null}
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  </Row>
+                                </>
+                              ) : null}
+                            </>
+                          ) : getAllData.length > 0 &&
+                            getAllData !== undefined &&
+                            getAllData !== null && listviewactive === true ? (
                             <>
                               <TableToDo
                                 sortDirections={["descend", "ascend"]}
                                 column={MyDocumentsColumns}
                                 className={styles["DataRoom_Table"]}
                                 rows={getAllData}
+                                rowSelection={{ type: selectionType, ...rowSelection }}
+                                size={"middle"}
                               />
                               {showbarupload ? (
                                 <>
@@ -1850,56 +2046,54 @@ const DataRoom = () => {
                                 </>
                               ) : null}
                             </>
-                          ) : (
-                            <>
-                              <Row className="mt-2">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-center"
-                                >
-                                  <span className={styles["Messege_nofiles"]}>
-                                    {t("There-are-no-items-here")}
-                                  </span>
-                                </Col>
-                              </Row>
-                              <Row className="mt-3">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-center"
-                                >
-                                  <span className={styles["Tag_line_nofiles"]}>
-                                    {t("Start-adding-your-documents")}
-                                  </span>
-                                </Col>
-                              </Row>
-                              {/* Dragger Uploader */}
-                              <Row className="mt-4">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-center"
-                                >
-                                  <Dragger
-                                    setProgress={setProgress}
-                                    className={styles["DragDropIconDataRoom"]}
-                                    handleFileDraggerUploadRequest={handleUploadFile}
-                                    Icon={
-                                      <img
-                                        src={DrapDropIcon}
-                                        heigh="356.89"
-                                        width="356.89"
-                                      />
-                                    }
-                                  />
-                                </Col>
-                              </Row>
-                            </>
-                          )}
+                          ) : <>
+                            <Row className="mt-2">
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <span className={styles["Messege_nofiles"]}>
+                                  {t("There-are-no-items-here")}
+                                </span>
+                              </Col>
+                            </Row>
+                            <Row className="mt-3">
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <span className={styles["Tag_line_nofiles"]}>
+                                  {t("Start-adding-your-documents")}
+                                </span>
+                              </Col>
+                            </Row>
+                            {/* Dragger Uploader */}
+                            <Row className="mt-4">
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <Dragger
+                                  setProgress={setProgress}
+                                  className={styles["DragDropIconDataRoom"]}
+                                  handleFileDraggerUploadRequest={handleUploadFile}
+                                  Icon={
+                                    <img
+                                      src={DrapDropIcon}
+                                      heigh="356.89"
+                                      width="356.89"
+                                    />
+                                  }
+                                />
+                              </Col>
+                            </Row>
+                          </>}
                         </Col>
                       </Row>
                     </>
@@ -1931,6 +2125,7 @@ const DataRoom = () => {
           sharefolder={sharefoldermodal}
           setSharefolder={setSharefoldermodal}
           folderId={folderId}
+          folderName={folderName}
         />
       ) : null}
       {requestingAccess ? (
@@ -1954,6 +2149,7 @@ const DataRoom = () => {
           />
         </>
       ) : null}
+      {shareFileModal ? (<ModalShareFile folderId={folderId} fileName={fileName} setShareFile={setShareFileModal} shareFile={shareFileModal} />) : null}
       {DataRoomReducer.Loading ? <Loader /> : null}
       <Notification open={open.open} message={open.message} setOpen={setOpen} />
     </>
