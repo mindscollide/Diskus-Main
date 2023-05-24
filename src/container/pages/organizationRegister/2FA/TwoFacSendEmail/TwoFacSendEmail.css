@@ -38,10 +38,13 @@
   font-family: "MontserratRegular";
 }
 
-.forogt_email_link a {
-  color: #5A5A5A !important;
+body[dir="rtl"] .forogt_email_link {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
+.forogt_email_link a {
+  color: #5a5a5a !important;
+}
 
 .SelectLineTwofacSendEmail_twofacmultidevice {
   color: #5a5a5a;
@@ -49,7 +52,9 @@
   font-family: "MontserratSemiBold-600";
   margin-bottom: 28px;
 }
-
+body[dir="rtl"] .SelectLineTwofacSendEmail_twofacmultidevice {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .VerifyHeadingTwofacSendEmail_twofacmultidevice {
   font-weight: bold;
   color: #5a5a5a;
@@ -59,7 +64,9 @@
   margin: 0;
   padding: 0;
 }
-
+body[dir="rtl"] .VerifyHeadingTwofacSendEmail_twofacmultidevice {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .Auth_Icon1SendEmailRealme {
   position: absolute;
   left: 24%;
@@ -80,10 +87,18 @@
   font-family: "MontserratSemiBold-600";
 }
 
+body[dir="rtl"] .SendEmailOnDeiveColor {
+  /* font-family: "IBMPlexSansArabic-SemiBold" !important; */
+}
+
 .SendEmailOnDeiveColor_active {
   font-weight: bold;
   color: #e1e1e1 !important;
   font-family: "MontserratSemiBold-600";
+}
+
+body[dir="rtl"] .SendEmailOnDeiveColor_active {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Two-fac-send-language {
@@ -120,9 +135,9 @@
   padding: 0 50px !important;
   z-index: 9999;
   height: 2.9em !important;
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
-  font-family: 'MontserratSemiBold-600' !important;
+  font-family: "MontserratSemiBold-600" !important;
   border-radius: 4px;
   outline: none !important;
 }
@@ -137,11 +152,11 @@
 .select-language-signin:focus,
 .select-language-signin:focus-within,
 .select-language-signin:focus-visible {
-  border: 1px solid #E1E1E1 !important;
+  border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
   outline: none !important;
 }
-body[dir="rtl"] .select-language-signin_twofacmultidevice{
+body[dir="rtl"] .select-language-signin_twofacmultidevice {
   right: 80%;
 }
 .languageIcon_twofacmultidevice {
@@ -163,7 +178,6 @@ body[dir="rtl"] .languageIcon_twofacmultidevice {
 }
 
 .MultiFac_Auth_Icon {
-
   position: absolute;
   right: -205px;
   bottom: -205px;
