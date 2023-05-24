@@ -766,7 +766,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           md={6}
                           sm={6}
-                          className="resolution-search-input"
+                          className="resolution-search-input FontArabicRegular"
                         >
                           <Select
                             name="Participant"
@@ -795,7 +795,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           md={6}
                           sm={6}
-                          className="resolution-search-input"
+                          className="resolution-search-input FontArabicRegular"
                         >
                           <Select
                             name=""
@@ -814,7 +814,7 @@ const ScheduleNewResolution = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className="CreateMeetingInput "
+                          className="CreateMeetingInput FontArabicRegular "
                         >
                           <TextField
                             applyClass="text-area-create-group"
@@ -856,7 +856,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input  "
+                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           <TextField
                             type="date"
@@ -886,7 +886,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input  "
+                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           <TextField
                             type="time"
@@ -929,7 +929,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input "
+                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           <TextField
                             type="date"
@@ -959,7 +959,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input  "
+                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           <TextField
                             type="time"
@@ -1002,7 +1002,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input  "
+                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           <TextField
                             type="date"
@@ -1032,7 +1032,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input  "
+                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           <TextField
                             type="time"
@@ -1071,7 +1071,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           md={6}
                           sm={12}
-                          className="CreateMeetingReminder resolution-search-input select-dropdowns-height "
+                          className="CreateMeetingReminder resolution-search-input select-dropdowns-height FontArabicRegular "
                         >
                           <Select
                             name="Participant"
@@ -1110,7 +1110,7 @@ const ScheduleNewResolution = ({
                               lg={12}
                               md={12}
                               sm={12}
-                              className="UpdateCheckbox  d-flex justify-content-start"
+                              className="UpdateCheckbox  d-flex justify-content-start FontArabicRegular"
                             >
                               <Checkbox
                                 className="SearchCheckbox MontserratSemiBold-600"

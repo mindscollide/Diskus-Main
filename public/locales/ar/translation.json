@@ -917,5 +917,8 @@
   "Has-been-updated": "تم التحديث",
   "You-have-selected-for-immediate-cancellation": "لقد اخترت الإلغاء الفوري. يرجى ملاحظة أنه سيتم أيضًا إنهاء جميع الخدمات المرتبطة مع هذا الاشتراك على الفور. يرجى أخذ نسخ احتياطية من جميع بياناتك لأن أي فقد للبيانات عند الإلغاء لن يكون من مسؤولية DiskUS.",
   "You-have-selected-for-cancellation-of-subscription-at-the-end-of-your-term-which-is-at": "لقد اخترت إلغاء الاشتراك في نهاية المدة الخاصة بك والتي هي في",
-  "You-can-always-opt-out-by-selecting-the-revoke-Cancellation-Option-from-the-same-screen": "يمكنك دائمًا إلغاء الاشتراك عن طريق تحديد خيار الإلغاء من نفس الشاشة"
+  "You-can-always-opt-out-by-selecting-the-revoke-Cancellation-Option-from-the-same-screen": "يمكنك دائمًا إلغاء الاشتراك عن طريق تحديد خيار الإلغاء من نفس الشاشة",
+  "Moderator": "مشرف",
+  "Voter": "ناخب",
+  "Vote-count": "عدد الأصوات"
 }

@@ -5037,7 +5037,7 @@ body[dir="rtl"]
   .searchBox-dropdowns-resolution
   .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold";
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
   color: #a2a2a2 !important;
   margin-right: 0px !important;
   height: 39px !important;

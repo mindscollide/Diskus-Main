@@ -11,6 +11,7 @@
 
 body[dir="rtl"] .create-Resolution-btn {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .create-Resolution-btn::before {
@@ -42,6 +43,10 @@ body[dir="rtl"] .create-Resolution-btn {
   border: 1px solid #e1e1e1 !important;
 }
 
+body[dir="rtl"] .Resolution-All-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Resolution-All-btn:hover,
 .Resolution-All-btn:focus,
 .Resolution-All-btn:active,
@@ -67,6 +72,7 @@ body[dir="rtl"] .create-Resolution-btn {
 
 body[dir="rtl"] .Resolution-All-btn_Active {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Resolution-All-btn_Active:hover,
@@ -100,6 +106,7 @@ body[dir="rtl"] .Resolution-All-btn_Active {
 
 body[dir="rtl"] .Resolution-vote-btn {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Resolution-vote-btn:hover,
@@ -131,6 +138,10 @@ body[dir="rtl"] .Resolution-vote-btn {
   text-align: center !important;
 }
 
+body[dir="rtl"] .Resolution-closed-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Resolution-closed-btn:hover,
 .Resolution-closed-btn:active,
 .Resolution-closed-btn:focus-visible,
@@ -158,6 +169,7 @@ body[dir="rtl"] .Resolution-vote-btn {
 
 body[dir="rtl"] .Resolution-closed-btn_Active {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Resolution-closed-btn_Active:hover,
@@ -183,6 +195,10 @@ body[dir="rtl"] .Resolution-closed-btn_Active {
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
   text-align: center !important;
+}
+
+body[dir="rtl"] .Resolution-Current-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Resolution-Current-btn:hover,
@@ -212,6 +228,7 @@ body[dir="rtl"] .Resolution-closed-btn_Active {
 
 body[dir="rtl"] .Resolution-Current-btn_Active {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Resolution-Current-btn_Active:hover,
@@ -251,6 +268,9 @@ body[dir="rtl"] .Search_Icon {
   font-family: "MontserratSemiBold" !important;
 }
 
+body[dir="rtl"] .Resolution-heading-size {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .Resolution-Title {
   width: 100% !important;
   font-size: 12px !important;
@@ -372,6 +392,7 @@ body[dir="rtl"] .voterCountStyle {
   display: flex !important;
   justify-content: center !important;
   margin-right: 30px !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 body[dir="rtl"] .Result_icon {
@@ -386,10 +407,12 @@ body[dir="rtl"] .Result_icon {
 
 body[dir="rtl"] .resolution_date {
   margin-right: 15px !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 body[dir="rtl"] .resolution_date_Decision_date {
   margin-right: 20px !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 body[dir="rtl"] .Edit_Icon_moderator {
@@ -433,6 +456,10 @@ body[dir="rtl"] .Edit_Icon_moderator {
   border: 1px solid #e1e1e1 !important;
 }
 
+body[dir="rtl"] .ResetButton_SearchBar_Resolution {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
 .ResetButton_SearchBar_Resolution:hover,
 .ResetButton_SearchBar_Resolution:active,
 .ResetButton_SearchBar_Resolution:focus-visible,
@@ -450,6 +477,10 @@ body[dir="rtl"] .Edit_Icon_moderator {
   font-size: 12px !important;
   color: #fff;
   border: none !important;
+}
+
+body[dir="rtl"] .SearchButton_SearchBar_Resolution {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .SearchButton_SearchBar_Resolution:hover,
@@ -489,6 +520,7 @@ body[dir="rtl"] .Edit_Icon_moderator {
 body[dir="rtl"] .decision_Approved {
   display: flex !important;
   justify-content: center !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
   margin-left: 8px !important;
 }
 .decision_text {
@@ -529,6 +561,9 @@ body[dir="rtl"] .PLusICon {
   cursor: pointer !important;
 }
 
+body[dir="rtl"] .resolution_title {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .voterCountStyle {
   font-family: "MontserratSemiBold";
   font-size: 12px !important;
@@ -544,6 +579,7 @@ body[dir="rtl"] .PLusICon {
 body[dir="rtl"] .decision_text_Moderator_closed {
   display: flex !important;
   justify-content: center !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
   margin-right: 50px !important;
 }
 

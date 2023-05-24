@@ -13,9 +13,17 @@
   /* margin-top: 15px !important; */
 }
 
+body[dir="rtl"] .name_participant {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .email_participant {
   font-size: 10pt !important;
   color: #6172d6 !important;
   font-family: "MontserratSemiBold";
   text-decoration: underline;
+}
+
+body[dir="rtl"] .email_participant {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
