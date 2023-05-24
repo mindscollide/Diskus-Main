@@ -546,6 +546,17 @@ body[dir="rtl"] .List_Components-verification {
   margin-left: 3px !important;
 }
 
+.anchor_tag_text1 {
+  font-family: "MontserratSemiBold";
+  color: #6172d6;
+  margin-left: 3px !important;
+}
+
+body[dir="rtl"] .anchor_tag_text1 {
+  font-family: "IBMPlexSansArabic-SemiBold";
+  margin-right: 3px !important;
+}
+
 body[dir="rtl"] .anchor_tag_text {
   font-family: "IBMPlexSansArabic-SemiBold";
 }

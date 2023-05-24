@@ -43,7 +43,7 @@ const ForgotPassword = () => {
     message: "",
   });
   const submitForm = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (email !== "") {
       if (validateEmail(email)) {
         setMessege("");
@@ -108,7 +108,6 @@ const ForgotPassword = () => {
       dispatch(cleareChangePasswordMessage());
     } else {
       dispatch(cleareChangePasswordMessage());
-
     }
   }, [auth.ResponseMessage]);
   return (
@@ -169,7 +168,7 @@ const ForgotPassword = () => {
                   </Col>
                   <Col sm={12} md={12} lg={12} className="m-0 p-0">
                     <span className={styles["ForgotPassword_heading1"]}>
-                      {t("Password?")}
+                      {t("Password")}?
                     </span>
                   </Col>
                 </Row>
@@ -185,7 +184,7 @@ const ForgotPassword = () => {
                       {t("Email-address")}
                     </Col>
                   </Row>
-                  <Row >
+                  <Row>
                     <Col
                       sm={12}
                       md={12}
@@ -204,7 +203,6 @@ const ForgotPassword = () => {
                         maxLength={160}
                         // autoComplete={"off"}
                         // autoComplete="on"
-
                       />
                       <p className={styles["ErrorMessege"]}>{messege}</p>
                     </Col>
@@ -241,7 +239,7 @@ const ForgotPassword = () => {
                     </Col>
                   </Row>
                 </Form>
-                <Row >
+                <Row>
                   <Col
                     sm={12}
                     md={12}

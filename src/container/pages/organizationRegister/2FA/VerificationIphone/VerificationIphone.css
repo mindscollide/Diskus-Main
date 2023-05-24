@@ -14,6 +14,10 @@
   font-family: "MontserratSemiBold";
 }
 
+body[dir="rtl"] .Next_button_EmailVerifyVerificationIphone {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Next_button_EmailVerifyVerificationIphone:focus-visible {
   width: 280px;
   border-radius: 4px;
@@ -43,6 +47,10 @@
   font-family: "MontserratRegular";
 }
 
+body[dir="rtl"] .forogt_email_link {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
 .forogt_email_link a {
   color: #5a5a5a !important;
 }
@@ -53,6 +61,9 @@
   font-weight: bold;
   font-family: "MontserratSemiBold-600";
 }
+body[dir="rtl"] .SelectLineIphone {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 
 .VerifyHeadingIphone {
   font-weight: bold;
@@ -61,6 +72,9 @@
   font-size: calc(35px - 20%) !important;
 }
 
+body[dir="rtl"] .VerifyHeadingIphone {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .Auth_Icon1SendEmailVerificationIphone {
   position: absolute;
   left: 25%;
@@ -81,10 +95,18 @@
   font-family: "MontserratSemiBold-600";
 }
 
+body[dir="rtl"] .verificationIphoneLabels {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .verificationIphoneLabels_active {
   font-weight: bold;
   color: #e1e1e1 !important;
   font-family: "MontserratSemiBold-600";
+}
+
+body[dir="rtl"] .verificationIphoneLabels_active {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Verification-Iphone-language {

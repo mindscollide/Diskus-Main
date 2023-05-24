@@ -247,7 +247,9 @@ body[dir="rtl"] .selectbox-height-organization {
   color: #6172d6;
   font-family: "MontserratSemiBold";
 }
-
+body[dir="rtl"] .verification-email-modal-title {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .allow-limit-modal-title {
   margin: 20px 0;
   font-size: 18px !important;
@@ -267,6 +269,9 @@ body[dir="rtl"] .allow-limit-modal-title {
   font-family: "MontserratSemiBold";
 }
 
+body[dir="rtl"] .verification-email-modal-paragraph {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .Ok-modal-btn {
   width: 119px !important;
   height: 46px !important;
