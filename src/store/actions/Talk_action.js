@@ -505,6 +505,7 @@ const GetGroupMessages = (chatGroupData, t) => {
       GroupID: chatGroupData.GroupID,
       NumberOfMessages: chatGroupData.NumberOfMessages,
       OffsetMessage: chatGroupData.OffsetMessage,
+      ChannelID: parseInt(chatGroupData.ChannelID),
     },
   }
   return (dispatch) => {
@@ -2212,10 +2213,11 @@ const OTOMessageSendInit = () => {
   }
 }
 
-const OTOMessageSendNotification = (message) => {
+const OTOMessageSendNotification = (message, response) => {
   return {
     type: actions.OTO_MESSAGESEND_NOTIFICATION,
     message: message,
+    response: response,
   }
 }
 
@@ -2251,7 +2253,10 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
                 )
             ) {
               await dispatch(
-                OTOMessageSendNotification(t('OTO-message-inserted')),
+                OTOMessageSendNotification(
+                  t('OTO-message-inserted'),
+                  response.data.responseResult.talkResponse,
+                ),
               )
             } else if (
               response.data.responseResult.responseMessage
@@ -2261,7 +2266,10 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
                 )
             ) {
               await dispatch(
-                OTOMessageSendNotification(t('User-is-not-in-channel')),
+                OTOMessageSendNotification(
+                  t('User-is-not-in-channel'),
+                  response.data.responseResult.talkResponse,
+                ),
               )
             } else if (
               response.data.responseResult.responseMessage
@@ -2270,7 +2278,12 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
                   'Talk_TalkServiceManager_InsertOTOMessages_03'.toLowerCase(),
                 )
             ) {
-              await dispatch(OTOMessageSendNotification(t('User-is-blocked')))
+              await dispatch(
+                OTOMessageSendNotification(
+                  t('User-is-blocked'),
+                  response.data.responseResult.talkResponse,
+                ),
+              )
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2279,7 +2292,10 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
                 )
             ) {
               await dispatch(
-                OTOMessageSendNotification(t('OTO-message-not-inserted')),
+                OTOMessageSendNotification(
+                  t('OTO-message-not-inserted'),
+                  response.data.responseResult.talkResponse,
+                ),
               )
             } else if (
               response.data.responseResult.responseMessage
@@ -2509,7 +2525,7 @@ const DeleteSingleMessage = (object, t) => {
   console.log('DeleteSingleMessage', object)
   let data = {
     TalkRequest: {
-      UserID: 5,
+      UserID: object.UserID,
       Message: {
         MessageID: object.MessageIds,
         MessageType: object.MessageType,
