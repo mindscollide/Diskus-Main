@@ -729,6 +729,7 @@ const TalkChat = () => {
 
     let chatGroupData = {
       UserID: parseInt(currentUserId),
+      ChannelID: currentOrganizationId,
       GroupID: record.id,
       NumberOfMessages: 50,
       OffsetMessage: 0,
@@ -1411,6 +1412,7 @@ const TalkChat = () => {
 
   const deleteSingleMessage = (record) => {
     let Data = {
+      UserID: parseInt(currentUserId),
       MessageType: chatClickData.messageType,
       MessageIds: record.messageID,
     }

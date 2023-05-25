@@ -504,6 +504,7 @@ const GetGroupMessages = (chatGroupData, t) => {
       GroupID: chatGroupData.GroupID,
       NumberOfMessages: chatGroupData.NumberOfMessages,
       OffsetMessage: chatGroupData.OffsetMessage,
+      ChannelID: parseInt(chatGroupData.ChannelID),
     },
   }
   return (dispatch) => {
@@ -2523,7 +2524,7 @@ const DeleteSingleMessage = (object, t) => {
   console.log('DeleteSingleMessage', object)
   let data = {
     TalkRequest: {
-      UserID: 5,
+      UserID: object.UserID,
       Message: {
         MessageID: object.MessageIds,
         MessageType: object.MessageType,
