@@ -87,6 +87,30 @@ const Talk = () => {
     }
   }, [talkStateData?.AllUserChats?.AllUserChatsData?.unreadMessageCount])
 
+  //MQTT Unread Message Count
+  useEffect(() => {
+    if (
+      talkStateData.talkSocketUnreadMessageCount.unreadMessageData !==
+        undefined &&
+      talkStateData.talkSocketUnreadMessageCount.unreadMessageData !== null &&
+      talkStateData.talkSocketUnreadMessageCount.unreadMessageData.length !== 0
+    ) {
+      let mqttUnreadMessageCount =
+        talkStateData.talkSocketUnreadMessageCount.unreadMessageData
+      if (Object.keys(mqttUnreadMessageCount) !== null) {
+        setUnreadMessageCount(mqttUnreadMessageCount.data[0].totalCount)
+      } else {
+        setUnreadMessageCount(
+          talkStateData?.AllUserChats?.AllUserChatsData?.unreadMessageCount[0]
+            ?.totalCount,
+        )
+      }
+    }
+  }, [
+    talkStateData.talkSocketUnreadMessageCount.unreadMessageData,
+    talkStateData?.AllUserChats?.AllUserChatsData?.unreadMessageCount,
+  ])
+
   return (
     <div className={'talk_nav' + ' ' + currentLang}>
       {activeChatBox === true ? (

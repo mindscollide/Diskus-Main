@@ -82,9 +82,10 @@ import EditIcon from '../../../../assets/images/Edit-Icon.png'
 import { useTranslation } from 'react-i18next'
 import {
   oneToOneMessages,
-  setAllChatDataFunction,
-  setAllChatDataFunction2,
-  setAllOtoMessagesFunction,
+  groupMessages,
+  unreadMessageCountFunction,
+  groupCreationFunction,
+  markStarUnstarFunction,
 } from './oneToOneMessage'
 import { sendChatFunction } from './sendChat'
 
@@ -147,6 +148,9 @@ const TalkChat = () => {
 
   //search group user states
   const [searchGroupUserValue, setSearchGroupUserValue] = useState('')
+
+  //Loading State
+  const [isLoading, setIsLoading] = useState(true)
 
   //Opening Encryption Message
   const [openEncryptionDialogue, setOpenEncryptionDialogue] = useState(false)
@@ -1586,7 +1590,7 @@ const TalkChat = () => {
     let allotomessages =
       talkStateData.UserOTOMessages.UserOTOMessagesData.oneToOneMessages
     if (allotomessages !== undefined) {
-      oneToOneMessages(allOtoMessages, setAllOtoMessages, allotomessages)
+      oneToOneMessages(setAllOtoMessages, allotomessages)
     }
   }, [talkStateData.UserOTOMessages.UserOTOMessagesData])
 
@@ -1597,39 +1601,10 @@ const TalkChat = () => {
 
   // Saving All Group Messages in single state
   useEffect(() => {
-    let allGroupMessages =
+    let allGroupMessagesReducer =
       talkStateData.GroupMessages.GroupMessagesData.groupMessages
-    if (allGroupMessages != undefined) {
-      let allGroupMessagesArr = []
-      allGroupMessages.map((messagesData) => {
-        if (
-          messagesData.frMessages !== 'Direct Message' &&
-          messagesData.frMessages.length > 0 &&
-          messagesData.frMessages !== undefined &&
-          typeof messagesData.frMessages !== 'object'
-        ) {
-          messagesData.frMessages = messagesData.frMessages.split('|')
-        }
-        allGroupMessagesArr.push({
-          attachmentLocation: messagesData.attachmentLocation,
-          currDate: messagesData.currDate,
-          fileGeneratedName: messagesData.fileGeneratedName,
-          fileName: messagesData.fileName,
-          frMessages: messagesData.frMessages,
-          isFlag: messagesData.isFlag,
-          messageBody: messagesData.messageBody,
-          messageCount: messagesData.messageCount,
-          messageID: messagesData.messageID,
-          receiverID: messagesData.receiverID,
-          senderID: messagesData.senderID,
-          senderName: messagesData.senderName,
-          sentDate: messagesData.sentDate,
-          shoutAll: messagesData.shoutAll,
-          sourceMessageBody: messagesData.sourceMessageBody,
-          sourceMessageId: messagesData.sourceMessageId,
-        })
-      })
-      setAllGroupMessages([...allGroupMessagesArr])
+    if (allGroupMessagesReducer !== undefined) {
+      groupMessages(allGroupMessagesReducer, setAllGroupMessages)
     }
   }, [talkStateData.GroupMessages.GroupMessagesData])
 
@@ -1673,10 +1648,19 @@ const TalkChat = () => {
       talkStateData.talkSocketData.socketInsertOTOMessageData !== undefined &&
       talkStateData.talkSocketData.socketInsertOTOMessageData.length !== 0
     ) {
-      console.log('talkStateData.activeChatID')
+      console.log('talkStateData.talkSocketData.socketInsertOTOMessageData')
       try {
         if (talkStateData.activeChatIdData.messageType === 'O') {
-          console.log('talkStateData.activeChatID')
+          console.log(
+            'talkStateData.talkSocketData.socketInsertOTOMessageData 1',
+            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+              .senderID,
+          )
+          console.log(
+            'talkStateData.talkSocketData.socketInsertOTOMessageData 2',
+            talkStateData.activeChatIdData.id,
+          )
+
           if (
             talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
               .senderID != undefined &&
@@ -1690,19 +1674,11 @@ const TalkChat = () => {
               .senderID != '0' &&
             talkStateData.activeChatIdData.id ===
               talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
-                .senderID
+                .receiverID
           ) {
-            console.log('talkStateData.activeChatID')
             console.log(
-              'talkStateData.activeChatID',
-              talkStateData.activeChatIdData.id,
+              'talkStateData.talkSocketData.socketInsertOTOMessageData',
             )
-            console.log(
-              'talkStateData.activeChatID',
-              talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
-                .receiverID,
-            )
-
             let mqttInsertOtoMessageData =
               talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
             let insertMqttOtoMessageData = {
@@ -1875,13 +1851,13 @@ const TalkChat = () => {
               .senderID != '' &&
             talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
               .senderID != '0' &&
-            currentUserId ===
+            parseInt(currentUserId) !==
               talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
                 .senderID
           ) {
-            console.log('talkStateData.activeChatID')
-
-            console.log('talkStateData.activeChatID')
+            console.log(
+              'talkStateData.talkSocketData.socketInsertOTOMessageData',
+            )
 
             let mqttInsertOtoMessageData =
               talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
@@ -2044,7 +2020,9 @@ const TalkChat = () => {
           }
         }
       } catch {
-        console.log('error on update mqtt msg coming for 1 to 1 message')
+        console.log(
+          'ERROR talkStateData.talkSocketData.socketInsertOTOMessageData',
+        )
       }
     }
     //
@@ -2056,134 +2034,308 @@ const TalkChat = () => {
       talkStateData.talkSocketData.socketInsertGroupMessageData !== undefined &&
       talkStateData.talkSocketData.socketInsertGroupMessageData.length !== 0
     ) {
-      let mqttInsertGroupMessageData =
-        talkStateData.talkSocketData.socketInsertGroupMessageData.data[0]
-      let insertMqttGroupMessageData = {
-        messageID: mqttInsertGroupMessageData.messageID,
-        senderID: mqttInsertGroupMessageData.senderID,
-        receiverID: mqttInsertGroupMessageData.receiverID,
-        messageBody: mqttInsertGroupMessageData.messageBody,
-        senderName: mqttInsertGroupMessageData.senderName,
-        isFlag: 0,
-        sentDate: mqttInsertGroupMessageData.sentDate,
-        currDate: mqttInsertGroupMessageData.currDate,
-        fileGeneratedName: mqttInsertGroupMessageData.fileGeneratedName,
-        fileName: mqttInsertGroupMessageData.fileName,
-        shoutAll: mqttInsertGroupMessageData.shoutAll,
-        frMessages: mqttInsertGroupMessageData.frMessages,
-        messageCount: 0,
-        attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
-      }
-
-      let newGroupMessageChat = {
-        id: mqttInsertGroupMessageData.receiverID,
-        fullName: mqttInsertGroupMessageData.groupName,
-        imgURL: 'O.jpg',
-        messageBody: mqttInsertGroupMessageData.messageBody,
-        messageDate: mqttInsertGroupMessageData.sentDate,
-        notiCount: 0,
-        messageType: 'G',
-        isOnline: true,
-        companyName: 'Tresmark',
-        sentDate: mqttInsertGroupMessageData.sentDate,
-        receivedDate: '',
-        seenDate: '',
-        attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
-        senderID: parseInt(messageSendData.SenderID),
-        admin: mqttInsertGroupMessageData.admin,
-      }
-
-      if (Object.keys(insertMqttGroupMessageData) !== null) {
-        if (
-          insertMqttGroupMessageData !== undefined &&
-          insertMqttGroupMessageData !== null &&
-          insertMqttGroupMessageData.hasOwnProperty('messageBody') &&
-          insertMqttGroupMessageData.messageBody !== undefined &&
-          allGroupMessages.length > 0 &&
-          allGroupMessages[allGroupMessages.length - 1] !== undefined &&
-          allGroupMessages[allGroupMessages.length - 1] !== null &&
-          allGroupMessages[allGroupMessages.length - 1].hasOwnProperty(
-            'messageBody',
-          ) &&
-          allGroupMessages[allGroupMessages.length - 1].messageBody !==
-            undefined &&
-          insertMqttGroupMessageData.messageBody ===
-            allGroupMessages[allGroupMessages.length - 1].messageBody
-        ) {
+      try {
+        if (talkStateData.activeChatIdData.messageType === 'G') {
           if (
-            activeChat.id === insertMqttGroupMessageData.receiverID ||
-            activeChat.id === insertMqttGroupMessageData.senderID
+            talkStateData.talkSocketData.socketInsertGroupMessageData.data[0]
+              .senderID != undefined &&
+            talkStateData.talkSocketData.socketInsertGroupMessageData.data[0]
+              .senderID != null &&
+            talkStateData.talkSocketData.socketInsertGroupMessageData.data[0]
+              .senderID != 0 &&
+            talkStateData.talkSocketData.socketInsertGroupMessageData.data[0]
+              .senderID != '' &&
+            talkStateData.talkSocketData.socketInsertGroupMessageData.data[0]
+              .senderID != '0' &&
+            talkStateData.activeChatIdData.id ===
+              talkStateData.talkSocketData.socketInsertGroupMessageData.data[0]
+                .receiverID
           ) {
-            setAllGroupMessages((prevState) => {
-              const updatedMessages = [...prevState]
-              updatedMessages[
-                updatedMessages.length - 1
-              ] = insertMqttGroupMessageData
-              return updatedMessages
-            })
-            let updatedArray = [...allChatData]
-            if (
-              updatedArray.length > 0 &&
-              updatedArray[0].hasOwnProperty('messageBody')
-            ) {
-              updatedArray[0] = newGroupMessageChat
+            let mqttInsertGroupMessageData =
+              talkStateData.talkSocketData.socketInsertGroupMessageData.data[0]
+            let insertMqttGroupMessageData = {
+              messageID: mqttInsertGroupMessageData.messageID,
+              senderID: mqttInsertGroupMessageData.senderID,
+              receiverID: mqttInsertGroupMessageData.receiverID,
+              messageBody: mqttInsertGroupMessageData.messageBody,
+              senderName: mqttInsertGroupMessageData.senderName,
+              isFlag: 0,
+              sentDate: mqttInsertGroupMessageData.sentDate,
+              currDate: mqttInsertGroupMessageData.currDate,
+              fileGeneratedName: mqttInsertGroupMessageData.fileGeneratedName,
+              fileName: mqttInsertGroupMessageData.fileName,
+              shoutAll: mqttInsertGroupMessageData.shoutAll,
+              frMessages: mqttInsertGroupMessageData.frMessages,
+              messageCount: 0,
+              attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
             }
-            setAllChatData(updatedArray)
 
-            // allGroupMessages.push(insertMqttGroupMessageData)
-            // setAllGroupMessages([...allGroupMessages])
-          }
-        } else if (
-          insertMqttGroupMessageData !== undefined &&
-          insertMqttGroupMessageData !== null &&
-          insertMqttGroupMessageData.hasOwnProperty('messageBody') &&
-          insertMqttGroupMessageData.messageBody !== undefined &&
-          allGroupMessages.length > 0 &&
-          allGroupMessages[allGroupMessages.length - 1] !== undefined &&
-          allGroupMessages[allGroupMessages.length - 1] !== null &&
-          allGroupMessages[allGroupMessages.length - 1].hasOwnProperty(
-            'messageBody',
-          ) &&
-          insertMqttGroupMessageData.messageBody !==
-            allGroupMessages[allGroupMessages.length - 1].messageBody
-        ) {
-          setAllGroupMessages([...allGroupMessages, insertMqttGroupMessageData])
-          let updatedArray = [...allChatData]
-          if (
-            updatedArray.length > 0 &&
-            updatedArray[0].hasOwnProperty('messageBody') &&
-            updatedArray[0].messageBody === allChatData[0].messageBody
+            let newGroupMessageChat = {
+              id: mqttInsertGroupMessageData.receiverID,
+              fullName: mqttInsertGroupMessageData.groupName,
+              imgURL: 'O.jpg',
+              messageBody: mqttInsertGroupMessageData.messageBody,
+              messageDate: mqttInsertGroupMessageData.sentDate,
+              notiCount: 0,
+              messageType: 'G',
+              isOnline: true,
+              companyName: 'Tresmark',
+              sentDate: mqttInsertGroupMessageData.sentDate,
+              receivedDate: '',
+              seenDate: '',
+              attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+              senderID: parseInt(messageSendData.SenderID),
+              admin: mqttInsertGroupMessageData.admin,
+            }
+
+            if (Object.keys(insertMqttGroupMessageData) !== null) {
+              if (
+                insertMqttGroupMessageData !== undefined &&
+                insertMqttGroupMessageData !== null &&
+                insertMqttGroupMessageData.hasOwnProperty('messageBody') &&
+                insertMqttGroupMessageData.messageBody !== undefined &&
+                allGroupMessages.length > 0 &&
+                allGroupMessages[allGroupMessages.length - 1] !== undefined &&
+                allGroupMessages[allGroupMessages.length - 1] !== null &&
+                allGroupMessages[allGroupMessages.length - 1].hasOwnProperty(
+                  'messageBody',
+                ) &&
+                allGroupMessages[allGroupMessages.length - 1].messageBody !==
+                  undefined &&
+                insertMqttGroupMessageData.messageBody ===
+                  allGroupMessages[allGroupMessages.length - 1].messageBody
+              ) {
+                if (
+                  activeChat.id === insertMqttGroupMessageData.receiverID ||
+                  activeChat.id === insertMqttGroupMessageData.senderID
+                ) {
+                  setAllGroupMessages((prevState) => {
+                    const updatedMessages = [...prevState]
+                    updatedMessages[
+                      updatedMessages.length - 1
+                    ] = insertMqttGroupMessageData
+                    return updatedMessages
+                  })
+                  let updatedArray = [...allChatData]
+                  if (
+                    updatedArray.length > 0 &&
+                    updatedArray[0].hasOwnProperty('messageBody')
+                  ) {
+                    updatedArray[0] = newGroupMessageChat
+                  }
+                  setAllChatData(updatedArray)
+
+                  // allGroupMessages.push(insertMqttGroupMessageData)
+                  // setAllGroupMessages([...allGroupMessages])
+                }
+              } else if (
+                insertMqttGroupMessageData !== undefined &&
+                insertMqttGroupMessageData !== null &&
+                insertMqttGroupMessageData.hasOwnProperty('messageBody') &&
+                insertMqttGroupMessageData.messageBody !== undefined &&
+                allGroupMessages.length > 0 &&
+                allGroupMessages[allGroupMessages.length - 1] !== undefined &&
+                allGroupMessages[allGroupMessages.length - 1] !== null &&
+                allGroupMessages[allGroupMessages.length - 1].hasOwnProperty(
+                  'messageBody',
+                ) &&
+                insertMqttGroupMessageData.messageBody !==
+                  allGroupMessages[allGroupMessages.length - 1].messageBody
+              ) {
+                setAllGroupMessages([
+                  ...allGroupMessages,
+                  insertMqttGroupMessageData,
+                ])
+                let updatedArray = [...allChatData]
+                if (
+                  updatedArray.length > 0 &&
+                  updatedArray[0].hasOwnProperty('messageBody') &&
+                  updatedArray[0].messageBody === allChatData[0].messageBody
+                ) {
+                  updatedArray[0] = newGroupMessageChat
+                }
+                setAllChatData(updatedArray)
+              }
+            } else {
+              let allGroupMessages =
+                talkStateData.GroupMessages.GroupMessagesData.groupMessages
+              if (allGroupMessages != undefined) {
+                let allGroupMessagesArr = []
+                allGroupMessages.map((messagesData) => {
+                  allGroupMessagesArr.push({
+                    attachmentLocation: messagesData.attachmentLocation,
+                    currDate: messagesData.currDate,
+                    fileGeneratedName: messagesData.fileGeneratedName,
+                    fileName: messagesData.fileName,
+                    frMessages: messagesData.frMessages,
+                    isFlag: messagesData.isFlag,
+                    messageBody: messagesData.messageBody,
+                    messageCount: messagesData.messageCount,
+                    messageID: messagesData.messageID,
+                    receiverID: messagesData.receiverID,
+                    senderID: messagesData.senderID,
+                    senderName: messagesData.senderName,
+                    sentDate: messagesData.sentDate,
+                    shoutAll: messagesData.shoutAll,
+                  })
+                })
+                setAllGroupMessages([...allGroupMessagesArr])
+              }
+              // }
+            }
+          } else if (
+            talkStateData.talkSocketData.socketInsertGroupMessageData.data[0]
+              .senderID != undefined &&
+            talkStateData.talkSocketData.socketInsertGroupMessageData.data[0]
+              .senderID != null &&
+            talkStateData.talkSocketData.socketInsertGroupMessageData.data[0]
+              .senderID != 0 &&
+            talkStateData.talkSocketData.socketInsertGroupMessageData.data[0]
+              .senderID != '' &&
+            talkStateData.talkSocketData.socketInsertGroupMessageData.data[0]
+              .senderID != '0' &&
+            parseInt(currentUserId) !==
+              talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+                .senderID
           ) {
-            updatedArray[0] = newGroupMessageChat
+            let mqttInsertGroupMessageData =
+              talkStateData.talkSocketData.socketInsertGroupMessageData.data[0]
+            let insertMqttGroupMessageData = {
+              messageID: mqttInsertGroupMessageData.messageID,
+              senderID: mqttInsertGroupMessageData.senderID,
+              receiverID: mqttInsertGroupMessageData.receiverID,
+              messageBody: mqttInsertGroupMessageData.messageBody,
+              senderName: mqttInsertGroupMessageData.senderName,
+              isFlag: 0,
+              sentDate: mqttInsertGroupMessageData.sentDate,
+              currDate: mqttInsertGroupMessageData.currDate,
+              fileGeneratedName: mqttInsertGroupMessageData.fileGeneratedName,
+              fileName: mqttInsertGroupMessageData.fileName,
+              shoutAll: mqttInsertGroupMessageData.shoutAll,
+              frMessages: mqttInsertGroupMessageData.frMessages,
+              messageCount: 0,
+              attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+            }
+
+            let newGroupMessageChat = {
+              id: mqttInsertGroupMessageData.receiverID,
+              fullName: mqttInsertGroupMessageData.groupName,
+              imgURL: 'O.jpg',
+              messageBody: mqttInsertGroupMessageData.messageBody,
+              messageDate: mqttInsertGroupMessageData.sentDate,
+              notiCount: 0,
+              messageType: 'G',
+              isOnline: true,
+              companyName: 'Tresmark',
+              sentDate: mqttInsertGroupMessageData.sentDate,
+              receivedDate: '',
+              seenDate: '',
+              attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+              senderID: parseInt(messageSendData.SenderID),
+              admin: mqttInsertGroupMessageData.admin,
+            }
+
+            if (Object.keys(insertMqttGroupMessageData) !== null) {
+              if (
+                insertMqttGroupMessageData !== undefined &&
+                insertMqttGroupMessageData !== null &&
+                insertMqttGroupMessageData.hasOwnProperty('messageBody') &&
+                insertMqttGroupMessageData.messageBody !== undefined &&
+                allGroupMessages.length > 0 &&
+                allGroupMessages[allGroupMessages.length - 1] !== undefined &&
+                allGroupMessages[allGroupMessages.length - 1] !== null &&
+                allGroupMessages[allGroupMessages.length - 1].hasOwnProperty(
+                  'messageBody',
+                ) &&
+                allGroupMessages[allGroupMessages.length - 1].messageBody !==
+                  undefined &&
+                insertMqttGroupMessageData.messageBody ===
+                  allGroupMessages[allGroupMessages.length - 1].messageBody
+              ) {
+                if (
+                  activeChat.id === insertMqttGroupMessageData.receiverID ||
+                  activeChat.id === insertMqttGroupMessageData.senderID
+                ) {
+                  setAllGroupMessages((prevState) => {
+                    const updatedMessages = [...prevState]
+                    updatedMessages[
+                      updatedMessages.length - 1
+                    ] = insertMqttGroupMessageData
+                    return updatedMessages
+                  })
+                  let updatedArray = [...allChatData]
+                  if (
+                    updatedArray.length > 0 &&
+                    updatedArray[0].hasOwnProperty('messageBody')
+                  ) {
+                    updatedArray[0] = newGroupMessageChat
+                  }
+                  setAllChatData(updatedArray)
+
+                  // allGroupMessages.push(insertMqttGroupMessageData)
+                  // setAllGroupMessages([...allGroupMessages])
+                }
+              } else if (
+                insertMqttGroupMessageData !== undefined &&
+                insertMqttGroupMessageData !== null &&
+                insertMqttGroupMessageData.hasOwnProperty('messageBody') &&
+                insertMqttGroupMessageData.messageBody !== undefined &&
+                allGroupMessages.length > 0 &&
+                allGroupMessages[allGroupMessages.length - 1] !== undefined &&
+                allGroupMessages[allGroupMessages.length - 1] !== null &&
+                allGroupMessages[allGroupMessages.length - 1].hasOwnProperty(
+                  'messageBody',
+                ) &&
+                insertMqttGroupMessageData.messageBody !==
+                  allGroupMessages[allGroupMessages.length - 1].messageBody
+              ) {
+                setAllGroupMessages([
+                  ...allGroupMessages,
+                  insertMqttGroupMessageData,
+                ])
+                let updatedArray = [...allChatData]
+                if (
+                  updatedArray.length > 0 &&
+                  updatedArray[0].hasOwnProperty('messageBody') &&
+                  updatedArray[0].messageBody === allChatData[0].messageBody
+                ) {
+                  updatedArray[0] = newGroupMessageChat
+                }
+                setAllChatData(updatedArray)
+              }
+            } else {
+              let allGroupMessages =
+                talkStateData.GroupMessages.GroupMessagesData.groupMessages
+              if (allGroupMessages != undefined) {
+                let allGroupMessagesArr = []
+                allGroupMessages.map((messagesData) => {
+                  allGroupMessagesArr.push({
+                    attachmentLocation: messagesData.attachmentLocation,
+                    currDate: messagesData.currDate,
+                    fileGeneratedName: messagesData.fileGeneratedName,
+                    fileName: messagesData.fileName,
+                    frMessages: messagesData.frMessages,
+                    isFlag: messagesData.isFlag,
+                    messageBody: messagesData.messageBody,
+                    messageCount: messagesData.messageCount,
+                    messageID: messagesData.messageID,
+                    receiverID: messagesData.receiverID,
+                    senderID: messagesData.senderID,
+                    senderName: messagesData.senderName,
+                    sentDate: messagesData.sentDate,
+                    shoutAll: messagesData.shoutAll,
+                  })
+                })
+                setAllGroupMessages([...allGroupMessagesArr])
+              }
+              // }
+            }
           }
-          setAllChatData(updatedArray)
         }
-      } else {
-        let allGroupMessages =
-          talkStateData.GroupMessages.GroupMessagesData.groupMessages
-        if (allGroupMessages != undefined) {
-          let allGroupMessagesArr = []
-          allGroupMessages.map((messagesData) => {
-            allGroupMessagesArr.push({
-              attachmentLocation: messagesData.attachmentLocation,
-              currDate: messagesData.currDate,
-              fileGeneratedName: messagesData.fileGeneratedName,
-              fileName: messagesData.fileName,
-              frMessages: messagesData.frMessages,
-              isFlag: messagesData.isFlag,
-              messageBody: messagesData.messageBody,
-              messageCount: messagesData.messageCount,
-              messageID: messagesData.messageID,
-              receiverID: messagesData.receiverID,
-              senderID: messagesData.senderID,
-              senderName: messagesData.senderName,
-              sentDate: messagesData.sentDate,
-              shoutAll: messagesData.shoutAll,
-            })
-          })
-          setAllGroupMessages([...allGroupMessagesArr])
-        }
-        // }
+      } catch {
+        console.log(
+          'ERROR talkStateData.talkSocketData.socketInsertGroupMessageData',
+        )
       }
     }
   }, [talkStateData.talkSocketData.socketInsertGroupMessageData])
@@ -2317,7 +2469,7 @@ const TalkChat = () => {
         undefined &&
       talkStateData.talkSocketDataStarUnstar.socketUnstarMessage.length !== 0
     ) {
-      setAllOtoMessagesFunction(
+      markStarUnstarFunction(
         talkStateData,
         allChatData,
         setAllOtoMessages,
@@ -2336,7 +2488,7 @@ const TalkChat = () => {
       talkStateData.talkSocketGroupCreation.groupCreatedData !== undefined &&
       talkStateData.talkSocketGroupCreation.groupCreatedData.length !== 0
     ) {
-      setAllChatDataFunction2(talkStateData, setAllChatData, allChatData)
+      groupCreationFunction(talkStateData, setAllChatData, allChatData)
     }
   }, [talkStateData?.talkSocketGroupCreation?.groupCreatedData])
 
@@ -2348,7 +2500,7 @@ const TalkChat = () => {
         undefined &&
       talkStateData.talkSocketUnreadMessageCount.unreadMessageData.length !== 0
     ) {
-      setAllChatDataFunction(talkStateData, allChatData, setAllChatData)
+      unreadMessageCountFunction(talkStateData, allChatData, setAllChatData)
     }
   }, [
     talkStateData?.talkSocketData?.socketInsertOTOMessageData,
@@ -2365,6 +2517,7 @@ const TalkChat = () => {
     })
   }
 
+  //Blocking user Notification
   useEffect(() => {
     if (talkStateData.MessageSendOTO.ResponseMessage === 'User-is-blocked') {
       setNotification({
@@ -2628,8 +2781,7 @@ const TalkChat = () => {
     setReplyFeature(false)
   }
 
-  const [isLoading, setIsLoading] = useState(true)
-
+  //Set Timer For Loading
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false)
@@ -2640,14 +2792,7 @@ const TalkChat = () => {
     }
   }, [])
 
-  // console.log('Talk State Data', talkStateData)
-  // console.log('messagesChecked', messagesChecked, messagesChecked.length)
-
-  console.log('All Chat Data', allChatData)
-  // console.log('All OTO MESSAGES', allOtoMessages)
-  // console.log('All GROUP MESSAGES', allGroupMessages)
-  // console.log('messageInfoData', messageInfoData)
-  // console.log('groupInfoData', groupInfoData)
+  console.log('Talk State Data', talkStateData)
 
   return (
     <>
@@ -2815,11 +2960,11 @@ const TalkChat = () => {
                             ) : (
                               <img src={SingleIcon} width={25} />
                             )}
-                            {dataItem.isOnline === true ? (
+                            {/* {dataItem.isOnline === true ? (
                               <span className="user-active-status"></span>
                             ) : (
                               <span className="user-active-status offline"></span>
-                            )}
+                            )} */}
                           </div>
                         </Col>
                         <Col lg={10} md={10} sm={10} className="bottom-border">
@@ -2889,7 +3034,7 @@ const TalkChat = () => {
                                   ).format('DD-MMM-YYYY')} */}
                                   {newTimeFormaterAsPerUTCTalkDate(
                                     dataItem.messageDate,
-                                  )}
+                                  ) + ' '}
                                   | Yesterday
                                 </>
                               ) : (
@@ -3011,11 +3156,11 @@ const TalkChat = () => {
                             ) : (
                               <img src={SingleIcon} width={25} />
                             )}
-                            {dataItem.isOnline === true ? (
+                            {/* {dataItem.isOnline === true ? (
                               <span className="user-active-status"></span>
                             ) : (
                               <span className="user-active-status offline"></span>
-                            )}
+                            )} */}
                           </div>
                         </Col>
                         <Col lg={10} md={10} sm={10} className="bottom-border">
@@ -3088,7 +3233,7 @@ const TalkChat = () => {
                                   ).format('DD-MMM-YYYY')}{' '} */}
                                   {newTimeFormaterAsPerUTCTalkDate(
                                     dataItem.messageDate,
-                                  )}
+                                  ) + ' '}
                                   | Yesterday
                                 </>
                               ) : (
@@ -3239,11 +3384,11 @@ const TalkChat = () => {
                             ) : (
                               <img src={SingleIcon} width={25} />
                             )}
-                            {dataItem.isOnline === true ? (
+                            {/* {dataItem.isOnline === true ? (
                               <span className="user-active-status"></span>
                             ) : (
                               <span className="user-active-status offline"></span>
-                            )}
+                            )} */}
                           </div>
                         </Col>
                         <Col lg={10} md={10} sm={10} className="bottom-border">
@@ -3309,7 +3454,7 @@ const TalkChat = () => {
                                 <>
                                   {newTimeFormaterAsPerUTCTalkDate(
                                     dataItem.messageDate,
-                                  )}
+                                  ) + ' '}
                                   | Yesterday
                                 </>
                               ) : (
@@ -3629,7 +3774,7 @@ const TalkChat = () => {
                                     />
                                   </g>
                                 </svg>
-                                <span className="user-active-status"></span>
+                                {/* <span className="user-active-status"></span> */}
                               </div>
                             </Col>
                             <Col
@@ -3745,7 +3890,7 @@ const TalkChat = () => {
                                       />
                                     </g>
                                   </svg>
-                                  <span className="user-active-status-group"></span>
+                                  {/* <span className="user-active-status-group"></span> */}
                                 </div>
                               </Col>
                               <Col lg={8} md={8} sm={8}>
@@ -3989,11 +4134,11 @@ const TalkChat = () => {
                                 ) : (
                                   <img src={SingleIcon} width={25} />
                                 )}
-                                {dataItem.isOnline === true ? (
+                                {/* {dataItem.isOnline === true ? (
                                   <span className="user-active-status"></span>
                                 ) : (
                                   <span className="user-active-status offline"></span>
-                                )}
+                                )} */}
                               </div>
                             </Col>
                             <Col
@@ -4082,7 +4227,7 @@ const TalkChat = () => {
                                       ).format('DD-MMM-YYYY')}{' '} */}
                                       {newTimeFormaterAsPerUTCTalkDate(
                                         dataItem.messageDate,
-                                      )}
+                                      ) + ' '}
                                       | Yesterday
                                     </>
                                   ) : (
@@ -4185,7 +4330,7 @@ const TalkChat = () => {
                           ) : activeChat.messageType === 'G' ? (
                             <img src={GroupIcon} width={30} />
                           ) : null}
-                          <span className="user-active-status"></span>
+                          {/* <span className="user-active-status"></span> */}
                         </div>
                       </Col>
                       <Col lg={6} md={6} sm={12}>
@@ -4491,7 +4636,7 @@ const TalkChat = () => {
                                                     )}{' '} */}
                                                     {newTimeFormaterAsPerUTCTalkDate(
                                                       messageData.sentDate,
-                                                    )}
+                                                    ) + ' '}
                                                     | Yesterday
                                                   </>
                                                 ) : messageData.sentDate ===
@@ -4723,7 +4868,7 @@ const TalkChat = () => {
                                                   ).format('DD-MMM-YYYY')}{' '} */}
                                                   {newTimeFormaterAsPerUTCTalkDate(
                                                     messageData.sentDate,
-                                                  )}
+                                                  ) + ' '}
                                                   | Yesterday
                                                 </>
                                               ) : (
@@ -4892,7 +5037,7 @@ const TalkChat = () => {
                                                   ).format('DD-MMM-YYYY')}{' '} */}
                                                   {newTimeFormaterAsPerUTCTalkDate(
                                                     messageData.sentDate,
-                                                  )}
+                                                  ) + ' '}
                                                   | Yesterday
                                                 </>
                                               ) : (
@@ -5118,7 +5263,7 @@ const TalkChat = () => {
                                                   ).format('DD-MMM-YYYY')}{' '} */}
                                                   {newTimeFormaterAsPerUTCTalkDate(
                                                     messageData.sentDate,
-                                                  )}
+                                                  ) + ' '}
                                                   | Yesterday
                                                 </>
                                               ) : (

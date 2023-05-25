@@ -1,8 +1,4 @@
-export const oneToOneMessages = (
-  allOtoMessages,
-  setAllOtoMessages,
-  allotomessages,
-) => {
+export const oneToOneMessages = (setAllOtoMessages, allotomessages) => {
   let allMessagesArr = []
   allotomessages.map((messagesData) => {
     if (
@@ -41,7 +37,41 @@ export const oneToOneMessages = (
   })
   return setAllOtoMessages([...allMessagesArr])
 }
-export const setAllChatDataFunction = (
+
+export const groupMessages = (allGroupMessagesReducer, setAllGroupMessages) => {
+  let allGroupMessagesArr = []
+  allGroupMessagesReducer.map((messagesData) => {
+    if (
+      messagesData.frMessages !== 'Direct Message' &&
+      messagesData.frMessages.length > 0 &&
+      messagesData.frMessages !== undefined &&
+      typeof messagesData.frMessages !== 'object'
+    ) {
+      messagesData.frMessages = messagesData.frMessages.split('|')
+    }
+    allGroupMessagesArr.push({
+      attachmentLocation: messagesData.attachmentLocation,
+      currDate: messagesData.currDate,
+      fileGeneratedName: messagesData.fileGeneratedName,
+      fileName: messagesData.fileName,
+      frMessages: messagesData.frMessages,
+      isFlag: messagesData.isFlag,
+      messageBody: messagesData.messageBody,
+      messageCount: messagesData.messageCount,
+      messageID: messagesData.messageID,
+      receiverID: messagesData.receiverID,
+      senderID: messagesData.senderID,
+      senderName: messagesData.senderName,
+      sentDate: messagesData.sentDate,
+      shoutAll: messagesData.shoutAll,
+      sourceMessageBody: messagesData.sourceMessageBody,
+      sourceMessageId: messagesData.sourceMessageId,
+    })
+  })
+  return setAllGroupMessages([...allGroupMessagesArr])
+}
+
+export const unreadMessageCountFunction = (
   talkStateData,
   allChatData,
   setAllChatData,
@@ -67,7 +97,8 @@ export const setAllChatDataFunction = (
     setAllChatData(updatedAllChatData)
   }
 }
-export const setAllOtoMessagesFunction = (
+
+export const markStarUnstarFunction = (
   talkStateData,
   allChatData,
   setAllOtoMessages,
@@ -117,7 +148,8 @@ export const setAllOtoMessagesFunction = (
     }
   }
 }
-export const setAllChatDataFunction2 = (
+
+export const groupCreationFunction = (
   talkStateData,
   setAllChatData,
   allChatData,
