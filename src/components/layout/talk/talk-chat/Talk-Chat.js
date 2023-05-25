@@ -923,6 +923,11 @@ const TalkChat = () => {
     setShowChatSearch(false)
     setAllOtoMessages([])
     setAllGroupMessages([])
+    let newData = {
+      messageType: '',
+      id: 0,
+    }
+    dispatch(activeChatID(newData))
   }
 
   //Add Click Function
@@ -1678,9 +1683,7 @@ const TalkChat = () => {
               talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
                 .receiverID
           ) {
-            console.log(
-              'talkStateData.talkSocketData.socketInsertOTOMessageData',
-            )
+            console.log('This is Senders end Check')
             let mqttInsertOtoMessageData =
               talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
             let insertMqttOtoMessageData = {
@@ -1857,9 +1860,7 @@ const TalkChat = () => {
               talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
                 .senderID
           ) {
-            console.log(
-              'talkStateData.talkSocketData.socketInsertOTOMessageData',
-            )
+            console.log('This is Receivers end Check')
 
             let mqttInsertOtoMessageData =
               talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
@@ -2020,6 +2021,109 @@ const TalkChat = () => {
               }
             }
           }
+        } else if (
+          talkStateData.activeChatIdData.messageType === '' &&
+          talkStateData.activeChatIdData.id === 0
+        ) {
+          if (
+            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+              .senderID != undefined &&
+            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+              .senderID != null &&
+            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+              .senderID != 0 &&
+            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+              .senderID != '' &&
+            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+              .senderID != '0' &&
+            talkStateData.activeChatIdData.id === 0 &&
+            talkStateData.activeChatIdData.messageType === ''
+          ) {
+            console.log('This is Receivers end Check when chat not open')
+
+            let mqttInsertOtoMessageData =
+              talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+            let allChatNewMessageOtoData = {
+              id:
+                parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
+                  ? mqttInsertOtoMessageData.receiverID
+                  : parseInt(currentUserId) ===
+                    mqttInsertOtoMessageData.receiverID
+                  ? mqttInsertOtoMessageData.senderID
+                  : null,
+              fullName:
+                parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
+                  ? mqttInsertOtoMessageData.receiverName
+                  : parseInt(currentUserId) ===
+                    mqttInsertOtoMessageData.receiverID
+                  ? mqttInsertOtoMessageData.senderName
+                  : null,
+              imgURL: 'O.jpg',
+              messageBody: mqttInsertOtoMessageData.messageBody,
+              messageDate: mqttInsertOtoMessageData.sentDate,
+              notiCount: 0,
+              messageType: 'O',
+              isOnline: true,
+              isBlock: 0,
+              companyName: 'Tresmark',
+              sentDate: mqttInsertOtoMessageData.sentDate,
+              receivedDate: mqttInsertOtoMessageData.receivedDate,
+              seenDate: mqttInsertOtoMessageData.seenDate,
+              attachmentLocation: mqttInsertOtoMessageData.attachmentLocation,
+              senderID: mqttInsertOtoMessageData.senderID,
+              admin: 0,
+            }
+            if (Object.keys(mqttInsertOtoMessageData) !== null) {
+              let updatedArray = [...allChatData]
+              if (
+                updatedArray.length > 0 &&
+                updatedArray[0].hasOwnProperty('messageBody')
+              ) {
+                const index = updatedArray.findIndex(
+                  (item) => item.id === allChatNewMessageOtoData.id,
+                )
+                if (index !== -1) {
+                  updatedArray[index] = allChatNewMessageOtoData
+                } else {
+                  updatedArray[0] = allChatNewMessageOtoData
+                }
+              }
+              setAllChatData(updatedArray)
+            } else {
+              let allotomessages =
+                talkStateData.UserOTOMessages.UserOTOMessagesData
+                  .oneToOneMessages
+              if (allotomessages != undefined) {
+                let allMessagesArr = []
+                allotomessages.map((messagesData) => {
+                  allMessagesArr.push({
+                    attachmentLocation: messagesData.attachmentLocation,
+                    blockCount: messagesData.blockCount,
+                    broadcastName: messagesData.broadcastName,
+                    currDate: messagesData.currDate,
+                    fileGeneratedName: messagesData.fileGeneratedName,
+                    fileName: messagesData.fileName,
+                    frMessages: messagesData.frMessages,
+                    isFlag: messagesData.isFlag,
+                    messageBody: messagesData.messageBody,
+                    messageCount: messagesData.messageCount,
+                    messageID: messagesData.messageID,
+                    messageStatus: messagesData.messageStatus,
+                    receivedDate: messagesData.receivedDate,
+                    receiverID: messagesData.receiverID,
+                    receiverName: messagesData.receiverName,
+                    seenDate: messagesData.seenDate,
+                    senderID: messagesData.senderID,
+                    senderName: messagesData.senderName,
+                    sentDate: messagesData.sentDate,
+                    shoutAll: messagesData.shoutAll,
+                    uid: messagesData.uid,
+                  })
+                })
+                setAllOtoMessages([...allMessagesArr])
+              }
+            }
+          }
         }
       } catch {
         console.log(
@@ -2029,6 +2133,8 @@ const TalkChat = () => {
     }
     //
   }, [talkStateData.talkSocketData.socketInsertOTOMessageData])
+
+  console.log('This is All Chat Data', allChatData)
 
   useEffect(() => {
     if (
@@ -2295,6 +2401,107 @@ const TalkChat = () => {
                   ...allGroupMessages,
                   insertMqttGroupMessageData,
                 ])
+                let updatedArray = [...allChatData]
+                if (
+                  updatedArray.length > 0 &&
+                  updatedArray[0].hasOwnProperty('messageBody') &&
+                  updatedArray[0].messageBody === allChatData[0].messageBody
+                ) {
+                  updatedArray[0] = newGroupMessageChat
+                }
+                setAllChatData(updatedArray)
+              }
+            } else {
+              let allGroupMessages =
+                talkStateData.GroupMessages.GroupMessagesData.groupMessages
+              if (allGroupMessages != undefined) {
+                let allGroupMessagesArr = []
+                allGroupMessages.map((messagesData) => {
+                  allGroupMessagesArr.push({
+                    attachmentLocation: messagesData.attachmentLocation,
+                    currDate: messagesData.currDate,
+                    fileGeneratedName: messagesData.fileGeneratedName,
+                    fileName: messagesData.fileName,
+                    frMessages: messagesData.frMessages,
+                    isFlag: messagesData.isFlag,
+                    messageBody: messagesData.messageBody,
+                    messageCount: messagesData.messageCount,
+                    messageID: messagesData.messageID,
+                    receiverID: messagesData.receiverID,
+                    senderID: messagesData.senderID,
+                    senderName: messagesData.senderName,
+                    sentDate: messagesData.sentDate,
+                    shoutAll: messagesData.shoutAll,
+                  })
+                })
+                setAllGroupMessages([...allGroupMessagesArr])
+              }
+              // }
+            }
+          } else if (
+            talkStateData.activeChatIdData.messageType === '' &&
+            talkStateData.activeChatIdData.id === 0
+          ) {
+            let mqttInsertGroupMessageData =
+              talkStateData.talkSocketData.socketInsertGroupMessageData.data[0]
+
+            let newGroupMessageChat = {
+              id: mqttInsertGroupMessageData.receiverID,
+              fullName: mqttInsertGroupMessageData.groupName,
+              imgURL: 'O.jpg',
+              messageBody: mqttInsertGroupMessageData.messageBody,
+              messageDate: mqttInsertGroupMessageData.sentDate,
+              notiCount: 0,
+              messageType: 'G',
+              isOnline: true,
+              companyName: 'Tresmark',
+              sentDate: mqttInsertGroupMessageData.sentDate,
+              receivedDate: '',
+              seenDate: '',
+              attachmentLocation: mqttInsertGroupMessageData.attachmentLocation,
+              senderID: parseInt(messageSendData.SenderID),
+              admin: mqttInsertGroupMessageData.admin,
+            }
+
+            if (Object.keys(mqttInsertGroupMessageData) !== null) {
+              if (
+                mqttInsertGroupMessageData !== undefined &&
+                mqttInsertGroupMessageData !== null &&
+                mqttInsertGroupMessageData.hasOwnProperty('messageBody') &&
+                mqttInsertGroupMessageData.messageBody !== undefined &&
+                allGroupMessages.length > 0 &&
+                allGroupMessages[allGroupMessages.length - 1] !== undefined &&
+                allGroupMessages[allGroupMessages.length - 1] !== null &&
+                allGroupMessages[allGroupMessages.length - 1].hasOwnProperty(
+                  'messageBody',
+                ) &&
+                allGroupMessages[allGroupMessages.length - 1].messageBody !==
+                  undefined &&
+                mqttInsertGroupMessageData.messageBody ===
+                  allGroupMessages[allGroupMessages.length - 1].messageBody
+              ) {
+                let updatedArray = [...allChatData]
+                if (
+                  updatedArray.length > 0 &&
+                  updatedArray[0].hasOwnProperty('messageBody')
+                ) {
+                  updatedArray[0] = newGroupMessageChat
+                }
+                setAllChatData(updatedArray)
+              } else if (
+                mqttInsertGroupMessageData !== undefined &&
+                mqttInsertGroupMessageData !== null &&
+                mqttInsertGroupMessageData.hasOwnProperty('messageBody') &&
+                mqttInsertGroupMessageData.messageBody !== undefined &&
+                allGroupMessages.length > 0 &&
+                allGroupMessages[allGroupMessages.length - 1] !== undefined &&
+                allGroupMessages[allGroupMessages.length - 1] !== null &&
+                allGroupMessages[allGroupMessages.length - 1].hasOwnProperty(
+                  'messageBody',
+                ) &&
+                mqttInsertGroupMessageData.messageBody !==
+                  allGroupMessages[allGroupMessages.length - 1].messageBody
+              ) {
                 let updatedArray = [...allChatData]
                 if (
                   updatedArray.length > 0 &&
