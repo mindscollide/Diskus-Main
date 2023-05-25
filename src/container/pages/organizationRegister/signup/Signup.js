@@ -624,7 +624,7 @@ const Signup = () => {
   }, []);
 
   useEffect(() => {
-    dispatch(getCountryNamesAction(t));
+    dispatch(getCountryNamesAction(navigate, t));
   }, []);
 
   useEffect(() => {
@@ -824,7 +824,7 @@ const Signup = () => {
                               className={
                                 (signUpDetails.CompanyName.errorStatus &&
                                   signUpDetails.CompanyName.value === "") ||
-                                signUpDetails.CompanyName.errorMessage !== ""
+                                  signUpDetails.CompanyName.errorMessage !== ""
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
@@ -867,14 +867,14 @@ const Signup = () => {
                         change={signupValuesChangeHandler}
                         value={signUpDetails.Address1.value || ""}
                         name="Address1"
-                        // applyClass="form-control2"
+                      // applyClass="form-control2"
                       />
                       <Row>
                         <Col>
                           <p
                             className={
                               signUpDetails.Address1.errorStatus &&
-                              signUpDetails.Address1.value === ""
+                                signUpDetails.Address1.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -901,7 +901,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.Address2.errorStatus &&
-                              signUpDetails.Address2.value === ""
+                                signUpDetails.Address2.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -928,7 +928,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.State.errorStatus &&
-                              signUpDetails.State.value === ""
+                                signUpDetails.State.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -953,7 +953,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.City.errorStatus &&
-                              signUpDetails.City.value === ""
+                                signUpDetails.City.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -978,7 +978,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.PostalCode.errorStatus &&
-                              signUpDetails.PostalCode.value === ""
+                                signUpDetails.PostalCode.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -1010,7 +1010,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.FullName.errorStatus &&
-                              signUpDetails.FullName.value === ""
+                                signUpDetails.FullName.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -1043,11 +1043,11 @@ const Signup = () => {
                               className={
                                 (signUpDetails.Email.errorStatus &&
                                   signUpDetails.Email.value === "") ||
-                                signUpDetails.Email.errorMessage !== ""
+                                  signUpDetails.Email.errorMessage !== ""
                                   ? // &&
-                                    //   signUpDetails.Email.errorMessage !==
-                                    //     t("User-email-doesnt-exists"))
-                                    ` ${styles["errorMessage"]} `
+                                  //   signUpDetails.Email.errorMessage !==
+                                  //     t("User-email-doesnt-exists"))
+                                  ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
                             >
@@ -1111,7 +1111,7 @@ const Signup = () => {
                             <p
                               className={
                                 signUpDetails.PhoneNumber.errorStatus &&
-                                signUpDetails.PhoneNumber.value === ""
+                                  signUpDetails.PhoneNumber.value === ""
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }

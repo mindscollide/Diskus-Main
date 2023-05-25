@@ -63,14 +63,7 @@ const getCountryNamesAction = (navigate, t) => {
               )
 
               dispatch(setLoader(false));
-              if (flag && flag != undefined && flag != null) {
-                console.log(
-                  "fK_WorldCountryID123123")
-              } else {
-                console.log(
-                  "fK_WorldCountryID123123")
-                dispatch(setLoader(false));
-              }
+
 
             } else if (
               response.data.responseResult.responseMessage
