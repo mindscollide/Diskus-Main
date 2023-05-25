@@ -90,7 +90,7 @@ const DataRoom = () => {
   const [progress, setProgress] = useState(0)
   const text = <span>Share</span>
   const Deltooltip = <span>Delete</span>
-  const eventClickHandler = () => {}
+  const eventClickHandler = () => { }
   const { t } = useTranslation()
   const { uploadReducer, DataRoomReducer } = useSelector((state) => state)
   let currentLanguage = localStorage.getItem('i18nextLng')
@@ -129,7 +129,7 @@ const DataRoom = () => {
   const [folderName, setFolderName] = useState('')
   const [filterVal, setFilterVal] = useState('')
   const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [folderID, setFolderID] = useState([])
   const [rows, setRow] = useState([])
   const [getAllData, setGetAllData] = useState([])
@@ -1609,7 +1609,7 @@ const DataRoom = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className="dropdown-item"
-                      // onClick={handleCreateTodo}
+                    // onClick={handleCreateTodo}
                     >
                       <Row className="mt-1">
                         <Col
@@ -1629,7 +1629,7 @@ const DataRoom = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className="dropdown-item"
-                      // onClick={handleCreateTodo}
+                    // onClick={handleCreateTodo}
                     >
                       <Row className="mt-1">
                         <Col
@@ -1807,7 +1807,7 @@ const DataRoom = () => {
                         >
                           <span
                             className={styles['Clear_All_btn']}
-                            // onClick={CleatingSearchOptions}
+                          // onClick={CleatingSearchOptions}
                           >
                             {t('Clear-all')}
                           </span>
@@ -1820,9 +1820,9 @@ const DataRoom = () => {
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
                           {getAllData.length > 0 &&
-                          getAllData !== undefined &&
-                          getAllData !== null &&
-                          gridbtnactive ? (
+                            getAllData !== undefined &&
+                            getAllData !== null &&
+                            gridbtnactive ? (
                             <>
                               <GridViewDataRoom data={getAllData} />
                             </>
@@ -1889,9 +1889,9 @@ const DataRoom = () => {
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
                           {getAllData.length > 0 &&
-                          getAllData !== undefined &&
-                          getAllData !== null &&
-                          gridbtnactive ? (
+                            getAllData !== undefined &&
+                            getAllData !== null &&
+                            gridbtnactive ? (
                             <>
                               <GridViewDataRoom data={getAllData} />
 
@@ -1953,15 +1953,15 @@ const DataRoom = () => {
                                                 src={chevdown}
                                                 width={9}
 
-                                                // width="8.49px"
-                                                // height="4.46px"
+                                              // width="8.49px"
+                                              // height="4.46px"
                                               />
                                               <img
                                                 src={Cancellicon}
                                                 width={9}
                                                 onClick={closeSearchBar}
-                                                // width="6.94px"
-                                                // height="6.71px"
+                                              // width="6.94px"
+                                              // height="6.71px"
                                               />
                                             </Col>
                                           </Row>
@@ -1979,53 +1979,53 @@ const DataRoom = () => {
                                           {Object.values(tasksAttachments)
                                             .length > 0
                                             ? Object.values(
-                                                tasksAttachments,
-                                              ).map((data, index) => {
-                                                console.log(
-                                                  data,
-                                                  'datadatadatadatadatadatadatadatadata',
-                                                )
-                                                return (
-                                                  <>
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                      className="d-flex gap-1 mt-2 flex-column"
+                                              tasksAttachments,
+                                            ).map((data, index) => {
+                                              console.log(
+                                                data,
+                                                'datadatadatadatadatadatadatadatadata',
+                                              )
+                                              return (
+                                                <>
+                                                  <Col
+                                                    lg={12}
+                                                    md={12}
+                                                    sm={12}
+                                                    className="d-flex gap-1 mt-2 flex-column"
+                                                  >
+                                                    <Space
+                                                      direction="vertical"
+                                                      className="d-flex flex-row"
                                                     >
-                                                      <Space
-                                                        direction="vertical"
-                                                        className="d-flex flex-row"
+                                                      <img
+                                                        src={PDFICON}
+                                                        height="16px"
+                                                        width="16px"
+                                                        className={
+                                                          styles[
+                                                          'Icon_in_Bar'
+                                                          ]
+                                                        }
+                                                      />
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                          'name_of_life_in_Bar'
+                                                          ]
+                                                        }
                                                       >
-                                                        <img
-                                                          src={PDFICON}
-                                                          height="16px"
-                                                          width="16px"
-                                                          className={
-                                                            styles[
-                                                              'Icon_in_Bar'
-                                                            ]
-                                                          }
-                                                        />
-                                                        <span
-                                                          className={
-                                                            styles[
-                                                              'name_of_life_in_Bar'
-                                                            ]
-                                                          }
-                                                        >
-                                                          {data.name}
-                                                        </span>
-                                                      </Space>
-                                                      {progress > 0 && (
-                                                        <Progress
-                                                          percent={progress}
-                                                        />
-                                                      )}
-                                                    </Col>
-                                                  </>
-                                                )
-                                              })
+                                                        {data.name}
+                                                      </span>
+                                                    </Space>
+                                                    {progress > 0 && (
+                                                      <Progress
+                                                        percent={progress}
+                                                      />
+                                                    )}
+                                                  </Col>
+                                                </>
+                                              )
+                                            })
                                             : null}
                                         </Col>
                                       </Row>
@@ -2105,15 +2105,15 @@ const DataRoom = () => {
                                                 src={chevdown}
                                                 width={9}
 
-                                                // width="8.49px"
-                                                // height="4.46px"
+                                              // width="8.49px"
+                                              // height="4.46px"
                                               />
                                               <img
                                                 src={Cancellicon}
                                                 width={9}
                                                 onClick={closeSearchBar}
-                                                // width="6.94px"
-                                                // height="6.71px"
+                                              // width="6.94px"
+                                              // height="6.71px"
                                               />
                                             </Col>
                                           </Row>
@@ -2131,53 +2131,53 @@ const DataRoom = () => {
                                           {Object.values(tasksAttachments)
                                             .length > 0
                                             ? Object.values(
-                                                tasksAttachments,
-                                              ).map((data, index) => {
-                                                console.log(
-                                                  data,
-                                                  'datadatadatadatadatadatadatadatadata',
-                                                )
-                                                return (
-                                                  <>
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                      className="d-flex gap-1 mt-2 flex-column"
+                                              tasksAttachments,
+                                            ).map((data, index) => {
+                                              console.log(
+                                                data,
+                                                'datadatadatadatadatadatadatadatadata',
+                                              )
+                                              return (
+                                                <>
+                                                  <Col
+                                                    lg={12}
+                                                    md={12}
+                                                    sm={12}
+                                                    className="d-flex gap-1 mt-2 flex-column"
+                                                  >
+                                                    <Space
+                                                      direction="vertical"
+                                                      className="d-flex flex-row"
                                                     >
-                                                      <Space
-                                                        direction="vertical"
-                                                        className="d-flex flex-row"
+                                                      <img
+                                                        src={PDFICON}
+                                                        height="16px"
+                                                        width="16px"
+                                                        className={
+                                                          styles[
+                                                          'Icon_in_Bar'
+                                                          ]
+                                                        }
+                                                      />
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                          'name_of_life_in_Bar'
+                                                          ]
+                                                        }
                                                       >
-                                                        <img
-                                                          src={PDFICON}
-                                                          height="16px"
-                                                          width="16px"
-                                                          className={
-                                                            styles[
-                                                              'Icon_in_Bar'
-                                                            ]
-                                                          }
-                                                        />
-                                                        <span
-                                                          className={
-                                                            styles[
-                                                              'name_of_life_in_Bar'
-                                                            ]
-                                                          }
-                                                        >
-                                                          {data.name}
-                                                        </span>
-                                                      </Space>
-                                                      {progress > 0 && (
-                                                        <Progress
-                                                          percent={progress}
-                                                        />
-                                                      )}
-                                                    </Col>
-                                                  </>
-                                                )
-                                              })
+                                                        {data.name}
+                                                      </span>
+                                                    </Space>
+                                                    {progress > 0 && (
+                                                      <Progress
+                                                        percent={progress}
+                                                      />
+                                                    )}
+                                                  </Col>
+                                                </>
+                                              )
+                                            })
                                             : null}
                                         </Col>
                                       </Row>
