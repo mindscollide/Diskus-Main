@@ -31,11 +31,13 @@ import { cleareMessage } from "../../store/actions/Admin_AddUser";
 import { cleareMessage as cleareMessagetodo } from "../../store/actions/GetTodos";
 import { HideNotificationMeetings } from "../../store/actions/GetMeetingUserId";
 import { clearResponce } from "../../store/actions/ToDoList_action";
+import { useNavigate } from "react-router-dom";
 
 const CalendarPage = () => {
   //For Localization
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const state = useSelector((state) => state);
   const [meetingModalShow, setMeetingModalShow] = useState(false);
   const [todolistModalShow, setTodolistModalShow] = useState(false);
@@ -67,7 +69,7 @@ const CalendarPage = () => {
   // for view modal  handler
   const viewModalHandler = async (value) => {
     let Data = { MeetingID: parseInt(value.id) };
-    await dispatch(ViewMeeting(Data, t, setViewFlag, setEditFlag, setCalendarViewModal, 3));
+    await dispatch(ViewMeeting(navigate, Data, t, setViewFlag, setEditFlag, setCalendarViewModal, 3));
   };
 
   function onChange(value) {
@@ -80,7 +82,7 @@ const CalendarPage = () => {
   // calling Api for getting data for calendar
   useEffect(() => {
     const userID = localStorage.getItem("userID");
-    dispatch(getCalendarDataResponse(userID, t));
+    dispatch(getCalendarDataResponse(navigate, userID, t));
     window.addEventListener("click", function (e) {
       var clsname = e.target.className;
       let prev = "ant-picker-prev-icon";
@@ -427,7 +429,7 @@ const CalendarPage = () => {
     getTodosStatus.UpdateTodoStatusMessage,
     getTodosStatus.UpdateTodoStatus,
   ]);
-  
+
   return (
     <>
       <Container id={"calender"}>

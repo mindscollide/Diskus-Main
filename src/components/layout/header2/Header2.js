@@ -81,12 +81,7 @@ const Header2 = () => {
     let currentUserID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
     let roleID = localStorage.getItem("roleID");
-
-    // dispatch(getNotifications(JSON.parse(currentUserID)));
-    // if (parseInt(roleID) != 3) {
-    //   dispatch(getPackageExpiryDetail(JSON.parse(OrganizationID), t));
-    // }
-    dispatch(getUserSetting(JSON.parse(currentUserID), t));
+    dispatch(getUserSetting(navigate, JSON.parse(currentUserID), t));
   }, []);
 
   useEffect(() => {
@@ -134,7 +129,7 @@ const Header2 = () => {
     // setUserProfileModal(true);
     let userID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
-    dispatch(getUserDetails(userID, t, OrganizationID, setUserProfileModal));
+    dispatch(getUserDetails(navigate, userID, t, OrganizationID, setUserProfileModal));
   };
 
   // for modal create  handler
@@ -157,11 +152,11 @@ const Header2 = () => {
           <Container fluid>
             <Navbar.Brand
               as={Link}
-              // to={
-              //   location.pathname.includes("/Admin")
-              //     ? "/DisKus/Admin/PayOutstanding"
-              //     : "/DisKus/Admin/PayOutstanding"
-              // }
+            // to={
+            //   location.pathname.includes("/Admin")
+            //     ? "/DisKus/Admin/PayOutstanding"
+            //     : "/DisKus/Admin/PayOutstanding"
+            // }
             >
               <img src={DiskusLogoHeader} width={120} />
             </Navbar.Brand>

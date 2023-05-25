@@ -5,6 +5,7 @@ import {
   updateOrganizationLevelSettings,
   getOrganizationLevelSettings,
 } from "../../commen/apis/Api_config";
+import { RefreshToken } from "./Auth_action";
 
 const getOrganizationLevelSettingInit = () => {
   return {
@@ -24,7 +25,7 @@ const getOrganizationLevelSettingFail = (message) => {
     message: message,
   };
 };
-const getOrganizationLevelSetting = (t) => {
+const getOrganizationLevelSetting = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let data = {
@@ -46,6 +47,8 @@ const getOrganizationLevelSetting = (t) => {
       .then(async (response) => {
         console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t))
+          dispatch(getOrganizationLevelSetting(navigate, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             console.log(response, "responseresponseresponse");
@@ -125,7 +128,7 @@ const updateOrganizationLevelSettingFail = (message) => {
     message: message,
   };
 };
-const updateOrganizationLevelSetting = (updateData, t) => {
+const updateOrganizationLevelSetting = (navigate, updateData, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let data = {
     organizationSettings: updateData,
@@ -147,6 +150,8 @@ const updateOrganizationLevelSetting = (updateData, t) => {
       .then(async (response) => {
         console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t))
+          dispatch(updateOrganizationLevelSetting(navigate, updateData, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             console.log(response, "responseresponseresponse");

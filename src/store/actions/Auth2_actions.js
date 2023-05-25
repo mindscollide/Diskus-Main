@@ -455,10 +455,10 @@ const enterPasswordSuccess = (response, message) => {
     message: message,
   };
 };
-const enterPasswordFail = (message) => {
+const enterPasswordFail = (message,response) => {
   return {
     type: actions.PASSWORDVALIDATION_FAIL,
-    // response: response,
+    response: response,
     message: message,
   };
 };
@@ -670,6 +670,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               ) {
                 await dispatch(
                   getPackageExpiryDetail(
+                    navigate,
                     response.data.responseResult.organizationRoleID,
                     t
                   )
@@ -828,6 +829,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 await dispatch(
                   getPackageExpiryDetail(
+                    navigate,
                     response.data.responseResult.organizationID,
                     t
                   )
@@ -1098,7 +1100,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
-                  enterPasswordFail(t("Your-organization-is-not-activated"))
+                  enterPasswordFail(t("Your-organization-is-not-activated"),true)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -1332,7 +1334,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 );
                 navigate("/");
               }
-            }  else {
+            } else {
               dispatch(enterPasswordFail(t("Something-went-wrong")));
             }
           } else {
@@ -2674,7 +2676,7 @@ const changePasswordFail = (message) => {
     message: message,
   };
 };
-const changePasswordFunc = (oldPassword, newPassword, t) => {
+const changePasswordFunc = (navigate, oldPassword, newPassword, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
   let data = {
@@ -2699,8 +2701,8 @@ const changePasswordFunc = (oldPassword, newPassword, t) => {
       .then(async (response) => {
         console.log("response", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(changePasswordFunc(oldPassword, newPassword, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(changePasswordFunc(navigate, oldPassword, newPassword, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2808,6 +2810,7 @@ const organizationPackageReselection = (
       .then(async (response) => {
         console.log("flagForSelectedPackeg", response);
         if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t))
           await dispatch(
             organizationPackageReselection(
               ID,

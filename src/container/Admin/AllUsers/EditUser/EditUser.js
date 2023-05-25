@@ -35,6 +35,7 @@ import {
   GetAllUserStatus,
 } from "../../../../store/actions/RolesList";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
   const [filterBarModal, setFilterBarModal] = useState(false);
@@ -43,6 +44,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [deleteEditModal, setDeleteEditModal] = useState(false);
   const [errorBar, setErrorBar] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const state = useSelector((state) => state);
   const { adminReducer, roleListReducer } = state;
 
@@ -329,7 +331,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       RequestingUserID: parseInt(RequestingUserID),
     };
     await dispatch(
-      deleteUserAction(dataForDelete, setDeleteEditModal, newData, t)
+      deleteUserAction(navigate, dataForDelete, setDeleteEditModal, newData, t)
     );
     // await dispatch(AllUserAction(newData, t));
   };
@@ -355,7 +357,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       OrganizationID: parseInt(OrganizationID),
       RequestingUserID: parseInt(RequestingUserID),
     };
-    await dispatch(AllUserAction(newData, t));
+    await dispatch(AllUserAction(navigate, newData, t));
     // setFilterBarModal(false);
   };
 
@@ -483,9 +485,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         if (record.UserStatus === "Closed") {
           return (
             <p
-              className={`${"Disabled-Close"} ${
-                styles["Edit-title-col-Name-Bold"]
-              }`}
+              className={`${"Disabled-Close"} ${styles["Edit-title-col-Name-Bold"]
+                }`}
             >
               {text}
             </p>
@@ -681,13 +682,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       return (
         (filterFieldSection.Names != ""
           ? a.Names.toLowerCase().includes(
-              filterFieldSection.Names.toLowerCase()
-            )
+            filterFieldSection.Names.toLowerCase()
+          )
           : a.Names) &&
         (filterFieldSection.Emails.value != ""
           ? a.Emails.toLowerCase().includes(
-              filterFieldSection.Emails.value.toLowerCase()
-            )
+            filterFieldSection.Emails.value.toLowerCase()
+          )
           : a.Emails) &&
         (filterFieldSection.OrganizationRoles != ""
           ? a.OrganizationRole === filterFieldSection.OrganizationRoles
@@ -816,9 +817,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       OrganizationID: parseInt(OrganizationID),
       RequestingUserID: parseInt(RequestingUserID),
     };
-    dispatch(AllUserAction(newData, t));
-    dispatch(GetAllUserRoles(t));
-    dispatch(GetAllUserStatus(t));
+    dispatch(AllUserAction(navigate, newData, t));
+    dispatch(GetAllUserRoles(navigate, t));
+    dispatch(GetAllUserStatus(navigate, t));
   }, []);
 
   useEffect(() => {
@@ -857,11 +858,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-        t("Record-found") &&
+      t("Record-found") &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-        t("Data-available") &&
+      t("Data-available") &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-        t("The-user-has-been-edited-successfully")
+      t("The-user-has-been-edited-successfully")
     ) {
       console.log("checkreponce");
       setOpen({
@@ -883,7 +884,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.AllOrganizationResponseMessage !== t("Record-found") &&
       adminReducer.AllOrganizationResponseMessage !== t("Data-available") &&
       adminReducer.AllOrganizationResponseMessage !==
-        t("The-user-has-been-edited-successfully")
+      t("The-user-has-been-edited-successfully")
     ) {
       console.log("checkreponce");
 
@@ -904,9 +905,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     } else if (
       adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-        t("Record-found") &&
+      t("Record-found") &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-        t("Data-available")
+      t("Data-available")
     ) {
       console.log("checkreponce");
 
@@ -929,9 +930,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.ResponseMessage !== t("Record-found") &&
       adminReducer.ResponseMessage !== t("Data-available") &&
       adminReducer.ResponseMessage !==
-        t("The-user-has-been-edited-successfully") &&
+      t("The-user-has-been-edited-successfully") &&
       adminReducer.ResponseMessage !==
-        t("The-user-has-been-updated-but-the-status-has-not-been-updated")
+      t("The-user-has-been-updated-but-the-status-has-not-been-updated")
     ) {
       console.log("checkreponce");
 
@@ -1299,9 +1300,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         centered
         size={
           editModal &&
-          isUpdateSuccessfully &&
-          filterBarModal &&
-          deleteEditModal === "sm"
+            isUpdateSuccessfully &&
+            filterBarModal &&
+            deleteEditModal === "sm"
             ? filterBarModal && deleteEditModal === "sm"
             : "md"
         }
@@ -1435,8 +1436,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                             placeholder={"Select Co...."}
                             customLabels={countryName}
                             searchable={true}
-                            // onChange={(phone) => PhoneHandler({ phone })}
-                            // className={styles["react-flag"]}
+                          // onChange={(phone) => PhoneHandler({ phone })}
+                          // className={styles["react-flag"]}
                           />
                         </Col>
                         <Col sm={12} md={9} lg={9}>
@@ -1770,13 +1771,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       text={t("Reset")}
                       className={styles["icon-modal-ResetBtn"]}
                       onClick={editResetHandler}
-                      // onClick={closeOnUpdateBtn}
+                    // onClick={closeOnUpdateBtn}
                     />
                     <Button
                       className={styles["icon-modal-SearchBtn"]}
                       text={t("Search")}
                       onClick={searchFunc}
-                      // onClick={openDeleteModal}
+                    // onClick={openDeleteModal}
                     />
                   </Col>
                 </Row>

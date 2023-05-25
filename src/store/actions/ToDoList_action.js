@@ -93,7 +93,7 @@ const getTodoListFail = (message) => {
 }
 
 //get todolist api
-const GetTodoListByUser = (data, t) => {
+const GetTodoListByUser = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(getTodoListInit())
@@ -110,8 +110,8 @@ const GetTodoListByUser = (data, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t))
-          dispatch(GetTodoListByUser(data, t))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(GetTodoListByUser(navigate, data, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -186,7 +186,8 @@ const setTodoStatusDataFormSocket = (response) => {
   }
 }
 //Creating A ToDoList
-const CreateToDoList = (object, t) => {
+
+const CreateToDoList = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   //Data For ToDoList
   //Get Current User ID
@@ -207,8 +208,8 @@ const CreateToDoList = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t))
-          dispatch(CreateToDoList(object, t))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(CreateToDoList(navigate, object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -221,7 +222,7 @@ const CreateToDoList = (object, t) => {
               await dispatch(
                 ShowNotification(t('The-record-has-been-saved-successfully')),
               )
-              await dispatch(GetTodoListByUser(dataForList, t))
+              await dispatch(GetTodoListByUser(navigate, dataForList, t))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -274,7 +275,8 @@ const GetAllAssigneesFail = (message) => {
 }
 
 //  pending for deletion for qm
-const GetAllAssigneesToDoList = (object, t, check) => {
+
+const GetAllAssigneesToDoList = (navigate, object, t, check) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let OrganizationID = JSON.parse(localStorage.getItem('organizationID'))
   let Data = {
@@ -295,9 +297,11 @@ const GetAllAssigneesToDoList = (object, t, check) => {
       },
     })
       .then(async (response) => {
+        console.log('RefreshToken', response.data.responseCode)
+
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t))
-          dispatch(GetAllAssigneesToDoList(object, t, check))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(GetAllAssigneesToDoList(navigate, object, t, check))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -361,7 +365,8 @@ const ViewToDoFail = (message) => {
 }
 
 //View To-Do
-const ViewToDoList = (object, t) => {
+
+const ViewToDoList = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(toDoListLoaderStart())
@@ -378,8 +383,8 @@ const ViewToDoList = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t))
-          dispatch(ViewToDoList(object, t))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(ViewToDoList(navigate, object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -423,7 +428,7 @@ const ViewToDoList = (object, t) => {
 }
 
 //Update To-Do List
-const UpdateToDoList = (object, t) => {
+const UpdateToDoList = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let createrID = localStorage.getItem('userID')
   let dataForList = { UserID: parseInt(createrID), NumberOfRecords: 300 }
@@ -443,8 +448,8 @@ const UpdateToDoList = (object, t) => {
       .then(async (response) => {
         console.log('UpdateToDoList', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t))
-          dispatch(UpdateToDoList(object, t))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(UpdateToDoList(navigate, object, t))
         } else if (response.data.responseCode === 200) {
           console.log('UpdateToDoList TrueResponse', response)
           if (response.data.responseResult.isExecuted === true) {
@@ -458,7 +463,7 @@ const UpdateToDoList = (object, t) => {
               await dispatch(
                 ShowNotification(t('The-record-has-been-updated-successfully')),
               )
-              await dispatch(GetTodoListByUser(dataForList, t))
+              await dispatch(GetTodoListByUser(navigate, dataForList, t))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -496,7 +501,7 @@ const UpdateToDoList = (object, t) => {
 
 // search todolist
 //get todolist api
-const searchTodoListByUser = (data, t) => {
+const searchTodoListByUser = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(getTodoListInit())
@@ -513,8 +518,8 @@ const searchTodoListByUser = (data, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t))
-          dispatch(searchTodoListByUser(data, t))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(searchTodoListByUser(navigate, data, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -583,7 +588,7 @@ const getWeeklyToDoCountFail = (message) => {
 }
 
 //Get Week meetings
-const GetWeeklyToDoCount = (data, t) => {
+const GetWeeklyToDoCount = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(SetSpinnerTrue())
@@ -600,8 +605,8 @@ const GetWeeklyToDoCount = (data, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t))
-          dispatch(GetWeeklyToDoCount(data, t))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(GetWeeklyToDoCount(navigate, data, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

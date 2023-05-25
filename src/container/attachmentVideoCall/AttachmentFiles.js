@@ -42,7 +42,7 @@ const AttachmentFiles = ({ openModal }) => {
     let Data = {
       "MeetingID": JSON.parse(meetingID)
     }
-    dispatch(getMeetingAttachments(Data))
+    dispatch(getMeetingAttachments(navigate, Data, t))
   }, [])
   console.log("VideoChatReducerVideoChatReducerVideoChatReducerAttachment", VideoChatReducer)
   return (

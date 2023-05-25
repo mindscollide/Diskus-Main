@@ -22,6 +22,7 @@ import {
 import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
 import Card from "../../components/elements/Card/Card";
 import ModalArchivedCommittee from "../ModalArchivedCommittee/ModalArchivedCommittee";
+import { useNavigate } from "react-router-dom";
 
 const Committee = () => {
   const { CommitteeReducer } = useSelector((state) => state);
@@ -49,6 +50,7 @@ const Committee = () => {
   const [postperpage, setPostperpage] = useState(8);
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [listofGroups, setListofGroups] = useState([]);
   console.log("listofGroupslistofGroups", listofGroups);
   const Lastpostindex = currentPage * postperpage;
@@ -100,6 +102,7 @@ const Committee = () => {
     };
     dispatch(
       getCommitteesbyCommitteeId(
+        navigate,
         Data,
         t,
         setViewGroupPage,
@@ -167,10 +170,10 @@ const Committee = () => {
       CommitteeStatusId: JSON.parse(e.value),
       OrganizationID: JSON.parse(OrganizationID),
     };
-    dispatch(committeeStatusUpdate(Data, t));
+    dispatch(committeeStatusUpdate(navigate, Data, t));
   };
   useEffect(() => {
-    dispatch(getAllCommitteesByUserIdActions(t));
+    dispatch(getAllCommitteesByUserIdActions(navigate, t));
   }, []);
 
   useEffect(() => {
@@ -328,7 +331,7 @@ const Committee = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                // className={styles["Committee-Main_Scrollbar"]}
+              // className={styles["Committee-Main_Scrollbar"]}
               >
                 <Row className="d-flex text-center  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1">
                   <Col sm={12} md={12} lg={12} className="m-0 p-0 mt-2 ">
@@ -369,10 +372,10 @@ const Committee = () => {
                                     data.committeeStatusID === 1
                                       ? t("View-committee")
                                       : data.committeeStatusID === 2
-                                      ? ""
-                                      : data.committeeStatusID === 3
-                                      ? t("Update-committee")
-                                      : ""
+                                        ? ""
+                                        : data.committeeStatusID === 3
+                                          ? t("Update-committee")
+                                          : ""
                                   }
                                 />
                               </Col>

@@ -163,7 +163,7 @@ const PackageSelection = () => {
   };
 
   useEffect(() => {
-    dispatch(getSubscriptionDetails(t));
+    dispatch(getSubscriptionDetails(navigate, t));
   }, []);
 
   useEffect(() => {
@@ -374,9 +374,8 @@ const PackageSelection = () => {
         <Row>
           <Col sm={12} className="mt-4">
             <h2
-              className={`${"MontserratSemiBold"} ${
-                styles["packageselection_heading"]
-              }`}
+              className={`${"MontserratSemiBold"} ${styles["packageselection_heading"]
+                }`}
             >
               {t("Select-package")}
             </h2>
@@ -452,8 +451,8 @@ const PackageSelection = () => {
                                 monthlyPackageShow
                                   ? `${styles["packagecard_pricebox"]}`
                                   : currentPackageId === data.PackageID
-                                  ? `${styles["packagecard_pricebox_Active"]}`
-                                  : `${styles["packagecard_pricebox"]}`
+                                    ? `${styles["packagecard_pricebox_Active"]}`
+                                    : `${styles["packagecard_pricebox"]}`
                               }
                             >
                               <h4
@@ -461,8 +460,8 @@ const PackageSelection = () => {
                                   monthlyPackageShow
                                     ? `${styles["package_actualPrice"]}`
                                     : currentPackageId === data.PackageID
-                                    ? `${styles["package_actualPrice_active"]}`
-                                    : `${styles["package_actualPrice"]}`
+                                      ? `${styles["package_actualPrice_active"]}`
+                                      : `${styles["package_actualPrice"]}`
                                 }
                               >
                                 ${data.MontlyPackageAmount}/
@@ -488,17 +487,17 @@ const PackageSelection = () => {
                                     ? `${styles["spanActive"]}`
                                     : monthlyPackageShow &&
                                       currentPackageId === data.PackageID
-                                    ? `${styles["span-formontly"]}`
-                                    : monthlyPackageShow === false &&
-                                      currentPackageId != data.PackageID
-                                    ? `${styles["spanActive"]}`
-                                    : // : monthlyPackageShow &&
-                                      //   currentPackageId === data.PackageID
-                                      //   ? `${styles["spanActive"]}`
-                                      //   : monthlyPackageShow &&
-                                      //     currentPackageId === data.PackageID
-                                      //     ? `${styles["span-formontly"]}`
-                                      `${styles["span-formontly"]}`
+                                      ? `${styles["span-formontly"]}`
+                                      : monthlyPackageShow === false &&
+                                        currentPackageId != data.PackageID
+                                        ? `${styles["spanActive"]}`
+                                        : // : monthlyPackageShow &&
+                                        //   currentPackageId === data.PackageID
+                                        //   ? `${styles["spanActive"]}`
+                                        //   : monthlyPackageShow &&
+                                        //     currentPackageId === data.PackageID
+                                        //     ? `${styles["span-formontly"]}`
+                                        `${styles["span-formontly"]}`
                                 }
                                 onClick={() =>
                                   handleManualPackage(data.PackageID)
@@ -509,7 +508,7 @@ const PackageSelection = () => {
                               <span
                                 className={
                                   annualPackageShow &&
-                                  currentPackageId === data.PackageID
+                                    currentPackageId === data.PackageID
                                     ? `${styles["spanActive"]}`
                                     : `${styles["span-foranually"]}`
                                 }
@@ -529,7 +528,7 @@ const PackageSelection = () => {
                             <div
                               className={
                                 annualPackageShow &&
-                                currentPackageId === data.PackageID
+                                  currentPackageId === data.PackageID
                                   ? `${styles["packagecard_two"]} `
                                   : ` ${styles["packagecard_two_visible"]} `
                               }
@@ -597,7 +596,7 @@ const PackageSelection = () => {
                                     <h6
                                       className={
                                         styles[
-                                          "packagecard_usersallows_heading"
+                                        "packagecard_usersallows_heading"
                                         ]
                                       }
                                     >
@@ -621,7 +620,7 @@ const PackageSelection = () => {
                                           lg={12}
                                           className={
                                             styles[
-                                              "package_membersHeading_values"
+                                            "package_membersHeading_values"
                                             ]
                                           }
                                         >
@@ -645,7 +644,7 @@ const PackageSelection = () => {
                                           lg={12}
                                           className={
                                             styles[
-                                              "package_membersHeading_values"
+                                            "package_membersHeading_values"
                                             ]
                                           }
                                         >

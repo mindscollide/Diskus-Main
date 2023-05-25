@@ -75,7 +75,7 @@ body[dir="rtl"] .rmdp-left i {
 }
 
 .rmdp-day.rmdp-selected span:not(.highlight) {
-  background-color: #bbbbbb !important;
+  background-color: #e1e1e1 !important;
   color: #000 !important;
 }
 
@@ -187,6 +187,7 @@ body[dir="rtl"] .todolist-title-col {
 
 body[dir="rtl"] td.ant-table-cell {
   text-align: right !important;
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead > tr > th {

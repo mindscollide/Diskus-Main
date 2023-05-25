@@ -100,7 +100,12 @@ const AuthReducer = (state = initialState, action) => {
       console.log(action, "action");
       return {
         ...state,
-        Loading: false,
+        Loading:
+          action.response != undefined &&
+          action.response != null &&
+          action.response === true
+            ? true
+            : false,
         EnterPasswordResponse: null,
         EnterPasswordResponseMessage: action.message,
       };

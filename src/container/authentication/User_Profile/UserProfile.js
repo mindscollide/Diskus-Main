@@ -298,8 +298,8 @@ const UserProfileModal = ({
           ProfilePicture: userProfileEdit.ProfilePicture,
           FK_NumberWorldCountryID: userProfileEdit.CountyCode,
         };
-       
-        dispatch(updateuserprofile(userInformation, t));
+
+        dispatch(updateuserprofile(navigate, userInformation, t));
       }
     } else {
       setErrorBar(true);
@@ -411,7 +411,7 @@ const UserProfileModal = ({
                     sm={6}
                     xs={12}
                     className="user-Profile"
-                    // className="d-flex justify-content-center"
+                  // className="d-flex justify-content-center"
                   >
                     <Form.Control
                       ref={Designation}

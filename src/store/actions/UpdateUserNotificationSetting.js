@@ -25,7 +25,7 @@ const updateusernotificationfail = (message, response) => {
   };
 };
 
-const getUserNotificationSetting = (userSettingData) => {
+const getUserNotificationSetting = (navigate, userSettingData, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentUserID = localStorage.getItem("userID");
   let Data = {
@@ -60,7 +60,8 @@ const getUserNotificationSetting = (userSettingData) => {
       .then(async (response) => {
         console.log("updae user notification", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getUserNotificationSetting(navigate, userSettingData, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             await dispatch(

@@ -64,68 +64,40 @@ const ResetAllFilesUpload = () => {
 
 //File Upload
 const FileUploadToDo = (
+  navigate,
   data,
   t,
-  flag,
-  setProgress,
-  setUploadCounter,
-  uploadCounter,
-  setRemainingTime,
-  remainingTime
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let startTime = Date.now();
   console.log("uploadedFile:", data);
   let form = new FormData();
   form.append("RequestMethod", uploadDocument.RequestMethod);
   form.append("RequestData", JSON.stringify(data));
   form.append("File", data);
 
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(UploadLoaderStart());
-    axios({
+    await axios({
       method: "post",
       url: settingApi,
       data: form,
       headers: {
         _token: token,
       },
-      onUploadProgress: (progressEvent) => {
-        const percentCompleted = Math.round(
-          (progressEvent.loaded * 100) / progressEvent.total
-        );
-        let currentTime = Date.now();
-        let elapsedTime = currentTime - startTime;
-        let bytesUploaded = progressEvent.loaded;
-        let bytesTotal = progressEvent.total;
-        let bytesRemaining = bytesTotal - bytesUploaded;
-        let bytesPerSecond = bytesUploaded / (elapsedTime / 1000);
-        let secondsRemaining = Math.ceil(bytesRemaining / bytesPerSecond);
-        console.log("secondsRemaining elapsedTime", elapsedTime);
-        console.log("secondsRemaining bytesUploaded", bytesUploaded);
-        console.log("secondsRemaining bytesTotal", bytesTotal);
-        console.log("secondsRemaining bytesRemaining", bytesRemaining);
-        console.log("secondsRemaining bytesPerSecond", bytesPerSecond);
-        console.log("secondsRemaining secondsRemaining", secondsRemaining);
-        console.log("secondsRemaining percentCompleted", percentCompleted);
-        if (flag != undefined && flag != null) {
-          setProgress(percentCompleted);
-          setRemainingTime(remainingTime + secondsRemaining);
-        }
-
-      },
     })
       .then(async (response) => {
-        console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
+        console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList", response);
+        console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList", response.data.responseCode);
+        console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList", response.data.responseCode === 417);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
+          console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList", response);
+
+          await dispatch(RefreshToken(navigate, t));
           dispatch(
             FileUploadToDo(
+              navigate,
               data,
               t,
-              setProgress,
-              setUploadCounter,
-              uploadCounter
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -141,20 +113,12 @@ const FileUploadToDo = (
             ) {
 
               console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
-
               dispatch(
                 uploadDocumentSuccess(
                   response.data.responseResult,
                   t("valid-data")
                 )
               );
-              if (flag != undefined && flag != null) {
-                if (uploadCounter != 0) {
-                  setUploadCounter(uploadCounter - 1);
-                }
-                setProgress(0);
-              }
-
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -164,11 +128,6 @@ const FileUploadToDo = (
             ) {
               console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
               await dispatch(uploadDocumentFail(t("Invalid-data")));
-              if (flag != undefined && flag != null) {
-                if (uploadCounter != 0) {
-                  setUploadCounter(uploadCounter - 1);
-                }
-              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -178,11 +137,6 @@ const FileUploadToDo = (
             ) {
               console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
               await dispatch(uploadDocumentFail(t("Something-went-wrong")));
-              if (flag != undefined && flag != null) {
-                if (uploadCounter != 0) {
-                  setUploadCounter(uploadCounter - 1);
-                }
-              }
             }
           } else {
             console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");

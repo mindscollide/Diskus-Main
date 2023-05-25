@@ -26,6 +26,7 @@ import ParticipantInfoShareFolder from "../../../components/elements/Participant
 import EditIconNote from "../../../assets/images/EditIconNotes.svg";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { shareFilesApi } from "../../../store/actions/DataRoom_actions";
+import { useNavigate } from "react-router-dom";
 
 
 const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileName }) => {
@@ -42,6 +43,7 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
   })
   console.log(fileData, "datadatadata")
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [meetingDate, setMeetingDate] = useState("");
@@ -156,7 +158,7 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
     console.log("hnbhaiclicktuhorahahy");
 
     setShowrequestsend(true);
-    dispatch(shareFilesApi(fileData, t))
+    dispatch(shareFilesApi(navigate, fileData, t))
   };
   const openAccessRequestModalClick = () => {
     setShowaccessrequest(true);
@@ -197,7 +199,7 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
     setShareFile(false);
   };
   useEffect(() => {
-    dispatch(allAssignessList(t));
+    dispatch(allAssignessList(navigate, t));
   }, []);
   return (
     <>

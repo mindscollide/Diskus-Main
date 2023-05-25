@@ -2,6 +2,7 @@ import * as actions from "../action_types";
 import axios from "axios";
 import { settingApi } from "../../commen/apis/Api_ends_points";
 import { getTimeZOne } from "../../commen/apis/Api_config";
+import { RefreshToken } from "./Auth_action";
 
 const timeZoneInit = () => {
   return {
@@ -23,7 +24,7 @@ const timeZoneFail = (message) => {
   };
 };
 
-const getTimeZone = () => {
+const getTimeZone = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
@@ -39,26 +40,33 @@ const getTimeZone = () => {
         _token: token,
       },
     })
-      .then((response) => {
+      .then(async (response) => {
         console.log("timezone response", response);
-        if (response.data.responseResult.isExecuted === true) {
-          console.log(
-            "timezone response in conidtion",
-            response.data.responseResult
-          );
-          dispatch(
-            timeZoneSuccess(
-              response.data.responseResult.timeZones,
-              response.data.responseMessage
-            )
-          );
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(getTimeZone((navigate, t)))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (response.data.responseResult.responseMessage.toLowerCase().includes("Settings_SettingsServiceManager_GetAllTimeZones_01".toLowerCase())) {
+              dispatch(
+                timeZoneSuccess(
+                  response.data.responseResult.timeZones,
+                  t("Record-found")
+                ))
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Settings_SettingsServiceManager_GetAllTimeZones_02".toLowerCase())) {
+              dispatch(timeZoneFail(t("No-record-found")));
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Settings_SettingsServiceManager_GetAllTimeZones_03".toLowerCase())) {
+              dispatch(timeZoneFail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(timeZoneFail(t("Something-went-wrong")));
+          }
         } else {
-          dispatch(timeZoneFail(response.data.responseMessage));
+          dispatch(timeZoneFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(timeZoneFail);
-        console.log(response);
+        dispatch(timeZoneFail(t("Something-went-wrong")));
       });
   };
 };

@@ -22,11 +22,13 @@ import {
 import { DownloadFile } from "../../store/actions/Download_action";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   //For Localization
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { assignees } = useSelector((state) => state);
   const [isDetails, setIsDetails] = useState(true);
   const [isAttendees, setIsAttendees] = useState(false);
@@ -455,7 +457,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   useEffect(() => {
     try {
       if (viewFlag) {
-        dispatch(allAssignessList(t));
+        dispatch(allAssignessList(navigate, t));
       } else {
         setViewFlag(false);
         dispatch(cleareAssigneesState());
@@ -558,7 +560,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       MeetingID: meetingID,
       UserID: parseInt(createrID),
     };
-    await dispatch(StartMeeting(Data, t));
+    await dispatch(StartMeeting(navigate, Data, t));
   };
 
   const endMeeting = async () => {
@@ -568,7 +570,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       MeetingID: meetingID,
       UserID: parseInt(createrID),
     };
-    await dispatch(EndMeeting(Data, t));
+    await dispatch(EndMeeting(navigate, Data, t));
   };
 
   const downloadClick = (e, record) => {
@@ -576,7 +578,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
       OriginalFileName: record.OriginalAttachmentName,
       DisplayFileName: record.DisplayAttachmentName,
     };
-    dispatch(DownloadFile(data, t));
+    dispatch(DownloadFile(navigate, data, t));
   };
 
   return (

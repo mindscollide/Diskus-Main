@@ -243,7 +243,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   };
 
   const handleMeetingUpdate = () => {
-    dispatch(updateOrganizationMeeting(isMeetingId, isMeetingStatusId, t));
+    dispatch(updateOrganizationMeeting(navigate, isMeetingId, isMeetingStatusId, t));
     setMeetingModal(false);
   };
 
@@ -485,13 +485,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       return (
         (modalMeetingStates.Status != ""
           ? a.status
-              .toLowerCase()
-              .includes(modalMeetingStates.Status.toLowerCase())
+            .toLowerCase()
+            .includes(modalMeetingStates.Status.toLowerCase())
           : a.status) &&
         (modalMeetingStates.Title != ""
           ? a.title
-              .toLowerCase()
-              .includes(modalMeetingStates.Title.toLowerCase())
+            .toLowerCase()
+            .includes(modalMeetingStates.Title.toLowerCase())
           : a.title) &&
         (modalMeetingStates.Attendee != ""
           ? handleMeetingAtendees(a, modalMeetingStates)
@@ -504,28 +504,28 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
           : a.meetingAgenda) &&
         (fromDate != "" && toDate != ""
           ? removeDashesFromDate(
-              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
-            ) >= removeDashesFromDate(editResolutionDate(fromDate)) &&
-            removeDashesFromDate(
-              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
-            ) <= removeDashesFromDate(editResolutionDate(toDate))
+            editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+          ) >= removeDashesFromDate(editResolutionDate(fromDate)) &&
+          removeDashesFromDate(
+            editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+          ) <= removeDashesFromDate(editResolutionDate(toDate))
           : removeDashesFromDate(
-              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
-            )) &&
+            editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+          )) &&
         (toDate != "" && fromDate === ""
           ? removeDashesFromDate(
-              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
-            ) <= removeDashesFromDate(editResolutionDate(toDate))
+            editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+          ) <= removeDashesFromDate(editResolutionDate(toDate))
           : removeDashesFromDate(
-              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
-            )) &&
+            editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+          )) &&
         (fromDate != "" && toDate === ""
           ? removeDashesFromDate(
-              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
-            ) >= removeDashesFromDate(editResolutionDate(fromDate))
+            editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+          ) >= removeDashesFromDate(editResolutionDate(fromDate))
           : removeDashesFromDate(
-              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
-            ))
+            editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+          ))
       );
     });
 
@@ -596,7 +596,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
 
   useEffect(() => {
     dispatch(OrganizationMeetings(navigate, t));
-    dispatch(GetMeetingStatus(t));
+    dispatch(GetMeetingStatus(navigate, t));
   }, []);
 
   useEffect(() => {
@@ -616,9 +616,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage != "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-        t("Record-found") &&
+      t("Record-found") &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-        t("Data-available")
+      t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -640,9 +640,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     if (
       adminReducer.DeleteOrganizationMessageResponseMessage != "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-        t("Record-found") &&
+      t("Record-found") &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-        t("Data-available")
+      t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -806,16 +806,16 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                 showSizeChanger: true,
                 pageSizeOptions: ["100 ", "150", "200"],
               }}
-              // expandable={{
-              //   expandedRowRender: (record) => {
-              //     return record.meetingAgenda.map((data) => (
-              //       <p className="meeting-expanded-row">
-              //         {data.objMeetingAgenda.title}
-              //       </p>
-              //     ));
-              //   },
-              //   rowExpandable: (record) => record.host !== "Test",
-              // }}
+            // expandable={{
+            //   expandedRowRender: (record) => {
+            //     return record.meetingAgenda.map((data) => (
+            //       <p className="meeting-expanded-row">
+            //         {data.objMeetingAgenda.title}
+            //       </p>
+            //     ));
+            //   },
+            //   rowExpandable: (record) => record.host !== "Test",
+            // }}
             />
           </Col>
         </Row>
@@ -971,18 +971,18 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                               1 === modalEditMeetingStates.Status
                                 ? "UpComing"
                                 : 2 === modalEditMeetingStates.Status
-                                ? "Start"
-                                : 3 === modalEditMeetingStates.Status
-                                ? "End"
-                                : 4 === modalEditMeetingStates.Status
-                                ? "Cancel"
-                                : 5 === modalEditMeetingStates.Status
-                                ? "Reschudule"
-                                : 6 === modalEditMeetingStates.Statuses
-                                ? "Close"
-                                : 7 === modalEditMeetingStates.Status
-                                ? "Delete"
-                                : null,
+                                  ? "Start"
+                                  : 3 === modalEditMeetingStates.Status
+                                    ? "End"
+                                    : 4 === modalEditMeetingStates.Status
+                                      ? "Cancel"
+                                      : 5 === modalEditMeetingStates.Status
+                                        ? "Reschudule"
+                                        : 6 === modalEditMeetingStates.Statuses
+                                          ? "Close"
+                                          : 7 === modalEditMeetingStates.Status
+                                            ? "Delete"
+                                            : null,
                             value: modalEditMeetingStates.Status,
                           }}
                         />
@@ -1040,7 +1040,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           onKeyDown={(event) => enterKeyHandler(event, Host)}
                           className={
                             styles[
-                              "formcontrol-fieldselectfor-filtermodalmeeting"
+                            "formcontrol-fieldselectfor-filtermodalmeeting"
                             ]
                           }
                           options={meetingStatusOption}
@@ -1220,7 +1220,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       <Button
                         text={t("Discard")}
                         className={styles["icon-modalmeeting-ResetBtn"]}
-                        // onClick={closeOnUpdateBtn}
+                      // onClick={closeOnUpdateBtn}
                       />
                     </Col>
 

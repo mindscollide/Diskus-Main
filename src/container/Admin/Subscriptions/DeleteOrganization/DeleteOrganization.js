@@ -49,12 +49,12 @@ const DeleteOrganization = () => {
     localStorage.setItem("deleteContent", true);
     dispatch(
       deleteOrganizationAction(
+        navigate,
         Data,
         t,
         setDeleteSuccesModal,
         setDeleteModal,
         setDeleteConfirmModal,
-        navigate
       )
     );
   };
@@ -84,9 +84,8 @@ const DeleteOrganization = () => {
                 sm={12}
                 md={12}
                 lg={12}
-                className={`${"MontserratSemiBold-600 fs-4 mt-4 mb-2"} ${
-                  styles["DeleteOrganization_box_heading"]
-                }`}
+                className={`${"MontserratSemiBold-600 fs-4 mt-4 mb-2"} ${styles["DeleteOrganization_box_heading"]
+                  }`}
               >
                 {t("Delete-organization")}
               </Col>

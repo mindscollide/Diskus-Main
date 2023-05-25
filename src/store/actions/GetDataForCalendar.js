@@ -27,7 +27,7 @@ const getCalendarDataFail = (message) => {
   };
 };
 
-const getCalendarDataResponse = (data, t) => {
+const getCalendarDataResponse = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     UserID: parseInt(data),
@@ -48,8 +48,8 @@ const getCalendarDataResponse = (data, t) => {
       .then(async (response) => {
         console.log("calendar Data Response", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(getCalendarDataResponse(data, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getCalendarDataResponse(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

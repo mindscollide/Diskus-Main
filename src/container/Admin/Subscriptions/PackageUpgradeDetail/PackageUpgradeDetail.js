@@ -33,7 +33,7 @@ const PackageUpgradeDetail = () => {
   console.log(state, "statestatestate");
   //for Translation
   const upgradePackage = (id) => {
-    dispatch(updateSubscribePackage(id, navigate, t));
+    dispatch(updateSubscribePackage(navigate, id, t));
   };
   const { t } = useTranslation();
 
@@ -48,7 +48,7 @@ const PackageUpgradeDetail = () => {
     if (
       GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== "" &&
       GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !==
-        t("Organization-subscription-update")
+      t("Organization-subscription-update")
     ) {
       setOpen({
         ...open,

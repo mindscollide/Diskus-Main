@@ -35,7 +35,7 @@ const getallcommitteebyuserid_fail = (message) => {
   };
 };
 
-const getAllCommitteesByUserIdActions = (t) => {
+const getAllCommitteesByUserIdActions = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = localStorage.getItem("organizationID");
   let UserID = localStorage.getItem("userID");
@@ -57,12 +57,10 @@ const getAllCommitteesByUserIdActions = (t) => {
       },
     })
       .then(async (response) => {
-        console.log(
-          "getAllCommitteesByUserIdActionsgetAllCommitteesByUserIdActions",
-          response
-        );
-        console.log("checking");
-        if (response.data.responseCode === 200) {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(getAllCommitteesByUserIdActions(navigate, t))
+        } else if (response.data.responseCode === 200) {
           console.log("checking");
           if (response.data.responseResult.isExecuted === true) {
             console.log("checking");
@@ -156,7 +154,7 @@ const getCommitteByCommitteeID_Fail = (message) => {
   }
 }
 
-const getCommitteesbyCommitteeId = (Data, t, setViewGroupPage, setUpdateComponentpage, CommitteeStatusID, setArchivedCommittee) => {
+const getCommitteesbyCommitteeId = (navigate, Data, t, setViewGroupPage, setUpdateComponentpage, CommitteeStatusID, setArchivedCommittee) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getCommitteByCommitteeID_Init());
@@ -177,7 +175,10 @@ const getCommitteesbyCommitteeId = (Data, t, setViewGroupPage, setUpdateComponen
           response
         );
         console.log("checking");
-        if (response.data.responseCode === 200) {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(getCommitteesbyCommitteeId(navigate, Data, t, setViewGroupPage, setUpdateComponentpage, CommitteeStatusID, setArchivedCommittee))
+        } else if (response.data.responseCode === 200) {
           console.log("checking");
           if (response.data.responseResult.isExecuted === true) {
             console.log("checking");
@@ -274,7 +275,7 @@ const createcommittee_fail = (message) => {
   };
 };
 
-const createcommittee = (Data, t, setCreategrouppage) => {
+const createcommittee = (navigate, Data, t, setCreategrouppage) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(createcommittee_init());
@@ -292,8 +293,8 @@ const createcommittee = (Data, t, setCreategrouppage) => {
       .then(async (response) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          await dispatch(createcommittee_success(Data, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(createcommittee(navigate, Data, t, setCreategrouppage));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -312,7 +313,7 @@ const createcommittee = (Data, t, setCreategrouppage) => {
                 )
               );
               await setCreategrouppage(false)
-              await dispatch(getAllCommitteesByUserIdActions(t));
+              await dispatch(getAllCommitteesByUserIdActions(navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -389,7 +390,7 @@ const getCommitteeTypes_Fail = (message) => {
     message: message
   }
 }
-const getCommitteeTypes = (Data, t) => {
+const getCommitteeTypes = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return ((dispatch) => {
     dispatch(getCommitteeTypes_Init());
@@ -406,7 +407,8 @@ const getCommitteeTypes = (Data, t) => {
     }).then(async (response) => {
       console.log(response, "response")
       if (response.data.responseCode === 417) {
-        await dispatch(RefreshToken(t));
+        await dispatch(RefreshToken(navigate, t));
+        dispatch(getCommitteeTypes(navigate, Data, t))
       } else if (response.data.responseCode === 200) {
         console.log(response, "response")
         if (response.data.responseResult.isExecuted === true) {
@@ -453,7 +455,7 @@ const getCommitteeMembersRole_Fail = (message) => {
     message: message
   }
 }
-const getCommitteeMembersRole = (Data, t) => {
+const getCommitteeMembersRole = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return ((dispatch) => {
     dispatch(getCommitteeMembersRole_Init());
@@ -470,7 +472,8 @@ const getCommitteeMembersRole = (Data, t) => {
     }).then(async (response) => {
       console.log(response, "response")
       if (response.data.responseCode === 417) {
-        await dispatch(RefreshToken(t));
+        await dispatch(RefreshToken(navigate, t));
+        dispatch(getCommitteeMembersRole(navigate, Data, t))
       } else if (response.data.responseCode === 200) {
         console.log(response, "response")
         if (response.data.responseResult.isExecuted === true) {
@@ -515,7 +518,7 @@ const updateCommitteeStatus_Fail = message => {
     message: message
   }
 }
-const committeeStatusUpdate = (Data, t) => {
+const committeeStatusUpdate = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return ((dispatch) => {
     dispatch(updateCommitteeStatus_Init());
@@ -532,14 +535,15 @@ const committeeStatusUpdate = (Data, t) => {
     }).then(async (response) => {
       console.log(response, "response")
       if (response.data.responseCode === 417) {
-        await dispatch(RefreshToken(t));
+        await dispatch(RefreshToken(navigate, t));
+        dispatch(committeeStatusUpdate(navigate, Data, t))
       } else if (response.data.responseCode === 200) {
         console.log(response, "response")
         if (response.data.responseResult.isExecuted === true) {
           console.log(response, "response")
           if (response.data.responseResult.responseMessage.toLowerCase().includes("Committees_CommitteeServiceManager_UpdateCommitteeStatus_01".toLowerCase())) {
             await dispatch(updateCommitteeStatus_Success(response.data.responseResult.committeeMemberRoles, t("Record-updated")))
-            dispatch(getAllCommitteesByUserIdActions(t))
+            dispatch(getAllCommitteesByUserIdActions(navigate, t))
           } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Committees_CommitteeServiceManager_UpdateCommitteeStatus_02".toLowerCase())) {
             dispatch(updateCommitteeStatus_Fail(t("No-record-updated")))
           } else {
@@ -575,7 +579,7 @@ const updateCommittee_Fail = (message) => {
     message: message
   }
 }
-const updateCommittee = (Data, t, setUpdateComponentpage) => {
+const updateCommittee = (navigate, Data, t, setUpdateComponentpage) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return ((dispatch) => {
     dispatch(updatecommittee_Init());
@@ -592,7 +596,8 @@ const updateCommittee = (Data, t, setUpdateComponentpage) => {
     }).then(async (response) => {
       console.log(response, "response")
       if (response.data.responseCode === 417) {
-        await dispatch(RefreshToken(t));
+        await dispatch(RefreshToken(navigate, t));
+        dispatch(updateCommittee(navigate, Data, t, setUpdateComponentpage))
       } else if (response.data.responseCode === 200) {
         console.log(response, "response")
         if (response.data.responseResult.isExecuted === true) {
@@ -600,7 +605,7 @@ const updateCommittee = (Data, t, setUpdateComponentpage) => {
           if (response.data.responseResult.responseMessage.toLowerCase().includes("Committees_CommitteeServiceManager_UpdateCommittee_01".toLowerCase())) {
             await dispatch(updateCommittee_Success(response.data.responseResult, t("Committee-update")))
             await setUpdateComponentpage(false)
-            await dispatch(getAllCommitteesByUserIdActions(t))
+            await dispatch(getAllCommitteesByUserIdActions(navigate, t))
           } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Committees_CommitteeServiceManager_UpdateCommittee_02".toLowerCase())) {
             dispatch(updateCommittee_Fail(t("No-committee-update")))
           } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Committees_CommitteeServiceManager_UpdateCommittee_03".toLowerCase())) {
@@ -657,7 +662,7 @@ const assignGroup_Failt = (message) => {
     message: message
   }
 }
-const assignGroups = (Data, t) => {
+const assignGroups = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return ((dispatch) => {
     dispatch(assignGroup_Init());
@@ -674,7 +679,8 @@ const assignGroups = (Data, t) => {
     }).then(async (response) => {
       console.log(response, "response")
       if (response.data.responseCode === 417) {
-        await dispatch(RefreshToken(t));
+        await dispatch(RefreshToken(navigate, t));
+        dispatch(assignGroups(navigate, Data, t))
       } else if (response.data.responseCode === 200) {
         console.log(response, "response")
         if (response.data.responseResult.isExecuted === true) {

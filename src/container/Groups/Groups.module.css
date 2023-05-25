@@ -4,6 +4,10 @@
   font-family: "MontserratSemiBold" !important;
 }
 
+body[dir="rtl"] .Groups-heading-size {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .create-Group-btn {
   padding: 12px 80px !important;
   font-size: 12px !important;
@@ -12,6 +16,10 @@
   font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
+}
+
+body[dir="rtl"] .create-Group-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 body[dir="rtl"] .create-Group-btn {
@@ -42,6 +50,10 @@ body[dir="rtl"] .create-Group-btn {
   display: flex !important;
   gap: 10px !important;
   align-items: center;
+}
+
+body[dir="rtl"] .Archived-Group-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 body[dir="rtl"] .Archived-Group-btn {
@@ -238,6 +250,10 @@ body[dir="rtl"] .PaginationStyle-Committee {
   color: #5a5a5a;
 }
 
+body[dir="rtl"] .heading-modal-active-contfirmation {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Confirm-activegroup-modal {
   font-size: 12px;
   background: #6172d6;
@@ -247,6 +263,10 @@ body[dir="rtl"] .PaginationStyle-Committee {
   padding: 12px 30px 12px 30px !important;
   font-family: "MontserratSemiBold";
   border: none !important;
+}
+
+body[dir="rtl"] .Confirm-activegroup-modal {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Confirm-activegroup-modal:is(
@@ -274,6 +294,10 @@ body[dir="rtl"] .PaginationStyle-Committee {
   font-family: "MontserratSemiBold" !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
+}
+
+body[dir="rtl"] .Cancel-activegroup-modal {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Cancel-activegroup-modal:is(

@@ -37,7 +37,7 @@ const postCommentFail = (message) => {
     message: message,
   };
 };
-const postAssgineeComment = (data, t) => {
+const postAssgineeComment = (navigate, data, t) => {
   console.log("datadatadata", data);
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -56,8 +56,8 @@ const postAssgineeComment = (data, t) => {
       .then(async (response) => {
         console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(postCommentsInit());
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(postAssgineeComment(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             let userID = localStorage.getItem("userID");

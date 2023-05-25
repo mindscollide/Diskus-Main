@@ -50,3 +50,21 @@
     margin-bottom: 10px !important;
     border-radius: 4px !important;
 }
+
+.folderContainer {
+    height: 70vh !important;
+    overflow-y: auto;
+}
+
+.folderContainer::-webkit-scrollbar {
+    width: 0.5rem;
+    height: 0.5em;
+    border-radius: 20px;
+    background-color: #f2f2f2;
+}
+
+.folderContainer::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background: #ccc;
+    margin-left: -15px;
+}

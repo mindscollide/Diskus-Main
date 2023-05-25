@@ -29,7 +29,7 @@ const meetinOfMeetingFail = (message) => {
   };
 };
 
-const addMinutesofMeetings = (data, t) => {
+const addMinutesofMeetings = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(meetinOfMeetingInit());
@@ -46,8 +46,8 @@ const addMinutesofMeetings = (data, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(addMinutesofMeetings(data, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(addMinutesofMeetings(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

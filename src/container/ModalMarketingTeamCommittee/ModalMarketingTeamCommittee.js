@@ -4,34 +4,37 @@ import styles from "./ModalMarketingTeamCommittee.module.css";
 import userImage from "../../assets/images/user.png";
 import { Button, InputSearchFilter, Modal } from "../../components/elements";
 import { style } from "@mui/system";
-import Crossicon from '../../assets/images/CrossIcon.svg'
-import { useTranslation } from 'react-i18next'
+import Crossicon from "../../assets/images/CrossIcon.svg";
+import { useTranslation } from "react-i18next";
 import { getAllGroups } from "../../store/actions/Groups_actions";
 import Group_Icon from "../../assets/images/group_Icons.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { assignGroups } from "../../store/actions/Committee_actions";
+import { useNavigate } from "react-router-dom";
 const ModalMarketingTeamCommittee = ({
   ModalTitle,
   MarketingTeam,
   setMarketingTeam,
-  committeeID
+  committeeID,
 }) => {
-  const { GroupsReducer } = useSelector(state => state)
-  console.log("GroupsReducerGroupsReducer", GroupsReducer)
-  const [Groups, setGroups] = useState([])
+  const { GroupsReducer } = useSelector((state) => state);
+  console.log("GroupsReducerGroupsReducer", GroupsReducer);
+  const [Groups, setGroups] = useState([]);
   const [groupName, setGroupName] = useState("");
   const [groupID, setGroupID] = useState(0)
   const [groupData, setGroupData] = useState([])
   const [data, setData] = useState([])
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { t } = useTranslation()
+
   const closebtn = async () => {
     setMarketingTeam(false);
   };
   //Drop Down Values
   const searchFilterHandler = (value) => {
     let getAllGroupsData = GroupsReducer.getAllGroups;
-    console.log("getAllGroupsDatagetAllGroupsData", getAllGroupsData)
+    console.log("getAllGroupsDatagetAllGroupsData", getAllGroupsData);
     if (
       GroupsReducer.getAllGroups != undefined &&
       GroupsReducer.getAllGroups != null &&
@@ -70,48 +73,46 @@ const ModalMarketingTeamCommittee = ({
   };
 
   // on Search filter for add members
-  const onChangeSearch = (e,) => {
+  const onChangeSearch = (e) => {
     setGroupName(e.target.value.trimStart());
   };
 
   const handleAdd = () => {
-    console.log("groupIDgroupID", groupID, committeeID)
+    console.log("groupIDgroupID", groupID, committeeID);
 
     if (groupID !== 0 && committeeID !== 0) {
       data.push({
         GroupID: groupID,
-        CommitteeId: committeeID
-      })
+        CommitteeId: committeeID,
+      });
       groupData.push({
         GroupID: groupID,
-        GroupName: groupName
-      })
-      setData([...data])
-      setGroupData([...groupData])
+        GroupName: groupName,
+      });
+      setData([...data]);
+      setGroupData([...groupData]);
       setGroupName("");
       setGroupID(0);
     }
-  }
+  };
   const removeHandler = (id) => {
-    let newData = data.filter((data, index) => data.GroupID !== id)
-    let newGroupData = groupData.filter((data, index) => data.GroupID !== id)
-    setData([...newData])
-    setGroupData([...newGroupData])
-  }
+    let newData = data.filter((data, index) => data.GroupID !== id);
+    let newGroupData = groupData.filter((data, index) => data.GroupID !== id);
+    setData([...newData]);
+    setGroupData([...newGroupData]);
+  };
   const handleUpdate = () => {
     if (data.length > 0) {
       let Data = {
         committeeGroupMapping: data
       }
-      dispatch(assignGroups(Data, t))
+      dispatch(assignGroups(navigate, Data, t))
       console.log("DataData", Data)
     } else {
-
     }
-
-  }
+  };
   useEffect(() => {
-    dispatch(getAllGroups(t))
+    dispatch(getAllGroups(navigate, t))
   }, [])
   useEffect(() => {
     if (GroupsReducer.getAllGroups !== null) {
@@ -120,12 +121,12 @@ const ModalMarketingTeamCommittee = ({
         newArr.push({
           GroupID: data.pK_GRID,
           GroupTitle: data.title,
-          GroupStatus: data.fK_GRSID
-        })
-      })
-      setGroups(newArr)
+          GroupStatus: data.fK_GRSID,
+        });
+      });
+      setGroups(newArr);
     }
-  }, [GroupsReducer.getAllGroups])
+  }, [GroupsReducer.getAllGroups]);
   return (
     <>
       <Container>
@@ -145,7 +146,7 @@ const ModalMarketingTeamCommittee = ({
               <Row>
                 <Col lg={12} md={12} sm={12} className="d-flex text-center ">
                   <span className={styles["Marketing-Modal-Heading"]}>
-                    Marketing Team Committee
+                    {t("Marketing-team-committee")}
                   </span>
                 </Col>
               </Row>
@@ -157,9 +158,14 @@ const ModalMarketingTeamCommittee = ({
                       lg={10}
                       md={10}
                       sm={12}
-                      className="d-flex justify-content-start"
+                      className="d-flex justify-content-start Saved_money_Tagline"
                     >
-                      <InputSearchFilter labelClass="d-none" value={groupName} filteredDataHandler={searchFilterHandler(groupName)} change={onChangeSearch} />
+                      <InputSearchFilter
+                        labelClass="d-none"
+                        value={groupName}
+                        filteredDataHandler={searchFilterHandler(groupName)}
+                        change={onChangeSearch}
+                      />
                     </Col>
                     <Col lg={2} md={2} sm={12}>
                       <Button
@@ -170,20 +176,40 @@ const ModalMarketingTeamCommittee = ({
                     </Col>
                   </Row>
                   <Row className={styles["GroupsDataRow"]}>
-                    {groupData.length > 0 ? groupData.map((data, index) => {
-                      return <Col sm={12} md={12} lg={12} className={styles["marketingDataCol"]}>
-                        <Row className="align-items-center my-2 ">
-                          <Col sm={1} md={1} lg={1} >
-                            <span className={styles["group_Icon_Box"]}>
-                              <img src={Group_Icon} />
-                            </span>
+                    {groupData.length > 0
+                      ? groupData.map((data, index) => {
+                        return (
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className={styles["marketingDataCol"]}
+                          >
+                            <Row className="align-items-center my-2 ">
+                              <Col sm={1} md={1} lg={1}>
+                                <span className={styles["group_Icon_Box"]}>
+                                  <img src={Group_Icon} />
+                                </span>
+                              </Col>
+                              <Col sm={10} md={10} lg={10}>
+                                <span className="ms-3">{data.GroupName}</span>{" "}
+                              </Col>
+                              <Col
+                                sm={1}
+                                md={1}
+                                lg={1}
+                                className="d-flex justify-content-end"
+                              >
+                                <img
+                                  src={Crossicon}
+                                  onClick={() => removeHandler(data.GroupID)}
+                                />
+                              </Col>
+                            </Row>
                           </Col>
-                          <Col sm={10} md={10} lg={10}><span className="ms-3">{data.GroupName}</span> </Col>
-                          <Col sm={1} md={1} lg={1} className="d-flex justify-content-end"><img src={Crossicon} onClick={() => removeHandler(data.GroupID)} /></Col>
-                        </Row>
-                      </Col>
-                    }) : null}
-
+                        );
+                      })
+                      : null}
                   </Row>
                 </Col>
               </Row>
@@ -192,13 +218,13 @@ const ModalMarketingTeamCommittee = ({
           ModalFooter={
             <>
               <Row className="mt-5">
-
                 <Col
                   lg={12}
                   sm={12}
                   md={12}
                   className="d-flex justify-content-end gap-2"
-                ><Button
+                >
+                  <Button
                     text={t("Close")}
                     className={styles["CloseModal"]}
                     onClick={closebtn}

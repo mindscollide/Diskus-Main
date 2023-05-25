@@ -49,12 +49,14 @@ import {
   ResetAllFilesUpload,
 } from '../../store/actions/Upload_action'
 import Form from 'react-bootstrap/Form'
+import { useNavigate } from 'react-router-dom'
 
 const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   //For Localization
   const { t } = useTranslation()
   let currentLanguage = localStorage.getItem('i18nextLng')
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { assignees, uploadReducer } = useSelector((state) => state)
   const [isDetails, setIsDetails] = useState(true)
   const [isAttendees, setIsAttendees] = useState(false)
@@ -463,7 +465,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         } else if (size === false) {
         } else if (sizezero === false) {
         } else {
-          dispatch(FileUploadToDo(uploadedFile, t))
+          dispatch(FileUploadToDo(navigate, uploadedFile, t))
         }
       } else {
         let size
@@ -479,7 +481,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         if (size === false) {
         } else if (sizezero === false) {
         } else {
-          dispatch(FileUploadToDo(uploadedFile, t))
+          dispatch(FileUploadToDo(navigate, uploadedFile, t))
         }
       }
     }
@@ -731,7 +733,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     try {
       if (Object.keys(assignees.user).length > 0) {
       } else {
-        dispatch(allAssignessList(t))
+        dispatch(allAssignessList(navigate, t))
       }
       if (show) {
         let user1 = createMeeting.MeetingAttendees
@@ -771,7 +773,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         console.log('ListListList', List)
         setCreateMeeting({ ...createMeeting, ['MeetingAttendees']: user1 })
         setAddedParticipantNameList(List)
-        dispatch(GetAllReminders(t))
+        dispatch(GetAllReminders(navigate, t))
       } else {
         setModalField(false)
         setShow(false)
@@ -1076,7 +1078,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setIsAgenda(false)
     setIsAttendees(false)
     setIsPublishMeeting(false)
-    dispatch(ScheduleNewMeeting(newData, calenderFlag, t))
+    dispatch(ScheduleNewMeeting(navigate, newData, calenderFlag, t))
     setObjMeetingAgenda({
       Title: '',
       PresenterName: '',

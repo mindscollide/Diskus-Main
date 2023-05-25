@@ -16,10 +16,12 @@ import EmployeeinfoCard from "../../components/elements/Employeeinfocard/Employe
 
 import { useSelector, useDispatch } from "react-redux";
 import { updateVoteApi } from "../../store/actions/Resolution_actions";
+import { useNavigate } from "react-router-dom";
 const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const { t } = useTranslation();
   const { ResolutionReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [voteDetails, setVoteDetails] = useState({
     ResolutionTitle: "",
     ResolutionMethod: "",
@@ -111,7 +113,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
         PK_RV_ID: voterID,
         FK_VotingStatusID: voteId,
       };
-      dispatch(updateVoteApi(Data, t, setVoteresolution));
+      dispatch(updateVoteApi(navigate, Data, t, setVoteresolution));
     } else {
       setOpen({
         flag: true,
@@ -185,12 +187,12 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                               </span>
                             </Col>
                           </Row>
-                          <Row className="mt-4">
+                          <Row className="mt-4 FontArabicRegular">
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex gap-3 justify-content-center"
+                              className="d-flex gap-3 justify-content-center "
                             >
                               <Button
                                 text={t("Abstain")}
@@ -204,8 +206,8 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                 className={
                                   voteId === 3
                                     ? styles[
-                                    "Abstain_btn_vote_resolution_Active"
-                                    ]
+                                        "Abstain_btn_vote_resolution_Active"
+                                      ]
                                     : styles["Abstain_btn_vote_resolution"]
                                 }
                                 onClick={() => isAbstainBtn(4)}
@@ -222,8 +224,8 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                 className={
                                   voteId === 2
                                     ? styles[
-                                    "Notapproved_btn_voteresolution_Active"
-                                    ]
+                                        "Notapproved_btn_voteresolution_Active"
+                                      ]
                                     : styles["Notapproved_btn_voteresolution"]
                                 }
                                 onClick={() => isNotApprovedBtn(2)}
@@ -241,8 +243,8 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                 className={
                                   voteId === 1
                                     ? styles[
-                                    "approved_btn_voteresolution_Active"
-                                    ]
+                                        "approved_btn_voteresolution_Active"
+                                      ]
                                     : styles["approved_btn_voteresolution"]
                                 }
                               />
@@ -275,7 +277,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                         </>
                       ) : isVotingMethod === "Show of Hands" ? (
                         <>
-                          <Row className="mt-4">
+                          <Row className="mt-3">
                             <Col
                               lg={12}
                               md={12}
@@ -285,33 +287,48 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                               <Row>
                                 {voter.length > 0
                                   ? voter.map((data, index) => {
-                                    console.log(data, "datadadadasdad");
-                                    return (
-                                      <>
-                                        <Col
-                                          lg={6}
-                                          md={6}
-                                          sm={6}
-                                          key={data.pK_RV_ID}
-                                        >
-                                          <EmployeeinfoCard
-                                            Employeename={data.username}
-                                            Employeeemail={data.email}
-                                            Icon={
-                                              <img
-                                                src={data.fK_VotingStatus_ID === 1 ? thumbsup : data.fK_VotingStatus_ID === 2 ? thumbsdown : data.fK_VotingStatus_ID === 3 ? Clock : data.fK_VotingStatus_ID === 4 ? Abstain : null}
-                                                width="20px"
-                                                height="20px"
-                                                onClick={() =>
-                                                  setVoterID(data.pK_RV_ID)
-                                                }
-                                              />
-                                            }
-                                          />
-                                        </Col>
-                                      </>
-                                    );
-                                  })
+                                      console.log(data, "datadadadasdad");
+                                      return (
+                                        <>
+                                          <Col
+                                            lg={6}
+                                            md={6}
+                                            sm={6}
+                                            key={data.pK_RV_ID}
+                                            className="mt-1"
+                                          >
+                                            <EmployeeinfoCard
+                                              Employeename={data.username}
+                                              Employeeemail={data.email}
+                                              Icon={
+                                                <img
+                                                  src={
+                                                    data.fK_VotingStatus_ID ===
+                                                    1
+                                                      ? thumbsup
+                                                      : data.fK_VotingStatus_ID ===
+                                                        2
+                                                      ? thumbsdown
+                                                      : data.fK_VotingStatus_ID ===
+                                                        3
+                                                      ? Clock
+                                                      : data.fK_VotingStatus_ID ===
+                                                        4
+                                                      ? Abstain
+                                                      : null
+                                                  }
+                                                  width="20px"
+                                                  height="20px"
+                                                  onClick={() =>
+                                                    setVoterID(data.pK_RV_ID)
+                                                  }
+                                                />
+                                              }
+                                            />
+                                          </Col>
+                                        </>
+                                      );
+                                    })
                                   : null}
                               </Row>
                             </Col>

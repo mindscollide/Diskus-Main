@@ -21,9 +21,12 @@ import {
   getCommitteeTypes,
   updateCommittee,
 } from "../../../store/actions/Committee_actions";
+import { useNavigate } from "react-router-dom";
 const UpdateCommittee = ({ setUpdateComponentpage }) => {
+
   const { CommitteeReducer, assignees } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [attendees, setAttendees] = useState([]);
@@ -353,7 +356,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         },
         CommitteeMembers: membersData,
       };
-      dispatch(updateCommittee(Data, t, setUpdateComponentpage));
+      dispatch(updateCommittee(navigate, Data, t, setUpdateComponentpage));
     } else {
       setErrorBar(true);
       setOpen({
@@ -376,9 +379,9 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
     let Data = {
       OrganizationID: organizationID,
     };
-    dispatch(allAssignessList(t));
-    dispatch(getCommitteeTypes(Data, t));
-    dispatch(getCommitteeMembersRole(Data, t));
+    dispatch(allAssignessList(navigate, t));
+    dispatch(getCommitteeTypes(navigate, Data, t));
+    dispatch(getCommitteeMembersRole(navigate, Data, t));
   }, []);
 
   useEffect(() => {
@@ -470,7 +473,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           <span
                             className={styles["details-class-Update-Committee"]}
                           >
-                            {t(" Details")}
+                            {t("Details")}
                           </span>
                         </Col>
                       </Row>
@@ -480,7 +483,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="create-committee-fields CreateMeetingInput"
+                          className="create-committee-fields CreateMeetingInput "
                         >
                           <TextField
                             applyClass="form-control2"
@@ -512,7 +515,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="CreateMeetingInput "
+                          className="CreateMeetingInput Saved_money_Tagline"
                         >
                           <TextField
                             applyClass="text-area-create-group"
@@ -525,7 +528,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             required={true}
                             change={InputFielsChangeHandler}
                             value={committeeData.committeeDescription}
-                            // className={styles["Height-of-textarea"]
+                          // className={styles["Height-of-textarea"]
                           />
                         </Col>
                       </Row>
@@ -534,7 +537,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           <p
                             className={
                               erorbar &&
-                              committeeData.committeeDescription === ""
+                                committeeData.committeeDescription === ""
                                 ? styles["errorMessage"]
                                 : styles["errorMessage_hidden"]
                             }
@@ -556,7 +559,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="Update-committee-Checkbox"
+                              className="Update-committee-Checkbox Saved_money_Tagline"
                             >
                               <Checkbox
                                 className="SearchCheckbox MontserratSemiBold-600"
@@ -575,7 +578,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           lg={4}
                           md={4}
                           sm={4}
-                          className="committee-update-type-select-fields CreateMeetingReminder ml-0 select-participant-box"
+                          className="committee-update-type-select-fields CreateMeetingReminder ml-0 "
                         >
                           <SelectBox
                             name="Participant"
@@ -590,7 +593,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             <p
                               className={
                                 erorbar &&
-                                committeeData.committeeTypeValue === ""
+                                  committeeData.committeeTypeValue === ""
                                   ? styles["errorMessage"]
                                   : styles["errorMessage_hidden"]
                               }
@@ -651,7 +654,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "name-Update-Committee"
+                                                      "name-Update-Committee"
                                                       ]
                                                     }
                                                   >
@@ -664,7 +667,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "Designation-Update-Committee"
+                                                      "Designation-Update-Committee"
                                                       ]
                                                     }
                                                   >
@@ -677,7 +680,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "email-Update-Committee"
+                                                      "email-Update-Committee"
                                                       ]
                                                     }
                                                   >
@@ -689,7 +692,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                           </Row>
                                         </Col>
                                         {data.data.pK_UID !=
-                                        committeeData.CreatorID ? (
+                                          committeeData.CreatorID ? (
                                           <Col
                                             lg={2}
                                             md={2}
@@ -721,7 +724,12 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                 }
                               })
                             ) : (
-                              <Col sm={12} md={12} lg={12}>
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={styles["no-member"]}
+                              >
                                 {t("No-member-selected")}
                               </Col>
                             )}
@@ -767,7 +775,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "name-Update-Committee"
+                                                      "name-Update-Committee"
                                                       ]
                                                     }
                                                   >
@@ -780,7 +788,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "Designation-Update-Committee"
+                                                      "Designation-Update-Committee"
                                                       ]
                                                     }
                                                   >
@@ -793,7 +801,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "email-Update-Committee"
+                                                      "email-Update-Committee"
                                                       ]
                                                     }
                                                   >
@@ -828,7 +836,12 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                 }
                               })
                             ) : (
-                              <Col sm={12} md={12} lg={12}>
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={styles["no-member"]}
+                              >
                                 {t("No-member-selected")}
                               </Col>
                             )}
@@ -874,7 +887,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               lg={8}
                               md={8}
                               sm={8}
-                              className="committee-select-fields CreateMeetingReminder"
+                              className="committee-select-fields  CreateMeetingReminder"
                             >
                               <SelectBox
                                 name="Participant"
@@ -893,7 +906,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               <Button
                                 className={styles["ADD-Update-Committee-btn"]}
                                 onClick={handleAddAttendees}
-                                text={t(" ADD")}
+                                text={t("ADD")}
                               />
                             </Col>
                           </Row>
@@ -909,103 +922,103 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             >
                               {meetingAttendeesList.length > 0
                                 ? meetingAttendeesList.map((data, index) => {
-                                    console.log(
-                                      "meetingAttendeesListmeetingAttendeesList",
-                                      data
-                                    );
-                                    return (
-                                      <Row className="mt-4">
-                                        <Col lg={12} md={12} sm={12}>
-                                          <Row className="d-flex gap-2">
-                                            <Col lg={2} md={2} sm={12}>
-                                              <img
-                                                src={Newprofile}
-                                                width={50}
-                                              />
-                                            </Col>
+                                  console.log(
+                                    "meetingAttendeesListmeetingAttendeesList",
+                                    data
+                                  );
+                                  return (
+                                    <Row className="mt-4">
+                                      <Col lg={12} md={12} sm={12}>
+                                        <Row className="d-flex gap-2">
+                                          <Col lg={2} md={2} sm={12}>
+                                            <img
+                                              src={Newprofile}
+                                              width={50}
+                                            />
+                                          </Col>
 
-                                            <Col
-                                              lg={7}
-                                              md={7}
-                                              sm={12}
-                                              className={
-                                                styles[
-                                                  "Update-Committee-head-info-Add-Members"
-                                                ]
+                                          <Col
+                                            lg={7}
+                                            md={7}
+                                            sm={12}
+                                            className={
+                                              styles[
+                                              "Update-Committee-head-info-Add-Members"
+                                              ]
+                                            }
+                                          >
+                                            <Row className="mt-1">
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                    "name-Update-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  {data?.name}
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                            <Row>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                    "Designation-Update-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  Designer
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                            <Row>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                    "email-Update-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  <a>{data.emailAddress}</a>
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                          </Col>
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={12}
+                                            className="mt-2 "
+                                          >
+                                            <Checkbox
+                                              checked={
+                                                attendees.includes(
+                                                  data.pK_UID
+                                                )
+                                                  ? true
+                                                  : false
                                               }
-                                            >
-                                              <Row className="mt-1">
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "name-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data?.name}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "Designation-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    Designer
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "email-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    <a>{data.emailAddress}</a>
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                            <Col
-                                              lg={2}
-                                              md={2}
-                                              sm={12}
-                                              className="mt-2 "
-                                            >
-                                              <Checkbox
-                                                checked={
-                                                  attendees.includes(
-                                                    data.pK_UID
-                                                  )
-                                                    ? true
-                                                    : false
-                                                }
-                                                classNameDiv=""
-                                                onChange={() =>
-                                                  checkAttendeeBox(
-                                                    data,
-                                                    data.pK_UID,
-                                                    index
-                                                  )
-                                                }
-                                                className={
-                                                  styles["RememberEmail"]
-                                                }
-                                              />
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                      </Row>
-                                    );
-                                  })
+                                              classNameDiv=""
+                                              onChange={() =>
+                                                checkAttendeeBox(
+                                                  data,
+                                                  data.pK_UID,
+                                                  index
+                                                )
+                                              }
+                                              className={
+                                                styles["RememberEmail"]
+                                              }
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </Col>
+                                    </Row>
+                                  );
+                                })
                                 : null}
                             </Col>
                           </Row>

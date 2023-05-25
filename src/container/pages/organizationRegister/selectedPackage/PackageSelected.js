@@ -92,7 +92,7 @@ const PackageSelected = () => {
     localStorage.removeItem("flagForSelectedPackeg");
   }, []);
   const dataCallForDetails = async () => {
-    await dispatch(getCountryNamesAction(t));
+    await dispatch(getCountryNamesAction(navigate, t));
     dispatch(getSelectedPacakgeDetail(navigate, t));
   };
 
@@ -212,10 +212,10 @@ const PackageSelected = () => {
       Authreducer.EnterPasswordResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !== t("Record-found") &&
       Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-an-admin-user") &&
+      t("The-user-is-an-admin-user") &&
       Authreducer.EnterPasswordResponseMessage !== t("2fa-enabled") &&
       Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user") &&
+      t("The-user-is-not-an-admin-user") &&
       Authreducer.EnterPasswordResponseMessage !== undefined &&
       Authreducer.EnterPasswordResponseMessage !== t("2fa-verification") &&
       Authreducer.EnterPasswordResponseMessage !== t("2fa-enabled")
@@ -259,16 +259,16 @@ const PackageSelected = () => {
       Authreducer.CreatePasswordResponseMessage !== "" &&
       Authreducer.CreatePasswordResponseMessage !== t("Record-found") &&
       Authreducer.CreatePasswordResponseMessage !==
-        t("The-user-is-an-admin-user") &&
+      t("The-user-is-an-admin-user") &&
       Authreducer.CreatePasswordResponseMessage !== t("2fa-enabled") &&
       Authreducer.CreatePasswordResponseMessage !==
-        t("Tthe-user-is-a-partial-admin-user") &&
+      t("Tthe-user-is-a-partial-admin-user") &&
       Authreducer.CreatePasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user") &&
+      t("The-user-is-not-an-admin-user") &&
       Authreducer.CreatePasswordResponseMessage !==
-        t("User-is-not-a-new-user-the-user-is-a-partial-admin-user") &&
+      t("User-is-not-a-new-user-the-user-is-a-partial-admin-user") &&
       Authreducer.CreatePasswordResponseMessage !==
-        t("User-is-not-a-new-user-the-user-is-not-an-admin-user") &&
+      t("User-is-not-a-new-user-the-user-is-not-an-admin-user") &&
       Authreducer.CreatePasswordResponseMessage !== undefined &&
       Authreducer.CreatePasswordResponseMessage !== t("2fa-verification") &&
       Authreducer.CreatePasswordResponseMessage !== t("2fa-enabled")
@@ -379,9 +379,8 @@ const PackageSelected = () => {
                   <Row>
                     <Col sm={12}>
                       <h4
-                        className={`${"text-center"} ${
-                          styles["selectPackage_title"]
-                        }`}
+                        className={`${"text-center"} ${styles["selectPackage_title"]
+                          }`}
                       >
                         {organizationDataSelectedPackage.PackageTitle}
                       </h4>
@@ -415,9 +414,8 @@ const PackageSelected = () => {
                   </Row>
 
                   <div
-                    className={`${"MontserratMedium-500"} ${
-                      styles["selected-package-text"]
-                    }`}
+                    className={`${"MontserratMedium-500"} ${styles["selected-package-text"]
+                      }`}
                   >
                     {isHTML(
                       organizationDataSelectedPackage.PackageDescriptive
@@ -445,9 +443,8 @@ const PackageSelected = () => {
                         <Col sm={12}>
                           <Col className={styles["packagecard_usersallows"]}>
                             <h1
-                              className={`${"MontserratBold-700"} ${
-                                styles["packagecard_usersallows_heading"]
-                              }`}
+                              className={`${"MontserratBold-700"} ${styles["packagecard_usersallows_heading"]
+                                }`}
                             >
                               {t("Allowed-users")}
                             </h1>
@@ -465,9 +462,8 @@ const PackageSelected = () => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={`${"MontserratBold-700"} ${
-                                    styles["package_membersHeading_values"]
-                                  }`}
+                                  className={`${"MontserratBold-700"} ${styles["package_membersHeading_values"]
+                                    }`}
                                 >
                                   {
                                     organizationDataSelectedPackage.PackageAllowedBoardMembers
@@ -487,9 +483,8 @@ const PackageSelected = () => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={`${"MontserratBold-700"} ${
-                                    styles["package_membersHeading_values"]
-                                  }`}
+                                  className={`${"MontserratBold-700"} ${styles["package_membersHeading_values"]
+                                    }`}
                                 >
                                   {
                                     organizationDataSelectedPackage.PackageAllowedAdminMembers

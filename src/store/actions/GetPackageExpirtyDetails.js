@@ -2,6 +2,7 @@ import axios from "axios";
 import { IsPackageExpiryDetail } from "../../commen/apis/Api_config";
 import { getAdminURLs } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
+import { RefreshToken } from './Auth_action'
 
 const getExpiryDetailsInit = () => {
   return {
@@ -10,7 +11,7 @@ const getExpiryDetailsInit = () => {
 };
 
 const getExpiryDetailsSuccess = (response, message) => {
-  console.log("isExpiry color",response)
+  console.log("isExpiry color", response)
   return {
     type: actions.GETPACKAGEEXPIRYDETAILS_SUCCESS,
     response: response,
@@ -24,7 +25,7 @@ const getExpiryDetailFail = (message) => {
   };
 };
 
-const getPackageExpiryDetail = (id, t) => {
+const getPackageExpiryDetail = (navigate, id, t) => {
   let data = { OrganizationID: JSON.parse(id) };
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -42,6 +43,8 @@ const getPackageExpiryDetail = (id, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(getPackageExpiryDetail(navigate, id, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

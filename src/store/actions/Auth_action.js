@@ -22,10 +22,10 @@ const refreshtokenSuccess = (response, message) => {
   }
 }
 
-const RefreshToken = (t) => {
-  const navigate = useNavigate()
+const RefreshToken = (navigate, t) => {
+  // const navigate = useNavigate();
   let Token = JSON.parse(localStorage.getItem('token'))
-  let RefreshToken = JSON.parse(localStorage.getItem('RefreshToken'))
+  let RefreshToken = JSON.parse(localStorage.getItem('refreshToken'))
   console.log('RefreshToken', Token, RefreshToken)
   let Data = {
     Token: Token,

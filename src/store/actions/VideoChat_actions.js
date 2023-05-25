@@ -49,7 +49,7 @@ const getMeetingAgendasFail = (message) => {
   };
 };
 
-const getMeetingAgendas = (data, t) => {
+const getMeetingAgendas = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getMeetingAgendasInit());
@@ -67,8 +67,8 @@ const getMeetingAgendas = (data, t) => {
       .then(async (response) => {
         console.log("getMeetingAgenda", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(getMeetingAgendas(data, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getMeetingAgendas(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             console.log(
@@ -114,7 +114,7 @@ const getMeetingAttachmentsFail = (message) => {
     message: message,
   };
 };
-const getMeetingAttachments = (data, t) => {
+const getMeetingAttachments = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getMeetingAttachmentsInit());
@@ -132,8 +132,8 @@ const getMeetingAttachments = (data, t) => {
       .then(async (response) => {
         console.log("getMeetingAgendaAttachment", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(getMeetingAttachments(data, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getMeetingAttachments(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             console.log(
@@ -180,7 +180,7 @@ const updateAgendaAttahmentsFail = (message) => {
     message: message,
   };
 };
-const updateAgendaAttachment = (data, t) => {
+const updateAgendaAttachment = (navigate, data, t) => {
   let AgendaAttachments = { AgendaAttachments: [...data] };
   console.log(
     "AgendaAttachmentsAgendaAttachmentsAgendaAttachmentsAgendaAttachmentsAgendaAttachments",
@@ -206,8 +206,8 @@ const updateAgendaAttachment = (data, t) => {
       .then(async (response) => {
         console.log("getMeetingAgendaAttachment123", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(updateAgendaAttachment(data, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(updateAgendaAttachment(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             await dispatch(

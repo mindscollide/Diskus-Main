@@ -95,11 +95,14 @@
   background: #ebeeff !important;
   color: #6172d6 !important;
   width: 100% !important;
-
   font-family: "MontserratSemiBold" !important;
   font-size: 16px !important;
   border-top-left-radius: 4px !important;
   border-top-right-radius: 4px !important;
+}
+
+body[dir="rtl"] .Archived-Status-Committee-Group {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .In-Active-status-Committee-Group-background {
@@ -130,6 +133,10 @@
 }
 .Status-Committee-Group {
   padding-top: 10px !important;
+}
+
+body[dir="rtl"] .Status-Committee-Group {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .group-icon-Committee-Group {
@@ -167,6 +174,11 @@ body[dir="rtl"] .group-icon-Committee-Group {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+body[dir="rtl"] .card-heading-Committee-Group {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .card-heading-Committee-Group_InActive {
   font-size: 20px !important;
   font-family: "MontserratSemiBold" !important;
@@ -178,6 +190,11 @@ body[dir="rtl"] .group-icon-Committee-Group {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+body[dir="rtl"] .card-heading-Committee-Group_InActive {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .namesCards-Committee-Group {
   width: 35px !important;
   font-size: 10px !important;
@@ -186,6 +203,10 @@ body[dir="rtl"] .group-icon-Committee-Group {
   text-overflow: ellipsis;
   text-transform: capitalize !important;
   height: 14px !important;
+}
+
+body[dir="rtl"] .namesCards-Committee-Group {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .roundnumber {
@@ -227,6 +248,9 @@ body[dir="rtl"] .Two-Icons-style-Committee-Group {
   border-radius: 4px !important;
   border: none !important;
 }
+body[dir="rtl"] .update-Committee-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 
 .update-Committee-btn:hover {
   background-color: #6172d6 !important;
@@ -239,6 +263,7 @@ body[dir="rtl"] .Two-Icons-style-Committee-Group {
 body[dir="rtl"] .Dropdown-container-Committee {
   left: auto !important;
   right: 110px !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {

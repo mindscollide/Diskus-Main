@@ -33,7 +33,7 @@ const addUserFail = (message) => {
   };
 };
 
-const addUserAction = (Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
+const addUserAction = (navigate, Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(addUserInit());
@@ -50,9 +50,9 @@ const addUserAction = (Data, setEmailVerifyModal, setAllowedLimitModal, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
+          await dispatch(RefreshToken(navigate, t));
           dispatch(
-            addUserAction(Data, setEmailVerifyModal, setAllowedLimitModal, t)
+            addUserAction(navigate, Data, setEmailVerifyModal, setAllowedLimitModal, t)
           );
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -207,7 +207,7 @@ const OrganizationUserListStatisticsFail = (message) => {
   };
 };
 
-const OrganizationUserListStatisticsAction = (Data, t) => {
+const OrganizationUserListStatisticsAction = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(OrganizationUserListStatisticsInit());
@@ -224,8 +224,8 @@ const OrganizationUserListStatisticsAction = (Data, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(OrganizationUserListStatisticsAction(Data, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(OrganizationUserListStatisticsAction(navigate, Data, t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage
@@ -315,7 +315,7 @@ const allUserListFail = (message) => {
     message: message,
   };
 };
-const AllUserAction = (Data, t, setIsUpdateSuccessfully) => {
+const AllUserAction = (navigate, Data, t, setIsUpdateSuccessfully) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(allUserListInit());
@@ -332,8 +332,8 @@ const AllUserAction = (Data, t, setIsUpdateSuccessfully) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(addUserAction(Data, t, setIsUpdateSuccessfully));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(addUserAction(navigate, Data, t, setIsUpdateSuccessfully));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -421,7 +421,7 @@ const editUserFail = (message) => {
   };
 };
 
-const editUserAction = (
+const editUserAction = (navigate,
   setIsUpdateSuccessfully,
   setEditModal,
   updateData,
@@ -443,9 +443,9 @@ const editUserAction = (
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
+          await dispatch(RefreshToken(navigate, t));
           dispatch(
-            editUserAction(setIsUpdateSuccessfully, setEditModal, updateData, t)
+            editUserAction(navigate, setIsUpdateSuccessfully, setEditModal, updateData, t)
           );
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -544,7 +544,7 @@ const deleteUserFail = (message) => {
   };
 };
 
-const deleteUserAction = (dataForDelete, setDeleteEditModal, newData, t) => {
+const deleteUserAction = (navigate, dataForDelete, setDeleteEditModal, newData, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(deleteUserInit());
@@ -561,9 +561,9 @@ const deleteUserAction = (dataForDelete, setDeleteEditModal, newData, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
+          await dispatch(RefreshToken(navigate, t));
           dispatch(
-            deleteUserAction(dataForDelete, setDeleteEditModal, newData, t)
+            deleteUserAction(navigate, dataForDelete, setDeleteEditModal, newData, t)
           );
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -586,7 +586,7 @@ const deleteUserAction = (dataForDelete, setDeleteEditModal, newData, t) => {
             await dispatch(
               deleteUserSuccess(response.data.responseResult, newMessage)
             );
-            await dispatch(AllUserAction(newData, t));
+            await dispatch(AllUserAction(navigate, newData, t));
             return setDeleteEditModal(false);
           } else if (
             response.data.responseResult.responseMessage

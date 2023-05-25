@@ -34,7 +34,7 @@ const packageUpgradeFail = (message) => {
   };
 };
 
-const packagesforUpgrade = (t) => {
+const packagesforUpgrade = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let data = { OrganizationID: organizationID };
@@ -56,8 +56,8 @@ const packagesforUpgrade = (t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          await dispatch(packagesforUpgrade(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(packagesforUpgrade(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -115,7 +115,7 @@ const updateSubscribePackageFail = (message) => {
   };
 };
 
-const updateSubscribePackage = (ID, navigate, t) => {
+const updateSubscribePackage = (navigate, ID, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let tenureOfSuscriptionID = JSON.parse(localStorage.getItem("TenureOfSuscriptionID"));
@@ -139,8 +139,8 @@ const updateSubscribePackage = (ID, navigate, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          await dispatch(updateSubscribePackage(ID, navigate, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(updateSubscribePackage(navigate, ID, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

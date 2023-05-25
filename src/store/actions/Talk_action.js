@@ -35,6 +35,7 @@ import {
 import axios from 'axios'
 import { talkApi } from '../../commen/apis/Api_ends_points'
 import { signOut } from './Auth_Sign_Out'
+import { RefreshToken } from './Auth_action'
 
 // Refresh Token Talk Success
 const refreshtokenTalkSuccess = (response, message) => {
@@ -2221,7 +2222,7 @@ const OTOMessageSendNotification = (message, response) => {
 }
 
 //Insert OTO Messages
-const InsertOTOMessages = (object, fileUploadData, t) => {
+const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   console.log('InsertOTOMessages', object, fileUploadData)
   return (dispatch) => {
@@ -2240,8 +2241,8 @@ const InsertOTOMessages = (object, fileUploadData, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshToken(t));
-          dispatch(InsertOTOMessages(object, fileUploadData, t))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(InsertOTOMessages(navigate, object, fileUploadData, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2336,7 +2337,7 @@ const GroupPrivateSendNotification = (message) => {
 }
 
 //Insert Private Group Messages
-const InsertPrivateGroupMessages = (object, t) => {
+const InsertPrivateGroupMessages = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(GroupPrivateMessageSendInit())
@@ -2353,8 +2354,8 @@ const InsertPrivateGroupMessages = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshToken(t));
-          dispatch(InsertPrivateGroupMessages(object, t))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(InsertPrivateGroupMessages(navigate, object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2419,7 +2420,7 @@ const BlockUnblockUserNotification = (message) => {
 }
 
 //Block Unblock a user
-const BlockUnblockUser = (object, t) => {
+const BlockUnblockUser = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   console.log('Blocked User', object)
   let Data = {
@@ -2444,8 +2445,8 @@ const BlockUnblockUser = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshToken(t));
-          dispatch(BlockUnblockUser(object, t))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(BlockUnblockUser(navigate, object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2600,7 +2601,7 @@ const broadcastMessageSendNotification = (message) => {
 }
 
 //Insert Private Group Messages
-const InsertBroadcastMessages = (object, t) => {
+const InsertBroadcastMessages = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(broadcastMessageSendInit())
@@ -2617,8 +2618,8 @@ const InsertBroadcastMessages = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshToken(t));
-          dispatch(InsertBroadcastMessages(object, t))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(InsertBroadcastMessages(navigate, object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2690,7 +2691,7 @@ const createPrivateGroupNotification = (response, message) => {
 }
 
 //CreatePrivateGroup
-const CreatePrivateGroup = (object, t) => {
+const CreatePrivateGroup = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(createPrivateGroupInit())
@@ -2707,8 +2708,8 @@ const CreatePrivateGroup = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshToken(t));
-          dispatch(CreatePrivateGroup(object, t))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(CreatePrivateGroup(navigate, object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2864,7 +2865,7 @@ const MarkStarredMessageNotification = (message) => {
 }
 
 //Star Unstar A message
-const MarkStarredUnstarredMessage = (object, t) => {
+const MarkStarredUnstarredMessage = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   console.log('Mark Starred Message', object)
   let Data = {
@@ -2892,8 +2893,8 @@ const MarkStarredUnstarredMessage = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshToken(t));
-          dispatch(MarkStarredUnstarredMessage(object, t))
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(MarkStarredUnstarredMessage(navigate, object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
