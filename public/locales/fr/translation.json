@@ -588,5 +588,10 @@
   "Voter": "Voter",
   "Vote-count": "Vote Count",
   "Circulated": "Circulated",
-  "Note": "Note"
+  "Note": "Note",
+  "Committees": "Committees",
+  "File-sharing": "File Sharing",
+  "Discussion": "Discussion",
+  "Marketing-team-committee": "Marketing Team Committee",
+  "Executive-member": "Executive Member"
 }

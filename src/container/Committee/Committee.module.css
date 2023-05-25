@@ -4,6 +4,10 @@
   font-family: "MontserratSemiBold" !important;
 }
 
+body[dir="rtl"] .Committee-heading-size {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .create-Committee-btn {
   padding: 12px 80px !important;
   font-size: 12px;
@@ -19,6 +23,7 @@
 
 body[dir="rtl"] .create-Committee-btn {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .create-Committee-btn:active,
@@ -67,6 +72,7 @@ body[dir="rtl"] .PLusICon {
 
 body[dir="rtl"] .Archived-Group-btn-Committee-section {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Archived-Group-btn-Committee-section:active,
@@ -319,6 +325,10 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
   font-family: "MontserratSemiBold" !important;
   color: #bbbbbb !important;
   font-size: 20px !important;
+}
+
+body[dir="rtl"] .CommitteeNotFoundText {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .CommiiteeNotFoundContainer {

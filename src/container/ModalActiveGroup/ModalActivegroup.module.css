@@ -2,6 +2,10 @@
   font-size: 20px !important;
 }
 
+body[dir="rtl"] .heading-modal-active-contfirmation {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Confirm-activegroup-modal {
   padding: 12px 30px !important;
   font-size: 12px !important;
@@ -12,12 +16,43 @@
   border: 1px solid #707070 !important;
 }
 
+.Confirm-activegroup-modal:hover,
+.Confirm-activegroup-modal:active,
+.Confirm-activegroup-modal:focus,
+.Confirm-activegroup-modal:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #707070 !important;
+}
+
+body[dir="rtl"] .Confirm-activegroup-modal {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Cancell-activegroup-modal {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff;
   color: #5a5a5a;
-  font-weight: 600;
   border-radius: 4px !important;
   border: 1px solid #707070 !important;
+}
+
+.Cancell-activegroup-modal:hover,
+.Cancell-activegroup-modal:active,
+.Cancell-activegroup-modal:focus,
+.Cancell-activegroup-modal:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  border: 1px solid #707070 !important;
+}
+
+body[dir="rtl"] .Cancell-activegroup-modal {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }

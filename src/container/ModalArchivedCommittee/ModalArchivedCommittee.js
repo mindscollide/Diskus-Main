@@ -272,7 +272,7 @@ const ModalArchivedCommittee = ({
               <Container className={styles["Archived_modal_scrollbar"]}>
                 <Row className="text-center mt-4">
                   {getcommitteedata.length > 0 &&
-                    Object.values(getcommitteedata).length > 0 ? (
+                  Object.values(getcommitteedata).length > 0 ? (
                     currentposts.map((data, index) => {
                       console.log(data, "datadatadata");
                       // if(index+1===Lastpostindex||index+1>=)

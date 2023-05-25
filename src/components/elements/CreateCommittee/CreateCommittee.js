@@ -552,7 +552,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="CreateMeetingInput "
+                          className="CreateMeetingInput Saved_money_Tagline "
                         >
                           <TextField
                             applyClass="text-area-create-group"
@@ -595,7 +595,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="UpdateCheckbox"
+                              className="UpdateCheckbox Saved_money_Tagline"
                             >
                               <Checkbox
                                 className="SearchCheckbox MontserratSemiBold-600"
@@ -614,7 +614,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           lg={4}
                           md={4}
                           sm={4}
-                          className="commmittee-type-select-field CreateMeetingReminder"
+                          className="commmittee-type-select-field CreateMeetingReminder Saved_money_Tagline"
                         >
                           <SelectBox
                             name="Participant"
@@ -745,7 +745,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               })
                             ) : (
                               <>
-                                <Col sm={12} md={12} lg={12}>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className={styles["No-member"]}
+                                >
                                   {t("No-member-selected")}
                                 </Col>
                               </>
@@ -848,7 +853,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               })
                             ) : (
                               <>
-                                <Col sm={12} md={12} lg={12}>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className={styles["No-member"]}
+                                >
                                   {t("No-member-selected")}
                                 </Col>
                               </>
@@ -878,7 +888,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               md={12}
                               lg={12}
                               sm={12}
-                              className="create-committee-fields"
+                              className="create-committee-fields InputSearchForCreateCommittee"
                             >
                               <InputSearchFilter
                                 placeholder="Search member here"

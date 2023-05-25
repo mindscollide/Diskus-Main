@@ -950,5 +950,9 @@
   "Moderator": "Moderator",
   "Voter": "Voter",
   "Circulated": "Circulated",
-  "Note": "Note"
+  "Note": "Note",
+  "Committees": "Committees",
+  "File-sharing": "File Sharing",
+  "Discussion": "Discussion",
+  "Marketing-team-committee": "Marketing Team Committee"
 }

@@ -35,6 +35,7 @@ const TextField = ({
   clickIcon,
   maxLength,
 }) => {
+  console.log("applyClassapplyClass", applyClass);
   return (
     <>
       <FormGroup className={styles[formParentClass]}>
@@ -42,7 +43,11 @@ const TextField = ({
         <Form.Control
           onBlur={onBlur}
           autoComplete={autoComplete}
-          className={styles[applyClass]}
+          className={
+            applyClass != undefined && applyClass != null
+              ? styles[applyClass]
+              : "form-control2 Saved_money_Tagline"
+          }
           ref={ref}
           id={id && id}
           onFocus={focus}

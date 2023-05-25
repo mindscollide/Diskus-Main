@@ -1071,7 +1071,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           md={6}
                           sm={12}
-                          className="CreateMeetingReminder resolution-search-input select-dropdowns-height FontArabicRegular "
+                          className="CreateMeetingReminder resolution-search-input select-dropdowns-height FontArabicMedium "
                         >
                           <Select
                             name="Participant"

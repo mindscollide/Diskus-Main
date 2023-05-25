@@ -470,7 +470,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           <span
                             className={styles["details-class-Update-Committee"]}
                           >
-                            {t(" Details")}
+                            {t("Details")}
                           </span>
                         </Col>
                       </Row>
@@ -480,7 +480,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="create-committee-fields CreateMeetingInput"
+                          className="create-committee-fields CreateMeetingInput "
                         >
                           <TextField
                             applyClass="form-control2"
@@ -512,7 +512,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="CreateMeetingInput "
+                          className="CreateMeetingInput Saved_money_Tagline"
                         >
                           <TextField
                             applyClass="text-area-create-group"
@@ -556,7 +556,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="Update-committee-Checkbox"
+                              className="Update-committee-Checkbox Saved_money_Tagline"
                             >
                               <Checkbox
                                 className="SearchCheckbox MontserratSemiBold-600"
@@ -575,7 +575,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           lg={4}
                           md={4}
                           sm={4}
-                          className="committee-update-type-select-fields CreateMeetingReminder ml-0 select-participant-box"
+                          className="committee-update-type-select-fields CreateMeetingReminder ml-0 "
                         >
                           <SelectBox
                             name="Participant"
@@ -721,7 +721,12 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                 }
                               })
                             ) : (
-                              <Col sm={12} md={12} lg={12}>
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={styles["no-member"]}
+                              >
                                 {t("No-member-selected")}
                               </Col>
                             )}
@@ -828,7 +833,12 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                 }
                               })
                             ) : (
-                              <Col sm={12} md={12} lg={12}>
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={styles["no-member"]}
+                              >
                                 {t("No-member-selected")}
                               </Col>
                             )}
@@ -874,7 +884,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               lg={8}
                               md={8}
                               sm={8}
-                              className="committee-select-fields CreateMeetingReminder"
+                              className="committee-select-fields  CreateMeetingReminder"
                             >
                               <SelectBox
                                 name="Participant"
@@ -893,7 +903,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               <Button
                                 className={styles["ADD-Update-Committee-btn"]}
                                 onClick={handleAddAttendees}
-                                text={t(" ADD")}
+                                text={t("ADD")}
                               />
                             </Col>
                           </Row>
