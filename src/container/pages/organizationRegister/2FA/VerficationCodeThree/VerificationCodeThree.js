@@ -272,7 +272,7 @@ const VerificationCodeThree = () => {
                       </li>
                       <li className="List_Components-verification">
                         {t("Click-on")}
-                        <span className="anchor_tag_text">{t("Yes")}</span>
+                        <span className="anchor_tag_text1">{t("Yes")}</span>
                         <span className="space"></span>
                         {t("to-sign-in")}
                       </li>

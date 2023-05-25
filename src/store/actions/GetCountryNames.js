@@ -12,7 +12,6 @@ const getCountryNamesInit = () => {
 };
 
 const getCountryNameSuccess = (response, message) => {
-  console.log("fK_WorldCountryID", response)
   return {
     type: actions.COUNTRYNAMES_SUCCESS,
     response: response,
@@ -29,11 +28,11 @@ const getCountryNameFail = (message) => {
 
 const getCountryNamesAction = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(getCountryNamesInit());
     let form = new FormData();
     form.append("RequestMethod", getCountryNames.RequestMethod);
-    axios({
+    await axios({
       method: "post",
       url: authenticationApi,
       data: form,
@@ -55,16 +54,24 @@ const getCountryNamesAction = (navigate, t) => {
                   "ERM_AuthService_SignUpManager_GetWorldCountries_01".toLowerCase()
                 )
             ) {
-              console.log("fK_WorldCountryID", response.data.responseResult.worldCountries)
-              dispatch(
+
+              await dispatch(
                 getCountryNameSuccess(
                   response.data.responseResult.worldCountries,
                   t("Data-available")
                 )
-              );
-              console.log("fK_WorldCountryID", response.data.responseResult.worldCountries)
+              )
 
               dispatch(setLoader(false));
+              if (flag && flag != undefined && flag != null) {
+                console.log(
+                  "fK_WorldCountryID123123")
+              } else {
+                console.log(
+                  "fK_WorldCountryID123123")
+                dispatch(setLoader(false));
+              }
+
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

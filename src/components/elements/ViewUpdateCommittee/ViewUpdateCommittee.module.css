@@ -3,9 +3,17 @@
   color: #6172d6 !important;
 }
 
+body[dir="rtl"] .View-Committee-heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .View-Committee-Subheading {
   font-size: 30px !important;
   color: #6172d6 !important;
+}
+
+body[dir="rtl"] .View-Committee-Subheading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Management-Heading-View-Committee {
@@ -13,9 +21,17 @@
   color: #5a5a5a;
 }
 
+body[dir="rtl"] .Management-Heading-View-Committee {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .View-Committee-Head-Heading {
   font-size: 20px !important;
   color: #6172d6 !important;
+}
+
+body[dir="rtl"] .View-Committee-Head-Heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .ViewCommittee-head-info {
@@ -26,14 +42,27 @@
   color: #5a5a5a;
   font-size: 12px !important;
 }
+
+body[dir="rtl"] .name-ViewCommittee-group {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .paragraph-content-View-Committee {
   color: #5a5a5a;
   font-size: 16px !important;
 }
 
+body[dir="rtl"] .paragraph-content-View-Committee {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Designation-ViewCommittee-group {
   color: #5a5a5a;
   font-size: 10px !important;
+}
+
+body[dir="rtl"] .Designation-ViewCommittee-group {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .email-ViewCommittee-group {
@@ -43,9 +72,17 @@
   font-size: 10px !important;
 }
 
+body[dir="rtl"] .email-ViewCommittee-group {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
 .members-ViewCommittee-group-page {
   font-size: 20px !important;
   color: #6172d6 !important;
+}
+
+body[dir="rtl"] .members-ViewCommittee-group-page {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .scroll-bar-ViewGroup {
@@ -66,10 +103,10 @@
 }
 
 .View-Committee-paper {
-  width: 1429px !important;
-  height: 711px !important;
-  padding: 50px 50px !important;
-  margin-top: 8px !important;
+  height: auto !important;
+  width: 100% !important;
+  padding: 60px 60px !important;
+  /* margin-top: 8px !important; */
 }
 
 .Close-ViewCommittee-btn {
@@ -83,6 +120,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+body[dir="rtl"] .Close-ViewCommittee-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Close-ViewCommittee-btn:hover,

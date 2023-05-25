@@ -4,6 +4,10 @@
   font-family: "MontserratSemiBold";
 }
 
+body[dir="rtl"] .View_attachment_heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .ViewAttachment_paper {
   height: 710px !important;
   width: 1429px !important;
@@ -32,11 +36,20 @@
   text-overflow: ellipsis;
   text-align: center;
 }
+
+body[dir="rtl"] .notes-attachment-text {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
 .viewAttachmentCloseBtn {
   padding: 12px 30px;
   border: 1px solid #e1e1e1 !important;
   color: #5a5a5a;
   background-color: #fff !important;
+}
+
+body[dir="rtl"] .viewAttachmentCloseBtn {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .viewAttachmentCloseBtn:hover,

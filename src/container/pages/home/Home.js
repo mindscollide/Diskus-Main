@@ -26,10 +26,6 @@ import gregorian from "react-date-object/calendars/gregorian";
 import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
-// import Calendar from "react-calendar";
-// Branch number 3;
-// Branch number 3;
-// Branch number 3;
 
 import {
   getCalendarDataResponse,
@@ -93,12 +89,7 @@ const Home = () => {
     NotesReducer,
   } = state;
   const { RecentActivityData, SocketRecentActivityData } = settingReducer;
-  console.log(
-    settingReducer,
-    "settingReducersettingReducersettingReducersettingReducer"
-  );
   const [notes, setNotes] = useState([]);
-  console.log("notesnotesnotesnotes", notes);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -120,13 +111,32 @@ const Home = () => {
   // get new date
   let date = new Date();
   let getCurrentDate = moment(date).format("DD");
-  console.log("date", getCurrentDate);
   let format = "YYYYMMDD";
 
   const [dates, setDates] = useState([]);
   const [activateBlur, setActivateBlur] = useState(false);
 
   let Blur = localStorage.getItem("blur");
+  const [meetingCountThisWeek, setMeetingCountThisWeek] = useState(0);
+  const [upcomingMeetingCountThisWeek, setUpcomingMeetingCountThisWeek] =
+    useState(0);
+
+  const [todoListThisWeek, setTodoListThisWeek] = useState(0);
+  const [todoListAssignedThisWeek, setTodoListAssignedThisWeek] = useState(0);
+  //ToDo Table Data
+  const [rowsToDo, setRowToDo] = useState([]);
+  console.log(rowsToDo, "rowsToDorowsToDorowsToDo");
+  //Get Current User ID
+  let createrID = localStorage.getItem("userID");
+  //For Custom language datepicker
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
+
+  let lang = localStorage.getItem("i18nextLng");
+  let valueMeeting = meetingCountThisWeek - upcomingMeetingCountThisWeek;
+  let toDoValue = todoListThisWeek - todoListAssignedThisWeek;
+  const [show, setShow] = useState(false);
+  const [editFlag, setEditFlag] = useState(false);
 
   useEffect(() => {
     if (Blur != undefined) {
@@ -187,16 +197,6 @@ const Home = () => {
     dispatch(getCalendarDataResponse(navigate, userID, t));
   }, []);
 
-  //ToDo Table Data
-  const [rowsToDo, setRowToDo] = useState([]);
-  console.log(rowsToDo, "rowsToDorowsToDorowsToDo");
-  //Get Current User ID
-  let createrID = localStorage.getItem("userID");
-  //For Custom language datepicker
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
-
-  let lang = localStorage.getItem("i18nextLng");
   useEffect(() => {
     if (
       SocketRecentActivityData !== null &&
@@ -204,21 +204,9 @@ const Home = () => {
       Object.keys(SocketRecentActivityData).length > 0
     ) {
       let duplicatonData = [...recentActivityData];
-      console.log(
-        duplicatonData,
-        "recentActivityDatarecentActivityDatarecentActivityData"
-      );
       duplicatonData.unshift(SocketRecentActivityData);
-      console.log(
-        duplicatonData,
-        "recentActivityDatarecentActivityDatarecentActivityData"
-      );
       setRecentActivityData([...duplicatonData]);
     }
-    console.log(
-      "recentActivityDatarecentActivityDatarecentActivityData",
-      recentActivityData
-    );
   }, [SocketRecentActivityData]);
 
   useEffect(() => {
@@ -238,6 +226,7 @@ const Home = () => {
     let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
     dispatch(GetTodoListByUser(navigate, data, t));
   }, []);
+
   useEffect(() => {
     let OrganizationID = localStorage.getItem("organizationID");
     let Data = {
@@ -250,9 +239,11 @@ const Home = () => {
   const viewModalHandler = (id) => {
     console.log("viewID", id);
   };
+
   const handleClickNoteModal = () => {
     setModalNote(true);
   };
+
   console.log(notes, "NotesReducerNotesReducer");
   // render Notes Data
   useEffect(() => {
@@ -280,6 +271,7 @@ const Home = () => {
       setRowToDo(toDoListReducer.AllTodolistData);
     }
   }, [toDoListReducer.SocketTodoActivityData]);
+
   //get todolist reducer
   useEffect(() => {
     if (
@@ -386,15 +378,10 @@ const Home = () => {
     dispatch(GetWeeklyToDoCount(navigate, Data2, t));
     dispatch(GetUpcomingEvents(navigate, Data2, t));
   }, []);
+
   useEffect(() => {
     dispatch(getNotifications(navigate, createrID, t));
   }, []);
-  const [meetingCountThisWeek, setMeetingCountThisWeek] = useState(0);
-  const [upcomingMeetingCountThisWeek, setUpcomingMeetingCountThisWeek] =
-    useState(0);
-
-  const [todoListThisWeek, setTodoListThisWeek] = useState(0);
-  const [todoListAssignedThisWeek, setTodoListAssignedThisWeek] = useState(0);
 
   useEffect(() => {
     setMeetingCountThisWeek(meetingIdReducer.TotalMeetingCountThisWeek);
@@ -402,11 +389,13 @@ const Home = () => {
       meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek
     );
   }, [meetingIdReducer]);
+
   useEffect(() => {
     if (meetingIdReducer.UpcomingEventsData.length > 0) {
       console.log("NEW_UPCOMING123", meetingIdReducer.UpcomingEventsData);
     }
   }, [meetingIdReducer.UpcomingEventsData]);
+
   useEffect(() => {
     setTodoListThisWeek(toDoListReducer.TotalTodoCountThisWeek);
     setTodoListAssignedThisWeek(
@@ -419,8 +408,7 @@ const Home = () => {
       setRecentActivityData(RecentActivityData);
     }
   }, [RecentActivityData]);
-  let valueMeeting = meetingCountThisWeek - upcomingMeetingCountThisWeek;
-  let toDoValue = todoListThisWeek - todoListAssignedThisWeek;
+
   useEffect(() => {
     dispatch(HideNotificationAuth());
     dispatch(HideNotificationCalendarData());
@@ -429,6 +417,7 @@ const Home = () => {
     dispatch(HideNotificationMeetings());
     dispatch(HideNotification());
   }, [auth.ResponseMessage]);
+
   const showsubTalkIcons = () => {
     setSubIcons(!subIcons);
   };
@@ -535,16 +524,13 @@ const Home = () => {
     Authreducer.GetSelectedPackageResponseMessage,
   ]);
 
-  const [show, setShow] = useState(false);
-
-  const [editFlag, setEditFlag] = useState(false);
-
-  const calendarClickFunction = async (e) => {
+  const calendarClickFunction = async (value) => {
     console.log("Calendar Clicked");
+    if (!dates.includes(value)) {
+      setDates([...dates, value]);
+    }
     // await setShow(true);
   };
-
-  const trackRtlStyle = lang === "ar" ? { left: "2px", right: "auto" } : {};
 
   useEffect(() => {
     if (lang === "ar") {
@@ -558,8 +544,6 @@ const Home = () => {
     }
   }, [lang]);
 
-  console.log("updateNotesModalHomePage", updateNotesModalHomePage);
-  console.log("updateNotesModalHomePage", modalNote);
   const closeModal = () => {
     setActivateBlur(false);
     setLoader(false);
@@ -590,7 +574,7 @@ const Home = () => {
         return (
           <>
             {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-              getCurrentDate ? (
+            getCurrentDate ? (
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <div
@@ -607,7 +591,7 @@ const Home = () => {
                     <p className="events-dateTime MontserratSemiBold-600">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
-                        upcomingEventsData.meetingEvent.startTime
+                          upcomingEventsData.meetingEvent.startTime
                       )}
                     </p>
                   </div>
@@ -632,7 +616,7 @@ const Home = () => {
                       <p className="events-dateTime">
                         {newTimeFormaterAsPerUTCFullDate(
                           upcomingEventsData.meetingEvent.meetingDate +
-                          upcomingEventsData.meetingEvent.startTime
+                            upcomingEventsData.meetingEvent.startTime
                         )}
                       </p>
                     </div>
@@ -656,7 +640,7 @@ const Home = () => {
                     <p className="events-dateTime">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
-                        upcomingEventsData.meetingEvent.startTime
+                          upcomingEventsData.meetingEvent.startTime
                       )}
                     </p>
                   </div>
@@ -668,6 +652,7 @@ const Home = () => {
       }
     );
   };
+
   const OpenUpdateNotesModal = (id) => {
     dispatch(
       GetNotesByIdAPI(
@@ -680,6 +665,7 @@ const Home = () => {
       )
     );
   };
+
   return (
     <>
       <Container fluid className="Dashboard-Main-Container">
@@ -719,11 +705,11 @@ const Home = () => {
               <Col lg={12} md={12} sm={12} className="Dashboard-Calendar  ">
                 <div className="whiteBackground Spinner home-calendar-spinner border">
                   {calendarReducer.Spinner === true ||
-                    meetingIdReducer.Spinner === true ? (
+                  meetingIdReducer.Spinner === true ? (
                     <Spin />
                   ) : (
                     <>
-                      <Row >
+                      <Row>
                         <Col lg={12} md={12} sm={12} xs={12}>
                           <Calendar
                             value={dates}
@@ -735,6 +721,7 @@ const Home = () => {
                             showOtherDays={true}
                             multiple={false}
                             onChange={calendarClickFunction}
+                            className="custom-multi-date-picker"
                           />
                         </Col>
                       </Row>
@@ -746,7 +733,7 @@ const Home = () => {
 
                           <div className="Upcoming-Events-Box">
                             {meetingIdReducer.UpcomingEventsData.length ===
-                              0 ? (
+                            0 ? (
                               <ResultMessage
                                 icon={<Mailbox className="notification-icon" />}
                                 subTitle={t("No-upcoming-events")}
@@ -825,16 +812,11 @@ const Home = () => {
                       {t("Todo-list")}
                     </h1>
                     <ResultMessage
-                      // icon={<Paragraph className="nodata-table-icon" />}
                       icon={
                         <img src={TodoMessageIcon1} height={210} width={250} />
                       }
                       title="NO TASK"
                       className="NoTask"
-
-                    // title={t("Nothing-to-do")}
-                    // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}
-                    // extra={<Button text="+ Create New Meeting" />}
                     />
                   </Paper>
                 )}
@@ -846,7 +828,6 @@ const Home = () => {
               {t("Recent-activity")}
             </h1>
             <div className="whiteBackground Spinner home-recentactivity-scrollbar-container mt-2 border">
-              {/* <h1 className="recent-activity">Recent Activity</h1> */}
               <div
                 className={
                   recentActivityData.length === 0
@@ -870,13 +851,12 @@ const Home = () => {
                 ) : recentActivityData !== null &&
                   recentActivityData !== undefined ? (
                   recentActivityData.map((recentActivityData, index) => {
-                    // console.log(recentActivityData, "recentActivityData");
                     return (
                       <>
                         <Row>
                           <Col sm={1}>
                             {recentActivityData.notificationTypes.pK_NTID ===
-                              1 ? (
+                            1 ? (
                               <div className="desc-notification-user ">
                                 {/* Bell Notification SVG Code */}
                                 <svg

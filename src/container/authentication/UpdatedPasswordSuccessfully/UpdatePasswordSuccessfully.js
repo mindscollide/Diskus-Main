@@ -55,7 +55,8 @@ const UpdatePasswordSuccessfully = () => {
   useEffect(() => {
     if (
       Authreducer.passwordUpdateOnForgotPasswordMessege !== "" &&
-      Authreducer.passwordUpdateOnForgotPasswordMessege !== t("Password-updated-successfully") 
+      Authreducer.passwordUpdateOnForgotPasswordMessege !==
+        t("Password-updated-successfully")
     ) {
       setOpen({
         ...open,
@@ -138,7 +139,7 @@ const UpdatePasswordSuccessfully = () => {
                       className="d-flex justify-content-center"
                     >
                       <span className={styles["Update_Password_Heading"]}>
-                        Your Password
+                        {t("Your-password")}
                       </span>
                     </Col>
                   </Row>
@@ -150,7 +151,7 @@ const UpdatePasswordSuccessfully = () => {
                       className="d-flex justify-content-center"
                     >
                       <span className={styles["Update_Password_Heading"]}>
-                        has been updated
+                        {t("Has-been-updated")}
                       </span>
                     </Col>
                   </Row>

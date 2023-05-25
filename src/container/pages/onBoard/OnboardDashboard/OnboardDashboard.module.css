@@ -367,7 +367,7 @@ span.rmdp-arrow-container.rmdp-right {
   } */
 
 .rmdp-day.rmdp-selected span:not(.highlight) {
-  background-color: #8d8d8d !important;
+  background-color: #e1e1e1 !important;
   box-shadow: none !important;
   color: #fff !important;
 }

@@ -91,6 +91,7 @@
 
 .delete-note-modal-text {
   padding: 5px 100px;
+  margin-top: 30px !important;
   font-family: "MontserratSemiBold";
   color: #5a5a5a;
   font-size: 20px;
@@ -246,9 +247,10 @@ body[dir="rtl"] .quill-update-height {
 
 .errorUpdateMessage {
   position: absolute !important;
-  margin: 4px;
+  margin: 7.2% 6px 4px 0px;
+  /* margin-right: px !important;
   bottom: 190px !important;
-  height: 15px;
+  height: 15px; */
   /* height: 60px; */
   color: #f16b6b;
   visibility: visible !important;

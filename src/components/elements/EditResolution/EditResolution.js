@@ -82,6 +82,7 @@ const EditResolution = ({
   const [nonVoter, setNonVoters] = useState([]);
   const [votersForView, setVotersForView] = useState([]);
   const [nonVoterForView, setNonVotersForView] = useState([]);
+  const [error, setError] = useState(false);
   const [VoterName, setVoterName] = useState("");
   const [VoterID, setVoterID] = useState(0);
   const [isVoterModalRemove, setVoterModalRemove] = useState(false);
@@ -458,11 +459,11 @@ const EditResolution = ({
           NotesToVoter: editResolutionData.NotesToVoter,
           CirculationDateTime: createConvert(
             removeDashesFromDate(circulationDateTime.date) +
-            RemoveTimeDashes(circulationDateTime.time)
+              RemoveTimeDashes(circulationDateTime.time)
           ),
           DeadlineDateTime: createConvert(
             removeDashesFromDate(votingDateTime.date) +
-            RemoveTimeDashes(votingDateTime.time)
+              RemoveTimeDashes(votingDateTime.time)
           ),
           FK_ResolutionReminderFrequency_ID:
             editResolutionData.FK_ResolutionReminderFrequency_ID,
@@ -470,7 +471,7 @@ const EditResolution = ({
           PK_ResolutionID: editResolutionData.pK_ResolutionID,
           DecisionAnnouncementDateTime: createConvert(
             removeDashesFromDate(decisionDateTime.date) +
-            RemoveTimeDashes(decisionDateTime.time)
+              RemoveTimeDashes(decisionDateTime.time)
           ),
           IsResolutionPublic: editResolutionData.IsResolutionPublic,
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
@@ -492,6 +493,12 @@ const EditResolution = ({
           id
         )
       );
+    } else {
+      setError(true);
+      setOpen({
+        flag: true,
+        message: "Please fill all the fields",
+      });
     }
   };
 
@@ -601,7 +608,7 @@ const EditResolution = ({
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
     },
-    customRequest() { },
+    customRequest() {},
   };
   const handleChangeChecker = (e, checked) => {
     console.log(e.target.checked, checked, "testing1212");
@@ -783,7 +790,7 @@ const EditResolution = ({
       if (Object.keys(assignees.user).length > 0) {
         setMeetingAttendeesList(assignees.user);
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [assignees.user]);
 
   // Get Voting Methods
@@ -1005,7 +1012,7 @@ const EditResolution = ({
                               lg={12}
                               md={12}
                               sm={12}
-                              className="CreateMeetingInput  resolution-search-input"
+                              className="CreateMeetingInput  resolution-search-input "
                             >
                               <TextField
                                 applyClass="form-control2"
@@ -1018,13 +1025,26 @@ const EditResolution = ({
                                 change={handleChange}
                               />
                             </Col>
+                            <Row>
+                              <Col>
+                                <p
+                                  className={
+                                    editResolutionData.Title === "" && error
+                                      ? ` ${styles["errorMessage"]}`
+                                      : `${styles["errorMessage_hidden"]}`
+                                  }
+                                >
+                                  {t("Resolution-Title-is-required")}
+                                </p>
+                              </Col>
+                            </Row>
                           </Row>
                           <Row className="mt-3">
                             <Col
                               lg={6}
                               md={6}
                               sm={6}
-                              className="select-dropdowns-height"
+                              className="select-dropdowns-height FontArabicRegular"
                             >
                               <Select
                                 name="Participant"
@@ -1038,12 +1058,26 @@ const EditResolution = ({
                                 isSearchable={false}
                                 onChange={detailDropDownhandler}
                               />
+                              <Row>
+                                <Col>
+                                  <p
+                                    className={
+                                      editResolutionData.FK_ResolutionVotingMethodID ===
+                                        0 && error
+                                        ? ` ${styles["errorMessage"]}`
+                                        : `${styles["errorMessage_hidden"]}`
+                                    }
+                                  >
+                                    {t("Voting-method-is-required")}
+                                  </p>
+                                </Col>
+                              </Row>
                             </Col>
                             <Col
                               lg={6}
                               md={6}
                               sm={6}
-                              className="select-dropdowns-height"
+                              className="select-dropdowns-height FontArabicRegular"
                             >
                               <Select
                                 name=""
@@ -1062,7 +1096,7 @@ const EditResolution = ({
                               lg={12}
                               md={12}
                               sm={12}
-                              className="CreateMeetingInput "
+                              className="CreateMeetingInput FontArabicRegular "
                             >
                               <TextField
                                 applyClass="text-area-create-group"
@@ -1076,6 +1110,21 @@ const EditResolution = ({
                                 name="ResolutionDescription"
                                 change={handleChange}
                               />
+
+                              <Row>
+                                <Col>
+                                  <p
+                                    className={
+                                      editResolutionData.NotesToVoter === "" &&
+                                      error
+                                        ? ` ${styles["errorMessage"]}`
+                                        : `${styles["errorMessage_hidden"]}`
+                                    }
+                                  >
+                                    {t("Resolution-description-is-required")}
+                                  </p>
+                                </Col>
+                              </Row>
                             </Col>
                           </Row>
                           <Row className="mt-2">
@@ -1090,7 +1139,7 @@ const EditResolution = ({
                               lg={6}
                               sm={6}
                               md={6}
-                              className="CreateMeetingReminder resolution-search-input "
+                              className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
                               <TextField
                                 type="date"
@@ -1103,12 +1152,25 @@ const EditResolution = ({
                                   });
                                 }}
                               />
+                              <Row>
+                                <Col>
+                                  <p
+                                    className={
+                                      circulationDateTime.date === "" && error
+                                        ? ` ${styles["errorMessage"]}`
+                                        : `${styles["errorMessage_hidden"]}`
+                                    }
+                                  >
+                                    {t("Circulation-date-is-required")}
+                                  </p>
+                                </Col>
+                              </Row>
                             </Col>
                             <Col
                               lg={6}
                               sm={6}
                               md={6}
-                              className="CreateMeetingReminder resolution-search-input"
+                              className="CreateMeetingReminder resolution-search-input FontArabicRegular"
                             >
                               <TextField
                                 type="time"
@@ -1121,6 +1183,19 @@ const EditResolution = ({
                                   });
                                 }}
                               />
+                              <Row>
+                                <Col>
+                                  <p
+                                    className={
+                                      circulationDateTime.time === "" && error
+                                        ? ` ${styles["errorMessage"]}`
+                                        : `${styles["errorMessage_hidden"]}`
+                                    }
+                                  >
+                                    {t("Circulation-time-is-required")}
+                                  </p>
+                                </Col>
+                              </Row>
                             </Col>
                           </Row>
                           <Row className="mt-2">
@@ -1139,7 +1214,7 @@ const EditResolution = ({
                               lg={6}
                               sm={6}
                               md={6}
-                              className="CreateMeetingReminder resolution-search-input "
+                              className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
                               <TextField
                                 type="date"
@@ -1152,12 +1227,26 @@ const EditResolution = ({
                                   });
                                 }}
                               />
+
+                              <Row>
+                                <Col>
+                                  <p
+                                    className={
+                                      votingDateTime.date === "" && error
+                                        ? ` ${styles["errorMessage"]}`
+                                        : `${styles["errorMessage_hidden"]}`
+                                    }
+                                  >
+                                    {t("Voting-date-is-required")}
+                                  </p>
+                                </Col>
+                              </Row>
                             </Col>
                             <Col
                               lg={6}
                               sm={6}
                               md={6}
-                              className="CreateMeetingReminder  resolution-search-input"
+                              className="CreateMeetingReminder  resolution-search-input FontArabicRegular"
                             >
                               <TextField
                                 type="time"
@@ -1170,6 +1259,19 @@ const EditResolution = ({
                                   });
                                 }}
                               />
+                              <Row>
+                                <Col>
+                                  <p
+                                    className={
+                                      votingDateTime.time === "" && error
+                                        ? ` ${styles["errorMessage"]}`
+                                        : `${styles["errorMessage_hidden"]}`
+                                    }
+                                  >
+                                    {t("Voting-time-is-required")}
+                                  </p>
+                                </Col>
+                              </Row>
                             </Col>
                           </Row>
                           <Row className="mt-2">
@@ -1177,7 +1279,7 @@ const EditResolution = ({
                               <span
                                 className={
                                   styles[
-                                  "decision_annoucement_Createresoulution"
+                                    "decision_annoucement_Createresoulution"
                                   ]
                                 }
                               >
@@ -1190,7 +1292,7 @@ const EditResolution = ({
                               lg={6}
                               sm={6}
                               md={6}
-                              className="CreateMeetingReminder resolution-search-input "
+                              className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
                               <TextField
                                 type="date"
@@ -1203,12 +1305,25 @@ const EditResolution = ({
                                   });
                                 }}
                               />
+                              <Row>
+                                <Col>
+                                  <p
+                                    className={
+                                      decisionDateTime.date === "" && error
+                                        ? ` ${styles["errorMessage"]}`
+                                        : `${styles["errorMessage_hidden"]}`
+                                    }
+                                  >
+                                    {t("Decision-date-is-required")}
+                                  </p>
+                                </Col>
+                              </Row>
                             </Col>
                             <Col
                               lg={6}
                               sm={6}
                               md={6}
-                              className="CreateMeetingReminder resolution-search-input  "
+                              className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
                               <TextField
                                 type="time"
@@ -1221,6 +1336,19 @@ const EditResolution = ({
                                   });
                                 }}
                               />
+                              <Row>
+                                <Col>
+                                  <p
+                                    className={
+                                      decisionDateTime.time === "" && error
+                                        ? ` ${styles["errorMessage"]}`
+                                        : `${styles["errorMessage_hidden"]}`
+                                    }
+                                  >
+                                    {t("Decision-time-is-required")}
+                                  </p>
+                                </Col>
+                              </Row>
                             </Col>
                           </Row>
                           <Row className="mt-2">
@@ -1235,7 +1363,7 @@ const EditResolution = ({
                               lg={6}
                               md={6}
                               sm={12}
-                              className="CreateMeetingReminder select-dropdowns-height "
+                              className="CreateMeetingReminder select-dropdowns-height FontArabicRegular "
                             >
                               <Select
                                 name="Participant"
@@ -1250,7 +1378,7 @@ const EditResolution = ({
                               />
                             </Col>
                           </Row>
-                          <Row className="mt-4">
+                          <Row className="mt-2">
                             <Col
                               lg={12}
                               md={12}
@@ -1262,7 +1390,7 @@ const EditResolution = ({
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="UpdateCheckbox  d-flex justify-content-start"
+                                  className="UpdateCheckbox  d-flex justify-content-start FontArabicRegular"
                                 >
                                   <Checkbox
                                     className="SearchCheckbox MontserratSemiBold-600"
@@ -1338,6 +1466,19 @@ const EditResolution = ({
                                         )}
                                         change={onChangeSearch}
                                       />
+                                      <Row>
+                                        <Col>
+                                          <p
+                                            className={
+                                              voters.length === 0 && error
+                                                ? ` ${styles["errorMessage"]}`
+                                                : `${styles["errorMessage_hidden"]}`
+                                            }
+                                          >
+                                            {t("At-least-add-one-voter")}
+                                          </p>
+                                        </Col>
+                                      </Row>
                                     </Col>
 
                                     <Col
@@ -1378,47 +1519,47 @@ const EditResolution = ({
                                       <Row>
                                         {votersForView.length > 0
                                           ? votersForView.map((data, index) => {
-                                            return (
-                                              <>
-                                                <Col
-                                                  lg={6}
-                                                  md={6}
-                                                  sm={6}
-                                                  className="mt-2"
-                                                >
-                                                  <Row>
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                    >
-                                                      <EmployeeinfoCard
-                                                        Employeename={
-                                                          data?.name
-                                                        }
-                                                        Employeeemail={
-                                                          data?.emailAddress
-                                                        }
-                                                        Icon={
-                                                          <img
-                                                            src={CrossIcon}
-                                                            width="18px"
-                                                            height="18px"
-                                                            onClick={() =>
-                                                              removeUserForVoter(
-                                                                data.pK_UID,
-                                                                data.name
-                                                              )
-                                                            }
-                                                          />
-                                                        }
-                                                      />
-                                                    </Col>
-                                                  </Row>
-                                                </Col>
-                                              </>
-                                            );
-                                          })
+                                              return (
+                                                <>
+                                                  <Col
+                                                    lg={6}
+                                                    md={6}
+                                                    sm={6}
+                                                    className="mt-2"
+                                                  >
+                                                    <Row>
+                                                      <Col
+                                                        lg={12}
+                                                        md={12}
+                                                        sm={12}
+                                                      >
+                                                        <EmployeeinfoCard
+                                                          Employeename={
+                                                            data?.name
+                                                          }
+                                                          Employeeemail={
+                                                            data?.emailAddress
+                                                          }
+                                                          Icon={
+                                                            <img
+                                                              src={CrossIcon}
+                                                              width="18px"
+                                                              height="18px"
+                                                              onClick={() =>
+                                                                removeUserForVoter(
+                                                                  data.pK_UID,
+                                                                  data.name
+                                                                )
+                                                              }
+                                                            />
+                                                          }
+                                                        />
+                                                      </Col>
+                                                    </Row>
+                                                  </Col>
+                                                </>
+                                              );
+                                            })
                                           : null}
                                       </Row>
                                     </Col>
@@ -1481,49 +1622,49 @@ const EditResolution = ({
                                       <Row>
                                         {nonVoterForView.length > 0
                                           ? nonVoterForView.map(
-                                            (data, index) => {
-                                              return (
-                                                <>
-                                                  <Col
-                                                    lg={6}
-                                                    md={6}
-                                                    sm={6}
-                                                    className="mt-2"
-                                                  >
-                                                    <Row>
-                                                      <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
-                                                      >
-                                                        <EmployeeinfoCard
-                                                          Employeename={
-                                                            data?.name
-                                                          }
-                                                          Employeeemail={
-                                                            data?.emailAddress
-                                                          }
-                                                          Icon={
-                                                            <img
-                                                              src={CrossIcon}
-                                                              width="18px"
-                                                              height="18px"
-                                                              onClick={() =>
-                                                                removeUserForNonVoter(
-                                                                  data.pK_UID,
-                                                                  data.name
-                                                                )
-                                                              }
-                                                            />
-                                                          }
-                                                        />
-                                                      </Col>
-                                                    </Row>
-                                                  </Col>
-                                                </>
-                                              );
-                                            }
-                                          )
+                                              (data, index) => {
+                                                return (
+                                                  <>
+                                                    <Col
+                                                      lg={6}
+                                                      md={6}
+                                                      sm={6}
+                                                      className="mt-2"
+                                                    >
+                                                      <Row>
+                                                        <Col
+                                                          lg={12}
+                                                          md={12}
+                                                          sm={12}
+                                                        >
+                                                          <EmployeeinfoCard
+                                                            Employeename={
+                                                              data?.name
+                                                            }
+                                                            Employeeemail={
+                                                              data?.emailAddress
+                                                            }
+                                                            Icon={
+                                                              <img
+                                                                src={CrossIcon}
+                                                                width="18px"
+                                                                height="18px"
+                                                                onClick={() =>
+                                                                  removeUserForNonVoter(
+                                                                    data.pK_UID,
+                                                                    data.name
+                                                                  )
+                                                                }
+                                                              />
+                                                            }
+                                                          />
+                                                        </Col>
+                                                      </Row>
+                                                    </Col>
+                                                  </>
+                                                );
+                                              }
+                                            )
                                           : null}
                                       </Row>
                                     </Col>
@@ -1570,113 +1711,129 @@ const EditResolution = ({
                                     >
                                       {tasksAttachments.length > 0
                                         ? tasksAttachments.map(
-                                          (data, index) => {
-                                            var ext =
-                                              data?.DisplayAttachmentName?.split(
-                                                "."
-                                              ).pop();
-                                            const first =
-                                              data?.DisplayAttachmentName?.split(
-                                                " "
-                                              )[0];
-                                            return (
-                                              <Col
-                                                sm={12}
-                                                lg={2}
-                                                md={2}
-                                                className="modaltodolist-attachment-icon"
-                                              >
-                                                {ext === "doc" ? <FileIcon
-                                                  extension={"docx"}
-                                                  size={78}
-                                                  type={"document"}
-
-                                                  labelColor={"rgba(44, 88, 152)"}
-                                                /> :
-                                                  ext === "docx" ? <FileIcon
-                                                    extension={"docx"}
-                                                    size={78}
-                                                    type={"font"}
-
-                                                    labelColor={"rgba(44, 88, 152)"}
-                                                  /> :
-                                                    ext === "xls" ? <FileIcon
+                                            (data, index) => {
+                                              var ext =
+                                                data?.DisplayAttachmentName?.split(
+                                                  "."
+                                                ).pop();
+                                              const first =
+                                                data?.DisplayAttachmentName?.split(
+                                                  " "
+                                                )[0];
+                                              return (
+                                                <Col
+                                                  sm={12}
+                                                  lg={2}
+                                                  md={2}
+                                                  className="modaltodolist-attachment-icon"
+                                                >
+                                                  {ext === "doc" ? (
+                                                    <FileIcon
+                                                      extension={"docx"}
+                                                      size={78}
+                                                      type={"document"}
+                                                      labelColor={
+                                                        "rgba(44, 88, 152)"
+                                                      }
+                                                    />
+                                                  ) : ext === "docx" ? (
+                                                    <FileIcon
+                                                      extension={"docx"}
+                                                      size={78}
+                                                      type={"font"}
+                                                      labelColor={
+                                                        "rgba(44, 88, 152)"
+                                                      }
+                                                    />
+                                                  ) : ext === "xls" ? (
+                                                    <FileIcon
                                                       extension={"xls"}
                                                       type={"spreadsheet"}
-
                                                       size={78}
-
-                                                      labelColor={"rgba(16, 121, 63)"}
-                                                    /> :
-                                                      ext === "xlsx" ? <FileIcon
-                                                        extension={"xls"}
-                                                        type={"spreadsheet"}
-
-                                                        size={78}
-
-                                                        labelColor={"rgba(16, 121, 63)"}
-                                                      /> :
-                                                        ext === "pdf" ? <FileIcon
-                                                          extension={"pdf"}
-                                                          size={78}
-                                                          {...defaultStyles.pdf}
-                                                        /> :
-                                                          ext === "png" ? <FileIcon
-                                                            extension={"png"}
-                                                            size={78}
-                                                            type={"image"}
-
-                                                            labelColor={"rgba(102, 102, 224)"}
-                                                          /> :
-                                                            ext === "txt" ? <FileIcon
-                                                              extension={"txt"}
-                                                              size={78}
-                                                              type={"document"}
-
-                                                              labelColor={"rgba(52, 120, 199)"}
-                                                            /> :
-                                                              ext === "jpg" ? <FileIcon
-                                                                extension={"jpg"}
-                                                                size={78}
-                                                                type={"image"}
-
-                                                                labelColor={"rgba(102, 102, 224)"}
-                                                              /> :
-                                                                ext === "jpeg" ? <FileIcon
-                                                                  extension={"jpeg"}
-                                                                  size={78}
-                                                                  type={"image"}
-
-                                                                  labelColor={"rgba(102, 102, 224)"}
-                                                                /> :
-                                                                  ext === "gif" ? <FileIcon
-                                                                    extension={"gif"}
-                                                                    size={78}
-
-                                                                    {...defaultStyles.gif}
-                                                                  /> : null}
-                                                <span className="deleteBtn">
-                                                  <img
-                                                    src={
-                                                      deleteButtonCreateMeeting
-                                                    }
-                                                    width={15}
-                                                    height={15}
-                                                    onClick={() =>
-                                                      deleteFilefromAttachments(
-                                                        data,
-                                                        index
-                                                      )
-                                                    }
-                                                  />
-                                                </span>
-                                                <p className="modaltodolist-attachment-text">
-                                                  {first}
-                                                </p>
-                                              </Col>
-                                            );
-                                          }
-                                        )
+                                                      labelColor={
+                                                        "rgba(16, 121, 63)"
+                                                      }
+                                                    />
+                                                  ) : ext === "xlsx" ? (
+                                                    <FileIcon
+                                                      extension={"xls"}
+                                                      type={"spreadsheet"}
+                                                      size={78}
+                                                      labelColor={
+                                                        "rgba(16, 121, 63)"
+                                                      }
+                                                    />
+                                                  ) : ext === "pdf" ? (
+                                                    <FileIcon
+                                                      extension={"pdf"}
+                                                      size={78}
+                                                      {...defaultStyles.pdf}
+                                                    />
+                                                  ) : ext === "png" ? (
+                                                    <FileIcon
+                                                      extension={"png"}
+                                                      size={78}
+                                                      type={"image"}
+                                                      labelColor={
+                                                        "rgba(102, 102, 224)"
+                                                      }
+                                                    />
+                                                  ) : ext === "txt" ? (
+                                                    <FileIcon
+                                                      extension={"txt"}
+                                                      size={78}
+                                                      type={"document"}
+                                                      labelColor={
+                                                        "rgba(52, 120, 199)"
+                                                      }
+                                                    />
+                                                  ) : ext === "jpg" ? (
+                                                    <FileIcon
+                                                      extension={"jpg"}
+                                                      size={78}
+                                                      type={"image"}
+                                                      labelColor={
+                                                        "rgba(102, 102, 224)"
+                                                      }
+                                                    />
+                                                  ) : ext === "jpeg" ? (
+                                                    <FileIcon
+                                                      extension={"jpeg"}
+                                                      size={78}
+                                                      type={"image"}
+                                                      labelColor={
+                                                        "rgba(102, 102, 224)"
+                                                      }
+                                                    />
+                                                  ) : ext === "gif" ? (
+                                                    <FileIcon
+                                                      extension={"gif"}
+                                                      size={78}
+                                                      {...defaultStyles.gif}
+                                                    />
+                                                  ) : null}
+                                                  <span className="deleteBtn">
+                                                    <img
+                                                      src={
+                                                        deleteButtonCreateMeeting
+                                                      }
+                                                      width={15}
+                                                      height={15}
+                                                      onClick={() =>
+                                                        deleteFilefromAttachments(
+                                                          data,
+                                                          index
+                                                        )
+                                                      }
+                                                    />
+                                                  </span>
+                                                  <p className="modaltodolist-attachment-text  FontArabicRegular">
+                                                    {first}
+                                                  </p>
+                                                </Col>
+                                              );
+                                            }
+                                          )
                                         : null}
                                     </Col>
                                   </Row>
@@ -1711,9 +1868,11 @@ const EditResolution = ({
                                         />
                                       </span>
                                     </p>
-                                    <p className="ant-upload-text">
+                                    <p className="ant-upload-text FontArabicRegular">
                                       {t("Drag-&-drop-or")}
-                                      <span> {t("Choose-file")} </span>{" "}
+                                      <span className="FontArabicRegular">
+                                        {t("Choose-file")}
+                                      </span>{" "}
                                       {t("Here")}
                                     </p>
                                   </Dragger>
@@ -1757,7 +1916,7 @@ const EditResolution = ({
                                     text={t("Circulate")}
                                     className={
                                       styles[
-                                      "circulate_button_Createresolution"
+                                        "circulate_button_Createresolution"
                                       ]
                                     }
                                     onClick={() =>

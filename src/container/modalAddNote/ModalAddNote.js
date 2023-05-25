@@ -444,10 +444,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
             isCreateNote === true
               ? "d-none"
               : isCreateNote === false
-                ? styles["header-AddNotesModal-close-btn"]
-                : isAddNote
-                  ? styles["addNoteHeader"]
-                  : null
+              ? styles["header-AddNotesModal-close-btn"]
+              : isAddNote
+              ? styles["addNoteHeader"]
+              : null
           }
           centered
           modalFooterClassName={styles["modal-userprofile-footer"]}
@@ -523,7 +523,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                           <p
                             className={
                               addNoteFields.Title.errorStatus &&
-                                addNoteFields.Title.value === ""
+                              addNoteFields.Title.value === ""
                                 ? ` ${styles["errorNotesMessage"]} `
                                 : `${styles["errorNotesMessage_hidden"]}`
                             }
@@ -552,7 +552,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                           <p
                             className={
                               addNoteFields.Description.errorStatus &&
-                                addNoteFields.Description.value === ""
+                              addNoteFields.Description.value === ""
                                 ? ` ${styles["errorNotesMessage_description"]} `
                                 : `${styles["errorNotesMessage_hidden_description"]}`
                             }
@@ -575,7 +575,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                           className="mb-3 mt-2"
                         >
                           <label className={styles["Add-Notes-Attachment"]}>
-                            {t("Attachements")}
+                            {t("Attachments")}
                           </label>
                         </Col>
                       </Row>
@@ -601,117 +601,125 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                               >
                                 {tasksAttachments.TasksAttachments.length > 0
                                   ? tasksAttachments.TasksAttachments.map(
-                                    (data, index) => {
-                                      var ext =
-                                        data.DisplayAttachmentName.split(
-                                          "."
-                                        ).pop();
+                                      (data, index) => {
+                                        var ext =
+                                          data.DisplayAttachmentName.split(
+                                            "."
+                                          ).pop();
 
-                                      const first =
-                                        data.DisplayAttachmentName.split(
-                                          " "
-                                        )[0];
-                                      console.log("extextext", ext)
-                                      // let newext = JSON.parse(ext)
-                                      // console.log("extextext", newext)
+                                        const first =
+                                          data.DisplayAttachmentName.split(
+                                            " "
+                                          )[0];
+                                        console.log("extextext", ext);
+                                        // let newext = JSON.parse(ext)
+                                        // console.log("extextext", newext)
 
-                                      return (
-                                        <Col
-                                          sm={12}
-                                          lg={2}
-                                          md={2}
-                                          className="modaltodolist-attachment-icon"
-                                        >
-                                          {ext === "doc" ? <FileIcon
-                                            extension={"docx"}
-                                            size={78}
-                                            type={"document"}
-
-                                            labelColor={"rgba(44, 88, 152)"}
-                                          /> :
-                                            ext === "docx" ? <FileIcon
-                                              extension={"docx"}
-                                              size={78}
-                                              type={"font"}
-
-                                              labelColor={"rgba(44, 88, 152)"}
-                                            /> :
-                                              ext === "xls" ? <FileIcon
+                                        return (
+                                          <Col
+                                            sm={12}
+                                            lg={2}
+                                            md={2}
+                                            className="modaltodolist-attachment-icon"
+                                          >
+                                            {ext === "doc" ? (
+                                              <FileIcon
+                                                extension={"docx"}
+                                                size={78}
+                                                type={"document"}
+                                                labelColor={"rgba(44, 88, 152)"}
+                                              />
+                                            ) : ext === "docx" ? (
+                                              <FileIcon
+                                                extension={"docx"}
+                                                size={78}
+                                                type={"font"}
+                                                labelColor={"rgba(44, 88, 152)"}
+                                              />
+                                            ) : ext === "xls" ? (
+                                              <FileIcon
                                                 extension={"xls"}
                                                 type={"spreadsheet"}
-
                                                 size={78}
-
                                                 labelColor={"rgba(16, 121, 63)"}
-                                              /> :
-                                                ext === "xlsx" ? <FileIcon
-                                                  extension={"xls"}
-                                                  type={"spreadsheet"}
+                                              />
+                                            ) : ext === "xlsx" ? (
+                                              <FileIcon
+                                                extension={"xls"}
+                                                type={"spreadsheet"}
+                                                size={78}
+                                                labelColor={"rgba(16, 121, 63)"}
+                                              />
+                                            ) : ext === "pdf" ? (
+                                              <FileIcon
+                                                extension={"pdf"}
+                                                size={78}
+                                                {...defaultStyles.pdf}
+                                              />
+                                            ) : ext === "png" ? (
+                                              <FileIcon
+                                                extension={"png"}
+                                                size={78}
+                                                type={"image"}
+                                                labelColor={
+                                                  "rgba(102, 102, 224)"
+                                                }
+                                              />
+                                            ) : ext === "txt" ? (
+                                              <FileIcon
+                                                extension={"txt"}
+                                                size={78}
+                                                type={"document"}
+                                                labelColor={
+                                                  "rgba(52, 120, 199)"
+                                                }
+                                              />
+                                            ) : ext === "jpg" ? (
+                                              <FileIcon
+                                                extension={"jpg"}
+                                                size={78}
+                                                type={"image"}
+                                                labelColor={
+                                                  "rgba(102, 102, 224)"
+                                                }
+                                              />
+                                            ) : ext === "jpeg" ? (
+                                              <FileIcon
+                                                extension={"jpeg"}
+                                                size={78}
+                                                type={"image"}
+                                                labelColor={
+                                                  "rgba(102, 102, 224)"
+                                                }
+                                              />
+                                            ) : ext === "gif" ? (
+                                              <FileIcon
+                                                extension={"gif"}
+                                                size={78}
+                                                {...defaultStyles.gif}
+                                              />
+                                            ) : null}
 
-                                                  size={78}
-
-                                                  labelColor={"rgba(16, 121, 63)"}
-                                                /> :
-                                                  ext === "pdf" ? <FileIcon
-                                                    extension={"pdf"}
-                                                    size={78}
-                                                    {...defaultStyles.pdf}
-                                                  /> :
-                                                    ext === "png" ? <FileIcon
-                                                      extension={"png"}
-                                                      size={78}
-                                                      type={"image"}
-
-                                                      labelColor={"rgba(102, 102, 224)"}
-                                                    /> :
-                                                      ext === "txt" ? <FileIcon
-                                                        extension={"txt"}
-                                                        size={78}
-                                                        type={"document"}
-
-                                                        labelColor={"rgba(52, 120, 199)"}
-                                                      /> :
-                                                        ext === "jpg" ? <FileIcon
-                                                          extension={"jpg"}
-                                                          size={78}
-                                                          type={"image"}
-
-                                                          labelColor={"rgba(102, 102, 224)"}
-                                                        /> :
-                                                          ext === "jpeg" ? <FileIcon
-                                                            extension={"jpeg"}
-                                                            size={78}
-                                                            type={"image"}
-
-                                                            labelColor={"rgba(102, 102, 224)"}
-                                                          /> :
-                                                            ext === "gif" ? <FileIcon
-                                                              extension={"gif"}
-                                                              size={78}
-
-                                                              {...defaultStyles.gif}
-                                                            /> : null}
-
-                                          <span className="deleteBtn">
-                                            <img
-                                              src={deleteButtonCreateMeeting}
-                                              width={15}
-                                              height={15}
-                                              onClick={() =>
-                                                deleteFilefromAttachments(
-                                                  data,
-                                                  index
-                                                )
-                                              }
-                                            />
-                                          </span>
-                                          <p className="modaltodolist-attachment-text">
-                                            {first}
-                                          </p>
-                                        </Col>
-                                      );
-                                    }
-                                  )
+                                            <span className="deleteBtn">
+                                              <img
+                                                src={deleteButtonCreateMeeting}
+                                                width={15}
+                                                height={15}
+                                                onClick={() =>
+                                                  deleteFilefromAttachments(
+                                                    data,
+                                                    index
+                                                  )
+                                                }
+                                              />
+                                            </span>
+                                            <p className="modaltodolist-attachment-text">
+                                              {first}
+                                            </p>
+                                          </Col>
+                                        );
+                                      }
+                                    )
                                   : null}
                               </Col>
                             </Row>
@@ -724,7 +732,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
               ) : isCreateNote ? (
                 <>
                   <Row>
-                    {/* <Col lg={2} md={2} sm={2} /> */}
                     <Col
                       lg={12}
                       md={12}

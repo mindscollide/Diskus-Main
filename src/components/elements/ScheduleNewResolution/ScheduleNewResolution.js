@@ -452,18 +452,18 @@ const ScheduleNewResolution = ({
           NotesToVoter: createResolutionData.NotesToVoter,
           CirculationDateTime: createConvert(
             removeDashesFromDate(circulationDateTime.date) +
-            RemoveTimeDashes(circulationDateTime.time)
+              RemoveTimeDashes(circulationDateTime.time)
           ),
           DeadlineDateTime: createConvert(
             removeDashesFromDate(votingDateTime.date) +
-            RemoveTimeDashes(votingDateTime.time)
+              RemoveTimeDashes(votingDateTime.time)
           ),
           FK_ResolutionReminderFrequency_ID:
             createResolutionData.FK_ResolutionReminderFrequency_ID,
           FK_ResolutionDecision_ID: 3,
           DecisionAnnouncementDateTime: createConvert(
             removeDashesFromDate(decisionDateTime.date) +
-            RemoveTimeDashes(decisionDateTime.time)
+              RemoveTimeDashes(decisionDateTime.time)
           ),
           IsResolutionPublic: createResolutionData.IsResolutionPublic,
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
@@ -580,7 +580,7 @@ const ScheduleNewResolution = ({
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
     },
-    customRequest() { },
+    customRequest() {},
   };
 
   // Check is Resolution Checker Handler
@@ -642,7 +642,7 @@ const ScheduleNewResolution = ({
       if (Object.keys(assignees.user).length > 0) {
         setMeetingAttendeesList(assignees.user);
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [assignees.user]);
 
   useEffect(() => {
@@ -768,7 +768,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           md={6}
                           sm={6}
-                          className="resolution-search-input"
+                          className="resolution-search-input FontArabicRegular"
                         >
                           <Select
                             name="Participant"
@@ -797,7 +797,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           md={6}
                           sm={6}
-                          className="resolution-search-input"
+                          className="resolution-search-input FontArabicRegular"
                         >
                           <Select
                             name=""
@@ -816,7 +816,7 @@ const ScheduleNewResolution = ({
                           lg={12}
                           md={12}
                           sm={12}
-                          className="CreateMeetingInput "
+                          className="CreateMeetingInput FontArabicRegular "
                         >
                           <TextField
                             applyClass="text-area-create-group"
@@ -835,7 +835,7 @@ const ScheduleNewResolution = ({
                               <p
                                 className={
                                   createResolutionData.NotesToVoter === "" &&
-                                    error
+                                  error
                                     ? ` ${styles["errorMessage"]}`
                                     : `${styles["errorMessage_hidden"]}`
                                 }
@@ -858,7 +858,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input  "
+                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           <TextField
                             type="date"
@@ -888,7 +888,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input  "
+                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           <TextField
                             type="time"
@@ -931,7 +931,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input "
+                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           <TextField
                             type="date"
@@ -961,7 +961,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input  "
+                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           <TextField
                             type="time"
@@ -1004,7 +1004,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input  "
+                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           <TextField
                             type="date"
@@ -1034,7 +1034,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input  "
+                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           <TextField
                             type="time"
@@ -1073,7 +1073,7 @@ const ScheduleNewResolution = ({
                           lg={6}
                           md={6}
                           sm={12}
-                          className="CreateMeetingReminder resolution-search-input select-dropdowns-height "
+                          className="CreateMeetingReminder resolution-search-input select-dropdowns-height FontArabicMedium "
                         >
                           <Select
                             name="Participant"
@@ -1112,7 +1112,7 @@ const ScheduleNewResolution = ({
                               lg={12}
                               md={12}
                               sm={12}
-                              className="UpdateCheckbox  d-flex justify-content-start"
+                              className="UpdateCheckbox  d-flex justify-content-start FontArabicRegular"
                             >
                               <Checkbox
                                 className="SearchCheckbox MontserratSemiBold-600"
@@ -1241,41 +1241,41 @@ const ScheduleNewResolution = ({
                                   <Row>
                                     {votersForView.length > 0
                                       ? votersForView.map((data, index) => {
-                                        return (
-                                          <>
-                                            <Col
-                                              lg={6}
-                                              md={6}
-                                              sm={6}
-                                              className="mt-2"
-                                            >
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <EmployeeinfoCard
-                                                    Employeename={data?.name}
-                                                    Employeeemail={
-                                                      data?.emailAddress
-                                                    }
-                                                    Icon={
-                                                      <img
-                                                        src={CrossIcon}
-                                                        width="18px"
-                                                        height="18px"
-                                                        onClick={() =>
-                                                          removeUserForVoter(
-                                                            data.pK_UID,
-                                                            data.name
-                                                          )
-                                                        }
-                                                      />
-                                                    }
-                                                  />
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                          </>
-                                        );
-                                      })
+                                          return (
+                                            <>
+                                              <Col
+                                                lg={6}
+                                                md={6}
+                                                sm={6}
+                                                className="mt-2"
+                                              >
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <EmployeeinfoCard
+                                                      Employeename={data?.name}
+                                                      Employeeemail={
+                                                        data?.emailAddress
+                                                      }
+                                                      Icon={
+                                                        <img
+                                                          src={CrossIcon}
+                                                          width="18px"
+                                                          height="18px"
+                                                          onClick={() =>
+                                                            removeUserForVoter(
+                                                              data.pK_UID,
+                                                              data.name
+                                                            )
+                                                          }
+                                                        />
+                                                      }
+                                                    />
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                            </>
+                                          );
+                                        })
                                       : null}
                                   </Row>
                                 </Col>
@@ -1338,41 +1338,41 @@ const ScheduleNewResolution = ({
                                   <Row>
                                     {nonVoterForView.length > 0
                                       ? nonVoterForView.map((data, index) => {
-                                        return (
-                                          <>
-                                            <Col
-                                              lg={6}
-                                              md={6}
-                                              sm={6}
-                                              className="mt-2"
-                                            >
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <EmployeeinfoCard
-                                                    Employeename={data?.name}
-                                                    Employeeemail={
-                                                      data?.emailAddress
-                                                    }
-                                                    Icon={
-                                                      <img
-                                                        src={CrossIcon}
-                                                        width="18px"
-                                                        height="18px"
-                                                        onClick={() =>
-                                                          removeUserForNonVoter(
-                                                            data.pK_UID,
-                                                            data.name
-                                                          )
-                                                        }
-                                                      />
-                                                    }
-                                                  />
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                          </>
-                                        );
-                                      })
+                                          return (
+                                            <>
+                                              <Col
+                                                lg={6}
+                                                md={6}
+                                                sm={6}
+                                                className="mt-2"
+                                              >
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <EmployeeinfoCard
+                                                      Employeename={data?.name}
+                                                      Employeeemail={
+                                                        data?.emailAddress
+                                                      }
+                                                      Icon={
+                                                        <img
+                                                          src={CrossIcon}
+                                                          width="18px"
+                                                          height="18px"
+                                                          onClick={() =>
+                                                            removeUserForNonVoter(
+                                                              data.pK_UID,
+                                                              data.name
+                                                            )
+                                                          }
+                                                        />
+                                                      }
+                                                    />
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                            </>
+                                          );
+                                        })
                                       : null}
                                   </Row>
                                 </Col>
@@ -1425,113 +1425,129 @@ const ScheduleNewResolution = ({
                                     >
                                       {tasksAttachments.length > 0
                                         ? tasksAttachments.map(
-                                          (data, index) => {
-                                            var ext =
-                                              data?.DisplayAttachmentName?.split(
-                                                "."
-                                              ).pop();
-                                            const first =
-                                              data?.DisplayAttachmentName?.split(
-                                                " "
-                                              )[0];
-                                            return (
-                                              <Col
-                                                sm={12}
-                                                lg={2}
-                                                md={2}
-                                                className="modaltodolist-attachment-icon"
-                                              >
-                                                {ext === "doc" ? <FileIcon
-                                                  extension={"docx"}
-                                                  size={78}
-                                                  type={"document"}
-
-                                                  labelColor={"rgba(44, 88, 152)"}
-                                                /> :
-                                                  ext === "docx" ? <FileIcon
-                                                    extension={"docx"}
-                                                    size={78}
-                                                    type={"font"}
-
-                                                    labelColor={"rgba(44, 88, 152)"}
-                                                  /> :
-                                                    ext === "xls" ? <FileIcon
+                                            (data, index) => {
+                                              var ext =
+                                                data?.DisplayAttachmentName?.split(
+                                                  "."
+                                                ).pop();
+                                              const first =
+                                                data?.DisplayAttachmentName?.split(
+                                                  " "
+                                                )[0];
+                                              return (
+                                                <Col
+                                                  sm={12}
+                                                  lg={2}
+                                                  md={2}
+                                                  className="modaltodolist-attachment-icon"
+                                                >
+                                                  {ext === "doc" ? (
+                                                    <FileIcon
+                                                      extension={"docx"}
+                                                      size={78}
+                                                      type={"document"}
+                                                      labelColor={
+                                                        "rgba(44, 88, 152)"
+                                                      }
+                                                    />
+                                                  ) : ext === "docx" ? (
+                                                    <FileIcon
+                                                      extension={"docx"}
+                                                      size={78}
+                                                      type={"font"}
+                                                      labelColor={
+                                                        "rgba(44, 88, 152)"
+                                                      }
+                                                    />
+                                                  ) : ext === "xls" ? (
+                                                    <FileIcon
                                                       extension={"xls"}
                                                       type={"spreadsheet"}
-
                                                       size={78}
-
-                                                      labelColor={"rgba(16, 121, 63)"}
-                                                    /> :
-                                                      ext === "xlsx" ? <FileIcon
-                                                        extension={"xls"}
-                                                        type={"spreadsheet"}
-
-                                                        size={78}
-
-                                                        labelColor={"rgba(16, 121, 63)"}
-                                                      /> :
-                                                        ext === "pdf" ? <FileIcon
-                                                          extension={"pdf"}
-                                                          size={78}
-                                                          {...defaultStyles.pdf}
-                                                        /> :
-                                                          ext === "png" ? <FileIcon
-                                                            extension={"png"}
-                                                            size={78}
-                                                            type={"image"}
-
-                                                            labelColor={"rgba(102, 102, 224)"}
-                                                          /> :
-                                                            ext === "txt" ? <FileIcon
-                                                              extension={"txt"}
-                                                              size={78}
-                                                              type={"document"}
-
-                                                              labelColor={"rgba(52, 120, 199)"}
-                                                            /> :
-                                                              ext === "jpg" ? <FileIcon
-                                                                extension={"jpg"}
-                                                                size={78}
-                                                                type={"image"}
-
-                                                                labelColor={"rgba(102, 102, 224)"}
-                                                              /> :
-                                                                ext === "jpeg" ? <FileIcon
-                                                                  extension={"jpeg"}
-                                                                  size={78}
-                                                                  type={"image"}
-
-                                                                  labelColor={"rgba(102, 102, 224)"}
-                                                                /> :
-                                                                  ext === "gif" ? <FileIcon
-                                                                    extension={"gif"}
-                                                                    size={78}
-
-                                                                    {...defaultStyles.gif}
-                                                                  /> : null}
-                                                <span className="deleteBtn">
-                                                  <img
-                                                    src={
-                                                      deleteButtonCreateMeeting
-                                                    }
-                                                    width={15}
-                                                    height={15}
-                                                    onClick={() =>
-                                                      deleteFilefromAttachments(
-                                                        data,
-                                                        index
-                                                      )
-                                                    }
-                                                  />
-                                                </span>
-                                                <p className="modaltodolist-attachment-text">
-                                                  {first}
-                                                </p>
-                                              </Col>
-                                            );
-                                          }
-                                        )
+                                                      labelColor={
+                                                        "rgba(16, 121, 63)"
+                                                      }
+                                                    />
+                                                  ) : ext === "xlsx" ? (
+                                                    <FileIcon
+                                                      extension={"xls"}
+                                                      type={"spreadsheet"}
+                                                      size={78}
+                                                      labelColor={
+                                                        "rgba(16, 121, 63)"
+                                                      }
+                                                    />
+                                                  ) : ext === "pdf" ? (
+                                                    <FileIcon
+                                                      extension={"pdf"}
+                                                      size={78}
+                                                      {...defaultStyles.pdf}
+                                                    />
+                                                  ) : ext === "png" ? (
+                                                    <FileIcon
+                                                      extension={"png"}
+                                                      size={78}
+                                                      type={"image"}
+                                                      labelColor={
+                                                        "rgba(102, 102, 224)"
+                                                      }
+                                                    />
+                                                  ) : ext === "txt" ? (
+                                                    <FileIcon
+                                                      extension={"txt"}
+                                                      size={78}
+                                                      type={"document"}
+                                                      labelColor={
+                                                        "rgba(52, 120, 199)"
+                                                      }
+                                                    />
+                                                  ) : ext === "jpg" ? (
+                                                    <FileIcon
+                                                      extension={"jpg"}
+                                                      size={78}
+                                                      type={"image"}
+                                                      labelColor={
+                                                        "rgba(102, 102, 224)"
+                                                      }
+                                                    />
+                                                  ) : ext === "jpeg" ? (
+                                                    <FileIcon
+                                                      extension={"jpeg"}
+                                                      size={78}
+                                                      type={"image"}
+                                                      labelColor={
+                                                        "rgba(102, 102, 224)"
+                                                      }
+                                                    />
+                                                  ) : ext === "gif" ? (
+                                                    <FileIcon
+                                                      extension={"gif"}
+                                                      size={78}
+                                                      {...defaultStyles.gif}
+                                                    />
+                                                  ) : null}
+                                                  <span className="deleteBtn">
+                                                    <img
+                                                      src={
+                                                        deleteButtonCreateMeeting
+                                                      }
+                                                      width={15}
+                                                      height={15}
+                                                      onClick={() =>
+                                                        deleteFilefromAttachments(
+                                                          data,
+                                                          index
+                                                        )
+                                                      }
+                                                    />
+                                                  </span>
+                                                  <p className="modaltodolist-attachment-text">
+                                                    {first}
+                                                  </p>
+                                                </Col>
+                                              );
+                                            }
+                                          )
                                         : null}
                                     </Col>
                                   </Row>

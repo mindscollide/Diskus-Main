@@ -88,7 +88,7 @@ body[dir="rtl"] .VerifyHeadingTwofacSendEmail_twofacmultidevice {
 }
 
 body[dir="rtl"] .SendEmailOnDeiveColor {
-  /* font-family: "IBMPlexSansArabic-SemiBold" !important; */
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .SendEmailOnDeiveColor_active {

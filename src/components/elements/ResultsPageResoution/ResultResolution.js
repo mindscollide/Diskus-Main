@@ -7,7 +7,7 @@ import Abstain from "../../../assets/images/Abstain.svg";
 import Clock from "../../../assets/images/Clock.svg";
 import line from "../../../assets/images/line.png";
 import thumbsup from "../../../assets/images/thumbsup.svg";
-import Tie from '../../../assets/images/Tie.svg'
+import Tie from "../../../assets/images/Tie.svg";
 import thumbsdown from "../../../assets/images/thumbsdown.svg";
 import { useTranslation } from "react-i18next";
 import { Chart } from "react-google-charts";
@@ -31,7 +31,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const [abstain, setAbstain] = useState(0);
   const [notes, setNotes] = useState("");
   const [totalVoters, setTotalVoters] = useState(0);
-  const [decisionDateExpiry, setDesicionDateExpiry] = useState(false)
+  const [decisionDateExpiry, setDesicionDateExpiry] = useState(false);
   const [voter, setVoter] = useState([]);
   const [decision, setDecision] = useState("");
   const options = {
@@ -110,14 +110,15 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
       setResolutionID(resolutionresult.resolutionID);
       setResolutionTitle(resolutionresult.resolutionTite);
       let newDate = new Date();
-      let DecisionDateExpiry = resolutionResultTable(resolutionresult.decisionAnnouncementDateTime);
+      let DecisionDateExpiry = resolutionResultTable(
+        resolutionresult.decisionAnnouncementDateTime
+      );
       if (newDate > DecisionDateExpiry) {
-        setDesicionDateExpiry(true)
+        setDesicionDateExpiry(true);
       } else {
-        setDesicionDateExpiry(false)
+        setDesicionDateExpiry(false);
       }
     }
-
   }, [ResolutionReducer.getResolutionResult]);
   return (
     <section>
@@ -165,7 +166,25 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                             sm={12}
                             className="d-flex justify-content-center"
                           >
-                            <img src={decision.toLowerCase() === "Approved".toLowerCase() ? Clock : decision.toLowerCase() === "Not Approved".toLowerCase() ? thumbsdown : decision.toLowerCase() === "Pending".toLowerCase() ? Clock : decision.toLowerCase() === "tie".toLowerCase() ? Tie : null} width="36.98px" height="37px" />
+                            <img
+                              src={
+                                decision.toLowerCase() ===
+                                "Approved".toLowerCase()
+                                  ? Clock
+                                  : decision.toLowerCase() ===
+                                    "Not Approved".toLowerCase()
+                                  ? thumbsdown
+                                  : decision.toLowerCase() ===
+                                    "Pending".toLowerCase()
+                                  ? Clock
+                                  : decision.toLowerCase() ===
+                                    "tie".toLowerCase()
+                                  ? Tie
+                                  : null
+                              }
+                              width="36.98px"
+                              height="37px"
+                            />
                           </Col>
                         </Row>
                         <Row>
@@ -225,7 +244,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-4">
+                <Row className="mt-3">
                   <Col
                     lg={12}
                     md={12}
@@ -235,31 +254,52 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                     <Row>
                       {voter.length > 0
                         ? voter.map((data, index) => {
-                          console.log(data, "datadatadata");
-                          return (
-                            <>
-                              <Col lg={6} md={6} sm={6} key={data.pK_RV_ID}>
-                                <EmployeeinfoCard
-                                  Employeename={data.username}
-                                  Employeeemail={data.email}
-                                  Icon={
-                                    <img
-                                      src={data.fK_VotingStatus_ID === 1 ? thumbsup : data.fK_VotingStatus_ID === 2 ? thumbsdown : data.fK_VotingStatus_ID === 3 ? Clock : data.fK_VotingStatus_ID === 4 ? Abstain : null}
-                                      width="20px"
-                                      height="20px"
-                                    />
-                                  }
-                                />
-                              </Col>
-                            </>
-                          );
-                        })
+                            console.log(data, "datadatadata");
+                            return (
+                              <>
+                                <Col
+                                  lg={6}
+                                  md={6}
+                                  sm={6}
+                                  key={data.pK_RV_ID}
+                                  className="mt-1"
+                                >
+                                  <EmployeeinfoCard
+                                    Employeename={data.username}
+                                    Employeeemail={data.email}
+                                    Icon={
+                                      <img
+                                        src={
+                                          data.fK_VotingStatus_ID === 1
+                                            ? thumbsup
+                                            : data.fK_VotingStatus_ID === 2
+                                            ? thumbsdown
+                                            : data.fK_VotingStatus_ID === 3
+                                            ? Clock
+                                            : data.fK_VotingStatus_ID === 4
+                                            ? Abstain
+                                            : null
+                                        }
+                                        width="20px"
+                                        height="20px"
+                                      />
+                                    }
+                                  />
+                                </Col>
+                              </>
+                            );
+                          })
                         : null}
                     </Row>
                   </Col>
                 </Row>
                 <Row className="mt-3">
-                  <Col lg={12} md={12} sm={12} className="CreateMeetingInput ">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="CreateMeetingInput FontArabicRegular "
+                  >
                     <TextField
                       applyClass="text-area-close-resolution"
                       type="text"

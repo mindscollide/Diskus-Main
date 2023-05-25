@@ -662,7 +662,11 @@ const Resolution = () => {
       key: "voteCount",
       width: "110px",
       render: (text, data) => {
-        return <span className="d-flex justify-content-center">{text}</span>;
+        return (
+          <span className="d-flex justify-content-center Saved_money_Tagline ">
+            {text}
+          </span>
+        );
       },
     },
     {
@@ -1188,7 +1192,7 @@ const Resolution = () => {
                               lg={6}
                               md={6}
                               sm={6}
-                              className="CreateMeetingReminder searchBox-dropdowns-resolution "
+                              className="CreateMeetingReminder searchBox-dropdowns-resolution FontArabicRegular "
                             >
                               <TextField
                                 label={
@@ -1205,7 +1209,7 @@ const Resolution = () => {
                               lg={6}
                               md={6}
                               sm={6}
-                              className="CreateMeetingReminder  searchBox-dropdowns-resolution"
+                              className="CreateMeetingReminder  searchBox-dropdowns-resolution FontArabicRegular"
                             >
                               <TextField
                                 label={t("Voting-deadline")}

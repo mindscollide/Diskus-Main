@@ -2136,6 +2136,11 @@ button.btn.btn-primary.meeting.end {
   font-family: "MontserratSemiBold-600";
 }
 
+body[dir="rtl"] .CreateMeetingReminder .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDens::placeholder {
+  color: #a2a2a2 !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .CreateMeetingReminder input::placeholder {
   color: #000 !important;
 }
@@ -3636,7 +3641,7 @@ input[placeholder] {
   box-shadow: none !important;
 }
 
-body[dir="rtl"] input[placeholder] {
+body[dir="rtl"] input::placeholder {
   font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
@@ -4978,7 +4983,7 @@ body[dir="rtl"] .group-type-select-field .MuiInputBase-root.MuiOutlinedInput-roo
 
 body[dir="rtl"] .searchBox-dropdowns-resolution .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold";
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
   color: #a2a2a2 !important;
   margin-right: 0px !important;
   height: 39px !important;
@@ -5039,7 +5044,7 @@ body[dir="rtl"] .committee-update-type-select-fields .MuiInputBase-root.MuiOutli
 
 body[dir="rtl"] .committee-select-fields .MuiInputBase-root.MuiOutlinedInput-root.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiOutlinedInput-adornedEnd.MuiInputBase-marginDense.MuiOutlinedInput-marginDense {
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold-600";
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
   color: #a2a2a2 !important;
   height: 39px !important;
   margin-top: 2px;
@@ -5310,4 +5315,32 @@ body[dir="rtl"] .FontArabicRegular {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
+}
+
+body[dir="rtl"] .FontArabicMedium {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+body[dir="rtl"] .create-committee-fields input.form-control {
+  height: 39px !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  border-radius: 4px !important;
+}
+
+body[dir="rtl"] .Group_input_field input.form-control {
+  height: 39px !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  border-radius: 4px !important;
+}
+
+body[dir="rtl"] .Group_input_field input.form-control {
+  height: 39px !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  border-radius: 4px !important;
+}
+
+body[dir="rtl"] .group-fields input.form-control {
+  height: 39px !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  border-radius: 4px !important;
 }
