@@ -5400,3 +5400,20 @@ body[dir="rtl"] .create-committee-fields input.form-control {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
   border-radius: 4px !important;
 }
+
+body[dir="rtl"] .Group_input_field input.form-control {
+  height: 39px !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  border-radius: 4px !important;
+}
+
+body[dir="rtl"] .Group_input_field input.form-control {
+  height: 39px !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  border-radius: 4px !important;
+}
+body[dir="rtl"] .group-fields input.form-control {
+  height: 39px !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  border-radius: 4px !important;
+}

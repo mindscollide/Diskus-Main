@@ -540,7 +540,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="Group_input_field Create_group_Title_filed_margin"
+                          className="Group_input_field  Create_group_Title_filed_margin"
                         >
                           <Form.Control
                             applyClass="form-control2"
@@ -574,7 +574,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="CreateMeetingInput "
+                          className="CreateMeetingInput Saved_money_Tagline"
                         >
                           <TextField
                             applyClass="text-area-create-group"
@@ -615,7 +615,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="UpdateCheckbox"
+                              className="UpdateCheckbox Saved_money_Tagline"
                             >
                               <Checkbox
                                 className="SearchCheckbox MontserratSemiBold-600"
@@ -634,7 +634,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           lg={4}
                           md={4}
                           sm={4}
-                          className="group-type-select-field m-0 CreateMeetingReminder "
+                          className="group-type-select-field m-0 CreateMeetingReminder"
                         >
                           <SelectBox
                             name="grouptype"
@@ -764,7 +764,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
                               })
                             ) : (
                               <>
-                                <Col sm={12} md={12} lg={12}>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className={styles["no-members-found"]}
+                                >
                                   {t("No-group-heads-found")}
                                 </Col>
                               </>
