@@ -80,6 +80,13 @@ import ShoutIcon from '../../../../assets/images/Shout-Icon.png'
 import StarredMessageIcon from '../../../../assets/images/Starred-Message-Icon.png'
 import EditIcon from '../../../../assets/images/Edit-Icon.png'
 import { useTranslation } from 'react-i18next'
+import {
+  oneToOneMessages,
+  setAllChatDataFunction,
+  setAllChatDataFunction2,
+  setAllOtoMessagesFunction,
+} from './oneToOneMessage'
+import { sendChatFunction } from './sendChat'
 
 const TalkChat = () => {
   //Current User ID
@@ -743,6 +750,22 @@ const TalkChat = () => {
       setAllGroupMessages([])
       dispatch(GetBroadcastMessages(broadcastMessagesData, t))
     }
+    try {
+      if (
+        record.messageType != '' &&
+        record.messageType &&
+        record.id &&
+        record.id != 0
+      ) {
+        let newData = {
+          messageType: record.messageType,
+          id: record.id,
+        }
+        dispatch(activeChatID(newData))
+      }
+    } catch {
+      console.log('error on open chat data slection')
+    }
 
     setMessageSendData({
       ...messageSendData,
@@ -768,8 +791,7 @@ const TalkChat = () => {
       admin: record.admin,
       isBlock: record.isBlock,
     })
-
-    dispatch(activeChatID(record))
+    console.log('recordrecordrecordrecordrecord', record)
 
     setActiveChat(record)
     setChatOpen(true)
@@ -1564,43 +1586,7 @@ const TalkChat = () => {
     let allotomessages =
       talkStateData.UserOTOMessages.UserOTOMessagesData.oneToOneMessages
     if (allotomessages !== undefined) {
-      let allMessagesArr = []
-      allotomessages.map((messagesData) => {
-        if (
-          messagesData.frMessages !== 'Direct Message' &&
-          messagesData.frMessages.length > 0 &&
-          messagesData.frMessages !== undefined &&
-          typeof messagesData.frMessages !== 'object'
-        ) {
-          messagesData.frMessages = messagesData.frMessages.split('|')
-        }
-        allMessagesArr.push({
-          attachmentLocation: messagesData.attachmentLocation,
-          blockCount: messagesData.blockCount,
-          broadcastName: messagesData.broadcastName,
-          currDate: messagesData.currDate,
-          fileGeneratedName: messagesData.fileGeneratedName,
-          fileName: messagesData.fileName,
-          frMessages: messagesData.frMessages,
-          isFlag: messagesData.isFlag,
-          messageBody: messagesData.messageBody,
-          messageCount: messagesData.messageCount,
-          messageID: messagesData.messageID,
-          messageStatus: messagesData.messageStatus,
-          receivedDate: messagesData.receivedDate,
-          receiverID: messagesData.receiverID,
-          receiverName: messagesData.receiverName,
-          seenDate: messagesData.seenDate,
-          senderID: messagesData.senderID,
-          senderName: messagesData.senderName,
-          sentDate: messagesData.sentDate,
-          shoutAll: messagesData.shoutAll,
-          uid: messagesData.uid,
-          sourceMessageBody: messagesData.sourceMessageBody,
-          sourceMessageId: messagesData.sourceMessageId,
-        })
-      })
-      setAllOtoMessages([...allMessagesArr])
+      oneToOneMessages(allOtoMessages, setAllOtoMessages, allotomessages)
     }
   }, [talkStateData.UserOTOMessages.UserOTOMessagesData])
 
@@ -1687,189 +1673,378 @@ const TalkChat = () => {
       talkStateData.talkSocketData.socketInsertOTOMessageData !== undefined &&
       talkStateData.talkSocketData.socketInsertOTOMessageData.length !== 0
     ) {
-      let mqttInsertOtoMessageData =
-        talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
-      let insertMqttOtoMessageData = {
-        attachmentLocation: mqttInsertOtoMessageData.attachmentLocation,
-        blockCount: 0,
-        broadcastName: mqttInsertOtoMessageData.broadcastName,
-        currDate: mqttInsertOtoMessageData.currDate,
-        fileGeneratedName: mqttInsertOtoMessageData.fileGeneratedName,
-        fileName: mqttInsertOtoMessageData.fileName,
-        frMessages: mqttInsertOtoMessageData.frMessages,
-        isFlag: 0,
-        messageBody: mqttInsertOtoMessageData.messageBody,
-        messageCount: 0,
-        messageID: mqttInsertOtoMessageData.messageID,
-        messageStatus: mqttInsertOtoMessageData.messageStatus,
-        receivedDate: mqttInsertOtoMessageData.receivedDate,
-        receiverID: mqttInsertOtoMessageData.receiverID,
-        receiverName: mqttInsertOtoMessageData.receiverName,
-        seenDate: mqttInsertOtoMessageData.seenDate,
-        senderID: mqttInsertOtoMessageData.senderID,
-        senderName: mqttInsertOtoMessageData.senderName,
-        sentDate: mqttInsertOtoMessageData.sentDate,
-        shoutAll: mqttInsertOtoMessageData.shoutAll,
-        uid: '',
-      }
-      let allChatNewMessageOtoData = {
-        id:
-          parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
-            ? mqttInsertOtoMessageData.receiverID
-            : parseInt(currentUserId) === mqttInsertOtoMessageData.receiverID
-            ? mqttInsertOtoMessageData.senderID
-            : null,
-        fullName:
-          parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
-            ? mqttInsertOtoMessageData.receiverName
-            : parseInt(currentUserId) === mqttInsertOtoMessageData.receiverID
-            ? mqttInsertOtoMessageData.senderName
-            : null,
-        imgURL: 'O.jpg',
-        messageBody: mqttInsertOtoMessageData.messageBody,
-        messageDate: mqttInsertOtoMessageData.sentDate,
-        notiCount: 0,
-        messageType: 'O',
-        isOnline: true,
-        isBlock: 0,
-        companyName: 'Tresmark',
-        sentDate: mqttInsertOtoMessageData.sentDate,
-        receivedDate: mqttInsertOtoMessageData.receivedDate,
-        seenDate: mqttInsertOtoMessageData.seenDate,
-        attachmentLocation: mqttInsertOtoMessageData.attachmentLocation,
-        senderID: mqttInsertOtoMessageData.senderID,
-        admin: 0,
-      }
-      if (Object.keys(insertMqttOtoMessageData) !== null) {
-        if (
-          insertMqttOtoMessageData !== undefined &&
-          insertMqttOtoMessageData !== null &&
-          insertMqttOtoMessageData.hasOwnProperty('messageBody') &&
-          insertMqttOtoMessageData.messageBody !== undefined &&
-          allOtoMessages.length > 0 &&
-          allOtoMessages[allOtoMessages.length - 1] !== undefined &&
-          allOtoMessages[allOtoMessages.length - 1] !== null &&
-          allOtoMessages[allOtoMessages.length - 1].hasOwnProperty(
-            'messageBody',
-          ) &&
-          allOtoMessages[allOtoMessages.length - 1].messageBody !== undefined &&
-          insertMqttOtoMessageData.messageBody ===
-            allOtoMessages[allOtoMessages.length - 1].messageBody
-        ) {
-          setAllOtoMessages((prevState) => {
-            const updatedMessages = [...prevState]
-            updatedMessages[
-              updatedMessages.length - 1
-            ] = insertMqttOtoMessageData
-            return updatedMessages
-          })
-          let updatedArray = [...allChatData]
+      console.log('talkStateData.activeChatID')
+      try {
+        if (talkStateData.activeChatIdData.messageType === 'O') {
+          console.log('talkStateData.activeChatID')
           if (
-            updatedArray.length > 0 &&
-            updatedArray[0].hasOwnProperty('messageBody')
+            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+              .senderID != undefined &&
+            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+              .senderID != null &&
+            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+              .senderID != 0 &&
+            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+              .senderID != '' &&
+            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+              .senderID != '0' &&
+            talkStateData.activeChatIdData.id ===
+              talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+                .senderID
           ) {
-            const index = updatedArray.findIndex(
-              (item) => item.id === allChatNewMessageOtoData.id,
+            console.log('talkStateData.activeChatID')
+            console.log(
+              'talkStateData.activeChatID',
+              talkStateData.activeChatIdData.id,
             )
-            if (index !== -1) {
-              updatedArray[index] = allChatNewMessageOtoData
+            console.log(
+              'talkStateData.activeChatID',
+              talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+                .receiverID,
+            )
+
+            let mqttInsertOtoMessageData =
+              talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+            let insertMqttOtoMessageData = {
+              attachmentLocation: mqttInsertOtoMessageData.attachmentLocation,
+              blockCount: 0,
+              broadcastName: mqttInsertOtoMessageData.broadcastName,
+              currDate: mqttInsertOtoMessageData.currDate,
+              fileGeneratedName: mqttInsertOtoMessageData.fileGeneratedName,
+              fileName: mqttInsertOtoMessageData.fileName,
+              frMessages: mqttInsertOtoMessageData.frMessages,
+              isFlag: 0,
+              messageBody: mqttInsertOtoMessageData.messageBody,
+              messageCount: 0,
+              messageID: mqttInsertOtoMessageData.messageID,
+              messageStatus: mqttInsertOtoMessageData.messageStatus,
+              receivedDate: mqttInsertOtoMessageData.receivedDate,
+              receiverID: mqttInsertOtoMessageData.receiverID,
+              receiverName: mqttInsertOtoMessageData.receiverName,
+              seenDate: mqttInsertOtoMessageData.seenDate,
+              senderID: mqttInsertOtoMessageData.senderID,
+              senderName: mqttInsertOtoMessageData.senderName,
+              sentDate: mqttInsertOtoMessageData.sentDate,
+              shoutAll: mqttInsertOtoMessageData.shoutAll,
+              uid: '',
+            }
+            let allChatNewMessageOtoData = {
+              id:
+                parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
+                  ? mqttInsertOtoMessageData.receiverID
+                  : parseInt(currentUserId) ===
+                    mqttInsertOtoMessageData.receiverID
+                  ? mqttInsertOtoMessageData.senderID
+                  : null,
+              fullName:
+                parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
+                  ? mqttInsertOtoMessageData.receiverName
+                  : parseInt(currentUserId) ===
+                    mqttInsertOtoMessageData.receiverID
+                  ? mqttInsertOtoMessageData.senderName
+                  : null,
+              imgURL: 'O.jpg',
+              messageBody: mqttInsertOtoMessageData.messageBody,
+              messageDate: mqttInsertOtoMessageData.sentDate,
+              notiCount: 0,
+              messageType: 'O',
+              isOnline: true,
+              isBlock: 0,
+              companyName: 'Tresmark',
+              sentDate: mqttInsertOtoMessageData.sentDate,
+              receivedDate: mqttInsertOtoMessageData.receivedDate,
+              seenDate: mqttInsertOtoMessageData.seenDate,
+              attachmentLocation: mqttInsertOtoMessageData.attachmentLocation,
+              senderID: mqttInsertOtoMessageData.senderID,
+              admin: 0,
+            }
+            if (Object.keys(insertMqttOtoMessageData) !== null) {
+              if (
+                insertMqttOtoMessageData !== undefined &&
+                insertMqttOtoMessageData !== null &&
+                insertMqttOtoMessageData.hasOwnProperty('messageBody') &&
+                insertMqttOtoMessageData.messageBody !== undefined &&
+                allOtoMessages.length > 0 &&
+                allOtoMessages[allOtoMessages.length - 1] !== undefined &&
+                allOtoMessages[allOtoMessages.length - 1] !== null &&
+                allOtoMessages[allOtoMessages.length - 1].hasOwnProperty(
+                  'messageBody',
+                ) &&
+                allOtoMessages[allOtoMessages.length - 1].messageBody !==
+                  undefined &&
+                insertMqttOtoMessageData.messageBody ===
+                  allOtoMessages[allOtoMessages.length - 1].messageBody
+              ) {
+                setAllOtoMessages((prevState) => {
+                  const updatedMessages = [...prevState]
+                  updatedMessages[
+                    updatedMessages.length - 1
+                  ] = insertMqttOtoMessageData
+                  return updatedMessages
+                })
+                let updatedArray = [...allChatData]
+                if (
+                  updatedArray.length > 0 &&
+                  updatedArray[0].hasOwnProperty('messageBody')
+                ) {
+                  const index = updatedArray.findIndex(
+                    (item) => item.id === allChatNewMessageOtoData.id,
+                  )
+                  if (index !== -1) {
+                    updatedArray[index] = allChatNewMessageOtoData
+                  } else {
+                    updatedArray[0] = allChatNewMessageOtoData
+                  }
+                }
+                setAllChatData(updatedArray)
+              } else if (
+                insertMqttOtoMessageData !== undefined &&
+                insertMqttOtoMessageData !== null &&
+                insertMqttOtoMessageData.hasOwnProperty('messageBody') &&
+                insertMqttOtoMessageData.messageBody !== undefined &&
+                allOtoMessages.length > 0 &&
+                allOtoMessages[allOtoMessages.length - 1] !== undefined &&
+                allOtoMessages[allOtoMessages.length - 1] !== null &&
+                allOtoMessages[allOtoMessages.length - 1].hasOwnProperty(
+                  'messageBody',
+                ) &&
+                insertMqttOtoMessageData.messageBody !==
+                  allOtoMessages[allOtoMessages.length - 1].messageBody
+              ) {
+                setAllOtoMessages((prevState) => {
+                  const updatedMessages = [...prevState]
+                  updatedMessages[
+                    updatedMessages.length - 1
+                  ] = insertMqttOtoMessageData
+                  return updatedMessages
+                })
+                let updatedArray = [...allChatData]
+                if (
+                  updatedArray.length > 0 &&
+                  updatedArray[0].hasOwnProperty('messageBody')
+                ) {
+                  updatedArray[0] = allChatNewMessageOtoData
+                }
+                setAllChatData(updatedArray)
+              }
             } else {
-              updatedArray[0] = allChatNewMessageOtoData
+              let allotomessages =
+                talkStateData.UserOTOMessages.UserOTOMessagesData
+                  .oneToOneMessages
+              if (allotomessages != undefined) {
+                let allMessagesArr = []
+                allotomessages.map((messagesData) => {
+                  allMessagesArr.push({
+                    attachmentLocation: messagesData.attachmentLocation,
+                    blockCount: messagesData.blockCount,
+                    broadcastName: messagesData.broadcastName,
+                    currDate: messagesData.currDate,
+                    fileGeneratedName: messagesData.fileGeneratedName,
+                    fileName: messagesData.fileName,
+                    frMessages: messagesData.frMessages,
+                    isFlag: messagesData.isFlag,
+                    messageBody: messagesData.messageBody,
+                    messageCount: messagesData.messageCount,
+                    messageID: messagesData.messageID,
+                    messageStatus: messagesData.messageStatus,
+                    receivedDate: messagesData.receivedDate,
+                    receiverID: messagesData.receiverID,
+                    receiverName: messagesData.receiverName,
+                    seenDate: messagesData.seenDate,
+                    senderID: messagesData.senderID,
+                    senderName: messagesData.senderName,
+                    sentDate: messagesData.sentDate,
+                    shoutAll: messagesData.shoutAll,
+                    uid: messagesData.uid,
+                  })
+                })
+                setAllOtoMessages([...allMessagesArr])
+              }
+            }
+            // } else {
+            //   console.log('reciver id not found')
+            // }
+          } else if (
+            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+              .senderID != undefined &&
+            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+              .senderID != null &&
+            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+              .senderID != 0 &&
+            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+              .senderID != '' &&
+            talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+              .senderID != '0' &&
+            currentUserId ===
+              talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+                .senderID
+          ) {
+            console.log('talkStateData.activeChatID')
+
+            console.log('talkStateData.activeChatID')
+
+            let mqttInsertOtoMessageData =
+              talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+            let insertMqttOtoMessageData = {
+              attachmentLocation: mqttInsertOtoMessageData.attachmentLocation,
+              blockCount: 0,
+              broadcastName: mqttInsertOtoMessageData.broadcastName,
+              currDate: mqttInsertOtoMessageData.currDate,
+              fileGeneratedName: mqttInsertOtoMessageData.fileGeneratedName,
+              fileName: mqttInsertOtoMessageData.fileName,
+              frMessages: mqttInsertOtoMessageData.frMessages,
+              isFlag: 0,
+              messageBody: mqttInsertOtoMessageData.messageBody,
+              messageCount: 0,
+              messageID: mqttInsertOtoMessageData.messageID,
+              messageStatus: mqttInsertOtoMessageData.messageStatus,
+              receivedDate: mqttInsertOtoMessageData.receivedDate,
+              receiverID: mqttInsertOtoMessageData.receiverID,
+              receiverName: mqttInsertOtoMessageData.receiverName,
+              seenDate: mqttInsertOtoMessageData.seenDate,
+              senderID: mqttInsertOtoMessageData.senderID,
+              senderName: mqttInsertOtoMessageData.senderName,
+              sentDate: mqttInsertOtoMessageData.sentDate,
+              shoutAll: mqttInsertOtoMessageData.shoutAll,
+              uid: '',
+            }
+            let allChatNewMessageOtoData = {
+              id:
+                parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
+                  ? mqttInsertOtoMessageData.receiverID
+                  : parseInt(currentUserId) ===
+                    mqttInsertOtoMessageData.receiverID
+                  ? mqttInsertOtoMessageData.senderID
+                  : null,
+              fullName:
+                parseInt(currentUserId) === mqttInsertOtoMessageData.senderID
+                  ? mqttInsertOtoMessageData.receiverName
+                  : parseInt(currentUserId) ===
+                    mqttInsertOtoMessageData.receiverID
+                  ? mqttInsertOtoMessageData.senderName
+                  : null,
+              imgURL: 'O.jpg',
+              messageBody: mqttInsertOtoMessageData.messageBody,
+              messageDate: mqttInsertOtoMessageData.sentDate,
+              notiCount: 0,
+              messageType: 'O',
+              isOnline: true,
+              isBlock: 0,
+              companyName: 'Tresmark',
+              sentDate: mqttInsertOtoMessageData.sentDate,
+              receivedDate: mqttInsertOtoMessageData.receivedDate,
+              seenDate: mqttInsertOtoMessageData.seenDate,
+              attachmentLocation: mqttInsertOtoMessageData.attachmentLocation,
+              senderID: mqttInsertOtoMessageData.senderID,
+              admin: 0,
+            }
+            if (Object.keys(insertMqttOtoMessageData) !== null) {
+              if (
+                insertMqttOtoMessageData !== undefined &&
+                insertMqttOtoMessageData !== null &&
+                insertMqttOtoMessageData.hasOwnProperty('messageBody') &&
+                insertMqttOtoMessageData.messageBody !== undefined &&
+                allOtoMessages.length > 0 &&
+                allOtoMessages[allOtoMessages.length - 1] !== undefined &&
+                allOtoMessages[allOtoMessages.length - 1] !== null &&
+                allOtoMessages[allOtoMessages.length - 1].hasOwnProperty(
+                  'messageBody',
+                ) &&
+                allOtoMessages[allOtoMessages.length - 1].messageBody !==
+                  undefined &&
+                insertMqttOtoMessageData.messageBody ===
+                  allOtoMessages[allOtoMessages.length - 1].messageBody
+              ) {
+                setAllOtoMessages((prevState) => {
+                  const updatedMessages = [...prevState]
+                  updatedMessages[
+                    updatedMessages.length - 1
+                  ] = insertMqttOtoMessageData
+                  return updatedMessages
+                })
+                let updatedArray = [...allChatData]
+                if (
+                  updatedArray.length > 0 &&
+                  updatedArray[0].hasOwnProperty('messageBody')
+                ) {
+                  const index = updatedArray.findIndex(
+                    (item) => item.id === allChatNewMessageOtoData.id,
+                  )
+                  if (index !== -1) {
+                    updatedArray[index] = allChatNewMessageOtoData
+                  } else {
+                    updatedArray[0] = allChatNewMessageOtoData
+                  }
+                }
+                setAllChatData(updatedArray)
+              } else if (
+                insertMqttOtoMessageData !== undefined &&
+                insertMqttOtoMessageData !== null &&
+                insertMqttOtoMessageData.hasOwnProperty('messageBody') &&
+                insertMqttOtoMessageData.messageBody !== undefined &&
+                allOtoMessages.length > 0 &&
+                allOtoMessages[allOtoMessages.length - 1] !== undefined &&
+                allOtoMessages[allOtoMessages.length - 1] !== null &&
+                allOtoMessages[allOtoMessages.length - 1].hasOwnProperty(
+                  'messageBody',
+                ) &&
+                insertMqttOtoMessageData.messageBody !==
+                  allOtoMessages[allOtoMessages.length - 1].messageBody
+              ) {
+                setAllOtoMessages((prevState) => {
+                  const updatedMessages = [...prevState]
+                  updatedMessages[
+                    updatedMessages.length - 1
+                  ] = insertMqttOtoMessageData
+                  return updatedMessages
+                })
+                let updatedArray = [...allChatData]
+                if (
+                  updatedArray.length > 0 &&
+                  updatedArray[0].hasOwnProperty('messageBody')
+                ) {
+                  updatedArray[0] = allChatNewMessageOtoData
+                }
+                setAllChatData(updatedArray)
+              }
+            } else {
+              let allotomessages =
+                talkStateData.UserOTOMessages.UserOTOMessagesData
+                  .oneToOneMessages
+              if (allotomessages != undefined) {
+                let allMessagesArr = []
+                allotomessages.map((messagesData) => {
+                  allMessagesArr.push({
+                    attachmentLocation: messagesData.attachmentLocation,
+                    blockCount: messagesData.blockCount,
+                    broadcastName: messagesData.broadcastName,
+                    currDate: messagesData.currDate,
+                    fileGeneratedName: messagesData.fileGeneratedName,
+                    fileName: messagesData.fileName,
+                    frMessages: messagesData.frMessages,
+                    isFlag: messagesData.isFlag,
+                    messageBody: messagesData.messageBody,
+                    messageCount: messagesData.messageCount,
+                    messageID: messagesData.messageID,
+                    messageStatus: messagesData.messageStatus,
+                    receivedDate: messagesData.receivedDate,
+                    receiverID: messagesData.receiverID,
+                    receiverName: messagesData.receiverName,
+                    seenDate: messagesData.seenDate,
+                    senderID: messagesData.senderID,
+                    senderName: messagesData.senderName,
+                    sentDate: messagesData.sentDate,
+                    shoutAll: messagesData.shoutAll,
+                    uid: messagesData.uid,
+                  })
+                })
+                setAllOtoMessages([...allMessagesArr])
+              }
             }
           }
-          setAllChatData(updatedArray)
-          // console.log('All Chat Data IF CHECK')
-          // setAllOtoMessages((prevState) => {
-          //   const updatedMessages = [...prevState]
-          //   updatedMessages[
-          //     updatedMessages.length - 1
-          //   ] = insertMqttOtoMessageData
-          //   return updatedMessages
-          // })
-          // let updatedArray = [...allChatData]
-          // if (
-          //   updatedArray.length > 0 &&
-          //   updatedArray[0].hasOwnProperty('messageBody')
-          // ) {
-          //   updatedArray[0] = allChatNewMessageOtoData
-          // }
-          // setAllChatData(updatedArray)
-        } else if (
-          insertMqttOtoMessageData !== undefined &&
-          insertMqttOtoMessageData !== null &&
-          insertMqttOtoMessageData.hasOwnProperty('messageBody') &&
-          insertMqttOtoMessageData.messageBody !== undefined &&
-          allOtoMessages.length > 0 &&
-          allOtoMessages[allOtoMessages.length - 1] !== undefined &&
-          allOtoMessages[allOtoMessages.length - 1] !== null &&
-          allOtoMessages[allOtoMessages.length - 1].hasOwnProperty(
-            'messageBody',
-          ) &&
-          insertMqttOtoMessageData.messageBody !==
-            allOtoMessages[allOtoMessages.length - 1].messageBody
-        ) {
-          setAllOtoMessages((prevState) => {
-            const updatedMessages = [...prevState]
-            updatedMessages[
-              updatedMessages.length - 1
-            ] = insertMqttOtoMessageData
-            return updatedMessages
-          })
-          let updatedArray = [...allChatData]
-          if (
-            updatedArray.length > 0 &&
-            updatedArray[0].hasOwnProperty('messageBody')
-          ) {
-            updatedArray[0] = allChatNewMessageOtoData
-          }
-          setAllChatData(updatedArray)
-          // console.log('All Chat Data Before Setting Updated Array', allChatData)
-          // setAllOtoMessages([...allOtoMessages, insertMqttOtoMessageData])
-          // let updatedArray = [...allChatData]
-          // console.log('All Chat Data Updated Array', updatedArray)
-          // if (
-          //   updatedArray.length > 0 &&
-          //   updatedArray[0].hasOwnProperty('messageBody') &&
-          //   updatedArray[0].messageBody !== allChatData[0].messageBody
-          // ) {
-          //   updatedArray[0] = allChatNewMessageOtoData
-          //   console.log('All Chat Data Check working or not', allChatData)
-          // }
-          // setAllChatData(updatedArray)
-          // console.log('All Chat Data After Setting Updated Array', allChatData)
         }
-      } else {
-        let allotomessages =
-          talkStateData.UserOTOMessages.UserOTOMessagesData.oneToOneMessages
-        if (allotomessages != undefined) {
-          let allMessagesArr = []
-          allotomessages.map((messagesData) => {
-            allMessagesArr.push({
-              attachmentLocation: messagesData.attachmentLocation,
-              blockCount: messagesData.blockCount,
-              broadcastName: messagesData.broadcastName,
-              currDate: messagesData.currDate,
-              fileGeneratedName: messagesData.fileGeneratedName,
-              fileName: messagesData.fileName,
-              frMessages: messagesData.frMessages,
-              isFlag: messagesData.isFlag,
-              messageBody: messagesData.messageBody,
-              messageCount: messagesData.messageCount,
-              messageID: messagesData.messageID,
-              messageStatus: messagesData.messageStatus,
-              receivedDate: messagesData.receivedDate,
-              receiverID: messagesData.receiverID,
-              receiverName: messagesData.receiverName,
-              seenDate: messagesData.seenDate,
-              senderID: messagesData.senderID,
-              senderName: messagesData.senderName,
-              sentDate: messagesData.sentDate,
-              shoutAll: messagesData.shoutAll,
-              uid: messagesData.uid,
-            })
-          })
-          setAllOtoMessages([...allMessagesArr])
-        }
+      } catch {
+        console.log('error on update mqtt msg coming for 1 to 1 message')
       }
     }
     //
@@ -2142,47 +2317,14 @@ const TalkChat = () => {
         undefined &&
       talkStateData.talkSocketDataStarUnstar.socketUnstarMessage.length !== 0
     ) {
-      let mqttUnStarMessageData =
-        talkStateData.talkSocketDataStarUnstar.socketUnstarMessage
-      if (Object.keys(mqttUnStarMessageData) !== null) {
-        if (mqttUnStarMessageData.messageType === 'O') {
-          let messageOtoUnStarred = allOtoMessages.find(
-            (item) => item.messageID === mqttUnStarMessageData.messageID,
-          )
-          if (messageOtoUnStarred !== undefined) {
-            if (messageOtoUnStarred.isFlag === 1) {
-              messageOtoUnStarred.isFlag = 0
-            } else if (messageOtoUnStarred.isFlag === 0) {
-              messageOtoUnStarred.isFlag = 1
-            }
-          }
-          setAllOtoMessages(
-            allOtoMessages.map((data) =>
-              data.messageID === messageOtoUnStarred.messageID
-                ? messageOtoUnStarred
-                : data,
-            ),
-          )
-        } else if (mqttUnStarMessageData.messageType === 'G') {
-          let messageGroupUnStarred = allGroupMessages.find(
-            (item) => item.messageID === mqttUnStarMessageData.messageID,
-          )
-          if (messageGroupUnStarred !== undefined) {
-            if (messageGroupUnStarred.isFlag === 1) {
-              messageGroupUnStarred.isFlag = 0
-            } else if (messageGroupUnStarred.isFlag === 0) {
-              messageGroupUnStarred.isFlag = 1
-            }
-          }
-          setAllGroupMessages(
-            allGroupMessages.map((data) =>
-              data.messageID === messageGroupUnStarred.messageID
-                ? messageGroupUnStarred
-                : data,
-            ),
-          )
-        }
-      }
+      setAllOtoMessagesFunction(
+        talkStateData,
+        allChatData,
+        setAllOtoMessages,
+        allOtoMessages,
+        allGroupMessages,
+        setAllGroupMessages,
+      )
     }
   }, [talkStateData?.talkSocketDataStarUnstar?.socketUnstarMessage])
 
@@ -2194,35 +2336,27 @@ const TalkChat = () => {
       talkStateData.talkSocketGroupCreation.groupCreatedData !== undefined &&
       talkStateData.talkSocketGroupCreation.groupCreatedData.length !== 0
     ) {
-      let mqttCreatedGroup =
-        talkStateData.talkSocketGroupCreation.groupCreatedData.data[0]
-      let groupCreationDataMqtt = {
-        admin: mqttCreatedGroup.admin,
-        attachmentLocation: '',
-        companyName: '',
-        fullName: mqttCreatedGroup.fullName,
-        id: mqttCreatedGroup.id,
-        imgURL: mqttCreatedGroup.imgURL,
-        isBlock: 0,
-        isOnline: false,
-        messageBody: mqttCreatedGroup.messageBody,
-        messageDate: mqttCreatedGroup.messageDate,
-        messageType: 'G',
-        notiCount: 0,
-        receivedDate: '',
-        seenDate: '',
-        senderID: 0,
-        sentDate: '',
-      }
-      if (Object.keys(groupCreationDataMqtt) !== null) {
-        setAllChatData([groupCreationDataMqtt, ...allChatData])
-      } else {
-      }
+      setAllChatDataFunction2(talkStateData, setAllChatData, allChatData)
     }
   }, [talkStateData?.talkSocketGroupCreation?.groupCreatedData])
 
+  //MQTT Unread Message Count
+  useEffect(() => {
+    if (
+      talkStateData.talkSocketUnreadMessageCount.unreadMessageData !== null &&
+      talkStateData.talkSocketUnreadMessageCount.unreadMessageData !==
+        undefined &&
+      talkStateData.talkSocketUnreadMessageCount.unreadMessageData.length !== 0
+    ) {
+      setAllChatDataFunction(talkStateData, allChatData, setAllChatData)
+    }
+  }, [
+    talkStateData?.talkSocketData?.socketInsertOTOMessageData,
+    talkStateData?.talkSocketUnreadMessageCount?.unreadMessageData,
+  ])
+
   localStorage.setItem('activeChatID', activeChat.id)
-  localStorage.setItem('activeChatMessageType', activeChat.messageType)
+  // localStorage.setItem('activeChatMessageType', activeChat.messageType)
 
   const closeNotification = () => {
     setNotification({
@@ -2244,6 +2378,24 @@ const TalkChat = () => {
   //Send Chat
   const sendChat = async (e) => {
     e.preventDefault()
+    // sendChatFunction(
+    //   t,
+    //   setReplyFeature,
+    //   setAllChatData,
+    //   allChatData,
+    //   messageSendData,
+    //   setMessageSendData,
+    //   allBroadcastMessages,
+    //   setAllBroadcastMessages,
+    //   chatClickData,
+    //   allGroupMessages,
+    //   setAllGroupMessages,
+    //   allOtoMessages,
+    //   setAllOtoMessages,
+    //   uploadFileTalk,
+    //   activeChat,
+    // )
+
     dispatch(activeChatID(activeChat))
     if (messageSendData.Body !== '') {
       if (chatClickData.messageType === 'O') {
@@ -2339,7 +2491,7 @@ const TalkChat = () => {
           messageBody: messageSendData.Body,
           senderName: 'Ali Mamdani',
           isFlag: 0,
-          sentDate: '',
+          sentDate: currentDateTimeUtc,
           currDate: '',
           fileGeneratedName: '',
           fileName: '',
@@ -2491,11 +2643,11 @@ const TalkChat = () => {
   // console.log('Talk State Data', talkStateData)
   // console.log('messagesChecked', messagesChecked, messagesChecked.length)
 
-  // console.log('All Chat Data', allChatData)
-  console.log('All OTO MESSAGES', allOtoMessages)
-  console.log('All GROUP MESSAGES', allGroupMessages)
-  console.log('messageInfoData', messageInfoData)
-  console.log('groupInfoData', groupInfoData)
+  console.log('All Chat Data', allChatData)
+  // console.log('All OTO MESSAGES', allOtoMessages)
+  // console.log('All GROUP MESSAGES', allGroupMessages)
+  // console.log('messageInfoData', messageInfoData)
+  // console.log('groupInfoData', groupInfoData)
 
   return (
     <>

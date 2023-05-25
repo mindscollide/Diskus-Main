@@ -218,7 +218,7 @@ const talkReducer = (state = initialState, action) => {
   console.log('talkReducer', state)
 
   switch (action.type) {
-    case actions.REFRESH_TOKEN_TALK_SUCCESS:
+    case actions.REFRESH_TOKEN_TALK_SUCCESS: {
       localStorage.setItem('token', JSON.stringify(action.response.token))
       localStorage.setItem(
         'RefreshToken',
@@ -230,8 +230,9 @@ const talkReducer = (state = initialState, action) => {
         Token: action.response.token,
         Refresh: action.response.refreshToken,
       }
+    }
 
-    case actions.REFRESH_TOKEN_TALK_FAIL:
+    case actions.REFRESH_TOKEN_TALK_FAIL: {
       console.log('RefreshToken', action)
       return {
         ...state,
@@ -242,8 +243,9 @@ const talkReducer = (state = initialState, action) => {
         Token: '',
         Refresh: '',
       }
+    }
 
-    case actions.GET_ACTIVECHATID:
+    case actions.GET_ACTIVECHATID: {
       console.log('GET_ACTIVECHATID', action)
       return {
         ...state,
@@ -252,8 +254,9 @@ const talkReducer = (state = initialState, action) => {
           messageType: action.response.messageType,
         },
       }
+    }
 
-    case actions.GET_ACTIVEMESSAGEID:
+    case actions.GET_ACTIVEMESSAGEID: {
       console.log('GET_ACTIVEMESSAGEID', action)
       return {
         ...state,
@@ -281,83 +284,100 @@ const talkReducer = (state = initialState, action) => {
           uid: action.response.uid,
         },
       }
+    }
 
     case actions.GET_USERCHATS_INIT: {
-      return {
-        ...state,
-        AllUserChats: {
-          Loading: true,
-          AllUserChatsData: [],
-          ResponseMessage: '',
-        },
+      {
+        return {
+          ...state,
+          AllUserChats: {
+            Loading: true,
+            AllUserChatsData: [],
+            ResponseMessage: '',
+          },
+        }
       }
     }
     case actions.GET_USERCHATS_SUCCESS: {
-      return {
-        ...state,
-        AllUserChats: {
-          Loading: false,
-          AllUserChatsData: action.response,
-          ResponseMessage: action.message,
-        },
+      {
+        return {
+          ...state,
+          AllUserChats: {
+            Loading: false,
+            AllUserChatsData: action.response,
+            ResponseMessage: action.message,
+          },
+        }
       }
     }
     case actions.GET_USERCHATS_FAIL: {
-      return {
-        ...state,
-        AllUserChats: {
-          Loading: false,
-          AllUserChatsData: [],
-          ResponseMessage: action.message,
-        },
+      {
+        return {
+          ...state,
+          AllUserChats: {
+            Loading: false,
+            AllUserChatsData: [],
+            ResponseMessage: action.message,
+          },
+        }
       }
     }
 
     case actions.GET_OTOUSERMESSAGES_INIT: {
-      return {
-        ...state,
-        UserOTOMessages: {
-          ResponseMessage: '',
-          UserOTOMessagesData: [],
-          Loading: true,
-        },
+      {
+        return {
+          ...state,
+          UserOTOMessages: {
+            ResponseMessage: '',
+            UserOTOMessagesData: [],
+            Loading: true,
+          },
+        }
       }
     }
     case actions.GET_OTOUSERMESSAGES_SUCCESS: {
-      return {
-        ...state,
-        UserOTOMessages: {
-          ResponseMessage: action.message,
-          UserOTOMessagesData: action.response,
-          Loading: false,
-        },
+      {
+        return {
+          ...state,
+          UserOTOMessages: {
+            ResponseMessage: action.message,
+            UserOTOMessagesData: action.response,
+            Loading: false,
+          },
+        }
       }
     }
     case actions.GET_OTOUSERMESSAGES_FAIL: {
-      return {
-        ...state,
-        UserOTOMessages: {
-          ResponseMessage: action.message,
-          UserOTOMessagesData: [],
-          Loading: false,
-        },
+      {
+        return {
+          ...state,
+          UserOTOMessages: {
+            ResponseMessage: action.message,
+            UserOTOMessagesData: [],
+            Loading: false,
+          },
+        }
       }
     }
 
     case actions.GET_OTOUSERUNDELIVEREDMESSAGES_INIT: {
-      return {
-        ...state,
-        // Loading: false,
+      {
+        return {
+          ...state,
+          // Loading: false,
+        }
       }
     }
 
     case actions.GET_OTOUSERUNDELIVEREDMESSAGES_SUCCESS: {
-      return {
-        ...state,
-        UserOTOUndeliveredMessages: {
-          ResponseMessage: action.message,
-          UserOTOUndeliveredMessagesData: action.response,
-        },
+      {
+        return {
+          ...state,
+          UserOTOUndeliveredMessages: {
+            ResponseMessage: action.message,
+            UserOTOUndeliveredMessagesData: action.response,
+          },
+        }
       }
     }
 
@@ -959,23 +979,25 @@ const talkReducer = (state = initialState, action) => {
       }
     }
 
-    case actions.BROADCAST_MESSAGESEND_INIT:
+    case actions.BROADCAST_MESSAGESEND_INIT: {
       return {
         ...state,
         MessageSendBroadcast: {
           ResponseMessage: '',
         },
       }
+    }
 
-    case actions.BROADCAST_MESSAGESEND_NOTIFICATION:
+    case actions.BROADCAST_MESSAGESEND_NOTIFICATION: {
       return {
         ...state,
         MessageSendBroadcast: {
           ResponseMessage: action.message,
         },
       }
+    }
 
-    case actions.CREATE_PRIVATEGROUP_INIT:
+    case actions.CREATE_PRIVATEGROUP_INIT: {
       return {
         ...state,
         CreatePrivateGroup: {
@@ -983,8 +1005,9 @@ const talkReducer = (state = initialState, action) => {
           CreatePrivateGroupResponseMessage: action.message,
         },
       }
+    }
 
-    case actions.CREATE_PRIVATEGROUP_NOTIFICATION:
+    case actions.CREATE_PRIVATEGROUP_NOTIFICATION: {
       return {
         ...state,
         CreatePrivateGroup: {
@@ -992,6 +1015,7 @@ const talkReducer = (state = initialState, action) => {
           CreatePrivateGroupResponseMessage: action.message,
         },
       }
+    }
 
     case actions.GET_PRIVATEGROUPMEMBERS_INIT: {
       return {
@@ -1018,7 +1042,7 @@ const talkReducer = (state = initialState, action) => {
       }
     }
 
-    case actions.STAR_UNSTAR_MESSAGE_INIT:
+    case actions.STAR_UNSTAR_MESSAGE_INIT: {
       console.log('STAR_UNSTAR_MESSAGE_INIT', action.response)
       return {
         ...state,
@@ -1026,8 +1050,9 @@ const talkReducer = (state = initialState, action) => {
           MarkStarUnstarMessageResponseMessage: '',
         },
       }
+    }
 
-    case actions.STAR_UNSTAR_MESSAGE_NOTIFICATION:
+    case actions.STAR_UNSTAR_MESSAGE_NOTIFICATION: {
       console.log('STAR_UNSTAR_MESSAGE_NOTIFICATION', action.response)
       return {
         ...state,
@@ -1036,25 +1061,29 @@ const talkReducer = (state = initialState, action) => {
           MarkStarUnstarMessageResponseMessage: action.message,
         },
       }
+    }
 
-    case actions.MQTT_INSERT_OTO_MESSAGE:
-      if (
-        (parseInt(state.activeChatIdData.id) ===
-          action.response.data[0].receiverID ||
-          parseInt(state.activeChatIdData.id) ===
-            action.response.data[0].senderID) &&
-        state.activeChatIdData.messageType === action.response.data[0].mType
-      ) {
-        return {
-          ...state,
-          talkSocketData: {
-            socketInsertOTOMessageData: action.response,
-            socketInsertGroupMessageData: null,
-          },
-        }
+    case actions.MQTT_INSERT_OTO_MESSAGE: {
+      // if (
+      //   (parseInt(state.activeChatIdData.id) ===
+      //     action.response.data[0].receiverID ||
+      //     parseInt(state.activeChatIdData.id) ===
+      //       action.response.data[0].senderID) &&
+      //   state.activeChatIdData.messageType === action.response.data[0].mType
+      // ) {
+      console.log('MQTT_INSERT_OTO_MESSAGE')
+      return {
+        ...state,
+        talkSocketData: {
+          socketInsertOTOMessageData: action.response,
+          socketInsertGroupMessageData:
+            initialState.talkSocketData.socketInsertGroupMessageData,
+        },
       }
+      // }
+    }
 
-    case actions.MQTT_INSERT_PRIVATEGROUP_MESSAGE:
+    case actions.MQTT_INSERT_PRIVATEGROUP_MESSAGE: {
       if (
         (parseInt(state.activeChatIdData.id) ===
           action.response.data[0].receiverID ||
@@ -1070,24 +1099,34 @@ const talkReducer = (state = initialState, action) => {
           },
         }
       }
+    }
 
-    case actions.MQTT_BLOCK_USER:
+    case actions.MQTT_BLOCK_USER: {
       console.log('MQTT_BLOCK_USER', action.response)
-      if (
-        action.response.message !== 'NEW_ONE_TO_ONE_MESSAGE' &&
-        action.response.message !== 'NEW_GROUP_MESSAGE'
-      ) {
-        return {
-          ...state,
-          talkSocketDataUserBlockUnblock: {
-            socketBlockUser: action.response,
-            socketUnblockUser: null,
-          },
-        }
-      }
+      console.log('MQTT_INSERT_OTO_MESSAGE')
 
-    case actions.MQTT_UNBLOCK_USER:
+      // if (
+      //   action.response.message !== 'NEW_ONE_TO_ONE_MESSAGE' &&
+      //   action.response.message !== 'NEW_GROUP_MESSAGE'
+      // ) {
+      return {
+        ...state,
+        talkSocketDataUserBlockUnblock: {
+          socketBlockUser: action.response,
+          socketUnblockUser: null,
+        },
+      }
+    }
+    // }
+
+    case actions.MQTT_UNBLOCK_USER: {
       console.log('MQTT_UNBLOCK_USER', action.response)
+      console.log('MQTT_INSERT_OTO_MESSAGE')
+
+      // if (
+      //   action.response.message !== 'NEW_ONE_TO_ONE_MESSAGE' &&
+      //   action.response.message !== 'NEW_GROUP_MESSAGE'
+      // ) {
       return {
         ...state,
         talkSocketDataUserBlockUnblock: {
@@ -1095,8 +1134,10 @@ const talkReducer = (state = initialState, action) => {
           socketUnblockUser: action.response,
         },
       }
+    }
+    // }
 
-    case actions.MQTT_STAR_MESSAGE:
+    case actions.MQTT_STAR_MESSAGE: {
       console.log('MQTT_STAR_MESSAGE', action.response)
       return {
         ...state,
@@ -1109,8 +1150,9 @@ const talkReducer = (state = initialState, action) => {
           socketUnstarMessage: null,
         },
       }
+    }
 
-    case actions.MQTT_UNSTAR_MESSAGE:
+    case actions.MQTT_UNSTAR_MESSAGE: {
       console.log('MQTT_UNSTAR_MESSAGE', action.response)
       return {
         ...state,
@@ -1123,8 +1165,9 @@ const talkReducer = (state = initialState, action) => {
           },
         },
       }
+    }
 
-    case actions.MQTT_GROUP_CREATED:
+    case actions.MQTT_GROUP_CREATED: {
       console.log('MQTT_GROUP_CREATED', action.response)
       return {
         ...state,
@@ -1132,8 +1175,9 @@ const talkReducer = (state = initialState, action) => {
           groupCreatedData: action.response,
         },
       }
+    }
 
-    case actions.MQTT_UNREAD_MESSAGE_COUNT:
+    case actions.MQTT_UNREAD_MESSAGE_COUNT: {
       console.log('MQTT_UNREAD_MESSAGE_COUNT', action.response)
       return {
         ...state,
@@ -1141,6 +1185,7 @@ const talkReducer = (state = initialState, action) => {
           unreadMessageData: action.response,
         },
       }
+    }
 
     default:
       return { ...state }

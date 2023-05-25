@@ -167,7 +167,9 @@ const Talk = () => {
           className={subIcons ? 'talk_subIcon' : 'talk_subIcon_hidden'}
           onClick={iconClick}
         >
-          <span className="talk-count">{unreadMessageCount}</span>
+          <span className={unreadMessageCount === 0 ? '' : 'talk-count'}>
+            {unreadMessageCount === 0 ? '' : unreadMessageCount}
+          </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="34"

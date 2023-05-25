@@ -564,13 +564,13 @@ const Dashboard = () => {
         'UNREAD_MESSAGES_COUNT'.toLowerCase()
       ) {
         console.log('UNREAD_MESSAGES_COUNT', data.payload.data)
-        setNotification({
-          ...notification,
-          notificationShow: true,
-          message: `UNREAD_MESSAGES_COUNT`,
-        })
+        // setNotification({
+        //   ...notification,
+        //   notificationShow: true,
+        //   message: `UNREAD_MESSAGES_COUNT`,
+        // })
         dispatch(mqttUnreadMessageCount(data.payload))
-        setNotificationID(id)
+        // setNotificationID(id)
       }
     }
   }
