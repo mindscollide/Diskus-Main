@@ -262,7 +262,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
               3000
             );
           } else {
-            dispatch(FileUploadToDo(uploadedFile, t));
+            dispatch(FileUploadToDo(navigate, uploadedFile, t));
             file.push({
               PK_TAID: 0,
               DisplayAttachmentName: uploadedFile.name,
@@ -295,7 +295,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
               3000
             );
           } else {
-            dispatch(FileUploadToDo(uploadedFile, t));
+            dispatch(FileUploadToDo(navigate, uploadedFile, t));
             file.push({
               PK_TAID: 0,
               DisplayAttachmentName: uploadedFile.name,
@@ -314,7 +314,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   useEffect(() => {
     // dispatch(GetAllAssigneesToDoList(parseInt(createrID)));
     if (show) {
-      dispatch(GetAllAssigneesToDoList(parseInt(createrID), t));
+      dispatch(GetAllAssigneesToDoList(navigate, parseInt(createrID), t));
     } else {
       setShow(false);
       setTask({
@@ -489,7 +489,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         TaskAssignedTo,
         TasksAttachments,
       };
-      dispatch(CreateToDoList(Data, t));
+      dispatch(CreateToDoList(navigate, Data, t));
       setShow(false);
       console.log("createToDoList", Data);
       setTask({

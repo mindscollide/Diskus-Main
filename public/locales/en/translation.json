@@ -941,5 +941,9 @@
   "Will-delete-and-remove-all-relevant-data-including-but-not": "will delete and remove all relevant data including but not limited to Users, Meetings, Documents related to your organization account. Please make sure that we do not retain any backup of data and will not be able to entertain backup recovery request.",
   "It-is-requested-that-you-please-make-backup-of-all-your-data": " It is requested that you please make backup of all your data before proceeding to delete the account. Please proceed with caution and at your own risk.",
   "Proceed-to-deletion": "Proceed to Deletion",
-  "Delete-organization": "Delete Organization"
+  "Delete-organization": "Delete Organization",
+  "Folder-name-is-required": "Folder Name is Required",
+  "No-folder-exist-against-this-name": "No Folder Exist Against this name",
+  "Folder-deleted-successfully": "Folder Deleted Successfully",
+  "Failed-to-delete-any-folder": "Failed to delete any folder"
 }

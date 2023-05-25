@@ -30,10 +30,10 @@ const cancelSubFail = (message) => {
 };
 
 const CancelSubscriptionPackage = (
+  navigate,
   susbcriptionID,
   cancelReson,
   t,
-  navigate
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -58,7 +58,8 @@ const CancelSubscriptionPackage = (
       .then(async (response) => {
         console.log("CancelSubscriptionPackage", response);
         if (response.data.responseCode === 417) {
-          // dispatch(RefreshToken(props))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(CancelSubscriptionPackage(navigate, susbcriptionID, cancelReson, t,))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             console.log(response, "responseresponseresponse");
@@ -154,7 +155,7 @@ const revokefail = (message) => {
   };
 };
 
-const revokeprocess = (t) => {
+const revokeprocess = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let data = {
@@ -175,8 +176,8 @@ const revokeprocess = (t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(revokeprocess(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(revokeprocess(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             console.log(response, "responseresponseresponse");

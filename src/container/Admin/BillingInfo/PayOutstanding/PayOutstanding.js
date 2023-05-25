@@ -13,18 +13,20 @@ import {
   _justShowDateformat,
   _justShowDateformatBilling,
 } from "../../../../commen/functions/date_formater";
+import { useNavigate } from "react-router-dom";
 
 const PayOutstanding = () => {
   const { OrganizationBillingReducer } = useSelector((state) => state);
   // for translation
   const { t } = useTranslation();
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const [payOutStanding, setPayOutStanding] = useState({
-    Invoice: "1965423",
-    DueDate: "12-05-23",
-    InvoiceAmount: t("50") + "$",
-    LateCharges: "10$",
-    BalanceDue: "60$",
+    Invoice: "",
+    DueDate: "",
+    InvoiceAmount: 0,
+    LateCharges: 0,
+    BalanceDue: 0,
   });
   useEffect(() => {
     if (OrganizationBillingReducer.getPayoutStanding !== null) {
@@ -39,7 +41,7 @@ const PayOutstanding = () => {
     }
   }, [OrganizationBillingReducer.getPayoutStanding]);
   useEffect(() => {
-    dispatch(getPayoutStandingInformation(t));
+    dispatch(getPayoutStandingInformation(navigate, t));
   }, []);
   return (
     <>

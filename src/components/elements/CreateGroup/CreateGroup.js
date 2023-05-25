@@ -24,6 +24,7 @@ import {
 import { render } from "@testing-library/react";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 const CreateGroup = ({ setCreategrouppage }) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState({
@@ -33,6 +34,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const { assignees, GroupsReducer } = useSelector((state) => state);
   console.log("GroupsReducerGroupsReducer", GroupsReducer);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   let creatorID = JSON.parse(localStorage.getItem("userID"));
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
@@ -96,7 +98,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
   };
   useEffect(() => {
     let UserID = JSON.parse(localStorage.getItem("userID"));
-    dispatch(allAssignessList(t));
+    dispatch(allAssignessList(navigate, t));
   }, []);
 
   const onSearch = (name, id) => {
@@ -471,7 +473,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
         },
         GroupMembers: createGroupDetails.GroupMembers,
       };
-      dispatch(createGroup(Data, t, setCreategrouppage));
+      dispatch(createGroup(navigate, Data, t, setCreategrouppage));
     } else {
       setErrorBar(true);
       setOpen({
@@ -502,8 +504,8 @@ const CreateGroup = ({ setCreategrouppage }) => {
     let Data = {
       OrganizationID: organizationID,
     };
-    dispatch(getGroupMembersRoles(Data, t));
-    dispatch(getOrganizationGroupTypes(Data, t));
+    dispatch(getGroupMembersRoles(navigate, Data, t));
+    dispatch(getOrganizationGroupTypes(navigate, Data, t));
   }, []);
 
   return (

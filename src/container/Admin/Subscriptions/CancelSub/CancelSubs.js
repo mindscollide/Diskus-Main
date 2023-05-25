@@ -83,21 +83,21 @@ const CancelSubs = () => {
   };
   const handleSubmitPrcoceedwithCancellation = () => {
     // setCancelDailogBox(false)
-    dispatch(CancelSubscriptionPackage(5, isReason, t, navigate));
+    dispatch(CancelSubscriptionPackage(navigate, 5, isReason, t));
     setCancelDailogBox(false);
   };
   const handleClickCancelBtn = () => {
     // setCancelDailogBox(false)
-    dispatch(CancelSubscriptionPackage(6, isReason, t, navigate));
+    dispatch(CancelSubscriptionPackage(navigate, 6, isReason, t));
     setCancelDailogBox(false);
   };
 
   const handleChangeForRevoke = () => {
-    dispatch(revokeprocess(t));
+    dispatch(revokeprocess(navigate, t));
   };
 
   useEffect(() => {
-    dispatch(getSubscribeOrganizationPackage(t));
+    dispatch(getSubscribeOrganizationPackage(navigate, t));
   }, []);
   console.log("revokeCancellation", revokeCancellation === false);
   useEffect(() => {
@@ -219,7 +219,7 @@ const CancelSubs = () => {
                   <Col sm={12}>
                     {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       null &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       undefined ? (
                       <>
                         <span class="icon-star package-icon-style">
@@ -442,7 +442,7 @@ const CancelSubs = () => {
                   <Col sm={12} md={12} lg={12} className="mb-4">
                     {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       null &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       undefined ? (
                       <>
                         <span class="icon-star package-icon-style">
@@ -460,9 +460,8 @@ const CancelSubs = () => {
                           ></span>
                         </span>
                         <h3
-                          className={`${"margin-top-70"} ${
-                            styles["packageCard_title"]
-                          }`}
+                          className={`${"margin-top-70"} ${styles["packageCard_title"]
+                            }`}
                         >
                           {isPackageDetail.PackageTitle}
                         </h3>{" "}

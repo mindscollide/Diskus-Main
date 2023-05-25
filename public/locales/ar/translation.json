@@ -912,5 +912,9 @@
   "Will-delete-and-remove-all-relevant-data-including-but-not": "سيحذف ويزيل جميع البيانات ذات الصلة بما في ذلك على سبيل المثال لا الحصر المستخدمون والاجتماعات والمستندات المتعلقة بحساب مؤسستك. يرجى التأكد من أننا لا نحتفظ بأي نسخة احتياطية من البيانات ولن نتمكن من قبول طلب استرداد النسخ الاحتياطي.",
   "It-is-requested-that-you-please-make-backup-of-all-your-data": "يُطلب منك عمل نسخة احتياطية من جميع بياناتك قبل متابعة حذف الحساب. يرجى المتابعة بحذر وعلى مسؤوليتك الخاصة.",
   "Proceed-to-deletion": "انتقل إلى الحذف",
-  "Delete-organization": "حذف المنظمة"
+  "Delete-organization": "حذف المنظمة",
+  "Folder-name-is-required": "Folder Name is Required",
+  "No-folder-exist-against-this-name": "No Folder Exist Against this name",
+  "Folder-deleted-successfully": "Folder Deleted Successfully",
+  "Failed-to-delete-any-folder": "Failed to delete any folder"
 }

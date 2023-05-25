@@ -21,6 +21,7 @@ import CommitteeICon from "../../assets/images/CommitteeICon.svg";
 import right from "../../assets/images/rightchev.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Carousel from "react-bootstrap/Carousel";
+import { useNavigate } from "react-router-dom";
 
 const ModalArchivedCommittee = ({
   ModalTitle,
@@ -32,6 +33,7 @@ const ModalArchivedCommittee = ({
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [editdropdown, setEditdropdown] = useState(false);
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const { CommitteeReducer } = useSelector((state) => state);
@@ -147,6 +149,7 @@ const ModalArchivedCommittee = ({
     };
     dispatch(
       getCommitteesbyCommitteeId(
+        navigate,
         Data,
         t,
         setViewGroupPage,
@@ -157,7 +160,7 @@ const ModalArchivedCommittee = ({
     );
   };
   useEffect(() => {
-    dispatch(getAllCommitteesByUserIdActions(t));
+    dispatch(getAllCommitteesByUserIdActions(navigate, t));
   }, []);
   // const CarouselStructure = () => {
   //   let curentindex = 0;

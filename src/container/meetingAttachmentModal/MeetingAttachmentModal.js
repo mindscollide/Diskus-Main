@@ -93,12 +93,12 @@ const MeetingAttachmentModal = ({ setShow }) => {
             })
         })
         dispatch(meetingModalAttachment(false))
-        dispatch(updateAgendaAttachment(updateArr))
+        dispatch(updateAgendaAttachment(navigate, updateArr, t))
     }
     useEffect(() => {
         let meetingID = localStorage.getItem("MeetingId")
         let obj = { "MeetingID": JSON.parse(meetingID) }
-        dispatch(getMeetingAgendas(obj))
+        dispatch(getMeetingAgendas(navigate, obj))
     }, [])
 
     return (

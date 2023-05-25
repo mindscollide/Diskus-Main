@@ -22,10 +22,10 @@ import {
   updateGroupStatus,
 } from "../../store/actions/Groups_actions";
 import { Plus } from "react-bootstrap-icons";
+import { useNavigate } from "react-router-dom";
 
 const Groups = () => {
   const { t } = useTranslation();
-
   const { GroupsReducer } = useSelector((state) => state);
   const [modalStatusChange, setModalStatusChange] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -33,6 +33,7 @@ const Groups = () => {
   const [showActiveGroup, setShowActivegroup] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const [ViewGroupPage, setViewGroupPage] = useState(true);
   const [creategrouppage, setCreategrouppage] = useState(false);
@@ -79,6 +80,7 @@ const Groups = () => {
     if (statusID === 1) {
       dispatch(
         getbyGroupID(
+          navigate,
           groupID,
           t,
           setViewGroupPage,
@@ -90,6 +92,7 @@ const Groups = () => {
     } else if (statusID === 3) {
       dispatch(
         getbyGroupID(
+          navigate,
           groupID,
           t,
           setViewGroupPage,
@@ -121,7 +124,7 @@ const Groups = () => {
       GroupStatusId: groupStatusUpdateData.StatusID,
       OrganizationID: JSON.parse(OrganizationID),
     };
-    await dispatch(updateGroupStatus(Data, t, setModalStatusChange));
+    await dispatch(updateGroupStatus(navigate, Data, t, setModalStatusChange));
     setGroupStatusUpdateData({
       GroupID: 0,
       StatusID: 0,
@@ -239,7 +242,7 @@ const Groups = () => {
   }, [GroupsReducer.ResponseMessage]);
 
   useEffect(() => {
-    dispatch(getGroups(t));
+    dispatch(getGroups(navigate, t));
   }, []);
 
   return (

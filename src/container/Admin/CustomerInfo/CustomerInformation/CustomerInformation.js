@@ -31,10 +31,12 @@ import {
   updateCustomerOrganizationProfileDetail,
 } from "../../../../store/actions/Admin_Customer_Information";
 import { cleareMessage } from "../../../../store/actions/Admin_AddUser";
+import { useNavigate } from "react-router-dom";
 
 const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   //for translation
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const { countryNamesReducer, adminReducer } = useSelector((state) => state);
@@ -424,7 +426,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       "customerInformationcustomerInformationcustomerInformation",
       customerInformation
     );
-    dispatch(updateCustomerOrganizationProfileDetail(customerInformation, t));
+    dispatch(updateCustomerOrganizationProfileDetail(navigate, customerInformation, t));
     setCountrySelectEnable(true);
     setAddressEnable(true);
     setAddressTwoEnable(true);
@@ -481,7 +483,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         console.log("obj", obj);
         return obj.shortCode == value;
       });
-    } catch {}
+    } catch { }
 
     console.log("CountryNamesData", a);
     console.log("CountryNamesData", a.pK_WorldCountryID);
@@ -492,8 +494,8 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
     });
   };
   const callAPI = async () => {
-    await dispatch(getCountryNamesAction(t));
-    dispatch(customerInfoOrganizationDetails(t));
+    await dispatch(getCountryNamesAction(navigate, t));
+    dispatch(customerInfoOrganizationDetails(navigate, t));
   };
   useEffect(() => {
     callAPI();
@@ -764,7 +766,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         name="Address2"
                         onChange={customerInfoHandler}
                         value={customerSection.Address2 || ""}
-                        // applyClass="form-control2"
+                      // applyClass="form-control2"
                       />
                       <span className={styles["address_bottom_line"]}>
                         {!addressTwoEnable
@@ -984,7 +986,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         onKeyDown={(event) => handleKeyEnter(event, Number)}
                         maxLength={160}
                         placeholder={t("Contact-email")}
-                        // applyClass="form-control2"
+                      // applyClass="form-control2"
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>

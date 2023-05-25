@@ -19,7 +19,9 @@ import {
 } from "../../../store/actions/Auth2_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 const ChangePassword = () => {
+  const navigate = useNavigate()
   const { t } = useTranslation();
   const { Authreducer } = useSelector((state) => state);
   const [oldPassword, setOldPassword] = useState("");
@@ -66,7 +68,7 @@ const ChangePassword = () => {
   };
 
   const handleConformationUpdate = async () => {
-    await dispatch(changePasswordFunc(oldPassword, Password.newPassword, t));
+    await dispatch(changePasswordFunc(navigate, oldPassword, Password.newPassword, t));
   };
 
   const cancelHandler = () => {
@@ -81,11 +83,11 @@ const ChangePassword = () => {
     if (
       Authreducer.ChangeUserPasswordResponseMessage != t("Change-password") &&
       Authreducer.ChangeUserPasswordResponseMessage !=
-        t("Your-password-has-been-updated") &&
+      t("Your-password-has-been-updated") &&
       Authreducer.ChangeUserPasswordResponseMessage !=
-        t("Your-password-has-been-changed-successfully") &&
+      t("Your-password-has-been-changed-successfully") &&
       Authreducer.ChangeUserPasswordResponseMessage !=
-        t("Password-updated-successfully") &&
+      t("Password-updated-successfully") &&
       Authreducer.ChangeUserPasswordResponseMessage != ""
     ) {
       console.log(
@@ -306,12 +308,12 @@ const ChangePassword = () => {
                     oldPassword === ""
                       ? true
                       : Password.newPassword === ""
-                      ? true
-                      : Password.ConfirmPassword === ""
-                      ? true
-                      : !isPasswordStrong
-                      ? true
-                      : false
+                        ? true
+                        : Password.ConfirmPassword === ""
+                          ? true
+                          : !isPasswordStrong
+                            ? true
+                            : false
                   }
                   text={t("Update")}
                   onClick={handleConformationUpdate}

@@ -33,6 +33,7 @@ import {
 } from "../../store/actions/Post_AssigneeComments";
 import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 
 const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   //For Localization
@@ -44,6 +45,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   const { Comments } = postAssigneeComments;
   //To Display Modal
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   //Notification State
   const [open, setOpen] = useState({
@@ -214,7 +216,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   //Get All Assignees API hit
   useEffect(() => {
     if (viewFlagToDo) {
-      dispatch(GetAllAssigneesToDoList(1, t));
+      dispatch(GetAllAssigneesToDoList(navigate, 1, t));
     } else {
       setViewFlagToDo(false);
       dispatch(clearState());
@@ -244,7 +246,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
       DisplayFileName: record.DisplayAttachmentName,
     };
     console.log("DownloadFile", data);
-    dispatch(DownloadFile(data));
+    dispatch(DownloadFile(navigate, data));
   };
 
   const handleClickCommentSubmit = async (e, id) => {

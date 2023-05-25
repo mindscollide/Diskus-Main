@@ -10,6 +10,7 @@ import { getAllGroups } from "../../store/actions/Groups_actions";
 import Group_Icon from "../../assets/images/group_Icons.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { assignGroups } from "../../store/actions/Committee_actions";
+import { useNavigate } from "react-router-dom";
 const ModalMarketingTeamCommittee = ({
   ModalTitle,
   MarketingTeam,
@@ -24,6 +25,7 @@ const ModalMarketingTeamCommittee = ({
   const [groupData, setGroupData] = useState([])
   const [data, setData] = useState([])
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { t } = useTranslation()
   const closebtn = async () => {
     setMarketingTeam(false);
@@ -103,7 +105,7 @@ const ModalMarketingTeamCommittee = ({
       let Data = {
         committeeGroupMapping: data
       }
-      dispatch(assignGroups(Data, t))
+      dispatch(assignGroups(navigate, Data, t))
       console.log("DataData", Data)
     } else {
 
@@ -111,7 +113,7 @@ const ModalMarketingTeamCommittee = ({
 
   }
   useEffect(() => {
-    dispatch(getAllGroups(t))
+    dispatch(getAllGroups(navigate, t))
   }, [])
   useEffect(() => {
     if (GroupsReducer.getAllGroups !== null) {

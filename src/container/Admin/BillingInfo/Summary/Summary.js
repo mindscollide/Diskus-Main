@@ -312,7 +312,7 @@ const Summary = () => {
   console.log("SummarySummarySummary", rows);
 
   useEffect(() => {
-    dispatch(getBillingInformationapi(t));
+    dispatch(getBillingInformationapi(navigate, t));
   }, []);
   return (
     <>

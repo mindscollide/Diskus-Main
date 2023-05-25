@@ -2,6 +2,7 @@ import axios from 'axios'
 import { getAllVotingRequestMethod, cancelResolutionRequestMethod, updateVoteRequestMethod, closeResolutionRequestMethod, getAllVotingStatusRequestMethod, getVoteDetailsByID, getResolutionResultsDetails, getResolutionsRequestMethod, scheduleResolutionRequestMethod, getResolutionByIDRequestMethod, addUpdateResolutionRequestMethod, getVoterResolutionRequestMethod } from '../../commen/apis/Api_config'
 import { getResolutionApi } from '../../commen/apis/Api_ends_points'
 import * as actions from '../action_types'
+import { RefreshToken } from './Auth_action'
 
 const getAllVoting_Init = () => {
     return {
@@ -23,7 +24,7 @@ const getAllVoting_Fail = (message) => {
     }
 
 }
-const getAllVotingMethods = (t) => {
+const getAllVotingMethods = (navigate, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     return (dispatch) => {
         dispatch(getAllVoting_Init());
@@ -37,9 +38,12 @@ const getAllVotingMethods = (t) => {
                 _token: token,
             },
         })
-            .then((response) => {
+            .then(async (response) => {
                 console.log("responseresponseresponse", response)
-                if (response.data.responseCode === 200) {
+                if (response.data.responseCode === 417) {
+                    await dispatch(RefreshToken(navigate, t))
+                    dispatch(getAllVotingMethods(navigate, t))
+                } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_GetAllVotingMethod_01".toLowerCase()) {
                             dispatch(getAllVoting_Success(response.data.responseResult.resolutionMethod, t("Data-available")))
@@ -80,7 +84,7 @@ const getAllResolutionStatus_Fail = (message) => {
         message: message
     }
 }
-const getAllResolutionStatus = (t) => {
+const getAllResolutionStatus = (navigate, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     return (dispatch) => {
         dispatch(getAllResolutionStatus_Init());
@@ -94,9 +98,12 @@ const getAllResolutionStatus = (t) => {
                 _token: token,
             },
         })
-            .then((response) => {
+            .then(async (response) => {
                 console.log("responseresponseresponse", response)
-                if (response.data.responseCode === 200) {
+                if (response.data.responseCode === 417) {
+                    await dispatch(RefreshToken(navigate, t))
+                    dispatch(getAllResolutionStatus(navigate, t))
+                } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_GetAllResolutionStatus_01".toLowerCase()) {
                             dispatch(getAllResolutionStatus_Success(response.data.responseResult.resolutionStatus, t("Data-available")))
@@ -136,7 +143,7 @@ const getResolutions_Fail = (message) => {
         message: message
     }
 };
-const getResolutions = (id, t) => {
+const getResolutions = (navigate, id, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
     let Data = {
@@ -156,9 +163,12 @@ const getResolutions = (id, t) => {
                 _token: token,
             },
         })
-            .then((response) => {
+            .then(async (response) => {
                 console.log("responseresponseresponse", response)
-                if (response.data.responseCode === 200) {
+                if (response.data.responseCode === 417) {
+                    await dispatch(RefreshToken(navigate, t))
+                    dispatch(getResolutions(navigate, id, t))
+                } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchResolutions_01".toLowerCase()) {
                             dispatch(getResolutions_Success(response.data.responseResult.resolutionTable, t("Data-available")))
@@ -173,7 +183,6 @@ const getResolutions = (id, t) => {
                 } else {
                     dispatch(getResolutions_Fail("Something-went-wrong"))
                 }
-
             })
             .catch((response) => {
                 dispatch(getResolutions_Fail("Something-went-wrong"))
@@ -198,7 +207,7 @@ const createResolution_Fail = (message) => {
         message: message
     }
 };
-const createResolution = (Data, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated) => {
+const createResolution = (navigate, Data, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated) => {
     console.log(Data, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, no, circulated, "checkingforudpatestatemodal")
     let token = JSON.parse(localStorage.getItem("token"));
     return (dispatch) => {
@@ -215,7 +224,10 @@ const createResolution = (Data, voters, nonVoter, tasksAttachments, setNewresolu
             },
         })
             .then(async (response) => {
-                if (response.data.responseCode === 200) {
+                if (response.data.responseCode === 417) {
+                    await dispatch(RefreshToken(navigate, t))
+                    dispatch(createResolution(navigate, Data, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated))
+                } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_01".toLowerCase()) {
                             await dispatch(createResolution_Success(response.data.responseResult.resolutionID, t("Resolution-added-successfully")))
@@ -263,7 +275,7 @@ const updateResolution_Fail = (message) => {
         message: message
     }
 }
-const updateResolution = (resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated) => {
+const updateResolution = (navigate, resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated) => {
     console.log(setNewresolution, setEditResoutionPage, no, circulated, "checkingforudpatestatemodal")
     let Data2 = {
         IsCirculate: circulated === 2 ? true : false,
@@ -286,8 +298,11 @@ const updateResolution = (resolutionID, voters, nonVoter, tasksAttachments, setN
                 _token: token,
             },
         })
-            .then((response) => {
-                if (response.data.responseCode === 200) {
+            .then(async (response) => {
+                if (response.data.responseCode === 417) {
+                    await dispatch(RefreshToken(navigate, t))
+                    dispatch(updateResolution(navigate, resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated))
+                } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_01".toLowerCase()) {
                             dispatch(updateResolution_Success(response.data.responseResult.resolutionID, t("Resolution-circulated-successfully")))
@@ -343,7 +358,7 @@ const getResolutionById_Fail = (message) => {
         message: message
     }
 }
-const getResolutionbyResolutionID = (id, t, setEditResoutionPage, setViewresolution, no) => {
+const getResolutionbyResolutionID = (navigate, id, t, setEditResoutionPage, setViewresolution, no) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let Data = {
         ResolutionID: JSON.parse(id)
@@ -362,8 +377,11 @@ const getResolutionbyResolutionID = (id, t, setEditResoutionPage, setViewresolut
                 _token: token,
             },
         })
-            .then((response) => {
-                if (response.data.responseCode === 200) {
+            .then(async (response) => {
+                if (response.data.responseCode === 417) {
+                    await dispatch(RefreshToken(navigate, t))
+                    dispatch(getResolutionbyResolutionID(navigate, id, t, setEditResoutionPage, setViewresolution, no))
+                } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_GetResolutionByID_01".toLowerCase()) {
                             dispatch(getResolutionById_Success(response.data.responseResult.resolution, t("Resolution-circulated-successfully")))
@@ -408,7 +426,7 @@ const getResolutionResult_Fail = (message) => {
         message: message
     }
 }
-const getResolutionResult = (id, t, setResultresolution) => {
+const getResolutionResult = (navigate, id, t, setResultresolution) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
     let Data = {
@@ -428,8 +446,11 @@ const getResolutionResult = (id, t, setResultresolution) => {
                 _token: token,
             },
         })
-            .then((response) => {
-                if (response.data.responseCode === 200) {
+            .then(async (response) => {
+                if (response.data.responseCode === 417) {
+                    await dispatch(RefreshToken(navigate, t))
+                    dispatch(getResolutionResult(navigate, id, t, setResultresolution))
+                } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_GetResultDetails_01".toLowerCase()) {
                             dispatch(getResolutionResult_Success(response.data.responseResult, t("Data-available")))
@@ -476,7 +497,7 @@ const getVotesDetail_Fail = (message) => {
         message: message
     }
 }
-const getVotesDetails = (id, t, setVoteresolution) => {
+const getVotesDetails = (navigate, id, t, setVoteresolution) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
     let Data = {
@@ -496,8 +517,11 @@ const getVotesDetails = (id, t, setVoteresolution) => {
                 _token: token,
             },
         })
-            .then((response) => {
-                if (response.data.responseCode === 200) {
+            .then(async (response) => {
+                if (response.data.responseCode === 417) {
+                    await dispatch(RefreshToken(navigate, t))
+                    dispatch(getVotesDetails(navigate, id, t, setVoteresolution))
+                } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_GetVoteDetailsByID_01".toLowerCase()) {
                             dispatch(getVotesDetail_Success(response.data.responseResult, t("Data-available")))
@@ -538,7 +562,7 @@ const cancelResolution_Fail = (message) => {
         message: message
     }
 }
-const cancelResolutionApi = (id, t) => {
+const cancelResolutionApi = (navigate, id, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
     let Data = {
@@ -558,8 +582,11 @@ const cancelResolutionApi = (id, t) => {
                 _token: token,
             },
         })
-            .then((response) => {
-                if (response.data.responseCode === 200) {
+            .then(async (response) => {
+                if (response.data.responseCode === 417) {
+                    await dispatch(RefreshToken(navigate, t))
+                    dispatch(cancelResolutionApi(navigate, id, t))
+                } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CancelResolution_01".toLowerCase()) {
                             dispatch(cancelResolution_Success(response.data.responseResult, t("Resolution-cancelled")))
@@ -600,7 +627,7 @@ const closeResolution_Fail = (message) => {
         message: message
     }
 }
-const closeResolutionApi = (ResolutionID, ResolutionDecisionID, notes, t, setResultresolution) => {
+const closeResolutionApi = (navigate, ResolutionID, ResolutionDecisionID, notes, t, setResultresolution) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
     let Data = {
@@ -621,8 +648,11 @@ const closeResolutionApi = (ResolutionID, ResolutionDecisionID, notes, t, setRes
                 _token: token,
             },
         })
-            .then((response) => {
-                if (response.data.responseCode === 200) {
+            .then(async (response) => {
+                if (response.data.responseCode === 417) {
+                    await dispatch(RefreshToken(navigate, t))
+                    dispatch(closeResolutionApi(navigate, ResolutionID, ResolutionDecisionID, notes, t, setResultresolution))
+                } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CloseResolution_01".toLowerCase()) {
                             dispatch(closeResolution_Success(response.data.responseResult, t("Resolution-closed-successfully")))
@@ -663,7 +693,7 @@ const updateVote_Fail = (message) => {
         message: message
     }
 }
-const updateVoteApi = (Data, t, setVoteresolution) => {
+const updateVoteApi = (navigate, Data, t, setVoteresolution) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
     return (dispatch) => {
@@ -679,8 +709,11 @@ const updateVoteApi = (Data, t, setVoteresolution) => {
                 _token: token,
             },
         })
-            .then((response) => {
-                if (response.data.responseCode === 200) {
+            .then(async (response) => {
+                if (response.data.responseCode === 417) {
+                    await dispatch(RefreshToken(navigate, t))
+                    dispatch(updateVoteApi(navigate, Data, t, setVoteresolution))
+                } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_01".toLowerCase()) {
                             dispatch(updateVote_Success(response.data.responseResult, t("Record-updated")))
@@ -704,7 +737,6 @@ const updateVoteApi = (Data, t, setVoteresolution) => {
             });
     };
 }
-
 const getVoterResolution_init = () => {
     return {
         type: actions.SEARCH_VOTERRESOLUTION_INIT
@@ -723,8 +755,7 @@ const getVoterResolution_fail = (message) => {
         message: message
     }
 }
-
-const getVoterResolution = (id, t) => {
+const getVoterResolution = (navigate, id, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
     let Data = {
@@ -745,8 +776,11 @@ const getVoterResolution = (id, t) => {
                 _token: token,
             },
         })
-            .then((response) => {
-                if (response.data.responseCode === 200) {
+            .then(async (response) => {
+                if (response.data.responseCode === 417) {
+                    await dispatch(RefreshToken(navigate, t))
+                    dispatch(getVoterResolution(navigate, id, t))
+                } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchVoterResolutions_01".toLowerCase()) {
                             dispatch(getVoterResolution_success(response.data.responseResult.resolutionTable, t("Record-updated")))
@@ -768,7 +802,6 @@ const getVoterResolution = (id, t) => {
             });
     };
 }
-
 const currentResolutionView = (response) => {
     return {
         type: actions.CURRENTRESOLUTIONSTATE,

@@ -382,9 +382,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       OrganizationID: parseInt(OrganizationID),
       RequestingUserID: parseInt(RequestingUserID),
     };
-    dispatch(AllUserAction(newData, t));
-    dispatch(GetAllUserRoles(t));
-    dispatch(GetAllUserStatus(t));
+    dispatch(AllUserAction(navigate, newData, t));
+    dispatch(GetAllUserRoles(navigate, t));
+    dispatch(GetAllUserStatus(navigate, t));
   }, []);
 
   useEffect(() => {
@@ -450,13 +450,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       return (
         (filterFieldSection.Names != ""
           ? a.Names.toLowerCase().includes(
-              filterFieldSection.Names.toLowerCase()
-            )
+            filterFieldSection.Names.toLowerCase()
+          )
           : a.Names) &&
         (filterFieldSection.Emails.value != ""
           ? a.Emails.toLowerCase().includes(
-              filterFieldSection.Emails.value.toLowerCase()
-            )
+            filterFieldSection.Emails.value.toLowerCase()
+          )
           : a.Emails) &&
         (filterFieldSection.OrganizationRoles != ""
           ? a.OrganizationRole === filterFieldSection.OrganizationRoles

@@ -51,6 +51,7 @@ import {
   newTimeFormaterAsPerUTC,
   newTimeFormaterAsPerUTCFullDate,
 } from "../../../commen/functions/date_formater";
+import { useNavigate } from "react-router-dom";
 
 const TodoList = () => {
   //For Localization
@@ -67,6 +68,7 @@ const TodoList = () => {
     socketTodoStatusData,
   } = state;
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [isExpand, setExpand] = useState(false);
   const { Option } = Select;
   const [rowsToDo, setRowToDo] = useState([]);
@@ -155,14 +157,14 @@ const TodoList = () => {
     // setViewFlagToDo(true);
     let Data = { ToDoListID: id };
     console.log("viewModalHandler", Data);
-    dispatch(ViewToDoList(Data, t));
+    dispatch(ViewToDoList(navigate, Data, t));
   };
 
   //dispatch gettodolist api
   useEffect(() => {
     let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
     console.log("datadata", data);
-    dispatch(GetTodoListByUser(data, t));
+    dispatch(GetTodoListByUser(navigate, data, t));
   }, []);
 
   //get todolist reducer
@@ -198,7 +200,7 @@ const TodoList = () => {
   }, [toDoListReducer.SocketTodoActivityData]);
   // GET TODOS STATUS
   useEffect(() => {
-    dispatch(getTodoStatus(t));
+    dispatch(getTodoStatus(navigate, t));
   }, []);
   // SET STATUS VALUES
   useEffect(() => {
@@ -234,9 +236,9 @@ const TodoList = () => {
   };
   const deleteTodolist = (record) => {
     console.log("deleteTodolist", record);
-    dispatch(updateTodoStatusFunc(6, record.pK_TID, t));
+    dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t));
     let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
-    dispatch(GetTodoListByUser(data, t));
+    dispatch(GetTodoListByUser(navigate, data, t));
   };
 
   const columnsToDo = [
@@ -495,7 +497,7 @@ const TodoList = () => {
   // CHANGE HANDLER STATUS
   const statusChangeHandler = (e, statusdata) => {
     console.log("stautschangehandler", "e", e, "statusdata", statusdata);
-    dispatch(updateTodoStatusFunc(e, statusdata, t, false));
+    dispatch(updateTodoStatusFunc(navigate, e, statusdata, t, false));
     // let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
     // dispatch(GetTodoListByUser(data, t));
     // console.log("change Handler Value", e, data);
@@ -535,7 +537,7 @@ const TodoList = () => {
         AssignedToName: "",
         UserID: parseInt(createrID),
       };
-      dispatch(searchTodoListByUser(newData, t));
+      dispatch(searchTodoListByUser(navigate, newData, t));
       setSearchData({
         ...searchData,
         Date: "",
@@ -545,7 +547,7 @@ const TodoList = () => {
       });
     } else {
       // make notification for if input fields is empty here
-      dispatch(searchTodoListByUser(searchData, t));
+      dispatch(searchTodoListByUser(navigate, searchData, t));
       setSearchData({
         Date: "",
         Title: "",

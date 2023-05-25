@@ -3,6 +3,7 @@ import { authenticationApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import axios from "axios";
 import { setLoader } from "./Auth2_actions";
+import { RefreshToken } from "./Auth_action";
 
 const getCountryNamesInit = () => {
   return {
@@ -11,7 +12,7 @@ const getCountryNamesInit = () => {
 };
 
 const getCountryNameSuccess = (response, message) => {
-  console.log("fK_WorldCountryID",response)
+  console.log("fK_WorldCountryID", response)
   return {
     type: actions.COUNTRYNAMES_SUCCESS,
     response: response,
@@ -26,7 +27,7 @@ const getCountryNameFail = (message) => {
   };
 };
 
-const getCountryNamesAction = (t) => {
+const getCountryNamesAction = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getCountryNamesInit());
@@ -40,9 +41,12 @@ const getCountryNamesAction = (t) => {
         _token: token,
       },
     })
-      .then((response) => {
+      .then(async (response) => {
         console.log(response, "countryname");
-        if (response.data.responseCode === 200) {
+        if (response.data.responseCode === 417) {
+          dispatch(RefreshToken(navigate, t))
+          await dispatch(getCountryNamesAction(navigate, t))
+        } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
@@ -51,14 +55,14 @@ const getCountryNamesAction = (t) => {
                   "ERM_AuthService_SignUpManager_GetWorldCountries_01".toLowerCase()
                 )
             ) {
-              console.log("fK_WorldCountryID",response.data.responseResult.worldCountries)
+              console.log("fK_WorldCountryID", response.data.responseResult.worldCountries)
               dispatch(
                 getCountryNameSuccess(
                   response.data.responseResult.worldCountries,
                   t("Data-available")
                 )
               );
-              console.log("fK_WorldCountryID",response.data.responseResult.worldCountries)
+              console.log("fK_WorldCountryID", response.data.responseResult.worldCountries)
 
               dispatch(setLoader(false));
             } else if (

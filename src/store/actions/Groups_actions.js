@@ -31,7 +31,7 @@ const getGroup_Fail = (message) => {
     }
 }
 
-const getGroups = (t) => {
+const getGroups = (navigate, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let createrID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
@@ -51,8 +51,8 @@ const getGroups = (t) => {
         }).then(async (response) => {
             console.log(response, "response")
             if (response.data.responseCode === 417) {
-                await dispatch(RefreshToken(t));
-                await dispatch(getGroups(t))
+                await dispatch(RefreshToken(navigate, t));
+                await dispatch(getGroups(navigate, t))
             } else if (response.data.responseCode === 200) {
                 console.log(response, "response")
                 if (response.data.responseResult.isExecuted === true) {
@@ -104,7 +104,7 @@ const getbyGroupID_Fail = (message) => {
         message: message
     }
 }
-const getbyGroupID = (GroupId, t, setViewGroupPage, setUpdateComponentpage, no, setArchivedGroups) => {
+const getbyGroupID = (navigate, GroupId, t, setViewGroupPage, setUpdateComponentpage, no, setArchivedGroups) => {
     console.log(no, "getbyGroupIDgetbyGroupIDgetbyGroupIDgetbyGroupID")
     let token = JSON.parse(localStorage.getItem("token"));
     let OrganizationID = localStorage.getItem("organizationID");
@@ -124,8 +124,8 @@ const getbyGroupID = (GroupId, t, setViewGroupPage, setUpdateComponentpage, no, 
         }).then(async (response) => {
             console.log(response, "response")
             if (response.data.responseCode === 417) {
-                await dispatch(RefreshToken(t));
-                await dispatch(getbyGroupID(GroupId, t))
+                await dispatch(RefreshToken(navigate, t));
+                await dispatch(getbyGroupID(navigate, GroupId, t, setViewGroupPage, setUpdateComponentpage, no, setArchivedGroups))
             } else if (response.data.responseCode === 200) {
                 console.log(response, "response")
                 if (response.data.responseResult.isExecuted === true) {
@@ -186,7 +186,7 @@ const createGroup_Fail = (message) => {
         message: message
     }
 }
-const createGroup = (Data, t, setCreategrouppage) => {
+const createGroup = (navigate, Data, t, setCreategrouppage) => {
     let token = JSON.parse(localStorage.getItem("token"));
     return ((dispatch) => {
         dispatch(createGroup_Init());
@@ -203,8 +203,8 @@ const createGroup = (Data, t, setCreategrouppage) => {
         }).then(async (response) => {
             console.log(response, "response")
             if (response.data.responseCode === 417) {
-                await dispatch(RefreshToken(t));
-                await dispatch(createGroup(Data, t))
+                await dispatch(RefreshToken(navigate, t));
+                await dispatch(createGroup(navigate, Data, t, setCreategrouppage))
             } else if (response.data.responseCode === 200) {
                 console.log(response, "response")
                 if (response.data.responseResult.isExecuted === true) {
@@ -259,7 +259,7 @@ const getOrganiationGroupRoles_Fail = (message) => {
 
 }
 
-const getGroupMembersRoles = (Data, t) => {
+const getGroupMembersRoles = (navigate, Data, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     return ((dispatch) => {
         dispatch(getOrganiationGroupRoles_Init());
@@ -276,7 +276,8 @@ const getGroupMembersRoles = (Data, t) => {
         }).then(async (response) => {
             console.log(response, "response")
             if (response.data.responseCode === 417) {
-                await dispatch(RefreshToken(t));
+                await dispatch(RefreshToken(navigate, t));
+                dispatch(getGroupMembersRoles(navigate, Data, t))
             } else if (response.data.responseCode === 200) {
                 console.log(response, "response")
                 if (response.data.responseResult.isExecuted === true) {
@@ -322,7 +323,7 @@ const getOrganizationGroupTypes_Fail = (message) => {
         message: message
     }
 }
-const getOrganizationGroupTypes = (Data, t) => {
+const getOrganizationGroupTypes = (navigate, Data, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     return ((dispatch) => {
         dispatch(getOrganizationGroupTypes_Init());
@@ -339,7 +340,8 @@ const getOrganizationGroupTypes = (Data, t) => {
         }).then(async (response) => {
             console.log(response, "response")
             if (response.data.responseCode === 417) {
-                await dispatch(RefreshToken(t));
+                await dispatch(RefreshToken(navigate, t));
+                dispatch(getOrganizationGroupTypes(navigate, Data, t));
             } else if (response.data.responseCode === 200) {
                 console.log(response, "response")
                 if (response.data.responseResult.isExecuted === true) {
@@ -385,7 +387,7 @@ const updateGroup_Fail = (message) => {
         message: message
     }
 }
-const updateGroup = (Data, t, setViewUpdateGroup) => {
+const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
     let token = JSON.parse(localStorage.getItem("token"));
     return ((dispatch) => {
         dispatch(updateGroup_Init());
@@ -402,8 +404,8 @@ const updateGroup = (Data, t, setViewUpdateGroup) => {
         }).then(async (response) => {
             console.log(response, "response")
             if (response.data.responseCode === 417) {
-                await dispatch(RefreshToken(t));
-                await dispatch(updateGroup_Init(Data, t))
+                await dispatch(RefreshToken(navigate, t));
+                dispatch(updateGroup(navigate, Data, t, setViewUpdateGroup))
             } else if (response.data.responseCode === 200) {
                 console.log(response, "response")
                 if (response.data.responseResult.isExecuted === true) {
@@ -457,7 +459,7 @@ const updateGroupStatus_Fail = (message) => {
         message: message
     }
 }
-const updateGroupStatus = (Data, t, setModalStatusChange) => {
+const updateGroupStatus = (navigate, Data, t, setModalStatusChange) => {
     let token = JSON.parse(localStorage.getItem("token"));
     return ((dispatch) => {
         dispatch(updateGroupStatus_Init());
@@ -474,8 +476,8 @@ const updateGroupStatus = (Data, t, setModalStatusChange) => {
         }).then(async (response) => {
             console.log(response, "response")
             if (response.data.responseCode === 417) {
-                await dispatch(RefreshToken(t));
-                await dispatch(updateGroup_Init(Data, t))
+                await dispatch(RefreshToken(navigate, t));
+                dispatch(updateGroupStatus(navigate, Data, t, setModalStatusChange))
             } else if (response.data.responseCode === 200) {
                 console.log(response, "response")
                 if (response.data.responseResult.isExecuted === true) {
@@ -536,7 +538,7 @@ const getAllGroups_Fail = (message) => {
         message: message
     }
 }
-const getAllGroups = (t) => {
+const getAllGroups = (navigate, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let OrganizationID = localStorage.getItem("organizationID");
     let Data = { OrganizationID: JSON.parse(OrganizationID) }
@@ -555,7 +557,8 @@ const getAllGroups = (t) => {
         }).then(async (response) => {
             console.log(response, "response")
             if (response.data.responseCode === 417) {
-                await dispatch(RefreshToken(t));
+                await dispatch(RefreshToken(navigate, t));
+                dispatch(getAllGroups(navigate, t));
             } else if (response.data.responseCode === 200) {
                 console.log(response, "response")
                 if (response.data.responseResult.isExecuted === true) {

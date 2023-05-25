@@ -16,10 +16,12 @@ import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
 import { useSelector, useDispatch } from "react-redux";
 import { closeResolutionApi } from "../../../store/actions/Resolution_actions";
 import { resolutionResultTable } from "../../../commen/functions/date_formater";
+import { useNavigate } from "react-router-dom";
 
 const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { ResolutionReducer } = useSelector((state) => state);
   const [resolutionTitle, setResolutionTitle] = useState("");
   const [approved, setApproved] = useState(0);
@@ -88,7 +90,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   ];
   const closeResolutionHandleClick = () => {
     dispatch(
-      closeResolutionApi(resolutionID, 2, notes, t, setResultresolution)
+      closeResolutionApi(navigate, resolutionID, 2, notes, t, setResultresolution)
     );
   };
   useEffect(() => {

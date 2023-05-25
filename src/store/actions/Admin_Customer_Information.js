@@ -37,7 +37,7 @@ const customerInformationFail = (response, message) => {
   };
 };
 
-const customerInfoOrganizationDetails = (t) => {
+const customerInfoOrganizationDetails = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
@@ -57,8 +57,8 @@ const customerInfoOrganizationDetails = (t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(customerInfoOrganizationDetails(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(customerInfoOrganizationDetails(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -132,7 +132,7 @@ const updateCustomerInformationFail = (message) => {
   };
 };
 
-const updateCustomerOrganizationProfileDetail = (updateData, t) => {
+const updateCustomerOrganizationProfileDetail = (navigate, updateData, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(updateCustomerInformationInit());
@@ -153,6 +153,8 @@ const updateCustomerOrganizationProfileDetail = (updateData, t) => {
       .then(async (response) => {
         console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(updateCustomerOrganizationProfileDetail(navigate, updateData, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             console.log(response, "responseresponseresponse");
@@ -165,7 +167,6 @@ const updateCustomerOrganizationProfileDetail = (updateData, t) => {
                   t("Record-updated-successfully")
                 )
               );
-              dispatch(customerInfoOrganizationDetails(t));
             } else if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_UpdateOrganizationProfile_02"

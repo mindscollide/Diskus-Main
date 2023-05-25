@@ -654,6 +654,9 @@ const FolderisExistRequestMethod = {
 const FileisExistRequestMethod = {
   RequestMethod: 'ServiceManager.FileExist'
 }
+const deleteFolderRequestMethod = {
+  RequestMethod: 'ServiceManager.DeleteFolder'
+}
 export {
   signuprequest,
   signinauthenication,
@@ -830,7 +833,8 @@ export {
   shareFolderRequestMethod,
   FileisExistRequestMethod,
   FolderisExistRequestMethod,
-  deleteFileRequestMethod
+  deleteFileRequestMethod,
+  deleteFolderRequestMethod
 };
 
 

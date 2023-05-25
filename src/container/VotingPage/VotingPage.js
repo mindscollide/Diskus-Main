@@ -16,10 +16,12 @@ import EmployeeinfoCard from "../../components/elements/Employeeinfocard/Employe
 
 import { useSelector, useDispatch } from "react-redux";
 import { updateVoteApi } from "../../store/actions/Resolution_actions";
+import { useNavigate } from "react-router-dom";
 const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const { t } = useTranslation();
   const { ResolutionReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [voteDetails, setVoteDetails] = useState({
     ResolutionTitle: "",
     ResolutionMethod: "",
@@ -111,7 +113,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
         PK_RV_ID: voterID,
         FK_VotingStatusID: voteId,
       };
-      dispatch(updateVoteApi(Data, t, setVoteresolution));
+      dispatch(updateVoteApi(navigate, Data, t, setVoteresolution));
     } else {
       setOpen({
         flag: true,

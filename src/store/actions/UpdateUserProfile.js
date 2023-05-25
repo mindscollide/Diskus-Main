@@ -25,7 +25,7 @@ const updateuserprofilefail = (message, response) => {
   };
 };
 
-const updateUserProfile = (userProfileData) => {
+const updateUserProfile = (navigate, userProfileData, t) => {
   let currentUserID = localStorage.getItem("userID");
   console.log(userProfileData);
   let token = JSON.parse(localStorage.getItem("token"));
@@ -63,7 +63,8 @@ const updateUserProfile = (userProfileData) => {
           response.data.responseResult.responseMessage
         );
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(updateUserProfile(navigate, userProfileData, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             await dispatch(
@@ -72,7 +73,7 @@ const updateUserProfile = (userProfileData) => {
                 response.data.responseResult
               )
             );
-            await dispatch(getUserSetting(JSON.parse(currentUserID)));
+            await dispatch(getUserSetting(navigate, JSON.parse(currentUserID)));
           } else {
             dispatch(updateuserprofilefail());
           }

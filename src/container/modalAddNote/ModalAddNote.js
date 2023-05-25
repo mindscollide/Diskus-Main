@@ -23,13 +23,17 @@ import { SaveNotesAPI } from "../../store/actions/Notes_actions";
 import { useTranslation } from "react-i18next";
 import StarIcon from "../../assets/images/Star.svg";
 import hollowstar from "../../assets/images/Hollowstar.svg";
+import { useNavigate } from "react-router-dom";
 const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   //For Localization
   const { uploadReducer } = useSelector((state) => state);
   let createrID = localStorage.getItem("userID");
+  const navigate = useNavigate()
   let OrganizationID = localStorage.getItem("organizationID");
   const [isAddNote, setIsAddNote] = useState(true);
   const [isCreateNote, setIsCreateNote] = useState(false);
+  const [fileSize, setFileSize] = useState(0)
+  const [fileForSend, setFileForSend] = useState([])
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const NoteTitle = useRef(null);
@@ -47,7 +51,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
-
+  console.log("fileSizefileSize", fileSize)
   var FontAttributor = Quill.import("formats/font");
   var fonts = ["impact", "courier", "comic"];
   FontAttributor.whitelist = fonts;
@@ -188,13 +192,21 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
+    let fileSizeArr;
     if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
       console.log("uploadedFile");
-
       setTimeout(
         setOpen({
           open: true,
           message: t("You-can-not-upload-more-then-10-files"),
+        }),
+        3000
+      );
+    } else if (fileSize >= 104857600) {
+      setTimeout(
+        setOpen({
+          open: true,
+          message: t("You-can-not-upload-more-then-100MB-files"),
         }),
         3000
       );
@@ -262,7 +274,11 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
               3000
             );
           } else {
-            dispatch(FileUploadToDo(uploadedFile, t));
+            // dispatch(FileUploadToDo(uploadedFile, t));
+            fileSizeArr = uploadedFile.size + fileSize
+            fileSizeArr = uploadedFile.size + fileSize
+            setFileForSend([...fileForSend, uploadedFile])
+            setFileSize(fileSizeArr)
             file.push({
               PK_TAID: 0,
               DisplayAttachmentName: uploadedFile.name,
@@ -295,7 +311,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
               3000
             );
           } else {
-            dispatch(FileUploadToDo(uploadedFile, t));
+            // dispatch(FileUploadToDo(uploadedFile, t));
+            fileSizeArr = uploadedFile.size + fileSize
+            setFileForSend([...fileForSend, uploadedFile])
+            setFileSize(fileSizeArr)
             file.push({
               PK_TAID: 0,
               DisplayAttachmentName: uploadedFile.name,
@@ -309,11 +328,8 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       }
     }
   };
+  console.log(fileForSend, "fileSizefileSizefileSize")
 
-  const createModalHandler = async () => {
-    setIsAddNote(false);
-    // setIsCreateNote(true);
-  };
   const cancelNewNoteModal = () => {
     setAddNewModal(false);
   };
@@ -338,39 +354,73 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       handlers: {},
     },
   };
-  const handleClick = () => {
+
+  const handleClick = async () => {
     if (
       addNoteFields.Title.value !== "" &&
       addNoteFields.Description.value !== ""
     ) {
-      setAddNewModal(false);
-      let notesAttachment = [];
-      if (tasksAttachments.TasksAttachments.length > 0) {
-        tasksAttachments.TasksAttachments.map((data, index) => {
-          notesAttachment.push({
-            DisplayAttachmentName: data.DisplayAttachmentName,
-            OriginalAttachmentName: data.OriginalAttachmentName,
-          });
-        });
-      }
-      // let Dis=JSON.stringify(addNoteFields.Description.value)
-      let Data = {
-        Title: addNoteFields.Title.value,
-        Description: addNoteFields.Description.value,
-        isStarred: isStarrted,
-        FK_UserID: JSON.parse(createrID),
-        FK_OrganizationID: JSON.parse(OrganizationID),
-        NotesAttachments: notesAttachment,
-      };
+      let counter = Object.keys(fileForSend).length - 1
 
-      dispatch(SaveNotesAPI(Data, t, setAddNewModal));
+      if (Object.keys(fileForSend).length > 0) {
+
+        await fileForSend.map(async (newData, index) => {
+          await dispatch(FileUploadToDo(navigate, newData, t));
+          counter = counter - 1
+        })
+        if (counter <= 0) {
+          setAddNewModal(false);
+          let notesAttachment = [];
+          if (tasksAttachments.TasksAttachments.length > 0) {
+            tasksAttachments.TasksAttachments.map((data, index) => {
+              notesAttachment.push({
+                DisplayAttachmentName: data.DisplayAttachmentName,
+                OriginalAttachmentName: data.OriginalAttachmentName,
+              });
+            });
+          }
+          let Data = {
+            Title: addNoteFields.Title.value,
+            Description: addNoteFields.Description.value,
+            isStarred: isStarrted,
+            FK_UserID: JSON.parse(createrID),
+            FK_OrganizationID: JSON.parse(OrganizationID),
+            NotesAttachments: notesAttachment,
+          };
+
+          dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
+        }
+
+      } else {
+        setAddNewModal(false);
+        let notesAttachment = [];
+        if (tasksAttachments.TasksAttachments.length > 0) {
+          tasksAttachments.TasksAttachments.map((data, index) => {
+            notesAttachment.push({
+              DisplayAttachmentName: data.DisplayAttachmentName,
+              OriginalAttachmentName: data.OriginalAttachmentName,
+            });
+          });
+        }
+        let Data = {
+          Title: addNoteFields.Title.value,
+          Description: addNoteFields.Description.value,
+          isStarred: isStarrted,
+          FK_UserID: JSON.parse(createrID),
+          FK_OrganizationID: JSON.parse(OrganizationID),
+          NotesAttachments: notesAttachment,
+        };
+
+        dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
+      }
+
     } else {
     }
   };
 
-  useEffect(() => {
-    NoteTitle.current.focus();
-  }, []);
+  // useEffect(() => {
+  //   NoteTitle.current.focus();
+  // }, []);
 
   const enterKeyHandler = (event) => {
     if (event.key === "Tab" && !event.shiftKey) {

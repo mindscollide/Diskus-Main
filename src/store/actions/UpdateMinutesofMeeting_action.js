@@ -24,7 +24,7 @@ const meetinOfMeetingFail = (response, message) => {
   };
 };
 
-const updateMeetingOfMinutes = (data) => {
+const updateMeetingOfMinutes = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(meetinOfMeetingInit());
@@ -41,7 +41,8 @@ const updateMeetingOfMinutes = (data) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(updateMeetingOfMinutes(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             await dispatch(

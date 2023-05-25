@@ -67,7 +67,7 @@ import ModalShareFile from "./ModalShareFile/ModalShareFile";
 import Dragger from "../../components/elements/Dragger/Dragger";
 import ModalCancelDownload from "./ModalCancelDownload/ModalCancelDownload";
 import ModalRenameFolder from "./ModalRenameFolder/ModalRenameFolder";
-import { clearDataResponseMessage, deleteFileDataroom, FileisExist, getDocumentsAndFolderApi, getFolderDocumentsApi, getSharedFilesandFolderApi, uploadDocumentsApi } from "../../store/actions/DataRoom_actions";
+import { clearDataResponseMessage, deleteFileDataroom, deleteFolder, FileisExist, getDocumentsAndFolderApi, getFolderDocumentsApi, getSharedFilesandFolderApi, uploadDocumentsApi } from "../../store/actions/DataRoom_actions";
 import sharedIcon from "../../assets/images/shared_icon.svg";
 import UploadDataFolder from "../../components/elements/Dragger/UploadFolder";
 import { _justShowDateformat } from "../../commen/functions/date_formater";
@@ -123,7 +123,7 @@ const DataRoom = () => {
   const [rows, setRow] = useState([]);
   const [getAllData, setGetAllData] = useState([])
   const [showsubmenu, setShowsubmenu] = useState(false);
-  const [selectionType, setSelectionType] = useState("checkbox")
+  const [selectedRows, setSelectedRows] = useState([]);
   const [searchModalOptions, setSearchModalOptions] = useState({
     Location: "",
     DateModified: "",
@@ -494,14 +494,14 @@ const DataRoom = () => {
     setSearchbarshow(!searchbarshow);
   };
   const SharewithmeButonShow = () => {
-    dispatch(getDocumentsAndFolderApi(2, t))
+    dispatch(getDocumentsAndFolderApi(navigate, 2, t))
     setSharemebtn(true);
     setSharedwithmebtn(true);
     setMydocumentbtnactive(false);
   };
 
   const MydocumentButtonShow = () => {
-    dispatch(getDocumentsAndFolderApi(1, t))
+    dispatch(getDocumentsAndFolderApi(navigate, 1, t))
     setSharemebtn(false);
     setMydocumentbtnactive(true);
     setSharedwithmebtn(false);
@@ -519,7 +519,7 @@ const DataRoom = () => {
 
   const getFolderDocuments = (folderid) => {
     localStorage.setItem("folderID", folderid)
-    dispatch(getFolderDocumentsApi(folderid, t))
+    dispatch(getFolderDocumentsApi(navigate, folderid, t))
   }
 
   useEffect(() => {
@@ -725,7 +725,14 @@ const DataRoom = () => {
                         height="10.71px"
                         width="15.02px"
                         className={styles["Deletehover"]}
-                        onClick={() => dispatch(deleteFileDataroom(data.id, t))}
+                        onClick={() => {
+                          if (data.isFolder) {
+                            dispatch(deleteFolder(navigate, data.id, t))
+                          } else {
+                            dispatch(deleteFileDataroom(navigate, data.id, t))
+                          }
+                        }
+                        }
                       />
                     </Tooltip>
                   </>
@@ -736,7 +743,14 @@ const DataRoom = () => {
                         src={del}
                         height="10.71px"
                         width="15.02px"
-                        onClick={() => dispatch(deleteFileDataroom(data.id, t))}
+                        onClick={() => {
+                          if (data.isFolder) {
+                            dispatch(deleteFolder(navigate, data.id, t))
+                          } else {
+                            dispatch(deleteFileDataroom(navigate, data.id, t))
+                          }
+                        }
+                        }
                       />
                     </Tooltip>
                   </>
@@ -985,26 +999,26 @@ const DataRoom = () => {
     }
   };
   const handleUploadFile = ({ file }) => {
-    dispatch(FileisExist(file.name, t, file, setProgress, setRemainingTime, remainingTime, setShowbarupload, setTasksAttachments))
+    dispatch(FileisExist(navigate, file.name, t, file, setProgress, setRemainingTime, remainingTime, setShowbarupload, setTasksAttachments))
   }
   const handleUploadFolder = ({ file }) => {
-    dispatch(FileisExist(file.name, t, file, setProgress, setRemainingTime, remainingTime, setShowbarupload, setTasksAttachments))
+    dispatch(FileisExist(navigate, file.name, t, file, setProgress, setRemainingTime, remainingTime, setShowbarupload, setTasksAttachments))
   }
   const handleOpen = () => {
     console.log("handleOpen", isOpen);
     setIsOpen(true);
   };
-
-  const onChange = () => { }
-  // rowSelection object indicates the need for row selection
-  const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    onSelect: (record, selected, selectedRows) => {
-      console.log(record, selected, selectedRows);
-    },
+  const onSelectChange = (selectedRowKeys, selectedRows) => {
+    console.log(selectedRowKeys, selectedRows, "onSelectChangeonSelectChangeonSelectChangeonSelectChange")
+    setSelectedRows(selectedRows);
   };
+
+  const rowSelection = {
+    onChange: onSelectChange,
+  };
+
+
+
   useEffect(() => {
     if (DataRoomReducer.ResponseMessage !== "" && DataRoomReducer.ResponseMessage !== t("Data-available")) {
       setOpen({
@@ -1028,7 +1042,7 @@ const DataRoom = () => {
     }
   }, [DataRoomReducer.getAllDocumentandShareFolderResponse])
   useEffect(() => {
-    dispatch(getDocumentsAndFolderApi(3, t))
+    dispatch(getDocumentsAndFolderApi(navigate, 3, t))
   }, [])
   return (
     <>
@@ -1715,16 +1729,24 @@ const DataRoom = () => {
                         <Col lg={12} sm={12} md={12}>
                           {getAllData.length > 0 &&
                             getAllData !== undefined &&
-                            getAllData !== null ? (
+                            getAllData !== null && gridbtnactive ? (
+                            <>
+                              <GridViewDataRoom data={getAllData} />
+
+                            </>
+                          ) : getAllData.length > 0 &&
+                            getAllData !== undefined &&
+                            getAllData !== null && listviewactive === true ? (
                             <>
                               <TableToDo
                                 sortDirections={["descend", "ascend"]}
+
                                 column={MyDocumentsColumns}
                                 className={"Resolution"}
+                                size={"middle"}
                                 rows={getAllData}
                               />
-                            </>
-                          ) : (
+                            </>) : (
                             <>
                               <Row className="mt-4">
                                 <Col
@@ -1916,7 +1938,7 @@ const DataRoom = () => {
                                 column={MyDocumentsColumns}
                                 className={styles["DataRoom_Table"]}
                                 rows={getAllData}
-                                rowSelection={{ type: selectionType, ...rowSelection }}
+                                rowSelection={true}
                                 size={"middle"}
                               />
                               {showbarupload ? (

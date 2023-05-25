@@ -23,7 +23,9 @@ import {
   getCommitteeTypes,
 } from "../../../store/actions/Committee_actions";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+import { useNavigate } from "react-router-dom";
 const CreateCommittee = ({ setCreategrouppage }) => {
+  const navigate = useNavigate()
   const [viewCreateCommittee, setViewCreateCommittee] = useState(true);
   const { assignees, CommitteeReducer } = useSelector((state) => state);
   // for meatings  Attendees List
@@ -387,7 +389,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   useEffect(() => {
     CommitteeTitle.current.focus();
     let UserID = JSON.parse(localStorage.getItem("userID"));
-    dispatch(allAssignessList(t));
+    dispatch(allAssignessList(navigate, t));
   }, []);
 
   const handleSubmitCreateGroup = async () => {
@@ -412,7 +414,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         },
         CommitteeMembers: createCommitteeDetails.CommitteeMembers,
       };
-      dispatch(createcommittee(Data, t, setCreategrouppage));
+      dispatch(createcommittee(navigate, Data, t, setCreategrouppage));
     } else {
       setErrorBar(true);
       setOpen({
@@ -477,8 +479,8 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     let Data = {
       OrganizationID: organizationID,
     };
-    dispatch(getCommitteeTypes(Data, t));
-    dispatch(getCommitteeMembersRole(Data, t));
+    dispatch(getCommitteeTypes(navigate, Data, t));
+    dispatch(getCommitteeMembersRole(navigate, Data, t));
   }, []);
 
   return (
