@@ -1,56 +1,61 @@
-import React, { useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import styles from "./ModalAddFolder.module.css";
-import { useTranslation } from "react-i18next";
+import React, { useState } from 'react'
+import { Col, Container, Row } from 'react-bootstrap'
+import styles from './ModalAddFolder.module.css'
+import { useTranslation } from 'react-i18next'
 import {
   Button,
   InputSearchFilter,
   Modal,
   TextField,
-} from "../../../components/elements";
+} from '../../../components/elements'
 import { useDispatch } from 'react-redux'
-import { style } from "@mui/system";
-import { createFolderApi, FolderisExist } from "../../../store/actions/DataRoom_actions";
+import { style } from '@mui/system'
+import {
+  createFolderApi,
+  FolderisExist,
+} from '../../../store/actions/DataRoom_actions'
+import { useNavigate } from 'react-router-dom'
 
 const ModalAddFolder = ({ addfolder, setAddfolder }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const [FolderName, setFolderName] = useState({
-    content: "",
-    errorMessage: "",
-    errorStatus: false
+    content: '',
+    errorMessage: '',
+    errorStatus: false,
   })
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const closebtn = async () => {
-    setAddfolder(false);
-  };
+    setAddfolder(false)
+  }
   const handleAddFolder = () => {
-    if (FolderName.content !== "") {
+    if (FolderName.content !== '') {
       dispatch(FolderisExist(navigate, FolderName.content, t, setAddfolder))
     } else {
       setFolderName({
-        content: "",
-        errorMessage: "Folder name should not be empty",
-        errorStatus: true
+        content: '',
+        errorMessage: 'Folder name should not be empty',
+        errorStatus: true,
       })
     }
   }
-  const handleChangeFolderName = e => {
-    let name = e.target.name;
-    let value = e.target.value;
-    console.log("namevalue", name, value)
-    let valueCheck = value.replace("/^[a-zA-Z0-9]+$/g", "")
+  const handleChangeFolderName = (e) => {
+    let name = e.target.name
+    let value = e.target.value
+    console.log('namevalue', name, value)
+    let valueCheck = value.replace('/^[a-zA-Z0-9]+$/g', '')
     console.log(valueCheck)
-    if (name === "FolderName" && valueCheck !== "") {
+    if (name === 'FolderName' && valueCheck !== '') {
       setFolderName({
         content: valueCheck.trimStart(),
-        errorMessage: "",
-        errorStatus: false
+        errorMessage: '',
+        errorStatus: false,
       })
     } else {
       setFolderName({
-        content: "",
-        errorMessage: "Folder should have alpha numeric special character",
-        errorStatus: true
+        content: '',
+        errorMessage: 'Folder should have alpha numeric special character',
+        errorStatus: true,
       })
     }
   }
@@ -61,19 +66,19 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
         <Modal
           show={addfolder}
           onHide={() => {
-            setAddfolder(false);
+            setAddfolder(false)
           }}
           setShow={setAddfolder}
           modalFooterClassName="d-block"
           centered
-          size={"md"}
+          size={'md'}
           ModalBody={
             <>
               <Container>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
-                    <span className={styles["NewFolder_Heading"]}>
-                      {t("New-folder")}
+                    <span className={styles['NewFolder_Heading']}>
+                      {t('New-folder')}
                     </span>
                   </Col>
                 </Row>
@@ -83,7 +88,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
                       width="455px"
                       name="FolderName"
                       value={FolderName.content}
-                      placeholder={t("Name")}
+                      placeholder={t('Name')}
                       labelClass="textFieldSearch d-none"
                       change={handleChangeFolderName}
                     />
@@ -93,17 +98,15 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
                   <Col>
                     <p
                       className={
-                        FolderName.errorStatus &&
-                          FolderName.content === ""
-                          ? ` ${styles["errorMessage"]} `
-                          : `${styles["errorMessage_hidden"]}`
+                        FolderName.errorStatus && FolderName.content === ''
+                          ? ` ${styles['errorMessage']} `
+                          : `${styles['errorMessage_hidden']}`
                       }
                     >
                       {FolderName.errorMessage}
                     </p>
                   </Col>
                 </Row>
-
               </Container>
             </>
           }
@@ -117,17 +120,16 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
                   className="d-flex justify-content-end gap-2"
                 >
                   <Button
-                    text={t("Cancel")}
-                    className={styles["Cancel_button_AddFolder"]}
+                    text={t('Cancel')}
+                    className={styles['Cancel_button_AddFolder']}
                     onClick={closebtn}
-
                   />
 
                   <Button
-                    text={t("Create")}
-                    className={styles["Create_button_AddFolder"]}
+                    text={t('Create')}
+                    className={styles['Create_button_AddFolder']}
                     onClick={handleAddFolder}
-                    disableBtn={FolderName.content !== "" ? false : true}
+                    disableBtn={FolderName.content !== '' ? false : true}
                   />
                 </Col>
               </Row>
@@ -136,7 +138,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
         />
       </Container>
     </>
-  );
-};
+  )
+}
 
-export default ModalAddFolder;
+export default ModalAddFolder
