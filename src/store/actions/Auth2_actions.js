@@ -455,10 +455,10 @@ const enterPasswordSuccess = (response, message) => {
     message: message,
   };
 };
-const enterPasswordFail = (message) => {
+const enterPasswordFail = (message,response) => {
   return {
     type: actions.PASSWORDVALIDATION_FAIL,
-    // response: response,
+    response: response,
     message: message,
   };
 };
@@ -1098,7 +1098,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
-                  enterPasswordFail(t("Your-organization-is-not-activated"))
+                  enterPasswordFail(t("Your-organization-is-not-activated"),true)
                 );
                 localStorage.setItem(
                   "organizationID",

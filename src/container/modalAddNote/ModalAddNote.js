@@ -525,7 +525,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                           className="mb-3 mt-2"
                         >
                           <label className={styles["Add-Notes-Attachment"]}>
-                            {t("Attachements")}
+                            {t("Attachments")}
                           </label>
                         </Col>
                       </Row>

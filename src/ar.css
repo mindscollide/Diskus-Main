@@ -75,7 +75,7 @@ body[dir="rtl"] .rmdp-left i {
 }
 
 .rmdp-day.rmdp-selected span:not(.highlight) {
-  background-color: #bbbbbb !important;
+  background-color: #e1e1e1 !important;
   color: #000 !important;
 }
 

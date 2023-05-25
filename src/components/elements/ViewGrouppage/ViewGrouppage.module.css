@@ -108,10 +108,9 @@ body[dir="rtl"] .members-create-group-page {
 }
 
 .View-group-paper {
-  height: 711px !important;
-  width: 1429px !important;
+  height: auto !important;
+  width: 100% !important;
   padding: 60px 60px !important;
-  margin-top: 8px !important;
 }
 
 .Close-ViewGroup-btn {
