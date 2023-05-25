@@ -59,7 +59,7 @@ const clearResponseMessage = () => {
     type: actions.LISTOFASSIGNEE_RESPONSE_MESSAGE,
   };
 };
-const allAssignessList = (t) => {
+const allAssignessList = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
   let Data = {
@@ -80,9 +80,10 @@ const allAssignessList = (t) => {
       },
     })
       .then(async (response) => {
+        console.log("RefreshToken", response.data.responseCode)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(allAssignessList(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(allAssignessList(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -148,7 +149,7 @@ const ScheduleMeetingFail = (message) => {
 };
 
 //SaveNONAPIDisputes
-const ScheduleNewMeeting = (object, calenderFlag, t) => {
+const ScheduleNewMeeting = (navigate, object, calenderFlag, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
@@ -167,8 +168,8 @@ const ScheduleNewMeeting = (object, calenderFlag, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(ScheduleNewMeeting(object, calenderFlag, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(ScheduleNewMeeting(navigate, object, calenderFlag, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -186,10 +187,10 @@ const ScheduleNewMeeting = (object, calenderFlag, t) => {
                 calenderFlag !== undefined &&
                 calenderFlag !== null
               ) {
-                await dispatch(getCalendarDataResponse(createrID, t));
+                await dispatch(getCalendarDataResponse(navigate, createrID, t));
                 await dispatch(SetLoaderFalse());
               } else {
-                await dispatch(getMeetingUserId(dataForList, t));
+                await dispatch(getMeetingUserId(navigate, dataForList, t));
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -223,7 +224,7 @@ const ScheduleNewMeeting = (object, calenderFlag, t) => {
 };
 
 // update meeting
-const UpdateMeeting = (object, t) => {
+const UpdateMeeting = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
@@ -243,8 +244,8 @@ const UpdateMeeting = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(ScheduleNewMeeting(object, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(ScheduleNewMeeting(navigate, object, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -257,7 +258,7 @@ const UpdateMeeting = (object, t) => {
               await dispatch(
                 ShowNotification(t("The-record-has-been-updated-successfully"))
               );
-              await dispatch(getMeetingUserId(dataForList, t));
+              await dispatch(getMeetingUserId(navigate, dataForList, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -268,7 +269,7 @@ const UpdateMeeting = (object, t) => {
               await dispatch(
                 ScheduleMeetingFail(t("No-record-has-been-updated"))
               );
-              await dispatch(getMeetingUserId(dataForList, t));
+              await dispatch(getMeetingUserId(navigate, dataForList, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -316,7 +317,7 @@ const ViewMeetingFail = (message) => {
 };
 
 // View Meeting
-const ViewMeeting = (object, t, setViewFlag, setEditFlag, setCalendarViewModal, no) => {
+const ViewMeeting = (navigate, object, t, setViewFlag, setEditFlag, setCalendarViewModal, no) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(ViewMeetingInit());
@@ -333,8 +334,8 @@ const ViewMeeting = (object, t, setViewFlag, setEditFlag, setCalendarViewModal, 
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(ViewMeeting(object, t, setViewFlag, setEditFlag, no));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(ViewMeeting(navigate, object, t, setViewFlag, setEditFlag, setCalendarViewModal, no));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -350,7 +351,7 @@ const ViewMeeting = (object, t, setViewFlag, setEditFlag, setCalendarViewModal, 
                   t("Record-found")
                 )
               );
-              await dispatch(GetAllReminders(t))
+              await dispatch(GetAllReminders(navigate, t))
               if (no === 1) {
                 setViewFlag(true)
               } else if (no === 2) {
@@ -419,7 +420,7 @@ const CancelMeetingFail = (message) => {
 };
 
 //Cancel Meeting
-const CancelMeeting = (object, t) => {
+const CancelMeeting = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
@@ -438,8 +439,8 @@ const CancelMeeting = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          await dispatch(CancelMeeting(object, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(CancelMeeting(navigate, object, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -455,7 +456,7 @@ const CancelMeeting = (object, t) => {
                   t("The-meeting-has-been-cancelled")
                 )
               );
-              await dispatch(getMeetingUserId(dataForList, t));
+              await dispatch(getMeetingUserId(navigate, dataForList, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -516,7 +517,7 @@ const StartMeetingFail = (message) => {
 };
 
 //START Meeting
-const StartMeeting = (object, navigate, t) => {
+const StartMeeting = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
@@ -535,8 +536,8 @@ const StartMeeting = (object, navigate, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(StartMeeting(object, navigate, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(StartMeeting(navigate, object, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -553,7 +554,7 @@ const StartMeeting = (object, navigate, t) => {
                   t("The-meeting-has-been-started")
                 )
               );
-              await dispatch(getMeetingUserId(dataForList, t));
+              await dispatch(getMeetingUserId(navigate, dataForList, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -627,7 +628,7 @@ const EndMeetingFail = (message) => {
 };
 
 //START Meeting
-const EndMeeting = (object, t) => {
+const EndMeeting = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
@@ -646,8 +647,8 @@ const EndMeeting = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(EndMeeting(object, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(EndMeeting(navigate, object, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -663,7 +664,7 @@ const EndMeeting = (object, t) => {
                   t("The-meeting-has-been-ended")
                 )
               );
-              await dispatch(getMeetingUserId(dataForList, t));
+              await dispatch(getMeetingUserId(navigate, dataForList, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -711,7 +712,7 @@ const getAllRemindersFail = (message) => {
   };
 };
 
-const GetAllReminders = (t) => {
+const GetAllReminders = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     let form = new FormData();
@@ -726,8 +727,8 @@ const GetAllReminders = (t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(GetAllReminders(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllReminders(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

@@ -32,7 +32,7 @@ const getAllOrganizationRolesFail = (response, message) => {
   };
 };
 
-const GetAllOrganizationRoles = (t) => {
+const GetAllOrganizationRoles = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllOrganizationRolesinit());
@@ -50,8 +50,8 @@ const GetAllOrganizationRoles = (t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(GetAllOrganizationRoles(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllOrganizationRoles(navigate, t));
         } else if (response.data.responseResult.isExecuted === true) {
           console.log("asd", response);
           if (
@@ -113,7 +113,7 @@ const getAllUserRolesFail = (response, message) => {
   };
 };
 
-const GetAllUserRoles = (t) => {
+const GetAllUserRoles = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllUserRolesInit());
@@ -132,8 +132,8 @@ const GetAllUserRoles = (t) => {
       .then(async (response) => {
         console.log("ValidateData", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(GetAllUserRoles(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllUserRoles(navigate, t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
@@ -195,7 +195,7 @@ const getOrganizationByIDFail = (response, message) => {
   };
 };
 
-const GetOrganizationByID = (object, t) => {
+const GetOrganizationByID = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getOrganizationByIDInit());
@@ -213,8 +213,8 @@ const GetOrganizationByID = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(GetOrganizationByID(object, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetOrganizationByID(navigate, object, t));
         } else if (response.data.responseResult.isExecuted === true) {
           console.log("GetOrganizationByID", response.data.responseResult);
           if (
@@ -279,7 +279,7 @@ const getAllUserStatusFail = (response, message) => {
   };
 };
 
-const GetAllUserStatus = (t) => {
+const GetAllUserStatus = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getAllUserStatusInit());
@@ -298,8 +298,8 @@ const GetAllUserStatus = (t) => {
       .then(async (response) => {
         console.log("GetAllUserStatus", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(GetAllUserStatus(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetAllUserStatus(navigate, t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===

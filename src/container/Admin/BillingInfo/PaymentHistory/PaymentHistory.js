@@ -151,12 +151,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   //Open payment history modal
 
-  const openPaymentModal = async () => {};
+  const openPaymentModal = async () => { };
 
   // open delete modal on search button
 
   const iconModalHandler = async (e) => {
-    //  await dispatch(allAssignessList(1));
     setPaymentHistoryModal(true);
     setpaymentInvoiceSection({
       Invoice: "",
@@ -338,7 +337,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     }
   }, [OrganizationBillingReducer.getInvoiceAndPaymentHistory]);
   useEffect(() => {
-    dispatch(invoiceandpaymenthistory(t));
+    dispatch(invoiceandpaymenthistory(navigate, t));
   }, []);
   return (
     <>

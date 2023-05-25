@@ -55,6 +55,7 @@ import {
 } from "../../../commen/functions/date_formater";
 import moment from "moment";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+import { useNavigate } from "react-router-dom";
 
 const ScheduleNewResolution = ({
   newresolution,
@@ -64,7 +65,7 @@ const ScheduleNewResolution = ({
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
-
+  const navigate = useNavigate()
   const SlideLeft = () => {
     var Slider = document.getElementById("Slider");
     Slider.scrollLeft = Slider.scrollLeft - 300;
@@ -472,6 +473,7 @@ const ScheduleNewResolution = ({
       console.log("createConvertcreateConvert in", Data);
       dispatch(
         createResolution(
+          navigate,
           Data,
           voters,
           nonVoter,
@@ -544,7 +546,7 @@ const ScheduleNewResolution = ({
             3000
           );
         } else {
-          dispatch(FileUploadToDo(data.file.originFileObj, t));
+          dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
         }
       } else {
         let sizezero;
@@ -571,7 +573,7 @@ const ScheduleNewResolution = ({
             3000
           );
         } else {
-          dispatch(FileUploadToDo(data.file.originFileObj, t));
+          dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
         }
       }
     },
@@ -689,9 +691,9 @@ const ScheduleNewResolution = ({
   }, [uploadReducer.uploadDocumentsList]);
 
   useEffect(() => {
-    dispatch(getAllVotingMethods(t));
-    dispatch(getAllResolutionStatus(t));
-    dispatch(allAssignessList(t));
+    dispatch(getAllVotingMethods(navigate, t));
+    dispatch(getAllResolutionStatus(navigate, t));
+    dispatch(allAssignessList(navigate, t));
   }, []);
 
   return (

@@ -28,7 +28,7 @@ const getusernotificationfail = (message) => {
   };
 };
 
-const getNotifications = (userID, t) => {
+const getNotifications = (navigate, userID, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userIDData = {
     UserID: parseInt(userID),
@@ -49,8 +49,8 @@ const getNotifications = (userID, t) => {
       .then(async (response) => {
         console.log("notifications response", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(getNotifications(userID, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getNotifications(navigate, userID, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

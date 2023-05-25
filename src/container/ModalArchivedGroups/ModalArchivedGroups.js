@@ -11,6 +11,7 @@ import right from "../../assets/images/rightchev.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Carousel from "react-bootstrap/Carousel";
 import { getbyGroupID, getGroups } from "../../store/actions/Groups_actions";
+import { useNavigate } from "react-router-dom";
 
 const ModalArchivedCommittee = ({
   ModalTitle,
@@ -22,6 +23,7 @@ const ModalArchivedCommittee = ({
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [editdropdown, setEditdropdown] = useState(false);
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const { GroupsReducer } = useSelector((state) => state);
@@ -127,6 +129,7 @@ const ModalArchivedCommittee = ({
   const ViewGroupmodal = (groupID, statusID) => {
     dispatch(
       getbyGroupID(
+        navigate,
         groupID,
         t,
         setViewGroupPage,

@@ -61,7 +61,7 @@ const OrganizationMeetings = (navigate, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
+          await dispatch(RefreshToken(navigate, t));
           dispatch(OrganizationMeetings(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -157,7 +157,7 @@ const updateOrganizationMeetingFail = (message) => {
   };
 };
 
-const updateOrganizationMeeting = (MeetingID, MeetingStatusID, t, navigate) => {
+const updateOrganizationMeeting = (navigate, MeetingID, MeetingStatusID, t) => {
   let userID = localStorage.getItem("userID");
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationId = localStorage.getItem("organizationID");
@@ -186,7 +186,8 @@ const updateOrganizationMeeting = (MeetingID, MeetingStatusID, t, navigate) => {
       .then(async (response) => {
         console.log(response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(updateOrganizationMeeting(navigate, MeetingID, MeetingStatusID, t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage
@@ -268,7 +269,7 @@ const deleteOrganizationMeetingFail = (message) => {
   };
 };
 
-const deleteOrganiationMessage = (meetingID, MeetingStatusID, t, navigate) => {
+const deleteOrganiationMessage = (navigate, meetingID, MeetingStatusID, t) => {
   console.log(meetingID, MeetingStatusID, "datadatadata");
   let userID = localStorage.getItem("userID");
   let token = JSON.parse(localStorage.getItem("token"));
@@ -296,7 +297,8 @@ const deleteOrganiationMessage = (meetingID, MeetingStatusID, t, navigate) => {
       .then(async (response) => {
         console.log(response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(deleteOrganiationMessage(navigate, meetingID, MeetingStatusID, t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage
@@ -366,7 +368,7 @@ const getMeetingStatusFail = (message) => {
   };
 };
 
-const GetMeetingStatus = (t) => {
+const GetMeetingStatus = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
@@ -383,8 +385,8 @@ const GetMeetingStatus = (t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(GetMeetingStatus(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetMeetingStatus(navigate, t));
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage

@@ -168,7 +168,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
   //Get All Assignees API hit
   useEffect(() => {
     if (updateFlagToDo) {
-      dispatch(GetAllAssigneesToDoList(1, t));
+      dispatch(GetAllAssigneesToDoList(navigate, 1, t));
     } else {
       setUpdateFlagToDo(false);
       // setTask({
@@ -281,7 +281,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
       // let Data = {
       //   Task,
       // };
-      dispatch(UpdateToDoList(Task, t));
+      dispatch(UpdateToDoList(navigate, Task, t));
       setUpdateFlagToDo(false);
       setTask({
         ...task,
@@ -303,7 +303,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
       DisplayFileName: record.DisplayAttachmentName,
     };
     console.log("DownloadFile", data);
-    dispatch(DownloadFile(data));
+    dispatch(DownloadFile(navigate, data));
   };
 
   console.log("toDoListReducer", toDoListReducer);

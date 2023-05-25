@@ -43,7 +43,7 @@ const updateTodoStatusFail = (message) => {
     message: message,
   };
 };
-const getTodoStatus = (t) => {
+const getTodoStatus = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getTodoStatusInit());
@@ -60,8 +60,8 @@ const getTodoStatus = (t) => {
       .then(async (response) => {
         console.log("todo Status response", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(getTodoStatus(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getTodoStatus(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -107,7 +107,7 @@ const getTodoStatus = (t) => {
   };
 };
 
-const updateTodoStatusFunc = (value, data, t, flag) => {
+const updateTodoStatusFunc = (navigate, value, data, t, flag) => {
   console.log(value, data, "updateTodoStatus");
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
@@ -131,8 +131,8 @@ const updateTodoStatusFunc = (value, data, t, flag) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(updateTodoStatusFunc(value, data, t, flag));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(updateTodoStatusFunc(navigate, value, data, t, flag));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -144,7 +144,7 @@ const updateTodoStatusFunc = (value, data, t, flag) => {
             ) {
               let createrID = localStorage.getItem("userID");
 
-              await dispatch(getTodoStatus(t));
+              await dispatch(getTodoStatus(navigate, t));
               if (flag === false) {
                 await dispatch(
                   updateTodoStatusSuccess(
@@ -162,7 +162,7 @@ const updateTodoStatusFunc = (value, data, t, flag) => {
               }
               if (flag === false) {
                 let data2 = { UserID: parseInt(createrID), NumberOfRecords: 300 };
-                dispatch(GetTodoListByUser(data2, t));
+                dispatch(GetTodoListByUser(navigate, data2, t));
               }
             } else if (
               response.data.responseResult.responseMessage

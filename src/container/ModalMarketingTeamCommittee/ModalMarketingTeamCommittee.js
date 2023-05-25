@@ -10,6 +10,7 @@ import { getAllGroups } from "../../store/actions/Groups_actions";
 import Group_Icon from "../../assets/images/group_Icons.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { assignGroups } from "../../store/actions/Committee_actions";
+import { useNavigate } from "react-router-dom";
 const ModalMarketingTeamCommittee = ({
   ModalTitle,
   MarketingTeam,
@@ -20,11 +21,13 @@ const ModalMarketingTeamCommittee = ({
   console.log("GroupsReducerGroupsReducer", GroupsReducer);
   const [Groups, setGroups] = useState([]);
   const [groupName, setGroupName] = useState("");
-  const [groupID, setGroupID] = useState(0);
-  const [groupData, setGroupData] = useState([]);
-  const [data, setData] = useState([]);
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
+  const [groupID, setGroupID] = useState(0)
+  const [groupData, setGroupData] = useState([])
+  const [data, setData] = useState([])
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { t } = useTranslation()
+
   const closebtn = async () => {
     setMarketingTeam(false);
   };
@@ -101,16 +104,16 @@ const ModalMarketingTeamCommittee = ({
   const handleUpdate = () => {
     if (data.length > 0) {
       let Data = {
-        committeeGroupMapping: data,
-      };
-      dispatch(assignGroups(Data, t));
-      console.log("DataData", Data);
+        committeeGroupMapping: data
+      }
+      dispatch(assignGroups(navigate, Data, t))
+      console.log("DataData", Data)
     } else {
     }
   };
   useEffect(() => {
-    dispatch(getAllGroups(t));
-  }, []);
+    dispatch(getAllGroups(navigate, t))
+  }, [])
   useEffect(() => {
     if (GroupsReducer.getAllGroups !== null) {
       let newArr = [];
@@ -175,37 +178,37 @@ const ModalMarketingTeamCommittee = ({
                   <Row className={styles["GroupsDataRow"]}>
                     {groupData.length > 0
                       ? groupData.map((data, index) => {
-                          return (
-                            <Col
-                              sm={12}
-                              md={12}
-                              lg={12}
-                              className={styles["marketingDataCol"]}
-                            >
-                              <Row className="align-items-center my-2 ">
-                                <Col sm={1} md={1} lg={1}>
-                                  <span className={styles["group_Icon_Box"]}>
-                                    <img src={Group_Icon} />
-                                  </span>
-                                </Col>
-                                <Col sm={10} md={10} lg={10}>
-                                  <span className="ms-3">{data.GroupName}</span>{" "}
-                                </Col>
-                                <Col
-                                  sm={1}
-                                  md={1}
-                                  lg={1}
-                                  className="d-flex justify-content-end"
-                                >
-                                  <img
-                                    src={Crossicon}
-                                    onClick={() => removeHandler(data.GroupID)}
-                                  />
-                                </Col>
-                              </Row>
-                            </Col>
-                          );
-                        })
+                        return (
+                          <Col
+                            sm={12}
+                            md={12}
+                            lg={12}
+                            className={styles["marketingDataCol"]}
+                          >
+                            <Row className="align-items-center my-2 ">
+                              <Col sm={1} md={1} lg={1}>
+                                <span className={styles["group_Icon_Box"]}>
+                                  <img src={Group_Icon} />
+                                </span>
+                              </Col>
+                              <Col sm={10} md={10} lg={10}>
+                                <span className="ms-3">{data.GroupName}</span>{" "}
+                              </Col>
+                              <Col
+                                sm={1}
+                                md={1}
+                                lg={1}
+                                className="d-flex justify-content-end"
+                              >
+                                <img
+                                  src={Crossicon}
+                                  onClick={() => removeHandler(data.GroupID)}
+                                />
+                              </Col>
+                            </Row>
+                          </Col>
+                        );
+                      })
                       : null}
                   </Row>
                 </Col>

@@ -92,7 +92,7 @@ const Meeting = () => {
   });
   useEffect(() => {
     let data = { UserID: JSON.parse(UserID), NumberOfRecords: 300 };
-    dispatch(getMeetingUserId(data, t));
+    dispatch(getMeetingUserId(navigate, data, t));
   }, []);
   useEffect(() => {
     let organzier = [];
@@ -173,7 +173,7 @@ const Meeting = () => {
   // for view modal  handler
   const viewModalHandler = async (id) => {
     let Data = { MeetingID: id };
-    await dispatch(ViewMeeting(Data, t, setViewFlag, setEditFlag, setCalendarViewModal, 1));
+    await dispatch(ViewMeeting(navigate, Data, t, setViewFlag, setEditFlag, setCalendarViewModal, 1));
     // setViewFlag(true);
   };
 
@@ -181,7 +181,7 @@ const Meeting = () => {
   const editModalHandler = async (id) => {
     let Data = { MeetingID: id };
 
-    await dispatch(ViewMeeting(Data, t, setViewFlag, setEditFlag, setCalendarViewModal, 2));
+    await dispatch(ViewMeeting(navigate, Data, t, setViewFlag, setEditFlag, setCalendarViewModal, 2));
     await dispatch(GetAllReminders(t));
     // setModalsflag(true);
   };
@@ -193,7 +193,7 @@ const Meeting = () => {
       MeetingID: meetingID,
       UserID: parseInt(UserID),
     };
-    dispatch(StartMeeting(Data, navigate, t));
+    dispatch(StartMeeting(navigate, Data, t));
   };
 
   const endMeeting = (record) => {
@@ -202,7 +202,7 @@ const Meeting = () => {
       MeetingID: meetingID,
       UserID: parseInt(UserID),
     };
-    dispatch(EndMeeting(Data, t));
+    dispatch(EndMeeting(navigate, Data, t));
   };
 
   const checkForEdit = (record) => {
@@ -681,7 +681,7 @@ const Meeting = () => {
         HostName: "",
         UserID: parseInt(UserID),
       };
-      dispatch(searchMeetingUserId(newData, t));
+      dispatch(searchMeetingUserId(navigate, newData, t));
       setSearchData({
         ...searchData,
         Date: "",
@@ -691,7 +691,7 @@ const Meeting = () => {
       });
     } else {
       // make notification for if input fields is empty here
-      dispatch(searchMeetingUserId(searchData, t));
+      dispatch(searchMeetingUserId(navigate, searchData, t));
       setSearchData({
         Date: "",
         Title: "",

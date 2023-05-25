@@ -49,6 +49,7 @@ import {
   RemoveTimeDashes,
 } from "../../../commen/functions/date_formater";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+import { useNavigate } from "react-router-dom";
 const EditResolution = ({
   setEditResoutionPage,
   editresolutionPage,
@@ -57,9 +58,8 @@ const EditResolution = ({
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { ResolutionReducer, assignees, uploadReducer } = useSelector(
-    (state) => state
-  );
+  const navigate = useNavigate();
+  const { ResolutionReducer, assignees, uploadReducer } = useSelector((state) => state);
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [resolutionID, setResolutionID] = useState(0);
   console.log(
@@ -481,6 +481,7 @@ const EditResolution = ({
       console.log(Data, "DataDataDataDataDataDataData");
       dispatch(
         createResolution(
+          navigate,
           Data,
           voters,
           nonVoter,
@@ -573,7 +574,7 @@ const EditResolution = ({
             3000
           );
         } else {
-          dispatch(FileUploadToDo(data.file.originFileObj, t));
+          dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
         }
       } else {
         let sizezero;
@@ -600,7 +601,7 @@ const EditResolution = ({
             3000
           );
         } else {
-          dispatch(FileUploadToDo(data.file.originFileObj, t));
+          dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
         }
       }
     },
@@ -823,9 +824,9 @@ const EditResolution = ({
   }, [uploadReducer.uploadDocumentsList]);
 
   useEffect(() => {
-    dispatch(getAllVotingMethods(t));
-    dispatch(getAllResolutionStatus(t));
-    dispatch(allAssignessList(t));
+    dispatch(getAllVotingMethods(navigate, t));
+    dispatch(getAllResolutionStatus(navigate, t));
+    dispatch(allAssignessList(navigate, t));
   }, []);
   useEffect(() => {
     if (ResolutionReducer.getResolutionbyID !== null) {

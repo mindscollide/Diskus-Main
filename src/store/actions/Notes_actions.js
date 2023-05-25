@@ -32,7 +32,7 @@ const getNotes_Fail = (message, response) => {
   };
 };
 
-const GetNotes = (Data, t) => {
+const GetNotes = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getNotes_Init());
@@ -52,8 +52,8 @@ const GetNotes = (Data, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          // dispatch(GetNotes(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetNotes(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -124,7 +124,7 @@ const saveNotes_Fail = (message) => {
   };
 };
 
-const SaveNotesAPI = (Data, t, setAddNewModal) => {
+const SaveNotesAPI = (navigate, Data, t, setAddNewModal) => {
   console.log("DataDataData", Data);
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
@@ -149,8 +149,8 @@ const SaveNotesAPI = (Data, t, setAddNewModal) => {
       .then(async (response) => {
         console.log("checking");
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          // dispatch(GetNotes(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
         } else if (response.data.responseCode === 200) {
           console.log("checking");
           if (response.data.responseResult.isExecuted === true) {
@@ -234,6 +234,7 @@ const UpdateNotes_Fail = (message) => {
 };
 
 const UpdateNotesAPI = (
+  navigate,
   data,
   t,
   setIsUpdateNote,
@@ -262,8 +263,15 @@ const UpdateNotesAPI = (
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          // dispatch(GetNotes(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(UpdateNotesAPI(
+            navigate,
+            data,
+            t,
+            setIsUpdateNote,
+            setIsDeleteNote,
+            setUpdateNotes
+          ))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -354,6 +362,7 @@ const GetNotesById_Fail = (message) => {
 };
 
 const GetNotesByIdAPI = (
+  navigate,
   NotesID,
   t,
   setViewModalShow,
@@ -387,8 +396,16 @@ const GetNotesByIdAPI = (
       .then(async (response) => {
         console.log("responseresponse", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          // dispatch(GetNotes(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetNotesByIdAPI(
+            navigate,
+            NotesID,
+            t,
+            setViewModalShow,
+            setUpdateModalShow,
+            setUpdateNotesModalHomePage,
+            no
+          ))
         } else if (response.data.responseCode === 200) {
           console.log("responseresponse", response);
           if (response.data.responseResult.isExecuted === true) {
@@ -471,7 +488,7 @@ const deleteNotes_Fail = (message) => {
     message: message
   }
 }
-const deleteNotesApi = (ID, t, setUpdateNotes) => {
+const deleteNotesApi = (navigate, ID, t, setUpdateNotes) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -497,7 +514,10 @@ const deleteNotesApi = (ID, t, setUpdateNotes) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(deleteNotesApi(
+            navigate, ID, t, setUpdateNotes
+          ))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (response.data.responseResult.responseMessage.toLowerCase().includes("Notes_NotesServiceManager_DeleteNotes_01".toLowerCase())) {

@@ -45,13 +45,14 @@ import {
 import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
 import Form from "react-bootstrap/Form";
+import { useNavigate } from "react-router-dom";
 
 const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
   //For Localization
   const { t } = useTranslation();
 
   let currentLanguage = localStorage.getItem("i18nextLng");
-
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const { assignees, uploadReducer, minuteofMeetingReducer } = useSelector(
     (state) => state
@@ -428,7 +429,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
         await setIsMinutes(false);
         await setIsAgenda(false);
         await setMinutesOftheMeatingStatus(false);
-        await dispatch(addMinutesofMeetings(Data, t));
+        await dispatch(addMinutesofMeetings(navigate, Data, t));
         await setObjMeetingAgenda({
           PK_MAID: 0,
           Title: "",
@@ -693,7 +694,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
           console.log("uploadFile ReducerData");
         } else {
           console.log("uploadFile ReducerData");
-          dispatch(FileUploadToDo(uploadedFile, t));
+          dispatch(FileUploadToDo(navigate, uploadedFile, t));
         }
       } else {
         console.log("uploadFile ReducerData");
@@ -724,7 +725,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
         } else {
           console.log("uploadFile ReducerData");
 
-          dispatch(FileUploadToDo(uploadedFile, t));
+          dispatch(FileUploadToDo(navigate, uploadedFile, t));
         }
       }
     }
@@ -735,7 +736,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
       DisplayFileName: record.DisplayAttachmentName,
     };
     console.log("DownloadFile", data);
-    dispatch(DownloadFile(data));
+    dispatch(DownloadFile(navigate, data));
   };
 
   useEffect(() => {
@@ -994,8 +995,8 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
 
       setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
       setAddedParticipantNameList(List);
-      dispatch(allAssignessList(t));;
-      dispatch(GetAllReminders(t));
+      dispatch(allAssignessList(navigate, t));;
+      dispatch(GetAllReminders(navigate, t));
     } else {
       setEditFlag(false);
       seteditRecordIndex(null);
@@ -1551,7 +1552,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
       MeetingAttendees: createMeeting.MeetingAttendees,
       ExternalMeetingAttendees: createMeeting.ExternalMeetingAttendees,
     }
-    await dispatch(UpdateMeeting(newData, t));
+    await dispatch(UpdateMeeting(navigate, newData, t));
     await setObjMeetingAgenda({
       PK_MAID: 0,
       Title: "",
@@ -1618,7 +1619,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
     let Data = {
       MeetingID: meetingID,
     };
-    await dispatch(CancelMeeting(Data, t));
+    await dispatch(CancelMeeting(navigate, Data, t));
     setObjMeetingAgenda({
       PK_MAID: 0,
       Title: "",
@@ -1755,7 +1756,6 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
         await setIsMinutes(false);
         await setIsAgenda(false);
         await setMinutesOftheMeatingStatus(false);
-        // await dispatch(addMinutesofMeetings(Data));
         await setObjMeetingAgenda({
           PK_MAID: 0,
           Title: "",

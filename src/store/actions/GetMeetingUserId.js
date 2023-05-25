@@ -97,7 +97,7 @@ const setMQTTRequestUpcomingEvents = (response) => {
     response: response
   }
 }
-const getMeetingUserId = (data, t) => {
+const getMeetingUserId = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getMeetingIdInit());
@@ -114,8 +114,8 @@ const getMeetingUserId = (data, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(getMeetingUserId(data, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getMeetingUserId(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -169,7 +169,7 @@ const getMeetingUserId = (data, t) => {
 
 //get meetinguser ID API
 
-const searchMeetingUserId = (data, t) => {
+const searchMeetingUserId = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(getMeetingIdInit());
@@ -186,8 +186,8 @@ const searchMeetingUserId = (data, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(getMeetingUserId(data, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(searchMeetingUserId(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -260,7 +260,7 @@ const getWeeklyMeetingsCountFail = (message) => {
 };
 
 //Get Week meetings
-const GetWeeklyMeetingsCount = (id, t) => {
+const GetWeeklyMeetingsCount = (navigate, id, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     UserId: parseInt(id),
@@ -280,8 +280,8 @@ const GetWeeklyMeetingsCount = (id, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(GetWeeklyMeetingsCount(Data, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetWeeklyMeetingsCount(navigate, Data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -357,7 +357,7 @@ const getUpcomingEventsFail = (response) => {
 };
 
 //Get Week meetings
-const GetUpcomingEvents = (data, t) => {
+const GetUpcomingEvents = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(SetSpinnerTrue());
@@ -375,8 +375,8 @@ const GetUpcomingEvents = (data, t) => {
       .then(async (response) => {
         console.log("GetUpcomingEvents", response);
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(GetUpcomingEvents(data, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetUpcomingEvents(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

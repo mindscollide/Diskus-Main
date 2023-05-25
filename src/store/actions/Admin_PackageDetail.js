@@ -25,7 +25,7 @@ const packageDetailFail = (message) => {
   };
 };
 
-const getSubscribeOrganizationPackage = (t) => {
+const getSubscribeOrganizationPackage = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
   let data = { OrganizationID: organizationID };
@@ -48,7 +48,8 @@ const getSubscribeOrganizationPackage = (t) => {
       .then(async (response) => {
         console.log("getSubscribeOrganizationPackage", response);
         if (response.data.responseCode === 417) {
-          // dispatch(RefreshToken(props))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(getSubscribeOrganizationPackage(navigate, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             console.log(response, "responseresponseresponse");

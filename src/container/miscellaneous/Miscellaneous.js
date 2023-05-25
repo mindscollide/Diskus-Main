@@ -10,13 +10,14 @@ import { GetUserFAQs } from "./../../store/actions/Get_Faqs";
 import { Row, Col, Container, Card } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 const CustomMiscellaneous = () => {
   const state = useSelector((state) => state);
   const { t } = useTranslation();
   //import faqsReducer from reducers
   const { fAQsReducer } = state;
   const dispatch = useDispatch();
-
+  const navigate = useNavigate()
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -33,7 +34,7 @@ const CustomMiscellaneous = () => {
 
   //dispatch user getfaqs api
   useEffect(() => {
-    dispatch(GetUserFAQs(t));
+    dispatch(GetUserFAQs(navigate, t));
   }, []);
 
   let currentLanguage = localStorage.getItem("i18nextLng");

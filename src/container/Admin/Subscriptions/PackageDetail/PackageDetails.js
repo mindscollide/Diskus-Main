@@ -45,7 +45,7 @@ const PackageDetails = () => {
     navigate("/Diskus/Admin/UpgradePackage");
   };
   useEffect(() => {
-    dispatch(getSubscribeOrganizationPackage(t));
+    dispatch(getSubscribeOrganizationPackage(navigate, t));
   }, []);
 
   useEffect(() => {
@@ -111,7 +111,7 @@ const PackageDetails = () => {
                 <Col sm={12}>
                   {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                     null &&
-                  GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                     undefined ? (
                     <>
                       {/* <img
@@ -282,9 +282,8 @@ const PackageDetails = () => {
           </Col>
           <Col sm={12} md={8} lg={8} className="mb-3">
             <Col
-              className={`${
-                styles["upgrade_planBox"]
-              } ${"border py-5 px-5 bg-white h-100"}`}
+              className={`${styles["upgrade_planBox"]
+                } ${"border py-5 px-5 bg-white h-100"}`}
               sm={12}
               md={12}
               lg={12}

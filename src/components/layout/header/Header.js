@@ -43,8 +43,8 @@ const Header = ({ currentUserImage }) => {
   useEffect(() => {
     let currentUserID = localStorage.getItem("userID");
     if (reload === true) {
-      dispatch(getNotifications(JSON.parse(currentUserID)));
-      dispatch(getUserSetting(JSON.parse(currentUserID)));
+      dispatch(getNotifications(navigate, JSON.parse(currentUserID)));
+      dispatch(getUserSetting(navigate, JSON.parse(currentUserID)));
       setReload(false);
     }
   }, [reload]);
@@ -112,8 +112,8 @@ const Header = ({ currentUserImage }) => {
                 className={"notification-dropdown_menu" + " " + currentLanguage}
               >
                 {NotificationData !== null &&
-                NotificationData !== undefined &&
-                NotificationData.length !== 0 ? (
+                  NotificationData !== undefined &&
+                  NotificationData.length !== 0 ? (
                   NotificationData.map((notificationData, index) => {
                     // console.log("notificationData", notificationData);
                     return (
@@ -122,7 +122,7 @@ const Header = ({ currentUserImage }) => {
                           <Row className="d-flex justify-content-center ">
                             <Col sm={2}>
                               {notificationData.notificationTypes.pK_NTID ===
-                              1 ? (
+                                1 ? (
                                 <div className="desc-notification-user ">
                                   <img
                                     src={MeetingChangesSvg}

@@ -49,7 +49,7 @@ const downloadDocumentFail = (response) => {
 };
 
 // DownloadFile
-const DownloadFile = (data, t) => {
+const DownloadFile = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let form = new FormData();
   form.append("RequestMethod", downloadDocument.RequestMethod);
@@ -97,8 +97,8 @@ const DownloadFile = (data, t) => {
     })
       .then(async (response) => {
         if (response.status === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(DownloadFile(data, t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(DownloadFile(navigate, data, t));
         } else if (response.status === 200) {
           const url = window.URL.createObjectURL(new Blob([response.data]));
           const link = document.createElement("a");

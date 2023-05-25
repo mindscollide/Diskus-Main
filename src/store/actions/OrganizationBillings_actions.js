@@ -25,7 +25,7 @@ const getBillingInformation_fail = (message) => {
     }
 }
 
-const getBillingInformationapi = (t) => {
+const getBillingInformationapi = (navigate, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let OrganizationID = localStorage.getItem("organizationID");
     let Data = {
@@ -46,7 +46,8 @@ const getBillingInformationapi = (t) => {
         }).then(async (response) => {
             console.log(response, "response")
             if (response.data.responseCode === 417) {
-                await dispatch(RefreshToken(t));
+                await dispatch(RefreshToken(navigate, t));
+                dispatch(getBillingInformationapi(navigate, t))
             } else if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_GetBillingInformation_01".toLowerCase())) {
@@ -88,7 +89,7 @@ const getPayoutstading_fail = (message) => {
     }
 }
 
-const getPayoutStandingInformation = (t) => {
+const getPayoutStandingInformation = (navigate, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let OrganizationID = localStorage.getItem("organizationID");
     let Data = {
@@ -108,7 +109,8 @@ const getPayoutStandingInformation = (t) => {
             }
         }).then(async (response) => {
             if (response.data.responseCode === 417) {
-                await dispatch(RefreshToken(t));
+                await dispatch(RefreshToken(navigate, t));
+                dispatch(getPayoutStandingInformation(navigate, t))
             } else if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_PayOustanding_01".toLowerCase())) {
@@ -150,7 +152,7 @@ const invoiceandpaymenthistory_fail = (message) => {
     }
 }
 
-const invoiceandpaymenthistory = (t) => {
+const invoiceandpaymenthistory = (navigate, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let OrganizationID = localStorage.getItem("organizationID");
     let Data = {
@@ -170,7 +172,8 @@ const invoiceandpaymenthistory = (t) => {
             }
         }).then(async (response) => {
             if (response.data.responseCode === 417) {
-                await dispatch(RefreshToken(t));
+                await dispatch(RefreshToken(navigate, t));
+                dispatch(invoiceandpaymenthistory(navigate, t));
             } else if (response.data.responseCode === 200) {
                 if (response.data.responseResult.isExecuted === true) {
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("Admin_AdminServiceManager_InvoicesAndPaymentHistory_01".toLowerCase())) {

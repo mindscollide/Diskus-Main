@@ -57,7 +57,7 @@ const PackageUpgrade = () => {
     setMonthlyPackageShow(false);
   };
   const selectUpgrade = (data) => {
-    if (annualPackageShow  === true) {
+    if (annualPackageShow === true) {
       if (currentPackageId === data.PackageID) {
         // anually packege
         localStorage.setItem("TenureOfSuscriptionID", JSON.parse(1));
@@ -81,16 +81,16 @@ const PackageUpgrade = () => {
     return annuallyAmount.toFixed() / 12;
   };
   useEffect(() => {
-    dispatch(packagesforUpgrade(t));
+    dispatch(packagesforUpgrade(navigate, t));
   }, []);
   useEffect(() => {
     if (
       GetSubscriptionPackage.getSubscriptionPackageforUpgradeResponse.length >
-        0 &&
+      0 &&
       GetSubscriptionPackage.getSubscriptionPackageforUpgradeResponse !==
-        null &&
+      null &&
       GetSubscriptionPackage.getSubscriptionPackageforUpgradeResponse !==
-        undefined
+      undefined
     ) {
       let data = [];
       GetSubscriptionPackage.getSubscriptionPackageforUpgradeResponse.map(
@@ -209,7 +209,7 @@ const PackageUpgrade = () => {
                         className={styles["upgradePackageAmoutnandList"]}
                       >
                         {annualPackageShow &&
-                        currentPackageId === data.PackageID ? (
+                          currentPackageId === data.PackageID ? (
                           <h2 className={styles["crossicon1"]}>
                             <del>${data.PackageAmount}/</del>
                             <span className="fs-6">{t("Month")}</span>
@@ -242,12 +242,12 @@ const PackageUpgrade = () => {
                                       ? `${styles["spanActive"]}`
                                       : monthlyPackageShow &&
                                         currentPackageId === data.PackageID
-                                      ? `${styles["span-formontly"]}`
-                                      : monthlyPackageShow === false &&
-                                        currentPackageId != data.PackageID
-                                      ? `${styles["spanActive"]}`
-                                      : 
-                                        `${styles["span-formontly"]}`
+                                        ? `${styles["span-formontly"]}`
+                                        : monthlyPackageShow === false &&
+                                          currentPackageId != data.PackageID
+                                          ? `${styles["spanActive"]}`
+                                          :
+                                          `${styles["span-formontly"]}`
                                   }
                                   onClick={() =>
                                     handleManualPackage(data.PackageID)
@@ -258,7 +258,7 @@ const PackageUpgrade = () => {
                                 <span
                                   className={
                                     annualPackageShow &&
-                                    currentPackageId === data.PackageID
+                                      currentPackageId === data.PackageID
                                       ? `${styles["spanActive"]}`
                                       : `${styles["span-foranually"]}`
                                   }
@@ -277,7 +277,7 @@ const PackageUpgrade = () => {
                               <div
                                 className={
                                   annualPackageShow &&
-                                  currentPackageId === data.PackageID
+                                    currentPackageId === data.PackageID
                                     ? `${styles["packagecard_two"]} `
                                     : ` ${styles["packagecard_two_visible"]} `
                                 }
@@ -296,7 +296,7 @@ const PackageUpgrade = () => {
                                     <b
                                       className={
                                         styles[
-                                          "packagecard_disoucntprice_amount"
+                                        "packagecard_disoucntprice_amount"
                                         ]
                                       }
                                     >
@@ -308,7 +308,7 @@ const PackageUpgrade = () => {
                                     <b
                                       className={
                                         styles[
-                                          "packagecard_disoucntprice_amount"
+                                        "packagecard_disoucntprice_amount"
                                         ]
                                       }
                                     >

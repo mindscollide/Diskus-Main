@@ -63,7 +63,7 @@ import { getUserSetting } from "../actions/GetUserSetting";
 //       .then(async (response) => {
 //         console.log("update general user response", response);
 //         if (response.data.responseCode === 417) {
-//           await dispatch(RefreshToken(t));
+//           await dispatch(RefreshToken(navigate,t));
 //         } else if (response.data.responseCode === 200) {
 //           if (response.data.responseResult.isExecuted === true) {
 //             await dispatch(
@@ -104,7 +104,7 @@ const updateUserSettingFail = (message) => {
     message: message,
   };
 };
-const updateUserSettingFunc = (userGeneralSettingData, t) => {
+const updateUserSettingFunc = (navigate, userGeneralSettingData, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentUserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -147,7 +147,8 @@ const updateUserSettingFunc = (userGeneralSettingData, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(updateUserSettingFunc(navigate, userGeneralSettingData, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -163,7 +164,7 @@ const updateUserSettingFunc = (userGeneralSettingData, t) => {
                   t("User-configurations-updated-successfully")
                 )
               );
-              dispatch(getUserSetting(JSON.parse(currentUserID), t));
+              dispatch(getUserSetting(navigate, JSON.parse(currentUserID), t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

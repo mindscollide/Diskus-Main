@@ -24,6 +24,8 @@ import {
   updateUserMessageCleare,
   updateUserSettingFunc,
 } from "../../store/actions/UpdateUserGeneralSetting";
+import { getUserSetting } from "../../store/actions/GetUserSetting";
+import { useNavigate } from "react-router-dom";
 
 const Organization = () => {
   //for translation
@@ -31,6 +33,7 @@ const Organization = () => {
   console.log("settingReducersettingReducersettingReducer", settingReducer);
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -197,7 +200,7 @@ const Organization = () => {
     });
   };
   const updateOrganizationLevelSettings = () => {
-    dispatch(updateUserSettingFunc(organizationStates, t));
+    dispatch(updateUserSettingFunc(navigate, organizationStates, t));
   };
 
   // Time Zones set in values
@@ -226,10 +229,10 @@ const Organization = () => {
   //   }
   // }, [settingReducer.CountryCodes]);
 
-  // useEffect(() => {
-  //   dispatch(getCountryCodeFunc())
-  //   dispatch(getTimeZone())
-  // }, [])
+  useEffect(() => {
+    dispatch(getUserSetting(navigate, t))
+    // dispatch(getTimeZone())
+  }, [])
   useEffect(() => {
     let userProfileData = settingReducer.UserProfileData;
     if (userProfileData !== null && userProfileData !== undefined) {

@@ -13,6 +13,7 @@ const initialState = {
     shareFilesResponse: null,
     shareFoldersResponse: null,
     DeleteFileResponse: null,
+    DeleteFolderResponse: null,
     FolderisExistResponse: null,
     FileisExistResponse: null
 }
@@ -261,6 +262,28 @@ const DataRoomReducer = (state = initialState, action) => {
                 ...state,
                 Loading: false,
                 FolderisExistResponse: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.DELETEFOLDER_DATAROOM_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.DELETEFOLDER_DATAROOM_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                DeleteFolderResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.DELETEFOLDER_DATAROOM_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                DeleteFolderResponse: null,
                 ResponseMessage: action.message
             }
         }

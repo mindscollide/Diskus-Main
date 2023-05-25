@@ -29,7 +29,7 @@ const faqsFail = (message) => {
   };
 };
 
-const GetUserFAQs = (t) => {
+const GetUserFAQs = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(faqsInit());
@@ -45,8 +45,8 @@ const GetUserFAQs = (t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(t));
-          dispatch(GetUserFAQs(t));
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(GetUserFAQs(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

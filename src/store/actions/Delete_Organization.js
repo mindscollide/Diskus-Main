@@ -24,7 +24,7 @@ const deleteOrganizationfail = (message) => {
     message: message
   }
 }
-const deleteOrganizationAction = (Data, t, setDeleteSuccesModal, setDeleteModal, setDeleteConfirmModal, navigate) => {
+const deleteOrganizationAction = (navigate, Data, t, setDeleteSuccesModal, setDeleteModal, setDeleteConfirmModal) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(deleteOrganizationInit());
@@ -39,12 +39,12 @@ const deleteOrganizationAction = (Data, t, setDeleteSuccesModal, setDeleteModal,
         _token: token
       }
     })
-      .then((response) => {
+      .then(async (response) => {
         console.log("asdasdasd", response)
         if (response.data.responseCode === 417) {
           console.log("asdasdasd", response)
-          dispatch(RefreshToken(t))
-          dispatch(deleteOrganizationAction(Data, t, setDeleteSuccesModal, setDeleteModal, setDeleteConfirmModal, navigate))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(deleteOrganizationAction(navigate, Data, t, setDeleteSuccesModal, setDeleteModal, setDeleteConfirmModal))
         } else if (response.data.responseCode === 200) {
           console.log("asdasdasd", response)
           if (response.data.responseResult.isExecuted === true) {

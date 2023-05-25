@@ -8,8 +8,10 @@ import { useTranslation } from "react-i18next";
 import Committee from "../../../container/Committee/Committee";
 import { useDispatch, useSelector } from "react-redux";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+import { useNavigate } from "react-router-dom";
 const ViewUpdateCommittee = ({ setViewGroupPage }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { t } = useTranslation();
   const [viewCommitteeClose, setViewCommitteeClose] = useState(true);
   const { CommitteeReducer } = useSelector((state) => state);
@@ -45,7 +47,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
 
   useEffect(() => {
     let UserID = JSON.parse(localStorage.getItem("userID"));
-    dispatch(allAssignessList(t));
+    dispatch(allAssignessList(navigate, t));
   }, []);
 
   return (
@@ -132,7 +134,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                                     <span
                                       className={
                                         styles[
-                                          "Designation-ViewCommittee-group"
+                                        "Designation-ViewCommittee-group"
                                         ]
                                       }
                                     >
@@ -203,7 +205,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                                     <span
                                       className={
                                         styles[
-                                          "Designation-ViewCommittee-group"
+                                        "Designation-ViewCommittee-group"
                                         ]
                                       }
                                     >

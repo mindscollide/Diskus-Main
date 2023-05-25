@@ -22,6 +22,7 @@ import {
   updateOrganizationLevelSetting,
 } from "../../../../store/actions/OrganizationSettings";
 import { countryName } from "../../AllUsers/AddUser/CountryJson";
+import { useNavigate } from "react-router-dom";
 
 const Organization = () => {
   //for translation
@@ -29,6 +30,7 @@ const Organization = () => {
   console.log("settingReducersettingReducersettingReducer", settingReducer);
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [timedurationValues, setTimeDurationValues] = useState([
     {
       label: "1 Hours",
@@ -250,7 +252,7 @@ const Organization = () => {
         organizationStates.PushNotificationOnCancelledMeeting,
       EmailOnCancelledMeeting: organizationStates.EmailOnCancelledMeeting,
     };
-    dispatch(updateOrganizationLevelSetting(organizationSettings, t));
+    dispatch(updateOrganizationLevelSetting(navigate, organizationSettings, t));
   };
   useEffect(() => {
     let newCountryCode = [];
@@ -310,12 +312,12 @@ const Organization = () => {
   // Country Code set in values
 
   useEffect(() => {
-    dispatch(getOrganizationLevelSetting(t));
+    dispatch(getOrganizationLevelSetting(navigate, t));
   }, []);
 
   useEffect(() => {
     // dispatch(getCountryCodeFunc());
-    dispatch(getTimeZone());
+    dispatch(getTimeZone(navigate, t));
   }, []);
   useEffect(() => {
     let userProfileData = settingReducer.GetOrganizationLevelSettingResponse;
