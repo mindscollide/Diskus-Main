@@ -9,6 +9,10 @@
   color: #6172d6 !important;
 }
 
+body[dir="rtl"] .details-class {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .scroll-bar-creategroup {
   height: 30vh !important;
   overflow-x: hidden !important;
@@ -31,6 +35,10 @@
   color: #6172d6 !important;
 }
 
+body[dir="rtl"] .Create-group-Head-Heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .group-head-info {
   line-height: 15px !important;
 }
@@ -40,9 +48,17 @@
   font-size: 12px !important;
 }
 
+body[dir="rtl"] .name-create-group {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Designation-create-group {
   color: #5a5a5a;
   font-size: 10px !important;
+}
+
+body[dir="rtl"] .Designation-create-group {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .email-create-group {
@@ -52,14 +68,30 @@
   font-size: 10px !important;
 }
 
+body[dir="rtl"] .email-create-group {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+body[dir="rtl"] .no-member {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .members-create-group-page {
   font-size: 18px !important;
   color: #6172d6 !important;
 }
 
+body[dir="rtl"] .members-create-group-page {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Addmembers-class {
   font-size: 18px !important;
   color: #6172d6 !important;
+}
+
+body[dir="rtl"] .Addmembers-class {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Create-UpgradeGroup-btn {
@@ -70,6 +102,10 @@
   font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: none !important;
+}
+
+body[dir="rtl"] .Create-UpgradeGroup-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Create-UpgradeGroup-btn:is(:hover, :active, :focus, :focus-visible, :visited) {
@@ -91,6 +127,11 @@
   border: 1px solid #e1e1e1 !important;
   padding: 12px 30px !important;
   height: 39px !important;
+}
+
+body[dir="rtl"] .ADD-Group-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .ADD-Group-btn:hover,
@@ -138,6 +179,10 @@
   border: 1px solid #e1e1e1 !important;
 }
 
+body[dir="rtl"] .Cancell-UpgradeGroup-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Cancell-UpgradeGroup-btn:hover,
 .Cancell-UpgradeGroup-btn:active,
 .Cancell-UpgradeGroup-btn:focus,
@@ -155,6 +200,10 @@
 .Create-Group-Heading {
   font-size: 30px !important;
   color: #6172d6 !important;
+}
+
+body[dir="rtl"] .Create-Group-Heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 /* .Column-Update-Group-Style {
@@ -189,9 +238,17 @@ body[dir="rtl"] .Checkbox {
   visibility: visible !important;
 }
 
+body[dir="rtl"] .errorMessage {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .errorMessage_hidden {
   visibility: hidden;
   margin: 0;
   height: 7px;
   color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }

@@ -463,6 +463,10 @@ body[dir="rtl"] .user-name {
   font-size: 12px;
 }
 
+body[dir="rtl"] .Cancel-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Cancel-btn:hover {
   width: 128px !important;
   height: 46px !important;
@@ -478,6 +482,9 @@ label.logout-confirmation-label {
   font-size: 18px;
 }
 
+body[dir="rtl"] label.logout-confirmation-label {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 /* .mb-3.LogoutButtons.ar.row .text-end.ar.col-lg-6.col-md-6.col-sm-12 {
   text-align: left !important;
 }

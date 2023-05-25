@@ -8,7 +8,7 @@ import { style } from "@mui/system";
 const ModalCancellResolution = ({
   cancelresolution,
   setCancelresolution,
-  setEditResoutionPage
+  setEditResoutionPage,
 }) => {
   const { t } = useTranslation();
   const closebtn = async () => {

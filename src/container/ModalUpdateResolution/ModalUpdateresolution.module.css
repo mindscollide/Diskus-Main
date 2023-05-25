@@ -8,6 +8,10 @@
   border: none !important;
 }
 
+body[dir="rtl"] .Confirm-updateResolution-modal {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Confirm-updateResolution-modal:hover,
 .Confirm-updateResolution-modal:active,
 .Confirm-updateResolution-modal:focus,
@@ -31,6 +35,10 @@
   border: 1px solid #e1e1e1 !important;
 }
 
+body[dir="rtl"] .Discard_button_updateResolution_modal {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Discard_button_updateResolution_modal:hover,
 .Discard_button_updateResolution_modal:focus,
 .Discard_button_updateResolution_modal:focus-visible,
@@ -48,4 +56,8 @@
   font-size: 16px !important;
   font-family: "MontserratSemiBold";
   color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .Heading_For_Update_resolution_Ask {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }

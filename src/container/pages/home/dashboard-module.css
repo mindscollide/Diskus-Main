@@ -893,6 +893,10 @@ body[dir="rtl"] .desc-notification-user {
   margin-bottom: 20px !important;
 }
 
+body[dir="rtl"] .Ok-Successfull-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .allowModalIcon {
   color: #f16b6b;
   border: none !important;
@@ -1167,6 +1171,7 @@ h1.noteheading {
   word-wrap: break-word;
   text-align: center;
 }
+
 .custom-multi-date-picker .react-multi-date-picker__calendar__date--selected {
   background-color: #e1e1e1 !important;
   color: #ffffff !important;

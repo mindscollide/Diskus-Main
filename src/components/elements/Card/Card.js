@@ -84,8 +84,8 @@ const Card = ({
         StatusID === 1
           ? styles["Committee_InActive"]
           : StatusID === 2
-            ? styles["Committee_Archived"]
-            : styles["Committee"]
+          ? styles["Committee_Archived"]
+          : styles["Committee"]
       }
     >
       <Col
@@ -96,8 +96,8 @@ const Card = ({
           StatusID === 1
             ? styles["In-Active-status-Committee-Group-background"]
             : StatusID === 2
-              ? styles["Archived-status-Committee-Group-background"]
-              : styles["Active-status-Committee-Group-background"]
+            ? styles["Archived-status-Committee-Group-background"]
+            : styles["Active-status-Committee-Group-background"]
         }
       >
         {StatusID === 1 ? (
@@ -181,41 +181,41 @@ const Card = ({
                   >
                     {editItems.length > 0
                       ? editItems.map((editItem, index) => {
-                        return (
-                          <>
-                            <Row className="mt-1">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center cursor-pointer "
-                              >
-                                <span
-                                  className={styles["dropdown-text"]}
-                                  onClick={() =>
-                                    changeHandleStatus(
-                                      editItem,
-                                      CardID,
-                                      setEditdropdown
-                                    )
-                                  }
+                          return (
+                            <>
+                              <Row className="mt-1">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-center cursor-pointer Saved_money_Tagline "
                                 >
-                                  {editItem.key}
-                                </span>
-                              </Col>
-                            </Row>
-                            <hr
-                              className={styles["HR-line-Committee-group"]}
-                            />
-                          </>
-                        );
-                      })
+                                  <span
+                                    className={styles["dropdown-text"]}
+                                    onClick={() =>
+                                      changeHandleStatus(
+                                        editItem,
+                                        CardID,
+                                        setEditdropdown
+                                      )
+                                    }
+                                  >
+                                    {editItem.key}
+                                  </span>
+                                </Col>
+                              </Row>
+                              <hr
+                                className={styles["HR-line-Committee-group"]}
+                              />
+                            </>
+                          );
+                        })
                       : null}
                   </Container>
                 </>
               ) : null}
               {dropdownthreedots &&
-                parseInt(CardID) === parseInt(uniqCardID) ? (
+              parseInt(CardID) === parseInt(uniqCardID) ? (
                 <>
                   <Container className={styles["Dropdown-container-Committee"]}>
                     <Row className="mt-1">
@@ -223,7 +223,7 @@ const Card = ({
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-start gap-2  ms-1"
+                        className="d-flex justify-content-start gap-2  ms-1 "
                       >
                         <span>
                           <img src={img1} width={15} />
@@ -246,7 +246,7 @@ const Card = ({
                             <img src={img2} width={17} />
                           </span>
                           <span className={styles["dropdown-text"]}>
-                            {t(" File Sharing")}
+                            {t("File-sharing")}
                           </span>
                         </Col>
                       </Col>
@@ -338,9 +338,9 @@ const Card = ({
                             </span>
                             <span
                               className={styles["dropdown-text"]}
-                            // onClick={() =>
-                            //   setdropdownthreedots(!dropdownthreedots)
-                            // }
+                              // onClick={() =>
+                              //   setdropdownthreedots(!dropdownthreedots)
+                              // }
                             >
                               {t("Assign-remove-group")}
                             </span>
@@ -377,28 +377,28 @@ const Card = ({
           <Row className="justify-content-center">
             {profile != undefined && profile != null
               ? profile.map((data, index) => {
-                if (index <= 3) {
-                  return (
-                    <Col
-                      sm={2}
-                      md={2}
-                      lg={2}
-                      className={
-                        StatusID === 1
-                          ? styles["card_profile_box_InActive"]
-                          : StatusID === 2
+                  if (index <= 3) {
+                    return (
+                      <Col
+                        sm={2}
+                        md={2}
+                        lg={2}
+                        className={
+                          StatusID === 1
+                            ? styles["card_profile_box_InActive"]
+                            : StatusID === 2
                             ? styles["card_profile_box_Archived"]
                             : styles["card_profile_box"]
-                      }
-                    >
-                      <img src={picprofile} width="37px" height="37px" />
-                      <p className={styles["namesCards-Committee-Group"]}>
-                        {data.userName}
-                      </p>
-                    </Col>
-                  );
-                }
-              })
+                        }
+                      >
+                        <img src={picprofile} width="37px" height="37px" />
+                        <p className={styles["namesCards-Committee-Group"]}>
+                          {data.userName}
+                        </p>
+                      </Col>
+                    );
+                  }
+                })
               : null}
             {profile && profile.length - 4 > 0 ? (
               <Col sm={2} md={2} lg={2} className={styles["card_profile_box"]}>

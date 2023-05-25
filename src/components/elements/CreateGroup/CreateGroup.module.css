@@ -27,6 +27,10 @@
   color: #6172d6 !important;
 }
 
+body[dir="rtl"] .details-class {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .scroll-bar-creategroup {
   height: 30vh !important;
   overflow-x: hidden !important;
@@ -49,6 +53,10 @@
   color: #6172d6 !important;
 }
 
+body[dir="rtl"] .Create-group-Head-Heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .group-head-info {
   line-height: 15px !important;
 }
@@ -58,9 +66,21 @@
   font-size: 12px !important;
 }
 
+body[dir="rtl"] .name-create-group {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Designation-create-group {
   color: #5a5a5a;
   font-size: 10px !important;
+}
+
+body[dir="rtl"] .Designation-create-group {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"] .no-members-found {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .email-create-group {
@@ -68,6 +88,10 @@
   color: #6172d6;
   text-decoration: underline !important;
   font-size: 10px !important;
+}
+
+body[dir="rtl"] .email-create-group a {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 .email-create-group a {
   width: 10px !important;
@@ -78,9 +102,17 @@
   color: #6172d6 !important;
 }
 
+body[dir="rtl"] .members-create-group-page {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Addmembers-class {
   font-size: 20px !important;
   color: #6172d6 !important;
+}
+
+body[dir="rtl"] .Addmembers-class {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Create-CreateGroup-btn {
@@ -95,6 +127,11 @@
   border-radius: 4px !important;
   border: none !important;
 }
+
+body[dir="rtl"] .Create-CreateGroup-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Create-CreateGroup-btn:has(:hover, :active, :focus, :focus-visible, :visited) {
   padding: 12px 30px !important;
   display: flex !important;
@@ -111,11 +148,16 @@
   padding: 12px 30px !important;
   font-size: 12px !important;
   font-family: "MontserratSemiBold";
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   height: 39px !important;
   border-radius: 4px !important;
   border: none !important;
+}
+
+body[dir="rtl"] .ADD-Group-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .ADD-Group-btn:hover,
@@ -168,10 +210,18 @@
   border: none !important;
 }
 
+body[dir="rtl"] .Cancell-CreateGroup-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Create-Group-Heading {
   font-size: 30px !important;
   color: #6172d6 !important;
   font-family: "MontserratSemiBold";
+}
+
+body[dir="rtl"] .Create-Group-Heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Cancell-CreateGroup-btn:hover,
@@ -211,11 +261,19 @@ body[dir="rtl"] .Label_Of_CheckBox {
   visibility: visible !important;
 }
 
+body[dir="rtl"] .errorMessage {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .errorMessage_hidden {
   visibility: hidden;
   margin: 0;
   height: 7px;
   color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .CheckBoxalign {
@@ -232,4 +290,5 @@ body[dir="rtl"] .CheckBoxalign {
 .create-grouperror-type-heading {
   display: flex;
   justify-content: end;
+  margin-right: 11% !important;
 }

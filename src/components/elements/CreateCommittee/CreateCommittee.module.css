@@ -9,6 +9,10 @@
   color: #6172d6 !important;
 }
 
+body[dir="rtl"] .details-class-Create-Committee {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .scroll-bar-createCommittee {
   height: 30vh !important;
   overflow-x: hidden !important;
@@ -31,6 +35,10 @@
   color: #6172d6 !important;
 }
 
+body[dir="rtl"] .Create-Committee-Head-Heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .group-head-info-Create-Committee {
   line-height: 15px !important;
 }
@@ -40,9 +48,17 @@
   font-size: 12px !important;
 }
 
+body[dir="rtl"] .name-create-Committee {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Designation-create-Committee {
   color: #5a5a5a;
   font-size: 10px !important;
+}
+
+body[dir="rtl"] .Designation-create-Committee {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .email-create-Committee {
@@ -52,14 +68,30 @@
   font-size: 10px !important;
 }
 
+body[dir="rtl"] .email-create-Committee {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+body[dir="rtl"] .No-member {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .members-create-Committee-page {
   font-size: 20px !important;
   color: #6172d6 !important;
 }
 
+body[dir="rtl"] .members-create-Committee-page {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Addmembers-class-Create-Committee {
   font-size: 20px !important;
   color: #6172d6 !important;
+}
+
+body[dir="rtl"] .Addmembers-class-Create-Committee {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Create-CreateCommittee-btn {
@@ -70,6 +102,10 @@
   color: #fff !important;
   border-radius: 4px !important;
   border: none !important;
+}
+
+body[dir="rtl"] .Create-CreateCommittee-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Create-CreateCommittee-btn:hover,
@@ -89,13 +125,18 @@
 .ADD-Committee-btn {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   height: 39px !important;
   font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   margin-top: 2px !important;
   border: 1px solid #e1e1e1 !important;
+}
+
+body[dir="rtl"] .ADD-Committee-btn {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .ADD-Committee-btn:hover,
@@ -144,6 +185,10 @@
   border: 1px solid #e1e1e1 !important;
 }
 
+body[dir="rtl"] .Cancell-CreateCommittee-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Cancell-CreateCommittee-btn:hover,
 .Cancell-CreateCommittee-btn:active,
 .Cancell-CreateCommittee-btn:visited,
@@ -162,6 +207,10 @@
   font-size: 30px !important;
   font-family: "MontserratSemiBold";
   color: #6172d6 !important;
+}
+
+body[dir="rtl"] .Create-Committee-Heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Cancell-CreateGroup-btn:hover {
@@ -189,11 +238,19 @@ body[dir="rtl"] .Label_Of_CheckBox {
   visibility: visible !important;
 }
 
+body[dir="rtl"] .errorMessage {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .errorMessage_hidden {
   visibility: hidden;
   margin: 0;
   height: 7px;
   color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .CheckAlignment {
@@ -204,4 +261,14 @@ body[dir="rtl"] .Label_Of_CheckBox {
 
 body[dir="rtl"] .CheckAlignment {
   margin-right: -20px !important;
+}
+
+.Committee_error_coloumn {
+  display: flex !important;
+  justify-content: end !important;
+  margin-right: 9.5% !important;
+}
+
+body[dir="rtl"] .Committee_error_coloumn {
+  margin-left: 19.5% !important;
 }

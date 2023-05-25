@@ -8,6 +8,10 @@
   border: none !important;
 }
 
+body[dir="rtl"] .Confirm-activegroup-modal {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Confirm-activegroup-modal:hover,
 .Confirm-activegroup-modal:active,
 .Confirm-activegroup-modal:focus-visible,
@@ -31,6 +35,10 @@
   border: 1px solid #e1e1e1;
 }
 
+body[dir="rtl"] .Confirm-activegroup-modal-cancel-button {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Confirm-activegroup-modal-cancel-button:hover,
 .Confirm-activegroup-modal-cancel-button:focus,
 .Confirm-activegroup-modal-cancel-button:active,
@@ -48,4 +56,8 @@
   font-size: 16px !important;
   font-family: "MontserratSemiBold";
   color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .Heading_For_Active_Sure {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }

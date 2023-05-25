@@ -612,7 +612,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="CreateMeetingInput "
+                          className="CreateMeetingInput Saved_money_Tagline"
                         >
                           <TextField
                             applyClass="text-area-create-group"
@@ -655,7 +655,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="UpdateCheckbox"
+                              className="UpdateCheckbox Saved_money_Tagline"
                             >
                               <Checkbox
                                 className="SearchCheckbox MontserratSemiBold-600"
@@ -809,7 +809,12 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 }
                               })
                             ) : (
-                              <Col sm={12} md={12} lg={12}>
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={styles["no-member"]}
+                              >
                                 {t("No-group-heads-found")}
                               </Col>
                             )}
@@ -912,7 +917,12 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 }
                               })
                             ) : (
-                              <Col sm={12} md={12} lg={12}>
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={styles["no-member"]}
+                              >
                                 {t("No-group-memebers-found")}
                               </Col>
                             )}
