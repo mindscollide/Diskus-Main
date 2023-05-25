@@ -38,75 +38,75 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
                           md={1}
                           className={styles["notes-attachment-icon"]}
                         >
-                          {ext === "doc" ? <FileIcon
-                            extension={"docx"}
-                            size={78}
-                            type={"document"}
-
-                            labelColor={"rgba(44, 88, 152)"}
-                          /> :
-                            ext === "docx" ? <FileIcon
+                          {ext === "doc" ? (
+                            <FileIcon
+                              extension={"docx"}
+                              size={78}
+                              type={"document"}
+                              labelColor={"rgba(44, 88, 152)"}
+                            />
+                          ) : ext === "docx" ? (
+                            <FileIcon
                               extension={"docx"}
                               size={78}
                               type={"font"}
-
                               labelColor={"rgba(44, 88, 152)"}
-                            /> :
-                              ext === "xls" ? <FileIcon
-                                extension={"xls"}
-                                type={"spreadsheet"}
-
-                                size={78}
-
-                                labelColor={"rgba(16, 121, 63)"}
-                              /> :
-                                ext === "xlsx" ? <FileIcon
-                                  extension={"xls"}
-                                  type={"spreadsheet"}
-
-                                  size={78}
-
-                                  labelColor={"rgba(16, 121, 63)"}
-                                /> :
-                                  ext === "pdf" ? <FileIcon
-                                    extension={"pdf"}
-                                    size={78}
-                                    {...defaultStyles.pdf}
-                                  /> :
-                                    ext === "png" ? <FileIcon
-                                      extension={"png"}
-                                      size={78}
-                                      type={"image"}
-
-                                      labelColor={"rgba(102, 102, 224)"}
-                                    /> :
-                                      ext === "txt" ? <FileIcon
-                                        extension={"txt"}
-                                        size={78}
-                                        type={"document"}
-
-                                        labelColor={"rgba(52, 120, 199)"}
-                                      /> :
-                                        ext === "jpg" ? <FileIcon
-                                          extension={"jpg"}
-                                          size={78}
-                                          type={"image"}
-
-                                          labelColor={"rgba(102, 102, 224)"}
-                                        /> :
-                                          ext === "jpeg" ? <FileIcon
-                                            extension={"jpeg"}
-                                            size={78}
-                                            type={"image"}
-
-                                            labelColor={"rgba(102, 102, 224)"}
-                                          /> :
-                                            ext === "gif" ? <FileIcon
-                                              extension={"gif"}
-                                              size={78}
-
-                                              {...defaultStyles.gif}
-                                            /> : null}
+                            />
+                          ) : ext === "xls" ? (
+                            <FileIcon
+                              extension={"xls"}
+                              type={"spreadsheet"}
+                              size={78}
+                              labelColor={"rgba(16, 121, 63)"}
+                            />
+                          ) : ext === "xlsx" ? (
+                            <FileIcon
+                              extension={"xls"}
+                              type={"spreadsheet"}
+                              size={78}
+                              labelColor={"rgba(16, 121, 63)"}
+                            />
+                          ) : ext === "pdf" ? (
+                            <FileIcon
+                              extension={"pdf"}
+                              size={78}
+                              {...defaultStyles.pdf}
+                            />
+                          ) : ext === "png" ? (
+                            <FileIcon
+                              extension={"png"}
+                              size={78}
+                              type={"image"}
+                              labelColor={"rgba(102, 102, 224)"}
+                            />
+                          ) : ext === "txt" ? (
+                            <FileIcon
+                              extension={"txt"}
+                              size={78}
+                              type={"document"}
+                              labelColor={"rgba(52, 120, 199)"}
+                            />
+                          ) : ext === "jpg" ? (
+                            <FileIcon
+                              extension={"jpg"}
+                              size={78}
+                              type={"image"}
+                              labelColor={"rgba(102, 102, 224)"}
+                            />
+                          ) : ext === "jpeg" ? (
+                            <FileIcon
+                              extension={"jpeg"}
+                              size={78}
+                              type={"image"}
+                              labelColor={"rgba(102, 102, 224)"}
+                            />
+                          ) : ext === "gif" ? (
+                            <FileIcon
+                              extension={"gif"}
+                              size={78}
+                              {...defaultStyles.gif}
+                            />
+                          ) : null}
                           <p className={styles["notes-attachment-text"]}>
                             {first}
                           </p>
@@ -119,7 +119,7 @@ const ViewAttachments = ({ resolutionAttachments, setViewattachmentpage }) => {
             <Row>
               <Col className="d-flex justify-content-end">
                 <Button
-                  text={"Close"}
+                  text={t("Close")}
                   onClick={() => setViewattachmentpage(false)}
                   className={styles["viewAttachmentCloseBtn"]}
                 />

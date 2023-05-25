@@ -576,9 +576,19 @@ const CancelSubs = () => {
                     >
                       <WarningMessageBox
                         text={
-                          forrevokeCancel
-                            ? "You have selected for cancellation of subscription at the end of your term which is at “ 18-Dec-23 ”. You can always opt out by selecting the revoke Cancellation Option from the same screen."
-                            : "You have selected for immediate cancellation. Please note that all associated services will also be terminated along with this subscription immediately. Please take backups of all your data as any loss of data on cancellation will not be a responsibility of DiskUS."
+                          forrevokeCancel ? (
+                            <span>
+                              {t(
+                                "You-have-selected-for-cancellation-of-subscription-at-the-end-of-your-term-which-is-at"
+                              )}{" "}
+                              <span>18-Dec-23</span>.
+                              {t(
+                                "You-can-always-opt-out-by-selecting-the-revoke-Cancellation-Option-from-the-same-screen"
+                              )}
+                            </span>
+                          ) : (
+                            t("You-have-selected-for-immediate-cancellation")
+                          )
                         }
                         textClass="fw-bold font-12 margin-top-5 "
                       />

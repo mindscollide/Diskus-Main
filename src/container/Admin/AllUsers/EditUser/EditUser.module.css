@@ -66,6 +66,10 @@
   font-size: 12px !important;
 }
 
+body[dir="rtl"] .Edit-Update-Btn {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
 .Edit-Update-Btn:active,
 .Edit-Update-Btn:focus {
   background-color: #6172d6 !important;
@@ -104,6 +108,10 @@ body[dir="rtl"] .Edit-Main-Heading {
   font-family: "MontserratSemiBold";
 }
 
+body[dir="rtl"] .successfull-label {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Ok-Successfull-btn {
   width: 115px !important;
   height: 46px !important;
@@ -112,6 +120,10 @@ body[dir="rtl"] .Edit-Main-Heading {
   background-color: #6172d6 !important;
   color: #fff !important;
   margin-bottom: 20px !important;
+}
+
+body[dir="rtl"] .Ok-Successfull-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Ok-Successfull-btn:hover {
@@ -225,6 +237,10 @@ body[dir="rtl"] .icon-modal-SearchBtn {
   font-size: 12px;
 }
 
+body[dir="rtl"] .ResetBtn-Edit-Dlt {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
 .ResetBtn-Edit-Dlt:hover,
 .ResetBtn-Edit-Dlt:active,
 .ResetBtn-Edit-Dlt:focus {
@@ -247,6 +263,9 @@ body[dir="rtl"] .icon-modal-SearchBtn {
   margin-bottom: 20px !important;
   font-family: "MontserratMedium-500";
   font-size: 12px;
+}
+body[dir="rtl"] .ProceedBtn-Edit-Dlt {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .ProceedBtn-Edit-Dlt:hover {
@@ -311,6 +330,10 @@ body[dir="rtl"] .filterModal {
   font-size: 19px;
   font-weight: 600;
   text-align: center !important;
+}
+
+body[dir="rtl"] .deleteModal-message {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .name-error-Message {
