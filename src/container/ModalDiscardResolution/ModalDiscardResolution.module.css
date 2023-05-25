@@ -8,6 +8,10 @@
   border: 1px solid#E1E1E1 !important;
 }
 
+body[dir="rtl"] .Resolution_cancell_discard {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Resolution_cancell_discard:hover,
 .Resolution_cancell_discard:active,
 .Resolution_cancell_discard:focus,
@@ -31,6 +35,10 @@
   border: none !important;
 }
 
+body[dir="rtl"] .Resolution-Discard-button {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Resolution-Discard-button:hover,
 .Resolution-Discard-button:focus,
 .Resolution-Discard-button:active,
@@ -48,4 +56,8 @@
   font-size: 16px !important;
   font-family: "MontserratSemiBold";
   color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .Heading_For_Discard_resolution {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }

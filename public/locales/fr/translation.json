@@ -586,5 +586,7 @@
   "You-can-always-opt-out-by-selecting-the-revoke-Cancellation-Option-from-the-same-screen": "You can always opt out by selecting the revoke Cancellation Option from the same screen",
   "Moderator": "Moderator",
   "Voter": "Voter",
-  "Vote-count": "Vote Count"
+  "Vote-count": "Vote Count",
+  "Circulated": "Circulated",
+  "Note": "Note"
 }

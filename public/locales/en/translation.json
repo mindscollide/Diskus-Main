@@ -948,5 +948,7 @@
   "You-have-selected-for-cancellation-of-subscription-at-the-end-of-your-term-which-is-at": "You have selected for cancellation of subscription at the end of your term which is at",
   "You-can-always-opt-out-by-selecting-the-revoke-Cancellation-Option-from-the-same-screen": "You can always opt out by selecting the revoke Cancellation Option from the same screen",
   "Moderator": "Moderator",
-  "Voter": "Voter"
+  "Voter": "Voter",
+  "Circulated": "Circulated",
+  "Note": "Note"
 }

@@ -1011,7 +1011,7 @@ const EditResolution = ({
                               lg={12}
                               md={12}
                               sm={12}
-                              className="CreateMeetingInput  resolution-search-input"
+                              className="CreateMeetingInput  resolution-search-input "
                             >
                               <TextField
                                 applyClass="form-control2"
@@ -1043,7 +1043,7 @@ const EditResolution = ({
                               lg={6}
                               md={6}
                               sm={6}
-                              className="select-dropdowns-height"
+                              className="select-dropdowns-height FontArabicRegular"
                             >
                               <Select
                                 name="Participant"
@@ -1076,7 +1076,7 @@ const EditResolution = ({
                               lg={6}
                               md={6}
                               sm={6}
-                              className="select-dropdowns-height"
+                              className="select-dropdowns-height FontArabicRegular"
                             >
                               <Select
                                 name=""
@@ -1095,7 +1095,7 @@ const EditResolution = ({
                               lg={12}
                               md={12}
                               sm={12}
-                              className="CreateMeetingInput "
+                              className="CreateMeetingInput FontArabicRegular "
                             >
                               <TextField
                                 applyClass="text-area-create-group"
@@ -1138,7 +1138,7 @@ const EditResolution = ({
                               lg={6}
                               sm={6}
                               md={6}
-                              className="CreateMeetingReminder resolution-search-input "
+                              className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
                               <TextField
                                 type="date"
@@ -1169,7 +1169,7 @@ const EditResolution = ({
                               lg={6}
                               sm={6}
                               md={6}
-                              className="CreateMeetingReminder resolution-search-input"
+                              className="CreateMeetingReminder resolution-search-input FontArabicRegular"
                             >
                               <TextField
                                 type="time"
@@ -1213,7 +1213,7 @@ const EditResolution = ({
                               lg={6}
                               sm={6}
                               md={6}
-                              className="CreateMeetingReminder resolution-search-input "
+                              className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
                               <TextField
                                 type="date"
@@ -1245,7 +1245,7 @@ const EditResolution = ({
                               lg={6}
                               sm={6}
                               md={6}
-                              className="CreateMeetingReminder  resolution-search-input"
+                              className="CreateMeetingReminder  resolution-search-input FontArabicRegular"
                             >
                               <TextField
                                 type="time"
@@ -1291,7 +1291,7 @@ const EditResolution = ({
                               lg={6}
                               sm={6}
                               md={6}
-                              className="CreateMeetingReminder resolution-search-input "
+                              className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
                               <TextField
                                 type="date"
@@ -1322,7 +1322,7 @@ const EditResolution = ({
                               lg={6}
                               sm={6}
                               md={6}
-                              className="CreateMeetingReminder resolution-search-input  "
+                              className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
                               <TextField
                                 type="time"
@@ -1362,7 +1362,7 @@ const EditResolution = ({
                               lg={6}
                               md={6}
                               sm={12}
-                              className="CreateMeetingReminder select-dropdowns-height "
+                              className="CreateMeetingReminder select-dropdowns-height FontArabicRegular "
                             >
                               <Select
                                 name="Participant"
@@ -1389,7 +1389,7 @@ const EditResolution = ({
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className="UpdateCheckbox  d-flex justify-content-start"
+                                  className="UpdateCheckbox  d-flex justify-content-start FontArabicRegular"
                                 >
                                   <Checkbox
                                     className="SearchCheckbox MontserratSemiBold-600"
@@ -1826,7 +1826,7 @@ const EditResolution = ({
                                                       }
                                                     />
                                                   </span>
-                                                  <p className="modaltodolist-attachment-text">
+                                                  <p className="modaltodolist-attachment-text  FontArabicRegular">
                                                     {first}
                                                   </p>
                                                 </Col>
@@ -1867,9 +1867,11 @@ const EditResolution = ({
                                         />
                                       </span>
                                     </p>
-                                    <p className="ant-upload-text">
+                                    <p className="ant-upload-text FontArabicRegular">
                                       {t("Drag-&-drop-or")}
-                                      <span> {t("Choose-file")} </span>{" "}
+                                      <span className="FontArabicRegular">
+                                        {t("Choose-file")}
+                                      </span>{" "}
                                       {t("Here")}
                                     </p>
                                   </Dragger>

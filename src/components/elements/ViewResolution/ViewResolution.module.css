@@ -16,10 +16,18 @@
   color: #6172d6 !important;
 }
 
+body[dir="rtl"] .Details_ViewResolution {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Heading_Authorize_Viewresolution {
   font-size: 20px !important;
   font-family: "MontserratSemiBold";
   color: #6172d6 !important;
+}
+
+body[dir="rtl"] .Heading_Authorize_Viewresolution {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Sub_heading_ViewResolution {
@@ -31,10 +39,18 @@
   color: #5a5a5a;
 }
 
+body[dir="rtl"] .Paragraph {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
 .View_resolution_circulationHeading {
   font-size: 12px !important;
   font-family: "MontserratSemiBold";
   color: #6172d6 !important;
+}
+
+body[dir="rtl"] .View_resolution_circulationHeading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Datetime_view_resolution {
@@ -43,10 +59,18 @@
   color: #5a5a5a;
 }
 
+body[dir="rtl"] .Datetime_view_resolution {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Reminder_viewResolution {
   font-size: 12px !important;
   font-family: "MontserratSemiBold";
   color: #6172d6 !important;
+}
+
+body[dir="rtl"] .Reminder_viewResolution {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Public_resolution {
@@ -69,6 +93,10 @@ body[dir="rtl"] .Public_resolution {
   color: #5a5a5a;
 }
 
+body[dir="rtl"] .Frequency_Viewresolution {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Voters_Btn_viewresolution {
   padding: 6px 12px !important;
   font-size: 12px !important;
@@ -77,6 +105,10 @@ body[dir="rtl"] .Public_resolution {
   color: #5a5a5a !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
+}
+
+body[dir="rtl"] .Voters_Btn_viewresolution {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Voters_Btn_viewresolution:hover,
@@ -95,12 +127,18 @@ body[dir="rtl"] .Public_resolution {
 .Voters_Btn_viewresolution_Active {
   padding: 6px 12px !important;
   font-size: 12px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: none !important;
 }
+
+body[dir="rtl"] .Voters_Btn_viewresolution_Active {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+}
+
 .Non_Voters_Btn_viewresolution {
   padding: 6px 12px !important;
   font-size: 12px !important;
@@ -109,6 +147,10 @@ body[dir="rtl"] .Public_resolution {
   font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
+}
+
+body[dir="rtl"] .Non_Voters_Btn_viewresolution {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Non_Voters_Btn_viewresolution:hover,
@@ -127,11 +169,16 @@ body[dir="rtl"] .Public_resolution {
 .Non_Voters_Btn_viewresolution_Active {
   padding: 6px 12px !important;
   font-size: 12px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: none !important;
+}
+
+body[dir="rtl"] .Non_Voters_Btn_viewresolution_Active {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .Name_participant_viewresolution {
@@ -175,6 +222,10 @@ body[dir="rtl"] .Public_resolution {
   color: #6166ff !important;
 }
 
+body[dir="rtl"] .Attachments_view_resolution {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Backward_button_viewresolution {
   background: none !important;
   border: none !important;
@@ -192,6 +243,10 @@ body[dir="rtl"] .Backward_button_viewresolution {
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
   margin-top: 15px !important;
+}
+
+body[dir="rtl"] .CloseButton_ViewResolution {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .CloseButton_ViewResolution:hover,
@@ -219,13 +274,17 @@ body[dir="rtl"] .Backward_button_viewresolution {
 
 body[dir="rtl"] .View_resolution_tag_box {
   width: auto !important;
-  left: 87% !important;
+  left: 88% !important;
 }
 
 .View_Tag_messege {
   font-size: 12px !important;
   color: #fff;
   font-family: "MontserratSemiBold";
+}
+
+body[dir="rtl"] .View_Tag_messege {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .CheckboxAlignmnet {
