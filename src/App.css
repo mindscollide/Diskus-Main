@@ -5407,6 +5407,14 @@ body[dir="rtl"] .FontArabicRegular {
   font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
+body[dir="rtl"] .ant-picker-now-btn {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+body[dir="rtl"] .ant-btn-sm {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
 body[dir="rtl"] .ant-btn-link {
   font-family: "IBMPlexSansArabic-Regular" !important;
 }
@@ -5470,4 +5478,8 @@ body[dir="rtl"] .modalNote-fields input.form-control {
 
 body[dir="rtl"] .ql-container {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"] .todolist-modal-fields input.form-control {
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
