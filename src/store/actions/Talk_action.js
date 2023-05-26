@@ -36,6 +36,7 @@ import axios from 'axios'
 import { talkApi } from '../../commen/apis/Api_ends_points'
 import { signOut } from './Auth_Sign_Out'
 import { RefreshToken } from './Auth_action'
+import { useNavigate } from 'react-router-dom'
 
 // Refresh Token Talk Success
 const refreshtokenTalkSuccess = (response, message) => {
@@ -57,7 +58,7 @@ const refreshtokenTalkFail = (response, message) => {
 
 //Refresh Tokenm
 const RefreshTokenTalk = (props) => {
-  // const navigate = useNavigate();
+  const navigate = useNavigate()
   console.log('RefreshTokenTalk', props)
   let Token = JSON.parse(localStorage.getItem('token'))
   let RefreshTokenTalk = JSON.parse(localStorage.getItem('RefreshTokenTalk'))
@@ -217,7 +218,7 @@ const getAllUserChatsFail = (response, message) => {
 }
 
 //Get all user chats
-const GetAllUserChats = (currentUserId, currentOrganizationId, t) => {
+const GetAllUserChats = (navigate, currentUserId, currentOrganizationId, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = {
     TalkRequest: {
@@ -242,8 +243,10 @@ const GetAllUserChats = (currentUserId, currentOrganizationId, t) => {
       .then(async (response) => {
         console.log('GetAllUserChats', response)
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshTokenTalk(t));
-          dispatch(GetAllUserChats(t))
+          await dispatch(RefreshTokenTalk(navigate, t))
+          dispatch(
+            GetAllUserChats(navigate, currentUserId, currentOrganizationId, t),
+          )
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
@@ -308,7 +311,7 @@ const getOTOUserMessagesFail = (response, message) => {
 }
 
 //Get OTO all user chats
-const GetOTOUserMessages = (chatOTOData, t) => {
+const GetOTOUserMessages = (navigate, chatOTOData, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = {
     TalkRequest: {
@@ -336,8 +339,8 @@ const GetOTOUserMessages = (chatOTOData, t) => {
       .then(async (response) => {
         console.log('GetOTOUserMessages', response)
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshTokenTalk(t))
-          dispatch(GetOTOUserMessages(t))
+          await dispatch(RefreshTokenTalk(navigate, t))
+          dispatch(GetOTOUserMessages(navigate, chatOTOData, t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
@@ -497,7 +500,7 @@ const getGroupMessagesFail = (response, message) => {
 }
 
 //get Group Messages
-const GetGroupMessages = (chatGroupData, t) => {
+const GetGroupMessages = (navigate, chatGroupData, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = {
     TalkRequest: {
@@ -525,8 +528,8 @@ const GetGroupMessages = (chatGroupData, t) => {
       .then(async (response) => {
         console.log('GetOTOUserMessages', response)
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshTokenTalk(t))
-          dispatch(GetGroupMessages(t))
+          await dispatch(RefreshTokenTalk(navigate, t))
+          dispatch(GetGroupMessages(navigate, chatGroupData, t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
@@ -591,7 +594,7 @@ const getBroacastMessagesFail = (response, message) => {
 }
 
 //get Broadcast Messages
-const GetBroadcastMessages = (broadcastMessagesData, t) => {
+const GetBroadcastMessages = (navigate, broadcastMessagesData, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = {
     TalkRequest: {
@@ -618,8 +621,8 @@ const GetBroadcastMessages = (broadcastMessagesData, t) => {
       .then(async (response) => {
         console.log('GetBroadcastMessages', response)
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshTokenTalk(t))
-          dispatch(GetBroadcastMessages(t))
+          await dispatch(RefreshTokenTalk(navigate, t))
+          dispatch(GetBroadcastMessages(navigate, broadcastMessagesData, t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
@@ -775,7 +778,7 @@ const getFlagMessagesFail = (response, message) => {
 }
 
 //get flag messsages
-const GetFlagMessages = (currentUserId, currentOrganizationId, t) => {
+const GetFlagMessages = (navigate, currentUserId, currentOrganizationId, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = {
     TalkRequest: {
@@ -800,8 +803,10 @@ const GetFlagMessages = (currentUserId, currentOrganizationId, t) => {
       .then(async (response) => {
         console.log('GetFlagMessages', response)
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshTokenTalk(t));
-          dispatch(GetFlagMessages(t))
+          await dispatch(RefreshTokenTalk(navigate, t))
+          dispatch(
+            GetFlagMessages(navigate, currentUserId, currentOrganizationId, t),
+          )
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
@@ -1690,7 +1695,7 @@ const getBlockedUsersFail = (response, message) => {
 }
 
 //GetBlockedUsers
-const GetBlockedUsers = (currentUserId, currentOrganizationId, t) => {
+const GetBlockedUsers = (navigate, currentUserId, currentOrganizationId, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = {
     TalkRequest: {
@@ -1714,8 +1719,10 @@ const GetBlockedUsers = (currentUserId, currentOrganizationId, t) => {
       .then(async (response) => {
         console.log('GetBlockedUsers', response)
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshTokenTalk(t));
-          dispatch(GetBlockedUsers(t))
+          await dispatch(RefreshTokenTalk(navigate, t))
+          dispatch(
+            GetBlockedUsers(navigate, currentUserId, currentOrganizationId, t),
+          )
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
@@ -1780,7 +1787,7 @@ const getAllUsersFail = (response, message) => {
 }
 
 //GetAllUsers
-const GetAllUsers = (currentUserId, currentOrganizationId, t) => {
+const GetAllUsers = (navigate, currentUserId, currentOrganizationId, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = {
     TalkRequest: {
@@ -1804,8 +1811,10 @@ const GetAllUsers = (currentUserId, currentOrganizationId, t) => {
       .then(async (response) => {
         console.log('GetAllUsers', response)
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshTokenTalk(t));
-          dispatch(GetAllUsers(t))
+          await dispatch(RefreshTokenTalk(navigate, t))
+          dispatch(
+            GetAllUsers(navigate, currentUserId, currentOrganizationId, t),
+          )
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
@@ -1871,6 +1880,7 @@ const getAllUsersGroupsRoomsListFail = (response, message) => {
 
 //GetAllUsersGroupsRoomsList
 const GetAllUsersGroupsRoomsList = (
+  navigate,
   currentUserId,
   currentOrganizationId,
   t,
@@ -1898,8 +1908,15 @@ const GetAllUsersGroupsRoomsList = (
       .then(async (response) => {
         console.log('GetAllUsersGroupsRoomsList', response)
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshTokenTalk(t));
-          dispatch(GetAllUsersGroupsRoomsList(t))
+          // await dispatch(RefreshTokenTalk(navigate, t));
+          dispatch(
+            GetAllUsersGroupsRoomsList(
+              navigate,
+              currentUserId,
+              currentOrganizationId,
+              t,
+            ),
+          )
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
@@ -2222,7 +2239,7 @@ const OTOMessageSendNotification = (message, response) => {
 }
 
 //Insert OTO Messages
-const InsertOTOMessages = (object, fileUploadData, t) => {
+const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   console.log('InsertOTOMessages', object, fileUploadData)
   return (dispatch) => {
@@ -2241,8 +2258,8 @@ const InsertOTOMessages = (object, fileUploadData, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshToken(navigate, t))
-          dispatch(InsertOTOMessages(object, fileUploadData, t))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(InsertOTOMessages(navigate, object, fileUploadData, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2337,7 +2354,7 @@ const GroupPrivateSendNotification = (message) => {
 }
 
 //Insert Private Group Messages
-const InsertPrivateGroupMessages = (object, t) => {
+const InsertPrivateGroupMessages = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(GroupPrivateMessageSendInit())
@@ -2354,8 +2371,8 @@ const InsertPrivateGroupMessages = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshToken(navigate, t))
-          dispatch(InsertPrivateGroupMessages(object, t))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(InsertPrivateGroupMessages(navigate, object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2420,7 +2437,7 @@ const BlockUnblockUserNotification = (message) => {
 }
 
 //Block Unblock a user
-const BlockUnblockUser = (object, t) => {
+const BlockUnblockUser = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   console.log('Blocked User', object)
   let Data = {
@@ -2445,8 +2462,8 @@ const BlockUnblockUser = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshToken(navigate, t))
-          dispatch(BlockUnblockUser(object, t))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(BlockUnblockUser(navigate, object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2520,7 +2537,7 @@ const deleteSingleMessageFail = (message) => {
   }
 }
 
-const DeleteSingleMessage = (object, t) => {
+const DeleteSingleMessage = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   console.log('DeleteSingleMessage', object)
   let data = {
@@ -2549,7 +2566,8 @@ const DeleteSingleMessage = (object, t) => {
       .then(async (response) => {
         console.log('DeleteSingleMessage', response)
         if (response.data.responseCode === 417) {
-          dispatch(DeleteSingleMessage(t))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(DeleteSingleMessage(navigate, object, t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
@@ -2691,7 +2709,7 @@ const createPrivateGroupNotification = (response, message) => {
 }
 
 //CreatePrivateGroup
-const CreatePrivateGroup = (object, t) => {
+const CreatePrivateGroup = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(createPrivateGroupInit())
@@ -2708,8 +2726,8 @@ const CreatePrivateGroup = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshToken(navigate, t))
-          dispatch(CreatePrivateGroup(object, t))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(CreatePrivateGroup(navigate, object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2785,7 +2803,7 @@ const getPrivateGroupMembersFail = (response, message) => {
 }
 
 //Get all private group members
-const GetAllPrivateGroupMembers = (object, t) => {
+const GetAllPrivateGroupMembers = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   console.log('GetAllPrivateGroupMembers', object)
   let Data = {
@@ -2812,8 +2830,8 @@ const GetAllPrivateGroupMembers = (object, t) => {
       .then(async (response) => {
         console.log('GetAllPrivateGroupMembers', response)
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshTokenTalk(t));
-          dispatch(GetAllPrivateGroupMembers(t))
+          await dispatch(RefreshTokenTalk(navigate, t))
+          dispatch(GetAllPrivateGroupMembers(navigate, object, t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
@@ -2865,7 +2883,7 @@ const MarkStarredMessageNotification = (message) => {
 }
 
 //Star Unstar A message
-const MarkStarredUnstarredMessage = (object, t) => {
+const MarkStarredUnstarredMessage = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   console.log('Mark Starred Message', object)
   let Data = {
@@ -2893,8 +2911,8 @@ const MarkStarredUnstarredMessage = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshToken(navigate, t))
-          dispatch(MarkStarredUnstarredMessage(object, t))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(MarkStarredUnstarredMessage(navigate, object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
