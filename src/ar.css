@@ -70,6 +70,10 @@ body[dir="rtl"] .rmdp-left i {
   font-weight: 600 !important;
 }
 
+body[dir="rtl"] .rmdp-week-day {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .rmdp-day.rmdp-today span {
   color: #fff !important;
   background-image: linear-gradient(#4bdbde, #5f7ad7) !important;
@@ -148,7 +152,7 @@ body[dir="rtl"] .modalupdatemeeting-add {
   margin-right: -15px !important;
 }
 
-body[dir="rtl"] .ant-table-wrapper.hello .ant-table-thead>tr * {
+body[dir="rtl"] .ant-table-wrapper.hello .ant-table-thead > tr * {
   text-align: center !important;
 }
 
@@ -168,12 +172,18 @@ body[dir="rtl"] th.ant-table-cell.ant-table-column-has-sorters {
   position: relative;
 }
 
-body[dir="rtl"] .ant-table-wrapper.hello th.ant-table-cell.ant-table-column-has-sorters .ant-table-column-sorters {
+body[dir="rtl"]
+  .ant-table-wrapper.hello
+  th.ant-table-cell.ant-table-column-has-sorters
+  .ant-table-column-sorters {
   position: absolute;
   top: 0;
 }
 
-body[dir="rtl"] .ant-table-wrapper.ToDo th.ant-table-cell.ant-table-column-has-sorters .ant-table-column-sorters {
+body[dir="rtl"]
+  .ant-table-wrapper.ToDo
+  th.ant-table-cell.ant-table-column-has-sorters
+  .ant-table-column-sorters {
   position: absolute;
   top: 15px;
 }
@@ -187,15 +197,20 @@ body[dir="rtl"] td.ant-table-cell {
   font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
-body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th {
+body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead > tr > th {
   text-align: right !important;
 }
 
-body[dir="rtl"] .ant-select.ant-select-borderless.orange.ant-select-single.ant-select-show-arrow {
+body[dir="rtl"]
+  .ant-select.ant-select-borderless.orange.ant-select-single.ant-select-show-arrow {
   position: relative;
 }
 
-body[dir="rtl"] td.ant-table-cell:has(.ant-select.ant-select-borderless.orange.ant-select-single.ant-select-show-arrow) .ant-select-selection-item {
+body[dir="rtl"]
+  td.ant-table-cell:has(
+    .ant-select.ant-select-borderless.orange.ant-select-single.ant-select-show-arrow
+  )
+  .ant-select-selection-item {
   padding-right: 0 !important;
 }
 
@@ -227,6 +242,7 @@ body[dir="rtl"] h1.upcoming-events {
 body[dir="rtl"] p.desc-item-text.home-recentactivity-notification-description {
   margin-left: 0 !important;
   margin-right: 15px !important;
+  font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
 body[dir="rtl"] .Recent-Activity-Box {
@@ -238,7 +254,14 @@ body[dir="rtl"] h1.recent-activity {
   padding-right: 20px !important;
 }
 
-body[dir="rtl"] .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.statusDashboard {
+body[dir="rtl"] h1.recent-activity {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"]
+  .DashboardTodoTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell.statusDashboard {
   border-left: 1px solid #e1e1e1 !important;
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
@@ -247,7 +270,10 @@ body[dir="rtl"] .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.an
   border-right: none !important;
 }
 
-body[dir="rtl"] .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.titleDashboard {
+body[dir="rtl"]
+  .DashboardTodoTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell.titleDashboard {
   border-right: 1px solid #e1e1e1 !important;
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
@@ -256,12 +282,19 @@ body[dir="rtl"] .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.an
   border-left: none !important;
 }
 
-body[dir="rtl"] .ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead>tr>th {
+body[dir="rtl"]
+  .ant-table-wrapper.dashboard-todo
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th {
   text-align: right !important;
   padding-right: 0 !important;
 }
 
-body[dir="rtl"] .DashboardTodoTable ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
+body[dir="rtl"]
+  .DashboardTodoTable
+  ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
   position: absolute;
   top: -42px;
   right: auto;
@@ -307,7 +340,7 @@ body[dir="rtl"] .react-tel-input .country-list .country .dial-code {
   margin-right: 7px;
 }
 
-body[dir="rtl"] .navbar>.dropdown-menu.show {
+body[dir="rtl"] .navbar > .dropdown-menu.show {
   left: -34px !important;
 }
 
@@ -380,11 +413,13 @@ body[dir="rtl"] .DataRoomShowBtn {
   margin-left: 0 !important;
 }
 
-body[dir="rtl"] .ant-table-thead>tr>th {
+body[dir="rtl"] .ant-table-thead > tr > th {
   text-align: right !important;
 }
 
-body[dir="rtl"] th.ant-table-cell.ant-table-column-has-sorters .ant-table-column-sorters {
+body[dir="rtl"]
+  th.ant-table-cell.ant-table-column-has-sorters
+  .ant-table-column-sorters {
   text-align: right !important;
   float: right !important;
   font-family: "IBMPlexSansArabic-SemiBold" !important;
