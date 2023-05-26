@@ -1316,6 +1316,7 @@ const TalkChat = () => {
 
   //mark starred message handler
   const markUnmarkStarMessageHandler = (record) => {
+    console.log('markUnmarkStarMessageHandler', record)
     setMessageClickData(record)
     let Data = {
       UserID: parseInt(currentUserId),
@@ -3512,12 +3513,32 @@ const TalkChat = () => {
           <div className="chat-inner-content">
             <div
               className={
-                chatOpen === true && deleteChat === true
+                chatOpen === true &&
+                deleteChat === true &&
+                activeCreateGroup === false
                   ? 'add-chat height applyBlur'
-                  : chatOpen === true && deleteChat === false
+                  : chatOpen === true &&
+                    deleteChat === false &&
+                    activeCreateGroup === false
                   ? 'add-chat height'
-                  : chatOpen === false && deleteChat === true
+                  : chatOpen === false &&
+                    deleteChat === true &&
+                    activeCreateGroup === false
                   ? 'add-chat applyBlur'
+                  : chatOpen === false &&
+                    deleteChat === true &&
+                    activeCreateGroup === true
+                  ? 'd-none'
+                  : chatOpen === true &&
+                    deleteChat === true &&
+                    activeCreateGroup === true
+                  ? 'd-none'
+                  : chatOpen === true &&
+                    deleteChat === false &&
+                    activeCreateGroup === true
+                  ? 'd-none'
+                  : activeCreateGroup === true
+                  ? 'd-none'
                   : 'add-chat'
               }
               onClick={createGroupScreen}
@@ -3840,12 +3861,32 @@ const TalkChat = () => {
                 <div className="chat-inner-content">
                   <div
                     className={
-                      chatOpen === true && deleteChat === true
+                      chatOpen === true &&
+                      deleteChat === true &&
+                      activeCreateGroup === false
                         ? 'add-chat height applyBlur'
-                        : chatOpen === true && deleteChat === false
+                        : chatOpen === true &&
+                          deleteChat === false &&
+                          activeCreateGroup === false
                         ? 'add-chat height'
-                        : chatOpen === false && deleteChat === true
+                        : chatOpen === false &&
+                          deleteChat === true &&
+                          activeCreateGroup === false
                         ? 'add-chat applyBlur'
+                        : chatOpen === false &&
+                          deleteChat === true &&
+                          activeCreateGroup === true
+                        ? 'd-none'
+                        : chatOpen === true &&
+                          deleteChat === true &&
+                          activeCreateGroup === true
+                        ? 'd-none'
+                        : chatOpen === true &&
+                          deleteChat === false &&
+                          activeCreateGroup === true
+                        ? 'd-none'
+                        : activeCreateGroup === true
+                        ? 'd-none'
                         : 'add-chat'
                     }
                     onClick={addChat}
@@ -3902,12 +3943,32 @@ const TalkChat = () => {
           <div className="chat-inner-content">
             <div
               className={
-                chatOpen === true && deleteChat === true
+                chatOpen === true &&
+                deleteChat === true &&
+                activeCreateGroup === false
                   ? 'add-chat height applyBlur'
-                  : chatOpen === true && deleteChat === false
+                  : chatOpen === true &&
+                    deleteChat === false &&
+                    activeCreateGroup === false
                   ? 'add-chat height'
-                  : chatOpen === false && deleteChat === true
+                  : chatOpen === false &&
+                    deleteChat === true &&
+                    activeCreateGroup === false
                   ? 'add-chat applyBlur'
+                  : chatOpen === false &&
+                    deleteChat === true &&
+                    activeCreateGroup === true
+                  ? 'd-none'
+                  : chatOpen === true &&
+                    deleteChat === true &&
+                    activeCreateGroup === true
+                  ? 'd-none'
+                  : chatOpen === true &&
+                    deleteChat === false &&
+                    activeCreateGroup === true
+                  ? 'd-none'
+                  : activeCreateGroup === true
+                  ? 'd-none'
                   : 'add-chat'
               }
               onClick={addChat}
@@ -6029,6 +6090,7 @@ const TalkChat = () => {
                                   disabled={
                                     chatClickData.isBlock === 1 ? true : false
                                   }
+                                  autoFocus
                                 />
                               </Form>
                             </div>
