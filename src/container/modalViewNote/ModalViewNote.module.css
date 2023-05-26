@@ -6,9 +6,17 @@
   padding: 0 !important;
 }
 
+body[dir="rtl"] .Viewnote-heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .date-updatenote {
   font-size: 8pt !important;
   color: #505050 !important;
+}
+
+body[dir="rtl"] .date-updatenote {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .close-note-modal-btn {
@@ -22,6 +30,10 @@
   font-family: "MontserratSemiBold-600";
 }
 
+body[dir="rtl"] .close-note-modal-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .modal-row {
   display: contents !important;
   /* margin-top: -20px !important; */
@@ -32,14 +44,22 @@
   font-family: "MontserratSemiBold-600" !important;
 }
 
+body[dir="rtl"] .modal-update-attachment-heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .modal-View-title {
   font-size: 20px;
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold-600";
-  overflow: hidden!important;
-  word-wrap: break-word!important;
-  text-overflow: ellipsis!important;
-  white-space: normal!important;
+  overflow: hidden !important;
+  word-wrap: break-word !important;
+  text-overflow: ellipsis !important;
+  white-space: normal !important;
+}
+
+body[dir="rtl"] .modal-View-title {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .modal-View-title::-webkit-scrollbar {
@@ -61,6 +81,11 @@
   max-height: 95px !important;
   height: 95px !important;
 }
+
+body[dir="rtl"] .modal-view-discription {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
 .modal-view-discription p {
   word-wrap: break-word !important;
 }

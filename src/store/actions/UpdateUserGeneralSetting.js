@@ -164,7 +164,7 @@ const updateUserSettingFunc = (navigate, userGeneralSettingData, t) => {
                   t("User-configurations-updated-successfully")
                 )
               );
-              dispatch(getUserSetting(navigate, JSON.parse(currentUserID), t));
+              dispatch(getUserSetting(navigate, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

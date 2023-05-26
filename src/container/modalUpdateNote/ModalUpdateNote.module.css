@@ -1,27 +1,13 @@
-@font-face {
-  font-family: "MontserratRegular";
-  src: url("./../../assets/fonts-new/montserrat-regular-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-regular-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratSemiBold";
-  src: url("./../../assets/fonts-new/montserrat-600-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-600-webfont.woff2");
-}
-
-@font-face {
-  font-family: "MontserratMedium-500";
-  src: url("./../../assets/fonts-new/montserrat-500-webfont.woff"),
-    url("./../../assets/fonts-new/montserrat-500-webfont.woff2");
-}
-
 .UpdateNote-heading {
   color: #6172d6 !important;
   font-size: 23px !important;
   font-weight: 600 !important;
   margin: 0 !important;
   padding: 0 !important;
+}
+
+body[dir="rtl"] .UpdateNote-heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .star-updatenote {
@@ -35,9 +21,17 @@
   font-family: "MontserratRegular";
 }
 
+body[dir="rtl"] .date-updatenote {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
 .date-updatenote2 {
   font-size: 10px !important;
   font-family: "MontserratRegular";
+}
+
+body[dir="rtl"] .date-updatenote2 {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .QuillRow {
@@ -54,6 +48,10 @@
   font-family: "MontserratSemiBold-600";
 }
 
+body[dir="rtl"] .cancel-Update-notes {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Update-notes-Button {
   background: #6172d6 !important;
   border: none !important;
@@ -64,6 +62,10 @@
   font-family: "MontserratSemiBold-600";
 }
 
+body[dir="rtl"] .Update-notes-Button {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Delete-notes-Button {
   background: white !important;
   border: 1px solid #e1e1e1 !important;
@@ -72,6 +74,10 @@
   font-size: 12pt !important;
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold-600";
+}
+
+body[dir="rtl"] .Delete-notes-Button {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .save-Update-notes {
@@ -99,6 +105,10 @@
   text-align: center !important;
 }
 
+body[dir="rtl"] .delete-note-modal-text {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .delete-note-modal-size {
   width: 450px !important;
   align-items: center !important;
@@ -114,6 +124,10 @@
   font-family: "MontserratSemiBold-600";
 }
 
+body[dir="rtl"] .cancel-note-modal-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .delete-note-modal-btn {
   background: #6172d6 !important;
   border: none !important;
@@ -122,6 +136,10 @@
   font-size: 12pt !important;
   color: #ffffff !important;
   font-family: "MontserratSemiBold-600";
+}
+
+body[dir="rtl"] .delete-note-modal-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .modalUpdateNotes {
@@ -173,6 +191,10 @@
 
 .attached-title {
   font-family: "MontserratSemiBold";
+}
+
+body[dir="rtl"] .attached-title {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 /* .UploadFileButton{ */
@@ -238,11 +260,19 @@ body[dir="rtl"] .quill-update-height {
   visibility: visible !important;
 }
 
+body[dir="rtl"] .errorMessage {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .errorMessage_hidden {
   visibility: hidden;
   margin: 0;
   height: 22px;
   color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorMessage_hidden {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .errorUpdateMessage {
@@ -256,10 +286,18 @@ body[dir="rtl"] .quill-update-height {
   visibility: visible !important;
 }
 
+body[dir="rtl"] .errorUpdateMessage {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .errorUpdateMessage_hidden {
   visibility: hidden;
   margin-top: 0px;
   margin: 0;
   height: 0px;
   color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorUpdateMessage_hidden {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }

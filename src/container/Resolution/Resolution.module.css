@@ -271,6 +271,7 @@ body[dir="rtl"] .Search_Icon {
 body[dir="rtl"] .Resolution-heading-size {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
+
 .Resolution-Title {
   width: 100% !important;
   font-size: 12px !important;
@@ -523,6 +524,7 @@ body[dir="rtl"] .decision_Approved {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
   margin-left: 8px !important;
 }
+
 .decision_text {
   color: #d8a709 !important;
   font-family: "MontserratSemiBold" !important;
@@ -564,6 +566,7 @@ body[dir="rtl"] .PLusICon {
 body[dir="rtl"] .resolution_title {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
+
 .voterCountStyle {
   font-family: "MontserratSemiBold";
   font-size: 12px !important;
@@ -589,4 +592,33 @@ body[dir="rtl"] .decision_text_Moderator_closed {
 
 body[dir="rtl"] .Result_Icon_cursor_pointer {
   margin-right: 30px !important;
+}
+
+.empty_Resolutions {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  min-height: 65vh !important;
+}
+
+.NoResolutionHeading {
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 2.5rem !important;
+  text-transform: uppercase;
+  /* margin-top: 15px !important; */
+  margin: 20px 0 0 0 !important;
+  padding: 0 !important;
+}
+
+.NoResolution_Tagline {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratRegular" !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 10px !important;
 }
