@@ -719,7 +719,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
 
   const closeOnUpdateBtn = () => {
     dispatch(
-      deleteOrganiationMessage(isMeetingId, isMeetingStatusId, t, navigate)
+      deleteOrganiationMessage(navigate, isMeetingId, isMeetingStatusId, t)
     );
     setMeetingDeleteModal(false);
   };
