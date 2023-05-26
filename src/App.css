@@ -5418,6 +5418,10 @@ body[dir="rtl"] .ant-btn-sm {
 body[dir="rtl"] .ant-btn-link {
   font-family: "IBMPlexSansArabic-Regular" !important;
 }
+/* Calender */
+body[dir="rtl"] .rbc-button-link {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 
 body[dir="rtl"] .ant-btn-primary {
   font-family: "IBMPlexSansArabic-Regular" !important;
