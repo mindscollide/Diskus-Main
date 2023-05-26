@@ -762,12 +762,12 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                     className=" d-flex justify-content-end mt-2 gap-3"
                   >
                     <Button
-                      text="Cancel"
+                      text={t("Cancel")}
                       className={styles["cancel-Add-notes-Modal"]}
                       onClick={cancelNewNoteModal}
                     />
                     <Button
-                      text="Save"
+                      text={t("Save")}
                       onClick={notesSaveHandler}
                       type="submit"
                       className={styles["save-Add-notes-Modal"]}
@@ -785,7 +785,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       className={styles["createNoteModalCancelBtn"]}
                     >
                       <Button
-                        text="Cancel"
+                        text={t("Cancel")}
                         className={styles["cancel-create-modal-btn"]}
                         onClick={() => {
                           setIsAddNote(true);
@@ -801,7 +801,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       className="d-flex justify-content-start "
                     >
                       <Button
-                        text="Proceed"
+                        text={t("Proceed")}
                         className={styles["proceed-create-modal-btn"]}
                         onClick={handleClick}
                       />

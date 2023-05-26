@@ -259,6 +259,10 @@ body[dir="rtl"] .errorNotesMessage_hidden_description {
   align-items: center;
 }
 
+body[dir="rtl"] .cancel-create-modal-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .proceed-create-modal-btn {
   background: #6172d6 !important;
   border: none !important;
@@ -273,6 +277,11 @@ body[dir="rtl"] .errorNotesMessage_hidden_description {
   justify-content: center;
   align-items: center;
 }
+
+body[dir="rtl"] .proceed-create-modal-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .cancel-Add-notes-Modal {
   background: white !important;
   outline: 1px solid #e1e1e1 !important;
@@ -289,6 +298,10 @@ body[dir="rtl"] .errorNotesMessage_hidden_description {
   font-family: "MontserratSemiBold-600";
 }
 
+body[dir="rtl"] .cancel-Add-notes-Modal {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .save-Add-notes-Modal {
   background: #6172d6 !important;
   border: none !important;
@@ -303,6 +316,11 @@ body[dir="rtl"] .errorNotesMessage_hidden_description {
   font-size: 12pt;
   font-family: "MontserratSemiBold-600";
 }
+
+body[dir="rtl"] .save-Add-notes-Modal {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .create-note-modal-text {
   margin-top: 42px;
   font-size: 20px;
@@ -310,6 +328,11 @@ body[dir="rtl"] .errorNotesMessage_hidden_description {
   font-family: "MontserratSemiBold-600";
   color: #5a5a5a !important;
 }
+
+body[dir="rtl"] .create-note-modal-text {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .modal-userprofile-footer {
   display: block !important;
 }
@@ -324,6 +347,10 @@ body[dir="rtl"] .errorNotesMessage_hidden_description {
 }
 .Add-Notes-Attachment {
   font-family: "MontserratSemiBold";
+}
+
+body[dir="rtl"] .Add-Notes-Attachment {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 .quill-height-addNote .ql-toolbar.ql-snow {
   color: #a2a2a2 !important;
