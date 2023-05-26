@@ -299,7 +299,7 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
                   className="d-flex justify-content-end"
                 >
                   <Button
-                    text="Close"
+                    text={t("Close")}
                     className={styles["close-note-modal-btn"]}
                     onClick={() => setViewNotes(false)}
                   />
