@@ -4083,9 +4083,9 @@ span.ant-notification-notice-icon img {
 }
 
 .ant-table-wrapper.ToDo {
-  overflow: auto;
+  overflow: hidden;
   padding-right: 10px;
-  height: 500px;
+  height: 81vh;
 }
 
 /* .ant-table-wrapper.Resolution_table {

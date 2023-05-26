@@ -139,7 +139,7 @@ body[dir="rtl"] .ADD-Group-btn {
 .ADD-Group-btn:focus,
 .ADD-Group-btn:focus-visible {
   font-size: 12px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;

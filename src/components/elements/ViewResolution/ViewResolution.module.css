@@ -24,8 +24,22 @@ body[dir="rtl"] .Details_ViewResolution {
   font-size: 20px !important;
   font-family: "MontserratSemiBold";
   color: #6172d6 !important;
+  word-break: break-word;
+  max-height: 14vh !important;
+  height: 14vh !important;
+  display: block;
+  overflow-y: auto;
 }
-
+.Heading_Authorize_Viewresolution::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+.Heading_Authorize_Viewresolution::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
 body[dir="rtl"] .Heading_Authorize_Viewresolution {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
@@ -77,7 +91,7 @@ body[dir="rtl"] .Reminder_viewResolution {
   font-size: 12px !important;
   color: #5a5a5a;
   margin-top: 13px !important;
-  margin-left: 4px !important;
+  margin-left: 10px !important;
 }
 
 body[dir="rtl"] .Public_resolution {
