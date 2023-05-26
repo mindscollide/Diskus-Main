@@ -336,7 +336,7 @@ const GetOTOUserMessages = (chatOTOData, t) => {
       .then(async (response) => {
         console.log('GetOTOUserMessages', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetOTOUserMessages(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -431,7 +431,7 @@ const GetOTOUserUndeliveredMessages = (t) => {
       .then(async (response) => {
         console.log('GetOTOUserMessages', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetOTOUserUndeliveredMessages(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -525,7 +525,7 @@ const GetGroupMessages = (chatGroupData, t) => {
       .then(async (response) => {
         console.log('GetOTOUserMessages', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetGroupMessages(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -618,7 +618,7 @@ const GetBroadcastMessages = (broadcastMessagesData, t) => {
       .then(async (response) => {
         console.log('GetBroadcastMessages', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetBroadcastMessages(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -709,7 +709,7 @@ const GetArchivedDataByUserID = (t) => {
       .then(async (response) => {
         console.log('GetBroadcastMessages', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetArchivedDataByUserID(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -891,7 +891,7 @@ const GetFollowMessages = (t) => {
       .then(async (response) => {
         console.log('GetFollowMessages', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetFollowMessages(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -982,7 +982,7 @@ const GetRecentTags = (t) => {
       .then(async (response) => {
         console.log('GetRecentTags', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetRecentTags(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -1075,7 +1075,7 @@ const GetTagsMessages = (t) => {
       .then(async (response) => {
         console.log('GetTagsMessages', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetTagsMessages(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -1167,7 +1167,7 @@ const GetMessageSentReceiveTime = (t) => {
       .then(async (response) => {
         console.log('GetMessageSentReceiveTime', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetMessageSentReceiveTime(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -1258,7 +1258,7 @@ const GetRecentFlagCount = (t) => {
       .then(async (response) => {
         console.log('GetRecentFlagCount', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetRecentFlagCount(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -1349,7 +1349,7 @@ const GetRecentFollowDataCount = (t) => {
       .then(async (response) => {
         console.log('GetRecentFollowDataCount', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetRecentFollowDataCount(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -1440,7 +1440,7 @@ const GetAllRecentTagsCount = (t) => {
       .then(async (response) => {
         console.log('GetAllRecentTagsCount', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetAllRecentTagsCount(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -1534,7 +1534,7 @@ const GetRecentDataArchiveCount = (t) => {
       .then(async (response) => {
         console.log('GetRecentDataArchiveCount', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetRecentDataArchiveCount(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -1624,7 +1624,7 @@ const GetBlockedUsersCount = (t) => {
       .then(async (response) => {
         console.log('GetBlockedUsersCount', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetBlockedUsersCount(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -1988,7 +1988,7 @@ const GetActiveUsersByGroupID = (t) => {
       .then(async (response) => {
         console.log('GetActiveUsersByGroupID', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetActiveUsersByGroupID(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -2078,7 +2078,7 @@ const GetActiveUsersByRoomID = (t) => {
       .then(async (response) => {
         console.log('GetActiveUsersByRoomID', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetActiveUsersByRoomID(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -2168,7 +2168,7 @@ const GetActiveUsersByBroadcastID = (t) => {
       .then(async (response) => {
         console.log('GetActiveUsersByBroadcastID', response)
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshTokenTalk(t))
+          // await dispatch(RefreshTokenTalk(t))
           dispatch(GetActiveUsersByBroadcastID(t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
@@ -2222,7 +2222,7 @@ const OTOMessageSendNotification = (message, response) => {
 }
 
 //Insert OTO Messages
-const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
+const InsertOTOMessages = (object, fileUploadData, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   console.log('InsertOTOMessages', object, fileUploadData)
   return (dispatch) => {
@@ -2241,8 +2241,8 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(InsertOTOMessages(navigate, object, fileUploadData, t))
+          // await dispatch(RefreshToken(navigate, t))
+          dispatch(InsertOTOMessages(object, fileUploadData, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2337,7 +2337,7 @@ const GroupPrivateSendNotification = (message) => {
 }
 
 //Insert Private Group Messages
-const InsertPrivateGroupMessages = (navigate, object, t) => {
+const InsertPrivateGroupMessages = (object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(GroupPrivateMessageSendInit())
@@ -2354,8 +2354,8 @@ const InsertPrivateGroupMessages = (navigate, object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(InsertPrivateGroupMessages(navigate, object, t))
+          // await dispatch(RefreshToken(navigate, t))
+          dispatch(InsertPrivateGroupMessages(object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2420,7 +2420,7 @@ const BlockUnblockUserNotification = (message) => {
 }
 
 //Block Unblock a user
-const BlockUnblockUser = (navigate, object, t) => {
+const BlockUnblockUser = (object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   console.log('Blocked User', object)
   let Data = {
@@ -2445,8 +2445,8 @@ const BlockUnblockUser = (navigate, object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(BlockUnblockUser(navigate, object, t))
+          // await dispatch(RefreshToken(navigate, t))
+          dispatch(BlockUnblockUser(object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2601,7 +2601,7 @@ const broadcastMessageSendNotification = (message) => {
 }
 
 //Insert Private Group Messages
-const InsertBroadcastMessages = (navigate, object, t) => {
+const InsertBroadcastMessages = (object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(broadcastMessageSendInit())
@@ -2618,8 +2618,8 @@ const InsertBroadcastMessages = (navigate, object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(InsertBroadcastMessages(navigate, object, t))
+          // await dispatch(RefreshToken(navigate, t))
+          dispatch(InsertBroadcastMessages(object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2691,7 +2691,7 @@ const createPrivateGroupNotification = (response, message) => {
 }
 
 //CreatePrivateGroup
-const CreatePrivateGroup = (navigate, object, t) => {
+const CreatePrivateGroup = (object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(createPrivateGroupInit())
@@ -2708,8 +2708,8 @@ const CreatePrivateGroup = (navigate, object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(CreatePrivateGroup(navigate, object, t))
+          // await dispatch(RefreshToken(navigate, t))
+          dispatch(CreatePrivateGroup(object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2865,7 +2865,7 @@ const MarkStarredMessageNotification = (message) => {
 }
 
 //Star Unstar A message
-const MarkStarredUnstarredMessage = (navigate, object, t) => {
+const MarkStarredUnstarredMessage = (object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   console.log('Mark Starred Message', object)
   let Data = {
@@ -2893,8 +2893,8 @@ const MarkStarredUnstarredMessage = (navigate, object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(MarkStarredUnstarredMessage(navigate, object, t))
+          // await dispatch(RefreshToken(navigate, t))
+          dispatch(MarkStarredUnstarredMessage(object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
