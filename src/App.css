@@ -5403,6 +5403,10 @@ body[dir="rtl"] .FontArabicRegular {
   font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
+body[dir="rtl"] .modaltodolist-attachment-text {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
 .ant-table-body::-webkit-scrollbar {
   width: 0.5rem;
   height: 0.5em;
@@ -5442,4 +5446,16 @@ body[dir="rtl"] .group-fields input.form-control {
   height: 39px !important;
   font-family: "IBMPlexSansArabic-SemiBold" !important;
   border-radius: 4px !important;
+}
+
+body[dir="rtl"] .modalNote-fields input.form-control {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.ql-container {
+  font-family: "MontserratSemiBold" !important;
+}
+
+body[dir="rtl"] .ql-container {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
