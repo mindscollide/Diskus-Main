@@ -25,7 +25,7 @@ import {
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
 const CreateCommittee = ({ setCreategrouppage }) => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [viewCreateCommittee, setViewCreateCommittee] = useState(true);
   const { assignees, CommitteeReducer } = useSelector((state) => state);
   // for meatings  Attendees List

@@ -168,7 +168,7 @@ const SaveNotesAPI = (navigate, Data, t, setAddNewModal) => {
                   t("Notes-saved-successfully")
                 )
               );
-              dispatch(GetNotes(getNotesAPI, t));
+              dispatch(GetNotes(navigate, getNotesAPI, t));
               setAddNewModal(false);
               console.log("checking");
             } else if (
@@ -184,7 +184,7 @@ const SaveNotesAPI = (navigate, Data, t, setAddNewModal) => {
                   t("Notes-saved-successfully-with-attachments")
                 )
               );
-              dispatch(GetNotes(getNotesAPI, t));
+              dispatch(GetNotes(navigate, getNotesAPI, t));
               setAddNewModal(false);
               console.log("checking");
             } else if (
@@ -287,7 +287,7 @@ const UpdateNotesAPI = (
                   t("Notes-updated-successfully")
                 )
               );
-              dispatch(GetNotes(getNotesAPI, t));
+              dispatch(GetNotes(navigate, getNotesAPI, t));
               setIsUpdateNote(false);
               setUpdateNotes(false);
               setIsDeleteNote(false);
@@ -304,7 +304,7 @@ const UpdateNotesAPI = (
                   t("Notes-updated-successfully-with-attachments")
                 )
               );
-              dispatch(GetNotes(getNotesAPI, t));
+              dispatch(GetNotes(navigate, getNotesAPI, t));
               setIsUpdateNote(false);
               setUpdateNotes(false);
               setIsDeleteNote(false);
@@ -374,6 +374,7 @@ const GetNotesByIdAPI = (
   let Data = {
     NotesID: JSON.parse(NotesID),
   };
+  console.log(Data, "navigatenavigatenavigatenavigate")
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let getNotesAPI = {
@@ -522,7 +523,7 @@ const deleteNotesApi = (navigate, ID, t, setUpdateNotes) => {
           if (response.data.responseResult.isExecuted === true) {
             if (response.data.responseResult.responseMessage.toLowerCase().includes("Notes_NotesServiceManager_DeleteNotes_01".toLowerCase())) {
               await dispatch(deleteNotes_Success(response.data.responseResult, t("Notes-deleted-successfully")))
-              dispatch(GetNotes(Data, t))
+              dispatch(GetNotes(navigate, Data, t))
               setUpdateNotes(false)
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Notes_NotesServiceManager_DeleteNotes_02".toLowerCase())) {
               dispatch(deleteNotes_Fail(t("Failed-to-delete-notes")))
