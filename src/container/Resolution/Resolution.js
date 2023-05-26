@@ -47,6 +47,7 @@ import {
 import EditResolutionIcon from "../../assets/images/Edit_Resolution_Icon.svg";
 import ResultResolutionIcon from "../../assets/images/Result_Resolution_Icon.svg";
 import AttachmentIcon from "../../assets/images/resolutions/Attachment_Resolution.svg";
+import EmptyResolution from "../../assets/images/resolutions/Empty_Resolution.svg";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 
@@ -1313,59 +1314,82 @@ const Resolution = () => {
             {ResolutionReducer.currentResolutionView === 1 ? (
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
-                  <TableToDo
-                    sortDirections={["descend", "ascend"]}
-                    column={
-                      ResolutionReducer.resoultionClosed === 2
-                        ? columnsModeratorClosed
-                        : columnsModerator
-                    }
-                    className="Resolution_table"
-                    scroll={{ y: 500 }}
-                    pagination={{
-                      pageSize: 50,
-                      showSizeChanger: true,
-                      pageSizeOptions: ["100 ", "150", "200"],
-                    }}
-                    loading={{
-                      indicator: (
-                        <div className={styles["resolution_spinner"]}>
-                          <Spin />
-                        </div>
-                      ),
-                      spinning: ResolutionReducer.Loading,
-                    }}
-                    rows={rows}
-                  />
+                  {rows.length > 0 ? (
+                    <TableToDo
+                      sortDirections={["descend", "ascend"]}
+                      column={
+                        ResolutionReducer.resoultionClosed === 2
+                          ? columnsModeratorClosed
+                          : columnsModerator
+                      }
+                      className="Resolution_table"
+                      scroll={{ y: 500 }}
+                      pagination={{
+                        pageSize: 50,
+                        showSizeChanger: true,
+                        pageSizeOptions: ["100 ", "150", "200"],
+                      }}
+                      loading={{
+                        indicator: (
+                          <div className={styles["resolution_spinner"]}>
+                            <Spin />
+                          </div>
+                        ),
+                        spinning: ResolutionReducer.Loading,
+                      }}
+                      rows={rows}
+                    />
+                  ) : (
+                    <Row>
+                      <Col sm={12} md={12} lg={12} className={styles["empty_Resolutions"]}>
+                        <img src={EmptyResolution} />
+                        <h2 className={styles["NoResolutionHeading"]}>{t("No-resolution-to-display")}</h2>
+                        <p className={styles["NoResolution_Tagline"]}>{t("Planning-to-get-a-thought-on-something?")}</p>
+                      </Col>
+                    </Row>
+                  )
+                  }
                 </Col>
               </Row>
             ) : ResolutionReducer.currentResolutionView === 2 ? (
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
-                  <TableToDo
-                    sortDirections={["descend", "ascend"]}
-                    column={
-                      ResolutionReducer.resoultionClosed === 2
-                        ? columnsVotersClosed
-                        : columnsvoters
-                    }
-                    className="Resolution_table"
-                    scroll={{ y: 500 }}
-                    pagination={{
-                      pageSize: 50,
-                      showSizeChanger: true,
-                      pageSizeOptions: ["100 ", "150", "200"],
-                    }}
-                    loading={{
-                      indicator: (
-                        <div className={styles["resolution_spinner"]}>
-                          <Spin />
-                        </div>
-                      ),
-                      spinning: ResolutionReducer.Loading,
-                    }}
-                    rows={isSearchVoter}
-                  />
+                  {isSearchVoter.length > 0 ? (
+                    <TableToDo
+                      sortDirections={["descend", "ascend"]}
+                      column={
+                        ResolutionReducer.resoultionClosed === 2
+                          ? columnsVotersClosed
+                          : columnsvoters
+                      }
+                      className="Resolution_table"
+                      scroll={{ y: 500 }}
+                      pagination={{
+                        pageSize: 50,
+                        showSizeChanger: true,
+                        pageSizeOptions: ["100 ", "150", "200"],
+                      }}
+                      loading={{
+                        indicator: (
+                          <div className={styles["resolution_spinner"]}>
+                            <Spin />
+                          </div>
+                        ),
+                        spinning: ResolutionReducer.Loading,
+                      }}
+                      rows={isSearchVoter}
+                    />
+                  ) : (
+                    <Row>
+                      <Col sm={12} md={12} lg={12} className={styles["empty_Resolutions"]}>
+                        <img src={EmptyResolution} />
+                        <h2 className={styles["NoResolutionHeading"]}>{t("No-resolution-to-display")}</h2>
+                        <p className={styles["NoResolution_Tagline"]}>{t("Planning-to-get-a-thought-on-something?")}</p>
+                      </Col>
+                    </Row>
+                  )
+                  }
+
                 </Col>
               </Row>
             ) : null}

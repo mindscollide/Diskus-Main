@@ -243,6 +243,7 @@ const Meeting = () => {
     {
       title: t("Status"),
       dataIndex: "status",
+      align: "center",
       key: "status",
       width: "10rem",
       filters: [

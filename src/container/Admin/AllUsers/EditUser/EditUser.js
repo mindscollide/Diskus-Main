@@ -349,7 +349,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       FK_NumberWorldCountryID: editUserSection.FK_CCID,
     };
     await dispatch(
-      editUserAction(setIsUpdateSuccessfully, setEditModal, updateData, t)
+      editUserAction(navigate, setIsUpdateSuccessfully, setEditModal, updateData, t)
     );
     let OrganizationID = localStorage.getItem("organizationID");
     let RequestingUserID = localStorage.getItem("userID");

@@ -68,8 +68,7 @@ const getSubscribeOrganizationPackage = (navigate, t) => {
               "Admin_AdminServiceManager_GetOrganizationSeletedPackageByOrganizationID_02"
             ) {
               dispatch(
-                packageDetailSuccess(
-                  response.data.responseResult,
+                packageDetailFail(
                   t("No-records-found")
                 )
               );
@@ -79,7 +78,6 @@ const getSubscribeOrganizationPackage = (navigate, t) => {
             ) {
               dispatch(
                 packageDetailFail(
-                  response.data.responseResult,
                   t("No-records-found")
                 )
               );
@@ -87,7 +85,6 @@ const getSubscribeOrganizationPackage = (navigate, t) => {
           } else {
             dispatch(
               packageDetailFail(
-                response.data.responseResult,
                 t("Something-went-wrong")
               )
             );
@@ -95,7 +92,6 @@ const getSubscribeOrganizationPackage = (navigate, t) => {
         } else {
           dispatch(
             packageDetailFail(
-              response.data.responseResult,
               t("No-records-found")
             )
           );
@@ -104,7 +100,6 @@ const getSubscribeOrganizationPackage = (navigate, t) => {
       .catch((response) => {
         dispatch(
           packageDetailFail(
-            response.data.responseResult,
             t("Something-went-wrong")
           )
         );

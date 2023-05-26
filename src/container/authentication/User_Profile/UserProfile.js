@@ -299,7 +299,7 @@ const UserProfileModal = ({
           FK_NumberWorldCountryID: userProfileEdit.CountyCode,
         };
 
-        dispatch(updateuserprofile(navigate, userInformation, t));
+        dispatch(updateuserprofile(navigate, userInformation, t, setMobileEnable, setDesignationEnable, setNameEanble));
       }
     } else {
       setErrorBar(true);

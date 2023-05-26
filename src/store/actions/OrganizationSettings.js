@@ -86,7 +86,6 @@ const getOrganizationLevelSetting = (navigate, t) => {
           } else {
             dispatch(
               getOrganizationLevelSettingFail(
-                response.data.responseResult,
                 t("No-records-found")
               )
             );
@@ -94,7 +93,6 @@ const getOrganizationLevelSetting = (navigate, t) => {
         } else {
           dispatch(
             getOrganizationLevelSettingFail(
-              response.data.responseResult,
               t("No-records-found")
             )
           );
@@ -102,10 +100,7 @@ const getOrganizationLevelSetting = (navigate, t) => {
       })
       .catch((response) => {
         dispatch(
-          getOrganizationLevelSettingFail(
-            response.data.responseResult,
-            t("No-records-found")
-          )
+          getOrganizationLevelSettingFail(t("No-records-found"))
         );
       });
   };
@@ -133,6 +128,7 @@ const updateOrganizationLevelSetting = (navigate, updateData, t) => {
   let data = {
     organizationSettings: updateData,
   };
+
   console.log(data, "updateData");
   return (dispatch) => {
     dispatch(updateOrganizationLevelSettingInit());
@@ -164,7 +160,7 @@ const updateOrganizationLevelSetting = (navigate, updateData, t) => {
                   t("Organization-configurations-updated-successfully")
                 )
               );
-              dispatch(getOrganizationLevelSetting(t));
+              dispatch(getOrganizationLevelSetting(navigate, t));
             } else if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_UpdateOrganizationSettings_02"

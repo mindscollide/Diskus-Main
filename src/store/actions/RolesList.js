@@ -146,7 +146,7 @@ const GetAllUserRoles = (navigate, t) => {
                 newError
               )
             );
-            await dispatch(GetAllOrganizationRoles(t));
+            await dispatch(GetAllOrganizationRoles(navigate, t));
           } else if (
             response.data.responseResult.responseMessage ===
             "Admin_AdminServiceManager_GetAllUserRoles_02"
@@ -166,8 +166,7 @@ const GetAllUserRoles = (navigate, t) => {
         }
       })
       .catch((response) => {
-        let newError = t("Something-went-wrong");
-        dispatch(getAllUserRolesFail(false, newError));
+        dispatch(getAllUserRolesFail(false, t("Something-went-wrong")));
       });
   };
 };
@@ -230,7 +229,7 @@ const GetOrganizationByID = (navigate, object, t) => {
             );
             console.log("GetOrganizationByID", response.data.responseResult);
 
-            await dispatch(GetAllUserRoles(t));
+            await dispatch(GetAllUserRoles(navigate, t));
             console.log("GetOrganizationByID", response.data.responseResult);
           } else if (
             response.data.responseResult.responseMessage ===
