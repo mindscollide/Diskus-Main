@@ -1061,9 +1061,9 @@ body[dir="rtl"] .ant-table-thead>tr * {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-.ant-table-row {
+/* .ant-table-row {
   background-color: #f6f6f6 !important;
-}
+} */
 
 .ant-picker-input>input[disabled] {
   color: #000 !important;
@@ -1416,7 +1416,7 @@ label.lightLabel.form-label {
   /* font-size : 13px; */
   /* padding   : 4px 15px; */
   border-radius: 50rem;
-  width: 110px !important;
+  /* width: 110px !important; */
   text-align: center !important;
 }
 

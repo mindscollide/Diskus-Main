@@ -167,6 +167,7 @@ const updateCustomerOrganizationProfileDetail = (navigate, updateData, t) => {
                   t("Record-updated-successfully")
                 )
               );
+              dispatch(customerInfoOrganizationDetails(navigate, t))
             } else if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_UpdateOrganizationProfile_02"
