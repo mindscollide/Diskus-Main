@@ -9,6 +9,10 @@
   font-family: "MontserratSemiBold-600";
 }
 
+body[dir="rtl"] .todolist-title-col {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .blue {
   color: #6172d6;
   font-family: "MontserratSemiBold-600" !important;
@@ -55,6 +59,10 @@ body[dir="rtl"] .todolist-create-btn {
   position: relative;
 }
 
+body[dir="rtl"] .todolist-create-btn button {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
 .todolist-create-btn button:focus-visible {
   box-shadow: none !important;
 }
@@ -99,7 +107,10 @@ body[dir="rtl"] .todolist-create-btn button {
   border-bottom-left-radius: 4px !important;
 }
 
-body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(1) {
+body[dir="rtl"]
+  .ToDo
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(1) {
   border-right: 1px solid #e1e1e1 !important;
   border-top-right-radius: 4px !important;
   border-top-left-radius: 0px !important;
@@ -115,7 +126,10 @@ body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:n
   text-align: center;
 }
 
-body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(6) {
+body[dir="rtl"]
+  .ToDo
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell:nth-child(6) {
   border-left: 1px solid #e1e1e1 !important;
   border-top-left-radius: 4px !important;
   border-top-right-radius: 0px !important;
@@ -211,6 +225,10 @@ body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:n
   top: 3px;
 }
 
+body[dir="rtl"] .todolist-heading-size {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 /* for todolist table */
 .NoTaskTodo .ant-result-title {
   color: #e4e4e4;
@@ -244,7 +262,9 @@ body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:n
   }
 }
 
-.MuiPaper-root.MuiPaper-elevation0.MuiPaper-rounded:has(.ant-result.ant-result-info.NoTaskTodo) {
+.MuiPaper-root.MuiPaper-elevation0.MuiPaper-rounded:has(
+    .ant-result.ant-result-info.NoTaskTodo
+  ) {
   background: none;
 }
 
@@ -262,9 +282,18 @@ button.btn.btn-primary.meeting.search.me-3.btn.btn-Primary svg {
   margin-top: -1px;
 }
 
-body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th.deadLineTodo {
+body[dir="rtl"]
+  .ant-table-wrapper.ToDo
+  .ant-table
+  .ant-table-thead
+  > tr
+  > th.deadLineTodo {
   text-align: center !important;
   padding-right: 0 !important;
+}
+
+body[dir="rtl"] .ArabicStatus {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 /* 
@@ -298,23 +327,43 @@ body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th.deadLi
   right: 18px !important;
 } */
 .InProgress {
-  color: #D8A709
+  color: #d8a709;
+}
+
+body[dir="rtl"] .InProgress {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Pending {
-  color: #5F78D6
+  color: #5f78d6;
+}
+
+body[dir="rtl"] .Pending {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Upcoming {
-  color: #F68732
+  color: #f68732;
+}
+
+body[dir="rtl"] .Upcoming {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Cancelled {
-  color: #F16B6B
+  color: #f16b6b;
+}
+
+body[dir="rtl"] .Cancelled {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Completed {
-  color: #81DB86
+  color: #81db86;
+}
+
+body[dir="rtl"] .Completed {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .Status-Todo .rc-virtual-list-holder-inner {
@@ -326,4 +375,8 @@ body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th.deadLi
 
 .Status-Todo:focus-visible {
   outline: none !important;
+}
+
+body[dir="rtl"] .Status-Todo .rc-virtual-list-holder-inner {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }

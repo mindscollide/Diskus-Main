@@ -17,6 +17,10 @@
   font-family: "MontserratSemiBold";
 }
 
+body[dir="rtl"] .notes-heading-size {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .create-note-btn {
   width: 150px;
   height: 39px;
@@ -26,6 +30,10 @@
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
   border: 1px solid #e1e1e1 !important;
+}
+
+body[dir="rtl"] .create-note-btn {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .create-note-btn::before {
@@ -138,9 +146,17 @@
   white-space: nowrap;
 }
 
+body[dir="rtl"] .header-of-collapse-material {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .collapse-text-attached-material {
   color: #5a5a5a !important;
   font-size: 12px;
+}
+
+body[dir="rtl"] .collapse-text-attached-material {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .MinusIcon {
@@ -231,6 +247,10 @@ body[dir="rtl"] .editIconBox {
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
+}
+
+body[dir="rtl"] .notes-attachment-text {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .emptyNotesState {

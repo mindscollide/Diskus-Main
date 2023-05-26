@@ -30,6 +30,7 @@ select.language-dropdown.ar {
 
 body[dir="rtl"] li.ant-dropdown-menu-item {
   text-align: right;
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 body[dir="rtl"] label.ant-radio-wrapper {
