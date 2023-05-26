@@ -211,7 +211,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
                     console.log(response, "response")
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_CreateNewGroup_01".toLowerCase())) {
                         await dispatch(createGroup_Success(response.data.responseResult, t("Data-available")))
-                        dispatch(getGroups(t))
+                        dispatch(getGroups(navigate,t))
                         setCreategrouppage(false)
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_CreateNewGroup_02".toLowerCase())) {
                         dispatch(createGroup_Fail(t("No-data-available")))
@@ -412,7 +412,7 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
                     console.log(response, "response")
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_UpdateGroup_01".toLowerCase())) {
                         await dispatch(updateGroup_Succes(response.data.responseResult, t("Group-updated")))
-                        dispatch(getGroups(t))
+                        dispatch(getGroups(navigate,t))
                         setViewUpdateGroup(false)
                         console.log("Group-updated")
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_UpdateGroup_02".toLowerCase())) {
@@ -484,7 +484,7 @@ const updateGroupStatus = (navigate, Data, t, setModalStatusChange) => {
                     console.log(response, "response")
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_GroupStatusUpdate_01".toLowerCase())) {
                         await dispatch(updateGroupStatus_Success(response.data.responseResult, t("Group-status-update")))
-                        dispatch(getGroups(t))
+                        dispatch(getGroups(navigate,t))
                         setModalStatusChange(false)
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Groups_GroupServiceManager_GroupStatusUpdate_02".toLowerCase())) {
                         dispatch(updateGroupStatus_Fail(t("Group-status-not-update")))
