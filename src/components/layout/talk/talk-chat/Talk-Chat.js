@@ -88,8 +88,12 @@ import {
   markStarUnstarFunction,
 } from './oneToOneMessage'
 import { sendChatFunction } from './sendChat'
+import { useNavigate } from 'react-router-dom'
 
 const TalkChat = () => {
+  //Use Navigate
+  const navigate = useNavigate()
+
   //Current User ID
   let currentUserId = localStorage.getItem('userID')
 
@@ -378,18 +382,25 @@ const TalkChat = () => {
   useEffect(() => {
     dispatch(
       GetAllUserChats(
+        navigate,
         parseInt(currentUserId),
         parseInt(currentOrganizationId),
         t,
       ),
     )
-    dispatch(GetBlockedUsers(currentUserId, currentOrganizationId, t))
-    dispatch(GetFlagMessages(currentUserId, currentOrganizationId, t))
+    dispatch(GetBlockedUsers(navigate, currentUserId, currentOrganizationId, t))
+    dispatch(GetFlagMessages(navigate, currentUserId, currentOrganizationId, t))
     dispatch(
-      GetAllUsers(parseInt(currentUserId), parseInt(currentOrganizationId), t),
+      GetAllUsers(
+        navigate,
+        parseInt(currentUserId),
+        parseInt(currentOrganizationId),
+        t,
+      ),
     )
     dispatch(
       GetAllUsersGroupsRoomsList(
+        navigate,
         parseInt(currentUserId),
         parseInt(currentOrganizationId),
         t,
@@ -713,6 +724,7 @@ const TalkChat = () => {
   const chatClick = (record) => {
     dispatch(
       GetAllUserChats(
+        navigate,
         parseInt(currentUserId),
         parseInt(currentOrganizationId),
         t,
@@ -745,15 +757,15 @@ const TalkChat = () => {
     if (record.messageType === 'O') {
       setAllGroupMessages([])
       setAllBroadcastMessages([])
-      dispatch(GetOTOUserMessages(chatOTOData, t))
+      dispatch(GetOTOUserMessages(navigate, chatOTOData, t))
     } else if (record.messageType === 'G') {
       setAllOtoMessages([])
       setAllBroadcastMessages([])
-      dispatch(GetGroupMessages(chatGroupData, t))
+      dispatch(GetGroupMessages(navigate, chatGroupData, t))
     } else if (record.messageType === 'B') {
       setAllOtoMessages([])
       setAllGroupMessages([])
-      dispatch(GetBroadcastMessages(broadcastMessagesData, t))
+      dispatch(GetBroadcastMessages(navigate, broadcastMessagesData, t))
     }
     try {
       if (
@@ -855,7 +867,7 @@ const TalkChat = () => {
       NumberOfMessages: 50,
       OffsetMessage: 0,
     }
-    dispatch(GetOTOUserMessages(chatOTOData, t))
+    dispatch(GetOTOUserMessages(navigate, chatOTOData, t))
 
     setChatOpen(true)
     setAddNewChat(false)
@@ -933,7 +945,12 @@ const TalkChat = () => {
   //Add Click Function
   const addChat = () => {
     dispatch(
-      GetAllUsers(parseInt(currentUserId), parseInt(currentOrganizationId), t),
+      GetAllUsers(
+        navigate,
+        parseInt(currentUserId),
+        parseInt(currentOrganizationId),
+        t,
+      ),
     )
     setAddNewChat(true)
     setActiveCreateGroup(false)
@@ -1324,7 +1341,7 @@ const TalkChat = () => {
       MessageType: chatClickData.messageType,
       IsFlag: record.isFlag === 0 ? true : false,
     }
-    dispatch(MarkStarredUnstarredMessage(Data, t))
+    dispatch(MarkStarredUnstarredMessage(navigate, Data, t))
   }
 
   // on change checkbox sender
@@ -1402,7 +1419,7 @@ const TalkChat = () => {
       channelID: currentOrganizationId,
       opponentUserId: record.id,
     }
-    dispatch(BlockUnblockUser(Data, t))
+    dispatch(BlockUnblockUser(navigate, Data, t))
     setChatHeadMenuActive(false)
   }
 
@@ -1413,7 +1430,7 @@ const TalkChat = () => {
       opponentUserId: record.id,
     }
     setUnblockUserId(record.id)
-    dispatch(BlockUnblockUser(Data, t))
+    dispatch(BlockUnblockUser(navigate, Data, t))
   }
 
   const deleteSingleMessage = (record) => {
@@ -1422,7 +1439,7 @@ const TalkChat = () => {
       MessageType: chatClickData.messageType,
       MessageIds: record.messageID,
     }
-    dispatch(DeleteSingleMessage(Data, t))
+    dispatch(DeleteSingleMessage(navigate, Data, t))
     setDeleteMessage(false)
   }
 
@@ -1453,6 +1470,7 @@ const TalkChat = () => {
         messagesChecked?.map((message) =>
           dispatch(
             InsertOTOMessages(
+              navigate,
               prepareMessageBody(
                 parseInt(currentOrganizationId),
                 parseInt(currentUserId),
@@ -1468,6 +1486,7 @@ const TalkChat = () => {
         messagesChecked?.map((message) =>
           dispatch(
             InsertBroadcastMessages(
+              navigate,
               prepareMessageBody(
                 parseInt(currentOrganizationId),
                 parseInt(currentUserId),
@@ -1482,6 +1501,7 @@ const TalkChat = () => {
         messagesChecked?.map((message) =>
           dispatch(
             InsertPrivateGroupMessages(
+              navigate,
               prepareMessageBody(
                 parseInt(currentOrganizationId),
                 parseInt(currentUserId),
@@ -1513,7 +1533,7 @@ const TalkChat = () => {
           },
         },
       }
-      dispatch(CreatePrivateGroup(Data, t))
+      dispatch(CreatePrivateGroup(navigate, Data, t))
       setChatFilter({
         ...chatFilter,
         value: chatFilterOptions[0].value,
@@ -1536,7 +1556,7 @@ const TalkChat = () => {
       GroupID: activeChat.id,
       ChannelID: currentOrganizationId,
     }
-    dispatch(GetAllPrivateGroupMembers(Data, t))
+    dispatch(GetAllPrivateGroupMembers(navigate, Data, t))
     setShowGroupInfo(true)
     setMessageInfo(false)
     setShowGroupEdit(false)
@@ -1547,7 +1567,7 @@ const TalkChat = () => {
       GroupID: activeChat.id,
       ChannelID: currentOrganizationId,
     }
-    dispatch(GetAllPrivateGroupMembers(Data, t))
+    dispatch(GetAllPrivateGroupMembers(navigate, Data, t))
     setShowGroupEdit(true)
     setShowGroupInfo(false)
     setMessageInfo(false)
@@ -2768,7 +2788,7 @@ const TalkChat = () => {
             Message: messageSendData,
           },
         }
-        dispatch(InsertOTOMessages(Data, uploadFileTalk, t))
+        dispatch(InsertOTOMessages(navigate, Data, uploadFileTalk, t))
 
         let newMessageOto = {
           messageID: 0,
@@ -2845,7 +2865,7 @@ const TalkChat = () => {
             Message: messageSendData,
           },
         }
-        dispatch(InsertPrivateGroupMessages(Data, t))
+        dispatch(InsertPrivateGroupMessages(navigate, Data, t))
 
         let newMessageGroup = {
           messageID: 0,
@@ -2915,7 +2935,7 @@ const TalkChat = () => {
             Message: messageSendData,
           },
         }
-        dispatch(InsertBroadcastMessages(Data, t))
+        dispatch(InsertBroadcastMessages(navigate, Data, t))
         let newMessage = {
           attachmentLocation: messageSendData.AttachmentLocation,
           blockCount: 0,
@@ -2983,7 +3003,7 @@ const TalkChat = () => {
           NumberOfMessages: 10,
           OffsetMessage: 5,
         }
-        dispatch(GetBroadcastMessages(broadcastMessagesData, t))
+        dispatch(GetBroadcastMessages(navigate, broadcastMessagesData, t))
       } else {
       }
     } else {

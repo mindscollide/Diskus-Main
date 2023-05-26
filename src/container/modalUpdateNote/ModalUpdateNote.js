@@ -166,116 +166,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     }
   };
   console.log(fileForSend, "fileForSendfileForSendfileForSendfileForSend");
-  const notesSaveHandler = async () => {
-    if (
-      addNoteFields.Title.value !== "" &&
-      addNoteFields.Description.value !== ""
-    ) {
-      if (Object.keys(fileForSend).length > 0) {
-        let counter = Object.keys(fileForSend).length - 1;
-        await fileForSend.map(async (newData, index) => {
-          await dispatch(FileUploadToDo(navigate, newData, t));
-          counter = counter - 1;
-        });
-        if (counter <= 0) {
-          await setErrorBar(false);
-          // setUpdateNotesModalHomePage(false);
-          let createrID = localStorage.getItem("userID");
-          let OrganizationID = localStorage.getItem("organizationID");
-          let notesAttachment = [];
-          console.log("setIsUpdateNotesetIsUpdateNote");
-
-          if (tasksAttachments.TasksAttachments.length > 0) {
-            tasksAttachments.TasksAttachments.map((data, index) => {
-              console.log("datadata", data);
-              notesAttachment.push({
-                DisplayAttachmentName: data.displayAttachmentName,
-                OriginalAttachmentName: data.originalAttachmentName,
-              });
-            });
-          }
-          let Data = {
-            PK_NotesID: addNoteFields.PK_NotesID,
-            Title: addNoteFields.Title.value,
-            Description: addNoteFields.Description.value,
-            isStarred: isStarred,
-            FK_UserID: JSON.parse(createrID),
-            FK_OrganizationID: JSON.parse(OrganizationID),
-            FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
-            NotesAttachments: notesAttachment,
-          };
-
-          if (flag) {
-            console.log("setIsUpdateNotesetIsUpdateNote");
-
-            await setUpdateNotes(false);
-          }
-
-          await dispatch(
-            UpdateNotesAPI(
-              navigate,
-              Data,
-              t,
-              setIsUpdateNote,
-              setIsDeleteNote,
-              setUpdateNotes
-            )
-          );
-        }
-      } else {
-        await setErrorBar(false);
-        // setUpdateNotesModalHomePage(false);
-        let createrID = localStorage.getItem("userID");
-        let OrganizationID = localStorage.getItem("organizationID");
-        let notesAttachment = [];
-        console.log("setIsUpdateNotesetIsUpdateNote");
-
-        if (tasksAttachments.TasksAttachments.length > 0) {
-          tasksAttachments.TasksAttachments.map((data, index) => {
-            console.log("datadata", data);
-            notesAttachment.push({
-              DisplayAttachmentName: data.displayAttachmentName,
-              OriginalAttachmentName: data.originalAttachmentName,
-            });
-          });
-        }
-        let Data = {
-          PK_NotesID: addNoteFields.PK_NotesID,
-          Title: addNoteFields.Title.value,
-          Description: addNoteFields.Description.value,
-          isStarred: isStarred,
-          FK_UserID: JSON.parse(createrID),
-          FK_OrganizationID: JSON.parse(OrganizationID),
-          FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
-          NotesAttachments: notesAttachment,
-        };
-
-        if (flag) {
-          console.log("setIsUpdateNotesetIsUpdateNote");
-
-          await setUpdateNotes(false);
-        }
-
-        await dispatch(
-          UpdateNotesAPI(
-            navigate,
-            Data,
-            t,
-            setIsUpdateNote,
-            setIsDeleteNote,
-            setUpdateNotes
-          )
-        );
-      }
-    } else {
-      console.log("setIsUpdateNotesetIsUpdateNote");
-      await setErrorBar(true);
-      setOpen({
-        open: true,
-        message: t("Please-fill-all-the-fields"),
-      });
-    }
-  };
 
   //State management of the Quill Editor
   const onTextChange = (content, delta, source) => {
@@ -350,7 +240,8 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       });
     }
   }, [NotesReducer.GetNotesByNotesId]);
-  console.log(fileSize, fileForSend);
+
+  console.log(fileSize, fileForSend, "checking");
   const uploadFilesToDo = (data) => {
     let fileSizeArr;
     if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
@@ -377,7 +268,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       console.log("uploadedFile", uploadedFile.name);
       let file = tasksAttachments.TasksAttachments;
       console.log("uploadedFile 12");
-
       if (
         ext === "doc" ||
         ext === "docx" ||
@@ -510,6 +400,116 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           }
         }
       }
+    }
+  };
+  const notesSaveHandler = async () => {
+    if (
+      addNoteFields.Title.value !== "" &&
+      addNoteFields.Description.value !== ""
+    ) {
+      if (Object.keys(fileForSend).length > 0) {
+        let counter = Object.keys(fileForSend).length - 1;
+        await fileForSend.map(async (newData, index) => {
+          await dispatch(FileUploadToDo(navigate, newData, t));
+          counter = counter - 1;
+        });
+        if (counter <= 0) {
+          await setErrorBar(false);
+          // setUpdateNotesModalHomePage(false);
+          let createrID = localStorage.getItem("userID");
+          let OrganizationID = localStorage.getItem("organizationID");
+          let notesAttachment = [];
+          console.log("setIsUpdateNotesetIsUpdateNote");
+
+          if (tasksAttachments.TasksAttachments.length > 0) {
+            tasksAttachments.TasksAttachments.map((data, index) => {
+              console.log("datadata", data);
+              notesAttachment.push({
+                DisplayAttachmentName: data.displayAttachmentName,
+                OriginalAttachmentName: data.originalAttachmentName,
+              });
+            });
+          }
+          let Data = {
+            PK_NotesID: addNoteFields.PK_NotesID,
+            Title: addNoteFields.Title.value,
+            Description: addNoteFields.Description.value,
+            isStarred: isStarred,
+            FK_UserID: JSON.parse(createrID),
+            FK_OrganizationID: JSON.parse(OrganizationID),
+            FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
+            NotesAttachments: notesAttachment,
+          };
+
+          if (flag) {
+            console.log("setIsUpdateNotesetIsUpdateNote");
+
+            await setUpdateNotes(false);
+          }
+
+          await dispatch(
+            UpdateNotesAPI(
+              navigate,
+              Data,
+              t,
+              setIsUpdateNote,
+              setIsDeleteNote,
+              setUpdateNotes
+            )
+          );
+        }
+      } else {
+        await setErrorBar(false);
+        // setUpdateNotesModalHomePage(false);
+        let createrID = localStorage.getItem("userID");
+        let OrganizationID = localStorage.getItem("organizationID");
+        let notesAttachment = [];
+        console.log("setIsUpdateNotesetIsUpdateNote");
+
+        if (tasksAttachments.TasksAttachments.length > 0) {
+          tasksAttachments.TasksAttachments.map((data, index) => {
+            console.log("datadata", data);
+            notesAttachment.push({
+              DisplayAttachmentName: data.displayAttachmentName,
+              OriginalAttachmentName: data.originalAttachmentName,
+            });
+          });
+        }
+        let Data = {
+          PK_NotesID: addNoteFields.PK_NotesID,
+          Title: addNoteFields.Title.value,
+          Description: addNoteFields.Description.value,
+          isStarred: isStarred,
+          FK_UserID: JSON.parse(createrID),
+          FK_OrganizationID: JSON.parse(OrganizationID),
+          FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
+          NotesAttachments: notesAttachment,
+        };
+
+        if (flag) {
+          console.log("setIsUpdateNotesetIsUpdateNote");
+
+          await setUpdateNotes(false);
+        }
+
+        await dispatch(
+          UpdateNotesAPI(
+            navigate,
+            Data,
+            t,
+            setIsUpdateNote,
+            setIsDeleteNote,
+            setUpdateNotes
+          )
+        );
+      }
+    } else {
+      console.log("setIsUpdateNotesetIsUpdateNote");
+      await setErrorBar(true);
+      setOpen({
+        open: true,
+        message: t("Please-fill-all-the-fields"),
+      });
     }
   };
   const handleClickCancelDeleteModal = () => {
