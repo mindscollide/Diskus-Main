@@ -44,6 +44,7 @@ import {
   _justShowDateformat,
   _justShowDay,
 } from "../../commen/functions/date_formater";
+import { useNavigate } from "react-router-dom";
 
 const Notes = () => {
   const [editFlag, setEditFlag] = useState(false);
@@ -52,6 +53,7 @@ const Notes = () => {
   const [selectedMarkerID, setSelectedMarkerID] = useState(0);
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { NotesReducer } = useSelector((state) => state);
   const { Panel } = Collapse;
   const [input, setInput] = useState("");
@@ -83,6 +85,7 @@ const Notes = () => {
     // setUpdateShow(true);
     dispatch(
       GetNotesByIdAPI(
+        navigate,
         id,
         t,
         setViewModalShow,
@@ -138,6 +141,7 @@ const Notes = () => {
     console.log(id, "viewNotesModalviewNotesModalviewNotesModal");
     dispatch(
       GetNotesByIdAPI(
+        navigate,
         id,
         t,
         setViewModalShow,
@@ -153,7 +157,7 @@ const Notes = () => {
       UserID: parseInt(createrID),
       OrganizationID: JSON.parse(OrganizationID),
     };
-    dispatch(GetNotes(Data, t));
+    dispatch(GetNotes(navigate, Data, t));
   }, []);
 
   const ColorStarIcon = (id, index) => {

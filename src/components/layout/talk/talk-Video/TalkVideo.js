@@ -42,6 +42,7 @@ import {
   setMinimizeVideoCallBox,
   setGroupVideoPanel,
 } from "../../../../store/actions/VideoCalling_actions";
+import { useNavigate } from "react-router-dom";
 const TalkVideo = () => {
   //Current User ID
   let createrID = localStorage.getItem("userID");
@@ -51,7 +52,7 @@ const TalkVideo = () => {
 
   // Using dispatch To Call APIs
   const dispatch = useDispatch();
-
+  const navigate = useNavigate()
   //Getting api result from the reducer
   const { assignees } = useSelector((state) => state);
 
@@ -136,7 +137,7 @@ const TalkVideo = () => {
 
   //Calling API
   useEffect(() => {
-    dispatch(allAssignessList(t));
+    dispatch(allAssignessList(navigate, t));
   }, []);
 
   //Emoji on click function
@@ -294,7 +295,7 @@ const TalkVideo = () => {
                 <Col lg={7} md={7} sm={7} className="bottom-border">
                   <div
                     className={"video-block"}
-                    //   onClick={() => chatClick(dataItem)}
+                  //   onClick={() => chatClick(dataItem)}
                   >
                     <p className="Video-chat-username m-0">
                       {" "}
@@ -360,7 +361,7 @@ const TalkVideo = () => {
                 <Col lg={7} md={7} sm={7} className="bottom-border">
                   <div
                     className={"video-block"}
-                    //   onClick={() => chatClick(dataItem)}
+                  //   onClick={() => chatClick(dataItem)}
                   >
                     <p className="Video-chat-username m-0">
                       {" "}

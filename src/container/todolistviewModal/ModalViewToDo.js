@@ -259,7 +259,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
         FK_UID: TaskCreatorID,
         DateTime: "",
       };
-      await dispatch(postAssgineeComment(commentData, t));
+      await dispatch(postAssgineeComment(navigate, commentData, t));
       // document.getElementById("commentviews").scrollHeight({block: "end"})
       // if (Object.keys(Comments).length > 0) {
       let newComment = {
