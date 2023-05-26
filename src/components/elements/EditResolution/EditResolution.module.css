@@ -19,8 +19,8 @@ body[dir="rtl"] .Details_New_resolution {
 }
 
 .Create_new_resolution_paper {
-  width: 1429px !important;
-  height: 708px !important;
+  width: 100% !important;
+  height: auto !important;
   padding: 58px 58px !important;
 }
 
@@ -90,6 +90,7 @@ body[dir="rtl"] .Voters_Btn_Createresolution {
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
+
 .Voters_Btn_Createresolution_Active {
   padding: 6px 12px !important;
   font-size: 12px !important;
@@ -173,6 +174,7 @@ body[dir="rtl"] .ADD_Button_Createresolution {
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
+
 .Attachments_resolution {
   font-size: 20px !important;
   font-family: "MontserratSemiBold";
@@ -195,6 +197,7 @@ body[dir="rtl"] .Attachments_resolution {
   background: none !important;
   border: none !important;
 }
+
 .Name_participant_resolution {
   font-size: 12px !important;
   font-family: "MontserratSemiBold";
@@ -275,6 +278,7 @@ body[dir="rtl"] .Discard_button_Createresolution {
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
 }
+
 .Update_button_Createresolution {
   padding: 12px 30px !important;
   font-size: 12px !important;
@@ -343,6 +347,7 @@ body[dir="rtl"] .circulate_button_Createresolution {
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
+
 .Draft_box_Edit {
   width: auto !important;
   height: 25px !important;
@@ -379,6 +384,7 @@ body[dir="rtl"] .Draft_box_Edit {
 body[dir="rtl"] .Leftpolygon {
   transform: rotate(180deg);
 }
+
 .Circulated_box_Edit {
   width: 67px !important;
   height: 25px !important;
