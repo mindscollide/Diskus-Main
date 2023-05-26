@@ -147,7 +147,7 @@ body[dir="rtl"] .ADD-Committee-btn {
   margin-top: 2px !important;
   padding: 12px 30px !important;
   height: 39px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;

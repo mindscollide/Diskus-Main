@@ -167,7 +167,7 @@ body[dir="rtl"] .ADD-Group-btn {
   padding: 12px 30px !important;
   font-size: 12px !important;
   font-family: "MontserratSemiBold" !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
   border: none !important;
