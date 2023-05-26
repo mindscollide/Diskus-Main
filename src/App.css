@@ -5403,6 +5403,14 @@ body[dir="rtl"] .FontArabicRegular {
   font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
+body[dir="rtl"] .ant-btn-link {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+body[dir="rtl"] .ant-btn-primary {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
 body[dir="rtl"] .modaltodolist-attachment-text {
   font-family: "IBMPlexSansArabic-Regular" !important;
 }
