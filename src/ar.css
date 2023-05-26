@@ -130,9 +130,11 @@ body[dir="rtl"] .CreateCheckbox p {
   margin-top: 10px !important;
   /* margin-left: 15px !important; */
 }
+
 body[dir="rtl"] .checkboxParentClass .SearchCheckbox {
   margin-right: 10px !important;
 }
+
 body[dir="rtl"] button.accordion-button.collapsed:after {
   margin-left: 0 !important;
   margin-right: auto;
@@ -145,8 +147,8 @@ body[dir="rtl"] .modalupdatemeeting-add {
   margin-right: -15px !important;
 }
 
-body[dir="rtl"] .ant-table-wrapper.hello .ant-table-thead > tr * {
-  text-align: right !important;
+body[dir="rtl"] .ant-table-wrapper.hello .ant-table-thead>tr * {
+  text-align: center !important;
 }
 
 body[dir="rtl"] span.ant-dropdown-trigger.ant-table-filter-trigger {
@@ -165,18 +167,12 @@ body[dir="rtl"] th.ant-table-cell.ant-table-column-has-sorters {
   position: relative;
 }
 
-body[dir="rtl"]
-  .ant-table-wrapper.hello
-  th.ant-table-cell.ant-table-column-has-sorters
-  .ant-table-column-sorters {
+body[dir="rtl"] .ant-table-wrapper.hello th.ant-table-cell.ant-table-column-has-sorters .ant-table-column-sorters {
   position: absolute;
   top: 0;
 }
 
-body[dir="rtl"]
-  .ant-table-wrapper.ToDo
-  th.ant-table-cell.ant-table-column-has-sorters
-  .ant-table-column-sorters {
+body[dir="rtl"] .ant-table-wrapper.ToDo th.ant-table-cell.ant-table-column-has-sorters .ant-table-column-sorters {
   position: absolute;
   top: 15px;
 }
@@ -190,20 +186,15 @@ body[dir="rtl"] td.ant-table-cell {
   font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
-body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead > tr > th {
+body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th {
   text-align: right !important;
 }
 
-body[dir="rtl"]
-  .ant-select.ant-select-borderless.orange.ant-select-single.ant-select-show-arrow {
+body[dir="rtl"] .ant-select.ant-select-borderless.orange.ant-select-single.ant-select-show-arrow {
   position: relative;
 }
 
-body[dir="rtl"]
-  td.ant-table-cell:has(
-    .ant-select.ant-select-borderless.orange.ant-select-single.ant-select-show-arrow
-  )
-  .ant-select-selection-item {
+body[dir="rtl"] td.ant-table-cell:has(.ant-select.ant-select-borderless.orange.ant-select-single.ant-select-show-arrow) .ant-select-selection-item {
   padding-right: 0 !important;
 }
 
@@ -246,10 +237,7 @@ body[dir="rtl"] h1.recent-activity {
   padding-right: 20px !important;
 }
 
-body[dir="rtl"]
-  .DashboardTodoTable
-  tr.ant-table-row.ant-table-row-level-0
-  td.ant-table-cell.statusDashboard {
+body[dir="rtl"] .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.statusDashboard {
   border-left: 1px solid #e1e1e1 !important;
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
@@ -258,10 +246,7 @@ body[dir="rtl"]
   border-right: none !important;
 }
 
-body[dir="rtl"]
-  .DashboardTodoTable
-  tr.ant-table-row.ant-table-row-level-0
-  td.ant-table-cell.titleDashboard {
+body[dir="rtl"] .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.titleDashboard {
   border-right: 1px solid #e1e1e1 !important;
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
@@ -270,19 +255,12 @@ body[dir="rtl"]
   border-left: none !important;
 }
 
-body[dir="rtl"]
-  .ant-table-wrapper.dashboard-todo
-  .ant-table
-  .ant-table-thead
-  > tr
-  > th {
+body[dir="rtl"] .ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead>tr>th {
   text-align: right !important;
   padding-right: 0 !important;
 }
 
-body[dir="rtl"]
-  .DashboardTodoTable
-  ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
+body[dir="rtl"] .DashboardTodoTable ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
   position: absolute;
   top: -42px;
   right: auto;
@@ -328,7 +306,7 @@ body[dir="rtl"] .react-tel-input .country-list .country .dial-code {
   margin-right: 7px;
 }
 
-body[dir="rtl"] .navbar > .dropdown-menu.show {
+body[dir="rtl"] .navbar>.dropdown-menu.show {
   left: -34px !important;
 }
 
@@ -361,9 +339,9 @@ body[dir="rtl"] .upgradePackageAmoutnandList .form-check {
   right: 0px;
 }
 
-body[dir="rtl"] .ant-table-wrapper.ToDo table tbody tr td:nth-child(5) {
+/* body[dir="rtl"] .ant-table-wrapper.ToDo table tbody tr td:nth-child(5) {
   text-align: right !important;
-}
+} */
 
 body[dir="rtl"] .ant-table-wrapper.hello table tbody tr td:nth-child(5) {
   text-align: center !important;
@@ -401,13 +379,11 @@ body[dir="rtl"] .DataRoomShowBtn {
   margin-left: 0 !important;
 }
 
-body[dir="rtl"] .ant-table-thead > tr > th {
+body[dir="rtl"] .ant-table-thead>tr>th {
   text-align: right !important;
 }
 
-body[dir="rtl"]
-  th.ant-table-cell.ant-table-column-has-sorters
-  .ant-table-column-sorters {
+body[dir="rtl"] th.ant-table-cell.ant-table-column-has-sorters .ant-table-column-sorters {
   text-align: right !important;
   float: right !important;
   font-family: "IBMPlexSansArabic-SemiBold" !important;

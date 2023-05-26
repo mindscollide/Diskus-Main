@@ -81,7 +81,7 @@ const Header2 = () => {
     let currentUserID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
     let roleID = localStorage.getItem("roleID");
-    dispatch(getUserSetting(navigate, JSON.parse(currentUserID), t));
+    dispatch(getUserSetting(navigate, t));
   }, []);
 
   useEffect(() => {

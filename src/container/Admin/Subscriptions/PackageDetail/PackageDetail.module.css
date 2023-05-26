@@ -48,9 +48,11 @@ body[dir="rtl"] .upgrade_planBox ul li::before {
   font-size: 15px;
   font-family: "MontserratMedium" !important;
 }
+
 body[dir="rtl"] .upgrade_planBox ul li {
   font-family: "IBMPlexSansArabic-Medium" !important;
 }
+
 .upgrade_button {
   margin: 160px 0 15px 0;
   display: flex;
@@ -188,9 +190,11 @@ body[dir="rtl"] .packagecard_pricebox {
   font-weight: 900;
   font-family: "MontserratBold";
 }
+
 body[dir="rtl"] .selectedPackage_priceDetails h4 {
   font-family: "IBMPlexSansArabic-Bold" !important;
 }
+
 .packagecard_two {
   border: 2px solid #6172d6;
   visibility: visible;
@@ -219,9 +223,11 @@ body[dir="rtl"] .selectedPackage_priceDetails h4 {
   font-weight: 400;
   font-size: 0.8rem !important;
 }
+
 body[dir="rtl"] .selectedpackagecard_disoucntprice_para {
   font-family: "IBMPlexSansArabic-Regular" !important;
 }
+
 .packagecard_usersallows {
   /* width: 80%; */
   margin: 0 auto;
@@ -229,7 +235,7 @@ body[dir="rtl"] .selectedpackagecard_disoucntprice_para {
   text-align: center;
 }
 
-.packagecard_usersallows + p {
+.packagecard_usersallows+p {
   font-size: 12px;
 }
 
@@ -326,8 +332,8 @@ body[dir="rtl"] .subcriptionkey_2 {
 }
 
 .selected-package-text {
-  padding: 0 10px;
-  text-align: center;
+  padding: 0;
+
   height: auto;
   overflow: hidden;
   margin-bottom: 15px;
@@ -365,9 +371,11 @@ body[dir="rtl"] .selected-package-text {
   font-family: "MontserratBold";
   margin: 40px 0 0 0 !important;
 }
+
 body[dir="rtl"] .packageCard_title {
   font-family: "IBMPlexSansArabic-Bold" !important;
 }
+
 .text-color {
   color: #5a5a5a !important;
 }
@@ -389,27 +397,32 @@ body[dir="rtl"] .packageCard_title {
 body[dir="rtl"] .upgradeplandetail_line {
   font-family: "IBMPlexSansArabic-Medium" !important;
 }
+
 .subcriptionvalue_1 {
   border-bottom-left-radius: 4px;
   border: 1px solid #ccc;
   /* border-bottom-right-radius: 4px; */
   padding: 3px 0px;
 }
+
 body[dir="rtl"] .subcriptionvalue_1 {
   border-bottom-left-radius: 0px;
   border-bottom-right-radius: 4px;
   font-family: "IBMPlexSansArabic-Regular";
 }
+
 .subcriptionvalue_2 {
   border-bottom-right-radius: 4px;
   border: 1px solid #ccc;
   padding: 3px 0px;
 }
+
 body[dir="rtl"] .subcriptionvalue_2 {
   border-bottom-right-radius: 0px;
   border-bottom-left-radius: 4px;
   font-family: "IBMPlexSansArabic-Regular";
 }
+
 img.package-icon {
   position: absolute;
   top: -9px;

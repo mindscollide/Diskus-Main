@@ -108,7 +108,7 @@ const Organization = () => {
     MaximumMeetingDuration: 0,
     Is2FAVerification: false,
   });
-
+  console.log(organizationStates, "organizationStatesorganizationStatesorganizationStates")
   //Reset handler for organization
 
   const resetOrganizer = () => {
@@ -252,7 +252,8 @@ const Organization = () => {
         organizationStates.PushNotificationOnCancelledMeeting,
       EmailOnCancelledMeeting: organizationStates.EmailOnCancelledMeeting,
     };
-    dispatch(updateOrganizationLevelSetting(navigate, organizationSettings, t));
+    console.log(organizationSettings, "organizationSettingsorganizationSettingsorganizationSettingsorganizationSettings")
+    // dispatch(updateOrganizationLevelSetting(navigate, organizationSettings, t));
   };
   useEffect(() => {
     let newCountryCode = [];
@@ -321,6 +322,7 @@ const Organization = () => {
   }, []);
   useEffect(() => {
     let userProfileData = settingReducer.GetOrganizationLevelSettingResponse;
+    console.log(userProfileData, "userProfileDatauserProfileDatauserProfileData")
     if (userProfileData !== null && userProfileData !== undefined) {
       let settingData = {
         SynchronizeDocuments: userProfileData.synchronizeDocuments,
@@ -611,7 +613,7 @@ const Organization = () => {
                   >
                     <Switch
                       name="EmailOnNewMeeting"
-                      checkedValue={organizationStates.EmailOnNewMeeting}
+                      checkedValue={organizationStates.EmailOnNewMeeting || false}
                       onChange={emailOnNewMeeting}
                     />
                   </Col>
@@ -638,7 +640,7 @@ const Organization = () => {
                   >
                     <Switch
                       name="EmailOnEditMeeting"
-                      checkedValue={organizationStates.EmailOnEditMeeting}
+                      checkedValue={organizationStates.EmailOnEditMeeting || false}
                       onChange={emailOnEditMeeting}
                     />
                   </Col>
@@ -665,7 +667,7 @@ const Organization = () => {
                   >
                     <Switch
                       name="EmailOnCancelledMeeting"
-                      checkedValue={organizationStates.EmailOnCancelledMeeting}
+                      checkedValue={organizationStates.EmailOnCancelledMeeting || false}
                       onChange={emailOnCancelledMeeting}
                     />
                   </Col>
@@ -694,7 +696,7 @@ const Organization = () => {
                       name="PushNotificationOnNewMeeting"
                       checkedValue={
                         organizationStates.PushNotificationOnNewMeeting
-                      }
+                        || false}
                       onChange={pushNotificationOnNewMeeting}
                     />
                   </Col>
@@ -723,7 +725,7 @@ const Organization = () => {
                       name="PushNotificationOnEditMeeting"
                       checkedValue={
                         organizationStates.PushNotificationOnEditMeeting
-                      }
+                        || false}
                       onChange={pushNotificationOnEditMeeting}
                     />
                   </Col>
@@ -752,7 +754,7 @@ const Organization = () => {
                       name="PushNotificationOnCancelledMeeting"
                       checkedValue={
                         organizationStates.PushNotificationOnCancelledMeeting
-                      }
+                        || false}
                       onChange={pushNotificationOnCancelledMeeting}
                     />
                   </Col>
@@ -781,7 +783,7 @@ const Organization = () => {
                       name="PushNotificationOnCancelledMeeting"
                       checkedValue={
                         organizationStates.ShowNotificationonparticipantJoining
-                      }
+                        || false}
                       onChange={showNotificationonparticipantJoining}
                     />
                   </Col>
