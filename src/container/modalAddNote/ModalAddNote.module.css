@@ -176,6 +176,11 @@ body[dir="rtl"] .star-addnote-modal{
   padding: 0 !important;
   font-size: 20pt !important;
 }
+
+body[dir="rtl"] .Addnote-heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .star-addnote-modal {
   color: #4adede !important;
   cursor: pointer;
@@ -185,6 +190,11 @@ body[dir="rtl"] .star-addnote-modal{
   margin-top: 10px !important;
   margin-bottom: 10px !important;
 }
+
+body[dir="rtl"] .Arabic_font_Applied {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
 .quill-height-addNote {
   border-top: 1px solid lightgrey;
   height: 18vh !important;
@@ -197,6 +207,11 @@ body[dir="rtl"] .star-addnote-modal{
   color: #f16b6b;
   visibility: visible !important;
 }
+
+body[dir="rtl"] .errorNotesMessage {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .errorNotesMessage_hidden {
   visibility: hidden;
   margin: 0;
@@ -204,18 +219,30 @@ body[dir="rtl"] .star-addnote-modal{
   color: #f16b6b !important;
 }
 
+body[dir="rtl"] .errorNotesMessage_hidden {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .errorNotesMessage_description {
   margin: 7% 4px 4px 0px;
   height: 7px;
   color: #f16b6b;
-
   visibility: visible !important;
 }
+
+body[dir="rtl"] .errorNotesMessage_description {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .errorNotesMessage_hidden_description {
   visibility: hidden;
   margin: 7% 4px 4px 4px;
   height: 7px;
   color: #f16b6b !important;
+}
+
+body[dir="rtl"] .errorNotesMessage_hidden_description {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .cancel-create-modal-btn {
@@ -343,6 +370,11 @@ body[dir="rtl"] .star-addnote-modal{
 .modal-Note-Title-Input :focus {
   border: 1px solid #e1e1e1 !important;
 }
+
+body[dir="rtl"] .modal-Note-Title-Input {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
 /*
 input.ModalAddNote_modalAddNoteTitleInput__Zp4eJ.form-control {
   border: 1px solid #e1e1e1 !important;

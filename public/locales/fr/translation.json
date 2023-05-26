@@ -598,5 +598,7 @@
   "Discussion": "Discussion",
   "Marketing-team-committee": "Marketing Team Committee",
   "Executive-member": "Executive Member",
-  "Memebers": "Memebers"
+  "Memebers": "Memebers",
+  "Title-is-required": "Title is required",
+  "Description-is-required": "Description is required"
 }

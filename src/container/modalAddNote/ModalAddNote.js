@@ -28,12 +28,12 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   //For Localization
   const { uploadReducer } = useSelector((state) => state);
   let createrID = localStorage.getItem("userID");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   let OrganizationID = localStorage.getItem("organizationID");
   const [isAddNote, setIsAddNote] = useState(true);
   const [isCreateNote, setIsCreateNote] = useState(false);
-  const [fileSize, setFileSize] = useState(0)
-  const [fileForSend, setFileForSend] = useState([])
+  const [fileSize, setFileSize] = useState(0);
+  const [fileForSend, setFileForSend] = useState([]);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const NoteTitle = useRef(null);
@@ -51,7 +51,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
   Quill.register(Size, true);
-  console.log("fileSizefileSize", fileSize)
+  console.log("fileSizefileSize", fileSize);
   var FontAttributor = Quill.import("formats/font");
   var fonts = ["impact", "courier", "comic"];
   FontAttributor.whitelist = fonts;
@@ -154,7 +154,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           value: addNoteFields.Title.value,
           errorMessage:
             addNoteFields.Title.value === ""
-              ? "Title is required"
+              ? t("Title-is-required")
               : addNoteFields.Title.errorMessage,
           errorStatus:
             addNoteFields.Title.value === ""
@@ -166,7 +166,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           value: addNoteFields.Description.value,
           errorMessage:
             addNoteFields.Description.value === ""
-              ? "Description is required"
+              ? t("Description-is-required")
               : addNoteFields.Description.errorMessage,
           errorStatus:
             addNoteFields.Description.value === ""
@@ -275,10 +275,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
             );
           } else {
             // dispatch(FileUploadToDo(uploadedFile, t));
-            fileSizeArr = uploadedFile.size + fileSize
-            fileSizeArr = uploadedFile.size + fileSize
-            setFileForSend([...fileForSend, uploadedFile])
-            setFileSize(fileSizeArr)
+            fileSizeArr = uploadedFile.size + fileSize;
+            fileSizeArr = uploadedFile.size + fileSize;
+            setFileForSend([...fileForSend, uploadedFile]);
+            setFileSize(fileSizeArr);
             file.push({
               PK_TAID: 0,
               DisplayAttachmentName: uploadedFile.name,
@@ -312,9 +312,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
             );
           } else {
             // dispatch(FileUploadToDo(uploadedFile, t));
-            fileSizeArr = uploadedFile.size + fileSize
-            setFileForSend([...fileForSend, uploadedFile])
-            setFileSize(fileSizeArr)
+            fileSizeArr = uploadedFile.size + fileSize;
+            setFileForSend([...fileForSend, uploadedFile]);
+            setFileSize(fileSizeArr);
             file.push({
               PK_TAID: 0,
               DisplayAttachmentName: uploadedFile.name,
@@ -328,7 +328,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       }
     }
   };
-  console.log(fileForSend, "fileSizefileSizefileSize")
+  console.log(fileForSend, "fileSizefileSizefileSize");
 
   const cancelNewNoteModal = () => {
     setAddNewModal(false);
@@ -360,14 +360,13 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       addNoteFields.Title.value !== "" &&
       addNoteFields.Description.value !== ""
     ) {
-      let counter = Object.keys(fileForSend).length - 1
+      let counter = Object.keys(fileForSend).length - 1;
 
       if (Object.keys(fileForSend).length > 0) {
-
         await fileForSend.map(async (newData, index) => {
           await dispatch(FileUploadToDo(navigate, newData, t));
-          counter = counter - 1
-        })
+          counter = counter - 1;
+        });
         if (counter <= 0) {
           setAddNewModal(false);
           let notesAttachment = [];
@@ -390,7 +389,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
           dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
         }
-
       } else {
         setAddNewModal(false);
         let notesAttachment = [];
@@ -413,7 +411,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
         dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
       }
-
     } else {
     }
   };
@@ -536,7 +533,13 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                   </Row>
 
                   <Row className={styles["Add-note-QuillRow"]}>
-                    <Col lg={12} md={12} sm={12} xs={12}>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      xs={12}
+                      className={styles["Arabic_font_Applied"]}
+                    >
                       <ReactQuill
                         ref={editorRef}
                         theme="snow"
