@@ -2550,6 +2550,10 @@ body[dir="rtl"] .Update-committee-Checkbox p:nth-child(1) {
   font-family: "MontserratSemiBold-600" !important;
 }
 
+body[dir="rtl"] .CreateMeetingTime .ant-picker::placeholder {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 button.cameraButton.Enable.btn.btn-primary svg {
   margin-top: 0 !important;
   font-size: 22px;
