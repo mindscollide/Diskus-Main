@@ -1,15 +1,12 @@
 import React from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import './CircularProgressbar.css'
+import "./CircularProgressbar.css";
 const CustomTextProgressbar = (props) => {
   const { children, value, text, maxValue } = props;
 
   return (
-    <div
-      className="circular_progressbar_div"
-
-    >
+    <div className="circular_progressbar_div">
       <div className="circular_progressbar">
         <CircularProgressbar
           value={value}
@@ -23,7 +20,7 @@ const CustomTextProgressbar = (props) => {
               // Path color
               stroke: `#4ADEDE`,
               // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-              strokeLinecap: 'butt',
+              strokeLinecap: "butt",
               // Customize transition animation
               transition: "stroke-dashoffset 0.5s ease 0s",
               // Rotate the path
@@ -36,7 +33,7 @@ const CustomTextProgressbar = (props) => {
               // Trail color
               stroke: "#F16B6B",
               // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-              strokeLinecap: 'butt',
+              strokeLinecap: "butt",
               // Rotate the trail
               transformOrigin: "center center",
               // Stroke width
@@ -51,11 +48,7 @@ const CustomTextProgressbar = (props) => {
           }}
         />
       </div>
-      <div
-        className="dashboard_progress_bar"
-      >
-        {props.children}
-      </div>
+      <div className="dashboard_progress_bar">{props.children}</div>
     </div>
   );
 };

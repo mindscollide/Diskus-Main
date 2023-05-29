@@ -546,7 +546,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     md={2}
                     sm={3}
                     xs={12}
-                    className="CreateMeetingTime FontArabicRegular"
+                    className="CreateMeetingTime"
                   >
                     <TimePickers
                       change={taskHandler}
@@ -642,7 +642,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col lg={12} md={12} xs={12} className="">
+                  <Col lg={12} md={12} xs={12} className="FontArabicRegular">
                     <TextField
                       change={taskHandler}
                       name="Description"
@@ -662,7 +662,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     xs={12}
                     className="MontserratSemiBold-600 attachmentCon margin-left-15"
                   >
-                    <label>{t("Attachement")}</label>
+                    <label className="ArabicFontSemiBold">
+                      {t("Attachement")}
+                    </label>
                     <span className="custom-upload-input">
                       <CustomUpload
                         change={uploadFilesToDo}
@@ -803,7 +805,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                   <Button
                     onClick={createToDoList}
                     className={
-                      "btn btn-primary px-4 fw-600 todocreate-createbtn"
+                      "btn btn-primary px-4 fw-600 todocreate-createbtn ArabicFontSemiBold"
                     }
                     variant={"Primary"}
                     text={t("Create")}

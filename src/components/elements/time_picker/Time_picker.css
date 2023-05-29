@@ -6,6 +6,11 @@
   width: 100px !important;
   border: 1px solid #e1e1e1 !important;
 }
-.ant-picker-focused{
+
+body[dir="rtl"] .timepicker_width {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.ant-picker-focused {
   box-shadow: none !important;
 }
