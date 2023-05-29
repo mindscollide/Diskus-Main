@@ -239,7 +239,7 @@ const createResolution = (navigate, Data, voters, nonVoter, tasksAttachments, se
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_04".toLowerCase()) {
                             dispatch(createResolution_Fail(t("Something-went-wrong")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_05".toLowerCase()) {
-                            dispatch(updateResolution(response.data.responseResult.resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no))
+                            dispatch(updateResolution(navigate, response.data.responseResult.resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_06".toLowerCase()) {
                             dispatch(createResolution_Fail(t("Something-went-wrong")))
                         }
