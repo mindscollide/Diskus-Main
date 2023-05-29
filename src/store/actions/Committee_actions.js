@@ -622,6 +622,51 @@ const committeeStatusUpdate = (navigate, Data, t) => {
               await dispatch(
                 updateCommitteeStatus_Success(
                   response.data.responseResult.committeeMemberRoles,
+                  t("Record-updated-successfully")
+                )
+              );
+              dispatch(getAllCommitteesByUserIdActions(navigate, t));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Committees_CommitteeServiceManager_UpdateCommitteeStatus_02".toLowerCase()
+                )
+            ) {
+              dispatch(updateCommitteeStatus_Fail(t("No-record-updated")));
+            } else {
+              console.log(response, "response");
+              dispatch(updateCommitteeStatus_Fail(t("Something-went-wrong")));
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(updateCommitteeStatus_Fail(t("Something-went-wrong")));
+          }
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(updateCommitteeStatus_Fail(t("Something-went-wrong")));
+      })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(committeeStatusUpdate(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(response, "response");
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "response");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Committees_CommitteeServiceManager_UpdateCommitteeStatus_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                updateCommitteeStatus_Success(
+                  response.data.responseResult.committeeMemberRoles,
                   t("Record-updated")
                 )
               );

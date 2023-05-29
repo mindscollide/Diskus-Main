@@ -220,6 +220,7 @@ const Committee = () => {
       setPagedata(parseInt(Totallength));
     }
   }, [CommitteeReducer.GetAllCommitteesByUserIDResponse]);
+  
   useEffect(() => {
     if (getcommitteedata.length > 0) {
       let Totallength = Math.ceil(getcommitteedata.length / 8);

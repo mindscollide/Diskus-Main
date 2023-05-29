@@ -1,65 +1,73 @@
-const baseURL = 'http://192.168.18.241'
+const baseURL = "http://192.168.18.241";
 
 //this is our services URL
-const serviceAuthenticationURL = ':11001/ERM_Auth'
-const toDoListURL = ':11003/ToDoList'
-// ali work
-const settingURL = ':11004/Settings'
-// Huzeifa work for Meetings
-const meetingURL = ':11002/Meeting'
+const serviceAuthenticationURL = ":11001/ERM_Auth";
 
-//get Calendar API URL
-const getCalendarURL = ':11002/Meeting'
-// aun work
-const getMeetingURL = ':11002/Meeting'
+const toDoListURL = ":11003/ToDoList";
+
+// ali work
+const settingURL = ":11004/Settings";
+
+// Huzeifa work for Meetings
+const meetingURL = ":11002/Meeting";
+
 // huzeifa work
-const getAdminURL = ':11009/Admin'
+const getAdminURL = ":11009/Admin";
 
 // DataRoom End Points;
-const getDataRoomURL = ':11017/DataRoom'
+const getDataRoomURL = ":11017/DataRoom";
 
-const getCommitteeURL = ':11013/Committee'
+const getCommitteeURL = ":11013/Committee";
 
-const getGroupsURL = ':11012/Groups'
+const getGroupsURL = ":11012/Groups";
 // Notes
-const getNotesURL = ':11011/Notes'
-const getResolutionURL = ':11015/Resolution'
+const getNotesURL = ":11011/Notes";
+
+const getResolutionURL = ":11015/Resolution";
+
 // socket url
-const getSocketURL = ':9999'
+const getSocketURL = ":9999";
 
 //talk url
-const talkURL = ':11014/Talk'
+const talkURL = ":11014/Talk";
 
 //this is our final api's
-const authenticationApi = baseURL + serviceAuthenticationURL
-const toDoListApi = baseURL + toDoListURL
+const authenticationApi = baseURL + serviceAuthenticationURL;
 
-const dataRoomApi = baseURL + getDataRoomURL
+const toDoListApi = baseURL + toDoListURL;
+
+const dataRoomApi = baseURL + getDataRoomURL;
 
 // ali work
-const settingApi = baseURL + settingURL
-const meetingApi = baseURL + meetingURL
+const settingApi = baseURL + settingURL;
+
+const meetingApi = baseURL + meetingURL;
 
 // aun work
-const getMeetingApi = baseURL + getMeetingURL
-const getTodoListAPI = baseURL + toDoListURL
-// get Data
-const getCalenderApi = baseURL + getCalendarURL
-// get Socket connection
-const getSocketConnection = baseURL + getSocketURL
-// get Admin
-const getAdminURLs = baseURL + getAdminURL
-// get Notes
-const getNotesApi = baseURL + getNotesURL
+const getMeetingApi = baseURL + meetingURL;
 
-const getResolutionApi = baseURL + getResolutionURL
+const getTodoListAPI = baseURL + toDoListURL;
+
+// get Data
+const getCalenderApi = baseURL + meetingURL;
+
+// get Socket connection
+const getSocketConnection = baseURL + getSocketURL;
+
+// get Admin
+const getAdminURLs = baseURL + getAdminURL;
+
+// get Notes
+const getNotesApi = baseURL + getNotesURL;
+
+const getResolutionApi = baseURL + getResolutionURL;
 
 // get Talk Api
-const talkApi = baseURL + talkURL
+const talkApi = baseURL + talkURL;
 
-const getGroupsApi = baseURL + getGroupsURL
+const getGroupsApi = baseURL + getGroupsURL;
 
-const getCommitteesApi = baseURL + getCommitteeURL
+const getCommitteesApi = baseURL + getCommitteeURL;
 
 export {
   authenticationApi,
@@ -77,4 +85,4 @@ export {
   getCommitteesApi,
   getResolutionApi,
   dataRoomApi,
-}
+};
