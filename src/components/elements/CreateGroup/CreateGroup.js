@@ -34,7 +34,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const { assignees, GroupsReducer } = useSelector((state) => state);
   console.log("GroupsReducerGroupsReducer", GroupsReducer);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   let creatorID = JSON.parse(localStorage.getItem("userID"));
   // for meatings  Attendees List
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
@@ -63,6 +63,22 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const [groupTypeValue, setGroupTypeValue] = useState("");
   const [organizationGroupType, setOrganizationGroupType] = useState([]);
   const [meetingAttendees, setMeetingAttendees] = useState([]);
+  // for Participant id's
+  const participantOptionsWithIDs = [
+    { label: t("Head"), id: 2 },
+    { label: t("Regular"), id: 1 },
+  ];
+  useEffect(() => {
+    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+    GroupeTitle.current.focus();
+    let Data = {
+      OrganizationID: organizationID,
+    };
+    dispatch(allAssignessList(navigate, t));
+    dispatch(getGroupMembersRoles(navigate, Data, t));
+    dispatch(getOrganizationGroupTypes(navigate, Data, t));
+  }, []);
+
   //Drop Down Values
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
@@ -96,10 +112,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
     } else {
     }
   };
-  useEffect(() => {
-    let UserID = JSON.parse(localStorage.getItem("userID"));
-    dispatch(allAssignessList(navigate, t));
-  }, []);
 
   const onSearch = (name, id) => {
     console.log("name id", name, id);
@@ -109,11 +121,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
   };
   console.log("name id", taskAssignedTo);
 
-  // for Participant id's
-  const participantOptionsWithIDs = [
-    { label: t("Head"), id: 2 },
-    { label: t("Regular"), id: 1 },
-  ];
   // for meatings  Attendees
 
   // for attendies Role handler
@@ -121,6 +128,71 @@ const CreateGroup = ({ setCreategrouppage }) => {
     console.log(value, "valuevaluevaluevalue");
     setParticipantRoleName(value);
   };
+
+  // for api reponce of list of all assignees
+  useEffect(() => {
+    try {
+      if (Object.keys(assignees.user).length > 0) {
+        setMeetingAttendeesList(assignees.user);
+      }
+    } catch (error) {}
+  }, [assignees.user]);
+
+  // for api response of list group roles
+  useEffect(() => {
+    if (
+      GroupsReducer.getOrganizationGroupRoles !== null &&
+      GroupsReducer.getOrganizationGroupRoles.length > 0
+    ) {
+      let newArr = [];
+      GroupsReducer.getOrganizationGroupRoles.map((data, index) => {
+        // if (data.groupRoleID != 3) {
+        newArr.push({
+          label: data.role,
+          id: data.groupRoleID,
+        });
+        // }
+      });
+      console.log(
+        "GroupsReducer.getOrganizationGroupRoles",
+        GroupsReducer.getOrganizationGroupRoles
+      );
+      setParticipantRoles([...newArr]);
+    }
+  }, [GroupsReducer.getOrganizationGroupRoles]);
+
+  // for api response of list group Types
+  useEffect(() => {
+    if (GroupsReducer.getOrganizationGroupTypes !== null) {
+      let newArr = [];
+      let newArrGroupType = [];
+      GroupsReducer.getOrganizationGroupTypes.map((data, index) => {
+        console.log("datadatagetOrganizationGroupTypes", data);
+        newArr.push({
+          label: data.type,
+          id: data.groupTypeID,
+        });
+        newArrGroupType.push(data.type);
+      });
+      setGroupTypeOptions([...newArrGroupType]);
+      setOrganizationGroupType([...newArr]);
+    }
+  }, [GroupsReducer.getOrganizationGroupTypes]);
+
+  // set Meeting Attendees By default creator
+  useEffect(() => {
+    if (
+      meetingAttendeesList !== null &&
+      meetingAttendeesList !== undefined &&
+      meetingAttendeesList.length > 0
+    ) {
+      setCreateGroupDetails({
+        ...createGroupDetails,
+        CreatorID: creatorID,
+      });
+    }
+  }, [meetingAttendeesList]);
+
   // Add Attendees Hanlder
   const handleAddAttendees = () => {
     if (taskAssignedTo != 0 && attendees.length > 0) {
@@ -161,6 +233,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
         });
         if (meetingAttendeesList.length > 0) {
           meetingAttendeesList.map((data, index) => {
+            console.log("groupMembers",groupMembers)
             if (data.pK_UID === taskAssignedTo) {
               groupMembers.push({
                 data,
@@ -280,114 +353,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
       GroupTypeID: findID.id,
     });
   };
-
-  // for api reponce of list of all assignees
-  useEffect(() => {
-    try {
-      if (Object.keys(assignees.user).length > 0) {
-        setMeetingAttendeesList(assignees.user);
-      }
-    } catch (error) {}
-  }, [assignees.user]);
-
-  // for api response of list group roles
-  useEffect(() => {
-    if (
-      GroupsReducer.getOrganizationGroupRoles !== null &&
-      GroupsReducer.getOrganizationGroupRoles.length > 0
-    ) {
-      let newArr = [];
-      GroupsReducer.getOrganizationGroupRoles.map((data, index) => {
-        // if (data.groupRoleID != 3) {
-        newArr.push({
-          label: data.role,
-          id: data.groupRoleID,
-        });
-        // }
-      });
-      console.log(
-        "GroupsReducer.getOrganizationGroupRoles",
-        GroupsReducer.getOrganizationGroupRoles
-      );
-      setParticipantRoles([...newArr]);
-    }
-  }, [GroupsReducer.getOrganizationGroupRoles]);
-
-  // for api response of list group Types
-  useEffect(() => {
-    if (GroupsReducer.getOrganizationGroupTypes !== null) {
-      let newArr = [];
-      let newArrGroupType = [];
-      GroupsReducer.getOrganizationGroupTypes.map((data, index) => {
-        console.log("datadatagetOrganizationGroupTypes", data);
-        newArr.push({
-          label: data.type,
-          id: data.groupTypeID,
-        });
-        newArrGroupType.push(data.type);
-      });
-      setGroupTypeOptions([...newArrGroupType]);
-      setOrganizationGroupType([...newArr]);
-    }
-  }, [GroupsReducer.getOrganizationGroupTypes]);
-  // set Meeting Attendees By default creator
-  useEffect(() => {
-    if (
-      meetingAttendeesList !== null &&
-      meetingAttendeesList !== undefined &&
-      meetingAttendeesList.length > 0
-    ) {
-      let newList = [];
-      let newList2 = [];
-      meetingAttendeesList.map((data, index) => {
-        if (data.pK_UID === creatorID) {
-          console.log("groupMembers", groupMembers);
-          if (Object.keys(groupMembers).length > 0) {
-            console.log("groupMembers", groupMembers);
-
-            groupMembers.map((datacheck, i) => {
-              if (datacheck.data.pK_UID === creatorID) {
-                console.log("groupMembers", groupMembers);
-              } else {
-                console.log("groupMembers", groupMembers);
-                newList.push({
-                  data,
-                  role: 2,
-                });
-              }
-            });
-          } else {
-            console.log("groupMembers", groupMembers);
-
-            newList.push({
-              data,
-              role: 2,
-            });
-          }
-          if (Object.keys(newList).length > 0) {
-            console.log("groupMembers", groupMembers);
-
-            setGroupMembers(newList);
-          }
-        }
-      });
-      if (newList.length > 0) {
-        let newData = {
-          FK_UID: creatorID, //userid
-          FK_GRMRID: 2, //group member role id
-          FK_GRID: 0, //group id
-        };
-        newList2.push(newData);
-        setMeetingAttendees(newList2);
-        setCreateGroupDetails({
-          ...createGroupDetails,
-          CreatorID: creatorID,
-          GroupMembers: newList2,
-        });
-      }
-    }
-  }, [meetingAttendeesList]);
-
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
     if (e.target.value.trimStart() != "") {
@@ -427,10 +392,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
     });
   };
 
-  useEffect(() => {
-    GroupeTitle.current.focus();
-  }, []);
-
   // remove member handler
   const removeMemberHandler = (id) => {
     console.log("id", id);
@@ -452,6 +413,24 @@ const CreateGroup = ({ setCreategrouppage }) => {
   console.log("found2found2found2", createGroupDetails.GroupMembers);
   console.log("found2found2found2", groupMembers);
   console.log("found2found2found2", attendees);
+
+  const checkGroupMembers = (GroupMembers) => {
+    console.log("checkGroupMembers", GroupMembers);
+    if (Object.keys(GroupMembers).length > 0) {
+      let flag1 = GroupMembers.find((data, index) => data.FK_GRMRID === 1);
+      let flag2 = GroupMembers.find((data, index) => data.FK_GRMRID === 2);
+      console.log("checkGroupMembers", flag1, flag2);
+
+      if (flag1 != undefined && flag2 != undefined) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  };
+  
   const handleSubmitCreateGroup = async () => {
     if (
       createGroupDetails.Title !== "" &&
@@ -459,21 +438,47 @@ const CreateGroup = ({ setCreategrouppage }) => {
       createGroupDetails.GroupTypeID !== 0 &&
       createGroupDetails.CreatorID !== 0
     ) {
-      setErrorBar(false);
-      let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-      let Data = {
-        GroupDetails: {
-          CreatorID: createGroupDetails.CreatorID,
-          title: createGroupDetails.Title,
-          Description: createGroupDetails.Description,
-          FK_GRTID: createGroupDetails.GroupTypeID,
-          FK_GRSID: 1,
-          IsTalk: createGroupDetails.isGroupChat,
-          OrganizationID: OrganizationID,
-        },
-        GroupMembers: createGroupDetails.GroupMembers,
-      };
-      dispatch(createGroup(navigate, Data, t, setCreategrouppage));
+      if (Object.keys(createGroupDetails.GroupMembers).length === 0) {
+        setOpen({
+          flag: true,
+          message: t("Please-add-atleast-one-group-head-and-one-group-member"),
+        });
+      } else {
+        if (!checkGroupMembers(createGroupDetails.GroupMembers)) {
+          console.log(
+            "checkGroupMembers",
+            checkGroupMembers(createGroupDetails.GroupMembers)
+          );
+          setOpen({
+            flag: true,
+            message: t(
+              "Please-add-atleast-one-group-head-and-one-group-member"
+            ),
+          });
+        } else {
+          console.log(
+            "checkGroupMembers",
+            checkGroupMembers(createGroupDetails.GroupMembers)
+          );
+          setErrorBar(false);
+          let OrganizationID = JSON.parse(
+            localStorage.getItem("organizationID")
+          );
+          let Data = {
+            GroupDetails: {
+              CreatorID: createGroupDetails.CreatorID,
+              title: createGroupDetails.Title,
+              Description: createGroupDetails.Description,
+              FK_GRTID: createGroupDetails.GroupTypeID,
+              FK_GRSID: 1,
+              IsTalk: createGroupDetails.isGroupChat,
+              OrganizationID: OrganizationID,
+            },
+            GroupMembers: createGroupDetails.GroupMembers,
+          };
+          dispatch(createGroup(navigate, Data, t, setCreategrouppage));
+        }
+      }
     } else {
       setErrorBar(true);
       setOpen({
@@ -498,15 +503,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
       setAttendees([...attendees]);
     }
   };
-
-  useEffect(() => {
-    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let Data = {
-      OrganizationID: organizationID,
-    };
-    dispatch(getGroupMembersRoles(navigate, Data, t));
-    dispatch(getOrganizationGroupTypes(navigate, Data, t));
-  }, []);
 
   return (
     <>
@@ -683,10 +679,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           <Row className="mt-2">
                             {groupMembers.length > 0 ? (
                               groupMembers.map((renderdata, index) => {
-                                if (
-                                  renderdata.role === 2 ||
-                                  renderdata.role === creatorID
-                                ) {
+                                if (renderdata.role === 2) {
                                   return (
                                     <Col lg={4} md={4} sm={4} className="mb-3">
                                       <Row>
@@ -719,7 +712,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                   ]
                                                 }
                                               >
-                                                Designer
+                                                {renderdata.data.designation}
                                               </span>
                                             </Col>
                                           </Row>
@@ -744,20 +737,17 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                           sm={2}
                                           className="d-flex align-items-center"
                                         >
-                                          {renderdata.data.pK_UID !=
-                                          creatorID ? (
-                                            <img
-                                              src={deleteButtonCreateMeeting}
-                                              className="cursor-pointer"
-                                              width={20}
-                                              height={20}
-                                              onClick={() =>
-                                                removeMemberHandler(
-                                                  renderdata.data.pK_UID
-                                                )
-                                              }
-                                            />
-                                          ) : null}
+                                          <img
+                                            src={deleteButtonCreateMeeting}
+                                            className="cursor-pointer"
+                                            width={20}
+                                            height={20}
+                                            onClick={() =>
+                                              removeMemberHandler(
+                                                renderdata.data.pK_UID
+                                              )
+                                            }
+                                          />
                                         </Col>
                                       </Row>
                                     </Col>
@@ -822,7 +812,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                   ]
                                                 }
                                               >
-                                                Designer
+                                                {data.data.designation}
                                               </span>
                                             </Col>
                                           </Row>
@@ -984,7 +974,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                         ]
                                                       }
                                                     >
-                                                      Designer
+                                                      {attendeelist.designation}
                                                     </span>
                                                   </Col>
                                                 </Row>

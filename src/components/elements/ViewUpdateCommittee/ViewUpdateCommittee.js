@@ -11,7 +11,7 @@ import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
 const ViewUpdateCommittee = ({ setViewGroupPage }) => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const [viewCommitteeClose, setViewCommitteeClose] = useState(true);
   const { CommitteeReducer } = useSelector((state) => state);
@@ -134,11 +134,11 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                                     <span
                                       className={
                                         styles[
-                                        "Designation-ViewCommittee-group"
+                                          "Designation-ViewCommittee-group"
                                         ]
                                       }
                                     >
-                                      Designer
+                                      {data?.designation}
                                     </span>
                                   </Col>
                                 </Row>
@@ -149,7 +149,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                                         styles["email-ViewCommittee-group"]
                                       }
                                     >
-                                      <a>Waleed@gmail.com</a>
+                                      <a>{data?.emailAddress}</a>
                                     </span>
                                   </Col>
                                 </Row>
@@ -205,11 +205,11 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                                     <span
                                       className={
                                         styles[
-                                        "Designation-ViewCommittee-group"
+                                          "Designation-ViewCommittee-group"
                                         ]
                                       }
                                     >
-                                      Designer
+                                      {data?.designation}
                                     </span>
                                   </Col>
                                 </Row>
@@ -220,7 +220,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                                         styles["email-ViewCommittee-group"]
                                       }
                                     >
-                                      <a>Waleed@gmail.com</a>
+                                      <a>{data?.emailAddress}</a>
                                     </span>
                                   </Col>
                                 </Row>
