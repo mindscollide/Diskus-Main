@@ -231,7 +231,7 @@ const createResolution = (navigate, Data, voters, nonVoter, tasksAttachments, se
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_01".toLowerCase()) {
                             await dispatch(createResolution_Success(response.data.responseResult.resolutionID, t("Resolution-added-successfully")))
-                            dispatch(updateResolution(response.data.responseResult.resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated))
+                            dispatch(updateResolution(navigate,response.data.responseResult.resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_02".toLowerCase()) {
                             dispatch(createResolution_Fail(t("Failed-to-create-resolution")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_03".toLowerCase()) {
@@ -239,7 +239,7 @@ const createResolution = (navigate, Data, voters, nonVoter, tasksAttachments, se
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_04".toLowerCase()) {
                             dispatch(createResolution_Fail(t("Something-went-wrong")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_05".toLowerCase()) {
-                            dispatch(updateResolution(response.data.responseResult.resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no))
+                            dispatch(updateResolution(navigate,response.data.responseResult.resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_06".toLowerCase()) {
                             dispatch(createResolution_Fail(t("Something-went-wrong")))
                         }

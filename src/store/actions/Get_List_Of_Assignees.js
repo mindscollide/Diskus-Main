@@ -67,12 +67,12 @@ const allAssignessList = (navigate, t) => {
     // UserID: id,
     OrganizationID: OrganizationID,
   }
-  return (dispatch) => {
+  return async(dispatch) => {
     dispatch(allassignesslistinit())
     let form = new FormData()
     form.append('RequestMethod', getAllAssigneesToDoList.RequestMethod)
     form.append('RequestData', JSON.stringify(Data))
-    axios({
+   await axios({
       method: 'post',
       url: meetingApi,
       data: form,

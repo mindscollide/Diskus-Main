@@ -70,6 +70,18 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     CommitteeMembers: [],
   });
   console.log("createGroupDetails", createCommitteeDetails);
+
+  useEffect(() => {
+    CommitteeTitle.current.focus();
+    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+    let Data = {
+      OrganizationID: organizationID,
+    };
+    dispatch(allAssignessList(navigate, t));
+    dispatch(getCommitteeTypes(navigate, Data, t));
+    dispatch(getCommitteeMembersRole(navigate, Data, t));
+  }, []);
+
   // for api response of list group roles
   useEffect(() => {
     if (CommitteeReducer.getCommitteeMembersRoles !== null) {
@@ -386,12 +398,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     } catch (error) {}
   }, [assignees.user]);
 
-  useEffect(() => {
-    CommitteeTitle.current.focus();
-    let UserID = JSON.parse(localStorage.getItem("userID"));
-    dispatch(allAssignessList(navigate, t));
-  }, []);
-
   const handleSubmitCreateGroup = async () => {
     if (
       createCommitteeDetails.CommitteesTitle !== "" &&
@@ -431,57 +437,14 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       meetingAttendeesList !== undefined &&
       meetingAttendeesList.length > 0
     ) {
-      let newList = [];
-      let newList2 = [];
-      meetingAttendeesList.map((data, index) => {
-        if (data.pK_UID === creatorID) {
-          if (Object.keys(groupMembers).length > 0) {
-            groupMembers.map((datacheck, i) => {
-              if (datacheck.data.pK_UID === creatorID) {
-              } else {
-                newList.push({
-                  data,
-                  role: 2,
-                });
-              }
-            });
-          } else {
-            newList.push({
-              data,
-              role: 2,
-            });
-          }
-          if (Object.keys(newList).length > 0) {
-            setGroupMembers(newList);
-          }
-        }
+      setCreateCommitteeDetails({
+        ...createCommitteeDetails,
+        CreatorID: creatorID,
       });
-      if (newList.length > 0) {
-        let newData = {
-          FK_UID: creatorID, //userid
-          FK_CMMRID: 2, //group member role id
-          FK_CMID: 0, //group id
-        };
-
-        newList2.push(newData);
-        setMeetingAttendees(newList2);
-        setCreateCommitteeDetails({
-          ...createCommitteeDetails,
-          CreatorID: creatorID,
-          CommitteeMembers: newList2,
-        });
-      }
     }
   }, [meetingAttendeesList]);
 
-  useEffect(() => {
-    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let Data = {
-      OrganizationID: organizationID,
-    };
-    dispatch(getCommitteeTypes(navigate, Data, t));
-    dispatch(getCommitteeMembersRole(navigate, Data, t));
-  }, []);
+
 
   return (
     <>
