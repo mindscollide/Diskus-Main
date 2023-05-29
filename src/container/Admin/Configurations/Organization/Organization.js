@@ -305,7 +305,13 @@ const Organization = () => {
     if (TimeZone !== undefined && TimeZone !== null) {
       let newData = [];
       TimeZone.map((data, index) => {
-        newData.push({ label: data.gmtOffset, value: data.pK_TZID });
+        newData.push({ label: data.gmtOffset? data.countryName +
+          " " +
+          "(" +
+          data.timeZone +
+          ")" +
+          " " +
+          data.gmtOffset:null, value: data.pK_TZID });
       });
       setTimeZone(newData);
     }
@@ -352,7 +358,13 @@ const Organization = () => {
       setCountryCodeValue(countryCode);
       setWorldCountryID(userProfileData.worldCountry?.fK_WorldCountryID);
       let timeZoneCode = {
-        label: userProfileData.timeZones?.gmtOffset,
+        label: userProfileData.timeZones? userProfileData.timeZones.countryName +
+        " " +
+        "(" +
+        userProfileData.timeZones.timeZone +
+        ")" +
+        " " +
+        userProfileData.timeZones.gmtOffset:null,
         value: userProfileData.timeZones?.pK_TZID,
       };
       setTimeZoneValue(timeZoneCode);
