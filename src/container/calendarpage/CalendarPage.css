@@ -173,12 +173,16 @@ body[dir="rtl"]
   .rbc-row-segment
   .rbc-event {
   background-color: #fff !important;
-  border: 2px solid #4adede  !important;
+  border: 2px solid #4adede !important;
   color: #000 !important;
   border-radius: 100px !important;
   font-weight: 700;
   padding: 0 5px !important;
   text-align: center !important;
+}
+
+body[dir="rtl"] .rbc-row-segment {
+  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .add-event {
@@ -229,6 +233,10 @@ body[dir="rtl"]
   font-size: 16px;
   color: #6172d6;
   font-family: "MontserratSemiBold-600";
+}
+
+body[dir="rtl"] .rbc-header span {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .bg-primary.text-white.add-event.calendar-dropdown.dropdown
@@ -324,6 +332,7 @@ button.btn.calendar-today.btn.btn-primary {
 
 body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 .rbc-row-segment {
@@ -395,6 +404,10 @@ body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
   border: none !important;
 }
 
+body[dir="rtl"] .Calendar_CreateBtn button {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Calendar_CreateBtn .dropdown-toggle.btn.btn-primary {
   border: none !important;
   height: 46px !important;
@@ -422,12 +435,18 @@ body[dir="rtl"] .Calendar_CreateBtn .dropdown-menu.show {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
 }
+
 .Calendar_CreateBtn .dropdown-menu.show .dropdown-item {
   padding: 10px 10px;
   font-family: "MontserratSemiBold-600" !important;
   text-align: center;
   font-size: 12px !important;
 }
+
+body[dir="rtl"] .Calendar_CreateBtn .dropdown-menu.show .dropdown-item {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 .Calendar_CreateBtn .dropdown-menu.show .dropdown-item:nth-child(1) {
   border-bottom: 1px solid #e1e1e1;
 }
@@ -458,6 +477,10 @@ body[dir="rtl"] .Calendar_CreateBtn .dropdown-menu.show {
   font-family: "MontserratSemiBold";
   color: #5f78d6 !important;
 }
+
+body[dir="rtl"] .Calender-heading {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 .rbc-row {
   margin: 2px !important;
 }
@@ -471,5 +494,5 @@ body[dir="rtl"] .Calendar_CreateBtn .dropdown-menu.show {
 .rbc-overlay-header {
   font-size: 15px !important;
   font-family: "MontserratSemiBold";
-  color: #5F78D6 !important;
+  color: #5f78d6 !important;
 }

@@ -376,7 +376,3 @@ body[dir="rtl"] .Completed {
 .Status-Todo:focus-visible {
   outline: none !important;
 }
-
-body[dir="rtl"] .Status-Todo .rc-virtual-list-holder-inner {
-  font-family: "IBMPlexSansArabic-Regular" !important;
-}

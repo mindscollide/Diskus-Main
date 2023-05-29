@@ -122,7 +122,7 @@ body[dir="rtl"] .footertodoCreateModal {
   line-height: 15px !important;
 }
 .todocreate-createbtn {
-  background-color: #6172D6;
+  background-color: #6172d6;
   width: 119px;
   height: 46px;
   border-radius: 4px !important;
@@ -136,7 +136,7 @@ body[dir="rtl"] .footertodoCreateModal {
 .todocreate-createbtn:hover,
 .todocreate-createbtn:target,
 .todocreate-createbtn:visited {
-  background-color: #6172D6 !important;
+  background-color: #6172d6 !important;
   width: 119px !important;
   height: 46px !important;
   border-radius: 4px !important;
@@ -151,6 +151,10 @@ body[dir="rtl"] .footertodoCreateModal {
 /* .modal-content {
   width: 700px !important;
 }  */
-.modaldialogTodoCreate{
-  --bs-modal-margin : 0px !important
+.modaldialogTodoCreate {
+  --bs-modal-margin: 0px !important;
+}
+
+body[dir="rtl"] .ArabicFontSemiBold {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }

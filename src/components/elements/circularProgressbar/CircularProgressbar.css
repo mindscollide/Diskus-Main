@@ -1,23 +1,27 @@
 .circular_progressbar_div {
   position: relative;
-  width   : 180px;
-  height  : 196px;
+  width: 180px;
+  height: 196px;
 }
 
 .circular_progressbar {
   position: absolute;
-  top     : 30px;
+  top: 30px;
 }
 
 .dashboard_progress_bar {
-  position       : absolute;
-  height         : 97%;
-  width          : 100%;
-  display        : flex;
-  flex-direction : column;
+  position: absolute;
+  height: 97%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  align-items    : center;
-  line-height    : 1.1;
+  align-items: center;
+  line-height: 1.1;
+}
+
+body[dir="rtl"] .dashboard_progress_bar {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 /* @media screen and (max-height: 600px) {
@@ -38,7 +42,7 @@
 
 @media screen and (max-width: 1100px) {
   .circular_progressbar_div {
-    width : 120px;
+    width: 120px;
     height: 120px;
   }
 

@@ -348,7 +348,6 @@ const TodoList = () => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-
       align: "center",
       width: "220px",
       filters: [

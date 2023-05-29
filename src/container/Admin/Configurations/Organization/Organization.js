@@ -253,7 +253,7 @@ const Organization = () => {
       EmailOnCancelledMeeting: organizationStates.EmailOnCancelledMeeting,
     };
     console.log(organizationSettings, "organizationSettingsorganizationSettingsorganizationSettingsorganizationSettings")
-    // dispatch(updateOrganizationLevelSetting(navigate, organizationSettings, t));
+    dispatch(updateOrganizationLevelSetting(navigate, organizationSettings, t));
   };
   useEffect(() => {
     let newCountryCode = [];
