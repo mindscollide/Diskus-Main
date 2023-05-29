@@ -150,6 +150,9 @@ const TalkChat = () => {
   const [searchChatValue, setSearchChatValue] = useState('')
   const [allChatData, setAllChatData] = useState([])
 
+  //Input Chat Autofocus state
+  const [inputChat, setInputChat] = useState(true)
+
   //Search Users State
   const [searchChatUserValue, setSearchChatUserValue] = useState('')
 
@@ -533,6 +536,7 @@ const TalkChat = () => {
       setEmojiActive(true)
     } else {
       setEmojiActive(false)
+      setInputChat(true)
     }
   }
 
@@ -944,6 +948,10 @@ const TalkChat = () => {
       id: 0,
     }
     dispatch(activeChatID(newData))
+    setMessageSendData({
+      ...messageSendData,
+      Body: '',
+    })
   }
 
   //Add Click Function
@@ -1263,9 +1271,13 @@ const TalkChat = () => {
         ...messageSendData,
         Body: messageSendData.Body + emoji,
       })
+      setInputChat(true)
     }
     setEmojiActive(false)
+    setInputChat(true)
   }
+
+  console.log('INPUT CHAT FOCUS', inputChat)
 
   //Selected Option of the chat
   const chatFeatureSelected = (record, id) => {
@@ -3036,6 +3048,7 @@ const TalkChat = () => {
     } else {
     }
     setReplyFeature(false)
+    setInputChat(true)
   }
 
   //Set Timer For Loading
@@ -3070,6 +3083,12 @@ const TalkChat = () => {
   }, [chatMenuActive])
 
   console.log('All Oto Messages', allOtoMessages)
+  const inputRef = useRef(null)
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [inputChat])
 
   return (
     <>
@@ -6193,6 +6212,7 @@ const TalkChat = () => {
                             <div className="chat-input-field">
                               <Form onSubmit={sendChat}>
                                 <Form.Control
+                                  ref={inputRef}
                                   value={messageSendData.Body}
                                   className="chat-message-input"
                                   name="ChatMessage"
@@ -6203,7 +6223,7 @@ const TalkChat = () => {
                                   disabled={
                                     chatClickData.isBlock === 1 ? true : false
                                   }
-                                  autoFocus
+                                  autoFocus={inputChat}
                                 />
                               </Form>
                             </div>
