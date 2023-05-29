@@ -5487,3 +5487,7 @@ body[dir="rtl"] .ql-container {
 body[dir="rtl"] .todolist-modal-fields input.form-control {
   font-family: "IBMPlexSansArabic-Medium" !important;
 }
+
+body[dir="rtl"] .ant-result-subtitle {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
