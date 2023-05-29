@@ -542,7 +542,7 @@ const committeeStatusUpdate = (navigate, Data, t) => {
         if (response.data.responseResult.isExecuted === true) {
           console.log(response, "response")
           if (response.data.responseResult.responseMessage.toLowerCase().includes("Committees_CommitteeServiceManager_UpdateCommitteeStatus_01".toLowerCase())) {
-            await dispatch(updateCommitteeStatus_Success(response.data.responseResult.committeeMemberRoles, t("Record-updated")))
+            await dispatch(updateCommitteeStatus_Success(response.data.responseResult.committeeMemberRoles, t("Record-updated-successfully")))
             dispatch(getAllCommitteesByUserIdActions(navigate, t))
           } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Committees_CommitteeServiceManager_UpdateCommitteeStatus_02".toLowerCase())) {
             dispatch(updateCommitteeStatus_Fail(t("No-record-updated")))
