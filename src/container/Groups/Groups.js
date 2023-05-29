@@ -33,7 +33,7 @@ const Groups = () => {
   const [showActiveGroup, setShowActivegroup] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const [ViewGroupPage, setViewGroupPage] = useState(true);
   const [creategrouppage, setCreategrouppage] = useState(false);
@@ -221,7 +221,8 @@ const Groups = () => {
   useEffect(() => {
     if (
       GroupsReducer.ResponseMessage !== "" &&
-      GroupsReducer.ResponseMessage !== t("Data-available")
+      GroupsReducer.ResponseMessage !== t("Data-available") &&
+      GroupsReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({
         ...open,
@@ -327,10 +328,10 @@ const Groups = () => {
                                     data.groupStatusID === 1
                                       ? t("View-group")
                                       : data.groupStatusID === 2
-                                        ? t("View-group")
-                                        : data.groupStatusID === 3
-                                          ? t("Update-group")
-                                          : ""
+                                      ? t("View-group")
+                                      : data.groupStatusID === 3
+                                      ? t("Update-group")
+                                      : ""
                                   }
                                   CardHeading={data?.groupTitle}
                                   changeHandleStatus={changeHandleStatus}
