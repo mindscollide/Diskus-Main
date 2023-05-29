@@ -111,7 +111,7 @@ const PackageDetails = () => {
                 <Col sm={12}>
                   {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                     null &&
-                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                  GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                     undefined ? (
                     <>
                       {/* <img
@@ -156,7 +156,7 @@ const PackageDetails = () => {
                             styles["selectedpackagecard_disoucntprice_para"]
                           }
                         >
-                          {t("Subscriptions")}{" "}
+                          {t("Annual-Subscriptions")}{" "}
                         </p>
                       </div>
                     </div>
@@ -253,7 +253,7 @@ const PackageDetails = () => {
                             lg={12}
                             className={styles["progressbar-text"]}
                           >
-                            {isPackageDetail.UsersRangeBoardMembers} {t("To")}{" "}
+                            {isPackageDetail.UsersRangeBoardMembers} {t("Of")}{" "}
                             {maxBoardMembers} {t("Board-members")}
                           </Col>
                           <Col sm={12} md={12} lg={12} className="m-0 p-0">
@@ -269,7 +269,7 @@ const PackageDetails = () => {
                             lg={12}
                             className={styles["progressbar-text"]}
                           >
-                            {isPackageDetail.OtherUsersRange} {t("To")}{" "}
+                            {isPackageDetail.OtherUsersRange} {t("Of")}{" "}
                             {maxOtherUsers} {t("Other-users")}
                           </Col>
                         </Row>
@@ -282,8 +282,9 @@ const PackageDetails = () => {
           </Col>
           <Col sm={12} md={8} lg={8} className="mb-3">
             <Col
-              className={`${styles["upgrade_planBox"]
-                } ${"border py-5 px-5 bg-white h-100"}`}
+              className={`${
+                styles["upgrade_planBox"]
+              } ${"border py-5 px-5 bg-white h-100"}`}
               sm={12}
               md={12}
               lg={12}
