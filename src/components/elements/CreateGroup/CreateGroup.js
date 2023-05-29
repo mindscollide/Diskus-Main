@@ -430,6 +430,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       return false;
     }
   };
+  
   const handleSubmitCreateGroup = async () => {
     if (
       createGroupDetails.Title !== "" &&

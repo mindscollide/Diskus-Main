@@ -716,7 +716,7 @@ const updateVoteApi = (navigate, Data, t, setVoteresolution) => {
                 } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_01".toLowerCase()) {
-                            dispatch(updateVote_Success(response.data.responseResult, t("Record-updated")))
+                            dispatch(updateVote_Success(response.data.responseResult, t("Record-updated-successfully")))
                             setVoteresolution(false)
                             dispatch(getVoterResolution(3, t))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_02".toLowerCase()) {
@@ -783,7 +783,7 @@ const getVoterResolution = (navigate, id, t) => {
                 } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchVoterResolutions_01".toLowerCase()) {
-                            dispatch(getVoterResolution_success(response.data.responseResult.resolutionTable, t("Record-updated")))
+                            dispatch(getVoterResolution_success(response.data.responseResult.resolutionTable, t("Record-updated-successfully")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchVoterResolutions_02".toLowerCase()) {
                             dispatch(getVoterResolution_fail(t("No-record-updated")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchVoterResolutions_03".toLowerCase()) {
