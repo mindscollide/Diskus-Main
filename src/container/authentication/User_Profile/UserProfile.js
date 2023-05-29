@@ -214,10 +214,7 @@ const UserProfileModal = ({
 
   //for edit Mobile field
   const mobileHandler = () => {
-    // Mobile.current.disabled = false;
-    // Mobile.current.focus();
     setMobileEnable(false);
-    // setIsFlagEnable(true);
   };
 
   //for next enter key
@@ -298,7 +295,10 @@ const UserProfileModal = ({
           ProfilePicture: userProfileEdit.ProfilePicture,
           FK_NumberWorldCountryID: userProfileEdit.CountyCode,
         };
-
+        setMessege("");
+        setMobileEnable(true);
+        setDesignationEnable(true);
+        setNameEanble(true);
         dispatch(updateuserprofile(navigate, userInformation, t, setMobileEnable, setDesignationEnable, setNameEanble));
       }
     } else {
