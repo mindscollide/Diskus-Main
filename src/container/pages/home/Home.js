@@ -692,7 +692,7 @@ const Home = () => {
                           {upcomingMeetingCountThisWeek}/{meetingCountThisWeek}
                         </strong>
                       </div>
-                      <div className="home-meetingcount-text">
+                      <div className="home-meetingcount-text Saved_money_Tagline">
                         {t("Meeting")} <br />
                         {t("This-week")}
                       </div>
@@ -772,7 +772,7 @@ const Home = () => {
                           {todoListAssignedThisWeek}/{todoListThisWeek}
                         </strong>
                       </div>
-                      <div className="home-todocount-text">
+                      <div className="home-todocount-text Saved_money_Tagline">
                         {t("Things")} <br />
                         {t("To-do")}
                       </div>

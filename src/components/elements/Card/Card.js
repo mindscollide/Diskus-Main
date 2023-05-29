@@ -39,16 +39,16 @@ const Card = ({
 
   useEffect(() => {
     console.log("click");
-    try{
+    try {
       window.addEventListener("click", function (e) {
         console.log("eeeeeeeee", e.target.className);
         var clsname = e.target.className;
-        let arr =  clsname.split("_");
+        let arr = clsname.split("_");
         console.log("click", arr[1]);
         if (arr != undefined) {
           if (arr[1] === "dot" && dropdownthreedots === true) {
             console.log("click", clsname);
-  
+
             setdropdownthreedots(false);
           } else if (arr[1] === "dot" && dropdownthreedots === false) {
             console.log("click", clsname);
@@ -56,7 +56,7 @@ const Card = ({
             setdropdownthreedots(true);
           } else if (arr[1] === "Edit" && editdropdown === true) {
             console.log("click", clsname);
-  
+
             setEditdropdown(false);
           } else if (arr[1] === "Edit" && editdropdown === false) {
             console.log("click", clsname);
@@ -72,8 +72,9 @@ const Card = ({
           setdropdownthreedots(false);
         }
       });
-    }catch{console.log("error");}
-    
+    } catch {
+      console.log("error");
+    }
   }, []);
   useEffect(() => {
     console.log("click", editdropdown, dropdownthreedots);
@@ -183,7 +184,7 @@ const Card = ({
                       ? editItems.map((editItem, index) => {
                           return (
                             <>
-                              <Row className="mt-1">
+                              <Row className="mt-1" key={index}>
                                 <Col
                                   lg={12}
                                   md={12}
@@ -205,7 +206,11 @@ const Card = ({
                                 </Col>
                               </Row>
                               <hr
-                                className={styles["HR-line-Committee-group"]}
+                                className={
+                                  index === 2
+                                    ? "d-none"
+                                    : styles["HR-line-Committee-group"]
+                                }
                               />
                             </>
                           );
@@ -383,6 +388,7 @@ const Card = ({
                         sm={2}
                         md={2}
                         lg={2}
+                        key={index}
                         className={
                           StatusID === 1
                             ? styles["card_profile_box_InActive"]
