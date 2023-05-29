@@ -70,6 +70,18 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     CommitteeMembers: [],
   });
   console.log("createGroupDetails", createCommitteeDetails);
+
+  useEffect(() => {
+    CommitteeTitle.current.focus();
+    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+    let Data = {
+      OrganizationID: organizationID,
+    };
+    dispatch(allAssignessList(navigate, t));
+    dispatch(getCommitteeTypes(navigate, Data, t));
+    dispatch(getCommitteeMembersRole(navigate, Data, t));
+  }, []);
+
   // for api response of list group roles
   useEffect(() => {
     if (CommitteeReducer.getCommitteeMembersRoles !== null) {
@@ -386,11 +398,22 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     } catch (error) {}
   }, [assignees.user]);
 
-  useEffect(() => {
-    CommitteeTitle.current.focus();
-    let UserID = JSON.parse(localStorage.getItem("userID"));
-    dispatch(allAssignessList(navigate, t));
-  }, []);
+  const checkGroupMembers = (GroupMembers) => {
+    console.log("checkGroupMembers", GroupMembers);
+    if (Object.keys(GroupMembers).length > 0) {
+      let flag1 = GroupMembers.find((data, index) => data.FK_CMMRID === 1);
+      let flag2 = GroupMembers.find((data, index) => data.FK_CMMRID === 2);
+      console.log("checkGroupMembers", flag1, flag2);
+
+      if (flag1 != undefined && flag2 != undefined) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  };
 
   const handleSubmitCreateGroup = async () => {
     if (
@@ -399,22 +422,45 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       createCommitteeDetails.CommitteeType !== 0 &&
       createCommitteeDetails.CreatorID !== 0
     ) {
-      setErrorBar(false);
-      let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-      let Data = {
-        CommitteeDetails: {
-          CreatorID: createCommitteeDetails.CreatorID,
-          CommitteesTitle: createCommitteeDetails.CommitteesTitle,
-          CommitteesDescription: createCommitteeDetails.CommitteesDescription,
-          PK_CMID: 0,
-          FK_CMSID: 3,
-          FK_CMTID: createCommitteeDetails.CommitteeType,
-          ISTalkChatGroup: createCommitteeDetails.ISTalkChatGroup,
-          OrganizationID: OrganizationID,
-        },
-        CommitteeMembers: createCommitteeDetails.CommitteeMembers,
-      };
-      dispatch(createcommittee(navigate, Data, t, setCreategrouppage));
+      if (Object.keys(createCommitteeDetails.CommitteeMembers).length === 0) {
+        setOpen({
+          flag: true,
+          message: t("Please-add-atleast-one-group-head-and-one-group-member"),
+        });
+      } else {
+        if (!checkGroupMembers(createCommitteeDetails.CommitteeMembers)) {
+          console.log(
+            "checkGroupMembers",
+            checkGroupMembers(createCommitteeDetails.CommitteeMembers)
+          );
+          setOpen({
+            flag: true,
+            message: t(
+              "Please-add-atleast-one-group-head-and-one-group-member"
+            ),
+          });
+        } else {
+          setErrorBar(false);
+          let OrganizationID = JSON.parse(
+            localStorage.getItem("organizationID")
+          );
+          let Data = {
+            CommitteeDetails: {
+              CreatorID: createCommitteeDetails.CreatorID,
+              CommitteesTitle: createCommitteeDetails.CommitteesTitle,
+              CommitteesDescription:
+                createCommitteeDetails.CommitteesDescription,
+              PK_CMID: 0,
+              FK_CMSID: 3,
+              FK_CMTID: createCommitteeDetails.CommitteeType,
+              ISTalkChatGroup: createCommitteeDetails.ISTalkChatGroup,
+              OrganizationID: OrganizationID,
+            },
+            CommitteeMembers: createCommitteeDetails.CommitteeMembers,
+          };
+          dispatch(createcommittee(navigate, Data, t, setCreategrouppage));
+        }
+      }
     } else {
       setErrorBar(true);
       setOpen({
@@ -431,57 +477,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       meetingAttendeesList !== undefined &&
       meetingAttendeesList.length > 0
     ) {
-      let newList = [];
-      let newList2 = [];
-      meetingAttendeesList.map((data, index) => {
-        if (data.pK_UID === creatorID) {
-          if (Object.keys(groupMembers).length > 0) {
-            groupMembers.map((datacheck, i) => {
-              if (datacheck.data.pK_UID === creatorID) {
-              } else {
-                newList.push({
-                  data,
-                  role: 2,
-                });
-              }
-            });
-          } else {
-            newList.push({
-              data,
-              role: 2,
-            });
-          }
-          if (Object.keys(newList).length > 0) {
-            setGroupMembers(newList);
-          }
-        }
+      setCreateCommitteeDetails({
+        ...createCommitteeDetails,
+        CreatorID: creatorID,
       });
-      if (newList.length > 0) {
-        let newData = {
-          FK_UID: creatorID, //userid
-          FK_CMMRID: 2, //group member role id
-          FK_CMID: 0, //group id
-        };
-
-        newList2.push(newData);
-        setMeetingAttendees(newList2);
-        setCreateCommitteeDetails({
-          ...createCommitteeDetails,
-          CreatorID: creatorID,
-          CommitteeMembers: newList2,
-        });
-      }
     }
   }, [meetingAttendeesList]);
-
-  useEffect(() => {
-    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
-    let Data = {
-      OrganizationID: organizationID,
-    };
-    dispatch(getCommitteeTypes(navigate, Data, t));
-    dispatch(getCommitteeMembersRole(navigate, Data, t));
-  }, []);
 
   return (
     <>
@@ -702,7 +703,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                   ]
                                                 }
                                               >
-                                                Designer
+                                                {data.data.designation}
                                               </span>
                                             </Col>
                                           </Row>
@@ -726,18 +727,16 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                           sm={12}
                                           className="mt-0  d-flex justify-content-center"
                                         >
-                                          {data.data.pK_UID != creatorID ? (
-                                            <img
-                                              src={CrossIcon}
-                                              width={18}
-                                              className="cursor-pointer"
-                                              onClick={() =>
-                                                removeMemberHandler(
-                                                  data.data.pK_UID
-                                                )
-                                              }
-                                            />
-                                          ) : null}
+                                          <img
+                                            src={CrossIcon}
+                                            width={18}
+                                            className="cursor-pointer"
+                                            onClick={() =>
+                                              removeMemberHandler(
+                                                data.data.pK_UID
+                                              )
+                                            }
+                                          />
                                         </Col>
                                       </Row>
                                     </Col>
@@ -812,7 +811,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                   ]
                                                 }
                                               >
-                                                Designer
+                                                {data.data.designation}
                                               </span>
                                             </Col>
                                           </Row>
@@ -989,7 +988,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                         ]
                                                       }
                                                     >
-                                                      Designer
+                                                      {attendeelist.designation}
                                                     </span>
                                                   </Col>
                                                 </Row>
