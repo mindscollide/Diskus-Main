@@ -503,6 +503,7 @@ body[dir="rtl"] .Calender-heading {
 
 .heading_button {
   margin-left: 20px !important;
+  font-size: calc(14px - 20%);
 }
 
 body[dir="rtl"] .heading_button {

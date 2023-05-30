@@ -23,10 +23,24 @@ body[dir="rtl"] .notes-heading-size {
 
 .create-note-btn {
   width: 150px;
-  height: 39px;
-  font-size: 12px !important;
+  height: 31px;
+  font-size: calc(14px - 20%);
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.create-note-btn:hover,
+.create-note-btn:active,
+.create-note-btn:focus,
+.create-note-btn:focus-visible {
+  width: 150pxv !important;
+  height: 31px !important;
+  font-size: calc(14px - 20%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
   border: 1px solid #e1e1e1 !important;
@@ -36,15 +50,9 @@ body[dir="rtl"] .create-note-btn {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-.create-note-btn::before {
-  content: "\002B";
-  margin-right: 6px !important;
-  font-size: 12px !important;
-}
-
-.create-note-btn:focus-visible {
+/* .create-note-btn:focus-visible {
   box-shadow: none !important;
-}
+} */
 
 .notescontainer {
   height: 90vh;

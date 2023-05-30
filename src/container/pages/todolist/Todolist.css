@@ -67,15 +67,6 @@ body[dir="rtl"] .todolist-create-btn button {
   box-shadow: none !important;
 }
 
-.todolist-create-btn button::before {
-  content: "\002B";
-  position: absolute;
-  font-size: 17px;
-  top: 2px;
-  left: 12px;
-  color: #fff;
-}
-
 body[dir="rtl"] .todolist-create-btn button {
   background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
 }

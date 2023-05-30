@@ -449,41 +449,45 @@ const CalendarPage = () => {
             <span className="Calender-heading">{t("Calendar")}</span>
           </Col>
           <Col
-            lg={10}
-            md={10}
+            lg={3}
+            md={3}
             sm={12}
             xs={12}
-            className=" mt-2 d-flex justify-content-start"
+            className=" mt-2 d-flex justify-content-center"
           >
-            <Dropdown
-              className="Calendar_CreateBtn"
-              onClick={eventClickHandler}
-              align={"start"}
-            >
-              <Dropdown.Toggle title={t("Create")}>
-                <Row>
-                  <Col lg={12} md={12} sm={12} className="heading_button">
-                    <Plus width={20} height={20} fontWeight={800} />
-                    <span>{t("Create")}</span>
-                  </Col>
-                </Row>
-              </Dropdown.Toggle>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <Dropdown
+                  className="Calendar_CreateBtn"
+                  onClick={eventClickHandler}
+                  align={"start"}
+                >
+                  <Dropdown.Toggle title={t("Create")}>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="heading_button">
+                        <Plus width={20} height={20} fontWeight={800} />
+                        <span>{t("Create")}</span>
+                      </Col>
+                    </Row>
+                  </Dropdown.Toggle>
 
-              <Dropdown.Menu>
-                <Dropdown.Item
-                  className="dropdown-item"
-                  onClick={handleCreateMeeting}
-                >
-                  {t("Schedule-a-meeting")}
-                </Dropdown.Item>
-                <Dropdown.Item
-                  className="dropdown-item"
-                  onClick={handleCreateTodo}
-                >
-                  {t("Create-a-to-do-list")}
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      className="dropdown-item"
+                      onClick={handleCreateMeeting}
+                    >
+                      {t("Schedule-a-meeting")}
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      className="dropdown-item"
+                      onClick={handleCreateTodo}
+                    >
+                      {t("Create-a-to-do-list")}
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Col>
+            </Row>
           </Col>
         </Row>
         <Row>

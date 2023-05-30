@@ -5281,8 +5281,8 @@ body[dir="rtl"]
 }
 
 .DataRoom_DropDown button {
-  width: 137px;
-  height: 39px;
+  width: 160px;
+  height: 31px;
   font-family: "MontserratSemiBold-600" !important;
   color: #fff !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
@@ -5331,6 +5331,10 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
 
 .DataRoom_DropDown .dropdown-menu.show .dropdown-item:hover {
   background: none !important;
+}
+
+.DataRoom_DropDown {
+  margin-top: 7px !important;
 }
 
 /* .DataRoom_DropDown button::before {

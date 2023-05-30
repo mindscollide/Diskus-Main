@@ -221,7 +221,7 @@ body[dir="rtl"] .start-meeting-btn {
 
 .ScheduleAMeeting {
   width: 160px;
-  height: 30px;
+  height: 31px;
   border-radius: 4px;
   font-size: calc(14px - 20%);
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
@@ -287,7 +287,6 @@ body[dir="rtl"] .ScheduleAMeeting:active {
     /* top     : -5px; */
     left: 50px;
     cursor: pointer;
-
   }
 
   .meeting-table-row {
@@ -329,15 +328,19 @@ body[dir="rtl"] .meeting-searchfileds {
   color: #bbbbbb !important;
 }
 
-.hello .ant-select.ant-pagination-options-size-changer.ant-select-single.ant-select-show-arrow {
+.hello
+  .ant-select.ant-pagination-options-size-changer.ant-select-single.ant-select-show-arrow {
   width: 110px;
 }
 
-body[dir="rtl"] .meeting-schedulenewmeeting-btn.col-lg-3.col-md-3.col-sm-4.col-12 {
+body[dir="rtl"]
+  .meeting-schedulenewmeeting-btn.col-lg-3.col-md-3.col-sm-4.col-12 {
   margin-right: -40px;
 }
 
-body[dir="rtl"] .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-endAdornment {
+body[dir="rtl"]
+  .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]
+  .MuiAutocomplete-endAdornment {
   right: auto !important;
   left: 9px !important;
 }
@@ -354,7 +357,8 @@ body[dir="rtl"] .modalmeeting-participant-scroll {
   border-bottom-color: #fff !important;
 }
 
-.react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle::after {
+.react-datepicker-popper[data-placement^="bottom"]
+  .react-datepicker__triangle::after {
   border-bottom-color: #fff !important;
 }
 
