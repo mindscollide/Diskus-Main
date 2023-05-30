@@ -1068,7 +1068,7 @@ const talkReducer = (state = initialState, action) => {
     }
 
     case actions.MQTT_INSERT_OTO_MESSAGE: {
-      console.log('MQTT_INSERT_OTO_MESSAGE')
+      console.log('MQTT_INSERT_OTO_MESSAGE', action)
       return {
         ...state,
         talkSocketData: {

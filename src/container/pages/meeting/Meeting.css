@@ -460,7 +460,7 @@ span.react-datepicker__navigation-icon.react-datepicker__navigation-icon--next {
   margin: 0 auto !important;
 }
 
-.ant-table-wrapper.hello {
+/* .ant-table-wrapper.hello {
   overflow: auto;
   padding-right: 10px;
   height: 65vh !important;

@@ -80,9 +80,9 @@ body[dir="rtl"] .todolist-create-btn button {
   overflow-y: auto;
 }
 
-.ToDo .ant-table table {
+/* .ToDo .ant-table table {
   margin-bottom: 10px !important;
-}
+} */
 
 .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell {
   padding: 3px 3px !important;
@@ -98,10 +98,7 @@ body[dir="rtl"] .todolist-create-btn button {
   border-bottom-left-radius: 4px !important;
 }
 
-body[dir="rtl"]
-  .ToDo
-  tr.ant-table-row.ant-table-row-level-0
-  td.ant-table-cell:nth-child(1) {
+body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(1) {
   border-right: 1px solid #e1e1e1 !important;
   border-top-right-radius: 4px !important;
   border-top-left-radius: 0px !important;
@@ -117,10 +114,7 @@ body[dir="rtl"]
   text-align: center;
 }
 
-body[dir="rtl"]
-  .ToDo
-  tr.ant-table-row.ant-table-row-level-0
-  td.ant-table-cell:nth-child(6) {
+body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:nth-child(6) {
   border-left: 1px solid #e1e1e1 !important;
   border-top-left-radius: 4px !important;
   border-top-right-radius: 0px !important;
@@ -253,9 +247,7 @@ body[dir="rtl"] .todolist-heading-size {
   }
 }
 
-.MuiPaper-root.MuiPaper-elevation0.MuiPaper-rounded:has(
-    .ant-result.ant-result-info.NoTaskTodo
-  ) {
+.MuiPaper-root.MuiPaper-elevation0.MuiPaper-rounded:has(.ant-result.ant-result-info.NoTaskTodo) {
   background: none;
 }
 
@@ -273,12 +265,7 @@ button.btn.btn-primary.meeting.search.me-3.btn.btn-Primary svg {
   margin-top: -1px;
 }
 
-body[dir="rtl"]
-  .ant-table-wrapper.ToDo
-  .ant-table
-  .ant-table-thead
-  > tr
-  > th.deadLineTodo {
+body[dir="rtl"] .ant-table-wrapper.ToDo .ant-table .ant-table-thead>tr>th.deadLineTodo {
   text-align: center !important;
   padding-right: 0 !important;
 }

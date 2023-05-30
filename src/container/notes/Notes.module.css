@@ -255,6 +255,7 @@ body[dir="rtl"] .editIconBox {
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
+  white-space: nowrap;
 }
 
 body[dir="rtl"] .notes-attachment-text {

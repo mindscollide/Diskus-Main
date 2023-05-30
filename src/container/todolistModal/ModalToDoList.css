@@ -9,9 +9,11 @@
   border-bottom: none;
   height: 20px;
 }
+
 .modal-header {
   border-bottom: none;
 }
+
 .modal-footer {
   border-top: none;
 }
@@ -54,6 +56,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
   text-align: center;
+  white-space: nowrap !important;
 }
 
 .bodytodoCreateModal {
@@ -62,6 +65,7 @@
   overflow-x: hidden !important;
   margin: 0 15px;
 }
+
 .todoModalCreateModal {
   width: 500px !important;
   display: flex;
@@ -70,17 +74,20 @@
   align-items: center;
   padding: 0 !important;
 }
+
 .todoModalCreateModal::-webkit-scrollbar {
   width: 0.5rem;
   height: 0.5em;
   border-radius: 20px;
   background-color: #f2f2f2;
 }
+
 .todoModalCreateModal::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
 }
+
 .bodytodoCreateModal::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
@@ -108,6 +115,7 @@
   min-height: 20% !important;
   max-height: 20% !important;
 }
+
 body[dir="rtl"] .footertodoCreateModal {
   margin: 10px 27px !important;
 }
@@ -118,9 +126,11 @@ body[dir="rtl"] .footertodoCreateModal {
   align-items: flex-start !important;
   flex-direction: column !important;
 }
+
 .attachmentCon label {
   line-height: 15px !important;
 }
+
 .todocreate-createbtn {
   background-color: #6172d6;
   width: 119px;
