@@ -169,9 +169,11 @@ const TalkChat = () => {
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
   })
+  const uploadFileRef = useRef()
 
   //Show Emoji or Not
   const [emojiActive, setEmojiActive] = useState(false)
+  const emojiMenuRef = useRef()
 
   //Add User Chat States
   const [addNewChat, setAddNewChat] = useState(false)
@@ -1260,6 +1262,9 @@ const TalkChat = () => {
     })
   }
 
+  //Selected Emoji
+  const [emojiSelected, setEmojiSelected] = useState(false)
+
   //Response return on click of emoji
   const selectedEmoji = (e) => {
     let sym = e.unified.split('-')
@@ -1271,10 +1276,11 @@ const TalkChat = () => {
         ...messageSendData,
         Body: messageSendData.Body + emoji,
       })
-      setInputChat(true)
+      // setInputChat(true)
     }
+    setEmojiSelected(true)
     setEmojiActive(false)
-    setInputChat(true)
+    // setInputChat(true)
   }
 
   console.log('INPUT CHAT FOCUS', inputChat)
@@ -3072,15 +3078,35 @@ const TalkChat = () => {
     ) {
       setChatMenuActive(false)
     }
+    if (
+      emojiMenuRef.current &&
+      !emojiMenuRef.current.contains(event.target) &&
+      emojiActive
+    ) {
+      setEmojiActive(false)
+    }
+    if (
+      uploadFileRef.current &&
+      !uploadFileRef.current.contains(event.target) &&
+      uploadOptions
+    ) {
+      setUploadOptions(false)
+    }
   }
 
   useEffect(() => {
     document.addEventListener('click', handleOutsideClick)
-
     return () => {
       document.removeEventListener('click', handleOutsideClick)
     }
-  }, [chatMenuActive])
+  }, [chatMenuActive, emojiActive, uploadOptions])
+
+  useEffect(() => {
+    if (emojiSelected) {
+      inputRef.current.focus()
+      setEmojiSelected(false)
+    }
+  }, [emojiSelected])
 
   console.log('All Oto Messages', allOtoMessages)
   const inputRef = useRef(null)
@@ -4751,58 +4777,6 @@ const TalkChat = () => {
                             </div>
                           )}
                         </div>
-                        {/* <div
-                          className="chat-box-icons positionRelative"
-                          onClick={activateChatMenu}
-                        >
-                          <img src={MenuIcon} />
-                          {chatMenuActive === true &&
-                          activeChat.messageType === 'O' ? (
-                            <div
-                              className="dropdown-menus-chat"
-                              ref={chatMenuRef}
-                            >
-                              <span onClick={modalHandlerSave}>Save</span>
-                              <span onClick={modalHandlerPrint}>Print</span>
-                              <span
-                                onClick={modalHandlerEmail}
-                                style={{ borderBottom: 'none' }}
-                              >
-                                Email
-                              </span>
-                            </div>
-                          ) : chatMenuActive === true &&
-                            activeChat.messageType === 'G' ? (
-                            <div
-                              className="dropdown-menus-chat"
-                              ref={chatMenuRef}
-                            >
-                              <span onClick={modalHandlerSave}>Save </span>
-                              <span onClick={modalHandlerPrint}>Print </span>
-                              <span onClick={modalHandlerEmail}>Email</span>
-                              <span onClick={modalHandlerGroupInfo}>
-                                Group Info
-                              </span>
-                              <span
-                              // onClick={modalHandlerEmail}
-                              >
-                                Delete Group
-                              </span>
-                              <span
-                              // onClick={modalHandlerEmail}
-                              >
-                                Leave Group
-                              </span>{' '}
-                              <span
-                                span
-                                onClick={modalHandlerGroupEdit}
-                                style={{ borderBottom: 'none' }}
-                              >
-                                Edit Info
-                              </span>
-                            </div>
-                          ) : null}
-                        </div> */}
                       </Col>
                       <Col lg={1} md={1} sm={12}>
                         {' '}
@@ -6155,17 +6129,22 @@ const TalkChat = () => {
                                 </div>
                               </div>
                             ) : null}
-                            <div className="emoji-click" onClick={emojiClick}>
-                              <img src={EmojiIcon} alt="" />
+                            <div ref={emojiMenuRef}>
+                              <div className="emoji-click" onClick={emojiClick}>
+                                <img src={EmojiIcon} alt="" />
+                              </div>
+                              {emojiActive === true ? (
+                                <Picker
+                                  data={data}
+                                  onEmojiSelect={selectedEmoji}
+                                  disabled={true}
+                                />
+                              ) : null}
                             </div>
-                            {emojiActive === true ? (
-                              <Picker
-                                data={data}
-                                onEmojiSelect={selectedEmoji}
-                                disabled={true}
-                              />
-                            ) : null}
-                            <div className="upload-click positionRelative">
+                            <div
+                              className="upload-click positionRelative"
+                              ref={uploadFileRef}
+                            >
                               <span className="custom-upload-input">
                                 <img
                                   src={UploadChatIcon}
