@@ -23,7 +23,7 @@ const ModalArchivedCommittee = ({
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [editdropdown, setEditdropdown] = useState(false);
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const { GroupsReducer } = useSelector((state) => state);
@@ -98,7 +98,8 @@ const ModalArchivedCommittee = ({
   useEffect(() => {
     if (
       GroupsReducer.getAllGroupsResponse !== null &&
-      GroupsReducer.getAllGroupsResponse.length > 0
+      GroupsReducer.getAllGroupsResponse.length > 0 &&
+      GroupsReducer.getAllGroupsResponse !== t("No-data-available")
     ) {
       let newArr = [];
       let filterItems = GroupsReducer.getAllGroupsResponse.filter(
@@ -281,7 +282,7 @@ const ModalArchivedCommittee = ({
                 <Container className={styles["Archived_modal_scrollbar"]}>
                   <Row className="text-center ">
                     {groupsArheivedData.length > 0 &&
-                      Object.values(groupsArheivedData).length > 0 ? (
+                    Object.values(groupsArheivedData).length > 0 ? (
                       currentposts.map((data, index) => {
                         console.log(data, "datadatadata1111");
                         // if(index+1===Lastpostindex||index+1>=)
@@ -327,41 +328,46 @@ const ModalArchivedCommittee = ({
             }
             ModalFooter={
               <>
-                <Row className="d-flex">
-                  <Col lg={4} md={4} sm={4}></Col>
-                  <Col lg={4} md={4} sm={4}>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-center  "
-                    >
-                      <Container
-                        className={
-                          styles["PaginationStyle-Committee-Archived_modal"]
-                        }
-                      >
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={"pagination-groups-table"}
+                {groupsArheivedData.length > 0 &&
+                Object.values(groupsArheivedData).length > 0 ? (
+                  <>
+                    <Row className="d-flex">
+                      <Col lg={4} md={4} sm={4}></Col>
+                      <Col lg={4} md={4} sm={4}>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center  "
+                        >
+                          <Container
+                            className={
+                              styles["PaginationStyle-Committee-Archived_modal"]
+                            }
                           >
-                            <Pagination
-                              defaultCurrent={currentposts}
-                              total={pagedata}
-                              current={currentPage}
-                              onChange={handlechange}
-                            />
-                            ;
-                          </Col>
-                        </Row>
-                      </Container>
-                    </Col>
-                  </Col>
-                  <Col lg={4} md={4} sm={4}></Col>
-                </Row>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className={"pagination-groups-table"}
+                              >
+                                <Pagination
+                                  defaultCurrent={currentposts}
+                                  total={pagedata}
+                                  current={currentPage}
+                                  onChange={handlechange}
+                                />
+                                ;
+                              </Col>
+                            </Row>
+                          </Container>
+                        </Col>
+                      </Col>
+                      <Col lg={4} md={4} sm={4}></Col>
+                    </Row>
+                  </>
+                ) : null}
               </>
             }
           />

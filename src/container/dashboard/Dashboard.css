@@ -1,41 +1,41 @@
 .sidebar-container {
-    /* max-width: 60px !important; */
-    margin: 0;
-    padding: 0;
+  /* max-width: 60px !important; */
+  margin: 0;
+  padding: 0;
 }
 
 .dashboard-row {
-    display: -webkit-box !important;
+  display: -webkit-box !important;
 }
 
 .talk-icons-container {
-    display: flex;
-    align-items: flex-end;
-    margin: 0;
-    padding: 0;
-    justify-content: flex-end !important;
-    align-items: flex-end !important;
-    margin-right: 10px;
-    position: relative;
-    top: -3px;
+  display: flex;
+  align-items: flex-end;
+  margin: 0;
+  padding: 0;
+  justify-content: flex-end !important;
+  align-items: flex-end !important;
+  margin-right: 10px;
+  position: relative;
+  top: -3px;
 }
 
 .Dashboard-Content {
-    margin-left: 60px !important;
+  margin-left: 60px !important;
 }
 
 .Dashboard-Main-Container.container-fluid {
-    height: 90vh !important;
-    /* padding-right: 20px; */
-    padding-left: 0;
-    margin-left: 90px;
-    width: 88% !important;
+  height: 90vh !important;
+  /* padding-right: 20px; */
+  padding-left: 0;
+  margin-left: 90px;
+  width: 88% !important;
 }
 
 body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
-    height: 90vh !important;
-    /* padding-left : 20px !important; */
-    padding-right: 0 !important;
-    margin-right: 90px !important;
-    width: 88% !important;
+  height: 90vh !important;
+  /* padding-left : 20px !important; */
+  padding-right: 0 !important;
+  margin-right: 90px !important;
+  width: 88% !important;
 }

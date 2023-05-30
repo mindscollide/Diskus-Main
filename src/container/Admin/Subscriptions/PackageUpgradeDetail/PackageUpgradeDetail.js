@@ -28,7 +28,11 @@ const PackageUpgradeDetail = () => {
   const location = useLocation();
   let packageColorPath1 = "";
   let packageColorPath2 = "";
-  console.log(packageColorPath1, packageColorPath2, "packageColorPath2packageColorPath2packageColorPath2")
+  console.log(
+    packageColorPath1,
+    packageColorPath2,
+    "packageColorPath2packageColorPath2packageColorPath2"
+  );
   const { state } = location;
   console.log(state, "statestatestate");
   //for Translation
@@ -48,7 +52,7 @@ const PackageUpgradeDetail = () => {
     if (
       GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== "" &&
       GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !==
-      t("Organization-subscription-update")
+        t("Organization-subscription-update")
     ) {
       setOpen({
         ...open,
@@ -97,15 +101,24 @@ const PackageUpgradeDetail = () => {
                       <span class="icon-star package-icon-style">
                         <span
                           class="path1"
-                          style={{ color: state.PackageBadgeColor.split("_SEPERATOR_")[0] }}
+                          style={{
+                            color:
+                              state.PackageBadgeColor.split("_SEPERATOR_")[0],
+                          }}
                         ></span>
                         <span
                           class="path2"
-                          style={{ color: state.PackageBadgeColor.split("_SEPERATOR_")[1] }}
+                          style={{
+                            color:
+                              state.PackageBadgeColor.split("_SEPERATOR_")[1],
+                          }}
                         ></span>
                         <span
                           class="path3"
-                          style={{ color: state.PackageBadgeColor.split("_SEPERATOR_")[1] }}
+                          style={{
+                            color:
+                              state.PackageBadgeColor.split("_SEPERATOR_")[1],
+                          }}
                         ></span>
                       </span>
                     </>

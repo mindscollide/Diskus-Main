@@ -19,7 +19,7 @@ const PayOutstanding = () => {
   const { OrganizationBillingReducer } = useSelector((state) => state);
   // for translation
   const { t } = useTranslation();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [payOutStanding, setPayOutStanding] = useState({
     Invoice: "",
@@ -33,10 +33,22 @@ const PayOutstanding = () => {
       let payOutStandingData = OrganizationBillingReducer.getPayoutStanding;
       setPayOutStanding({
         Invoice: payOutStandingData.invoiceCustomerNumber,
-        DueDate: payOutStandingData.invoiceDueDate,
-        InvoiceAmount: payOutStandingData.invoiceAmount,
-        LateCharges: payOutStandingData.lateFeeCharged,
-        BalanceDue: payOutStandingData.balanceDue,
+        DueDate:
+          payOutStandingData.invoiceDueDate != ""
+            ? payOutStandingData.invoiceDueDate
+            : "",
+        InvoiceAmount:
+          payOutStandingData.invoiceAmount != 0
+            ? payOutStandingData.invoiceAmount
+            : 0,
+        LateCharges:
+          payOutStandingData.lateFeeCharged != 0
+            ? payOutStandingData.invoiceAmount
+            : 0,
+        BalanceDue:
+          payOutStandingData.balanceDue != 0
+            ? payOutStandingData.balanceDue
+            : 0,
       });
     }
   }, [OrganizationBillingReducer.getPayoutStanding]);
@@ -95,7 +107,11 @@ const PayOutstanding = () => {
                     </Col>
                     <Col sm={7}>
                       <p className={styles["selected_package_details_p2"]}>
-                        {payOutStanding.InvoiceAmount}
+                        {payOutStanding.InvoiceAmount != 0 ? (
+                          <>$ {payOutStanding.InvoiceAmount}</>
+                        ) : (
+                          <>{payOutStanding.InvoiceAmount}</>
+                        )}
                       </p>
                     </Col>
                   </Row>
@@ -107,7 +123,11 @@ const PayOutstanding = () => {
                     </Col>
                     <Col sm={7}>
                       <p className={styles["selected_package_details_p2"]}>
-                        {payOutStanding.LateCharges}
+                        {payOutStanding.LateCharges != 0 ? (
+                          <>$ {payOutStanding.LateCharges}</>
+                        ) : (
+                          <>{payOutStanding.LateCharges}</>
+                        )}
                       </p>
                     </Col>
                   </Row>
@@ -119,7 +139,11 @@ const PayOutstanding = () => {
                     </Col>
                     <Col sm={7}>
                       <p className={styles["selected_package_details_p2"]}>
-                        {payOutStanding.BalanceDue}
+                        {payOutStanding.BalanceDue != 0 ? (
+                          <>$ {payOutStanding.BalanceDue}</>
+                        ) : (
+                          <>{payOutStanding.BalanceDue}</>
+                        )}
                       </p>
                     </Col>
                   </Row>
@@ -139,16 +163,12 @@ const PayOutstanding = () => {
               <Col sm={12} md={6} lg={6} className="mt-2 ps-0">
                 <Button
                   text={t("View-invoice-detail")}
-                  pdfIcon={PDFIcon}
                   className={styles["viewInvocieButton"]}
-                  pdfIconClass={styles["pdfIconstyle"]}
                 />
               </Col>
               <Col sm={12} md={6} lg={6} className="mt-2 pe-0">
                 <Button
-                  pdfIconClass={styles["pdfIconstyle"]}
                   text={t("Download-invoice")}
-                  pdfIcon={PDFIcon}
                   className={styles["DownloadInvoiceButton"]}
                 />
               </Col>

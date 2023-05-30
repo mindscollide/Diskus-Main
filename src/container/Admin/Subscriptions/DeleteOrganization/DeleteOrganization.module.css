@@ -81,6 +81,11 @@ body[dir="rtl"] .deleteOrganization_btn {
 
 .title {
   font-family: "MontserratExtraBold-800";
+  margin-left: 5px !important;
+}
+
+.title_two {
+  margin-left: 5px !important;
 }
 
 body[dir="rtl"] .title {
