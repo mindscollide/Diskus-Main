@@ -279,14 +279,15 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
             fileSizeArr = uploadedFile.size + fileSize;
             setFileForSend([...fileForSend, uploadedFile]);
             setFileSize(fileSizeArr);
-            file.push({
+            let FileData = {
               PK_TAID: 0,
               DisplayAttachmentName: uploadedFile.name,
               OriginalAttachmentName: uploadFilePath,
               CreationDateTime: "",
               FK_TID: 0,
-            });
-            setTasksAttachments({ ["TasksAttachments"]: file });
+              fileSize: uploadedFile.size
+            }
+            setTasksAttachments({ ["TasksAttachments"]: [...tasksAttachments.TasksAttachments, FileData] });
           }
         } else {
           if (uploadedFile.size > 10485760) {
@@ -315,14 +316,15 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
             fileSizeArr = uploadedFile.size + fileSize;
             setFileForSend([...fileForSend, uploadedFile]);
             setFileSize(fileSizeArr);
-            file.push({
+            let FileData = {
               PK_TAID: 0,
               DisplayAttachmentName: uploadedFile.name,
               OriginalAttachmentName: uploadFilePath,
               CreationDateTime: "",
               FK_TID: 0,
-            });
-            setTasksAttachments({ ["TasksAttachments"]: file });
+              fileSize: uploadedFile.size
+            }
+            setTasksAttachments({ ["TasksAttachments"]: [...tasksAttachments.TasksAttachments, FileData] });
           }
         }
       }
@@ -363,11 +365,13 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       let counter = Object.keys(fileForSend).length - 1;
 
       if (Object.keys(fileForSend).length > 0) {
-        await fileForSend.map(async (newData, index) => {
-          await dispatch(FileUploadToDo(navigate, newData, t));
-          counter = counter - 1;
-        });
-        if (counter <= 0) {
+        const uploadFiles = (fileForSend) => {
+          const uploadPromises = fileForSend.map((newData) => {
+            dispatch(FileUploadToDo(navigate, newData, t));
+          })
+          return Promise.all(uploadPromises)
+        }
+        uploadFiles(fileForSend).then((response) => {
           setAddNewModal(false);
           let notesAttachment = [];
           if (tasksAttachments.TasksAttachments.length > 0) {
@@ -388,7 +392,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           };
 
           dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
-        }
+        }).catch((error) => console.log(error))
       } else {
         setAddNewModal(false);
         let notesAttachment = [];
@@ -441,10 +445,10 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
             isCreateNote === true
               ? "d-none"
               : isCreateNote === false
-              ? styles["header-AddNotesModal-close-btn"]
-              : isAddNote
-              ? styles["addNoteHeader"]
-              : null
+                ? styles["header-AddNotesModal-close-btn"]
+                : isAddNote
+                  ? styles["addNoteHeader"]
+                  : null
           }
           centered
           modalFooterClassName={styles["modal-userprofile-footer"]}
@@ -520,7 +524,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                           <p
                             className={
                               addNoteFields.Title.errorStatus &&
-                              addNoteFields.Title.value === ""
+                                addNoteFields.Title.value === ""
                                 ? ` ${styles["errorNotesMessage"]} `
                                 : `${styles["errorNotesMessage_hidden"]}`
                             }
@@ -555,7 +559,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                           <p
                             className={
                               addNoteFields.Description.errorStatus &&
-                              addNoteFields.Description.value === ""
+                                addNoteFields.Description.value === ""
                                 ? ` ${styles["errorNotesMessage_description"]} `
                                 : `${styles["errorNotesMessage_hidden_description"]}`
                             }
@@ -604,125 +608,125 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                               >
                                 {tasksAttachments.TasksAttachments.length > 0
                                   ? tasksAttachments.TasksAttachments.map(
-                                      (data, index) => {
-                                        var ext =
-                                          data.DisplayAttachmentName.split(
-                                            "."
-                                          ).pop();
+                                    (data, index) => {
+                                      var ext =
+                                        data.DisplayAttachmentName.split(
+                                          "."
+                                        ).pop();
 
-                                        const first =
-                                          data.DisplayAttachmentName.split(
-                                            " "
-                                          )[0];
-                                        console.log("extextext", ext);
-                                        // let newext = JSON.parse(ext)
-                                        // console.log("extextext", newext)
+                                      const first =
+                                        data.DisplayAttachmentName.split(
+                                          " "
+                                        )[0];
+                                      console.log("extextext", ext);
+                                      // let newext = JSON.parse(ext)
+                                      // console.log("extextext", newext)
 
-                                        return (
-                                          <Col
-                                            sm={12}
-                                            lg={2}
-                                            md={2}
-                                            className="modaltodolist-attachment-icon"
-                                          >
-                                            {ext === "doc" ? (
-                                              <FileIcon
-                                                extension={"docx"}
-                                                size={78}
-                                                type={"document"}
-                                                labelColor={"rgba(44, 88, 152)"}
-                                              />
-                                            ) : ext === "docx" ? (
-                                              <FileIcon
-                                                extension={"docx"}
-                                                size={78}
-                                                type={"font"}
-                                                labelColor={"rgba(44, 88, 152)"}
-                                              />
-                                            ) : ext === "xls" ? (
-                                              <FileIcon
-                                                extension={"xls"}
-                                                type={"spreadsheet"}
-                                                size={78}
-                                                labelColor={"rgba(16, 121, 63)"}
-                                              />
-                                            ) : ext === "xlsx" ? (
-                                              <FileIcon
-                                                extension={"xls"}
-                                                type={"spreadsheet"}
-                                                size={78}
-                                                labelColor={"rgba(16, 121, 63)"}
-                                              />
-                                            ) : ext === "pdf" ? (
-                                              <FileIcon
-                                                extension={"pdf"}
-                                                size={78}
-                                                {...defaultStyles.pdf}
-                                              />
-                                            ) : ext === "png" ? (
-                                              <FileIcon
-                                                extension={"png"}
-                                                size={78}
-                                                type={"image"}
-                                                labelColor={
-                                                  "rgba(102, 102, 224)"
-                                                }
-                                              />
-                                            ) : ext === "txt" ? (
-                                              <FileIcon
-                                                extension={"txt"}
-                                                size={78}
-                                                type={"document"}
-                                                labelColor={
-                                                  "rgba(52, 120, 199)"
-                                                }
-                                              />
-                                            ) : ext === "jpg" ? (
-                                              <FileIcon
-                                                extension={"jpg"}
-                                                size={78}
-                                                type={"image"}
-                                                labelColor={
-                                                  "rgba(102, 102, 224)"
-                                                }
-                                              />
-                                            ) : ext === "jpeg" ? (
-                                              <FileIcon
-                                                extension={"jpeg"}
-                                                size={78}
-                                                type={"image"}
-                                                labelColor={
-                                                  "rgba(102, 102, 224)"
-                                                }
-                                              />
-                                            ) : ext === "gif" ? (
-                                              <FileIcon
-                                                extension={"gif"}
-                                                size={78}
-                                                {...defaultStyles.gif}
-                                              />
-                                            ) : null}
+                                      return (
+                                        <Col
+                                          sm={12}
+                                          lg={2}
+                                          md={2}
+                                          className="modaltodolist-attachment-icon"
+                                        >
+                                          {ext === "doc" ? (
+                                            <FileIcon
+                                              extension={"docx"}
+                                              size={78}
+                                              type={"document"}
+                                              labelColor={"rgba(44, 88, 152)"}
+                                            />
+                                          ) : ext === "docx" ? (
+                                            <FileIcon
+                                              extension={"docx"}
+                                              size={78}
+                                              type={"font"}
+                                              labelColor={"rgba(44, 88, 152)"}
+                                            />
+                                          ) : ext === "xls" ? (
+                                            <FileIcon
+                                              extension={"xls"}
+                                              type={"spreadsheet"}
+                                              size={78}
+                                              labelColor={"rgba(16, 121, 63)"}
+                                            />
+                                          ) : ext === "xlsx" ? (
+                                            <FileIcon
+                                              extension={"xls"}
+                                              type={"spreadsheet"}
+                                              size={78}
+                                              labelColor={"rgba(16, 121, 63)"}
+                                            />
+                                          ) : ext === "pdf" ? (
+                                            <FileIcon
+                                              extension={"pdf"}
+                                              size={78}
+                                              {...defaultStyles.pdf}
+                                            />
+                                          ) : ext === "png" ? (
+                                            <FileIcon
+                                              extension={"png"}
+                                              size={78}
+                                              type={"image"}
+                                              labelColor={
+                                                "rgba(102, 102, 224)"
+                                              }
+                                            />
+                                          ) : ext === "txt" ? (
+                                            <FileIcon
+                                              extension={"txt"}
+                                              size={78}
+                                              type={"document"}
+                                              labelColor={
+                                                "rgba(52, 120, 199)"
+                                              }
+                                            />
+                                          ) : ext === "jpg" ? (
+                                            <FileIcon
+                                              extension={"jpg"}
+                                              size={78}
+                                              type={"image"}
+                                              labelColor={
+                                                "rgba(102, 102, 224)"
+                                              }
+                                            />
+                                          ) : ext === "jpeg" ? (
+                                            <FileIcon
+                                              extension={"jpeg"}
+                                              size={78}
+                                              type={"image"}
+                                              labelColor={
+                                                "rgba(102, 102, 224)"
+                                              }
+                                            />
+                                          ) : ext === "gif" ? (
+                                            <FileIcon
+                                              extension={"gif"}
+                                              size={78}
+                                              {...defaultStyles.gif}
+                                            />
+                                          ) : null}
 
-                                            <span className="deleteBtn">
-                                              <img
-                                                src={deleteButtonCreateMeeting}
-                                                width={15}
-                                                height={15}
-                                                onClick={() =>
-                                                  deleteFilefromAttachments(
-                                                    data,
-                                                    index
-                                                  )
-                                                }
-                                              />
-                                            </span>
-                                            <p className="modaltodolist-attachment-text">
-                                              {first}
-                                            </p>
-                                          </Col>
-                                        );
-                                      }
-                                    )
+                                          <span className="deleteBtn">
+                                            <img
+                                              src={deleteButtonCreateMeeting}
+                                              width={15}
+                                              height={15}
+                                              onClick={() =>
+                                                deleteFilefromAttachments(
+                                                  data,
+                                                  index
+                                                )
+                                              }
+                                            />
+                                          </span>
+                                          <p className="modaltodolist-attachment-text">
+                                            {first}
+                                          </p>
+                                        </Col>
+                                      );
+                                    }
+                                  )
                                   : null}
                               </Col>
                             </Row>

@@ -919,6 +919,7 @@ const Meeting = () => {
                 className="hello"
                 onChange={tableChangeHandler}
                 rows={rows}
+                scroll={{ y: 600 }}
                 pagination={{
                   pageSize: 50,
                   defaultPageSize: 50,

@@ -72,61 +72,50 @@ const saveFilesApi = (navigate, data, t) => {
         _token: token,
       },
     })
-      .then(async (response) => {
+    return (dispatch) => {
+      // dispatch(saveFiles_init())
+      let form = new FormData();
+      form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
+      form.append("RequestData", JSON.stringify(Data));
+      axios({
+        method: "post",
+        url: dataRoomApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      }).then(async (response) => {
         if (response.data.responseCode === 417) {
-          dispatch(RefreshToken(navigate, t));
+          dispatch(RefreshToken(navigate, t))
           dispatch(saveFilesApi(navigate, data, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                saveFiles_success(
-                  response.data.responseMessage,
-                  t("Files-saved-successfully")
-                )
-              );
+            if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase())) {
+              await dispatch(saveFiles_success(response.data.responseMessage, t("Files-saved-successfully")))
               if (folderID !== null) {
-                await dispatch(getFolderDocumentsApi(folderID, t));
+                await dispatch(getFolderDocumentsApi(navigate, folderID, t))
               } else {
-                await dispatch(getDocumentsAndFolderApi(1, t));
+                await dispatch(getDocumentsAndFolderApi(navigate, 1, t))
               }
-              localStorage.removeItem("folderID");
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
-                )
-            ) {
-              dispatch(saveFiles_fail(t("Failed-to-save-any-file")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
-                )
-            ) {
-              dispatch(saveFiles_fail(t("Something-went-wrong")));
+              localStorage.removeItem("folderID")
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase())) {
+              dispatch(saveFiles_fail(t("Failed-to-save-any-file")))
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase())) {
+              dispatch(saveFiles_fail(t("Something-went-wrong")))
             }
           } else {
-            dispatch(saveFiles_fail(t("Something-went-wrong")));
+            dispatch(saveFiles_fail(t("Something-went-wrong")))
           }
         } else {
-          dispatch(saveFiles_fail(t("Something-went-wrong")));
+          dispatch(saveFiles_fail(t("Something-went-wrong")))
         }
-        console.log(response);
+        console.log(response)
+      }).catch(() => {
+        dispatch(saveFiles_fail(t("Something-went-wrong")))
       })
-      .catch(() => {
-        dispatch(saveFiles_fail(t("Something-went-wrong")));
-      });
-  };
-};
+    }
+  }
+}
 
 // Upload Documents Init
 const uploadDocument_init = () => {
@@ -205,63 +194,29 @@ const uploadDocumentsApi = (
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            uploadDocumentsApi(
-              navigate,
-              file,
-              t,
-              setProgress,
-              setRemainingTime,
-              remainingTime,
-              setShowbarupload
-            )
-          );
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(uploadDocumentsApi(navigate, file, t, setProgress, setRemainingTime, remainingTime, setShowbarupload))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                uploadDocument_success(
-                  response.data.responseResult,
-                  t("Document-uploaded-successfully")
-                )
-              );
-              await dispatch(saveFilesApi(response.data.responseResult, t));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
-                )
-            ) {
-              dispatch(uploadDocument_fail(t("Failed-to-update-document")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
-                )
-            ) {
-              dispatch(uploadDocument_fail(t("Something-went-wrong")));
+            if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase())) {
+              await dispatch(uploadDocument_success(response.data.responseResult, t("Document-uploaded-successfully")))
+              await dispatch(saveFilesApi(navigate, response.data.responseResult, t))
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase())) {
+              dispatch(uploadDocument_fail(t("Failed-to-update-document")))
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase())) {
+              dispatch(uploadDocument_fail(t("Something-went-wrong")))
             }
           } else {
-            dispatch(uploadDocument_fail(t("Something-went-wrong")));
+            dispatch(uploadDocument_fail(t("Something-went-wrong")))
           }
         } else {
-          dispatch(uploadDocument_fail(t("Something-went-wrong")));
+          dispatch(uploadDocument_fail(t("Something-went-wrong")))
         }
+      }).catch((error) => {
+        dispatch(uploadDocument_fail(t("Something-went-wrong")))
       })
-      .catch((error) => {
-        dispatch(uploadDocument_fail(t("Something-went-wrong")));
-      });
-  };
-};
+  }
+}
 
 // Save Folder Init
 const saveFolder_init = () => {
@@ -332,7 +287,7 @@ const saveFolderApi = () => {
         } else {
         }
       })
-      .catch((error) => {});
+      .catch((error) => { });
   };
 };
 
@@ -460,10 +415,10 @@ const createFolderApi = (navigate, folder, t, setAddfolder) => {
     FolderName: folder,
     UserID: parseInt(createrID),
     OrganizationID: parseInt(OrganizationID),
-    ParentFolderID: folderID !== null ? folderID : 0,
-  };
+    ParentFolderID: folderID !== null ? folderID : 0
+  }
   return (dispatch) => {
-    dispatch(createFolder_init());
+    dispatch(createFolder_init())
     let form = new FormData();
     form.append("RequestMethod", createFolderRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -474,53 +429,32 @@ const createFolderApi = (navigate, folder, t, setAddfolder) => {
       headers: {
         _token: token,
       },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(createFolderApi(navigate, folder, t, setAddfolder));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_CreateFolder_01".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                createFolder_success(
-                  response.data.responseResult,
-                  t("Folder-created-successfully")
-                )
-              );
-              dispatch(getDocumentsAndFolderApi(3, t));
-              setAddfolder(false);
-              localStorage.removeItem("folderID");
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_CreateFolder_02".toLowerCase()
-                )
-            ) {
-              dispatch(createFolder_fail(t("Failed-to-create-folder")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_CreateFolder_03".toLowerCase()
-                )
-            ) {
-              dispatch(createFolder_fail(t("Something-went-wrong")));
+    }).then(async (response) => {
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t))
+        dispatch(createFolderApi(navigate, folder, t, setAddfolder))
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_01".toLowerCase())) {
+            await dispatch(createFolder_success(response.data.responseResult, t("Folder-created-successfully")))
+            if (folderID !== null) {
+              dispatch(getFolderDocumentsApi(navigate, folderID, t))
+            } else {
+              dispatch(getDocumentsAndFolderApi(navigate, 3, t))
             }
-          } else {
-            dispatch(createFolder_fail(t("Something-went-wrong")));
+            setAddfolder(false)
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_02".toLowerCase())) {
+            dispatch(createFolder_fail(t("Failed-to-create-folder")))
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_03".toLowerCase())) {
+            dispatch(createFolder_fail(t("Something-went-wrong")))
           }
         } else {
-          dispatch(createFolder_fail(t("Something-went-wrong")));
+          dispatch(createFolder_fail(t("Something-went-wrong")))
         }
-      })
+      } else {
+        dispatch(createFolder_fail(t("Something-went-wrong")))
+      }
+    })
       .catch((error) => {
         dispatch(createFolder_fail(t("Something-went-wrong")));
       });
@@ -829,11 +763,11 @@ const deleteFileDataroom_fail = (message) => {
 // Delete file API
 const deleteFileDataroom = (navigate, id, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let data = [];
-  data.push(id);
-  let Data = { FileID: data };
+  let data = []
+  data.push(id)
+  let Data = { FileID: data }
   return (dispatch) => {
-    dispatch(deleteFileDataroom_init());
+    dispatch(deleteFileDataroom_init())
     let form = new FormData();
     form.append("RequestMethod", deleteFileRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -844,53 +778,29 @@ const deleteFileDataroom = (navigate, id, t) => {
       headers: {
         _token: token,
       },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(deleteFileDataroom(navigate, id, t));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_DeleteFile_01".toLowerCase()
-                )
-            ) {
-              console.log("hello");
-              dispatch(getDocumentsAndFolderApi(3, t));
-              dispatch(
-                deleteFileDataroom_success(
-                  response.data.responseResult,
-                  t("Files-deleted-successfully")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_DeleteFile_02".toLowerCase()
-                )
-            ) {
-              console.log("hello");
-              dispatch(deleteFileDataroom_fail(t("Failed-to-delete-any-file")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_DeleteFile_03".toLowerCase()
-                )
-            ) {
-              dispatch(deleteFileDataroom_fail(t("Something-went-wrong")));
-            }
-          } else {
-            dispatch(deleteFileDataroom_fail(t("Something-went-wrong")));
+    }).then(async (response) => {
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t))
+        dispatch(deleteFileDataroom(navigate, id, t))
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_DeleteFile_01".toLowerCase())) {
+            console.log("hello")
+            dispatch(getDocumentsAndFolderApi(navigate, 3, t))
+            dispatch(deleteFileDataroom_success(response.data.responseResult, t("Files-deleted-successfully")))
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_DeleteFile_02".toLowerCase())) {
+            console.log("hello")
+            dispatch(deleteFileDataroom_fail(t("Failed-to-delete-any-file")))
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_DeleteFile_03".toLowerCase())) {
+            dispatch(deleteFileDataroom_fail(t("Something-went-wrong")))
           }
         } else {
-          dispatch(deleteFileDataroom_fail(t("Something-went-wrong")));
+          dispatch(deleteFileDataroom_fail(t("Something-went-wrong")))
         }
-      })
+      } else {
+        dispatch(deleteFileDataroom_fail(t("Something-went-wrong")))
+      }
+    })
       .catch((error) => {
         dispatch(deleteFileDataroom_fail(t("Something-went-wrong")));
       });
@@ -921,26 +831,16 @@ const FileisExist_fail = (message) => {
 };
 
 // File Exist API
-const FileisExist = (
-  navigate,
-  FileName,
-  t,
-  file,
-  setProgress,
-  setRemainingTime,
-  remainingTime,
-  setShowbarupload,
-  setTasksAttachments
-) => {
+const FileisExist = (navigate, FileName, t, file, setProgress, setRemainingTime, remainingTime, setShowbarupload, setTasksAttachments) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let Data = {
     UserID: JSON.parse(createrID),
     ParentFolderID: 0,
-    FileName: FileName,
-  };
+    FileName: FileName
+  }
   return (dispatch) => {
-    dispatch(FileisExist_init());
+    dispatch(FileisExist_init())
     let form = new FormData();
     form.append("RequestMethod", FileisExistRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -951,76 +851,29 @@ const FileisExist = (
       headers: {
         _token: token,
       },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            FileisExist(
-              navigate,
-              FileName,
-              t,
-              file,
-              setProgress,
-              setRemainingTime,
-              remainingTime,
-              setShowbarupload,
-              setTasksAttachments
-            )
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_FileExist_01".toLowerCase()
-                )
-            ) {
-              dispatch(FileisExist_fail(t("File-already-exist")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_FileExist_02".toLowerCase()
-                )
-            ) {
-              dispatch(FileisExist_success(t("No-file-exist")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_FileExist_03".toLowerCase()
-                )
-            ) {
-              await dispatch(FileisExist_fail(t("No-duplicate-found")));
-              await dispatch(
-                uploadDocumentsApi(
-                  file,
-                  t,
-                  setProgress,
-                  setRemainingTime,
-                  remainingTime,
-                  setShowbarupload,
-                  setTasksAttachments
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_FileExist_04".toLowerCase()
-                )
-            ) {
-              dispatch(FileisExist_fail(t("Something-went-wrong")));
-            }
-          } else {
-            dispatch(FileisExist_fail(t("Something-went-wrong")));
+    }).then(async (response) => {
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t))
+        dispatch(FileisExist(navigate, FileName, t, file, setProgress, setRemainingTime, remainingTime, setShowbarupload, setTasksAttachments))
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FileExist_01".toLowerCase())) {
+            dispatch(FileisExist_fail(t("File-already-exist")))
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FileExist_02".toLowerCase())) {
+            dispatch(FileisExist_success(t("No-file-exist")))
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FileExist_03".toLowerCase())) {
+            await dispatch(FileisExist_fail(t("No-duplicate-found")))
+            await dispatch(uploadDocumentsApi(navigate, file, t, setProgress, setRemainingTime, remainingTime, setShowbarupload, setTasksAttachments))
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FileExist_04".toLowerCase())) {
+            dispatch(FileisExist_fail(t("Something-went-wrong")))
           }
         } else {
-          dispatch(FileisExist_fail(t("Something-went-wrong")));
+          dispatch(FileisExist_fail(t("Something-went-wrong")))
         }
-      })
+      } else {
+        dispatch(FileisExist_fail(t("Something-went-wrong")))
+      }
+    })
       .catch((error) => {
         dispatch(FileisExist_fail(t("Something-went-wrong")));
       });
@@ -1058,10 +911,10 @@ const FolderisExist = (navigate, FolderName, t, setAddfolder) => {
   let Data = {
     UserID: JSON.parse(createrID),
     ParentFolderID: folderID !== null ? folderID : 0,
-    FolderName: FolderName,
-  };
+    FolderName: FolderName
+  }
   return (dispatch) => {
-    dispatch(FolderisExist_init());
+    dispatch(FolderisExist_init())
     let form = new FormData();
     form.append("RequestMethod", FolderisExistRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -1072,56 +925,29 @@ const FolderisExist = (navigate, FolderName, t, setAddfolder) => {
       headers: {
         _token: token,
       },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(FolderisExist(navigate, FolderName, t, setAddfolder));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_FolderExist_01".toLowerCase()
-                )
-            ) {
-              dispatch(FolderisExist_fail(t("Folder-already-exist")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_FolderExist_02".toLowerCase()
-                )
-            ) {
-              await dispatch(FolderisExist_fail(t("Folder-name-is-required")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_FolderExist_03".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                FolderisExist_fail(t("No Folder Exist Against this name"))
-              );
-              dispatch(createFolderApi(FolderName, t, setAddfolder));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_FolderExist_04".toLowerCase()
-                )
-            ) {
-              dispatch(FolderisExist_fail(t("Something-went-wrong")));
-            }
-          } else {
-            dispatch(FolderisExist_fail(t("Something-went-wrong")));
+    }).then(async (response) => {
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t))
+        dispatch(FolderisExist(navigate, FolderName, t, setAddfolder))
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_01".toLowerCase())) {
+            dispatch(FolderisExist_fail(t("Folder-already-exist")))
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_02".toLowerCase())) {
+            await dispatch(FolderisExist_fail(t("Folder-name-is-required")))
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_03".toLowerCase())) {
+            await dispatch(FolderisExist_fail(t("No Folder Exist Against this name")))
+            dispatch(createFolderApi(navigate, FolderName, t, setAddfolder))
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_04".toLowerCase())) {
+            dispatch(FolderisExist_fail(t("Something-went-wrong")))
           }
         } else {
-          dispatch(FolderisExist_fail(t("Something-went-wrong")));
+          dispatch(FolderisExist_fail(t("Something-went-wrong")))
         }
-      })
+      } else {
+        dispatch(FolderisExist_fail(t("Something-went-wrong")))
+      }
+    })
       .catch(() => {
         dispatch(FolderisExist_fail(t("Something-went-wrong")));
       });
@@ -1148,11 +974,11 @@ const deleteFolder_fail = (message) => {
 };
 const deleteFolder = (navigate, id, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let data = [];
-  data.push(id);
-  let Data = { FolderID: data };
+  let data = []
+  data.push(id)
+  let Data = { FolderID: data }
   return (dispatch) => {
-    dispatch(deleteFolder_init());
+    dispatch(deleteFolder_init())
     let form = new FormData();
     form.append("RequestMethod", deleteFolderRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -1163,55 +989,32 @@ const deleteFolder = (navigate, id, t) => {
       headers: {
         _token: token,
       },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(deleteFolder(navigate, id, t));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_DeleteFolder_01".toLowerCase()
-                )
-            ) {
-              console.log("hello");
-              dispatch(getDocumentsAndFolderApi(3, t));
-              dispatch(
-                deleteFolder_success(
-                  response.data.responseResult,
-                  t("Folder-deleted-successfully")
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_DeleteFolder_02".toLowerCase()
-                )
-            ) {
-              console.log("hello");
-              dispatch(deleteFolder_fail(t("Failed-to-delete-any-folder")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_DeleteFolder_03".toLowerCase()
-                )
-            ) {
-              dispatch(deleteFolder_fail(t("Something-went-wrong")));
-            } else {
-              dispatch(deleteFolder_fail(t("Something-went-wrong")));
-            }
+    }).then(async (response) => {
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t))
+        dispatch(deleteFolder(navigate, id, t))
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_DeleteFolder_01".toLowerCase())) {
+            console.log("hello")
+            dispatch(getDocumentsAndFolderApi(navigate, 3, t))
+            dispatch(deleteFolder_success(response.data.responseResult, t("Folder-deleted-successfully")))
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_DeleteFolder_02".toLowerCase())) {
+            console.log("hello")
+            dispatch(deleteFolder_fail(t("Failed-to-delete-any-folder")))
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_DeleteFolder_03".toLowerCase())) {
+            dispatch(deleteFolder_fail(t("Something-went-wrong")))
           } else {
-            dispatch(deleteFolder_fail(t("Something-went-wrong")));
+            dispatch(deleteFolder_fail(t("Something-went-wrong")))
           }
         } else {
-          dispatch(deleteFolder_fail(t("Something-went-wrong")));
+          dispatch(deleteFolder_fail(t("Something-went-wrong")))
         }
-      })
+      } else {
+        dispatch(deleteFolder_fail(t("Something-went-wrong")));
+      }
+
+    })
       .catch((error) => {
         dispatch(deleteFolder_fail(t("Something-went-wrong")));
       });

@@ -15,7 +15,6 @@ const getNotes_Init = () => {
     type: actions.GET_NOTES_INIT,
   };
 };
-
 const getNotes_Success = (response, message) => {
   return {
     type: actions.GET_NOTES_SUCCESS,
@@ -23,7 +22,6 @@ const getNotes_Success = (response, message) => {
     message: message,
   };
 };
-
 const getNotes_Fail = (message, response) => {
   return {
     type: actions.GET_NOTES_FAIL,
@@ -31,7 +29,6 @@ const getNotes_Fail = (message, response) => {
     response: response
   };
 };
-
 const GetNotes = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -102,13 +99,11 @@ const GetNotes = (navigate, Data, t) => {
       });
   };
 };
-
 const saveNotes_Init = () => {
   return {
     type: actions.ADD_NOTES_INIT,
   };
 };
-
 const saveNotes_Success = (response, message) => {
   return {
     type: actions.ADD_NOTES_SUCCESS,
@@ -116,14 +111,12 @@ const saveNotes_Success = (response, message) => {
     message: message,
   };
 };
-
 const saveNotes_Fail = (message) => {
   return {
     type: actions.ADD_NOTES_FAIL,
     message: message,
   };
 };
-
 const SaveNotesAPI = (navigate, Data, t, setAddNewModal) => {
   console.log("DataDataData", Data);
   let token = JSON.parse(localStorage.getItem("token"));
@@ -217,7 +210,6 @@ const UpdateNotes_Init = () => {
     type: actions.UPDATE_NOTES_INIT,
   };
 };
-
 const UpdateNotes_Success = (response, message) => {
   return {
     type: actions.UPDATE_NOTES_SUCCESS,
@@ -225,14 +217,12 @@ const UpdateNotes_Success = (response, message) => {
     message: message,
   };
 };
-
 const UpdateNotes_Fail = (message) => {
   return {
     type: actions.UPDATE_NOTES_FAIL,
     message: message,
   };
 };
-
 const UpdateNotesAPI = (
   navigate,
   data,
@@ -344,7 +334,6 @@ const GetNotesById_Init = () => {
     type: actions.GET_NOTES_BY_NOTESID_INIT,
   };
 };
-
 const GetNotesById_Success = (response, message) => {
   console.log("NotesReducerNotesReducer", response);
   return {
@@ -353,14 +342,12 @@ const GetNotesById_Success = (response, message) => {
     message: message,
   };
 };
-
 const GetNotesById_Fail = (message) => {
   return {
     type: actions.GET_NOTES_BY_NOTESID_FAIL,
     message: message,
   };
 };
-
 const GetNotesByIdAPI = (
   navigate,
   NotesID,
@@ -375,12 +362,6 @@ const GetNotesByIdAPI = (
     NotesID: JSON.parse(NotesID),
   };
   console.log(Data, "navigatenavigatenavigatenavigate")
-  let createrID = localStorage.getItem("userID");
-  let OrganizationID = localStorage.getItem("organizationID");
-  let getNotesAPI = {
-    UserID: parseInt(createrID),
-    OrganizationID: JSON.parse(OrganizationID),
-  };
   return (dispatch) => {
     dispatch(GetNotesById_Init());
     let form = new FormData();

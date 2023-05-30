@@ -20,8 +20,8 @@ body[dir="rtl"] .Details_New_resolution {
 }
 
 .Create_new_resolution_paper {
-  width: 1429px !important;
-  height: 720px !important;
+  width: 100% !important;
+  height: auto !important;
   padding: 35px 47px !important;
 }
 
@@ -298,6 +298,7 @@ body[dir="rtl"] .Save_button_Createresolution {
 body[dir="rtl"] .circulate_button_Createresolution {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
+
 .circulate_button_Createresolution:hover,
 .circulate_button_Createresolution:focus,
 .circulate_button_Createresolution:focus-visible,
