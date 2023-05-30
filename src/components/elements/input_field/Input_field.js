@@ -33,6 +33,8 @@ const TextField = ({
   formParentClass,
   labelClass,
   clickIcon,
+  min,
+  max,
   maxLength,
 }) => {
   console.log("applyClassapplyClass", applyClass);
@@ -66,6 +68,8 @@ const TextField = ({
           type={type}
           maxLength={maxLength}
           disabled={disable}
+          min={min}
+          max={max}
           required={required ? true : false}
         />
         <FormControl.Feedback className={iconClassName} onClick={clickIcon}>

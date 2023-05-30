@@ -9,11 +9,13 @@ body[dir="rtl"] .Groups-heading-size {
 }
 
 .create-Group-btn {
-  padding: 12px 80px !important;
-  font-size: 12px !important;
+  width: 219px !important;
+  height: 31px !important;
+  font-size: calc(14px - 20%);
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
+  margin-top: 8px !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
@@ -30,8 +32,9 @@ body[dir="rtl"] .create-Group-btn {
 .create-Group-btn:active,
 .create-Group-btn:focus,
 .create-Group-btn:focus-visible {
-  padding: 12px 80px !important;
-  font-size: 12px !important;
+  width: 219px !important;
+  height: 31px !important;
+  font-size: calc(14px - 20%) !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
@@ -40,14 +43,16 @@ body[dir="rtl"] .create-Group-btn {
 }
 
 .Archived-Group-btn {
-  font-size: 12px;
+  font-size: calc(14px - 20%);
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  padding: 12px 80px !important;
+  width: 219px !important;
+  height: 31px !important;
   display: flex !important;
+  justify-content: center !important;
   gap: 10px !important;
   align-items: center;
 }
@@ -64,16 +69,18 @@ body[dir="rtl"] .Archived-Group-btn {
 .Archived-Group-btn:focus-visible,
 .Archived-Group-btn:focus,
 .Archived-Group-btn:active {
-  font-size: 12px !important;
+  font-size: calc(14px - 20%);
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  padding: 12px 80px !important;
+  width: 219px !important;
+  height: 31px !important;
+  justify-content: center !important;
   display: flex !important;
   gap: 10px !important;
-  align-items: center;
+  align-items: center !important;
 }
 
 /* .archivedbtnIcon {

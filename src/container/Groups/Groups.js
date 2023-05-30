@@ -280,7 +280,7 @@ const Groups = () => {
                 lg={8}
                 md={8}
                 sm={8}
-                className="d-flex justify-content-end gap-1 "
+                className="d-flex justify-content-end gap-1 mt-2 "
               >
                 <Button
                   className={styles["Archived-Group-btn"]}

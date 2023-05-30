@@ -1,6 +1,7 @@
 .create-Resolution-btn {
-  padding: 6px 12px !important;
-  font-size: 12pt !important;
+  width: 177px !important;
+  height: 31px !important;
+  font-size: calc(14px - 20%);
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-family: "MontserratSemiBold";
@@ -9,23 +10,27 @@
   border: none !important;
 }
 
+.Btn_create_text {
+  margin-left: 4px !important;
+  align-items: center !important;
+}
+
+body[dir="rtl"] .Btn_create_text {
+  margin-right: 4px !important;
+}
+
 body[dir="rtl"] .create-Resolution-btn {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
   font-family: "IBMPlexSansArabic-SemiBold" !important;
-}
-
-.create-Resolution-btn::before {
-  content: "\002B";
-  font-size: 18px !important;
-  margin-right: 5px !important;
 }
 
 .create-Resolution-btn:focus,
 .create-Resolution-btn:active,
 .create-Resolution-btn:hover,
 .create-Resolution-btn:focus-visible {
-  padding: 6px 12px !important;
-  font-size: 12pt !important;
+  width: 177px !important;
+  height: 31px !important;
+  font-size: calc(14px - 20%);
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-family: "MontserratSemiBold";
@@ -34,8 +39,9 @@ body[dir="rtl"] .create-Resolution-btn {
 }
 
 .Resolution-All-btn {
-  padding: 6px 12px !important;
-  font-size: 12px !important;
+  width: 49px !important;
+  height: 31px !important;
+  font-size: calc(14px - 20%);
   background: #fff !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
@@ -43,7 +49,18 @@ body[dir="rtl"] .create-Resolution-btn {
   border: 1px solid #e1e1e1 !important;
 }
 
-body[dir="rtl"] .Resolution-All-btn {
+.Resolution-moderator-btn {
+  padding: 8px 12px !important;
+  height: 31px !important;
+  font-size: calc(14px - 20%);
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold";
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Resolution-moderator-btn body[dir="rtl"] .Resolution-All-btn {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
@@ -51,8 +68,9 @@ body[dir="rtl"] .Resolution-All-btn {
 .Resolution-All-btn:focus,
 .Resolution-All-btn:active,
 .Resolution-All-btn:focus-visible {
-  padding: 6px 12px !important;
-  font-size: 12px !important;
+  width: 49px !important;
+  height: 31px !important;
+  font-size: calc(14px - 20%);
   background: #fff !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
@@ -61,8 +79,20 @@ body[dir="rtl"] .Resolution-All-btn {
 }
 
 .Resolution-All-btn_Active {
-  padding: 6px 12px !important;
-  font-size: 12px !important;
+  width: 49px !important;
+  height: 31px !important;
+  font-size: calc(14px - 20%);
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold";
+  border: none !important;
+}
+
+.Resolution-moderator-btn_Active {
+  padding: 8px 12px !important;
+  height: 31px !important;
+  font-size: calc(14px - 20%);
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
   border-radius: 4px !important;
@@ -128,8 +158,9 @@ body[dir="rtl"] .Resolution-vote-btn {
 }
 
 .Resolution-closed-btn {
-  padding: 6px 12px !important;
-  font-size: 12px !important;
+  width: 66px !important;
+  height: 31px !important;
+  font-size: calc(14px - 20%);
   font-family: "MontserratSemiBold";
   background: #fff;
   color: #5a5a5a;
@@ -146,8 +177,9 @@ body[dir="rtl"] .Resolution-closed-btn {
 .Resolution-closed-btn:active,
 .Resolution-closed-btn:focus-visible,
 .Resolution-closed-btn:focus {
-  padding: 6px 12px !important;
-  font-size: 12px !important;
+  width: 66px !important;
+  height: 31px !important;
+  font-size: calc(14px - 20%);
   font-family: "MontserratSemiBold" !important;
   background: #fff !important;
   color: #5a5a5a !important;
@@ -157,8 +189,9 @@ body[dir="rtl"] .Resolution-closed-btn {
 }
 
 .Resolution-closed-btn_Active {
-  padding: 6px 12px !important;
-  font-size: 12px !important;
+  width: 66px !important;
+  height: 31px !important;
+  font-size: calc(14px - 20%);
   font-family: "MontserratSemiBold";
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;
@@ -187,8 +220,9 @@ body[dir="rtl"] .Resolution-closed-btn_Active {
 }
 
 .Resolution-Current-btn {
-  padding: 6px 12px !important;
-  font-size: 12px !important;
+  width: 71.63px !important;
+  height: 31px !important;
+  font-size: calc(14px - 20%);
   font-family: "MontserratSemiBold";
   background: #fff;
   color: #5a5a5a;
@@ -205,8 +239,9 @@ body[dir="rtl"] .Resolution-Current-btn {
 .Resolution-Current-btn:focus-visible,
 .Resolution-Current-btn:focus,
 .Resolution-Current-btn:active {
-  padding: 6px 12px !important;
-  font-size: 12px !important;
+  width: 71.63px !important;
+  height: 31px !important;
+  font-size: calc(14px - 20%);
   font-family: "MontserratSemiBold" !important;
   background: #fff !important;
   color: #5a5a5a !important;
@@ -216,8 +251,9 @@ body[dir="rtl"] .Resolution-Current-btn {
 }
 
 .Resolution-Current-btn_Active {
-  padding: 6px 12px !important;
-  font-size: 12px !important;
+  width: 71.63px !important;
+  height: 31px !important;
+  font-size: calc(14px - 20%);
   font-family: "MontserratSemiBold";
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff;

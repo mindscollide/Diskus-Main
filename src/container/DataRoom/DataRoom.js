@@ -23,7 +23,7 @@ import deleterednew from "../../assets/images/delete red new.svg";
 import sitesIcon from "../../assets/images/sitesIcon.svg";
 import DrapDropIcon from "../../assets/images/DrapDropIcon.svg";
 import EmptyStateSharewithme from "../../assets/images/SharewithmeEmptyIcon.svg";
-import { ChevronDown } from "react-bootstrap-icons";
+import { ChevronDown, Plus } from "react-bootstrap-icons";
 import chevdown from "../../assets/images/chevron-down.svg";
 import document from "../../assets/images/color document.svg";
 import pdf from "../../assets/images/color pdf.svg";
@@ -1124,6 +1124,7 @@ const DataRoom = () => {
       dispatch(clearDataResponseMessage());
     }
   }, [DataRoomReducer.ResponseMessage]);
+
   useEffect(() => {
     if (
       DataRoomReducer.getAllDocumentandShareFolderResponse !== null &&
@@ -1135,9 +1136,11 @@ const DataRoom = () => {
       setGetAllData([]);
     }
   }, [DataRoomReducer.getAllDocumentandShareFolderResponse]);
+
   useEffect(() => {
     dispatch(getDocumentsAndFolderApi(navigate, 3, t));
   }, []);
+
   return (
     <>
       <section className={styles["DataRoom_container"]}>
@@ -1563,26 +1566,34 @@ const DataRoom = () => {
         <Row className="mt-3">
           <Col sm={12} md={12} lg={12}>
             <Row>
-              <Col
-                lg={5}
-                md={5}
-                sm={5}
-                className="d-flex justify-content-start gap-3 "
-              >
+              <Col lg={2} md={2} sm={2}>
                 <span className={styles["Data_room_heading"]}>
                   {t("Data-room")}
                 </span>
+              </Col>
+              <Col
+                lg={3}
+                md={3}
+                sm={3}
+                className="d-flex justify-content-start"
+              >
                 <Dropdown
                   className="DataRoom_DropDown"
                   onClick={eventClickHandler}
                   align={"start"}
                 >
                   <Dropdown.Toggle title={t("New")}>
-                    <span className={styles["Title_new_Dataroom"]}>
-                      {t("New")}
-                    </span>
-
-                    <ChevronDown fontSize={26} />
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["Data_room_btn"]}
+                      >
+                        <Plus width={20} height={20} fontWeight={800} />
+                        <span className={styles["font_size"]}>{t("New")}</span>
+                      </Col>
+                    </Row>
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu className={styles["dropdown_menu_dataroom"]}>

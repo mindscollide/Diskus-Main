@@ -794,8 +794,9 @@ const Meeting = () => {
             <Button
               className={"ScheduleAMeeting"}
               variant={"Primary"}
+              icon={<Plus width={20} height={20} fontWeight={800} />}
               // className={"Meeting-schedule-btn"}
-              text={"+ " + t("Schedule-a-meeting")}
+              text={t("Schedule-a-meeting")}
               onClick={modalHandler}
             />
           </Col>
