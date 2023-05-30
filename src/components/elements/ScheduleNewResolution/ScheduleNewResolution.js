@@ -161,8 +161,6 @@ const ScheduleNewResolution = ({
     "circulationDateTimecirculationDateTime"
   );
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
-  const [fileSize, setFileSize] = useState(0);
-  const [fileForSend, setFileForSend] = useState([]);
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [emailValue, setEmailValue] = useState("");
@@ -332,31 +330,9 @@ const ScheduleNewResolution = ({
   };
 
   const deleteFilefromAttachments = (data, index) => {
-    console.log(
-      data,
-      data.fileSize,
-      data.DisplayAttachmentName,
-      fileForSend,
-      fileSize,
-      "checkingelemnaiteFile"
-    );
-    let fileSizefound = fileSize - data.fileSize;
-    let fileForSendingIndex = fileForSend.findIndex(
-      (newData, index) => newData.name === data.DisplayAttachmentName
-    );
     let searchIndex = tasksAttachments;
-    setFileForSend(fileForSend);
-    setFileSize(fileSizefound);
-    fileForSend.splice(fileForSendingIndex, 1);
     searchIndex.splice(index, 1);
     setTasksAttachments([...tasksAttachments]);
-    console.log(
-      data,
-      fileForSend,
-      fileSizefound,
-      fileForSendingIndex,
-      "checkingelemnaiteFile"
-    );
   };
 
   const addVoters = () => {
@@ -455,7 +431,7 @@ const ScheduleNewResolution = ({
     setEmailValue("");
   };
 
-  const createResolutionHandleClick = async (id) => {
+  const createResolutionHandleClick = (id) => {
     if (
       createResolutionData.Title !== "" &&
       circulationDateTime.date !== "" &&
@@ -467,102 +443,48 @@ const ScheduleNewResolution = ({
       createResolutionData.FK_ResolutionVotingMethodID !== 0 &&
       createResolutionData.FK_ResolutionReminderFrequency_ID !== 0
     ) {
-      if (fileForSend.length > 0) {
-        let counter = fileForSend.length;
-        console.log(counter, "countercountercounter");
-        fileForSend.map(async (newData, index) => {
-          await dispatch(FileUploadToDo(navigate, newData, t));
-          counter = counter - 1;
-        });
-        let Data = {
-          ResolutionModel: {
-            FK_ResolutionStatusID: createResolutionData.FK_ResolutionStatusID,
-            FK_ResolutionVotingMethodID:
-              createResolutionData.FK_ResolutionVotingMethodID,
-            Title: createResolutionData.Title,
-            NotesToVoter: createResolutionData.NotesToVoter,
-            CirculationDateTime: createConvert(
-              removeDashesFromDate(circulationDateTime.date) +
-                RemoveTimeDashes(circulationDateTime.time)
-            ),
-            DeadlineDateTime: createConvert(
-              removeDashesFromDate(votingDateTime.date) +
-                RemoveTimeDashes(votingDateTime.time)
-            ),
-            FK_ResolutionReminderFrequency_ID:
-              createResolutionData.FK_ResolutionReminderFrequency_ID,
-            FK_ResolutionDecision_ID: 3,
-            DecisionAnnouncementDateTime: createConvert(
-              removeDashesFromDate(decisionDateTime.date) +
-                RemoveTimeDashes(decisionDateTime.time)
-            ),
-            IsResolutionPublic: createResolutionData.IsResolutionPublic,
-            FK_OrganizationID: JSON.parse(
-              localStorage.getItem("organizationID")
-            ),
-            FK_UID: JSON.parse(localStorage.getItem("userID")),
-          },
-        };
-        dispatch(
-          createResolution(
-            navigate,
-            Data,
-            voters,
-            nonVoter,
-            tasksAttachments,
-            setNewresolution,
-            setEditResoutionPage,
-            t,
-            1,
-            id
-          )
-        );
-      } else {
-        let Data = {
-          ResolutionModel: {
-            FK_ResolutionStatusID: createResolutionData.FK_ResolutionStatusID,
-            FK_ResolutionVotingMethodID:
-              createResolutionData.FK_ResolutionVotingMethodID,
-            Title: createResolutionData.Title,
-            NotesToVoter: createResolutionData.NotesToVoter,
-            CirculationDateTime: createConvert(
-              removeDashesFromDate(circulationDateTime.date) +
-                RemoveTimeDashes(circulationDateTime.time)
-            ),
-            DeadlineDateTime: createConvert(
-              removeDashesFromDate(votingDateTime.date) +
-                RemoveTimeDashes(votingDateTime.time)
-            ),
-            FK_ResolutionReminderFrequency_ID:
-              createResolutionData.FK_ResolutionReminderFrequency_ID,
-            FK_ResolutionDecision_ID: 3,
-            DecisionAnnouncementDateTime: createConvert(
-              removeDashesFromDate(decisionDateTime.date) +
-                RemoveTimeDashes(decisionDateTime.time)
-            ),
-            IsResolutionPublic: createResolutionData.IsResolutionPublic,
-            FK_OrganizationID: JSON.parse(
-              localStorage.getItem("organizationID")
-            ),
-            FK_UID: JSON.parse(localStorage.getItem("userID")),
-          },
-        };
-        dispatch(
-          createResolution(
-            navigate,
-            Data,
-            voters,
-            nonVoter,
-            tasksAttachments,
-            setNewresolution,
-            setEditResoutionPage,
-            t,
-            1,
-            id
-          )
-        );
-        setTasksAttachments([]);
-      }
+      let Data = {
+        ResolutionModel: {
+          FK_ResolutionStatusID: createResolutionData.FK_ResolutionStatusID,
+          FK_ResolutionVotingMethodID:
+            createResolutionData.FK_ResolutionVotingMethodID,
+          Title: createResolutionData.Title,
+          NotesToVoter: createResolutionData.NotesToVoter,
+          CirculationDateTime: createConvert(
+            removeDashesFromDate(circulationDateTime.date) +
+              RemoveTimeDashes(circulationDateTime.time)
+          ),
+          DeadlineDateTime: createConvert(
+            removeDashesFromDate(votingDateTime.date) +
+              RemoveTimeDashes(votingDateTime.time)
+          ),
+          FK_ResolutionReminderFrequency_ID:
+            createResolutionData.FK_ResolutionReminderFrequency_ID,
+          FK_ResolutionDecision_ID: 3,
+          DecisionAnnouncementDateTime: createConvert(
+            removeDashesFromDate(decisionDateTime.date) +
+              RemoveTimeDashes(decisionDateTime.time)
+          ),
+          IsResolutionPublic: createResolutionData.IsResolutionPublic,
+          FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
+          FK_UID: JSON.parse(localStorage.getItem("userID")),
+        },
+      };
+      console.log("createConvertcreateConvert in", Data);
+      dispatch(
+        createResolution(
+          navigate,
+          Data,
+          voters,
+          nonVoter,
+          tasksAttachments,
+          setNewresolution,
+          setEditResoutionPage,
+          t,
+          1,
+          id
+        )
+      );
     } else {
       setError(true);
       setOpen({
@@ -578,23 +500,13 @@ const ScheduleNewResolution = ({
     multiple: true,
     showUploadList: false,
     onChange(data) {
-      let fileSizeArr;
       const { status } = data.file;
-      console.log(data, data.file.originFileObj.size, "checkingSize");
 
-      if (tasksAttachments.length > 10) {
+      if (tasksAttachments.length > 9) {
         setOpen({
           flag: true,
           message: t("Not-allowed-more-than-10-files"),
         });
-      } else if (fileSize >= 104857600) {
-        setTimeout(
-          setOpen({
-            open: true,
-            message: t("You-can-not-upload-more-then-100MB-files"),
-          }),
-          3000
-        );
       } else if (tasksAttachments.length > 0) {
         let flag = false;
         let sizezero;
@@ -634,16 +546,7 @@ const ScheduleNewResolution = ({
             3000
           );
         } else {
-          let file = {
-            DisplayAttachmentName: data.file.name,
-            OriginalAttachmentName: data.file.name,
-            fileSize: data.file.originFileObj.size,
-          };
-          setTasksAttachments([...tasksAttachments, file]);
-          fileSizeArr = data.file.originFileObj.size + fileSize;
-          setFileForSend([...fileForSend, data.file.originFileObj]);
-          setFileSize(fileSizeArr);
-          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
+          dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
         }
       } else {
         let sizezero;
@@ -670,16 +573,7 @@ const ScheduleNewResolution = ({
             3000
           );
         } else {
-          let file = {
-            DisplayAttachmentName: data.file.name,
-            OriginalAttachmentName: data.file.name,
-            fileSize: data.file.originFileObj.size,
-          };
-          setTasksAttachments([...tasksAttachments, file]);
-          fileSizeArr = data.file.originFileObj.size + fileSize;
-          setFileForSend([...fileForSend, data.file.originFileObj]);
-          setFileSize(fileSizeArr);
-          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
+          dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
         }
       }
     },
@@ -688,7 +582,7 @@ const ScheduleNewResolution = ({
     },
     customRequest() {},
   };
-  console.log(fileForSend, fileSize, tasksAttachments, "checkingUpload");
+
   // Check is Resolution Checker Handler
   const handleChangeChecker = (e, checked) => {
     console.log(e.target.checked, checked, "testing1212");
@@ -779,6 +673,22 @@ const ScheduleNewResolution = ({
       setVotingMethods(newArr);
     }
   }, [ResolutionReducer.GetAllVotingMethods]);
+
+  useEffect(() => {
+    setTasksAttachments([]);
+  }, []);
+
+  useEffect(() => {
+    if (uploadReducer.uploadDocumentsList !== null) {
+      tasksAttachments.push({
+        DisplayAttachmentName:
+          uploadReducer.uploadDocumentsList.displayFileName,
+        OriginalAttachmentName:
+          uploadReducer.uploadDocumentsList.originalFileName,
+      });
+      setTasksAttachments([...tasksAttachments]);
+    }
+  }, [uploadReducer.uploadDocumentsList]);
 
   useEffect(() => {
     dispatch(getAllVotingMethods(navigate, t));
