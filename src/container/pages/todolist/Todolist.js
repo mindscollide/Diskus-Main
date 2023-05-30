@@ -561,42 +561,27 @@ const TodoList = () => {
     if (
       toDoListReducer.ResponseMessage != "" &&
       toDoListReducer.ResponseMessage != undefined &&
-      toDoListReducer.ResponseMessage != t("Record-found")
+      toDoListReducer.ResponseMessage != t("Record-found") &&
+      toDoListReducer.ResponseMessage !== t("No-records-found")
     ) {
-      if (toDoListReducer.ResponseMessage === t("No-records-found")) {
+      setOpen({
+        ...open,
+        open: true,
+        message: toDoListReducer.ResponseMessage,
+      });
+      setTimeout(() => {
         setOpen({
           ...open,
-          open: true,
-          message: t("No-todo-items-found"),
+          open: false,
+          message: "",
         });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: "",
-          });
-        }, 3000);
+      }, 3000);
 
-        dispatch(clearResponce());
-      } else {
-        setOpen({
-          ...open,
-          open: true,
-          message: toDoListReducer.ResponseMessage,
-        });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: "",
-          });
-        }, 3000);
-
-        dispatch(clearResponce());
-      }
+      dispatch(clearResponce());
     } else if (
       assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != t("Record-found")
+      assignees.ResponseMessage != t("Record-found") &&
+      assignees.ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -622,7 +607,8 @@ const TodoList = () => {
     if (
       getTodosStatus.ResponseMessage != "" &&
       getTodosStatus.ResponseMessage != undefined &&
-      getTodosStatus.ResponseMessage != t("Record-found")
+      getTodosStatus.ResponseMessage != t("Record-found") &&
+      getTodosStatus.ResponseMessage != t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -641,7 +627,8 @@ const TodoList = () => {
     } else if (
       getTodosStatus.UpdateTodoStatusMessage != "" &&
       getTodosStatus.UpdateTodoStatusMessage != undefined &&
-      getTodosStatus.UpdateTodoStatusMessage != t("Record-found")
+      getTodosStatus.UpdateTodoStatusMessage != t("Record-found") &&
+      getTodosStatus.UpdateTodoStatusMessage != t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -660,7 +647,8 @@ const TodoList = () => {
     } else if (
       getTodosStatus.UpdateTodoStatus != "" &&
       getTodosStatus.UpdateTodoStatus != undefined &&
-      getTodosStatus.UpdateTodoStatus != t("Record-found")
+      getTodosStatus.UpdateTodoStatus != t("Record-found") &&
+      getTodosStatus.UpdateTodoStatus != t("No-records-found")
     ) {
       setOpen({
         ...open,

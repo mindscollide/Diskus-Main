@@ -271,10 +271,12 @@ const updateuserprofile = (navigate, updateData, t, setMobileEnable, setDesignat
               await dispatch(
                 updateprofilesuccess(t("Record-updated-successfully"))
               );
+              let userID = localStorage.getItem("userID");
+              let OrganizationID = localStorage.getItem("organizationID");
               setMobileEnable(true);
               setDesignationEnable(true);
               setNameEanble(true);
-              await dispatch(getUserDetails(navigate, t));
+              await dispatch(getUserDetails(navigate, userID, t, OrganizationID));
               await dispatch(getUserSetting(navigate, t));
 
             } else if (

@@ -30,7 +30,7 @@ const Organization = () => {
   console.log("settingReducersettingReducersettingReducer", settingReducer);
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [timedurationValues, setTimeDurationValues] = useState([
     {
       label: "1 Hours",
@@ -108,7 +108,10 @@ const Organization = () => {
     MaximumMeetingDuration: 0,
     Is2FAVerification: false,
   });
-  console.log(organizationStates, "organizationStatesorganizationStatesorganizationStates")
+  console.log(
+    organizationStates,
+    "organizationStatesorganizationStatesorganizationStates"
+  );
   //Reset handler for organization
 
   const resetOrganizer = () => {
@@ -252,7 +255,10 @@ const Organization = () => {
         organizationStates.PushNotificationOnCancelledMeeting,
       EmailOnCancelledMeeting: organizationStates.EmailOnCancelledMeeting,
     };
-    console.log(organizationSettings, "organizationSettingsorganizationSettingsorganizationSettingsorganizationSettings")
+    console.log(
+      organizationSettings,
+      "organizationSettingsorganizationSettingsorganizationSettingsorganizationSettings"
+    );
     dispatch(updateOrganizationLevelSetting(navigate, organizationSettings, t));
   };
   useEffect(() => {
@@ -305,7 +311,18 @@ const Organization = () => {
     if (TimeZone !== undefined && TimeZone !== null) {
       let newData = [];
       TimeZone.map((data, index) => {
-        newData.push({ label: data.gmtOffset, value: data.pK_TZID });
+        newData.push({
+          label: data.gmtOffset
+            ? data.countryName +
+              " " +
+              "(" +
+              data.timeZone +
+              ")" +
+              " " +
+              data.gmtOffset
+            : null,
+          value: data.pK_TZID,
+        });
       });
       setTimeZone(newData);
     }
@@ -322,7 +339,10 @@ const Organization = () => {
   }, []);
   useEffect(() => {
     let userProfileData = settingReducer.GetOrganizationLevelSettingResponse;
-    console.log(userProfileData, "userProfileDatauserProfileDatauserProfileData")
+    console.log(
+      userProfileData,
+      "userProfileDatauserProfileDatauserProfileData"
+    );
     if (userProfileData !== null && userProfileData !== undefined) {
       let settingData = {
         SynchronizeDocuments: userProfileData.synchronizeDocuments,
@@ -352,7 +372,15 @@ const Organization = () => {
       setCountryCodeValue(countryCode);
       setWorldCountryID(userProfileData.worldCountry?.fK_WorldCountryID);
       let timeZoneCode = {
-        label: userProfileData.timeZones?.gmtOffset,
+        label: userProfileData.timeZones
+          ? userProfileData.timeZones.countryName +
+            " " +
+            "(" +
+            userProfileData.timeZones.timeZone +
+            ")" +
+            " " +
+            userProfileData.timeZones.gmtOffset
+          : null,
         value: userProfileData.timeZones?.pK_TZID,
       };
       setTimeZoneValue(timeZoneCode);
@@ -401,8 +429,8 @@ const Organization = () => {
                     </label>
                   </Col>
                   <Col
-                    lg={6}
-                    md={6}
+                    lg={4}
+                    md={4}
                     sm={12}
                     xs={12}
                     className={
@@ -412,6 +440,7 @@ const Organization = () => {
                     <Select
                       options={timezone}
                       placeholder={t("Please-select")}
+                      classNamePrefix={"Select_timezone"}
                       className={styles["select-timezone"]}
                       value={timeZoneValue}
                       defaultValue={{
@@ -424,41 +453,6 @@ const Organization = () => {
                     />
                   </Col>
                 </Row>
-                {/* <span className={styles["bottom-line"]}></span> */}
-                {/* <Row className="mt-3 d-flex align-items-center">
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-start align-items-center"
-                  >
-                    <label className="organization-labels">
-                      {t("Country-code")}
-                    </label>
-                  </Col>
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={12}
-                    xs={12}
-                    className={"d-flex justify-content-end organization-timezone-col"}
-                  >
-                    <Select
-                      options={countrycode}
-                      placeholder={t("Please-select")}
-                      className={styles["select-Country"]}
-                      value={countryCodeValue}
-                      defaultValue={{
-                        label: countryCodeValue.label,
-                        value: countryCodeValue.value,
-                      }}
-                      menuShouldScrollIntoView={false}
-                      onChange={countryCodeChandeHandler}
-                      styles={borderChanges}
-                    />
-                  </Col>
-                </Row> */}
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3 d-flex align-items-center">
                   <Col
@@ -478,7 +472,7 @@ const Organization = () => {
                     sm={12}
                     xs={12}
                     className={
-                      "d-flex justify-content-end organization-timezone-col"
+                      "d-flex justify-content-end organization-timezone-col2"
                     }
                   >
                     <Select
@@ -613,7 +607,9 @@ const Organization = () => {
                   >
                     <Switch
                       name="EmailOnNewMeeting"
-                      checkedValue={organizationStates.EmailOnNewMeeting || false}
+                      checkedValue={
+                        organizationStates.EmailOnNewMeeting || false
+                      }
                       onChange={emailOnNewMeeting}
                     />
                   </Col>
@@ -640,7 +636,9 @@ const Organization = () => {
                   >
                     <Switch
                       name="EmailOnEditMeeting"
-                      checkedValue={organizationStates.EmailOnEditMeeting || false}
+                      checkedValue={
+                        organizationStates.EmailOnEditMeeting || false
+                      }
                       onChange={emailOnEditMeeting}
                     />
                   </Col>
@@ -667,7 +665,9 @@ const Organization = () => {
                   >
                     <Switch
                       name="EmailOnCancelledMeeting"
-                      checkedValue={organizationStates.EmailOnCancelledMeeting || false}
+                      checkedValue={
+                        organizationStates.EmailOnCancelledMeeting || false
+                      }
                       onChange={emailOnCancelledMeeting}
                     />
                   </Col>
@@ -695,8 +695,8 @@ const Organization = () => {
                     <Switch
                       name="PushNotificationOnNewMeeting"
                       checkedValue={
-                        organizationStates.PushNotificationOnNewMeeting
-                        || false}
+                        organizationStates.PushNotificationOnNewMeeting || false
+                      }
                       onChange={pushNotificationOnNewMeeting}
                     />
                   </Col>
@@ -724,8 +724,9 @@ const Organization = () => {
                     <Switch
                       name="PushNotificationOnEditMeeting"
                       checkedValue={
-                        organizationStates.PushNotificationOnEditMeeting
-                        || false}
+                        organizationStates.PushNotificationOnEditMeeting ||
+                        false
+                      }
                       onChange={pushNotificationOnEditMeeting}
                     />
                   </Col>
@@ -753,8 +754,9 @@ const Organization = () => {
                     <Switch
                       name="PushNotificationOnCancelledMeeting"
                       checkedValue={
-                        organizationStates.PushNotificationOnCancelledMeeting
-                        || false}
+                        organizationStates.PushNotificationOnCancelledMeeting ||
+                        false
+                      }
                       onChange={pushNotificationOnCancelledMeeting}
                     />
                   </Col>
@@ -782,8 +784,9 @@ const Organization = () => {
                     <Switch
                       name="PushNotificationOnCancelledMeeting"
                       checkedValue={
-                        organizationStates.ShowNotificationonparticipantJoining
-                        || false}
+                        organizationStates.ShowNotificationonparticipantJoining ||
+                        false
+                      }
                       onChange={showNotificationonparticipantJoining}
                     />
                   </Col>

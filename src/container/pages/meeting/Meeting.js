@@ -19,7 +19,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import "./Meeting.css";
 
-
 import {
   Table,
   Loader,
@@ -53,7 +52,10 @@ import { registerLocale } from "react-datepicker";
 // import * as ar from "date-fns/locale/ar/index.js";
 // import * as en from "date-fns/locale/en-GB/index.js";
 import { enGB, ar } from "date-fns/locale";
-import { newTimeFormaterAsPerUTC, newTimeFormaterAsPerUTCFullDate } from "../../../commen/functions/date_formater";
+import {
+  newTimeFormaterAsPerUTC,
+  newTimeFormaterAsPerUTCFullDate,
+} from "../../../commen/functions/date_formater";
 
 const Meeting = () => {
   //For Localization
@@ -66,7 +68,7 @@ const Meeting = () => {
   const [rows, setRow] = useState([]);
   const [tableFilterValue, setTableFilterValue] = useState([]);
   const [editFlag, setEditFlag] = useState(false);
-  const [calendarViewModal, setCalendarViewModal] = useState(false)
+  const [calendarViewModal, setCalendarViewModal] = useState(false);
   const [viewFlag, setViewFlag] = useState(false);
   const [modalsflag, setModalsflag] = useState(false);
   const [open, setOpen] = useState({
@@ -135,7 +137,10 @@ const Meeting = () => {
   // for Socket Update meeting status update
   useEffect(() => {
     if (Object.keys(MeetingStatusSocket).length > 0) {
-      console.log(MeetingStatusSocket, "MeetingStatusSocketMeetingStatusSocket")
+      console.log(
+        MeetingStatusSocket,
+        "MeetingStatusSocketMeetingStatusSocket"
+      );
       let tableRowsData = [...rows];
       var foundIndex = tableRowsData.findIndex(
         (x) => x.pK_MDID === MeetingStatusSocket.meetingID
@@ -157,7 +162,7 @@ const Meeting = () => {
     }
   }, [MeetingStatusSocket]);
 
-  useEffect(() => { }, [rows]);
+  useEffect(() => {}, [rows]);
 
   useEffect(() => {
     if (Object.keys(AllMeetingIdData).length > 0) {
@@ -173,7 +178,17 @@ const Meeting = () => {
   // for view modal  handler
   const viewModalHandler = async (id) => {
     let Data = { MeetingID: id };
-    await dispatch(ViewMeeting(navigate, Data, t, setViewFlag, setEditFlag, setCalendarViewModal, 1));
+    await dispatch(
+      ViewMeeting(
+        navigate,
+        Data,
+        t,
+        setViewFlag,
+        setEditFlag,
+        setCalendarViewModal,
+        1
+      )
+    );
     // setViewFlag(true);
   };
 
@@ -181,7 +196,17 @@ const Meeting = () => {
   const editModalHandler = async (id) => {
     let Data = { MeetingID: id };
 
-    await dispatch(ViewMeeting(navigate, Data, t, setViewFlag, setEditFlag, setCalendarViewModal, 2));
+    await dispatch(
+      ViewMeeting(
+        navigate,
+        Data,
+        t,
+        setViewFlag,
+        setEditFlag,
+        setCalendarViewModal,
+        2
+      )
+    );
     await dispatch(GetAllReminders(t));
     // setModalsflag(true);
   };
@@ -209,7 +234,10 @@ const Meeting = () => {
     try {
       return record.meetingAttendees.map((data) => {
         if (data.user.pK_UID === parseInt(UserID)) {
-          if (data.meetingAttendeeRole.pK_MARID === 1 || data.meetingAttendeeRole.pK_MARID === 3) {
+          if (
+            data.meetingAttendeeRole.pK_MARID === 1 ||
+            data.meetingAttendeeRole.pK_MARID === 3
+          ) {
             return true;
           } else {
             return false;
@@ -218,7 +246,7 @@ const Meeting = () => {
           return false;
         }
       });
-    } catch (e) { }
+    } catch (e) {}
   };
 
   const columns = [
@@ -314,11 +342,10 @@ const Meeting = () => {
       width: "13rem",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
-
         if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
-
-          return (
-            newTimeFormaterAsPerUTCFullDate(record.dateOfMeeting + record.meetingStartTime));
+          return newTimeFormaterAsPerUTCFullDate(
+            record.dateOfMeeting + record.meetingStartTime
+          );
         }
       },
       sorter: (a, b, sortOrder) => {
@@ -408,10 +435,13 @@ const Meeting = () => {
       key: "status",
       width: "10rem",
       render: (text, record) => {
-        console.log("recordrecord", text, record)
+        console.log("recordrecord", text, record);
         let check = checkForEdit(record);
-        console.log("recordrecord", check)
-        const found = check !== null && check !== undefined ? check.find((element) => element === true) : undefined;
+        console.log("recordrecord", check);
+        const found =
+          check !== null && check !== undefined
+            ? check.find((element) => element === true)
+            : undefined;
         if (found !== undefined) {
           if (text === "1") {
             return (
@@ -448,7 +478,10 @@ const Meeting = () => {
       width: "4rem",
       render: (text, record) => {
         let check = checkForEdit(record);
-        const found = check !== null && check !== undefined ? check.find((element) => element === true) : undefined;
+        const found =
+          check !== null && check !== undefined
+            ? check.find((element) => element === true)
+            : undefined;
         if (found !== undefined && record.status !== "4") {
           return (
             <i
@@ -481,42 +514,27 @@ const Meeting = () => {
   useEffect(() => {
     if (
       meetingIdReducer.ResponseMessage != "" &&
-      meetingIdReducer.ResponseMessage != t("Record-found")
+      meetingIdReducer.ResponseMessage != t("Record-found") &&
+      meetingIdReducer.ResponseMessage !== t("No-records-found")
     ) {
-      if (meetingIdReducer.ResponseMessage === t("No-records-found")) {
+      setOpen({
+        ...open,
+        open: true,
+        message: meetingIdReducer.ResponseMessage,
+      });
+      setTimeout(() => {
         setOpen({
           ...open,
-          open: true,
-          message: t("No-meetings-found"),
+          open: false,
+          message: "",
         });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: "",
-          });
-        }, 3000);
+      }, 3000);
 
-        dispatch(HideNotificationMeetings());
-      } else {
-        setOpen({
-          ...open,
-          open: true,
-          message: meetingIdReducer.ResponseMessage,
-        });
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: "",
-          });
-        }, 3000);
-
-        dispatch(HideNotificationMeetings());
-      }
+      dispatch(HideNotificationMeetings());
     } else if (
       assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != t("Record-found")
+      assignees.ResponseMessage != t("Record-found") &&
+      assignees.ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -543,7 +561,9 @@ const Meeting = () => {
     if (
       minuteofMeetingReducer.AddMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.AddMeetingofMinutesMessage !=
-      t("The-record-has-been-saved-successfully")
+        t("The-record-has-been-saved-successfully") &&
+      minuteofMeetingReducer.AddMeetingofMinutesMessage !==
+        t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -562,7 +582,9 @@ const Meeting = () => {
     } else if (
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage !=
-      t("The-record-has-been-saved-successfully")
+        t("The-record-has-been-saved-successfully") &&
+      minuteofMeetingReducer.UpdateMeetingofMinutesMessage !==
+        t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -580,7 +602,10 @@ const Meeting = () => {
       dispatch(HideMinuteMeetingMessage());
     } else if (
       minuteofMeetingReducer.ResponseMessage != "" &&
-      assignees.ResponseMessage != t("The-record-has-been-saved-successfully")
+      assignees.ResponseMessage !=
+        t("The-record-has-been-saved-successfully") &&
+      minuteofMeetingReducer.ResponseMessage !== t("No-records-found") &&
+      assignees.ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -609,7 +634,8 @@ const Meeting = () => {
   useEffect(() => {
     if (
       uploadReducer.ResponseMessage != "" &&
-      uploadReducer.ResponseMessage != t("valid-data")
+      uploadReducer.ResponseMessage != t("valid-data") &&
+      uploadReducer.ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -831,7 +857,7 @@ const Meeting = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowLeft />}
-                      // onClick={search}
+                        // onClick={search}
                       />
                     </Form>
                   </div>
@@ -876,7 +902,7 @@ const Meeting = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowRight />}
-                      // onClick={search}
+                        // onClick={search}
                       />
                     </Form>
                   </div>
@@ -942,21 +968,13 @@ const Meeting = () => {
           </Col>
         </Row>
       </Col>
-      {show ? (
-        <ModalMeeting
-          show={show}
-          setShow={setShow}
-        />
-      ) : null}
+      {show ? <ModalMeeting show={show} setShow={setShow} /> : null}
 
       {viewFlag ? (
         <ModalView viewFlag={viewFlag} setViewFlag={setViewFlag} />
       ) : null}
       {editFlag ? (
-        <ModalUpdate
-          editFlag={editFlag}
-          setEditFlag={setEditFlag}
-        />
+        <ModalUpdate editFlag={editFlag} setEditFlag={setEditFlag} />
       ) : null}
 
       <Notification setOpen={setOpen} open={open.open} message={open.message} />

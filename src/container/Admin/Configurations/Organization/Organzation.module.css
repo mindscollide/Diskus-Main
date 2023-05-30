@@ -11,8 +11,8 @@
 }
 
 .select-timezone {
-  width: 200px !important;
-  height: 35px;
+  width: 100% !important;
+  height: 39px !important;
   border-radius: none !important;
 }
 
@@ -121,7 +121,7 @@ body[dir="rtl"] .organization-level-updateBtn {
 }
 
 .select-timeDuration {
-  width: 100px;
+  width: 150px;
   height: 35px;
 }
 body[dir="rtl"] .select-timeDuration {

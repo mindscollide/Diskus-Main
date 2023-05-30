@@ -54,7 +54,7 @@ const DeleteOrganization = () => {
         t,
         setDeleteSuccesModal,
         setDeleteModal,
-        setDeleteConfirmModal,
+        setDeleteConfirmModal
       )
     );
   };
@@ -84,8 +84,9 @@ const DeleteOrganization = () => {
                 sm={12}
                 md={12}
                 lg={12}
-                className={`${"MontserratSemiBold-600 fs-4 mt-4 mb-2"} ${styles["DeleteOrganization_box_heading"]
-                  }`}
+                className={`${"MontserratSemiBold-600 fs-4 mt-4 mb-2"} ${
+                  styles["DeleteOrganization_box_heading"]
+                }`}
               >
                 {t("Delete-organization")}
               </Col>
@@ -101,9 +102,12 @@ const DeleteOrganization = () => {
                   <span className={styles["title"]}>
                     {t("Delete-the-organization")}
                   </span>
-                  {t(
-                    "Will-delete-and-remove-all-relevant-data-including-but-not"
-                  )}
+                  <span className={styles["title_two"]}>
+                    {t(
+                      "Will-delete-and-remove-all-relevant-data-including-but-not"
+                    )}
+                  </span>
+
                   <br />
                   <br />
 

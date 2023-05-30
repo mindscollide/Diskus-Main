@@ -117,11 +117,6 @@ const Header2 = () => {
 
   const dropDownMenuFunction = () => {
     setDropdownOpen(!dropdownOpen);
-    if (dropdownOpen === false) {
-      // document.body.classList.add("blur-background");
-    } else {
-      // document.body.classList.remove("blur-background");
-    }
   };
 
   // userProfile handler
@@ -152,11 +147,6 @@ const Header2 = () => {
           <Container fluid>
             <Navbar.Brand
               as={Link}
-            // to={
-            //   location.pathname.includes("/Admin")
-            //     ? "/DisKus/Admin/PayOutstanding"
-            //     : "/DisKus/Admin/PayOutstanding"
-            // }
             >
               <img src={DiskusLogoHeader} width={120} />
             </Navbar.Brand>
