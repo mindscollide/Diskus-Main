@@ -332,9 +332,16 @@ const ScheduleNewResolution = ({
   };
 
   const deleteFilefromAttachments = (data, index) => {
+    console.log(data, data.fileSize, data.DisplayAttachmentName, fileForSend, fileSize, "checkingelemnaiteFile")
+    let fileSizefound = fileSize - data.fileSize;
+    let fileForSendingIndex = fileForSend.findIndex((newData, index) => newData.name === data.DisplayAttachmentName)
     let searchIndex = tasksAttachments;
+    setFileForSend(fileForSend)
+    setFileSize(fileSizefound)
+    fileForSend.splice(fileForSendingIndex, 1)
     searchIndex.splice(index, 1);
     setTasksAttachments([...tasksAttachments]);
+    console.log(data, fileForSend, fileSizefound, fileForSendingIndex, "checkingelemnaiteFile")
   };
 
   const addVoters = () => {
@@ -599,6 +606,7 @@ const ScheduleNewResolution = ({
           let file = {
             DisplayAttachmentName: data.file.name,
             OriginalAttachmentName: data.file.name,
+            fileSize: data.file.originFileObj.size
           }
           setTasksAttachments([...tasksAttachments, file])
           fileSizeArr = data.file.originFileObj.size + fileSize;
@@ -634,6 +642,7 @@ const ScheduleNewResolution = ({
           let file = {
             DisplayAttachmentName: data.file.name,
             OriginalAttachmentName: data.file.name,
+            fileSize: data.file.originFileObj.size
           }
           setTasksAttachments([...tasksAttachments, file])
           fileSizeArr = data.file.originFileObj.size + fileSize;

@@ -114,6 +114,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   });
 
   const deleteFilefromAttachments = (data, index) => {
+    console.log(data, data.fileSize, data.DisplayAttachmentName, fileForSend, fileSize, "checkingelemnaiteFile")
+    let fileSizefound = fileSize - data.fileSize;
+    let fileForSendingIndex = fileForSend.findIndex((newData, index) => newData.name === data.DisplayAttachmentName)
+    setFileForSend(fileForSend)
+    setFileSize(fileSizefound)
+    fileForSend.splice(fileForSendingIndex, 1)
     let searchIndex = tasksAttachments.TasksAttachments;
     searchIndex.splice(index, 1);
     setTasksAttachments({
@@ -276,7 +282,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             );
           } else {
             fileSizeArr = uploadedFile.size + fileSize;
-            fileSizeArr = uploadedFile.size + fileSize;
             setFileForSend([...fileForSend, uploadedFile]);
             setFileSize(fileSizeArr);
             // dispatch(FileUploadToDo(navigate, uploadedFile, t));
@@ -286,6 +291,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
               OriginalAttachmentName: uploadFilePath,
               CreationDateTime: "",
               FK_TID: 0,
+              fileSize: uploadedFile.size
             });
             setTasksAttachments({ ["TasksAttachments"]: file });
           }
@@ -314,7 +320,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           } else {
             // dispatch(FileUploadToDo(navigate, uploadedFile, t));
             fileSizeArr = uploadedFile.size + fileSize;
-            fileSizeArr = uploadedFile.size + fileSize;
             setFileForSend([...fileForSend, uploadedFile]);
             setFileSize(fileSizeArr);
             file.push({
@@ -323,6 +328,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
               OriginalAttachmentName: uploadFilePath,
               CreationDateTime: "",
               FK_TID: 0,
+              fileSize: uploadedFile.size
             });
             setTasksAttachments({ ["TasksAttachments"]: file });
           }

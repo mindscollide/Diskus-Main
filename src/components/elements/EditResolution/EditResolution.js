@@ -335,11 +335,18 @@ const EditResolution = ({
   };
 
   const deleteFilefromAttachments = (data, index) => {
+    console.log(data, data.fileSize, data.DisplayAttachmentName, fileForSend, fileSize, "checkingelemnaiteFile")
+    let fileSizefound = fileSize - data.fileSize;
+    let fileForSendingIndex = fileForSend.findIndex((newData, index) => newData.name === data.DisplayAttachmentName)
+    fileForSend.splice(fileForSendingIndex, 1)
+    setFileForSend(fileForSend)
+    setFileSize(fileSizefound)
     let searchIndex = tasksAttachments;
     searchIndex.splice(index, 1);
     setTasksAttachments([...tasksAttachments]);
   };
 
+  console.log(fileForSend, fileSize, "checkingelemnaiteFile2")
   const addVoters = () => {
     let findVoter = voters.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo
@@ -453,11 +460,19 @@ const EditResolution = ({
     onChange(data) {
       const { status } = data.file;
       let fileSizeArr;
-      if (tasksAttachments.length > 9) {
+      if (tasksAttachments.length > 10) {
         setOpen({
           flag: true,
           message: t("Not-allowed-more-than-10-files"),
         });
+      } else if (fileSize >= 104857600) {
+        setTimeout(
+          setOpen({
+            open: true,
+            message: t("You-can-not-upload-more-then-100MB-files"),
+          }),
+          3000
+        );
       } else if (tasksAttachments.length > 0) {
         let flag = false;
         let sizezero;
@@ -500,6 +515,7 @@ const EditResolution = ({
           let file = {
             DisplayAttachmentName: data.file.name,
             OriginalAttachmentName: data.file.name,
+            fileSize: data.file.originFileObj.size
           }
           setTasksAttachments([...tasksAttachments, file])
           fileSizeArr = data.file.originFileObj.size + fileSize;
@@ -535,6 +551,7 @@ const EditResolution = ({
           let file = {
             DisplayAttachmentName: data.file.name,
             OriginalAttachmentName: data.file.name,
+            fileSize: data.file.originFileObj.size
           }
           setTasksAttachments([...tasksAttachments, file])
           fileSizeArr = data.file.originFileObj.size + fileSize;

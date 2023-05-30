@@ -504,15 +504,17 @@ const DataRoom = () => {
   const searchbardropdownShow = () => {
     setSearchbarshow(!searchbarshow)
   }
-  const SharewithmeButonShow = () => {
-    dispatch(getDocumentsAndFolderApi(navigate, 2, t))
+  const SharewithmeButonShow = async () => {
+    await dispatch(getDocumentsAndFolderApi(navigate, 2, t))
     setSharemebtn(true)
     setSharedwithmebtn(true)
     setMydocumentbtnactive(false)
+    localStorage.removeItem("folderID")
   }
 
-  const MydocumentButtonShow = () => {
-    dispatch(getDocumentsAndFolderApi(navigate, 1, t))
+  const MydocumentButtonShow = async () => {
+    await dispatch(getDocumentsAndFolderApi(navigate, 1, t))
+    localStorage.removeItem("folderID")
     setSharemebtn(false)
     setMydocumentbtnactive(true)
     setSharedwithmebtn(false)
@@ -826,226 +828,6 @@ const DataRoom = () => {
     },
   ]
 
-  const shareWithmeColoumns = [
-    {
-      title: t('Name'),
-      dataIndex: 'Name',
-      key: 'Name',
-      width: '250px',
-      sortDirections: ['descend', 'ascend'],
-    },
-    {
-      title: t('Shared_by'),
-      dataIndex: 'Sharedby',
-      key: 'Sharedby',
-      width: '90px',
-      sortDirections: ['descend', 'ascend'],
-    },
-    {
-      title: t('Share_date'),
-      dataIndex: 'Sharedate',
-      key: 'Sharedate',
-      width: '90px',
-      sortDirections: ['descend', 'ascend'],
-      filters: [
-        {
-          text: t('Shared_date'),
-          value: 'Shared date',
-          className: currentLanguage,
-        },
-        {
-          text: t('Last_modified'),
-          value: 'Last modified',
-        },
-        {
-          text: t('Last_modified_by_me'),
-          value: 'Last modified by me',
-        },
-        {
-          text: t('Last_open_by_me'),
-          value: 'Last open by me',
-        },
-      ],
-      filterIcon: (filtered) => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
-      ),
-    },
-    {
-      title: t('File-size'),
-      dataIndex: 'Filesize',
-      key: 'Filesize',
-      width: '90px',
-      sortDirections: ['descend', 'ascend'],
-    },
-
-    {
-      dataIndex: 'OtherStuff',
-      key: 'OtherStuff',
-      width: '180px',
-      sortDirections: ['descend', 'ascend'],
-    },
-  ]
-
-  const SharedwithmeTableData = [
-    {
-      key: '1',
-      Name: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex gap-2 align-items-center"
-            >
-              <Checkbox />
-              <span className={styles['Folder_style']}>Folder</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Sharedby: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-start gap-1"
-            >
-              <img
-                src={profile}
-                height="22"
-                width="22"
-                className={styles['profile_picture']}
-              />
-              <span className={styles['Name_particiapnt']}>Saad Fudda</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Sharedate: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles['Lastmodified_date']}>
-                22nd December,2022
-              </span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Filesize: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex ">
-              <span className={styles['File_size_Style']}>1 MB</span>
-            </Col>
-          </Row>
-        </>
-      ),
-
-      OtherStuff: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-end gap-2"
-            >
-              <img
-                src={dot}
-                height="10.71px"
-                width="15.02px"
-                onClick={OpenthreeDotDropdown}
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      key: '2',
-      Name: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex gap-2 align-items-center"
-            >
-              <img src={PDFICON} height="18px" width="18px" />
-              <span className={styles['name_of_life']}>DairaLogo.pdf</span>
-              <img src={person} width="13.44px" height="10.71px" />
-            </Col>
-          </Row>
-        </>
-      ),
-      Sharedby: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-start gap-1"
-            >
-              <img
-                src={profile}
-                height="22"
-                width="22"
-                className={styles['profile_picture']}
-              />
-              <span className={styles['Name_particiapnt']}>Saad Fudda</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Sharedate: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles['Lastmodified_date']}>
-                22nd December,2022
-              </span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Filesize: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex ">
-              <span className={styles['File_size_Style']}>1 MB</span>
-            </Col>
-          </Row>
-        </>
-      ),
-
-      OtherStuff: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-end gap-2"
-            >
-              <img
-                src={dot}
-                height="10.71px"
-                width="15.02px"
-                onClick={OpenCancelDownloadModal}
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-  ]
-
   const [isOpen, setIsOpen] = useState(false)
 
   const handleChange = (Selectoptions) => {
@@ -1122,6 +904,7 @@ const DataRoom = () => {
       dispatch(clearDataResponseMessage())
     }
   }, [DataRoomReducer.ResponseMessage])
+
   useEffect(() => {
     if (
       DataRoomReducer.getAllDocumentandShareFolderResponse !== null &&
@@ -1133,6 +916,7 @@ const DataRoom = () => {
       setGetAllData([])
     }
   }, [DataRoomReducer.getAllDocumentandShareFolderResponse])
+
   useEffect(() => {
     dispatch(getDocumentsAndFolderApi(navigate, 3, t))
   }, [])
@@ -2044,7 +1828,10 @@ const DataRoom = () => {
                                 column={MyDocumentsColumns}
                                 className={styles['DataRoom_Table']}
                                 rows={getAllData}
-                                rowSelection={true}
+                                rowSelection={{
+                                  type: 'checkbox',
+                                  onSelect: (record) => { console.log(record, "rowSelectionrowSelectionrowSelection") }
+                                }}
                                 size={'middle'}
                               />
                               {showbarupload ? (

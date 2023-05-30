@@ -68,9 +68,9 @@ const saveFilesApi = (navigate, data, t) => {
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase())) {
                         await dispatch(saveFiles_success(response.data.responseMessage, t("Files-saved-successfully")))
                         if (folderID !== null) {
-                            await dispatch(getFolderDocumentsApi(folderID, t))
+                            await dispatch(getFolderDocumentsApi(navigate, folderID, t))
                         } else {
-                            await dispatch(getDocumentsAndFolderApi(1, t))
+                            await dispatch(getDocumentsAndFolderApi(navigate, 1, t))
                         }
                         localStorage.removeItem("folderID")
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase())) {
@@ -165,7 +165,7 @@ const uploadDocumentsApi = (navigate, file, t, setProgress, setRemainingTime, re
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase())) {
                             await dispatch(uploadDocument_success(response.data.responseResult, t("Document-uploaded-successfully")))
-                            await dispatch(saveFilesApi(response.data.responseResult, t))
+                            await dispatch(saveFilesApi(navigate, response.data.responseResult, t))
                         } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase())) {
                             dispatch(uploadDocument_fail(t("Failed-to-update-document")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase())) {
@@ -363,9 +363,12 @@ const createFolderApi = (navigate, folder, t, setAddfolder) => {
                 if (response.data.responseResult.isExecuted === true) {
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_01".toLowerCase())) {
                         await dispatch(createFolder_success(response.data.responseResult, t("Folder-created-successfully")))
-                        dispatch(getDocumentsAndFolderApi(3, t))
+                        if (folderID !== null) {
+                            dispatch(getFolderDocumentsApi(navigate, folderID, t))
+                        } else {
+                            dispatch(getDocumentsAndFolderApi(navigate, 3, t))
+                        }
                         setAddfolder(false)
-                        localStorage.removeItem("folderID")
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_02".toLowerCase())) {
                         dispatch(createFolder_fail(t("Failed-to-create-folder")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_03".toLowerCase())) {
@@ -640,7 +643,7 @@ const deleteFileDataroom = (navigate, id, t) => {
                 if (response.data.responseResult.isExecuted === true) {
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_DeleteFile_01".toLowerCase())) {
                         console.log("hello")
-                        dispatch(getDocumentsAndFolderApi(3, t))
+                        dispatch(getDocumentsAndFolderApi(navigate, 3, t))
                         dispatch(deleteFileDataroom_success(response.data.responseResult, t("Files-deleted-successfully")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_DeleteFile_02".toLowerCase())) {
                         console.log("hello")
@@ -716,7 +719,7 @@ const FileisExist = (navigate, FileName, t, file, setProgress, setRemainingTime,
                         dispatch(FileisExist_success(t("No-file-exist")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FileExist_03".toLowerCase())) {
                         await dispatch(FileisExist_fail(t("No-duplicate-found")))
-                        await dispatch(uploadDocumentsApi(file, t, setProgress, setRemainingTime, remainingTime, setShowbarupload, setTasksAttachments))
+                        await dispatch(uploadDocumentsApi(navigate, file, t, setProgress, setRemainingTime, remainingTime, setShowbarupload, setTasksAttachments))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FileExist_04".toLowerCase())) {
                         dispatch(FileisExist_fail(t("Something-went-wrong")))
                     }
@@ -789,7 +792,7 @@ const FolderisExist = (navigate, FolderName, t, setAddfolder) => {
                         await dispatch(FolderisExist_fail(t("Folder-name-is-required")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_03".toLowerCase())) {
                         await dispatch(FolderisExist_fail(t("No Folder Exist Against this name")))
-                        dispatch(createFolderApi(FolderName, t, setAddfolder))
+                        dispatch(createFolderApi(navigate, FolderName, t, setAddfolder))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_04".toLowerCase())) {
                         dispatch(FolderisExist_fail(t("Something-went-wrong")))
                     }
@@ -848,7 +851,7 @@ const deleteFolder = (navigate, id, t) => {
                 if (response.data.responseResult.isExecuted === true) {
                     if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_DeleteFolder_01".toLowerCase())) {
                         console.log("hello")
-                        dispatch(getDocumentsAndFolderApi(3, t))
+                        dispatch(getDocumentsAndFolderApi(navigate, 3, t))
                         dispatch(deleteFolder_success(response.data.responseResult, t("Folder-deleted-successfully")))
                     } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_DeleteFolder_02".toLowerCase())) {
                         console.log("hello")
