@@ -18,12 +18,18 @@ const PaymentActivity = ({
         sm={12}
         md={12}
         lg={12}
-        className={`${"MontserratSemiBold-600 fs-4 mt-3 mb-2"} ${styles["paymentActivityTitle"]
-          }`}
+        className={`${"MontserratSemiBold-600 fs-4 mt-3 mb-2"} ${
+          styles["paymentActivityTitle"]
+        }`}
       >
         {PaymentActivityBoxTitle}
       </Col>
-      <Col sm={12} lg={12} md={12} className="border py-3 px-5 bg-white border-radius-4">
+      <Col
+        sm={12}
+        lg={12}
+        md={12}
+        className="border py-3 px-5 bg-white border-radius-4"
+      >
         <Col
           sm={12}
           md={12}

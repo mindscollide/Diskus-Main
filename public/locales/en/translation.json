@@ -214,7 +214,7 @@
   "Next-payment-due-date": "Next Payment Due Date:",
   "Account-activity": "Account Activity",
   "Last-payment": "Last Payment",
-  "Payment-received-date": "Payment Received Date",
+  "Payment-received-date": "Payment Received Date :",
   "Paid-amount": "Paid Amount",
   "Open-invoice": "Open Invoices",
   "Due-date": "Due Date",
@@ -563,7 +563,7 @@
   "Are-you-sure-you-want-to-delete-this-account": "Are you sure you want to delete this account?",
   "This-will-permanently-erase-your-account-and": "This will permanently erase your account and",
   "Your-organization-subscription-will-also-be-cancelled": "your Organization subscription will also be cancelled!",
-  "Invoice-number": "Invoice #",
+  "Invoice-number": "Invoice# :",
   "Invoice-start": "Invoice Start",
   "Invoice-end": "Invoice End",
   "Payment-start": "Payment Start",
@@ -948,7 +948,7 @@
   "Failed-to-delete-any-folder": "Failed to delete any folder",
   "Your-password": "Your Password",
   "Has-been-updated": "has been updated",
-  "You-have-selected-for-immediate-cancellation": "You have selected for immediate cancellation. Please note that all associated services will also be terminated along with this subscription immediately. Please take backups of all your data as any loss of data on cancellation will not be a responsibility of DiskUS.",
+  "You-have-selected-for-immediate-cancellation": "You have selected for immediate cancellation. Please note that all associated services will also be terminated along with this subscription immediately. Please take backups of all your data as any loss of data on cancellation will not be a responsibility of Diskus.",
   "You-have-selected-for-cancellation-of-subscription-at-the-end-of-your-term-which-is-at": "You have selected for cancellation of subscription at the end of your term which is at",
   "You-can-always-opt-out-by-selecting-the-revoke-Cancellation-Option-from-the-same-screen": "You can always opt out by selecting the revoke Cancellation Option from the same screen",
   "Moderator": "Moderator",
@@ -965,6 +965,7 @@
   "View-note": "View Note",
   "No-resolution-to-display": "No resolution to display",
   "Planning-to-get-a-thought-on-something?": "Planning to get a thought on something?",
-  "Please-add-atleast-one-group-head-and-one-group-member":"Please add atleast one group head and one group member"
-
+  "No-records-found": "No records found",
+  "Annual-Subscriptions": "Annual Subscriptions",
+  "Please-add-atleast-one-group-head-and-one-group-member": "Please add atleast one group head and one group member"
 }

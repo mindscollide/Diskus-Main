@@ -219,7 +219,7 @@ const CancelSubs = () => {
                   <Col sm={12}>
                     {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       null &&
-                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       undefined ? (
                       <>
                         <span class="icon-star package-icon-style">
@@ -259,7 +259,7 @@ const CancelSubs = () => {
                               styles["selectedpackagecard_disoucntprice_para"]
                             }
                           >
-                            {t("Subscriptions")}
+                            {t("Annual-Subscriptions")}
                           </p>
                         </div>
                       </div>
@@ -342,7 +342,7 @@ const CancelSubs = () => {
                               lg={12}
                               className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
                             >
-                              {isPackageDetail.UsersRangeAdmin} {t("To")}{" "}
+                              {isPackageDetail.UsersRangeAdmin} {t("of")}{" "}
                               {maxAdminUser} {t("Admin-users")}
                             </Col>
                             <Col sm={12} md={12} lg={12} className="m-0 p-0">
@@ -358,7 +358,7 @@ const CancelSubs = () => {
                               lg={12}
                               className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
                             >
-                              {isPackageDetail.UsersRangeBoardMembers} {t("To")}{" "}
+                              {isPackageDetail.UsersRangeBoardMembers} {t("of")}{" "}
                               {maxBoardMembers} {t("Board-members")}
                             </Col>
                             <Col sm={12} md={12} lg={12} className="m-0 p-0">
@@ -374,8 +374,8 @@ const CancelSubs = () => {
                               lg={12}
                               className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
                             >
-                              {isPackageDetail.OtherUsersRange} {t("To")}{" "}
-                              {maxOtherUsers} {t("Board-members")}
+                              {isPackageDetail.OtherUsersRange} {t("of")}{" "}
+                              {maxOtherUsers} {t("Other-users")}
                             </Col>
                           </Row>
                         </Col>
@@ -442,7 +442,7 @@ const CancelSubs = () => {
                   <Col sm={12} md={12} lg={12} className="mb-4">
                     {GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       null &&
-                      GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
+                    GetSubscriptionPackage.getCurrentActiveSubscriptionPackage !==
                       undefined ? (
                       <>
                         <span class="icon-star package-icon-style">
@@ -460,8 +460,9 @@ const CancelSubs = () => {
                           ></span>
                         </span>
                         <h3
-                          className={`${"margin-top-70"} ${styles["packageCard_title"]
-                            }`}
+                          className={`${"margin-top-70"} ${
+                            styles["packageCard_title"]
+                          }`}
                         >
                           {isPackageDetail.PackageTitle}
                         </h3>{" "}
@@ -474,7 +475,7 @@ const CancelSubs = () => {
                       </p>
                     </h4>
                     <p className={styles["packageAmountText_p2"]}>
-                      {t("Annually-subscription")}
+                      {t("Annual-Subscriptions")}
                     </p>
                   </Col>
                   <Row>
@@ -534,7 +535,7 @@ const CancelSubs = () => {
                       lg={12}
                       className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
                     >
-                      {isPackageDetail.UsersRangeBoardMembers} {t("To")}{" "}
+                      {isPackageDetail.UsersRangeBoardMembers} {t("of")}{" "}
                       {maxBoardMembers} {t("Board-members")}
                     </Col>
                     <Col sm={12} md={12} lg={12} className="m-0 p-0">
@@ -550,8 +551,8 @@ const CancelSubs = () => {
                       lg={12}
                       className="MontserratSemiBold-600 text-start color-949494 font-11 p-0 Saved_money_Tagline"
                     >
-                      {isPackageDetail.OtherUsersRange} {t("To")}{" "}
-                      {maxOtherUsers} {t("Board-members")}
+                      {isPackageDetail.OtherUsersRange} {t("of")}{" "}
+                      {maxOtherUsers} {t("Other-users")}
                     </Col>
                   </Row>
                   <Col sm={12} md={12} lg={12}>

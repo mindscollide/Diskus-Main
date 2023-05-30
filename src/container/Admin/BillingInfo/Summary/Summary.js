@@ -277,8 +277,9 @@ const Summary = () => {
           OrganizationBillingReducer.getBillInformation
         );
         setSummary({
-          BalanceDue: Summary.balanceDue,
-          NextInvoiceEstimate: Summary.nextAmountEstimate,
+          BalanceDue: Summary.balanceDue != 0 ? Summary.balanceDue : 0,
+          NextInvoiceEstimate:
+            Summary.nextAmountEstimate != 0 ? Summary.nextAmountEstimate : 0,
           NextPaymentDueDate: Summary.nextPaymentDate,
           AmountAfterDiscount: Summary.amountAfterDiscount,
         });
@@ -301,8 +302,14 @@ const Summary = () => {
 
         setLastPayment({
           Invoice: lastpaymentDetail.invoiceCustomerNumber,
-          PaidAmount: lastpaymentDetail.paidAmount,
-          PaymentReceivedDate: lastpaymentDetail.paymentRecieveDate,
+          PaidAmount:
+            lastpaymentDetail.paidAmount != 0
+              ? lastpaymentDetail.paidAmount
+              : 0,
+          PaymentReceivedDate:
+            lastpaymentDetail.paymentRecieveDate != ""
+              ? lastpaymentDetail.paymentRecieveDate
+              : "",
         });
       }
     } catch {
@@ -324,8 +331,20 @@ const Summary = () => {
             ColOneKey={t("Balance-duee")}
             ColTwoKey={t("Next-invoice-estimate")}
             ColThreeKey={t("Next-payment-due-date")}
-            ColOneValue={summary.BalanceDue}
-            ColTwoValue={summary.NextInvoiceEstimate}
+            ColOneValue={
+              summary.BalanceDue != 0 ? (
+                <>$ {summary.BalanceDue}</>
+              ) : (
+                <>{summary.BalanceDue}</>
+              )
+            }
+            ColTwoValue={
+              summary.NextInvoiceEstimate != 0 ? (
+                <>$ {summary.NextInvoiceEstimate}</>
+              ) : (
+                <>{summary.NextInvoiceEstimate}</>
+              )
+            }
             ColThreeValue={_justShowDateformatBilling(
               summary.NextPaymentDueDate
             )}
@@ -340,7 +359,13 @@ const Summary = () => {
             ColTwoValue={_justShowDateformatBilling(
               lastPayment.PaymentReceivedDate
             )}
-            ColThreeValue={lastPayment.PaidAmount + "$"}
+            ColThreeValue={
+              lastPayment.PaidAmount != 0 ? (
+                <>$ {lastPayment.PaidAmount}</>
+              ) : (
+                <>{lastPayment.PaidAmount}</>
+              )
+            }
           />
           <Row>
             <Col

@@ -1,15 +1,15 @@
-import React, { useState, useRef, useMemo, useEffect } from 'react'
-import styles from './PaymentHistory.module.css'
-import countryList from 'react-select-country-list'
-import PhoneInput from 'react-phone-input-2'
-import 'react-phone-input-2/lib/style.css'
-import './../../../../i18n'
-import { useTranslation } from 'react-i18next'
-import DatePicker from 'react-datepicker'
-import Paymenthistoryhamberge from '../../../../assets/images/newElements/paymenthistoryhamberge.png'
-import FailedIcon from '../../../../assets/images/failed.png'
-import DeletedIcon from '../../../../assets/images/Deleted-Icon.png'
-import Select from 'react-select'
+import React, { useState, useRef, useMemo, useEffect } from "react";
+import styles from "./PaymentHistory.module.css";
+import countryList from "react-select-country-list";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import "./../../../../i18n";
+import { useTranslation } from "react-i18next";
+import DatePicker from "react-datepicker";
+import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymenthistoryhamberge.png";
+import FailedIcon from "../../../../assets/images/failed.png";
+import DeletedIcon from "../../../../assets/images/Deleted-Icon.png";
+import Select from "react-select";
 
 // import { Select } from "antd";
 import {
@@ -22,187 +22,191 @@ import {
   Table,
   Modal,
   Loader,
-} from '../../../../components/elements'
-import { Container, Row, Col, Form } from 'react-bootstrap'
+} from "../../../../components/elements";
+import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   removeDashesFromDate,
   TimeDisplayFormat,
   _justShowDateformatBilling,
-} from '../../../../commen/functions/date_formater'
-import { Sliders2, Trash, ExclamationTriangleFill } from 'react-bootstrap-icons'
-import { invoiceandpaymenthistory } from '../../../../store/actions/OrganizationBillings_actions'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+} from "../../../../commen/functions/date_formater";
+import {
+  Sliders2,
+  Trash,
+  ExclamationTriangleFill,
+} from "react-bootstrap-icons";
+import { invoiceandpaymenthistory } from "../../../../store/actions/OrganizationBillings_actions";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
-  const { OrganizationBillingReducer } = useSelector((state) => state)
-  const [filterBarModal, setFilterBarModal] = useState(false)
-  const [editModal, setEditModal] = useState(false)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const { OrganizationBillingReducer } = useSelector((state) => state);
+  const [filterBarModal, setFilterBarModal] = useState(false);
+  const [editModal, setEditModal] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const [isUpdateSuccessfully, setIsUpdateSuccessfully] = useState(false)
-  const [deleteEditModal, setDeleteEditModal] = useState(false)
+  const [isUpdateSuccessfully, setIsUpdateSuccessfully] = useState(false);
+  const [deleteEditModal, setDeleteEditModal] = useState(false);
 
   // for payment history
-  const [paymentHistoryModal, setPaymentHistoryModal] = useState(false)
+  const [paymentHistoryModal, setPaymentHistoryModal] = useState(false);
 
-  const [errorBar, setErrorBar] = useState(false)
+  const [errorBar, setErrorBar] = useState(false);
   const [nameErrorMessage, setNameErrorMessage] = useState(
-    'Name Field Is Empty',
-  )
+    "Name Field Is Empty"
+  );
   const [emailErrorMessage, setEmailErrorMessage] = useState(
-    'Email Field Is Empty',
-  )
+    "Email Field Is Empty"
+  );
 
   const [open, setOpen] = useState({
     open: false,
-    message: '',
-  })
+    message: "",
+  });
 
-  const { t } = useTranslation()
+  const { t } = useTranslation();
 
-  const [rowSize, setRowSize] = useState(50)
-  const [rows, setRows] = useState([])
-  console.log('rowsrowsrowsrows', rows)
+  const [rowSize, setRowSize] = useState(50);
+  const [rows, setRows] = useState([]);
+  console.log("rowsrowsrowsrows", rows);
 
-  const [selectedCountry, setSelectedCountry] = useState(null)
+  const [selectedCountry, setSelectedCountry] = useState(null);
 
   const handleSelect = (country) => {
-    setSelectedCountry(country)
-  }
+    setSelectedCountry(country);
+  };
 
-  const [value, setValue] = useState()
-  const options = useMemo(() => countryList().getData(), [])
+  const [value, setValue] = useState();
+  const options = useMemo(() => countryList().getData(), []);
 
   // ref to move on next field
-  const Invoice = useRef(null)
-  const InvoiceStart = useRef(null)
-  const InvoiceEnd = useRef(null)
-  const PaymentStart = useRef(null)
-  const PaymentEnd = useRef(null)
-  const PaymentBy = useRef(null)
+  const Invoice = useRef(null);
+  const InvoiceStart = useRef(null);
+  const InvoiceEnd = useRef(null);
+  const PaymentStart = useRef(null);
+  const PaymentEnd = useRef(null);
+  const PaymentBy = useRef(null);
 
   //state for FilterbarModal
   const [filterSection, setFilterSection] = useState({
-    Names: '',
-    OrganizationRoles: '',
-    EnableRoles: '',
-    UserRoles: '',
-    Emails: '',
-  })
+    Names: "",
+    OrganizationRoles: "",
+    EnableRoles: "",
+    UserRoles: "",
+    Emails: "",
+  });
 
   //state for EditUser
   const [editUserSection, setEditUserSection] = useState({
-    Name: '',
-    Designation: '',
-    CountryCode: '',
-    Mobile: '',
-    OrganizationRole: '',
-    UserRole: '',
-    Email: '',
-    UserStatus: '',
-  })
+    Name: "",
+    Designation: "",
+    CountryCode: "",
+    Mobile: "",
+    OrganizationRole: "",
+    UserRole: "",
+    Email: "",
+    UserStatus: "",
+  });
 
   //state for EditUser
   const [paymentInvoiceSection, setpaymentInvoiceSection] = useState({
-    Invoice: '',
-    InvoiceStart: '',
-    InvoiceEnd: '',
-    PaymentStart: '',
-    PaymentEnd: '',
-    PaymentBy: '',
-  })
+    Invoice: "",
+    InvoiceStart: "",
+    InvoiceEnd: "",
+    PaymentStart: "",
+    PaymentEnd: "",
+    PaymentBy: "",
+  });
 
-  const [invoiceStartDate, setInvoiceStartDate] = useState('')
-  const [invoiceEndDate, setInvoiceEndDate] = useState('')
+  const [invoiceStartDate, setInvoiceStartDate] = useState("");
+  const [invoiceEndDate, setInvoiceEndDate] = useState("");
 
-  const [paymentStartDate, setPaymentStartDate] = useState('')
-  const [paymentEndDate, setPaymentEndDate] = useState('')
+  const [paymentStartDate, setPaymentStartDate] = useState("");
+  const [paymentEndDate, setPaymentEndDate] = useState("");
 
   // Enter Handler to move on next field
   const enterHandler = (event, nextInput) => {
-    if (event.key === 'Enter') {
-      nextInput.current.focus()
+    if (event.key === "Enter") {
+      nextInput.current.focus();
     }
-  }
+  };
 
   const EditUserHandler = (e) => {
-    let name = e.target.name
-    let value = e.target.value
+    let name = e.target.name;
+    let value = e.target.value;
 
-    if (name === 'Invoice' && value !== '') {
-      let valueCheck = value.replace(/[^0-9]/g, '')
-      if (valueCheck !== '') {
+    if (name === "Invoice" && value !== "") {
+      let valueCheck = value.replace(/[^0-9]/g, "");
+      if (valueCheck !== "") {
         setpaymentInvoiceSection({
           ...paymentInvoiceSection,
           Invoice: valueCheck.trimStart(),
-        })
+        });
       }
-    } else if (name === 'Invoice' && value === '') {
+    } else if (name === "Invoice" && value === "") {
       setpaymentInvoiceSection({
         ...paymentInvoiceSection,
-        Invoice: '',
-      })
+        Invoice: "",
+      });
     }
-  }
+  };
 
   //Open payment history modal
 
-  const openPaymentModal = async () => {}
+  const openPaymentModal = async () => {};
 
   // open delete modal on search button
 
   const iconModalHandler = async (e) => {
-    setPaymentHistoryModal(true)
+    setPaymentHistoryModal(true);
     setpaymentInvoiceSection({
-      Invoice: '',
-      InvoiceStart: '',
-      InvoiceEnd: '',
-      PaymentStart: '',
-      PaymentEnd: '',
-      PaymentBy: '',
-    })
-    setInvoiceStartDate('')
-    setInvoiceEndDate('')
-    setPaymentStartDate('')
-    setPaymentEndDate('')
-  }
+      Invoice: "",
+      InvoiceStart: "",
+      InvoiceEnd: "",
+      PaymentStart: "",
+      PaymentEnd: "",
+      PaymentBy: "",
+    });
+    setInvoiceStartDate("");
+    setInvoiceEndDate("");
+    setPaymentStartDate("");
+    setPaymentEndDate("");
+  };
 
   const resetPaymentHandler = () => {
     setpaymentInvoiceSection({
-      Invoice: '',
-      InvoiceStart: '',
-      InvoiceEnd: '',
-      PaymentStart: '',
-      PaymentEnd: '',
-      PaymentBy: '',
-    })
-    setInvoiceStartDate('')
-    setInvoiceEndDate('')
-    setPaymentStartDate('')
-    setPaymentEndDate('')
-    setLateSurcharge(false)
-  }
+      Invoice: "",
+      InvoiceStart: "",
+      InvoiceEnd: "",
+      PaymentStart: "",
+      PaymentEnd: "",
+      PaymentBy: "",
+    });
+    setInvoiceStartDate("");
+    setInvoiceEndDate("");
+    setPaymentStartDate("");
+    setPaymentEndDate("");
+    setLateSurcharge(false);
+  };
 
   const searchPaymentHandler = () => {
-    setPaymentHistoryModal(false)
+    setPaymentHistoryModal(false);
     setpaymentInvoiceSection({
-      Invoice: '',
-      InvoiceStart: '',
-      InvoiceEnd: '',
-      PaymentStart: '',
-      PaymentEnd: '',
-      PaymentBy: '',
-    })
-    setInvoiceStartDate('')
-    setInvoiceEndDate('')
-    setPaymentStartDate('')
-    setPaymentEndDate('')
-    setLateSurcharge(false)
-  }
+      Invoice: "",
+      InvoiceStart: "",
+      InvoiceEnd: "",
+      PaymentStart: "",
+      PaymentEnd: "",
+      PaymentBy: "",
+    });
+    setInvoiceStartDate("");
+    setInvoiceEndDate("");
+    setPaymentStartDate("");
+    setPaymentEndDate("");
+    setLateSurcharge(false);
+  };
   const handlerSearch = () => {
-    if (filterSection.Names !== '' && filterSection.Emails !== '') {
+    if (filterSection.Names !== "" && filterSection.Emails !== "") {
       // if (validationEmail(signUpDetails.Email) === true) {
       //   navigate("/packageselection");
       // } else {
@@ -212,61 +216,61 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       //     message: "Email should be in Email Format",
       //   });
       // }
-      setErrorBar(true)
+      setErrorBar(true);
     } else {
-      setErrorBar(true)
+      setErrorBar(true);
       setOpen({
         ...open,
         open: true,
-        message: 'Please fill all the fields',
-      })
+        message: "Please fill all the fields",
+      });
     }
-  }
+  };
 
   const Option = [
-    { value: 100, title: '100' },
-    { value: 250, title: '250' },
-    { value: 500, title: '500' },
-  ]
+    { value: 100, title: "100" },
+    { value: 250, title: "250" },
+    { value: 500, title: "500" },
+  ];
 
   const EditUserColumn = [
     {
       title: (
-        <span className={styles['tableColLabel']}>{t('Invoice-number')}</span>
+        <span className={styles["tableColLabel"]}>{t("Invoice-number")}</span>
       ),
-      dataIndex: 'InvoiceNo',
-      key: 'InvoiceNo',
-      width: '150px',
+      dataIndex: "InvoiceNo",
+      key: "InvoiceNo",
+      width: "150px",
     },
     {
       title: (
-        <span className={styles['tableColLabel']}>{t('Invoice-date')}</span>
+        <span className={styles["tableColLabel"]}>{t("Invoice-date")}</span>
       ),
-      dataIndex: 'invoiceDate',
-      key: 'invoiceDate',
-      width: '10rem',
+      dataIndex: "invoiceDate",
+      key: "invoiceDate",
+      width: "10rem",
       render: (text, data) => {
-        return <span>{_justShowDateformatBilling(text)}</span>
+        return <span>{_justShowDateformatBilling(text)}</span>;
       },
     },
     {
       title: (
-        <span className={styles['tableColLabel']}>{t('Payment-date')}</span>
+        <span className={styles["tableColLabel"]}>{t("Payment-date")}</span>
       ),
-      dataIndex: 'paymentdate',
-      key: 'paymentdate',
-      width: '10rem',
+      dataIndex: "paymentdate",
+      key: "paymentdate",
+      width: "10rem",
       render: (text, data) => {
-        return <span>{_justShowDateformatBilling(text)}</span>
+        return <span>{_justShowDateformatBilling(text)}</span>;
       },
     },
     {
-      title: t('Paid-amount'),
-      dataIndex: 'paidamount',
-      key: 'paidamount',
-      width: '13rem',
+      title: t("Paid-amount"),
+      dataIndex: "paidamount",
+      key: "paidamount",
+      width: "13rem",
     },
-  ]
+  ];
 
   const dateHandler = (date) => {
     // let name = e.target.name;
@@ -285,40 +289,40 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     //   ...paymentInvoiceSection,
     //   InvoiceStart: e.target.value,
     // });
-  }
+  };
 
   const paymentDateHandler = (e) => {
-    let name = e.target.name
-    let value = e.target.value
-    console.log('eee', name)
+    let name = e.target.name;
+    let value = e.target.value;
+    console.log("eee", name);
 
     setpaymentInvoiceSection({
       ...paymentInvoiceSection,
       [name]: removeDashesFromDate(value),
-    })
-    if (name === 'PaymentEnd') {
-      setPaymentEndDate(value)
+    });
+    if (name === "PaymentEnd") {
+      setPaymentEndDate(value);
     } else {
-      setPaymentStartDate(value)
+      setPaymentStartDate(value);
     }
-  }
+  };
 
   const handleClose = () => {
-    setPaymentHistoryModal(false)
-  }
+    setPaymentHistoryModal(false);
+  };
 
-  const [lateSurcharge, setLateSurcharge] = useState(false)
+  const [lateSurcharge, setLateSurcharge] = useState(false);
 
   function onChangeSurcharge(e) {
-    setLateSurcharge(e.target.checked)
+    setLateSurcharge(e.target.checked);
   }
   useEffect(() => {
     if (OrganizationBillingReducer.getInvoiceAndPaymentHistory !== null) {
       console.log(
         OrganizationBillingReducer,
-        'OrganizationBillingReducer.paymentInfoOrganizationBillingReducer.paymentInfo',
-      )
-      let paymentHistoryData = []
+        "OrganizationBillingReducer.paymentInfoOrganizationBillingReducer.paymentInfo"
+      );
+      let paymentHistoryData = [];
       if (OrganizationBillingReducer.getInvoiceAndPaymentHistory !== null) {
         OrganizationBillingReducer.getInvoiceAndPaymentHistory.paymentInfo.paymentHistory.map(
           (data, index) => {
@@ -327,23 +331,23 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               invoiceDate: data.invoiceDate,
               paymentdate: data.paymentRecieveDate,
               paidamount: data.paidAmount,
-            })
-          },
-        )
+            });
+          }
+        );
       }
-      setRows([...paymentHistoryData])
+      setRows([...paymentHistoryData]);
     }
-  }, [OrganizationBillingReducer.getInvoiceAndPaymentHistory])
+  }, [OrganizationBillingReducer.getInvoiceAndPaymentHistory]);
   useEffect(() => {
-    dispatch(invoiceandpaymenthistory(navigate, t))
-  }, [])
+    dispatch(invoiceandpaymenthistory(navigate, t));
+  }, []);
   return (
     <>
       <Container>
-        <Row className={styles['filterdrow']}>
+        <Row className={styles["filterdrow"]}>
           <Col lg={4} md={4} sm={12} xs={12}>
-            <label className={styles['Edit-Main-Heading']}>
-              {t('Payment-history')}
+            <label className={styles["Edit-Main-Heading"]}>
+              {t("Payment-history")}
             </label>
           </Col>
           <Col
@@ -351,14 +355,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             md={5}
             sm={12}
             xs={12}
-            className={styles['searchbar-textfield']}
+            className={styles["searchbar-textfield"]}
           >
             <Form.Control
-              className={styles['paymenthistory_searchbar']}
+              className={styles["paymenthistory_searchbar"]}
               labelClass="filter"
-              placeholder={t('Invoice-number')}
+              placeholder={t("Invoice-number")}
             />
-            <div className={styles['filterModal']}>
+            <div className={styles["filterModal"]}>
               <img
                 src={Paymenthistoryhamberge}
                 width={20}
@@ -370,17 +374,17 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           <Col lg={3} md={3} sm={false} xs={12} />
         </Row>
 
-        <Row className={styles['tablecolumnrow']}>
+        <Row className={styles["tablecolumnrow"]}>
           <Col lg={12} md={12} sm={12}>
             <Table
               column={EditUserColumn}
               rows={rows}
-              className={styles['paymentHistoryTable']}
-              scroll={{ x: 'max-content' }}
+              className={styles["paymentHistoryTable"]}
+              // scroll={{ x: 'max-content' }}
               pagination={{
                 pageSize: rowSize,
                 showSizeChanger: true,
-                pageSizeOptions: ['100 ', '150', '200'],
+                pageSizeOptions: ["100 ", "150", "200"],
               }}
             />
           </Col>
@@ -389,7 +393,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         <Modal
           show={paymentHistoryModal}
           setShow={() => {
-            setPaymentHistoryModal()
+            setPaymentHistoryModal();
           }}
           onHide={handleClose}
           ButtonTitle={ModalTitle}
@@ -397,7 +401,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           size="md"
           ModalBody={
             <>
-              <Container className={styles['container-payment']}>
+              <Container className={styles["container-payment"]}>
                 <Row className="mt-2">
                   <Col
                     lg={12}
@@ -411,8 +415,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       onKeyDown={(event) => enterHandler(event, InvoiceStart)}
                       name="Invoice"
                       applyClass="form-control2"
-                      className={styles['form-control-textfields']}
-                      placeholder={t('Invoice-number')}
+                      className={styles["form-control-textfields"]}
+                      placeholder={t("Invoice-number")}
                       onChange={EditUserHandler}
                       value={paymentInvoiceSection.Invoice}
                     />
@@ -428,7 +432,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="PaymentHistory-Datpickers"
                   >
                     <span className="modal-labels mt-3 FontArabicRegular">
-                      {t('InvoiceStart')}
+                      {t("Invoice-start")}
                     </span>
                     <DatePicker
                       ref={InvoiceStart}
@@ -437,7 +441,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       onChange={(date) => setInvoiceStartDate(date)}
                       className="form-control"
                       name="InvoiceStart"
-                      placeholder={t('InvoiceStart')}
+                      placeholder={t("InvoiceStart")}
                     />
                   </Col>
                   <Col
@@ -448,7 +452,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="PaymentHistory-Datpickers"
                   >
                     <span className="modal-labels mt-3 FontArabicRegular">
-                      {t('Invoice-end')}
+                      {t("Invoice-end")}
                     </span>
                     <Form.Label className="d-none"></Form.Label>
                     {/* <Form.Control
@@ -471,7 +475,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       onChange={(date) => setInvoiceEndDate(date)}
                       className="form-control"
                       name="InvoiceEnd"
-                      placeholder={t('Invoice-end')}
+                      placeholder={t("Invoice-end")}
                     />
                   </Col>
                 </Row>
@@ -485,7 +489,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="PaymentHistory-Datpickers"
                   >
                     <span className="modal-labels mt-3 FontArabicRegular">
-                      {t('Payment-start')}
+                      {t("Payment-start")}
                     </span>
                     {/* <Form.Control
                         ref={PaymentStart}
@@ -507,7 +511,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       onChange={(date) => setPaymentStartDate(date)}
                       className="form-control"
                       name="PaymentStart"
-                      placeholder={t('Payment-start')}
+                      placeholder={t("Payment-start")}
                     />
                   </Col>
                   <Col
@@ -518,7 +522,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     className="PaymentHistory-Datpickers"
                   >
                     <span className="modal-labels mt-3 FontArabicRegular">
-                      {t('Payment-end')}
+                      {t("Payment-end")}
                     </span>
                     <Form.Label className="d-none"></Form.Label>
                     {/* <Form.Control
@@ -541,7 +545,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       onChange={(date) => setPaymentEndDate(date)}
                       className="form-control"
                       name="PaymentEnd"
-                      placeholder={t('Payment-end')}
+                      placeholder={t("Payment-end")}
                     />
                   </Col>
                 </Row>
@@ -559,7 +563,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       onKeyDown={(event) => enterHandler(event, Invoice)}
                       applyClass="form-control2"
                       // className={"payment-history-select"}
-                      placeholder={t('Payment-by')}
+                      placeholder={t("Payment-by")}
                       value={paymentInvoiceSection.PaymentBy}
                       name="PaymentBy"
                     />
@@ -570,10 +574,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     md={5}
                     sm={12}
                     xs={12}
-                    className="mt-2 d-flex justify-content-end"
+                    className="mt-2 d-flex justify-content-end mt-4"
                   >
-                    <label className={styles['surcharge']}>
-                      {t('With-late-surcharge')}
+                    <label className={styles["surcharge"]}>
+                      {t("With-late-surcharge")}
                     </label>
                   </Col>
 
@@ -602,8 +606,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       className="d-flex justify-content-end"
                     >
                       <Button
-                        text={t('Reset')}
-                        className={styles['icon-PaymentHistory-ResetBtn']}
+                        text={t("Reset")}
+                        className={styles["icon-PaymentHistory-ResetBtn"]}
                         onClick={resetPaymentHandler}
                       />
                     </Col>
@@ -615,8 +619,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       className="d-flex justify-content-end"
                     >
                       <Button
-                        text={t('Search')}
-                        className={styles['icon-PaymentHistory-SearchBtn']}
+                        text={t("Search")}
+                        className={styles["icon-PaymentHistory-SearchBtn"]}
                         onClick={searchPaymentHandler}
                       />
                     </Col>
@@ -630,7 +634,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       </Container>
       {OrganizationBillingReducer.Loading ? <Loader /> : null}
     </>
-  )
-}
+  );
+};
 
-export default EditUser
+export default EditUser;

@@ -215,7 +215,7 @@
   "Client-member": "أعضاء العميل",
   "Successfully-updated": "تم التحديث بنجاح",
   "Delete-user-confirmation": "هل أنت متأكد أنك تريد حذف هذا المستخدم؟",
-  "Invoice-number": "فاتورة  # ",
+  "Invoice-number": ":فاتورة  # ",
   "Invoice-start": "بدء الفاتورة",
   "Invoice-end": "نهاية الفاتورة",
   "Payment-start": "بدء الدفع",
@@ -348,7 +348,7 @@
   "Next-payment-due-date": "تاريخ استحقاق الدفعة التالية:",
   "Account-activity": "نشاط الحساب",
   "Last-payment": "الدفعة الأخيرة",
-  "Payment-received-date": "تاريخ استلام الدفعة",
+  "Payment-received-date": ": تاريخ استلام الدفعة",
   "Paid-amount": "المبلغ المدفوع",
   "Open-invoice": "فتح الفواتير",
   "Due-date": "تاريخ الاستحقاق",
@@ -939,5 +939,6 @@
   "View-note": "مشاهدة الملاحظة",
   "No-resolution-to-display": "No resolution to display",
   "Planning-to-get-a-thought-on-something?": "Planning to get a thought on something?",
-  "Please-add-atleast-one-group-head-and-one-group-member":"Please add atleast one group head and one group member"
+  "Annual-Subscriptions": "الاشتراكات السنوية",
+  "Please-add-atleast-one-group-head-and-one-group-member": "Please add atleast one group head and one group member"
 }

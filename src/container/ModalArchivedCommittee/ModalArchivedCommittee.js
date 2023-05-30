@@ -33,7 +33,7 @@ const ModalArchivedCommittee = ({
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [editdropdown, setEditdropdown] = useState(false);
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const { CommitteeReducer } = useSelector((state) => state);
@@ -81,7 +81,9 @@ const ModalArchivedCommittee = ({
   useEffect(() => {
     if (
       CommitteeReducer.GetAllCommitteesByUserIDResponse !== null &&
-      CommitteeReducer.GetAllCommitteesByUserIDResponse.length > 0
+      CommitteeReducer.GetAllCommitteesByUserIDResponse.length > 0 &&
+      CommitteeReducer.GetAllCommitteesByUserIDResponse !==
+        t("No-data-available")
     ) {
       let newArr = [];
       let filterItems =
@@ -313,41 +315,46 @@ const ModalArchivedCommittee = ({
           }
           ModalFooter={
             <>
-              <Row className="d-flex">
-                <Col lg={4} md={4} sm={4}></Col>
-                <Col lg={4} md={4} sm={4}>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center  "
-                  >
-                    <Container
-                      className={
-                        styles["PaginationStyle-Committee-Archived_modal"]
-                      }
-                    >
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={"pagination-groups-table"}
+              {getcommitteedata.length > 0 &&
+              Object.values(getcommitteedata).length > 0 ? (
+                <>
+                  <Row className="d-flex">
+                    <Col lg={4} md={4} sm={4}></Col>
+                    <Col lg={4} md={4} sm={4}>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-center  "
+                      >
+                        <Container
+                          className={
+                            styles["PaginationStyle-Committee-Archived_modal"]
+                          }
                         >
-                          <Pagination
-                            defaultCurrent={currentposts}
-                            total={pagedata}
-                            current={currentPage}
-                            onChange={handlechange}
-                          />
-                          ;
-                        </Col>
-                      </Row>
-                    </Container>
-                  </Col>
-                </Col>
-                <Col lg={4} md={4} sm={4}></Col>
-              </Row>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={"pagination-groups-table"}
+                            >
+                              <Pagination
+                                defaultCurrent={currentposts}
+                                total={pagedata}
+                                current={currentPage}
+                                onChange={handlechange}
+                              />
+                              ;
+                            </Col>
+                          </Row>
+                        </Container>
+                      </Col>
+                    </Col>
+                    <Col lg={4} md={4} sm={4}></Col>
+                  </Row>
+                </>
+              ) : null}
             </>
           }
         />

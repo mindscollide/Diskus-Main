@@ -171,7 +171,8 @@ const Notes = () => {
   useEffect(() => {
     if (
       NotesReducer.ResponseMessage !== "" &&
-      NotesReducer.ResponseMessage !== "Data available"
+      NotesReducer.ResponseMessage !== t("Data-available") &&
+      NotesReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({
         ...open,
@@ -196,7 +197,8 @@ const Notes = () => {
     if (
       NotesReducer.ResponseMessage !== "" &&
       NotesReducer.ResponseMessage.toLowerCase() !==
-        "Data Available".toLowerCase()
+        t("Data-available").toLowerCase() &&
+      NotesReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({
         open: true,
