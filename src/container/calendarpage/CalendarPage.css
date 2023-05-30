@@ -394,8 +394,8 @@ body[dir="rtl"] button.btn.calendar-today.btn.btn-primary {
   display: none !important;
 }
 .Calendar_CreateBtn button {
-  width: 192px;
-  height: 39px;
+  width: 160px;
+  height: 31px;
   font-family: "MontserratSemiBold-600" !important;
   color: #fff !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
@@ -410,14 +410,14 @@ body[dir="rtl"] .Calendar_CreateBtn button {
 
 .Calendar_CreateBtn .dropdown-toggle.btn.btn-primary {
   border: none !important;
-  height: 46px !important;
+  height: 31px !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
 .Calendar_CreateBtn .dropdown-menu.show {
   padding: 0 !important;
-  width: 190px;
+  width: 140px;
   padding: 0 10px !important;
   margin: 0 !important;
   transform: translate(0px, 45px);
@@ -427,7 +427,7 @@ body[dir="rtl"] .Calendar_CreateBtn button {
 }
 body[dir="rtl"] .Calendar_CreateBtn .dropdown-menu.show {
   padding: 0 !important;
-  width: 190px;
+  width: 160px;
   padding: 0 10px !important;
   margin: 0 !important;
   transform: translateY(0px, 45px) !important;
@@ -440,7 +440,7 @@ body[dir="rtl"] .Calendar_CreateBtn .dropdown-menu.show {
   padding: 10px 10px;
   font-family: "MontserratSemiBold-600" !important;
   text-align: center;
-  font-size: 12px !important;
+  font-size: 11px !important;
 }
 
 body[dir="rtl"] .Calendar_CreateBtn .dropdown-menu.show .dropdown-item {
@@ -495,4 +495,20 @@ body[dir="rtl"] .Calender-heading {
   font-size: 15px !important;
   font-family: "MontserratSemiBold";
   color: #5f78d6 !important;
+}
+
+.Create_title {
+  margin-right: 90px !important;
+}
+
+.heading_button {
+  margin-left: 20px !important;
+}
+
+body[dir="rtl"] .heading_button {
+  margin-right: 17px !important;
+}
+
+.Calendar_CreateBtn {
+  margin-top: 10px !important;
 }
