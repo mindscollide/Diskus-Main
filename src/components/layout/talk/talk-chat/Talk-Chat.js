@@ -146,6 +146,9 @@ const TalkChat = () => {
   //Scroll down state
   const chatMessages = useRef()
 
+  //Chat Message Feature
+  const chatMessageRefs = useRef()
+
   //search chat states
   const [searchChatValue, setSearchChatValue] = useState('')
   const [allChatData, setAllChatData] = useState([])
@@ -542,7 +545,7 @@ const TalkChat = () => {
     }
   }
 
-  const [uploadFileTalk, setUploadFileTalk] = useState([])
+  const [uploadFileTalk, setUploadFileTalk] = useState({})
 
   //File Upload click Function
   const fileUploadTalk = (data) => {
@@ -590,19 +593,16 @@ const TalkChat = () => {
         }
       }
     }
-    setTasksAttachments({ ['TasksAttachments']: file })
+    // setTasksAttachments({ ['TasksAttachments']: file })
     setUploadOptions(false)
     setUploadFileTalk(uploadedFile)
   }
 
   //Delete uploaded File
   const deleteFilefromAttachments = (data, index) => {
-    let searchIndex = tasksAttachments.TasksAttachments
+    let searchIndex = uploadFileTalk
     searchIndex.splice(index, 1)
-    setTasksAttachments({
-      ...tasksAttachments,
-      ['TasksAttachments']: searchIndex,
-    })
+    setUploadFileTalk(searchIndex)
   }
 
   //ChatFilter Selection Handler
@@ -1521,7 +1521,7 @@ const TalkChat = () => {
     setShowCheckboxes(false)
     forwardUsersChecked?.map((user) => {
       let { id, type } = user
-      if (type == 'U') {
+      if (type == 'O') {
         messagesChecked?.map((message) =>
           dispatch(
             InsertOTOMessages(
@@ -1532,7 +1532,7 @@ const TalkChat = () => {
                 id,
                 message.messageBody,
               ),
-              tasksAttachments.TasksAttachments,
+              uploadFileTalk,
               t,
             ),
           ),
@@ -3092,6 +3092,13 @@ const TalkChat = () => {
     ) {
       setUploadOptions(false)
     }
+    if (
+      chatMessageRefs.current &&
+      !chatMessageRefs.current.contains(event.target) &&
+      chatFeatureActive
+    ) {
+      setChatFeatureActive(false)
+    }
   }
 
   useEffect(() => {
@@ -3099,7 +3106,7 @@ const TalkChat = () => {
     return () => {
       document.removeEventListener('click', handleOutsideClick)
     }
-  }, [chatMenuActive, emojiActive, uploadOptions])
+  }, [chatMenuActive, emojiActive, uploadOptions, chatFeatureActive])
 
   useEffect(() => {
     if (emojiSelected) {
@@ -3115,6 +3122,13 @@ const TalkChat = () => {
       inputRef.current.focus()
     }
   }, [inputChat])
+
+  console.log(
+    'uploadFileTalk',
+    uploadFileTalk,
+    Object.keys(uploadFileTalk).length,
+    typeof uploadFileTalk,
+  )
 
   return (
     <>
@@ -4876,6 +4890,7 @@ const TalkChat = () => {
                                                 messageData.messageID,
                                               )
                                             }
+                                            ref={chatMessageRefs}
                                           >
                                             <img
                                               className="dropdown-icon"
@@ -5115,6 +5130,7 @@ const TalkChat = () => {
                                               messageData.messageID,
                                             )
                                           }
+                                          ref={chatMessageRefs}
                                         >
                                           <img
                                             className="dropdown-icon"
@@ -5284,6 +5300,7 @@ const TalkChat = () => {
                                               messageData.messageID,
                                             )
                                           }
+                                          ref={chatMessageRefs}
                                         >
                                           <img
                                             className="dropdown-icon"
@@ -5502,6 +5519,7 @@ const TalkChat = () => {
                                               messageData.messageID,
                                             )
                                           }
+                                          ref={chatMessageRefs}
                                         >
                                           <img
                                             className="dropdown-icon"
@@ -6077,53 +6095,46 @@ const TalkChat = () => {
                       >
                         {showCheckboxes === false ? (
                           <>
-                            {tasksAttachments.TasksAttachments.length > 0 ? (
+                            {Object.keys(uploadFileTalk).length > 0 ? (
                               <div className="uploaded-file-section">
                                 <div className="file-upload">
                                   <Row>
-                                    {tasksAttachments.TasksAttachments.length >
-                                    0
-                                      ? tasksAttachments.TasksAttachments.map(
-                                          (data, index) => {
-                                            var ext = data.DisplayAttachmentName.split(
-                                              '.',
-                                            ).pop()
+                                    {Object.keys(uploadFileTalk).length > 0
+                                      ? uploadFileTalk.map((data, index) => {
+                                          var ext = data.name.split('.').pop()
 
-                                            const first = data.DisplayAttachmentName.split(
-                                              ' ',
-                                            )[0]
-                                            return (
-                                              <Col
-                                                sm={12}
-                                                lg={3}
-                                                md={3}
-                                                className="chat-upload-icon"
-                                              >
+                                          const first = data.name.split(' ')[0]
+                                          return (
+                                            <Col
+                                              sm={12}
+                                              lg={3}
+                                              md={3}
+                                              className="chat-upload-icon"
+                                            >
+                                              <img
+                                                src={DocumentIcon}
+                                                className="attachment-icon"
+                                                extension={ext}
+                                              />
+                                              <p className="chat-upload-text">
+                                                {first}
+                                              </p>
+                                              <div className="delete-uplaoded-file">
                                                 <img
-                                                  src={DocumentIcon}
-                                                  className="attachment-icon"
-                                                  extension={ext}
+                                                  src={DeleteUploadIcon}
+                                                  className="delete-upload-file"
+                                                  onClick={() =>
+                                                    deleteFilefromAttachments(
+                                                      data,
+                                                      index,
+                                                    )
+                                                  }
+                                                  alt=""
                                                 />
-                                                <p className="chat-upload-text">
-                                                  {first}
-                                                </p>
-                                                <div className="delete-uplaoded-file">
-                                                  <img
-                                                    src={DeleteUploadIcon}
-                                                    className="delete-upload-file"
-                                                    onClick={() =>
-                                                      deleteFilefromAttachments(
-                                                        data,
-                                                        index,
-                                                      )
-                                                    }
-                                                    alt=""
-                                                  />
-                                                </div>
-                                              </Col>
-                                            )
-                                          },
-                                        )
+                                              </div>
+                                            </Col>
+                                          )
+                                        })
                                       : null}
                                   </Row>
                                 </div>
