@@ -593,16 +593,29 @@ const TalkChat = () => {
         }
       }
     }
-    // setTasksAttachments({ ['TasksAttachments']: file })
+    file.push({
+      DisplayAttachmentName: uploadedFile.name,
+      OriginalAttachmentName: uploadFilePath,
+    })
+    setTasksAttachments({ ['TasksAttachments']: file })
     setUploadOptions(false)
     setUploadFileTalk(uploadedFile)
   }
 
   //Delete uploaded File
+  // const deleteFilefromAttachments = (data, index) => {
+  //   let searchIndex = uploadFileTalk
+  //   searchIndex.splice(index, 1)
+  //   setUploadFileTalk(searchIndex)
+  // }
   const deleteFilefromAttachments = (data, index) => {
-    let searchIndex = uploadFileTalk
+    let searchIndex = tasksAttachments.TasksAttachments
     searchIndex.splice(index, 1)
-    setUploadFileTalk(searchIndex)
+    setTasksAttachments({
+      ...tasksAttachments,
+      ['TasksAttachments']: searchIndex,
+    })
+    setUploadFileTalk({})
   }
 
   //ChatFilter Selection Handler
@@ -3123,12 +3136,7 @@ const TalkChat = () => {
     }
   }, [inputChat])
 
-  console.log(
-    'uploadFileTalk',
-    uploadFileTalk,
-    Object.keys(uploadFileTalk).length,
-    typeof uploadFileTalk,
-  )
+  console.log('File Upload States', tasksAttachments, uploadFileTalk)
 
   return (
     <>
@@ -6095,46 +6103,53 @@ const TalkChat = () => {
                       >
                         {showCheckboxes === false ? (
                           <>
-                            {Object.keys(uploadFileTalk).length > 0 ? (
+                            {tasksAttachments.TasksAttachments.length > 0 ? (
                               <div className="uploaded-file-section">
                                 <div className="file-upload">
                                   <Row>
-                                    {Object.keys(uploadFileTalk).length > 0
-                                      ? uploadFileTalk.map((data, index) => {
-                                          var ext = data.name.split('.').pop()
+                                    {tasksAttachments.TasksAttachments.length >
+                                    0
+                                      ? tasksAttachments.TasksAttachments.map(
+                                          (data, index) => {
+                                            var ext = data.DisplayAttachmentName.split(
+                                              '.',
+                                            ).pop()
 
-                                          const first = data.name.split(' ')[0]
-                                          return (
-                                            <Col
-                                              sm={12}
-                                              lg={3}
-                                              md={3}
-                                              className="chat-upload-icon"
-                                            >
-                                              <img
-                                                src={DocumentIcon}
-                                                className="attachment-icon"
-                                                extension={ext}
-                                              />
-                                              <p className="chat-upload-text">
-                                                {first}
-                                              </p>
-                                              <div className="delete-uplaoded-file">
+                                            const first = data.DisplayAttachmentName.split(
+                                              ' ',
+                                            )[0]
+                                            return (
+                                              <Col
+                                                sm={12}
+                                                lg={3}
+                                                md={3}
+                                                className="chat-upload-icon"
+                                              >
                                                 <img
-                                                  src={DeleteUploadIcon}
-                                                  className="delete-upload-file"
-                                                  onClick={() =>
-                                                    deleteFilefromAttachments(
-                                                      data,
-                                                      index,
-                                                    )
-                                                  }
-                                                  alt=""
+                                                  src={DocumentIcon}
+                                                  className="attachment-icon"
+                                                  extension={ext}
                                                 />
-                                              </div>
-                                            </Col>
-                                          )
-                                        })
+                                                <p className="chat-upload-text">
+                                                  {first}
+                                                </p>
+                                                <div className="delete-uplaoded-file">
+                                                  <img
+                                                    src={DeleteUploadIcon}
+                                                    className="delete-upload-file"
+                                                    onClick={() =>
+                                                      deleteFilefromAttachments(
+                                                        data,
+                                                        index,
+                                                      )
+                                                    }
+                                                    alt=""
+                                                  />
+                                                </div>
+                                              </Col>
+                                            )
+                                          },
+                                        )
                                       : null}
                                   </Row>
                                 </div>
