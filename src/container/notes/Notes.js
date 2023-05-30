@@ -222,11 +222,19 @@ const Notes = () => {
   return (
     <>
       <Col className={styles["notescontainer"]}>
-        <Row className="mt-4 d-flex align-items-center">
-          <Col md={12} sm={12} lg={12} className="d-flex gap-4">
+        <Row className="mt-3">
+          <Col md={2} sm={2} lg={2}>
             <h1 className={styles["notes-heading-size"]}>{t("Notes")}</h1>
+          </Col>
+          <Col
+            lg={10}
+            md={10}
+            sm={10}
+            className="d-flex justify-content-start mt-0 "
+          >
             <Button
               text={t("Create-new-note")}
+              icon={<Plus width={20} height={20} fontWeight={800} />}
               className={styles["create-note-btn"]}
               onClick={modalAddUserModal}
             />

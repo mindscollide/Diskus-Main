@@ -9,6 +9,7 @@ import {
 } from "./../../components/elements";
 import { ChevronBarDown, ChevronDown } from "react-bootstrap-icons";
 import "./CalendarPage.css";
+import { Plus } from "react-bootstrap-icons";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import { getCalendarDataResponse } from "../../store/actions/GetDataForCalendar";
@@ -37,7 +38,7 @@ const CalendarPage = () => {
   //For Localization
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const state = useSelector((state) => state);
   const [meetingModalShow, setMeetingModalShow] = useState(false);
   const [todolistModalShow, setTodolistModalShow] = useState(false);
@@ -55,7 +56,7 @@ const CalendarPage = () => {
   const [calenderData, setCalenderDatae] = useState([]);
   console.log("assignees", assignees);
   const [calendarView, setCalendarView] = useState(false);
-  const [calendarViewModal, setCalendarViewModal] = useState(false)
+  const [calendarViewModal, setCalendarViewModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [defaultValue, setDefaultValue] = useState("");
   console.log("calendarReducer", calendarReducer.CalenderData);
@@ -69,7 +70,17 @@ const CalendarPage = () => {
   // for view modal  handler
   const viewModalHandler = async (value) => {
     let Data = { MeetingID: parseInt(value.id) };
-    await dispatch(ViewMeeting(navigate, Data, t, setViewFlag, setEditFlag, setCalendarViewModal, 3));
+    await dispatch(
+      ViewMeeting(
+        navigate,
+        Data,
+        t,
+        setViewFlag,
+        setEditFlag,
+        setCalendarViewModal,
+        3
+      )
+    );
   };
 
   function onChange(value) {
@@ -188,11 +199,11 @@ const CalendarPage = () => {
   };
 
   //click handler for create events button
-  const eventClickHandler = () => { };
+  const eventClickHandler = () => {};
 
   console.log("handleAddEventhandleAddEvent 4", open);
 
-  useEffect(() => { }, [defaultValue]);
+  useEffect(() => {}, [defaultValue]);
 
   function handleAddEvent() {
     setOpen(true);
@@ -438,37 +449,45 @@ const CalendarPage = () => {
             <span className="Calender-heading">{t("Calendar")}</span>
           </Col>
           <Col
-            lg={10}
-            md={10}
+            lg={3}
+            md={3}
             sm={12}
             xs={12}
-            className=" mt-2 d-flex justify-content-start"
+            className=" mt-2 d-flex justify-content-center"
           >
-            <Dropdown
-              className="Calendar_CreateBtn"
-              onClick={eventClickHandler}
-              align={"start"}
-            >
-              <Dropdown.Toggle title={t("Create")}>
-                {t("Create")}
-                <ChevronDown />
-              </Dropdown.Toggle>
-              {/* <ChevronDown /> */}
-              <Dropdown.Menu>
-                <Dropdown.Item
-                  className="dropdown-item"
-                  onClick={handleCreateMeeting}
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <Dropdown
+                  className="Calendar_CreateBtn"
+                  onClick={eventClickHandler}
+                  align={"start"}
                 >
-                  {t("Schedule-a-meeting")}
-                </Dropdown.Item>
-                <Dropdown.Item
-                  className="dropdown-item"
-                  onClick={handleCreateTodo}
-                >
-                  {t("Create-a-to-do-list")}
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+                  <Dropdown.Toggle title={t("Create")}>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="heading_button">
+                        <Plus width={20} height={20} fontWeight={800} />
+                        <span>{t("Create")}</span>
+                      </Col>
+                    </Row>
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      className="dropdown-item"
+                      onClick={handleCreateMeeting}
+                    >
+                      {t("Schedule-a-meeting")}
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      className="dropdown-item"
+                      onClick={handleCreateTodo}
+                    >
+                      {t("Create-a-to-do-list")}
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </Col>
+            </Row>
           </Col>
         </Row>
         <Row>
@@ -498,7 +517,10 @@ const CalendarPage = () => {
       ) : toDoListReducer.Loading ? (
         <Loader />
       ) : null}
-      <ModalView viewFlag={calendarViewModal} setViewFlag={setCalendarViewModal} />
+      <ModalView
+        viewFlag={calendarViewModal}
+        setViewFlag={setCalendarViewModal}
+      />
       <ModalMeeting
         calenderFlag={true}
         show={meetingModalShow}
