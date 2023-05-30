@@ -20,8 +20,8 @@ body[dir="rtl"] .Details_New_resolution {
 }
 
 .Create_new_resolution_paper {
-  width: 100% !important;
-  height: auto !important;
+  width: 1429px !important;
+  height: 720px !important;
   padding: 35px 47px !important;
 }
 
@@ -67,8 +67,7 @@ body[dir="rtl"] .Reminder {
 
 .Voters_Btn_Createresolution {
   padding: 6px 12px !important;
-  height: 31px !important;
-  font-size: calc(14px - 20%);
+  font-size: 12px !important;
   background: #fff !important;
   font-family: "MontserratSemiBold";
   color: #5a5a5a !important;
@@ -84,7 +83,6 @@ body[dir="rtl"] .Voters_Btn_Createresolution {
 .Voters_Btn_Createresolution:focus-visible,
 .Voters_Btn_Createresolution:hover {
   padding: 6px 12px !important;
-  height: 31px !important;
   font-size: 12px !important;
   background: #fff !important;
   font-family: "MontserratSemiBold";
@@ -95,8 +93,7 @@ body[dir="rtl"] .Voters_Btn_Createresolution {
 
 .Voters_Btn_Createresolution_Active {
   padding: 6px 12px !important;
-  height: 31px !important;
-  font-size: calc(14px - 20%);
+  font-size: 12px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
@@ -111,8 +108,7 @@ body[dir="rtl"] .Voters_Btn_Createresolution_Active {
 
 .Non_Voters_Btn_Createresolution {
   padding: 6px 12px !important;
-  height: 31px !important;
-  font-size: calc(14px - 20%);
+  font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold" !important;
@@ -126,8 +122,7 @@ body[dir="rtl"] .Non_Voters_Btn_Createresolution {
 
 .Non_Voters_Btn_Createresolution_Active {
   padding: 6px 12px !important;
-  height: 31px !important;
-  font-size: calc(14px - 20%);
+  font-size: 12px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
@@ -144,8 +139,7 @@ body[dir="rtl"] .Non_Voters_Btn_Createresolution_Active {
 .Non_Voters_Btn_Createresolution:focus,
 .Non_Voters_Btn_Createresolution:focus-visible {
   padding: 6px 12px !important;
-  height: 31px !important;
-  font-size: calc(14px - 20%);
+  font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold" !important;
@@ -304,7 +298,6 @@ body[dir="rtl"] .Save_button_Createresolution {
 body[dir="rtl"] .circulate_button_Createresolution {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
-
 .circulate_button_Createresolution:hover,
 .circulate_button_Createresolution:focus,
 .circulate_button_Createresolution:focus-visible,
