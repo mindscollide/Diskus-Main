@@ -90,7 +90,7 @@ const DataRoom = () => {
   const [progress, setProgress] = useState(0);
   const text = <span>Share</span>;
   const Deltooltip = <span>Delete</span>;
-  const eventClickHandler = () => { };
+  const eventClickHandler = () => {};
   const { t } = useTranslation();
   const { uploadReducer, DataRoomReducer } = useSelector((state) => state);
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -501,23 +501,23 @@ const DataRoom = () => {
     setSearchoptions(true);
   };
   const searchbardropdownShow = () => {
-    setSearchbarshow(!searchbarshow)
-  }
+    setSearchbarshow(!searchbarshow);
+  };
   const SharewithmeButonShow = async () => {
-    await dispatch(getDocumentsAndFolderApi(navigate, 2, t))
-    setSharemebtn(true)
-    setSharedwithmebtn(true)
-    setMydocumentbtnactive(false)
-    localStorage.removeItem("folderID")
-  }
+    await dispatch(getDocumentsAndFolderApi(navigate, 2, t));
+    setSharemebtn(true);
+    setSharedwithmebtn(true);
+    setMydocumentbtnactive(false);
+    localStorage.removeItem("folderID");
+  };
 
   const MydocumentButtonShow = async () => {
-    await dispatch(getDocumentsAndFolderApi(navigate, 1, t))
-    localStorage.removeItem("folderID")
-    setSharemebtn(false)
-    setMydocumentbtnactive(true)
-    setSharedwithmebtn(false)
-  }
+    await dispatch(getDocumentsAndFolderApi(navigate, 1, t));
+    localStorage.removeItem("folderID");
+    setSharemebtn(false);
+    setMydocumentbtnactive(true);
+    setSharedwithmebtn(false);
+  };
   const showCancellUploadModal = () => {
     setCanceluploadmodal(true);
   };
@@ -1622,7 +1622,7 @@ const DataRoom = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className="dropdown-item"
-                    // onClick={handleCreateTodo}
+                      // onClick={handleCreateTodo}
                     >
                       <Row className="mt-1">
                         <Col
@@ -1641,8 +1641,8 @@ const DataRoom = () => {
                       </Row>
                     </Dropdown.Item>
                     <Dropdown.Item
-                      className="dropdown-item"
-                    // onClick={handleCreateTodo}
+                      className="dropdown-item_folder"
+                      // onClick={handleCreateTodo}
                     >
                       <Row className="mt-1">
                         <Col
@@ -1820,7 +1820,7 @@ const DataRoom = () => {
                         >
                           <span
                             className={styles["Clear_All_btn"]}
-                          // onClick={CleatingSearchOptions}
+                            // onClick={CleatingSearchOptions}
                           >
                             {t("Clear-all")}
                           </span>
@@ -1833,9 +1833,9 @@ const DataRoom = () => {
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
                           {getAllData.length > 0 &&
-                            getAllData !== undefined &&
-                            getAllData !== null &&
-                            gridbtnactive ? (
+                          getAllData !== undefined &&
+                          getAllData !== null &&
+                          gridbtnactive ? (
                             <>
                               <GridViewDataRoom data={getAllData} />
                             </>
@@ -1902,9 +1902,9 @@ const DataRoom = () => {
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
                           {getAllData.length > 0 &&
-                            getAllData !== undefined &&
-                            getAllData !== null &&
-                            gridbtnactive ? (
+                          getAllData !== undefined &&
+                          getAllData !== null &&
+                          gridbtnactive ? (
                             <>
                               <GridViewDataRoom data={getAllData} />
 
@@ -1966,15 +1966,15 @@ const DataRoom = () => {
                                                 src={chevdown}
                                                 width={9}
 
-                                              // width="8.49px"
-                                              // height="4.46px"
+                                                // width="8.49px"
+                                                // height="4.46px"
                                               />
                                               <img
                                                 src={Cancellicon}
                                                 width={9}
                                                 onClick={closeSearchBar}
-                                              // width="6.94px"
-                                              // height="6.71px"
+                                                // width="6.94px"
+                                                // height="6.71px"
                                               />
                                             </Col>
                                           </Row>
@@ -1992,53 +1992,53 @@ const DataRoom = () => {
                                           {Object.values(tasksAttachments)
                                             .length > 0
                                             ? Object.values(
-                                              tasksAttachments
-                                            ).map((data, index) => {
-                                              console.log(
-                                                data,
-                                                "datadatadatadatadatadatadatadatadata"
-                                              );
-                                              return (
-                                                <>
-                                                  <Col
-                                                    lg={12}
-                                                    md={12}
-                                                    sm={12}
-                                                    className="d-flex gap-1 mt-2 flex-column"
-                                                  >
-                                                    <Space
-                                                      direction="vertical"
-                                                      className="d-flex flex-row"
+                                                tasksAttachments
+                                              ).map((data, index) => {
+                                                console.log(
+                                                  data,
+                                                  "datadatadatadatadatadatadatadatadata"
+                                                );
+                                                return (
+                                                  <>
+                                                    <Col
+                                                      lg={12}
+                                                      md={12}
+                                                      sm={12}
+                                                      className="d-flex gap-1 mt-2 flex-column"
                                                     >
-                                                      <img
-                                                        src={PDFICON}
-                                                        height="16px"
-                                                        width="16px"
-                                                        className={
-                                                          styles[
-                                                          "Icon_in_Bar"
-                                                          ]
-                                                        }
-                                                      />
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                          "name_of_life_in_Bar"
-                                                          ]
-                                                        }
+                                                      <Space
+                                                        direction="vertical"
+                                                        className="d-flex flex-row"
                                                       >
-                                                        {data.name}
-                                                      </span>
-                                                    </Space>
-                                                    {progress > 0 && (
-                                                      <Progress
-                                                        percent={progress}
-                                                      />
-                                                    )}
-                                                  </Col>
-                                                </>
-                                              );
-                                            })
+                                                        <img
+                                                          src={PDFICON}
+                                                          height="16px"
+                                                          width="16px"
+                                                          className={
+                                                            styles[
+                                                              "Icon_in_Bar"
+                                                            ]
+                                                          }
+                                                        />
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "name_of_life_in_Bar"
+                                                            ]
+                                                          }
+                                                        >
+                                                          {data.name}
+                                                        </span>
+                                                      </Space>
+                                                      {progress > 0 && (
+                                                        <Progress
+                                                          percent={progress}
+                                                        />
+                                                      )}
+                                                    </Col>
+                                                  </>
+                                                );
+                                              })
                                             : null}
                                         </Col>
                                       </Row>
@@ -2058,10 +2058,15 @@ const DataRoom = () => {
                                 className={styles["DataRoom_Table"]}
                                 rows={getAllData}
                                 rowSelection={{
-                                  type: 'checkbox',
-                                  onSelect: (record) => { console.log(record, "rowSelectionrowSelectionrowSelection") }
+                                  type: "checkbox",
+                                  onSelect: (record) => {
+                                    console.log(
+                                      record,
+                                      "rowSelectionrowSelectionrowSelection"
+                                    );
+                                  },
                                 }}
-                                size={'middle'}
+                                size={"middle"}
                               />
                               {showbarupload ? (
                                 <>
@@ -2121,15 +2126,15 @@ const DataRoom = () => {
                                                 src={chevdown}
                                                 width={9}
 
-                                              // width="8.49px"
-                                              // height="4.46px"
+                                                // width="8.49px"
+                                                // height="4.46px"
                                               />
                                               <img
                                                 src={Cancellicon}
                                                 width={9}
                                                 onClick={closeSearchBar}
-                                              // width="6.94px"
-                                              // height="6.71px"
+                                                // width="6.94px"
+                                                // height="6.71px"
                                               />
                                             </Col>
                                           </Row>
@@ -2147,53 +2152,53 @@ const DataRoom = () => {
                                           {Object.values(tasksAttachments)
                                             .length > 0
                                             ? Object.values(
-                                              tasksAttachments
-                                            ).map((data, index) => {
-                                              console.log(
-                                                data,
-                                                "datadatadatadatadatadatadatadatadata"
-                                              );
-                                              return (
-                                                <>
-                                                  <Col
-                                                    lg={12}
-                                                    md={12}
-                                                    sm={12}
-                                                    className="d-flex gap-1 mt-2 flex-column"
-                                                  >
-                                                    <Space
-                                                      direction="vertical"
-                                                      className="d-flex flex-row"
+                                                tasksAttachments
+                                              ).map((data, index) => {
+                                                console.log(
+                                                  data,
+                                                  "datadatadatadatadatadatadatadatadata"
+                                                );
+                                                return (
+                                                  <>
+                                                    <Col
+                                                      lg={12}
+                                                      md={12}
+                                                      sm={12}
+                                                      className="d-flex gap-1 mt-2 flex-column"
                                                     >
-                                                      <img
-                                                        src={PDFICON}
-                                                        height="16px"
-                                                        width="16px"
-                                                        className={
-                                                          styles[
-                                                          "Icon_in_Bar"
-                                                          ]
-                                                        }
-                                                      />
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                          "name_of_life_in_Bar"
-                                                          ]
-                                                        }
+                                                      <Space
+                                                        direction="vertical"
+                                                        className="d-flex flex-row"
                                                       >
-                                                        {data.name}
-                                                      </span>
-                                                    </Space>
-                                                    {progress > 0 && (
-                                                      <Progress
-                                                        percent={progress}
-                                                      />
-                                                    )}
-                                                  </Col>
-                                                </>
-                                              );
-                                            })
+                                                        <img
+                                                          src={PDFICON}
+                                                          height="16px"
+                                                          width="16px"
+                                                          className={
+                                                            styles[
+                                                              "Icon_in_Bar"
+                                                            ]
+                                                          }
+                                                        />
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "name_of_life_in_Bar"
+                                                            ]
+                                                          }
+                                                        >
+                                                          {data.name}
+                                                        </span>
+                                                      </Space>
+                                                      {progress > 0 && (
+                                                        <Progress
+                                                          percent={progress}
+                                                        />
+                                                      )}
+                                                    </Col>
+                                                  </>
+                                                );
+                                              })
                                             : null}
                                         </Col>
                                       </Row>
