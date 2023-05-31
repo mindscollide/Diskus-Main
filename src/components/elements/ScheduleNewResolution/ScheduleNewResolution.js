@@ -174,6 +174,8 @@ const ScheduleNewResolution = ({
   console.log("emailValueemailValueemailValue", emailValue);
   const [isNonVoter, setNonVoter] = useState(false);
   const [resolutioncancel, setResolutioncancel] = useState(false);
+  const [fileSize, setFileSize] = useState(0);
+  const [fileForSend, setFileForSend] = useState([]);
   const [showmodal, setShowmodal] = useState(false);
   const [resolutionupdate, setResolutionupdate] = useState(false);
   const [discardresolution, setDsicardresolution] = useState(false);
@@ -337,11 +339,16 @@ const ScheduleNewResolution = ({
   };
 
   const deleteFilefromAttachments = (data, index) => {
+    let fileSizefound = fileSize - data.fileSize;
+    let fileForSendingIndex = fileForSend.findIndex((newData, index) => newData.name === data.DisplayAttachmentName)
+    fileForSend.splice(fileForSendingIndex, 1)
+    setFileForSend(fileForSend)
+    setFileSize(fileSizefound)
     let searchIndex = tasksAttachments;
     searchIndex.splice(index, 1);
     setTasksAttachments([...tasksAttachments]);
   };
-
+  console.log(tasksAttachments, fileForSend, fileSize, "checkingelemnaiteFile")
   const addVoters = () => {
     let findVoter = voters.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo
@@ -555,7 +562,7 @@ const ScheduleNewResolution = ({
     showUploadList: false,
     onChange(data) {
       const { status } = data.file;
-
+      let fileSizeArr;
       if (tasksAttachments.length > 9) {
         setOpen({
           flag: true,
@@ -600,7 +607,16 @@ const ScheduleNewResolution = ({
             3000
           );
         } else {
-          dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
+          let file = {
+            DisplayAttachmentName: data.file.name,
+            OriginalAttachmentName: data.file.name,
+            fileSize: data.file.originFileObj.size
+          }
+          setTasksAttachments([...tasksAttachments, file])
+          fileSizeArr = data.file.originFileObj.size + fileSize;
+          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileSize(fileSizeArr);
+          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
         }
       } else {
         let sizezero;
@@ -627,7 +643,16 @@ const ScheduleNewResolution = ({
             3000
           );
         } else {
-          dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
+          let file = {
+            DisplayAttachmentName: data.file.name,
+            OriginalAttachmentName: data.file.name,
+            fileSize: data.file.originFileObj.size
+          }
+          setTasksAttachments([...tasksAttachments, file])
+          fileSizeArr = data.file.originFileObj.size + fileSize;
+          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileSize(fileSizeArr);
+          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
         }
       }
     },
