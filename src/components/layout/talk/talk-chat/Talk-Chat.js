@@ -146,6 +146,9 @@ const TalkChat = () => {
   //Scroll down state
   const chatMessages = useRef()
 
+  //Chat Message Feature
+  const chatMessageRefs = useRef()
+
   //search chat states
   const [searchChatValue, setSearchChatValue] = useState('')
   const [allChatData, setAllChatData] = useState([])
@@ -542,7 +545,7 @@ const TalkChat = () => {
     }
   }
 
-  const [uploadFileTalk, setUploadFileTalk] = useState([])
+  const [uploadFileTalk, setUploadFileTalk] = useState({})
 
   //File Upload click Function
   const fileUploadTalk = (data) => {
@@ -590,12 +593,21 @@ const TalkChat = () => {
         }
       }
     }
+    file.push({
+      DisplayAttachmentName: uploadedFile.name,
+      OriginalAttachmentName: uploadFilePath,
+    })
     setTasksAttachments({ ['TasksAttachments']: file })
     setUploadOptions(false)
     setUploadFileTalk(uploadedFile)
   }
 
   //Delete uploaded File
+  // const deleteFilefromAttachments = (data, index) => {
+  //   let searchIndex = uploadFileTalk
+  //   searchIndex.splice(index, 1)
+  //   setUploadFileTalk(searchIndex)
+  // }
   const deleteFilefromAttachments = (data, index) => {
     let searchIndex = tasksAttachments.TasksAttachments
     searchIndex.splice(index, 1)
@@ -603,6 +615,7 @@ const TalkChat = () => {
       ...tasksAttachments,
       ['TasksAttachments']: searchIndex,
     })
+    setUploadFileTalk({})
   }
 
   //ChatFilter Selection Handler
@@ -1521,7 +1534,7 @@ const TalkChat = () => {
     setShowCheckboxes(false)
     forwardUsersChecked?.map((user) => {
       let { id, type } = user
-      if (type == 'U') {
+      if (type == 'O') {
         messagesChecked?.map((message) =>
           dispatch(
             InsertOTOMessages(
@@ -1532,7 +1545,7 @@ const TalkChat = () => {
                 id,
                 message.messageBody,
               ),
-              tasksAttachments.TasksAttachments,
+              uploadFileTalk,
               t,
             ),
           ),
@@ -3092,6 +3105,13 @@ const TalkChat = () => {
     ) {
       setUploadOptions(false)
     }
+    if (
+      chatMessageRefs.current &&
+      !chatMessageRefs.current.contains(event.target) &&
+      chatFeatureActive
+    ) {
+      setChatFeatureActive(false)
+    }
   }
 
   useEffect(() => {
@@ -3099,7 +3119,7 @@ const TalkChat = () => {
     return () => {
       document.removeEventListener('click', handleOutsideClick)
     }
-  }, [chatMenuActive, emojiActive, uploadOptions])
+  }, [chatMenuActive, emojiActive, uploadOptions, chatFeatureActive])
 
   useEffect(() => {
     if (emojiSelected) {
@@ -3115,6 +3135,8 @@ const TalkChat = () => {
       inputRef.current.focus()
     }
   }, [inputChat])
+
+  console.log('File Upload States', tasksAttachments, uploadFileTalk)
 
   return (
     <>
@@ -4876,6 +4898,7 @@ const TalkChat = () => {
                                                 messageData.messageID,
                                               )
                                             }
+                                            ref={chatMessageRefs}
                                           >
                                             <img
                                               className="dropdown-icon"
@@ -5115,6 +5138,7 @@ const TalkChat = () => {
                                               messageData.messageID,
                                             )
                                           }
+                                          ref={chatMessageRefs}
                                         >
                                           <img
                                             className="dropdown-icon"
@@ -5284,6 +5308,7 @@ const TalkChat = () => {
                                               messageData.messageID,
                                             )
                                           }
+                                          ref={chatMessageRefs}
                                         >
                                           <img
                                             className="dropdown-icon"
@@ -5502,6 +5527,7 @@ const TalkChat = () => {
                                               messageData.messageID,
                                             )
                                           }
+                                          ref={chatMessageRefs}
                                         >
                                           <img
                                             className="dropdown-icon"

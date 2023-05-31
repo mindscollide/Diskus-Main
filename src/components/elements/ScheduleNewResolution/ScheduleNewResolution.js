@@ -168,8 +168,6 @@ const ScheduleNewResolution = ({
     "circulationDateTimecirculationDateTime"
   );
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
-  const [fileSize, setFileSize] = useState(0);
-  const [fileForSend, setFileForSend] = useState([]);
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [emailValue, setEmailValue] = useState("");
@@ -339,16 +337,9 @@ const ScheduleNewResolution = ({
   };
 
   const deleteFilefromAttachments = (data, index) => {
-    console.log(data, data.fileSize, data.DisplayAttachmentName, fileForSend, fileSize, "checkingelemnaiteFile")
-    let fileSizefound = fileSize - data.fileSize;
-    let fileForSendingIndex = fileForSend.findIndex((newData, index) => newData.name === data.DisplayAttachmentName)
     let searchIndex = tasksAttachments;
-    setFileForSend(fileForSend)
-    setFileSize(fileSizefound)
-    fileForSend.splice(fileForSendingIndex, 1)
     searchIndex.splice(index, 1);
     setTasksAttachments([...tasksAttachments]);
-    console.log(data, fileForSend, fileSizefound, fileForSendingIndex, "checkingelemnaiteFile")
   };
 
   const addVoters = () => {
@@ -563,23 +554,13 @@ const ScheduleNewResolution = ({
     multiple: true,
     showUploadList: false,
     onChange(data) {
-      let fileSizeArr;
       const { status } = data.file;
-      console.log(data, data.file.originFileObj.size, "checkingSize")
 
-      if (tasksAttachments.length > 10) {
+      if (tasksAttachments.length > 9) {
         setOpen({
           flag: true,
           message: t("Not-allowed-more-than-10-files"),
         });
-      } else if (fileSize >= 104857600) {
-        setTimeout(
-          setOpen({
-            open: true,
-            message: t("You-can-not-upload-more-then-100MB-files"),
-          }),
-          3000
-        );
       } else if (tasksAttachments.length > 0) {
         let flag = false;
         let sizezero;
@@ -619,16 +600,7 @@ const ScheduleNewResolution = ({
             3000
           );
         } else {
-          let file = {
-            DisplayAttachmentName: data.file.name,
-            OriginalAttachmentName: data.file.name,
-            fileSize: data.file.originFileObj.size
-          }
-          setTasksAttachments([...tasksAttachments, file])
-          fileSizeArr = data.file.originFileObj.size + fileSize;
-          setFileForSend([...fileForSend, data.file.originFileObj]);
-          setFileSize(fileSizeArr);
-          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
+          dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
         }
       } else {
         let sizezero;
@@ -655,16 +627,7 @@ const ScheduleNewResolution = ({
             3000
           );
         } else {
-          let file = {
-            DisplayAttachmentName: data.file.name,
-            OriginalAttachmentName: data.file.name,
-            fileSize: data.file.originFileObj.size
-          }
-          setTasksAttachments([...tasksAttachments, file])
-          fileSizeArr = data.file.originFileObj.size + fileSize;
-          setFileForSend([...fileForSend, data.file.originFileObj]);
-          setFileSize(fileSizeArr);
-          // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
+          dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
         }
       }
     },
@@ -673,7 +636,7 @@ const ScheduleNewResolution = ({
     },
     customRequest() { },
   };
-  console.log(fileForSend, fileSize, tasksAttachments, "checkingUpload")
+
   // Check is Resolution Checker Handler
   const handleChangeChecker = (e, checked) => {
     console.log(e.target.checked, checked, "testing1212");
@@ -764,6 +727,22 @@ const ScheduleNewResolution = ({
       setVotingMethods(newArr);
     }
   }, [ResolutionReducer.GetAllVotingMethods]);
+
+  useEffect(() => {
+    setTasksAttachments([]);
+  }, []);
+
+  useEffect(() => {
+    if (uploadReducer.uploadDocumentsList !== null) {
+      tasksAttachments.push({
+        DisplayAttachmentName:
+          uploadReducer.uploadDocumentsList.displayFileName,
+        OriginalAttachmentName:
+          uploadReducer.uploadDocumentsList.originalFileName,
+      });
+      setTasksAttachments([...tasksAttachments]);
+    }
+  }, [uploadReducer.uploadDocumentsList]);
 
   useEffect(() => {
     dispatch(getAllVotingMethods(navigate, t));

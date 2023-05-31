@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { ChevronDown } from "react-bootstrap-icons";
+import { ChevronDown, Plus } from "react-bootstrap-icons";
 import { Select } from "antd";
 import {
   Button,
@@ -684,6 +684,7 @@ const TodoList = () => {
           <Col lg={2} md={2} sm={4} className="todolist-create-btn">
             <Button
               className={"btn btn-primary"}
+              icon={<Plus width={20} height={20} fontWeight={800} />}
               variant={"Primary"}
               text={t("Create-to-do-list")}
               onClick={modalHandler}

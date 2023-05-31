@@ -54,7 +54,7 @@ import { useNavigate } from "react-router-dom";
 const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { ResolutionReducer } = useSelector((state) => state);
   const [newresolution, setNewresolution] = useState(false);
   const [viewresolution, setViewresolution] = useState(false);
@@ -87,9 +87,9 @@ const Resolution = () => {
       let data = moderatordata.filter((a) => {
         console.log(
           removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-          removeDashesFromDate(
-            editResolutionDate(searchModalDates.circulationDate)
-          ),
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.circulationDate)
+            ),
           "datadatadatadata"
         );
         // console.log(a, "datadatadatadata")
@@ -97,29 +97,29 @@ const Resolution = () => {
         //   editResolutionDate(a.circulationDate)), "datadatadatadata")
         return (
           (searchModalDates.circulationDate != "" &&
-            searchModalDates.votingDate != ""
+          searchModalDates.votingDate != ""
             ? removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.circulationDate)
-            ) &&
-            removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.votingDate)
-            )
+                removeDashesFromDate(
+                  editResolutionDate(searchModalDates.circulationDate)
+                ) &&
+              removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
+                removeDashesFromDate(
+                  editResolutionDate(searchModalDates.votingDate)
+                )
             : a) &&
           (searchModalDates.circulationDate != "" &&
-            searchModalDates.votingDate === ""
+          searchModalDates.votingDate === ""
             ? removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.circulationDate)
-            )
+              removeDashesFromDate(
+                editResolutionDate(searchModalDates.circulationDate)
+              )
             : removeDashesFromDate(editResolutionDate(a.circulationDate))) &&
           (searchModalDates.votingDate != "" &&
-            searchModalDates.circulationDate === ""
+          searchModalDates.circulationDate === ""
             ? removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.votingDate)
-            )
+              removeDashesFromDate(
+                editResolutionDate(searchModalDates.votingDate)
+              )
             : removeDashesFromDate(editResolutionDate(a.votingDeadline)))
         );
       });
@@ -131,9 +131,9 @@ const Resolution = () => {
       let data = voterData.filter((a) => {
         console.log(
           removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-          removeDashesFromDate(
-            editResolutionDate(searchModalDates.circulationDate)
-          ),
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.circulationDate)
+            ),
           "datadatadatadata"
         );
         console.log(a, "datadatadatadata");
@@ -143,29 +143,29 @@ const Resolution = () => {
         );
         return (
           (searchModalDates.circulationDate != "" &&
-            searchModalDates.votingDate != ""
+          searchModalDates.votingDate != ""
             ? removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.circulationDate)
-            ) &&
-            removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.votingDate)
-            )
+                removeDashesFromDate(
+                  editResolutionDate(searchModalDates.circulationDate)
+                ) &&
+              removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
+                removeDashesFromDate(
+                  editResolutionDate(searchModalDates.votingDate)
+                )
             : a) &&
           (searchModalDates.circulationDate != "" &&
-            searchModalDates.votingDate === ""
+          searchModalDates.votingDate === ""
             ? removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.circulationDate)
-            )
+              removeDashesFromDate(
+                editResolutionDate(searchModalDates.circulationDate)
+              )
             : removeDashesFromDate(editResolutionDate(a.decisionDate))) &&
           (searchModalDates.votingDate != "" &&
-            searchModalDates.circulationDate === ""
+          searchModalDates.circulationDate === ""
             ? removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.votingDate)
-            )
+              removeDashesFromDate(
+                editResolutionDate(searchModalDates.votingDate)
+              )
             : removeDashesFromDate(editResolutionDate(a.votingDeadline)))
         );
       });
@@ -698,7 +698,7 @@ const Resolution = () => {
             <img
               src={ResultResolutionIcon}
 
-            // onClick={() => getResultHandle(data.resolutionID)}
+              // onClick={() => getResultHandle(data.resolutionID)}
             />
           );
         }
@@ -1107,7 +1107,19 @@ const Resolution = () => {
                     </span>
                     <Button
                       className={styles["create-Resolution-btn"]}
-                      text={t("Create-new-resolution")}
+                      text={
+                        <span className={styles["Btn_create_text"]}>
+                          {t("Create-new-resolution")}
+                        </span>
+                      }
+                      icon={
+                        <img
+                          src={plusbutton}
+                          height="7.6px"
+                          width="7.6px"
+                          className="align-items-center"
+                        />
+                      }
                       onClick={createresolution}
                     />
                     <Button
@@ -1294,8 +1306,8 @@ const Resolution = () => {
                 <Button
                   className={
                     ResolutionReducer.currentResolutionView === 1
-                      ? styles["Resolution-All-btn_Active"]
-                      : styles["Resolution-All-btn"]
+                      ? styles["Resolution-moderator-btn_Active"]
+                      : styles["Resolution-moderator-btn"]
                   }
                   text={t("Moderator")}
                   onClick={() => resolutionTable(1)}
@@ -1341,14 +1353,22 @@ const Resolution = () => {
                     />
                   ) : (
                     <Row>
-                      <Col sm={12} md={12} lg={12} className={styles["empty_Resolutions"]}>
+                      <Col
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        className={styles["empty_Resolutions"]}
+                      >
                         <img src={EmptyResolution} />
-                        <h2 className={styles["NoResolutionHeading"]}>{t("No-resolution-to-display")}</h2>
-                        <p className={styles["NoResolution_Tagline"]}>{t("Planning-to-get-a-thought-on-something?")}</p>
+                        <h2 className={styles["NoResolutionHeading"]}>
+                          {t("No-resolution-to-display")}
+                        </h2>
+                        <p className={styles["NoResolution_Tagline"]}>
+                          {t("Planning-to-get-a-thought-on-something?")}
+                        </p>
                       </Col>
                     </Row>
-                  )
-                  }
+                  )}
                 </Col>
               </Row>
             ) : ResolutionReducer.currentResolutionView === 2 ? (
@@ -1381,15 +1401,22 @@ const Resolution = () => {
                     />
                   ) : (
                     <Row>
-                      <Col sm={12} md={12} lg={12} className={styles["empty_Resolutions"]}>
+                      <Col
+                        sm={12}
+                        md={12}
+                        lg={12}
+                        className={styles["empty_Resolutions"]}
+                      >
                         <img src={EmptyResolution} />
-                        <h2 className={styles["NoResolutionHeading"]}>{t("No-resolution-to-display")}</h2>
-                        <p className={styles["NoResolution_Tagline"]}>{t("Planning-to-get-a-thought-on-something?")}</p>
+                        <h2 className={styles["NoResolutionHeading"]}>
+                          {t("No-resolution-to-display")}
+                        </h2>
+                        <p className={styles["NoResolution_Tagline"]}>
+                          {t("Planning-to-get-a-thought-on-something?")}
+                        </p>
                       </Col>
                     </Row>
-                  )
-                  }
-
+                  )}
                 </Col>
               </Row>
             ) : null}

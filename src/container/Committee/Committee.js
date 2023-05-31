@@ -220,7 +220,7 @@ const Committee = () => {
       setPagedata(parseInt(Totallength));
     }
   }, [CommitteeReducer.GetAllCommitteesByUserIDResponse]);
-  
+
   useEffect(() => {
     if (getcommitteedata.length > 0) {
       let Totallength = Math.ceil(getcommitteedata.length / 8);
@@ -311,7 +311,7 @@ const Committee = () => {
                 lg={6}
                 md={6}
                 sm={6}
-                className="d-flex justify-content-end  "
+                className="d-flex justify-content-end mt-2 "
               >
                 <Button
                   className={styles["Archived-Group-btn-Committee-section"]}
