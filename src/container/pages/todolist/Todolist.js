@@ -806,7 +806,7 @@ const TodoList = () => {
                     column={columnsToDo}
                     className={"ToDo" + " " + currentLanguage}
                     rows={rowsToDo}
-                    scroll={{ y: 600 }}
+                    scroll={{ y: 600, x: "max-content" }}
                     onChange={tableTodoChange}
                     pagination={{
                       pageSize: 50,
