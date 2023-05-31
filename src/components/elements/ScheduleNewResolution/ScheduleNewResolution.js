@@ -56,6 +56,7 @@ import {
 import moment from "moment";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
+import TextFieldDateTime from "../input_field_date/Input_field";
 
 const ScheduleNewResolution = ({
   newresolution,
@@ -65,7 +66,13 @@ const ScheduleNewResolution = ({
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const [minDate, setMinDate] = useState("")
+  console.log(minDate, "minDateminDateminDate")
+  useEffect(() => {
+    const min_date = new Date();
+    setMinDate(moment(min_date).format('YYYY-MM-DD'));
+  }, [])
   const SlideLeft = () => {
     var Slider = document.getElementById("Slider");
     Slider.scrollLeft = Slider.scrollLeft - 300;
@@ -441,16 +448,13 @@ const ScheduleNewResolution = ({
   };
 
   const createResolutionHandleClick = async (id) => {
-    if (
-      createResolutionData.Title !== "" &&
-      circulationDateTime.date !== "" &&
-      decisionDateTime.date !== "" &&
-      decisionDateTime.date !== "" &&
+    if (createResolutionData.Title !== "" && circulationDateTime.date !== "" && decisionDateTime.date !== "" && decisionDateTime.date !== "" &&
       circulationDateTime.time !== "" &&
       decisionDateTime.time !== "" &&
       createResolutionData.NotesToVoter !== "" &&
       createResolutionData.FK_ResolutionVotingMethodID !== 0 &&
       createResolutionData.FK_ResolutionReminderFrequency_ID !== 0
+      // voters.length > 0
     ) {
 
       if (fileForSend.length > 0) {
@@ -480,20 +484,27 @@ const ScheduleNewResolution = ({
             FK_UID: JSON.parse(localStorage.getItem("userID")),
           },
         };
-        dispatch(
-          createResolution(
-            navigate,
-            Data,
-            voters,
-            nonVoter,
-            tasksAttachments,
-            setNewresolution,
-            setEditResoutionPage,
-            t,
-            1,
-            id
-          )
-        );
+        if (id === 2 && Object.keys(voters).length <= 0) {
+          console.log(typeof voters, voters.length, voters, "DataDataDataDataDataDataData");
+
+          setError(true);
+        } else {
+          dispatch(
+            createResolution(
+              navigate,
+              Data,
+              voters,
+              nonVoter,
+              tasksAttachments,
+              setNewresolution,
+              setEditResoutionPage,
+              t,
+              1,
+              id
+            )
+          );
+        }
+
       } else {
         let Data = {
           ResolutionModel: {
@@ -515,20 +526,25 @@ const ScheduleNewResolution = ({
             FK_UID: JSON.parse(localStorage.getItem("userID")),
           },
         };
-        dispatch(
-          createResolution(
-            navigate,
-            Data,
-            voters,
-            nonVoter,
-            tasksAttachments,
-            setNewresolution,
-            setEditResoutionPage,
-            t,
-            1,
-            id
-          )
-        );
+        if (id === 2 && Object.keys(voters).length <= 0) {
+          console.log(typeof voters, voters.length, voters, "DataDataDataDataDataDataData");
+          setError(true);
+        } else {
+          dispatch(
+            createResolution(
+              navigate,
+              Data,
+              voters,
+              nonVoter,
+              tasksAttachments,
+              setNewresolution,
+              setEditResoutionPage,
+              t,
+              1,
+              id
+            )
+          );
+        }
         setTasksAttachments([])
       }
 
@@ -919,8 +935,8 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
-                          <TextField
-                            type="date"
+                          <TextFieldDateTime
+                            min={minDate}
                             labelClass="d-none"
                             change={(e) => {
                               setCirculationDateTime({
@@ -992,8 +1008,8 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
-                          <TextField
-                            type="date"
+                          <TextFieldDateTime
+                            min={minDate}
                             labelClass="d-none"
                             change={(e) => {
                               setVotingDateTime({
@@ -1065,8 +1081,8 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
-                          <TextField
-                            type="date"
+                          <TextFieldDateTime
+                            min={minDate}
                             labelClass="d-none"
                             change={(e) => {
                               setDecisionDateTime({

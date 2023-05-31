@@ -309,7 +309,7 @@ const updateResolution = (navigate, resolutionID, voters, nonVoter, tasksAttachm
                             } else {
                                 setEditResoutionPage(false)
                             }
-                            dispatch(getResolutions(3, t))
+                            dispatch(getResolutions(navigate, 3, t))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_02".toLowerCase()) {
                             dispatch(updateResolution_Fail(t("Failed-to-update-resolution-status")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_03".toLowerCase()) {
@@ -319,7 +319,7 @@ const updateResolution = (navigate, resolutionID, voters, nonVoter, tasksAttachm
                             } else {
                                 setEditResoutionPage(false)
                             }
-                            dispatch(getResolutions(3, t))
+                            dispatch(getResolutions(navigate, 3, t))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_04".toLowerCase()) {
                             dispatch(updateResolution_Fail(t("Please-add-at-least-one-voter")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_05".toLowerCase()) {
@@ -653,7 +653,7 @@ const closeResolutionApi = (navigate, ResolutionID, ResolutionDecisionID, notes,
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CloseResolution_01".toLowerCase()) {
                             dispatch(closeResolution_Success(response.data.responseResult, t("Resolution-closed-successfully")))
-                            dispatch(getResolutions(3, t))
+                            dispatch(getResolutions(navigate, 3, t))
                             setResultresolution(false)
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CloseResolution_02".toLowerCase()) {
                             dispatch(closeResolution_Fail(t("Failed-to-close-resolution")))
@@ -715,7 +715,7 @@ const updateVoteApi = (navigate, Data, t, setVoteresolution) => {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_01".toLowerCase()) {
                             dispatch(updateVote_Success(response.data.responseResult, t("Record-updated-successfully")))
                             setVoteresolution(false)
-                            dispatch(getVoterResolution(3, t))
+                            dispatch(getVoterResolution(navigate, 3, t))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_02".toLowerCase()) {
                             dispatch(updateVote_Fail(t("No-record-updated")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_03".toLowerCase()) {
