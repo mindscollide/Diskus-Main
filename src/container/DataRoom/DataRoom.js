@@ -503,23 +503,59 @@ const DataRoom = () => {
     setSearchoptions(true);
   };
   const searchbardropdownShow = () => {
-    setSearchbarshow(!searchbarshow)
-  }
+    setSearchbarshow(!searchbarshow);
+  };
+
+  // useEffect(() => {
+  //   console.log("click");
+  //   try {
+  //     window.addEventListener("click", function (e) {
+  //       console.log("eeeeeeeee", e.target.className);
+  //       var clsname = e.target.className;
+  //       let arr = clsname.split("_");
+  //       console.log("click", arr[1]);
+  //       if (arr != undefined) {
+  //         if (arr[1] === "Saved_money_Tagline" && searchbarshow === true) {
+  //           setSearchbarshow(true);
+  //           console.log("click", clsname);
+  //         } else if (
+  //           arr[1] === "DataRoom_Data_room_paper" &&
+  //           searchbarshow === false
+  //         ) {
+  //           setSearchbarshow(true);
+
+  //           console.log("click", clsname);
+  //         } else if (arr[1] === "Edit" && searchbarshow === true) {
+  //           console.log("click", clsname);
+  //         } else if (arr[1] === "Edit" && searchbarshow === false) {
+  //           console.log("click", clsname);
+  //         } else {
+  //           console.log("click", clsname);
+  //         }
+  //       } else {
+  //         setSearchbarshow(true);
+  //       }
+  //     });
+  //   } catch {
+  //     console.log("error");
+  //   }
+  // }, []);
+
   const SharewithmeButonShow = async () => {
-    await dispatch(getDocumentsAndFolderApi(navigate, 2, t))
-    setSharemebtn(true)
-    setSharedwithmebtn(true)
-    setMydocumentbtnactive(false)
-    localStorage.removeItem("folderID")
-  }
+    await dispatch(getDocumentsAndFolderApi(navigate, 2, t));
+    setSharemebtn(true);
+    setSharedwithmebtn(true);
+    setMydocumentbtnactive(false);
+    localStorage.removeItem("folderID");
+  };
 
   const MydocumentButtonShow = async () => {
-    await dispatch(getDocumentsAndFolderApi(navigate, 1, t))
-    localStorage.removeItem("folderID")
-    setSharemebtn(false)
-    setMydocumentbtnactive(true)
-    setSharedwithmebtn(false)
-  }
+    await dispatch(getDocumentsAndFolderApi(navigate, 1, t));
+    localStorage.removeItem("folderID");
+    setSharemebtn(false);
+    setMydocumentbtnactive(true);
+    setSharedwithmebtn(false);
+  };
   const showCancellUploadModal = () => {
     setCanceluploadmodal(true);
   };
@@ -1647,7 +1683,7 @@ const DataRoom = () => {
                       </Row>
                     </Dropdown.Item>
                     <Dropdown.Item
-                      className="dropdown-item"
+                      className="dropdown-item_folder"
                     // onClick={handleCreateTodo}
                     >
                       <Row className="mt-1">
@@ -1925,11 +1961,17 @@ const DataRoom = () => {
                                 className={styles["DataRoom_Table"]}
                                 rows={getAllData}
                                 rowSelection={{
-                                  type: 'checkbox',
-                                  onSelect: (record) => { console.log(record, "rowSelectionrowSelectionrowSelection") }
+                                  type: "checkbox",
+                                  onSelect: (record) => {
+                                    console.log(
+                                      record,
+                                      "rowSelectionrowSelectionrowSelection"
+                                    );
+                                  },
                                 }}
-                                size={'middle'}
+                                size={"middle"}
                               />
+
                             </>
                           ) : (
                             <>
