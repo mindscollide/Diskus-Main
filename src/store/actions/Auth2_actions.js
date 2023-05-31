@@ -455,7 +455,7 @@ const enterPasswordSuccess = (response, message) => {
     message: message,
   };
 };
-const enterPasswordFail = (message,response) => {
+const enterPasswordFail = (message, response) => {
   return {
     type: actions.PASSWORDVALIDATION_FAIL,
     response: response,
@@ -1100,7 +1100,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
-                  enterPasswordFail(t("Your-organization-is-not-activated"),true)
+                  enterPasswordFail(t("Your-organization-is-not-activated"), true)
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -1439,6 +1439,11 @@ const verificationEmailOTP = (
                 verifyOTPFail(t("The-users-email-has-not-been-verified"))
               );
               // return setSeconds(0), setMinutes(0);
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_SignUpManager_UserEmailVerification_04".toLowerCase())) {
+              dispatch(
+                verifyOTPFail(t("The-user-has-reached-the-maximum-faileda-attempts"))
+              );
+              navigate("/")
             }
             // navigate("/createpasswordorganization")
             //    dispatch(verifyOTPSuccess(response.data.responseResult, response.data.responseResult.responseMessage))

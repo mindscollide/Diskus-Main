@@ -1,7 +1,6 @@
 import * as actions from "../action_types";
 import axios from "axios";
 import {
-  verifyotp,
   verifyOTPSignUp,
   resendOTP,
   resendOTPForgotPassword,
@@ -15,68 +14,7 @@ const verifyoptinit = () => {
   };
 };
 
-const verifyoptsuccess = (response, message) => {
-  return {
-    type: actions.VERIFY_OPT_SUCCESS,
-    response: response,
-    message: message,
-  };
-};
 
-const verifyoptfail = (response, message) => {
-  return {
-    type: actions.VERIFY_OPT_FAIL,
-    response: response,
-    message: message,
-  };
-};
-
-const VerifyOTPFunc = (verificationData, navigate, setVerificationError) => {
-  let userID = localStorage.getItem("userID");
-  let email = localStorage.getItem("UserEmail");
-  let Data = {
-    UserID: parseInt(verificationData.UserID),
-    Email: verificationData.Email,
-    OTP: verificationData.OTP,
-    Device: "browser",
-  };
-  return (dispatch) => {
-    dispatch(verifyoptinit());
-    let form = new FormData();
-    form.append("RequestMethod", verifyotp.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: authenticationApi,
-      data: form,
-    })
-      .then((response) => {
-        if (response.data.responseResult.isExecuted === true) {
-          console.log("SignIn Response", response);
-          dispatch(
-            verifyoptsuccess(
-              response.data.responseResult,
-              response.data.responseMessage
-            )
-          );
-          console.log("verificationData 1.1.2", Data, verificationData);
-          localStorage.setItem("verificationData", verificationData);
-          localStorage.setItem("Email", Data.Email);
-          localStorage.setItem("userID", Data.UserID);
-          setVerificationError(false);
-          // navigate("/updateNewPassword");
-          navigate("/createpasswordorganization");
-        } else {
-          setVerificationError(true);
-          dispatch(verifyoptfail(response.data.responseResult));
-        }
-      })
-      .catch((response) => {
-        dispatch(verifyoptfail(response));
-        //   dispatch(SomeThingWentWrong(response));
-      });
-  };
-};
 
 const verifyOTPSignUpSuccess = (response) => {
   return {
@@ -275,7 +213,6 @@ const ResendOTPForgotPasswordOTP = (verificationData, t) => {
 };
 
 export {
-  VerifyOTPFunc,
   VerifyOTPSignUp,
   ResendOTP,
   ResendOTPForgotPasswordOTP,

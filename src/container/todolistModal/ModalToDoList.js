@@ -505,11 +505,13 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     else {
       let counter = Object.keys(fileForSend).length - 1;
       if (Object.keys(fileForSend).length > 0) {
-        await fileForSend.map(async (newData, index) => {
-          await dispatch(FileUploadToDo(navigate, newData, t));
-          counter = counter - 1;
-        });
-        if (counter <= 0) {
+        const uploadFiles = (fileForSend) => {
+          const uploadPromises = fileForSend.map((newData) => {
+            dispatch(FileUploadToDo(navigate, newData, t));
+          })
+          return Promise.all(uploadPromises)
+        }
+        uploadFiles(fileForSend).then((response) => {
           let Data = {
             Task,
             TaskCreatorID,
@@ -537,7 +539,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           setToDoDate("");
           setFileForSend([])
           setFileSize(0)
-        }
+        }).catch((error) => { console.log(error) })
       } else {
         let Data = {
           Task,

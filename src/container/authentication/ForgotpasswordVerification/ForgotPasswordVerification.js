@@ -19,7 +19,6 @@ import LanguageChangeIcon from "../../../assets/images/newElements/Language.svg"
 import { useDispatch, useSelector } from "react-redux";
 import {
   ResendOTP,
-  VerifyOTPFunc,
 } from "../../../../src/store/actions/Auth_Verify_Opt";
 import { cleareChangePasswordMessage } from "../../../store/actions/Auth_Forgot_Password";
 import {
@@ -111,7 +110,6 @@ const ForgotPasswordVerification = () => {
           setMinutes
         )
       );
-      // dispatch(VerifyOTPFunc(verifyOTP, navigate, t));
     }
   };
 
@@ -312,7 +310,7 @@ const ForgotPasswordVerification = () => {
                         <Button
                           className={
                             styles[
-                              "Forgot_Password_Verification_resendCode_btn"
+                            "Forgot_Password_Verification_resendCode_btn"
                             ]
                           }
                           disableBtn={seconds > 0 || minutes > 0}
@@ -323,7 +321,7 @@ const ForgotPasswordVerification = () => {
                       <span
                         className={
                           styles[
-                            "Forgot_password_Verification_update_OTPCounter"
+                          "Forgot_password_Verification_update_OTPCounter"
                           ]
                         }
                       >
@@ -354,10 +352,10 @@ const ForgotPasswordVerification = () => {
                         onClick={SubmitOTP}
                         className={
                           styles[
-                            "Forgot_Password_Verification_Next_button_EmailVerify"
+                          "Forgot_Password_Verification_Next_button_EmailVerify"
                           ]
                         }
-                        // disableBtn={disablebtnverify}
+                      // disableBtn={disablebtnverify}
                       />
                     </Col>
                   </Row>
