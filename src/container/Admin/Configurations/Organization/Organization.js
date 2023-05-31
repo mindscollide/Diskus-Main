@@ -314,12 +314,12 @@ const Organization = () => {
         newData.push({
           label: data.gmtOffset
             ? data.countryName +
-              " " +
-              "(" +
-              data.timeZone +
-              ")" +
-              " " +
-              data.gmtOffset
+            " " +
+            "(" +
+            data.timeZone +
+            ")" +
+            " " +
+            data.gmtOffset
             : null,
           value: data.pK_TZID,
         });
@@ -349,7 +349,7 @@ const Organization = () => {
         DisableMeetingScheduling: userProfileData.disableMeetingScheduling,
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
         EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
-        EmailOnCancelledMeeting: userProfileData.emailOnCancelledMeeting,
+        EmailOnCancelledMeeting: userProfileData.emailOnCancelledDeletedMeeting,
         PushNotificationOnNewMeeting:
           userProfileData.pushNotificationOnNewMeeting,
         PushNotificationOnEditMeeting:
@@ -374,12 +374,12 @@ const Organization = () => {
       let timeZoneCode = {
         label: userProfileData.timeZones
           ? userProfileData.timeZones.countryName +
-            " " +
-            "(" +
-            userProfileData.timeZones.timeZone +
-            ")" +
-            " " +
-            userProfileData.timeZones.gmtOffset
+          " " +
+          "(" +
+          userProfileData.timeZones.timeZone +
+          ")" +
+          " " +
+          userProfileData.timeZones.gmtOffset
           : null,
         value: userProfileData.timeZones?.pK_TZID,
       };

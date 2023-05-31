@@ -967,5 +967,6 @@
   "Planning-to-get-a-thought-on-something?": "Planning to get a thought on something?",
   "No-records-found": "No records found",
   "Annual-Subscriptions": "Annual Subscriptions",
-  "Please-add-atleast-one-group-head-and-one-group-member": "Please add atleast one group head and one group member"
+  "Please-add-atleast-one-group-head-and-one-group-member": "Please add atleast one group head and one group member",
+  "The-user-has-reached-the-maximum-faileda-attempts": "The User has Reached the Maximum Failed Attempts"
 }

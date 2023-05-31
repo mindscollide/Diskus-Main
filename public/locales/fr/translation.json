@@ -611,5 +611,6 @@
   "Invoice-start": "Invoice Start",
   "Please-add-atleast-one-group-head-and-one-group-member": "Please add atleast one group head and one group member",
   "Invoice-number": "Invoice# :",
-  "Payment-received-date": "Payment Received Date :"
+  "Payment-received-date": "Payment Received Date :",
+  "The-user-has-reached-the-maximum-faileda-attempts": "The User has Reached the Maximum Failed Attempts"
 }
