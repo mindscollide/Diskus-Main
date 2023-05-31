@@ -102,11 +102,12 @@ const Organization = () => {
     EmailOnCancelledMeeting: false,
     PushNotificationOnNewMeeting: false,
     PushNotificationOnEditMeeting: false,
-    PushNotificationOnCancelledMeeting: false,
+    PushNotificationOnCancelledorDeleteMeeting: false,
     ShowNotificationonparticipantJoining: false,
     DormatInactiveUsersforDays: 0,
     MaximumMeetingDuration: 0,
     Is2FAVerification: false,
+    EmailonCancelledorDeleteMeeting: false
   });
   console.log(
     organizationStates,
@@ -126,8 +127,8 @@ const Organization = () => {
           userProfileData.pushNotificationOnNewMeeting,
         PushNotificationOnEditMeeting:
           userProfileData.pushNotificationOnEditMeeting,
-        PushNotificationOnCancelledMeeting:
-          userProfileData.pushNotificationonCancelledMeeting,
+        PushNotificationOnCancelledorDeleteMeeting:
+          userProfileData.pushNotificationonCancelledDeletedMeeting,
         ShowNotificationonparticipantJoining:
           userProfileData.showNotificationOnParticipantJoining,
         DormatInactiveUsersforDays: parseInt(
@@ -136,6 +137,7 @@ const Organization = () => {
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
         Is2FAVerification: userProfileData.is2FAEnabled,
         EmailOnCancelledMeeting: userProfileData.emailOnCancelledMeeting,
+        EmailonCancelledorDeleteMeeting: userProfileData.emailOnCancelledDeletedMeeting
       };
       setOrganizationStates(settingData);
       let countryCode = {
@@ -194,7 +196,7 @@ const Organization = () => {
   const emailOnCancelledMeeting = (checked) => {
     setOrganizationStates({
       ...organizationStates,
-      EmailOnCancelledMeeting: checked,
+      EmailonCancelledorDeleteMeeting: checked,
     });
   };
 
@@ -221,7 +223,7 @@ const Organization = () => {
   const pushNotificationOnCancelledMeeting = (checked) => {
     setOrganizationStates({
       ...organizationStates,
-      PushNotificationOnCancelledMeeting: checked,
+      PushNotificationOnCancelledorDeleteMeeting: checked,
     });
   };
   const dormatInactiveUsersforDays = (checked) => {
@@ -251,9 +253,8 @@ const Organization = () => {
       FK_WorldCountryID: worldCountryID,
       Is2FAEnabled: organizationStates.Is2FAVerification,
       DisableMeetingScheduling: organizationStates.DisableMeetingScheduling,
-      PushNotificationonCancelledMeeting:
-        organizationStates.PushNotificationOnCancelledMeeting,
-      EmailOnCancelledMeeting: organizationStates.EmailOnCancelledMeeting,
+      PushNotificationonCancelledDeletedMeeting: organizationStates.PushNotificationOnCancelledorDeleteMeeting,
+      EmailOnCancelledDeletedMeeting: organizationStates.EmailonCancelledorDeleteMeeting,
     };
     console.log(
       organizationSettings,
@@ -299,12 +300,14 @@ const Organization = () => {
       MaximumMeetingDuration: event.value,
     });
   };
+
   const Is2FAVerificationHandle = (checked) => {
     setOrganizationStates({
       ...organizationStates,
       Is2FAVerification: checked,
     });
   };
+
   // Time Zones set in values
   useEffect(() => {
     let TimeZone = settingReducer.TimeZone;
@@ -349,13 +352,13 @@ const Organization = () => {
         DisableMeetingScheduling: userProfileData.disableMeetingScheduling,
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
         EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
-        EmailOnCancelledMeeting: userProfileData.emailOnCancelledDeletedMeeting,
+        EmailOnCancelledMeeting: userProfileData.emailOnCancelledMeeting,
         PushNotificationOnNewMeeting:
           userProfileData.pushNotificationOnNewMeeting,
         PushNotificationOnEditMeeting:
           userProfileData.pushNotificationOnEditMeeting,
-        PushNotificationOnCancelledMeeting:
-          userProfileData.pushNotificationonCancelledMeeting,
+        PushNotificationOnCancelledorDeleteMeeting:
+          userProfileData.pushNotificationonCancelledDeletedMeeting,
         ShowNotificationonparticipantJoining:
           userProfileData.showNotificationOnParticipantJoining,
         DormatInactiveUsersforDays: parseInt(
@@ -363,6 +366,7 @@ const Organization = () => {
         ),
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
         Is2FAVerification: userProfileData.is2FAEnabled,
+        EmailonCancelledorDeleteMeeting: userProfileData.emailOnCancelledDeletedMeeting
       };
       setOrganizationStates(settingData);
       let countryCode = {
@@ -653,7 +657,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="organization-labels">
-                      {t("Email-on-cancelled-meeting")}
+                      {t("Email-on-cancel-or-delete-meeting")}
                     </label>
                   </Col>
                   <Col
@@ -666,7 +670,7 @@ const Organization = () => {
                     <Switch
                       name="EmailOnCancelledMeeting"
                       checkedValue={
-                        organizationStates.EmailOnCancelledMeeting || false
+                        organizationStates.EmailonCancelledorDeleteMeeting || false
                       }
                       onChange={emailOnCancelledMeeting}
                     />
@@ -741,7 +745,7 @@ const Organization = () => {
                     className="d-flex justify-content-start"
                   >
                     <label className="organization-labels">
-                      {t("Push-notification-on-cancelled-meeting")}
+                      {t("Push-notification-on-cancel-or-delete-meeting")}
                     </label>
                   </Col>
                   <Col
@@ -752,9 +756,9 @@ const Organization = () => {
                     className="d-flex justify-content-end"
                   >
                     <Switch
-                      name="PushNotificationOnCancelledMeeting"
+                      name="PushNotificationOnCancelledorDeleteMeeting"
                       checkedValue={
-                        organizationStates.PushNotificationOnCancelledMeeting ||
+                        organizationStates.PushNotificationOnCancelledorDeleteMeeting ||
                         false
                       }
                       onChange={pushNotificationOnCancelledMeeting}
@@ -782,7 +786,7 @@ const Organization = () => {
                     className="d-flex justify-content-end"
                   >
                     <Switch
-                      name="PushNotificationOnCancelledMeeting"
+                      name="PushNotificationOnCancelledorDeleteMeeting"
                       checkedValue={
                         organizationStates.ShowNotificationonparticipantJoining ||
                         false

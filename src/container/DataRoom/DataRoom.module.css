@@ -33,7 +33,7 @@
 
 .Data_room_paper {
   width: 100% !important;
-  height: 740px !important;
+  height: auto !important;
   padding: 30px 30px !important;
 }
 
@@ -422,8 +422,9 @@ body[dir="rtl"] .Search_Icon {
 }
 
 .Scroller_bar_of_BarUploder {
-  height: 8vh !important;
+  height: 13vh !important;
   overflow-x: hidden !important;
+
 }
 
 .Scroller_bar_of_BarUploder::-webkit-scrollbar {

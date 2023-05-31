@@ -1109,7 +1109,9 @@ const DataRoom = () => {
     if (
       DataRoomReducer.ResponseMessage !== "" &&
       DataRoomReducer.ResponseMessage !== t("Data-available") &&
-      DataRoomReducer.ResponseMessage !== t("No-record-found")
+      DataRoomReducer.ResponseMessage !== t("No-record-found") &&
+      DataRoomReducer.ResponseMessage !== t("No-folder-exist-against-this-name") &&
+      DataRoomReducer.ResponseMessage !== t("No-duplicate-found")
     ) {
       setOpen({
         open: true,

@@ -71,51 +71,37 @@ const saveFilesApi = (navigate, data, t) => {
       headers: {
         _token: token,
       },
-    })
-    return (dispatch) => {
-      // dispatch(saveFiles_init())
-      let form = new FormData();
-      form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
-      form.append("RequestData", JSON.stringify(Data));
-      axios({
-        method: "post",
-        url: dataRoomApi,
-        data: form,
-        headers: {
-          _token: token,
-        },
-      }).then(async (response) => {
-        if (response.data.responseCode === 417) {
-          dispatch(RefreshToken(navigate, t))
-          dispatch(saveFilesApi(navigate, data, t));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase())) {
-              await dispatch(saveFiles_success(response.data.responseMessage, t("Files-saved-successfully")))
-              if (folderID !== null) {
-                await dispatch(getFolderDocumentsApi(navigate, folderID, t))
-              } else {
-                await dispatch(getDocumentsAndFolderApi(navigate, 1, t))
-              }
-              localStorage.removeItem("folderID")
-            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase())) {
-              dispatch(saveFiles_fail(t("Failed-to-save-any-file")))
-            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase())) {
-              dispatch(saveFiles_fail(t("Something-went-wrong")))
+    }).then(async (response) => {
+      if (response.data.responseCode === 417) {
+        dispatch(RefreshToken(navigate, t))
+        dispatch(saveFilesApi(navigate, data, t));
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase())) {
+            await dispatch(saveFiles_success(response.data.responseMessage, t("Files-saved-successfully")))
+            if (folderID !== null) {
+              dispatch(getFolderDocumentsApi(navigate, folderID, t))
+            } else {
+              dispatch(getDocumentsAndFolderApi(navigate, 1, t))
             }
-          } else {
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase())) {
+            dispatch(saveFiles_fail(t("Failed-to-save-any-file")))
+          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase())) {
             dispatch(saveFiles_fail(t("Something-went-wrong")))
           }
         } else {
           dispatch(saveFiles_fail(t("Something-went-wrong")))
         }
-        console.log(response)
-      }).catch(() => {
+      } else {
         dispatch(saveFiles_fail(t("Something-went-wrong")))
-      })
-    }
+      }
+      console.log(response)
+    }).catch(() => {
+      dispatch(saveFiles_fail(t("Something-went-wrong")))
+    })
   }
 }
+
 
 // Upload Documents Init
 const uploadDocument_init = () => {
@@ -936,7 +922,7 @@ const FolderisExist = (navigate, FolderName, t, setAddfolder) => {
           } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_02".toLowerCase())) {
             await dispatch(FolderisExist_fail(t("Folder-name-is-required")))
           } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_03".toLowerCase())) {
-            await dispatch(FolderisExist_fail(t("No Folder Exist Against this name")))
+            await dispatch(FolderisExist_fail(t("No-folder-exist-against-this-name")))
             dispatch(createFolderApi(navigate, FolderName, t, setAddfolder))
           } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_04".toLowerCase())) {
             dispatch(FolderisExist_fail(t("Something-went-wrong")))
