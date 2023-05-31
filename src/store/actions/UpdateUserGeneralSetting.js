@@ -124,10 +124,10 @@ const updateUserSettingFunc = (navigate, userGeneralSettingData, t) => {
         userGeneralSettingData.ShowNotificationonparticipantJoining,
       DormantInactiveUsersForDays:
         userGeneralSettingData.DormatInactiveUsersforDays,
-      PushNotificationonCancelledMeeting: userGeneralSettingData.PushNotificationOnCancelledMeeting,
+      PushNotificationonCancelledORDeleteMeeting: userGeneralSettingData.PushNotificationonCancelledORDeleteMeeting,
       FK_OrganizationID: JSON.parse(OrganizationID),
       FK_CCID: 0,
-      EmailOnCancelledMeeting: userGeneralSettingData.EmailOnCancelledMeeting,
+      EmailOnCancelledORDeleteMeeting: userGeneralSettingData.EmailOnCancelledorDeleteMeeting,
       FK_UID: JSON.parse(currentUserID),
       Is2FAEnabled: userGeneralSettingData.Is2FAVerification
     },

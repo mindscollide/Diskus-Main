@@ -707,6 +707,10 @@ const verificationTwoFacOtp = (Data, t, navigate, setOtpCode) => {
               dispatch(verifyOtpFacFail(t("No-otp-exist-against-this-user")));
               setOtpCode("")
               localStorage.setItem("TowApproval", false);
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_AuthManager_Verify2FAOTP_05".toLowerCase())) {
+              dispatch(verifyOtpFacFail(t("The-user-has-reached-the-maximum-faileda-attempts")));
+              setOtpCode("")
+              navigate("/")
             }
           } else {
             dispatch(verifyOtpFacFail(t("Something-went-wrong")));
