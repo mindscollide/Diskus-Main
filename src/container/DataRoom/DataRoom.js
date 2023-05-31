@@ -86,6 +86,7 @@ import { useNavigate } from "react-router-dom";
 const DataRoom = () => {
   // tooltip
   const [showbarupload, setShowbarupload] = useState(false);
+
   const [minimize, setMinimize] = useState(false);
   const [progress, setProgress] = useState(0);
   const text = <span>Share</span>;
@@ -143,6 +144,7 @@ const DataRoom = () => {
     OwnerTypeValue: "",
     EnterMember: "",
   });
+  console.log(showbarupload, "showbaruploadshowbaruploadshowbarupload")
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -536,8 +538,9 @@ const DataRoom = () => {
 
   useEffect(() => {
     if (
-      DataRoomReducer.getFolderDocumentResponse.length !== null &&
-      DataRoomReducer.getFolderDocumentResponse.length !== undefined
+      DataRoomReducer.getFolderDocumentResponse !== null &&
+      DataRoomReducer.getFolderDocumentResponse !== undefined &&
+      DataRoomReducer.getFolderDocumentResponse.length > 0
     ) {
       setGetAllData(DataRoomReducer.getFolderDocumentResponse);
     }
@@ -545,13 +548,14 @@ const DataRoom = () => {
 
   useEffect(() => {
     if (uploadReducer.uploadDocumentsList !== null) {
-      tasksAttachments.push({
+      let attachmentData = []
+      attachmentData.push({
         DisplayAttachmentName:
           uploadReducer.uploadDocumentsList.displayFileName,
         OriginalAttachmentName:
           uploadReducer.uploadDocumentsList.originalFileName,
       });
-      setTasksAttachments([...tasksAttachments]);
+      setTasksAttachments(attachmentData);
     }
   }, [uploadReducer.uploadDocumentsList]);
 
@@ -1909,145 +1913,6 @@ const DataRoom = () => {
                             gridbtnactive ? (
                             <>
                               <GridViewDataRoom data={getAllData} />
-
-                              {showbarupload ? (
-                                <>
-                                  <Row>
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className={
-                                        styles["Back_ground_For_uploader"]
-                                      }
-                                    >
-                                      <Row>
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className={styles["Blue_Strip"]}
-                                        >
-                                          <Row className="mt-2">
-                                            <Col
-                                              lg={9}
-                                              md={9}
-                                              sm={9}
-                                              className="d-flex justify-content-start gap-3"
-                                            >
-                                              <span
-                                                className={styles["Uploading"]}
-                                              >
-                                                {t("Uploading")} {uploadCounter}{" "}
-                                                {t("items")}
-                                              </span>
-                                              <Space
-                                                className={
-                                                  styles["Progress_bar"]
-                                                }
-                                              >
-                                                {parseInt(progress) + "%"}
-                                              </Space>
-                                              <Space
-                                                className={
-                                                  styles["Progress_bar"]
-                                                }
-                                              >
-                                                {remainingTime +
-                                                  t("Sec-remaining")}
-                                              </Space>
-                                            </Col>
-
-                                            <Col
-                                              lg={3}
-                                              md={3}
-                                              sm={3}
-                                              className="d-flex justify-content-end gap-2 mt-1"
-                                            >
-                                              <img
-                                                src={chevdown}
-                                                width={9}
-
-                                              // width="8.49px"
-                                              // height="4.46px"
-                                              />
-                                              <img
-                                                src={Cancellicon}
-                                                width={9}
-                                                onClick={closeSearchBar}
-                                              // width="6.94px"
-                                              // height="6.71px"
-                                              />
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className={
-                                            styles["Scroller_bar_of_BarUploder"]
-                                          }
-                                        >
-                                          {Object.values(tasksAttachments)
-                                            .length > 0
-                                            ? Object.values(
-                                              tasksAttachments
-                                            ).map((data, index) => {
-                                              console.log(
-                                                data,
-                                                "datadatadatadatadatadatadatadatadata"
-                                              );
-                                              return (
-                                                <>
-                                                  <Col
-                                                    lg={12}
-                                                    md={12}
-                                                    sm={12}
-                                                    className="d-flex gap-1 mt-2 flex-column"
-                                                  >
-                                                    <Space
-                                                      direction="vertical"
-                                                      className="d-flex flex-row"
-                                                    >
-                                                      <img
-                                                        src={PDFICON}
-                                                        height="16px"
-                                                        width="16px"
-                                                        className={
-                                                          styles[
-                                                          "Icon_in_Bar"
-                                                          ]
-                                                        }
-                                                      />
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                          "name_of_life_in_Bar"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {data.name}
-                                                      </span>
-                                                    </Space>
-                                                    {progress > 0 && (
-                                                      <Progress
-                                                        percent={progress}
-                                                      />
-                                                    )}
-                                                  </Col>
-                                                </>
-                                              );
-                                            })
-                                            : null}
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                  </Row>
-                                </>
-                              ) : null}
                             </>
                           ) : getAllData.length > 0 &&
                             getAllData !== undefined &&
@@ -2065,144 +1930,6 @@ const DataRoom = () => {
                                 }}
                                 size={'middle'}
                               />
-                              {showbarupload ? (
-                                <>
-                                  <Row>
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className={
-                                        styles["Back_ground_For_uploader"]
-                                      }
-                                    >
-                                      <Row>
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className={styles["Blue_Strip"]}
-                                        >
-                                          <Row className="mt-2">
-                                            <Col
-                                              lg={9}
-                                              md={9}
-                                              sm={9}
-                                              className="d-flex justify-content-start gap-3"
-                                            >
-                                              <span
-                                                className={styles["Uploading"]}
-                                              >
-                                                {t("Uploading")} {uploadCounter}{" "}
-                                                {t("items")}
-                                              </span>
-                                              <Space
-                                                className={
-                                                  styles["Progress_bar"]
-                                                }
-                                              >
-                                                {parseInt(progress) + "%"}
-                                              </Space>
-                                              <Space
-                                                className={
-                                                  styles["Progress_bar"]
-                                                }
-                                              >
-                                                {remainingTime +
-                                                  t("Sec-remaining")}
-                                              </Space>
-                                            </Col>
-
-                                            <Col
-                                              lg={3}
-                                              md={3}
-                                              sm={3}
-                                              className="d-flex justify-content-end gap-2 mt-1"
-                                            >
-                                              <img
-                                                src={chevdown}
-                                                width={9}
-
-                                              // width="8.49px"
-                                              // height="4.46px"
-                                              />
-                                              <img
-                                                src={Cancellicon}
-                                                width={9}
-                                                onClick={closeSearchBar}
-                                              // width="6.94px"
-                                              // height="6.71px"
-                                              />
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className={
-                                            styles["Scroller_bar_of_BarUploder"]
-                                          }
-                                        >
-                                          {Object.values(tasksAttachments)
-                                            .length > 0
-                                            ? Object.values(
-                                              tasksAttachments
-                                            ).map((data, index) => {
-                                              console.log(
-                                                data,
-                                                "datadatadatadatadatadatadatadatadata"
-                                              );
-                                              return (
-                                                <>
-                                                  <Col
-                                                    lg={12}
-                                                    md={12}
-                                                    sm={12}
-                                                    className="d-flex gap-1 mt-2 flex-column"
-                                                  >
-                                                    <Space
-                                                      direction="vertical"
-                                                      className="d-flex flex-row"
-                                                    >
-                                                      <img
-                                                        src={PDFICON}
-                                                        height="16px"
-                                                        width="16px"
-                                                        className={
-                                                          styles[
-                                                          "Icon_in_Bar"
-                                                          ]
-                                                        }
-                                                      />
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                          "name_of_life_in_Bar"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {data.name}
-                                                      </span>
-                                                    </Space>
-                                                    {progress > 0 && (
-                                                      <Progress
-                                                        percent={progress}
-                                                      />
-                                                    )}
-                                                  </Col>
-                                                </>
-                                              );
-                                            })
-                                            : null}
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                  </Row>
-                                </>
-                              ) : null}
                             </>
                           ) : (
                             <>
@@ -2260,6 +1987,144 @@ const DataRoom = () => {
                       </Row>
                     </>
                   )}
+                  {showbarupload ? (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={
+                            styles["Back_ground_For_uploader"]
+                          }
+                        >
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={styles["Blue_Strip"]}
+                            >
+                              <Row className="mt-2">
+                                <Col
+                                  lg={9}
+                                  md={9}
+                                  sm={9}
+                                  className="d-flex justify-content-start gap-3"
+                                >
+                                  <span
+                                    className={styles["Uploading"]}
+                                  >
+                                    {t("Uploading")} {uploadCounter}{" "}
+                                    {t("items")}
+                                  </span>
+                                  <Space
+                                    className={
+                                      styles["Progress_bar"]
+                                    }
+                                  >
+                                    {parseInt(progress) + "%"}
+                                  </Space>
+                                  <Space
+                                    className={
+                                      styles["Progress_bar"]
+                                    }
+                                  >
+                                    {remainingTime +
+                                      t("Sec-remaining")}
+                                  </Space>
+                                </Col>
+
+                                <Col
+                                  lg={3}
+                                  md={3}
+                                  sm={3}
+                                  className="d-flex justify-content-end gap-2 mt-1"
+                                >
+                                  <img
+                                    src={chevdown}
+                                    width={9}
+
+                                  // width="8.49px"
+                                  // height="4.46px"
+                                  />
+                                  <img
+                                    src={Cancellicon}
+                                    width={9}
+                                    onClick={closeSearchBar}
+                                  // width="6.94px"
+                                  // height="6.71px"
+                                  />
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={
+                                styles["Scroller_bar_of_BarUploder"]
+                              }
+                            >
+                              {Object.values(tasksAttachments)
+                                .length > 0
+                                ? Object.values(
+                                  tasksAttachments
+                                ).map((data, index) => {
+                                  console.log(
+                                    data,
+                                    "datadatadatadatadatadatadatadatadata"
+                                  );
+                                  return (
+                                    <>
+                                      <Col
+                                        lg={12}
+                                        md={12}
+                                        sm={12}
+                                        className="d-flex gap-1 mt-2 flex-column"
+                                      >
+                                        <Space
+                                          direction="vertical"
+                                          className="d-flex flex-row"
+                                        >
+                                          <img
+                                            src={PDFICON}
+                                            height="16px"
+                                            width="16px"
+                                            className={
+                                              styles[
+                                              "Icon_in_Bar"
+                                              ]
+                                            }
+                                          />
+                                          <span
+                                            className={
+                                              styles[
+                                              "name_of_life_in_Bar"
+                                              ]
+                                            }
+                                          >
+                                            {data.name}
+                                          </span>
+                                        </Space>
+                                        {progress > 0 && (
+                                          <Progress
+                                            percent={progress}
+                                          />
+                                        )}
+                                      </Col>
+                                    </>
+                                  );
+                                })
+                                : null}
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
                 </Paper>
               </Col>
             </Row>
