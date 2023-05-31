@@ -612,5 +612,6 @@
   "Please-add-atleast-one-group-head-and-one-group-member": "Please add atleast one group head and one group member",
   "Invoice-number": "Invoice# :",
   "Payment-received-date": "Payment Received Date :",
-  "Folder-name": "Folder Name"
+  "Folder-name": "Folder Name",
+  "The-user-has-reached-the-maximum-faileda-attempts": "The User has Reached the Maximum Failed Attempts"
 }

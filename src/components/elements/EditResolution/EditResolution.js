@@ -50,6 +50,7 @@ import {
 } from "../../../commen/functions/date_formater";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
+import TextFieldDateTime from "../input_field_date/Input_field";
 const EditResolution = ({
   setEditResoutionPage,
   editresolutionPage,
@@ -68,6 +69,12 @@ const EditResolution = ({
     meetingAttendeesList,
     "ResolutionReducerResolutionReducerResolutionReducer"
   );
+  const [minDate, setMinDate] = useState("")
+  console.log(minDate, "minDateminDateminDate")
+  useEffect(() => {
+    const min_date = new Date();
+    setMinDate(moment(min_date).format('YYYY-MM-DD'));
+  }, [])
   const [isVoter, setVoter] = useState(true);
   const [open, setOpen] = useState({
     flag: false,
@@ -573,8 +580,12 @@ const EditResolution = ({
       decisionDateTime.date !== "" &&
       decisionDateTime.date !== "" &&
       circulationDateTime.time !== "" &&
-      decisionDateTime.time !== ""
+      decisionDateTime.time !== "" &&
+      editResolutionData.NotesToVoter !== "" &&
+      editResolutionData.FK_ResolutionVotingMethodID !== 0 &&
+      editResolutionData.FK_ResolutionReminderFrequency_ID !== 0
     ) {
+
       if (fileForSend.length > 0) {
         let counter = fileForSend.length;
         console.log(counter, "countercountercounter")
@@ -610,21 +621,29 @@ const EditResolution = ({
             FK_UID: JSON.parse(localStorage.getItem("userID")),
           },
         };
-        console.log(Data, "DataDataDataDataDataDataData");
-        dispatch(
-          createResolution(
-            navigate,
-            Data,
-            voters,
-            nonVoter,
-            tasksAttachments,
-            setNewresolution,
-            setEditResoutionPage,
-            t,
-            2,
-            id
-          )
-        );
+        console.log(typeof voters, voters.length, voters, "DataDataDataDataDataDataData");
+        if (id === 2 && Object.keys(voters).length <= 0) {
+          console.log(typeof voters, voters.length, voters, "DataDataDataDataDataDataData");
+
+          setError(true);
+        } else {
+          console.log(typeof voters, voters.length, voters, "DataDataDataDataDataDataData");
+
+          dispatch(
+            createResolution(
+              navigate,
+              Data,
+              voters,
+              nonVoter,
+              tasksAttachments,
+              setNewresolution,
+              setEditResoutionPage,
+              t,
+              2,
+              id
+            )
+          );
+        }
       } else {
         let Data = {
           ResolutionModel: {
@@ -655,20 +674,29 @@ const EditResolution = ({
           },
         };
         console.log(Data, "DataDataDataDataDataDataData");
-        dispatch(
-          createResolution(
-            navigate,
-            Data,
-            voters,
-            nonVoter,
-            tasksAttachments,
-            setNewresolution,
-            setEditResoutionPage,
-            t,
-            2,
-            id
-          )
-        );
+        console.log(typeof voters, voters, "DataDataDataDataDataDataData");
+        if (id === 2 && Object.keys(voters).length <= 0) {
+          console.log(typeof voters, voters.length, voters, "DataDataDataDataDataDataData");
+
+          setError(true);
+        } else {
+          console.log(typeof voters, voters.length, voters, "DataDataDataDataDataDataData");
+
+          dispatch(
+            createResolution(
+              navigate,
+              Data,
+              voters,
+              nonVoter,
+              tasksAttachments,
+              setNewresolution,
+              setEditResoutionPage,
+              t,
+              2,
+              id
+            )
+          );
+        }
       }
 
     } else {
@@ -1210,8 +1238,8 @@ const EditResolution = ({
                               md={6}
                               className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
-                              <TextField
-                                type="date"
+                              <TextFieldDateTime
+                                min={minDate}
                                 labelClass="d-none"
                                 value={circulationDateTime.date}
                                 change={(e) => {
@@ -1285,8 +1313,8 @@ const EditResolution = ({
                               md={6}
                               className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
-                              <TextField
-                                type="date"
+                              <TextFieldDateTime
+                                min={minDate}
                                 labelClass="d-none"
                                 value={votingDateTime.date}
                                 change={(e) => {
@@ -1363,8 +1391,8 @@ const EditResolution = ({
                               md={6}
                               className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
-                              <TextField
-                                type="date"
+                              <TextFieldDateTime
+                                min={minDate}
                                 labelClass="d-none"
                                 value={decisionDateTime.date}
                                 change={(e) => {

@@ -35,6 +35,8 @@
 .Data_room_paper {
   height: 708px !important;
   width: 1429px !important;
+  width: 100% !important;
+  height: auto !important;
   padding: 30px 30px !important;
 }
 
@@ -448,7 +450,7 @@ body[dir="rtl"] .Search_Icon {
 }
 
 .Scroller_bar_of_BarUploder {
-  height: 8vh !important;
+  height: 13vh !important;
   overflow-x: hidden !important;
 }
 

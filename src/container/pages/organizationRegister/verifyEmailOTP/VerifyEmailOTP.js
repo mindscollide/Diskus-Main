@@ -22,7 +22,6 @@ import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   ResendOTP,
-  VerifyOTPFunc,
 } from "../../../../store/actions/Auth_Verify_Opt";
 import Cookies from "js-cookie";
 import LanguageChangeIcon from "../../../../assets/images/newElements/Language.svg";
@@ -94,7 +93,6 @@ const VerifyEmailOTP = () => {
           setMinutes
         )
       );
-      // dispatch(VerifyOTPFunc(verifyOTP, navigate, t));
     }
   };
 

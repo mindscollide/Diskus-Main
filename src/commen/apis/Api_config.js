@@ -10,10 +10,6 @@ const forgetpassword = {
   RequestMethod: 'ServiceManager.ForgotPassword',
 }
 
-const verifyotp = {
-  RequestMethod: 'ServiceManager.VerifyOTP',
-}
-
 const verifyOTPSignUp = {
   RequestMethod: 'ServiceManager.OTPVerification',
 }
@@ -661,7 +657,6 @@ export {
   signuprequest,
   signinauthenication,
   forgetpassword,
-  verifyotp,
   verifyOTPSignUp,
   resendOTP,
   resendOTPForgotPassword,
