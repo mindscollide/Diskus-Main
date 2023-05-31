@@ -339,6 +339,7 @@ body[dir="rtl"] p.chat-username {
 
 .chat-box-icons img {
   width: 18px;
+  cursor: pointer;
 }
 
 .encryption-level-chat {
@@ -415,7 +416,7 @@ body[dir="rtl"] .encryption-level-chat p.level-heading {
 .chat-box-icons {
   height: 100%;
   width: 25px;
-  cursor: pointer;
+  /* cursor: pointer; */
   align-items: center;
   display: flex;
   justify-content: center;
@@ -612,6 +613,7 @@ input.chat-message-input.form-control:focus {
   border-bottom: 1px solid #ccc;
   margin: 10px;
   font-size: 12px;
+  cursor: pointer;
   font-weight: 600;
 }
 
@@ -1672,4 +1674,12 @@ p.group-sender-name {
   margin: 0;
   font-weight: bold;
   font-size: 14px;
+}
+
+input.form-control2.Saved_money_Tagline.form-control {
+  margin: 10px 0px;
+}
+
+input[placeholder="Search Chat"] {
+  margin-top: 10px;
 }
