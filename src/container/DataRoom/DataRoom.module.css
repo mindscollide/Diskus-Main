@@ -27,6 +27,7 @@
 .Search_Icon {
   position: absolute !important;
   right: 213px !important;
+  cursor: pointer !important;
   top: 26px !important;
   z-index: 1 !important;
 }
@@ -204,7 +205,7 @@
   border: 1px solid #e1e1e1;
   z-index: 1;
   position: absolute;
-  top: 48px !important;
+  top: 49px !important;
   right: 202px !important;
 }
 
@@ -316,6 +317,7 @@ body[dir="rtl"] .Drop_Down_searchBar_Options {
 
 body[dir="rtl"] .Search_Icon {
   position: absolute !important;
+  cursor: pointer !important;
   right: 1370px !important;
 }
 

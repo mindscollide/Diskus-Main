@@ -503,6 +503,42 @@ const DataRoom = () => {
   const searchbardropdownShow = () => {
     setSearchbarshow(!searchbarshow);
   };
+
+  // useEffect(() => {
+  //   console.log("click");
+  //   try {
+  //     window.addEventListener("click", function (e) {
+  //       console.log("eeeeeeeee", e.target.className);
+  //       var clsname = e.target.className;
+  //       let arr = clsname.split("_");
+  //       console.log("click", arr[1]);
+  //       if (arr != undefined) {
+  //         if (arr[1] === "Saved_money_Tagline" && searchbarshow === true) {
+  //           setSearchbarshow(true);
+  //           console.log("click", clsname);
+  //         } else if (
+  //           arr[1] === "DataRoom_Data_room_paper" &&
+  //           searchbarshow === false
+  //         ) {
+  //           setSearchbarshow(true);
+
+  //           console.log("click", clsname);
+  //         } else if (arr[1] === "Edit" && searchbarshow === true) {
+  //           console.log("click", clsname);
+  //         } else if (arr[1] === "Edit" && searchbarshow === false) {
+  //           console.log("click", clsname);
+  //         } else {
+  //           console.log("click", clsname);
+  //         }
+  //       } else {
+  //         setSearchbarshow(true);
+  //       }
+  //     });
+  //   } catch {
+  //     console.log("error");
+  //   }
+  // }, []);
+
   const SharewithmeButonShow = async () => {
     await dispatch(getDocumentsAndFolderApi(navigate, 2, t));
     setSharemebtn(true);
