@@ -1547,6 +1547,9 @@ p.groupinfo-groupname {
   margin-top: 5px !important;
   font-weight: 600;
   color: #5a5a5a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 p.groupinfo-createdon {
@@ -1556,7 +1559,7 @@ p.groupinfo-createdon {
 }
 
 .users-list-groupinfo {
-  height: 120px;
+  height: 160px;
   overflow: hidden auto;
 }
 
@@ -1614,8 +1617,9 @@ span.starred-status {
 }
 
 img.Edit-Group-Title-Icon {
-  width: 18px;
+  width: 13px;
   margin-left: 10px;
+  margin-top: 2px;
 }
 
 mark.YourHighlightClass {
@@ -1682,4 +1686,11 @@ input.form-control2.Saved_money_Tagline.form-control {
 
 input[placeholder="Search Chat"] {
   margin-top: 10px;
+}
+
+.edit-group-button {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
 }

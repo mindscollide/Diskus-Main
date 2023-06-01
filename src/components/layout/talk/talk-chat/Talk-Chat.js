@@ -23,6 +23,7 @@ import {
   MarkStarredUnstarredMessage,
   activeChatID,
   activeMessageID,
+  UpdatePrivateGroup,
 } from '../../../../store/actions/Talk_action'
 import {
   newTimeFormaterAsPerUTCTalkTime,
@@ -86,6 +87,7 @@ import {
   unreadMessageCountFunction,
   groupCreationFunction,
   markStarUnstarFunction,
+  groupUpdationFunction,
 } from './oneToOneMessage'
 import { sendChatFunction } from './sendChat'
 import { useNavigate } from 'react-router-dom'
@@ -148,6 +150,9 @@ const TalkChat = () => {
 
   //Chat Message Feature
   const chatMessageRefs = useRef()
+
+  //Input refs
+  const inputRef = useRef(null)
 
   //search chat states
   const [searchChatValue, setSearchChatValue] = useState('')
@@ -457,20 +462,20 @@ const TalkChat = () => {
         undefined &&
       talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse !==
         null &&
-      talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse !==
-        []
+      talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
+        .length !== 0
     ) {
       setGroupInfoData(
         talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
           ?.groupUsers,
       )
-    }
-    if (
-      groupInfoData !== undefined &&
-      groupInfoData !== null &&
-      groupInfoData.length !== 0
-    ) {
-      setGroupName(groupInfoData[0].name)
+      const firstGroupUser =
+        talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
+          ?.groupUsers[0]
+
+      if (firstGroupUser && firstGroupUser.name) {
+        setGroupName(firstGroupUser.name)
+      }
     }
   }, [
     talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
@@ -553,11 +558,11 @@ const TalkChat = () => {
 
   //Emoji on click function
   const emojiClick = () => {
+    console.log('Emoji Clicked', emojiActive)
     if (emojiActive === false) {
       setEmojiActive(true)
     } else {
       setEmojiActive(false)
-      setInputChat(true)
     }
   }
 
@@ -1324,11 +1329,11 @@ const TalkChat = () => {
         ...messageSendData,
         Body: messageSendData.Body + emoji,
       })
-      // setInputChat(true)
+      setInputChat(true)
     }
     setEmojiSelected(true)
     setEmojiActive(false)
-    // setInputChat(true)
+    setInputChat(true)
   }
 
   console.log('INPUT CHAT FOCUS', inputChat)
@@ -2882,6 +2887,17 @@ const TalkChat = () => {
     }
   }, [talkStateData?.talkSocketGroupCreation?.groupCreatedData])
 
+  //Group Updation In Real Time
+  useEffect(() => {
+    if (
+      talkStateData.talkSocketGroupUpdation.groupUpdatedData !== null &&
+      talkStateData.talkSocketGroupUpdation.groupUpdatedData !== undefined &&
+      talkStateData.talkSocketGroupUpdation.groupUpdatedData.length !== 0
+    ) {
+      groupUpdationFunction(talkStateData, setAllChatData, allChatData)
+    }
+  }, [talkStateData?.talkSocketGroupUpdation?.groupUpdatedData])
+
   //MQTT Unread Message Count
   useEffect(() => {
     if (
@@ -2921,23 +2937,6 @@ const TalkChat = () => {
   //Send Chat
   const sendChat = async (e) => {
     e.preventDefault()
-    // sendChatFunction(
-    //   t,
-    //   setReplyFeature,
-    //   setAllChatData,
-    //   allChatData,
-    //   messageSendData,
-    //   setMessageSendData,
-    //   allBroadcastMessages,
-    //   setAllBroadcastMessages,
-    //   chatClickData,
-    //   allGroupMessages,
-    //   setAllGroupMessages,
-    //   allOtoMessages,
-    //   setAllOtoMessages,
-    //   uploadFileTalk,
-    //   activeChat,
-    // )
 
     dispatch(activeChatID(activeChat))
     if (messageSendData.Body !== '') {
@@ -3224,38 +3223,53 @@ const TalkChat = () => {
   }, [chatMenuActive, emojiActive, uploadOptions, chatFeatureActive])
 
   useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [inputChat])
+
+  useEffect(() => {
     if (emojiSelected) {
       inputRef.current.focus()
       setEmojiSelected(false)
     }
   }, [emojiSelected])
 
-  console.log('All Oto Messages', allOtoMessages)
-  const inputRef = useRef(null)
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus()
+  const editGroup = () => {
+    let editGroupUsersHashCheck = editGroupUsersChecked.map((value, index) => {
+      return value + '#' + 0
+    })
+    setEditGroupUsersChecked(editGroupUsersHashCheck)
+    let data = {
+      TalkRequest: {
+        UserID: parseInt(currentUserId),
+        Group: {
+          GroupID: chatClickData.id,
+          GroupName: groupName,
+          Users: editGroupUsersHashCheck.join(','),
+          RemovedUsers: '',
+        },
+      },
     }
-  }, [inputChat])
+    // console.log('editGroup', data)
+    dispatch(UpdatePrivateGroup(data, t, navigate))
+    setShowGroupEdit(false)
+  }
 
-  console.log('File Upload States', tasksAttachments, uploadFileTalk)
-
-  // console.log(
-  //   'Group Users Checked',
-  //   editGroupUsersChecked,
-  //   editGroupUsersChecked.map((value, index) => {
-  //     console.log('Group Users Checked', value, index)
-  //     return `${value}#${0}`
-  //   }),
-  //   groupInfoData,
-  // )
-
-  let data = editGroupUsersChecked.map((value, index) => {
-    return value + '#' + 0
-  })
-  // newArray = data
-
-  console.log('EditUsersCheck', data)
+  //Group Modification
+  useEffect(() => {
+    if (
+      talkStateData.UpdatePrivateGroup.UpdatePrivateGroupResponseMessage ===
+      'Group-modified'
+    ) {
+      setNotification({
+        notificationShow: true,
+        message:
+          talkStateData.UpdatePrivateGroup.UpdatePrivateGroupResponseMessage,
+      })
+      setNotificationID(id)
+    }
+  }, [talkStateData.UpdatePrivateGroup.UpdatePrivateGroupResponseMessage])
 
   return (
     <>
@@ -6698,8 +6712,8 @@ const TalkChat = () => {
                         className="text-center d-flex align-items-center justify-content-center"
                       >
                         <p className="groupinfo-groupname m-0">
-                          {groupInfoData !== undefined
-                            ? groupInfoData[0].name
+                          {groupName !== undefined && groupName !== null
+                            ? groupName
                             : null}
                         </p>
                         <img
@@ -6800,6 +6814,17 @@ const TalkChat = () => {
                         })
                       : null}
                   </div>
+                  <Row>
+                    <Col>
+                      <div className="edit-group-button">
+                        <Button
+                          className="MontserratSemiBold Ok-btn forward-user"
+                          text="Edit Group"
+                          onClick={editGroup}
+                        />
+                      </div>
+                    </Col>
+                  </Row>
                 </>
               ) : null}
             </Container>

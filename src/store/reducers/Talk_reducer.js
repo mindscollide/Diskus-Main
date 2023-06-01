@@ -178,6 +178,11 @@ const initialState = {
     CreatePrivateGroupResponseMessage: '',
   },
 
+  UpdatePrivateGroup: {
+    UpdatePrivateGroupResponse: [],
+    UpdatePrivateGroupResponseMessage: '',
+  },
+
   GetPrivateGroupMembers: {
     GetPrivateGroupMembersResponse: [],
     GetPrivateGroupMembersResponseMessage: '',
@@ -208,6 +213,10 @@ const initialState = {
 
   talkSocketGroupCreation: {
     groupCreatedData: null,
+  },
+
+  talkSocketGroupUpdation: {
+    groupUpdatedData: null,
   },
 
   talkSocketUnreadMessageCount: {
@@ -1021,6 +1030,28 @@ const talkReducer = (state = initialState, action) => {
       }
     }
 
+    case actions.UPDATE_PRIVATEGROUP_INIT: {
+      console.log('UPDATE_PRIVATEGROUP_INIT', action)
+      return {
+        ...state,
+        UpdatePrivateGroup: {
+          UpdatePrivateGroupResponse: action.response,
+          UpdatePrivateGroupResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.UPDATE_PRIVATEGROUP_NOTIFICATION: {
+      console.log('UPDATE_PRIVATEGROUP_NOTIFICATION', action)
+      return {
+        ...state,
+        UpdatePrivateGroup: {
+          UpdatePrivateGroupResponse: [],
+          UpdatePrivateGroupResponseMessage: action.message,
+        },
+      }
+    }
+
     case actions.GET_PRIVATEGROUPMEMBERS_INIT: {
       return {
         ...state,
@@ -1170,6 +1201,16 @@ const talkReducer = (state = initialState, action) => {
         ...state,
         talkSocketGroupCreation: {
           groupCreatedData: action.response,
+        },
+      }
+    }
+
+    case actions.MQTT_GROUP_UPDATED: {
+      console.log('MQTT_GROUP_UPDATED', action.response)
+      return {
+        ...state,
+        talkSocketGroupUpdation: {
+          groupUpdatedData: action.response,
         },
       }
     }

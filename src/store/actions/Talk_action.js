@@ -31,6 +31,7 @@ import {
   createTalkPrivateGroup,
   getPrivateGroupMembers,
   markStarredMessage,
+  updatePrivateGroup,
 } from '../../commen/apis/Api_config'
 import axios from 'axios'
 import { talkApi } from '../../commen/apis/Api_ends_points'
@@ -178,6 +179,15 @@ const mqttGroupCreated = (response) => {
   console.log('responseresponseresponse', response)
   return {
     type: actions.MQTT_GROUP_CREATED,
+    response: response,
+  }
+}
+
+//Group is updated MQTT Response
+const mqttGroupUpdated = (response) => {
+  console.log('responseresponseresponse', response)
+  return {
+    type: actions.MQTT_GROUP_UPDATED,
     response: response,
   }
 }
@@ -2869,6 +2879,100 @@ const GetAllPrivateGroupMembers = (navigate, object, t) => {
   }
 }
 
+const updatePrivateGroupInit = (response, message) => {
+  return {
+    type: actions.UPDATE_PRIVATEGROUP_INIT,
+    response: response,
+    message: message,
+  }
+}
+
+const updatePrivateGroupNotification = (response, message) => {
+  return {
+    type: actions.UPDATE_PRIVATEGROUP_NOTIFICATION,
+    response: response,
+    message: message,
+  }
+}
+
+//Update Private Group
+const UpdatePrivateGroup = (object, t, navigate) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(updatePrivateGroupInit())
+    let form = new FormData()
+    form.append('RequestMethod', updatePrivateGroup.RequestMethod)
+    form.append('RequestData', JSON.stringify(object))
+    axios({
+      method: 'post',
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(UpdatePrivateGroup(navigate, object, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_ModifyGroup_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                updatePrivateGroupInit(response, t('Group-modified')),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_ModifyGroup_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                updatePrivateGroupInit(response, t('Group-not-modified')),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_ModifyGroup_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                updatePrivateGroupNotification(
+                  response,
+                  t('Something-went-wrong'),
+                ),
+              )
+            }
+          } else {
+            await dispatch(
+              updatePrivateGroupNotification(
+                response,
+                t('Something-went-wrong'),
+              ),
+            )
+          }
+        } else {
+          await dispatch(
+            updatePrivateGroupNotification(response, t('Something-went-wrong')),
+          )
+        }
+      })
+      .catch((response) => {
+        dispatch(
+          updatePrivateGroupNotification(response, t('Something-went-wrong')),
+        )
+      })
+  }
+}
+
 const MarkStarredMessageInit = () => {
   return {
     type: actions.STAR_UNSTAR_MESSAGE_INIT,
@@ -2975,6 +3079,7 @@ export {
   mqttStarMessage,
   mqttUnstarMessage,
   mqttGroupCreated,
+  mqttGroupUpdated,
   mqttUnreadMessageCount,
   GetAllUserChats,
   GetOTOUserMessages,
@@ -3003,6 +3108,7 @@ export {
   GetAllUsersGroupsRoomsList,
   InsertBroadcastMessages,
   CreatePrivateGroup,
+  UpdatePrivateGroup,
   GetAllPrivateGroupMembers,
   MarkStarredUnstarredMessage,
 }
