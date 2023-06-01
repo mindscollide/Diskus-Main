@@ -24,6 +24,9 @@ import {
   activeChatID,
   activeMessageID,
   UpdatePrivateGroup,
+  LeaveGroup,
+  ResetLeaveGroupMessage,
+  ResetGroupModify,
 } from '../../../../store/actions/Talk_action'
 import {
   newTimeFormaterAsPerUTCTalkTime,
@@ -3269,7 +3272,40 @@ const TalkChat = () => {
       })
       setNotificationID(id)
     }
-  }, [talkStateData.UpdatePrivateGroup.UpdatePrivateGroupResponseMessage])
+    dispatch(ResetGroupModify())
+  }, [])
+
+  const leaveGroupHandler = (record) => {
+    console.log('Leave Group', record)
+    let data = {
+      UserID: parseInt(currentUserId),
+      GroupID: record.id,
+    }
+    dispatch(LeaveGroup(navigate, data, t))
+    setChatHeadMenuActive(false)
+  }
+
+  const leaveGroupHandlerChat = (record) => {
+    console.log('Leave Group', record)
+    let data = {
+      UserID: parseInt(currentUserId),
+      GroupID: record.id,
+    }
+    dispatch(LeaveGroup(navigate, data, t))
+    setChatMenuActive(false)
+  }
+
+  //Group Left
+  useEffect(() => {
+    if (talkStateData.LeaveGroup.LeaveGroupResponseMessage === 'Group-left') {
+      setNotification({
+        notificationShow: true,
+        message: talkStateData.LeaveGroup.LeaveGroupResponseMessage,
+      })
+      setNotificationID(id)
+    }
+    dispatch(ResetLeaveGroupMessage())
+  }, [talkStateData.LeaveGroup.LeaveGroupResponseMessage])
 
   return (
     <>
@@ -3537,9 +3573,9 @@ const TalkChat = () => {
                               />
                               {chatHeadMenuActive === dataItem.id ? (
                                 <div className="dropdown-menus-chathead">
-                                  <span onClick={deleteChatHandler}>
+                                  {/* <span onClick={deleteChatHandler}>
                                     Delete Chat
-                                  </span>
+                                  </span> */}
                                   <span
                                     onClick={() =>
                                       blockContactHandler(dataItem)
@@ -3736,9 +3772,9 @@ const TalkChat = () => {
                               />
                               {chatHeadMenuActive === dataItem.id ? (
                                 <div className="dropdown-menus-chathead">
-                                  <span onClick={deleteChatHandler}>
+                                  {/* <span onClick={deleteChatHandler}>
                                     Delete Chat
-                                  </span>
+                                  </span> */}
                                   {dataItem.isBlock === 0 ? (
                                     <span
                                       onClick={() =>
@@ -3977,9 +4013,9 @@ const TalkChat = () => {
                               />
                               {chatHeadMenuActive === dataItem.id ? (
                                 <div className="dropdown-menus-chathead">
-                                  <span onClick={deleteChatHandler}>
+                                  {/* <span onClick={deleteChatHandler}>
                                     Delete Chat
-                                  </span>
+                                  </span> */}
                                   {dataItem.isBlock === 0 ? (
                                     <span
                                       onClick={() =>
@@ -4797,9 +4833,9 @@ const TalkChat = () => {
                                   />
                                   {chatHeadMenuActive === dataItem.id ? (
                                     <div className="dropdown-menus-chathead">
-                                      <span onClick={deleteChatHandler}>
+                                      {/* <span onClick={deleteChatHandler}>
                                         Delete Chat
-                                      </span>
+                                      </span> */}
                                       {dataItem.messageType === 'O' &&
                                       dataItem.isBlock === 0 ? (
                                         <span
@@ -4823,9 +4859,9 @@ const TalkChat = () => {
                                       ) : dataItem.messageType === 'G' &&
                                         dataItem.isBlock === 0 ? (
                                         <span
-                                          // onClick={() =>
-                                          // blockContactHandler(dataItem)
-                                          // }
+                                          onClick={() =>
+                                            leaveGroupHandler(dataItem)
+                                          }
                                           style={{ borderBottom: 'none' }}
                                         >
                                           Leave Group
@@ -4924,7 +4960,13 @@ const TalkChat = () => {
                                     Group Info
                                   </span>
                                   <span>Delete Group</span>
-                                  <span>Leave Group</span>
+                                  <span
+                                    onClick={() =>
+                                      leaveGroupHandlerChat(activeChat)
+                                    }
+                                  >
+                                    Leave Group
+                                  </span>
                                   <span
                                     style={{ borderBottom: 'none' }}
                                     onClick={modalHandlerGroupEdit}
