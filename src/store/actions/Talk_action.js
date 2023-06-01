@@ -32,6 +32,7 @@ import {
   getPrivateGroupMembers,
   markStarredMessage,
   updatePrivateGroup,
+  leaveGroup,
 } from '../../commen/apis/Api_config'
 import axios from 'axios'
 import { talkApi } from '../../commen/apis/Api_ends_points'
@@ -3069,6 +3070,103 @@ const MarkStarredUnstarredMessage = (navigate, object, t) => {
   }
 }
 
+const LeaveGroupInit = (response, message) => {
+  return {
+    type: actions.LEAVE_GROUP_INIT,
+    response: response,
+    message: message,
+  }
+}
+
+const LeaveGroupNotification = (response, message) => {
+  return {
+    type: actions.LEAVE_GROUP_NOTIFICATION,
+    response: response,
+    message: message,
+  }
+}
+
+//Star Unstar A message
+const LeaveGroup = (navigate, object, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  console.log('Leave Group Object', object)
+  let Data = {
+    TalkRequest: {
+      UserID: object.UserID,
+      GroupID: object.GroupID,
+    },
+  }
+  return (dispatch) => {
+    dispatch(LeaveGroupInit())
+    let form = new FormData()
+    form.append('RequestMethod', leaveGroup.RequestMethod)
+    form.append('RequestData', JSON.stringify(Data))
+    axios({
+      method: 'post',
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(LeaveGroup(navigate, object, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_RemoveUserFromGroup_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(LeaveGroupInit(response, t('Group-left')))
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_RemoveUserFromGroup_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                LeaveGroupInit(response, t('Group-left-didnt-work')),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_RemoveUserFromGroup_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(LeaveGroupNotification(t('Something-went-wrong')))
+            }
+          } else {
+            await dispatch(LeaveGroupNotification(t('Something-went-wrong')))
+          }
+        } else {
+          await dispatch(LeaveGroupNotification(t('Something-went-wrong')))
+        }
+      })
+      .catch((response) => {
+        dispatch(LeaveGroupNotification(t('Something-went-wrong')))
+      })
+  }
+}
+
+const ResetLeaveGroupMessage = () => {
+  return {
+    type: actions.RESET_LEAVE_GROUP_MESSAGE,
+  }
+}
+
+const ResetGroupModify = () => {
+  return {
+    type: actions.RESET_GROUP_MODIFY_MESSAGE,
+  }
+}
+
 export {
   activeChatID,
   activeMessageID,
@@ -3111,4 +3209,7 @@ export {
   UpdatePrivateGroup,
   GetAllPrivateGroupMembers,
   MarkStarredUnstarredMessage,
+  LeaveGroup,
+  ResetLeaveGroupMessage,
+  ResetGroupModify,
 }

@@ -900,7 +900,7 @@ body[dir="rtl"] span.securityicon-box {
   width: 100px;
   border-radius: 5px;
   border: 1px solid #b6b6b6;
-  z-index: 9;
+  z-index: 9999999;
   right: -22px;
   padding-top: 10px;
 }

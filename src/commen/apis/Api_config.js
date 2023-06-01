@@ -658,6 +658,11 @@ const FileisExistRequestMethod = {
 const deleteFolderRequestMethod = {
   RequestMethod: 'ServiceManager.DeleteFolder',
 }
+
+const leaveGroup = {
+  RequestMethod: 'ServiceManager.RemoveUserFromGroup',
+}
+
 export {
   signuprequest,
   signinauthenication,
@@ -836,4 +841,5 @@ export {
   deleteFileRequestMethod,
   deleteFolderRequestMethod,
   updatePrivateGroup,
+  leaveGroup,
 }

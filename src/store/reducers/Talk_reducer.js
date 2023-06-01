@@ -183,6 +183,11 @@ const initialState = {
     UpdatePrivateGroupResponseMessage: '',
   },
 
+  LeaveGroup: {
+    LeaveGroupResponse: [],
+    LeaveGroupResponseMessage: '',
+  },
+
   GetPrivateGroupMembers: {
     GetPrivateGroupMembersResponse: [],
     GetPrivateGroupMembersResponseMessage: '',
@@ -1052,6 +1057,28 @@ const talkReducer = (state = initialState, action) => {
       }
     }
 
+    case actions.LEAVE_GROUP_INIT: {
+      console.log('LEAVE_GROUP_INIT', action)
+      return {
+        ...state,
+        LeaveGroup: {
+          LeaveGroupResponse: action.response,
+          LeaveGroupResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.LEAVE_GROUP_NOTIFICATION: {
+      console.log('LEAVE_GROUP_NOTIFICATION', action)
+      return {
+        ...state,
+        LeaveGroup: {
+          LeaveGroupResponse: [],
+          LeaveGroupResponseMessage: action.message,
+        },
+      }
+    }
+
     case actions.GET_PRIVATEGROUPMEMBERS_INIT: {
       return {
         ...state,
@@ -1221,6 +1248,28 @@ const talkReducer = (state = initialState, action) => {
         ...state,
         talkSocketUnreadMessageCount: {
           unreadMessageData: action.response,
+        },
+      }
+    }
+
+    case actions.RESET_LEAVE_GROUP_MESSAGE: {
+      console.log('RESET_LEAVE_GROUP_MESSAGE', action.response)
+      return {
+        ...state,
+        LeaveGroup: {
+          LeaveGroupResponse: [],
+          LeaveGroupResponseMessage: '',
+        },
+      }
+    }
+
+    case actions.RESET_GROUP_MODIFY_MESSAGE: {
+      console.log('RESET_GROUP_MODIFY_MESSAGE', action.response)
+      return {
+        ...state,
+        UpdatePrivateGroup: {
+          UpdatePrivateGroupResponse: [],
+          UpdatePrivateGroupResponseMessage: '',
         },
       }
     }
