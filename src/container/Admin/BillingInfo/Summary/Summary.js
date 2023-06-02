@@ -81,7 +81,7 @@ const Summary = () => {
   useEffect(() => {
     if (
       Authreducer.VerifyOTPEmailResponseMessage !== "" &&
-      Authreducer.VerifyOTPEmailResponseMessage !== undefined
+      Authreducer.VerifyOTPEmailResponseMessage !== undefined && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -99,7 +99,7 @@ const Summary = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.EnterPasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !== undefined
+      Authreducer.EnterPasswordResponseMessage !== undefined && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -117,7 +117,7 @@ const Summary = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.OrganizationCreateResponseMessage !== "" &&
-      Authreducer.OrganizationCreateResponseMessage !== undefined
+      Authreducer.OrganizationCreateResponseMessage !== undefined && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -135,7 +135,7 @@ const Summary = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.CreatePasswordResponseMessage !== "" &&
-      Authreducer.CreatePasswordResponseMessage !== undefined
+      Authreducer.CreatePasswordResponseMessage !== undefined && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -153,7 +153,7 @@ const Summary = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.GetSelectedPackageResponseMessage !== "" &&
-      Authreducer.GetSelectedPackageResponseMessage !== undefined
+      Authreducer.GetSelectedPackageResponseMessage !== undefined && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -171,7 +171,7 @@ const Summary = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.EmailValidationResponseMessage !== "" &&
-      Authreducer.EmailValidationResponseMessage !== undefined
+      Authreducer.EmailValidationResponseMessage !== undefined && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
     ) {
       setOpen({
         ...open,

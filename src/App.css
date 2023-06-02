@@ -5267,26 +5267,13 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
 
 .Scroller-x-resolution {
   width: 100% !important;
+  overflow-x: hidden;
   display: flex;
-  overflow-x: auto;
-  overflow-y: hidden;
   scroll-behavior: smooth !important;
   align-items: center;
   padding: 0 !important;
 }
 
-.Scroller-x-resolution::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 0.5em;
-  border-radius: 20px;
-  background-color: #f2f2f2;
-}
-
-.Scroller-x-resolution::-webkit-scrollbar-thumb {
-  border-radius: 20px;
-  background: #ccc;
-  margin-left: -15px;
-}
 
 .file-icon-modalmeeting-p-View-resolution {
   overflow: hidden;
@@ -5425,4 +5412,5 @@ body[dir="rtl"] .ant-result-subtitle {
 .ant-upload.ant-upload-drag {
   border: 1px solid #e1e1e1 !important;
   background: none !important;
+  border: none !important;
 }
