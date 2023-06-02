@@ -23,6 +23,10 @@ import {
   MarkStarredUnstarredMessage,
   activeChatID,
   activeMessageID,
+  UpdatePrivateGroup,
+  LeaveGroup,
+  ResetLeaveGroupMessage,
+  ResetGroupModify,
 } from '../../../../store/actions/Talk_action'
 import {
   newTimeFormaterAsPerUTCTalkTime,
@@ -86,6 +90,7 @@ import {
   unreadMessageCountFunction,
   groupCreationFunction,
   markStarUnstarFunction,
+  groupUpdationFunction,
 } from './oneToOneMessage'
 import { sendChatFunction } from './sendChat'
 import { useNavigate } from 'react-router-dom'
@@ -148,6 +153,9 @@ const TalkChat = () => {
 
   //Chat Message Feature
   const chatMessageRefs = useRef()
+
+  //Input refs
+  const inputRef = useRef(null)
 
   //search chat states
   const [searchChatValue, setSearchChatValue] = useState('')
@@ -360,6 +368,9 @@ const TalkChat = () => {
   //Current Group Members State
   const [groupInfoData, setGroupInfoData] = useState([])
 
+  //Saving Group Name in a state so that it can be used for various functionalities
+  const [groupName, setGroupName] = useState('')
+
   const [searchGroupUserInfoValue, setSearchGroupUserInfoValue] = useState('')
 
   //unblock user id states
@@ -454,18 +465,31 @@ const TalkChat = () => {
         undefined &&
       talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse !==
         null &&
-      talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse !==
-        []
+      talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
+        .length !== 0
     ) {
       setGroupInfoData(
         talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
           ?.groupUsers,
       )
+      const firstGroupUser =
+        talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
+          ?.groupUsers[0]
+
+      if (firstGroupUser && firstGroupUser.name) {
+        setGroupName(firstGroupUser.name)
+      }
     }
   }, [
     talkStateData?.GetPrivateGroupMembers?.GetPrivateGroupMembersResponse
       ?.groupUsers,
   ])
+
+  //Group Name Change Handler
+  const groupNameHandler = (e) => {
+    console.log('Group Name Handler', e.target.value)
+    setGroupName(e.target.value)
+  }
 
   //Setting state data of all users
   useEffect(() => {
@@ -537,11 +561,11 @@ const TalkChat = () => {
 
   //Emoji on click function
   const emojiClick = () => {
+    console.log('Emoji Clicked', emojiActive)
     if (emojiActive === false) {
       setEmojiActive(true)
     } else {
       setEmojiActive(false)
-      setInputChat(true)
     }
   }
 
@@ -1021,7 +1045,11 @@ const TalkChat = () => {
               return value.fullName.toLowerCase().includes(e.toLowerCase())
             },
           )
-          setAllUsers(filteredData)
+          if (filteredData.length === 0) {
+            setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers)
+          } else {
+            setAllUsers(filteredData)
+          }
         } else if (e === '' || e === null) {
           let data = talkStateData.AllUsers.AllUsersData.allUsers
           setSearchChatUserValue('')
@@ -1048,7 +1076,14 @@ const TalkChat = () => {
               return value.fullName.toLowerCase().includes(e.toLowerCase())
             },
           )
-          setAllChatData(filteredData)
+
+          if (filteredData.length === 0) {
+            setAllChatData(
+              talkStateData.AllUserChats.AllUserChatsData.allMessages,
+            )
+          } else {
+            setAllChatData(filteredData)
+          }
         } else if (e === '' || e === null) {
           let data = talkStateData.AllUserChats.AllUserChatsData.allMessages
           setSearchChatValue('')
@@ -1071,7 +1106,11 @@ const TalkChat = () => {
             .includes(searchGroupUserValue.toLowerCase())
         },
       )
-      setAllUsers(filteredData)
+      if (filteredData.length === 0) {
+        setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers)
+      } else {
+        setAllUsers(filteredData)
+      }
     } else if (e === '' || e === null) {
       let data = talkStateData.AllUsers.AllUsersData.allUsers
       setSearchGroupUserValue('')
@@ -1128,6 +1167,7 @@ const TalkChat = () => {
     setDeleteMessage(false)
     setMessageInfo(false)
     setShowGroupInfo(false)
+    setChatMenuActive(false)
   }
 
   // for print chat
@@ -1138,6 +1178,7 @@ const TalkChat = () => {
     setDeleteMessage(false)
     setMessageInfo(false)
     setShowGroupInfo(false)
+    setChatMenuActive(false)
   }
 
   // for email chat
@@ -1148,6 +1189,7 @@ const TalkChat = () => {
     setDeleteMessage(false)
     setMessageInfo(false)
     setShowGroupInfo(false)
+    setChatMenuActive(false)
   }
 
   // on change checkbox today
@@ -1231,6 +1273,7 @@ const TalkChat = () => {
 
   //Edit Group Title Activator
   const editGroupTitle = () => {
+    console.log('Image Clicked')
     setShowEditGroupField(true)
   }
 
@@ -1289,11 +1332,11 @@ const TalkChat = () => {
         ...messageSendData,
         Body: messageSendData.Body + emoji,
       })
-      // setInputChat(true)
+      setInputChat(true)
     }
     setEmojiSelected(true)
     setEmojiActive(false)
-    // setInputChat(true)
+    setInputChat(true)
   }
 
   console.log('INPUT CHAT FOCUS', inputChat)
@@ -1471,14 +1514,25 @@ const TalkChat = () => {
       let editGroupUserIndex = editGroupUsersChecked.findIndex(
         (data2) => data2 === id,
       )
+      let findIndexgroupInfoData = groupInfoData.findIndex(
+        (data3, index) => data3.userID === id,
+      )
+      if (findIndexgroupInfoData !== -1) {
+        groupInfoData.splice(findIndexgroupInfoData, 1)
+        setGroupInfoData([...groupInfoData])
+      }
       if (editGroupUserIndex !== -1) {
         editGroupUsersChecked.splice(editGroupUserIndex, 1)
         setEditGroupUsersChecked([...editGroupUsersChecked])
       }
     } else {
-      editGroupUsersChecked.push(id)
-      setEditGroupUsersChecked([...editGroupUsersChecked])
+      setEditGroupUsersChecked([...editGroupUsersChecked, id])
     }
+    // setEditGroupUsersChecked(
+    //   editGroupUsersChecked.map((value, index) => {
+    //     return `${value}#${0}`
+    //   }),
+    // )
   }
 
   const blockContactHandler = (record) => {
@@ -1628,6 +1682,7 @@ const TalkChat = () => {
     setShowGroupInfo(true)
     setMessageInfo(false)
     setShowGroupEdit(false)
+    setChatMenuActive(false)
   }
 
   const modalHandlerGroupEdit = () => {
@@ -1639,33 +1694,88 @@ const TalkChat = () => {
     setShowGroupEdit(true)
     setShowGroupInfo(false)
     setMessageInfo(false)
+    setChatMenuActive(false)
+  }
+
+  //Search Group Chat
+  const searchGroupEditUser = (e) => {
+    setSearchGroupUserInfoValue(e)
+    console.log('Group Info Filter', searchGroupUserInfoValue)
+    try {
+      if (
+        talkStateData.AllUsers.AllUsersData !== undefined &&
+        (talkStateData.AllUsers.AllUsersData !== null) &
+          (talkStateData.AllUsers.AllUsersData.length !== 0)
+      ) {
+        if (e !== '') {
+          let filteredData = talkStateData.AllUsers.AllUsersData.allUsers.filter(
+            (value) => {
+              return value.fullName.toLowerCase().includes(e.toLowerCase())
+            },
+          )
+          if (filteredData.length === 0) {
+            setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers)
+          } else {
+            setAllUsers(filteredData)
+          }
+          console.log(
+            'Group Info Filter',
+            talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse,
+          )
+        } else if (e === '' || e === null) {
+          let data = talkStateData.AllUsers.AllUsersData.allUsers
+          setSearchGroupUserInfoValue('')
+          setAllUsers(data)
+          console.log('Group Info Filter', data)
+        }
+      }
+    } catch {
+      console.log('Group User Search Filter')
+    }
   }
 
   //Search Group Chat
   const searchGroupInfoUser = (e) => {
-    if (e !== '' && groupInfoData !== undefined && groupInfoData.length !== 0) {
-      setSearchGroupUserInfoValue(e)
-      let filteredData = talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse.groupUsers.filter(
-        (value) => {
-          return value.userName
-            .toLowerCase()
-            .includes(searchGroupUserInfoValue.toLowerCase())
-        },
-      )
-      setGroupInfoData(filteredData)
-    } else if (
-      e === '' ||
-      (e === null && groupInfoData !== undefined && groupInfoData.length !== 0)
-    ) {
-      let data =
+    setSearchGroupUserInfoValue(e)
+    try {
+      if (
+        talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse !==
+          undefined &&
+        talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse !==
+          null &&
         talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse
-          .groupUsers
-      setSearchGroupUserInfoValue('')
-      setGroupInfoData(data)
-    } else {
-      setGroupInfoData([])
+          .length !== 0
+      ) {
+        if (e !== '') {
+          let filteredData = talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse.groupUsers.filter(
+            (value) => {
+              return value.userName
+                .toLowerCase()
+                .includes(searchGroupUserInfoValue.toLowerCase())
+            },
+          )
+          if (filteredData.length === 0) {
+            setGroupInfoData(
+              talkStateData.GetPrivateGroupMembers
+                .GetPrivateGroupMembersResponse.groupUsers,
+            )
+          } else {
+            setGroupInfoData(filteredData)
+          }
+        } else if (e === '' || e === null) {
+          let data =
+            talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse
+              .groupUsers
+          setSearchGroupUserInfoValue('')
+          setGroupInfoData(data)
+        }
+      }
+    } catch {
+      console.log('Filter Error')
     }
   }
+
+  console.log('Group Info Filter', groupInfoData)
 
   const showChatSearchHandler = () => {
     if (showChatSearch === true) {
@@ -2780,6 +2890,17 @@ const TalkChat = () => {
     }
   }, [talkStateData?.talkSocketGroupCreation?.groupCreatedData])
 
+  //Group Updation In Real Time
+  useEffect(() => {
+    if (
+      talkStateData.talkSocketGroupUpdation.groupUpdatedData !== null &&
+      talkStateData.talkSocketGroupUpdation.groupUpdatedData !== undefined &&
+      talkStateData.talkSocketGroupUpdation.groupUpdatedData.length !== 0
+    ) {
+      groupUpdationFunction(talkStateData, setAllChatData, allChatData)
+    }
+  }, [talkStateData?.talkSocketGroupUpdation?.groupUpdatedData])
+
   //MQTT Unread Message Count
   useEffect(() => {
     if (
@@ -2819,23 +2940,6 @@ const TalkChat = () => {
   //Send Chat
   const sendChat = async (e) => {
     e.preventDefault()
-    // sendChatFunction(
-    //   t,
-    //   setReplyFeature,
-    //   setAllChatData,
-    //   allChatData,
-    //   messageSendData,
-    //   setMessageSendData,
-    //   allBroadcastMessages,
-    //   setAllBroadcastMessages,
-    //   chatClickData,
-    //   allGroupMessages,
-    //   setAllGroupMessages,
-    //   allOtoMessages,
-    //   setAllOtoMessages,
-    //   uploadFileTalk,
-    //   activeChat,
-    // )
 
     dispatch(activeChatID(activeChat))
     if (messageSendData.Body !== '') {
@@ -3122,21 +3226,86 @@ const TalkChat = () => {
   }, [chatMenuActive, emojiActive, uploadOptions, chatFeatureActive])
 
   useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [inputChat])
+
+  useEffect(() => {
     if (emojiSelected) {
       inputRef.current.focus()
       setEmojiSelected(false)
     }
   }, [emojiSelected])
 
-  console.log('All Oto Messages', allOtoMessages)
-  const inputRef = useRef(null)
-  useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus()
+  const editGroup = () => {
+    let editGroupUsersHashCheck = editGroupUsersChecked.map((value, index) => {
+      return value + '#' + 0
+    })
+    setEditGroupUsersChecked(editGroupUsersHashCheck)
+    let data = {
+      TalkRequest: {
+        UserID: parseInt(currentUserId),
+        Group: {
+          GroupID: chatClickData.id,
+          GroupName: groupName,
+          Users: editGroupUsersHashCheck.join(','),
+          RemovedUsers: '',
+        },
+      },
     }
-  }, [inputChat])
+    // console.log('editGroup', data)
+    dispatch(UpdatePrivateGroup(data, t, navigate))
+    setShowGroupEdit(false)
+  }
 
-  console.log('File Upload States', tasksAttachments, uploadFileTalk)
+  //Group Modification
+  useEffect(() => {
+    if (
+      talkStateData.UpdatePrivateGroup.UpdatePrivateGroupResponseMessage ===
+      'Group-modified'
+    ) {
+      setNotification({
+        notificationShow: true,
+        message:
+          talkStateData.UpdatePrivateGroup.UpdatePrivateGroupResponseMessage,
+      })
+      setNotificationID(id)
+    }
+    dispatch(ResetGroupModify())
+  }, [])
+
+  const leaveGroupHandler = (record) => {
+    console.log('Leave Group', record)
+    let data = {
+      UserID: parseInt(currentUserId),
+      GroupID: record.id,
+    }
+    dispatch(LeaveGroup(navigate, data, t))
+    setChatHeadMenuActive(false)
+  }
+
+  const leaveGroupHandlerChat = (record) => {
+    console.log('Leave Group', record)
+    let data = {
+      UserID: parseInt(currentUserId),
+      GroupID: record.id,
+    }
+    dispatch(LeaveGroup(navigate, data, t))
+    setChatMenuActive(false)
+  }
+
+  //Group Left
+  useEffect(() => {
+    if (talkStateData.LeaveGroup.LeaveGroupResponseMessage === 'Group-left') {
+      setNotification({
+        notificationShow: true,
+        message: talkStateData.LeaveGroup.LeaveGroupResponseMessage,
+      })
+      setNotificationID(id)
+    }
+    dispatch(ResetLeaveGroupMessage())
+  }, [talkStateData.LeaveGroup.LeaveGroupResponseMessage])
 
   return (
     <>
@@ -3404,9 +3573,9 @@ const TalkChat = () => {
                               />
                               {chatHeadMenuActive === dataItem.id ? (
                                 <div className="dropdown-menus-chathead">
-                                  <span onClick={deleteChatHandler}>
+                                  {/* <span onClick={deleteChatHandler}>
                                     Delete Chat
-                                  </span>
+                                  </span> */}
                                   <span
                                     onClick={() =>
                                       blockContactHandler(dataItem)
@@ -3603,9 +3772,9 @@ const TalkChat = () => {
                               />
                               {chatHeadMenuActive === dataItem.id ? (
                                 <div className="dropdown-menus-chathead">
-                                  <span onClick={deleteChatHandler}>
+                                  {/* <span onClick={deleteChatHandler}>
                                     Delete Chat
-                                  </span>
+                                  </span> */}
                                   {dataItem.isBlock === 0 ? (
                                     <span
                                       onClick={() =>
@@ -3844,9 +4013,9 @@ const TalkChat = () => {
                               />
                               {chatHeadMenuActive === dataItem.id ? (
                                 <div className="dropdown-menus-chathead">
-                                  <span onClick={deleteChatHandler}>
+                                  {/* <span onClick={deleteChatHandler}>
                                     Delete Chat
-                                  </span>
+                                  </span> */}
                                   {dataItem.isBlock === 0 ? (
                                     <span
                                       onClick={() =>
@@ -4145,6 +4314,7 @@ const TalkChat = () => {
                           searchChatUsers(e.target.value)
                         }}
                         value={searchChatUserValue}
+                        labelClass={'d-none'}
                       />
                     </Col>
                   </Row>
@@ -4246,6 +4416,7 @@ const TalkChat = () => {
                           setGroupNameValue(e.target.value)
                         }}
                         value={groupNameValue}
+                        labelClass={'d-none'}
                       />
                     </Col>
                   </Row>
@@ -4260,6 +4431,7 @@ const TalkChat = () => {
                           searchGroupUser(e.target.value)
                         }}
                         value={searchGroupUserValue}
+                        labelClass={'d-none'}
                       />
                     </Col>
                   </Row>
@@ -4391,6 +4563,7 @@ const TalkChat = () => {
                           }}
                           value={searchChatValue}
                           placeholder="Search Chat"
+                          labelClass={'d-none'}
                         />
                       </Col>
                     </Row>
@@ -4660,9 +4833,9 @@ const TalkChat = () => {
                                   />
                                   {chatHeadMenuActive === dataItem.id ? (
                                     <div className="dropdown-menus-chathead">
-                                      <span onClick={deleteChatHandler}>
+                                      {/* <span onClick={deleteChatHandler}>
                                         Delete Chat
-                                      </span>
+                                      </span> */}
                                       {dataItem.messageType === 'O' &&
                                       dataItem.isBlock === 0 ? (
                                         <span
@@ -4686,9 +4859,9 @@ const TalkChat = () => {
                                       ) : dataItem.messageType === 'G' &&
                                         dataItem.isBlock === 0 ? (
                                         <span
-                                          // onClick={() =>
-                                          // blockContactHandler(dataItem)
-                                          // }
+                                          onClick={() =>
+                                            leaveGroupHandler(dataItem)
+                                          }
                                           style={{ borderBottom: 'none' }}
                                         >
                                           Leave Group
@@ -4787,7 +4960,13 @@ const TalkChat = () => {
                                     Group Info
                                   </span>
                                   <span>Delete Group</span>
-                                  <span>Leave Group</span>
+                                  <span
+                                    onClick={() =>
+                                      leaveGroupHandlerChat(activeChat)
+                                    }
+                                  >
+                                    Leave Group
+                                  </span>
                                   <span
                                     style={{ borderBottom: 'none' }}
                                     onClick={modalHandlerGroupEdit}
@@ -4853,6 +5032,7 @@ const TalkChat = () => {
                           change={(e) => setSearchChatWord(e.target.value)}
                           value={searchChatWord}
                           placeholder="Search Chat"
+                          labelClass={'d-none'}
                         />
                       </Col>
                     </Row>
@@ -6351,7 +6531,7 @@ const TalkChat = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      style={{ marginTop: '-22px', marginBottom: '10px' }}
+                      style={{ marginBottom: '10px' }}
                     >
                       <TextField
                         maxLength={200}
@@ -6362,6 +6542,7 @@ const TalkChat = () => {
                         }}
                         value={searchChatValue}
                         placeholder="Search Users"
+                        labelClass={'d-none'}
                       />
                     </Col>
                   </Row>
@@ -6489,7 +6670,7 @@ const TalkChat = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      style={{ marginTop: '-22px', marginBottom: '5px' }}
+                      style={{ marginBottom: '5px' }}
                     >
                       <TextField
                         maxLength={200}
@@ -6500,6 +6681,7 @@ const TalkChat = () => {
                         }}
                         value={searchGroupUserInfoValue}
                         placeholder="Search Users"
+                        labelClass={'d-none'}
                       />
                     </Col>
                   </Row>
@@ -6572,8 +6754,8 @@ const TalkChat = () => {
                         className="text-center d-flex align-items-center justify-content-center"
                       >
                         <p className="groupinfo-groupname m-0">
-                          {groupInfoData !== undefined
-                            ? groupInfoData[0].name
+                          {groupName !== undefined && groupName !== null
+                            ? groupName
                             : null}
                         </p>
                         <img
@@ -6591,13 +6773,14 @@ const TalkChat = () => {
                         className="text-center d-flex align-items-center justify-content-center"
                       >
                         <TextField
-                          // value={messageSendData.Body}
+                          value={groupName}
                           className="chat-message-input"
                           name="ChatMessage"
-                          placeholder={groupInfoData[0].name}
+                          placeholder={'Group Name'}
                           maxLength={200}
-                          onChange={chatMessageHandler}
+                          change={groupNameHandler}
                           autoComplete="off"
+                          labelClass={'d-none'}
                         />
                       </Col>
                     )}
@@ -6608,17 +6791,18 @@ const TalkChat = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      style={{ marginTop: '-22px', marginBottom: '5px' }}
+                      style={{ marginBottom: '5px' }}
                     >
                       <TextField
                         maxLength={200}
                         applyClass="form-control2"
                         name="Name"
                         change={(e) => {
-                          searchGroupInfoUser(e.target.value)
+                          searchGroupEditUser(e.target.value)
                         }}
                         value={searchGroupUserInfoValue}
                         placeholder="Search Users"
+                        labelClass={'d-none'}
                       />
                     </Col>
                   </Row>
@@ -6647,6 +6831,8 @@ const TalkChat = () => {
                                             (item) =>
                                               item.userID === dataItem.id,
                                           )))
+                                        ? true
+                                        : false
                                     }
                                     onChange={() =>
                                       editGroupUsersCheckedHandler(
@@ -6670,6 +6856,17 @@ const TalkChat = () => {
                         })
                       : null}
                   </div>
+                  <Row>
+                    <Col>
+                      <div className="edit-group-button">
+                        <Button
+                          className="MontserratSemiBold Ok-btn forward-user"
+                          text="Edit Group"
+                          onClick={editGroup}
+                        />
+                      </div>
+                    </Col>
+                  </Row>
                 </>
               ) : null}
             </Container>

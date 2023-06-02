@@ -178,6 +178,16 @@ const initialState = {
     CreatePrivateGroupResponseMessage: '',
   },
 
+  UpdatePrivateGroup: {
+    UpdatePrivateGroupResponse: [],
+    UpdatePrivateGroupResponseMessage: '',
+  },
+
+  LeaveGroup: {
+    LeaveGroupResponse: [],
+    LeaveGroupResponseMessage: '',
+  },
+
   GetPrivateGroupMembers: {
     GetPrivateGroupMembersResponse: [],
     GetPrivateGroupMembersResponseMessage: '',
@@ -208,6 +218,10 @@ const initialState = {
 
   talkSocketGroupCreation: {
     groupCreatedData: null,
+  },
+
+  talkSocketGroupUpdation: {
+    groupUpdatedData: null,
   },
 
   talkSocketUnreadMessageCount: {
@@ -1021,6 +1035,50 @@ const talkReducer = (state = initialState, action) => {
       }
     }
 
+    case actions.UPDATE_PRIVATEGROUP_INIT: {
+      console.log('UPDATE_PRIVATEGROUP_INIT', action)
+      return {
+        ...state,
+        UpdatePrivateGroup: {
+          UpdatePrivateGroupResponse: action.response,
+          UpdatePrivateGroupResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.UPDATE_PRIVATEGROUP_NOTIFICATION: {
+      console.log('UPDATE_PRIVATEGROUP_NOTIFICATION', action)
+      return {
+        ...state,
+        UpdatePrivateGroup: {
+          UpdatePrivateGroupResponse: [],
+          UpdatePrivateGroupResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.LEAVE_GROUP_INIT: {
+      console.log('LEAVE_GROUP_INIT', action)
+      return {
+        ...state,
+        LeaveGroup: {
+          LeaveGroupResponse: action.response,
+          LeaveGroupResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.LEAVE_GROUP_NOTIFICATION: {
+      console.log('LEAVE_GROUP_NOTIFICATION', action)
+      return {
+        ...state,
+        LeaveGroup: {
+          LeaveGroupResponse: [],
+          LeaveGroupResponseMessage: action.message,
+        },
+      }
+    }
+
     case actions.GET_PRIVATEGROUPMEMBERS_INIT: {
       return {
         ...state,
@@ -1174,12 +1232,44 @@ const talkReducer = (state = initialState, action) => {
       }
     }
 
+    case actions.MQTT_GROUP_UPDATED: {
+      console.log('MQTT_GROUP_UPDATED', action.response)
+      return {
+        ...state,
+        talkSocketGroupUpdation: {
+          groupUpdatedData: action.response,
+        },
+      }
+    }
+
     case actions.MQTT_UNREAD_MESSAGE_COUNT: {
       console.log('MQTT_UNREAD_MESSAGE_COUNT', action.response)
       return {
         ...state,
         talkSocketUnreadMessageCount: {
           unreadMessageData: action.response,
+        },
+      }
+    }
+
+    case actions.RESET_LEAVE_GROUP_MESSAGE: {
+      console.log('RESET_LEAVE_GROUP_MESSAGE', action.response)
+      return {
+        ...state,
+        LeaveGroup: {
+          LeaveGroupResponse: [],
+          LeaveGroupResponseMessage: '',
+        },
+      }
+    }
+
+    case actions.RESET_GROUP_MODIFY_MESSAGE: {
+      console.log('RESET_GROUP_MODIFY_MESSAGE', action.response)
+      return {
+        ...state,
+        UpdatePrivateGroup: {
+          UpdatePrivateGroupResponse: [],
+          UpdatePrivateGroupResponseMessage: '',
         },
       }
     }
