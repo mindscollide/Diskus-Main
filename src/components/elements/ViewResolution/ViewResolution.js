@@ -296,7 +296,7 @@ const ViewResolution = ({ setViewresolution }) => {
                       sm={12}
                       className={styles["scroll-bar-view-resolution"]}
                     >
-                      <Row>
+                      <Row className="mt-4">
                         {resolutionData?.nonVoters.length > 0
                           ? resolutionData?.nonVoters.map((data, index) => {
                             return (

@@ -31,6 +31,7 @@ import ModalresolutionRemove from "../../../container/ModalresolutionRemove/Moda
 import ModalCancellResolution from "../../../container/ModalCancellResolution/ModalCancellResolution";
 import ModalUpdateresolution from "../../../container/ModalUpdateResolution/ModalUpdateresolution";
 import ModalDiscardResolution from "../../../container/ModalDiscardResolution/ModalDiscardResolution";
+import ModalResolutionUpdated from '../../../container/ModalResolutionUpdated/ModalResolutionUpdated'
 import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
 import {
   createResolution,
@@ -38,6 +39,7 @@ import {
   getAllVotingMethods,
   cancelResolutionApi,
   closeResolutionApi,
+  clearResponseMessage,
 } from "../../../store/actions/Resolution_actions";
 import moment from "moment";
 import {
@@ -94,13 +96,6 @@ const EditResolution = ({
   const [VoterID, setVoterID] = useState(0);
   const [isVoterModalRemove, setVoterModalRemove] = useState(false);
   const [isNonVoterModalRemove, setNonVoterModalRemove] = useState(false);
-  console.log(
-    voters,
-    votersForView,
-    nonVoter,
-    nonVoterForView,
-    "nonVoterForViewnonVoterForViewnonVoterForView"
-  );
   const [reminderData, setReminderData] = useState([
     {
       label: "10 minutes before",
@@ -131,8 +126,6 @@ const EditResolution = ({
       value: 7,
     },
   ]);
-  console.log("votingMethodsvotingMethods", votingMethods);
-  //Attendees States
   const [circulationDateTime, setCirculationDateTime] = useState({
     date: "",
     time: "",
@@ -164,6 +157,7 @@ const EditResolution = ({
   const [cancelResolutionID, setCancelResolutionID] = useState(0)
   const [fileForSend, setFileForSend] = useState([]);
   const [resolutionupdate, setResolutionupdate] = useState(false);
+  const [resolutionUpdateSuccessfully, setResolutionUpdateSuccessfully] = useState(false)
   const [discardresolution, setDsicardresolution] = useState(false);
   const [tasksAttachments, setTasksAttachments] = useState([]);
   const [editResolutionData, setEditResolutionData] = useState({
@@ -355,7 +349,6 @@ const EditResolution = ({
     setTasksAttachments([...tasksAttachments]);
   };
 
-  console.log(fileForSend, fileSize, "checkingelemnaiteFile2")
   const addVoters = () => {
     let findVoter = voters.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo
@@ -575,6 +568,7 @@ const EditResolution = ({
     },
     customRequest() { },
   };
+
   const createResolutionHandleClick = async (id) => {
     if (
       editResolutionData.Title !== "" &&
@@ -642,7 +636,9 @@ const EditResolution = ({
               setEditResoutionPage,
               t,
               2,
-              id
+              id,
+              setResolutionUpdateSuccessfully
+
             )
           );
         }
@@ -695,7 +691,8 @@ const EditResolution = ({
               setEditResoutionPage,
               t,
               2,
-              id
+              id,
+              setResolutionUpdateSuccessfully
             )
           );
         }
@@ -705,7 +702,7 @@ const EditResolution = ({
       setError(true);
       setOpen({
         flag: true,
-        message: "Please fill all the fields",
+        message: t("Please-fill-all-the-fields"),
       });
     }
   };
@@ -913,7 +910,21 @@ const EditResolution = ({
       setVotingMethods(newArr);
     }
   }, [ResolutionReducer.GetAllVotingMethods]);
-
+  useEffect(() => {
+    if (ResolutionReducer.ResponseMessage !== "" && ResolutionReducer.ResponseMessage !== t("Data-available")) {
+      setOpen({
+        flag: true,
+        message: ResolutionReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          flag: false,
+          message: "",
+        });
+      }, 4000);
+      dispatch(clearResponseMessage());
+    }
+  }, [ResolutionReducer.ResponseMessage]);
   useEffect(() => {
     dispatch(getAllVotingMethods(navigate, t));
     dispatch(getAllResolutionStatus(navigate, t));
@@ -1052,7 +1063,6 @@ const EditResolution = ({
       }
     }
   }, [ResolutionReducer.getResolutionbyID, meetingAttendeesList]);
-  console.log(editResolutionData.pK_ResolutionID, "editResolutionDataeditResolutionDataeditResolutionData")
   return (
     <>
       <section>
@@ -2104,6 +2114,8 @@ const EditResolution = ({
           handleDiscardBtn={handleDiscardBtnFunc}
         />
       ) : null}
+      {resolutionUpdateSuccessfully &&
+        <ModalResolutionUpdated resolutionupdated={resolutionUpdateSuccessfully} setResolutionupdated={setResolutionUpdateSuccessfully} />}
       <Notification message={open.message} setOpen={setOpen} open={open.flag} />
     </>
   );
