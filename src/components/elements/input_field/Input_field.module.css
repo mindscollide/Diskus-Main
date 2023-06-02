@@ -125,3 +125,8 @@
 .sharefoldersearchInput {
   height: 30px !important;
 }
+
+.dataRoomSearchInput {
+  width: 611px;
+  position: relative !important;
+}
