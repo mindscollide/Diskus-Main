@@ -559,7 +559,7 @@ const cancelResolution_Fail = (message) => {
         message: message
     }
 }
-const cancelResolutionApi = (navigate, id, t) => {
+const cancelResolutionApi = (navigate, id, t, setEditResoutionPage) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
     let Data = {
@@ -582,12 +582,13 @@ const cancelResolutionApi = (navigate, id, t) => {
             .then(async (response) => {
                 if (response.data.responseCode === 417) {
                     await dispatch(RefreshToken(navigate, t))
-                    dispatch(cancelResolutionApi(navigate, id, t))
+                    dispatch(cancelResolutionApi(navigate, id, t, setEditResoutionPage))
                 } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CancelResolution_01".toLowerCase()) {
                             dispatch(cancelResolution_Success(response.data.responseResult, t("Resolution-cancelled")))
-                            // setVoteresolution(true)
+                            await setEditResoutionPage(false)
+                            dispatch(getResolutions(navigate, 1, t))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CancelResolution_02".toLowerCase()) {
                             dispatch(cancelResolution_Fail(t("Failed-to-cancel-resolution")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CancelResolution_03".toLowerCase()) {

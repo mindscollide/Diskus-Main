@@ -130,3 +130,7 @@
   width: 611px;
   position: relative !important;
 }
+
+.search_voterInput {
+  margin: 0 !important;
+}
