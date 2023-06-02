@@ -543,7 +543,7 @@ const getResolutionsRequestMethod = {
 }
 
 const getVoterResolutionRequestMethod = {
-  RequestMethod: "ServiceManager.SearchVoterResolutions"
+  RequestMethod: 'ServiceManager.SearchVoterResolutions',
 }
 const getResolutionByIDRequestMethod = {
   RequestMethod: 'ServiceManager.GetResolutionByID',
@@ -566,6 +566,11 @@ const createTalkPrivateGroup = {
 //Get Private Group Members
 const getPrivateGroupMembers = {
   RequestMethod: 'ServiceManager.GetActiveUsersByGroupID',
+}
+
+//Edit Group
+const updatePrivateGroup = {
+  RequestMethod: 'ServiceManager.ModifyGroup',
 }
 
 const deleteNotes = {
@@ -596,63 +601,68 @@ const closeResolutionRequestMethod = {
 }
 
 const getBillingInformationRequestMethod = {
-  RequestMethod: "ServiceManager.GetBillingInformation"
+  RequestMethod: 'ServiceManager.GetBillingInformation',
 }
 const payOutStandingRequestMethod = {
-  RequestMethod: "ServiceManager.PayOustanding"
+  RequestMethod: 'ServiceManager.PayOustanding',
 }
 
 const invoiceandPaymentHistoryRequestMethod = {
-  RequestMethod: "ServiceManager.InvoicesAndPaymentHistory"
+  RequestMethod: 'ServiceManager.InvoicesAndPaymentHistory',
 }
 const markStarredMessage = {
   RequestMethod: 'ServiceManager.SetMessageFlag',
 }
 
 const saveFilesRequestMethod = {
-  RequestMethod: 'ServiceManager.SaveFiles'
+  RequestMethod: 'ServiceManager.SaveFiles',
 }
 
 const uploadDocumentsRequestMethod = {
-  RequestMethod: 'ServiceManager.UploadDocuments'
+  RequestMethod: 'ServiceManager.UploadDocuments',
 }
 
 const saveFolderRequestMethod = {
-  RequestMethod: 'ServiceManager.SaveFolder'
+  RequestMethod: 'ServiceManager.SaveFolder',
 }
 
 const getFolderDocumentsRequestMethod = {
-  RequestMethod: 'ServiceManager.GetFolderDocuments'
+  RequestMethod: 'ServiceManager.GetFolderDocuments',
 }
 
 const createFolderRequestMethod = {
-  RequestMethod: 'ServiceManager.CreateFolder'
+  RequestMethod: 'ServiceManager.CreateFolder',
 }
 
 const getDocumentsAndFolderRequestMethod = {
-  RequestMethod: 'ServiceManager.GetDocumentsAndFolders'
+  RequestMethod: 'ServiceManager.GetDocumentsAndFolders',
 }
 
 const shareFilesRequestMethod = {
-  RequestMethod: 'ServiceManager.ShareFiles'
+  RequestMethod: 'ServiceManager.ShareFiles',
 }
 
 const shareFolderRequestMethod = {
-  RequestMethod: 'ServiceManager.ShareFolders'
+  RequestMethod: 'ServiceManager.ShareFolders',
 }
 
 const deleteFileRequestMethod = {
-  RequestMethod: 'ServiceManager.DeleteFile'
+  RequestMethod: 'ServiceManager.DeleteFile',
 }
 const FolderisExistRequestMethod = {
-  RequestMethod: 'ServiceManager.FolderExist'
+  RequestMethod: 'ServiceManager.FolderExist',
 }
 const FileisExistRequestMethod = {
-  RequestMethod: 'ServiceManager.FileExist'
+  RequestMethod: 'ServiceManager.FileExist',
 }
 const deleteFolderRequestMethod = {
-  RequestMethod: 'ServiceManager.DeleteFolder'
+  RequestMethod: 'ServiceManager.DeleteFolder',
 }
+
+const leaveGroup = {
+  RequestMethod: 'ServiceManager.RemoveUserFromGroup',
+}
+
 export {
   signuprequest,
   signinauthenication,
@@ -829,8 +839,7 @@ export {
   FileisExistRequestMethod,
   FolderisExistRequestMethod,
   deleteFileRequestMethod,
-  deleteFolderRequestMethod
-};
-
-
-
+  deleteFolderRequestMethod,
+  updatePrivateGroup,
+  leaveGroup,
+}

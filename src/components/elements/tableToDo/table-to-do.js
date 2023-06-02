@@ -13,7 +13,8 @@ const CustomTableToDo = ({
   scroll,
   labelTitle,
   size,
-  rowSelection
+  rowSelection,
+  onRow
 }) => {
   console.log("CustomTableToDO", className);
 
@@ -30,6 +31,7 @@ const CustomTableToDo = ({
         className={className}
         loading={loading}
         onChange={onChange}
+        onRow={onRow}
         // bordered
         scroll={scroll}
         locale={Locale}

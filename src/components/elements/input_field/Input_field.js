@@ -36,6 +36,7 @@ const TextField = ({
   min,
   max,
   maxLength,
+  onDoubleClick
 }) => {
   console.log("applyClassapplyClass", applyClass);
   return (
@@ -71,6 +72,7 @@ const TextField = ({
           min={min}
           max={max}
           required={required ? true : false}
+          onDoubleClick={onDoubleClick}
         />
         <FormControl.Feedback className={iconClassName} onClick={clickIcon}>
           {inputicon}

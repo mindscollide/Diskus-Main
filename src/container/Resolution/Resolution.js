@@ -87,9 +87,9 @@ const Resolution = () => {
       let data = moderatordata.filter((a) => {
         console.log(
           removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.circulationDate)
-            ),
+          removeDashesFromDate(
+            editResolutionDate(searchModalDates.circulationDate)
+          ),
           "datadatadatadata"
         );
         // console.log(a, "datadatadatadata")
@@ -97,29 +97,29 @@ const Resolution = () => {
         //   editResolutionDate(a.circulationDate)), "datadatadatadata")
         return (
           (searchModalDates.circulationDate != "" &&
-          searchModalDates.votingDate != ""
+            searchModalDates.votingDate != ""
             ? removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-                removeDashesFromDate(
-                  editResolutionDate(searchModalDates.circulationDate)
-                ) &&
-              removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-                removeDashesFromDate(
-                  editResolutionDate(searchModalDates.votingDate)
-                )
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.circulationDate)
+            ) &&
+            removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.votingDate)
+            )
             : a) &&
           (searchModalDates.circulationDate != "" &&
-          searchModalDates.votingDate === ""
+            searchModalDates.votingDate === ""
             ? removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-              removeDashesFromDate(
-                editResolutionDate(searchModalDates.circulationDate)
-              )
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.circulationDate)
+            )
             : removeDashesFromDate(editResolutionDate(a.circulationDate))) &&
           (searchModalDates.votingDate != "" &&
-          searchModalDates.circulationDate === ""
+            searchModalDates.circulationDate === ""
             ? removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-              removeDashesFromDate(
-                editResolutionDate(searchModalDates.votingDate)
-              )
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.votingDate)
+            )
             : removeDashesFromDate(editResolutionDate(a.votingDeadline)))
         );
       });
@@ -131,9 +131,9 @@ const Resolution = () => {
       let data = voterData.filter((a) => {
         console.log(
           removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.circulationDate)
-            ),
+          removeDashesFromDate(
+            editResolutionDate(searchModalDates.circulationDate)
+          ),
           "datadatadatadata"
         );
         console.log(a, "datadatadatadata");
@@ -143,29 +143,29 @@ const Resolution = () => {
         );
         return (
           (searchModalDates.circulationDate != "" &&
-          searchModalDates.votingDate != ""
+            searchModalDates.votingDate != ""
             ? removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-                removeDashesFromDate(
-                  editResolutionDate(searchModalDates.circulationDate)
-                ) &&
-              removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-                removeDashesFromDate(
-                  editResolutionDate(searchModalDates.votingDate)
-                )
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.circulationDate)
+            ) &&
+            removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.votingDate)
+            )
             : a) &&
           (searchModalDates.circulationDate != "" &&
-          searchModalDates.votingDate === ""
+            searchModalDates.votingDate === ""
             ? removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-              removeDashesFromDate(
-                editResolutionDate(searchModalDates.circulationDate)
-              )
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.circulationDate)
+            )
             : removeDashesFromDate(editResolutionDate(a.decisionDate))) &&
           (searchModalDates.votingDate != "" &&
-          searchModalDates.circulationDate === ""
+            searchModalDates.circulationDate === ""
             ? removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-              removeDashesFromDate(
-                editResolutionDate(searchModalDates.votingDate)
-              )
+            removeDashesFromDate(
+              editResolutionDate(searchModalDates.votingDate)
+            )
             : removeDashesFromDate(editResolutionDate(a.votingDeadline)))
         );
       });
@@ -698,7 +698,7 @@ const Resolution = () => {
             <img
               src={ResultResolutionIcon}
 
-              // onClick={() => getResultHandle(data.resolutionID)}
+            // onClick={() => getResultHandle(data.resolutionID)}
             />
           );
         }
@@ -1157,24 +1157,116 @@ const Resolution = () => {
                     sm={12}
                     className=" d-flex justify-content-end  align-items-center  Search-filed-resolution"
                   >
-                    <TextField
-                      width="455px"
-                      name="Title"
-                      placeholder={t("Search")}
-                      labelClass="textFieldSearch d-none"
-                      change={filterResolution}
-                      applyClass={"resolution-search-input"}
-                      value={allSearchInput}
-                    />
-                    <img
-                      src={searchicon}
-                      height="19px"
-                      width="19px"
-                      className={styles["Search_Icon"]}
-                      onClick={openSearchBox}
-                    />
+                    <span>
+                      <TextField
+                        width="455px"
+                        name="Title"
+                        placeholder={t("Search")}
+                        labelClass="textFieldSearch d-none"
+                        change={filterResolution}
+                        applyClass={"resolution-search-input"}
+                        value={allSearchInput}
+                        iconClassName={styles["Search_Icon"]}
+                        inputicon={<img src={searchicon} />}
+                        clickIcon={openSearchBox}
+                      />
+                      {/* <img
+                        src={searchicon}
+                        height="19px"
+                        width="19px"
+                        className={styles["Search_Icon"]}
+                        onClick={openSearchBox}
+                      /> */}
+                      {searchIcon ? (
+                        <>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={styles["Search_Box_Main_Resolution_page"]}
+                            >
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-end"
+                                >
+                                  <span className="position-relative">
+                                    <img
+                                      src={Cross}
+                                      height="16px"
+                                      className={styles["searchBox_CrossIcon"]}
+                                      width="16px"
+                                      onClick={closeSeachBar}
+                                    />
+                                  </span>
+                                </Col>
+                              </Row>
+                              <Row className="mt-3 d-flex justify-content-start align-items-start ">
+                                <Col
+                                  lg={6}
+                                  md={6}
+                                  sm={6}
+                                  className="CreateMeetingReminder searchBox-dropdowns-resolution FontArabicRegular "
+                                >
+                                  <TextField
+                                    label={
+                                      ResolutionReducer.currentResolutionView === 2
+                                        ? t("Decision-date")
+                                        : t("Circulation-date")
+                                    }
+                                    type="date"
+                                    name="circulationDate"
+                                    change={changeSearchDateHandler}
+                                  />
+                                </Col>
+                                <Col
+                                  lg={6}
+                                  md={6}
+                                  sm={6}
+                                  className="CreateMeetingReminder  searchBox-dropdowns-resolution FontArabicRegular"
+                                >
+                                  <TextField
+                                    label={t("Voting-deadline")}
+                                    type="date"
+                                    name="votingDate"
+                                    change={changeSearchDateHandler}
+                                  />
+                                </Col>
+                              </Row>
+                              <Row className="mt-3">
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex justify-content-end gap-3"
+                                >
+                                  <Button
+                                    text={t("Reset")}
+                                    className={
+                                      styles["ResetButton_SearchBar_Resolution"]
+                                    }
+                                    onClick={hideSearchOptions}
+                                  />
+                                  <Button
+                                    text={t("Search")}
+                                    className={
+                                      styles["SearchButton_SearchBar_Resolution"]
+                                    }
+                                    onClick={showSearchOptions}
+                                  />
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        </>
+                      ) : null}
+                    </span>
                   </Col>
-                  {searchIcon ? (
+
+                  {/* {searchIcon ? (
                     <>
                       <Row>
                         <Col
@@ -1258,7 +1350,7 @@ const Resolution = () => {
                         </Col>
                       </Row>
                     </>
-                  ) : null}
+                  ) : null} */}
                 </Row>
               </Col>
             </Row>
