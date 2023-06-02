@@ -86,11 +86,12 @@ import { useNavigate } from "react-router-dom";
 const DataRoom = () => {
   // tooltip
   const [showbarupload, setShowbarupload] = useState(false);
+
   const [minimize, setMinimize] = useState(false);
   const [progress, setProgress] = useState(0);
   const text = <span>Share</span>;
   const Deltooltip = <span>Delete</span>;
-  const eventClickHandler = () => {};
+  const eventClickHandler = () => { };
   const { t } = useTranslation();
   const { uploadReducer, DataRoomReducer } = useSelector((state) => state);
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -110,6 +111,7 @@ const DataRoom = () => {
   const [sharehoverstyle, setSharehoverstyle] = useState(false);
   const [sharefoldermodal, setSharefoldermodal] = useState(false);
   const [mydocumentbtnactive, setMydocumentbtnactive] = useState(false);
+  const [alldocumentAcitve, setAllDocumentActive] = useState(false)
   const [tasksAttachments, setTasksAttachments] = useState([]);
   const [deltehoverstyle, setDeltehoverstyle] = useState(false);
   const [sharedwithmebtn, setSharedwithmebtn] = useState(false);
@@ -134,6 +136,7 @@ const DataRoom = () => {
   const [getAllData, setGetAllData] = useState([]);
   const [showsubmenu, setShowsubmenu] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
+  const [isDocumentsId, setDocumentId] = useState(0)
   const [searchModalOptions, setSearchModalOptions] = useState({
     Location: "",
     DateModified: "",
@@ -143,6 +146,7 @@ const DataRoom = () => {
     OwnerTypeValue: "",
     EnterMember: "",
   });
+  console.log(showbarupload, "showbaruploadshowbaruploadshowbarupload")
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -160,24 +164,30 @@ const DataRoom = () => {
   const OpenCancelDownloadModal = () => {
     setShowcanceldownload(true);
   };
+
   const OpenthreeDotDropdown = () => {
     setOptionsthreedoticon(!optionsthreedoticon);
   };
+
   const openFileremovedNotification = () => {
     setFileremoved(true);
   };
+
   const closeSearchBar = () => {
     setShowbarupload(false);
     setTasksAttachments([]);
   };
+
   const MinimizeOption = () => {
     setMinimize(true);
   };
+
   const deleteafterhover = () => {
     setDeltehoverstyle(true);
     setSharehoverstyle(false);
     setDeletenotification(true);
   };
+
   const OptionsDocument = [
     {
       value: "Document",
@@ -498,51 +508,18 @@ const DataRoom = () => {
     setSearchbarsearchoptions(false);
   };
   const showSearchResultsOptions = () => {
-    setSearchoptions(true);
+    setSearchoptions(!searchoptions);
+    setSearchbarshow(true)
   };
   const searchbardropdownShow = () => {
     setSearchbarshow(!searchbarshow);
   };
 
-  // useEffect(() => {
-  //   console.log("click");
-  //   try {
-  //     window.addEventListener("click", function (e) {
-  //       console.log("eeeeeeeee", e.target.className);
-  //       var clsname = e.target.className;
-  //       let arr = clsname.split("_");
-  //       console.log("click", arr[1]);
-  //       if (arr != undefined) {
-  //         if (arr[1] === "Saved_money_Tagline" && searchbarshow === true) {
-  //           setSearchbarshow(true);
-  //           console.log("click", clsname);
-  //         } else if (
-  //           arr[1] === "DataRoom_Data_room_paper" &&
-  //           searchbarshow === false
-  //         ) {
-  //           setSearchbarshow(true);
-
-  //           console.log("click", clsname);
-  //         } else if (arr[1] === "Edit" && searchbarshow === true) {
-  //           console.log("click", clsname);
-  //         } else if (arr[1] === "Edit" && searchbarshow === false) {
-  //           console.log("click", clsname);
-  //         } else {
-  //           console.log("click", clsname);
-  //         }
-  //       } else {
-  //         setSearchbarshow(true);
-  //       }
-  //     });
-  //   } catch {
-  //     console.log("error");
-  //   }
-  // }, []);
-
   const SharewithmeButonShow = async () => {
     await dispatch(getDocumentsAndFolderApi(navigate, 2, t));
     setSharemebtn(true);
     setSharedwithmebtn(true);
+    setAllDocumentActive(false);
     setMydocumentbtnactive(false);
     localStorage.removeItem("folderID");
   };
@@ -550,10 +527,20 @@ const DataRoom = () => {
   const MydocumentButtonShow = async () => {
     await dispatch(getDocumentsAndFolderApi(navigate, 1, t));
     localStorage.removeItem("folderID");
+    setAllDocumentActive(false)
     setSharemebtn(false);
     setMydocumentbtnactive(true);
     setSharedwithmebtn(false);
   };
+
+  const AllDocuments = async () => {
+    await dispatch(getDocumentsAndFolderApi(navigate, 3, t));
+    localStorage.removeItem("folderID");
+    setSharemebtn(false);
+    setAllDocumentActive(true)
+    setMydocumentbtnactive(false);
+    setSharedwithmebtn(false);
+  }
   const showCancellUploadModal = () => {
     setCanceluploadmodal(true);
   };
@@ -572,8 +559,9 @@ const DataRoom = () => {
 
   useEffect(() => {
     if (
-      DataRoomReducer.getFolderDocumentResponse.length !== null &&
-      DataRoomReducer.getFolderDocumentResponse.length !== undefined
+      DataRoomReducer.getFolderDocumentResponse !== null &&
+      DataRoomReducer.getFolderDocumentResponse !== undefined &&
+      DataRoomReducer.getFolderDocumentResponse.length > 0
     ) {
       setGetAllData(DataRoomReducer.getFolderDocumentResponse);
     }
@@ -581,13 +569,14 @@ const DataRoom = () => {
 
   useEffect(() => {
     if (uploadReducer.uploadDocumentsList !== null) {
-      tasksAttachments.push({
+      let attachmentData = []
+      attachmentData.push({
         DisplayAttachmentName:
           uploadReducer.uploadDocumentsList.displayFileName,
         OriginalAttachmentName:
           uploadReducer.uploadDocumentsList.originalFileName,
       });
-      setTasksAttachments([...tasksAttachments]);
+      setTasksAttachments(attachmentData);
     }
   }, [uploadReducer.uploadDocumentsList]);
 
@@ -775,39 +764,20 @@ const DataRoom = () => {
                 className="d-flex justify-content-end gap-2"
               >
                 <>
-                  <Tooltip placement="topLeft" title={text}>
-                    <img
-                      src={addone}
-                      height="10.71px"
-                      width="15.02px"
-                      className={styles["HoverStyle"]}
-                      onClick={() => {
-                        if (data.isFolder) {
-                          showShareFolderModal(data.id, data.name);
-                        } else {
-                          showShareFileModal(data.id, data.name);
-                        }
-                      }}
-                    />
-                  </Tooltip>
+                  <img
+                    src={addone}
+                    height="10.71px"
+                    width="15.02px"
+                    className={styles["HoverStyle"]}
+                    onClick={() => {
+                      if (data.isFolder) {
+                        showShareFolderModal(data.id, data.name);
+                      } else {
+                        showShareFileModal(data.id, data.name);
+                      }
+                    }}
+                  />
                 </>
-                {/* <>
-                  <Tooltip placement="topLeft" title={text}>
-                    <img
-                      src={add}
-                      height="10.71px"
-                      width="15.02px"
-                      onClick={() => {
-                        if (data.isFolder) {
-                          showShareFolderModal(data.id)
-                        } else {
-                          showShareFileModal(data.id)
-                        }
-                      }
-                      }
-                    />
-                  </Tooltip>
-                </> */}
 
                 <img
                   src={download}
@@ -815,42 +785,23 @@ const DataRoom = () => {
                   width="15.02px"
                   onClick={showRequestingAccessModal}
                 />
-                {deltehoverstyle ? (
-                  <>
-                    <Tooltip placement="topLeft" title={Deltooltip}>
-                      <img
-                        src={deleterednew}
-                        height="10.71px"
-                        width="15.02px"
-                        className={styles["Deletehover"]}
-                        onClick={() => {
-                          if (data.isFolder) {
-                            dispatch(deleteFolder(navigate, data.id, t));
-                          } else {
-                            dispatch(deleteFileDataroom(navigate, data.id, t));
-                          }
-                        }}
-                      />
-                    </Tooltip>
-                  </>
-                ) : (
-                  <>
-                    <Tooltip placement="topLeft" title={Deltooltip}>
-                      <img
-                        src={del}
-                        height="10.71px"
-                        width="15.02px"
-                        onClick={() => {
-                          if (data.isFolder) {
-                            dispatch(deleteFolder(navigate, data.id, t));
-                          } else {
-                            dispatch(deleteFileDataroom(navigate, data.id, t));
-                          }
-                        }}
-                      />
-                    </Tooltip>
-                  </>
-                )}
+
+                <>
+                  <Tooltip placement="topLeft" title={Deltooltip}>
+                    <img
+                      src={del}
+                      height="10.71px"
+                      width="15.02px"
+                      onClick={() => {
+                        if (data.isFolder) {
+                          dispatch(deleteFolder(navigate, data.id, t));
+                        } else {
+                          dispatch(deleteFileDataroom(navigate, data.id, t));
+                        }
+                      }}
+                    />
+                  </Tooltip>
+                </>
 
                 <img src={start} height="10.71px" width="15.02px" />
 
@@ -1129,18 +1080,17 @@ const DataRoom = () => {
     setIsOpen(true);
   };
   const onSelectChange = (selectedRowKeys, selectedRows) => {
-    console.log(
-      selectedRowKeys,
-      selectedRows,
-      "onSelectChangeonSelectChangeonSelectChangeonSelectChange"
-    );
     setSelectedRows(selectedRows);
   };
-
+  console.log(selectedRows, "selectedRowsselectedRowsselectedRows")
   const rowSelection = {
+    selectedRows,
     onChange: onSelectChange,
-  };
+    onSelect: (e) => {
+      console.log(e, "selectedRowsselectedRowsselectedRows")
+    }
 
+  }
   useEffect(() => {
     if (
       DataRoomReducer.ResponseMessage !== "" &&
@@ -1238,83 +1188,8 @@ const DataRoom = () => {
             </Row>
           </>
         ) : null}
-        {searchbarshow ? (
-          <>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className={styles["Drop_Down_searchBar"]}
-              >
-                <Row className="mt-3">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className=" d-flex gap-5 justify-content-center text-center"
-                  >
-                    <div>
-                      <img src={document} height="19.25px" width="16.85px" />
-                      <span className={styles["DropDown_name"]}>Document</span>
-                    </div>
-                    <div>
-                      <img src={pdf} height="19.25px" width="16.85px" />
-                      <span className={styles["DropDown_name"]}>PDF</span>
-                    </div>
-                    <div>
-                      <img src={folderColor} height="18.99px" width="21.11px" />
-                      <span className={styles["DropDown_name"]}>folder</span>
-                    </div>
-                    <div>
-                      <img src={video} height="20.53px" width="17.97px" />
-                      <span className={styles["DropDown_name"]}>video</span>
-                    </div>
-                    <div>
-                      <img src={spreadsheet} height="19.76px" width="19.78px" />
-                      <span className={styles["DropDown_name"]}>
-                        spreadsheet
-                      </span>
-                    </div>
-                    <div>
-                      <img src={forms} height="20.24px" width="18.65px" />
-                      <span className={styles["DropDown_name"]}>forms</span>
-                    </div>
-                    <div>
-                      <img src={video} height="20.53px" width="17.97px" />
-                      <span className={styles["DropDown_name"]}>video</span>
-                    </div>
-                  </Col>
-                </Row>
-                <Row className="mt-4">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={styles["Show_more_options"]}
-                  >
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex align-items-center mt-2"
-                      >
-                        <span
-                          className={styles["Search_option_text_span"]}
-                          onClick={showSearchResultsOptions}
-                        >
-                          {t("Show-search-options")}
-                        </span>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </>
-        ) : null}
-        {searchbarsearchoptions ? (
+
+        {/* {searchbarsearchoptions ? (
           <>
             <Row>
               <Col
@@ -1341,11 +1216,7 @@ const DataRoom = () => {
                 </Row>
                 <Row className="mt-1">
                   <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
-                    {/* <Select
-                      options={OptionsDocument}
-                      placeholder={t("File-type")}
-                      closeMenuOnSelect={false}
-                    /> */}
+               
                   </Col>
                   <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
                     <Select
@@ -1418,7 +1289,7 @@ const DataRoom = () => {
               </Col>
             </Row>
           </>
-        ) : null}
+        ) : null} */}
         {deletenotification ? (
           <>
             <Row>
@@ -1612,7 +1483,7 @@ const DataRoom = () => {
               <Col
                 lg={3}
                 md={3}
-                sm={3}
+                sm={12}
                 className="d-flex justify-content-start"
               >
                 <Dropdown
@@ -1660,7 +1531,7 @@ const DataRoom = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className="dropdown-item"
-                      // onClick={handleCreateTodo}
+                    // onClick={handleCreateTodo}
                     >
                       <Row className="mt-1">
                         <Col
@@ -1680,7 +1551,7 @@ const DataRoom = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className="dropdown-item_folder"
-                      // onClick={handleCreateTodo}
+                    // onClick={handleCreateTodo}
                     >
                       <Row className="mt-1">
                         <Col
@@ -1705,26 +1576,201 @@ const DataRoom = () => {
                 lg={6}
                 md={6}
                 sm={6}
-                className="d-flex  Inputfield_for_data_room justify-content-end "
+                className="d-flex position-relative Inputfield_for_data_room justify-content-end "
               >
-                <div onClick={searchbardropdownShow}>
+                <div className="position-relative">
                   <TextField
-                    width="611px"
-                    name={filterVal}
+                    value={filterVal}
                     change={handleFilter}
                     placeholder={t("Search")}
-                    labelClass="textFieldSearch d-none"
+                    applyClass={"dataRoomSearchInput"}
+                    labelClass="d-none"
+                    onDoubleClick={searchbardropdownShow}
+                    inputicon={<img src={searchicon} />}
+                    clickIcon={SearchiconClickOptions}
+                    iconClassName={styles["dataroom_searchinput"]}
                   />
+                  {searchbarsearchoptions ? (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={styles["Drop_Down_searchBar_Options"]}
+                        >
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-end"
+                            >
+                              <Button
+                                className={styles["CrossButton"]}
+                                icon={
+                                  <img src={Cross} width="10.35px" height="10.01px" />
+                                }
+                                onClick={SearchiconClickOptionsHide}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-1">
+                            <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
+
+                            </Col>
+                            <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
+                              <Select
+                                options={optionsLastmodified}
+                                placeholder={t("Data-modified")}
+                                closeMenuOnSelect={false}
+                                value={searchModalOptions.DateModified}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-2">
+                            <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
+                              <Select
+                                options={optionsLocations}
+                                placeholder={t("Location")}
+                                closeMenuOnSelect={false}
+                                value={searchModalOptions.LocationValue}
+                              />
+                            </Col>
+                            <Col
+                              lg={6}
+                              md={6}
+                              sm={6}
+                              className=" Inputfield_for_data_room"
+                            >
+                              <TextField
+                                placeholder="Item name"
+                                labelClass="textFieldSearch d-none"
+                                value={searchModalOptions.ItemName}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-3 Inputfield_for_data_room">
+                            <Col lg={12} md={12} sm={12}>
+                              <TextField
+                                placeholder="Enter a team the matches part of the file name"
+                                labelClass="textFieldSearch d-none"
+                                value={searchModalOptions.EnterMember}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-2">
+                            <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
+                              <Select
+                                options={OptionsOwner}
+                                placeholder={t("Owner")}
+                                closeMenuOnSelect={false}
+                                value={searchModalOptions.OwnerTypeValue}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-5">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-end gap-3"
+                            >
+                              <Button
+                                text={t("Cancel")}
+                                className={styles["cancell_Search_button_Dataroom"]}
+                                onClick={SearchiconClickOptionsHide}
+                              />
+                              <Button
+                                text={t("Search")}
+                                className={styles["Search_Search_button_Dataroom"]}
+                              />
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
+                  {searchbarshow ? (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={styles["Drop_Down_searchBar"]}
+                        >
+                          <Row className="mt-3">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className=" d-flex gap-5 justify-content-center text-center"
+                            >
+                              <div>
+                                <img src={document} height="19.25px" width="16.85px" />
+                                <span className={styles["DropDown_name"]}>Document</span>
+                              </div>
+                              <div>
+                                <img src={pdf} height="19.25px" width="16.85px" />
+                                <span className={styles["DropDown_name"]}>PDF</span>
+                              </div>
+                              <div>
+                                <img src={folderColor} height="18.99px" width="21.11px" />
+                                <span className={styles["DropDown_name"]}>folder</span>
+                              </div>
+                              <div>
+                                <img src={video} height="20.53px" width="17.97px" />
+                                <span className={styles["DropDown_name"]}>video</span>
+                              </div>
+                              <div>
+                                <img src={spreadsheet} height="19.76px" width="19.78px" />
+                                <span className={styles["DropDown_name"]}>
+                                  spreadsheet
+                                </span>
+                              </div>
+                              <div>
+                                <img src={forms} height="20.24px" width="18.65px" />
+                                <span className={styles["DropDown_name"]}>forms</span>
+                              </div>
+                              <div>
+                                <img src={video} height="20.53px" width="17.97px" />
+                                <span className={styles["DropDown_name"]}>video</span>
+                              </div>
+                            </Col>
+                          </Row>
+                          <Row className="mt-4">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={styles["Show_more_options"]}
+                            >
+                              <Row>
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className="d-flex align-items-center mt-2"
+                                >
+                                  <span
+                                    className={styles["Search_option_text_span"]}
+                                    onClick={showSearchResultsOptions}
+                                  >
+                                    {t("Show-search-options")}
+                                  </span>
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
                 </div>
-                <img
-                  src={searchicon}
-                  height="19px"
-                  width="19px"
-                  className={styles["Search_Icon"]}
-                  onClick={SearchiconClickOptions}
-                />
+
               </Col>
-              <Col lg={1} md={1} sm={1}>
+              <Col lg={1} md={1} sm={12} className="d-flex justify-content-center">
                 <Button
                   icon={
                     <img
@@ -1765,6 +1811,16 @@ const DataRoom = () => {
                 <Paper className={styles["Data_room_paper"]}>
                   <Row>
                     <Col lg={12} md={12} sm={12} className="d-flex gap-3">
+                      <Button
+                        text={t("All")}
+                        className={
+                          alldocumentAcitve
+                            ? `${styles["allDocuments_btn_active"]}`
+                            : `${styles["allDocuments_btn"]}`
+                        }
+                        // onClick={showUploadOptionsModal}
+                        onClick={AllDocuments}
+                      />
                       <Button
                         text={t("My-document")}
                         className={
@@ -1858,7 +1914,7 @@ const DataRoom = () => {
                         >
                           <span
                             className={styles["Clear_All_btn"]}
-                            // onClick={CleatingSearchOptions}
+                          // onClick={CleatingSearchOptions}
                           >
                             {t("Clear-all")}
                           </span>
@@ -1871,9 +1927,9 @@ const DataRoom = () => {
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
                           {getAllData.length > 0 &&
-                          getAllData !== undefined &&
-                          getAllData !== null &&
-                          gridbtnactive ? (
+                            getAllData !== undefined &&
+                            getAllData !== null &&
+                            gridbtnactive ? (
                             <>
                               <GridViewDataRoom data={getAllData} />
                             </>
@@ -1940,150 +1996,11 @@ const DataRoom = () => {
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
                           {getAllData.length > 0 &&
-                          getAllData !== undefined &&
-                          getAllData !== null &&
-                          gridbtnactive ? (
+                            getAllData !== undefined &&
+                            getAllData !== null &&
+                            gridbtnactive ? (
                             <>
                               <GridViewDataRoom data={getAllData} />
-
-                              {showbarupload ? (
-                                <>
-                                  <Row>
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className={
-                                        styles["Back_ground_For_uploader"]
-                                      }
-                                    >
-                                      <Row>
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className={styles["Blue_Strip"]}
-                                        >
-                                          <Row className="mt-2">
-                                            <Col
-                                              lg={9}
-                                              md={9}
-                                              sm={9}
-                                              className="d-flex justify-content-start gap-3"
-                                            >
-                                              <span
-                                                className={styles["Uploading"]}
-                                              >
-                                                {t("Uploading")} {uploadCounter}{" "}
-                                                {t("items")}
-                                              </span>
-                                              <Space
-                                                className={
-                                                  styles["Progress_bar"]
-                                                }
-                                              >
-                                                {parseInt(progress) + "%"}
-                                              </Space>
-                                              <Space
-                                                className={
-                                                  styles["Progress_bar"]
-                                                }
-                                              >
-                                                {remainingTime +
-                                                  t("Sec-remaining")}
-                                              </Space>
-                                            </Col>
-
-                                            <Col
-                                              lg={3}
-                                              md={3}
-                                              sm={3}
-                                              className="d-flex justify-content-end gap-2 mt-1"
-                                            >
-                                              <img
-                                                src={chevdown}
-                                                width={9}
-
-                                                // width="8.49px"
-                                                // height="4.46px"
-                                              />
-                                              <img
-                                                src={Cancellicon}
-                                                width={9}
-                                                onClick={closeSearchBar}
-                                                // width="6.94px"
-                                                // height="6.71px"
-                                              />
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className={
-                                            styles["Scroller_bar_of_BarUploder"]
-                                          }
-                                        >
-                                          {Object.values(tasksAttachments)
-                                            .length > 0
-                                            ? Object.values(
-                                                tasksAttachments
-                                              ).map((data, index) => {
-                                                console.log(
-                                                  data,
-                                                  "datadatadatadatadatadatadatadatadata"
-                                                );
-                                                return (
-                                                  <>
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                      className="d-flex gap-1 mt-2 flex-column"
-                                                    >
-                                                      <Space
-                                                        direction="vertical"
-                                                        className="d-flex flex-row"
-                                                      >
-                                                        <img
-                                                          src={PDFICON}
-                                                          height="16px"
-                                                          width="16px"
-                                                          className={
-                                                            styles[
-                                                              "Icon_in_Bar"
-                                                            ]
-                                                          }
-                                                        />
-                                                        <span
-                                                          className={
-                                                            styles[
-                                                              "name_of_life_in_Bar"
-                                                            ]
-                                                          }
-                                                        >
-                                                          {data.name}
-                                                        </span>
-                                                      </Space>
-                                                      {progress > 0 && (
-                                                        <Progress
-                                                          percent={progress}
-                                                        />
-                                                      )}
-                                                    </Col>
-                                                  </>
-                                                );
-                                              })
-                                            : null}
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                  </Row>
-                                </>
-                              ) : null}
                             </>
                           ) : getAllData.length > 0 &&
                             getAllData !== undefined &&
@@ -2095,155 +2012,17 @@ const DataRoom = () => {
                                 column={MyDocumentsColumns}
                                 className={styles["DataRoom_Table"]}
                                 rows={getAllData}
-                                rowSelection={{
-                                  type: "checkbox",
-                                  onSelect: (record) => {
-                                    console.log(
-                                      record,
-                                      "rowSelectionrowSelectionrowSelection"
-                                    );
-                                  },
-                                }}
+                                // rowSelection={rowSelection}
                                 size={"middle"}
+                                onRow={(record, rowIndex) => {
+                                  return {
+                                    onClick: event => {
+                                      console.log(event.target.lastChild.data, record, "asasasasas")
+                                    }, // click row
+                                  };
+                                }}
                               />
-                              {showbarupload ? (
-                                <>
-                                  <Row>
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className={
-                                        styles["Back_ground_For_uploader"]
-                                      }
-                                    >
-                                      <Row>
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className={styles["Blue_Strip"]}
-                                        >
-                                          <Row className="mt-2">
-                                            <Col
-                                              lg={9}
-                                              md={9}
-                                              sm={9}
-                                              className="d-flex justify-content-start gap-3"
-                                            >
-                                              <span
-                                                className={styles["Uploading"]}
-                                              >
-                                                {t("Uploading")} {uploadCounter}{" "}
-                                                {t("items")}
-                                              </span>
-                                              <Space
-                                                className={
-                                                  styles["Progress_bar"]
-                                                }
-                                              >
-                                                {parseInt(progress) + "%"}
-                                              </Space>
-                                              <Space
-                                                className={
-                                                  styles["Progress_bar"]
-                                                }
-                                              >
-                                                {remainingTime +
-                                                  t("Sec-remaining")}
-                                              </Space>
-                                            </Col>
 
-                                            <Col
-                                              lg={3}
-                                              md={3}
-                                              sm={3}
-                                              className="d-flex justify-content-end gap-2 mt-1"
-                                            >
-                                              <img
-                                                src={chevdown}
-                                                width={9}
-
-                                                // width="8.49px"
-                                                // height="4.46px"
-                                              />
-                                              <img
-                                                src={Cancellicon}
-                                                width={9}
-                                                onClick={closeSearchBar}
-                                                // width="6.94px"
-                                                // height="6.71px"
-                                              />
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                      </Row>
-                                      <Row>
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className={
-                                            styles["Scroller_bar_of_BarUploder"]
-                                          }
-                                        >
-                                          {Object.values(tasksAttachments)
-                                            .length > 0
-                                            ? Object.values(
-                                                tasksAttachments
-                                              ).map((data, index) => {
-                                                console.log(
-                                                  data,
-                                                  "datadatadatadatadatadatadatadatadata"
-                                                );
-                                                return (
-                                                  <>
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                      className="d-flex gap-1 mt-2 flex-column"
-                                                    >
-                                                      <Space
-                                                        direction="vertical"
-                                                        className="d-flex flex-row"
-                                                      >
-                                                        <img
-                                                          src={PDFICON}
-                                                          height="16px"
-                                                          width="16px"
-                                                          className={
-                                                            styles[
-                                                              "Icon_in_Bar"
-                                                            ]
-                                                          }
-                                                        />
-                                                        <span
-                                                          className={
-                                                            styles[
-                                                              "name_of_life_in_Bar"
-                                                            ]
-                                                          }
-                                                        >
-                                                          {data.name}
-                                                        </span>
-                                                      </Space>
-                                                      {progress > 0 && (
-                                                        <Progress
-                                                          percent={progress}
-                                                        />
-                                                      )}
-                                                    </Col>
-                                                  </>
-                                                );
-                                              })
-                                            : null}
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                  </Row>
-                                </>
-                              ) : null}
                             </>
                           ) : (
                             <>
@@ -2301,6 +2080,144 @@ const DataRoom = () => {
                       </Row>
                     </>
                   )}
+                  {showbarupload ? (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={
+                            styles["Back_ground_For_uploader"]
+                          }
+                        >
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={styles["Blue_Strip"]}
+                            >
+                              <Row className="mt-2">
+                                <Col
+                                  lg={9}
+                                  md={9}
+                                  sm={9}
+                                  className="d-flex justify-content-start gap-3"
+                                >
+                                  <span
+                                    className={styles["Uploading"]}
+                                  >
+                                    {t("Uploading")} {uploadCounter}{" "}
+                                    {t("items")}
+                                  </span>
+                                  <Space
+                                    className={
+                                      styles["Progress_bar"]
+                                    }
+                                  >
+                                    {parseInt(progress) + "%"}
+                                  </Space>
+                                  <Space
+                                    className={
+                                      styles["Progress_bar"]
+                                    }
+                                  >
+                                    {remainingTime +
+                                      t("Sec-remaining")}
+                                  </Space>
+                                </Col>
+
+                                <Col
+                                  lg={3}
+                                  md={3}
+                                  sm={3}
+                                  className="d-flex justify-content-end gap-2 mt-1"
+                                >
+                                  <img
+                                    src={chevdown}
+                                    width={9}
+
+                                  // width="8.49px"
+                                  // height="4.46px"
+                                  />
+                                  <img
+                                    src={Cancellicon}
+                                    width={9}
+                                    onClick={closeSearchBar}
+                                  // width="6.94px"
+                                  // height="6.71px"
+                                  />
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={
+                                styles["Scroller_bar_of_BarUploder"]
+                              }
+                            >
+                              {Object.values(tasksAttachments)
+                                .length > 0
+                                ? Object.values(
+                                  tasksAttachments
+                                ).map((data, index) => {
+                                  console.log(
+                                    data,
+                                    "datadatadatadatadatadatadatadatadata"
+                                  );
+                                  return (
+                                    <>
+                                      <Col
+                                        lg={12}
+                                        md={12}
+                                        sm={12}
+                                        className="d-flex gap-1 mt-2 flex-column"
+                                      >
+                                        <Space
+                                          direction="vertical"
+                                          className="d-flex flex-row"
+                                        >
+                                          <img
+                                            src={PDFICON}
+                                            height="16px"
+                                            width="16px"
+                                            className={
+                                              styles[
+                                              "Icon_in_Bar"
+                                              ]
+                                            }
+                                          />
+                                          <span
+                                            className={
+                                              styles[
+                                              "name_of_life_in_Bar"
+                                              ]
+                                            }
+                                          >
+                                            {data.name}
+                                          </span>
+                                        </Space>
+                                        {progress > 0 && (
+                                          <Progress
+                                            percent={progress}
+                                          />
+                                        )}
+                                      </Col>
+                                    </>
+                                  );
+                                })
+                                : null}
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
                 </Paper>
               </Col>
             </Row>

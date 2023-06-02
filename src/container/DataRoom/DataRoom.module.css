@@ -40,6 +40,39 @@
   padding: 30px 30px !important;
 }
 
+.allDocuments_btn {
+  padding: 6px 12px !important;
+  font-size: 12px !important;
+  background: #fff;
+  border: none !important;
+  font-family: "MontserratSemiBold";
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a;
+}
+
+.allDocuments_btn_active {
+  padding: 6px 12px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold";
+  color: #fff;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+}
+
+.allDocuments_btn:hover,
+.allDocuments_btn:focus,
+.allDocuments_btn:active,
+.allDocuments_btn:focus-visible {
+  padding: 6px 12px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: none !important;
+  font-family: "MontserratSemiBold";
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+}
+
+
 .myDocument_btn_active {
   padding: 6px 12px !important;
   font-size: 12px !important;
@@ -200,15 +233,15 @@
 }
 
 .Drop_Down_searchBar {
-  width: 611px !important;
+  width: 100% !important;
   height: 127px !important;
   padding: 10px 10px !important;
   background: #fff;
   border: 1px solid #e1e1e1;
   z-index: 1;
   position: absolute;
-  top: 49px !important;
-  right: 202px !important;
+  top: 39px !important;
+  right: 0 !important;
 }
 
 body[dir="rtl"] .Drop_Down_searchBar {
@@ -248,14 +281,14 @@ body[dir="rtl"] .Drop_Down_searchBar {
 
 .Drop_Down_searchBar_Options {
   width: 611px !important;
-  height: 399px !important;
+  height: auto;
   padding: 10px 10px !important;
   background: #fff;
   border: 1px solid #e1e1e1;
   z-index: 1;
   position: absolute;
-  top: 48px !important;
-  right: 202px !important;
+  top: 39px;
+  right: 0;
 }
 
 body[dir="rtl"] .Drop_Down_searchBar_Options {
@@ -328,46 +361,67 @@ body[dir="rtl"] .Search_Icon {
 .grid_view_btn {
   height: 39px !important;
   width: 39px !important;
-  background: none !important;
+  background: #fff !important;
   border: 1px solid #e1e1e1;
-  border-right: none !important;
+  /* border-right: none !important; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
 }
 
-.grid_view_btn:hover,
-.grid_view_btn:active,
-.grid_view_btn:focus,
-.grid_view_btn:focus-visible {
+.grid_view_btn:is(:hover, :visited, :active, :focus, :focus-visible, :active) {
   height: 39px !important;
   width: 39px !important;
-  background: none !important;
-  border: 1px solid #e1e1e1 !important;
-  border-right: none !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1;
+  border-color: #e1e1e1 !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important;
+  outline: none !important;
 }
+
 
 .grid_view_btn_active {
   height: 39px !important;
   width: 39px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border-top-right-radius: 0px !important; */
+  /* border-bottom-right-radius: 0px !important; */
 }
 
 .List_view_btn {
   height: 39px !important;
   width: 39px !important;
-  background: none !important;
+  background: #fff !important;
   border: 1px solid #e1e1e1;
-  border-left: none !important;
+  border-color: #e1e1e1 !important;
+  /* border-left: none !important; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
 }
 
-.List_view_btn:hover,
-.List_view_btn:active,
-.List_view_btn:focus,
-.List_view_btn:focus-visible {
+.List_view_btn:is(:hover, :visited, :active, :focus, :focus-visible, :active) {
   height: 39px !important;
   width: 39px !important;
-  background: none !important;
-  border: 1px solid #e1e1e1 !important;
-  border-left: none !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top-left-radius: 0px !important;
+  border-bottom-left-radius: 0px !important;
 }
 
 .List_view_btn_active {
@@ -375,15 +429,14 @@ body[dir="rtl"] .Search_Icon {
   width: 39px !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* border-top-left-radius: 0px !important; */
+  /* border-bottom-left-radius: 0px !important; */
 }
 
-.grid_view_Icon {
-  margin-left: -3px !important;
-}
 
-.list_view_Icon {
-  margin-left: -3px !important;
-}
 
 .new_folder {
   font-size: 10px !important;
@@ -401,10 +454,8 @@ body[dir="rtl"] .Search_Icon {
 .HoverStyle {
   width: 25px !important;
   height: 25px !important;
-  background: #f1f1f1 !important;
   border-radius: 20px !important;
-  padding: 5px 5px !important;
-  box-shadow: 0px 0px 0px 5px solid #f1f1f1;
+  padding: 5px !important;
 }
 
 .Deletehover {
@@ -697,4 +748,13 @@ body[dir="rtl"] .Data_room_btn {
 
 .font_size {
   font-size: calc(14px - 20%) !important;
+}
+
+.dataroom_searchinput {
+  display: inline-block;
+  position: absolute !important;
+  right: 0 !important;
+  width: auto;
+  top: 7px;
+  margin-right: 10px;
 }

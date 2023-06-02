@@ -41,7 +41,7 @@ const saveFiles_fail = (message) => {
 };
 
 // Save Files API
-const saveFilesApi = (navigate, data, t) => {
+const saveFilesApi = (navigate, data, t, setShowbarupload) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -79,6 +79,7 @@ const saveFilesApi = (navigate, data, t) => {
         if (response.data.responseResult.isExecuted === true) {
           if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase())) {
             await dispatch(saveFiles_success(response.data.responseMessage, t("Files-saved-successfully")))
+            setShowbarupload(false)
             if (folderID !== null) {
               dispatch(getFolderDocumentsApi(navigate, folderID, t))
             } else {
@@ -186,7 +187,7 @@ const uploadDocumentsApi = (
           if (response.data.responseResult.isExecuted === true) {
             if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase())) {
               await dispatch(uploadDocument_success(response.data.responseResult, t("Document-uploaded-successfully")))
-              await dispatch(saveFilesApi(navigate, response.data.responseResult, t))
+              await dispatch(saveFilesApi(navigate, response.data.responseResult, t, setShowbarupload))
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase())) {
               dispatch(uploadDocument_fail(t("Failed-to-update-document")))
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase())) {
