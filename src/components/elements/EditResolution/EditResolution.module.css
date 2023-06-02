@@ -221,7 +221,7 @@ body[dir="rtl"] .Attachments_resolution {
 }
 
 .scroll-bar-Create-resolution {
-  height: 15vh !important;
+  height: 20vh !important;
   overflow-x: hidden !important;
 }
 
@@ -423,7 +423,6 @@ body[dir="rtl"] .CheckBoxalign {
 }
 
 .errorMessage {
-  margin: 3px;
   height: 7px;
   color: #f16b6b;
   visibility: visible !important;
@@ -435,11 +434,14 @@ body[dir="rtl"] .errorMessage {
 
 .errorMessage_hidden {
   visibility: hidden;
-  margin: 0;
   height: 7px;
   color: #f16b6b !important;
 }
 
 body[dir="rtl"] .errorMessage_hidden {
   font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.attachments_height {
+  height: 100px !important;
 }

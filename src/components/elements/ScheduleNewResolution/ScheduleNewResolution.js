@@ -86,15 +86,10 @@ const ScheduleNewResolution = ({
     (state) => state
   );
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
-  console.log(
-    ResolutionReducer,
-    uploadReducer,
-    "ResolutionReducerResolutionReducerResolutionReducer"
-  );
   const [isVoter, setVoter] = useState(true);
   const [votingMethods, setVotingMethods] = useState([]);
   const [decision, setDecision] = useState({
-    label: "Pending",
+    label: t("Decision-pending"),
     value: 1,
   });
   const [open, setOpen] = useState({
@@ -110,13 +105,6 @@ const ScheduleNewResolution = ({
   const [VoterID, setVoterID] = useState(0);
   const [isVoterModalRemove, setVoterModalRemove] = useState(false);
   const [isNonVoterModalRemove, setNonVoterModalRemove] = useState(false);
-  console.log(
-    voters,
-    votersForView,
-    nonVoter,
-    nonVoterForView,
-    "nonVoterForViewnonVoterForViewnonVoterForView"
-  );
   const [reminderData, setReminderData] = useState([
     {
       label: "10 minutes before",
@@ -147,8 +135,6 @@ const ScheduleNewResolution = ({
       value: 7,
     },
   ]);
-  console.log("votingMethodsvotingMethods", votingMethods);
-  //Attendees States
   const [circulationDateTime, setCirculationDateTime] = useState({
     date: "",
     time: "",
@@ -161,17 +147,10 @@ const ScheduleNewResolution = ({
     date: "",
     time: "",
   });
-  console.log(
-    circulationDateTime,
-    votingDateTime,
-    decisionDateTime,
-    "circulationDateTimecirculationDateTime"
-  );
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [emailValue, setEmailValue] = useState("");
-  console.log("emailValueemailValueemailValue", emailValue);
   const [isNonVoter, setNonVoter] = useState(false);
   const [resolutioncancel, setResolutioncancel] = useState(false);
   const [fileSize, setFileSize] = useState(0);
@@ -348,7 +327,6 @@ const ScheduleNewResolution = ({
     searchIndex.splice(index, 1);
     setTasksAttachments([...tasksAttachments]);
   };
-  console.log(tasksAttachments, fileForSend, fileSize, "checkingelemnaiteFile")
   const addVoters = () => {
     let findVoter = voters.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo
@@ -723,9 +701,9 @@ const ScheduleNewResolution = ({
       }
     } catch (error) { }
   }, [assignees.user]);
-
+  console.log(ResolutionReducer, "ResolutionReducerResolutionReducerResolutionReducer")
   useEffect(() => {
-    if (ResolutionReducer.ResponseMessage !== null) {
+    if (ResolutionReducer.ResponseMessage !== "" && ResolutionReducer.ResponseMessage !== t("Data-available")) {
       setOpen({
         flag: true,
         message: ResolutionReducer.ResponseMessage,
@@ -739,6 +717,7 @@ const ScheduleNewResolution = ({
       dispatch(clearResponseMessage());
     }
   }, [ResolutionReducer.ResponseMessage]);
+  console.log(open, "ResolutionReducerResolutionReducerResolutionReducerResolutionReducerResolutionReducerResolutionReducer")
   // Get Voting Methods
   useEffect(() => {
     if (ResolutionReducer.GetAllVotingMethods !== null) {
@@ -820,7 +799,7 @@ const ScheduleNewResolution = ({
                           <TextField
                             applyClass="form-control2"
                             type="text"
-                            placeholder={t("Resolution-title")}
+                            placeholder={t("Resolution-title") + "*"}
                             required={true}
                             value={createResolutionData.Title}
                             maxLength={300}
@@ -851,7 +830,7 @@ const ScheduleNewResolution = ({
                         >
                           <Select
                             name="Participant"
-                            placeholder={t("Voting-deadline")}
+                            placeholder={t("Voting-deadline" + "*")}
                             className="select-voting-deadline"
                             options={votingMethods}
                             isSearchable={false}
@@ -880,7 +859,7 @@ const ScheduleNewResolution = ({
                         >
                           <Select
                             name=""
-                            placeholder={t("Decision")}
+                            placeholder={t("Decision") + "*"}
                             className="select-voting-deadline"
                             defaultValue={{
                               label: decision.label,
@@ -902,7 +881,7 @@ const ScheduleNewResolution = ({
                             type="text"
                             as={"textarea"}
                             rows="4"
-                            placeholder={t("Notes")}
+                            placeholder={t("Notes-for-voters") + "*"}
                             value={createResolutionData.NotesToVoter}
                             required={true}
                             maxLength={500}
@@ -928,7 +907,7 @@ const ScheduleNewResolution = ({
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Circulation_heading"]}>
-                            {t("Circulation")}
+                            {t("Circulation-date") + "*"}
                           </span>
                         </Col>
                       </Row>
@@ -941,7 +920,9 @@ const ScheduleNewResolution = ({
                         >
                           <TextFieldDateTime
                             min={minDate}
+                            placeholder={+"*"}
                             labelClass="d-none"
+                            applyClass={"search_voterInput"}
                             change={(e) => {
                               setCirculationDateTime({
                                 ...circulationDateTime,
@@ -972,6 +953,7 @@ const ScheduleNewResolution = ({
                           <TextField
                             type="time"
                             labelClass="d-none"
+                            applyClass={"search_voterInput"}
                             change={(e) => {
                               setCirculationDateTime({
                                 ...circulationDateTime,
@@ -1001,7 +983,7 @@ const ScheduleNewResolution = ({
                               styles["Voting_deadline_Create_resolution"]
                             }
                           >
-                            {t("Voting-deadline")}
+                            {t("Voting-deadline") + "*"}
                           </span>
                         </Col>
                       </Row>
@@ -1014,6 +996,7 @@ const ScheduleNewResolution = ({
                         >
                           <TextFieldDateTime
                             min={minDate}
+                            applyClass={"search_voterInput"}
                             labelClass="d-none"
                             change={(e) => {
                               setVotingDateTime({
@@ -1031,7 +1014,7 @@ const ScheduleNewResolution = ({
                                     : `${styles["errorMessage_hidden"]}`
                                 }
                               >
-                                {t("Voting-date-is-required")}
+                                {t("Voting-deadline-date-is-required")}
                               </p>
                             </Col>
                           </Row>
@@ -1044,6 +1027,7 @@ const ScheduleNewResolution = ({
                         >
                           <TextField
                             type="time"
+                            applyClass={"search_voterInput"}
                             labelClass="d-none"
                             change={(e) => {
                               setVotingDateTime({
@@ -1061,7 +1045,7 @@ const ScheduleNewResolution = ({
                                     : `${styles["errorMessage_hidden"]}`
                                 }
                               >
-                                {t("Voting-time-is-required")}
+                                {t("Voting-deadline-time-is-required")}
                               </p>
                             </Col>
                           </Row>
@@ -1074,7 +1058,7 @@ const ScheduleNewResolution = ({
                               styles["decision_annoucement_Createresoulution"]
                             }
                           >
-                            {t("Descision-announcement")}
+                            {t("Descision-announcement") + "*"}
                           </span>
                         </Col>
                       </Row>
@@ -1086,6 +1070,7 @@ const ScheduleNewResolution = ({
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           <TextFieldDateTime
+                            applyClass={"search_voterInput"}
                             min={minDate}
                             labelClass="d-none"
                             change={(e) => {
@@ -1104,7 +1089,7 @@ const ScheduleNewResolution = ({
                                     : `${styles["errorMessage_hidden"]}`
                                 }
                               >
-                                {t("Decision-date-is-required")}
+                                {t("Decision-announcement-date-is-required")}
                               </p>
                             </Col>
                           </Row>
@@ -1116,6 +1101,7 @@ const ScheduleNewResolution = ({
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           <TextField
+                            applyClass={"search_voterInput"}
                             type="time"
                             labelClass="d-none"
                             change={(e) => {
@@ -1134,7 +1120,7 @@ const ScheduleNewResolution = ({
                                     : `${styles["errorMessage_hidden"]}`
                                 }
                               >
-                                {t("Decision-time-is-required")}
+                                {t("Decision-announcement-time-is-required")}
                               </p>
                             </Col>
                           </Row>
@@ -1143,7 +1129,7 @@ const ScheduleNewResolution = ({
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Reminder"]}>
-                            {t("Reminder-frequency")}
+                            {t("Reminder-frequency") + "*"}
                           </span>
                         </Col>
                       </Row>
@@ -1171,7 +1157,7 @@ const ScheduleNewResolution = ({
                                     : `${styles["errorMessage_hidden"]}`
                                 }
                               >
-                                {t("Reminder-is-required")}
+                                {t("Reminder-frequency-is-required")}
                               </p>
                             </Col>
                           </Row>
@@ -1265,6 +1251,7 @@ const ScheduleNewResolution = ({
                                     filteredDataHandler={searchFilterHandler(
                                       taskAssignedToInput
                                     )}
+                                    applyClass={"search_voterInput"}
                                     change={onChangeSearch}
                                   />
                                   <Row>
@@ -1370,6 +1357,7 @@ const ScheduleNewResolution = ({
                                   className="CreateMeetingInput resolution-search-input "
                                 >
                                   <InputSearchFilter
+                                    applyClass={"search_voterInput"}
                                     placeholder={t("Add-attendees")}
                                     className="taskassignee"
                                     value={taskAssignedToInput}

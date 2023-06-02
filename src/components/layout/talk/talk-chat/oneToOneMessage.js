@@ -179,3 +179,34 @@ export const groupCreationFunction = (
   } else {
   }
 }
+
+export const groupUpdationFunction = (
+  talkStateData,
+  setAllChatData,
+  allChatData,
+) => {
+  let mqttCreatedGroup =
+    talkStateData.talkSocketGroupUpdation.groupUpdatedData.data[0]
+  let groupUpdationDataMqtt = {
+    admin: mqttCreatedGroup.admin,
+    attachmentLocation: '',
+    companyName: '',
+    fullName: mqttCreatedGroup.fullName,
+    id: mqttCreatedGroup.id,
+    imgURL: mqttCreatedGroup.imgURL,
+    isBlock: 0,
+    isOnline: false,
+    messageBody: mqttCreatedGroup.messageBody,
+    messageDate: mqttCreatedGroup.messageDate,
+    messageType: 'G',
+    notiCount: 0,
+    receivedDate: '',
+    seenDate: '',
+    senderID: 0,
+    sentDate: '',
+  }
+  if (Object.keys(groupUpdationDataMqtt) !== null) {
+    setAllChatData([groupUpdationDataMqtt, ...allChatData])
+  } else {
+  }
+}

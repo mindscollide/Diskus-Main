@@ -871,13 +871,13 @@
   "Decision-time-is-required": "وقت القرار مطلوب",
   "Decision-date-is-required": "تاريخ القرار مطلوب",
   "Voting-time-is-required": "وقت التصويت مطلوب",
-  "Voting-date-is-required": "تاريخ التصويت مطلوب",
+  "Voting-deadline-date-is-required": "Voting Deadline date is required",
   "Circulation-time-is-required": "وقت التداول مطلوب",
   "Circulation-date-is-required": "تاريخ الإعارة مطلوب",
   "Resolution-description-is-required": "وصف الدقة مطلوب",
   "Voting-method-is-required": "طريقة التصويت مطلوبة",
   "Resolution-Title-is-required": "مطلوب عنوان القرار",
-  "Reminder-is-required": "التذكير مطلوب",
+  "Reminder-frequency-is-required": "التذكير مطلوب",
   "Files-saved-successfully": "تم حفظ الملفات بنجاح",
   "Failed-to-save-any-file": "فشل حفظ أي ملف",
   "The-user-is-blocked": "المستخدم محظور",
@@ -926,7 +926,7 @@
   "Voter": "ناخب",
   "Vote-count": "عدد الأصوات",
   "Circulated": "متداول",
-  "Note": "ملحوظة",
+  "Notes-for-voters": "Notes for Voters",
   "Committees": "اللجان",
   "File-sharing": "مشاركة الملفات",
   "Discussion": "مناقشة",
@@ -942,5 +942,6 @@
   "Annual-Subscriptions": "الاشتراكات السنوية",
   "Please-add-atleast-one-group-head-and-one-group-member": "Please add atleast one group head and one group member",
   "Folder-name": "Folder Name",
-  "The-user-has-reached-the-maximum-faileda-attempts": "The User has Reached the Maximum Failed Attempts"
+  "The-user-has-reached-the-maximum-faileda-attempts": "The User has Reached the Maximum Failed Attempts",
+  "Decision-pending": "Decision Pending"
 }
