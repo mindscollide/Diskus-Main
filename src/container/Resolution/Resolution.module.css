@@ -282,10 +282,14 @@ body[dir="rtl"] .Resolution-Current-btn_Active {
 }
 
 .Search_Icon {
-  position: absolute !important;
-  right: 90px !important;
   cursor: pointer !important;
   z-index: 1 !important;
+  display: block;
+  top: 25px !important;
+  position: absolute;
+  left: 93%;
+  width: 20px;
+  height: 20px;
 }
 
 body[dir="rtl"] .Search_Icon {
@@ -293,10 +297,7 @@ body[dir="rtl"] .Search_Icon {
   cursor: pointer !important;
 }
 
-.Resolution-closed-btn:hover {
-  background: none !important;
-  color: #5a5a5a;
-}
+
 
 .Resolution-heading-size {
   font-size: 30px !important;
@@ -408,13 +409,13 @@ body[dir="rtl"] .Resolution-heading-size {
 .Search_Box_Main_Resolution_page {
   width: 455px !important;
   padding: 20px 20px !important;
-  height: 183px !important;
+  height: auto !important;
   background: #fff !important;
   border: 1px solid #e1e1e1;
   position: absolute;
   /* /* position: absolute !important; */
   top: 57px;
-  right: 80px !important;
+  right: 5% !important;
   border-radius: 4px !important;
   z-index: 1 !important;
 }
@@ -657,4 +658,8 @@ body[dir="rtl"] .Result_Icon_cursor_pointer {
   margin: 0 !important;
   padding: 0 !important;
   line-height: 10px !important;
+}
+
+.searchBox_CrossIcon {
+  cursor: pointer !important;
 }

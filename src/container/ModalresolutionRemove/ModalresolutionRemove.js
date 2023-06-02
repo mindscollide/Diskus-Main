@@ -69,6 +69,7 @@ const ModalresolutionRemove = ({
                   <Button
                     text={t("Discard")}
                     className={styles["Discard_btn_removeParticipant_modal"]}
+                    onClick={closebtn}
                   />
 
                   <Button

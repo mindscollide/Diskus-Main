@@ -9,6 +9,7 @@ const ModalCancellResolution = ({
   cancelresolution,
   setCancelresolution,
   setEditResoutionPage,
+  handleCancelResolution
 }) => {
   const { t } = useTranslation();
   const closebtn = async () => {
@@ -74,7 +75,7 @@ const ModalCancellResolution = ({
                   <Button
                     text={t("Confirm")}
                     className={styles["Confirm-activegroup-modal"]}
-                    onClick={() => setEditResoutionPage(false)}
+                    onClick={handleCancelResolution}
                   />
                 </Col>
               </Row>
