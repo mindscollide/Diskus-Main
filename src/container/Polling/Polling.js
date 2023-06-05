@@ -4,7 +4,7 @@ import { Row, Col } from "react-bootstrap";
 import { Button, Table, TextField } from "../../components/elements";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
-import CreatePolling from "./CreatePolling/CreatePolling";
+import CreatePolling from "./CreatePolling/CreatePollingModal";
 
 
 
