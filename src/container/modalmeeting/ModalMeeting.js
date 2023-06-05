@@ -1868,6 +1868,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         filteredDataHandler={searchFilterHandler(
                           taskAssignedToInput,
                         )}
+                        applyClass={"input_searchAttendees_createMeeting"}
                         change={onChangeSearch}
                       />
                     </Col>

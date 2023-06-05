@@ -83,10 +83,10 @@ import CustomCheckbox from "../../components/elements/check_box/Checkbox";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import GridViewDataRoom from "./GridViewDataRoom/GridViewDataRoom";
 import { useNavigate } from "react-router-dom";
+import { Data } from "emoji-mart";
 const DataRoom = () => {
   // tooltip
   const [showbarupload, setShowbarupload] = useState(false);
-
   const [minimize, setMinimize] = useState(false);
   const [progress, setProgress] = useState(0);
   const text = <span>Share</span>;
@@ -137,6 +137,16 @@ const DataRoom = () => {
   const [showsubmenu, setShowsubmenu] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [isDocumentsId, setDocumentId] = useState(0)
+  const [searchDocumentTypeValue, setSearchDocumentTypeValue] = useState(0);
+  const [searchDocumentType, setSearchDocumentType] = useState({
+    label: "",
+    value: 0
+  })
+  const [locationValue, setLocationValue] = useState({
+    label: "",
+    value: 0
+  })
+  console.log(searchDocumentType, "searchDocumentTypeValuesearchDocumentTypeValuesearchDocumentTypeValue")
   const [searchModalOptions, setSearchModalOptions] = useState({
     Location: "",
     DateModified: "",
@@ -147,6 +157,8 @@ const DataRoom = () => {
     EnterMember: "",
   });
   console.log(showbarupload, "showbaruploadshowbaruploadshowbarupload")
+
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -190,7 +202,7 @@ const DataRoom = () => {
 
   const OptionsDocument = [
     {
-      value: "Document",
+      value: 1,
       label: (
         <>
           <Row>
@@ -210,7 +222,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: "Viewer",
+      value: 2,
       label: (
         <>
           <Row>
@@ -230,7 +242,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: "Viewer",
+      value: 3,
       label: (
         <>
           <Row>
@@ -250,7 +262,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: "Viewer",
+      value: 4,
       label: (
         <>
           <Row>
@@ -270,7 +282,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: "Viewer",
+      value: 5,
       label: (
         <>
           <Row>
@@ -282,7 +294,7 @@ const DataRoom = () => {
             >
               <img src={images} height="17px" width="17px" />
               <span className={styles["Option_Document_button"]}>
-                {t("Photos-and-images")}
+                {t("Photos")}
               </span>
             </Col>
           </Row>
@@ -290,7 +302,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: "Viewer",
+      value: 6,
       label: (
         <>
           <Row>
@@ -310,7 +322,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: "Viewer",
+      value: 7,
       label: (
         <>
           <Row>
@@ -329,9 +341,8 @@ const DataRoom = () => {
         </>
       ),
     },
-
     {
-      value: "Viewer",
+      value: 8,
       label: (
         <>
           <Row>
@@ -351,7 +362,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: "Viewer",
+      value: 9,
       label: (
         <>
           <Row>
@@ -371,7 +382,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: "Viewer",
+      value: 10,
       label: (
         <>
           <Row>
@@ -391,7 +402,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: "Viewer",
+      value: 11,
       label: (
         <>
           <Row>
@@ -411,27 +422,85 @@ const DataRoom = () => {
       ),
     },
   ];
+  const OptionsDocument2 = [
+    {
+      value: 1,
+      imgSrc: document,
+      label: t("Document")
+    },
+    {
+      value: 2,
+      imgSrc: spreadsheet,
+      label: t("Spreadsheets")
+    },
+    {
+      value: 3,
+      imgSrc: video,
+      label: t("Presentaion")
+    },
+    {
+      value: 4,
+      imgSrc: forms,
+      label: t("Forms")
+    },
+    {
+      value: 5,
+      imgSrc: images,
+      label: t("Photos")
+    },
+    {
+      value: 6,
+      imgSrc: pdf,
+      label: t("PDFs")
+    },
+    {
+      value: 7,
+      imgSrc: video,
+      label: t("Videos")
+    },
+    {
+      value: 8,
+      imgSrc: ShareIcon,
+      label: t("Share")
+    },
+    {
+      value: 9,
+      imgSrc: folderColor,
+      label: t("Folder")
+    },
+    {
+      value: 10,
+      imgSrc: sitesIcon,
+      label: t("Sites")
+    },
+    {
+      value: 11,
+      imgSrc: audioIcon,
+      label: t("Audio")
+    },
+
+  ];
 
   const optionsLocations = [
-    { value: "Any Where in DataRoom", label: "Any Where in DataRoom" },
-    { value: "My Documents", label: "My Documents" },
-    { value: "Shared with me", label: "Shared with me" },
+    { value: 1, label: "Any Where in DataRoom" },
+    { value: 2, label: "My Documents" },
+    { value: 3, label: "Shared with me" },
   ];
 
   const OptionsOwner = [
-    { value: "Owned by me", label: "Owned by me" },
-    { value: "Not Owned by me", label: "Not Owned by me" },
-    { value: "Specific person", label: "Specific person" },
+    { value: 1, label: "Owned by me" },
+    { value: 2, label: "Not Owned by me" },
+    { value: 3, label: "Specific person" },
   ];
-  const optionsPeople = [{ value: "Viewer", label: "Viewer" }];
+  const optionsPeople = [{ value: 1, label: "Viewer" }];
   const optionsLastmodified = [
-    { value: "Today", label: "Today" },
-    { value: "Last 7 days", label: "Last 7 days" },
-    { value: "Last 30 days", label: "Last 30 days" },
-    { value: "This year (2023)", label: "This year (2023)" },
-    { value: "Last year (2022)", label: "Last year (2022)" },
+    { value: 1, label: "Today" },
+    { value: 2, label: "Last 7 days" },
+    { value: 3, label: "Last 30 days" },
+    { value: 4, label: "This year (2023)" },
+    { value: 5, label: "Last year (2022)" },
     {
-      value: "Custom Range",
+      value: 6,
       label: (
         <>
           <Row>
@@ -454,7 +523,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: "Last year (2022)",
+      value: 7,
       label: (
         <>
           <Button text={t("Clear")} className={styles["Clear_button"]} />
@@ -479,6 +548,9 @@ const DataRoom = () => {
   };
   const SearchiconClickOptions = () => {
     setSearchbarsearchoptions(true);
+    if (searchbarshow === true) {
+      setSearchbarshow(false)
+    }
   };
 
   const showShareFolderModal = (id, name) => {
@@ -513,6 +585,9 @@ const DataRoom = () => {
   };
   const searchbardropdownShow = () => {
     setSearchbarshow(!searchbarshow);
+    if (searchbarsearchoptions === true) {
+      setSearchbarsearchoptions(false)
+    }
   };
 
   const SharewithmeButonShow = async () => {
@@ -579,40 +654,6 @@ const DataRoom = () => {
       setTasksAttachments(attachmentData);
     }
   }, [uploadReducer.uploadDocumentsList]);
-
-  // useEffect(() => {
-  //   console.log("click");
-  //   window.addEventListener("click", function (e) {
-  //     console.log("eeeeeeeee", e.target.className);
-  //     var clsname = e.target.className;
-  //     let arr = clsname && clsname.split("_");
-  //     console.log("click", typeof arr);
-  //     console.log("click", arr != "");
-  //     console.log("click", arr.length);
-  //     if (arr != undefined && arr.length > 0) {
-  //       if (arr[1] === "Drop" && arr[1] === "down") {
-  //         console.log("click", arr);
-  //       } else {
-  //         console.log("click", arr);
-
-  //         setIsOpen(false);
-  //         setShowsubmenu(false);
-  //       }
-  //     } else {
-  //       console.log("click", arr);
-
-  //       if (isOpen) {
-  //         console.log("click", arr);
-  //       } else if (showsubmenu) {
-  //         console.log("click", arr);
-  //       }
-
-  //       // setIsOpen(false);
-  //       // setShowsubmenu(false);
-  //     }
-  //   });
-  // }, []);
-  // }, [showsubmenu]);
 
   const foldersHandler = (id) => {
     console.log(
@@ -1091,6 +1132,31 @@ const DataRoom = () => {
     }
 
   }
+
+  const handleChangeLocationValue = (event) => {
+    console.log(event, "handleChangeLocationValue")
+    setLocationValue({
+      label: event.label,
+      value: event.value
+    })
+  }
+  const handleChangeDocuments = (documentID) => {
+    setSearchDocumentTypeValue(documentID)
+    OptionsDocument.map((data, index) => {
+      if (data.value === documentID) {
+        setSearchDocumentType({
+          label: data.label,
+          value: data.value
+        })
+      }
+    })
+  }
+  const handleSearch = () => {
+    setSearchoptions(true)
+  }
+  const handleClearAllSearchOptions = () => {
+    setSearchoptions(false)
+  }
   useEffect(() => {
     if (
       DataRoomReducer.ResponseMessage !== "" &&
@@ -1189,107 +1255,6 @@ const DataRoom = () => {
           </>
         ) : null}
 
-        {/* {searchbarsearchoptions ? (
-          <>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className={styles["Drop_Down_searchBar_Options"]}
-              >
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <Button
-                      className={styles["CrossButton"]}
-                      icon={
-                        <img src={Cross} width="10.35px" height="10.01px" />
-                      }
-                      onClick={SearchiconClickOptionsHide}
-                    />
-                  </Col>
-                </Row>
-                <Row className="mt-1">
-                  <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
-               
-                  </Col>
-                  <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
-                    <Select
-                      options={optionsLastmodified}
-                      placeholder={t("Data-modified")}
-                      closeMenuOnSelect={false}
-                      value={searchModalOptions.DateModified}
-                    />
-                  </Col>
-                </Row>
-                <Row className="mt-2">
-                  <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
-                    <Select
-                      options={optionsLocations}
-                      placeholder={t("Location")}
-                      closeMenuOnSelect={false}
-                      value={searchModalOptions.LocationValue}
-                    />
-                  </Col>
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    className=" Inputfield_for_data_room"
-                  >
-                    <TextField
-                      placeholder="Item name"
-                      labelClass="textFieldSearch d-none"
-                      value={searchModalOptions.ItemName}
-                    />
-                  </Col>
-                </Row>
-                <Row className="mt-3 Inputfield_for_data_room">
-                  <Col lg={12} md={12} sm={12}>
-                    <TextField
-                      placeholder="Enter a team the matches part of the file name"
-                      labelClass="textFieldSearch d-none"
-                      value={searchModalOptions.EnterMember}
-                    />
-                  </Col>
-                </Row>
-                <Row className="mt-2">
-                  <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
-                    <Select
-                      options={OptionsOwner}
-                      placeholder={t("Owner")}
-                      closeMenuOnSelect={false}
-                      value={searchModalOptions.OwnerTypeValue}
-                    />
-                  </Col>
-                </Row>
-                <Row className="mt-5">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-end gap-3"
-                  >
-                    <Button
-                      text={t("Cancel")}
-                      className={styles["cancell_Search_button_Dataroom"]}
-                      onClick={SearchiconClickOptionsHide}
-                    />
-                    <Button
-                      text={t("Search")}
-                      className={styles["Search_Search_button_Dataroom"]}
-                    />
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </>
-        ) : null} */}
         {deletenotification ? (
           <>
             <Row>
@@ -1450,7 +1415,6 @@ const DataRoom = () => {
             </Row>
           </>
         ) : null}
-
         {/* not called yet */}
         {actionundonenotification ? (
           <>
@@ -1622,19 +1586,23 @@ const DataRoom = () => {
                             <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
                               <Select
                                 options={optionsLastmodified}
-                                placeholder={t("Data-modified")}
+                                placeholder={t("Date-modified")}
                                 closeMenuOnSelect={false}
                                 value={searchModalOptions.DateModified}
                               />
                             </Col>
                           </Row>
                           <Row className="mt-2">
-                            <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
+                            <Col lg={6} md={6} sm={6} className="select-dropdowns-height d-flex align-items-center">
                               <Select
                                 options={optionsLocations}
                                 placeholder={t("Location")}
                                 closeMenuOnSelect={false}
-                                value={searchModalOptions.LocationValue}
+                                onChange={handleChangeLocationValue}
+                                value={{
+                                  value: locationValue.value,
+                                  label: locationValue.label
+                                }}
                               />
                             </Col>
                             <Col
@@ -1684,6 +1652,7 @@ const DataRoom = () => {
                               <Button
                                 text={t("Search")}
                                 className={styles["Search_Search_button_Dataroom"]}
+                                onClick={handleSearch}
                               />
                             </Col>
                           </Row>
@@ -1707,36 +1676,16 @@ const DataRoom = () => {
                               sm={12}
                               className=" d-flex gap-5 justify-content-center text-center"
                             >
-                              <div>
-                                <img src={document} height="19.25px" width="16.85px" />
-                                <span className={styles["DropDown_name"]}>Document</span>
-                              </div>
-                              <div>
-                                <img src={pdf} height="19.25px" width="16.85px" />
-                                <span className={styles["DropDown_name"]}>PDF</span>
-                              </div>
-                              <div>
-                                <img src={folderColor} height="18.99px" width="21.11px" />
-                                <span className={styles["DropDown_name"]}>folder</span>
-                              </div>
-                              <div>
-                                <img src={video} height="20.53px" width="17.97px" />
-                                <span className={styles["DropDown_name"]}>video</span>
-                              </div>
-                              <div>
-                                <img src={spreadsheet} height="19.76px" width="19.78px" />
-                                <span className={styles["DropDown_name"]}>
-                                  spreadsheet
-                                </span>
-                              </div>
-                              <div>
-                                <img src={forms} height="20.24px" width="18.65px" />
-                                <span className={styles["DropDown_name"]}>forms</span>
-                              </div>
-                              <div>
-                                <img src={video} height="20.53px" width="17.97px" />
-                                <span className={styles["DropDown_name"]}>video</span>
-                              </div>
+                              {OptionsDocument2.map((data, index) => {
+                                return (
+                                  <>
+                                    <span key={index} onClick={() => handleChangeDocuments(data.value)} className="border-bottom-0">
+                                      <img src={data.imgSrc} height="19.25px" width="16.85px" />
+                                      <span className={styles["DropDown_name"]}>{data.label}</span>
+                                    </span>
+                                  </>
+                                )
+                              })}
                             </Col>
                           </Row>
                           <Row className="mt-4">
@@ -1768,7 +1717,6 @@ const DataRoom = () => {
                     </>
                   ) : null}
                 </div>
-
               </Col>
               <Col lg={1} md={1} sm={12} className="d-flex justify-content-center">
                 <Button
@@ -1805,7 +1753,6 @@ const DataRoom = () => {
                 />
               </Col>
             </Row>
-
             <Row className="mt-4">
               <Col lg={12} md={12} sm={12}>
                 <Paper className={styles["Data_room_paper"]}>
@@ -1865,6 +1812,10 @@ const DataRoom = () => {
                                 options={OptionsDocument}
                                 placeholder={t("Documents")}
                                 closeMenuOnSelect={false}
+                                value={{
+                                  value: searchDocumentType.value,
+                                  label: searchDocumentType.label
+                                }}
                               />
                             </Col>
                             <Col
@@ -1877,6 +1828,10 @@ const DataRoom = () => {
                                 options={optionsLocations}
                                 placeholder={t("Location")}
                                 closeMenuOnSelect={false}
+                                value={{
+                                  value: locationValue.value,
+                                  label: locationValue.label
+                                }}
                               />
                             </Col>
                             <Col
@@ -1900,7 +1855,7 @@ const DataRoom = () => {
                               <Select
                                 options={optionsLastmodified}
                                 onChange={handleChange}
-                                menuIsOpen={isOpen}
+                                // menuIsOpen={isOpen}
                                 onMenuOpen={handleOpen}
                               />
                             </Col>
@@ -1914,6 +1869,7 @@ const DataRoom = () => {
                         >
                           <span
                             className={styles["Clear_All_btn"]}
+                            onClick={handleClearAllSearchOptions}
                           // onClick={CleatingSearchOptions}
                           >
                             {t("Clear-all")}
@@ -2078,6 +2034,7 @@ const DataRoom = () => {
                           )}
                         </Col>
                       </Row>
+
                     </>
                   )}
                   {showbarupload ? (

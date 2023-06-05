@@ -4,6 +4,7 @@
   margin: 0px 20px;
   text-overflow: ellipsis;
   white-space: nowrap;
+  width: 260px !important;
   overflow: hidden;
   font-size: 14px;
   font-family: "MontserratSemiBold-600";
