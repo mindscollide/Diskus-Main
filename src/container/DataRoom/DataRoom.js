@@ -146,7 +146,7 @@ const DataRoom = () => {
     label: "",
     value: 0
   })
-  console.log(searchDocumentType, "searchDocumentTypeValuesearchDocumentTypeValuesearchDocumentTypeValue")
+  console.log(searchDocumentType, locationValue, "searchDocumentTypeValuesearchDocumentTypeValuesearchDocumentTypeValue")
   const [searchModalOptions, setSearchModalOptions] = useState({
     Location: "",
     DateModified: "",
@@ -546,6 +546,7 @@ const DataRoom = () => {
     }
     setFilterVal(e.target.value);
   };
+
   const SearchiconClickOptions = () => {
     setSearchbarsearchoptions(true);
     if (searchbarshow === true) {
@@ -580,8 +581,10 @@ const DataRoom = () => {
     setSearchbarsearchoptions(false);
   };
   const showSearchResultsOptions = () => {
-    setSearchoptions(!searchoptions);
-    setSearchbarshow(true)
+    // setSearchoptions(!searchoptions);
+    // setSearchbarshow(true)
+    setSearchbarshow(false)
+    setSearchbarsearchoptions(true)
   };
   const searchbardropdownShow = () => {
     setSearchbarshow(!searchbarshow);
@@ -1140,8 +1143,16 @@ const DataRoom = () => {
       value: event.value
     })
   }
+  const handleChangeOptionsLocation = (event) => {
+    console.log(event, "handleChangeLocationValue")
+    setLocationValue({
+      label: event.label,
+      value: event.value
+    })
+  }
   const handleChangeDocuments = (documentID) => {
     setSearchDocumentTypeValue(documentID)
+    setSearchoptions(true)
     OptionsDocument.map((data, index) => {
       if (data.value === documentID) {
         setSearchDocumentType({
@@ -1151,12 +1162,49 @@ const DataRoom = () => {
       }
     })
   }
+
+  const handleChangeDocumentsOptions = (event) => {
+    setSearchDocumentType({
+      label: event.label,
+      value: event.value
+    })
+  }
+
+  const handleChangeLastModifedDate = (event) => {
+    console.log(event, "handleChangeLastModifedDatehandleChangeLastModifedDate")
+  }
   const handleSearch = () => {
+    setSearchbarsearchoptions(false)
     setSearchoptions(true)
   }
   const handleClearAllSearchOptions = () => {
     setSearchoptions(false)
   }
+
+  useEffect(() => {
+    console.log("click");
+    // try {
+    //   window.addEventListener("click", function (e) {
+    //     console.log("eeeeeeeee", e.target.className);
+    //     let clsname = e.target.className;
+    //     let arr = clsname.split("_");
+    //     console.log("click", arr[1]);
+    //     if (arr != undefined) {
+    //       if (arr[1] === "Drop" && searchbarsearchoptions === true) {
+    //         console.log("click", clsname);
+    //       } else if (arr[1] === "Data" && searchbarsearchoptions === true) {
+    //         setSearchbarsearchoptions(false);
+    //         setSearchbarshow(false);
+    //       }
+    //     } else {
+    //       setSearchbarsearchoptions(false);
+    //       setSearchbarshow(false);
+    //     }
+    //   });
+    // } catch {
+    //   console.log("error");
+    // }
+  }, []);
   useEffect(() => {
     if (
       DataRoomReducer.ResponseMessage !== "" &&
@@ -1549,7 +1597,7 @@ const DataRoom = () => {
                     placeholder={t("Search")}
                     applyClass={"dataRoomSearchInput"}
                     labelClass="d-none"
-                    onDoubleClick={searchbardropdownShow}
+                    onClick={searchbardropdownShow}
                     inputicon={<img src={searchicon} />}
                     clickIcon={SearchiconClickOptions}
                     iconClassName={styles["dataroom_searchinput"]}
@@ -1587,17 +1635,16 @@ const DataRoom = () => {
                               <Select
                                 options={optionsLastmodified}
                                 placeholder={t("Date-modified")}
-                                closeMenuOnSelect={false}
+                                onChange={handleChangeLastModifedDate}
                                 value={searchModalOptions.DateModified}
                               />
                             </Col>
                           </Row>
                           <Row className="mt-2">
-                            <Col lg={6} md={6} sm={6} className="select-dropdowns-height d-flex align-items-center">
+                            <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
                               <Select
                                 options={optionsLocations}
                                 placeholder={t("Location")}
-                                closeMenuOnSelect={false}
                                 onChange={handleChangeLocationValue}
                                 value={{
                                   value: locationValue.value,
@@ -1679,7 +1726,7 @@ const DataRoom = () => {
                               {OptionsDocument2.map((data, index) => {
                                 return (
                                   <>
-                                    <span key={index} onClick={() => handleChangeDocuments(data.value)} className="border-bottom-0">
+                                    <span key={index} onClick={() => handleChangeDocuments(data.value)} className="cursor-pointer">
                                       <img src={data.imgSrc} height="19.25px" width="16.85px" />
                                       <span className={styles["DropDown_name"]}>{data.label}</span>
                                     </span>
@@ -1811,7 +1858,7 @@ const DataRoom = () => {
                               <Select
                                 options={OptionsDocument}
                                 placeholder={t("Documents")}
-                                closeMenuOnSelect={false}
+                                onChange={handleChangeDocumentsOptions}
                                 value={{
                                   value: searchDocumentType.value,
                                   label: searchDocumentType.label
@@ -1827,7 +1874,7 @@ const DataRoom = () => {
                               <Select
                                 options={optionsLocations}
                                 placeholder={t("Location")}
-                                closeMenuOnSelect={false}
+                                onChange={handleChangeOptionsLocation}
                                 value={{
                                   value: locationValue.value,
                                   label: locationValue.label
@@ -1843,7 +1890,6 @@ const DataRoom = () => {
                               <Select
                                 options={optionsPeople}
                                 placeholder={t("People")}
-                                closeMenuOnSelect={false}
                               />
                             </Col>
                             <Col
@@ -1855,8 +1901,8 @@ const DataRoom = () => {
                               <Select
                                 options={optionsLastmodified}
                                 onChange={handleChange}
-                                // menuIsOpen={isOpen}
-                                onMenuOpen={handleOpen}
+                              // menuIsOpen={isOpen}
+                              // onMenuOpen={handleOpen}
                               />
                             </Col>
                           </Row>
