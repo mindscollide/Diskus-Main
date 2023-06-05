@@ -234,14 +234,33 @@
 
 .Drop_Down_searchBar {
   width: 100% !important;
-  height: 127px !important;
+  height: auto;
   padding: 10px 10px !important;
   background: #fff;
   border: 1px solid #e1e1e1;
   z-index: 1;
   position: absolute;
   top: 39px !important;
+  overflow-x: auto;
   right: 0 !important;
+  overflow-y: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+.Drop_Down_searchBar::-webkit-scrollbar {
+  width: 0.5rem;
+  height: 0.5em;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Drop_Down_searchBar::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
 }
 
 body[dir="rtl"] .Drop_Down_searchBar {
@@ -258,7 +277,7 @@ body[dir="rtl"] .Drop_Down_searchBar {
   font-size: 12px !important;
   font-family: "MontserratSemiBold";
   color: #5a5a5a;
-  border-top: 1px solid #e1e1e1;
+  /* border-top: 1px solid #e1e1e1; */
 }
 
 .Search_option_text_span {

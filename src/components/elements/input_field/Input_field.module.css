@@ -131,10 +131,16 @@
   position: relative !important;
 }
 
+.PollingSearchInput {
+  width: 611px;
+  position: relative !important;
+  height: 39px !important;
+}
+
 .search_voterInput {
   margin: 0 !important;
 }
 
-.input_searchAttendees_createMeeting {
+/* .input_searchAttendees_createMeeting {
   margin: 0 !important;
-}
+} */
