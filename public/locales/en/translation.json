@@ -972,5 +972,12 @@
   "The-user-has-reached-the-maximum-faileda-attempts": "The User has Reached the Maximum Failed Attempts",
   "Email-on-cancel-or-delete-meeting": "Email On Cancel Or Delete Meeting",
   "Push-notification-on-cancel-or-delete-meeting": "Push Notification On Cancel Or Delete Meeting",
-  "Decision-pending": "Decision Pending"
+  "Decision-pending": "Decision Pending",
+  "Search-by-Title": "Search by Title",
+  "Search-by-name": "Search by name",
+  "Create-new-poll": "Create New Poll",
+  "Typing-tile": "Typing Tile",
+  "Add-another-field": "Add Another Option",
+  "Allow-multiple-answers": "Allow Multiple Answers",
+  "Save-and-publish": "Save and Publish"
 }

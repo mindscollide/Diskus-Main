@@ -614,5 +614,12 @@
   "Payment-received-date": "Payment Received Date :",
   "Folder-name": "Folder Name",
   "The-user-has-reached-the-maximum-faileda-attempts": "The User has Reached the Maximum Failed Attempts",
-  "Decision-pending": "Decision Pending"
+  "Decision-pending": "Decision Pending",
+  "Search-by-Title": "Search by Title",
+  "Search-by-name": "Search by name",
+  "Create-new-poll": "Create New Poll",
+  "Typing-tile": "Typing Tile",
+  "Add-another-field": "Add Another Option",
+  "Allow-multiple-answers": "Allow Multiple Answers",
+  "Save-and-publish": "Save and Publish"
 }
