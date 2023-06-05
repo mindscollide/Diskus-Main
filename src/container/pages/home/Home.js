@@ -203,9 +203,7 @@ const Home = () => {
       SocketRecentActivityData !== undefined &&
       Object.keys(SocketRecentActivityData).length > 0
     ) {
-      // let duplicatonData = [...recentActivityData];
-      // duplicatonData.unshift(SocketRecentActivityData);
-      setRecentActivityData([SocketRecentActivityData, ...duplicatonData]);
+      setRecentActivityData([SocketRecentActivityData, ...recentActivityData]);
     }
   }, [SocketRecentActivityData]);
 

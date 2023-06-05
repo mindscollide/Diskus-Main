@@ -113,10 +113,9 @@ fieldset:disabled .btn {
   margin-top: 10px;
 } */
 .participant-scroll-creatingmeeting {
-  height: 320px;
+  height: 36vh !important;
   overflow-y: auto !important;
   overflow-x: hidden;
-  margin: 20px 0px !important;
 }
 
 .participant-scroll-creatingmeeting::-webkit-scrollbar {
@@ -481,10 +480,7 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
   /* width: 100px !important; */
 }
 
-.modalmeeting-attendees-row
-  .inputSearchFilter
-  .search-container-assignee
-  .dropdown-assignee {
+.modalmeeting-attendees-row .inputSearchFilter .search-container-assignee .dropdown-assignee {
   width: 260px !important;
   top: 29px !important;
 }

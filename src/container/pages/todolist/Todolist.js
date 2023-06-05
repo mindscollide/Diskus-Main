@@ -246,7 +246,7 @@ const TodoList = () => {
       title: t("Task"),
       dataIndex: "title",
       key: "title",
-      width: "360px",
+      width: "260px",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         a.title.toLowerCase().localeCompare(b.title.toLowerCase()),

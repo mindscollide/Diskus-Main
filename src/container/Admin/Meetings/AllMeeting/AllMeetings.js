@@ -987,12 +987,12 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                                 : 2 === modalEditMeetingStates.Status
                                   ? "Start"
                                   : 3 === modalEditMeetingStates.Status
-                                    ? "End"
+                                    ? "Completed"
                                     : 4 === modalEditMeetingStates.Status
                                       ? "Cancel"
                                       : 5 === modalEditMeetingStates.Status
                                         ? "Reschudule"
-                                        : 6 === modalEditMeetingStates.Statuses
+                                        : 6 === modalEditMeetingStates.Status
                                           ? "Close"
                                           : 7 === modalEditMeetingStates.Status
                                             ? "Delete"
