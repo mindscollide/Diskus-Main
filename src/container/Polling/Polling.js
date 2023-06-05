@@ -4,7 +4,7 @@ import { Row, Col } from "react-bootstrap";
 import { Button, Table, TextField } from "../../components/elements";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
-import CreatePolling from "./CreatePolling/CreatePollingModal";
+import CreatePolling from "./CreatePolling/CreatePolling";
 
 
 
@@ -14,28 +14,35 @@ const Polling = () => {
   const PollTableColumns = [
     {
       title: "Post Title",
-      dataIndex: "",
-      key: "",
+      dataIndex: "title",
+      key: "title",
     },
     {
       title: "Status",
-      dataIndex: "",
-      key: "",
+      dataIndex: "status",
+      key: "status",
+      render: (text, record) => {
+        if (text === 1) {
+          return <span className="text-success">{t("Published")}</span>
+        } else if (text === 2) {
+          return <span className="text-success">{t("Unpublished")}</span>
+        }
+      }
     },
     {
       title: "Due Date",
-      dataIndex: "",
-      key: "",
+      dataIndex: "dueDate",
+      key: "dueDate",
     },
     {
       title: "Created By",
-      dataIndex: "",
-      key: "",
+      dataIndex: "createBy",
+      key: "createBy",
     },
     {
       title: "Vote",
-      dataIndex: "",
-      key: "",
+      dataIndex: "vote",
+      key: "vote",
     },
     {
       title: "Edit",
@@ -43,6 +50,84 @@ const Polling = () => {
       key: "",
     },
   ];
+  const RowsData = [{
+    title: "test title",
+    status: 1,
+    dueDate: "2023-06-28",
+    createBy: "Ali Raza",
+    vote: 1
+  },
+  {
+    title: "test title",
+    status: 2,
+    dueDate: "2023-06-28",
+    createBy: "Ali Raza",
+    vote: 3
+  },
+  {
+    title: "test title",
+    status: 2,
+    dueDate: "2023-06-28",
+    createBy: "Ali Raza",
+    vote: 4
+  },
+  {
+    title: "test title",
+    status: 2,
+    dueDate: "2023-06-28",
+    createBy: "Ali Raza",
+    vote: 2
+  },
+  {
+    title: "test title",
+    status: 1,
+    dueDate: "2023-06-28",
+    createBy: "Ali Raza",
+    vote: 1
+  },
+  {
+    title: "test title",
+    status: 1,
+    dueDate: "2023-06-28",
+    createBy: "Ali Raza",
+    vote: 1
+  },
+  {
+    title: "test title",
+    status: 2,
+    dueDate: "2023-06-28",
+    createBy: "Ali Raza",
+    vote: 1
+  },
+  {
+    title: "test title",
+    status: 2,
+    dueDate: "2023-06-28",
+    createBy: "Ali Raza",
+    vote: 1
+  },
+  {
+    title: "test title",
+    status: 2,
+    dueDate: "2023-06-28",
+    createBy: "Ali Raza",
+    vote: 1
+  },
+  {
+    title: "test title",
+    status: 1,
+    dueDate: "2023-06-28",
+    createBy: "Ali Raza",
+    vote: 1
+  },
+  {
+    title: "test title",
+    status: 2,
+    dueDate: "2023-06-28",
+    createBy: "Ali Raza",
+    vote: 1
+  }
+  ]
   return (
     <>
       <section className={styles["Poll_Container"]}>
@@ -70,7 +155,7 @@ const Polling = () => {
         </Row>
         <Row>
           <Col sm={12} md={12} lg={12}>
-            <Table column={PollTableColumns} />
+            <Table column={PollTableColumns} rows={RowsData} />
           </Col>
         </Row>
       </section>
