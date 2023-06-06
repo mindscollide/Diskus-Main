@@ -68,6 +68,7 @@ import UpdatePasswordSuccessfully from "../container/authentication/UpdatedPassw
 import Committee from "../container/Committee/Committee";
 import Resolution from "../container/Resolution/Resolution";
 import DataRoom from "../container/DataRoom/DataRoom";
+import Polling from "../container/Polling/Polling";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -123,6 +124,7 @@ export const router = createHashRouter(
           <Route path="committee" element={<Committee />} />
           <Route path="resolution" element={<Resolution />} />
           <Route path="dataroom" element={<DataRoom />} />
+          <Route path="polling" element={<Polling />} />
         </Route>
       </Route>
       <Route element={<PrivateAdminRoute />}>

@@ -203,9 +203,7 @@ const Home = () => {
       SocketRecentActivityData !== undefined &&
       Object.keys(SocketRecentActivityData).length > 0
     ) {
-      let duplicatonData = [...recentActivityData];
-      duplicatonData.unshift(SocketRecentActivityData);
-      setRecentActivityData([...duplicatonData]);
+      setRecentActivityData([SocketRecentActivityData, ...recentActivityData]);
     }
   }, [SocketRecentActivityData]);
 
@@ -264,8 +262,8 @@ const Home = () => {
   useEffect(() => {
     console.log("checkingthesocketdata is coming or not", rowsToDo);
     if (Object.keys(toDoListReducer.SocketTodoActivityData).length > 0) {
-      rowsToDo.unshift(toDoListReducer.SocketTodoActivityData);
-      setRowToDo([...rowsToDo]);
+      // rowsToDo.unshift(toDoListReducer.SocketTodoActivityData);
+      setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo]);
       console.log("checkingthesocketdata is coming or not", rowsToDo);
     } else {
       setRowToDo(toDoListReducer.AllTodolistData);
@@ -423,7 +421,7 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage !== "") {
+    if (Authreducer.VerifyOTPEmailResponseMessage !== "" && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-not-an-admin-user")) {
       setOpen({
         ...open,
         open: true,
@@ -438,7 +436,7 @@ const Home = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.EnterPasswordResponseMessage !== "") {
+    } else if (Authreducer.EnterPasswordResponseMessage !== "" && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-not-an-admin-user")) {
       setOpen({
         ...open,
         open: false,
@@ -453,7 +451,7 @@ const Home = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.OrganizationCreateResponseMessage !== "") {
+    } else if (Authreducer.OrganizationCreateResponseMessage !== "" && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-not-an-admin-user")) {
       setOpen({
         ...open,
         open: true,
@@ -468,7 +466,7 @@ const Home = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.CreatePasswordResponseMessage !== "") {
+    } else if (Authreducer.CreatePasswordResponseMessage !== "" && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-not-an-admin-user")) {
       setOpen({
         ...open,
         open: true,
@@ -483,7 +481,7 @@ const Home = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.GetSelectedPackageResponseMessage !== "") {
+    } else if (Authreducer.GetSelectedPackageResponseMessage !== "" && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-not-an-admin-user")) {
       setOpen({
         ...open,
         open: true,
@@ -498,7 +496,7 @@ const Home = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.EmailValidationResponseMessage !== "") {
+    } else if (Authreducer.EmailValidationResponseMessage !== "" && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-not-an-admin-user")) {
       setOpen({
         ...open,
         open: true,
@@ -514,6 +512,11 @@ const Home = () => {
 
       dispatch(cleareMessage());
     } else {
+      setOpen({
+        ...open,
+        open: false,
+        message: "",
+      });
     }
   }, [
     Authreducer.EnterPasswordResponseMessage,
@@ -574,7 +577,7 @@ const Home = () => {
         return (
           <>
             {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-            getCurrentDate ? (
+              getCurrentDate ? (
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <div
@@ -591,7 +594,7 @@ const Home = () => {
                     <p className="events-dateTime MontserratSemiBold-600">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
-                          upcomingEventsData.meetingEvent.startTime
+                        upcomingEventsData.meetingEvent.startTime
                       )}
                     </p>
                   </div>
@@ -616,7 +619,7 @@ const Home = () => {
                       <p className="events-dateTime">
                         {newTimeFormaterAsPerUTCFullDate(
                           upcomingEventsData.meetingEvent.meetingDate +
-                            upcomingEventsData.meetingEvent.startTime
+                          upcomingEventsData.meetingEvent.startTime
                         )}
                       </p>
                     </div>
@@ -640,7 +643,7 @@ const Home = () => {
                     <p className="events-dateTime">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
-                          upcomingEventsData.meetingEvent.startTime
+                        upcomingEventsData.meetingEvent.startTime
                       )}
                     </p>
                   </div>
@@ -705,7 +708,7 @@ const Home = () => {
               <Col lg={12} md={12} sm={12} className="Dashboard-Calendar  ">
                 <div className="whiteBackground Spinner home-calendar-spinner border">
                   {calendarReducer.Spinner === true ||
-                  meetingIdReducer.Spinner === true ? (
+                    meetingIdReducer.Spinner === true ? (
                     <Spin />
                   ) : (
                     <>
@@ -733,7 +736,7 @@ const Home = () => {
 
                           <div className="Upcoming-Events-Box">
                             {meetingIdReducer.UpcomingEventsData.length ===
-                            0 ? (
+                              0 ? (
                               <ResultMessage
                                 icon={<Mailbox className="notification-icon" />}
                                 subTitle={t("No-upcoming-events")}
@@ -856,7 +859,7 @@ const Home = () => {
                         <Row>
                           <Col sm={1}>
                             {recentActivityData.notificationTypes.pK_NTID ===
-                            1 ? (
+                              1 ? (
                               <div className="desc-notification-user ">
                                 {/* Bell Notification SVG Code */}
                                 <svg

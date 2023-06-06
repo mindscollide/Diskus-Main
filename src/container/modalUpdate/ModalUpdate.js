@@ -2642,6 +2642,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
                             taskAssignedToInput
                           )}
                           change={onChangeSearch}
+                          applyClass={"input_searchAttendees_createMeeting"}
                         />
                       </Col>
                       <Col

@@ -8,6 +8,7 @@
   width: 100% !important;
   height: auto !important;
   padding: 50px 50px !important;
+  position: relative !important;
 }
 
 .Details_ViewResolution {
@@ -216,7 +217,7 @@ body[dir="rtl"] .Non_Voters_Btn_viewresolution_Active {
 }
 
 .scroll-bar-view-resolution {
-  height: 15vh !important;
+  height: 20vh !important;
   overflow-x: hidden !important;
   margin-bottom: 60px !important;
 }
@@ -285,13 +286,16 @@ body[dir="rtl"] .CloseButton_ViewResolution {
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   position: absolute !important;
-  left: 12.5%;
-  top: 3.5rem;
+  left: 3.7%;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 body[dir="rtl"] .View_resolution_tag_box {
   width: auto !important;
-  left: 88% !important;
+  left: 91.5% !important;
 }
 
 .View_Tag_messege {
