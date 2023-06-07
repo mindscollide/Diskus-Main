@@ -178,6 +178,11 @@ const initialState = {
     CreatePrivateGroupResponseMessage: '',
   },
 
+  CreateShoutAllList: {
+    CreateShoutAllListResponse: [],
+    CreateShoutAllListResponseMessage: '',
+  },
+
   UpdatePrivateGroup: {
     UpdatePrivateGroupResponse: [],
     UpdatePrivateGroupResponseMessage: '',
@@ -186,6 +191,11 @@ const initialState = {
   LeaveGroup: {
     LeaveGroupResponse: [],
     LeaveGroupResponseMessage: '',
+  },
+
+  DeleteShout: {
+    DeleteShoutResponse: [],
+    DeleteShoutResponseMessage: '',
   },
 
   GetPrivateGroupMembers: {
@@ -226,6 +236,17 @@ const initialState = {
 
   talkSocketUnreadMessageCount: {
     unreadMessageData: null,
+  },
+
+  // talkSocketInsertBroadcastMesage: {
+  talkSocketInsertBroadcastMessage: {
+    MessageSendBroadcastResponseData: [],
+  },
+  // }
+
+  UpdateShoutAllData: {
+    UpdateShoutAllResponse: [],
+    UpdateShoutAllResponseMessage: '',
   },
 }
 
@@ -1270,6 +1291,123 @@ const talkReducer = (state = initialState, action) => {
         UpdatePrivateGroup: {
           UpdatePrivateGroupResponse: [],
           UpdatePrivateGroupResponseMessage: '',
+        },
+      }
+    }
+
+    case actions.CREATE_SHOUTALL_INIT: {
+      console.log('CREATE_SHOUTALL_INIT', action.response)
+      return {
+        ...state,
+        CreateShoutAllList: {
+          CreateShoutAllListResponse: [],
+          CreateShoutAllListResponseMessage: '',
+        },
+      }
+    }
+
+    case actions.CREATE_SHOUTALL_SUCCESS: {
+      console.log('CREATE_SHOUTALL_SUCCESS', action.response)
+      return {
+        ...state,
+        CreateShoutAllList: {
+          CreateShoutAllListResponse: action.response,
+          CreateShoutAllListResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.CREATE_SHOUTALL_FAIL: {
+      console.log('CREATE_SHOUTALL_FAIL', action.response)
+      return {
+        ...state,
+        CreateShoutAllList: {
+          CreateShoutAllListResponse: [],
+          CreateShoutAllListResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.RESET_SHOUTALL_CREATED_MESSAGE: {
+      console.log('RESET_SHOUTALL_CREATED_MESSAGE', action.response)
+      return {
+        ...state,
+        CreateShoutAllList: {
+          CreateShoutAllListResponse: [],
+          CreateShoutAllListResponseMessage: '',
+        },
+      }
+    }
+
+    case actions.MQTT_INSERT_BROADCAST_MESSAGE: {
+      console.log('MQTT_INSERT_BROADCAST_MESSAGE', action.response)
+      return {
+        ...state,
+        talkSocketInsertBroadcastMessage: {
+          MessageSendBroadcastResponseData: action.response,
+        },
+      }
+    }
+
+    case actions.DELETE_SHOUT_INIT: {
+      console.log('DELETE_SHOUT_INIT', action.response)
+      return {
+        ...state,
+        DeleteShout: {
+          DeleteShoutResponse: [],
+          DeleteShoutResponseMessage: '',
+        },
+      }
+    }
+
+    case actions.DELETE_SHOUT_SUCCESS: {
+      console.log('DELETE_SHOUT_SUCCESS', action.response)
+      return {
+        ...state,
+        DeleteShout: {
+          DeleteShoutResponse: action.response,
+          DeleteShoutResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.DELETE_SHOUT_FAIL: {
+      console.log('DELETE_SHOUT_FAIL', action.response)
+      return {
+        ...state,
+        DeleteShout: {
+          DeleteShoutResponse: [],
+          DeleteShoutResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.UPDATE_SHOUTALL_INIT: {
+      return {
+        ...state,
+        UpdateShoutAllData: {
+          UpdateShoutAllResponse: [],
+          UpdateShoutAllResponseMessage: '',
+        },
+      }
+    }
+
+    case actions.UPDATE_SHOUTALL_SUCCESS: {
+      return {
+        ...state,
+        UpdateShoutAllData: {
+          UpdateShoutAllResponse: action.response,
+          UpdateShoutAllResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.UPDATE_SHOUTALL_FAIL: {
+      return {
+        ...state,
+        UpdateShoutAllData: {
+          UpdateShoutAllResponse: [],
+          UpdateShoutAllResponseMessage: action.message,
         },
       }
     }

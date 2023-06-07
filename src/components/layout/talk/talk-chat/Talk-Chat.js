@@ -19,7 +19,9 @@ import {
   InsertPrivateGroupMessages,
   InsertBroadcastMessages,
   CreatePrivateGroup,
+  CreateShoutAll,
   GetAllPrivateGroupMembers,
+  GetActiveUsersByBroadcastID,
   MarkStarredUnstarredMessage,
   activeChatID,
   activeMessageID,
@@ -27,6 +29,9 @@ import {
   LeaveGroup,
   ResetLeaveGroupMessage,
   ResetGroupModify,
+  ResetShoutAllCreated,
+  DeleteShout,
+  UpdateShoutAll,
 } from '../../../../store/actions/Talk_action'
 import {
   newTimeFormaterAsPerUTCTalkTime,
@@ -170,6 +175,9 @@ const TalkChat = () => {
   //search group user states
   const [searchGroupUserValue, setSearchGroupUserValue] = useState('')
 
+  //search shout all user states
+  const [searchShoutAllUserValue, setSearchShoutAllUserValue] = useState('')
+
   //Loading State
   const [isLoading, setIsLoading] = useState(true)
 
@@ -191,6 +199,9 @@ const TalkChat = () => {
 
   //Create Group States
   const [activeCreateGroup, setActiveCreateGroup] = useState(false)
+
+  //Create Shout All
+  const [activeCreateShoutAll, setActiveCreateShoutAll] = useState(false)
 
   //Global Search Filter
   const [globalSearchFilter, setGlobalSearchFilter] = useState(false)
@@ -216,6 +227,7 @@ const TalkChat = () => {
   const [messageInfo, setMessageInfo] = useState(false)
   const [showGroupInfo, setShowGroupInfo] = useState(false)
   const [showGroupEdit, setShowGroupEdit] = useState(false)
+  const [showShoutEdit, setShowShoutEdit] = useState(false)
 
   //Popup Options
   const [todayCheckState, setTodayCheckState] = useState(false)
@@ -238,6 +250,9 @@ const TalkChat = () => {
 
   //delete chat
   const [deleteChat, setDeleteChat] = useState(false)
+
+  //Filter Flags
+  const [filterFlag, setFilterFlag] = useState('RecentChats')
 
   //Upload Options
   const [uploadOptions, setUploadOptions] = useState(false)
@@ -312,8 +327,14 @@ const TalkChat = () => {
   //group users checked
   const [groupUsersChecked, setGroupUsersChecked] = useState([])
 
+  //Shout All Users Checked
+  const [shoutAllUsersChecked, setShoutAllUsersChecked] = useState([])
+
   //Group Name State for Creation/Modification
   const [groupNameValue, setGroupNameValue] = useState('')
+
+  //Shout Name State for Creation/Modification
+  const [shoutNameValue, setShoutNameValue] = useState('')
 
   //forward users checked
   const [forwardUsersChecked, setForwardUsersChecked] = useState([])
@@ -325,6 +346,9 @@ const TalkChat = () => {
 
   //group edit users state
   const [editGroupUsersChecked, setEditGroupUsersChecked] = useState([])
+
+  //Shout Users Check Uncheck
+  const [editShoutUsersChecked, setEditShoutUsersChecked] = useState([])
 
   //Message info data
   const [messageInfoData, setMessageInfoData] = useState({
@@ -368,10 +392,18 @@ const TalkChat = () => {
   //Current Group Members State
   const [groupInfoData, setGroupInfoData] = useState([])
 
+  //Current Broadcast Members State
+  const [shoutAllUsersData, setShoutAllUsersData] = useState([])
+
   //Saving Group Name in a state so that it can be used for various functionalities
   const [groupName, setGroupName] = useState('')
 
+  //Saving Shout Name in a state so that it can be used for various functionalities
+  const [shoutName, setShoutName] = useState('')
+
   const [searchGroupUserInfoValue, setSearchGroupUserInfoValue] = useState('')
+
+  const [searchUserShoutValue, setSearchUserShoutValue] = useState('')
 
   //unblock user id states
   const [unblockUserId, setUnblockUserId] = useState(null)
@@ -383,6 +415,8 @@ const TalkChat = () => {
   const [mqttUnreadMessageData, setMqttUnreadMessageData] = useState([])
 
   const [showEditGroupField, setShowEditGroupField] = useState(false)
+
+  const [showEditShoutField, setShowEditShoutField] = useState(false)
 
   //Chat Search
   const [showChatSearch, setShowChatSearch] = useState(false)
@@ -485,10 +519,43 @@ const TalkChat = () => {
       ?.groupUsers,
   ])
 
+  //All shout members data
+  useEffect(() => {
+    if (
+      talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData !==
+        undefined &&
+      talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData !==
+        null &&
+      talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData
+        .length !== 0
+    ) {
+      setShoutAllUsersData(
+        talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData
+          ?.broadcastUsers,
+      )
+      const firstShoutUser =
+        talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData
+          ?.broadcastUsers[0]
+
+      if (firstShoutUser && firstShoutUser.name) {
+        setShoutName(firstShoutUser.name)
+      }
+    }
+  }, [
+    talkStateData?.ActiveUsersByBroadcastID?.ActiveUsersByBroadcastIDData
+      ?.broadcastUsers,
+  ])
+
   //Group Name Change Handler
   const groupNameHandler = (e) => {
     console.log('Group Name Handler', e.target.value)
     setGroupName(e.target.value)
+  }
+
+  //Shout Name Change Handler
+  const shoutNameHandler = (e) => {
+    console.log('Group Name Handler', e.target.value)
+    setShoutName(e.target.value)
   }
 
   //Setting state data of all users
@@ -525,6 +592,32 @@ const TalkChat = () => {
   }, [
     talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse
       .groupUsers,
+  ])
+
+  //Auto store in state
+  // Broadcast EDIT IDHAR HOGA
+  useEffect(() => {
+    let shoutMembersData =
+      talkStateData.ActiveUsersByBroadcastID.ActiveUsersByBroadcastIDData
+        .broadcastUsers
+    let allUsers = talkStateData.AllUsers.AllUsersData.allUsers
+    if (
+      shoutMembersData !== undefined &&
+      shoutMembersData !== null &&
+      allUsers !== undefined &&
+      allUsers !== null
+    ) {
+      let groupMembersArray = shoutMembersData
+        .filter((item) => {
+          return allUsers.some((user) => user.id === item.userID)
+        })
+        .map((item) => item.userID)
+
+      setEditShoutUsersChecked(groupMembersArray)
+    }
+  }, [
+    talkStateData.ActiveUsersByBroadcastID.ActiveUsersByBroadcastIDData
+      .broadcastUsers,
   ])
 
   //All users groups rooms
@@ -658,6 +751,7 @@ const TalkChat = () => {
         })
       }
       if (value.value === 1) {
+        setFilterFlag('RecentChats')
         if (
           talkStateData.AllUserChats.AllUserChatsData !== undefined &&
           talkStateData.AllUserChats.AllUserChatsData !== null &&
@@ -675,6 +769,7 @@ const TalkChat = () => {
         setPrivateGroupsData([])
         setStarredMessagesData([])
       } else if (value.value === 2) {
+        setFilterFlag('PrivateMessage')
         if (
           talkStateData.AllUserChats.AllUserChatsData !== undefined &&
           talkStateData.AllUserChats.AllUserChatsData !== null &&
@@ -693,6 +788,7 @@ const TalkChat = () => {
         setStarredMessagesData([])
         setAllChatData([])
       } else if (value.value === 3) {
+        setFilterFlag('PrivateGroup')
         if (
           talkStateData.AllUserChats.AllUserChatsData !== undefined &&
           talkStateData.AllUserChats.AllUserChatsData !== null &&
@@ -712,6 +808,7 @@ const TalkChat = () => {
         setStarredMessagesData([])
         setAllChatData([])
       } else if (value.value === 5) {
+        setFilterFlag('StarredMessage')
         setPrivateMessageData([])
         setBlockedUsersData([])
         setShoutAllData([])
@@ -729,6 +826,7 @@ const TalkChat = () => {
         }
         setAllChatData([])
       } else if (value.value === 6) {
+        setFilterFlag('ShoutAll')
         if (
           talkStateData.AllUserChats.AllUserChatsData !== undefined &&
           talkStateData.AllUserChats.AllUserChatsData !== null &&
@@ -748,6 +846,7 @@ const TalkChat = () => {
         setStarredMessagesData([])
         setAllChatData([])
       } else if (value.value === 8) {
+        setFilterFlag('BlockedUser')
         if (
           talkStateData.BlockedUsers.BlockedUsersData !== undefined &&
           talkStateData.BlockedUsers.BlockedUsersData !== null &&
@@ -766,6 +865,8 @@ const TalkChat = () => {
       }
     }
   }
+
+  console.log('Filter Flag', filterFlag)
 
   //Clicking on Chat Function
   const chatClick = (record) => {
@@ -798,7 +899,7 @@ const TalkChat = () => {
       UserID: currentUserId,
       BroadcastID: record.id,
       NumberOfMessages: 10,
-      OffsetMessage: 5,
+      OffsetMessage: 0,
     }
 
     if (record.messageType === 'O') {
@@ -861,6 +962,7 @@ const TalkChat = () => {
     setChatOpen(true)
     setAddNewChat(false)
     setActiveCreateGroup(false)
+    setActiveCreateShoutAll(false)
     setGlobalSearchFilter(false)
     setSearchChatValue('')
     if (
@@ -919,6 +1021,7 @@ const TalkChat = () => {
     setChatOpen(true)
     setAddNewChat(false)
     setActiveCreateGroup(false)
+    setActiveCreateShoutAll(false)
     setGlobalSearchFilter(false)
     setSearchChatValue('')
     if (
@@ -957,9 +1060,11 @@ const TalkChat = () => {
     setDeleteChat(false)
     setShowGroupEdit(false)
     setShowEditGroupField(false)
+    setShowEditShoutField(false)
     setEmojiActive(false)
     setAddNewChat(false)
     setActiveCreateGroup(false)
+    setActiveCreateShoutAll(false)
     setGlobalSearchFilter(false)
     setChatMenuActive(false)
     setChatHeadMenuActive(false)
@@ -982,6 +1087,7 @@ const TalkChat = () => {
     setShowChatSearch(false)
     setAllOtoMessages([])
     setAllGroupMessages([])
+    setAllBroadcastMessages([])
     let newData = {
       messageType: '',
       id: 0,
@@ -1005,13 +1111,23 @@ const TalkChat = () => {
     )
     setAddNewChat(true)
     setActiveCreateGroup(false)
+    setActiveCreateShoutAll(false)
   }
 
   //Create Group Screen
   const createGroupScreen = () => {
     setActiveCreateGroup(true)
+    setActiveCreateShoutAll(false)
     setAddNewChat(false)
     setPrivateGroupsData([])
+  }
+
+  //Create Shout All Screen
+  const createShoutAllScreen = () => {
+    setActiveCreateShoutAll(true)
+    setActiveCreateGroup(false)
+    setAddNewChat(false)
+    setShoutAllData([])
   }
 
   //Close Add Chat
@@ -1020,14 +1136,43 @@ const TalkChat = () => {
   }
 
   const closeAddGroupScreen = () => {
-    let privateGroupsMessages = talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
-      (data, index) => data.messageType === 'G',
-    )
-    setPrivateGroupsData(privateGroupsMessages)
+    if (
+      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
+      talkStateData.AllUserChats.AllUserChatsData !== null &&
+      talkStateData.AllUserChats.AllUserChatsData.length !== 0
+    ) {
+      let privateGroupsMessages = talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
+        (data, index) => data.messageType === 'G',
+      )
+      setPrivateGroupsData(privateGroupsMessages)
+    } else {
+      setPrivateGroupsData([])
+    }
+
     setActiveCreateGroup(false)
     setGroupNameValue('')
     setSearchGroupUserValue('')
     setGroupUsersChecked([])
+  }
+
+  const closeAddShoutAllScreen = () => {
+    if (
+      talkStateData.AllUserChats.AllUserChatsData !== undefined &&
+      talkStateData.AllUserChats.AllUserChatsData !== null &&
+      talkStateData.AllUserChats.AllUserChatsData.length !== 0
+    ) {
+      let shoutAllMessages = talkStateData.AllUserChats.AllUserChatsData.allMessages.filter(
+        (data, index) => data.messageType === 'B',
+      )
+      setShoutAllData(shoutAllMessages)
+    } else {
+      setShoutAllData([])
+    }
+
+    setActiveCreateShoutAll(false)
+    //setShoutNameValue('')
+    //setSearchShoutAllUserValue('')
+    //setGroupUsersChecked([])
   }
 
   //Search Users
@@ -1114,6 +1259,29 @@ const TalkChat = () => {
     } else if (e === '' || e === null) {
       let data = talkStateData.AllUsers.AllUsersData.allUsers
       setSearchGroupUserValue('')
+      setAllUsers(data)
+    }
+  }
+
+  //Search Shout All User
+  const searchShoutAllUserUser = (e) => {
+    if (e !== '') {
+      setSearchShoutAllUserValue(e)
+      let filteredData = talkStateData.AllUsers.AllUsersData.allUsers.filter(
+        (value) => {
+          return value.fullName
+            .toLowerCase()
+            .includes(searchShoutAllUserValue.toLowerCase())
+        },
+      )
+      if (filteredData.length === 0) {
+        setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers)
+      } else {
+        setAllUsers(filteredData)
+      }
+    } else if (e === '' || e === null) {
+      let data = talkStateData.AllUsers.AllUsersData.allUsers
+      setSearchShoutAllUserValue('')
       setAllUsers(data)
     }
   }
@@ -1233,9 +1401,11 @@ const TalkChat = () => {
     setDeleteChat(false)
     setShowGroupEdit(false)
     setShowEditGroupField(false)
+    setShowEditShoutField(false)
     setEmojiActive(false)
     setAddNewChat(false)
     setActiveCreateGroup(false)
+    setActiveCreateShoutAll(false)
     setGlobalSearchFilter(false)
     setChatMenuActive(false)
     setChatHeadMenuActive(false)
@@ -1259,8 +1429,11 @@ const TalkChat = () => {
     setForwardUsersChecked([])
     setMessagesChecked([])
     setGroupNameValue('')
+    setShoutNameValue('')
     setSearchGroupUserValue('')
+    setSearchShoutAllUserValue('')
     setGroupUsersChecked([])
+    setShowShoutEdit(false)
   }
 
   const cancelForwardSection = () => {
@@ -1275,6 +1448,12 @@ const TalkChat = () => {
   const editGroupTitle = () => {
     console.log('Image Clicked')
     setShowEditGroupField(true)
+  }
+
+  //Edit Shout Title Activator
+  const editShoutTitle = () => {
+    console.log('Image Clicked')
+    setShowEditShoutField(true)
   }
 
   //On Change Dates
@@ -1294,11 +1473,6 @@ const TalkChat = () => {
         [name]: DateSendingFormat(value),
       })
     }
-    // if (chatDateState.StartDate !== "") {
-    //   setEndDatedisable(false);
-    // } else {
-    //   setEndDatedisable(true);
-    // }
   }
 
   //Show upload options or Hide
@@ -1492,6 +1666,22 @@ const TalkChat = () => {
     }
   }
 
+  //On Change Shout All Users
+  const shoutAllUsersCheckedHandler = (data, id, index) => {
+    if (shoutAllUsersChecked.includes(id)) {
+      let groupUserIndex = shoutAllUsersChecked.findIndex(
+        (data2, index) => data2 === id,
+      )
+      if (groupUserIndex !== -1) {
+        shoutAllUsersChecked.splice(groupUserIndex, 1)
+        setShoutAllUsersChecked([...shoutAllUsersChecked])
+      }
+    } else {
+      shoutAllUsersChecked.push(id)
+      setShoutAllUsersChecked([...shoutAllUsersChecked])
+    }
+  }
+
   // on change forward users list
   const forwardUsersCheckedHandler = (data, id, index) => {
     if (forwardUsersChecked.includes(data)) {
@@ -1528,11 +1718,30 @@ const TalkChat = () => {
     } else {
       setEditGroupUsersChecked([...editGroupUsersChecked, id])
     }
-    // setEditGroupUsersChecked(
-    //   editGroupUsersChecked.map((value, index) => {
-    //     return `${value}#${0}`
-    //   }),
-    // )
+  }
+
+  console.log('editShoutUsersChecked', editShoutUsersChecked)
+
+  //on change groups users
+  const editShoutUsersCheckedHandler = (data, id, index) => {
+    if (editShoutUsersChecked.includes(id)) {
+      let editGroupUserIndex = editShoutUsersChecked.findIndex(
+        (data2) => data2 === id,
+      )
+      let findIndexShoutInfoData = shoutAllUsersData.findIndex(
+        (data3, index) => data3.userID === id,
+      )
+      if (findIndexShoutInfoData !== -1) {
+        shoutAllUsersData.splice(findIndexShoutInfoData, 1)
+        setGroupInfoData([...shoutAllUsersData])
+      }
+      if (editGroupUserIndex !== -1) {
+        editShoutUsersChecked.splice(editGroupUserIndex, 1)
+        setEditShoutUsersChecked([...editShoutUsersChecked])
+      }
+    } else {
+      setEditShoutUsersChecked([...editShoutUsersChecked, id])
+    }
   }
 
   const blockContactHandler = (record) => {
@@ -1673,6 +1882,39 @@ const TalkChat = () => {
     }
   }
 
+  const createShoutAllList = () => {
+    if (shoutAllUsersChecked.length === 0) {
+      setNoParticipant(true)
+    } else {
+      setNoParticipant(false)
+      let Data = {
+        TalkRequest: {
+          UserID: parseInt(currentUserId),
+          ChannelID: parseInt(currentOrganizationId),
+          Group: {
+            GroupName: shoutNameValue,
+            Users: shoutAllUsersChecked.toString(),
+          },
+        },
+      }
+      dispatch(CreateShoutAll(navigate, Data, t))
+      setChatFilter({
+        ...chatFilter,
+        value: chatFilterOptions[0].value,
+        label: chatFilterOptions[0].label,
+      })
+      setChatFilterName(chatFilterOptions[0])
+      setActiveCreateShoutAll(false)
+      setBlockedUsersData([])
+      setShoutAllData([])
+      setPrivateMessageData([])
+      setPrivateGroupsData([])
+      setStarredMessagesData([])
+      setAllChatData(talkStateData.AllUserChats.AllUserChatsData.allMessages)
+      setShoutAllUsersChecked([])
+    }
+  }
+
   const modalHandlerGroupInfo = () => {
     let Data = {
       GroupID: activeChat.id,
@@ -1734,6 +1976,43 @@ const TalkChat = () => {
     }
   }
 
+  //Search Shout Chat
+  const searchShoutEditUser = (e) => {
+    setSearchUserShoutValue(e)
+    console.log('Group Info Filter', searchUserShoutValue)
+    try {
+      if (
+        talkStateData.AllUsers.AllUsersData !== undefined &&
+        (talkStateData.AllUsers.AllUsersData !== null) &
+          (talkStateData.AllUsers.AllUsersData.length !== 0)
+      ) {
+        if (e !== '') {
+          let filteredData = talkStateData.AllUsers.AllUsersData.allUsers.filter(
+            (value) => {
+              return value.fullName.toLowerCase().includes(e.toLowerCase())
+            },
+          )
+          if (filteredData.length === 0) {
+            setAllUsers(talkStateData.AllUsers.AllUsersData.allUsers)
+          } else {
+            setAllUsers(filteredData)
+          }
+          console.log(
+            'Group Info Filter',
+            talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse,
+          )
+        } else if (e === '' || e === null) {
+          let data = talkStateData.AllUsers.AllUsersData.allUsers
+          setSearchUserShoutValue('')
+          setAllUsers(data)
+          console.log('Group Info Filter', data)
+        }
+      }
+    } catch {
+      console.log('Group User Search Filter')
+    }
+  }
+
   //Search Group Chat
   const searchGroupInfoUser = (e) => {
     setSearchGroupUserInfoValue(e)
@@ -1773,6 +2052,34 @@ const TalkChat = () => {
     } catch {
       console.log('Filter Error')
     }
+  }
+
+  const deleteShoutFunction = () => {
+    let Data = {
+      TalkRequest: {
+        UserID: parseInt(currentUserId),
+        ChannelID: parseInt(currentOrganizationId),
+        Group: {
+          GroupID: activeChat.id,
+        },
+      },
+    }
+    console.log('deleteShoutFunction', Data)
+    dispatch(DeleteShout(navigate, Data, t))
+    setChatMenuActive(false)
+    console.log('delete')
+  }
+
+  const editShoutFunction = () => {
+    let Data = {
+      TalkRequest: {
+        BroadcastID: activeChat.id,
+        ChannelID: parseInt(currentOrganizationId),
+      },
+    }
+    dispatch(GetActiveUsersByBroadcastID(navigate, Data, t))
+    setShowShoutEdit(true)
+    setChatMenuActive(false)
   }
 
   console.log('Group Info Filter', groupInfoData)
@@ -2738,6 +3045,453 @@ const TalkChat = () => {
     }
   }, [talkStateData.talkSocketData.socketInsertGroupMessageData])
 
+  //Socket Insert Broadcast Message
+  useEffect(() => {
+    if (
+      talkStateData.talkSocketInsertBroadcastMessage
+        .MessageSendBroadcastResponseData !== null &&
+      talkStateData.talkSocketInsertBroadcastMessage
+        .MessageSendBroadcastResponseData !== undefined &&
+      talkStateData.talkSocketInsertBroadcastMessage
+        .MessageSendBroadcastResponseData.length !== 0
+    ) {
+      try {
+        if (talkStateData.activeChatIdData.messageType === 'B') {
+          if (
+            talkStateData.talkSocketInsertBroadcastMessage
+              .MessageSendBroadcastResponseData.data[0].senderID != undefined &&
+            talkStateData.talkSocketInsertBroadcastMessage
+              .MessageSendBroadcastResponseData.data[0].senderID != null &&
+            talkStateData.talkSocketInsertBroadcastMessage
+              .MessageSendBroadcastResponseData.data[0].senderID != 0 &&
+            talkStateData.talkSocketInsertBroadcastMessage
+              .MessageSendBroadcastResponseData.data[0].senderID != '' &&
+            talkStateData.talkSocketInsertBroadcastMessage
+              .MessageSendBroadcastResponseData.data[0].senderID != '0' &&
+            talkStateData.activeChatIdData.id ===
+              talkStateData.talkSocketInsertBroadcastMessage
+                .MessageSendBroadcastResponseData.data[0].receiverID
+          ) {
+            let mqttInsertBroadcastMessageData =
+              talkStateData.talkSocketInsertBroadcastMessage
+                .MessageSendBroadcastResponseData.data[0]
+            let insertMqttBroadcastMessageData = {
+              messageID: mqttInsertBroadcastMessageData.messageID,
+              senderID: mqttInsertBroadcastMessageData.senderID,
+              receiverID: mqttInsertBroadcastMessageData.receiverID,
+              messageBody: mqttInsertBroadcastMessageData.messageBody,
+              senderName: mqttInsertBroadcastMessageData.senderName,
+              isFlag: 0,
+              sentDate: mqttInsertBroadcastMessageData.sentDate,
+              currDate: mqttInsertBroadcastMessageData.currDate,
+              fileGeneratedName:
+                mqttInsertBroadcastMessageData.fileGeneratedName,
+              fileName: mqttInsertBroadcastMessageData.fileName,
+              shoutAll: mqttInsertBroadcastMessageData.shoutAll,
+              frMessages: mqttInsertBroadcastMessageData.frMessages,
+              messageCount: 0,
+              attachmentLocation:
+                mqttInsertBroadcastMessageData.attachmentLocation,
+            }
+            let newBroadcastMessageChat = {
+              id: mqttInsertBroadcastMessageData.receiverID,
+              fullName: mqttInsertBroadcastMessageData.broadcastName,
+              imgURL: 'O.jpg',
+              messageBody: mqttInsertBroadcastMessageData.messageBody,
+              messageDate: mqttInsertBroadcastMessageData.sentDate,
+              notiCount: 0,
+              messageType: 'B',
+              isOnline: true,
+              companyName: 'Tresmark',
+              sentDate: mqttInsertBroadcastMessageData.sentDate,
+              receivedDate: '',
+              seenDate: '',
+              attachmentLocation:
+                mqttInsertBroadcastMessageData.attachmentLocation,
+              senderID: parseInt(messageSendData.SenderID),
+              admin: mqttInsertBroadcastMessageData.admin,
+            }
+
+            if (Object.keys(insertMqttBroadcastMessageData) !== null) {
+              if (
+                insertMqttBroadcastMessageData !== undefined &&
+                insertMqttBroadcastMessageData !== null &&
+                insertMqttBroadcastMessageData.hasOwnProperty('messageBody') &&
+                insertMqttBroadcastMessageData.messageBody !== undefined &&
+                allBroadcastMessages.length > 0 &&
+                allBroadcastMessages[allBroadcastMessages.length - 1] !==
+                  undefined &&
+                allBroadcastMessages[allBroadcastMessages.length - 1] !==
+                  null &&
+                allBroadcastMessages[
+                  allBroadcastMessages.length - 1
+                ].hasOwnProperty('messageBody') &&
+                allBroadcastMessages[allBroadcastMessages.length - 1]
+                  .messageBody !== undefined &&
+                insertMqttBroadcastMessageData.messageBody ===
+                  allBroadcastMessages[allBroadcastMessages.length - 1]
+                    .messageBody
+              ) {
+                if (
+                  activeChat.id === insertMqttBroadcastMessageData.receiverID ||
+                  activeChat.id === insertMqttBroadcastMessageData.senderID
+                ) {
+                  setAllBroadcastMessages((prevState) => {
+                    const updatedMessages = [...prevState]
+                    updatedMessages[
+                      updatedMessages.length - 1
+                    ] = insertMqttBroadcastMessageData
+                    return updatedMessages
+                  })
+                  let updatedArray = [...allChatData]
+                  if (
+                    updatedArray.length > 0 &&
+                    updatedArray[0].hasOwnProperty('messageBody')
+                  ) {
+                    updatedArray[0] = newBroadcastMessageChat
+                  }
+                  setAllChatData(updatedArray)
+
+                  // allBroadcastMessages.push(insertMqttBroadcastMessageData)
+                  // setAllBroadcastMessages([...allBroadcastMessages])
+                }
+              } else if (
+                insertMqttBroadcastMessageData !== undefined &&
+                insertMqttBroadcastMessageData !== null &&
+                insertMqttBroadcastMessageData.hasOwnProperty('messageBody') &&
+                insertMqttBroadcastMessageData.messageBody !== undefined &&
+                allBroadcastMessages.length > 0 &&
+                allBroadcastMessages[allBroadcastMessages.length - 1] !==
+                  undefined &&
+                allBroadcastMessages[allBroadcastMessages.length - 1] !==
+                  null &&
+                allBroadcastMessages[
+                  allBroadcastMessages.length - 1
+                ].hasOwnProperty('messageBody') &&
+                insertMqttBroadcastMessageData.messageBody !==
+                  allBroadcastMessages[allBroadcastMessages.length - 1]
+                    .messageBody
+              ) {
+                setAllBroadcastMessages([
+                  ...allBroadcastMessages,
+                  insertMqttBroadcastMessageData,
+                ])
+                let updatedArray = [...allChatData]
+                if (
+                  updatedArray.length > 0 &&
+                  updatedArray[0].hasOwnProperty('messageBody') &&
+                  updatedArray[0].messageBody === allChatData[0].messageBody
+                ) {
+                  updatedArray[0] = newBroadcastMessageChat
+                }
+                setAllChatData(updatedArray)
+              }
+            } else {
+              let allBroadcastMessages =
+                talkStateData.BroadcastMessages.BroadcastMessagesData
+                  .broadcastMessages
+              if (allBroadcastMessages != undefined) {
+                let allBroadcastMessagesArr = []
+                allBroadcastMessages.map((messagesData) => {
+                  allBroadcastMessagesArr.push({
+                    attachmentLocation: messagesData.attachmentLocation,
+                    currDate: messagesData.currDate,
+                    fileGeneratedName: messagesData.fileGeneratedName,
+                    fileName: messagesData.fileName,
+                    frMessages: messagesData.frMessages,
+                    isFlag: messagesData.isFlag,
+                    messageBody: messagesData.messageBody,
+                    messageCount: messagesData.messageCount,
+                    messageID: messagesData.messageID,
+                    receiverID: messagesData.receiverID,
+                    senderID: messagesData.senderID,
+                    senderName: messagesData.senderName,
+                    sentDate: messagesData.sentDate,
+                    shoutAll: messagesData.shoutAll,
+                  })
+                })
+                setAllBroadcastMessages([...allBroadcastMessagesArr])
+              }
+              // }
+            }
+          } else if (
+            talkStateData.talkSocketInsertBroadcastMessage
+              .MessageSendBroadcastResponseData.data[0].senderID != undefined &&
+            talkStateData.talkSocketInsertBroadcastMessage
+              .MessageSendBroadcastResponseData.data[0].senderID != null &&
+            talkStateData.talkSocketInsertBroadcastMessage
+              .MessageSendBroadcastResponseData.data[0].senderID != 0 &&
+            talkStateData.talkSocketInsertBroadcastMessage
+              .MessageSendBroadcastResponseData.data[0].senderID != '' &&
+            talkStateData.talkSocketInsertBroadcastMessage
+              .MessageSendBroadcastResponseData.data[0].senderID != '0' &&
+            parseInt(currentUserId) !==
+              talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
+                .senderID
+          ) {
+            let mqttInsertBroadcastMessageData =
+              talkStateData.talkSocketInsertBroadcastMessage
+                .MessageSendBroadcastResponseData.data[0]
+            let insertMqttBroadcastMessageData = {
+              messageID: mqttInsertBroadcastMessageData.messageID,
+              senderID: mqttInsertBroadcastMessageData.senderID,
+              receiverID: mqttInsertBroadcastMessageData.receiverID,
+              messageBody: mqttInsertBroadcastMessageData.messageBody,
+              senderName: mqttInsertBroadcastMessageData.senderName,
+              isFlag: 0,
+              sentDate: mqttInsertBroadcastMessageData.sentDate,
+              currDate: mqttInsertBroadcastMessageData.currDate,
+              fileGeneratedName:
+                mqttInsertBroadcastMessageData.fileGeneratedName,
+              fileName: mqttInsertBroadcastMessageData.fileName,
+              shoutAll: mqttInsertBroadcastMessageData.shoutAll,
+              frMessages: mqttInsertBroadcastMessageData.frMessages,
+              messageCount: 0,
+              attachmentLocation:
+                mqttInsertBroadcastMessageData.attachmentLocation,
+            }
+
+            let newBroadcastMessageChat = {
+              id: mqttInsertBroadcastMessageData.receiverID,
+              fullName: mqttInsertBroadcastMessageData.broadcastName,
+              imgURL: 'O.jpg',
+              messageBody: mqttInsertBroadcastMessageData.messageBody,
+              messageDate: mqttInsertBroadcastMessageData.sentDate,
+              notiCount: 0,
+              messageType: 'B',
+              isOnline: true,
+              companyName: 'Tresmark',
+              sentDate: mqttInsertBroadcastMessageData.sentDate,
+              receivedDate: '',
+              seenDate: '',
+              attachmentLocation:
+                mqttInsertBroadcastMessageData.attachmentLocation,
+              senderID: parseInt(messageSendData.SenderID),
+              admin: mqttInsertBroadcastMessageData.admin,
+            }
+
+            if (Object.keys(insertMqttBroadcastMessageData) !== null) {
+              if (
+                insertMqttBroadcastMessageData !== undefined &&
+                insertMqttBroadcastMessageData !== null &&
+                insertMqttBroadcastMessageData.hasOwnProperty('messageBody') &&
+                insertMqttBroadcastMessageData.messageBody !== undefined &&
+                allBroadcastMessages.length > 0 &&
+                allBroadcastMessages[allBroadcastMessages.length - 1] !==
+                  undefined &&
+                allBroadcastMessages[allBroadcastMessages.length - 1] !==
+                  null &&
+                allBroadcastMessages[
+                  allBroadcastMessages.length - 1
+                ].hasOwnProperty('messageBody') &&
+                allBroadcastMessages[allBroadcastMessages.length - 1]
+                  .messageBody !== undefined &&
+                insertMqttBroadcastMessageData.messageBody ===
+                  allBroadcastMessages[allBroadcastMessages.length - 1]
+                    .messageBody
+              ) {
+                if (
+                  activeChat.id === insertMqttBroadcastMessageData.receiverID ||
+                  activeChat.id === insertMqttBroadcastMessageData.senderID
+                ) {
+                  setAllBroadcastMessages((prevState) => {
+                    const updatedMessages = [...prevState]
+                    updatedMessages[
+                      updatedMessages.length - 1
+                    ] = insertMqttBroadcastMessageData
+                    return updatedMessages
+                  })
+                  let updatedArray = [...allChatData]
+                  if (
+                    updatedArray.length > 0 &&
+                    updatedArray[0].hasOwnProperty('messageBody')
+                  ) {
+                    updatedArray[0] = newBroadcastMessageChat
+                  }
+                  setAllChatData(updatedArray)
+                }
+              } else if (
+                insertMqttBroadcastMessageData !== undefined &&
+                insertMqttBroadcastMessageData !== null &&
+                insertMqttBroadcastMessageData.hasOwnProperty('messageBody') &&
+                insertMqttBroadcastMessageData.messageBody !== undefined &&
+                allBroadcastMessages.length > 0 &&
+                allBroadcastMessages[allBroadcastMessages.length - 1] !==
+                  undefined &&
+                allBroadcastMessages[allBroadcastMessages.length - 1] !==
+                  null &&
+                allBroadcastMessages[
+                  allBroadcastMessages.length - 1
+                ].hasOwnProperty('messageBody') &&
+                insertMqttBroadcastMessageData.messageBody !==
+                  allBroadcastMessages[allBroadcastMessages.length - 1]
+                    .messageBody
+              ) {
+                setAllBroadcastMessages([
+                  ...allBroadcastMessages,
+                  insertMqttBroadcastMessageData,
+                ])
+                let updatedArray = [...allChatData]
+                if (
+                  updatedArray.length > 0 &&
+                  updatedArray[0].hasOwnProperty('messageBody') &&
+                  updatedArray[0].messageBody === allChatData[0].messageBody
+                ) {
+                  updatedArray[0] = newBroadcastMessageChat
+                }
+                setAllChatData(updatedArray)
+              }
+            } else {
+              let allBroadcastMessages =
+                talkStateData.BroadcastMessages.BroadcastMessagesData
+                  .broadcastMessages
+              if (allBroadcastMessages != undefined) {
+                let allBroadcastMessagesArr = []
+                allBroadcastMessages.map((messagesData) => {
+                  allBroadcastMessagesArr.push({
+                    attachmentLocation: messagesData.attachmentLocation,
+                    currDate: messagesData.currDate,
+                    fileGeneratedName: messagesData.fileGeneratedName,
+                    fileName: messagesData.fileName,
+                    frMessages: messagesData.frMessages,
+                    isFlag: messagesData.isFlag,
+                    messageBody: messagesData.messageBody,
+                    messageCount: messagesData.messageCount,
+                    messageID: messagesData.messageID,
+                    receiverID: messagesData.receiverID,
+                    senderID: messagesData.senderID,
+                    senderName: messagesData.senderName,
+                    sentDate: messagesData.sentDate,
+                    shoutAll: messagesData.shoutAll,
+                  })
+                })
+                setAllBroadcastMessages([...allBroadcastMessagesArr])
+              }
+              // }
+            }
+          } else if (
+            talkStateData.activeChatIdData.messageType === '' &&
+            talkStateData.activeChatIdData.id === 0
+          ) {
+            let mqttInsertBroadcastMessageData =
+              talkStateData.talkSocketInsertBroadcastMessage
+                .MessageSendBroadcastResponseData.data[0]
+
+            let newBroadcastMessageChat = {
+              id: mqttInsertBroadcastMessageData.receiverID,
+              fullName: mqttInsertBroadcastMessageData.broadcastName,
+              imgURL: 'O.jpg',
+              messageBody: mqttInsertBroadcastMessageData.messageBody,
+              messageDate: mqttInsertBroadcastMessageData.sentDate,
+              notiCount: 0,
+              messageType: 'B',
+              isOnline: true,
+              companyName: 'Tresmark',
+              sentDate: mqttInsertBroadcastMessageData.sentDate,
+              receivedDate: '',
+              seenDate: '',
+              attachmentLocation:
+                mqttInsertBroadcastMessageData.attachmentLocation,
+              senderID: parseInt(messageSendData.SenderID),
+              admin: mqttInsertBroadcastMessageData.admin,
+            }
+
+            if (Object.keys(mqttInsertBroadcastMessageData) !== null) {
+              if (
+                mqttInsertBroadcastMessageData !== undefined &&
+                mqttInsertBroadcastMessageData !== null &&
+                mqttInsertBroadcastMessageData.hasOwnProperty('messageBody') &&
+                mqttInsertBroadcastMessageData.messageBody !== undefined &&
+                allBroadcastMessages.length > 0 &&
+                allBroadcastMessages[allBroadcastMessages.length - 1] !==
+                  undefined &&
+                allBroadcastMessages[allBroadcastMessages.length - 1] !==
+                  null &&
+                allBroadcastMessages[
+                  allBroadcastMessages.length - 1
+                ].hasOwnProperty('messageBody') &&
+                allBroadcastMessages[allBroadcastMessages.length - 1]
+                  .messageBody !== undefined &&
+                mqttInsertBroadcastMessageData.messageBody ===
+                  allBroadcastMessages[allBroadcastMessages.length - 1]
+                    .messageBody
+              ) {
+                let updatedArray = [...allChatData]
+                if (
+                  updatedArray.length > 0 &&
+                  updatedArray[0].hasOwnProperty('messageBody')
+                ) {
+                  updatedArray[0] = newBroadcastMessageChat
+                }
+                setAllChatData(updatedArray)
+              } else if (
+                mqttInsertBroadcastMessageData !== undefined &&
+                mqttInsertBroadcastMessageData !== null &&
+                mqttInsertBroadcastMessageData.hasOwnProperty('messageBody') &&
+                mqttInsertBroadcastMessageData.messageBody !== undefined &&
+                allBroadcastMessages.length > 0 &&
+                allBroadcastMessages[allBroadcastMessages.length - 1] !==
+                  undefined &&
+                allBroadcastMessages[allBroadcastMessages.length - 1] !==
+                  null &&
+                allBroadcastMessages[
+                  allBroadcastMessages.length - 1
+                ].hasOwnProperty('messageBody') &&
+                mqttInsertBroadcastMessageData.messageBody !==
+                  allBroadcastMessages[allBroadcastMessages.length - 1]
+                    .messageBody
+              ) {
+                let updatedArray = [...allChatData]
+                if (
+                  updatedArray.length > 0 &&
+                  updatedArray[0].hasOwnProperty('messageBody') &&
+                  updatedArray[0].messageBody === allChatData[0].messageBody
+                ) {
+                  updatedArray[0] = newBroadcastMessageChat
+                }
+                setAllChatData(updatedArray)
+              }
+            } else {
+              let allBroadcastMessages =
+                talkStateData.BroadcastMessages.BroadcastMessagesData
+                  .broadcastMessages
+              if (allBroadcastMessages != undefined) {
+                let allBroadcastMessagesArr = []
+                allBroadcastMessages.map((messagesData) => {
+                  allBroadcastMessagesArr.push({
+                    attachmentLocation: messagesData.attachmentLocation,
+                    currDate: messagesData.currDate,
+                    fileGeneratedName: messagesData.fileGeneratedName,
+                    fileName: messagesData.fileName,
+                    frMessages: messagesData.frMessages,
+                    isFlag: messagesData.isFlag,
+                    messageBody: messagesData.messageBody,
+                    messageCount: messagesData.messageCount,
+                    messageID: messagesData.messageID,
+                    receiverID: messagesData.receiverID,
+                    senderID: messagesData.senderID,
+                    senderName: messagesData.senderName,
+                    sentDate: messagesData.sentDate,
+                    shoutAll: messagesData.shoutAll,
+                  })
+                })
+                setAllBroadcastMessages([...allBroadcastMessagesArr])
+              }
+              // }
+            }
+          }
+        }
+      } catch {
+        console.log(
+          'ERROR talkStateData.talkSocketInsertBroadcastMessage.MessageSendBroadcastResponseData',
+        )
+      }
+    }
+  }, [
+    talkStateData.talkSocketInsertBroadcastMessage
+      .MessageSendBroadcastResponseData,
+  ])
+
   //Blocking a User MQTT
   useEffect(() => {
     if (
@@ -3099,12 +3853,12 @@ const TalkChat = () => {
         }
         dispatch(InsertBroadcastMessages(navigate, Data, t))
         let newMessage = {
-          attachmentLocation: messageSendData.AttachmentLocation,
+          attachmentLocation: '',
           blockCount: 0,
-          broadcastName: '',
+          broadcastName: chatClickData.fullName,
           currDate: currentDateTimeUtc,
-          fileGeneratedName: messageSendData.FileGeneratedName,
-          fileName: messageSendData.FileName,
+          fileGeneratedName: '',
+          fileName: '',
           frMessages: 'Direct Message',
           isFlag: 0,
           messageBody: messageSendData.Body,
@@ -3116,7 +3870,7 @@ const TalkChat = () => {
           receiverName: '',
           seenDate: '',
           senderID: parseInt(messageSendData.SenderID),
-          senderName: 'Muhammad Ovais',
+          senderName: currentUserName,
           sentDate: '',
           shoutAll: 0,
           uid: '',
@@ -3138,8 +3892,6 @@ const TalkChat = () => {
           senderID: parseInt(messageSendData.SenderID),
           admin: chatClickData.admin,
         }
-        allBroadcastMessages.push(newMessage)
-        setAllBroadcastMessages(allBroadcastMessages)
         setMessageSendData({
           ...messageSendData,
           SenderID: currentUserId.toString(),
@@ -3158,14 +3910,12 @@ const TalkChat = () => {
             return obj
           }
         })
+        updatedArray = [
+          newChat,
+          ...updatedArray.filter((obj) => obj.id !== newChat.id),
+        ]
         setAllChatData(updatedArray)
-        let broadcastMessagesData = {
-          UserID: currentUserId,
-          BroadcastID: newChat.id,
-          NumberOfMessages: 10,
-          OffsetMessage: 5,
-        }
-        dispatch(GetBroadcastMessages(navigate, broadcastMessagesData, t))
+        setAllBroadcastMessages([...allBroadcastMessages, newMessage])
       } else {
       }
     } else {
@@ -3259,6 +4009,24 @@ const TalkChat = () => {
     setShowGroupEdit(false)
   }
 
+  const editShoutAll = () => {
+    // editShoutUsersChecked
+    let Data = {
+      TalkRequest: {
+        UserID: parseInt(currentUserId),
+        ChannelID: parseInt(currentOrganizationId),
+        Group: {
+          GroupID: activeChat.id,
+          GroupName: shoutName,
+          Users: editShoutUsersChecked.join(','),
+        },
+      },
+    }
+    dispatch(UpdateShoutAll(Data, t, navigate))
+    setShowShoutEdit(false)
+    console.log('editShoutAll', Data)
+  }
+
   //Group Modification
   useEffect(() => {
     if (
@@ -3307,6 +4075,30 @@ const TalkChat = () => {
     dispatch(ResetLeaveGroupMessage())
   }, [talkStateData.LeaveGroup.LeaveGroupResponseMessage])
 
+  useEffect(() => {
+    if (
+      talkStateData.CreateShoutAllList.CreateShoutAllListResponseMessage ===
+      'Broadcast-list-created'
+    ) {
+      setNotification({
+        notificationShow: true,
+        message:
+          talkStateData.CreateShoutAllList.CreateShoutAllListResponseMessage,
+      })
+      setNotificationID(id)
+    }
+    dispatch(ResetShoutAllCreated())
+  }, [talkStateData.CreateShoutAllList.CreateShoutAllListResponseMessage])
+
+  console.log('activeCreateShoutAll', activeCreateShoutAll)
+
+  console.log(
+    'All Messages State',
+    allOtoMessages,
+    allGroupMessages,
+    allBroadcastMessages,
+  )
+
   return (
     <>
       <div className={chatOpen === true ? 'chatBox height' : 'chatBox'}>
@@ -3317,6 +4109,7 @@ const TalkChat = () => {
         starredMessagesData.length === 0 &&
         allChatData.length === 0 &&
         activeCreateGroup === false &&
+        activeCreateShoutAll === false &&
         addNewChat === false ? (
           <div className="chat-inner-content">
             <span className="triangle-overlay-chat"></span>
@@ -3406,6 +4199,7 @@ const TalkChat = () => {
           starredMessagesData.length === 0 &&
           allChatData.length === 0 &&
           activeCreateGroup === false &&
+          activeCreateShoutAll === false &&
           addNewChat === false ? (
           <div className="chat-inner-content">
             <span className="triangle-overlay-chat"></span>
@@ -3602,6 +4396,7 @@ const TalkChat = () => {
           starredMessagesData.length === 0 &&
           allChatData.length === 0 &&
           activeCreateGroup === false &&
+          activeCreateShoutAll === false &&
           addNewChat === false ? (
           <div className="chat-inner-content">
             <span className="triangle-overlay-chat"></span>
@@ -3812,46 +4607,71 @@ const TalkChat = () => {
           starredMessagesData.length === 0 &&
           allChatData.length === 0 &&
           activeCreateGroup === false &&
+          activeCreateShoutAll === false &&
           addNewChat === false ? (
           <div className="chat-inner-content">
-            <div
-              className={
-                chatOpen === true &&
-                deleteChat === true &&
-                activeCreateGroup === false
-                  ? 'add-chat height applyBlur'
-                  : chatOpen === true &&
-                    deleteChat === false &&
-                    activeCreateGroup === false
-                  ? 'add-chat height'
-                  : chatOpen === false &&
-                    deleteChat === true &&
-                    activeCreateGroup === false
-                  ? 'add-chat applyBlur'
-                  : chatOpen === false &&
-                    deleteChat === true &&
-                    activeCreateGroup === true
-                  ? 'd-none'
-                  : chatOpen === true &&
-                    deleteChat === true &&
-                    activeCreateGroup === true
-                  ? 'd-none'
-                  : chatOpen === true &&
-                    deleteChat === false &&
-                    activeCreateGroup === true
-                  ? 'd-none'
-                  : activeCreateGroup === true
-                  ? 'd-none'
-                  : 'add-chat'
-              }
-              onClick={createGroupScreen}
-            >
-              <img
-                className={deleteChat === false ? '' : 'applyBlur'}
-                src={AddChatIcon}
-                alt=""
-              />
-            </div>
+            {filterFlag === 'StarredMessage' ||
+            filterFlag === 'BlockedUser' ? null : (
+              <div
+                className={
+                  chatOpen === true &&
+                  deleteChat === true &&
+                  activeCreateGroup === false &&
+                  activeCreateShoutAll === false
+                    ? 'add-chat height applyBlur'
+                    : chatOpen === true &&
+                      deleteChat === false &&
+                      activeCreateGroup === false &&
+                      activeCreateShoutAll === false
+                    ? 'add-chat height'
+                    : chatOpen === false &&
+                      deleteChat === true &&
+                      activeCreateGroup === false &&
+                      activeCreateShoutAll === false
+                    ? 'add-chat applyBlur'
+                    : chatOpen === false &&
+                      deleteChat === true &&
+                      (activeCreateGroup === true ||
+                        addNewChat === true ||
+                        activeCreateShoutAll === true)
+                    ? 'd-none'
+                    : chatOpen === true &&
+                      deleteChat === true &&
+                      (activeCreateGroup === true ||
+                        addNewChat === true ||
+                        activeCreateShoutAll === true)
+                    ? 'd-none'
+                    : chatOpen === true &&
+                      deleteChat === false &&
+                      (activeCreateGroup === true ||
+                        addNewChat === true ||
+                        activeCreateShoutAll === true)
+                    ? 'd-none'
+                    : activeCreateGroup === true ||
+                      addNewChat === true ||
+                      activeCreateShoutAll === true
+                    ? 'd-none'
+                    : 'add-chat'
+                }
+                onClick={
+                  filterFlag === 'RecentChats'
+                    ? addChat
+                    : filterFlag === 'PrivateMessage'
+                    ? addChat
+                    : filterFlag === 'PrivateGroup'
+                    ? createGroupScreen
+                    : filterFlag === 'ShoutAll'
+                    ? createShoutAllScreen
+                    : ''
+                }
+              >
+                <img
+                  className={deleteChat === false ? '' : 'applyBlur'}
+                  src={AddChatIcon}
+                  alt=""
+                />
+              </div>
+            )}
             <span className="triangle-overlay-chat"></span>
             <Triangle className="pointer-chat-icon" />
             <Container>
@@ -4053,6 +4873,7 @@ const TalkChat = () => {
           starredMessagesData.length > 0 &&
           allChatData.length === 0 &&
           activeCreateGroup === false &&
+          activeCreateShoutAll === false &&
           addNewChat === false ? (
           <div className="chat-inner-content">
             <span className="triangle-overlay-chat"></span>
@@ -4155,6 +4976,7 @@ const TalkChat = () => {
           starredMessagesData.length === 0 &&
           allChatData.length === 0 &&
           activeCreateGroup === false &&
+          activeCreateShoutAll === false &&
           addNewChat === false ? (
           <>
             {talkStateData.AllUserChats.Loading === true ? (
@@ -4162,44 +4984,68 @@ const TalkChat = () => {
             ) : (
               <>
                 <div className="chat-inner-content">
-                  <div
-                    className={
-                      chatOpen === true &&
-                      deleteChat === true &&
-                      activeCreateGroup === false
-                        ? 'add-chat height applyBlur'
-                        : chatOpen === true &&
-                          deleteChat === false &&
-                          activeCreateGroup === false
-                        ? 'add-chat height'
-                        : chatOpen === false &&
-                          deleteChat === true &&
-                          activeCreateGroup === false
-                        ? 'add-chat applyBlur'
-                        : chatOpen === false &&
-                          deleteChat === true &&
-                          activeCreateGroup === true
-                        ? 'd-none'
-                        : chatOpen === true &&
-                          deleteChat === true &&
-                          activeCreateGroup === true
-                        ? 'd-none'
-                        : chatOpen === true &&
-                          deleteChat === false &&
-                          activeCreateGroup === true
-                        ? 'd-none'
-                        : activeCreateGroup === true
-                        ? 'd-none'
-                        : 'add-chat'
-                    }
-                    onClick={addChat}
-                  >
-                    <img
-                      className={deleteChat === false ? '' : 'applyBlur'}
-                      src={AddChatIcon}
-                      alt=""
-                    />
-                  </div>
+                  {filterFlag === 'StarredMessage' ||
+                  filterFlag === 'BlockedUser' ? null : (
+                    <div
+                      className={
+                        chatOpen === true &&
+                        deleteChat === true &&
+                        activeCreateGroup === false &&
+                        activeCreateShoutAll === false
+                          ? 'add-chat height applyBlur'
+                          : chatOpen === true &&
+                            deleteChat === false &&
+                            activeCreateGroup === false &&
+                            activeCreateShoutAll === false
+                          ? 'add-chat height'
+                          : chatOpen === false &&
+                            deleteChat === true &&
+                            activeCreateGroup === false &&
+                            activeCreateShoutAll === false
+                          ? 'add-chat applyBlur'
+                          : chatOpen === false &&
+                            deleteChat === true &&
+                            (activeCreateGroup === true ||
+                              addNewChat === true ||
+                              activeCreateShoutAll === true)
+                          ? 'd-none'
+                          : chatOpen === true &&
+                            deleteChat === true &&
+                            (activeCreateGroup === true ||
+                              addNewChat === true ||
+                              activeCreateShoutAll === true)
+                          ? 'd-none'
+                          : chatOpen === true &&
+                            deleteChat === false &&
+                            (activeCreateGroup === true ||
+                              addNewChat === true ||
+                              activeCreateShoutAll === true)
+                          ? 'd-none'
+                          : activeCreateGroup === true ||
+                            addNewChat === true ||
+                            activeCreateShoutAll === true
+                          ? 'd-none'
+                          : 'add-chat'
+                      }
+                      onClick={
+                        filterFlag === 'RecentChats'
+                          ? addChat
+                          : filterFlag === 'PrivateMessage'
+                          ? addChat
+                          : filterFlag === 'PrivateGroup'
+                          ? createGroupScreen
+                          : filterFlag === 'ShoutAll'
+                          ? createShoutAllScreen
+                          : ''
+                      }
+                    >
+                      <img
+                        className={deleteChat === false ? '' : 'applyBlur'}
+                        src={AddChatIcon}
+                        alt=""
+                      />
+                    </div>
+                  )}
                   <span className="triangle-overlay-chat"></span>
                   <Triangle className="pointer-chat-icon" />
                   <Container>
@@ -4244,47 +5090,73 @@ const TalkChat = () => {
           </>
         ) : (
           <div className="chat-inner-content">
-            <div
-              className={
-                chatOpen === true &&
-                deleteChat === true &&
-                activeCreateGroup === false
-                  ? 'add-chat height applyBlur'
-                  : chatOpen === true &&
-                    deleteChat === false &&
-                    activeCreateGroup === false
-                  ? 'add-chat height'
-                  : chatOpen === false &&
-                    deleteChat === true &&
-                    activeCreateGroup === false
-                  ? 'add-chat applyBlur'
-                  : chatOpen === false &&
-                    deleteChat === true &&
-                    activeCreateGroup === true
-                  ? 'd-none'
-                  : chatOpen === true &&
-                    deleteChat === true &&
-                    activeCreateGroup === true
-                  ? 'd-none'
-                  : chatOpen === true &&
-                    deleteChat === false &&
-                    activeCreateGroup === true
-                  ? 'd-none'
-                  : activeCreateGroup === true
-                  ? 'd-none'
-                  : 'add-chat'
-              }
-              onClick={addChat}
-            >
-              <img
-                className={deleteChat === false ? '' : 'applyBlur'}
-                src={AddChatIcon}
-                alt=""
-              />
-            </div>
+            {filterFlag === 'StarredMessage' ||
+            filterFlag === 'BlockedUser' ? null : (
+              <div
+                className={
+                  chatOpen === true &&
+                  deleteChat === true &&
+                  activeCreateGroup === false &&
+                  activeCreateShoutAll === false
+                    ? 'add-chat height applyBlur'
+                    : chatOpen === true &&
+                      deleteChat === false &&
+                      activeCreateGroup === false &&
+                      activeCreateShoutAll === false
+                    ? 'add-chat height'
+                    : chatOpen === false &&
+                      deleteChat === true &&
+                      activeCreateGroup === false &&
+                      activeCreateShoutAll === false
+                    ? 'add-chat applyBlur'
+                    : chatOpen === false &&
+                      deleteChat === true &&
+                      (activeCreateGroup === true ||
+                        addNewChat === true ||
+                        activeCreateShoutAll === true)
+                    ? 'd-none'
+                    : chatOpen === true &&
+                      deleteChat === true &&
+                      (activeCreateGroup === true ||
+                        addNewChat === true ||
+                        activeCreateShoutAll === true)
+                    ? 'd-none'
+                    : chatOpen === true &&
+                      deleteChat === false &&
+                      (activeCreateGroup === true ||
+                        addNewChat === true ||
+                        activeCreateShoutAll === true)
+                    ? 'd-none'
+                    : activeCreateGroup === true ||
+                      addNewChat === true ||
+                      activeCreateShoutAll === true
+                    ? 'd-none'
+                    : 'add-chat'
+                }
+                onClick={
+                  filterFlag === 'RecentChats'
+                    ? addChat
+                    : filterFlag === 'PrivateMessage'
+                    ? addChat
+                    : filterFlag === 'PrivateGroup'
+                    ? createGroupScreen
+                    : filterFlag === 'ShoutAll'
+                    ? createShoutAllScreen
+                    : ''
+                }
+              >
+                <img
+                  className={deleteChat === false ? '' : 'applyBlur'}
+                  src={AddChatIcon}
+                  alt=""
+                />
+              </div>
+            )}
             <span className="triangle-overlay-chat"></span>
             <Triangle className="pointer-chat-icon" />
-            {addNewChat === true && activeCreateGroup === false ? (
+            {addNewChat === true &&
+            activeCreateGroup === false &&
+            activeCreateShoutAll === false ? (
               <>
                 <Container>
                   <Row className="margin-top-10">
@@ -4385,7 +5257,9 @@ const TalkChat = () => {
                     : null}
                 </Container>
               </>
-            ) : addNewChat === false && activeCreateGroup === true ? (
+            ) : addNewChat === false &&
+              activeCreateGroup === true &&
+              activeCreateShoutAll === false ? (
               <>
                 <Container>
                   <Row className="margin-top-10">
@@ -4504,7 +5378,9 @@ const TalkChat = () => {
                   <Row>
                     <Col className="text-center">
                       {noParticipant === true ? (
-                        <p className="m-0">At least add one participant</p>
+                        <p className="participant-warning m-0">
+                          At least add one participant
+                        </p>
                       ) : null}
                       <Button
                         className="MontserratSemiBold Ok-btn forward-user"
@@ -4515,7 +5391,143 @@ const TalkChat = () => {
                   </Row>
                 </Container>
               </>
-            ) : addNewChat === false && activeCreateGroup === false ? (
+            ) : addNewChat === false &&
+              activeCreateGroup === false &&
+              activeCreateShoutAll === true ? (
+              <>
+                <Container>
+                  <Row className="margin-top-10">
+                    <Col lg={6} md={6} sm={12}>
+                      <div className="new-chat">
+                        <p className="fw-bold m-0">Create a new Shout</p>
+                      </div>
+                    </Col>
+                    <Col lg={5} md={5} sm={12}></Col>
+
+                    <Col lg={1} md={1} sm={12} className="p-0">
+                      <div
+                        className="close-addChat-filter"
+                        onClick={closeAddShoutAllScreen}
+                      >
+                        <img src={CloseChatIcon} />
+                      </div>
+                    </Col>
+                  </Row>
+                  <Row className="margin-top-10">
+                    <Col lg={12} md={12} sm={12}>
+                      <TextField
+                        maxLength={200}
+                        applyClass="form-control2"
+                        name="Name"
+                        placeholder={'List Name'}
+                        change={(e) => {
+                          setShoutNameValue(e.target.value)
+                        }}
+                        value={shoutNameValue}
+                        labelClass={'d-none'}
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="margin-top-5">
+                    <Col lg={12} md={12} sm={12}>
+                      <TextField
+                        maxLength={200}
+                        applyClass="form-control2"
+                        name="Name"
+                        placeholder={'Search Users'}
+                        change={(e) => {
+                          searchShoutAllUserUser(e.target.value)
+                        }}
+                        value={searchShoutAllUserValue}
+                        labelClass={'d-none'}
+                      />
+                    </Col>
+                  </Row>
+                </Container>
+                <Container>
+                  <div className="add-group-members-list">
+                    {allUsers !== undefined &&
+                    allUsers !== null &&
+                    allUsers.length > 0
+                      ? allUsers.map((dataItem, index) => {
+                          return (
+                            <Row className="single-user">
+                              <Col lg={2} md={2} sm={2}>
+                                <div className="user-profile-icon">
+                                  {/* Bell Notification SVG Code */}
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="31.188"
+                                    height="31.186"
+                                    viewBox="0 0 31.188 31.186"
+                                  >
+                                    <g
+                                      id="Group_1683"
+                                      data-name="Group 1683"
+                                      transform="translate(-189.415 78.235)"
+                                    >
+                                      <path
+                                        id="Path_594"
+                                        data-name="Path 594"
+                                        d="M220.6-47.049H218.18a13.038,13.038,0,0,0-4.892-10.2,12.728,12.728,0,0,0-8.892-2.939,12.681,12.681,0,0,0-6.291,1.95,13.229,13.229,0,0,0-4.581,4.787,13.087,13.087,0,0,0-1.674,6.385h-2.434a15.387,15.387,0,0,1,2.885-9.01,15.6,15.6,0,0,1,7.585-5.709c-.09-.076-.145-.129-.207-.175a8.863,8.863,0,0,1-3.339-9.641,8.764,8.764,0,0,1,6.6-6.379c.477-.127.975-.171,1.464-.254h1.218c.489.083.987.128,1.464.254a8.694,8.694,0,0,1,6.591,6.382A8.679,8.679,0,0,1,211-62.5c-.261.247-.554.459-.854.705.09.041.151.073.215.1a15.292,15.292,0,0,1,5.562,3.519,15.27,15.27,0,0,1,4.436,8.416c.1.6.164,1.2.244,1.8ZM205.008-75.8a6.6,6.6,0,0,0-6.576,6.563,6.6,6.6,0,0,0,6.579,6.591,6.6,6.6,0,0,0,6.576-6.563A6.6,6.6,0,0,0,205.008-75.8Z"
+                                        fill="#fff"
+                                      />
+                                    </g>
+                                  </svg>
+                                  {/* <span className="user-active-status-group"></span> */}
+                                </div>
+                              </Col>
+                              <Col lg={8} md={8} sm={8}>
+                                <div className={'group-add-user'}>
+                                  <p className="chat-username-group m-0">
+                                    {dataItem.fullName}
+                                  </p>
+                                  <span>{dataItem.companyName}</span>
+                                </div>
+                              </Col>
+                              <Col lg={2} md={2} sm={2}>
+                                <Checkbox
+                                  checked={
+                                    shoutAllUsersChecked.includes(dataItem.id)
+                                      ? true
+                                      : false
+                                  }
+                                  onChange={() =>
+                                    shoutAllUsersCheckedHandler(
+                                      dataItem,
+                                      dataItem.id,
+                                      index,
+                                    )
+                                  }
+                                  className="chat-message-checkbox-group"
+                                />
+                              </Col>
+                            </Row>
+                          )
+                        })
+                      : null}
+                  </div>
+                </Container>
+                <Container>
+                  <Row>
+                    <Col className="text-center">
+                      {noParticipant === true ? (
+                        <p className="participant-warning m-0">
+                          At least add one participant
+                        </p>
+                      ) : null}
+                      <Button
+                        className="MontserratSemiBold Ok-btn forward-user"
+                        text="Create Shout"
+                        onClick={createShoutAllList}
+                      />
+                    </Col>
+                  </Row>
+                </Container>
+              </>
+            ) : addNewChat === false &&
+              activeCreateGroup === false &&
+              activeCreateShoutAll === false ? (
               <>
                 <Container>
                   <Row className={deleteChat === false ? '' : 'applyBlur'}>
@@ -4866,6 +5878,15 @@ const TalkChat = () => {
                                         >
                                           Leave Group
                                         </span>
+                                      ) : dataItem.messageType === 'B' ? (
+                                        <span
+                                          onClick={() =>
+                                            deleteShoutFunction(dataItem)
+                                          }
+                                          style={{ borderBottom: 'none' }}
+                                        >
+                                          Delete Shout
+                                        </span>
                                       ) : null}
                                     </div>
                                   ) : null}
@@ -4906,6 +5927,8 @@ const TalkChat = () => {
                             <img src={SingleIcon} width={25} />
                           ) : activeChat.messageType === 'G' ? (
                             <img src={GroupIcon} width={30} />
+                          ) : activeChat.messageType === 'B' ? (
+                            <img src={ShoutIcon} width={20} />
                           ) : null}
                           {/* <span className="user-active-status"></span> */}
                         </div>
@@ -4972,6 +5995,19 @@ const TalkChat = () => {
                                     onClick={modalHandlerGroupEdit}
                                   >
                                     Edit Info
+                                  </span>
+                                </>
+                              )}
+                              {activeChat.messageType === 'B' && (
+                                <>
+                                  <span onClick={modalHandlerSave}>Save</span>
+                                  <span onClick={modalHandlerPrint}>Print</span>
+                                  <span onClick={modalHandlerEmail}>Email</span>
+                                  <span onClick={deleteShoutFunction}>
+                                    Delete Shout
+                                  </span>
+                                  <span onClick={editShoutFunction}>
+                                    Edit Shout
                                   </span>
                                 </>
                               )}
@@ -5043,7 +6079,8 @@ const TalkChat = () => {
               {messageInfo === false &&
               forwardMessageUsersSection === false &&
               showGroupInfo === false &&
-              showGroupEdit === false ? (
+              showGroupEdit === false &&
+              showShoutEdit === false ? (
                 <>
                   <Row>
                     <Col className="p-0">
@@ -5060,6 +6097,7 @@ const TalkChat = () => {
                         <>
                           <div className="chat-messages-section">
                             {allOtoMessages.length > 0 &&
+                            allBroadcastMessages.length === 0 &&
                             allGroupMessages.length === 0 ? (
                               allOtoMessages.map((messageData, index) => {
                                 if (
@@ -5468,6 +6506,7 @@ const TalkChat = () => {
                                 }
                               })
                             ) : allOtoMessages.length === 0 &&
+                              allBroadcastMessages.length === 0 &&
                               allGroupMessages.length > 0 ? (
                               allGroupMessages.map((messageData, index) => {
                                 if (
@@ -5863,6 +6902,420 @@ const TalkChat = () => {
                                     </div>
                                   )
                                 }
+                              })
+                            ) : allOtoMessages.length === 0 &&
+                              allGroupMessages.length === 0 &&
+                              allBroadcastMessages.length > 0 ? (
+                              allBroadcastMessages.map((messageData, index) => {
+                                console.log(
+                                  'All Broadcast Messages',
+                                  messageData,
+                                )
+                                if (
+                                  messageData.senderID ===
+                                  parseInt(currentUserId)
+                                ) {
+                                  return (
+                                    <>
+                                      <div className="direct-chat-msg text-right mb-2 ">
+                                        <div className="direct-chat-text message-outbox message-box text-start">
+                                          <div
+                                            className="chatmessage-box-icons"
+                                            onClick={() =>
+                                              chatFeatureSelected(
+                                                messageData,
+                                                messageData.messageID,
+                                              )
+                                            }
+                                            ref={chatMessageRefs}
+                                          >
+                                            <img
+                                              className="dropdown-icon"
+                                              src={DropDownIcon}
+                                            />
+                                            {chatFeatureActive ===
+                                            messageData.messageID ? (
+                                              <div className="dropdown-menus-chatmessage">
+                                                <span
+                                                  onClick={() =>
+                                                    replyFeatureHandler(
+                                                      messageData,
+                                                    )
+                                                  }
+                                                >
+                                                  Reply
+                                                </span>
+                                                <span
+                                                  onClick={
+                                                    forwardFeatureHandler
+                                                  }
+                                                >
+                                                  Forward
+                                                </span>
+                                                <span
+                                                  onClick={() =>
+                                                    deleteFeatureHandler(
+                                                      messageData,
+                                                    )
+                                                  }
+                                                >
+                                                  Delete
+                                                </span>
+                                                <span
+                                                  onClick={() =>
+                                                    messageInfoHandler(
+                                                      messageData,
+                                                    )
+                                                  }
+                                                >
+                                                  Message Info
+                                                </span>
+                                                <span
+                                                  onClick={() =>
+                                                    markUnmarkStarMessageHandler(
+                                                      messageData,
+                                                    )
+                                                  }
+                                                  style={{
+                                                    borderBottom: 'none',
+                                                  }}
+                                                >
+                                                  {messageData.isFlag === 0 ? (
+                                                    <>Star Message</>
+                                                  ) : (
+                                                    <>Unstar Message</>
+                                                  )}
+                                                </span>
+                                              </div>
+                                            ) : null}
+                                          </div>
+                                          {messageData.frMessages ===
+                                          'Direct Message' ? (
+                                            <span className="direct-chat-body color-5a5a5a">
+                                              <Keywords
+                                                value={searchChatWord}
+                                                render={highlight}
+                                              >
+                                                {messageData.messageBody}
+                                              </Keywords>
+                                            </span>
+                                          ) : (
+                                            <>
+                                              <div className="replied-message-send">
+                                                <p className="replied-message-sender m-0">
+                                                  {messageData.frMessages[3]}
+                                                </p>
+                                                <p className="replied-message m-0">
+                                                  {
+                                                    messageData.sourceMessageBody
+                                                  }
+                                                </p>
+                                              </div>
+                                              <span className="direct-chat-body color-5a5a5a">
+                                                <Keywords
+                                                  value={searchChatWord}
+                                                  render={highlight}
+                                                >
+                                                  {messageData.messageBody}
+                                                </Keywords>
+                                              </span>
+                                            </>
+                                          )}
+
+                                          <div className="d-flex mt-1 justify-content-end">
+                                            <div className="star-time-status ml-auto text-end">
+                                              <span className="starred-status">
+                                                {messageData.isFlag === 1 ? (
+                                                  <img
+                                                    src={StarredMessageIcon}
+                                                    alt=""
+                                                  />
+                                                ) : null}
+                                              </span>
+                                              <span className="direct-chat-sent-time chat-datetime">
+                                                {messageData.sentDate.slice(
+                                                  0,
+                                                  8,
+                                                ) === currentUtcDate ? (
+                                                  <>
+                                                    {/* {moment(
+                                                      messageData.sentDate.slice(
+                                                        8,
+                                                        15,
+                                                      ),
+                                                      'hhmmss',
+                                                    ).format('hh:mm a')} */}
+                                                    {newTimeFormaterAsPerUTCTalkTime(
+                                                      messageData.sentDate,
+                                                    )}
+                                                  </>
+                                                ) : messageData.sentDate.slice(
+                                                    0,
+                                                    8,
+                                                  ) === yesterdayDateUtc ? (
+                                                  <>
+                                                    {/* {moment(
+                                                      messageData.sentDate.slice(
+                                                        0,
+                                                        8,
+                                                      ),
+                                                    ).format(
+                                                      'DD-MMM-YYYY',
+                                                    )}{' '} */}
+                                                    {newTimeFormaterAsPerUTCTalkDate(
+                                                      messageData.sentDate,
+                                                    ) + ' '}
+                                                    | Yesterday
+                                                  </>
+                                                ) : messageData.sentDate ===
+                                                  '' ? null : (
+                                                  <>
+                                                    {/* {moment(
+                                                      messageData.sentDate.slice(
+                                                        0,
+                                                        8,
+                                                      ),
+                                                    ).format('DD-MMM-YYYY')} */}
+                                                    {newTimeFormaterAsPerUTCTalkDate(
+                                                      messageData.sentDate,
+                                                    )}
+                                                  </>
+                                                )}
+                                              </span>
+                                              <div className="message-status">
+                                                {messageData.messageStatus ===
+                                                'Sent' ? (
+                                                  <img
+                                                    src={SingleTickIcon}
+                                                    alt=""
+                                                  />
+                                                ) : messageData.messageStatus ===
+                                                  'Delivered' ? (
+                                                  <img
+                                                    src={
+                                                      DoubleTickDeliveredIcon
+                                                    }
+                                                    alt=""
+                                                  />
+                                                ) : messageData.messageStatus ===
+                                                  'Seen' ? (
+                                                  <img
+                                                    src={DoubleTickIcon}
+                                                    alt=""
+                                                  />
+                                                ) : messageData.messageStatus ===
+                                                  'Undelivered' ? (
+                                                  <img src={TimerIcon} alt="" />
+                                                ) : null}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                        {showCheckboxes === true ? (
+                                          <Checkbox
+                                            // checked={receiverCheckbox}
+                                            checked={
+                                              messagesChecked.includes(
+                                                messageData,
+                                              )
+                                                ? true
+                                                : false
+                                            }
+                                            onChange={() =>
+                                              messagesCheckedHandler(
+                                                messageData,
+                                                index,
+                                              )
+                                            }
+                                            className="chat-message-checkbox-receiver"
+                                          />
+                                        ) : null}
+                                      </div>
+                                    </>
+                                  )
+                                }
+                                // else if (
+                                //   messageData.senderID !==
+                                //   parseInt(currentUserId)
+                                // ) {
+                                //   return (
+                                //     <div className="direct-chat-msg text-left mb-2 ">
+                                //       {showCheckboxes === true ? (
+                                //         <Checkbox
+                                //           checked={
+                                //             messagesChecked.includes(
+                                //               messageData,
+                                //             )
+                                //               ? true
+                                //               : false
+                                //           }
+                                //           onChange={() =>
+                                //             messagesCheckedHandler(
+                                //               messageData,
+                                //               index,
+                                //             )
+                                //           }
+                                //           className="chat-message-checkbox-sender"
+                                //         />
+                                //       ) : null}
+
+                                //       <div className="direct-chat-text message-inbox message-box text-start">
+                                //         <div
+                                //           className="chatmessage-box-icons"
+                                //           onClick={() =>
+                                //             chatFeatureSelected(
+                                //               messageData,
+                                //               messageData.messageID,
+                                //             )
+                                //           }
+                                //           ref={chatMessageRefs}
+                                //         >
+                                //           <img
+                                //             className="dropdown-icon"
+                                //             src={DropDownChatIcon}
+                                //           />
+                                //           {chatFeatureActive ===
+                                //           messageData.messageID ? (
+                                //             <div className="dropdown-menus-chatmessage">
+                                //               <span
+                                //                 onClick={() =>
+                                //                   replyFeatureHandler(
+                                //                     messageData,
+                                //                   )
+                                //                 }
+                                //               >
+                                //                 Reply
+                                //               </span>
+                                //               <span
+                                //                 onClick={forwardFeatureHandler}
+                                //               >
+                                //                 Forward
+                                //               </span>
+                                //               <span
+                                //                 onClick={() =>
+                                //                   deleteFeatureHandler(
+                                //                     messageData,
+                                //                   )
+                                //                 }
+                                //               >
+                                //                 Delete
+                                //               </span>
+                                //               <span
+                                //                 onClick={() =>
+                                //                   messageInfoHandler(
+                                //                     messageData,
+                                //                   )
+                                //                 }
+                                //               >
+                                //                 Message Info
+                                //               </span>
+                                //               <span
+                                //                 onClick={() =>
+                                //                   markUnmarkStarMessageHandler(
+                                //                     messageData,
+                                //                   )
+                                //                 }
+                                //                 style={{
+                                //                   borderBottom: 'none',
+                                //                 }}
+                                //               >
+                                //                 {messageData.isFlag === 0 ? (
+                                //                   <>Star Message</>
+                                //                 ) : (
+                                //                   <>Unstar Message</>
+                                //                 )}
+                                //               </span>
+                                //             </div>
+                                //           ) : null}
+                                //         </div>
+                                //         {messageData.frMessages ===
+                                //         'Direct Message' ? (
+                                //           <span className="direct-chat-body color-white">
+                                //             <Keywords
+                                //               value={searchChatWord}
+                                //               render={highlight}
+                                //             >
+                                //               {messageData.messageBody}
+                                //             </Keywords>
+                                //           </span>
+                                //         ) : (
+                                //           <>
+                                //             <div className="replied-message-receive">
+                                //               <p className="replied-message-receiver m-0">
+                                //                 {messageData.frMessages[3]}
+                                //               </p>
+                                //               <p className="replied-message m-0">
+                                //                 {messageData.sourceMessageBody}
+                                //               </p>
+                                //             </div>
+                                //             <span className="direct-chat-body color-white">
+                                //               <Keywords
+                                //                 value={searchChatWord}
+                                //                 render={highlight}
+                                //               >
+                                //                 {messageData.messageBody}
+                                //               </Keywords>
+                                //             </span>
+                                //           </>
+                                //         )}
+                                //         <div className="d-flex mt-1 justify-content-end">
+                                //           <div className="star-time-status ml-auto text-end">
+                                //             <span className="starred-status">
+                                //               {messageData.isFlag === 1 ? (
+                                //                 <img
+                                //                   src={StarredMessageIcon}
+                                //                   alt=""
+                                //                 />
+                                //               ) : null}
+                                //             </span>
+                                //             <span className="direct-chat-sent-time chat-datetime">
+                                //               {messageData.sentDate.slice(
+                                //                 0,
+                                //                 8,
+                                //               ) === currentUtcDate ? (
+                                //                 <>
+                                //                   {/* {moment(
+                                //                     messageData.sentDate.slice(
+                                //                       8,
+                                //                       15,
+                                //                     ),
+                                //                     'hhmmss',
+                                //                   ).format('hh:mm a')} */}
+                                //                   {newTimeFormaterAsPerUTCTalkTime(
+                                //                     messageData.sentDate,
+                                //                   )}
+                                //                 </>
+                                //               ) : messageData.sentDate.slice(
+                                //                   0,
+                                //                   8,
+                                //                 ) === yesterdayDateUtc ? (
+                                //                 <>
+                                //                   {/* {moment(
+                                //                     messageData.sentDate.slice(
+                                //                       0,
+                                //                       8,
+                                //                     ),
+                                //                   ).format('DD-MMM-YYYY')}{' '} */}
+                                //                   {newTimeFormaterAsPerUTCTalkDate(
+                                //                     messageData.sentDate,
+                                //                   ) + ' '}
+                                //                   | Yesterday
+                                //                 </>
+                                //               ) : (
+                                //                 <>
+                                //                   {newTimeFormaterAsPerUTCTalkDate(
+                                //                     messageData.sentDate,
+                                //                   )}
+                                //                 </>
+                                //               )}
+                                //             </span>
+                                //             <div className="message-status"></div>
+                                //           </div>
+                                //         </div>
+                                //       </div>
+                                //     </div>
+                                //   )
+                                // }
                               })
                             ) : (
                               <>
@@ -6437,7 +7890,8 @@ const TalkChat = () => {
               ) : messageInfo === true &&
                 forwardMessageUsersSection === false &&
                 showGroupInfo === false &&
-                showGroupEdit === false ? (
+                showGroupEdit === false &&
+                showShoutEdit === false ? (
                 <div className="talk-screen-innerwrapper">
                   <div className="message-body talk-screen-content">
                     <div className="message-heading d-flex mb-2">
@@ -6512,7 +7966,8 @@ const TalkChat = () => {
               ) : messageInfo === false &&
                 forwardMessageUsersSection === true &&
                 showGroupInfo === false &&
-                showGroupEdit === false ? (
+                showGroupEdit === false &&
+                showShoutEdit === false ? (
                 <>
                   <Row className="mt-1">
                     <Col lg={6} md={6} sm={12}>
@@ -6618,7 +8073,8 @@ const TalkChat = () => {
               ) : messageInfo === false &&
                 forwardMessageUsersSection === false &&
                 showGroupInfo === true &&
-                showGroupEdit === false ? (
+                showGroupEdit === false &&
+                showShoutEdit === false ? (
                 <>
                   <Row className="mt-1">
                     <Col lg={4} md={4} sm={12}></Col>
@@ -6722,7 +8178,8 @@ const TalkChat = () => {
               ) : messageInfo === false &&
                 forwardMessageUsersSection === false &&
                 showGroupInfo === false &&
-                showGroupEdit === true ? (
+                showGroupEdit === true &&
+                showShoutEdit === false ? (
                 <>
                   <Row className="mt-1">
                     <Col lg={4} md={4} sm={12}></Col>
@@ -6863,6 +8320,156 @@ const TalkChat = () => {
                           className="MontserratSemiBold Ok-btn forward-user"
                           text="Edit Group"
                           onClick={editGroup}
+                        />
+                      </div>
+                    </Col>
+                  </Row>
+                </>
+              ) : messageInfo === false &&
+                forwardMessageUsersSection === false &&
+                showGroupInfo === false &&
+                showGroupEdit === false &&
+                showShoutEdit === true ? (
+                <>
+                  <Row className="mt-1">
+                    <Col lg={4} md={4} sm={12}></Col>
+                    <Col
+                      lg={4}
+                      md={4}
+                      sm={12}
+                      className="d-flex justify-content-center"
+                    >
+                      <div className="chat-groupinfo-icon">
+                        <img src={ShoutIcon} width={20} />
+                      </div>
+                    </Col>
+                    <Col lg={4} md={4} sm={12} className="text-end">
+                      <img
+                        onClick={handleCancel}
+                        src={CloseChatIcon}
+                        width={10}
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="">
+                    <Col lg={2} md={2} sm={12}></Col>
+                    {showEditShoutField === false ? (
+                      <Col
+                        lg={8}
+                        md={8}
+                        sm={12}
+                        className="text-center d-flex align-items-center justify-content-center"
+                      >
+                        <p className="groupinfo-groupname m-0">
+                          {shoutName !== undefined && shoutName !== null
+                            ? shoutName
+                            : null}
+                        </p>
+                        <img
+                          onClick={editShoutTitle}
+                          className="Edit-Group-Title-Icon"
+                          src={EditIcon}
+                          alt=""
+                        />
+                      </Col>
+                    ) : (
+                      <Col
+                        lg={8}
+                        md={8}
+                        sm={12}
+                        className="text-center d-flex align-items-center justify-content-center"
+                      >
+                        <TextField
+                          value={shoutName}
+                          className="chat-message-input"
+                          name="ChatMessage"
+                          placeholder={'Shout Name'}
+                          maxLength={200}
+                          change={shoutNameHandler}
+                          autoComplete="off"
+                          labelClass={'d-none'}
+                        />
+                      </Col>
+                    )}
+                    <Col lg={2} md={2} sm={12} className="text-end"></Col>
+                  </Row>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      style={{ marginBottom: '5px' }}
+                    >
+                      <TextField
+                        maxLength={200}
+                        applyClass="form-control2"
+                        name="Name"
+                        change={(e) => {
+                          searchShoutEditUser(e.target.value)
+                        }}
+                        value={searchUserShoutValue}
+                        placeholder="Search Users"
+                        labelClass={'d-none'}
+                      />
+                    </Col>
+                  </Row>
+                  <div className="users-list-groupinfo">
+                    {allUsers !== undefined &&
+                    allUsers !== null &&
+                    allUsers.length > 0
+                      ? allUsers.map((dataItem, index) => {
+                          return (
+                            <Row style={{ alignItems: 'center' }}>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                style={{ paddingRight: '20px' }}
+                              >
+                                <div className="users-groupinfo">
+                                  <Checkbox
+                                    checked={
+                                      Array.isArray(editShoutUsersChecked) &&
+                                      (editShoutUsersChecked.some(
+                                        (item) => item === dataItem.id,
+                                      ) ||
+                                        (Array.isArray(shoutAllUsersData) &&
+                                          shoutAllUsersData.some(
+                                            (item) =>
+                                              item.userID === dataItem.id,
+                                          )))
+                                        ? true
+                                        : false
+                                    }
+                                    onChange={() =>
+                                      editShoutUsersCheckedHandler(
+                                        dataItem,
+                                        dataItem.id,
+                                        index,
+                                      )
+                                    }
+                                    className="group-edit-users-add"
+                                  />
+                                  <div className="chat-profile-icon groupinfo">
+                                    <img src={SingleIcon} width={15} />
+                                  </div>
+                                  <p className="groupinfo-groupusersname m-0">
+                                    {dataItem.fullName}
+                                  </p>
+                                </div>
+                              </Col>
+                            </Row>
+                          )
+                        })
+                      : null}
+                  </div>
+                  <Row>
+                    <Col>
+                      <div className="edit-group-button">
+                        <Button
+                          className="MontserratSemiBold Ok-btn forward-user"
+                          text="Edit Shout"
+                          onClick={editShoutAll}
                         />
                       </div>
                     </Col>
