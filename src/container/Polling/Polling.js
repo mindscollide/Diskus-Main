@@ -5,10 +5,15 @@ import { Button, Table, TextField } from "../../components/elements";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
 import CreatePolling from "./CreatePolling/CreatePollingModal";
+import AlarmClock from "../../assets/images/AlarmOptions.svg";
 import BlackCrossIcon from "../../assets/images/BlackCrossIconModals.svg";
-
+import EditIcon from "../../assets/images/Edit-Icon.png";
+import UpdatePolls from "./UpdatePolls/UpdatePolls";
+import ViewPoll from "./ViewPoll/ViewPoll";
 const Polling = () => {
   const [isCreatePoll, setIsCreatePoll] = useState(false);
+  const [isUpdatePoll, setIsUpdatePoll] = useState(false);
+  const [isViewPoll, setIsViewPoll] = useState(false);
   const [searchpoll, setSearchpoll] = useState(false);
   const { t } = useTranslation();
   const PollTableColumns = [
@@ -46,17 +51,48 @@ const Polling = () => {
     },
     {
       title: "Edit",
-      dataIndex: "",
-      key: "",
+      dataIndex: "Edit",
+      key: "Edit",
     },
   ];
   const RowsData = [
     {
-      title: "test title",
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span
+                className={styles["Table_title"]}
+                onClick={() => {
+                  setIsViewPoll(true);
+                }}
+              >
+                test title
+              </span>
+            </Col>
+          </Row>
+        </>
+      ),
       status: 1,
       dueDate: "2023-06-28",
       createBy: "Ali Raza",
       vote: 1,
+      Edit: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12} className="d-flex align-items-center">
+              <img
+                src={EditIcon}
+                width="21.59px"
+                height="21.59px"
+                onClick={() => {
+                  setIsUpdatePoll(true);
+                }}
+              />
+            </Col>
+          </Row>
+        </>
+      ),
     },
     {
       title: "test title",
@@ -244,6 +280,21 @@ const Polling = () => {
           showPollingModal={isCreatePoll}
         />
       )}
+
+      {isUpdatePoll ? (
+        <UpdatePolls
+          showUpdatepollModal={isUpdatePoll}
+          setShowUpdatepollModal={setIsUpdatePoll}
+        />
+      ) : null}
+      {isViewPoll ? (
+        <>
+          <ViewPoll
+            showViewPollModal={isViewPoll}
+            setShowViewPollModal={setIsViewPoll}
+          />
+        </>
+      ) : null}
     </>
   );
 };

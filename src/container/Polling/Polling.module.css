@@ -92,3 +92,7 @@
   font-size: 12px !important;
   border: 1px solid #e1e1e1 !important;
 }
+
+.Table_title {
+  cursor: pointer !important;
+}

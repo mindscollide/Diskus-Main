@@ -950,5 +950,11 @@
   "Typing-tile": "Typing Tile",
   "Add-another-field": "Add Another Option",
   "Allow-multiple-answers": "Allow Multiple Answers",
-  "Save-and-publish": "Save and Publish"
+  "Save-and-publish": "Save and Publish",
+  "Any-unsaved-changes-will-be": "Any unsaved changes will be",
+  "Lost-continue": "Lost. Continue?",
+  "Update-poll": "Update poll",
+  "Update-and-publish": "Update and publish",
+  "Due-date-on": "Due date on",
+  "View-poll": "View Poll"
 }
