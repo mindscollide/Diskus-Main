@@ -627,5 +627,10 @@
   "Update-poll": "Update poll",
   "Update-and-publish": "Update and publish",
   "Due-date-on": "Due date on",
-  "View-poll": "View Poll"
+  "View-poll": "View Poll",
+  "Post-title": "Post Title",
+  "Created-by": "Created By",
+  "Polls": "Polls",
+  "View-votes": "View Votes",
+  "Poll-Details": "Poll Details"
 }

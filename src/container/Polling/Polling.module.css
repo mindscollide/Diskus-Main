@@ -95,4 +95,13 @@
 
 .Table_title {
   cursor: pointer !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+}
+
+.GlobalSearchFieldICon {
+  cursor: pointer !important;
 }

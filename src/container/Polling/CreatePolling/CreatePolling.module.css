@@ -121,6 +121,7 @@ body[dir="rtl"] .Add_another_field {
 .Cross-icon-Create_poll {
   padding: 5px 5px !important;
   margin-top: 4px !important;
+  cursor: pointer !important;
 }
 
 .PlusFaddedClass {

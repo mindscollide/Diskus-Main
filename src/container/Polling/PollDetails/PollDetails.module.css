@@ -1,0 +1,98 @@
+.Poll_details_Heading {
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a;
+}
+
+.Box_For_Title_toShow {
+  width: 100% !important;
+  height: auto !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.no-Of-Yes {
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a;
+}
+
+.no-Of-No {
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a;
+  margin-left: 30% !important;
+}
+
+.border_bottom {
+  border-bottom: 1px solid #e1e1e1;
+  width: 100% !important;
+}
+
+.Participants_polls_Details {
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a;
+}
+
+.Scroller-Yes {
+  height: 12vh !important;
+  overflow-x: hidden !important;
+  width: 100%;
+}
+
+.Scroller-Yes::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+.Scroller-Yes::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Card_border2 {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding: 8px 0;
+  margin-left: -23px !important;
+}
+
+.Name_cards {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold" !important;
+  margin-left: 5px !important;
+}
+
+.Image {
+  margin-left: 8px !important;
+}
+
+.Yes_voters {
+  font-size: 16px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Class_Close {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.Class_Close:hover,
+.Class_Close:active,
+.Class_Close:focus,
+.Class_Close:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}

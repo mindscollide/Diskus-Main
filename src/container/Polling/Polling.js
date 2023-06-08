@@ -9,23 +9,45 @@ import AlarmClock from "../../assets/images/AlarmOptions.svg";
 import BlackCrossIcon from "../../assets/images/BlackCrossIconModals.svg";
 import EditIcon from "../../assets/images/Edit-Icon.png";
 import UpdatePolls from "./UpdatePolls/UpdatePolls";
+import plusbutton from "../../assets/images/Group 119.svg";
 import ViewPoll from "./ViewPoll/ViewPoll";
+import ViewPollProgress from "./ViewPoll/ViewPollProgress/ViewPollProgress";
+import PollDetails from "./PollDetails/PollDetails";
 const Polling = () => {
   const [isCreatePoll, setIsCreatePoll] = useState(false);
   const [isUpdatePoll, setIsUpdatePoll] = useState(false);
+  const [viewprogress, setViewprogress] = useState(false);
+  const [viewPollsDetails, setViewPollsDetails] = useState(false);
   const [isViewPoll, setIsViewPoll] = useState(false);
+  const [pollsState, setPollsState] = useState({
+    searchValue: "",
+  });
+
+  const [searchBoxState, setsearchBoxState] = useState({
+    searchByName: "",
+    searchByTitle: "",
+  });
   const [searchpoll, setSearchpoll] = useState(false);
+  const showViewProgressBarModal = () => {
+    setViewprogress(true);
+  };
+
+  const ShowPollsDetailsModal = () => {
+    setViewPollsDetails(true);
+  };
   const { t } = useTranslation();
   const PollTableColumns = [
     {
-      title: "Post Title",
+      title: t("Post-title"),
       dataIndex: "title",
       key: "title",
+      width: "365px",
     },
     {
-      title: "Status",
+      title: t("Status"),
       dataIndex: "status",
       key: "status",
+      width: "62px",
       render: (text, record) => {
         if (text === 1) {
           return <span className="text-success">{t("Published")}</span>;
@@ -35,24 +57,28 @@ const Polling = () => {
       },
     },
     {
-      title: "Due Date",
+      title: t("Due-date"),
       dataIndex: "dueDate",
       key: "dueDate",
+      width: "89px",
     },
     {
-      title: "Created By",
+      title: t("Created-by"),
       dataIndex: "createBy",
       key: "createBy",
+      width: "97px",
     },
     {
-      title: "Vote",
+      title: t("Vote"),
       dataIndex: "vote",
       key: "vote",
+      width: "59px",
     },
     {
-      title: "Edit",
+      title: t("Edit"),
       dataIndex: "Edit",
       key: "Edit",
+      width: "33px",
     },
   ];
   const RowsData = [
@@ -80,7 +106,12 @@ const Polling = () => {
       Edit: (
         <>
           <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex align-items-center">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex align-items-center cursor-pointer"
+            >
               <img
                 src={EditIcon}
                 width="21.59px"
@@ -95,14 +126,32 @@ const Polling = () => {
       ),
     },
     {
-      title: "test title",
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span onClick={showViewProgressBarModal}>
+                View Progress Modal
+              </span>
+            </Col>
+          </Row>
+        </>
+      ),
       status: 2,
       dueDate: "2023-06-28",
       createBy: "Ali Raza",
       vote: 3,
     },
     {
-      title: "test title",
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span onClick={ShowPollsDetailsModal}>Poll Details</span>
+            </Col>
+          </Row>
+        </>
+      ),
       status: 2,
       dueDate: "2023-06-28",
       createBy: "Ali Raza",
@@ -166,6 +215,66 @@ const Polling = () => {
     },
   ];
 
+  const HandleSearchPollsMain = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "SearchVal") {
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (value !== "") {
+        setPollsState({
+          ...pollsState,
+          searchValue: valueCheck,
+        });
+      } else {
+        setPollsState({
+          ...pollsState,
+          searchValue: "",
+        });
+      }
+    }
+  };
+
+  const HandleSearchboxNameTitle = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "searchbytitle") {
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (value !== "") {
+        setsearchBoxState({
+          ...searchBoxState,
+          searchByTitle: valueCheck,
+        });
+      } else {
+        setsearchBoxState({
+          ...searchBoxState,
+          searchByTitle: "",
+        });
+      }
+    }
+    if (name === "seachbyname") {
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (value !== "") {
+        setsearchBoxState({
+          ...searchBoxState,
+          searchByName: valueCheck,
+        });
+      } else {
+        setsearchBoxState({
+          ...searchBoxState,
+          searchByName: "",
+        });
+      }
+    }
+  };
+
+  const ResetSearchBtn = () => {
+    setsearchBoxState({
+      ...searchBoxState,
+      searchByName: "",
+      searchByTitle: "",
+    });
+  };
+
   const HandleShowSearch = () => {
     setSearchpoll(true);
   };
@@ -178,12 +287,22 @@ const Polling = () => {
       <section className={styles["Poll_Container"]}>
         <Row className="my-3 d-flex align-items-center">
           <Col sm={12} md={1} lg={1}>
-            <span className={styles["Poll_Container__heading"]}>Polls</span>
+            <span className={styles["Poll_Container__heading"]}>
+              {t("Polls")}
+            </span>
           </Col>
           <Col sm={12} md={2} lg={2}>
             <Button
-              text={`+ ${t("New")}`}
+              text={t("New")}
               className={styles["new_Poll_Button"]}
+              icon={
+                <img
+                  src={plusbutton}
+                  height="7.6px"
+                  width="7.6px"
+                  className="align-items-center"
+                />
+              }
               onClick={() => setIsCreatePoll(true)}
             />
           </Col>
@@ -195,9 +314,18 @@ const Polling = () => {
                 // change={handleFilter}
                 placeholder={t("Search")}
                 applyClass={"PollingSearchInput"}
+                name={"SearchVal"}
+                value={pollsState.searchValue}
+                change={HandleSearchPollsMain}
                 labelClass="d-none"
                 // onDoubleClick={searchbardropdownShow}
-                inputicon={<img src={searchicon} onClick={HandleShowSearch} />}
+                inputicon={
+                  <img
+                    src={searchicon}
+                    className={styles["GlobalSearchFieldICon"]}
+                    onClick={HandleShowSearch}
+                  />
+                }
                 // clickIcon={SearchiconClickOptions}
                 iconClassName={styles["polling_searchinput"]}
               />
@@ -232,6 +360,9 @@ const Polling = () => {
                             placeholder={t("Search-by-Title")}
                             applyClass={"Search_Modal_Fields"}
                             labelClass="d-none"
+                            name={"searchbytitle"}
+                            value={searchBoxState.searchByTitle}
+                            change={HandleSearchboxNameTitle}
                           />
                         </Col>
                         <Col lg={6} md={6} sm={6}>
@@ -239,6 +370,9 @@ const Polling = () => {
                             placeholder={t("Search-by-name")}
                             applyClass={"Search_Modal_Fields"}
                             labelClass="d-none"
+                            name={"seachbyname"}
+                            value={searchBoxState.searchByName}
+                            change={HandleSearchboxNameTitle}
                           />
                         </Col>
                       </Row>
@@ -252,6 +386,7 @@ const Polling = () => {
                           <Button
                             text={t("Reset")}
                             className={styles["Reset_Button_polls_SearchModal"]}
+                            onClick={ResetSearchBtn}
                           />
                           <Button
                             text={t("Search")}
@@ -270,7 +405,15 @@ const Polling = () => {
         </Row>
         <Row>
           <Col sm={12} md={12} lg={12}>
-            <Table column={PollTableColumns} rows={RowsData} />
+            <Table
+              column={PollTableColumns}
+              rows={RowsData}
+              pagination={{
+                pageSize: 50,
+                showSizeChanger: true,
+                pageSizeOptions: ["100 ", "150", "200"],
+              }}
+            />
           </Col>
         </Row>
       </section>
@@ -292,6 +435,22 @@ const Polling = () => {
           <ViewPoll
             showViewPollModal={isViewPoll}
             setShowViewPollModal={setIsViewPoll}
+          />
+        </>
+      ) : null}
+      {viewprogress ? (
+        <>
+          <ViewPollProgress
+            showViewProgress={viewprogress}
+            setShowViewProgress={setViewprogress}
+          />
+        </>
+      ) : null}
+      {viewPollsDetails ? (
+        <>
+          <PollDetails
+            showpollDetails={viewPollsDetails}
+            setShowpollDetails={setViewPollsDetails}
           />
         </>
       ) : null}
