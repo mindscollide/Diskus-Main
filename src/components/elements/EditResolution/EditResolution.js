@@ -1388,7 +1388,7 @@ const EditResolution = ({
                                   ]
                                 }
                               >
-                                {t("Descision-announcement")}
+                                {t("Decision-announcement")}
                               </span>
                             </Col>
                           </Row>
