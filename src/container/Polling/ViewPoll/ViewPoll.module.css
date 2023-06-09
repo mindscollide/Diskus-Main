@@ -41,7 +41,11 @@
 
 .View_Title {
   font-family: "MontserratMedium-500" !important;
-  font-size: 16px !important;
+  /* width: 100%; */
+  display: flex;
+  /* padding: 3px 3px !important; */
+  align-items: center !important;
+  font-size: 12px !important;
 }
 
 .Multiple_viewModal {
@@ -73,10 +77,17 @@
   margin-left: -15px;
 }
 
+.Box_ViewPoll_after_publish {
+  border: 1px solid #e1e1e1;
+  height: auto;
+  border-radius: 4px !important;
+}
+
 .Card_border2 {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  margin-left: 0px;
+  margin: 0;
+  margin-left: -12px !important;
   padding: 8px 0;
   display: flex;
   align-items: center;
@@ -112,4 +123,15 @@
 
 .View_cross_icon {
   cursor: pointer !important;
+}
+
+.OverallPadding {
+  margin: 0;
+  padding: 0;
+}
+
+.BOx_for_yes {
+  border: 1px solid #e1e1e1;
+  height: 39px;
+  border-radius: 4px !important;
 }

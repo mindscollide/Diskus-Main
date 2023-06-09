@@ -112,8 +112,12 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
               </Row>
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12} className="m-0 p-0 d-flex gap-5">
-                  <span className={styles["no-Of-Yes"]}>9-Yes</span>
-                  <span className={styles["no-Of-No"]}>2-No</span>
+                  <span className={styles["no-Of-Yes"]}>
+                    9 - <span>{t("Yes")}</span>
+                  </span>
+                  <span className={styles["no-Of-No"]}>
+                    2 - <span>{t("No")}</span>
+                  </span>
                 </Col>
               </Row>
               <Row>
@@ -144,7 +148,7 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
               </Row>
               <Row>
                 <Col lg={12} md={12} sm={12} className="m-0 p-0 mt-2">
-                  <span className={styles["Yes_voters"]}>Yes</span>
+                  <span className={styles["Yes_voters"]}>{t("Yes")}</span>
                 </Col>
               </Row>
               <Row>
@@ -178,7 +182,7 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
               </Row>
               <Row className="mt-2">
                 <Col lg={12} md={12} sm={12} className="m-0 p-0">
-                  <span className={styles["Yes_voters"]}>No</span>
+                  <span className={styles["Yes_voters"]}>{t("No")}</span>
                 </Col>
               </Row>
               <Row>
