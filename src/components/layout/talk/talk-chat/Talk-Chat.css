@@ -1680,9 +1680,9 @@ p.group-sender-name {
   font-size: 14px;
 }
 
-input.form-control2.Saved_money_Tagline.form-control {
+/* input.form-control2.Saved_money_Tagline.form-control {
   margin: 10px 0px;
-}
+} */
 
 input[placeholder="Search Chat"] {
   margin-top: 10px;

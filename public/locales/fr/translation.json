@@ -614,5 +614,6 @@
   "Payment-received-date": "Payment Received Date :",
   "Folder-name": "Folder Name",
   "The-user-has-reached-the-maximum-faileda-attempts": "The User has Reached the Maximum Failed Attempts",
-  "Decision-pending": "Decision Pending"
+  "Decision-pending": "Decision Pending",
+  "Last-modified": "Last modified"
 }

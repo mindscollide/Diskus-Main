@@ -732,21 +732,21 @@ const ScheduleNewResolution = ({
     }
   }, [ResolutionReducer.GetAllVotingMethods]);
 
-  useEffect(() => {
-    setTasksAttachments([]);
-  }, []);
+  // useEffect(() => {
+  //   setTasksAttachments([]);
+  // }, []);
 
-  useEffect(() => {
-    if (uploadReducer.uploadDocumentsList !== null) {
-      tasksAttachments.push({
-        DisplayAttachmentName:
-          uploadReducer.uploadDocumentsList.displayFileName,
-        OriginalAttachmentName:
-          uploadReducer.uploadDocumentsList.originalFileName,
-      });
-      setTasksAttachments([...tasksAttachments]);
-    }
-  }, [uploadReducer.uploadDocumentsList]);
+  // useEffect(() => {
+  //   if (uploadReducer.uploadDocumentsList !== null) {
+  //     tasksAttachments.push({
+  //       DisplayAttachmentName:
+  //         uploadReducer.uploadDocumentsList.displayFileName,
+  //       OriginalAttachmentName:
+  //         uploadReducer.uploadDocumentsList.originalFileName,
+  //     });
+  //     setTasksAttachments([...tasksAttachments]);
+  //   }
+  // }, [uploadReducer.uploadDocumentsList]);
 
   useEffect(() => {
     dispatch(getAllVotingMethods(navigate, t));

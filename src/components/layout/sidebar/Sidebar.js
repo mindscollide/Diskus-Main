@@ -6,13 +6,19 @@ import CalendarIcon from "../../../assets/images/newElements/newCalenderIcon.svg
 import LockIcon from "../../../assets/images/newElements/newlockIcon.svg";
 import MeetingIcon from "../../../assets/images/newElements/newmeetingIcon.svg";
 import TodoIcon from "../../../assets/images/newElements/newTodoIcon.svg";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import MeetingIconSvg from "../../../assets/images/newElements/MeetingIcon.svg";
 
 import "./sidebar.css";
+import { getDocumentsAndFolderApi } from "../../../store/actions/DataRoom_actions";
+import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const Sidebar = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
+  const { t } = useTranslation()
+  const navigate = useNavigate();
   const [activateBlur, setActivateBlur] = useState(false);
 
   let Blur = localStorage.getItem("blur");
@@ -657,6 +663,10 @@ const Sidebar = () => {
                   as={Link}
                   to="dataroom"
                   eventKey="link-5"
+                  onClick={() => {
+                    dispatch(getDocumentsAndFolderApi(navigate, 3, t));
+                    localStorage.setItem("setTableView", 3)
+                  }}
                   className={
                     location.pathname === "/DisKus/dataroom" ||
                       location.pathname === "/Diskus/dataroom"
@@ -988,7 +998,7 @@ const Sidebar = () => {
                       : "m-0 p-0 icon"
                   }
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg"  width="43.97" height="24.96" viewBox="0 0 43.97 24.96">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="43.97" height="24.96" viewBox="0 0 43.97 24.96">
                     <defs>
                       <linearGradient id="linear-gradient" x1="0.78" x2="0.081" y2="1" gradientUnits="objectBoundingBox">
                         <stop offset="0" stopColor="#4adede" />

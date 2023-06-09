@@ -5,13 +5,10 @@ import Cancellicon from "../../assets/images/x-lg.svg";
 import { FileUploadToDo } from "../../store/actions/Upload_action";
 import images from "../../assets/images/Imagesandphotos.svg";
 import { useDispatch, useSelector } from "react-redux";
-import line from "../../assets/images/Path 1810.svg";
 import { useTranslation } from "react-i18next";
 import rightdirection from "../../assets/images/Path 1691.svg";
 import searchicon from "../../assets/images/searchicon.svg";
 import audioIcon from "../../assets/images/audioICon.svg";
-import person from "../../assets/images/add_new.svg";
-import addone from "../../assets/images/addone.svg";
 import cross from "../../assets/images/Group 71.png";
 import download from "../../assets/images/Icon feather-download.svg";
 import del from "../../assets/images/Icon material-delete.svg";
@@ -55,7 +52,7 @@ import {
   Checkbox,
   UploadTextField,
 } from "../../components/elements";
-import { Row, Col, Dropdown } from "react-bootstrap";
+import { Row, Col, Dropdown, NavLink } from "react-bootstrap";
 import { useState } from "react";
 import ModalAddFolder from "./ModalAddFolder/ModalAddFolder";
 import ModalOptions from "./ModalUploadOptions/ModalOptions";
@@ -83,7 +80,13 @@ import CustomCheckbox from "../../components/elements/check_box/Checkbox";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import GridViewDataRoom from "./GridViewDataRoom/GridViewDataRoom";
 import { useNavigate } from "react-router-dom";
-import { Data } from "emoji-mart";
+import CrossIconDropdown from '../../assets/images/cross__sign_dropdown.svg'
+import CheckIconDropdown from '../../assets/images/check__sign_dropdown.svg'
+import ShowBeforeAfterDate from "./ShowSubMenuforBeforeAfterDate/ShowBeforeAfterDate";
+import DeleteNotificationBox from "./DeleteNotification/deleteNotification";
+import FileRemoveBox from "./FileRemoved/FileRemoveBox";
+import ShowRenameNotification from "./ShowRenameNotification/ShowRenameNotification";
+import ActionUndoNotification from "./ActionUndoNotification/ActionUndoNotification";
 const DataRoom = () => {
   // tooltip
   const [showbarupload, setShowbarupload] = useState(false);
@@ -92,6 +95,10 @@ const DataRoom = () => {
   const text = <span>Share</span>;
   const Deltooltip = <span>Delete</span>;
   const eventClickHandler = () => { };
+  const [optionsFileisShown, setOptionsFileisShown] = useState(false)
+  const [optionsFolderisShown, setOptionsFolderisShown] = useState(false)
+  const [optionsforFolder, setOptionsforFolder] = useState([{ label: "Share", value: 1, labelIcon: PDFICON }, { label: "Rename", value: 2, labelIcon: PDFICON }, { label: "View Details", value: 3, labelIcon: PDFICON }, { label: "Download", value: 4, labelIcon: PDFICON }, { label: "Remove", value: 5, labelIcon: PDFICON }])
+  const [optionsforFile, setOptionsforFile] = useState([{ label: "Open With", value: 1, labelIcon: PDFICON }, { label: "Share", value: 2, labelIcon: PDFICON }, { label: "Rename", value: 3, labelIcon: PDFICON }, { label: "View Details", value: 4, labelIcon: PDFICON }, { label: "Download", value: 5, labelIcon: PDFICON }, { label: "Remove", value: 6, labelIcon: PDFICON }])
   const { t } = useTranslation();
   const { uploadReducer, DataRoomReducer } = useSelector((state) => state);
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -111,7 +118,7 @@ const DataRoom = () => {
   const [sharehoverstyle, setSharehoverstyle] = useState(false);
   const [sharefoldermodal, setSharefoldermodal] = useState(false);
   const [mydocumentbtnactive, setMydocumentbtnactive] = useState(false);
-  const [alldocumentAcitve, setAllDocumentActive] = useState(false)
+  const [alldocumentAcitve, setAllDocumentActive] = useState(true)
   const [tasksAttachments, setTasksAttachments] = useState([]);
   const [deltehoverstyle, setDeltehoverstyle] = useState(false);
   const [sharedwithmebtn, setSharedwithmebtn] = useState(false);
@@ -131,38 +138,98 @@ const DataRoom = () => {
   const [filterVal, setFilterVal] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [threeDotOptions, setThreeDotOptions] = useState(0)
   const [folderID, setFolderID] = useState([]);
   const [rows, setRow] = useState([]);
   const [getAllData, setGetAllData] = useState([]);
   const [showsubmenu, setShowsubmenu] = useState(false);
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [isDocumentsId, setDocumentId] = useState(0)
   const [searchDocumentTypeValue, setSearchDocumentTypeValue] = useState(0);
-  const [searchDocumentType, setSearchDocumentType] = useState({
-    label: "",
-    value: 0
-  })
-  const [locationValue, setLocationValue] = useState({
-    label: "",
-    value: 0
-  })
-  console.log(searchDocumentType, locationValue, "searchDocumentTypeValuesearchDocumentTypeValuesearchDocumentTypeValue")
-  const [searchModalOptions, setSearchModalOptions] = useState({
-    Location: "",
-    DateModified: "",
-    ItemName: "",
-    OwnerType: "",
-    LocationValue: "",
-    OwnerTypeValue: "",
-    EnterMember: "",
-  });
-  console.log(showbarupload, "showbaruploadshowbaruploadshowbarupload")
+  const currentView = JSON.parse(localStorage.getItem("setTableView"))
+  console.log(currentView, "currentViewcurrentViewcurrentViewcurrentView")
+  const [searchResultBoxFields, setSearchResultBoxFields] = useState({
+    documentType: {
+      value: 0,
+      label: ""
+    },
+    lastModifedDate: {
+      value: 0,
+      label: ""
+    },
+    documetLocation: {
+      value: 0,
+      label: ""
+    },
+    itemname: "",
+    haswords: "",
+    owner: {
+      value: 0,
+      label: ""
+    },
+    specifiPeople: ""
 
+  })
+  const [searchResultsFields, setSearchResultFields] = useState({
+    lastModifiedDate: {
+      value: 0,
+      label: ""
+    },
+    DocumentType: {
+      label: "",
+      value: 0
+    },
+    documentLocation: {
+      value: 0,
+      label: ""
+    },
+    userPermission: {
+      value: 0,
+      label: ""
+    }
+  })
 
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
+  useEffect(() => {
+    try {
+      window.addEventListener("click", function (e) {
+        console.log("eeeeeeeee", e.target.className);
+        let clsname = e.target.className;
+        let arr = clsname.split("_");
+        let arrremoveminus = clsname.split("-");
+        console.log(arrremoveminus, "arrremoveminusarrremoveminus")
+        // select-dropdowns-height
+        console.log("click", arr[0]);
+        console.log("click", arr[1]);
+        console.log("click", arr[2]);
+        console.log("click", arr);
+        if (arr != undefined) {
+          if (searchbarshow === true) {
+            if (arr[1] != "Drop" && arr[2] != "Down" && arr[3] != "searchBar") {
+              setSearchbarshow(false)
+              console.log("click");
+            }
+          } else if (arr[2] === "dataRoomSearchInput") {
+            setSearchbarshow(true)
+            console.log("click");
+
+          }
+        } else {
+          if (searchbarshow === true) {
+            setSearchbarshow(false)
+          }
+        }
+      });
+    } catch {
+      console.log("error");
+    }
+    if (currentView !== null) {
+      console.log("click");
+
+      dispatch(getDocumentsAndFolderApi(navigate, currentView, t));
+    }
+  }, []);
   const showCustomerangetOptions = () => {
     setCustomerangemoreoptions(!customrangemoreoptions);
   };
@@ -170,9 +237,11 @@ const DataRoom = () => {
   const ClosingNotificationRenameFolder = () => {
     setShowrenamenotification(false);
   };
+
   const OpenRenameFolderModal = () => {
     setShowreanmemodal(true);
   };
+
   const OpenCancelDownloadModal = () => {
     setShowcanceldownload(true);
   };
@@ -203,6 +272,24 @@ const DataRoom = () => {
   const OptionsDocument = [
     {
       value: 1,
+      label: <>
+        <Row>
+          <Col
+            lg={12}
+            md={12}
+            sm={12}
+            className="d-flex align-items-center gap-2"
+          >
+            <img src={""} height="17px" width="17px" />
+            <span className={styles["Option_Document_button"]}>
+              {t("Any")}
+            </span>
+          </Col>
+        </Row>
+      </>,
+    },
+    {
+      value: 2,
       label: (
         <>
           <Row>
@@ -222,7 +309,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: 2,
+      value: 3,
       label: (
         <>
           <Row>
@@ -242,7 +329,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: 3,
+      value: 4,
       label: (
         <>
           <Row>
@@ -262,7 +349,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: 4,
+      value: 5,
       label: (
         <>
           <Row>
@@ -282,7 +369,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: 5,
+      value: 6,
       label: (
         <>
           <Row>
@@ -302,7 +389,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: 6,
+      value: 7,
       label: (
         <>
           <Row>
@@ -322,7 +409,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: 7,
+      value: 8,
       label: (
         <>
           <Row>
@@ -342,7 +429,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: 8,
+      value: 9,
       label: (
         <>
           <Row>
@@ -362,7 +449,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: 9,
+      value: 10,
       label: (
         <>
           <Row>
@@ -382,7 +469,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: 10,
+      value: 11,
       label: (
         <>
           <Row>
@@ -402,7 +489,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: 11,
+      value: 12,
       label: (
         <>
           <Row>
@@ -422,59 +509,60 @@ const DataRoom = () => {
       ),
     },
   ];
+
   const OptionsDocument2 = [
     {
-      value: 1,
+      value: 2,
       imgSrc: document,
       label: t("Document")
     },
     {
-      value: 2,
+      value: 3,
       imgSrc: spreadsheet,
       label: t("Spreadsheets")
     },
     {
-      value: 3,
+      value: 4,
       imgSrc: video,
       label: t("Presentaion")
     },
     {
-      value: 4,
+      value: 5,
       imgSrc: forms,
       label: t("Forms")
     },
     {
-      value: 5,
+      value: 6,
       imgSrc: images,
       label: t("Photos")
     },
     {
-      value: 6,
+      value: 7,
       imgSrc: pdf,
       label: t("PDFs")
     },
     {
-      value: 7,
+      value: 8,
       imgSrc: video,
       label: t("Videos")
     },
     {
-      value: 8,
+      value: 9,
       imgSrc: ShareIcon,
       label: t("Share")
     },
     {
-      value: 9,
+      value: 10,
       imgSrc: folderColor,
       label: t("Folder")
     },
     {
-      value: 10,
+      value: 11,
       imgSrc: sitesIcon,
       label: t("Sites")
     },
     {
-      value: 11,
+      value: 12,
       imgSrc: audioIcon,
       label: t("Audio")
     },
@@ -482,25 +570,29 @@ const DataRoom = () => {
   ];
 
   const optionsLocations = [
-    { value: 1, label: "Any Where in DataRoom" },
-    { value: 2, label: "My Documents" },
-    { value: 3, label: "Shared with me" },
+    { value: 1, label: t("Any-where-in-dataRoom") },
+    { value: 2, label: t("My-documents") },
+    { value: 3, label: t("Shared-with-me") },
   ];
 
   const OptionsOwner = [
-    { value: 1, label: "Owned by me" },
-    { value: 2, label: "Not Owned by me" },
-    { value: 3, label: "Specific person" },
+    { value: 1, label: t("Anyone") },
+    { value: 2, label: t("Owned-by-me") },
+    { value: 3, label: t("Not-owned-by-me") },
+    { value: 4, label: t("Specific-person") },
   ];
-  const optionsPeople = [{ value: 1, label: "Viewer" }];
+
+  const optionsPeople = [{ value: 1, label: t("Viewer") }];
+
   const optionsLastmodified = [
-    { value: 1, label: "Today" },
-    { value: 2, label: "Last 7 days" },
-    { value: 3, label: "Last 30 days" },
-    { value: 4, label: "This year (2023)" },
-    { value: 5, label: "Last year (2022)" },
+    { value: 1, label: t("Any-time") },
+    { value: 2, label: t("Today") },
+    { value: 3, label: t("Last-7-days") },
+    { value: 4, label: t("Last-30-days") },
+    { value: 5, label: t("This-year-(2023)") },
+    { value: 6, label: t("Last-year-(2022)") },
     {
-      value: 6,
+      value: 7,
       label: (
         <>
           <Row>
@@ -523,7 +615,7 @@ const DataRoom = () => {
       ),
     },
     {
-      value: 7,
+      value: 8,
       label: (
         <>
           <Button text={t("Clear")} className={styles["Clear_button"]} />
@@ -535,6 +627,7 @@ const DataRoom = () => {
   const showRequestingAccessModal = () => {
     setRequestingAccess(true);
   };
+
   const handleFilter = (e) => {
     if (e.target.value == "") {
       setData(rows);
@@ -548,11 +641,13 @@ const DataRoom = () => {
   };
 
   const SearchiconClickOptions = () => {
+    console.log("SearchiconClickOptions")
     setSearchbarsearchoptions(true);
     if (searchbarshow === true) {
       setSearchbarshow(false)
     }
   };
+  console.log("SearchiconClickOptions", searchbarsearchoptions)
 
   const showShareFolderModal = (id, name) => {
     setFolderId(id);
@@ -561,6 +656,7 @@ const DataRoom = () => {
     setSharehoverstyle(true);
     setDeltehoverstyle(false);
   };
+
   const showShareFileModal = (id, name) => {
     setFolderId(id);
     setFileName(name);
@@ -568,6 +664,7 @@ const DataRoom = () => {
     setSharehoverstyle(true);
     setDeltehoverstyle(false);
   };
+
   const handleGridView = () => {
     setGridbtnactive(true);
     setListviewactive(false);
@@ -577,16 +674,62 @@ const DataRoom = () => {
     setListviewactive(true);
     setGridbtnactive(false);
   };
+
   const SearchiconClickOptionsHide = () => {
+    console.log("SearchiconClickOptions")
+
     setSearchbarsearchoptions(false);
+    setSearchResultBoxFields({
+      documentType: {
+        value: 0,
+        label: ""
+      },
+      lastModifedDate: {
+        value: 0,
+        label: ""
+      },
+      documetLocation: {
+        value: 0,
+        label: ""
+      },
+      itemname: "",
+      haswords: "",
+      owner: {
+        value: 0,
+        label: ""
+      },
+      specifiPeople: ""
+    })
+    setSearchResultFields({
+      lastModifiedDate: {
+        value: 0,
+        label: ""
+      },
+      DocumentType: {
+        label: "",
+        value: 0
+      },
+      documentLocation: {
+        value: 0,
+        label: ""
+      },
+      userPermission: {
+        value: 0,
+        label: ""
+      }
+    })
   };
+
   const showSearchResultsOptions = () => {
-    // setSearchoptions(!searchoptions);
-    // setSearchbarshow(true)
+    console.log("SearchiconClickOptions")
+
     setSearchbarshow(false)
     setSearchbarsearchoptions(true)
   };
+
   const searchbardropdownShow = () => {
+    console.log("SearchiconClickOptions")
+
     setSearchbarshow(!searchbarshow);
     if (searchbarsearchoptions === true) {
       setSearchbarsearchoptions(false)
@@ -594,6 +737,7 @@ const DataRoom = () => {
   };
 
   const SharewithmeButonShow = async () => {
+    localStorage.setItem("setTableView", 2)
     await dispatch(getDocumentsAndFolderApi(navigate, 2, t));
     setSharemebtn(true);
     setSharedwithmebtn(true);
@@ -603,6 +747,7 @@ const DataRoom = () => {
   };
 
   const MydocumentButtonShow = async () => {
+    localStorage.setItem("setTableView", 1)
     await dispatch(getDocumentsAndFolderApi(navigate, 1, t));
     localStorage.removeItem("folderID");
     setAllDocumentActive(false)
@@ -612,6 +757,7 @@ const DataRoom = () => {
   };
 
   const AllDocuments = async () => {
+    localStorage.setItem("setTableView", 3)
     await dispatch(getDocumentsAndFolderApi(navigate, 3, t));
     localStorage.removeItem("folderID");
     setSharemebtn(false);
@@ -619,9 +765,11 @@ const DataRoom = () => {
     setMydocumentbtnactive(false);
     setSharedwithmebtn(false);
   }
+
   const showCancellUploadModal = () => {
     setCanceluploadmodal(true);
   };
+
   const showUploadOptionsModal = () => {
     setUploadOptionsmodal(!uploadOptionsmodal);
   };
@@ -680,28 +828,13 @@ const DataRoom = () => {
     } else {
       setFolderID([...folderID, id]);
     }
-    // if (folderID.includes(id)) {
-    //   let findFolderIDIndex = getAllData.findIndex((data, index) => data.id === id)
-    //   console.log(findFolderIDIndex, "findFolderIDIndexfindFolderIDIndexfindFolderIDIndex")
-    //   if (findFolderIDIndex !== -1) {
-    //     folderID.splice(findFolderIDIndex, 1)
-    //     setFolderID([...folderID])
-    //   } else {
-    //     console.log(findFolderIDIndex, "findFolderIDIndexfindFolderIDIndexfindFolderIDIndex")
-    //     folderID.push(id)
-    //     setFolderID([...folderID])
-    //   }
-
-    // } else {
-    //   setFolderID([...folderID, id])
-    // }
   };
   const MyDocumentsColumns = [
     {
       title: t("Name"),
       dataIndex: "name",
       key: "name",
-      width: "250px",
+      width: "150px",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
         console.log(data, "21212");
@@ -714,7 +847,7 @@ const DataRoom = () => {
                   onChange={() => foldersHandler(data.id, data)}
                 />
                 <span
-                  className="me-2"
+                  className={styles["dataroom_table_heading"]}
                   onClick={() => getFolderDocuments(data.id)}
                 >
                   {text} <img src={sharedIcon} />
@@ -724,7 +857,7 @@ const DataRoom = () => {
           } else {
             let findExt = text.split(".").pop();
             return (
-              <span className="d-flex align-items-center cursor-pointer gap-2">
+              <span className={styles["dataroom_table_heading"]}>
                 <FileIcon size={22} extension={findExt} />
                 {text} <img src={sharedIcon} />
               </span>
@@ -739,7 +872,7 @@ const DataRoom = () => {
                   onChange={() => foldersHandler(data.id, data)}
                 />
                 <span
-                  className="me-2"
+                  className={styles["dataroom_table_heading"]}
                   onClick={() => getFolderDocuments(data.id)}
                 >
                   {text}{" "}
@@ -749,7 +882,7 @@ const DataRoom = () => {
           } else {
             let findExt = text.split(".").pop();
             return (
-              <span className="d-flex align-items-center cursor-pointer gap-2">
+              <span className={styles["dataroom_table_heading"]}>
                 <FileIcon size={22} extension={findExt} />
                 {text}
               </span>
@@ -790,6 +923,9 @@ const DataRoom = () => {
       key: "location",
       width: "90px",
       sortDirections: ["descend", "ascend"],
+      render: (text, record) => {
+        return <span className={styles["Dataroom__mydocument_location"]}>{text}</span>
+      }
     },
     {
       dataIndex: "OtherStuff",
@@ -808,287 +944,120 @@ const DataRoom = () => {
                 className="d-flex justify-content-end gap-2"
               >
                 <>
-                  <img
-                    src={addone}
-                    height="10.71px"
-                    width="15.02px"
-                    className={styles["HoverStyle"]}
-                    onClick={() => {
-                      if (data.isFolder) {
-                        showShareFolderModal(data.id, data.name);
-                      } else {
-                        showShareFileModal(data.id, data.name);
-                      }
-                    }}
-                  />
-                </>
-
-                <img
-                  src={download}
-                  height="10.71px"
-                  width="15.02px"
-                  onClick={showRequestingAccessModal}
-                />
-
-                <>
-                  <Tooltip placement="topLeft" title={Deltooltip}>
-                    <img
-                      src={del}
-                      height="10.71px"
-                      width="15.02px"
-                      onClick={() => {
+                  <Tooltip placement="topRight" title={"Share"}>
+                    <span className={styles["share__Icon"]}>
+                      <svg className={styles["share__Icon_img"]} onClick={() => {
                         if (data.isFolder) {
-                          dispatch(deleteFolder(navigate, data.id, t));
+                          showShareFolderModal(data.id, data.name);
                         } else {
-                          dispatch(deleteFileDataroom(navigate, data.id, t));
+                          showShareFileModal(data.id, data.name);
                         }
-                      }}
-                    />
+                      }} xmlns="http://www.w3.org/2000/svg" width="16.022" height="11.71" viewBox="0 0 16.022 11.71">
+                        <path id="Icon_material-group-add" data-name="Icon material-group-add" d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z" transform="translate(0.5 -7)" fill="none" stroke="#5a5a5a" stroke-width="1" />
+                      </svg>
+                    </span>
                   </Tooltip>
                 </>
+                <Tooltip placement="topRight" title={"Download"}>
+                  <span className={styles["download__Icon"]} >
+                    <img
+                      src={download}
+                      height="10.71px"
+                      width="15.02px"
+                      className={styles["download__Icon_img"]}
+                      onClick={showRequestingAccessModal}
+                    />
+                  </span>
+                </Tooltip>
+                <>
+                  <Tooltip placement="topRight" title={Deltooltip}>
+                    <span className={styles["delete__Icon"]} >
+                      <img
+                        src={del}
+                        height="10.71px"
+                        width="15.02px"
+                        className={styles["delete__Icon_img"]}
+                        onClick={() => {
+                          if (data.isFolder) {
+                            dispatch(deleteFolder(navigate, data.id, t));
+                          } else {
+                            dispatch(deleteFileDataroom(navigate, data.id, t));
+                          }
+                        }}
+                      />
+                    </span>
+                  </Tooltip>
+                </>
+                <Tooltip placement="topRight" title={"Start"}>
+                  <span className={styles["start__Icon"]}>
+                    <img src={start} className={styles["start__Icon_img"]} height="10.71px" width="15.02px" />
+                  </span>
+                </Tooltip>
+                <span className={styles["threeDot__Icon"]}>
+                  <img src={dot} height="10.71px" className="cursor-pointer position-relative" width="15.02px" onClick={() => handleClickDropDown(data)} />
 
-                <img src={start} height="10.71px" width="15.02px" />
-
-                <img src={dot} height="10.71px" width="15.02px" />
+                  {optionsFolderisShown && threeDotOptions === data.id ?
+                    <Row className="position-absolute">
+                      <Col className={styles["FilterDropDown_TableView"]}>
+                        {optionsforFolder.map((navlink, index) => {
+                          {
+                            if (threeDotOptions === data.id) {
+                              return <NavLink key={index} onClick={() => setOptionsFolderisShown(false)} className={styles["NavLink__filter"]} >{navlink.label}</NavLink>
+                            }
+                          }
+                        })
+                        }
+                      </Col>
+                    </Row> :
+                    optionsFileisShown && threeDotOptions === data.id ?
+                      <Row className="position-absolute">
+                        <Col className={styles["FilterDropDown_TableView"]}>
+                          {optionsforFile.map((navlink, index) => {
+                            if (threeDotOptions === data.id) {
+                              return <NavLink key={index} className={styles["NavLink__filter"]} onClick={() => setOptionsFileisShown(false)} >{navlink.label}</NavLink>
+                            }
+                          })}
+                        </Col>
+                      </Row> : null}
+                </span>
               </Col>
-            </Row>
+            </Row >
           </>
         );
       },
     },
   ];
-
-  const shareWithmeColoumns = [
-    {
-      title: t("Name"),
-      dataIndex: "Name",
-      key: "Name",
-      width: "250px",
-      sortDirections: ["descend", "ascend"],
-    },
-    {
-      title: t("Shared_by"),
-      dataIndex: "Sharedby",
-      key: "Sharedby",
-      width: "90px",
-      sortDirections: ["descend", "ascend"],
-    },
-    {
-      title: t("Share_date"),
-      dataIndex: "Sharedate",
-      key: "Sharedate",
-      width: "90px",
-      sortDirections: ["descend", "ascend"],
-      filters: [
-        {
-          text: t("Shared_date"),
-          value: "Shared date",
-          className: currentLanguage,
-        },
-        {
-          text: t("Last_modified"),
-          value: "Last modified",
-        },
-        {
-          text: t("Last_modified_by_me"),
-          value: "Last modified by me",
-        },
-        {
-          text: t("Last_open_by_me"),
-          value: "Last open by me",
-        },
-      ],
-      filterIcon: (filtered) => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
-      ),
-    },
-    {
-      title: t("File-size"),
-      dataIndex: "Filesize",
-      key: "Filesize",
-      width: "90px",
-      sortDirections: ["descend", "ascend"],
-    },
-
-    {
-      dataIndex: "OtherStuff",
-      key: "OtherStuff",
-      width: "180px",
-      sortDirections: ["descend", "ascend"],
-    },
-  ];
-
-  const SharedwithmeTableData = [
-    {
-      key: "1",
-      Name: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex gap-2 align-items-center"
-            >
-              <Checkbox />
-              <span className={styles["Folder_style"]}>Folder</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Sharedby: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-start gap-1"
-            >
-              <img
-                src={profile}
-                height="22"
-                width="22"
-                className={styles["profile_picture"]}
-              />
-              <span className={styles["Name_particiapnt"]}>Saad Fudda</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Sharedate: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Lastmodified_date"]}>
-                22nd December,2022
-              </span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Filesize: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex ">
-              <span className={styles["File_size_Style"]}>1 MB</span>
-            </Col>
-          </Row>
-        </>
-      ),
-
-      OtherStuff: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-end gap-2"
-            >
-              <img
-                src={dot}
-                height="10.71px"
-                width="15.02px"
-                onClick={OpenthreeDotDropdown}
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      key: "2",
-      Name: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex gap-2 align-items-center"
-            >
-              <img src={PDFICON} height="18px" width="18px" />
-              <span className={styles["name_of_life"]}>DairaLogo.pdf</span>
-              <img src={person} width="13.44px" height="10.71px" />
-            </Col>
-          </Row>
-        </>
-      ),
-      Sharedby: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-start gap-1"
-            >
-              <img
-                src={profile}
-                height="22"
-                width="22"
-                className={styles["profile_picture"]}
-              />
-              <span className={styles["Name_particiapnt"]}>Saad Fudda</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Sharedate: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Lastmodified_date"]}>
-                22nd December,2022
-              </span>
-            </Col>
-          </Row>
-        </>
-      ),
-      Filesize: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex ">
-              <span className={styles["File_size_Style"]}>1 MB</span>
-            </Col>
-          </Row>
-        </>
-      ),
-
-      OtherStuff: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-end gap-2"
-            >
-              <img
-                src={dot}
-                height="10.71px"
-                width="15.02px"
-                onClick={OpenCancelDownloadModal}
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-  ];
-
+  const handleClickDropDown = (rowData) => {
+    setThreeDotOptions(rowData.id)
+    if (rowData.isFolder === true) {
+      setOptionsFolderisShown(true)
+      setOptionsFileisShown(false)
+    } else {
+      setOptionsFileisShown(true)
+      setOptionsFolderisShown(false)
+    }
+    console.log(rowData, "handleClickDropDownhandleClickDropDownhandleClickDropDown")
+  }
   const [isOpen, setIsOpen] = useState(false);
 
   const handleChange = (Selectoptions) => {
+
     console.log("selectoptionsselectoptionsselectoptions", Selectoptions);
-    if (Selectoptions.value === "Custom Range") {
-      setShowsubmenu(!showsubmenu);
+    if (Selectoptions.value === 7) {
+      setShowsubmenu(true);
     } else {
       setIsOpen(false);
       setShowsubmenu(false);
+      setSearchResultFields({
+        ...searchResultsFields,
+        lastModifiedDate: {
+          label: Selectoptions.label,
+          value: Selectoptions.value
+        }
+      })
     }
   };
+
   const handleUploadFile = ({ file }) => {
     dispatch(
       FileisExist(
@@ -1104,6 +1073,7 @@ const DataRoom = () => {
       )
     );
   };
+
   const handleUploadFolder = ({ file }) => {
     dispatch(
       FileisExist(
@@ -1119,92 +1089,175 @@ const DataRoom = () => {
       )
     );
   };
-  const handleOpen = () => {
-    console.log("handleOpen", isOpen);
-    setIsOpen(true);
-  };
-  const onSelectChange = (selectedRowKeys, selectedRows) => {
-    setSelectedRows(selectedRows);
-  };
-  console.log(selectedRows, "selectedRowsselectedRowsselectedRows")
-  const rowSelection = {
-    selectedRows,
-    onChange: onSelectChange,
-    onSelect: (e) => {
-      console.log(e, "selectedRowsselectedRowsselectedRows")
-    }
-
-  }
 
   const handleChangeLocationValue = (event) => {
     console.log(event, "handleChangeLocationValue")
-    setLocationValue({
-      label: event.label,
-      value: event.value
+    setSearchResultBoxFields({
+      ...searchResultBoxFields,
+      documetLocation: {
+        label: event.label,
+        value: event.value
+      }
     })
+
   }
   const handleChangeOptionsLocation = (event) => {
     console.log(event, "handleChangeLocationValue")
-    setLocationValue({
-      label: event.label,
-      value: event.value
+    setSearchResultFields({
+      ...searchResultsFields,
+      documentLocation: {
+        label: event.label,
+        value: event.value
+      }
     })
   }
+  // Search Box Owner handle Change Function
+  const handleChangeStatus = (event) => {
+    console.log(event)
+    setSearchResultBoxFields({
+      ...searchResultBoxFields,
+      owner: {
+        label: event.label,
+        value: event.value
+      }
+    })
+  }
+
+  // handle Change input fields in search box
+  const handleChangeInputFieldinSearchBox = (event) => {
+    let { name, value } = event.target;
+    console.log(name, value, "handleChangeInputFieldinSearchBoxhandleChangeInputFieldinSearchBox")
+    if (name === "SpecificNameorEmail") {
+      setSearchResultBoxFields({
+        ...searchResultBoxFields,
+        specifiPeople: value
+      })
+    } else if (name === "Haswordsinfile") {
+      setSearchResultBoxFields({
+        ...searchResultBoxFields,
+        haswords: value
+      })
+    } else if (name === "Enterfilename") {
+      setSearchResultBoxFields({
+        ...searchResultBoxFields,
+        itemname: value
+      })
+    }
+  }
+
   const handleChangeDocuments = (documentID) => {
     setSearchDocumentTypeValue(documentID)
     setSearchoptions(true)
     OptionsDocument.map((data, index) => {
       if (data.value === documentID) {
-        setSearchDocumentType({
-          label: data.label,
-          value: data.value
+        setSearchResultFields({
+          ...searchResultsFields,
+          DocumentType: {
+            value: data.value,
+            label: data.label
+          }
         })
+      }
+    })
+    setSearchbarshow(false)
+  }
+
+  // Search Box Document Type handle Change Function
+  const handleChangeDocumentsOptions = (event) => {
+    setSearchResultBoxFields({
+      ...searchResultBoxFields,
+      documentType: {
+        label: event.label,
+        value: event.value
       }
     })
   }
 
-  const handleChangeDocumentsOptions = (event) => {
-    setSearchDocumentType({
-      label: event.label,
-      value: event.value
+  // Search Box Last modified Date handle Change Function
+  const handleChangeLastModifedDate = (event) => {
+    console.log(event, "handleChangeLastModifedDatehandleChangeLastModifedDate")
+    setSearchResultBoxFields({
+      ...searchResultBoxFields,
+      lastModifedDate: {
+        label: event.label,
+        value: event.value
+      }
     })
   }
 
-  const handleChangeLastModifedDate = (event) => {
-    console.log(event, "handleChangeLastModifedDatehandleChangeLastModifedDate")
-  }
+  // Handle Search Button in Search Box Function
   const handleSearch = () => {
+    console.log("SearchiconClickOptions")
+
     setSearchbarsearchoptions(false)
     setSearchoptions(true)
-  }
-  const handleClearAllSearchOptions = () => {
-    setSearchoptions(false)
+    console.log(searchResultBoxFields, "searchResultBoxFieldssearchResultBoxFields")
+    setSearchResultFields({
+      ...searchResultsFields,
+      lastModifiedDate: {
+        value: searchResultBoxFields.lastModifedDate.value,
+        label: searchResultBoxFields.lastModifedDate.label
+      },
+      documentLocation: {
+        value: searchResultBoxFields.documetLocation.value,
+        label: searchResultBoxFields.documetLocation.label
+      },
+      DocumentType: {
+        value: searchResultBoxFields.documentType.value,
+        label: searchResultBoxFields.documentType.label
+      },
+      userPermission: {
+        label: searchResultBoxFields.owner.label,
+        value: searchResultBoxFields.owner.value
+      }
+    })
   }
 
-  useEffect(() => {
-    console.log("click");
-    // try {
-    //   window.addEventListener("click", function (e) {
-    //     console.log("eeeeeeeee", e.target.className);
-    //     let clsname = e.target.className;
-    //     let arr = clsname.split("_");
-    //     console.log("click", arr[1]);
-    //     if (arr != undefined) {
-    //       if (arr[1] === "Drop" && searchbarsearchoptions === true) {
-    //         console.log("click", clsname);
-    //       } else if (arr[1] === "Data" && searchbarsearchoptions === true) {
-    //         setSearchbarsearchoptions(false);
-    //         setSearchbarshow(false);
-    //       }
-    //     } else {
-    //       setSearchbarsearchoptions(false);
-    //       setSearchbarshow(false);
-    //     }
-    //   });
-    // } catch {
-    //   console.log("error");
-    // }
-  }, []);
+  const handleClearAllSearchOptions = () => {
+    setSearchResultFields({
+      ...searchResultsFields,
+      lastModifiedDate: {
+        value: searchResultBoxFields.lastModifedDate.value,
+        label: searchResultBoxFields.lastModifedDate.label
+      },
+      documentLocation: {
+        value: searchResultBoxFields.documetLocation.value,
+        label: searchResultBoxFields.documetLocation.label
+      },
+      DocumentType: {
+        value: searchResultBoxFields.documentType.value,
+        label: searchResultBoxFields.documentType.label
+      },
+      userPermission: {
+        label: searchResultBoxFields.owner.label,
+        value: searchResultBoxFields.owner.value
+      }
+    })
+  }
+
+  // Handle Change User Permission in Search Result Row
+  const handleChangeUserPermission = (event) => {
+    setSearchResultFields({
+      ...searchResultsFields,
+      userPermission: {
+        label: event.label,
+        value: event.value
+      }
+    })
+  }
+  // Search Box Document Type handle Change Function
+  const handleChangeDocumentsinSearchResult = (event) => {
+    setSearchResultFields({
+      ...searchResultsFields,
+      DocumentType: {
+        label: event.label,
+        value: event.value
+      }
+    })
+  }
+
+
+
   useEffect(() => {
     if (
       DataRoomReducer.ResponseMessage !== "" &&
@@ -1239,251 +1292,16 @@ const DataRoom = () => {
     }
   }, [DataRoomReducer.getAllDocumentandShareFolderResponse]);
 
-  useEffect(() => {
-    dispatch(getDocumentsAndFolderApi(navigate, 3, t));
-  }, []);
+
 
   return (
     <>
       <section className={styles["DataRoom_container"]}>
-        {showsubmenu ? (
-          <>
-            <Row>
-              <Col className={styles["Drop_down_Documents"]}>
-                <Row className="mt-3">
-                  <Col lg={12} md={12} sm={12}>
-                    <Select placeholder={t("After")} />
-                  </Col>
-                </Row>
-
-                <Row className="mt-3">
-                  <Col lg={12} md={12} sm={12}>
-                    <Select placeholder={t("Before")} />
-                  </Col>
-                </Row>
-
-                <Row className="mt-5">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Line_down"]}
-                      >
-                        <img src={line} width="151px" />
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-                <Row className="mt-4">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center gap-2"
-                  >
-                    <Button
-                      text={t("Cancel")}
-                      className={styles["cancell_button_expandDropdown"]}
-                    />
-                    <Button
-                      text={t("Apply")}
-                      className={styles["Apply_button_expandDropdown"]}
-                    />
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </>
-        ) : null}
-
-        {deletenotification ? (
-          <>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className={styles["Delete_notification_bar"]}
-              >
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center mt-2"
-                  >
-                    <span className={styles["Folder_removed_heading"]}>
-                      {t("Folder-removed")}
-                    </span>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </>
-        ) : null}
-        {fileremoved ? (
-          <>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className={styles["Delete_notification_bar"]}
-              >
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center mt-2"
-                  >
-                    <span className={styles["Folder_removed_heading"]}>
-                      {t("File-removed")}
-                    </span>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </>
-        ) : null}
-        {optionsthreedoticon ? (
-          <>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className={styles["Drop_Down_container"]}
-              >
-                <Row className="mt-3">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex gap-4 align-items-center "
-                  >
-                    <span className={styles["Options_name_threedotdropdown"]}>
-                      {t("Open-with")}
-                    </span>
-                    <img src={rightIcon} width={12} />
-                  </Col>
-                  <hr className={styles["hr-Line_tag"]} />
-                </Row>
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <span className={styles["Options_name_threedotdropdown"]}>
-                      {t("Share")}
-                    </span>
-                  </Col>
-                  <hr className={styles["hr-Line_tag"]} />
-                </Row>
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <span className={styles["Options_name_threedotdropdown"]}>
-                      {t("Download")}
-                    </span>
-                  </Col>
-                  <hr className={styles["hr-Line_tag"]} />
-                </Row>
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <span className={styles["Options_name_threedotdropdown"]}>
-                      {t("View-detail")}
-                    </span>
-                  </Col>
-                  <hr className={styles["hr-Line_tag"]} />
-                </Row>
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <span
-                      className={styles["Options_name_threedotdropdown"]}
-                      onClick={OpenRenameFolderModal}
-                    >
-                      {t("Rename")}
-                    </span>
-                  </Col>
-                  <hr className={styles["hr-Line_tag"]} />
-                </Row>
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <span className={styles["Options_name_threedotdropdown"]}>
-                      {t("Remove")}
-                    </span>
-                  </Col>
-                  <hr className={styles["hr-Line_tag"]} />
-                </Row>
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <span className={styles["Options_name_threedotdropdown"]}>
-                      {t("Analytics")}
-                    </span>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </>
-        ) : null}
-        {showrenamenotification ? (
-          <>
-            <Row>
-              <Col
-                lf={12}
-                md={12}
-                sm={12}
-                className={styles["backgeound_Rename_notification"]}
-              >
-                <Row className="mt-2">
-                  <Col lg={9} md={9} sm={9}>
-                    <span className={styles["Tag_line_rename_notfication"]}>
-                      "Folder 1 renamed to "Folder renamed"
-                    </span>
-                  </Col>
-                  <Col lg={2} md={2} sm={2}>
-                    <span className={styles["Tag_line_rename_notfication"]}>
-                      UNDO
-                    </span>
-                  </Col>
-                  <Col lg={1} md={1} sm={1}>
-                    <img
-                      src={cross}
-                      height="15px"
-                      width="15px"
-                      onClick={ClosingNotificationRenameFolder}
-                    />
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </>
-        ) : null}
-        {/* not called yet */}
-        {actionundonenotification ? (
-          <>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className={styles["background_action_unDone"]}
-              >
-                <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <span className={styles["Action_undone_notification"]}>
-                      {t("Action-undone")}
-                    </span>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          </>
-        ) : null}
+        {showsubmenu && <ShowBeforeAfterDate />}
+        {deletenotification && <DeleteNotificationBox />}
+        {fileremoved && <FileRemoveBox />}
+        {showrenamenotification && <ShowRenameNotification ClosingNotificationRenameFolder={ClosingNotificationRenameFolder} />}
+        {actionundonenotification && <ActionUndoNotification />}
         <Row className="mt-3">
           <Col sm={12} md={12} lg={12}>
             <Row>
@@ -1598,7 +1416,7 @@ const DataRoom = () => {
                     applyClass={"dataRoomSearchInput"}
                     labelClass="d-none"
                     onClick={searchbardropdownShow}
-                    inputicon={<img src={searchicon} />}
+                    inputicon={<img src={searchicon} className="cursor-pointer" />}
                     clickIcon={SearchiconClickOptions}
                     iconClassName={styles["dataroom_searchinput"]}
                   />
@@ -1616,12 +1434,12 @@ const DataRoom = () => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className="d-flex justify-content-end"
+                              className="d-flex justify-content-end position-relative"
                             >
                               <Button
                                 className={styles["CrossButton"]}
                                 icon={
-                                  <img src={Cross} width="10.35px" height="10.01px" />
+                                  <img className="cursor-pointer" src={Cross} width="10.35px" height="10.01px" />
                                 }
                                 onClick={SearchiconClickOptionsHide}
                               />
@@ -1629,48 +1447,12 @@ const DataRoom = () => {
                           </Row>
                           <Row className="mt-1">
                             <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
+                              <Select
+                                options={OptionsDocument}
+                                placeholder={t("Documents")}
+                                isSearchable={false}
+                                onChange={handleChangeDocumentsOptions}
 
-                            </Col>
-                            <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
-                              <Select
-                                options={optionsLastmodified}
-                                placeholder={t("Date-modified")}
-                                onChange={handleChangeLastModifedDate}
-                                value={searchModalOptions.DateModified}
-                              />
-                            </Col>
-                          </Row>
-                          <Row className="mt-2">
-                            <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
-                              <Select
-                                options={optionsLocations}
-                                placeholder={t("Location")}
-                                onChange={handleChangeLocationValue}
-                                value={{
-                                  value: locationValue.value,
-                                  label: locationValue.label
-                                }}
-                              />
-                            </Col>
-                            <Col
-                              lg={6}
-                              md={6}
-                              sm={6}
-                              className=" Inputfield_for_data_room"
-                            >
-                              <TextField
-                                placeholder="Item name"
-                                labelClass="textFieldSearch d-none"
-                                value={searchModalOptions.ItemName}
-                              />
-                            </Col>
-                          </Row>
-                          <Row className="mt-3 Inputfield_for_data_room">
-                            <Col lg={12} md={12} sm={12}>
-                              <TextField
-                                placeholder="Enter a team the matches part of the file name"
-                                labelClass="textFieldSearch d-none"
-                                value={searchModalOptions.EnterMember}
                               />
                             </Col>
                           </Row>
@@ -1678,9 +1460,57 @@ const DataRoom = () => {
                             <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
                               <Select
                                 options={OptionsOwner}
-                                placeholder={t("Owner")}
-                                closeMenuOnSelect={false}
-                                value={searchModalOptions.OwnerTypeValue}
+                                placeholder={"Owner"}
+                                onChange={handleChangeStatus}
+                              />
+                            </Col>
+                            <Col lg={6} md={6} sm={6} className="select-dropdowns-height m-0 ">
+                              {searchResultBoxFields.owner.value === 4 && <TextField value={searchResultBoxFields.specifiPeople} labelClass="textFieldSearch d-none" change={handleChangeInputFieldinSearchBox} name="SpecificNameorEmail" placeholder={t("Enter-name-or-email-address")} />}
+                            </Col>
+                          </Row>
+                          <Row className="mt-2 d-flex align-items-center">
+
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className=" Inputfield_for_data_room"
+                            >
+                              <TextField
+                                placeholder={t("Has-the-words-found-inside-the-file")}
+                                labelClass="textFieldSearch d-none"
+                                name="Haswordsinfile"
+                                change={handleChangeInputFieldinSearchBox}
+                                value={searchResultBoxFields.haswords}
+
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-2 Inputfield_for_data_room">
+                            <Col lg={12} md={12} sm={12}>
+                              <TextField
+                                labelClass="textFieldSearch d-none"
+                                placeholder={t("Enter-a-team-the-matches-part-of-the-file-name")}
+                                value={searchResultBoxFields.itemname}
+                                name="Enterfilename"
+                                change={handleChangeInputFieldinSearchBox}
+                              />
+                            </Col>
+                          </Row>
+                          <Row className="mt-2">
+                            <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
+                              <Select
+                                options={optionsLocations}
+                                placeholder={t("Location-anywhere")}
+                                onChange={handleChangeLocationValue}
+
+                              />
+                            </Col>
+                            <Col lg={6} md={6} sm={6} className="select-dropdowns-height">
+                              <Select
+                                options={optionsLastmodified}
+                                placeholder={t("Date-modified")}
+                                onChange={handleChangeLastModifedDate}
                               />
                             </Col>
                           </Row>
@@ -1766,39 +1596,42 @@ const DataRoom = () => {
                 </div>
               </Col>
               <Col lg={1} md={1} sm={12} className="d-flex justify-content-center">
-                <Button
-                  icon={
-                    <img
-                      src={gridbtnactive ? Grid_Selected : Grid_Not_Selected}
-                      height="25.27px"
-                      width="25.27px"
-                      className={styles["grid_view_Icon"]}
-                    />
-                  }
-                  className={
-                    gridbtnactive
-                      ? `${styles["grid_view_btn_active"]}`
-                      : `${styles["grid_view_btn"]}`
-                  }
-                  onClick={handleGridView}
-                />
-                <Button
-                  icon={
-                    <img
-                      src={listviewactive ? List_Selected : List_Not_selected}
-                      height="25.27px"
-                      width="25.27px"
-                      className={styles["list_view_Icon"]}
-                    />
-                  }
-                  className={
-                    listviewactive
-                      ? `${styles["List_view_btn_active"]}`
-                      : `${styles["List_view_btn"]}`
-                  }
-                  onClick={handlelistview}
-                />
+                <span className={styles["lsit_grid_buttons"]}>
+                  <Button
+                    icon={
+                      <img
+                        src={gridbtnactive ? Grid_Selected : Grid_Not_Selected}
+                        height="25.27px"
+                        width="25.27px"
+                        className={styles["grid_view_Icon"]}
+                      />
+                    }
+                    className={
+                      gridbtnactive
+                        ? `${styles["grid_view_btn_active"]}`
+                        : `${styles["grid_view_btn"]}`
+                    }
+                    onClick={handleGridView}
+                  />
+                  <Button
+                    icon={
+                      <img
+                        src={listviewactive ? List_Selected : List_Not_selected}
+                        height="25.27px"
+                        width="25.27px"
+                        className={styles["list_view_Icon"]}
+                      />
+                    }
+                    className={
+                      listviewactive
+                        ? `${styles["List_view_btn_active"]}`
+                        : `${styles["List_view_btn"]}`
+                    }
+                    onClick={handlelistview}
+                  />
+                </span>
               </Col>
+
             </Row>
             <Row className="mt-4">
               <Col lg={12} md={12} sm={12}>
@@ -1808,7 +1641,7 @@ const DataRoom = () => {
                       <Button
                         text={t("All")}
                         className={
-                          alldocumentAcitve
+                          currentView === 3
                             ? `${styles["allDocuments_btn_active"]}`
                             : `${styles["allDocuments_btn"]}`
                         }
@@ -1818,7 +1651,7 @@ const DataRoom = () => {
                       <Button
                         text={t("My-document")}
                         className={
-                          mydocumentbtnactive
+                          currentView === 1
                             ? `${styles["myDocument_btn_active"]}`
                             : `${styles["myDocument_btn"]}`
                         }
@@ -1828,7 +1661,7 @@ const DataRoom = () => {
                       <Button
                         text={t("Shared-with-me")}
                         className={
-                          sharedwithmebtn
+                          currentView === 2
                             ? `${styles["Shared_with_me_btn_active"]}`
                             : `${styles["Shared_with_me_btn"]}`
                         }
@@ -1847,23 +1680,34 @@ const DataRoom = () => {
                         </Col>
                       </Row>
                       <Row className="mt-3">
-                        <Col lg={6} md={6} sm={6}>
+                        <Col lg={7} md={7} sm={12}>
                           <Row>
                             <Col
                               lg={3}
                               md={3}
-                              sm={3}
+                              sm={12}
                               className="select-dropdowns-height-DataRoom"
                             >
-                              <Select
+                              {searchResultsFields.DocumentType.value !== 0 ? <div className={styles["dropdown__Document_Value"]}><img width="12px" height="12px" src={CheckIconDropdown} /><p className={styles["overflow-text"]}>{searchResultsFields.DocumentType.label}</p><img width="12px" height="12px" src={CrossIconDropdown} className="cursor-pointer" onClick={() => {
+                                setSearchResultFields({
+                                  ...searchResultsFields,
+                                  DocumentType: {
+                                    label: "",
+                                    value: 0
+                                  }
+                                })
+                              }} /></div> : <Select
+                                classNamePrefix={"searchResult_Document"}
                                 options={OptionsDocument}
                                 placeholder={t("Documents")}
-                                onChange={handleChangeDocumentsOptions}
-                                value={{
-                                  value: searchDocumentType.value,
-                                  label: searchDocumentType.label
-                                }}
-                              />
+                                isSearchable={false}
+                                onChange={handleChangeDocumentsinSearchResult}
+                              // defaultValue={{
+                              //   value: searchResultsFields.DocumentType.value,
+                              //   label: searchResultsFields.DocumentType.label
+                              // }}
+                              />}
+
                             </Col>
                             <Col
                               lg={3}
@@ -1871,15 +1715,26 @@ const DataRoom = () => {
                               sm={3}
                               className="select-dropdowns-height-DataRoom"
                             >
-                              <Select
+                              {searchResultsFields.documentLocation.value !== 0 ? <div className={styles["dropdown__Document_Value"]}><img width="12px" height="12px" src={CheckIconDropdown} /><p className={styles["overflow-text"]}>{searchResultsFields.documentLocation.label}</p><img width="12px" height="12px" src={CrossIconDropdown} className="cursor-pointer" onClick={() => {
+                                setSearchResultFields({
+                                  ...searchResultsFields,
+                                  documentLocation: {
+                                    label: "",
+                                    value: 0
+                                  }
+                                })
+                              }} /></div> : <Select
+                                classNamePrefix={"searchResult_Document"}
                                 options={optionsLocations}
                                 placeholder={t("Location")}
+                                isSearchable={false}
                                 onChange={handleChangeOptionsLocation}
-                                value={{
-                                  value: locationValue.value,
-                                  label: locationValue.label
-                                }}
-                              />
+                              // value={{
+                              //   value: searchResultsFields.documentLocation.value,
+                              //   label: searchResultsFields.documentLocation.label
+                              // }}
+                              />}
+
                             </Col>
                             <Col
                               lg={3}
@@ -1887,10 +1742,26 @@ const DataRoom = () => {
                               sm={3}
                               className="select-dropdowns-height-DataRoom"
                             >
-                              <Select
-                                options={optionsPeople}
+                              {searchResultsFields.userPermission.value !== 0 ? <div className={styles["dropdown__Document_Value"]}><img width="12px" height="12px" src={CheckIconDropdown} /><p className={styles["overflow-text"]}>{searchResultsFields.userPermission.label}</p><img width="12px" height="12px" src={CrossIconDropdown} className="cursor-pointer" onClick={() => {
+                                setSearchResultFields({
+                                  ...searchResultsFields,
+                                  userPermission: {
+                                    label: "",
+                                    value: 0
+                                  }
+                                })
+                              }} /></div> : <Select
+                                options={OptionsOwner}
                                 placeholder={t("People")}
-                              />
+                                classNamePrefix={"searchResult_Document"}
+                                onChange={handleChangeUserPermission}
+                                isSearchable={false}
+                              // value={{
+                              //   label: searchResultsFields.userPermission.label,
+                              //   value: searchResultsFields.userPermission.value
+                              // }}
+                              />}
+
                             </Col>
                             <Col
                               lg={3}
@@ -1898,19 +1769,33 @@ const DataRoom = () => {
                               sm={3}
                               className="select-dropdowns-height-DataRoom"
                             >
-                              <Select
+                              {searchResultsFields.lastModifiedDate.value !== 0 ? <div className={styles["dropdown__Document_Value"]}><img width="12px" height="12px" src={CheckIconDropdown} /><p className={styles["overflow-text"]}> {searchResultsFields.lastModifiedDate.label}</p><img width="12px" height="12px" src={CrossIconDropdown} className="cursor-pointer" onClick={() => {
+                                setSearchResultFields({
+                                  ...searchResultsFields,
+                                  lastModifiedDate: {
+                                    label: "",
+                                    value: 0
+                                  }
+                                })
+                              }} /></div> : <Select
                                 options={optionsLastmodified}
+                                classNamePrefix={"searchResult_Document"}
+                                placeholder={<span className={styles["placeholder-text"]}>{t("Last-modified")}</span>}
                                 onChange={handleChange}
-                              // menuIsOpen={isOpen}
-                              // onMenuOpen={handleOpen}
-                              />
+                                isSearchable={false}
+                              // value={{
+                              //   value: searchResultsFields.lastModifiedDate.value,
+                              //   label: searchResultsFields.lastModifiedDate.label
+                              // }}
+                              />}
+
                             </Col>
                           </Row>
                         </Col>
                         <Col
-                          lg={1}
-                          md={1}
-                          sm={1}
+                          lg={5}
+                          md={5}
+                          sm={12}
                           className="d-flex justify-content-start align-items-center"
                         >
                           <span
@@ -1924,7 +1809,7 @@ const DataRoom = () => {
                       </Row>
                     </>
                   ) : null}
-                  {sharemebtn ? (
+                  {currentView === 2 ? (
                     <>
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
@@ -1944,7 +1829,7 @@ const DataRoom = () => {
                                 sortDirections={["descend", "ascend"]}
                                 column={MyDocumentsColumns}
                                 className={"Resolution"}
-                                size={"middle"}
+                                size={"small"}
                                 rows={getAllData}
                               />
                             </>
@@ -2179,6 +2064,7 @@ const DataRoom = () => {
                                         lg={12}
                                         md={12}
                                         sm={12}
+                                        key={index}
                                         className="d-flex gap-1 mt-2 flex-column"
                                       >
                                         <Space
@@ -2281,6 +2167,7 @@ const DataRoom = () => {
         />
       ) : null}
       {DataRoomReducer.Loading ? <Loader /> : null}
+      {/* <Loader /> */}
       <Notification open={open.open} message={open.message} setOpen={setOpen} />
     </>
   );

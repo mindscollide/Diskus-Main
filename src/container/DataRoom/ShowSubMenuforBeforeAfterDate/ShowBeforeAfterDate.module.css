@@ -1,0 +1,63 @@
+.Drop_down_Documents {
+    width: 191px !important;
+    height: 237px !important;
+    border: 1px solid #e1e1e1;
+    background: #fff;
+    position: absolute !important;
+    z-index: 1;
+    right: 39.2%;
+    top: 36.8%;
+}
+
+body[dir="rtl"] .Drop_down_Documents {
+    right: 49%;
+}
+
+.cancell_button_expandDropdown {
+    width: 68px !important;
+    height: 20px !important;
+    font-family: "MontserratSemiBold";
+    font-size: 8px !important;
+    color: #5a5a5a;
+    background: #fff;
+    border-radius: 4px;
+    border: 1px solid #e1e1e1;
+}
+
+.cancell_button_expandDropdown:hover,
+.cancell_button_expandDropdown:active,
+.cancell_button_expandDropdown:focus,
+.cancell_button_expandDropdown:focus-visible {
+    width: 68px !important;
+    height: 20px !important;
+    font-size: 8px !important;
+    color: #5a5a5a !important;
+    font-family: "MontserratSemiBold" !important;
+    background: #fff !important;
+    border-radius: 4px !important;
+    border: 1px solid #e1e1e1 !important;
+}
+
+.Apply_button_expandDropdown {
+    width: 64px !important;
+    height: 20px !important;
+    font-size: 8px !important;
+    background: #6172d6;
+    color: #fff;
+    border: none;
+    border-radius: 4px !important;
+}
+
+.Apply_button_expandDropdown:hover,
+.Apply_button_expandDropdown:active,
+.Apply_button_expandDropdown:focus,
+.Apply_button_expandDropdown:focus-visible {
+    width: 64px !important;
+    height: 20px !important;
+    font-size: 8px !important;
+    background: #6172d6;
+    font-family: "MontserratSemiBold" !important;
+    color: #fff;
+    border: none;
+    border-radius: 4px !important;
+}

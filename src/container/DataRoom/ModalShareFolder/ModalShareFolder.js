@@ -159,9 +159,11 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId, f
 
   const Notificationnaccessrequest = () => {
     console.log("hnbhaiclicktuhorahahy");
+    if (folderData.Folders.length > 0) {
+      setShowrequestsend(true);
+      dispatch(shareFoldersApi(navigate, folderData, t))
+    }
 
-    setShowrequestsend(true);
-    dispatch(shareFoldersApi(navigate, folderData, t))
   };
   const openAccessRequestModalClick = () => {
     setShowaccessrequest(true);
