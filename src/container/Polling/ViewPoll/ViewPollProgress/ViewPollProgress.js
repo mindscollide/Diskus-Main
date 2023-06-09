@@ -54,6 +54,24 @@ const ViewPollProgress = ({ showViewProgress, setShowViewProgress }) => {
       name: "Waseem",
     },
   ]);
+  const [checkboxesState, setCheckboxesState] = useState({
+    checkedYes: false,
+    checkedNO: false,
+  });
+
+  const HandleCheckBoxYes = () => {
+    setCheckboxesState({
+      ...checkboxesState,
+      checkedYes: !checkboxesState.checkedYes,
+    });
+  };
+
+  const HandleCheckBoxNo = () => {
+    setCheckboxesState({
+      ...checkboxesState,
+      checkedNO: !checkboxesState.checkedNO,
+    });
+  };
   const { t } = useTranslation();
   return (
     <Container>
@@ -133,7 +151,11 @@ const ViewPollProgress = ({ showViewProgress, setShowViewProgress }) => {
                   sm={12}
                   className={styles["CheckBox_ViewProgressPolls"]}
                 >
-                  <Checkbox classNameCheckBoxP="d-none" />
+                  <Checkbox
+                    checked={checkboxesState.checkedYes}
+                    onChange={HandleCheckBoxYes}
+                    classNameCheckBoxP="d-none"
+                  />
                 </Col>
                 <Col
                   lg={11}
@@ -155,7 +177,11 @@ const ViewPollProgress = ({ showViewProgress, setShowViewProgress }) => {
                   sm={12}
                   className={styles["CheckBox_ViewProgressPolls"]}
                 >
-                  <Checkbox classNameCheckBoxP="d-none" />
+                  <Checkbox
+                    checked={checkboxesState.checkedNO}
+                    onChange={HandleCheckBoxNo}
+                    classNameCheckBoxP="d-none"
+                  />
                 </Col>
                 <Col
                   lg={11}
@@ -257,6 +283,7 @@ const ViewPollProgress = ({ showViewProgress, setShowViewProgress }) => {
             </Row>
           </>
         }
+        size={"md"}
       />
     </Container>
   );

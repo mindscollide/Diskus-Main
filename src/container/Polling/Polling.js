@@ -13,10 +13,12 @@ import plusbutton from "../../assets/images/Group 119.svg";
 import ViewPoll from "./ViewPoll/ViewPoll";
 import ViewPollProgress from "./ViewPoll/ViewPollProgress/ViewPollProgress";
 import PollDetails from "./PollDetails/PollDetails";
+import Votepoll from "./VotePoll/Votepoll";
 const Polling = () => {
   const [isCreatePoll, setIsCreatePoll] = useState(false);
   const [isUpdatePoll, setIsUpdatePoll] = useState(false);
   const [viewprogress, setViewprogress] = useState(false);
+  const [isVotePoll, setisVotePoll] = useState(false);
   const [viewPollsDetails, setViewPollsDetails] = useState(false);
   const [isViewPoll, setIsViewPoll] = useState(false);
   const [pollsState, setPollsState] = useState({
@@ -34,6 +36,10 @@ const Polling = () => {
 
   const ShowPollsDetailsModal = () => {
     setViewPollsDetails(true);
+  };
+
+  const OpenVotePollModal = () => {
+    setisVotePoll(true);
   };
   const { t } = useTranslation();
   const PollTableColumns = [
@@ -158,7 +164,15 @@ const Polling = () => {
       vote: 4,
     },
     {
-      title: "test title",
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span onClick={OpenVotePollModal}>Votepoll</span>
+            </Col>
+          </Row>
+        </>
+      ),
       status: 2,
       dueDate: "2023-06-28",
       createBy: "Ali Raza",
@@ -452,6 +466,11 @@ const Polling = () => {
             showpollDetails={viewPollsDetails}
             setShowpollDetails={setViewPollsDetails}
           />
+        </>
+      ) : null}
+      {isVotePoll ? (
+        <>
+          <Votepoll showVotePoll={isVotePoll} setShowVotePoll={setisVotePoll} />
         </>
       ) : null}
     </>

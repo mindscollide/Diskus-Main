@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, Button, Checkbox } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import styles from "./PollDetails.module.css";
+import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { Col, Container, Row } from "react-bootstrap";
 import profile from "../../../assets/images/profile_polls.svg";
 import { Progress } from "antd";
@@ -71,10 +72,20 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
           <>
             <Container>
               <Row>
-                <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                <Col lg={11} md={11} sm={12} className="m-0 p-0">
                   <span className={styles["Poll_details_Heading"]}>
                     {t("Poll-Details")}
                   </span>
+                </Col>
+                <Col lg={1} md={1} sm={12}>
+                  <img
+                    src={BlackCrossIcon}
+                    width="16px"
+                    height="16px"
+                    onClick={() => {
+                      setShowpollDetails(false);
+                    }}
+                  />
                 </Col>
               </Row>
               <Row className="mt-2">
@@ -132,7 +143,7 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
                 </Col>
               </Row>
               <Row>
-                <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                <Col lg={12} md={12} sm={12} className="m-0 p-0 mt-2">
                   <span className={styles["Yes_voters"]}>Yes</span>
                 </Col>
               </Row>
@@ -165,7 +176,7 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-1">
+              <Row className="mt-2">
                 <Col lg={12} md={12} sm={12} className="m-0 p-0">
                   <span className={styles["Yes_voters"]}>No</span>
                 </Col>
@@ -222,6 +233,7 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
             </Row>
           </>
         }
+        size={"md"}
       />
     </Container>
   );
