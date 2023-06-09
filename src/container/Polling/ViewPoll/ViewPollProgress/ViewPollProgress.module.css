@@ -1,0 +1,166 @@
+.ModalHeader_View_poll_progress {
+  width: 100% !important;
+  margin: 0;
+  padding: 0;
+  border-radius: 8px !important;
+  height: auto;
+  margin-top: -5px !important;
+}
+
+.ModalRequestHeader_polling_View_modal_progress {
+  margin: 0 !important;
+  padding: 5px 12px !important;
+  width: 100%;
+}
+
+.BackGround_strip_viewmodal_progress {
+  background: #c2c2c2 !important ;
+  height: 40px !important;
+  width: 100% !important;
+}
+
+.BackGround_strip_viewmodal_progress {
+  background: #c2c2c2;
+  padding: 5px 5px !important;
+  margin: 0 !important;
+  border-top-right-radius: 6px !important;
+  border-top-left-radius: 6px !important;
+}
+
+.ViewPRogressDueDate {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a;
+}
+
+.Box_For_Title_toShow {
+  width: 100% !important;
+  height: auto !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.OverAll_padding {
+  margin: 0;
+  padding: 0;
+}
+
+.ViewTitleTOShowOnProgress {
+  width: 100%;
+  font-size: 12px !important;
+}
+
+.Box_For_Yes_ViewPoll {
+  width: 100% !important;
+  height: 39px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.YesAndNoOptions {
+  align-items: center !important;
+}
+
+.multiple_answers_allowed {
+  width: 100% !important;
+  margin-left: 0;
+}
+
+.Participants_Heading {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+}
+
+.Scroller_For_CreatePollModal2_View_poll {
+  height: 22vh !important;
+  overflow-x: hidden !important;
+  width: 100%;
+}
+
+.Scroller_For_CreatePollModal2_View_poll::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_For_CreatePollModal2_View_poll::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Card_border2 {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  margin-left: -23px;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+}
+
+.Name_cards {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold" !important;
+  margin-left: 5px !important;
+}
+
+.CheckBox_ViewProgressPolls {
+  margin: 0;
+  padding: 0;
+  margin-top: 8px !important;
+}
+
+.Progress_bar_view_polls {
+  margin: 0;
+  padding: 0;
+}
+
+.Close_Button_viewprogress {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Close_Button_viewprogress:hover,
+.Close_Button_viewprogress:active,
+.Close_Button_viewprogress:focus,
+.Close_Button_viewprogress:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.View_votes_btn {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5a5a5a !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+.View_votes_btn:hover,
+.View_votes_btn:active,
+.View_votes_btn:focus,
+.View_votes_btn:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5a5a5a !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+.View_poll_heading {
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a;
+}

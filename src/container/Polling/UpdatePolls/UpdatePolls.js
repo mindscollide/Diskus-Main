@@ -5,7 +5,7 @@ import {
   Modal,
   MultiDatePicker,
 } from "../../../components/elements";
-import styles from "./CreatePolling.module.css";
+import styles from "./UpdatePolls.module.css";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -21,12 +21,13 @@ import profile from "../../../assets/images/profile_polls.svg";
 import { useState } from "react";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 
-const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
+const UpdatePolls = ({ showUpdatepollModal, setShowUpdatepollModal }) => {
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const { t } = useTranslation();
   const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
+  const [assignees, setAssignees] = useState("");
   const [members, setMembers] = useState([
     {
       id: 1,
@@ -45,44 +46,22 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
       name: "Saif Rehman",
     },
     {
-      id: 22,
+      id: 5,
       name: "Saif Rehman",
     },
     {
-      id: 222,
-      name: "Saif Rehman",
+      id: 6,
+      name: "Saif test1",
     },
     {
-      id: 121,
-      name: "Saif Rehman",
+      id: 7,
+      name: "Saif test2",
     },
     {
-      id: 12121,
-      name: "Saif Rehman",
-    },
-    {
-      id: 222111,
-      name: "Saif Rehman",
+      id: 8,
+      name: "Saif test3",
     },
   ]);
-
-  const [createPollData, setcreatePollData] = useState({
-    TypingTitle: "",
-    InputSearch: "",
-    AllowMultipleAnswers: true,
-  });
-
-  const [assignees, setAssignees] = useState("");
-
-  const HandleSearch = (e) => {
-    if (e.target.value.trimStart() != "") {
-      setAssignees(e.target.value.trimStart());
-    } else {
-      setAssignees("");
-    }
-
-    console.log(assignees, "assigneesassignees");
-  };
 
   const [options, setOptions] = useState([
     {
@@ -98,38 +77,11 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
       value: "",
     },
   ]);
-  const HandleChange = (e, index) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    console.log(name, value, index, "checkvalue");
-    if (name === "TypingTitle") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (value !== "") {
-        setcreatePollData({
-          ...createPollData,
-          TypingTitle: valueCheck,
-        });
-      } else {
-        setcreatePollData({
-          ...createPollData,
-          TypingTitle: "",
-        });
-      }
-    }
-  };
-  const HandleOptionChange = (e) => {
-    let name = parseInt(e.target.name);
-    let newValue = e.target.value;
 
-    setOptions((prevState) =>
-      prevState.map((item) => {
-        console.log(item, "HandleOptionChange");
-        return item.name === name ? { ...item, value: newValue } : item;
-      })
-    );
-  };
-  console.log("HandleOptionChange", options);
-
+  const [UpdatePolls, setUpdatePolls] = useState({
+    TypingTitle: "",
+    AllowMultipleUser: false,
+  });
   const addNewRow = () => {
     if (options.length > 1) {
       let lastIndex = options.length - 1;
@@ -141,33 +93,77 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
     }
   };
 
+  const HandleSearchUpdatePolls = (e) => {
+    if (e.target.value.trimStart() != "") {
+      setAssignees(e.target.value.trimStart());
+    } else {
+      setAssignees("");
+    }
+
+    console.log(assignees, "assigneesassignees");
+  };
+
+  const HandleOptionChange = (e) => {
+    let name = parseInt(e.target.name);
+    let newValue = e.target.value;
+
+    setOptions((prevState) =>
+      prevState.map((item) => {
+        console.log(item, "HandleOptionChange");
+        return item.name === name ? { ...item, value: newValue } : item;
+      })
+    );
+  };
+
   const HandleCancelFunction = (index) => {
     options.splice(index, 1);
     setOptions([...options]);
   };
 
   const HandlecancellButton = () => {
-    // setShowPollingModal(false);
+    // setShowUpdatepollModal(false);
     setDefineUnsaveModal(true);
   };
 
-  const HandleCheck = () => {
-    setcreatePollData({
-      ...createPollData,
-      AllowMultipleAnswers: !createPollData.AllowMultipleAnswers,
+  const HandleChangeUpdatePolls = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "TypingTitle") {
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (value !== "") {
+        setUpdatePolls({
+          ...UpdatePolls,
+          TypingTitle: valueCheck,
+        });
+      } else {
+        setUpdatePolls({
+          ...UpdatePolls,
+          TypingTitle: "",
+        });
+      }
+    }
+  };
+
+  const HandleCheckBox = () => {
+    setUpdatePolls({
+      ...UpdatePolls,
+      AllowMultipleUser: !UpdatePolls.AllowMultipleUser,
     });
   };
+  console.log(options, "optionsFieldsoptionsFields");
   return (
     <>
       <Container>
         <Modal
-          show={showPollingModal}
-          setShow={setShowPollingModal}
-          modalTitleClassName={styles["ModalHeader_create_poll"]}
-          modalHeaderClassName={styles["ModalRequestHeader_polling"]}
+          show={showUpdatepollModal}
+          setShow={setShowUpdatepollModal}
+          modalTitleClassName={styles["ModalHeader_Update_poll"]}
+          modalHeaderClassName={
+            styles["ModalRequestHeader_polling_update_modal"]
+          }
           modalFooterClassName={"d-block"}
           onHide={() => {
-            setShowPollingModal(false);
+            setShowUpdatepollModal(false);
           }}
           ModalTitle={
             <>
@@ -193,19 +189,22 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                             height="14.66px"
                           />
                           <span className={styles["Due_Date_heading"]}>
-                            {t("Due-date")}
+                            {t("Due-date-on")}{" "}
+                            <span className={styles["Date_update_poll"]}>
+                              34 May 2023
+                            </span>
                           </span>
                           <MultiDatePicker
                             // onChange={meetingDateHandler}
                             name="MeetingDate"
                             check={true}
-                            // IconName={
-                            //   <img
-                            //     src={EditIcon}
-                            //     width="11.54px"
-                            //     height="11.11px"
-                            //   />
-                            // }
+                            IconName={
+                              <img
+                                src={EditIcon}
+                                width="11.54px"
+                                height="11.11px"
+                              />
+                            }
                             // value={meetingDate}
                             calendar={calendarValue}
                             locale={localValue}
@@ -244,8 +243,8 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                 <>
                   <Row className="d-flex">
                     <Col lg={11} md={11} sm={12}>
-                      <span className={styles["Create_Poll_Heading"]}>
-                        {t("Create-new-poll")}
+                      <span className={styles["Update_Poll_Heading"]}>
+                        {t("Update-poll")}
                       </span>
                     </Col>
 
@@ -253,12 +252,12 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                       <img
                         src={BlackCrossIcon}
                         className={
-                          styles["Cross_Icon_Styling_Create_Poll_Modal"]
+                          styles["Cross_Icon_Styling_Update_Poll_Modal"]
                         }
                         width="16px"
                         height="16px"
                         onClick={() => {
-                          setShowPollingModal(false);
+                          setShowUpdatepollModal(false);
                         }}
                       />
                     </Col>
@@ -268,7 +267,7 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["Scroller_For_CreatePollModal"]}
+                      className={styles["Scroller_For_UpdatePollModal"]}
                     >
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
@@ -277,63 +276,80 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                             applyClass={"PollingCreateModal"}
                             labelClass="d-none"
                             name={"TypingTitle"}
-                            value={createPollData.TypingTitle}
-                            change={HandleChange}
+                            value={UpdatePolls.TypingTitle}
+                            change={HandleChangeUpdatePolls}
                           />
                         </Col>
                       </Row>
+
                       {options.length > 0
                         ? options.map((data, index) => {
                             return (
                               <>
                                 {index <= 1 ? (
-                                  <Row className="mt-2">
-                                    <Col lg={12} md={12} sm={12}>
-                                      <span className="position-relative">
-                                        <TextField
-                                          placeholder={
-                                            "Option" + " " + parseInt(index + 1)
-                                          }
-                                          applyClass={"PollingCreateModal"}
-                                          labelClass="d-none"
-                                          name={data.name}
-                                          value={data.value}
-                                          change={(e) => HandleOptionChange(e)}
-                                        />
-                                      </span>
-                                    </Col>
-                                  </Row>
+                                  <>
+                                    <Row className="mt-2">
+                                      <Col lg={12} md={12} sm={12}>
+                                        <span className="position-relative">
+                                          <TextField
+                                            placeholder={
+                                              "Option" +
+                                              " " +
+                                              parseInt(index + 1)
+                                            }
+                                            applyClass={"PollingCreateModal"}
+                                            labelClass="d-none"
+                                            name={data.name}
+                                            value={data.value}
+                                            change={(e) =>
+                                              HandleOptionChange(e)
+                                            }
+                                          />
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </>
                                 ) : (
-                                  <Row className="mt-2">
-                                    <Col lg={12} md={12} sm={12}>
-                                      <span className="position-relative">
-                                        <TextField
-                                          placeholder={
-                                            "Option" + " " + parseInt(index + 1)
-                                          }
-                                          applyClass={"PollingCreateModal"}
-                                          labelClass="d-none"
-                                          name={data.name}
-                                          value={data.value}
-                                          change={(e) => HandleOptionChange(e)}
-                                          inputicon={
-                                            <img
-                                              src={BlackCrossIcon}
-                                              width="31.76px"
-                                              height="31.76px"
-                                              onClick={HandleCancelFunction}
-                                              className={
-                                                styles["Cross-icon-Create_poll"]
-                                              }
-                                            />
-                                          }
-                                          iconClassName={
-                                            styles["polling_Options_backGround"]
-                                          }
-                                        />
-                                      </span>
-                                    </Col>
-                                  </Row>
+                                  <>
+                                    <Row className="mt-2">
+                                      <Col lg={12} md={12} sm={12}>
+                                        <span className="position-relative">
+                                          <TextField
+                                            placeholder={
+                                              "Option" +
+                                              " " +
+                                              parseInt(index + 1)
+                                            }
+                                            applyClass={"PollingCreateModal"}
+                                            labelClass="d-none"
+                                            name={data.name}
+                                            value={data.value}
+                                            change={(e) =>
+                                              HandleOptionChange(e)
+                                            }
+                                            inputicon={
+                                              <img
+                                                src={BlackCrossIcon}
+                                                width="31.76px"
+                                                height="31.76px"
+                                                onClick={HandleCancelFunction}
+                                                className={
+                                                  styles[
+                                                    "Cross-icon-Create_poll"
+                                                  ]
+                                                }
+                                              />
+                                            }
+                                            iconClassName={
+                                              styles[
+                                                "polling_Options_backGround"
+                                              ]
+                                            }
+                                          />
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </>
                                 )}
                               </>
                             );
@@ -342,29 +358,29 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
 
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
-                          <Button
-                            text={
-                              <>
-                                <Row>
-                                  <Col
-                                    lg={12}
-                                    md={12}
-                                    sm={12}
-                                    className={styles["ClassAddButton"]}
-                                  >
-                                    <img
-                                      src={plusFaddes}
-                                      width="15.87px"
-                                      height="15.87px"
-                                    />
-                                    <span>{t("Add-another-field")}</span>
-                                  </Col>
-                                </Row>
-                              </>
-                            }
+                          <span
+                            className={styles["Add_Another_field"]}
                             onClick={addNewRow}
-                            className={styles["Add_another_options"]}
-                          />
+                          >
+                            <Row className="mt-2">
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex gap-1 align-items-center"
+                              >
+                                <img
+                                  src={plusFaddes}
+                                  height="15px"
+                                  width="15.87px"
+                                  className={styles["PlusFaddedClass"]}
+                                />
+                                <span className={styles["Add_another_field"]}>
+                                  {t("Add-another-field")}
+                                </span>
+                              </Col>
+                            </Row>
+                          </span>
                         </Col>
                       </Row>
                     </Col>
@@ -378,8 +394,8 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                       className="d-flex align-items-center gap-2"
                     >
                       <Checkbox
-                        checked={createPollData.AllowMultipleAnswers}
-                        onChange={HandleCheck}
+                        checked={UpdatePolls.AllowMultipleUser}
+                        onChange={HandleCheckBox}
                       />
                       <p className={styles["CheckBoxTitle"]}>
                         {t("Allow-multiple-answers")}
@@ -396,8 +412,8 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                       <InputSearchFilter
                         labelClass="d-none"
                         placeholder={t("Enter-name-or-email")}
-                        change={HandleSearch}
                         value={assignees}
+                        change={HandleSearchUpdatePolls}
                       />
                       <Button
                         text={t("ADD")}
@@ -410,7 +426,9 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["Scroller_For_CreatePollModal2"]}
+                      className={
+                        styles["Scroller_For_CreatePollModal2_Update_poll"]
+                      }
                     >
                       <Row>
                         {members.map((data, index) => {
@@ -485,16 +503,16 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                     >
                       <Button
                         text={t("Cancel")}
-                        className={styles["Cancell_btn_class"]}
+                        className={styles["Cancell_btn_class_Update_polls"]}
                         onClick={HandlecancellButton}
                       />
                       <Button
-                        text={t("Save")}
-                        className={styles["Save_btn_class"]}
+                        text={t("Update")}
+                        className={styles["Update_btn_class"]}
                       />
                       <Button
-                        text={t("Save-and-publish")}
-                        className={styles["Save_Publish_btn_class"]}
+                        text={t("Update-and-publish")}
+                        className={styles["Update_Publish_btn_class"]}
                       />
                     </Col>
                   </Row>
@@ -509,4 +527,4 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
   );
 };
 
-export default CreatePolling;
+export default UpdatePolls;

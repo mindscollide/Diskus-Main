@@ -1694,3 +1694,10 @@ input[placeholder="Search Chat"] {
   width: 100%;
   text-align: center;
 }
+
+.participant-warning {
+  font-family: 'MontserratMedium-500';
+  color: #F16B6B;
+  font-size: 12px;
+  margin-bottom: 10px !important;
+}

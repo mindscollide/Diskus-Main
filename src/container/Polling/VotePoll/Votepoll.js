@@ -1,0 +1,162 @@
+import React, { useState } from "react";
+import styles from "./Votepoll.module.css";
+import { Modal, Button, Checkbox } from "../../../components/elements";
+import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
+import { useSSR, useTranslation } from "react-i18next";
+import { Progress } from "antd";
+import { Col, Container, Row } from "react-bootstrap";
+const Votepoll = ({ showVotePoll, setShowVotePoll }) => {
+  const { t } = useTranslation();
+  const [votepollcheck, setVotepollcheck] = useState({
+    checkedYes: false,
+    checkedNo: false,
+  });
+
+  const HandleCheckNO = () => {
+    setVotepollcheck({
+      ...votepollcheck,
+      checkedNo: !votepollcheck.checkedNo,
+    });
+  };
+
+  const HandleCheckYes = () => {
+    setVotepollcheck({
+      ...votepollcheck,
+      checkedYes: !votepollcheck.checkedYes,
+    });
+  };
+  return (
+    <Container>
+      <Modal
+        show={showVotePoll}
+        setShow={setShowVotePoll}
+        onHide={() => {
+          setShowVotePoll(false);
+        }}
+        ModalBody={
+          <>
+            <Row className={styles["OverAll_padding"]}>
+              <Col lg={12} md={12} sm={12}>
+                <Row>
+                  <Col lg={11} md={11} sm={12} className="m-0 p-0">
+                    <span className={styles["Vote_poll_Heading"]}>
+                      {t("Vote-poll")}
+                    </span>
+                  </Col>
+                  <Col
+                    lg={1}
+                    md={1}
+                    sm={12}
+                    className="d-flex align-items-center"
+                  >
+                    <img
+                      src={BlackCrossIcon}
+                      className={styles["Vote_Poll_cross_ICon"]}
+                      height="16px"
+                      width="16px"
+                      onClick={() => {
+                        setShowVotePoll(false);
+                      }}
+                    />
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Col lg={12} md={12} sm={12} className={styles["Border_box"]}>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <span className={styles["ViewTitleTOShowOnProgress"]}>
+                          Did you receive the material In a sufficient time for
+                          you to prepare for the board meeting, Including agenda
+                        </span>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col
+                    lg={1}
+                    ms={1}
+                    sm={12}
+                    className={styles["CheckBox_ViewProgressPolls"]}
+                  >
+                    <Checkbox
+                      checked={votepollcheck.checkedYes}
+                      onChange={HandleCheckYes}
+                      classNameCheckBoxP="d-none"
+                    />
+                  </Col>
+                  <Col
+                    lg={11}
+                    md={11}
+                    sm={12}
+                    className={styles["Progress_bar_view_polls"]}
+                  >
+                    <Progress
+                      className="Progress_bar_Polls"
+                      percent={59}
+                      status="active"
+                    />
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Col
+                    lg={1}
+                    ms={1}
+                    sm={12}
+                    className={styles["CheckBox_ViewProgressPolls"]}
+                  >
+                    <Checkbox
+                      checked={votepollcheck.checkedNo}
+                      onChange={HandleCheckNO}
+                      classNameCheckBoxP="d-none"
+                    />
+                  </Col>
+                  <Col
+                    lg={11}
+                    md={11}
+                    sm={12}
+                    className={styles["Progress_bar_view_polls"]}
+                  >
+                    <Progress
+                      className="Progress_bar_Polls"
+                      percent={59}
+                      status="active"
+                    />
+                  </Col>
+                </Row>
+                <Row>
+                  <Col lg={1} md={1} sm={1}></Col>
+                  <Col
+                    lg={11}
+                    sm={11}
+                    md={12}
+                    className="d-flex justify-content-start m-0 p-0 mt-2"
+                  >
+                    <span>Mutiple Answer Allowed</span>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+          </>
+        }
+        ModalFooter={
+          <>
+            <Button
+              text={t("Close")}
+              className={styles["Close_Btn_votepoll"]}
+              onClick={() => {
+                setShowVotePoll(false);
+              }}
+            />
+            <Button
+              text={t("Submit")}
+              className={styles["Submit_btn_votepoll"]}
+            />
+          </>
+        }
+      />
+    </Container>
+  );
+};
+
+export default Votepoll;

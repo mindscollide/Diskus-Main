@@ -21,6 +21,7 @@ import {
   mqttUnstarMessage,
   mqttGroupCreated,
   mqttGroupUpdated,
+  mqttInsertBroadcastMessage,
   mqttUnreadMessageCount,
 } from '../../store/actions/Talk_action'
 import Paho from 'paho-mqtt'
@@ -583,6 +584,18 @@ const Dashboard = () => {
         // })
         dispatch(mqttUnreadMessageCount(data.payload))
         // setNotificationID(id)
+      } else if (
+        data.payload.message.toLowerCase() ===
+        'NEW_BROADCAST_MESSAGE'.toLowerCase()
+      ) {
+        console.log('NEW_BROADCAST_MESSAGE', data.payload.data)
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `You have sent a message in broadcast list ${data.payload.data[0].broadcastName}`,
+        })
+        dispatch(mqttInsertBroadcastMessage(data.payload))
+        setNotificationID(id)
       }
     }
   }

@@ -663,6 +663,18 @@ const leaveGroup = {
   RequestMethod: 'ServiceManager.RemoveUserFromGroup',
 }
 
+const createShoutAll = {
+  RequestMethod: 'ServiceManager.InsertBroadcast',
+}
+
+const deleteShoutAll = {
+  RequestMethod: 'ServiceManager.RemoveUserFromShout',
+}
+
+const updateShoutAll = {
+  RequestMethod: 'ServiceManager.UpdateBroadcast',
+}
+
 export {
   signuprequest,
   signinauthenication,
@@ -842,4 +854,7 @@ export {
   deleteFolderRequestMethod,
   updatePrivateGroup,
   leaveGroup,
+  createShoutAll,
+  deleteShoutAll,
+  updateShoutAll,
 }
