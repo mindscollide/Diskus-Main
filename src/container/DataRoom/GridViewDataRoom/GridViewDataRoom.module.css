@@ -42,6 +42,8 @@
     font-family: "MontserratSemiBold-600" !important;
     font-size: 16px !important;
     margin-bottom: 10px !important;
+    margin-left: 10px;
+    margin-top: 10px;
 }
 
 .fileview__Box {
@@ -61,10 +63,64 @@
     height: 0.5em;
     border-radius: 20px;
     background-color: #f2f2f2;
+
 }
 
 .folderContainer::-webkit-scrollbar-thumb {
     border-radius: 20px;
     background: #ccc;
     margin-left: -15px;
+}
+
+.Name_heading__gridView {
+    color: #6172D6 !important;
+    font-size: 16px !important;
+    font-family: "MontserratSemiBold-600" !important;
+    width: 100%;
+    position: relative !important;
+    margin-left: 10px;
+}
+
+.border_bottom__gridView {
+    height: 1px;
+    width: 100%;
+    display: block !important;
+    background-color: #e1e1e1 !important;
+}
+
+.three_dot__gridView {
+    cursor: pointer;
+}
+
+.FilterDropDown_GridView {
+    position: absolute;
+    padding: 5px 10px;
+    width: 170px !important;
+    height: auto !important;
+    border-radius: 4px;
+    border: 1px solid #e1e1e1;
+    z-index: 1;
+    background-color: #fff;
+    margin-left: 20px;
+    top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.NavLink__filter {
+    border-bottom: 1px solid #5A5A5A !important;
+    padding: 5px 0;
+    color: #5A5A5A;
+    font-family: "MontserratSemiBold-600" !important;
+}
+
+.NavLink__filter:is(:hover) {
+    border-bottom: 1px solid #5A5A5A !important;
+    padding: 5px 0;
+    color: #5A5A5A;
+    font-family: "MontserratSemiBold-600" !important;
+}
+
+.NavLink__filter:last-child {
+    border: none !important;
 }

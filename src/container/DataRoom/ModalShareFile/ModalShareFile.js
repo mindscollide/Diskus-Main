@@ -156,9 +156,13 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
 
   const Notificationnaccessrequest = () => {
     console.log("hnbhaiclicktuhorahahy");
+    if (fileData.Files.length > 0) {
+      dispatch(shareFilesApi(navigate, fileData, t))
+      setShowrequestsend(true);
 
-    setShowrequestsend(true);
-    dispatch(shareFilesApi(navigate, fileData, t))
+    } else {
+
+    }
   };
   const openAccessRequestModalClick = () => {
     setShowaccessrequest(true);
