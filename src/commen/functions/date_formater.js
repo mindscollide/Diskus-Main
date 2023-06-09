@@ -91,7 +91,7 @@ export const newTimeFormaterAsPerUTC = (dateTime) => {
   return moment(_dateTime).format('h:mm A')
 }
 export const newTimeFormaterAsPerUTCFullDate = (dateTime) => {
-  console.log('dateTimedateTimedateTime', dateTime)
+  // console.log('dateTimedateTimedateTime', dateTime)
   let fullDateyear =
     dateTime?.slice(0, 4) +
     '-' +
@@ -109,7 +109,7 @@ export const newTimeFormaterAsPerUTCFullDate = (dateTime) => {
   return moment(_dateTime).format('h:mm A, Do MMM, YYYY')
 }
 export const newTimeFormaterForResolutionAsPerUTCFullDate = (dateTime) => {
-  console.log('dateTimedateTimedateTime', dateTime)
+  // console.log('dateTimedateTimedateTime', dateTime)
   let fullDateyear =
     dateTime?.slice(0, 4) +
     '-' +
@@ -348,7 +348,7 @@ export const EditmeetingDateFormat = (dateTime) => {
 }
 
 export const newTimeFormaterAsPerUTCTalkTime = (dateTime) => {
-  console.log('dateTimedateTimedateTime', dateTime)
+  // console.log('dateTimedateTimedateTime', dateTime)
   let fullDateyear =
     dateTime?.slice(0, 4) +
     '-' +
@@ -367,7 +367,7 @@ export const newTimeFormaterAsPerUTCTalkTime = (dateTime) => {
 }
 
 export const newTimeFormaterAsPerUTCTalkDate = (dateTime) => {
-  console.log('dateTimedateTimedateTime', dateTime)
+  // console.log('dateTimedateTimedateTime', dateTime)
   let fullDateyear =
     dateTime?.slice(0, 4) +
     '-' +
@@ -386,7 +386,7 @@ export const newTimeFormaterAsPerUTCTalkDate = (dateTime) => {
 }
 
 export const newTimeFormaterAsPerUTCTalkDateTime = (dateTime) => {
-  console.log('dateTimedateTimedateTime', dateTime)
+  // console.log('dateTimedateTimedateTime', dateTime)
   let fullDateyear =
     dateTime?.slice(0, 4) +
     '-' +
