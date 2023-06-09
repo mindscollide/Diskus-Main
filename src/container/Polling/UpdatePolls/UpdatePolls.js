@@ -433,9 +433,9 @@ const UpdatePolls = ({ showUpdatepollModal, setShowUpdatepollModal }) => {
                       <Row>
                         {members.map((data, index) => {
                           return (
-                            <Col lg={5} md={5} sm={12} className="mt-2">
+                            <Col lg={6} md={6} sm={12} className="mt-2">
                               <Row>
-                                <Col lg={12} md={12} sm={12}>
+                                <Col lg={11} md={11} sm={12}>
                                   <Row className={styles["Card_border2"]}>
                                     <Col sm={12} md={10} lg={10}>
                                       <img

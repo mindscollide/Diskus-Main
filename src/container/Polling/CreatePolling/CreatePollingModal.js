@@ -44,6 +44,26 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
       id: 4,
       name: "Saif Rehman",
     },
+    {
+      id: 22,
+      name: "Saif Rehman",
+    },
+    {
+      id: 222,
+      name: "Saif Rehman",
+    },
+    {
+      id: 121,
+      name: "Saif Rehman",
+    },
+    {
+      id: 12121,
+      name: "Saif Rehman",
+    },
+    {
+      id: 222111,
+      name: "Saif Rehman",
+    },
   ]);
 
   const [createPollData, setcreatePollData] = useState({
@@ -395,9 +415,9 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                       <Row>
                         {members.map((data, index) => {
                           return (
-                            <Col lg={5} md={5} sm={12} className="mt-2">
+                            <Col lg={6} md={6} sm={12} className="mt-2">
                               <Row>
-                                <Col lg={12} md={12} sm={12}>
+                                <Col lg={11} md={11} sm={12}>
                                   <Row className={styles["Card_border2"]}>
                                     <Col sm={12} md={10} lg={10}>
                                       <img
