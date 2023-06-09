@@ -1,0 +1,85 @@
+.Vote_poll_Heading {
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Vote_Poll_cross_ICon {
+  cursor: pointer !important;
+  margin: 0;
+  padding: 0;
+}
+
+.ViewTitleTOShowOnProgress {
+  font-size: 12px !important;
+}
+
+.Border_box {
+  width: 100%;
+  height: auto !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.OverAll_padding {
+  margin: 0;
+  padding: 0;
+}
+
+.ViewTitleTOShowOnProgress {
+  width: 100%;
+  font-size: 12px !important;
+}
+
+.CheckBox_ViewProgressPolls {
+  margin: 0;
+  padding: 0;
+  margin-top: 8px !important;
+}
+
+.Progress_bar_view_polls {
+  margin: 0;
+  padding: 0;
+}
+
+.Close_Btn_votepoll {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.Close_Btn_votepoll:hover,
+.Close_Btn_votepoll:active,
+.Close_Btn_votepoll:focus,
+.Close_Btn_votepoll:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.Submit_btn_votepoll {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5a5a5a !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+.Submit_btn_votepoll:hover,
+.Submit_btn_votepoll:active,
+.Submit_btn_votepoll:focus,
+.Submit_btn_votepoll:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5a5a5a !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
