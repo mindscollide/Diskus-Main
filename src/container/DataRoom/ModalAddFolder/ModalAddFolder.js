@@ -71,7 +71,6 @@ const ModalAddFolder = ({ addfolder, setAddfolder }) => {
           setShow={setAddfolder}
           modalFooterClassName="d-block"
           centered
-          size={"md"}
           ModalBody={
             <>
               <Container>

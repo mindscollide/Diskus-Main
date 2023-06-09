@@ -1,13 +1,13 @@
-.Create_Poll_Heading {
+.Update_Poll_Heading {
   font-size: 20px !important;
   font-family: "MontserratSemiBold" !important;
 }
 
-body[dir="rtl"] .Create_Poll_Heading {
+body[dir="rtl"] .Update_Poll_Heading {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-.Cross_Icon_Styling_Create_Poll_Modal {
+.Cross_Icon_Styling_Update_Poll_Modal {
   cursor: pointer !important;
 }
 
@@ -17,7 +17,7 @@ body[dir="rtl"] .Create_Poll_Heading {
   width: 100% !important;
 }
 
-.ModalHeader_create_poll {
+.ModalHeader_Update_poll {
   width: 100% !important;
   margin: 0;
   padding: 0;
@@ -34,7 +34,7 @@ body[dir="rtl"] .Create_Poll_Heading {
   border-top-left-radius: 6px !important;
 }
 
-.ModalRequestHeader_polling {
+.ModalRequestHeader_polling_update_modal {
   margin: 0 !important;
   padding: 5px 12px !important;
   width: 100%;
@@ -57,35 +57,35 @@ body[dir="rtl"] .Due_Date_heading {
   display: inline-block;
 }
 
-.Scroller_For_CreatePollModal2 {
+.Scroller_For_CreatePollModal2_Update_poll {
   height: 14vh !important;
   overflow-x: hidden !important;
 }
 
-.Scroller_For_CreatePollModal2::-webkit-scrollbar {
+.Scroller_For_CreatePollModal2_Update_poll::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
   background-color: #f2f2f2;
 }
 
-.Scroller_For_CreatePollModal2::-webkit-scrollbar-thumb {
+.Scroller_For_CreatePollModal2_Update_poll::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
 }
 
-.Scroller_For_CreatePollModal {
+.Scroller_For_UpdatePollModal {
   height: 26vh !important;
   overflow-x: hidden !important;
 }
 
-.Scroller_For_CreatePollModal::-webkit-scrollbar {
+.Scroller_For_UpdatePollModal::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
   background-color: #f2f2f2;
 }
 
-.Scroller_For_CreatePollModal::-webkit-scrollbar-thumb {
+.Scroller_For_UpdatePollModal::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
@@ -121,7 +121,6 @@ body[dir="rtl"] .Add_another_field {
 .Cross-icon-Create_poll {
   padding: 5px 5px !important;
   margin-top: 4px !important;
-  cursor: pointer !important;
 }
 
 .PlusFaddedClass {
@@ -176,7 +175,7 @@ body[dir="rtl"] .Add_another_field {
   margin-left: 5px !important;
 }
 
-.Cancell_btn_class {
+.Cancell_btn_class_Update_polls {
   font-size: 12px !important;
   padding: 12px 30px !important;
   background: #fff;
@@ -185,10 +184,10 @@ body[dir="rtl"] .Add_another_field {
   border: 1px solid #e1e1e1;
 }
 
-.Cancell_btn_class:hover,
-.Cancell_btn_class:active,
-.Cancell_btn_class:focus,
-.Cancell_btn_class:focus-visible {
+.Cancell_btn_class_Update_polls:hover,
+.Cancell_btn_class_Update_polls:active,
+.Cancell_btn_class_Update_polls:focus,
+.Cancell_btn_class_Update_polls:focus-visible {
   font-size: 12px !important;
   padding: 12px 30px !important;
   background: #fff !important;
@@ -197,7 +196,7 @@ body[dir="rtl"] .Add_another_field {
   border: 1px solid #e1e1e1 !important;
 }
 
-.Save_btn_class {
+.Update_btn_class {
   font-size: 12px !important;
   padding: 12px 30px !important;
   background: #5a5a5a !important;
@@ -206,10 +205,10 @@ body[dir="rtl"] .Add_another_field {
   border: 1px solid #e1e1e1 !important;
 }
 
-.Save_btn_class:hover,
-.Save_btn_class:active,
-.Save_btn_class:focus,
-.Save_btn_class:focus-visible {
+.Update_btn_class:hover,
+.Update_btn_class:active,
+.Update_btn_class:focus,
+.Update_btn_class:focus-visible {
   font-size: 12px !important;
   padding: 12px 30px !important;
   background: #5a5a5a !important;
@@ -218,7 +217,7 @@ body[dir="rtl"] .Add_another_field {
   border: 1px solid #e1e1e1 !important;
 }
 
-.Save_Publish_btn_class {
+.Update_Publish_btn_class {
   font-size: 12px !important;
   padding: 12px 30px !important;
   background: #5a5a5a !important;
@@ -227,10 +226,10 @@ body[dir="rtl"] .Add_another_field {
   border: 1px solid #e1e1e1 !important;
 }
 
-.Save_Publish_btn_class:active,
-.Save_Publish_btn_class:hover,
-.Save_Publish_btn_class:focus,
-.Save_Publish_btn_class:focus-visible {
+.Update_Publish_btn_class:active,
+.Update_Publish_btn_class:hover,
+.Update_Publish_btn_class:focus,
+.Update_Publish_btn_class:focus-visible {
   font-size: 12px !important;
   padding: 12px 30px !important;
   background: #5a5a5a !important;
@@ -292,30 +291,8 @@ body[dir="rtl"] .Add_another_field {
   border: 1px solid #e1e1e1 !important;
 }
 
-.Add_another_options {
-  padding: 12px 30px !important;
-  background: #fff;
-  color: #d4d4d4 !important;
-  width: 100%;
+.Date_update_poll {
+  font-family: "MontserratSemiBold" !important;
   font-size: 12px !important;
-  border: 1px dashed #e1e1e1;
-}
-
-.Add_another_options:active,
-.Add_another_options:hover,
-.Add_another_options:focus,
-.Add_another_options:focus-visible {
-  padding: 12px 30px !important;
-  background: #fff !important;
-  color: #d4d4d4 !important;
-  width: 100% !important;
-  border: 1px dashed #e1e1e1 !important;
-  font-size: 12px !important;
-}
-
-.ClassAddButton {
-  height: 0 !important;
-  display: flex;
-  justify-content: start !important;
-  gap: 10px !important;
+  color: #5a5a5a;
 }

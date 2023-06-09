@@ -813,13 +813,13 @@ const Home = () => {
                 {toDoListReducer.TableSpinner === true ? (
                   <CustomTableToDoDashboard
                     loading={{
-                      spinning: toDoListReducer.TableSpinner,
+                      spinning: true,
                       indicator: <Spin />,
                     }}
                     column={columnsToDo}
                     className="dashboard-todo"
                     labelTitle={t('Todo-list')}
-                    scroll={{ y: 200 }}
+                    scroll={{ y: 600 }}
                     pagination={false}
                   />
                 ) : rowsToDo.length > 0 &&
@@ -1171,7 +1171,16 @@ const Home = () => {
                     }
                   >
                     {NotesReducer.Loading ? (
-                      <Spin />
+                      <Row>
+                        <Col
+                          sm={12}
+                          lg={12}
+                          md={12}
+                          className={'notes-spinner'}
+                        >
+                          <Spin />
+                        </Col>
+                      </Row>
                     ) : notes !== null &&
                       notes !== undefined &&
                       notes.length > 0 ? (
