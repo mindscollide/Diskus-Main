@@ -47,8 +47,8 @@ const getOrganizationLevelSetting = (navigate, t) => {
       .then(async (response) => {
         console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
-          dispatch(RefreshToken(navigate, t))
-          dispatch(getOrganizationLevelSetting(navigate, t))
+          dispatch(RefreshToken(navigate, t));
+          dispatch(getOrganizationLevelSetting(navigate, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             console.log(response, "responseresponseresponse");
@@ -84,24 +84,14 @@ const getOrganizationLevelSetting = (navigate, t) => {
               );
             }
           } else {
-            dispatch(
-              getOrganizationLevelSettingFail(
-                t("No-records-found")
-              )
-            );
+            dispatch(getOrganizationLevelSettingFail(t("No-records-found")));
           }
         } else {
-          dispatch(
-            getOrganizationLevelSettingFail(
-              t("No-records-found")
-            )
-          );
+          dispatch(getOrganizationLevelSettingFail(t("No-records-found")));
         }
       })
       .catch((response) => {
-        dispatch(
-          getOrganizationLevelSettingFail(t("No-records-found"))
-        );
+        dispatch(getOrganizationLevelSettingFail(t("No-records-found")));
       });
   };
 };
@@ -146,8 +136,8 @@ const updateOrganizationLevelSetting = (navigate, updateData, t) => {
       .then(async (response) => {
         console.log("responseresponseresponse", response);
         if (response.data.responseCode === 417) {
-          dispatch(RefreshToken(navigate, t))
-          dispatch(updateOrganizationLevelSetting(navigate, updateData, t))
+          dispatch(RefreshToken(navigate, t));
+          dispatch(updateOrganizationLevelSetting(navigate, updateData, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             console.log(response, "responseresponseresponse");
@@ -155,6 +145,7 @@ const updateOrganizationLevelSetting = (navigate, updateData, t) => {
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_UpdateOrganizationSettings_01"
             ) {
+              dispatch(getOrganizationLevelSetting(navigate, t));
               dispatch(
                 updateOrganizationLevelSettingSuccess(
                   t("Organization-configurations-updated-successfully")
@@ -166,7 +157,9 @@ const updateOrganizationLevelSetting = (navigate, updateData, t) => {
               "Settings_SettingsServiceManager_UpdateOrganizationSettings_02"
             ) {
               dispatch(
-                updateOrganizationLevelSettingSuccess(t("Organization-configurations-updates-not-successfully"))
+                updateOrganizationLevelSettingSuccess(
+                  t("Organization-configurations-updates-not-successfully")
+                )
               );
             } else if (
               response.data.responseResult.responseMessage ===
