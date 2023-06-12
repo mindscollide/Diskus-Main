@@ -67,12 +67,12 @@ const ScheduleNewResolution = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [minDate, setMinDate] = useState("")
-  console.log(minDate, "minDateminDateminDate")
+  const [minDate, setMinDate] = useState("");
+  console.log(minDate, "minDateminDateminDate");
   useEffect(() => {
     const min_date = new Date();
-    setMinDate(moment(min_date).format('YYYY-MM-DD'));
-  }, [])
+    setMinDate(moment(min_date).format("YYYY-MM-DD"));
+  }, []);
   const SlideLeft = () => {
     var Slider = document.getElementById("Slider");
     Slider.scrollLeft = Slider.scrollLeft - 300;
@@ -298,7 +298,7 @@ const ScheduleNewResolution = ({
           const assigneesName = item.name.toLowerCase();
           return (
             searchTerm &&
-            assigneesName.startsWith(searchTerm) &&
+            assigneesName.includes(searchTerm) &&
             assigneesName !== searchTerm
           );
         })
@@ -319,10 +319,12 @@ const ScheduleNewResolution = ({
 
   const deleteFilefromAttachments = (data, index) => {
     let fileSizefound = fileSize - data.fileSize;
-    let fileForSendingIndex = fileForSend.findIndex((newData, index) => newData.name === data.DisplayAttachmentName)
-    fileForSend.splice(fileForSendingIndex, 1)
-    setFileForSend(fileForSend)
-    setFileSize(fileSizefound)
+    let fileForSendingIndex = fileForSend.findIndex(
+      (newData, index) => newData.name === data.DisplayAttachmentName
+    );
+    fileForSend.splice(fileForSendingIndex, 1);
+    setFileForSend(fileForSend);
+    setFileSize(fileSizefound);
     let searchIndex = tasksAttachments;
     searchIndex.splice(index, 1);
     setTasksAttachments([...tasksAttachments]);
@@ -424,7 +426,11 @@ const ScheduleNewResolution = ({
   };
 
   const createResolutionHandleClick = async (id) => {
-    if (createResolutionData.Title !== "" && circulationDateTime.date !== "" && decisionDateTime.date !== "" && decisionDateTime.date !== "" &&
+    if (
+      createResolutionData.Title !== "" &&
+      circulationDateTime.date !== "" &&
+      decisionDateTime.date !== "" &&
+      decisionDateTime.date !== "" &&
       circulationDateTime.time !== "" &&
       decisionDateTime.time !== "" &&
       createResolutionData.NotesToVoter !== "" &&
@@ -432,14 +438,13 @@ const ScheduleNewResolution = ({
       createResolutionData.FK_ResolutionReminderFrequency_ID !== 0
       // voters.length > 0
     ) {
-
       if (fileForSend.length > 0) {
         let counter = fileForSend.length;
-        console.log(counter, "countercountercounter")
+        console.log(counter, "countercountercounter");
         fileForSend.map(async (newData, index) => {
           await dispatch(FileUploadToDo(navigate, newData, t));
           counter = counter - 1;
-        })
+        });
         let Data = {
           ResolutionModel: {
             FK_ResolutionStatusID: createResolutionData.FK_ResolutionStatusID,
@@ -447,21 +452,35 @@ const ScheduleNewResolution = ({
               createResolutionData.FK_ResolutionVotingMethodID,
             Title: createResolutionData.Title,
             NotesToVoter: createResolutionData.NotesToVoter,
-            CirculationDateTime: createConvert(removeDashesFromDate(circulationDateTime.date) + RemoveTimeDashes(circulationDateTime.time)
+            CirculationDateTime: createConvert(
+              removeDashesFromDate(circulationDateTime.date) +
+              RemoveTimeDashes(circulationDateTime.time)
             ),
-            DeadlineDateTime: createConvert(removeDashesFromDate(votingDateTime.date) + RemoveTimeDashes(votingDateTime.time)
+            DeadlineDateTime: createConvert(
+              removeDashesFromDate(votingDateTime.date) +
+              RemoveTimeDashes(votingDateTime.time)
             ),
-            FK_ResolutionReminderFrequency_ID: createResolutionData.FK_ResolutionReminderFrequency_ID,
+            FK_ResolutionReminderFrequency_ID:
+              createResolutionData.FK_ResolutionReminderFrequency_ID,
             FK_ResolutionDecision_ID: 3,
-            DecisionAnnouncementDateTime: createConvert(removeDashesFromDate(decisionDateTime.date) + RemoveTimeDashes(decisionDateTime.time)
+            DecisionAnnouncementDateTime: createConvert(
+              removeDashesFromDate(decisionDateTime.date) +
+              RemoveTimeDashes(decisionDateTime.time)
             ),
             IsResolutionPublic: createResolutionData.IsResolutionPublic,
-            FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
+            FK_OrganizationID: JSON.parse(
+              localStorage.getItem("organizationID")
+            ),
             FK_UID: JSON.parse(localStorage.getItem("userID")),
           },
         };
         if (id === 2 && Object.keys(voters).length <= 0) {
-          console.log(typeof voters, voters.length, voters, "DataDataDataDataDataDataData");
+          console.log(
+            typeof voters,
+            voters.length,
+            voters,
+            "DataDataDataDataDataDataData"
+          );
 
           setError(true);
         } else {
@@ -479,8 +498,11 @@ const ScheduleNewResolution = ({
               id
             )
           );
+          console.log(Data,
+            voters,
+            nonVoter,
+            tasksAttachments, "CreateResolutionCreateResolutionCreateResolution")
         }
-
       } else {
         let Data = {
           ResolutionModel: {
@@ -489,21 +511,35 @@ const ScheduleNewResolution = ({
               createResolutionData.FK_ResolutionVotingMethodID,
             Title: createResolutionData.Title,
             NotesToVoter: createResolutionData.NotesToVoter,
-            CirculationDateTime: createConvert(removeDashesFromDate(circulationDateTime.date) + RemoveTimeDashes(circulationDateTime.time)
+            CirculationDateTime: createConvert(
+              removeDashesFromDate(circulationDateTime.date) +
+              RemoveTimeDashes(circulationDateTime.time)
             ),
-            DeadlineDateTime: createConvert(removeDashesFromDate(votingDateTime.date) + RemoveTimeDashes(votingDateTime.time)
+            DeadlineDateTime: createConvert(
+              removeDashesFromDate(votingDateTime.date) +
+              RemoveTimeDashes(votingDateTime.time)
             ),
-            FK_ResolutionReminderFrequency_ID: createResolutionData.FK_ResolutionReminderFrequency_ID,
+            FK_ResolutionReminderFrequency_ID:
+              createResolutionData.FK_ResolutionReminderFrequency_ID,
             FK_ResolutionDecision_ID: 3,
-            DecisionAnnouncementDateTime: createConvert(removeDashesFromDate(decisionDateTime.date) + RemoveTimeDashes(decisionDateTime.time)
+            DecisionAnnouncementDateTime: createConvert(
+              removeDashesFromDate(decisionDateTime.date) +
+              RemoveTimeDashes(decisionDateTime.time)
             ),
             IsResolutionPublic: createResolutionData.IsResolutionPublic,
-            FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
+            FK_OrganizationID: JSON.parse(
+              localStorage.getItem("organizationID")
+            ),
             FK_UID: JSON.parse(localStorage.getItem("userID")),
           },
         };
         if (id === 2 && Object.keys(voters).length <= 0) {
-          console.log(typeof voters, voters.length, voters, "DataDataDataDataDataDataData");
+          console.log(
+            typeof voters,
+            voters.length,
+            voters,
+            "DataDataDataDataDataDataData"
+          );
           setError(true);
         } else {
           dispatch(
@@ -521,9 +557,12 @@ const ScheduleNewResolution = ({
             )
           );
         }
-        setTasksAttachments([])
+        console.log(Data,
+          voters,
+          nonVoter,
+          tasksAttachments, "CreateResolutionCreateResolutionCreateResolution")
+        setTasksAttachments([]);
       }
-
     } else {
       setError(true);
       setOpen({
@@ -531,6 +570,7 @@ const ScheduleNewResolution = ({
         message: "Please fill all the fields",
       });
     }
+
   };
 
   const props = {
@@ -588,9 +628,9 @@ const ScheduleNewResolution = ({
           let file = {
             DisplayAttachmentName: data.file.name,
             OriginalAttachmentName: data.file.name,
-            fileSize: data.file.originFileObj.size
-          }
-          setTasksAttachments([...tasksAttachments, file])
+            fileSize: data.file.originFileObj.size,
+          };
+          setTasksAttachments([...tasksAttachments, file]);
           fileSizeArr = data.file.originFileObj.size + fileSize;
           setFileForSend([...fileForSend, data.file.originFileObj]);
           setFileSize(fileSizeArr);
@@ -624,9 +664,9 @@ const ScheduleNewResolution = ({
           let file = {
             DisplayAttachmentName: data.file.name,
             OriginalAttachmentName: data.file.name,
-            fileSize: data.file.originFileObj.size
-          }
-          setTasksAttachments([...tasksAttachments, file])
+            fileSize: data.file.originFileObj.size,
+          };
+          setTasksAttachments([...tasksAttachments, file]);
           fileSizeArr = data.file.originFileObj.size + fileSize;
           setFileForSend([...fileForSend, data.file.originFileObj]);
           setFileSize(fileSizeArr);
@@ -701,9 +741,15 @@ const ScheduleNewResolution = ({
       }
     } catch (error) { }
   }, [assignees.user]);
-  console.log(ResolutionReducer, "ResolutionReducerResolutionReducerResolutionReducer")
+  console.log(
+    ResolutionReducer,
+    "ResolutionReducerResolutionReducerResolutionReducer"
+  );
   useEffect(() => {
-    if (ResolutionReducer.ResponseMessage !== "" && ResolutionReducer.ResponseMessage !== t("Data-available")) {
+    if (
+      ResolutionReducer.ResponseMessage !== "" &&
+      ResolutionReducer.ResponseMessage !== t("Data-available")
+    ) {
       setOpen({
         flag: true,
         message: ResolutionReducer.ResponseMessage,
@@ -717,7 +763,10 @@ const ScheduleNewResolution = ({
       dispatch(clearResponseMessage());
     }
   }, [ResolutionReducer.ResponseMessage]);
-  console.log(open, "ResolutionReducerResolutionReducerResolutionReducerResolutionReducerResolutionReducerResolutionReducer")
+  console.log(
+    open,
+    "ResolutionReducerResolutionReducerResolutionReducerResolutionReducerResolutionReducerResolutionReducer"
+  );
   // Get Voting Methods
   useEffect(() => {
     if (ResolutionReducer.GetAllVotingMethods !== null) {
@@ -732,21 +781,21 @@ const ScheduleNewResolution = ({
     }
   }, [ResolutionReducer.GetAllVotingMethods]);
 
-  useEffect(() => {
-    setTasksAttachments([]);
-  }, []);
+  // useEffect(() => {
+  //   setTasksAttachments([]);
+  // }, []);
 
-  useEffect(() => {
-    if (uploadReducer.uploadDocumentsList !== null) {
-      tasksAttachments.push({
-        DisplayAttachmentName:
-          uploadReducer.uploadDocumentsList.displayFileName,
-        OriginalAttachmentName:
-          uploadReducer.uploadDocumentsList.originalFileName,
-      });
-      setTasksAttachments([...tasksAttachments]);
-    }
-  }, [uploadReducer.uploadDocumentsList]);
+  // useEffect(() => {
+  //   if (uploadReducer.uploadDocumentsList !== null) {
+  //     tasksAttachments.push({
+  //       DisplayAttachmentName:
+  //         uploadReducer.uploadDocumentsList.displayFileName,
+  //       OriginalAttachmentName:
+  //         uploadReducer.uploadDocumentsList.originalFileName,
+  //     });
+  //     setTasksAttachments([...tasksAttachments]);
+  //   }
+  // }, [uploadReducer.uploadDocumentsList]);
 
   useEffect(() => {
     dispatch(getAllVotingMethods(navigate, t));
@@ -1058,7 +1107,7 @@ const ScheduleNewResolution = ({
                               styles["decision_annoucement_Createresoulution"]
                             }
                           >
-                            {t("Descision-announcement") + "*"}
+                            {t("Decision-announcement") + "*"}
                           </span>
                         </Col>
                       </Row>
@@ -1295,7 +1344,7 @@ const ScheduleNewResolution = ({
                                 </Col>
                               </Row>
 
-                              <Row className="mt-3">
+                              <Row className="mt-1">
                                 <Col
                                   lg={12}
                                   md={12}

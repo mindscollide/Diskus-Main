@@ -72,7 +72,7 @@ import ModalUpdateNote from "../../modalUpdateNote/ModalUpdateNote";
 
 const Home = () => {
   const dCheck = useLoaderData();
-  console.log("dCheck", dCheck);
+  // console.log("dCheck", dCheck);
   //For Localization
   const { t } = useTranslation();
   const [updateNotesModalHomePage, setUpdateNotesModalHomePage] =
@@ -109,6 +109,7 @@ const Home = () => {
   const [recentActivityData, setRecentActivityData] = useState([]);
   // const [open, setOpen] = useState(false);
   // get new date
+
   let date = new Date();
   let getCurrentDate = moment(date).format("DD");
   let format = "YYYYMMDD";
@@ -125,7 +126,7 @@ const Home = () => {
   const [todoListAssignedThisWeek, setTodoListAssignedThisWeek] = useState(0);
   //ToDo Table Data
   const [rowsToDo, setRowToDo] = useState([]);
-  console.log(rowsToDo, "rowsToDorowsToDorowsToDo");
+  // console.log(rowsToDo, "rowsToDorowsToDorowsToDo");
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
   //For Custom language datepicker
@@ -140,11 +141,11 @@ const Home = () => {
 
   useEffect(() => {
     if (Blur != undefined) {
-      console.log("Blur", Blur);
+      // console.log("Blur", Blur);
 
       setActivateBlur(true);
     } else {
-      console.log("Blur", Blur);
+      // console.log("Blur", Blur);
 
       setActivateBlur(false);
     }
@@ -152,7 +153,7 @@ const Home = () => {
   // set Data for Calendar
   useEffect(() => {
     let Data = calendarReducer.CalenderData;
-    console.log("Data", Data);
+    // console.log("Data", Data);
     let newList = [];
     if (Object.keys(Data).length > 0) {
       Data.map((cData, index) => {
@@ -161,13 +162,13 @@ const Home = () => {
         });
       });
       setCalenderData(newList);
-      console.log("newListnewListnewList", calenderData);
+      // console.log("newListnewListnewList", calenderData);
     }
   }, [calendarReducer.CalenderData]);
 
   useEffect(() => {
     var temp = [];
-    console.log("calenderDatacalenderData", calenderData);
+    // console.log("calenderDatacalenderData", calenderData);
     calenderData.map((cal, index) => {
       var year = moment(
         startDateTimeMeetingCalendar(cal.meetingDate + "000000")
@@ -178,14 +179,14 @@ const Home = () => {
       var day = moment(
         startDateTimeMeetingCalendar(cal.meetingDate + "000000")
       ).format("DD");
-      console.log("calenderDatacalenderData", year, month, day);
+      // console.log("calenderDatacalenderData", year, month, day);
       var d = new DateObject().set({
         year: year,
         month: month,
         day: day,
         format,
       });
-      console.log("calenderDatacalenderData", d);
+      // console.log("calenderDatacalenderData", d);
       temp.push(d);
     });
     setDates(temp);
@@ -203,8 +204,6 @@ const Home = () => {
       SocketRecentActivityData !== undefined &&
       Object.keys(SocketRecentActivityData).length > 0
     ) {
-      // let duplicatonData = [...recentActivityData];
-      // duplicatonData.unshift(SocketRecentActivityData);
       setRecentActivityData([SocketRecentActivityData, ...recentActivityData]);
     }
   }, [SocketRecentActivityData]);
@@ -237,14 +236,14 @@ const Home = () => {
   }, []);
   // for view modal  handler
   const viewModalHandler = (id) => {
-    console.log("viewID", id);
+    // console.log("viewID", id);
   };
 
   const handleClickNoteModal = () => {
     setModalNote(true);
   };
 
-  console.log(notes, "NotesReducerNotesReducer");
+  // console.log(notes, "NotesReducerNotesReducer");
   // render Notes Data
   useEffect(() => {
     if (
@@ -262,11 +261,11 @@ const Home = () => {
   }, [NotesReducer.GetAllNotesResponse]);
 
   useEffect(() => {
-    console.log("checkingthesocketdata is coming or not", rowsToDo);
+    // console.log("checkingthesocketdata is coming or not", rowsToDo);
     if (Object.keys(toDoListReducer.SocketTodoActivityData).length > 0) {
       // rowsToDo.unshift(toDoListReducer.SocketTodoActivityData);
       setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo]);
-      console.log("checkingthesocketdata is coming or not", rowsToDo);
+      // console.log("checkingthesocketdata is coming or not", rowsToDo);
     } else {
       setRowToDo(toDoListReducer.AllTodolistData);
     }
@@ -278,17 +277,17 @@ const Home = () => {
       Object.keys(toDoListReducer.AllTodolistData).length > 0 &&
       toDoListReducer.AllTodolistData !== undefined
     ) {
-      console.log(
-        "todolistreducer.AllTodolistData",
-        toDoListReducer,
-        toDoListReducer.AllTodolistData
-      );
+      // console.log(
+      //   "todolistreducer.AllTodolistData",
+      //   toDoListReducer,
+      //   toDoListReducer.AllTodolistData
+      // );
       setRowToDo(toDoListReducer.AllTodolistData);
     } else {
-      console.log(
-        "todolistreducer.AllTodolistData",
-        toDoListReducer.AllTodolistData
-      );
+      // console.log(
+      //   "todolistreducer.AllTodolistData",
+      //   toDoListReducer.AllTodolistData
+      // );
       setRowToDo([]);
     }
   }, [toDoListReducer.AllTodolistData]);
@@ -320,7 +319,7 @@ const Home = () => {
       width: "25%",
       className: "statusDashboard",
       render: (text) => {
-        console.log("texttexttexttext", text);
+        // console.log("texttexttexttext", text);
         return toDoListReducer.AllTodolistData.map((data, index) => {
           if (index === 0) {
             if (text.pK_TSID === 1) {
@@ -392,7 +391,7 @@ const Home = () => {
 
   useEffect(() => {
     if (meetingIdReducer.UpcomingEventsData.length > 0) {
-      console.log("NEW_UPCOMING123", meetingIdReducer.UpcomingEventsData);
+      // console.log("NEW_UPCOMING123", meetingIdReducer.UpcomingEventsData);
     }
   }, [meetingIdReducer.UpcomingEventsData]);
 
@@ -423,7 +422,11 @@ const Home = () => {
   };
 
   useEffect(() => {
-    if (Authreducer.VerifyOTPEmailResponseMessage !== "" && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-not-an-admin-user")) {
+    if (
+      Authreducer.VerifyOTPEmailResponseMessage !== "" &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-not-an-admin-user")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -438,7 +441,11 @@ const Home = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.EnterPasswordResponseMessage !== "" && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-not-an-admin-user")) {
+    } else if (
+      Authreducer.EnterPasswordResponseMessage !== "" &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-not-an-admin-user")
+    ) {
       setOpen({
         ...open,
         open: false,
@@ -453,7 +460,11 @@ const Home = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.OrganizationCreateResponseMessage !== "" && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-not-an-admin-user")) {
+    } else if (
+      Authreducer.OrganizationCreateResponseMessage !== "" &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-not-an-admin-user")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -468,7 +479,11 @@ const Home = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.CreatePasswordResponseMessage !== "" && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-not-an-admin-user")) {
+    } else if (
+      Authreducer.CreatePasswordResponseMessage !== "" &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-not-an-admin-user")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -483,7 +498,11 @@ const Home = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.GetSelectedPackageResponseMessage !== "" && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-not-an-admin-user")) {
+    } else if (
+      Authreducer.GetSelectedPackageResponseMessage !== "" &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-not-an-admin-user")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -498,7 +517,11 @@ const Home = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (Authreducer.EmailValidationResponseMessage !== "" && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-not-an-admin-user")) {
+    } else if (
+      Authreducer.EmailValidationResponseMessage !== "" &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-not-an-admin-user")
+    ) {
       setOpen({
         ...open,
         open: true,
@@ -530,7 +553,7 @@ const Home = () => {
   ]);
 
   const calendarClickFunction = async (value) => {
-    console.log("Calendar Clicked");
+    // console.log("Calendar Clicked");
     if (!dates.includes(value)) {
       setDates([...dates, value]);
     }
@@ -559,15 +582,22 @@ const Home = () => {
     let flag = false;
     let indexforUndeline = null;
     meetingIdReducer.UpcomingEventsData.map((upcomingEventsData, index) => {
+      console.log(
+        upcomingEventsData,
+        "upcomingEventsDataupcomingEventsDataupcomingEventsData"
+      );
       if (
-        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) !=
+        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) !==
         getCurrentDate
       ) {
         if (indexforUndeline === null && flag === false) {
           if (index - 1 >= 0) {
             flag = true;
             indexforUndeline = index;
-            console.log("upcomingEventsupcomingEvents2323", index);
+            console.log(
+              "upcomingEventsDataupcomingEventsDataupcomingEventsData",
+              index
+            );
           }
         }
       }
@@ -575,15 +605,19 @@ const Home = () => {
 
     return meetingIdReducer.UpcomingEventsData.map(
       (upcomingEventsData, index) => {
-        console.log("upcomingEvents index", index);
+        console.log(
+          "upcomingEvents index",
+          upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
+            getCurrentDate
+        );
         return (
           <>
             {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-              getCurrentDate ? (
+            getCurrentDate ? (
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <div
-                    className="event-details upcoming_events  border-0"
+                    className="event-details upcoming_events todayEvent border-0"
                     onClick={() =>
                       viewModalHandler(
                         upcomingEventsData.meetingDetails.pK_MDID
@@ -596,7 +630,7 @@ const Home = () => {
                     <p className="events-dateTime MontserratSemiBold-600">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
-                        upcomingEventsData.meetingEvent.startTime
+                          upcomingEventsData.meetingEvent.startTime
                       )}
                     </p>
                   </div>
@@ -604,7 +638,9 @@ const Home = () => {
               </Row>
             ) : indexforUndeline != null && indexforUndeline === index ? (
               <>
-                <span className="bordertop" />
+                {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
+                  getCurrentDate && <span className="bordertop" />}
+
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <div
@@ -621,7 +657,7 @@ const Home = () => {
                       <p className="events-dateTime">
                         {newTimeFormaterAsPerUTCFullDate(
                           upcomingEventsData.meetingEvent.meetingDate +
-                          upcomingEventsData.meetingEvent.startTime
+                            upcomingEventsData.meetingEvent.startTime
                         )}
                       </p>
                     </div>
@@ -645,7 +681,7 @@ const Home = () => {
                     <p className="events-dateTime">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
-                        upcomingEventsData.meetingEvent.startTime
+                          upcomingEventsData.meetingEvent.startTime
                       )}
                     </p>
                   </div>
@@ -699,7 +735,7 @@ const Home = () => {
                       </div>
                       <div className="home-meetingcount-text Saved_money_Tagline">
                         {t("Meeting")} <br />
-                        {t("This-week")}
+                        {t("This-month")}
                       </div>
                     </CustomTextProgressbar>
                   )}
@@ -710,7 +746,7 @@ const Home = () => {
               <Col lg={12} md={12} sm={12} className="Dashboard-Calendar  ">
                 <div className="whiteBackground Spinner home-calendar-spinner border">
                   {calendarReducer.Spinner === true ||
-                    meetingIdReducer.Spinner === true ? (
+                  meetingIdReducer.Spinner === true ? (
                     <Spin />
                   ) : (
                     <>
@@ -738,7 +774,7 @@ const Home = () => {
 
                           <div className="Upcoming-Events-Box">
                             {meetingIdReducer.UpcomingEventsData.length ===
-                              0 ? (
+                            0 ? (
                               <ResultMessage
                                 icon={<Mailbox className="notification-icon" />}
                                 subTitle={t("No-upcoming-events")}
@@ -778,8 +814,8 @@ const Home = () => {
                         </strong>
                       </div>
                       <div className="home-todocount-text Saved_money_Tagline">
-                        {t("Things")} <br />
-                        {t("To-do")}
+                        {t("Todo")} <br />
+                        {t("This-month")}
                       </div>
                     </CustomTextProgressbar>
                   )}
@@ -791,13 +827,13 @@ const Home = () => {
                 {toDoListReducer.TableSpinner === true ? (
                   <CustomTableToDoDashboard
                     loading={{
-                      spinning: toDoListReducer.TableSpinner,
+                      spinning: true,
                       indicator: <Spin />,
                     }}
                     column={columnsToDo}
                     className="dashboard-todo"
                     labelTitle={t("Todo-list")}
-                    scroll={{ y: 200 }}
+                    scroll={{ y: 600 }}
                     pagination={false}
                   />
                 ) : rowsToDo.length > 0 &&
@@ -861,7 +897,7 @@ const Home = () => {
                         <Row>
                           <Col sm={1}>
                             {recentActivityData.notificationTypes.pK_NTID ===
-                              1 ? (
+                            1 ? (
                               <div className="desc-notification-user ">
                                 {/* Bell Notification SVG Code */}
                                 <svg
@@ -1149,12 +1185,21 @@ const Home = () => {
                     }
                   >
                     {NotesReducer.Loading ? (
-                      <Spin />
+                      <Row>
+                        <Col
+                          sm={12}
+                          lg={12}
+                          md={12}
+                          className={"notes-spinner"}
+                        >
+                          <Spin />
+                        </Col>
+                      </Row>
                     ) : notes !== null &&
                       notes !== undefined &&
                       notes.length > 0 ? (
                       notes.map((data, index) => {
-                        console.log(data, "datadatadata");
+                        // console.log(data, "datadatadata");
                         return (
                           <div
                             className="notesdescription"

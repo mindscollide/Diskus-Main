@@ -21,7 +21,9 @@ import {
   mqttUnstarMessage,
   mqttGroupCreated,
   mqttGroupUpdated,
+  mqttInsertBroadcastMessage,
   mqttUnreadMessageCount,
+  InsertOTOMessages,
 } from '../../store/actions/Talk_action'
 import Paho from 'paho-mqtt'
 import Helper from '../../commen/functions/history_logout'
@@ -49,6 +51,7 @@ import {
 } from '../../store/actions/Committee_actions'
 import { mqttConnection } from '../../commen/functions/mqttconnection'
 import { realtimeNotificationRecent } from '../../store/actions/RealtimeNotification_actions'
+import { useTranslation } from 'react-i18next'
 
 const Dashboard = () => {
   const location = useLocation()
@@ -59,6 +62,10 @@ const Dashboard = () => {
   const navigate = useNavigate()
   const { Content } = Layout
   let createrID = localStorage.getItem('userID')
+
+  //Translation
+  const { t } = useTranslation()
+
   // let createrID = 5;
   const dispatch = useDispatch()
   const [newRecentData, setNewRecentData] = useState({
@@ -583,55 +590,72 @@ const Dashboard = () => {
         // })
         dispatch(mqttUnreadMessageCount(data.payload))
         // setNotificationID(id)
+      } else if (
+        data.payload.message.toLowerCase() ===
+        'NEW_BROADCAST_MESSAGE'.toLowerCase()
+      ) {
+        console.log('NEW_BROADCAST_MESSAGE', data.payload.data)
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `You have sent a message in broadcast list ${data.payload.data[0].broadcastName}`,
+        })
+        dispatch(mqttInsertBroadcastMessage(data.payload))
+        setNotificationID(id)
       }
     }
   }
-  // useEffect(() => {
-  //   console.log("testing", typeof newRecentData)
 
-  //   if (newRecentData.notificationTypes.pK_NTID !== 0) {
-  //     console.log("testing", newRecentData)
-  //     dispatch(setRecentActivityDataNotification(newRecentData))
-  //     setNewRecentData({
-  //       ...newRecentData,
-  //       creationDateTime: "",
-  //       notificationTypes: {
-  //         pK_NTID: 0,
-  //         description: "",
-  //         icon: "",
-  //       },
-  //       key: 0,
-  //     })
-  //   } else {
-  //   }
-  // }, [newRecentData])
+  // const [retryCount, setRetryCount] = useState(0)
 
   const onConnectionLost = () => {
     console.log('Connected to MQTT broker onConnectionLost')
     setTimeout(mqttConnection, 3000)
   }
 
-  // const mqttConnection = () => {
-  //   var min = 10000;
-  //   var max = 90000;
-  //   var id = min + Math.random() * (max - min);
-  //   newClient = new Paho.Client("192.168.18.241", 8228, subscribeID + "-" + id);
-  //   newClient.connect({
-  //     // cleanSession: false,
-  //     onSuccess: () => {
-  //       console.log("Connected to MQTT broker");
-  //       onConnected(newClient);
-  //     },
-  //     onFailure: () => {
-  //       console.log("Connected to MQTT broker onFailedConnect");
-  //       setTimeout(onConnectionLost, 6000);
-  //     },
-  //     keepAliveInterval: 30,
-  //     reconnect: true, // Enable automatic reconnect
-  //   });
+  // console.log('mqttConnectionmqttConnectionmqttConnection', mqttConnection)
 
-  //   setClient(newClient);
-  // };
+  // let messageSendingJson = localStorage.getItem('messageArray')
+
+  //   let interval
+  //   const maxRetries = 5
+
+  //   const fetchData = async () => {
+  //     const response = await dispatch(
+  //       InsertOTOMessages(navigate, messageSendingJson, null, t),
+  //     )
+
+  //     // Check if response is successful
+  //     if (response.success) {
+  //       clearInterval(interval)
+  //       return
+  //     }
+
+  //     // Check if maximum retries reached
+  //     if (retryCount >= maxRetries) {
+  //       clearInterval(interval)
+  //       console.log('Maximum retries reached. Stopping API calls.')
+  //       return
+  //     }
+
+  //     // Increment retry count
+  //     setRetryCount(retryCount + 1)
+  //   }
+
+  //   // Initial API call
+  //   fetchData()
+
+  //   interval = setInterval(fetchData, 4000)
+
+  //   // Stop hitting the API after 20 seconds
+  //   setTimeout(() => {
+  //     clearInterval(interval)
+  //   }, 20000)
+
+  //   // Clean up the interval on component unmount
+  //   return () => {
+  //     clearInterval(interval)
+  //   }
 
   useEffect(() => {
     console.log('Connected to MQTT broker onConnectionLost useEffect')
@@ -666,78 +690,6 @@ const Dashboard = () => {
       setVideoPanel(videoGroupPanel)
     }
   }, [videoGroupPanel])
-
-  // useEffect(() => {
-  //   if (Object.keys(newRecentData).length > 0) {
-  //     console.log("RecentActivityRecentActivity", newRecentData);
-  //     let data = {
-  //       creationDateTime: newRecentData.creationDateTime,
-  //       notificationTypes: {
-  //         pK_NTID: newRecentData.notificationTypes.pK_NTID,
-  //         description: newRecentData.description,
-  //         icon: newRecentData.notificationTypes.icon,
-  //       },
-  //       key: 0,
-  //     };
-  //     console.log("RecentActivityRecentActivity", data);
-  //     dispatch(setRecentActivityDataNotification(data));
-  //     setNewRecentData([]);
-  //   }
-  // }, [newRecentData]);
-
-  // for Todo Data socket
-  // useEffect(() => {
-  //   if (Object.keys(newTodoData).length > 0) {
-  //     console.log("TodoActivitydataiofter", newTodoData);
-  //     dispatch(setTodoListActivityData(newTodoData));
-  //     setNewTodoData([]);
-  //   }
-  // }, [newTodoData]);
-
-  // for Todo Data comment socket
-  // useEffect(() => {
-  //   if (Object.keys(newTodoDataComment).length > 0) {
-  //     console.log("postComments", newTodoDataComment);
-  //     if (createrID === newTodoDataComment.userID) {
-  //     } else {
-  //       dispatch(postComments(newTodoDataComment));
-  //     }
-  //     setNewTodoDataComment([]);
-  //   }
-  // }, [newTodoDataComment]);
-
-  // Meeting Add andEdit from socket
-  // useEffect(() => {
-  //   console.log("MeetingMeetingMeetingMeeting", newMeetingData);
-  //   if (Object.keys(newMeetingData).length > 0) {
-  //     console.log("MeetingMeetingMeetingMeeting", newMeetingData);
-  //     dispatch(allMeetingsSocket(newMeetingData));
-  //     setNewMeetingData([]);
-  //   }
-  // }, [newMeetingData]);
-
-  // for meeting status update from socket
-  // useEffect(() => {
-  //   console.log("MeetingStatusSocket", meetingStatus);
-  //   if (Object.keys(meetingStatus).length > 0) {
-  //     console.log("MeetingStatusSocket", meetingStatus);
-  //     dispatch(getMeetingStatusfromSocket(meetingStatus));
-  //     setMeetingStatus([]);
-  //   }
-  // }, [meetingStatus]);
-
-  // for Todo Data comment socket
-  // useEffect(() => {
-  //   if (Object.keys(newTodoDataComment).length > 0) {
-  //     console.log("postComments", newTodoDataComment);
-  //     if (createrID === newTodoDataComment.userID) {
-  //     } else {
-  //       dispatch(postComments(newTodoDataComment));
-  //     }
-
-  //     setNewTodoDataComment([]);
-  //   }
-  // }, [newTodoDataComment]);
 
   const showsubTalkIcons = () => {
     setSubIcons(!subIcons)

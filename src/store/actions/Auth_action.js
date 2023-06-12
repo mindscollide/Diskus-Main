@@ -40,6 +40,7 @@ const RefreshToken = (navigate, t) => {
       method: 'post',
       url: authenticationApi,
       data: form,
+      headers: { "Access-Control-Allow-Origin": "*" }
     })
       .then(async (response) => {
         console.log('RefreshToken', response)

@@ -180,7 +180,7 @@ const ViewResolution = ({ setViewresolution }) => {
                 <Row className="mt-5">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Reminder_viewResolution"]}>
-                      {t("Descision-announcement")}
+                      {t("Decision-announcement")}
                     </span>
                   </Col>
                 </Row>

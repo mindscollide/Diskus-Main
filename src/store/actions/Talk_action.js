@@ -33,6 +33,9 @@ import {
   markStarredMessage,
   updatePrivateGroup,
   leaveGroup,
+  createShoutAll,
+  deleteShoutAll,
+  updateShoutAll,
 } from '../../commen/apis/Api_config'
 import axios from 'axios'
 import { talkApi } from '../../commen/apis/Api_ends_points'
@@ -135,6 +138,15 @@ const mqttInsertPrivateGroupMessage = (response) => {
   console.log('responseresponseresponse', response)
   return {
     type: actions.MQTT_INSERT_PRIVATEGROUP_MESSAGE,
+    response: response,
+  }
+}
+
+//insert broadcast talk mqtt
+const mqttInsertBroadcastMessage = (response) => {
+  console.log('responseresponseresponse', response)
+  return {
+    type: actions.MQTT_INSERT_BROADCAST_MESSAGE,
     response: response,
   }
 }
@@ -609,7 +621,7 @@ const GetBroadcastMessages = (navigate, broadcastMessagesData, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = {
     TalkRequest: {
-      UserID: broadcastMessagesData.UserID,
+      UserID: parseInt(broadcastMessagesData.UserID),
       BroadcastID: broadcastMessagesData.BroadcastID,
       NumberOfMessages: broadcastMessagesData.NumberOfMessages,
       OffsetMessage: broadcastMessagesData.OffsetMessage,
@@ -2172,14 +2184,8 @@ const getActiveUsersByBroadcastIDFail = (response, message) => {
 }
 
 //GetActiveUsersByBroadcastID
-const GetActiveUsersByBroadcastID = (t) => {
+const GetActiveUsersByBroadcastID = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
-  let Data = {
-    TalkRequest: {
-      BroadcastID: 2,
-      ChannelID: 1,
-    },
-  }
   return (dispatch) => {
     dispatch(getActiveUsersByBroadcastIDInit())
     let form = new FormData()
@@ -2196,8 +2202,8 @@ const GetActiveUsersByBroadcastID = (t) => {
       .then(async (response) => {
         console.log('GetActiveUsersByBroadcastID', response)
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshTokenTalk(t))
-          dispatch(GetActiveUsersByBroadcastID(t))
+          await dispatch(RefreshTokenTalk(navigate))
+          dispatch(GetActiveUsersByBroadcastID(navigate, Data, t))
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage ===
@@ -2241,11 +2247,18 @@ const OTOMessageSendInit = () => {
   }
 }
 
-const OTOMessageSendNotification = (message, response) => {
+const OTOMessageSendSuccess = (message, response) => {
   return {
-    type: actions.OTO_MESSAGESEND_NOTIFICATION,
+    type: actions.OTO_MESSAGESEND_SUCCESS,
     message: message,
     response: response,
+  }
+}
+
+const OTOMessageSendFail = (message) => {
+  return {
+    type: actions.OTO_MESSAGESEND_FAIL,
+    message: message,
   }
 }
 
@@ -2281,7 +2294,7 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
                 )
             ) {
               await dispatch(
-                OTOMessageSendNotification(
+                OTOMessageSendSuccess(
                   t('OTO-message-inserted'),
                   response.data.responseResult.talkResponse,
                 ),
@@ -2294,7 +2307,7 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
                 )
             ) {
               await dispatch(
-                OTOMessageSendNotification(
+                OTOMessageSendSuccess(
                   t('User-is-not-in-channel'),
                   response.data.responseResult.talkResponse,
                 ),
@@ -2307,7 +2320,7 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
                 )
             ) {
               await dispatch(
-                OTOMessageSendNotification(
+                OTOMessageSendSuccess(
                   t('User-is-blocked'),
                   response.data.responseResult.talkResponse,
                 ),
@@ -2320,7 +2333,7 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
                 )
             ) {
               await dispatch(
-                OTOMessageSendNotification(
+                OTOMessageSendSuccess(
                   t('OTO-message-not-inserted'),
                   response.data.responseResult.talkResponse,
                 ),
@@ -2332,21 +2345,17 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
                   'Talk_TalkServiceManager_InsertOTOMessages_05'.toLowerCase(),
                 )
             ) {
-              await dispatch(
-                OTOMessageSendNotification(t('Something-went-wrong')),
-              )
+              await dispatch(OTOMessageSendFail(t('Something-went-wrong')))
             }
           } else {
-            await dispatch(
-              OTOMessageSendNotification(t('Something-went-wrong')),
-            )
+            await dispatch(OTOMessageSendFail(t('Something-went-wrong')))
           }
         } else {
-          await dispatch(OTOMessageSendNotification(t('Something-went-wrong')))
+          await dispatch(OTOMessageSendFail(t('Something-went-wrong')))
         }
       })
       .catch((response) => {
-        dispatch(OTOMessageSendNotification(t('Something-went-wrong')))
+        dispatch(OTOMessageSendFail(t('Something-went-wrong')))
       })
   }
 }
@@ -2630,7 +2639,7 @@ const broadcastMessageSendNotification = (message) => {
 }
 
 //Insert Private Group Messages
-const InsertBroadcastMessages = (object, t) => {
+const InsertBroadcastMessages = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(broadcastMessageSendInit())
@@ -2647,8 +2656,8 @@ const InsertBroadcastMessages = (object, t) => {
     })
       .then(async (response) => {
         if (response.data.responseCode === 417) {
-          // await dispatch(RefreshToken(navigate, t))
-          dispatch(InsertBroadcastMessages(object, t))
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(InsertBroadcastMessages(navigate, object, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2699,6 +2708,99 @@ const InsertBroadcastMessages = (object, t) => {
       })
       .catch((response) => {
         dispatch(broadcastMessageSendNotification(t('Something-went-wrong')))
+      })
+  }
+}
+
+const createShoutAllInit = (response, message) => {
+  return {
+    type: actions.CREATE_SHOUTALL_INIT,
+    response: response,
+    message: message,
+  }
+}
+
+const createShoutAllSuccess = (response, message) => {
+  return {
+    type: actions.CREATE_SHOUTALL_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+const createShoutAllFail = (message) => {
+  return {
+    type: actions.CREATE_SHOUTALL_FAIL,
+    message: message,
+  }
+}
+
+//CreatePrivateGroup
+const CreateShoutAll = (navigate, object, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(createShoutAllInit())
+    let form = new FormData()
+    form.append('RequestMethod', createShoutAll.RequestMethod)
+    form.append('RequestData', JSON.stringify(object))
+    axios({
+      method: 'post',
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(CreateShoutAll(navigate, object, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_InsertBroadcast_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                createShoutAllSuccess(
+                  response.data.responseResult.talkResponse,
+                  t('Broadcast-list-created'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_InsertBroadcast_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                createShoutAllSuccess(
+                  response.data.responseResult.talkResponse,
+                  t('Broadcast-list-not-created'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_InsertBroadcast_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(createShoutAllFail(t('Something-went-wrong')))
+            }
+          } else {
+            await dispatch(createShoutAllFail(t('Something-went-wrong')))
+          }
+        } else {
+          await dispatch(createShoutAllFail(t('Something-went-wrong')))
+        }
+      })
+      .catch((response) => {
+        dispatch(createShoutAllFail(t('Something-went-wrong')))
       })
   }
 }
@@ -3167,11 +3269,197 @@ const ResetGroupModify = () => {
   }
 }
 
+const ResetShoutAllCreated = () => {
+  return {
+    type: actions.RESET_SHOUTALL_CREATED_MESSAGE,
+  }
+}
+
+const deletShoutInit = (response) => {
+  return {
+    type: actions.DELETE_SHOUT_INIT,
+    response: response,
+  }
+}
+
+//get user chats success
+const deletShoutSuccess = (response, message) => {
+  return {
+    type: actions.DELETE_SHOUT_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+//get user chats fail
+const deletShoutFail = (message) => {
+  return {
+    type: actions.DELETE_SHOUT_FAIL,
+    message: message,
+  }
+}
+
+//Get all user chats
+const DeleteShout = (navigate, object, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(deletShoutInit())
+    let form = new FormData()
+    form.append('RequestMethod', deleteShoutAll.RequestMethod)
+    form.append('RequestData', JSON.stringify(object))
+
+    axios({
+      method: 'post',
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log('DeleteShout', response)
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshTokenTalk(navigate, t))
+          dispatch(DeleteShout(navigate, object, t))
+        } else if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage ===
+            'Talk_TalkServiceManager_RemoveUserFromShout_01'
+          ) {
+            let newError = t('Users-removed-from-broadcast-list')
+            await dispatch(
+              deletShoutSuccess(
+                response.data.responseResult.talkResponse,
+                newError,
+              ),
+            )
+          } else if (
+            response.data.responseResult.responseMessage ===
+            'Talk_TalkServiceManager_RemoveUserFromShout_02'
+          ) {
+            let newError = t('Users-do-not-removed-from-broadcast-list')
+            dispatch(
+              deletShoutSuccess(
+                response.data.responseResult.talkResponse,
+                newError,
+              ),
+            )
+          } else if (
+            response.data.responseResult.responseMessage ===
+            'Talk_TalkServiceManager_RemoveUserFromShout_03'
+          ) {
+            let newError = t('Something-went-wrong')
+            dispatch(deletShoutFail(newError))
+          }
+        } else {
+          let newError = t('Something-went-wrong')
+          dispatch(deletShoutFail(newError))
+        }
+      })
+      .catch((response) => {
+        let newError = t('Something-went-wrong')
+        dispatch(deletShoutFail(newError))
+      })
+  }
+}
+
+const updateShoutAllInit = () => {
+  return {
+    type: actions.UPDATE_SHOUTALL_INIT,
+  }
+}
+
+const updateShoutAllSuccess = (response, message) => {
+  return {
+    type: actions.UPDATE_SHOUTALL_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+const updateShoutAllFail = (message) => {
+  return {
+    type: actions.UPDATE_SHOUTALL_FAIL,
+    message: message,
+  }
+}
+
+//Update Shout All
+const UpdateShoutAll = (object, t, navigate) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(updateShoutAllInit())
+    let form = new FormData()
+    form.append('RequestMethod', updateShoutAll.RequestMethod)
+    form.append('RequestData', JSON.stringify(object))
+    axios({
+      method: 'post',
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(UpdateShoutAll(object, t, navigate))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_UpdateBroadcast_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                updateShoutAllSuccess(
+                  response.data.responseResult.talkResponse,
+                  t('Broadcast-list-modified'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_UpdateBroadcast_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                updateShoutAllSuccess(
+                  response.data.responseResult.talkResponse,
+                  t('Broadcast-list-not-modified'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_UpdateBroadcast_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(updateShoutAllFail(t('Something-went-wrong')))
+            }
+          } else {
+            await dispatch(updateShoutAllFail(t('Something-went-wrong')))
+          }
+        } else {
+          await dispatch(updateShoutAllFail(t('Something-went-wrong')))
+        }
+      })
+      .catch((response) => {
+        dispatch(updateShoutAllFail(t('Something-went-wrong')))
+      })
+  }
+}
+
 export {
   activeChatID,
   activeMessageID,
   mqttInsertOtoMessage,
   mqttInsertPrivateGroupMessage,
+  mqttInsertBroadcastMessage,
   mqttBlockUser,
   mqttUnblockUser,
   mqttStarMessage,
@@ -3206,10 +3494,15 @@ export {
   GetAllUsersGroupsRoomsList,
   InsertBroadcastMessages,
   CreatePrivateGroup,
+  CreateShoutAll,
   UpdatePrivateGroup,
   GetAllPrivateGroupMembers,
   MarkStarredUnstarredMessage,
   LeaveGroup,
   ResetLeaveGroupMessage,
   ResetGroupModify,
+  ResetShoutAllCreated,
+  DeleteShout,
+  GetActiveUsersByBroadcastID,
+  UpdateShoutAll,
 }
