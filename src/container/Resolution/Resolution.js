@@ -33,6 +33,7 @@ import {
   getVotesDetails,
   getVoterResolution,
   currentClosedView,
+  cancelResolutionApi,
 } from "../../store/actions/Resolution_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Spin } from "antd";
@@ -50,6 +51,7 @@ import AttachmentIcon from "../../assets/images/resolutions/Attachment_Resolutio
 import EmptyResolution from "../../assets/images/resolutions/Empty_Resolution.svg";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import { XSquare } from 'react-bootstrap-icons'
 
 const Resolution = () => {
   const { t } = useTranslation();
@@ -532,16 +534,15 @@ const Resolution = () => {
       },
     },
     {
-      title: t("Edit"),
+      title: "",
       dataIndex: "Edit",
       key: "Edit",
       align: "center",
       width: "78px",
       render: (table, data) => {
-        if (
-          data.resolutionStatus === "Circulated" ||
-          data.resolutionStatus === "Closed"
-        ) {
+        if (data.resolutionStatus === "Closed") {
+        } else if (data.resolutionStatus === "Circulated") {
+          return <span><XSquare width={22} height={22} onClick={() => dispatch(cancelResolutionApi(navigate, data.resolutionID, t, setEditResoutionPage))} /></span>
         } else {
           return (
             <img
@@ -696,6 +697,7 @@ const Resolution = () => {
         } else {
           return (
             <img
+              className={styles["Result_Icon_cursor_pointer"]}
               src={ResultResolutionIcon}
 
             // onClick={() => getResultHandle(data.resolutionID)}

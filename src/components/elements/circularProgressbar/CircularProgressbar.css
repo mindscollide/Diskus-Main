@@ -1,6 +1,6 @@
 .circular_progressbar_div {
   position: relative;
-  width: 180px;
+  width: 196px;
   height: 196px;
 }
 
@@ -11,7 +11,7 @@
 
 .dashboard_progress_bar {
   position: absolute;
-  height: 97%;
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;

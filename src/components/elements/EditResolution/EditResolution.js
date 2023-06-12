@@ -770,124 +770,123 @@ const EditResolution = ({
   }
 
   const handleDiscardBtnFunc = () => {
-    if (ResolutionReducer.getResolutionbyID !== null) {
-      setDsicardresolution(false)
-      let resolutionData = ResolutionReducer.getResolutionbyID.resolution;
-      let votersResolutionMembers = ResolutionReducer.getResolutionbyID.voters;
-      let nonVotersResolutionMembers =
-        ResolutionReducer.getResolutionbyID.nonVoters;
-      let attachmentsResolution =
-        ResolutionReducer.getResolutionbyID.attachments;
-      setEditResolutionData({
-        FK_ResolutionStatusID: resolutionData.fK_ResolutionDecision_ID,
-        FK_ResolutionVotingMethodID: resolutionData.fK_ResolutionVotingMethodID,
-        Title: resolutionData.title,
-        NotesToVoter: resolutionData.notesToVoter,
-        CirculationDateTime: "",
-        DeadlineDateTime: "",
-        FK_ResolutionReminderFrequency_ID:
-          resolutionData.fK_ResolutionReminderFrequency_ID,
-        FK_ResolutionDecision_ID: resolutionData.fK_ResolutionDecision_ID,
-        DecisionAnnouncementDateTime: "",
-        IsResolutionPublic: resolutionData.isResolutionPublic,
-        pK_ResolutionID: resolutionData.pK_ResolutionID,
-        ResolutionStatus: resolutionData.status,
-      });
-      reminderData
-        .filter(
-          (data, index) =>
-            data.value === resolutionData.fK_ResolutionReminderFrequency_ID
-        )
-        .map((reminderData, index) => {
-          setReminderFrequencyValue({
-            label: reminderData.label,
-            value: reminderData.value,
-          });
+    setDsicardresolution(false)
+    let resolutionData = ResolutionReducer.getResolutionbyID.resolution;
+    let votersResolutionMembers = ResolutionReducer.getResolutionbyID.voters;
+    let nonVotersResolutionMembers =
+      ResolutionReducer.getResolutionbyID.nonVoters;
+    let attachmentsResolution =
+      ResolutionReducer.getResolutionbyID.attachments;
+    setEditResolutionData({
+      FK_ResolutionStatusID: resolutionData.fK_ResolutionDecision_ID,
+      FK_ResolutionVotingMethodID: resolutionData.fK_ResolutionVotingMethodID,
+      Title: resolutionData.title,
+      NotesToVoter: resolutionData.notesToVoter,
+      CirculationDateTime: "",
+      DeadlineDateTime: "",
+      FK_ResolutionReminderFrequency_ID:
+        resolutionData.fK_ResolutionReminderFrequency_ID,
+      FK_ResolutionDecision_ID: resolutionData.fK_ResolutionDecision_ID,
+      DecisionAnnouncementDateTime: "",
+      IsResolutionPublic: resolutionData.isResolutionPublic,
+      pK_ResolutionID: resolutionData.pK_ResolutionID,
+      ResolutionStatus: resolutionData.status,
+    });
+    reminderData
+      .filter(
+        (data, index) =>
+          data.value === resolutionData.fK_ResolutionReminderFrequency_ID
+      )
+      .map((reminderData, index) => {
+        setReminderFrequencyValue({
+          label: reminderData.label,
+          value: reminderData.value,
         });
-      votingMethods
-        .filter(
-          (data, index) =>
-            data.value === resolutionData.fK_ResolutionVotingMethodID
-        )
-        .map((methodData, index) => {
-          setVotingMethodValue({
-            label: methodData.label,
-            value: methodData.value,
-          });
+      });
+    votingMethods
+      .filter(
+        (data, index) =>
+          data.value === resolutionData.fK_ResolutionVotingMethodID
+      )
+      .map((methodData, index) => {
+        setVotingMethodValue({
+          label: methodData.label,
+          value: methodData.value,
         });
-      console.log(
-        "resolutionData",
-        resolutionData.circulationDateTime.slice(0, 4)
-      );
-      setCirculationDateTime({
-        date: editResolutionDate(resolutionData.circulationDateTime),
-        time: editResolutionTime(resolutionData.circulationDateTime),
       });
-      setVotingDateTime({
-        date: editResolutionDate(resolutionData.deadlineDateTime),
-        time: editResolutionTime(resolutionData.deadlineDateTime),
-      });
-      setDecisionDateTime({
-        date: editResolutionDate(resolutionData.decisionAnnouncementDateTime),
-        time: editResolutionTime(resolutionData.decisionAnnouncementDateTime),
-      });
-      if (attachmentsResolution.length > 0) {
-        let resolutionAttachment = [];
-        attachmentsResolution.map((data, index) => {
-          resolutionAttachment.push({
-            DisplayAttachmentName: data.displayAttachmentName,
-            OriginalAttachmentName: data.originalAttachmentName,
-            pK_RAID: 0,
-          });
-          setTasksAttachments(resolutionAttachment);
+    console.log(
+      "resolutionData",
+      resolutionData.circulationDateTime.slice(0, 4)
+    );
+    setCirculationDateTime({
+      date: editResolutionDate(resolutionData.circulationDateTime),
+      time: editResolutionTime(resolutionData.circulationDateTime),
+    });
+    setVotingDateTime({
+      date: editResolutionDate(resolutionData.deadlineDateTime),
+      time: editResolutionTime(resolutionData.deadlineDateTime),
+    });
+    setDecisionDateTime({
+      date: editResolutionDate(resolutionData.decisionAnnouncementDateTime),
+      time: editResolutionTime(resolutionData.decisionAnnouncementDateTime),
+    });
+    if (attachmentsResolution.length > 0) {
+      let resolutionAttachment = [];
+      attachmentsResolution.map((data, index) => {
+        resolutionAttachment.push({
+          DisplayAttachmentName: data.displayAttachmentName,
+          OriginalAttachmentName: data.originalAttachmentName,
+          pK_RAID: 0,
         });
-      }
-      if (votersResolutionMembers.length > 0) {
-        let viewVoter = [];
-        let sendVoter = [];
-        votersResolutionMembers.map((voterMember, index) => {
-          meetingAttendeesList
-            .filter(
-              (assigneeData, index) =>
-                assigneeData.pK_UID === voterMember.fK_UID
-            )
-            .map((data, index) => {
-              sendVoter.push({
-                FK_UID: data.pK_UID,
-                FK_VotingStatus_ID: 3,
-                Notes: "",
-                Email: data.emailAddress,
-              });
-              viewVoter.push(data);
+        setTasksAttachments(resolutionAttachment);
+      });
+    }
+    if (votersResolutionMembers.length > 0) {
+      let viewVoter = [];
+      let sendVoter = [];
+      votersResolutionMembers.map((voterMember, index) => {
+        meetingAttendeesList
+          .filter(
+            (assigneeData, index) =>
+              assigneeData.pK_UID === voterMember.fK_UID
+          )
+          .map((data, index) => {
+            sendVoter.push({
+              FK_UID: data.pK_UID,
+              FK_VotingStatus_ID: 3,
+              Notes: "",
+              Email: data.emailAddress,
             });
-          setVoters(sendVoter);
-          setVotersForView(viewVoter);
-        });
-      }
-      if (nonVotersResolutionMembers.length > 0) {
-        let viewVoter = [];
-        let sendVoter = [];
-        nonVotersResolutionMembers.map((voterMember, index) => {
-          meetingAttendeesList
-            .filter(
-              (assigneeData, index) =>
-                assigneeData.pK_UID === voterMember.fK_UID
-            )
-            .map((data, index) => {
-              sendVoter.push({
-                FK_UID: data.pK_UID,
-                FK_VotingStatus_ID: 3,
-                Notes: "",
-                Email: data.emailAddress,
-              });
-              viewVoter.push(data);
+            viewVoter.push(data);
+          });
+        setVoters(sendVoter);
+        setVotersForView(viewVoter);
+      });
+    }
+    if (nonVotersResolutionMembers.length > 0) {
+      let viewVoter = [];
+      let sendVoter = [];
+      nonVotersResolutionMembers.map((voterMember, index) => {
+        meetingAttendeesList
+          .filter(
+            (assigneeData, index) =>
+              assigneeData.pK_UID === voterMember.fK_UID
+          )
+          .map((data, index) => {
+            sendVoter.push({
+              FK_UID: data.pK_UID,
+              FK_VotingStatus_ID: 3,
+              Notes: "",
+              Email: data.emailAddress,
             });
-          setNonVoters(sendVoter);
-          setNonVotersForView(viewVoter);
-        });
-      }
+            viewVoter.push(data);
+          });
+        setNonVoters(sendVoter);
+        setNonVotersForView(viewVoter);
+      });
     }
   };
+
   // for api reponce of list of all assignees
   useEffect(() => {
     try {
@@ -910,6 +909,7 @@ const EditResolution = ({
       setVotingMethods(newArr);
     }
   }, [ResolutionReducer.GetAllVotingMethods]);
+
   useEffect(() => {
     if (ResolutionReducer.ResponseMessage !== "" && ResolutionReducer.ResponseMessage !== t("Data-available")) {
       setOpen({
@@ -925,11 +925,13 @@ const EditResolution = ({
       dispatch(clearResponseMessage());
     }
   }, [ResolutionReducer.ResponseMessage]);
+
   useEffect(() => {
     dispatch(getAllVotingMethods(navigate, t));
     dispatch(getAllResolutionStatus(navigate, t));
     dispatch(allAssignessList(navigate, t));
   }, []);
+
   useEffect(() => {
     if (ResolutionReducer.getResolutionbyID !== null) {
       console.log(

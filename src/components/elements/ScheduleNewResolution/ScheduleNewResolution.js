@@ -298,7 +298,7 @@ const ScheduleNewResolution = ({
           const assigneesName = item.name.toLowerCase();
           return (
             searchTerm &&
-            assigneesName.startsWith(searchTerm) &&
+            assigneesName.includes(searchTerm) &&
             assigneesName !== searchTerm
           );
         })
@@ -498,6 +498,10 @@ const ScheduleNewResolution = ({
               id
             )
           );
+          console.log(Data,
+            voters,
+            nonVoter,
+            tasksAttachments, "CreateResolutionCreateResolutionCreateResolution")
         }
       } else {
         let Data = {
@@ -553,6 +557,10 @@ const ScheduleNewResolution = ({
             )
           );
         }
+        console.log(Data,
+          voters,
+          nonVoter,
+          tasksAttachments, "CreateResolutionCreateResolutionCreateResolution")
         setTasksAttachments([]);
       }
     } else {
@@ -562,6 +570,7 @@ const ScheduleNewResolution = ({
         message: "Please fill all the fields",
       });
     }
+
   };
 
   const props = {
@@ -1335,7 +1344,7 @@ const ScheduleNewResolution = ({
                                 </Col>
                               </Row>
 
-                              <Row className="mt-3">
+                              <Row className="mt-1">
                                 <Col
                                   lg={12}
                                   md={12}

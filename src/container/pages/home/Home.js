@@ -111,6 +111,7 @@ const Home = () => {
   // get new date
   let date = new Date();
   let getCurrentDate = moment(date).format("DD");
+  console.log(getCurrentDate, "getCurrentDategetCurrentDategetCurrentDate")
   let format = "YYYYMMDD";
 
   const [dates, setDates] = useState([]);
@@ -557,15 +558,16 @@ const Home = () => {
     let flag = false;
     let indexforUndeline = null;
     meetingIdReducer.UpcomingEventsData.map((upcomingEventsData, index) => {
+      console.log(upcomingEventsData, "upcomingEventsDataupcomingEventsDataupcomingEventsData")
       if (
-        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) !=
+        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) !==
         getCurrentDate
       ) {
         if (indexforUndeline === null && flag === false) {
           if (index - 1 >= 0) {
             flag = true;
             indexforUndeline = index;
-            console.log("upcomingEventsupcomingEvents2323", index);
+            console.log("upcomingEventsDataupcomingEventsDataupcomingEventsData", index);
           }
         }
       }
@@ -573,7 +575,8 @@ const Home = () => {
 
     return meetingIdReducer.UpcomingEventsData.map(
       (upcomingEventsData, index) => {
-        console.log("upcomingEvents index", index);
+        console.log("upcomingEvents index", upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
+          getCurrentDate);
         return (
           <>
             {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
@@ -581,7 +584,7 @@ const Home = () => {
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <div
-                    className="event-details upcoming_events  border-0"
+                    className="event-details upcoming_events todayEvent border-0"
                     onClick={() =>
                       viewModalHandler(
                         upcomingEventsData.meetingDetails.pK_MDID
@@ -602,7 +605,9 @@ const Home = () => {
               </Row>
             ) : indexforUndeline != null && indexforUndeline === index ? (
               <>
-                <span className="bordertop" />
+                {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
+                  getCurrentDate && <span className="bordertop" />}
+
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <div
@@ -697,7 +702,7 @@ const Home = () => {
                       </div>
                       <div className="home-meetingcount-text Saved_money_Tagline">
                         {t("Meeting")} <br />
-                        {t("This-week")}
+                        {t("This-month")}
                       </div>
                     </CustomTextProgressbar>
                   )}
@@ -776,8 +781,8 @@ const Home = () => {
                         </strong>
                       </div>
                       <div className="home-todocount-text Saved_money_Tagline">
-                        {t("Things")} <br />
-                        {t("To-do")}
+                        {t("Todo")} <br />
+                        {t("This-month")}
                       </div>
                     </CustomTextProgressbar>
                   )}
