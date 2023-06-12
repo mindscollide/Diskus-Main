@@ -2247,11 +2247,18 @@ const OTOMessageSendInit = () => {
   }
 }
 
-const OTOMessageSendNotification = (message, response) => {
+const OTOMessageSendSuccess = (message, response) => {
   return {
-    type: actions.OTO_MESSAGESEND_NOTIFICATION,
+    type: actions.OTO_MESSAGESEND_SUCCESS,
     message: message,
     response: response,
+  }
+}
+
+const OTOMessageSendFail = (message) => {
+  return {
+    type: actions.OTO_MESSAGESEND_FAIL,
+    message: message,
   }
 }
 
@@ -2287,7 +2294,7 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
                 )
             ) {
               await dispatch(
-                OTOMessageSendNotification(
+                OTOMessageSendSuccess(
                   t('OTO-message-inserted'),
                   response.data.responseResult.talkResponse,
                 ),
@@ -2300,7 +2307,7 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
                 )
             ) {
               await dispatch(
-                OTOMessageSendNotification(
+                OTOMessageSendSuccess(
                   t('User-is-not-in-channel'),
                   response.data.responseResult.talkResponse,
                 ),
@@ -2313,7 +2320,7 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
                 )
             ) {
               await dispatch(
-                OTOMessageSendNotification(
+                OTOMessageSendSuccess(
                   t('User-is-blocked'),
                   response.data.responseResult.talkResponse,
                 ),
@@ -2326,7 +2333,7 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
                 )
             ) {
               await dispatch(
-                OTOMessageSendNotification(
+                OTOMessageSendSuccess(
                   t('OTO-message-not-inserted'),
                   response.data.responseResult.talkResponse,
                 ),
@@ -2338,21 +2345,17 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t) => {
                   'Talk_TalkServiceManager_InsertOTOMessages_05'.toLowerCase(),
                 )
             ) {
-              await dispatch(
-                OTOMessageSendNotification(t('Something-went-wrong')),
-              )
+              await dispatch(OTOMessageSendFail(t('Something-went-wrong')))
             }
           } else {
-            await dispatch(
-              OTOMessageSendNotification(t('Something-went-wrong')),
-            )
+            await dispatch(OTOMessageSendFail(t('Something-went-wrong')))
           }
         } else {
-          await dispatch(OTOMessageSendNotification(t('Something-went-wrong')))
+          await dispatch(OTOMessageSendFail(t('Something-went-wrong')))
         }
       })
       .catch((response) => {
-        dispatch(OTOMessageSendNotification(t('Something-went-wrong')))
+        dispatch(OTOMessageSendFail(t('Something-went-wrong')))
       })
   }
 }

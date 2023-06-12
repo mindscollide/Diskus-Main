@@ -951,13 +951,23 @@ const talkReducer = (state = initialState, action) => {
         },
       }
 
-    case actions.OTO_MESSAGESEND_NOTIFICATION:
-      console.log('OTO_MESSAGESEND_NOTIFICATION', action)
+    case actions.OTO_MESSAGESEND_SUCCESS:
+      console.log('OTO_MESSAGESEND_SUCCESS', action)
       return {
         ...state,
         MessageSendOTO: {
           ResponseMessage: action.message,
           MessageSendResponseData: action.response,
+        },
+      }
+
+    case actions.OTO_MESSAGESEND_FAIL:
+      console.log('OTO_MESSAGESEND_FAIL', action)
+      return {
+        ...state,
+        MessageSendOTO: {
+          ResponseMessage: action.message,
+          MessageSendResponseData: [],
         },
       }
 

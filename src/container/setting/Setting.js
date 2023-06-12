@@ -33,7 +33,7 @@ const Organization = () => {
   console.log("settingReducersettingReducersettingReducer", settingReducer);
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -102,8 +102,6 @@ const Organization = () => {
   ]);
 
   const [organizationStates, setOrganizationStates] = useState({
-    SynchronizeDocuments: false,
-    DisableMeetingScheduling: false,
     EmailOnNewMeeting: false,
     EmailOnEditMeeting: false,
     PushNotificationOnNewMeeting: false,
@@ -113,8 +111,36 @@ const Organization = () => {
     MaximumMeetingDuration: 0,
     Is2FAVerification: false,
     EmailOnCancelledorDeleteMeeting: false,
-    PushNotificationonCancelledORDeleteMeeting: false
-
+    PushNotificationonCancelledORDeleteMeeting: false,
+    //NEW DATA FROM HERE STARTED
+    DiskusEventColor: "",
+    EmailWhenAddedToCommittee: false,
+    EmailWhenAddedToGroup: false,
+    EmailWhenCommitteeIsDissolvedorArchived: false,
+    EmailWhenCommitteeIsInActive: false,
+    EmailWhenGroupIsClosedorArchived: false,
+    EmailWhenGroupIsInActive: false,
+    EmailWhenNewResolutionIsCirculated: false,
+    EmailWhenRemovedFromCommittee: false,
+    EmailWhenRemovedFromGroup: false,
+    EmailWhenResolutionIsCancelledAfterCirculation: false,
+    EmailWhenResolutionIsClosed: false,
+    PushNotificationWhenAddedToCommittee: false,
+    PushNotificationWhenAddedToGroup: false,
+    PushNotificationWhenCommitteeIsDissolvedorArchived: false,
+    PushNotificationWhenCommitteeIsInActive: false,
+    PushNotificationWhenGroupIsClosedORArchived: false,
+    PushNotificationWhenGroupisSetInactive: false,
+    PushNotificationWhenNewResolutionIsCirculated: false,
+    PushNotificationWhenRemoveFromGroup: false,
+    PushNotificationWhenRemovedFromCommittee: false,
+    PushNotificationWhenResolutionIsClosed: false,
+    PushNotificationWhenWhenResolutionIsCancelledAfterCirculation: false,
+    UserAllowGoogleCalendarSynch: false,
+    UserAllowMicrosoftCalendarSynch: false,
+    UserName: "",
+    GoogleEventColor: "",
+    OfficeEventColor: "",
   });
   const [timeZoneValue, setTimeZoneValue] = useState({
     label: "",
@@ -127,19 +153,6 @@ const Organization = () => {
     label: "",
     value: "",
   });
-  const synchronizeDocuments = (checked) => {
-    setOrganizationStates({
-      ...organizationStates,
-      SynchronizeDocuments: checked,
-    });
-  };
-
-  const disableMeetingScheduling = (checked) => {
-    setOrganizationStates({
-      ...organizationStates,
-      DisableMeetingScheduling: checked,
-    });
-  };
 
   const emailOnNewMeeting = (checked) => {
     setOrganizationStates({
@@ -188,6 +201,20 @@ const Organization = () => {
       Is2FAVerification: checked,
     });
   };
+
+  const ChangeEmailWhenAddedToGroup = (checked) => {
+    setOrganizationStates({
+      ...organizationStates,
+      EmailWhenAddedToGroup: checked,
+    });
+  };
+
+  const ChangeEmailWhenCommitteeIsDissolvedorArchived = (checked) => {
+    setOrganizationStates({
+      ...organizationStates,
+      EmailWhenCommitteeIsDissolvedorArchived: checked,
+    });
+  };
   const pushNotificationOnCancelledMeeting = (checked) => {
     setOrganizationStates({
       ...organizationStates,
@@ -205,16 +232,14 @@ const Organization = () => {
   };
 
   useEffect(() => {
-    dispatch(getUserSetting(navigate, t))
+    dispatch(getUserSetting(navigate, t));
     // dispatch(getTimeZone())
-  }, [])
+  }, []);
   useEffect(() => {
     let userProfileData = settingReducer.UserProfileData;
     if (userProfileData !== null && userProfileData !== undefined) {
       console.log("userProfileDatauserProfileData", userProfileData);
       let settingData = {
-        SynchronizeDocuments: userProfileData.synchronizeDocuments,
-        DisableMeetingScheduling: userProfileData.disableMeetingScheduling,
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
         EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
         PushNotificationOnNewMeeting:
@@ -226,8 +251,59 @@ const Organization = () => {
         DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
         Is2FAVerification: userProfileData.iS2FAEnabled,
-        EmailOnCancelledorDeleteMeeting: userProfileData.emailOnCancelledORDeleteMeeting,
-        PushNotificationonCancelledORDeleteMeeting: userProfileData.pushNotificationonCancelledORDeleteMeeting
+        EmailOnCancelledorDeleteMeeting:
+          userProfileData.emailOnCancelledORDeleteMeeting,
+        PushNotificationonCancelledORDeleteMeeting:
+          userProfileData.pushNotificationonCancelledORDeleteMeeting,
+        //New Data inserted
+        DiskusEventColor: userProfileData.diskusEventColor,
+        EmailWhenAddedToCommittee: userProfileData.emailWhenAddedToCommittee,
+        EmailWhenAddedToGroup: userProfileData.emailWhenAddedToGroup,
+        EmailWhenCommitteeIsDissolvedorArchived:
+          userProfileData.emailWhenCommitteeIsDissolvedorArchived,
+        EmailWhenCommitteeIsInActive:
+          userProfileData.emailWhenCommitteeIsInActive,
+        EmailWhenGroupIsClosedorArchived:
+          userProfileData.emailWhenGroupIsClosedorArchived,
+        EmailWhenGroupIsInActive: userProfileData.emailWhenGroupIsInActive,
+        EmailWhenNewResolutionIsCirculated:
+          userProfileData.emailWhenNewResolutionIsCirculated,
+        EmailWhenRemovedFromCommittee:
+          userProfileData.emailWhenRemovedFromCommittee,
+        EmailWhenRemovedFromGroup: userProfileData.emailWhenRemovedFromGroup,
+        EmailWhenResolutionIsCancelledAfterCirculation:
+          userProfileData.emailWhenResolutionIsCancelledAfterCirculation,
+        EmailWhenResolutionIsClosed:
+          userProfileData.emailWhenResolutionIsClosed,
+        PushNotificationWhenAddedToCommittee:
+          userProfileData.pushNotificationWhenAddedToCommittee,
+        PushNotificationWhenAddedToGroup:
+          userProfileData.pushNotificationWhenAddedToGroup,
+        PushNotificationWhenCommitteeIsDissolvedorArchived:
+          userProfileData.pushNotificationWhenCommitteeIsDissolvedorArchived,
+        PushNotificationWhenCommitteeIsInActive:
+          userProfileData.pushNotificationWhenCommitteeIsInActive,
+        PushNotificationWhenGroupIsClosedORArchived:
+          userProfileData.pushNotificationWhenGroupIsClosedORArchived,
+        PushNotificationWhenGroupisSetInactive:
+          userProfileData.pushNotificationWhenGroupisSetInactive,
+        PushNotificationWhenNewResolutionIsCirculated:
+          userProfileData.pushNotificationWhenNewResolutionIsCirculated,
+        PushNotificationWhenRemoveFromGroup:
+          userProfileData.pushNotificationWhenRemoveFromGroup,
+        PushNotificationWhenRemovedFromCommittee:
+          userProfileData.pushNotificationWhenRemovedFromCommittee,
+        PushNotificationWhenResolutionIsClosed:
+          userProfileData.pushNotificationWhenResolutionIsClosed,
+        PushNotificationWhenWhenResolutionIsCancelledAfterCirculation:
+          userProfileData.pushNotificationWhenWhenResolutionIsCancelledAfterCirculation,
+        UserAllowGoogleCalendarSynch:
+          userProfileData.userAllowGoogleCalendarSynch,
+        UserAllowMicrosoftCalendarSynch:
+          userProfileData.userAllowMicrosoftCalendarSynch,
+        UserName: userProfileData.userName,
+        GoogleEventColor: userProfileData.googleEventColor,
+        OfficeEventColor: userProfileData.officeEventColor,
       };
       setOrganizationStates(settingData);
     }
@@ -236,8 +312,6 @@ const Organization = () => {
     let userProfileData = settingReducer.UserProfileData;
     if (userProfileData !== null && userProfileData !== undefined) {
       let settingData = {
-        SynchronizeDocuments: userProfileData.synchronizeDocuments,
-        DisableMeetingScheduling: userProfileData.disableMeetingScheduling,
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
         EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
         PushNotificationOnNewMeeting:
@@ -249,8 +323,59 @@ const Organization = () => {
         DormatInactiveUsersforDays: userProfileData.dormantInactiveUsersForDays,
         MaximumMeetingDuration: userProfileData.maximumMeetingDuration,
         Is2FAVerification: userProfileData.iS2FAEnabled,
-        EmailOnCancelledorDeleteMeeting: userProfileData.emailOnCancelledORDeleteMeeting,
-        PushNotificationonCancelledORDeleteMeeting: userProfileData.pushNotificationonCancelledORDeleteMeeting
+        EmailOnCancelledorDeleteMeeting:
+          userProfileData.emailOnCancelledORDeleteMeeting,
+        PushNotificationonCancelledORDeleteMeeting:
+          userProfileData.pushNotificationonCancelledORDeleteMeeting,
+        //New Data inserted
+        DiskusEventColor: userProfileData.diskusEventColor,
+        EmailWhenAddedToCommittee: userProfileData.emailWhenAddedToCommittee,
+        EmailWhenAddedToGroup: userProfileData.emailWhenAddedToGroup,
+        EmailWhenCommitteeIsDissolvedorArchived:
+          userProfileData.emailWhenCommitteeIsDissolvedorArchived,
+        EmailWhenCommitteeIsInActive:
+          userProfileData.emailWhenCommitteeIsInActive,
+        EmailWhenGroupIsClosedorArchived:
+          userProfileData.emailWhenGroupIsClosedorArchived,
+        EmailWhenGroupIsInActive: userProfileData.emailWhenGroupIsInActive,
+        EmailWhenNewResolutionIsCirculated:
+          userProfileData.emailWhenNewResolutionIsCirculated,
+        EmailWhenRemovedFromCommittee:
+          userProfileData.emailWhenRemovedFromCommittee,
+        EmailWhenRemovedFromGroup: userProfileData.emailWhenRemovedFromGroup,
+        EmailWhenResolutionIsCancelledAfterCirculation:
+          userProfileData.emailWhenResolutionIsCancelledAfterCirculation,
+        EmailWhenResolutionIsClosed:
+          userProfileData.emailWhenResolutionIsClosed,
+        PushNotificationWhenAddedToCommittee:
+          userProfileData.pushNotificationWhenAddedToCommittee,
+        PushNotificationWhenAddedToGroup:
+          userProfileData.pushNotificationWhenAddedToGroup,
+        PushNotificationWhenCommitteeIsDissolvedorArchived:
+          userProfileData.pushNotificationWhenCommitteeIsDissolvedorArchived,
+        PushNotificationWhenCommitteeIsInActive:
+          userProfileData.pushNotificationWhenCommitteeIsInActive,
+        PushNotificationWhenGroupIsClosedORArchived:
+          userProfileData.pushNotificationWhenGroupIsClosedORArchived,
+        PushNotificationWhenGroupisSetInactive:
+          userProfileData.pushNotificationWhenGroupisSetInactive,
+        PushNotificationWhenNewResolutionIsCirculated:
+          userProfileData.pushNotificationWhenNewResolutionIsCirculated,
+        PushNotificationWhenRemoveFromGroup:
+          userProfileData.pushNotificationWhenRemoveFromGroup,
+        PushNotificationWhenRemovedFromCommittee:
+          userProfileData.pushNotificationWhenRemovedFromCommittee,
+        PushNotificationWhenResolutionIsClosed:
+          userProfileData.pushNotificationWhenResolutionIsClosed,
+        PushNotificationWhenWhenResolutionIsCancelledAfterCirculation:
+          userProfileData.pushNotificationWhenWhenResolutionIsCancelledAfterCirculation,
+        UserAllowGoogleCalendarSynch:
+          userProfileData.userAllowGoogleCalendarSynch,
+        UserAllowMicrosoftCalendarSynch:
+          userProfileData.userAllowMicrosoftCalendarSynch,
+        UserName: userProfileData.userName,
+        GoogleEventColor: userProfileData.googleEventColor,
+        OfficeEventColor: userProfileData.officeEventColor,
       };
       setOrganizationStates(settingData);
     }
@@ -384,31 +509,6 @@ const Organization = () => {
               </Col>
             </Row> */}
 
-            <Row className={styles["setting-row"]}>
-              <Col
-                lg={10}
-                md={10}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
-                <label>{t("Synchronize-documents")}</label>
-              </Col>
-              <Col
-                lg={2}
-                md={2}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <Switch
-                  name="SynchronizeDocuments"
-                  checkedValue={organizationStates.SynchronizeDocuments}
-                  onChange={synchronizeDocuments}
-                />
-              </Col>
-            </Row>
-            <span className={styles["bottom-line"]}></span>
             <Row className="mt-3 FontArabicRegular">
               <Col
                 lg={10}
@@ -434,6 +534,8 @@ const Organization = () => {
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
+            {/* New Data Started Inserting  */}
+
             <Row className="mt-3 FontArabicRegular">
               <Col
                 lg={10}
@@ -442,7 +544,7 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start fw-900"
               >
-                <label>{t("Disable-meeting-scheduling")}</label>
+                <label>{t("Email-when-added-to-committee")}</label>
               </Col>
               <Col
                 lg={2}
@@ -452,15 +554,675 @@ const Organization = () => {
                 className="d-flex justify-content-end"
               >
                 <Switch
-                  name="DisableMeetingScheduling"
+                  name="EmailWhenAddedToCommittee"
                   checkedValue={
-                    organizationStates.DisableMeetingScheduling || false
+                    organizationStates.EmailWhenAddedToCommittee || false
                   }
-                  onChange={disableMeetingScheduling}
+                  onChange={Is2FAVerificationHandle}
                 />
               </Col>
             </Row>
             <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>{t("Email-when-added-to-group")}</label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="EmailWhenAddedToGroup"
+                  checkedValue={
+                    organizationStates.EmailWhenAddedToGroup || false
+                  }
+                  onChange={ChangeEmailWhenAddedToGroup}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>
+                  {t("Email-when-committee-is-dissolved-or-archived")}
+                </label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="EmailWhenCommitteeIsDissolvedorArchived"
+                  checkedValue={
+                    organizationStates.EmailWhenCommitteeIsDissolvedorArchived ||
+                    false
+                  }
+                  onChange={ChangeEmailWhenCommitteeIsDissolvedorArchived}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>{t("Email-when-committee-is-inActive")}</label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="EmailWhenCommitteeIsInActive"
+                  checkedValue={
+                    organizationStates.EmailWhenCommitteeIsInActive || false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>{t("Email-when-group-is-closed-or-archived")}</label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="EmailWhenGroupIsClosedorArchived"
+                  checkedValue={
+                    organizationStates.EmailWhenGroupIsClosedorArchived || false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>{t("Email-when-group-is-inActive")}</label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="EmailWhenGroupIsInActive"
+                  checkedValue={
+                    organizationStates.EmailWhenGroupIsInActive || false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>{t("Email-when-new-resolution-is-circulated")}</label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="EmailWhenNewResolutionIsCirculated"
+                  checkedValue={
+                    organizationStates.EmailWhenNewResolutionIsCirculated ||
+                    false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>{t("Email-when-removed-from-committee")}</label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="EmailWhenRemovedFromCommittee"
+                  checkedValue={
+                    organizationStates.EmailWhenRemovedFromCommittee || false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>{t("Email-when-removed-from-group")}</label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="EmailWhenRemovedFromGroup"
+                  checkedValue={
+                    organizationStates.EmailWhenRemovedFromGroup || false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>
+                  {t("Email-when-resolution-is-cancelled-after-circulation")}
+                </label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="EmailWhenResolutionIsCancelledAfterCirculation"
+                  checkedValue={
+                    organizationStates.EmailWhenResolutionIsCancelledAfterCirculation ||
+                    false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>{t("Email-when-resolution-is-closed")}</label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="EmailWhenResolutionIsClosed"
+                  checkedValue={
+                    organizationStates.EmailWhenResolutionIsClosed || false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>{t("Push-notification-when-added-to-committee")}</label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="PushNotificationWhenAddedToCommittee"
+                  checkedValue={
+                    organizationStates.PushNotificationWhenAddedToCommittee ||
+                    false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>{t("Push-notification-when-added-to-group")}</label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="PushNotificationWhenAddedToGroup"
+                  checkedValue={
+                    organizationStates.PushNotificationWhenAddedToGroup || false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>
+                  {t(
+                    "Push-notification-when-committee-is-dissolved-or-archived"
+                  )}
+                </label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="PushNotificationWhenCommitteeIsDissolvedorArchived"
+                  checkedValue={
+                    organizationStates.PushNotificationWhenCommitteeIsDissolvedorArchived ||
+                    false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>
+                  {t("Push-notification-when-committee-is-inActive")}
+                </label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="PushNotificationWhenCommitteeIsInActive"
+                  checkedValue={
+                    organizationStates.PushNotificationWhenCommitteeIsInActive ||
+                    false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>
+                  {t("Push-notification-when-group-is-closed-or-archived")}
+                </label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="PushNotificationWhenGroupIsClosedORArchived"
+                  checkedValue={
+                    organizationStates.PushNotificationWhenGroupIsClosedORArchived ||
+                    false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>
+                  {t("Push-notification-when-group-is-set-inactive")}
+                </label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="PushNotificationWhenGroupisSetInactive"
+                  checkedValue={
+                    organizationStates.PushNotificationWhenGroupisSetInactive ||
+                    false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>
+                  {t("Push-notification-when-new-resolution-is-circulated")}
+                </label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="PushNotificationWhenNewResolutionIsCirculated"
+                  checkedValue={
+                    organizationStates.PushNotificationWhenNewResolutionIsCirculated ||
+                    false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>{t("Push-notification-when-remove-from-group")}</label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="PushNotificationWhenRemoveFromGroup"
+                  checkedValue={
+                    organizationStates.PushNotificationWhenRemoveFromGroup ||
+                    false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>
+                  {t("Push-notification-when-removed-from-committee")}
+                </label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="PushNotificationWhenRemovedFromCommittee"
+                  checkedValue={
+                    organizationStates.PushNotificationWhenRemovedFromCommittee ||
+                    false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>
+                  {t("Push-notification-when-resolution-is-closed")}
+                </label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="PushNotificationWhenResolutionIsClosed"
+                  checkedValue={
+                    organizationStates.PushNotificationWhenResolutionIsClosed ||
+                    false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>
+                  {t(
+                    "Push-notification-when-when-resolution-is-cancelled-after-circulation"
+                  )}
+                </label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="PushNotificationWhenWhenResolutionIsCancelledAfterCirculation"
+                  checkedValue={
+                    organizationStates.PushNotificationWhenWhenResolutionIsCancelledAfterCirculation ||
+                    false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>{t("User-allow-google-calendar-synch")}</label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="UserAllowGoogleCalendarSynch"
+                  checkedValue={
+                    organizationStates.UserAllowGoogleCalendarSynch || false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+            <Row className="mt-3 FontArabicRegular">
+              <Col
+                lg={10}
+                md={10}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-start fw-900"
+              >
+                <label>{t("User-allow-microsoft-calendar-synch")}</label>
+              </Col>
+              <Col
+                lg={2}
+                md={2}
+                sm={12}
+                xs={12}
+                className="d-flex justify-content-end"
+              >
+                <Switch
+                  name="UserAllowMicrosoftCalendarSynch"
+                  checkedValue={
+                    organizationStates.UserAllowMicrosoftCalendarSynch || false
+                  }
+                  onChange={Is2FAVerificationHandle}
+                />
+              </Col>
+            </Row>
+            <span className={styles["bottom-line"]}></span>
+
+            {/* New Data Ends */}
             <Row className="mt-3 FontArabicRegular">
               <Col
                 lg={10}
@@ -530,7 +1292,9 @@ const Organization = () => {
               >
                 <Switch
                   name="EmailOnCancelledMeeting"
-                  checkedValue={organizationStates.EmailOnCancelledorDeleteMeeting}
+                  checkedValue={
+                    organizationStates.EmailOnCancelledorDeleteMeeting
+                  }
                   onChange={emailOnCancelledMeeting}
                 />
               </Col>
@@ -596,7 +1360,9 @@ const Organization = () => {
                 xs={12}
                 className="d-flex justify-content-start fw-900"
               >
-                <label>{t("Push-notification-on-cancel-or-delete-meeting")}</label>
+                <label>
+                  {t("Push-notification-on-cancel-or-delete-meeting")}
+                </label>
               </Col>
               <Col
                 lg={2}
