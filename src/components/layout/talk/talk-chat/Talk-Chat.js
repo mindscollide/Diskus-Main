@@ -149,9 +149,28 @@ const TalkChat = () => {
   let changeDateFormatYesterday = moment(yesterdayDate).utc()
   let yesterdayDateUtc = moment(changeDateFormatYesterday).format('YYYYMMDD')
 
+  function generateGUID() {
+    const alphanumericChars =
+      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    const randomChars = Array.from(
+      { length: 14 },
+      () =>
+        alphanumericChars[Math.floor(Math.random() * alphanumericChars.length)],
+    )
+    const currentDate = new Date()
+    const currentUTCDateTime = currentDate.toISOString().replace(/[-:.TZ]/g, '')
+
+    return `${randomChars.join('')}_${currentUTCDateTime}_${currentUserId}_${
+      chatClickData.id
+    }`
+  }
+
   //Opening Chat States
   const [activeChat, setActiveChat] = useState([])
   const [chatOpen, setChatOpen] = useState(false)
+
+  //Generate Unique ID
+  const [guID, setGUID] = useState('')
 
   //Scroll down state
   const chatMessages = useRef()
@@ -367,6 +386,8 @@ const TalkChat = () => {
     FileGeneratedName: '',
     Extension: '',
     AttachmentLocation: '',
+    UID: '',
+    MessageID: 0,
   })
 
   //saving chat click data in a state
@@ -548,13 +569,11 @@ const TalkChat = () => {
 
   //Group Name Change Handler
   const groupNameHandler = (e) => {
-    console.log('Group Name Handler', e.target.value)
     setGroupName(e.target.value)
   }
 
   //Shout Name Change Handler
   const shoutNameHandler = (e) => {
-    console.log('Group Name Handler', e.target.value)
     setShoutName(e.target.value)
   }
 
@@ -654,7 +673,6 @@ const TalkChat = () => {
 
   //Emoji on click function
   const emojiClick = () => {
-    console.log('Emoji Clicked', emojiActive)
     if (emojiActive === false) {
       setEmojiActive(true)
     } else {
@@ -866,8 +884,6 @@ const TalkChat = () => {
     }
   }
 
-  console.log('Filter Flag', filterFlag)
-
   //Clicking on Chat Function
   const chatClick = (record) => {
     dispatch(
@@ -928,9 +944,7 @@ const TalkChat = () => {
         }
         dispatch(activeChatID(newData))
       }
-    } catch {
-      console.log('error on open chat data slection')
-    }
+    } catch {}
 
     setMessageSendData({
       ...messageSendData,
@@ -956,7 +970,6 @@ const TalkChat = () => {
       admin: record.admin,
       isBlock: record.isBlock,
     })
-    console.log('recordrecordrecordrecordrecord', record)
 
     setActiveChat(record)
     setChatOpen(true)
@@ -1201,9 +1214,7 @@ const TalkChat = () => {
           setAllUsers(data)
         }
       }
-    } catch {
-      console.log('Error on Filter')
-    }
+    } catch {}
   }
 
   //Search Chats
@@ -1235,9 +1246,7 @@ const TalkChat = () => {
           setAllChatData(data)
         }
       }
-    } catch {
-      console.log('Error on Filter')
-    }
+    } catch {}
   }
 
   //Search Group Chat
@@ -1446,13 +1455,11 @@ const TalkChat = () => {
 
   //Edit Group Title Activator
   const editGroupTitle = () => {
-    console.log('Image Clicked')
     setShowEditGroupField(true)
   }
 
   //Edit Shout Title Activator
   const editShoutTitle = () => {
-    console.log('Image Clicked')
     setShowEditShoutField(true)
   }
 
@@ -1512,8 +1519,6 @@ const TalkChat = () => {
     setEmojiActive(false)
     setInputChat(true)
   }
-
-  console.log('INPUT CHAT FOCUS', inputChat)
 
   //Selected Option of the chat
   const chatFeatureSelected = (record, id) => {
@@ -1618,7 +1623,6 @@ const TalkChat = () => {
 
   //mark starred message handler
   const markUnmarkStarMessageHandler = (record) => {
-    console.log('markUnmarkStarMessageHandler', record)
     setMessageClickData(record)
     let Data = {
       UserID: parseInt(currentUserId),
@@ -1719,8 +1723,6 @@ const TalkChat = () => {
       setEditGroupUsersChecked([...editGroupUsersChecked, id])
     }
   }
-
-  console.log('editShoutUsersChecked', editShoutUsersChecked)
 
   //on change groups users
   const editShoutUsersCheckedHandler = (data, id, index) => {
@@ -1942,7 +1944,6 @@ const TalkChat = () => {
   //Search Group Chat
   const searchGroupEditUser = (e) => {
     setSearchGroupUserInfoValue(e)
-    console.log('Group Info Filter', searchGroupUserInfoValue)
     try {
       if (
         talkStateData.AllUsers.AllUsersData !== undefined &&
@@ -1960,26 +1961,18 @@ const TalkChat = () => {
           } else {
             setAllUsers(filteredData)
           }
-          console.log(
-            'Group Info Filter',
-            talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse,
-          )
         } else if (e === '' || e === null) {
           let data = talkStateData.AllUsers.AllUsersData.allUsers
           setSearchGroupUserInfoValue('')
           setAllUsers(data)
-          console.log('Group Info Filter', data)
         }
       }
-    } catch {
-      console.log('Group User Search Filter')
-    }
+    } catch {}
   }
 
   //Search Shout Chat
   const searchShoutEditUser = (e) => {
     setSearchUserShoutValue(e)
-    console.log('Group Info Filter', searchUserShoutValue)
     try {
       if (
         talkStateData.AllUsers.AllUsersData !== undefined &&
@@ -1997,20 +1990,13 @@ const TalkChat = () => {
           } else {
             setAllUsers(filteredData)
           }
-          console.log(
-            'Group Info Filter',
-            talkStateData.GetPrivateGroupMembers.GetPrivateGroupMembersResponse,
-          )
         } else if (e === '' || e === null) {
           let data = talkStateData.AllUsers.AllUsersData.allUsers
           setSearchUserShoutValue('')
           setAllUsers(data)
-          console.log('Group Info Filter', data)
         }
       }
-    } catch {
-      console.log('Group User Search Filter')
-    }
+    } catch {}
   }
 
   //Search Group Chat
@@ -2049,9 +2035,7 @@ const TalkChat = () => {
           setGroupInfoData(data)
         }
       }
-    } catch {
-      console.log('Filter Error')
-    }
+    } catch {}
   }
 
   const deleteShoutFunction = () => {
@@ -2064,10 +2048,8 @@ const TalkChat = () => {
         },
       },
     }
-    console.log('deleteShoutFunction', Data)
     dispatch(DeleteShout(navigate, Data, t))
     setChatMenuActive(false)
-    console.log('delete')
   }
 
   const editShoutFunction = () => {
@@ -2081,8 +2063,6 @@ const TalkChat = () => {
     setShowShoutEdit(true)
     setChatMenuActive(false)
   }
-
-  console.log('Group Info Filter', groupInfoData)
 
   const showChatSearchHandler = () => {
     if (showChatSearch === true) {
@@ -2161,7 +2141,6 @@ const TalkChat = () => {
       talkStateData.talkSocketData.socketInsertOTOMessageData !== undefined &&
       talkStateData.talkSocketData.socketInsertOTOMessageData.length !== 0
     ) {
-      console.log('talkStateData.talkSocketData.socketInsertOTOMessageData')
       try {
         if (talkStateData.activeChatIdData.messageType === 'O') {
           if (
@@ -2179,7 +2158,6 @@ const TalkChat = () => {
               talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
                 .receiverID
           ) {
-            console.log('This is Senders end Check')
             let mqttInsertOtoMessageData =
               talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
             let insertMqttOtoMessageData = {
@@ -2339,9 +2317,6 @@ const TalkChat = () => {
                 setAllOtoMessages([...allMessagesArr])
               }
             }
-            // } else {
-            //   console.log('reciver id not found')
-            // }
           } else if (
             talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
               .senderID != undefined &&
@@ -2357,7 +2332,6 @@ const TalkChat = () => {
               talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
                 .senderID
           ) {
-            console.log('This is Receivers end Check')
             let mqttInsertOtoMessageData =
               talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
             let insertMqttOtoMessageData = {
@@ -2536,8 +2510,6 @@ const TalkChat = () => {
             talkStateData.activeChatIdData.id === 0 &&
             talkStateData.activeChatIdData.messageType === ''
           ) {
-            console.log('This is Receivers end Check when chat not open')
-
             let mqttInsertOtoMessageData =
               talkStateData.talkSocketData.socketInsertOTOMessageData.data[0]
             let allChatNewMessageOtoData = {
@@ -2622,16 +2594,10 @@ const TalkChat = () => {
             }
           }
         }
-      } catch {
-        console.log(
-          'ERROR talkStateData.talkSocketData.socketInsertOTOMessageData',
-        )
-      }
+      } catch {}
     }
     //
   }, [talkStateData.talkSocketData.socketInsertOTOMessageData])
-
-  console.log('This is All Chat Data', allChatData)
 
   useEffect(() => {
     if (
@@ -3037,11 +3003,7 @@ const TalkChat = () => {
             }
           }
         }
-      } catch {
-        console.log(
-          'ERROR talkStateData.talkSocketData.socketInsertGroupMessageData',
-        )
-      }
+      } catch {}
     }
   }, [talkStateData.talkSocketData.socketInsertGroupMessageData])
 
@@ -3481,11 +3443,7 @@ const TalkChat = () => {
             }
           }
         }
-      } catch {
-        console.log(
-          'ERROR talkStateData.talkSocketInsertBroadcastMessage.MessageSendBroadcastResponseData',
-        )
-      }
+      } catch {}
     }
   }, [
     talkStateData.talkSocketInsertBroadcastMessage
@@ -3694,17 +3652,29 @@ const TalkChat = () => {
   //Send Chat
   const sendChat = async (e) => {
     e.preventDefault()
-
     dispatch(activeChatID(activeChat))
     if (messageSendData.Body !== '') {
+      // Generate the unique ID
+      const uniqueId = generateGUID()
+      console.log('uniqueId', uniqueId)
+
       if (chatClickData.messageType === 'O') {
         let Data = {
           TalkRequest: {
             ChannelID: parseInt(currentOrganizationId),
-            Message: messageSendData,
+            Message: {
+              ...messageSendData,
+              UID: uniqueId,
+            },
           },
         }
-        dispatch(InsertOTOMessages(navigate, Data, uploadFileTalk, t))
+        const existingArray =
+          JSON.parse(localStorage.getItem('messageArray')) || []
+        existingArray.push(Data)
+        localStorage.setItem('messageArray', JSON.stringify(existingArray))
+
+        console.log('Insert OTO Message Response', Data)
+        // dispatch(InsertOTOMessages(navigate, Data, uploadFileTalk, t))
 
         let newMessageOto = {
           messageID: 0,
@@ -3726,7 +3696,7 @@ const TalkChat = () => {
           fileName: '',
           messageCount: 0,
           attachmentLocation: '',
-          uid: '',
+          uid: uniqueId,
           blockCount: 0,
           sourceMessageBody: 'Direct Message',
           sourceMessageId: 0,
@@ -3760,6 +3730,8 @@ const TalkChat = () => {
           FileGeneratedName: '',
           Extension: '',
           AttachmentLocation: '',
+          UID: '',
+          MessageID: 0,
         })
         let updatedArray = allChatData.map((obj) => {
           if (obj.id === newChat.id) {
@@ -3831,6 +3803,7 @@ const TalkChat = () => {
           FileGeneratedName: '',
           Extension: '',
           AttachmentLocation: '',
+          MessageID: 0,
         })
         let updatedArray = allChatData.map((obj) => {
           if (obj.id === newChat.id) {
@@ -3902,6 +3875,8 @@ const TalkChat = () => {
           FileGeneratedName: '',
           Extension: '',
           AttachmentLocation: '',
+          MessageID: 0,
+          UID: '',
         })
         let updatedArray = allChatData.map((obj) => {
           if (obj.id === newChat.id) {
@@ -4024,7 +3999,6 @@ const TalkChat = () => {
     }
     dispatch(UpdateShoutAll(Data, t, navigate))
     setShowShoutEdit(false)
-    console.log('editShoutAll', Data)
   }
 
   //Group Modification
@@ -4044,7 +4018,6 @@ const TalkChat = () => {
   }, [])
 
   const leaveGroupHandler = (record) => {
-    console.log('Leave Group', record)
     let data = {
       UserID: parseInt(currentUserId),
       GroupID: record.id,
@@ -4054,7 +4027,6 @@ const TalkChat = () => {
   }
 
   const leaveGroupHandlerChat = (record) => {
-    console.log('Leave Group', record)
     let data = {
       UserID: parseInt(currentUserId),
       GroupID: record.id,
@@ -4092,12 +4064,7 @@ const TalkChat = () => {
 
   console.log('activeCreateShoutAll', activeCreateShoutAll)
 
-  console.log(
-    'All Messages State',
-    allOtoMessages,
-    allGroupMessages,
-    allBroadcastMessages,
-  )
+  console.log('Insert Oto message', allOtoMessages)
 
   return (
     <>

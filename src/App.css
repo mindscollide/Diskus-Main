@@ -5034,33 +5034,20 @@ body[dir="rtl"] .select-dropdowns-height .css-13cymwt-control {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-.select-dropdowns-height-DataRoom .css-13cymwt-control {
+.searchResult_Document__control {
   height: 39px !important;
+  width: 100%;
   border-radius: 4px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
   font-family: "MontserratSemiBold";
-  color: #fff !important;
+  box-shadow: none !important;
 }
 
-.select-dropdowns-height-DataRoom .css-1dimb5e-singleValue {
-  color: #fff !important;
-}
 
-.select-dropdowns-height-DataRoom div#react-select-2-placeholder {
-  color: #fff !important;
-}
 
-.select-dropdowns-height-DataRoom div#react-select-3-placeholder {
+/* .searchResult_Document__single-value {
   color: #fff !important;
-}
+} */
 
-.select-dropdowns-height-DataRoom div#react-select-4-placeholder {
-  color: #fff !important;
-}
-
-.select-dropdowns-height-DataRoom div#react-select-5-placeholder {
-  color: #fff !important;
-}
 
 body[dir="rtl"]
   .group-type-select-field
