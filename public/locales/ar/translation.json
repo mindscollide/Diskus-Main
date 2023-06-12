@@ -987,5 +987,17 @@
   "Email-when-added-to-committee": "Email When Added To Committee",
   "Email-when-a-Resolution-is-Closed": "Email when a Resolution is Closed",
   "User-Allow-Google-Calendar-Synch": "User Allow Google Calendar Synch",
-  "User-Allow-Microsoft-Calendar-Synch": "User Allow Microsoft Calendar Synch"
+  "User-Allow-Microsoft-Calendar-Synch": "User Allow Microsoft Calendar Synch",
+  "Email-when-committee-is-dissolved-or-archived": "Email When Committee Is Dissolved or Archived",
+  "Email-when-group-is-closed-or-archived": "Email When Group Is Closed or Archived",
+  "Email-when-resolution-is-closed": "Email When Resolution Is Closed",
+  "Push-notification-when-committee-is-dissolved-or-archived": "Push Notification When Committee Is Dissolved or Archived",
+  "Push-notification-when-committee-is-inActive": "Push Notification When Committee Is InActive",
+  "Push-notification-when-group-is-closed-or-archived": "Push Notification When Group Is Closed Or Archived",
+  "Push-notification-when-group-is-set-inactive": "Push Notification When Group Is Set Inactive",
+  "Push-notification-when-remove-from-group": "Push Notification When Remove From Group",
+  "Push-notification-when-resolution-is-closed": "Push-notification-when-resolution-is-closed",
+  "Push-notification-when-when-resolution-is-cancelled-after-circulation": "Push Notification When Resolution Is Cancelled After Circulation",
+  "User-allow-google-calendar-synch": "User Allow Google Calendar Synch",
+  "User-allow-microsoft-calendar-synch": "User Allow Microsoft Calendar Synch"
 }

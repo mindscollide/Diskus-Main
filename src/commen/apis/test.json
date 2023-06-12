@@ -1,31 +1,41 @@
 {
-    "TalkRequest": {
-        "ChannelID": 302,
-        "Message": {
-            "SenderID": "801",
-            "ReceiverID": "779",
-            "Body": "Test",
-            "MessageActivity": "Direct Message",
-            "FileName": "",
-            "FileGeneratedName": "",
-            "Extension": "",
-            "AttachmentLocation": ""
-        }
-    }
-}
-
-{
-    "TalkRequest": {
-        "ChannelID": 302,
-        "Message": {
-            "SenderID": "779",
-            "ReceiverID": "780",
-            "Body": "Test",
-            "MessageActivity": "Direct Message",
-            "FileName": "",
-            "FileGeneratedName": "",
-            "Extension": "",
-            "AttachmentLocation": ""
-        }
-    }
+  "organizationSettings": {
+    "FK_TZID": 2,
+    "MaximumMeetingDuration": 15,
+    "EmailOnNewMeeting": true,
+    "EmailOnEditMeeting": true,
+    "PushNotificationOnNewMeeting": true,
+    "PushNotificationOnEditMeeting": true,
+    "ShowNotificationOnParticipantJoining": true,
+    "DormantInactiveUsersForDays": 30,
+    "FK_OrganizationID": 387,
+    "FK_WorldCountryID": 153,
+    "Is2FAEnabled": false,
+    "PushNotificationonCancelledDeletedMeeting": true,
+    "EmailOnCancelledDeletedMeeting": true,
+    "PushNotificationWhenResolutionIsClosed": true,
+    "PushNotificationwhenResolutionisCancelledafterCirculation": true,
+    "PushNotificationwhenRemovedfromGroup": true,
+    "PushNotificationwhenRemovedfromCommittee": true,
+    "PushNotificationwhenNewResolutionisCirculated": true,
+    "PushNotificationwhenGroupissetInActive": true,
+    "PushNotificationwhenGroupisClosedArchived": true,
+    "PushNotificationwhenCommitteeissetInActive": true,
+    "PushNotificationwhenCommitteeisDissolvedArchived": true,
+    "PushNotificationwhenAddedtoGroup": true,
+    "PushNotificationwhenAddedtoCommittee": true,
+    "EmailwhenResolutionisCancelledafterCirculation": true,
+    "EmailWhenRemovedFromGroup": true,
+    "EmailWhenRemovedFromCommittee": true,
+    "EmailwhenNewResolutionisCirculated": true,
+    "EmailWhenGroupIsInActive": true,
+    "EmailWhenGroupIsClosedArchived": true,
+    "EmailWhenCommitteeIsInActive": true,
+    "EmailWhenCommitteeIsDissolvedArchived": true,
+    "EmailWhenAddedToGroup": true,
+    "EmailWhenAddedToCommittee": true,
+    "EmailwhenaResolutionisClosed": true,
+    "UserAllowGoogleCalendarSynch": false,
+    "UserAllowMicrosoftCalendarSynch": false
+  }
 }
