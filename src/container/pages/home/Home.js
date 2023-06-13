@@ -107,6 +107,7 @@ const Home = () => {
   const [recentActivityData, setRecentActivityData] = useState([])
   // const [open, setOpen] = useState(false);
   // get new date
+
   let date = new Date()
   let getCurrentDate = moment(date).format('DD')
   let format = 'YYYYMMDD'
@@ -424,7 +425,7 @@ const Home = () => {
     if (
       Authreducer.VerifyOTPEmailResponseMessage !== '' &&
       Authreducer.EnterPasswordResponseMessage !==
-        t('The-user-is-not-an-admin-user')
+      t('The-user-is-not-an-admin-user')
     ) {
       setOpen({
         ...open,
@@ -443,7 +444,7 @@ const Home = () => {
     } else if (
       Authreducer.EnterPasswordResponseMessage !== '' &&
       Authreducer.EnterPasswordResponseMessage !==
-        t('The-user-is-not-an-admin-user')
+      t('The-user-is-not-an-admin-user')
     ) {
       setOpen({
         ...open,
@@ -462,7 +463,7 @@ const Home = () => {
     } else if (
       Authreducer.OrganizationCreateResponseMessage !== '' &&
       Authreducer.EnterPasswordResponseMessage !==
-        t('The-user-is-not-an-admin-user')
+      t('The-user-is-not-an-admin-user')
     ) {
       setOpen({
         ...open,
@@ -481,7 +482,7 @@ const Home = () => {
     } else if (
       Authreducer.CreatePasswordResponseMessage !== '' &&
       Authreducer.EnterPasswordResponseMessage !==
-        t('The-user-is-not-an-admin-user')
+      t('The-user-is-not-an-admin-user')
     ) {
       setOpen({
         ...open,
@@ -500,7 +501,7 @@ const Home = () => {
     } else if (
       Authreducer.GetSelectedPackageResponseMessage !== '' &&
       Authreducer.EnterPasswordResponseMessage !==
-        t('The-user-is-not-an-admin-user')
+      t('The-user-is-not-an-admin-user')
     ) {
       setOpen({
         ...open,
@@ -519,7 +520,7 @@ const Home = () => {
     } else if (
       Authreducer.EmailValidationResponseMessage !== '' &&
       Authreducer.EnterPasswordResponseMessage !==
-        t('The-user-is-not-an-admin-user')
+      t('The-user-is-not-an-admin-user')
     ) {
       setOpen({
         ...open,
@@ -581,15 +582,16 @@ const Home = () => {
     let flag = false
     let indexforUndeline = null
     meetingIdReducer.UpcomingEventsData.map((upcomingEventsData, index) => {
+      console.log(upcomingEventsData, "upcomingEventsDataupcomingEventsDataupcomingEventsData")
       if (
-        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) !=
+        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) !==
         getCurrentDate
       ) {
         if (indexforUndeline === null && flag === false) {
           if (index - 1 >= 0) {
-            flag = true
-            indexforUndeline = index
-            // console.log("upcomingEventsupcomingEvents2323", index);
+            flag = true;
+            indexforUndeline = index;
+            console.log("upcomingEventsDataupcomingEventsDataupcomingEventsData", index);
           }
         }
       }
@@ -597,15 +599,16 @@ const Home = () => {
 
     return meetingIdReducer.UpcomingEventsData.map(
       (upcomingEventsData, index) => {
-        // console.log("upcomingEvents index", index);
+        console.log("upcomingEvents index", upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
+          getCurrentDate);
         return (
           <>
             {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-            getCurrentDate ? (
+              getCurrentDate ? (
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <div
-                    className="event-details upcoming_events  border-0"
+                    className="event-details upcoming_events todayEvent border-0"
                     onClick={() =>
                       viewModalHandler(
                         upcomingEventsData.meetingDetails.pK_MDID,
@@ -618,7 +621,7 @@ const Home = () => {
                     <p className="events-dateTime MontserratSemiBold-600">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
-                          upcomingEventsData.meetingEvent.startTime,
+                        upcomingEventsData.meetingEvent.startTime,
                       )}
                     </p>
                   </div>
@@ -626,7 +629,9 @@ const Home = () => {
               </Row>
             ) : indexforUndeline != null && indexforUndeline === index ? (
               <>
-                <span className="bordertop" />
+                {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
+                  getCurrentDate && <span className="bordertop" />}
+
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <div
@@ -643,7 +648,7 @@ const Home = () => {
                       <p className="events-dateTime">
                         {newTimeFormaterAsPerUTCFullDate(
                           upcomingEventsData.meetingEvent.meetingDate +
-                            upcomingEventsData.meetingEvent.startTime,
+                          upcomingEventsData.meetingEvent.startTime,
                         )}
                       </p>
                     </div>
@@ -667,7 +672,7 @@ const Home = () => {
                     <p className="events-dateTime">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
-                          upcomingEventsData.meetingEvent.startTime,
+                        upcomingEventsData.meetingEvent.startTime,
                       )}
                     </p>
                   </div>
@@ -720,8 +725,8 @@ const Home = () => {
                         </strong>
                       </div>
                       <div className="home-meetingcount-text Saved_money_Tagline">
-                        {t('Meeting')} <br />
-                        {t('This-week')}
+                        {t("Meeting")} <br />
+                        {t("This-month")}
                       </div>
                     </CustomTextProgressbar>
                   )}
@@ -732,7 +737,7 @@ const Home = () => {
               <Col lg={12} md={12} sm={12} className="Dashboard-Calendar  ">
                 <div className="whiteBackground Spinner home-calendar-spinner border">
                   {calendarReducer.Spinner === true ||
-                  meetingIdReducer.Spinner === true ? (
+                    meetingIdReducer.Spinner === true ? (
                     <Spin />
                   ) : (
                     <>
@@ -760,7 +765,7 @@ const Home = () => {
 
                           <div className="Upcoming-Events-Box">
                             {meetingIdReducer.UpcomingEventsData.length ===
-                            0 ? (
+                              0 ? (
                               <ResultMessage
                                 icon={<Mailbox className="notification-icon" />}
                                 subTitle={t('No-upcoming-events')}
@@ -800,8 +805,8 @@ const Home = () => {
                         </strong>
                       </div>
                       <div className="home-todocount-text Saved_money_Tagline">
-                        {t('Things')} <br />
-                        {t('To-do')}
+                        {t("Todo")} <br />
+                        {t("This-month")}
                       </div>
                     </CustomTextProgressbar>
                   )}
@@ -883,7 +888,7 @@ const Home = () => {
                         <Row>
                           <Col sm={1}>
                             {recentActivityData.notificationTypes.pK_NTID ===
-                            1 ? (
+                              1 ? (
                               <div className="desc-notification-user ">
                                 {/* Bell Notification SVG Code */}
                                 <svg

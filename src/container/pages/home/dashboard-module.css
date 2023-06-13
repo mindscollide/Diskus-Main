@@ -47,7 +47,8 @@
 
 .home-calendar-spinner {
   height: 61vh !important;
-  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .home-upcomingevents-scrollbar {
@@ -259,10 +260,14 @@ body[dir="rtl"] h1.upcoming-events {
 }
 
 .Upcoming-Events-Box {
-  height: 25vh !important;
+  height: 25vh;
   overflow-y: auto;
   overflow-x: hidden;
   margin-right: 7px !important;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .event-details {
@@ -1211,4 +1216,8 @@ body[dir="rtl"] h1.noteheading {
   align-items: center;
   height: 34vh !important;
 
+}
+
+.todayEvent {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%);
 }
