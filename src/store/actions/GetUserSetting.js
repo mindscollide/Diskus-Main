@@ -28,20 +28,18 @@ const settingFail = (response, message) => {
   };
 };
 const setRecentActivityDataNotification = (response) => {
-  console.log("setRecentActivityDataNotification")
+  console.log("setRecentActivityDataNotification");
   return {
     type: actions.SET_RECENT_ACTIVITY_NOTIFICATION,
     response: response,
   };
 };
 
-
 const getUserSetting = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = localStorage.getItem("userID");
   let userSettingData = {
     UserID: JSON.parse(userID),
-    NumberOfRecords: 10,
   };
   return (dispatch) => {
     dispatch(settingInit());
@@ -111,9 +109,7 @@ const getUserSetting = (navigate, t) => {
         }
       })
       .catch((response) => {
-        dispatch(
-          settingFail(t("Something-went-wrong"))
-        );
+        dispatch(settingFail(t("Something-went-wrong")));
       });
   };
 };
@@ -140,7 +136,13 @@ const getuserdetailsfail = (message) => {
   };
 };
 
-const getUserDetails = (navigate, userID, t, OrganizationID, setUserProfileModal) => {
+const getUserDetails = (
+  navigate,
+  userID,
+  t,
+  OrganizationID,
+  setUserProfileModal
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userSettingData = {
     UserID: JSON.parse(userID),
@@ -163,7 +165,15 @@ const getUserDetails = (navigate, userID, t, OrganizationID, setUserProfileModal
         console.log("responseresponse", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getUserDetails(navigate, userID, t, OrganizationID, setUserProfileModal));
+          dispatch(
+            getUserDetails(
+              navigate,
+              userID,
+              t,
+              OrganizationID,
+              setUserProfileModal
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -236,7 +246,14 @@ const updateprofilefail = (message) => {
   };
 };
 
-const updateuserprofile = (navigate, updateData, t, setMobileEnable, setDesignationEnable, setNameEanble) => {
+const updateuserprofile = (
+  navigate,
+  updateData,
+  t,
+  setMobileEnable,
+  setDesignationEnable,
+  setNameEanble
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -257,7 +274,16 @@ const updateuserprofile = (navigate, updateData, t, setMobileEnable, setDesignat
         console.log("responsefortheupdate", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(updateuserprofile(navigate, updateData, t, setMobileEnable, setDesignationEnable, setNameEanble));
+          dispatch(
+            updateuserprofile(
+              navigate,
+              updateData,
+              t,
+              setMobileEnable,
+              setDesignationEnable,
+              setNameEanble
+            )
+          );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             console.log(response, "responseresponseresponse");
@@ -276,9 +302,10 @@ const updateuserprofile = (navigate, updateData, t, setMobileEnable, setDesignat
               setMobileEnable(true);
               setDesignationEnable(true);
               setNameEanble(true);
-              await dispatch(getUserDetails(navigate, userID, t, OrganizationID));
+              await dispatch(
+                getUserDetails(navigate, userID, t, OrganizationID)
+              );
               await dispatch(getUserSetting(navigate, t));
-
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
