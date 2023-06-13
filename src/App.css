@@ -5509,6 +5509,7 @@ body[dir="rtl"] .ant-result-subtitle {
 .Progress_bar_Polls .ant-progress-bg {
   height: 39px !important;
   border-radius: 4px !important;
+  background: #4adede !important;
 }
 
 .pollsDetailsProgress .ant-progress-text {
