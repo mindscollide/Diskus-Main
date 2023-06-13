@@ -1041,8 +1041,12 @@
   "Push-notification-when-group-is-closed-or-archived": "Push Notification When Group Is Closed Or Archived",
   "Push-notification-when-group-is-set-inactive": "Push Notification When Group Is Set Inactive",
   "Push-notification-when-remove-from-group": "Push Notification When Remove From Group",
-  "Push-notification-when-resolution-is-closed": "Push-notification-when-resolution-is-closed",
+  "Push-notification-when-resolution-is-closed": "Push Notification When Resolution  Is Closed",
   "Push-notification-when-when-resolution-is-cancelled-after-circulation": "Push Notification When Resolution Is Cancelled After Circulation",
   "User-allow-google-calendar-synch": "User Allow Google Calendar Synch",
-  "User-allow-microsoft-calendar-synch": "User Allow Microsoft Calendar Synch"
+  "User-allow-microsoft-calendar-synch": "User Allow Microsoft Calendar Synch",
+  "Calender-month-span": "Calender Month Span",
+  "Google-calender-color": "Google Calender Color",
+  "Microsoft-calender-color": "Microsoft Calender Color",
+  "Diskus-color-theme": "Diskus Color Theme"
 }

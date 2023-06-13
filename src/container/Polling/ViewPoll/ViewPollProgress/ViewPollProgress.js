@@ -7,7 +7,11 @@ import profile from "../../../../assets/images/profile_polls.svg";
 import { Progress } from "antd";
 import { useTranslation } from "react-i18next";
 
-const ViewPollProgress = ({ showViewProgress, setShowViewProgress }) => {
+const ViewPollProgress = ({
+  showViewProgress,
+  setShowViewProgress,
+  percent,
+}) => {
   const [viewpollMembers, setViewPollmembers] = useState([
     {
       id: 1,
@@ -144,7 +148,19 @@ const ViewPollProgress = ({ showViewProgress, setShowViewProgress }) => {
                   </Row>
                 </Col>
               </Row>
-              <Row className="mt-2">
+              <Row>
+                <Col lg={1} md={1} sm={12}></Col>
+                <Col lg={11} md={11} sm={12} className="m-0 p-0 ">
+                  <Row className="mt-2">
+                    <Col lg={12} md={12} sm={12}>
+                      <span className={styles["Yes_ViewProgress"]}>
+                        Yes<span>(20)</span>
+                      </span>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+              <Row>
                 <Col
                   lg={1}
                   ms={1}
@@ -170,7 +186,15 @@ const ViewPollProgress = ({ showViewProgress, setShowViewProgress }) => {
                   />
                 </Col>
               </Row>
-              <Row className="mt-2">
+              <Row>
+                <Col lg={1} md={1} sm={1}></Col>
+                <Col lg={11} md={11} sm={12} className="m-0 p-0">
+                  <span className={styles["Yes_ViewProgress"]}>
+                    NO <span>(9)</span>
+                  </span>
+                </Col>
+              </Row>
+              <Row>
                 <Col
                   lg={1}
                   ms={1}

@@ -131,6 +131,7 @@ const Organization = () => {
     EmailwhenaResolutionisClosed: false,
     UserAllowGoogleCalendarSynch: false,
     UserAllowMicrosoftCalendarSynch: false,
+    CalenderMonthsSpan: 0,
   });
   const [timeZoneValue, setTimeZoneValue] = useState({
     label: "",
@@ -143,12 +144,29 @@ const Organization = () => {
     label: "",
     value: "",
   });
+
+  useEffect(() => {
+    dispatch(getTimeZone(navigate, t));
+    dispatch(getOrganizationLevelSetting(navigate, t));
+    let newCountryCode = [];
+    let array = Object.keys(countryName);
+    array.map((data, index) => {
+      console.log("datadatadata", data);
+      return newCountryCode.push({
+        label: data,
+        value: data,
+      });
+    });
+    setCountryCode(newCountryCode);
+  }, []);
+
   //Reset handler for organization
 
   const resetOrganizer = () => {
     let userProfileData = settingReducer.GetOrganizationLevelSettingResponse;
     if (userProfileData !== null && userProfileData !== undefined) {
       let settingData = {
+        CalenderMonthsSpan: userProfileData.calenderMonthsSpan,
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
         EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
         PushNotificationOnNewMeeting:
@@ -276,19 +294,12 @@ const Organization = () => {
     });
   };
 
-  const dormatInactiveUsersforDays = (checked) => {
-    setOrganizationStates({
-      ...organizationStates,
-      DormatInactiveUsersforDays: parseInt(checked),
-    });
-  };
-
   const updateOrganizationLevelSettings = () => {
     let organizationID = JSON.parse(localStorage.getItem("organizationID"));
     let organizationSettings = {
       FK_TZID: timeZoneValue.value,
       MaximumMeetingDuration: organizationStates.MaximumMeetingDuration,
-
+      CalenderMonthsSpan: organizationStates.CalenderMonthsSpan,
       EmailOnNewMeeting: organizationStates.EmailOnNewMeeting,
       EmailOnEditMeeting: organizationStates.EmailOnEditMeeting,
       PushNotificationOnNewMeeting:
@@ -360,46 +371,11 @@ const Organization = () => {
     dispatch(updateOrganizationLevelSetting(navigate, organizationSettings, t));
   };
 
-  useEffect(() => {
-    dispatch(getTimeZone(navigate, t));
-    dispatch(getOrganizationLevelSetting(navigate, t));
-    let newCountryCode = [];
-    let array = Object.keys(countryName);
-    array.map((data, index) => {
-      console.log("datadatadata", data);
-      return newCountryCode.push({
-        label: data,
-        value: data,
-      });
-    });
-    setCountryCode(newCountryCode);
-  }, []);
-
   // Time Zone Change Handler
   const timezoneChangeHandler = (event) => {
     setTimeZoneValue({
       label: event.label,
       value: event.value,
-    });
-  };
-
-  // Time Zone Change Handler
-  const countryCodeChandeHandler = (event) => {
-    let a = Object.values(countryName).find((obj) => {
-      return obj.primary == event.label;
-    });
-    console.log(a, "countryCode");
-    setWorldCountryID(a.id);
-    setCountryCodeValue({
-      label: event.label,
-      value: event.value,
-    });
-  };
-
-  const hoursHandler = (event) => {
-    setOrganizationStates({
-      ...organizationStates,
-      MaximumMeetingDuration: event.value,
     });
   };
 
@@ -577,6 +553,13 @@ const Organization = () => {
     setOrganizationStates({
       ...organizationStates,
       UserAllowMicrosoftCalendarSynch: checked,
+    });
+  };
+
+  const hoursHandler = (event) => {
+    setOrganizationStates({
+      ...organizationStates,
+      MaximumMeetingDuration: event.value,
     });
   };
 
@@ -772,6 +755,44 @@ const Organization = () => {
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3 d-flex align-items-center">
                   <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start align-items-center"
+                  >
+                    <label className="organization-labels">
+                      {t("Calender-month-span")}
+                    </label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className={
+                      "d-flex justify-content-end organization-timezone-col2"
+                    }
+                  >
+                    <TextField
+                      type="number"
+                      value={organizationStates.CalenderMonthsSpan}
+                      change={(e) => {
+                        setOrganizationStates({
+                          ...organizationStates,
+                          CalenderMonthsSpan: parseInt(e.target.value),
+                        });
+                      }}
+                      maxLength={360}
+                      labelClass="d-none"
+                      width="80px"
+                    />
+                  </Col>
+                </Row>
+
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3 d-flex align-items-center">
+                  <Col
                     lg={6}
                     md={6}
                     sm={12}
@@ -928,6 +949,306 @@ const Organization = () => {
                         false
                       }
                       onChange={emailOnCancelledMeeting}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label className="organization-labels">
+                      {t("Push-notification-when-added-to-committee")}
+                    </label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="PushNotificationwhenAddedtoCommittee"
+                      checkedValue={
+                        organizationStates.PushNotificationwhenAddedtoCommittee ||
+                        false
+                      }
+                      onChange={ChangePushNotificationwhenAddedtoCommittee}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label className="organization-labels">
+                      {t(
+                        "Email-when-resolution-is-cancelled-after-circulation"
+                      )}
+                    </label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="EmailwhenResolutionisCancelledafterCirculation"
+                      checkedValue={
+                        organizationStates.EmailwhenResolutionisCancelledafterCirculation ||
+                        false
+                      }
+                      onChange={
+                        ChangeEmailwhenResolutionisCancelledafterCirculation
+                      }
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label className="organization-labels">
+                      {t("Email-when-removed-from-group")}
+                    </label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="EmailWhenRemovedFromGroup"
+                      checkedValue={
+                        organizationStates.EmailWhenRemovedFromGroup || false
+                      }
+                      onChange={ChangeEmailWhenRemovedFromGroup}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label className="organization-labels">
+                      {t("Email-when-removed-from-committee")}
+                    </label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="EmailWhenRemovedFromCommittee"
+                      checkedValue={
+                        organizationStates.EmailWhenRemovedFromCommittee ||
+                        false
+                      }
+                      onChange={ChangeEmailWhenRemovedFromCommittee}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label className="organization-labels">
+                      {t("Email-when-new-resolution-is-circulated")}
+                    </label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="EmailwhenNewResolutionisCirculated"
+                      checkedValue={
+                        organizationStates.EmailwhenNewResolutionisCirculated ||
+                        false
+                      }
+                      onChange={ChangeEmailwhenNewResolutionisCirculated}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label className="organization-labels">
+                      {t("Email-when-group-is-inActive")}
+                    </label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="EmailWhenGroupIsInActive"
+                      checkedValue={
+                        organizationStates.EmailWhenGroupIsInActive || false
+                      }
+                      onChange={ChangeEmailWhenGroupIsInActive}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label className="organization-labels">
+                      {t("Email-When-Group-Is-Closed-Archived")}
+                    </label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="EmailWhenGroupIsClosedArchived"
+                      checkedValue={
+                        organizationStates.EmailWhenGroupIsClosedArchived ||
+                        false
+                      }
+                      onChange={ChangeEmailWhenGroupIsClosedArchived}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label className="organization-labels">
+                      {t("Email-when-committee-is-inActive")}
+                    </label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="EmailWhenCommitteeIsInActive"
+                      checkedValue={
+                        organizationStates.EmailWhenCommitteeIsInActive || false
+                      }
+                      onChange={ChangeEmailWhenCommitteeIsInActive}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label className="organization-labels">
+                      {t("Email-when-committee-is-dissolved-archived")}
+                    </label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="EmailWhenCommitteeIsDissolvedArchived"
+                      checkedValue={
+                        organizationStates.EmailWhenCommitteeIsDissolvedArchived ||
+                        false
+                      }
+                      onChange={ChangeEmailWhenCommitteeIsDissolvedArchived}
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+                <Row className="mt-3">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start"
+                  >
+                    <label className="organization-labels">
+                      {t("Email-when-added-to-group")}
+                    </label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Switch
+                      name="EmailWhenAddedToGroup"
+                      checkedValue={
+                        organizationStates.EmailWhenAddedToGroup || false
+                      }
+                      onChange={ChangeEmailWhenAddedToGroup}
                     />
                   </Col>
                 </Row>
@@ -1244,306 +1565,7 @@ const Organization = () => {
                   </Col>
                 </Row>
                 <span className={styles["bottom-line"]}></span>
-                <Row className="mt-3">
-                  <Col
-                    lg={10}
-                    md={10}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className="organization-labels">
-                      {t("Push-notification-when-added-to-committee")}
-                    </label>
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <Switch
-                      name="PushNotificationwhenAddedtoCommittee"
-                      checkedValue={
-                        organizationStates.PushNotificationwhenAddedtoCommittee ||
-                        false
-                      }
-                      onChange={ChangePushNotificationwhenAddedtoCommittee}
-                    />
-                  </Col>
-                </Row>
-                <span className={styles["bottom-line"]}></span>
-                <Row className="mt-3">
-                  <Col
-                    lg={10}
-                    md={10}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className="organization-labels">
-                      {t(
-                        "Email-when-resolution-is-cancelled-after-circulation"
-                      )}
-                    </label>
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <Switch
-                      name="EmailwhenResolutionisCancelledafterCirculation"
-                      checkedValue={
-                        organizationStates.EmailwhenResolutionisCancelledafterCirculation ||
-                        false
-                      }
-                      onChange={
-                        ChangeEmailwhenResolutionisCancelledafterCirculation
-                      }
-                    />
-                  </Col>
-                </Row>
-                <span className={styles["bottom-line"]}></span>
-                <Row className="mt-3">
-                  <Col
-                    lg={10}
-                    md={10}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className="organization-labels">
-                      {t("Email-when-removed-from-group")}
-                    </label>
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <Switch
-                      name="EmailWhenRemovedFromGroup"
-                      checkedValue={
-                        organizationStates.EmailWhenRemovedFromGroup || false
-                      }
-                      onChange={ChangeEmailWhenRemovedFromGroup}
-                    />
-                  </Col>
-                </Row>
-                <span className={styles["bottom-line"]}></span>
-                <Row className="mt-3">
-                  <Col
-                    lg={10}
-                    md={10}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className="organization-labels">
-                      {t("Email-when-removed-from-committee")}
-                    </label>
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <Switch
-                      name="EmailWhenRemovedFromCommittee"
-                      checkedValue={
-                        organizationStates.EmailWhenRemovedFromCommittee ||
-                        false
-                      }
-                      onChange={ChangeEmailWhenRemovedFromCommittee}
-                    />
-                  </Col>
-                </Row>
-                <span className={styles["bottom-line"]}></span>
-                <Row className="mt-3">
-                  <Col
-                    lg={10}
-                    md={10}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className="organization-labels">
-                      {t("Email-when-new-resolution-is-circulated")}
-                    </label>
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <Switch
-                      name="EmailwhenNewResolutionisCirculated"
-                      checkedValue={
-                        organizationStates.EmailwhenNewResolutionisCirculated ||
-                        false
-                      }
-                      onChange={ChangeEmailwhenNewResolutionisCirculated}
-                    />
-                  </Col>
-                </Row>
-                <span className={styles["bottom-line"]}></span>
-                <Row className="mt-3">
-                  <Col
-                    lg={10}
-                    md={10}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className="organization-labels">
-                      {t("Email-when-group-is-inActive")}
-                    </label>
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <Switch
-                      name="EmailWhenGroupIsInActive"
-                      checkedValue={
-                        organizationStates.EmailWhenGroupIsInActive || false
-                      }
-                      onChange={ChangeEmailWhenGroupIsInActive}
-                    />
-                  </Col>
-                </Row>
-                <span className={styles["bottom-line"]}></span>
-                <Row className="mt-3">
-                  <Col
-                    lg={10}
-                    md={10}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className="organization-labels">
-                      {t("Email-When-Group-Is-Closed-Archived")}
-                    </label>
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <Switch
-                      name="EmailWhenGroupIsClosedArchived"
-                      checkedValue={
-                        organizationStates.EmailWhenGroupIsClosedArchived ||
-                        false
-                      }
-                      onChange={ChangeEmailWhenGroupIsClosedArchived}
-                    />
-                  </Col>
-                </Row>
-                <span className={styles["bottom-line"]}></span>
-                <Row className="mt-3">
-                  <Col
-                    lg={10}
-                    md={10}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className="organization-labels">
-                      {t("Email-when-committee-is-inActive")}
-                    </label>
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <Switch
-                      name="EmailWhenCommitteeIsInActive"
-                      checkedValue={
-                        organizationStates.EmailWhenCommitteeIsInActive || false
-                      }
-                      onChange={ChangeEmailWhenCommitteeIsInActive}
-                    />
-                  </Col>
-                </Row>
-                <span className={styles["bottom-line"]}></span>
-                <Row className="mt-3">
-                  <Col
-                    lg={10}
-                    md={10}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className="organization-labels">
-                      {t("Email-when-committee-is-dissolved-archived")}
-                    </label>
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <Switch
-                      name="EmailWhenCommitteeIsDissolvedArchived"
-                      checkedValue={
-                        organizationStates.EmailWhenCommitteeIsDissolvedArchived ||
-                        false
-                      }
-                      onChange={ChangeEmailWhenCommitteeIsDissolvedArchived}
-                    />
-                  </Col>
-                </Row>
-                <span className={styles["bottom-line"]}></span>
-                <Row className="mt-3">
-                  <Col
-                    lg={10}
-                    md={10}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-start"
-                  >
-                    <label className="organization-labels">
-                      {t("Email-when-added-to-group")}
-                    </label>
-                  </Col>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={12}
-                    xs={12}
-                    className="d-flex justify-content-end"
-                  >
-                    <Switch
-                      name="EmailWhenAddedToGroup"
-                      checkedValue={
-                        organizationStates.EmailWhenAddedToGroup || false
-                      }
-                      onChange={ChangeEmailWhenAddedToGroup}
-                    />
-                  </Col>
-                </Row>
-                <span className={styles["bottom-line"]}></span>
+
                 <Row className="mt-3">
                   <Col
                     lg={10}

@@ -5042,12 +5042,9 @@ body[dir="rtl"] .select-dropdowns-height .css-13cymwt-control {
   box-shadow: none !important;
 }
 
-
-
 /* .searchResult_Document__single-value {
   color: #fff !important;
 } */
-
 
 body[dir="rtl"]
   .group-type-select-field
@@ -5520,4 +5517,14 @@ body[dir="rtl"] .ant-result-subtitle {
 
 .pollsDetailsProgress .ant-progress-bg {
   background: greenyellow !important;
+}
+
+.circle-color-picker {
+  appearance: none;
+  margin: 0;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding: 0;
+  outline: none;
+  cursor: pointer;
 }
