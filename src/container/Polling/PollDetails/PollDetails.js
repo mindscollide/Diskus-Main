@@ -80,6 +80,7 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
               >
                 <img
                   src={BlackCrossIcon}
+                  className={styles["Cross_Icon_poll_Details"]}
                   width="16px"
                   height="16px"
                   onClick={() => {
@@ -125,25 +126,121 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
                     </Row>
                   </Col>
                 </Row>
-                <Row className="mt-3">
-                  <Col lg={12} md={12} sm={12} className="m-0 p-0 d-flex gap-5">
-                    <span className={styles["no-Of-Yes"]}>
-                      9 - <span>{t("Yes")}</span>
-                    </span>
-                    <span className={styles["no-Of-No"]}>
-                      2 - <span>{t("No")}</span>
-                    </span>
+                <Row className="mt-1">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Scroller_Options"]}
+                  >
+                    <Row className="mt-3">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="m-0 p-0 d-flex gap-5"
+                      >
+                        <span className={styles["no-Of-Yes"]}>
+                          Option 1 - 20%
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <Progress
+                          percent={20}
+                          className="pollsDetailsProgress"
+                          status="active"
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="m-0 p-0 d-flex gap-5"
+                      >
+                        <span className={styles["no-Of-Yes"]}>
+                          Option 2 - 30%
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <Progress
+                          percent={30}
+                          className="pollsDetailsProgress"
+                          status="active"
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="m-0 p-0 d-flex gap-5"
+                      >
+                        <span className={styles["no-Of-Yes"]}>
+                          Option 3 - 10%
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <Progress
+                          percent={10}
+                          className="pollsDetailsProgress"
+                          status="active"
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="m-0 p-0 d-flex gap-5"
+                      >
+                        <span className={styles["no-Of-Yes"]}>
+                          Option 4 - 20%
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <Progress
+                          percent={20}
+                          className="pollsDetailsProgress"
+                          status="active"
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="m-0 p-0 d-flex gap-5"
+                      >
+                        <span className={styles["no-Of-Yes"]}>
+                          Option 5 - 20%
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <Progress
+                          percent={20}
+                          className="pollsDetailsProgress"
+                          status="active"
+                        />
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
-                <Row>
-                  <Col lg={12} md={12} sm={12} className="m-0 p-0">
-                    <Progress
-                      percent={60}
-                      className="pollsDetailsProgress"
-                      status="active"
-                    />
-                  </Col>
-                </Row>
+
                 <Row className="mt-2">
                   <Col lg={12} md={12} sm={12} className="mt-2 m-0 p-0">
                     <span className={styles["Participants_polls_Details"]}>
@@ -152,80 +249,87 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col lg={12} md={12} sm={12} className="m-0 p-0 mt-2">
-                    <span className={styles["Yes_voters"]}>{t("Yes")}</span>
-                  </Col>
-                </Row>
-                <Row>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Scroller-Yes"]}
+                    className={styles["Scroller_participants"]}
                   >
                     <Row>
-                      {yesParticipants.map((data, index) => {
-                        return (
-                          <Col lg={6} md={6} sm={12} className="mt-2">
-                            <Row className="m-0 p-0">
-                              <Col lg={12} md={12} sm={12}>
-                                <Row className={styles["Card_border2"]}>
-                                  <Col lg={12} md={12} sm={12}>
-                                    <img
-                                      src={profile}
-                                      width="33px"
-                                      height="33px"
-                                      className={styles["Image"]}
-                                    />
-                                    <span className={styles["Name_cards"]}>
-                                      {data.name}
-                                    </span>
-                                  </Col>
-                                </Row>
-                              </Col>
-                            </Row>
-                          </Col>
-                        );
-                      })}
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0 mt-2">
+                        <span className={styles["Yes_voters"]}>{t("Yes")}</span>
+                      </Col>
                     </Row>
-                  </Col>
-                </Row>
-                <Row className="mt-2">
-                  <Col lg={12} md={12} sm={12} className="m-0 p-0">
-                    <span className={styles["Yes_voters"]}>{t("No")}</span>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={styles["Scroller-Yes"]}
-                  >
                     <Row>
-                      {noParticipants.map((data, index) => {
-                        return (
-                          <Col lg={6} md={6} sm={12} className="mt-2">
-                            <Row className="m-0 p-0">
-                              <Col lg={12} md={12} sm={12}>
-                                <Row className={styles["Card_border2"]}>
-                                  <Col lg={12} md={12} sm={12}>
-                                    <img
-                                      src={profile}
-                                      width="33px"
-                                      height="33px"
-                                      className={styles["Image"]}
-                                    />
-                                    <span className={styles["Name_cards"]}>
-                                      {data.name}
-                                    </span>
+                      <Col lg={12} md={12} sm={12}>
+                        <Row>
+                          {yesParticipants.map((data, index) => {
+                            return (
+                              <Col lg={6} md={6} sm={12} className="mt-2">
+                                <Row>
+                                  <Col
+                                    lg={11}
+                                    md={11}
+                                    sm={12}
+                                    className="m-0 p-0"
+                                  >
+                                    <Row className={styles["Card_border2"]}>
+                                      <Col sm={12} md={12} lg={12}>
+                                        <img
+                                          src={profile}
+                                          width="33px"
+                                          height="33px"
+                                        />
+                                        <span className={styles["Name_cards"]}>
+                                          {data.name}
+                                        </span>
+                                      </Col>
+                                    </Row>
                                   </Col>
                                 </Row>
                               </Col>
-                            </Row>
-                          </Col>
-                        );
-                      })}
+                            );
+                          })}
+                        </Row>
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <span className={styles["Yes_voters"]}>{t("No")}</span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <Row>
+                          {noParticipants.map((data, index) => {
+                            return (
+                              <Col lg={6} md={6} sm={12} className="mt-2">
+                                <Row>
+                                  <Col
+                                    lg={11}
+                                    md={11}
+                                    sm={12}
+                                    className="m-0 p-0"
+                                  >
+                                    <Row className={styles["Card_border2"]}>
+                                      <Col sm={12} md={12} lg={12}>
+                                        <img
+                                          src={profile}
+                                          width="33px"
+                                          height="33px"
+                                        />
+                                        <span className={styles["Name_cards"]}>
+                                          {data.name}
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            );
+                          })}
+                        </Row>
+                      </Col>
                     </Row>
                   </Col>
                 </Row>
