@@ -174,7 +174,8 @@ const ViewPollProgress = ({
                     <Row className="mt-2">
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Yes_ViewProgress"]}>
-                          Yes<span>(20)</span>
+                          {t("Yes")}
+                          <span>(20)</span>
                         </span>
                       </Col>
                     </Row>
@@ -210,7 +211,7 @@ const ViewPollProgress = ({
                   <Col lg={1} md={1} sm={1}></Col>
                   <Col lg={11} md={11} sm={12} className="m-0 p-0">
                     <span className={styles["Yes_ViewProgress"]}>
-                      NO <span>(9)</span>
+                      {t("NO")} <span>(9)</span>
                     </span>
                   </Col>
                 </Row>
@@ -248,7 +249,9 @@ const ViewPollProgress = ({
                     md={12}
                     className="d-flex justify-content-start m-0 p-0 mt-2"
                   >
-                    <span>Mutiple Answer Allowed</span>
+                    <span className={styles["Multiple_answer"]}>
+                      Mutiple Answer Allowed
+                    </span>
                   </Col>
                 </Row>
                 <Row className="mt-2">
@@ -258,7 +261,7 @@ const ViewPollProgress = ({
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-0">
+                <Row className="mt-2">
                   <Col
                     lg={12}
                     md={12}
@@ -270,9 +273,9 @@ const ViewPollProgress = ({
                     <Row>
                       {viewpollMembers.map((data, index) => {
                         return (
-                          <Col lg={6} md={6} sm={12} className="mt-2 ">
-                            <Row className="m-0 p-0">
-                              <Col lg={12} md={12} sm={12}>
+                          <Col lg={6} md={6} sm={12} className="mt-2">
+                            <Row>
+                              <Col lg={11} md={11} sm={12} className="m-0 p-0">
                                 <Row className={styles["Card_border2"]}>
                                   <Col sm={12} md={12} lg={12}>
                                     <img
