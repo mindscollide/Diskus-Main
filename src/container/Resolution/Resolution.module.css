@@ -704,6 +704,6 @@ body[dir="rtl"] .cancel_icon_resolution {
 }
 
 body[dir="rtl"] .PaginationStyle-Resolution {
-  width: 100% !important;
+  width: auto !important;
   padding: 12px 10px !important;
 }

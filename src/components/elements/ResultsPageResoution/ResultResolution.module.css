@@ -9,9 +9,10 @@ body[dir="rtl"] .Result_Heading_resolution {
 }
 
 .Result_page_paper {
-  height: 710px;
-  width: 1429px;
-  padding: 55px 55px !important;
+  height: auto;
+  width: 100%;
+  padding: 55px 80px !important;
+  margin: 0 0 30px 0;
 }
 
 .results_paper_heading {
@@ -95,7 +96,7 @@ body[dir="rtl"] .voters_heading_result {
 }
 
 .Result-Screen_scroller {
-  height: 16vh !important;
+  height: 180px !important;
   overflow-x: hidden !important;
 }
 
@@ -174,4 +175,10 @@ body[dir="rtl"] .Close_Btn_Resultresolution {
   font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
+}
+
+.line_Resultesolution {
+  width: 1px;
+  height: 100%;
+  background-color: #5a5a5a !important;
 }

@@ -19,18 +19,24 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
 }
 
 .VotingPage_paper {
-  height: 710px !important;
-  width: 1429px !important;
+  height: auto !important;
+  width: 100% !important;
   padding: 50px 50px !important;
+  margin-bottom: 20px !important;
 }
 
 .Gray_Border_box {
-  width: 775px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  flex-direction: column;
   height: 230px;
   background: #fff !important;
   border: 1px solid #707070;
+  margin-bottom: 20px;
   border-radius: 4px !important;
-  margin-left: 12px !important;
 }
 
 .Abstain_btn_vote_resolution {
@@ -44,13 +50,12 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   align-items: center !important;
   gap: 5px !important;
 }
-.Abstain_btn_vote_resolution:is(
-    :hover,
-    :active,
-    :focus-visible,
-    :focus,
-    :visited
-  ) {
+
+.Abstain_btn_vote_resolution:is( :hover,
+  :active,
+  :focus-visible,
+  :focus,
+  :visited) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
@@ -61,6 +66,7 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   align-items: center !important;
   gap: 5px !important;
 }
+
 .Abstain_btn_vote_resolution_Active {
   padding: 12px 30px !important;
   font-size: 12px !important;
@@ -71,13 +77,12 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   align-items: center !important;
   gap: 5px !important;
 }
-.Abstain_btn_vote_resolution_Active:is(
-    :hover,
-    :active,
-    :focus-visible,
-    :focus,
-    :visited
-  ) {
+
+.Abstain_btn_vote_resolution_Active:is( :hover,
+  :active,
+  :focus-visible,
+  :focus,
+  :visited) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #828282 !important;
@@ -87,6 +92,7 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   align-items: center !important;
   gap: 5px !important;
 }
+
 /* .Abstain_btn_vote_resolution:hover {
   background: #fff;
   color: #828282;
@@ -103,13 +109,12 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   align-items: center !important;
   gap: 5px !important;
 }
-.Notapproved_btn_voteresolution:is(
-    :hover,
-    :focus,
-    :focus-visible,
-    :visited,
-    :active
-  ) {
+
+.Notapproved_btn_voteresolution:is( :hover,
+  :focus,
+  :focus-visible,
+  :visited,
+  :active) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
@@ -120,6 +125,7 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   align-items: center !important;
   gap: 5px !important;
 }
+
 .Notapproved_btn_voteresolution_Active {
   padding: 12px 30px !important;
   font-size: 12px !important;
@@ -130,13 +136,12 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   align-items: center !important;
   gap: 5px !important;
 }
-.Notapproved_btn_voteresolution_Active:is(
-    :hover,
-    :focus,
-    :focus-visible,
-    :visited,
-    :active
-  ) {
+
+.Notapproved_btn_voteresolution_Active:is( :hover,
+  :focus,
+  :focus-visible,
+  :visited,
+  :active) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #f16b6b !important;
@@ -158,13 +163,12 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   align-items: center !important;
   gap: 5px !important;
 }
-.approved_btn_voteresolution:is(
-    :hover,
-    :focus,
-    :focus-visible,
-    :visited,
-    :active
-  ) {
+
+.approved_btn_voteresolution:is( :hover,
+  :focus,
+  :focus-visible,
+  :visited,
+  :active) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
@@ -175,6 +179,7 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   align-items: center !important;
   gap: 5px !important;
 }
+
 .approved_btn_voteresolution_Active {
   padding: 12px 30px !important;
   font-size: 12px !important;
@@ -185,13 +190,12 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   align-items: center !important;
   gap: 5px !important;
 }
-.approved_btn_voteresolution_Active:is(
-    :hover,
-    :focus,
-    :focus-visible,
-    :visited,
-    :active
-  ) {
+
+.approved_btn_voteresolution_Active:is( :hover,
+  :focus,
+  :focus-visible,
+  :visited,
+  :active) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6de595 !important;
@@ -246,11 +250,12 @@ body[dir="rtl"] .Total_voters_voteResolution {
 }
 
 .Pending_status_voteResolutionBox {
-  width: 350px !important;
-  height: 136px !important;
+  width: 100% !important;
+  height: auto !important;
   background-color: #fff !important;
   border: 1px solid #ddb227;
   border-radius: 4px !important;
+  padding: 15px 55px;
 }
 
 .Status_voteResolutioin {
@@ -285,6 +290,7 @@ body[dir="rtl"] .close_btn_VoteResolution {
   border: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
 }
+
 .save_btn_VoteResolution {
   padding: 12px 30px !important;
   font-size: 12px !important;
@@ -328,8 +334,15 @@ body[dir="rtl"] .Your_vote_voteresolution {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
 }
+
 .VotingMethods_box span {
   font-family: "MontserratSemiBold";
   font-size: 16px !important;
   color: #6172d6 !important;
+}
+
+.line_voteResolution {
+  width: 1px;
+  height: 100%;
+  background-color: #5a5a5a !important;
 }

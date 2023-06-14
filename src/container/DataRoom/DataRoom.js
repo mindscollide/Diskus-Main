@@ -68,6 +68,7 @@ import {
   deleteFileDataroom,
   deleteFolder,
   FileisExist,
+  FolderisExist,
   getDocumentsAndFolderApi,
   getFolderDocumentsApi,
   getSharedFilesandFolderApi,
@@ -196,7 +197,7 @@ const DataRoom = () => {
       window.addEventListener("click", function (e) {
         console.log("eeeeeeeee", e.target.className);
         let clsname = e.target.className;
-        let arr = clsname.split("_");
+        let arr = clsname && clsname.split("_");
         let arrremoveminus = clsname.split("-");
         console.log(arrremoveminus, "arrremoveminusarrremoveminus")
         // select-dropdowns-height
@@ -204,6 +205,7 @@ const DataRoom = () => {
         console.log("click", arr[1]);
         console.log("click", arr[2]);
         console.log("click", arr[3]);
+        console.log(searchbarshow, "searchbarshow")
         if (arr != undefined) {
           if (searchbarshow === true) {
             if (arr[0] !== "DataRoom" && arr[1] !== "Drop" && arr[2] !== "Down" && arr[3] !== "searchBar") {
@@ -216,19 +218,20 @@ const DataRoom = () => {
 
           }
 
-        } else if (optionsFileisShown === true || optionsFolderisShown === true) {
-          if (arr[0] === "DataRoom" && arr[1] === "NavLink" && arr[3] === "filter") {
+        }
+        // else if (optionsFileisShown === true || optionsFolderisShown === true) {
+        //   if (arr[0] === "DataRoom" && arr[1] === "NavLink" && arr[3] === "filter") {
 
-          } else {
-            setOptionsFileisShown(false)
-            setOptionsFolderisShown(false)
-          }
-        }
-        else {
-          if (searchbarshow === true) {
-            setSearchbarshow(false)
-          }
-        }
+        //   } else {
+        //     setOptionsFileisShown(false)
+        //     setOptionsFolderisShown(false)
+        //   }
+        // }
+        // else {
+        //   if (searchbarshow === true) {
+        //     setSearchbarshow(false)
+        //   }
+        // }
       });
     } catch {
       console.log("error");
@@ -961,7 +964,7 @@ const DataRoom = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end gap-2"
+                className="d-flex justify-content-end gap-2 position-relative"
               >
                 <>
                   <Tooltip placement="topRight" title={"Share"}>
@@ -1049,10 +1052,10 @@ const DataRoom = () => {
   const handleClickDropDown = (rowData) => {
     setThreeDotOptions(rowData.id)
     if (rowData.isFolder === true) {
-      setOptionsFolderisShown(true)
+      setOptionsFolderisShown(!optionsFolderisShown)
       setOptionsFileisShown(false)
     } else {
-      setOptionsFileisShown(true)
+      setOptionsFileisShown(!optionsFileisShown)
       setOptionsFolderisShown(false)
     }
   }

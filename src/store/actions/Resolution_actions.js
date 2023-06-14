@@ -143,15 +143,18 @@ const getResolutions_Fail = (message) => {
         message: message
     }
 };
-const getResolutions = (navigate, id, t, current, pageSize) => {
+const getResolutions = (navigate, id, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
+    let moderatorPage = JSON.parse(localStorage.getItem("moderatorPage"));
+    let moderatorRows = JSON.parse(localStorage.getItem("moderatorRows"));
+
     let Data = {
         FK_UID: userID,
         ResolutionStatus: JSON.parse(id),
         Title: "",
-        PageNumber: current,
-        Length: pageSize
+        PageNumber: moderatorPage !== null ? moderatorPage : 1,
+        Length: moderatorRows !== null ? moderatorRows : 50
 
     }
     return (dispatch) => {
@@ -756,9 +759,11 @@ const getVoterResolution_fail = (message) => {
         message: message
     }
 }
-const getVoterResolution = (navigate, id, t, voterPage, voterRows) => {
+const getVoterResolution = (navigate, id, t) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
+    let voterPage = JSON.parse(localStorage.getItem("voterPage"));
+    let voterRows = JSON.parse(localStorage.getItem("voterRows"));
     let Data = {
         FK_UID: userID,
         ResolutionStatus: JSON.parse(id),

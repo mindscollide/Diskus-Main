@@ -34,7 +34,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const [totalVoters, setTotalVoters] = useState(0);
   const [isResolutionTitle, setResolutionTitle] = useState("");
   const [isVotingMethod, setVotingMethod] = useState("");
-  const [voteId, setVoteId] = useState(1);
+  const [voteId, setVoteId] = useState(0);
   const [isAbstain, setIsAbstain] = useState(false);
   const [notApproved, setNotApproved] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
@@ -165,7 +165,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                     </Col>
                   </Row>
                   <Row className="mt-5">
-                    <Col lg={7} md={7} sm={7}>
+                    <Col lg={7} md={7} sm={12}>
                       <Row className="mt-2">
                         <Col
                           lg={12}
@@ -204,10 +204,10 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                   />
                                 }
                                 className={
-                                  voteId === 3
+                                  voteId === 4
                                     ? styles[
-                                        "Abstain_btn_vote_resolution_Active"
-                                      ]
+                                    "Abstain_btn_vote_resolution_Active"
+                                    ]
                                     : styles["Abstain_btn_vote_resolution"]
                                 }
                                 onClick={() => isAbstainBtn(4)}
@@ -224,8 +224,8 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                 className={
                                   voteId === 2
                                     ? styles[
-                                        "Notapproved_btn_voteresolution_Active"
-                                      ]
+                                    "Notapproved_btn_voteresolution_Active"
+                                    ]
                                     : styles["Notapproved_btn_voteresolution"]
                                 }
                                 onClick={() => isNotApprovedBtn(2)}
@@ -243,8 +243,8 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                 className={
                                   voteId === 1
                                     ? styles[
-                                        "approved_btn_voteresolution_Active"
-                                      ]
+                                    "approved_btn_voteresolution_Active"
+                                    ]
                                     : styles["approved_btn_voteresolution"]
                                 }
                               />
@@ -287,48 +287,48 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                               <Row>
                                 {voter.length > 0
                                   ? voter.map((data, index) => {
-                                      console.log(data, "datadadadasdad");
-                                      return (
-                                        <>
-                                          <Col
-                                            lg={6}
-                                            md={6}
-                                            sm={6}
-                                            key={data.pK_RV_ID}
-                                            className="mt-1"
-                                          >
-                                            <EmployeeinfoCard
-                                              Employeename={data.username}
-                                              Employeeemail={data.email}
-                                              Icon={
-                                                <img
-                                                  src={
-                                                    data.fK_VotingStatus_ID ===
+                                    console.log(data, "datadadadasdad");
+                                    return (
+                                      <>
+                                        <Col
+                                          lg={6}
+                                          md={6}
+                                          sm={6}
+                                          key={data.pK_RV_ID}
+                                          className="mt-1"
+                                        >
+                                          <EmployeeinfoCard
+                                            Employeename={data.username}
+                                            Employeeemail={data.email}
+                                            Icon={
+                                              <img
+                                                src={
+                                                  data.fK_VotingStatus_ID ===
                                                     1
-                                                      ? thumbsup
-                                                      : data.fK_VotingStatus_ID ===
-                                                        2
+                                                    ? thumbsup
+                                                    : data.fK_VotingStatus_ID ===
+                                                      2
                                                       ? thumbsdown
                                                       : data.fK_VotingStatus_ID ===
                                                         3
-                                                      ? Clock
-                                                      : data.fK_VotingStatus_ID ===
-                                                        4
-                                                      ? Abstain
-                                                      : null
-                                                  }
-                                                  width="20px"
-                                                  height="20px"
-                                                  onClick={() =>
-                                                    setVoterID(data.pK_RV_ID)
-                                                  }
-                                                />
-                                              }
-                                            />
-                                          </Col>
-                                        </>
-                                      );
-                                    })
+                                                        ? Clock
+                                                        : data.fK_VotingStatus_ID ===
+                                                          4
+                                                          ? Abstain
+                                                          : null
+                                                }
+                                                width="20px"
+                                                height="20px"
+                                                onClick={() =>
+                                                  setVoterID(data.pK_RV_ID)
+                                                }
+                                              />
+                                            }
+                                          />
+                                        </Col>
+                                      </>
+                                    );
+                                  })
                                   : null}
                               </Row>
                             </Col>
@@ -344,41 +344,10 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                       sm={false}
                       className="d-flex justify-content-center"
                     >
-                      <img src={line} height="547px" />
+                      <span className={styles["line_voteResolution"]}></span>
                     </Col>
-                    <Col lg={4} md={4} sm={4}>
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <Chart
-                            chartType="ColumnChart"
-                            width="100%"
-                            height="250px"
-                            radius={10}
-                            data={data}
-                            options={options}
-                            className={styles["Addchart"]}
-                          />
-                        </Col>
-                      </Row>
-                      <Row className="mt-4">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-center"
-                        >
-                          <span
-                            className={styles["Total_voters_voteResolution"]}
-                          >
-                            {t("Total-voters")}
-                            <span
-                              className={styles["No_of_Votes_voteResolution"]}
-                            >
-                              {totalVoters || 0}
-                            </span>
-                          </span>
-                        </Col>
-                      </Row>
+                    <Col lg={4} md={4} sm={12} className="px-3">
+
                       <Row>
                         <Col
                           lg={12}
@@ -427,6 +396,38 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                               </Row>
                             </Col>
                           </Row>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col lg={12} md={12} sm={12}>
+                          <Chart
+                            chartType="ColumnChart"
+                            width="100%"
+                            height="250px"
+                            radius={10}
+                            data={data}
+                            options={options}
+                            className={styles["Addchart"]}
+                          />
+                        </Col>
+                      </Row>
+                      <Row className="mt-4">
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center"
+                        >
+                          <span
+                            className={styles["Total_voters_voteResolution"]}
+                          >
+                            {t("Total-voters")}
+                            <span
+                              className={styles["No_of_Votes_voteResolution"]}
+                            >
+                              {totalVoters || 0}
+                            </span>
+                          </span>
                         </Col>
                       </Row>
                       <Row className="mt-5">

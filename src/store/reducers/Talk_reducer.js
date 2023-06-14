@@ -7,6 +7,7 @@ const initialState = {
   Token: '',
   Refresh: '',
   SessionExpireResponseMessage: '',
+  OtoMessageFlag: false,
 
   activeChatIdData: {
     id: 0,
@@ -949,6 +950,13 @@ const talkReducer = (state = initialState, action) => {
           ResponseMessage: '',
           MessageSendResponseData: [],
         },
+      }
+
+    case actions.OTO_RETRY_FLAG:
+      console.log('OTO_RETRY_FLAG', action)
+      return {
+        ...state,
+        OtoMessageFlag: action.response,
       }
 
     case actions.OTO_MESSAGESEND_SUCCESS:

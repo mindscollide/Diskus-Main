@@ -830,7 +830,7 @@ const ScheduleNewResolution = ({
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
-                    <Col lg={5} md={5} sm={5}>
+                    <Col lg={5} md={5} sm={12}>
                       <Row>
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Details_New_resolution"]}>
@@ -879,7 +879,7 @@ const ScheduleNewResolution = ({
                         >
                           <Select
                             name="Participant"
-                            placeholder={t("Voting-deadline" + "*")}
+                            placeholder={t("Voting-deadline") + "*"}
                             className="select-voting-deadline"
                             options={votingMethods}
                             isSearchable={false}
@@ -926,7 +926,7 @@ const ScheduleNewResolution = ({
                           className="CreateMeetingInput FontArabicRegular "
                         >
                           <TextField
-                            applyClass="text-area-create-group"
+                            applyClass="text-area-create-resolution"
                             type="text"
                             as={"textarea"}
                             rows="4"
@@ -1252,7 +1252,7 @@ const ScheduleNewResolution = ({
                       sm={false}
                       className="d-flex justify-content-center"
                     >
-                      <img src={line} height="586px" />
+                      <span className={styles["line_createresolution"]}></span>
                     </Col>
                     <Col lg={6} md={6} sm={12}>
                       <Row>
@@ -1362,7 +1362,7 @@ const ScheduleNewResolution = ({
                                               lg={6}
                                               md={6}
                                               sm={6}
-                                              className="mt-2"
+                                            // className="mt-2"
                                             >
                                               <Row>
                                                 <Col lg={12} md={12} sm={12}>
@@ -1442,7 +1442,7 @@ const ScheduleNewResolution = ({
                                   />
                                 </Col>
                               </Row>
-                              <Row className="mt-3">
+                              <Row className="mt-1">
                                 <Col
                                   lg={12}
                                   md={12}
@@ -1460,7 +1460,7 @@ const ScheduleNewResolution = ({
                                               lg={6}
                                               md={6}
                                               sm={6}
-                                              className="mt-2"
+                                            // className="mt-2"
                                             >
                                               <Row>
                                                 <Col lg={12} md={12} sm={12}>
@@ -1505,8 +1505,8 @@ const ScheduleNewResolution = ({
                               </span>
                             </Col>
                           </Row>
-                          <Row className="mt-2">
-                            <Col
+                          <Row className={styles["create_resolution_attachmentattendeepart"]}>
+                            {tasksAttachments.length > 0 && <Col
                               sm={12}
                               md={12}
                               lg={12}
@@ -1686,11 +1686,10 @@ const ScheduleNewResolution = ({
                                   ) : null}
                                 </Col>
                               </Row>
-                            </Col>
-                          </Row>
-                          <Row className="mt-3">
+                            </Col>}
+
                             <Col lg={12} md={12} sm={12}>
-                              <Dragger {...props}>
+                              <Dragger {...props} className={styles["dragdrop_attachment_create_resolution"]}>
                                 <p className="ant-upload-drag-icon">
                                   <span>
                                     <img
@@ -1712,6 +1711,9 @@ const ScheduleNewResolution = ({
                               </Dragger>
                             </Col>
                           </Row>
+                          {/* <Row className="mt-3">
+                           
+                          </Row> */}
                           {/* {isVoter ?
                             <> */}
                           <Row className="mt-4">
