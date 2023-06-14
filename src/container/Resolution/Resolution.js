@@ -243,12 +243,12 @@ const Resolution = () => {
     setSearchIcon(false);
     if (resolutionView !== null && resolutionView === 1) {
       if (moderatorPage !== null && moderatorRows !== null) {
-        dispatch(getResolutions(navigate, 1, t, moderatorPage, moderatorRows));
+        dispatch(getResolutions(navigate, 1, t));
         // dispatch(currentClosedView(1));
       }
     } else if (voterView !== null && voterView === 2) {
       if (voterPage !== null && voterRows !== null) {
-        // dispatch(getVoterResolution(navigate, 1, t, voterPage, voterRows));
+        dispatch(getVoterResolution(navigate, 1, t));
       }
     }
     // dispatch(currentClosedView(1));
@@ -261,10 +261,10 @@ const Resolution = () => {
     setAllSearchInput("");
     setSearchIcon(false);
     if (resolutionView !== null && resolutionView === 1) {
-      dispatch(getResolutions(navigate, 3, t, moderatorPage, moderatorRows));
+      dispatch(getResolutions(navigate, 3, t));
       // dispatch(currentClosedView(1));
     } else if (voterView !== null && voterView === 2) {
-      // dispatch(getVoterResolution(navigate, 3, t, voterPage, voterRows));
+      dispatch(getVoterResolution(navigate, 3, t));
       // dispatch(currentClosedView(1));
     }
   };
@@ -276,9 +276,9 @@ const Resolution = () => {
     setAllSearchInput("");
     setSearchIcon(false);
     if (resolutionView !== null && resolutionView === 1) {
-      dispatch(getResolutions(navigate, 2, t, moderatorPage, moderatorRows));
+      dispatch(getResolutions(navigate, 2, t));
     } else if (voterView !== null && voterView === 2) {
-      // dispatch(getVoterResolution(navigate, 2, t, voterPage, voterRows));
+      dispatch(getVoterResolution(navigate, 2, t));
     }
   };
 
@@ -891,12 +891,12 @@ const Resolution = () => {
     if (viewID === 1) {
       localStorage.setItem("resolutionView", 1)
       localStorage.removeItem("voterResolutionView")
-      dispatch(getResolutions(navigate, 1, t, moderatorPage, moderatorRows));
+      dispatch(getResolutions(navigate, 1, t));
       // dispatch(currentClosedView(1));
     } else {
       localStorage.setItem("voterResolutionView", 2)
       localStorage.removeItem("resolutionView")
-      dispatch(getVoterResolution(navigate, 1, t, voterPage, voterRows));
+      dispatch(getVoterResolution(navigate, 1, t));
       // dispatch(currentClosedView(1));
     }
   };
@@ -1038,14 +1038,14 @@ const Resolution = () => {
 
   // change resoltion moderator pagination
   const handleChangeResolutionPagination = (current, pageSize) => {
-    dispatch(getResolutions(navigate, 1, t, current, pageSize))
+    dispatch(getResolutions(navigate, 1, t))
     localStorage.setItem("moderatorPage", current)
     localStorage.setItem("moderatorRows", pageSize)
   }
 
   // change resolution voter pagination
   const handleChangeVoterResolutionPagination = (current, pageSize) => {
-    dispatch(getVoterResolution(navigate, 1, t, current, pageSize))
+    dispatch(getVoterResolution(navigate, 1, t))
     localStorage.setItem("voterPage", current)
     localStorage.setItem("voterRows", pageSize)
   }
@@ -1078,7 +1078,7 @@ const Resolution = () => {
     localStorage.removeItem("voterResolutionView")
     localStorage.removeItem("AllBtn");
     localStorage.removeItem("CloseBtn");
-    dispatch(getResolutions(navigate, 1, t, 1, 50));
+    dispatch(getResolutions(navigate, 1, t));
   }, []);
 
   // voter resolution state manage

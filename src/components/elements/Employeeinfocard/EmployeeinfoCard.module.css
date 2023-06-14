@@ -3,7 +3,13 @@
   margin-top: 6px !important;
   margin-left: 10px !important;
   display: block !important;
-  justify-content: start !important;
+}
+
+body[dir="rtl"] .Lineheight {
+  line-height: 15px !important;
+  margin-top: 6px !important;
+  margin-right: 10px !important;
+  display: block !important;
 }
 
 .name_participant {

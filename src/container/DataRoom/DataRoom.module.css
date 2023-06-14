@@ -838,7 +838,6 @@ body[dir="rtl"] .Data_room_btn {
 }
 
 .FilterDropDown_TableView {
-  position: fixed;
   padding: 5px 10px;
   width: 120px !important;
   height: auto !important;
@@ -848,6 +847,9 @@ body[dir="rtl"] .Data_room_btn {
   background-color: #fff;
   display: flex;
   flex-direction: column;
+  position: absolute;
+  top: 22px;
+  left: 0;
 }
 
 .Option_Document_button_selected {

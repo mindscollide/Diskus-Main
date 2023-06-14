@@ -1079,7 +1079,7 @@ const EditResolution = ({
             </Row>
 
             <Paper className={styles["Create_new_resolution_paper"]}>
-              <Row className="mb-5">
+              <Row >
                 <Col lg={12} md={12} sm={12}>
                   <Row>
                     <Col
@@ -1538,7 +1538,7 @@ const EditResolution = ({
                           sm={false}
                           className="d-flex justify-content-center"
                         >
-                          <img src={line} height="586px" />
+                          <span className={styles["line_Editresolution"]}></span>
                         </Col>
                         <Col lg={6} md={6} sm={12}>
                           <Row>
@@ -1707,7 +1707,7 @@ const EditResolution = ({
                                         change={onChangeSearch}
                                         applyClass={"search_voterInput"}
                                       />
-                                      <Row>
+                                      {/* <Row>
                                         <Col>
                                           <p
                                             className={
@@ -1719,7 +1719,7 @@ const EditResolution = ({
                                             {t("At-least-add-one-voter")}
                                           </p>
                                         </Col>
-                                      </Row>
+                                      </Row> */}
                                     </Col>
 
                                     <Col
@@ -1818,189 +1818,189 @@ const EditResolution = ({
                                   </span>
                                 </Col>
                               </Row>
-                              <Row className="mt-2">
-                                <Col className={styles["attachments_height"]} sm={12} md={12} lg={12}>
-                                  <Row>
-                                    <Col lg={1} md={1} sm={1} className="mt-4">
-                                      {tasksAttachments.length > 6 ? (
-                                        <>
-                                          <Button
-                                            icon={
-                                              <img
-                                                src={Leftploygon}
-                                                width="20px"
-                                                height="15px"
-                                              />
-                                            }
-                                            onClick={SlideLeft}
-                                            className={styles["Leftpolygon"]}
-                                          />
-                                        </>
-                                      ) : null}
-                                    </Col>
-
-                                    <Col sm={10} lg={10} md={10}>
-                                      <Row>
-                                        <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className="Scroller-x-resolution"
-                                          id="Slider"
-                                        >
-                                          {tasksAttachments.length > 0
-                                            ? tasksAttachments.map(
-                                              (data, index) => {
-                                                var ext =
-                                                  data?.DisplayAttachmentName?.split(
-                                                    "."
-                                                  ).pop();
-                                                const first =
-                                                  data?.DisplayAttachmentName?.split(
-                                                    " "
-                                                  )[0];
-                                                return (
-                                                  <Col
-                                                    sm={12}
-                                                    lg={2}
-                                                    md={2}
-                                                    className="modaltodolist-attachment-icon"
-                                                  >
-                                                    {ext === "doc" ? (
-                                                      <FileIcon
-                                                        extension={"docx"}
-                                                        size={78}
-                                                        type={"document"}
-                                                        labelColor={
-                                                          "rgba(44, 88, 152)"
-                                                        }
-                                                      />
-                                                    ) : ext === "docx" ? (
-                                                      <FileIcon
-                                                        extension={"docx"}
-                                                        size={78}
-                                                        type={"font"}
-                                                        labelColor={
-                                                          "rgba(44, 88, 152)"
-                                                        }
-                                                      />
-                                                    ) : ext === "xls" ? (
-                                                      <FileIcon
-                                                        extension={"xls"}
-                                                        type={"spreadsheet"}
-                                                        size={78}
-                                                        labelColor={
-                                                          "rgba(16, 121, 63)"
-                                                        }
-                                                      />
-                                                    ) : ext === "xlsx" ? (
-                                                      <FileIcon
-                                                        extension={"xls"}
-                                                        type={"spreadsheet"}
-                                                        size={78}
-                                                        labelColor={
-                                                          "rgba(16, 121, 63)"
-                                                        }
-                                                      />
-                                                    ) : ext === "pdf" ? (
-                                                      <FileIcon
-                                                        extension={"pdf"}
-                                                        size={78}
-                                                        {...defaultStyles.pdf}
-                                                      />
-                                                    ) : ext === "png" ? (
-                                                      <FileIcon
-                                                        extension={"png"}
-                                                        size={78}
-                                                        type={"image"}
-                                                        labelColor={
-                                                          "rgba(102, 102, 224)"
-                                                        }
-                                                      />
-                                                    ) : ext === "txt" ? (
-                                                      <FileIcon
-                                                        extension={"txt"}
-                                                        size={78}
-                                                        type={"document"}
-                                                        labelColor={
-                                                          "rgba(52, 120, 199)"
-                                                        }
-                                                      />
-                                                    ) : ext === "jpg" ? (
-                                                      <FileIcon
-                                                        extension={"jpg"}
-                                                        size={78}
-                                                        type={"image"}
-                                                        labelColor={
-                                                          "rgba(102, 102, 224)"
-                                                        }
-                                                      />
-                                                    ) : ext === "jpeg" ? (
-                                                      <FileIcon
-                                                        extension={"jpeg"}
-                                                        size={78}
-                                                        type={"image"}
-                                                        labelColor={
-                                                          "rgba(102, 102, 224)"
-                                                        }
-                                                      />
-                                                    ) : ext === "gif" ? (
-                                                      <FileIcon
-                                                        extension={"gif"}
-                                                        size={78}
-                                                        {...defaultStyles.gif}
-                                                      />
-                                                    ) : null}
-                                                    <span className="deleteBtn">
-                                                      <img
-                                                        src={
-                                                          deleteButtonCreateMeeting
-                                                        }
-                                                        width={15}
-                                                        height={15}
-                                                        onClick={() =>
-                                                          deleteFilefromAttachments(
-                                                            data,
-                                                            index
-                                                          )
-                                                        }
-                                                      />
-                                                    </span>
-                                                    <p className="modaltodolist-attachment-text  FontArabicRegular">
-                                                      {first}
-                                                    </p>
-                                                  </Col>
-                                                );
+                              <Row className={styles["edit_resolution_attachments"]}>
+                                {tasksAttachments.length > 0 && (
+                                  <Col className={styles["attachments_height"]} sm={12} md={12} lg={12}>
+                                    <Row>
+                                      <Col lg={1} md={1} sm={1} className="mt-4">
+                                        {tasksAttachments.length > 6 ? (
+                                          <>
+                                            <Button
+                                              icon={
+                                                <img
+                                                  src={Leftploygon}
+                                                  width="20px"
+                                                  height="15px"
+                                                />
                                               }
-                                            )
-                                            : null}
-                                        </Col>
-                                      </Row>
-                                    </Col>
-                                    <Col lg={1} md={1} sm={1} className="mt-4">
-                                      {tasksAttachments.length > 6 ? (
-                                        <>
-                                          <Button
-                                            icon={
-                                              <img
-                                                src={Rightploygon}
-                                                width="20px"
-                                                height="15px"
-                                              />
-                                            }
-                                            onClick={Slideright}
-                                            className={styles["Leftpolygon"]}
-                                          />
-                                        </>
-                                      ) : null}
-                                    </Col>
-                                  </Row>
-                                </Col>
+                                              onClick={SlideLeft}
+                                              className={styles["Leftpolygon"]}
+                                            />
+                                          </>
+                                        ) : null}
+                                      </Col>
 
-                              </Row>
-                              <Row className="mt-3">
+                                      <Col sm={10} lg={10} md={10}>
+                                        <Row>
+                                          <Col
+                                            lg={12}
+                                            md={12}
+                                            sm={12}
+                                            className="Scroller-x-resolution"
+                                            id="Slider"
+                                          >
+                                            {tasksAttachments.length > 0
+                                              ? tasksAttachments.map(
+                                                (data, index) => {
+                                                  var ext =
+                                                    data?.DisplayAttachmentName?.split(
+                                                      "."
+                                                    ).pop();
+                                                  const first =
+                                                    data?.DisplayAttachmentName?.split(
+                                                      " "
+                                                    )[0];
+                                                  return (
+                                                    <Col
+                                                      sm={12}
+                                                      lg={2}
+                                                      md={2}
+                                                      className="modaltodolist-attachment-icon"
+                                                    >
+                                                      {ext === "doc" ? (
+                                                        <FileIcon
+                                                          extension={"docx"}
+                                                          size={78}
+                                                          type={"document"}
+                                                          labelColor={
+                                                            "rgba(44, 88, 152)"
+                                                          }
+                                                        />
+                                                      ) : ext === "docx" ? (
+                                                        <FileIcon
+                                                          extension={"docx"}
+                                                          size={78}
+                                                          type={"font"}
+                                                          labelColor={
+                                                            "rgba(44, 88, 152)"
+                                                          }
+                                                        />
+                                                      ) : ext === "xls" ? (
+                                                        <FileIcon
+                                                          extension={"xls"}
+                                                          type={"spreadsheet"}
+                                                          size={78}
+                                                          labelColor={
+                                                            "rgba(16, 121, 63)"
+                                                          }
+                                                        />
+                                                      ) : ext === "xlsx" ? (
+                                                        <FileIcon
+                                                          extension={"xls"}
+                                                          type={"spreadsheet"}
+                                                          size={78}
+                                                          labelColor={
+                                                            "rgba(16, 121, 63)"
+                                                          }
+                                                        />
+                                                      ) : ext === "pdf" ? (
+                                                        <FileIcon
+                                                          extension={"pdf"}
+                                                          size={78}
+                                                          {...defaultStyles.pdf}
+                                                        />
+                                                      ) : ext === "png" ? (
+                                                        <FileIcon
+                                                          extension={"png"}
+                                                          size={78}
+                                                          type={"image"}
+                                                          labelColor={
+                                                            "rgba(102, 102, 224)"
+                                                          }
+                                                        />
+                                                      ) : ext === "txt" ? (
+                                                        <FileIcon
+                                                          extension={"txt"}
+                                                          size={78}
+                                                          type={"document"}
+                                                          labelColor={
+                                                            "rgba(52, 120, 199)"
+                                                          }
+                                                        />
+                                                      ) : ext === "jpg" ? (
+                                                        <FileIcon
+                                                          extension={"jpg"}
+                                                          size={78}
+                                                          type={"image"}
+                                                          labelColor={
+                                                            "rgba(102, 102, 224)"
+                                                          }
+                                                        />
+                                                      ) : ext === "jpeg" ? (
+                                                        <FileIcon
+                                                          extension={"jpeg"}
+                                                          size={78}
+                                                          type={"image"}
+                                                          labelColor={
+                                                            "rgba(102, 102, 224)"
+                                                          }
+                                                        />
+                                                      ) : ext === "gif" ? (
+                                                        <FileIcon
+                                                          extension={"gif"}
+                                                          size={78}
+                                                          {...defaultStyles.gif}
+                                                        />
+                                                      ) : null}
+                                                      <span className="deleteBtn">
+                                                        <img
+                                                          src={
+                                                            deleteButtonCreateMeeting
+                                                          }
+                                                          width={15}
+                                                          height={15}
+                                                          onClick={() =>
+                                                            deleteFilefromAttachments(
+                                                              data,
+                                                              index
+                                                            )
+                                                          }
+                                                        />
+                                                      </span>
+                                                      <p className="modaltodolist-attachment-text  FontArabicRegular">
+                                                        {first}
+                                                      </p>
+                                                    </Col>
+                                                  );
+                                                }
+                                              )
+                                              : null}
+                                          </Col>
+                                        </Row>
+                                      </Col>
+                                      <Col lg={1} md={1} sm={1} className="mt-4">
+                                        {tasksAttachments.length > 6 ? (
+                                          <>
+                                            <Button
+                                              icon={
+                                                <img
+                                                  src={Rightploygon}
+                                                  width="20px"
+                                                  height="15px"
+                                                />
+                                              }
+                                              onClick={Slideright}
+                                              className={styles["Leftpolygon"]}
+                                            />
+                                          </>
+                                        ) : null}
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                )}
+
                                 <Col lg={12} md={12} sm={12}>
-                                  <Dragger {...props}>
+                                  <Dragger {...props} className={styles["EditResolution_dragger"]}>
                                     <p className="ant-upload-drag-icon">
                                       <span>
                                         <img
@@ -2020,6 +2020,9 @@ const EditResolution = ({
                                   </Dragger>
                                 </Col>
                               </Row>
+                              {/* <Row className="mt-3">
+                               
+                              </Row> */}
                               {/* {isVoter ?
                           <> */}
                               <Row className="mt-3">
