@@ -40,8 +40,7 @@ const getUserSetting = (navigate, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = localStorage.getItem("userID");
   let userSettingData = {
-    UserID: JSON.parse(userID),
-    NumberOfRecords: 10,
+    UserID: JSON.parse(userID)
   };
   return (dispatch) => {
     dispatch(settingInit());

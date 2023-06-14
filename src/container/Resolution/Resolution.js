@@ -9,6 +9,7 @@ import {
   SelectBox,
 } from "../../components/elements";
 import { Col, Row } from "react-bootstrap";
+import { Pagination } from 'antd'
 import searchicon from "../../assets/images/searchicon.svg";
 import plusbutton from "../../assets/images/Group 119.svg";
 import thumbsup from "../../assets/images/thumbsup.svg";
@@ -58,13 +59,19 @@ const Resolution = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { ResolutionReducer } = useSelector((state) => state);
+  const [currentPageSize, setCurrentPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalResolution, setTotalResolution] = useState(0)
+  const [currentPageVoter, setCurrentPageVoter] = useState(1)
+  const [totalVoterResolution, setTotalVoterResolution] = useState(0)
+  console.log(currentPage, totalResolution, "totalResolutiontotalResolutiontotalResolution")
   const [newresolution, setNewresolution] = useState(false);
   const [viewresolution, setViewresolution] = useState(false);
   const [resultresolution, setResultresolution] = useState(false);
   const [voteresolution, setVoteresolution] = useState(false);
-  const [closedbtntable, setClosedbtntable] = useState(false);
-  const [currentbtn, setCurrentbtn] = useState(true);
-  const [getAll, setGetAll] = useState(false);
+  // const [closedbtntable, setClosedbtntable] = useState(false);
+  // const [currentbtn, setCurrentbtn] = useState(true);
+  // const [getAll, setGetAll] = useState(false);
   const [searchIcon, setSearchIcon] = useState(false);
   const [rows, setRows] = useState([]);
   const [isSearchVoter, setSearchVoter] = useState([]);
@@ -75,6 +82,25 @@ const Resolution = () => {
   const [searchResultsArea, setSearchResultsArea] = useState(false);
   const [currentTab, setCurrentTab] = useState(0);
   const [allSearchInput, setAllSearchInput] = useState("");
+  let resolutionView = JSON.parse(localStorage.getItem("resolutionView"));
+  let voterView = JSON.parse(localStorage.getItem("voterResolutionView"));
+  let moderatorPage = JSON.parse(localStorage.getItem("moderatorPage"));
+  let moderatorRows = JSON.parse(localStorage.getItem("moderatorRows"));
+  let voterPage = JSON.parse(localStorage.getItem("voterPage"));
+  let voterRows = JSON.parse(localStorage.getItem("voterRows"));
+  let CurrentBtn = JSON.parse(localStorage.getItem("CurrentBtn"));
+  let AllBtn = JSON.parse(localStorage.getItem("AllBtn"));
+  let CloseBtn = JSON.parse(localStorage.getItem("CloseBtn"));
+  console.log(resolutionView, "voterViewvoterViewvoterView")
+  console.log(voterView, "voterViewvoterViewvoterView")
+  console.log(moderatorPage, "voterViewvoterViewvoterView")
+  console.log(moderatorRows, "voterViewvoterViewvoterView")
+  console.log(voterPage, "voterViewvoterViewvoterView")
+  console.log(voterRows, "voterViewvoterViewvoterView")
+  console.log(CurrentBtn, "voterViewvoterViewvoterView")
+  console.log(AllBtn, "voterViewvoterViewvoterView")
+  console.log(CloseBtn, "voterViewvoterViewvoterView")
+
   const [searchModalDates, setSearchModalDates] = useState({
     circulationDate: "",
     votingDate: "",
@@ -208,42 +234,54 @@ const Resolution = () => {
     let voterData = [...ResolutionReducer.searchVoterResolution];
     setSearchVoter(voterData);
   };
+
   const currentbuttontable = () => {
-    setClosedbtntable(false);
-    setCurrentbtn(true);
-    setGetAll(false);
+    localStorage.setItem("CurrentBtn", 1);
+    localStorage.removeItem("AllBtn");
+    localStorage.removeItem("CloseBtn");
     setAllSearchInput("");
-    setSearchModalDates({
-      circulationDate: "",
-      votingDate: "",
-    });
     setSearchIcon(false);
-    if (ResolutionReducer.currentResolutionView === 1) {
-      dispatch(getResolutions(navigate, 1, t));
-      dispatch(currentClosedView(1));
-    } else if (ResolutionReducer.currentResolutionView === 2) {
-      dispatch(getVoterResolution(navigate, 1, t));
+    if (resolutionView !== null && resolutionView === 1) {
+      if (moderatorPage !== null && moderatorRows !== null) {
+        dispatch(getResolutions(navigate, 1, t, moderatorPage, moderatorRows));
+        // dispatch(currentClosedView(1));
+      }
+    } else if (voterView !== null && voterView === 2) {
+      if (voterPage !== null && voterRows !== null) {
+        // dispatch(getVoterResolution(navigate, 1, t, voterPage, voterRows));
+      }
     }
-    dispatch(currentClosedView(1));
+    // dispatch(currentClosedView(1));
   };
+
   const allbtntable = () => {
-    setClosedbtntable(false);
-    setCurrentbtn(false);
-    setGetAll(true);
+    localStorage.setItem("AllBtn", 3);
+    localStorage.removeItem("CloseBtn");
+    localStorage.removeItem("CurrentBtn");
     setAllSearchInput("");
-    setSearchModalDates({
-      circulationDate: "",
-      votingDate: "",
-    });
     setSearchIcon(false);
-    if (ResolutionReducer.currentResolutionView === 1) {
-      dispatch(getResolutions(navigate, 3, t));
-      dispatch(currentClosedView(1));
-    } else if (ResolutionReducer.currentResolutionView === 2) {
-      dispatch(getVoterResolution(navigate, 3, t));
-      dispatch(currentClosedView(1));
+    if (resolutionView !== null && resolutionView === 1) {
+      dispatch(getResolutions(navigate, 3, t, moderatorPage, moderatorRows));
+      // dispatch(currentClosedView(1));
+    } else if (voterView !== null && voterView === 2) {
+      // dispatch(getVoterResolution(navigate, 3, t, voterPage, voterRows));
+      // dispatch(currentClosedView(1));
     }
   };
+
+  const buttonclosed = () => {
+    localStorage.setItem("CloseBtn", 2);
+    localStorage.removeItem("AllBtn");
+    localStorage.removeItem("CurrentBtn");
+    setAllSearchInput("");
+    setSearchIcon(false);
+    if (resolutionView !== null && resolutionView === 1) {
+      dispatch(getResolutions(navigate, 2, t, moderatorPage, moderatorRows));
+    } else if (voterView !== null && voterView === 2) {
+      // dispatch(getVoterResolution(navigate, 2, t, voterPage, voterRows));
+    }
+  };
+
   const createresolution = () => {
     setAllSearchInput("");
     setSearchModalDates({
@@ -254,24 +292,7 @@ const Resolution = () => {
     setNewresolution(true);
   };
 
-  const buttonclosed = () => {
-    setClosedbtntable(true);
-    setCurrentbtn(false);
-    setGetAll(false);
-    setAllSearchInput("");
-    setSearchModalDates({
-      circulationDate: "",
-      votingDate: "",
-    });
-    setSearchIcon(false);
-    if (ResolutionReducer.currentResolutionView === 1) {
-      dispatch(getResolutions(navigate, 2, t));
-      dispatch(currentClosedView(2));
-    } else if (ResolutionReducer.currentResolutionView === 2) {
-      dispatch(getVoterResolution(navigate, 2, t));
-      dispatch(currentClosedView(2));
-    }
-  };
+
   const resultpage = () => {
     setResultresolution(true);
     console.log("i am clicked ");
@@ -323,7 +344,7 @@ const Resolution = () => {
       value,
       "moderatorDatamoderatorDatamoderatorDatavalue"
     );
-    if (ResolutionReducer.currentResolutionView === 2) {
+    if (voterView !== null && voterView === 2) {
       let y = [...ResolutionReducer.searchVoterResolution];
       if (value != "") {
         let x = y.filter((a) => {
@@ -344,7 +365,7 @@ const Resolution = () => {
       } else {
         setSearchVoter(ResolutionReducer.searchVoterResolution);
       }
-    } else if (ResolutionReducer.currentResolutionView === 1) {
+    } else if (resolutionView !== null && resolutionView === 1) {
       // isSearchVoter
       let moderatordata = [...ResolutionReducer.GetResolutions];
       console.log(
@@ -468,7 +489,7 @@ const Resolution = () => {
         if (text === "Approved" || text === "Not Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else {
-          <span className={styles["decision_text"]}>{text}</span>;
+          return <span className={styles["decision_text"]}>{text}</span>;
         }
         //  return <span>{text}</span>
       },
@@ -542,7 +563,7 @@ const Resolution = () => {
       render: (table, data) => {
         if (data.resolutionStatus === "Closed") {
         } else if (data.resolutionStatus === "Circulated") {
-          return <span><XSquare width={22} height={22} onClick={() => dispatch(cancelResolutionApi(navigate, data.resolutionID, t, setEditResoutionPage))} /></span>
+          return <span className={styles["Edit_Icon_moderator"]}><XSquare className="cursor-pointer" width={22} height={22} onClick={() => dispatch(cancelResolutionApi(navigate, data.resolutionID, t, setEditResoutionPage))} /></span>
         } else {
           return (
             <img
@@ -860,7 +881,7 @@ const Resolution = () => {
   ];
 
   const resolutionTable = (viewID) => {
-    dispatch(currentResolutionView(viewID));
+    // dispatch(currentResolutionView(viewID));
     setAllSearchInput("");
     setSearchModalDates({
       circulationDate: "",
@@ -868,13 +889,18 @@ const Resolution = () => {
     });
     setSearchIcon(false);
     if (viewID === 1) {
-      dispatch(getResolutions(navigate, 1, t));
-      dispatch(currentClosedView(1));
+      localStorage.setItem("resolutionView", 1)
+      localStorage.removeItem("voterResolutionView")
+      dispatch(getResolutions(navigate, 1, t, moderatorPage, moderatorRows));
+      // dispatch(currentClosedView(1));
     } else {
-      dispatch(getVoterResolution(navigate, 1, t));
-      dispatch(currentClosedView(1));
+      localStorage.setItem("voterResolutionView", 2)
+      localStorage.removeItem("resolutionView")
+      dispatch(getVoterResolution(navigate, 1, t, voterPage, voterRows));
+      // dispatch(currentClosedView(1));
     }
   };
+
   // voters closed
   const columnsVotersClosed = [
     {
@@ -939,6 +965,7 @@ const Resolution = () => {
       dataIndex: "Attachment",
       key: "Attachment",
       width: "104px",
+      align: "center",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
         console.log(data, "datadatadatadatadatadata");
@@ -1009,6 +1036,21 @@ const Resolution = () => {
     },
   ];
 
+  // change resoltion moderator pagination
+  const handleChangeResolutionPagination = (current, pageSize) => {
+    dispatch(getResolutions(navigate, 1, t, current, pageSize))
+    localStorage.setItem("moderatorPage", current)
+    localStorage.setItem("moderatorRows", pageSize)
+  }
+
+  // change resolution voter pagination
+  const handleChangeVoterResolutionPagination = (current, pageSize) => {
+    dispatch(getVoterResolution(navigate, 1, t, current, pageSize))
+    localStorage.setItem("voterPage", current)
+    localStorage.setItem("voterRows", pageSize)
+  }
+
+  // Resolution reducer ResponseMessage
   useEffect(() => {
     if (ResolutionReducer.ResponseMessage !== null) {
       setOpen({
@@ -1025,21 +1067,37 @@ const Resolution = () => {
     }
   }, [ResolutionReducer.ResponseMessage]);
 
+  // call resolution
   useEffect(() => {
-    dispatch(getResolutions(navigate, 1, t));
+    localStorage.setItem("moderatorPage", 1)
+    localStorage.setItem("moderatorRows", 50)
+    localStorage.setItem("voterPage", 1)
+    localStorage.setItem("voterRows", 50)
+    localStorage.setItem("resolutionView", 1);
+    localStorage.setItem("CurrentBtn", 1);
+    localStorage.removeItem("voterResolutionView")
+    localStorage.removeItem("AllBtn");
+    localStorage.removeItem("CloseBtn");
+    dispatch(getResolutions(navigate, 1, t, 1, 50));
   }, []);
 
+  // voter resolution state manage
   useEffect(() => {
     if (ResolutionReducer.searchVoterResolution !== null) {
-      setSearchVoter(ResolutionReducer.searchVoterResolution);
+      setSearchVoter(ResolutionReducer.searchVoterResolution.resolutionTable);
+      setTotalVoterResolution(ResolutionReducer.searchVoterResolution.totalRecords)
+      setCurrentPageVoter(ResolutionReducer.searchVoterResolution.pageNumbers)
     } else {
       setSearchVoter([]);
     }
   }, [ResolutionReducer.searchVoterResolution]);
 
+  // moderator resolution state manage
   useEffect(() => {
     if (ResolutionReducer.GetResolutions !== null) {
-      setRows(ResolutionReducer.GetResolutions);
+      setCurrentPage(ResolutionReducer.GetResolutions.pageNumbers)
+      setTotalResolution(ResolutionReducer.GetResolutions.totalRecords)
+      setRows(ResolutionReducer.GetResolutions.resolutionTable);
     } else {
       setRows([]);
     }
@@ -1126,7 +1184,7 @@ const Resolution = () => {
                     />
                     <Button
                       className={
-                        getAll
+                        AllBtn !== null && AllBtn === 3
                           ? styles["Resolution-All-btn_Active"]
                           : styles["Resolution-All-btn"]
                       }
@@ -1135,7 +1193,7 @@ const Resolution = () => {
                     />
                     <Button
                       className={
-                        closedbtntable
+                        CloseBtn !== null && CloseBtn === 2
                           ? styles["Resolution-closed-btn_Active"]
                           : styles["Resolution-closed-btn"]
                       }
@@ -1144,7 +1202,7 @@ const Resolution = () => {
                     />
                     <Button
                       className={
-                        currentbtn
+                        CurrentBtn !== null && CurrentBtn === 1
                           ? styles["Resolution-Current-btn_Active"]
                           : styles["Resolution-Current-btn"]
                       }
@@ -1172,14 +1230,9 @@ const Resolution = () => {
                         inputicon={<img src={searchicon} />}
                         clickIcon={openSearchBox}
                       />
-                      {/* <img
-                        src={searchicon}
-                        height="19px"
-                        width="19px"
-                        className={styles["Search_Icon"]}
-                        onClick={openSearchBox}
-                      /> */}
-                      {searchIcon ? (
+                      {/* <SearchInputSuggestion /> */}
+
+                      {/* {searchIcon ? (
                         <>
                           <Row>
                             <Col
@@ -1264,7 +1317,7 @@ const Resolution = () => {
                             </Col>
                           </Row>
                         </>
-                      ) : null}
+                      ) : null} */}
                     </span>
                   </Col>
 
@@ -1354,6 +1407,7 @@ const Resolution = () => {
                     </>
                   ) : null} */}
                 </Row>
+
               </Col>
             </Row>
             {searchResultsArea ? (
@@ -1399,7 +1453,7 @@ const Resolution = () => {
               <Col sm={12} md={12} lg={12} className="d-flex gap-2">
                 <Button
                   className={
-                    ResolutionReducer.currentResolutionView === 1
+                    resolutionView !== null && resolutionView === 1
                       ? styles["Resolution-moderator-btn_Active"]
                       : styles["Resolution-moderator-btn"]
                   }
@@ -1408,7 +1462,7 @@ const Resolution = () => {
                 />
                 <Button
                   className={
-                    ResolutionReducer.currentResolutionView === 2
+                    voterView !== null && voterView === 2
                       ? styles["Resolution-closed-btn_Active"]
                       : styles["Resolution-closed-btn"]
                   }
@@ -1417,34 +1471,48 @@ const Resolution = () => {
                 />
               </Col>
             </Row>
-            {ResolutionReducer.currentResolutionView === 1 ? (
+            {resolutionView !== null && resolutionView === 1 ? (
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
-                  {rows.length > 0 ? (
-                    <TableToDo
-                      sortDirections={["descend", "ascend"]}
-                      column={
-                        ResolutionReducer.resoultionClosed === 2
-                          ? columnsModeratorClosed
-                          : columnsModerator
-                      }
-                      className="Resolution_table"
-                      scroll={{ y: 500 }}
-                      pagination={{
-                        pageSize: 50,
-                        showSizeChanger: true,
-                        pageSizeOptions: ["100 ", "150", "200"],
-                      }}
-                      loading={{
-                        indicator: (
-                          <div className={styles["resolution_spinner"]}>
-                            <Spin />
-                          </div>
-                        ),
-                        spinning: ResolutionReducer.Loading,
-                      }}
-                      rows={rows}
-                    />
+                  {rows !== null && rows !== undefined && rows.length > 0 ? (
+                    <>
+                      <TableToDo
+                        sortDirections={["descend", "ascend"]}
+                        column={
+                          CloseBtn !== null && CloseBtn === 2
+                            ? columnsModeratorClosed
+                            : columnsModerator
+                        }
+                        className="Resolution_table"
+                        scroll={{ y: "53vh" }}
+                        pagination={false}
+                        // pagination={{
+                        //   pageSize: 50,
+                        //   showSizeChanger: true,
+                        //   pageSizeOptions: ["100 ", "150", "200"],
+                        // }}
+                        loading={{
+                          indicator: (
+                            <div className={styles["resolution_spinner"]}>
+                              <Spin />
+                            </div>
+                          ),
+                          spinning: ResolutionReducer.Loading,
+                        }}
+                        rows={rows}
+                      />
+                      <Row>
+                        <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
+                          <Pagination
+                            defaultCurrent={currentPage}
+                            total={totalResolution}
+                            className={styles["PaginationStyle-Resolution"]}
+                            totalBoundaryShowSizeChanger={false}
+                            onChange={handleChangeResolutionPagination}
+                          />
+                        </Col>
+                      </Row>
+                    </>
                   ) : (
                     <Row>
                       <Col
@@ -1465,34 +1533,43 @@ const Resolution = () => {
                   )}
                 </Col>
               </Row>
-            ) : ResolutionReducer.currentResolutionView === 2 ? (
+            ) : voterView !== null && voterView === 2 ? (
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
-                  {isSearchVoter.length > 0 ? (
-                    <TableToDo
-                      sortDirections={["descend", "ascend"]}
-                      column={
-                        ResolutionReducer.resoultionClosed === 2
-                          ? columnsVotersClosed
-                          : columnsvoters
-                      }
-                      className="Resolution_table"
-                      scroll={{ y: 500 }}
-                      pagination={{
-                        pageSize: 50,
-                        showSizeChanger: true,
-                        pageSizeOptions: ["100 ", "150", "200"],
-                      }}
-                      loading={{
-                        indicator: (
-                          <div className={styles["resolution_spinner"]}>
-                            <Spin />
-                          </div>
-                        ),
-                        spinning: ResolutionReducer.Loading,
-                      }}
-                      rows={isSearchVoter}
-                    />
+                  {isSearchVoter !== null && isSearchVoter !== undefined && isSearchVoter.length > 0 ? (
+                    <>
+                      <TableToDo
+                        sortDirections={["descend", "ascend"]}
+                        column={
+                          CloseBtn !== null && CloseBtn === 2
+                            ? columnsVotersClosed
+                            : columnsvoters
+                        }
+                        className="Resolution_table"
+                        scroll={{ y: "53vh" }}
+                        pagination={false}
+                        loading={{
+                          indicator: (
+                            <div className={styles["resolution_spinner"]}>
+                              <Spin />
+                            </div>
+                          ),
+                          spinning: ResolutionReducer.Loading,
+                        }}
+                        rows={isSearchVoter}
+                      />
+                      <Row>
+                        <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
+                          <Pagination
+                            defaultCurrent={currentPageVoter}
+                            total={totalVoterResolution}
+                            className={styles["PaginationStyle-Resolution"]}
+                            selectComponentClass={"pagination_resolution"}
+                            onChange={handleChangeVoterResolutionPagination}
+                          />
+                        </Col>
+                      </Row>
+                    </>
                   ) : (
                     <Row>
                       <Col

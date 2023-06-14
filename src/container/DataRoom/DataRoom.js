@@ -203,10 +203,10 @@ const DataRoom = () => {
         console.log("click", arr[0]);
         console.log("click", arr[1]);
         console.log("click", arr[2]);
-        console.log("click", arr);
+        console.log("click", arr[3]);
         if (arr != undefined) {
           if (searchbarshow === true) {
-            if (arr[1] != "Drop" && arr[2] != "Down" && arr[3] != "searchBar") {
+            if (arr[0] !== "DataRoom" && arr[1] !== "Drop" && arr[2] !== "Down" && arr[3] !== "searchBar") {
               setSearchbarshow(false)
               console.log("click");
             }
@@ -215,7 +215,16 @@ const DataRoom = () => {
             console.log("click");
 
           }
-        } else {
+
+        } else if (optionsFileisShown === true || optionsFolderisShown === true) {
+          if (arr[0] === "DataRoom" && arr[1] === "NavLink" && arr[3] === "filter") {
+
+          } else {
+            setOptionsFileisShown(false)
+            setOptionsFolderisShown(false)
+          }
+        }
+        else {
           if (searchbarshow === true) {
             setSearchbarshow(false)
           }
@@ -744,6 +753,9 @@ const DataRoom = () => {
     setAllDocumentActive(false);
     setMydocumentbtnactive(false);
     localStorage.removeItem("folderID");
+    if (searchoptions) {
+      setSearchoptions(false)
+    }
   };
 
   const MydocumentButtonShow = async () => {
@@ -754,6 +766,9 @@ const DataRoom = () => {
     setSharemebtn(false);
     setMydocumentbtnactive(true);
     setSharedwithmebtn(false);
+    if (searchoptions) {
+      setSearchoptions(false)
+    }
   };
 
   const AllDocuments = async () => {
@@ -764,6 +779,9 @@ const DataRoom = () => {
     setAllDocumentActive(true)
     setMydocumentbtnactive(false);
     setSharedwithmebtn(false);
+    if (searchoptions) {
+      setSearchoptions(false)
+    }
   }
 
   const showCancellUploadModal = () => {
@@ -790,6 +808,8 @@ const DataRoom = () => {
       DataRoomReducer.getFolderDocumentResponse.length > 0
     ) {
       setGetAllData(DataRoomReducer.getFolderDocumentResponse);
+    } else {
+      setGetAllData([]);
     }
   }, [DataRoomReducer.getFolderDocumentResponse]);
 
@@ -997,28 +1017,27 @@ const DataRoom = () => {
                   <img src={dot} height="10.71px" className="cursor-pointer position-relative" width="15.02px" onClick={() => handleClickDropDown(data)} />
 
                   {optionsFolderisShown && threeDotOptions === data.id ?
-                    <Row className="position-absolute">
-                      <Col className={styles["FilterDropDown_TableView"]}>
-                        {optionsforFolder.map((navlink, index) => {
-                          {
-                            if (threeDotOptions === data.id) {
-                              return <NavLink key={index} onClick={() => setOptionsFolderisShown(false)} className={styles["NavLink__filter"]} >{navlink.label}</NavLink>
-                            }
+                    <Col className={styles["FilterDropDown_TableView"]}>
+                      {optionsforFolder.map((navlink, index) => {
+                        {
+                          if (threeDotOptions === data.id) {
+                            return <NavLink key={index} onClick={() => setOptionsFolderisShown(false)} className={styles["NavLink__filter"]} >{navlink.label}</NavLink>
                           }
-                        })
                         }
-                      </Col>
-                    </Row> :
+                      })
+                      }
+                    </Col>
+                    :
                     optionsFileisShown && threeDotOptions === data.id ?
-                      <Row className="position-absolute">
-                        <Col className={styles["FilterDropDown_TableView"]}>
-                          {optionsforFile.map((navlink, index) => {
-                            if (threeDotOptions === data.id) {
-                              return <NavLink key={index} className={styles["NavLink__filter"]} onClick={() => setOptionsFileisShown(false)} >{navlink.label}</NavLink>
-                            }
-                          })}
-                        </Col>
-                      </Row> : null}
+
+                      <Col className={styles["FilterDropDown_TableView"]}>
+                        {optionsforFile.map((navlink, index) => {
+                          if (threeDotOptions === data.id) {
+                            return <NavLink key={index} className={styles["NavLink__filter"]} onClick={() => setOptionsFileisShown(false)} >{navlink.label}</NavLink>
+                          }
+                        })}
+                      </Col>
+                      : null}
                 </span>
               </Col>
             </Row >
@@ -1036,7 +1055,6 @@ const DataRoom = () => {
       setOptionsFileisShown(true)
       setOptionsFolderisShown(false)
     }
-    console.log(rowData, "handleClickDropDownhandleClickDropDownhandleClickDropDown")
   }
   const [isOpen, setIsOpen] = useState(false);
 
