@@ -14,6 +14,7 @@ import ViewPoll from "./ViewPoll/ViewPoll";
 import ViewPollProgress from "./ViewPoll/ViewPollProgress/ViewPollProgress";
 import PollDetails from "./PollDetails/PollDetails";
 import Votepoll from "./VotePoll/Votepoll";
+import { style } from "@material-ui/system";
 const Polling = () => {
   const [isCreatePoll, setIsCreatePoll] = useState(false);
   const [isUpdatePoll, setIsUpdatePoll] = useState(false);
@@ -108,7 +109,15 @@ const Polling = () => {
       status: 1,
       dueDate: "2023-06-28",
       createBy: "Ali Raza",
-      vote: 1,
+      vote: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <Button text={t("Vote")} className={styles["Vote_button_poll"]} />
+            </Col>
+          </Row>
+        </>
+      ),
       Edit: (
         <>
           <Row>
@@ -135,7 +144,12 @@ const Polling = () => {
       title: (
         <>
           <Row>
-            <Col lg={12} md={12} sm={12}>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-start"
+            >
               <span onClick={showViewProgressBarModal}>
                 View Progress Modal
               </span>
@@ -146,7 +160,20 @@ const Polling = () => {
       status: 2,
       dueDate: "2023-06-28",
       createBy: "Ali Raza",
-      vote: 3,
+      vote: (
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-start"
+            >
+              <Button text={t("Vote")} className={styles["Voted_after"]} />
+            </Col>
+          </Row>
+        </>
+      ),
     },
     {
       title: (
@@ -332,12 +359,13 @@ const Polling = () => {
                 value={pollsState.searchValue}
                 change={HandleSearchPollsMain}
                 labelClass="d-none"
+                clickIcon={HandleShowSearch}
                 // onDoubleClick={searchbardropdownShow}
+
                 inputicon={
                   <img
                     src={searchicon}
-                    className={styles["GlobalSearchFieldICon"]}
-                    onClick={HandleShowSearch}
+                    // className={styles["GlobalSearchFieldICon"]}
                   />
                 }
                 // clickIcon={SearchiconClickOptions}

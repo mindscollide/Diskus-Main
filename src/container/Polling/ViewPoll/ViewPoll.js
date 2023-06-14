@@ -96,29 +96,31 @@ const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
         }
         ModalBody={
           <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end"
+              >
+                <img
+                  src={BlackCrossIcon}
+                  width="16px"
+                  height="16px"
+                  className={styles["View_cross_icon"]}
+                  onClick={() => {
+                    setShowViewPollModal(false);
+                  }}
+                />
+              </Col>
+            </Row>
             <Row className={styles["OverallPadding"]}>
               <Col lg={12} md={12} sm={12}>
                 <Row>
-                  <Col lg={11} md={11} sm={11} className="m-0 p-0">
+                  <Col lg={12} md={12} sm={12} className="m-0 p-0">
                     <span className={styles["View_poll_heading"]}>
                       {t("View-poll")}
                     </span>
-                  </Col>
-                  <Col
-                    lg={1}
-                    md={1}
-                    sm={12}
-                    className="f-flex justify-content-end"
-                  >
-                    <img
-                      src={BlackCrossIcon}
-                      width="16px"
-                      height="16px"
-                      className={styles["View_cross_icon"]}
-                      onClick={() => {
-                        setShowViewPollModal(false);
-                      }}
-                    />
                   </Col>
                 </Row>
                 <Row className="mt-2">
@@ -193,7 +195,7 @@ const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className="mt-2">
                   <Col
                     lg={12}
                     md={12}
@@ -207,7 +209,7 @@ const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
                         return (
                           <Col lg={6} md={6} sm={12} className="mt-2">
                             <Row>
-                              <Col lg={12} md={12} sm={12}>
+                              <Col lg={11} md={11} sm={12} className="m-0 p-0">
                                 <Row className={styles["Card_border2"]}>
                                   <Col sm={12} md={12} lg={12}>
                                     <img
@@ -235,19 +237,23 @@ const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
         ModalFooter={
           <>
             <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-end m-0 p-0"
-              >
-                <Button
-                  text={t("Close")}
-                  className={styles["Close_btn_ViewPoll"]}
-                  onClick={() => {
-                    setShowViewPollModal(false);
-                  }}
-                />
+              <Col lg={12} md={12} sm={12} className={styles["OverallPadding"]}>
+                <Row className="mt-3">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Button
+                      text={t("Close")}
+                      className={styles["Close_btn_ViewPoll"]}
+                      onClick={() => {
+                        setShowViewPollModal(false);
+                      }}
+                    />
+                  </Col>
+                </Row>
               </Col>
             </Row>
           </>

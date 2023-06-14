@@ -14,13 +14,13 @@
 }
 
 .BackGroundStrip_viewPoll {
-  background: #c2c2c2 !important ;
+  background: rgba(194, 194, 194, 0.14);
   height: 40px !important;
   width: 100% !important;
 }
 
 .BackGroundStrip_viewPoll {
-  background: #c2c2c2;
+  background: rgba(194, 194, 194, 0.14);
   padding: 5px 5px !important;
   margin: 0 !important;
   border-top-right-radius: 6px !important;
@@ -36,7 +36,7 @@
 .View_poll_heading {
   font-size: 20px !important;
   font-family: "MontserratSemiBold" !important;
-  color: #5a5a5a;
+  color: #6172d6;
 }
 
 .View_Title {
@@ -86,11 +86,14 @@
 .Card_border2 {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  margin: 0;
-  margin-left: -12px !important;
+  margin-left: 0px;
   padding: 8px 0;
   display: flex;
   align-items: center;
+}
+
+body[dir="rtl"] .Card_border2 {
+  margin-right: 0px !important;
 }
 
 .Name_cards {
@@ -123,11 +126,12 @@
 
 .View_cross_icon {
   cursor: pointer !important;
+  z-index: 1 !important;
 }
 
 .OverallPadding {
-  margin: 0;
-  padding: 0;
+  padding: 0px 45px !important;
+  margin-top: -25px !important;
 }
 
 .BOx_for_yes {
