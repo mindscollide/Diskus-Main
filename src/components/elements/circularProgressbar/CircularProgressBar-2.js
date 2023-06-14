@@ -18,7 +18,7 @@ const CustomTextProgressbar = (props) => {
             // Customize the path, i.e. the "completed progress"
             path: {
               // Path color
-              stroke: `#4ADEDE`,
+              stroke: `#F16B6B`,
               // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
               strokeLinecap: "butt",
               // Customize transition animation
@@ -31,7 +31,7 @@ const CustomTextProgressbar = (props) => {
             // Customize the circle behind the path, i.e. the "total progress"
             trail: {
               // Trail color
-              stroke: "#F16B6B",
+              stroke: "#4ADEDE",
               // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
               strokeLinecap: "butt",
               // Rotate the trail

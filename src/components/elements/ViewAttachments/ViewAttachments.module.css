@@ -9,8 +9,8 @@ body[dir="rtl"] .View_attachment_heading {
 }
 
 .ViewAttachment_paper {
-  height: 710px !important;
-  width: 1429px !important;
+  height: 82vh;
+  width: 100%;
   padding: 40px 40px !important;
 }
 
@@ -60,4 +60,8 @@ body[dir="rtl"] .viewAttachmentCloseBtn {
   border: 1px solid #e1e1e1 !important;
   color: #5a5a5a !important;
   background-color: #fff !important;
+}
+
+.notes-attachment-icon {
+  text-align: center;
 }

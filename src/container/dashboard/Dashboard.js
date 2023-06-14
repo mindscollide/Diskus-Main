@@ -262,7 +262,7 @@ const Dashboard = () => {
         data.payload.message.toLowerCase(),
         'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(),
         data.payload.message.toLowerCase() ===
-          'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(),
+        'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(),
       )
       console.log('testing', data.payload.message)
       console.log(
@@ -722,34 +722,34 @@ const Dashboard = () => {
       <Layout>
         <Sidebar />
         {location.pathname === '/DisKus/videochat' ? null : <Header2 />}
-        <Content className="MainContainer">
-          <Layout className="positionRelative">
-            <NotificationBar
-              iconName={<img src={IconMetroAttachment} />}
-              notificationMessage={notification.message}
-              notificationState={notification.notificationShow}
-              setNotification={setNotification}
-              handleClose={closeNotification}
-              id={notificationID}
+        {/* <Content className="MainContainer"> */}
+        <Layout className="positionRelative">
+          <NotificationBar
+            iconName={<img src={IconMetroAttachment} />}
+            notificationMessage={notification.message}
+            notificationState={notification.notificationShow}
+            setNotification={setNotification}
+            handleClose={closeNotification}
+            id={notificationID}
+          />
+          <Outlet />
+          {videoCall.openVideoCall === true && (
+            <VideoCallScreen
+            // openVideoScreen={videoCall.openVideoCall}
+            // closeButtonVideoCallFunc={() => videoHandlerforInisiateCall(false)}
             />
-            <Outlet />
-            {videoCall.openVideoCall === true && (
-              <VideoCallScreen
-              // openVideoScreen={videoCall.openVideoCall}
-              // closeButtonVideoCallFunc={() => videoHandlerforInisiateCall(false)}
-              />
-            )}
+          )}
 
-            {videoCall.openGroupVideopanel === true || isVideoPanel ? (
-              <VideoCallScreen
-              // openVideoScreen={videoCall.openVideoCall}
-              // closeButtonVideoCallFunc={() => videoHandlerforInisiateCall(false)}
-              />
-            ) : null}
+          {videoCall.openGroupVideopanel === true || isVideoPanel ? (
+            <VideoCallScreen
+            // openVideoScreen={videoCall.openVideoCall}
+            // closeButtonVideoCallFunc={() => videoHandlerforInisiateCall(false)}
+            />
+          ) : null}
 
-            {activateBlur === false ? <Talk /> : null}
-          </Layout>
-        </Content>
+          {activateBlur === false ? <Talk /> : null}
+        </Layout>
+        {/* </Content> */}
       </Layout>
     </>
   )

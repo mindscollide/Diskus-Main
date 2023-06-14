@@ -476,7 +476,6 @@ body[dir="rtl"] .Edit_Icon_moderator {
 }
 
 .Edit_Icon_moderator {
-  margin-right: 35px !important;
   cursor: pointer !important;
 }
 
@@ -570,6 +569,8 @@ body[dir="rtl"] .SearchButton_SearchBar_Resolution {
   color: #6de595 !important;
   font-family: "MontserratSemiBold" !important;
   font-size: 12px !important;
+  white-space: nowrap !important;
+  word-wrap: normal;
 }
 
 body[dir="rtl"] .decision_Approved {
@@ -591,6 +592,7 @@ body[dir="rtl"] .decision_Approved {
   color: #5a5a5a !important;
   /* margin-left: 7px !important; */
   margin-right: 18px !important;
+  white-space: nowrap !important;
 }
 
 .PLusICon {
@@ -648,6 +650,10 @@ body[dir="rtl"] .Result_Icon_cursor_pointer {
   margin-right: 30px !important;
 }
 
+body[dir="rtl"] .cancel_icon_resolution {
+  margin-right: 20px !important;
+}
+
 .empty_Resolutions {
   margin: 0;
   padding: 0;
@@ -679,4 +685,25 @@ body[dir="rtl"] .Result_Icon_cursor_pointer {
 
 .searchBox_CrossIcon {
   cursor: pointer !important;
+}
+
+.PaginationStyle-Resolution {
+  background-color: #fff !important;
+  display: flex !important;
+  justify-content: center !important;
+  width: auto !important;
+  padding: 12px 40px !important;
+  margin: 20px 0 40px 0;
+  height: auto !important;
+  box-shadow: 0px 0px 5px #ccc !important;
+  border-radius: 4px !important;
+}
+
+.PaginationStyle-Resolution:is(:focus-visible) {
+  outline: none !important;
+}
+
+body[dir="rtl"] .PaginationStyle-Resolution {
+  width: 100% !important;
+  padding: 12px 10px !important;
 }

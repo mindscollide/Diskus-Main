@@ -6,6 +6,7 @@ import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { Col, Container, Row } from "react-bootstrap";
 import profile from "../../../assets/images/profile_polls.svg";
 import { Progress } from "antd";
+import { style } from "@material-ui/system";
 const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
   const [yesParticipants, setyesParticipants] = useState([
     {
@@ -70,151 +71,270 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
         }}
         ModalBody={
           <>
-            <Container>
-              <Row>
-                <Col lg={11} md={11} sm={12} className="m-0 p-0">
-                  <span className={styles["Poll_details_Heading"]}>
-                    {t("Poll-Details")}
-                  </span>
-                </Col>
-                <Col lg={1} md={1} sm={12}>
-                  <img
-                    src={BlackCrossIcon}
-                    width="16px"
-                    height="16px"
-                    onClick={() => {
-                      setShowpollDetails(false);
-                    }}
-                  />
-                </Col>
-              </Row>
-              <Row className="mt-2">
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className={styles["Box_For_Title_toShow"]}
-                >
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex align-items-center"
-                    >
-                      <span className={styles["ViewTitleTOShowOnProgress"]}>
-                        Did you receive the material In a sufficient time for
-                        you to prepare for the board meeting, Including agenda
-                      </span>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
-              <Row className="mt-3">
-                <Col lg={12} md={12} sm={12} className="m-0 p-0 d-flex gap-5">
-                  <span className={styles["no-Of-Yes"]}>
-                    9 - <span>{t("Yes")}</span>
-                  </span>
-                  <span className={styles["no-Of-No"]}>
-                    2 - <span>{t("No")}</span>
-                  </span>
-                </Col>
-              </Row>
-              <Row>
-                <Col lg={12} md={12} sm={12} className="m-0 p-0">
-                  <Progress
-                    percent={60}
-                    className="pollsDetailsProgress"
-                    status="active"
-                  />
-                </Col>
-              </Row>
-            </Container>
-            <Row className="mt-2">
+            <Row>
               <Col
                 lg={12}
-                sm={12}
                 md={12}
-                className={styles["border_bottom"]}
-              ></Col>
+                sm={12}
+                className="d-flex justify-content-end"
+              >
+                <img
+                  src={BlackCrossIcon}
+                  className={styles["Cross_Icon_poll_Details"]}
+                  width="16px"
+                  height="16px"
+                  onClick={() => {
+                    setShowpollDetails(false);
+                  }}
+                />
+              </Col>
             </Row>
-            <Container>
-              <Row className="">
-                <Col lg={12} md={12} sm={12} className="mt-2 m-0 p-0">
-                  <span className={styles["Participants_polls_Details"]}>
-                    {t("Participants")}
-                  </span>
-                </Col>
-              </Row>
-              <Row>
-                <Col lg={12} md={12} sm={12} className="m-0 p-0 mt-2">
-                  <span className={styles["Yes_voters"]}>{t("Yes")}</span>
-                </Col>
-              </Row>
-              <Row>
-                <Col lg={12} md={12} sm={12} className={styles["Scroller-Yes"]}>
-                  <Row>
-                    {yesParticipants.map((data, index) => {
-                      return (
-                        <Col lg={6} md={6} sm={12} className="mt-2">
-                          <Row className="m-0 p-0">
-                            <Col lg={12} md={12} sm={12}>
-                              <Row className={styles["Card_border2"]}>
-                                <Col lg={12} md={12} sm={12}>
-                                  <img
-                                    src={profile}
-                                    width="33px"
-                                    height="33px"
-                                    className={styles["Image"]}
-                                  />
-                                  <span className={styles["Name_cards"]}>
-                                    {data.name}
-                                  </span>
-                                </Col>
-                              </Row>
-                            </Col>
-                          </Row>
-                        </Col>
-                      );
-                    })}
-                  </Row>
-                </Col>
-              </Row>
-              <Row className="mt-2">
-                <Col lg={12} md={12} sm={12} className="m-0 p-0">
-                  <span className={styles["Yes_voters"]}>{t("No")}</span>
-                </Col>
-              </Row>
-              <Row>
-                <Col lg={12} md={12} sm={12} className={styles["Scroller-Yes"]}>
-                  <Row>
-                    {noParticipants.map((data, index) => {
-                      return (
-                        <Col lg={6} md={6} sm={12} className="mt-2">
-                          <Row className="m-0 p-0">
-                            <Col lg={12} md={12} sm={12}>
-                              <Row className={styles["Card_border2"]}>
-                                <Col lg={12} md={12} sm={12}>
-                                  <img
-                                    src={profile}
-                                    width="33px"
-                                    height="33px"
-                                    className={styles["Image"]}
-                                  />
-                                  <span className={styles["Name_cards"]}>
-                                    {data.name}
-                                  </span>
-                                </Col>
-                              </Row>
-                            </Col>
-                          </Row>
-                        </Col>
-                      );
-                    })}
-                  </Row>
-                </Col>
-              </Row>
-            </Container>
+
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className={styles["OVerall_Padding"]}
+              >
+                <Row>
+                  <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                    <span className={styles["Poll_details_Heading"]}>
+                      {t("Poll-Details")}
+                    </span>
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Box_For_Title_toShow"]}
+                  >
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex align-items-center"
+                      >
+                        <span className={styles["ViewTitleTOShowOnProgress"]}>
+                          Did you receive the material In a sufficient time for
+                          you to prepare for the board meeting, Including agenda
+                        </span>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row className="mt-1">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Scroller_Options"]}
+                  >
+                    <Row className="mt-3">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="m-0 p-0 d-flex gap-5"
+                      >
+                        <span className={styles["no-Of-Yes"]}>
+                          Option 1 - 20%
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <Progress
+                          percent={20}
+                          className="pollsDetailsProgress"
+                          status="active"
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="m-0 p-0 d-flex gap-5"
+                      >
+                        <span className={styles["no-Of-Yes"]}>
+                          Option 2 - 30%
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <Progress
+                          percent={30}
+                          className="pollsDetailsProgress"
+                          status="active"
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="m-0 p-0 d-flex gap-5"
+                      >
+                        <span className={styles["no-Of-Yes"]}>
+                          Option 3 - 10%
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <Progress
+                          percent={10}
+                          className="pollsDetailsProgress"
+                          status="active"
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="m-0 p-0 d-flex gap-5"
+                      >
+                        <span className={styles["no-Of-Yes"]}>
+                          Option 4 - 20%
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <Progress
+                          percent={20}
+                          className="pollsDetailsProgress"
+                          status="active"
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="m-0 p-0 d-flex gap-5"
+                      >
+                        <span className={styles["no-Of-Yes"]}>
+                          Option 5 - 20%
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <Progress
+                          percent={20}
+                          className="pollsDetailsProgress"
+                          status="active"
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+
+                <Row className="mt-2">
+                  <Col lg={12} md={12} sm={12} className="mt-2 m-0 p-0">
+                    <span className={styles["Participants_polls_Details"]}>
+                      {t("Participants")}
+                    </span>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Scroller_participants"]}
+                  >
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0 mt-2">
+                        <span className={styles["Yes_voters"]}>{t("Yes")}</span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <Row>
+                          {yesParticipants.map((data, index) => {
+                            return (
+                              <Col lg={6} md={6} sm={12} className="mt-2">
+                                <Row>
+                                  <Col
+                                    lg={11}
+                                    md={11}
+                                    sm={12}
+                                    className="m-0 p-0"
+                                  >
+                                    <Row className={styles["Card_border2"]}>
+                                      <Col sm={12} md={12} lg={12}>
+                                        <img
+                                          src={profile}
+                                          width="33px"
+                                          height="33px"
+                                        />
+                                        <span className={styles["Name_cards"]}>
+                                          {data.name}
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            );
+                          })}
+                        </Row>
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <span className={styles["Yes_voters"]}>{t("No")}</span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <Row>
+                          {noParticipants.map((data, index) => {
+                            return (
+                              <Col lg={6} md={6} sm={12} className="mt-2">
+                                <Row>
+                                  <Col
+                                    lg={11}
+                                    md={11}
+                                    sm={12}
+                                    className="m-0 p-0"
+                                  >
+                                    <Row className={styles["Card_border2"]}>
+                                      <Col sm={12} md={12} lg={12}>
+                                        <img
+                                          src={profile}
+                                          width="33px"
+                                          height="33px"
+                                        />
+                                        <span className={styles["Name_cards"]}>
+                                          {data.name}
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            );
+                          })}
+                        </Row>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
           </>
         }
         ModalFooter={
@@ -224,15 +344,24 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end m-0 p-0"
+                className={styles["OVerall_Padding"]}
               >
-                <Button
-                  text={t("Close")}
-                  className={styles["Class_Close"]}
-                  onClick={() => {
-                    setShowpollDetails(false);
-                  }}
-                />
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-end  m-0 p-0"
+                  >
+                    <Button
+                      text={t("Close")}
+                      className={styles["Class_Close"]}
+                      onClick={() => {
+                        setShowpollDetails(false);
+                      }}
+                    />
+                  </Col>
+                </Row>
               </Col>
             </Row>
           </>
