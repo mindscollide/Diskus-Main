@@ -46,6 +46,7 @@
     "react-calendar": "^3.9.0",
     "react-circular-progressbar": "^2.1.0",
     "react-code-input": "^3.10.1",
+    "react-color": "^2.19.3",
     "react-custom-scrollbars": "^4.2.1",
     "react-datepicker": "^4.8.0",
     "react-dom": "^18.2.0",
