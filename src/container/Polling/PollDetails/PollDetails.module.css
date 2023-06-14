@@ -53,7 +53,8 @@
 }
 
 .Scroller_Options {
-  height: 25vh !important;
+  height: auto !important;
+  max-height: 30vh;
   overflow-x: hidden !important;
   width: 100%;
 }
