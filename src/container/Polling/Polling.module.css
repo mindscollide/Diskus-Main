@@ -157,3 +157,7 @@ body[dir="rtl"] .polling_searchinput {
   border: none !important;
   font-family: "MontserratSemiBold" !important;
 }
+
+.Search_Bar_icon_class {
+  cursor: pointer;
+}
