@@ -1,31 +1,17 @@
 {
     "TalkRequest": {
-        "ChannelID": 302,
+        "ChannelID": 387,
         "Message": {
-            "SenderID": "801",
-            "ReceiverID": "779",
-            "Body": "Test",
+            "SenderID": "932",
+            "ReceiverID": "931",
+            "Body": "d",
             "MessageActivity": "Direct Message",
             "FileName": "",
             "FileGeneratedName": "",
             "Extension": "",
-            "AttachmentLocation": ""
-        }
-    }
-}
-
-{
-    "TalkRequest": {
-        "ChannelID": 302,
-        "Message": {
-            "SenderID": "779",
-            "ReceiverID": "780",
-            "Body": "Test",
-            "MessageActivity": "Direct Message",
-            "FileName": "",
-            "FileGeneratedName": "",
-            "Extension": "",
-            "AttachmentLocation": ""
+            "AttachmentLocation": "",
+            "UID": "TlgqcsmOVzCUKj_20230614075913067_932_931",
+            "MessageID": 0
         }
     }
 }

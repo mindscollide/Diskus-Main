@@ -1701,3 +1701,28 @@ input[placeholder="Search Chat"] {
   font-size: 12px;
   margin-bottom: 10px !important;
 }
+
+.Retry-Delete-Feature {
+  text-align: center;
+}
+
+span.retry {
+  margin-right: 20px;
+  color: #0071c5;
+  cursor: default;
+}
+
+span.retry:hover {
+  text-decoration: underline;
+  cursor: pointer !important;
+}
+
+span.delete {
+  color: #ff0000;
+  cursor: default;
+}
+
+span.delete:hover {
+  text-decoration: underline;
+  cursor: pointer !important;
+}
