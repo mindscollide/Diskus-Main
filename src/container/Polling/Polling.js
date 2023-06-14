@@ -5,7 +5,7 @@ import { Button, Table, TextField } from "../../components/elements";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
 import CreatePolling from "./CreatePolling/CreatePollingModal";
-import AlarmClock from "../../assets/images/AlarmOptions.svg";
+import { ChevronDown, Plus } from "react-bootstrap-icons";
 import BlackCrossIcon from "../../assets/images/BlackCrossIconModals.svg";
 import EditIcon from "../../assets/images/Edit-Icon.png";
 import UpdatePolls from "./UpdatePolls/UpdatePolls";
@@ -14,18 +14,19 @@ import ViewPoll from "./ViewPoll/ViewPoll";
 import ViewPollProgress from "./ViewPoll/ViewPollProgress/ViewPollProgress";
 import PollDetails from "./PollDetails/PollDetails";
 import Votepoll from "./VotePoll/Votepoll";
-import { style } from "@material-ui/system";
+import UpdateSecond from "./UpdateSecond/UpdateSecond";
 const Polling = () => {
   const [isCreatePoll, setIsCreatePoll] = useState(false);
   const [isUpdatePoll, setIsUpdatePoll] = useState(false);
   const [viewprogress, setViewprogress] = useState(false);
+  const [updatePublished, setUpdatePublished] = useState(false);
   const [isVotePoll, setisVotePoll] = useState(false);
   const [viewPollsDetails, setViewPollsDetails] = useState(false);
   const [isViewPoll, setIsViewPoll] = useState(false);
   const [pollsState, setPollsState] = useState({
     searchValue: "",
   });
-
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const [searchBoxState, setsearchBoxState] = useState({
     searchByName: "",
     searchByTitle: "",
@@ -42,6 +43,10 @@ const Polling = () => {
   const OpenVotePollModal = () => {
     setisVotePoll(true);
   };
+
+  const OpenUpdatePublished = () => {
+    setUpdatePublished(true);
+  };
   const { t } = useTranslation();
   const PollTableColumns = [
     {
@@ -55,6 +60,20 @@ const Polling = () => {
       dataIndex: "status",
       key: "status",
       width: "62px",
+      filters: [
+        {
+          text: t("Published"),
+          value: "InProgress",
+          className: currentLanguage,
+        },
+        {
+          text: t("Unpublished"),
+          value: "Pending",
+        },
+      ],
+      filterIcon: (filtered) => (
+        <ChevronDown className="filter-chevron-icon-todolist" />
+      ),
       render: (text, record) => {
         if (text === 1) {
           return <span className="text-success">{t("Published")}</span>;
@@ -206,7 +225,15 @@ const Polling = () => {
       vote: 2,
     },
     {
-      title: "test title",
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span onClick={OpenUpdatePublished}> Update Published </span>
+            </Col>
+          </Row>
+        </>
+      ),
       status: 1,
       dueDate: "2023-06-28",
       createBy: "Ali Raza",
@@ -365,6 +392,7 @@ const Polling = () => {
                 inputicon={
                   <img
                     src={searchicon}
+                    className={styles["Search_Bar_icon_class"]}
                     // className={styles["GlobalSearchFieldICon"]}
                   />
                 }
@@ -499,6 +527,14 @@ const Polling = () => {
       {isVotePoll ? (
         <>
           <Votepoll showVotePoll={isVotePoll} setShowVotePoll={setisVotePoll} />
+        </>
+      ) : null}
+      {updatePublished ? (
+        <>
+          <UpdateSecond
+            showUpdateAfterPublished={updatePublished}
+            setShowUpdateAfterPublished={setUpdatePublished}
+          />
         </>
       ) : null}
     </>
