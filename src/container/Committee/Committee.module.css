@@ -44,6 +44,7 @@ body[dir="rtl"] .create-Committee-btn {
   justify-content: center !important;
   align-items: center !important;
 }
+
 .PLusICon {
   display: flex !important;
   justify-content: start !important;
@@ -53,6 +54,7 @@ body[dir="rtl"] .create-Committee-btn {
 body[dir="rtl"] .PLusICon {
   margin-left: 5px !important;
 }
+
 /* .create-Committee-btn::before {
   content: "\002B";
   margin-right: 10px !important;
@@ -115,9 +117,7 @@ body[dir="rtl"] .Archived-Group-btn-Committee-section {
   font-size: 15px !important;
   /* margin-left: 10px !important; */
 
-.Two-Icons-style-Committee-Group {
-  /* margin-left: 1px !important; */
-}
+
 
 .CommitteeContainer {
   height: 90vh;
