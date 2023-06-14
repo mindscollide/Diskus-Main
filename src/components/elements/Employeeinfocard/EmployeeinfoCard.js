@@ -15,10 +15,10 @@ const EmployeeinfoCard = ({
   return (
     <>
       <Row>
-        <Col lg={2} md={2} sm={2}>
+        <Col lg={2} md={12} sm={12}>
           <img src={newprofile} width="50px" height="50px" />
         </Col>
-        <Col lg={7} md={7} sm={7} className={styles["Lineheight"]}>
+        <Col lg={7} md={12} sm={12} className={styles["Lineheight"]}>
           <Row className="mt-1">
             <Col lg={12} md={12} sm={12}>
               <span className={styles["name_participant"]}>{Employeename}</span>
@@ -34,8 +34,8 @@ const EmployeeinfoCard = ({
         </Col>
         <Col
           lg={2}
-          md={2}
-          sm={2}
+          md={12}
+          sm={12}
           className="d-flex justify-content-start align-items-center"
         >
           <span>{Icon}</span>

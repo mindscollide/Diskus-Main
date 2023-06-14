@@ -66,24 +66,24 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const data = [
     ["Year", "Visitations", { role: "style" }],
     [
-      "Approved",
+      t("Approved"),
       approved,
 
       "stroke-color: #6DE595; stroke-opacity: 1 ;  fill-color: #6DE595; fill-opacity:1",
     ],
     [
-      "Non-Approved",
+      t("Non-Approved"),
       nonApproved,
 
       "stroke-color: #F16B6B; stroke-opacity: 1 ; stroke-color:#F16B6B; fill-color: #F16B6B; fill-opacity:1; text-color:#F16B6B",
     ],
     [
-      "Pending",
+      t("Pending"),
       pending,
       "stroke-color: #000; stroke-opacity: 1 ; stroke-color:#000000; fill-color: #000000; fill-opacity:1",
     ],
     [
-      "Abstain",
+      t("Abstain"),
       abstain,
       "stroke-color: #000; stroke-color:#949494;  stroke-width: 4; fill-color: #949494 ; fill-opacity:1",
     ],
@@ -122,7 +122,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   }, [ResolutionReducer.getResolutionResult]);
   return (
     <section>
-      <Row className="mt-2">
+      <Row className="my-4">
         <Col lg={12} md={12} sm={12}>
           <span className={styles["Result_Heading_resolution"]}>
             {t("Result")}
@@ -143,8 +143,8 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                 </span>
               </Col>
             </Row>
-            <Row className="mt-5">
-              <Col lg={4} md={4} sm={4}>
+            <Row className="mt-2">
+              <Col lg={4} md={4} sm={12}>
                 <Row className="mt-5">
                   <Col
                     lg={12}
@@ -169,18 +169,18 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                             <img
                               src={
                                 decision.toLowerCase() ===
-                                "Approved".toLowerCase()
+                                  "Approved".toLowerCase()
                                   ? Clock
                                   : decision.toLowerCase() ===
                                     "Not Approved".toLowerCase()
-                                  ? thumbsdown
-                                  : decision.toLowerCase() ===
-                                    "Pending".toLowerCase()
-                                  ? Clock
-                                  : decision.toLowerCase() ===
-                                    "tie".toLowerCase()
-                                  ? Tie
-                                  : null
+                                    ? thumbsdown
+                                    : decision.toLowerCase() ===
+                                      "Pending".toLowerCase()
+                                      ? Clock
+                                      : decision.toLowerCase() ===
+                                        "tie".toLowerCase()
+                                        ? Tie
+                                        : null
                               }
                               width="36.98px"
                               height="37px"
@@ -233,10 +233,15 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                   </Col>
                 </Row>
               </Col>
-              <Col lg={1} md={1} sm={false}>
-                <img src={line} height="547px" />
+              <Col
+                lg={1}
+                md={1}
+                sm={false}
+                className="d-flex justify-content-center"
+              >
+                <span className={styles["line_Resultesolution"]}></span>
               </Col>
-              <Col lg={7} md={7} sm={7}>
+              <Col lg={7} md={7} sm={12}>
                 <Row className="mt-5">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["voters_heading_result"]}>
@@ -254,41 +259,41 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                     <Row>
                       {voter.length > 0
                         ? voter.map((data, index) => {
-                            console.log(data, "datadatadata");
-                            return (
-                              <>
-                                <Col
-                                  lg={6}
-                                  md={6}
-                                  sm={6}
-                                  key={data.pK_RV_ID}
-                                  className="mt-1"
-                                >
-                                  <EmployeeinfoCard
-                                    Employeename={data.username}
-                                    Employeeemail={data.email}
-                                    Icon={
-                                      <img
-                                        src={
-                                          data.fK_VotingStatus_ID === 1
-                                            ? thumbsup
-                                            : data.fK_VotingStatus_ID === 2
+                          console.log(data, "datadatadata");
+                          return (
+                            <>
+                              <Col
+                                lg={6}
+                                md={6}
+                                sm={6}
+                                key={data.pK_RV_ID}
+                                className="mt-1"
+                              >
+                                <EmployeeinfoCard
+                                  Employeename={data.username}
+                                  Employeeemail={data.email}
+                                  Icon={
+                                    <img
+                                      src={
+                                        data.fK_VotingStatus_ID === 1
+                                          ? thumbsup
+                                          : data.fK_VotingStatus_ID === 2
                                             ? thumbsdown
                                             : data.fK_VotingStatus_ID === 3
-                                            ? Clock
-                                            : data.fK_VotingStatus_ID === 4
-                                            ? Abstain
-                                            : null
-                                        }
-                                        width="20px"
-                                        height="20px"
-                                      />
-                                    }
-                                  />
-                                </Col>
-                              </>
-                            );
-                          })
+                                              ? Clock
+                                              : data.fK_VotingStatus_ID === 4
+                                                ? Abstain
+                                                : null
+                                      }
+                                      width="20px"
+                                      height="20px"
+                                    />
+                                  }
+                                />
+                              </Col>
+                            </>
+                          );
+                        })
                         : null}
                     </Row>
                   </Col>

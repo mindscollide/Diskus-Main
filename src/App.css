@@ -5256,6 +5256,7 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
   scroll-behavior: smooth !important;
   align-items: center;
   padding: 0 !important;
+  height: 120px !important;
 }
 
 .file-icon-modalmeeting-p-View-resolution {

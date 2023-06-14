@@ -26,16 +26,16 @@
 
 .Dashboard-Main-Container.container-fluid {
   height: 90vh !important;
-  /* padding-right: 20px; */
+  padding-right: 20px;
   padding-left: 0;
   /* margin-left: 90px; */
-  width: 89% !important;
+  width: 90% !important;
 }
 
 body[dir="rtl"] .Dashboard-Main-Container.container-fluid {
   height: 90vh !important;
   /* padding-left : 20px !important; */
   padding-right: 0 !important;
-  margin-right: 90px !important;
-  width: 88% !important;
+  margin-right: 70px !important;
+  width: 89% !important;
 }

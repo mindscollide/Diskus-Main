@@ -140,6 +140,7 @@
 .Search_Modal_Fields {
   height: 39px !important;
 }
+
 .PollingCreateModal {
   margin: 0;
   height: 39px !important;
@@ -162,3 +163,7 @@
 /* .input_searchAttendees_createMeeting {
   margin: 0 !important;
 } */
+.text-area-create-resolution {
+  height: 110px !important;
+  resize: none;
+}
