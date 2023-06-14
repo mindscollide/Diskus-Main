@@ -1,7 +1,7 @@
 .Poll_details_Heading {
   font-size: 20px !important;
   font-family: "MontserratSemiBold" !important;
-  color: #5a5a5a;
+  color: #6172d6;
 }
 
 .Box_For_Title_toShow {
@@ -32,21 +32,39 @@
 .Participants_polls_Details {
   font-size: 20px !important;
   font-family: "MontserratSemiBold" !important;
-  color: #5a5a5a;
+  color: #6172d6;
 }
 
-.Scroller-Yes {
-  height: 12vh !important;
+.Scroller_participants {
+  height: 32vh !important;
   overflow-x: hidden !important;
   width: 100%;
 }
 
-.Scroller-Yes::-webkit-scrollbar {
+.Scroller_participants::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
   background-color: #f2f2f2;
 }
-.Scroller-Yes::-webkit-scrollbar-thumb {
+.Scroller_participants::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Scroller_Options {
+  height: 25vh !important;
+  overflow-x: hidden !important;
+  width: 100%;
+}
+
+.Scroller_Options::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_Options::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
@@ -55,8 +73,14 @@
 .Card_border2 {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
+  margin-left: 0px;
   padding: 8px 0;
-  margin-left: -23px !important;
+  display: flex;
+  align-items: center;
+}
+
+body[dir="rtl"] .Card_border2 {
+  margin-right: 0px !important;
 }
 
 .Name_cards {
@@ -95,4 +119,14 @@
   color: #5a5a5a !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
+}
+
+.OVerall_Padding {
+  padding: 0px 45px !important;
+  margin-top: -25px !important;
+}
+
+.Cross_Icon_poll_Details {
+  cursor: pointer !important;
+  z-index: 1 !important;
 }
