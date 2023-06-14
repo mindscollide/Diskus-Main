@@ -23,7 +23,7 @@ const calendarReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        CalenderData: action.response.meetingEvents,
+        CalenderData: action.response.calenderLists,
         ResponseMessage: action.message,
         Spinner: false,
       };

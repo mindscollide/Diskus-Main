@@ -125,7 +125,7 @@ const cancelMeeting = {
 // Get Data for Calender
 
 const calendarDataRequest = {
-  RequestMethod: 'ServiceManager.GetMeetingEventsByUserId',
+  RequestMethod: 'ServiceManager.GetCalenderList',
 }
 
 //search todolist by userId

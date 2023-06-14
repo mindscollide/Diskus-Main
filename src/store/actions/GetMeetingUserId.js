@@ -1,5 +1,5 @@
 import * as actions from "../action_types";
-import { getMeetingApi } from "../../commen/apis/Api_ends_points";
+import { meetingApi } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "../actions/Auth_action";
 import {
   getMeetingId,
@@ -106,7 +106,7 @@ const getMeetingUserId = (navigate, data, t) => {
     form.append("RequestData", JSON.stringify(data));
     axios({
       method: "post",
-      url: getMeetingApi,
+      url: meetingApi,
       data: form,
       headers: {
         _token: token,
@@ -178,7 +178,7 @@ const searchMeetingUserId = (navigate, data, t) => {
     form.append("RequestData", JSON.stringify(data));
     axios({
       method: "post",
-      url: getMeetingApi,
+      url: meetingApi,
       data: form,
       headers: {
         _token: token,
@@ -272,7 +272,7 @@ const GetWeeklyMeetingsCount = (navigate, id, t) => {
     form.append("RequestData", JSON.stringify(Data));
     axios({
       method: "post",
-      url: getMeetingApi,
+      url: meetingApi,
       data: form,
       headers: {
         _token: token,
@@ -366,7 +366,7 @@ const GetUpcomingEvents = (navigate, data, t) => {
     form.append("RequestData", JSON.stringify(data));
     axios({
       method: "post",
-      url: getMeetingApi,
+      url: meetingApi,
       data: form,
       headers: {
         _token: token,
