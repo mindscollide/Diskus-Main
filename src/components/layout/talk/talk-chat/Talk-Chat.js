@@ -32,6 +32,7 @@ import {
   ResetShoutAllCreated,
   DeleteShout,
   UpdateShoutAll,
+  OtoMessageRetryFlag,
 } from '../../../../store/actions/Talk_action'
 import {
   newTimeFormaterAsPerUTCTalkTime,
@@ -2134,6 +2135,199 @@ const TalkChat = () => {
     }
   }, [talkStateData.BroadcastMessages.BroadcastMessagesData])
 
+  //Message send oto api response data
+  useEffect(() => {
+    if (
+      talkStateData.MessageSendOTO.MessageSendResponseData !== null &&
+      talkStateData.MessageSendOTO.MessageSendResponseData !== undefined &&
+      talkStateData.MessageSendOTO.MessageSendResponseData.length !== 0
+    ) {
+      try {
+        if (talkStateData.activeChatIdData.messageType === 'O') {
+          console.log('Try 1')
+          if (
+            talkStateData.MessageSendOTO.MessageSendResponseData
+              .oneToOneMessages[0].senderID != undefined &&
+            talkStateData.MessageSendOTO.MessageSendResponseData
+              .oneToOneMessages[0].senderID != null &&
+            talkStateData.MessageSendOTO.MessageSendResponseData
+              .oneToOneMessages[0].senderID != 0 &&
+            talkStateData.MessageSendOTO.MessageSendResponseData
+              .oneToOneMessages[0].senderID != '' &&
+            talkStateData.MessageSendOTO.MessageSendResponseData
+              .oneToOneMessages[0].senderID != '0' &&
+            talkStateData.activeChatIdData.id ===
+              talkStateData.MessageSendOTO.MessageSendResponseData
+                .oneToOneMessages[0].receiverID
+          ) {
+            console.log('Try 2')
+            let apiInsertOtoMessageData =
+              talkStateData.MessageSendOTO.MessageSendResponseData
+                .oneToOneMessages[0]
+            let insertApiOtoMessageData = {
+              attachmentLocation: apiInsertOtoMessageData.attachmentLocation,
+              blockCount: 0,
+              broadcastName: apiInsertOtoMessageData.broadcastName,
+              currDate: apiInsertOtoMessageData.currDate,
+              fileGeneratedName: apiInsertOtoMessageData.fileGeneratedName,
+              fileName: apiInsertOtoMessageData.fileName,
+              frMessages: apiInsertOtoMessageData.frMessages,
+              isFlag: 0,
+              messageBody: apiInsertOtoMessageData.messageBody,
+              messageCount: 0,
+              messageID: apiInsertOtoMessageData.messageID,
+              messageStatus: apiInsertOtoMessageData.messageStatus,
+              receivedDate: apiInsertOtoMessageData.receivedDate,
+              receiverID: apiInsertOtoMessageData.receiverID,
+              receiverName: apiInsertOtoMessageData.receiverName,
+              seenDate: apiInsertOtoMessageData.seenDate,
+              senderID: apiInsertOtoMessageData.senderID,
+              senderName: apiInsertOtoMessageData.senderName,
+              sentDate: apiInsertOtoMessageData.sentDate,
+              shoutAll: apiInsertOtoMessageData.shoutAll,
+              uid: '',
+            }
+            console.log('Try 3')
+            let allChatNewMessageOtoData = {
+              id:
+                parseInt(currentUserId) === apiInsertOtoMessageData.senderID
+                  ? apiInsertOtoMessageData.receiverID
+                  : parseInt(currentUserId) ===
+                    apiInsertOtoMessageData.receiverID
+                  ? apiInsertOtoMessageData.senderID
+                  : null,
+              fullName:
+                parseInt(currentUserId) === apiInsertOtoMessageData.senderID
+                  ? apiInsertOtoMessageData.receiverName
+                  : parseInt(currentUserId) ===
+                    apiInsertOtoMessageData.receiverID
+                  ? apiInsertOtoMessageData.senderName
+                  : null,
+              imgURL: 'O.jpg',
+              messageBody: apiInsertOtoMessageData.messageBody,
+              messageDate: apiInsertOtoMessageData.sentDate,
+              notiCount: 0,
+              messageType: 'O',
+              isOnline: true,
+              isBlock: 0,
+              companyName: 'Tresmark',
+              sentDate: apiInsertOtoMessageData.sentDate,
+              receivedDate: apiInsertOtoMessageData.receivedDate,
+              seenDate: apiInsertOtoMessageData.seenDate,
+              attachmentLocation: apiInsertOtoMessageData.attachmentLocation,
+              senderID: apiInsertOtoMessageData.senderID,
+              admin: 0,
+            }
+            console.log('Try 4')
+            if (Object.keys(insertApiOtoMessageData) !== null) {
+              if (
+                insertApiOtoMessageData !== undefined &&
+                insertApiOtoMessageData !== null &&
+                insertApiOtoMessageData.hasOwnProperty('messageBody') &&
+                insertApiOtoMessageData.messageBody !== undefined &&
+                allOtoMessages.length > 0 &&
+                allOtoMessages[allOtoMessages.length - 1] !== undefined &&
+                allOtoMessages[allOtoMessages.length - 1] !== null &&
+                allOtoMessages[allOtoMessages.length - 1].hasOwnProperty(
+                  'messageBody',
+                ) &&
+                allOtoMessages[allOtoMessages.length - 1].messageBody !==
+                  undefined &&
+                insertApiOtoMessageData.messageBody ===
+                  allOtoMessages[allOtoMessages.length - 1].messageBody
+              ) {
+                console.log('Try 5')
+                setAllOtoMessages((prevState) => {
+                  const updatedMessages = [...prevState]
+                  updatedMessages[
+                    updatedMessages.length - 1
+                  ] = insertApiOtoMessageData
+                  return updatedMessages
+                })
+                let updatedArray = [...allChatData]
+                if (
+                  updatedArray.length > 0 &&
+                  updatedArray[0].hasOwnProperty('messageBody')
+                ) {
+                  const index = updatedArray.findIndex(
+                    (item) => item.id === allChatNewMessageOtoData.id,
+                  )
+                  if (index !== -1) {
+                    updatedArray[index] = allChatNewMessageOtoData
+                  } else {
+                    updatedArray[0] = allChatNewMessageOtoData
+                  }
+                }
+                setAllChatData(updatedArray)
+              } else if (
+                insertApiOtoMessageData !== undefined &&
+                insertApiOtoMessageData !== null &&
+                insertApiOtoMessageData.hasOwnProperty('messageBody') &&
+                insertApiOtoMessageData.messageBody !== undefined &&
+                allOtoMessages.length > 0 &&
+                allOtoMessages[allOtoMessages.length - 1] !== undefined &&
+                allOtoMessages[allOtoMessages.length - 1] !== null &&
+                allOtoMessages[allOtoMessages.length - 1].hasOwnProperty(
+                  'messageBody',
+                ) &&
+                insertApiOtoMessageData.messageBody !==
+                  allOtoMessages[allOtoMessages.length - 1].messageBody
+              ) {
+                setAllOtoMessages([...allOtoMessages, insertApiOtoMessageData])
+                let updatedArray = [...allChatData]
+                if (
+                  updatedArray.length > 0 &&
+                  updatedArray[0].hasOwnProperty('messageBody')
+                ) {
+                  updatedArray[0] = allChatNewMessageOtoData
+                }
+                setAllChatData(updatedArray)
+              }
+            } else {
+              let allotomessages =
+                talkStateData.UserOTOMessages.UserOTOMessagesData
+                  .oneToOneMessages[0]
+              if (allotomessages != undefined) {
+                let allMessagesArr = []
+                allotomessages.map((messagesData) => {
+                  allMessagesArr.push({
+                    attachmentLocation: messagesData.attachmentLocation,
+                    blockCount: messagesData.blockCount,
+                    broadcastName: messagesData.broadcastName,
+                    currDate: messagesData.currDate,
+                    fileGeneratedName: messagesData.fileGeneratedName,
+                    fileName: messagesData.fileName,
+                    frMessages: messagesData.frMessages,
+                    isFlag: messagesData.isFlag,
+                    messageBody: messagesData.messageBody,
+                    messageCount: messagesData.messageCount,
+                    messageID: messagesData.messageID,
+                    messageStatus: messagesData.messageStatus,
+                    receivedDate: messagesData.receivedDate,
+                    receiverID: messagesData.receiverID,
+                    receiverName: messagesData.receiverName,
+                    seenDate: messagesData.seenDate,
+                    senderID: messagesData.senderID,
+                    senderName: messagesData.senderName,
+                    sentDate: messagesData.sentDate,
+                    shoutAll: messagesData.shoutAll,
+                    uid: messagesData.uid,
+                  })
+                })
+                setAllOtoMessages([...allMessagesArr])
+              }
+            }
+          }
+          console.log('Try End Before Catch')
+        }
+        console.log('Try End Before Catch')
+      } catch {
+        console.log('Error MessageSendOTO')
+      }
+    }
+    //
+  }, [talkStateData.MessageSendOTO.MessageSendResponseData])
+
   //Making Data from MQTT Response
   useEffect(() => {
     if (
@@ -3671,10 +3865,11 @@ const TalkChat = () => {
         const existingArray =
           JSON.parse(localStorage.getItem('messageArray')) || []
         existingArray.push(Data)
+
         localStorage.setItem('messageArray', JSON.stringify(existingArray))
 
         console.log('Insert OTO Message Response', Data)
-        // dispatch(InsertOTOMessages(navigate, Data, uploadFileTalk, t))
+        dispatch(InsertOTOMessages(navigate, Data, uploadFileTalk, t))
 
         let newMessageOto = {
           messageID: 0,
@@ -4062,9 +4257,103 @@ const TalkChat = () => {
     dispatch(ResetShoutAllCreated())
   }, [talkStateData.CreateShoutAllList.CreateShoutAllListResponseMessage])
 
-  console.log('activeCreateShoutAll', activeCreateShoutAll)
+  let messageSendDataLS = JSON.parse(localStorage.getItem('messageArray')) || []
 
-  console.log('Insert Oto message', allOtoMessages)
+  const [isRetryAttemptComplete, setIsRetryAttemptComplete] = useState(false)
+
+  const storeDataInAPI = async (counter) => {
+    try {
+      console.log('LocalStorageManagement Interval', counter)
+      let newMessageData = [...messageSendDataLS]
+      let dataItem
+
+      newMessageData.reduce(async (previousPromise, dataItem, i) => {
+        await previousPromise
+        console.log('LocalStorageManagement Promise', previousPromise)
+        console.log('LocalStorageManagement Interval', i)
+        console.log('LocalStorageManagement dataItem', dataItem)
+
+        return dispatch(
+          InsertOTOMessages(navigate, dataItem, uploadFileTalk, t, counter),
+        )
+      }, Promise.resolve())
+
+      // for (let i = 0; i < newMessageData.length; i++) {
+      //   dataItem = newMessageData[i]
+      //   console.log('LocalStorageManagement Interval', i)
+
+      //   console.log('LocalStorageManagement dataItem', dataItem)
+      //   await dispatch(
+      //     InsertOTOMessages(navigate, dataItem, uploadFileTalk, t, counter),
+      //   )
+      // }
+      console.log('Maximum retries reached. Stopping API calls.', counter)
+      // Check if maximum retries reached
+      if (counter >= 16) {
+        console.log('Maximum retries reached. Stopping API calls.')
+        setIsRetryAttemptComplete(true)
+      }
+
+      // Increment retry count
+    } catch (error) {
+      console.error('LocalStorageManagement Error', error)
+      // Handle error if needed
+    }
+  }
+
+  //Current MQTT Connection State
+  let currentMqttState = localStorage.getItem('MqttConnectionState')
+
+  console.log('mqttState', currentMqttState)
+
+  useEffect(() => {}, [currentMqttState])
+
+  useEffect(() => {
+    let interval
+    if (talkStateData.OtoMessageFlag === true) {
+      let counter = 0
+      interval = setInterval(() => {
+        console.log('LocalStorageManagement Interval')
+
+        storeDataInAPI(counter)
+        counter += 4
+        if (counter >= 20) {
+          clearInterval(interval)
+          dispatch(OtoMessageRetryFlag(false))
+        }
+      }, 4000)
+    }
+
+    // Cleanup the interval when the component unmounts or loop is terminated
+    return () => {
+      clearInterval(interval)
+    }
+
+    // Clean up the interval on component unmount
+  }, [talkStateData.OtoMessageFlag])
+
+  const retryAttempt = () => {
+    setIsRetryAttemptComplete(false)
+    let interval
+    if (talkStateData.OtoMessageFlag === true) {
+      let counter = 0
+      interval = setInterval(() => {
+        console.log('LocalStorageManagement Interval')
+
+        storeDataInAPI(counter)
+        counter += 4
+        if (counter >= 20) {
+          clearInterval(interval)
+          dispatch(OtoMessageRetryFlag(false))
+        }
+      }, 4000)
+    }
+
+    // Cleanup the interval when the component unmounts or loop is terminated
+    return () => {
+      clearInterval(interval)
+    }
+  }
 
   return (
     <>
@@ -7294,6 +7583,14 @@ const TalkChat = () => {
                               </>
                             )}
                             <div ref={chatMessages} />
+                            {isRetryAttemptComplete === true ? (
+                              <div className="Retry-Delete-Feature">
+                                <span onClick={retryAttempt} className="retry">
+                                  Retry
+                                </span>
+                                <span className="delete">Delete</span>
+                              </div>
+                            ) : null}
                           </div>
                         </>
 

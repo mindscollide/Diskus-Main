@@ -351,7 +351,7 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-end m-0 p-0"
+                    className="d-flex justify-content-end  m-0 p-0"
                   >
                     <Button
                       text={t("Close")}

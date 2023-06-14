@@ -139,3 +139,24 @@ body[dir="rtl"] .Card_border2 {
   height: 39px;
   border-radius: 4px !important;
 }
+
+.Update_btn_Published {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #6172d6 !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+.Update_btn_Published:hover,
+.Update_btn_Published:active,
+.Update_btn_Published:focus,
+.Update_btn_Published:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #6172d6 !important;
+  border-radius: 4px !important;
+  border: none !important;
+}

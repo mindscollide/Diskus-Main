@@ -1,15 +1,21 @@
 import React from "react";
-import styles from "./ViewPoll.module.css";
+import styles from "./UpdateSecond.module.css";
 import { Container, Row, Col } from "react-bootstrap";
-import { Modal, Button, TextField } from "../../../components/elements";
+import { Modal, Button, MultiDatePicker } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import AlarmClock from "../../../assets/images/AlarmOptions.svg";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
+import gregorian_en from "react-date-object/locales/gregorian_en";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
+import gregorian from "react-date-object/calendars/gregorian";
+import arabic from "react-date-object/calendars/arabic";
 import profile from "../../../assets/images/profile_polls.svg";
 import { useState } from "react";
 
-const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
+const UpdateSecond = ({
+  showUpdateAfterPublished,
+  setShowUpdateAfterPublished,
+}) => {
   const [viewpollMembers, setViewPollmembers] = useState([
     {
       id: 1,
@@ -57,16 +63,18 @@ const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
     },
   ]);
   const { t } = useTranslation();
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
   return (
     <Container>
       <Modal
-        show={showViewPollModal}
-        setShow={setShowViewPollModal}
+        show={showUpdateAfterPublished}
+        setShow={setShowUpdateAfterPublished}
         modalTitleClassName={styles["ModalHeader_View_poll"]}
         modalHeaderClassName={styles["ModalRequestHeader_polling_View_modal"]}
         modalFooterClassName={"d-block"}
         onHide={() => {
-          setShowViewPollModal(false);
+          setShowUpdateAfterPublished(false);
         }}
         ModalTitle={
           <>
@@ -82,12 +90,21 @@ const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-center gap-2"
+                    className="d-flex justify-content-center gap-2 align-items-center"
                   >
                     <img src={AlarmClock} width="14.97px" height="14.66px" />
                     <span className={styles["Due_Date_viewPoll"]}>
                       {t("Due-date-on")} <span>34 May 2023</span>
                     </span>
+                    <MultiDatePicker
+                      // onChange={meetingDateHandler}
+                      name="MeetingDate"
+                      check={true}
+                      // value={meetingDate}
+                      calendar={calendarValue}
+                      locale={localValue}
+                      // newValue={createMeeting.MeetingDate}
+                    />
                   </Col>
                 </Row>
               </Col>
@@ -109,7 +126,7 @@ const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
                   height="16px"
                   className={styles["View_cross_icon"]}
                   onClick={() => {
-                    setShowViewPollModal(false);
+                    setShowUpdateAfterPublished(false);
                   }}
                 />
               </Col>
@@ -119,7 +136,7 @@ const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
                 <Row>
                   <Col lg={12} md={12} sm={12} className="m-0 p-0">
                     <span className={styles["View_poll_heading"]}>
-                      {t("View-poll")}
+                      {t("Update-poll")}
                     </span>
                   </Col>
                 </Row>
@@ -238,19 +255,23 @@ const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
           <>
             <Row>
               <Col lg={12} md={12} sm={12} className={styles["OverallPadding"]}>
-                <Row className="mt-3">
+                <Row className="mt-4">
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-end m-0 p-0"
+                    className="d-flex justify-content-end gap-2 m-0 p-0"
                   >
                     <Button
-                      text={t("Close")}
+                      text={t("Cancel")}
                       className={styles["Close_btn_ViewPoll"]}
                       onClick={() => {
-                        setShowViewPollModal(false);
+                        setShowUpdateAfterPublished(false);
                       }}
+                    />
+                    <Button
+                      text={t("Update")}
+                      className={styles["Update_btn_Published"]}
                     />
                   </Col>
                 </Row>
@@ -264,4 +285,4 @@ const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
   );
 };
 
-export default ViewPoll;
+export default UpdateSecond;
