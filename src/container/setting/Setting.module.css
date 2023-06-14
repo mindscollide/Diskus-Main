@@ -123,3 +123,20 @@ body[dir="rtl"] .setting-row {
   height: 12px !important;
   position: absolute !important;
 }
+
+.Background_Color_Picker {
+  padding: 5px 30px !important;
+  font-size: 12px !important;
+  background: #fff;
+  color: #5a5a5a;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1;
+}
+
+.Styles_For-Color {
+  border-radius: 150px !important;
+}
+
+.Colo_Name_show {
+  cursor: pointer !important;
+}

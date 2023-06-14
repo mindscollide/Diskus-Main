@@ -143,15 +143,15 @@ const getResolutions_Fail = (message) => {
         message: message
     }
 };
-const getResolutions = (navigate, id, t) => {
+const getResolutions = (navigate, id, t, current, pageSize) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
     let Data = {
         FK_UID: userID,
         ResolutionStatus: JSON.parse(id),
         Title: "",
-        PageNumber: 1,
-        Length: 50
+        PageNumber: current,
+        Length: pageSize
 
     }
     return (dispatch) => {
@@ -175,7 +175,7 @@ const getResolutions = (navigate, id, t) => {
                 } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchResolutions_01".toLowerCase()) {
-                            dispatch(getResolutions_Success(response.data.responseResult.resolutionTable, t("Data-available")))
+                            dispatch(getResolutions_Success(response.data.responseResult, t("Data-available")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchResolutions_02".toLowerCase()) {
                             dispatch(getResolutions_Success(response.data.responseResult.resolutionTable, t("No-data-available")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchResolutions_03".toLowerCase()) {
@@ -756,12 +756,16 @@ const getVoterResolution_fail = (message) => {
         message: message
     }
 }
-const getVoterResolution = (navigate, id, t) => {
+const getVoterResolution = (navigate, id, t, voterPage, voterRows) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
     let Data = {
         FK_UID: userID,
-        ResolutionStatus: JSON.parse(id)
+        ResolutionStatus: JSON.parse(id),
+        Title: "",
+        PageNumber: voterPage !== null ? voterPage : 1,
+        Length: voterRows !== null ? voterRows : 50
+
     }
 
     return (dispatch) => {
@@ -784,9 +788,9 @@ const getVoterResolution = (navigate, id, t) => {
                 } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchVoterResolutions_01".toLowerCase()) {
-                            dispatch(getVoterResolution_success(response.data.responseResult.resolutionTable, t("Record-updated-successfully")))
+                            dispatch(getVoterResolution_success(response.data.responseResult, t("Data-available")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchVoterResolutions_02".toLowerCase()) {
-                            dispatch(getVoterResolution_fail(t("No-record-updated")))
+                            dispatch(getVoterResolution_fail(t("No-data-available")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchVoterResolutions_03".toLowerCase()) {
                             dispatch(getVoterResolution_fail(t("Something-went-wrong")))
                         }

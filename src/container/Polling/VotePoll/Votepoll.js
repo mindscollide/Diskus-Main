@@ -5,6 +5,7 @@ import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { useSSR, useTranslation } from "react-i18next";
 import { Progress } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
+import { style } from "@material-ui/system";
 const Votepoll = ({ showVotePoll, setShowVotePoll }) => {
   const { t } = useTranslation();
   const [votepollcheck, setVotepollcheck] = useState({
@@ -35,29 +36,31 @@ const Votepoll = ({ showVotePoll, setShowVotePoll }) => {
         }}
         ModalBody={
           <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end"
+              >
+                <img
+                  src={BlackCrossIcon}
+                  className={styles["Vote_Poll_cross_ICon"]}
+                  height="16px"
+                  width="16px"
+                  onClick={() => {
+                    setShowVotePoll(false);
+                  }}
+                />
+              </Col>
+            </Row>
             <Row className={styles["OverAll_padding"]}>
               <Col lg={12} md={12} sm={12}>
                 <Row>
-                  <Col lg={11} md={11} sm={12} className="m-0 p-0">
+                  <Col lg={12} md={12} sm={12} className="m-0 p-0">
                     <span className={styles["Vote_poll_Heading"]}>
                       {t("Vote-poll")}
                     </span>
-                  </Col>
-                  <Col
-                    lg={1}
-                    md={1}
-                    sm={12}
-                    className="d-flex align-items-center"
-                  >
-                    <img
-                      src={BlackCrossIcon}
-                      className={styles["Vote_Poll_cross_ICon"]}
-                      height="16px"
-                      width="16px"
-                      onClick={() => {
-                        setShowVotePoll(false);
-                      }}
-                    />
                   </Col>
                 </Row>
                 <Row className="mt-2">
@@ -72,7 +75,16 @@ const Votepoll = ({ showVotePoll, setShowVotePoll }) => {
                     </Row>
                   </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className="mt-2">
+                  <Col lg={1} md={1} sm={12}></Col>
+                  <Col lg={11} md={11} sm={12} className="m-0 p-0">
+                    <span className={styles["Yes_Vote_poll"]}>
+                      {t("Yes")}
+                      <span>(30)</span>
+                    </span>
+                  </Col>
+                </Row>
+                <Row>
                   <Col
                     lg={1}
                     ms={1}
@@ -98,7 +110,16 @@ const Votepoll = ({ showVotePoll, setShowVotePoll }) => {
                     />
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row>
+                  <Col lg={1} md={1} sm={12}></Col>
+                  <Col lg={11} md={11} sm={12} className="m-0 p-0">
+                    <span className={styles["Yes_Vote_poll"]}>
+                      {t("No")}
+                      <span>(20)</span>
+                    </span>
+                  </Col>
+                </Row>
+                <Row>
                   <Col
                     lg={1}
                     ms={1}
@@ -132,7 +153,9 @@ const Votepoll = ({ showVotePoll, setShowVotePoll }) => {
                     md={12}
                     className="d-flex justify-content-start m-0 p-0 mt-2"
                   >
-                    <span>Mutiple Answer Allowed</span>
+                    <span className={styles["Multiple_vote_poll"]}>
+                      Mutiple Answer Allowed
+                    </span>
                   </Col>
                 </Row>
               </Col>
@@ -141,17 +164,30 @@ const Votepoll = ({ showVotePoll, setShowVotePoll }) => {
         }
         ModalFooter={
           <>
-            <Button
-              text={t("Close")}
-              className={styles["Close_Btn_votepoll"]}
-              onClick={() => {
-                setShowVotePoll(false);
-              }}
-            />
-            <Button
-              text={t("Submit")}
-              className={styles["Submit_btn_votepoll"]}
-            />
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className={styles["OverAll_padding"]}
+              >
+                <Row className="mt-3">
+                  <Col lg={12} md={12} sm={12} className="m-0 p-0 d-flex gap-2">
+                    <Button
+                      text={t("Close")}
+                      className={styles["Close_Btn_votepoll"]}
+                      onClick={() => {
+                        setShowVotePoll(false);
+                      }}
+                    />
+                    <Button
+                      text={t("Submit")}
+                      className={styles["Submit_btn_votepoll"]}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
           </>
         }
       />

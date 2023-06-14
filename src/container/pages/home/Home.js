@@ -69,6 +69,7 @@ import {
 } from "../../../store/actions/Notes_actions";
 import ModalAddNote from "../../modalAddNote/ModalAddNote";
 import ModalUpdateNote from "../../modalUpdateNote/ModalUpdateNote";
+import { getUserSetting } from "../../../store/actions/GetUserSetting";
 
 const Home = () => {
   const dCheck = useLoaderData();
@@ -107,11 +108,11 @@ const Home = () => {
   const navigate = useNavigate();
   const [calenderData, setCalenderData] = useState([]);
   const [recentActivityData, setRecentActivityData] = useState([]);
-  // const [open, setOpen] = useState(false);
   // get new date
-
   let date = new Date();
   let getCurrentDate = moment(date).format("DD");
+  console.log(getCurrentDate, "getCurrentDategetCurrentDategetCurrentDate");
+
   let format = "YYYYMMDD";
 
   const [dates, setDates] = useState([]);
@@ -234,16 +235,15 @@ const Home = () => {
     };
     dispatch(GetNotes(navigate, Data, t));
   }, []);
+  
   // for view modal  handler
   const viewModalHandler = (id) => {
-    // console.log("viewID", id);
   };
 
   const handleClickNoteModal = () => {
     setModalNote(true);
   };
 
-  // console.log(notes, "NotesReducerNotesReducer");
   // render Notes Data
   useEffect(() => {
     if (
@@ -261,11 +261,8 @@ const Home = () => {
   }, [NotesReducer.GetAllNotesResponse]);
 
   useEffect(() => {
-    // console.log("checkingthesocketdata is coming or not", rowsToDo);
     if (Object.keys(toDoListReducer.SocketTodoActivityData).length > 0) {
-      // rowsToDo.unshift(toDoListReducer.SocketTodoActivityData);
       setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo]);
-      // console.log("checkingthesocketdata is coming or not", rowsToDo);
     } else {
       setRowToDo(toDoListReducer.AllTodolistData);
     }
@@ -277,17 +274,8 @@ const Home = () => {
       Object.keys(toDoListReducer.AllTodolistData).length > 0 &&
       toDoListReducer.AllTodolistData !== undefined
     ) {
-      // console.log(
-      //   "todolistreducer.AllTodolistData",
-      //   toDoListReducer,
-      //   toDoListReducer.AllTodolistData
-      // );
       setRowToDo(toDoListReducer.AllTodolistData);
     } else {
-      // console.log(
-      //   "todolistreducer.AllTodolistData",
-      //   toDoListReducer.AllTodolistData
-      // );
       setRowToDo([]);
     }
   }, [toDoListReducer.AllTodolistData]);
@@ -553,6 +541,7 @@ const Home = () => {
   ]);
 
   const calendarClickFunction = async (value) => {
+    console.log("valuevaluevaluevalue", value);
     // console.log("Calendar Clicked");
     if (!dates.includes(value)) {
       setDates([...dates, value]);
@@ -572,6 +561,16 @@ const Home = () => {
     }
   }, [lang]);
 
+  useEffect(() => {
+    console.log(
+      settingReducer,
+      "settingReducer.UserProfileDatasettingReducer.UserProfileData"
+    );
+  }, [settingReducer]);
+
+  useEffect(() => {
+    dispatch(getUserSetting(navigate, t));
+  }, []);
   const closeModal = () => {
     setActivateBlur(false);
     setLoader(false);
@@ -638,9 +637,7 @@ const Home = () => {
               </Row>
             ) : indexforUndeline != null && indexforUndeline === index ? (
               <>
-                {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-                  getCurrentDate && <span className="bordertop" />}
-
+                <span className="bordertop" />
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <div
@@ -706,91 +703,111 @@ const Home = () => {
       )
     );
   };
+  const handleMonthChange = (value) => {
+    console.log("handleMonthChangehandleMonthChangehandleMonthChange", value);
+  };
 
   return (
     <>
       <Container fluid className="Dashboard-Main-Container">
         <Row>
           <Col lg={4} md={4} sm={12} className="dashboard-container">
-            <Row className="mb-3">
-              <Col
-                lg={12}
-                md={12}
-                sm={false}
-                xs={false}
-                className="text-center mt-2 MontserratSemiBold-600 color-5a5a5a  "
-              >
-                <div className="whiteBackground home-meetingcount border">
-                  {meetingIdReducer.Spinner === true ? (
-                    <Spin />
-                  ) : (
-                    <CustomTextProgressbar
-                      value={valueMeeting}
-                      maxValue={meetingCountThisWeek}
-                    >
-                      <div className="progressbar-count m-0 ">
-                        <strong>
-                          {upcomingMeetingCountThisWeek}/{meetingCountThisWeek}
-                        </strong>
-                      </div>
-                      <div className="home-meetingcount-text Saved_money_Tagline">
-                        {t("Meeting")} <br />
-                        {t("This-month")}
-                      </div>
-                    </CustomTextProgressbar>
-                  )}
-                </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col lg={12} md={12} sm={12} className="Dashboard-Calendar  ">
-                <div className="whiteBackground Spinner home-calendar-spinner border">
-                  {calendarReducer.Spinner === true ||
-                  meetingIdReducer.Spinner === true ? (
-                    <Spin />
-                  ) : (
-                    <>
-                      <Row>
-                        <Col lg={12} md={12} sm={12} xs={12}>
-                          <Calendar
-                            value={dates}
-                            disabled={false}
-                            minDate={moment().toDate()}
-                            calendar={calendarValue}
-                            locale={localValue}
-                            ref={calendarRef}
-                            showOtherDays={true}
-                            multiple={false}
-                            onChange={calendarClickFunction}
-                            className="custom-multi-date-picker"
-                          />
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <h1 className="upcoming-events">
-                            {t("Up-coming-event")}
-                          </h1>
+            <section className="dashboard-col-1">
+              <Row className="mb-3">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={false}
+                  xs={false}
+                  className="text-center mt-2 MontserratSemiBold-600 color-5a5a5a  "
+                >
+                  <div className="whiteBackground home-meetingcount border">
+                    {meetingIdReducer.Spinner === true ? (
+                      <Spin />
+                    ) : (
+                      <CustomTextProgressbar
+                        value={valueMeeting}
+                        maxValue={meetingCountThisWeek}
+                      >
+                        <div className="progressbar-count m-0 ">
+                          <strong>
+                            {upcomingMeetingCountThisWeek}/
+                            {meetingCountThisWeek}
+                          </strong>
+                        </div>
+                        <div className="home-meetingcount-text Saved_money_Tagline">
+                          {t("Meeting")} <br />
+                          {t("This-month")}
+                        </div>
+                      </CustomTextProgressbar>
+                    )}
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <div className="whiteBackground Spinner home-calendar-spinner calendar_home   ">
+                    {calendarReducer.Spinner === true ? (
+                      <Spin />
+                    ) : (
+                      <>
+                        <Row>
+                          <Col lg={12} md={12} sm={12} xs={12}>
+                            <Calendar
+                              value={dates}
+                              disabled={false}
+                              minDate={moment().toDate()}
+                              calendar={calendarValue}
+                              locale={localValue}
+                              ref={calendarRef}
+                              showOtherDays={true}
+                              multiple={false}
+                              onChange={calendarClickFunction}
+                              className="custom-multi-date-picker"
+                              onMonthChange={handleMonthChange}
+                            />
+                          </Col>
+                        </Row>
+                      </>
+                    )}
+                  </div>
+                </Col>
+              </Row>
+              <Row>
+                <Col lg={12} md={12} sm={12}>
+                  <div className="whiteBackground Spinner home-meeting_event-spinner event_home ">
+                    {meetingIdReducer.Spinner === true ? (
+                      <Spin />
+                    ) : (
+                      <>
+                        <Row>
+                          <Col lg={12} md={12} sm={12}>
+                            <h1 className="upcoming-events">
+                              {t("Up-coming-event")}
+                            </h1>
 
-                          <div className="Upcoming-Events-Box">
-                            {meetingIdReducer.UpcomingEventsData.length ===
-                            0 ? (
-                              <ResultMessage
-                                icon={<Mailbox className="notification-icon" />}
-                                subTitle={t("No-upcoming-events")}
-                                className="notification-text"
-                              />
-                            ) : (
-                              upcomingEventsHandler(meetingIdReducer)
-                            )}
-                          </div>
-                        </Col>
-                      </Row>
-                    </>
-                  )}
-                </div>
-              </Col>
-            </Row>
+                            <div className="Upcoming-Events-Box">
+                              {meetingIdReducer.UpcomingEventsData.length ===
+                              0 ? (
+                                <ResultMessage
+                                  icon={
+                                    <Mailbox className="notification-icon" />
+                                  }
+                                  subTitle={t("No-upcoming-events")}
+                                  className="notification-text"
+                                />
+                              ) : (
+                                upcomingEventsHandler(meetingIdReducer)
+                              )}
+                            </div>
+                          </Col>
+                        </Row>
+                      </>
+                    )}
+                  </div>
+                </Col>
+              </Row>
+            </section>
           </Col>
           <Col lg={4} md={4} sm={12} className="m-0 ">
             <Row className="mb-3">
@@ -844,7 +861,7 @@ const Home = () => {
                     className="dashboard-todo"
                     rows={rowsToDo}
                     labelTitle={t("Todo-list")}
-                    scroll={{ y: 400 }}
+                    scroll={{ y: "49vh" }}
                     pagination={false}
                   />
                 ) : (
