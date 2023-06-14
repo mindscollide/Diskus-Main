@@ -69,18 +69,20 @@ const CalendarPage = () => {
 
   // for view modal  handler
   const viewModalHandler = async (value) => {
-    let Data = { MeetingID: parseInt(value.id) };
-    await dispatch(
-      ViewMeeting(
-        navigate,
-        Data,
-        t,
-        setViewFlag,
-        setEditFlag,
-        setCalendarViewModal,
-        3
-      )
-    );
+    if (value.eventID === 3) {
+      let Data = { MeetingID: parseInt(value.id) };
+      await dispatch(
+        ViewMeeting(
+          navigate,
+          Data,
+          t,
+          setViewFlag,
+          setEditFlag,
+          setCalendarViewModal,
+          3
+        )
+      );
+    }
   };
 
   function onChange(value) {
@@ -147,29 +149,56 @@ const CalendarPage = () => {
   // set Data for Calendar
   useEffect(() => {
     let Data = calendarReducer.CalenderData;
+    let officeEventColor = localStorage.getItem("officeEventColor");
+    let googleEventColor = localStorage.getItem("googleEventColor");
+    let diskusEventColor = localStorage.getItem("diskusEventColor");
     console.log("Data", Data);
     let newList = [];
+
     if (Object.keys(Data).length > 0) {
       Data.map((cData, index) => {
         console.log("cData", cData);
         let StartingTime = startDateTimeMeetingCalendar(
-          cData.meetingDate + cData.startTime
+          cData.eventDate + cData.startTime
         );
         let EndingTime = startDateTimeMeetingCalendar(
-          cData.meetingDate + cData.endTime
+          cData.eventDate + cData.endTime
         );
         let meetingStartTime = newTimeFormaterAsPerUTC(
-          cData.meetingDate + cData.startTime
+          cData.eventDate + cData.startTime
         );
         console.log("newListnewListnewList", StartingTime, EndingTime);
-        newList.push({
-          id: parseInt(cData.fK_MDID),
-          title: meetingStartTime + " - " + cData.title,
-          allDay: true,
-          start: new Date(StartingTime),
-          end: new Date(EndingTime),
-          // startTime: meetingStartTime,
-        });
+        if (cData.fK_CESID === 1) {
+          newList.push({
+            id: parseInt(cData.pK_CEID),
+            eventID: parseInt(cData.fK_CESID),
+            title: meetingStartTime + " - " + cData.title,
+            allDay: true,
+            start: new Date(StartingTime),
+            end: new Date(EndingTime),
+            border: "2px solid" + googleEventColor,
+          });
+        } else if (cData.fK_CESID === 2) {
+          newList.push({
+            id: parseInt(cData.pK_CEID),
+            eventID: parseInt(cData.fK_CESID),
+            title: meetingStartTime + " - " + cData.title,
+            allDay: true,
+            start: new Date(StartingTime),
+            end: new Date(EndingTime),
+            border: "2px solid" + officeEventColor,
+          });
+        } else if (cData.fK_CESID === 3) {
+          newList.push({
+            id: parseInt(cData.pK_CEID),
+            eventID: parseInt(cData.fK_CESID),
+            title: meetingStartTime + " - " + cData.title,
+            allDay: true,
+            start: new Date(StartingTime),
+            end: new Date(EndingTime),
+            border: "2px solid" + diskusEventColor,
+          });
+        }
       });
       setCalenderDatae(newList);
       console.log("newListnewListnewList", newList);
@@ -440,7 +469,9 @@ const CalendarPage = () => {
     getTodosStatus.UpdateTodoStatusMessage,
     getTodosStatus.UpdateTodoStatus,
   ]);
-
+  console.log("meetingIdReducermeetingIdReducer", calendarReducer.Loading);
+  console.log("meetingIdReducermeetingIdReducer", toDoListReducer.Loading);
+  console.log("meetingIdReducermeetingIdReducer", assignees.Loading);
   return (
     <>
       <Container id={"calender"}>

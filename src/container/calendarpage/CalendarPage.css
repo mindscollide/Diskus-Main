@@ -173,7 +173,7 @@ body[dir="rtl"]
   .rbc-row-segment
   .rbc-event {
   background-color: #fff !important;
-  border: 2px solid #4adede !important;
+  /* border: 2px solid #4adede !important; */
   color: #000 !important;
   border-radius: 100px !important;
   font-weight: 700;
@@ -488,7 +488,9 @@ body[dir="rtl"] .Calender-heading {
   margin-top: 3px !important;
 }
 .rbc-event.rbc-event-allday.rbc-event-continues-after {
-  background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
+  /* background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important; */
+  background: #fff !important;
+  color: #000;
   border-radius: 4px !important;
 }
 .rbc-overlay-header {

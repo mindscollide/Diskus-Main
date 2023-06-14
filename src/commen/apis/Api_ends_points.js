@@ -31,6 +31,9 @@ const getSocketURL = ':9999'
 //talk url
 const talkURL = ':11014/Talk'
 
+// Calender 
+const calenderURL = ':11016/Calender'
+
 //this is our final api's
 const authenticationApi = baseURL + serviceAuthenticationURL
 
@@ -43,13 +46,7 @@ const settingApi = baseURL + settingURL
 
 const meetingApi = baseURL + meetingURL
 
-// aun work
-const getMeetingApi = baseURL + meetingURL
-
 const getTodoListAPI = baseURL + toDoListURL
-
-// get Data
-const getCalenderApi = baseURL + meetingURL
 
 // get Socket connection
 const getSocketConnection = baseURL + getSocketURL
@@ -69,14 +66,15 @@ const getGroupsApi = baseURL + getGroupsURL
 
 const getCommitteesApi = baseURL + getCommitteeURL
 
+// get Calender
+const getCalender = baseURL + calenderURL
+
 export {
   authenticationApi,
   toDoListApi,
   settingApi,
-  getMeetingApi,
-  getTodoListAPI,
   meetingApi,
-  getCalenderApi,
+  getTodoListAPI,
   getSocketConnection,
   getAdminURLs,
   getNotesApi,
@@ -85,4 +83,5 @@ export {
   getCommitteesApi,
   getResolutionApi,
   dataRoomApi,
+  getCalender,
 }

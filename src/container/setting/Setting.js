@@ -320,6 +320,18 @@ const Organization = () => {
   useEffect(() => {
     let userProfileData = settingReducer.UserProfileData;
     if (userProfileData !== null && userProfileData !== undefined) {
+      localStorage.setItem(
+        "officeEventColor",
+        userProfileData.officeEventColor
+      );
+      localStorage.setItem(
+        "googleEventColor",
+        userProfileData.googleEventColor
+      );
+      localStorage.setItem(
+        "diskusEventColor",
+        userProfileData.diskusEventColor
+      );
       console.log("userProfileDatauserProfileData", userProfileData);
       let settingData = {
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
@@ -382,10 +394,8 @@ const Organization = () => {
         UserAllowMicrosoftCalendarSynch:
           userProfileData.userAllowMicrosoftCalendarSynch,
         UserName: userProfileData.userName,
-        GoogleEventColor: userProfileData.googleEventColor,
         OfficeEventColor: userProfileData.officeEventColor,
         GoogleEventColor: userProfileData.googleEventColor,
-        OfficeEventColor: userProfileData.officeEventColor,
       };
       setOrganizationStates(settingData);
     }
@@ -484,15 +494,7 @@ const Organization = () => {
       dispatch(updateUserMessageCleare());
     }
   }, [settingReducer.UpdateUserSettingResponseMessage]);
-  const [active, setActive] = useState(false);
-  // const handleColorChange = (selectedColor) => {
-  //   // setColor(selectedColor.hex);
-  //   setActive(true);
-  //   setOrganizationStates({
-  //     ...organizationStates,
-  //     OfficeEventColor: selectedColor.hex,
-  //   });
-  // };
+
   console.log("colorPicker", organizationStates.OfficeEventColor);
   return (
     <>

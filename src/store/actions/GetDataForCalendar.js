@@ -1,6 +1,6 @@
 import * as actions from "../action_types";
 import { calendarDataRequest } from "../../commen/apis/Api_config";
-import { getCalenderApi } from "../../commen/apis/Api_ends_points";
+import { getCalender } from "../../commen/apis/Api_ends_points";
 import axios from "axios";
 import { RefreshToken } from "./Auth_action";
 
@@ -29,8 +29,13 @@ const getCalendarDataFail = (message) => {
 
 const getCalendarDataResponse = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+
   let Data = {
     UserID: parseInt(data),
+    OrganizationID: parseInt(organizationID),
+    StartDate: "20220202121749",
+    EndDate: "20240202121749",
   };
   return (dispatch) => {
     dispatch(getCalendarDataInit());
@@ -39,7 +44,7 @@ const getCalendarDataResponse = (navigate, data, t) => {
     form.append("RequestData", JSON.stringify(Data));
     axios({
       method: "post",
-      url: getCalenderApi,
+      url: getCalender,
       data: form,
       headers: {
         _token: token,
@@ -56,7 +61,7 @@ const getCalendarDataResponse = (navigate, data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingEventsByUserId_01".toLowerCase()
+                  "Calender_CalenderServiceManager_GetCalenderList_01".toLowerCase()
                 )
             ) {
               await dispatch(
@@ -69,7 +74,7 @@ const getCalendarDataResponse = (navigate, data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingEventsByUserId_02".toLowerCase()
+                  "Calender_CalenderServiceManager_GetCalenderList_02".toLowerCase()
                 )
             ) {
               await dispatch(getCalendarDataFail(t("No-records-found")));
@@ -77,17 +82,11 @@ const getCalendarDataResponse = (navigate, data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingEventsByUserId_03".toLowerCase()
+                  "Calender_CalenderServiceManager_GetCalenderList_03".toLowerCase()
                 )
             ) {
-              await dispatch(getCalendarDataFail(t("Empty-or-null-request")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingEventsByUserId_04".toLowerCase()
-                )
-            ) {
+              await dispatch(getCalendarDataFail(t("Something-went-wrong")));
+            } else {
               await dispatch(getCalendarDataFail(t("Something-went-wrong")));
             }
 

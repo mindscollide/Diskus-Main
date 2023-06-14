@@ -240,13 +240,12 @@ function CustomCalendar({
   );
   const currentDate = new Date();
   const eventPropGetter = (event, start, end, isSelected) => {
-    const isPastEvent = event.start < currentDate;
+    // const isPastEvent = event.start < currentDate;
     let style = {};
 
-    if (isPastEvent) {
-      style = {
-        pointerEvents: "none", // Disable pointer events for past events
-        opacity: 0.5, // Apply opacity to visually indicate past events
+    if (event) {
+      style = {// Disable pointer events for past events
+        border: event.border, // Apply opacity to visually indicate past events
       };
     }
 
@@ -254,18 +253,18 @@ function CustomCalendar({
       style: style,
     };
   };
-  const dayPropGetter = (date) => {
-    const isPastDate = date < currentDate;
-    let className = "";
+  // const dayPropGetter = (date) => {
+  //   const isPastDate = date < currentDate;
+  //   let className = "";
 
-    if (isPastDate) {
-      className += " rbc-day-bg rbc-off-range-bg"; // Add classes for past dates
-    }
+  //   if (isPastDate) {
+  //     className += " rbc-day-bg rbc-off-range-bg"; // Add classes for past dates
+  //   }
 
-    return {
-      className: className,
-    };
-  };
+  //   return {
+  //     className: className,
+  //   };
+  // };
   return (
     <Container className="bg-white border-radius-4 border ">
       <Row>
@@ -286,7 +285,7 @@ function CustomCalendar({
               // header: customTimeSlotHeader,
               month: false,
             }}
-            dayPropGetter={dayPropGetter}
+            // dayPropGetter={dayPropGetter}
             eventPropGetter={eventPropGetter}
             onNavigate={onNavigate}
             step={15}
