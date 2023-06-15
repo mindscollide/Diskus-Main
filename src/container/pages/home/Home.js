@@ -157,13 +157,15 @@ const Home = () => {
     // console.log("Data", Data);
     let newList = [];
     if (Object.keys(Data).length > 0) {
+      console.log("newListnewListnewList", Data);
+
       Data.map((cData, index) => {
         return newList.push({
-          meetingDate: cData.meetingDate,
+          meetingDate: cData.eventDate,
         });
       });
       setCalenderData(newList);
-      // console.log("newListnewListnewList", calenderData);
+      console.log("newListnewListnewList", calenderData);
     }
   }, [calendarReducer.CalenderData]);
 

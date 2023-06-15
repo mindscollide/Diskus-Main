@@ -70,6 +70,19 @@ const getUserSetting = (navigate, t) => {
                   t("Record-found")
                 )
               );
+              console.log("officeEventColor",response.data.responseResult.userSettings)
+              localStorage.setItem(
+                "officeEventColor",
+                response.data.responseResult.userSettings.officeEventColor
+              );
+              localStorage.setItem(
+                "googleEventColor",
+                response.data.responseResult.userSettings.googleEventColor
+              );
+              localStorage.setItem(
+                "diskusEventColor",
+                response.data.responseResult.userSettings.diskusEventColor
+              );
             } else if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_GetUserSettings_02"
