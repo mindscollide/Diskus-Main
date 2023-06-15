@@ -627,7 +627,7 @@ body[dir="rtl"] .resolution_title {
   font-family: "MontserratSemiBold";
   font-size: 12px !important;
   color: #5a5a5a !important;
-  margin-left: 25px !important;
+  /* margin-left: 25px !important; */
 }
 
 .decision_text_Moderator_closed {
