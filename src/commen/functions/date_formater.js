@@ -71,6 +71,7 @@ export const newDateFormaterAsPerUTC = (date) => {
   let newDate = new Date(dateConvert).toISOString()
   return newDate.slice(0, 10).replace(/-/g, '')
 }
+
 export const newTimeFormaterAsPerUTC = (dateTime) => {
   console.log(dateTime, 'checking12121')
   let fullDateyear =
@@ -90,6 +91,7 @@ export const newTimeFormaterAsPerUTC = (dateTime) => {
   console.log(_dateTime, 'checking12121')
   return moment(_dateTime).format('h:mm A')
 }
+
 export const newTimeFormaterAsPerUTCFullDate = (dateTime) => {
   // console.log('dateTimedateTimedateTime', dateTime)
   let fullDateyear =
@@ -108,6 +110,7 @@ export const newTimeFormaterAsPerUTCFullDate = (dateTime) => {
   let _dateTime = new Date(fullDateyear).toString('YYYYMMDDHHmmss')
   return moment(_dateTime).format('h:mm A, Do MMM, YYYY')
 }
+
 export const newTimeFormaterForResolutionAsPerUTCFullDate = (dateTime) => {
   // console.log('dateTimedateTimedateTime', dateTime)
   let fullDateyear =
@@ -126,6 +129,7 @@ export const newTimeFormaterForResolutionAsPerUTCFullDate = (dateTime) => {
   let _dateTime = new Date(fullDateyear).toString('YYYYMMDDHHmmss')
   return moment(_dateTime).format('h:mm A, D MMM, YYYY')
 }
+
 export const _justShowDateformat = (dateTime) => {
   let fullDateyear =
     dateTime.slice(0, 4) +
@@ -143,6 +147,7 @@ export const _justShowDateformat = (dateTime) => {
   let _dateTime = new Date(fullDateyear).toString('YYYYMMDDHHmmss')
   return moment(_dateTime).format('Do MMM, YYYY')
 }
+
 export const _justShowDateformatBilling = (dateTime) => {
   let fullDateyear =
     dateTime.slice(0, 4) +
@@ -178,6 +183,7 @@ export const _justShowDay = (dateTime) => {
   let _dateTime = new Date(fullDateyear).toString('YYYYMMDDHHmmss')
   return moment(_dateTime).format('dddd')
 }
+
 export const forRecentActivity = (dateTime) => {
   let fullDateYear =
     dateTime.slice(0, 4) +
@@ -213,6 +219,7 @@ export const startDateTimeMeetingCalendar = (dateTime) => {
   let _dateTime = new Date(fullDateYear).toString('YYYYMMDDHHmmss')
   return _dateTime
 }
+
 export const endDateTimeMeetingCalender = (dateTime) => {
   let fullDateYear =
     dateTime.slice(0, 4) +
