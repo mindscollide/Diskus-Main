@@ -4,18 +4,18 @@ import { getCalender } from "../../commen/apis/Api_ends_points";
 import axios from "axios";
 import { RefreshToken } from "./Auth_action";
 
-const getCalendarDataInit = (response, message) => {
+const getCalendarDataInit = (flag) => {
   return {
     type: actions.GET_DATA_FOR_CALENDAR_INIT,
-    response: response,
-    message: message,
+    flag: flag,
   };
 };
 
-const getCalendarDataSuccess = (response, message) => {
+const getCalendarDataSuccess = (response,flag, message) => {
   return {
     type: actions.GET_DATA_FOR_CALENDAR_SUCCESS,
     response: response,
+    flag:flag,
     message: message,
   };
 };
@@ -27,21 +27,21 @@ const getCalendarDataFail = (message) => {
   };
 };
 
-const getCalendarDataResponse = (navigate, data, t) => {
+const getCalendarDataResponse = (navigate, data,flag, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
 
   let Data = {
-    UserID: parseInt(data),
+    UserID: parseInt(data.UserID),
     OrganizationID: parseInt(organizationID),
     StartDate: "20220202121749",
     EndDate: "20240202121749",
   };
   return (dispatch) => {
-    dispatch(getCalendarDataInit());
+    dispatch(getCalendarDataInit(flag));
     let form = new FormData();
     form.append("RequestMethod", calendarDataRequest.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestData", JSON.stringify(data));
     axios({
       method: "post",
       url: getCalender,
@@ -54,7 +54,7 @@ const getCalendarDataResponse = (navigate, data, t) => {
         console.log("calendar Data Response", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getCalendarDataResponse(navigate, data, t));
+          dispatch(getCalendarDataResponse(navigate, data,flag, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -67,6 +67,7 @@ const getCalendarDataResponse = (navigate, data, t) => {
               await dispatch(
                 getCalendarDataSuccess(
                   response.data.responseResult,
+                  false,
                   t("Record-found")
                 )
               );
