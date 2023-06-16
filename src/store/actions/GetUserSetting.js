@@ -72,6 +72,10 @@ const getUserSetting = (navigate, t) => {
               );
               console.log("officeEventColor",response.data.responseResult.userSettings)
               localStorage.setItem(
+                "calenderMonthsSpan",
+                response.data.responseResult.userSettings.calenderMonthsSpan
+              );
+              localStorage.setItem(
                 "officeEventColor",
                 response.data.responseResult.userSettings.officeEventColor
               );

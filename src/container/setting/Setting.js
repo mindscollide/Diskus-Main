@@ -534,37 +534,44 @@ const Organization = () => {
             </Row>
             <span className={styles["bottom-line"]}></span>
             {/* New Data Started Inserting  */}
-            <Row className="mt-3 FontArabicRegular">
-              <Col
-                lg={10}
-                md={10}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
-                <label>{t("Diskus-color-theme")}</label>
-              </Col>
-              <Col
-                lg={2}
-                md={2}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <input
-                  type="color"
-                  className="m-0 p-0 circle-color-picker"
-                  value={organizationStates.DiskusEventColor}
-                  onChange={(e) =>
-                    setOrganizationStates({
-                      ...organizationStates,
-                      DiskusEventColor: e.target.value,
-                    })
-                  }
-                />
-              </Col>
-            </Row>
-            <span className={styles["bottom-line"]}></span>
+            {roleID != 1 && roleID != 2 ? (
+              <>
+                <Row className="mt-3 FontArabicRegular">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start fw-900"
+                  >
+                    <label>{t("Diskus-color-theme")}</label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <input
+                      type="color"
+                      className="m-0 p-0 circle-color-picker"
+                      value={organizationStates.DiskusEventColor}
+                      onChange={(e) =>
+                        setOrganizationStates({
+                          ...organizationStates,
+                          DiskusEventColor: e.target.value,
+                        })
+                      }
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+              </>
+            ) : (
+              <></>
+            )}
+
             <Row className="mt-3 FontArabicRegular">
               <Col
                 lg={10}

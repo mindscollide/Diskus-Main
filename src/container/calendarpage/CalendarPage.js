@@ -15,6 +15,7 @@ import moment from "moment";
 import { getCalendarDataResponse } from "../../store/actions/GetDataForCalendar";
 import {
   dateTime,
+  newDateFormaterAsPerUTC,
   newTimeFormaterAsPerUTC,
   startDateTimeMeetingCalendar,
   TimeDisplayFormat,
@@ -66,6 +67,23 @@ const CalendarPage = () => {
     flag: false,
     message: "",
   });
+  const [startDataUpdate, setStartDataUpdate] = useState("");
+  const [endDataUpdate, setEndDataUpdate] = useState("");
+  let CalenderMonthsSpan = localStorage.getItem("calenderMonthsSpan");
+  let OrganizationID = localStorage.getItem("organizationID");
+  const userID = localStorage.getItem("userID");
+  var currentDate = new Date(); // Get the current date
+  // Add CalenderMonthsSpan months and set the day to the last day of the month
+  var startDate = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() - parseInt(CalenderMonthsSpan),
+    1
+  ); // Subtract CalenderMonthsSpan months and set the day to the 1st
+  var endDate = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + parseInt(CalenderMonthsSpan),
+    0
+  );
 
   // for view modal  handler
   const viewModalHandler = async (value) => {
@@ -84,18 +102,19 @@ const CalendarPage = () => {
       );
     }
   };
-
-  function onChange(value) {
-    let newDAte = moment(value._d).format("YYYY-MM-DD");
-    setDefaultValue(newDAte);
-    setOpen(false);
-    setCalendarView(false);
-  }
-
   // calling Api for getting data for calendar
   useEffect(() => {
     const userID = localStorage.getItem("userID");
-    dispatch(getCalendarDataResponse(navigate, userID, t));
+    // dispatch(getCalendarDataResponse(navigate, userID,true, t));
+    let calendarData = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(OrganizationID),
+      StartDate: newDateFormaterAsPerUTC(startDate) + "000000",
+      EndDate: newDateFormaterAsPerUTC(endDate) + "000000",
+    };
+    setStartDataUpdate(startDate);
+    setEndDataUpdate(endDate);
+    dispatch(getCalendarDataResponse(navigate, calendarData, true, t));
     window.addEventListener("click", function (e) {
       var clsname = e.target.className;
       let prev = "ant-picker-prev-icon";
@@ -145,6 +164,53 @@ const CalendarPage = () => {
       }
     });
   }, []);
+  
+  function onChange(value) {
+    let newDAte = moment(value._d).format("YYYY-MM-DD");
+    let formattedDate = moment(value._d).format("YYYYMMDD");
+    // let formattedDate = moment(value._d).format("YYYYMMDD");
+
+    console.log("navigate", formattedDate);
+    console.log("navigate", value._d);
+    if (startDataUpdate > value._d) {
+      console.log("navigate", value._d);
+      const date = new Date(value._d);
+      let updateStartDate = new Date(
+        date.getFullYear(),
+        date.getMonth() - parseInt(CalenderMonthsSpan),
+        1
+      );
+      let calendarData = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(OrganizationID),
+        StartDate: newDateFormaterAsPerUTC(updateStartDate) + "000000",
+        EndDate: newDateFormaterAsPerUTC(startDataUpdate) + "000000",
+      };
+      setStartDataUpdate(updateStartDate);
+      dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
+    } else if (endDataUpdate < value._d) {
+      console.log("navigate", value._d);
+      const date = new Date(value._d);
+      let updateEndDate = new Date(
+        date.getFullYear(),
+        date.getMonth() + parseInt(CalenderMonthsSpan),
+        0
+      );
+      let calendarData = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(OrganizationID),
+        StartDate: newDateFormaterAsPerUTC(endDataUpdate) + "000000",
+        EndDate: newDateFormaterAsPerUTC(updateEndDate) + "000000",
+      };
+      setEndDataUpdate(updateEndDate);
+      dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
+    }
+    setDefaultValue(newDAte);
+    setOpen(false);
+    setCalendarView(false);
+  }
+
+
 
   // set Data for Calendar
   useEffect(() => {
@@ -153,8 +219,12 @@ const CalendarPage = () => {
     let googleEventColor = localStorage.getItem("googleEventColor");
     let diskusEventColor = localStorage.getItem("diskusEventColor");
     console.log("Data", Data);
-    let newList = [];
-
+    let newList;
+    if (Object.keys(calenderData).length > 0) {
+      newList = calenderData;
+    } else {
+      newList = [];
+    }
     if (Object.keys(Data).length > 0) {
       Data.map((cData, index) => {
         console.log("cData", cData);
@@ -525,6 +595,10 @@ const CalendarPage = () => {
           <Col>
             <Calendar
               events={calenderData}
+              startDataUpdate={startDataUpdate}
+              setStartDataUpdate={setStartDataUpdate}
+              endDataUpdate={endDataUpdate}
+              setEndDataUpdate={setEndDataUpdate}
               handleEventSelect={viewModalHandler}
               className="calendar"
               onChange={onChange}

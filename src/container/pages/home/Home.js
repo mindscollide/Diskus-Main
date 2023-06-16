@@ -41,6 +41,7 @@ import {
   _justShowDay,
   forRecentActivity,
   startDateTimeMeetingCalendar,
+  newDateFormaterAsPerUTC,
 } from "../../../commen/functions/date_formater";
 import TimeAgo from "timeago-react";
 import {
@@ -139,6 +140,51 @@ const Home = () => {
   let toDoValue = todoListThisWeek - todoListAssignedThisWeek;
   const [show, setShow] = useState(false);
   const [editFlag, setEditFlag] = useState(false);
+  const [startDataUpdate, setStartDataUpdate] = useState("");
+  const [endDataUpdate, setEndDataUpdate] = useState("");
+
+  const userID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
+  let CalenderMonthsSpan = localStorage.getItem("calenderMonthsSpan");
+  var currentDate = new Date(); // Get the current date
+  // Add CalenderMonthsSpan months and set the day to the last day of the month
+  var startDate = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() - parseInt(CalenderMonthsSpan),
+    1
+  ); // Subtract CalenderMonthsSpan months and set the day to the 1st
+  var endDate = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + parseInt(CalenderMonthsSpan),
+    0
+  );
+
+  useEffect(() => {
+    dispatch(getUserSetting(navigate, t));
+    let calendarData = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(OrganizationID),
+      StartDate: newDateFormaterAsPerUTC(startDate) + "000000",
+      EndDate: newDateFormaterAsPerUTC(endDate) + "000000",
+    };
+    setStartDataUpdate(startDate);
+    setEndDataUpdate(endDate);
+    dispatch(getCalendarDataResponse(navigate, calendarData,true, t));
+
+    let Data = {
+      UserID: parseInt(createrID),
+      OrganizationID: JSON.parse(OrganizationID),
+    };
+
+    dispatch(GetNotes(navigate, Data, t));
+    let Data2 = {
+      UserID: parseInt(createrID),
+    };
+    dispatch(GetWeeklyMeetingsCount(navigate, createrID, t));
+    dispatch(GetWeeklyToDoCount(navigate, Data2, t));
+    dispatch(GetUpcomingEvents(navigate, Data2, t));
+    dispatch(getNotifications(navigate, createrID, t));
+  }, []);
 
   useEffect(() => {
     if (Blur != undefined) {
@@ -151,27 +197,48 @@ const Home = () => {
       setActivateBlur(false);
     }
   }, [Blur]);
+
   // set Data for Calendar
   useEffect(() => {
     let Data = calendarReducer.CalenderData;
     // console.log("Data", Data);
-    let newList = [];
+
     if (Object.keys(Data).length > 0) {
       console.log("newListnewListnewList", Data);
 
-      Data.map((cData, index) => {
-        return newList.push({
-          meetingDate: cData.eventDate,
+      if (Object.keys(calenderData).length > 0) {
+        let newList = calenderData;
+        Data.map((cData, index) => {
+          let date = moment(
+            startDateTimeMeetingCalendar(cData.eventDate + cData.startTime)
+          ).format("YYYYMMDD");
+
+          return newList.push({
+            meetingDate: date,
+          });
         });
-      });
-      setCalenderData(newList);
-      console.log("newListnewListnewList", calenderData);
+        console.log("newListnewListnewList", calenderData);
+      } else {
+        let newList = [];
+        console.log("newListnewListnewList", calenderData);
+        Data.map((cData, index) => {
+          let date = moment(
+            startDateTimeMeetingCalendar(cData.eventDate + cData.startTime)
+          ).format("YYYYMMDD");
+
+          return newList.push({
+            meetingDate: date,
+          });
+        });
+        setCalenderData(newList);
+      }
     }
   }, [calendarReducer.CalenderData]);
 
   useEffect(() => {
     var temp = [];
-    // console.log("calenderDatacalenderData", calenderData);
+    console.log("newListnewListnewList", calenderData);
+
     calenderData.map((cal, index) => {
       var year = moment(
         startDateTimeMeetingCalendar(cal.meetingDate + "000000")
@@ -195,12 +262,6 @@ const Home = () => {
     setDates(temp);
   }, [calenderData]);
 
-  // calling Api for getting data for calendar
-  useEffect(() => {
-    const userID = localStorage.getItem("userID");
-    dispatch(getCalendarDataResponse(navigate, userID, t));
-  }, []);
-
   useEffect(() => {
     if (
       SocketRecentActivityData !== null &&
@@ -223,24 +284,8 @@ const Home = () => {
     }
   }, [lang]);
 
-  //dispatch gettodolist api
-  useEffect(() => {
-    let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
-    dispatch(GetTodoListByUser(navigate, data, t));
-  }, []);
-
-  useEffect(() => {
-    let OrganizationID = localStorage.getItem("organizationID");
-    let Data = {
-      UserID: parseInt(createrID),
-      OrganizationID: JSON.parse(OrganizationID),
-    };
-    dispatch(GetNotes(navigate, Data, t));
-  }, []);
-  
   // for view modal  handler
-  const viewModalHandler = (id) => {
-  };
+  const viewModalHandler = (id) => {};
 
   const handleClickNoteModal = () => {
     setModalNote(true);
@@ -354,23 +399,6 @@ const Home = () => {
       },
     },
   ];
-
-  // Api Hit Meeting Count
-  useEffect(() => {
-    let Data = {
-      UserId: parseInt(createrID),
-    };
-    let Data2 = {
-      UserID: parseInt(createrID),
-    };
-    dispatch(GetWeeklyMeetingsCount(navigate, createrID, t));
-    dispatch(GetWeeklyToDoCount(navigate, Data2, t));
-    dispatch(GetUpcomingEvents(navigate, Data2, t));
-  }, []);
-
-  useEffect(() => {
-    dispatch(getNotifications(navigate, createrID, t));
-  }, []);
 
   useEffect(() => {
     setMeetingCountThisWeek(meetingIdReducer.TotalMeetingCountThisWeek);
@@ -570,9 +598,6 @@ const Home = () => {
     );
   }, [settingReducer]);
 
-  useEffect(() => {
-    dispatch(getUserSetting(navigate, t));
-  }, []);
   const closeModal = () => {
     setActivateBlur(false);
     setLoader(false);
@@ -705,8 +730,66 @@ const Home = () => {
       )
     );
   };
+
   const handleMonthChange = (value) => {
-    console.log("handleMonthChangehandleMonthChangehandleMonthChange", value);
+    const formattedDate = value.format("YYYYMMDD");
+    const dateString = value.toDate().toString();
+    let newStartDataUpdate = moment(startDataUpdate).format("YYYYMMDD");
+    let newEndDataUpdate = moment(endDataUpdate).format("YYYYMMDD");
+
+    // Subtract CalenderMonthsSpan months and set the day to the 1st
+
+    console.log(
+      "handleMonthChangehandleMonthChangehandleMonthChange past ",
+      newStartDataUpdate > formattedDate
+    );
+    if (newStartDataUpdate > formattedDate) {
+      console.log(
+        "handleMonthChangehandleMonthChangehandleMonthChange past ",
+        startDataUpdate
+      );
+      const date = new Date(dateString);
+      let updateStartDate = new Date(
+        date.getFullYear(),
+        date.getMonth() - parseInt(CalenderMonthsSpan),
+        1
+      );
+      console.log(
+        "handleMonthChangehandleMonthChangehandleMonthChange past ",
+        updateStartDate
+      );
+      let calendarData = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(OrganizationID),
+        StartDate: newDateFormaterAsPerUTC(updateStartDate) + "000000",
+        EndDate: newDateFormaterAsPerUTC(formattedDate) + "000000",
+      };
+      setStartDataUpdate(updateStartDate);
+      dispatch(getCalendarDataResponse(navigate, calendarData,false, t));
+    } else if (newEndDataUpdate < formattedDate) {
+      console.log(
+        "handleMonthChangehandleMonthChangehandleMonthChange future",
+        formattedDate
+      );
+      const date = new Date(dateString);
+      let updateEndDate = new Date(
+        date.getFullYear(),
+        date.getMonth() + parseInt(CalenderMonthsSpan),
+        0
+      );
+      console.log(
+        "handleMonthChangehandleMonthChangehandleMonthChange past ",
+        updateEndDate
+      );
+      let calendarData = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(OrganizationID),
+        StartDate: newDateFormaterAsPerUTC(formattedDate) + "000000",
+        EndDate: newDateFormaterAsPerUTC(updateEndDate) + "000000",
+      };
+      setEndDataUpdate(updateEndDate);
+      dispatch(getCalendarDataResponse(navigate, calendarData,false, t));
+    }
   };
 
   return (
@@ -756,9 +839,10 @@ const Home = () => {
                         <Row>
                           <Col lg={12} md={12} sm={12} xs={12}>
                             <Calendar
+                              lazy
                               value={dates}
                               disabled={false}
-                              minDate={moment().toDate()}
+                              // minDate={moment().toDate()}
                               calendar={calendarValue}
                               locale={localValue}
                               ref={calendarRef}
@@ -766,7 +850,9 @@ const Home = () => {
                               multiple={false}
                               onChange={calendarClickFunction}
                               className="custom-multi-date-picker"
+                              // onMonthChange={handleMonthChange}
                               onMonthChange={handleMonthChange}
+                              // format="YYYY-MM-DD"
                             />
                           </Col>
                         </Row>

@@ -597,6 +597,7 @@ const Organization = () => {
     );
     if (userProfileData !== null && userProfileData !== undefined) {
       let settingData = {
+        CalenderMonthsSpan: userProfileData.calenderMonthsSpan,
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
         EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
         EmailOnCancelledDeletedMeeting: userProfileData.emailOnCancelledMeeting,
@@ -780,7 +781,7 @@ const Organization = () => {
                       change={(e) => {
                         setOrganizationStates({
                           ...organizationStates,
-                          CalenderMonthsSpan: parseInt(e.target.value),
+                          CalenderMonthsSpan: parseInt(e.target.value)< 0 ? 0:parseInt(e.target.value),
                         });
                       }}
                       maxLength={360}
