@@ -53,6 +53,7 @@ import EmptyResolution from "../../assets/images/resolutions/Empty_Resolution.sv
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { XSquare } from 'react-bootstrap-icons'
+import SearchInputSuggestion from "../../components/elements/searchInputResolution/searchInputsuggestion";
 
 const Resolution = () => {
   const { t } = useTranslation();
@@ -539,7 +540,7 @@ const Resolution = () => {
           data,
           newDate > votingDeadline
         );
-        if (newDate > votingDeadline) {
+        if (votingDeadline < newDate) {
           return (
             <img
               src={ResultResolutionIcon}
@@ -549,7 +550,7 @@ const Resolution = () => {
           );
         } else {
           return (
-            <img src={ResultResolutionIcon} className={styles["Result_icon"]} />
+            <img src={ResultResolutionIcon} className={styles["Result_icon_disabled"]} />
           );
         }
       },
@@ -1077,7 +1078,8 @@ const Resolution = () => {
 
   // Resolution reducer ResponseMessage
   useEffect(() => {
-    if (ResolutionReducer.ResponseMessage !== "" && ResolutionReducer.ResponseMessage !== t("Data-available") && ResolutionReducer.ResponseMessage !== t("No-data-available")) {
+    console.log(ResolutionReducer, "ResolutionReducerResolutionReducerResolutionReducerResolutionReducer")
+    if (ResolutionReducer.ResponseMessage !== "" && ResolutionReducer.ResponseMessage !== t("Data-available") && ResolutionReducer.ResponseMessage !== t("No-data-available") && ResolutionReducer.ResponseMessage !== undefined) {
       setOpen({
         flag: true,
         message: ResolutionReducer.ResponseMessage,
@@ -1183,7 +1185,7 @@ const Resolution = () => {
                 <Row>
                   <Col
                     lg={7}
-                    md={12}
+                    md={7}
                     sm={12}
                     className=" d-flex justify-content-start align-items-center  gap-3 "
                   >
@@ -1238,12 +1240,12 @@ const Resolution = () => {
 
                   <Col
                     lg={5}
-                    md={12}
+                    md={5}
                     sm={12}
                     className=" d-flex justify-content-end  align-items-center  Search-filed-resolution"
                   >
-                    <span>
-                      <TextField
+                    <span className={styles["search_input"]}>
+                      {/* <TextField
                         width="455px"
                         name="Title"
                         placeholder={t("Search")}
@@ -1254,8 +1256,8 @@ const Resolution = () => {
                         iconClassName={styles["Search_Icon"]}
                         inputicon={<img src={searchicon} />}
                         clickIcon={openSearchBox}
-                      />
-                      {/* <SearchInputSuggestion /> */}
+                      /> */}
+                      <SearchInputSuggestion />
 
                       {/* {searchIcon ? (
                         <>
@@ -1529,10 +1531,12 @@ const Resolution = () => {
                       <Row>
                         <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
                           <Pagination
-                            current={currentPage}
+                            current={moderatorPage}
+                            // totalBoundaryShowSizeChanger={}
                             total={totalResolution}
                             className={styles["PaginationStyle-Resolution"]}
                             onChange={handleChangeResolutionPagination}
+                            pageSize={moderatorRows}
                           />
                         </Col>
                       </Row>
@@ -1585,8 +1589,9 @@ const Resolution = () => {
                       <Row>
                         <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
                           <Pagination
-                            current={currentPageVoter}
+                            current={voterPage}
                             total={totalVoterResolution}
+                            pageSize={voterRows}
                             className={styles["PaginationStyle-Resolution"]}
                             selectComponentClass={"pagination_resolution"}
                             onChange={handleChangeVoterResolutionPagination}

@@ -1,64 +1,42 @@
-import React from 'react';
-import { UserOutlined } from '@ant-design/icons';
-import { AutoComplete, Input } from 'antd';
+import React, { useState } from 'react';
+import Select from 'react-select';
+import './searchInputsuggestion.css'
+const SearchSelect = () => {
+    const options = [
+        // { value: 'apple', label: 'Apple' },
+        // { value: 'banana', label: 'Banana' },
+        // { value: 'orange', label: 'Orange' },
+        // { value: 'grape', label: 'Grape' },
+        // { value: 'kiwi', label: 'Kiwi' },
+        // { value: 'mango', label: 'Mango' }
+        // Add more options as needed
+    ];
 
-const renderTitle = (title) => (
-    <span>
-        {title}
-        <a
-            style={{ float: 'right' }}
-            href="https://www.google.com/search?q=antd"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            more
-        </a>
-    </span>
-);
+    const [inputValue, setInputValue] = useState('');
+    const [filteredOptions, setFilteredOptions] = useState(options);
 
-const renderItem = (title, count) => ({
-    value: title,
-    label: (
-        <div
-            style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-            }}
-        >
-            {title}
-            <span>
-                <UserOutlined /> {count}
-            </span>
-        </div>
-    ),
-});
+    const handleInputChange = value => {
+        setInputValue(value);
 
-const options = [
-    {
-        label: renderTitle('Libraries'),
-        options: [renderItem('AntDesign', 10000), renderItem('AntDesign UI', 10600)],
-    },
-    {
-        label: renderTitle('Solutions'),
-        options: [renderItem('AntDesign UI FAQ', 60100), renderItem('AntDesign FAQ', 30010)],
-    },
-    {
-        label: renderTitle('Articles'),
-        options: [renderItem('AntDesign design language', 100000)],
-    },
-];
+        // Perform intelligent filtering based on user input
+        // const filtered = options.filter(option =>
+        //     option.label.toLowerCase().includes(value.toLowerCase())
+        // );
 
-const SearchInputSuggestion = () => {
+        // setFilteredOptions(filtered);
+    };
+
     return (
-        <AutoComplete
-            popupClassName="certain-category-search-dropdown"
-            dropdownMatchSelectWidth={500}
-            style={{ width: 250 }}
-            options={options}
-        >
-            <Input.Search size="large" placeholder="input here" />
-        </AutoComplete>
-    )
-}
+        <Select
+            classNamePrefix={"input_suggestion_resolution"}
+            options={filteredOptions}
+            onInputChange={handleInputChange}
+            inputValue={inputValue}
+            isSearchable
+            placeholder="Search..."
 
-export default SearchInputSuggestion;
+        />
+    );
+};
+
+export default SearchSelect;

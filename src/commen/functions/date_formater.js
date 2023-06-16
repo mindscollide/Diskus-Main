@@ -259,17 +259,42 @@ export const createResolutionDateTime = (dateTime) => {
 }
 
 export const editResolutionDate = (dateTime) => {
-  let _dateTime = moment(dateTime, 'YYYYMMDDHHmmss').toISOString()
-  var utcDate = new Date(_dateTime).toUTCString()
-  let convertGMT = new Date(utcDate).toString()
+  let fullDateYear =
+    dateTime.slice(0, 4) +
+    '-' +
+    dateTime.slice(4, 6) +
+    '-' +
+    dateTime.slice(6, 8) +
+    'T' +
+    dateTime.slice(8, 10) +
+    ':' +
+    dateTime.slice(10, 12) +
+    ':' +
+    dateTime.slice(12, 14) +
+    '.000Z'
+  let convertGMT = new Date(fullDateYear)
   let convertDate = moment(convertGMT).format('YYYY-MM-DD')
+  console.log(convertDate, "convertDateconvertDateconvertDate")
   return convertDate
 }
+
 export const editResolutionTime = (dateTime) => {
-  let _dateTime = moment(dateTime, 'YYYYMMDDHHmmss').toISOString()
-  let convertGMT = new Date(_dateTime).toString()
-  console.log('convertGMTconvertGMTconvertGMT', convertGMT)
-  let convertTime = moment(convertGMT).format('HH:MM')
+  let fullDateYear =
+    dateTime.slice(0, 4) +
+    '-' +
+    dateTime.slice(4, 6) +
+    '-' +
+    dateTime.slice(6, 8) +
+    'T' +
+    dateTime.slice(8, 10) +
+    ':' +
+    dateTime.slice(10, 12) +
+    ':' +
+    dateTime.slice(12, 14) +
+    '.000Z'
+  let convertGMT = new Date(fullDateYear).toString()
+  let convertTime = moment(convertGMT).format('HH:mm')
+  console.log(convertTime, convertGMT, "convertDateconvertDateconvertDate")
   return convertTime
 }
 
