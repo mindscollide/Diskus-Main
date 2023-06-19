@@ -33,10 +33,10 @@
 }
 
 .Data_room_paper {
-  height: 708px !important;
+  height: 80vh !important;
   width: 1429px !important;
   width: 100% !important;
-  height: auto !important;
+  height: 100%;
   padding: 30px 30px !important;
 }
 

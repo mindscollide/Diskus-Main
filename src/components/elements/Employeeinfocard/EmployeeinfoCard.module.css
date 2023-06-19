@@ -28,6 +28,11 @@ body[dir="rtl"] .name_participant {
   color: #6172d6 !important;
   font-family: "MontserratSemiBold";
   text-decoration: underline;
+  width: 100%;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 body[dir="rtl"] .email_participant {

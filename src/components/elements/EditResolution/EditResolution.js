@@ -10,7 +10,7 @@ import userImage from "../../../assets/images/user.png";
 import { FileUploadToDo } from "../../../store/actions/Upload_action";
 import { useDispatch, useSelector } from "react-redux";
 import { InboxOutlined } from "@ant-design/icons";
-import { UploadProps } from "antd";
+import { DatePicker, TimePicker, UploadProps } from "antd";
 import featherupload from "../../../assets/images/featherupload.svg";
 import Leftploygon from "../../../assets/images/Polygon 3.svg";
 import Rightploygon from "../../../assets/images/Polygon right.svg";
@@ -175,6 +175,7 @@ const EditResolution = ({
     pK_ResolutionID: 0,
     ResolutionStatus: "",
   });
+  console.log(editResolutionData, circulationDateTime, votingDateTime, decisionDateTime, "editResolutionDataeditResolutionDataeditResolutionData")
 
   const ShowVoter = () => {
     setVoter(true);
@@ -1244,6 +1245,7 @@ const EditResolution = ({
                               md={6}
                               className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
+                              {/* <DatePicker format='YYYY-MM-DD' value={circulationDateTime.date} /> */}
                               <TextFieldDateTime
                                 min={minDate}
                                 labelClass="d-none"
@@ -1277,6 +1279,7 @@ const EditResolution = ({
                               className="CreateMeetingReminder resolution-search-input FontArabicRegular"
                             >
                               <TextField
+                                min={minDate}
                                 type="time"
                                 labelClass="d-none"
                                 applyClass={"search_voterInput"}

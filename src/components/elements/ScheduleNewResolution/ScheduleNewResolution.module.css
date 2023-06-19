@@ -455,3 +455,7 @@ body[dir="rtl"] .here_text {
 .dragdrop_attachment_create_resolution {
   height: auto !important;
 }
+
+.react_datePicker {
+  width: 100% !important;
+}

@@ -39,6 +39,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const [notApproved, setNotApproved] = useState(false);
   const [isApproved, setIsApproved] = useState(false);
   const [voter, setVoter] = useState([]);
+  const userID = JSON.parse(localStorage.getItem("userID"));
   const [decision, setDecision] = useState("");
   const [open, setOpen] = useState({
     flag: false,
@@ -108,19 +109,12 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
     setVoteId(statusID);
   };
   const handleUpdateVote = () => {
-    if (voterID !== 0) {
-      let Data = {
-        PK_RV_ID: voterID,
-        FK_VotingStatusID: voteId,
-      };
-      dispatch(updateVoteApi(navigate, Data, t, setVoteresolution));
-    } else {
-      setOpen({
-        flag: true,
-        message: "Please Select voter ID",
-      });
-    }
-  };
+    let Data = {
+      PK_RV_ID: userID,
+      FK_VotingStatusID: voteId,
+    };
+    dispatch(updateVoteApi(navigate, Data, t, setVoteresolution));
+  }
   useEffect(() => {
     if (ResolutionReducer.getVoteDetailsByID !== null) {
       let getVoteresult = ResolutionReducer.getVoteDetailsByID;
@@ -319,9 +313,9 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                                                 }
                                                 width="20px"
                                                 height="20px"
-                                                onClick={() =>
-                                                  setVoterID(data.pK_RV_ID)
-                                                }
+                                              // onClick={() =>
+                                              //   setVoterID(data.pK_RV_ID)
+                                              // }
                                               />
                                             }
                                           />
@@ -446,6 +440,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                             text={t("Save")}
                             className={styles["save_btn_VoteResolution"]}
                             onClick={handleUpdateVote}
+                            disableBtn={voteId === 0 ? true : false}
                           />
                         </Col>
                         <Col lg={1} md={1} sm={1}></Col>

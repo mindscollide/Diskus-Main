@@ -1050,5 +1050,8 @@
   "Calender-month-span": "Calender Month Span",
   "Google-calender-color": "Google Calender Color",
   "Microsoft-calender-color": "Microsoft Calender Color",
-  "Diskus-color-theme": "Diskus Color Theme"
+  "Diskus-color-theme": "Diskus Color Theme",
+  "Non-approved": "Non Approved",
+  "This-user-already-exist-in-voter-list": "This user already exist in voter-list",
+  "This-voter-already-exist": "this Voter already Exist"
 }

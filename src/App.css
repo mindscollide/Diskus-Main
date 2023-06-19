@@ -5433,3 +5433,66 @@ body[dir="rtl"] .ant-result-subtitle {
   outline: none;
   cursor: pointer;
 }
+
+.date_Picker .rmdp-header-values {
+  color: #000 !important;
+  font-weight: 700 !important;
+  margin: auto;
+}
+
+.date_Picker .rmdp-week-day {
+  color: #000 !important;
+  cursor: default;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.date_Picker .rmdp-calendar {
+  height: max-content;
+  padding: 0px;
+}
+
+.date_Picker .rmdp-day-picker {
+  padding: 0px;
+}
+
+.date_Picker .rmdp-day {
+  cursor: pointer;
+  height: 30px;
+  position: relative;
+  width: 34px;
+}
+
+.date_Picker .rmdp-day span {
+  border-radius: 0%;
+  bottom: 0px;
+  font-size: 13px;
+  font-weight: 500;
+  left: 0px;
+  position: absolute;
+  right: 0px;
+  top: 0px;
+}
+
+.date_Picker .rmdp-day.rmdp-selected span:not(.highlight) {
+  background-color: #2e3cb2 !important;
+  border-radius: 4px;
+  border-color: #2e3cb2 !important;
+  box-shadow: 0 0 3px #8798ad;
+  color: #fff;
+}
+
+.date_Picker .rmdp-arrow {
+  border: solid #000000;
+  border-width: 0 1px 1px 0;
+  display: inline-block;
+  height: 3px;
+  margin-top: 5px;
+  padding: 3px;
+  width: 3px;
+}
+
+
+.UpdateCheckbox .checkboxParentClass .ant-checkbox-wrapper-disabled {
+  cursor: default !important;
+}

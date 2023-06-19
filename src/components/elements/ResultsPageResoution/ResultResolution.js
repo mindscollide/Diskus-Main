@@ -72,7 +72,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
       "stroke-color: #6DE595; stroke-opacity: 1 ;  fill-color: #6DE595; fill-opacity:1",
     ],
     [
-      t("Non-Approved"),
+      t("Non-approved"),
       nonApproved,
 
       "stroke-color: #F16B6B; stroke-opacity: 1 ; stroke-color:#F16B6B; fill-color: #F16B6B; fill-opacity:1; text-color:#F16B6B",
@@ -113,7 +113,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
       let DecisionDateExpiry = resolutionResultTable(
         resolutionresult.decisionAnnouncementDateTime
       );
-      if (newDate > DecisionDateExpiry) {
+      if (DecisionDateExpiry < newDate) {
         setDesicionDateExpiry(true);
       } else {
         setDesicionDateExpiry(false);
@@ -136,11 +136,9 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
             <Row>
               <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                 <span className={styles["results_paper_heading"]}>
-                  {resolutionTitle || ""}
+                  {resolutionTitle || ""} {" "} <img src={result} height="30.97px" width="20.96px" />
                 </span>
-                <span>
-                  <img src={result} height="30.97px" width="20.96px" />
-                </span>
+
               </Col>
             </Row>
             <Row className="mt-2">
@@ -204,11 +202,11 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col lg={12} md={12} sm={12}>
+                  <Col lg={12} md={12} sm={12} className="d-flex justify-content-center">
                     <Chart
                       // controls={false}
                       chartType="ColumnChart"
-                      width="100%"
+                      width="450px"
                       height="250px"
                       radius={10}
                       data={data}

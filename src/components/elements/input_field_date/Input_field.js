@@ -25,7 +25,8 @@ const TextFieldDateTime = ({
   labelClass,
   clickIcon,
   max,
-  min
+  min,
+  onkeyDown
 }) => {
   console.log("applyClassapplyClass", applyClass);
   return (
@@ -51,7 +52,12 @@ const TextFieldDateTime = ({
           type="date"
           max={max}
           min={min}
+          readonly
           required={required ? true : false}
+          onkeydown={(event) => event.preventDefault()}
+          onInput={(event) => event.preventDefault()}
+          onPaste={(event) => event.preventDefault()}
+        // readOnly={true}
         />
         <FormControl.Feedback className={iconClassName} onClick={clickIcon}>
           {inputicon}
