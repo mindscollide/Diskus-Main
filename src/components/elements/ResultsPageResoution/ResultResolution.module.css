@@ -19,9 +19,21 @@ body[dir="rtl"] .Result_Heading_resolution {
   font-size: 20px !important;
   font-family: "MontserratSemiBold";
   color: #6172d6 !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-wrap: break-word;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.results_paper_heading::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.results_paper_heading::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
 }
 
 body[dir="rtl"] .results_paper_heading {
@@ -86,7 +98,11 @@ body[dir="rtl"] .voters_heading_result {
   font-size: 10pt !important;
   color: #6172d6 !important;
   font-family: "MontserratSemiBold";
+  width: 100% !important;
   text-decoration: underline;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .Lineheight {

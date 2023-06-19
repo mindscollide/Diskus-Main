@@ -33,10 +33,10 @@
 }
 
 .Data_room_paper {
-  height: 708px !important;
+  height: 80vh !important;
   width: 1429px !important;
   width: 100% !important;
-  height: auto !important;
+  height: 100%;
   padding: 30px 30px !important;
 }
 
@@ -313,7 +313,7 @@ body[dir="rtl"] .Drop_Down_searchBar {
 }
 
 body[dir="rtl"] .Drop_Down_searchBar_Options {
-  right: 49.2% !important;
+  right: 0 !important;
 }
 
 .CrossButton {
@@ -678,6 +678,16 @@ body[dir="rtl"] .Data_room_btn {
   position: absolute !important;
   right: 0 !important;
   width: auto;
+  top: 7px;
+  margin-right: 10px;
+}
+
+body[dir="rtl"] .dataroom_searchinput {
+  display: inline-block;
+  position: absolute !important;
+  right: 93% !important;
+  width: auto;
+  left: 0;
   top: 7px;
   margin-right: 10px;
 }

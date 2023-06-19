@@ -71,6 +71,7 @@ export const newDateFormaterAsPerUTC = (date) => {
   let newDate = new Date(dateConvert).toISOString()
   return newDate.slice(0, 10).replace(/-/g, '')
 }
+
 export const newTimeFormaterAsPerUTC = (dateTime) => {
   console.log(dateTime, 'checking12121')
   let fullDateyear =
@@ -90,6 +91,7 @@ export const newTimeFormaterAsPerUTC = (dateTime) => {
   console.log(_dateTime, 'checking12121')
   return moment(_dateTime).format('h:mm A')
 }
+
 export const newTimeFormaterAsPerUTCFullDate = (dateTime) => {
   // console.log('dateTimedateTimedateTime', dateTime)
   let fullDateyear =
@@ -108,6 +110,7 @@ export const newTimeFormaterAsPerUTCFullDate = (dateTime) => {
   let _dateTime = new Date(fullDateyear).toString('YYYYMMDDHHmmss')
   return moment(_dateTime).format('h:mm A, Do MMM, YYYY')
 }
+
 export const newTimeFormaterForResolutionAsPerUTCFullDate = (dateTime) => {
   // console.log('dateTimedateTimedateTime', dateTime)
   let fullDateyear =
@@ -126,6 +129,7 @@ export const newTimeFormaterForResolutionAsPerUTCFullDate = (dateTime) => {
   let _dateTime = new Date(fullDateyear).toString('YYYYMMDDHHmmss')
   return moment(_dateTime).format('h:mm A, D MMM, YYYY')
 }
+
 export const _justShowDateformat = (dateTime) => {
   let fullDateyear =
     dateTime.slice(0, 4) +
@@ -143,6 +147,7 @@ export const _justShowDateformat = (dateTime) => {
   let _dateTime = new Date(fullDateyear).toString('YYYYMMDDHHmmss')
   return moment(_dateTime).format('Do MMM, YYYY')
 }
+
 export const _justShowDateformatBilling = (dateTime) => {
   let fullDateyear =
     dateTime.slice(0, 4) +
@@ -178,6 +183,7 @@ export const _justShowDay = (dateTime) => {
   let _dateTime = new Date(fullDateyear).toString('YYYYMMDDHHmmss')
   return moment(_dateTime).format('dddd')
 }
+
 export const forRecentActivity = (dateTime) => {
   let fullDateYear =
     dateTime.slice(0, 4) +
@@ -213,6 +219,7 @@ export const startDateTimeMeetingCalendar = (dateTime) => {
   let _dateTime = new Date(fullDateYear).toString('YYYYMMDDHHmmss')
   return _dateTime
 }
+
 export const endDateTimeMeetingCalender = (dateTime) => {
   let fullDateYear =
     dateTime.slice(0, 4) +
@@ -259,17 +266,42 @@ export const createResolutionDateTime = (dateTime) => {
 }
 
 export const editResolutionDate = (dateTime) => {
-  let _dateTime = moment(dateTime, 'YYYYMMDDHHmmss').toISOString()
-  var utcDate = new Date(_dateTime).toUTCString()
-  let convertGMT = new Date(utcDate).toString()
+  let fullDateYear =
+    dateTime.slice(0, 4) +
+    '-' +
+    dateTime.slice(4, 6) +
+    '-' +
+    dateTime.slice(6, 8) +
+    'T' +
+    dateTime.slice(8, 10) +
+    ':' +
+    dateTime.slice(10, 12) +
+    ':' +
+    dateTime.slice(12, 14) +
+    '.000Z'
+  let convertGMT = new Date(fullDateYear)
   let convertDate = moment(convertGMT).format('YYYY-MM-DD')
+  console.log(convertDate, "convertDateconvertDateconvertDate")
   return convertDate
 }
+
 export const editResolutionTime = (dateTime) => {
-  let _dateTime = moment(dateTime, 'YYYYMMDDHHmmss').toISOString()
-  let convertGMT = new Date(_dateTime).toString()
-  console.log('convertGMTconvertGMTconvertGMT', convertGMT)
-  let convertTime = moment(convertGMT).format('HH:MM')
+  let fullDateYear =
+    dateTime.slice(0, 4) +
+    '-' +
+    dateTime.slice(4, 6) +
+    '-' +
+    dateTime.slice(6, 8) +
+    'T' +
+    dateTime.slice(8, 10) +
+    ':' +
+    dateTime.slice(10, 12) +
+    ':' +
+    dateTime.slice(12, 14) +
+    '.000Z'
+  let convertGMT = new Date(fullDateYear).toString()
+  let convertTime = moment(convertGMT).format('HH:mm')
+  console.log(convertTime, convertGMT, "convertDateconvertDateconvertDate")
   return convertTime
 }
 

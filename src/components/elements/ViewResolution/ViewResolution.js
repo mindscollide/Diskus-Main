@@ -205,16 +205,19 @@ const ViewResolution = ({ setViewresolution }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className="UpdateCheckbox  d-flex justify-content-start mt-5 FontArabicRegular"
+                        className="UpdateCheckbox view-resolution d-flex justify-content-start mt-5 FontArabicRegular"
                       >
                         <Checkbox
-                          className="SearchCheckbox MontserratSemiBold"
+                          className={`"MontserratSemiBold viewResolution_checkbox`}
+                          // prefixCls={"checkbox_viewResolution"}
                           name="IsChat"
+                          // disabled={true}
                           label2={t("Make-resolution-public")}
                           label2Class={styles["Public_resolution"]}
                           checked={
                             resolutionData?.resolution?.isResolutionPublic
                           }
+
                           classNameDiv="checkboxParentClass"
                         ></Checkbox>
                       </Col>

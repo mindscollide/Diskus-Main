@@ -53,6 +53,7 @@ import EmptyResolution from "../../assets/images/resolutions/Empty_Resolution.sv
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { XSquare } from 'react-bootstrap-icons'
+import SearchInputSuggestion from "../../components/elements/searchInputResolution/searchInputsuggestion";
 
 const Resolution = () => {
   const { t } = useTranslation();
@@ -539,7 +540,7 @@ const Resolution = () => {
           data,
           newDate > votingDeadline
         );
-        if (newDate > votingDeadline) {
+        if (votingDeadline < newDate) {
           return (
             <img
               src={ResultResolutionIcon}
@@ -549,7 +550,7 @@ const Resolution = () => {
           );
         } else {
           return (
-            <img src={ResultResolutionIcon} className={styles["Result_icon"]} />
+            <img src={ResultResolutionIcon} className={styles["Result_icon_disabled"]} />
           );
         }
       },
@@ -890,13 +891,26 @@ const Resolution = () => {
     setSearchIcon(false);
     if (viewID === 1) {
       localStorage.setItem("resolutionView", 1)
-      localStorage.removeItem("voterResolutionView")
-      dispatch(getResolutions(navigate, 1, t));
+      localStorage.removeItem("voterResolutionView");
+      if (AllBtn !== null && AllBtn === 3) {
+        dispatch(getResolutions(navigate, 3, t))
+      } else if (CurrentBtn !== null && CurrentBtn === 1) {
+        dispatch(getResolutions(navigate, 1, t))
+      } else if (CloseBtn !== null && CloseBtn === 2) {
+        dispatch(getResolutions(navigate, 2, t))
+      }
+      // dispatch(getResolutions(navigate, 1, t));
       // dispatch(currentClosedView(1));
     } else {
       localStorage.setItem("voterResolutionView", 2)
       localStorage.removeItem("resolutionView")
-      dispatch(getVoterResolution(navigate, 1, t));
+      if (AllBtn !== null && AllBtn === 3) {
+        dispatch(getVoterResolution(navigate, 3, t))
+      } else if (CurrentBtn !== null && CurrentBtn === 1) {
+        dispatch(getVoterResolution(navigate, 1, t))
+      } else if (CloseBtn !== null && CloseBtn === 2) {
+        dispatch(getVoterResolution(navigate, 2, t))
+      }
       // dispatch(currentClosedView(1));
     }
   };
@@ -907,7 +921,7 @@ const Resolution = () => {
       title: t("Resolution-title"),
       dataIndex: "resolutionTitle",
       key: "resolutionTitle",
-      width: "365px",
+      width: "350px",
       sortDirections: ["descend", "ascend"],
       render: (table, data) => {
         console.log(table, data, "checking");
@@ -953,7 +967,7 @@ const Resolution = () => {
       title: t("Voting-method"),
       dataIndex: "votingMethod",
       key: "votingMethod",
-      width: "131px",
+      width: "120px",
       align: "center",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
@@ -964,7 +978,7 @@ const Resolution = () => {
       title: t("Attachment"),
       dataIndex: "Attachment",
       key: "Attachment",
-      width: "104px",
+      width: "90px",
       align: "center",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
@@ -1037,22 +1051,35 @@ const Resolution = () => {
   ];
 
   // change resoltion moderator pagination
-  const handleChangeResolutionPagination = (current, pageSize) => {
-    dispatch(getResolutions(navigate, 1, t))
-    localStorage.setItem("moderatorPage", current)
-    localStorage.setItem("moderatorRows", pageSize)
+  const handleChangeResolutionPagination = async (current, pageSize) => {
+    await localStorage.setItem("moderatorPage", current)
+    await localStorage.setItem("moderatorRows", pageSize)
+    if (AllBtn !== null && AllBtn === 3) {
+      dispatch(getResolutions(navigate, 3, t))
+    } else if (CurrentBtn !== null && CurrentBtn === 1) {
+      dispatch(getResolutions(navigate, 1, t))
+    } else if (CloseBtn !== null && CloseBtn === 2) {
+      dispatch(getResolutions(navigate, 2, t))
+    }
   }
 
   // change resolution voter pagination
-  const handleChangeVoterResolutionPagination = (current, pageSize) => {
-    dispatch(getVoterResolution(navigate, 1, t))
-    localStorage.setItem("voterPage", current)
-    localStorage.setItem("voterRows", pageSize)
+  const handleChangeVoterResolutionPagination = async (current, pageSize) => {
+    await localStorage.setItem("voterPage", current)
+    await localStorage.setItem("voterRows", pageSize)
+    if (AllBtn !== null && AllBtn === 3) {
+      dispatch(getVoterResolution(navigate, 3, t))
+    } else if (CurrentBtn !== null && CurrentBtn === 1) {
+      dispatch(getVoterResolution(navigate, 1, t))
+    } else if (CloseBtn !== null && CloseBtn === 2) {
+      dispatch(getVoterResolution(navigate, 2, t))
+    }
   }
 
   // Resolution reducer ResponseMessage
   useEffect(() => {
-    if (ResolutionReducer.ResponseMessage !== null) {
+    console.log(ResolutionReducer, "ResolutionReducerResolutionReducerResolutionReducerResolutionReducer")
+    if (ResolutionReducer.ResponseMessage !== "" && ResolutionReducer.ResponseMessage !== t("Data-available") && ResolutionReducer.ResponseMessage !== t("No-data-available") && ResolutionReducer.ResponseMessage !== undefined) {
       setOpen({
         flag: true,
         message: ResolutionReducer.ResponseMessage,
@@ -1158,7 +1185,7 @@ const Resolution = () => {
                 <Row>
                   <Col
                     lg={7}
-                    md={12}
+                    md={7}
                     sm={12}
                     className=" d-flex justify-content-start align-items-center  gap-3 "
                   >
@@ -1213,12 +1240,12 @@ const Resolution = () => {
 
                   <Col
                     lg={5}
-                    md={12}
+                    md={5}
                     sm={12}
                     className=" d-flex justify-content-end  align-items-center  Search-filed-resolution"
                   >
-                    <span>
-                      <TextField
+                    <span className={styles["search_input"]}>
+                      {/* <TextField
                         width="455px"
                         name="Title"
                         placeholder={t("Search")}
@@ -1229,8 +1256,8 @@ const Resolution = () => {
                         iconClassName={styles["Search_Icon"]}
                         inputicon={<img src={searchicon} />}
                         clickIcon={openSearchBox}
-                      />
-                      {/* <SearchInputSuggestion /> */}
+                      /> */}
+                      <SearchInputSuggestion />
 
                       {/* {searchIcon ? (
                         <>
@@ -1504,11 +1531,12 @@ const Resolution = () => {
                       <Row>
                         <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
                           <Pagination
-                            defaultCurrent={currentPage}
+                            current={moderatorPage}
+                            // totalBoundaryShowSizeChanger={}
                             total={totalResolution}
                             className={styles["PaginationStyle-Resolution"]}
-                            totalBoundaryShowSizeChanger={false}
                             onChange={handleChangeResolutionPagination}
+                            pageSize={moderatorRows}
                           />
                         </Col>
                       </Row>
@@ -1561,8 +1589,9 @@ const Resolution = () => {
                       <Row>
                         <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
                           <Pagination
-                            defaultCurrent={currentPageVoter}
+                            current={voterPage}
                             total={totalVoterResolution}
+                            pageSize={voterRows}
                             className={styles["PaginationStyle-Resolution"]}
                             selectComponentClass={"pagination_resolution"}
                             onChange={handleChangeVoterResolutionPagination}

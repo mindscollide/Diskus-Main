@@ -215,6 +215,8 @@ const createResolution_Fail = (message) => {
 };
 const createResolution = (navigate, Data, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated, setResolutionUpdateSuccessfully) => {
     console.log(Data, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, no, circulated, "checkingforcreatetatemodal")
+    console.log(no, circulated, "checkingforcreatetatemodal22")
+
     let token = JSON.parse(localStorage.getItem("token"));
     return (dispatch) => {
         dispatch(createResolution_Init());
@@ -245,7 +247,7 @@ const createResolution = (navigate, Data, voters, nonVoter, tasksAttachments, se
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_04".toLowerCase()) {
                             dispatch(createResolution_Fail(t("Something-went-wrong")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_05".toLowerCase()) {
-                            dispatch(updateResolution(navigate, response.data.responseResult.resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, setResolutionUpdateSuccessfully))
+                            dispatch(updateResolution(navigate, response.data.responseResult.resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated, setResolutionUpdateSuccessfully))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_06".toLowerCase()) {
                             dispatch(createResolution_Fail(t("Something-went-wrong")))
                         }
@@ -281,6 +283,7 @@ const updateResolution_Fail = (message) => {
 }
 const updateResolution = (navigate, resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated, setResolutionUpdateSuccessfully) => {
     console.log(resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated, "checkingforudpatestatemodal")
+    console.log(no, circulated, "checkingforudpatestatemodal222")
     let Data2 = {
         IsCirculate: circulated === 2 ? true : false,
         FK_ResolutionID: JSON.parse(resolutionID),
@@ -309,13 +312,13 @@ const updateResolution = (navigate, resolutionID, voters, nonVoter, tasksAttachm
                 } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_01".toLowerCase()) {
-                            dispatch(updateResolution_Success(response.data.responseResult.resolutionID, t("Resolution-circulated-successfully")))
+                            dispatch(updateResolution_Success(response.data.responseResult.resolutionID))
                             if (no === 1) {
                                 setNewresolution(false)
                             } else {
                                 setEditResoutionPage(false)
                             }
-                            dispatch(getResolutions(navigate, 3, t))
+                            dispatch(getResolutions(navigate, 1, t))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_02".toLowerCase()) {
                             dispatch(updateResolution_Fail(t("Failed-to-update-resolution-status")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_03".toLowerCase()) {
@@ -388,7 +391,7 @@ const getResolutionbyResolutionID = (navigate, id, t, setEditResoutionPage, setV
                 } else if (response.data.responseCode === 200) {
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_GetResolutionByID_01".toLowerCase()) {
-                            dispatch(getResolutionById_Success(response.data.responseResult.resolution, t("Resolution-circulated-successfully")))
+                            dispatch(getResolutionById_Success(response.data.responseResult.resolution, t("Data-available")))
                             if (no === 1) {
                                 setEditResoutionPage(true)
                             } else {

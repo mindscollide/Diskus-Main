@@ -21,7 +21,6 @@ import { UploadProps } from "antd";
 import featherupload from "../../../assets/images/featherupload.svg";
 import newprofile from "../../../assets/images/newprofile.png";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
-import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { message, Upload } from "antd";
 import {
   TextField,
@@ -38,7 +37,6 @@ import ModalCancellResolution from "../../../container/ModalCancellResolution/Mo
 import ModalUpdateresolution from "../../../container/ModalUpdateResolution/ModalUpdateresolution";
 import ModalDiscardResolution from "../../../container/ModalDiscardResolution/ModalDiscardResolution";
 import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
-import DatePicker from "react-multi-date-picker";
 import {
   getAllVotingMethods,
   getAllResolutionStatus,
@@ -57,6 +55,7 @@ import moment from "moment";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
 import TextFieldDateTime from "../input_field_date/Input_field";
+import { DatePicker, TimePicker } from 'antd';
 
 const ScheduleNewResolution = ({
   newresolution,
@@ -105,6 +104,7 @@ const ScheduleNewResolution = ({
   const [VoterID, setVoterID] = useState(0);
   const [isVoterModalRemove, setVoterModalRemove] = useState(false);
   const [isNonVoterModalRemove, setNonVoterModalRemove] = useState(false);
+  const [dateVal, setDateVal] = useState(new Date());
   const [reminderData, setReminderData] = useState([
     {
       label: "10 minutes before",
@@ -139,6 +139,7 @@ const ScheduleNewResolution = ({
     date: "",
     time: "",
   });
+  console.log(circulationDateTime, "circulationDateTimecirculationDateTimecirculationDateTime")
   const [votingDateTime, setVotingDateTime] = useState({
     date: "",
     time: "",
@@ -409,13 +410,13 @@ const ScheduleNewResolution = ({
       } else {
         setOpen({
           flag: true,
-          message: "this Voter already Exist",
+          message: t("This-voter-already-exist"),
         });
       }
     } else {
       setOpen({
         flag: true,
-        message: "this user already exist in voter list",
+        message: t("This-user-already-exist-in-voter-list"),
       });
     }
 
@@ -748,7 +749,7 @@ const ScheduleNewResolution = ({
   useEffect(() => {
     if (
       ResolutionReducer.ResponseMessage !== "" &&
-      ResolutionReducer.ResponseMessage !== t("Data-available")
+      ResolutionReducer.ResponseMessage !== t("Data-available") && ResolutionReducer.ResponseMessage !== undefined
     ) {
       setOpen({
         flag: true,
@@ -965,14 +966,22 @@ const ScheduleNewResolution = ({
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input FontArabicRegular "
+                          className="CreateMeetingReminder resolution-search-input  date_Picker FontArabicRegular "
                         >
+                          {/* <DatePicker disabledDate={disabledDate} style={{ width: "100%", height: "39px" }} onChange={(date) => {
+                            setCirculationDateTime({
+                              ...circulationDateTime,
+                              date: moment(date._d).format("YYYY-MM-DD"),
+                            });
+                          }} /> */}
                           <TextFieldDateTime
                             min={minDate}
-                            placeholder={+"*"}
                             labelClass="d-none"
                             applyClass={"search_voterInput"}
+                            onkeyDown={(e) => e.preventDefault()}
                             change={(e) => {
+                              // e.preventDefault()
+                              console.log(e.target.value, "DatePickerDatePickerDatePicker")
                               setCirculationDateTime({
                                 ...circulationDateTime,
                                 date: e.target.value,
@@ -999,11 +1008,13 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
+                          {/* <TimePicker style={{ width: "100%", height: "39px" }} onChange={(time) => console.log(time, "onChangeonChange")} /> */}
                           <TextField
                             type="time"
                             labelClass="d-none"
                             applyClass={"search_voterInput"}
                             change={(e) => {
+                              e.preventDefault()
                               setCirculationDateTime({
                                 ...circulationDateTime,
                                 time: e.target.value,
@@ -1043,11 +1054,18 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
+                          {/* <DatePicker disabledDate={disabledDate} style={{ width: "100%", height: "39px" }} onChange={(date) => {
+                            setVotingDateTime({
+                              ...votingDateTime,
+                              date: moment(date._d).format("YYYY-MM-DD"),
+                            });
+                          }} /> */}
                           <TextFieldDateTime
                             min={minDate}
                             applyClass={"search_voterInput"}
                             labelClass="d-none"
                             change={(e) => {
+                              e.preventDefault()
                               setVotingDateTime({
                                 ...votingDateTime,
                                 date: e.target.value,
@@ -1074,11 +1092,19 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
+                          {/* <TimePicker style={{ width: "100%", height: "39px" }} onChange={(e) => {
+                            setVotingDateTime({
+                              ...votingDateTime,
+                              time: e.target.value,
+                            })
+                          }
+                          } /> */}
                           <TextField
                             type="time"
                             applyClass={"search_voterInput"}
                             labelClass="d-none"
                             change={(e) => {
+                              e.preventDefault()
                               setVotingDateTime({
                                 ...votingDateTime,
                                 time: e.target.value,
@@ -1118,11 +1144,18 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
+                          {/* <DatePicker disabledDate={disabledDate} style={{ width: "100%", height: "39px" }} onChange={(date) => {
+                            setDecisionDateTime({
+                              ...decisionDateTime,
+                              date: moment(date._d).format("YYYY-MM-DD"),
+                            });
+                          }} /> */}
                           <TextFieldDateTime
                             applyClass={"search_voterInput"}
                             min={minDate}
                             labelClass="d-none"
                             change={(e) => {
+                              e.preventDefault()
                               setDecisionDateTime({
                                 ...decisionDateTime,
                                 date: e.target.value,
@@ -1149,11 +1182,19 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
+                          {/* <TimePicker style={{ width: "100%", height: "39px" }} onChange={(e) => {
+                            setDecisionDateTime({
+                              ...decisionDateTime,
+                              time: e.target.value,
+                            })
+                          }
+                          } /> */}
                           <TextField
                             applyClass={"search_voterInput"}
                             type="time"
                             labelClass="d-none"
                             change={(e) => {
+                              e.preventDefault()
                               setDecisionDateTime({
                                 ...decisionDateTime,
                                 time: e.target.value,

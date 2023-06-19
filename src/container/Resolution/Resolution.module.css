@@ -460,6 +460,14 @@ body[dir="rtl"] .Result_icon {
   cursor: pointer !important;
 }
 
+.Result_icon_disabled {
+  margin-right: 17px !important;
+}
+
+body[dir="rtl"] .Result_icon_disabled {
+  margin-right: 30px !important;
+}
+
 body[dir="rtl"] .resolution_date {
   margin-right: 15px !important;
   font-family: "IBMPlexSansArabic-SemiBold" !important;
@@ -627,7 +635,7 @@ body[dir="rtl"] .resolution_title {
   font-family: "MontserratSemiBold";
   font-size: 12px !important;
   color: #5a5a5a !important;
-  margin-left: 25px !important;
+  /* margin-left: 25px !important; */
 }
 
 .decision_text_Moderator_closed {
@@ -706,4 +714,8 @@ body[dir="rtl"] .cancel_icon_resolution {
 body[dir="rtl"] .PaginationStyle-Resolution {
   width: auto !important;
   padding: 12px 10px !important;
+}
+
+.search_input {
+  width: 100%;
 }
