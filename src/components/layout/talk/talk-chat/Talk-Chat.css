@@ -188,6 +188,7 @@ body[dir="rtl"] .ant-select.chatFilter.ant-select-single.ant-select-show-arrow s
 .chat-icons {
   margin-top: 15px;
   margin-left: -5px;
+  cursor: pointer;
 }
 
 .chat-icons img {
