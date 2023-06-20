@@ -1,0 +1,51 @@
+.dateHeading_events__Modal {
+    color: #6172d6;
+    font-size: 1.2rem !important;
+    font-family: "MontserratSemiBold-600" !important;
+
+}
+
+.eventsBox {
+    max-height: 250px !important;
+    min-height: 350px !important;
+    overflow-y: auto;
+    margin-right: 10px;
+}
+
+.eventsBox::-webkit-scrollbar {
+    width: 0.5rem;
+    border-radius: 20px;
+    background-color: #f2f2f2;
+}
+
+.eventsBox::-webkit-scrollbar-thumb {
+    border-radius: 20px;
+    background: #ccc;
+    /* margin-left: -15px; */
+}
+
+.eventBox {
+    border-radius: 4px;
+    /* background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%); */
+    padding: 3px 15px;
+    margin: 10px 0;
+}
+
+.event__title {
+    color: #5a5a5a !important;
+    font-family: "MontserratSemiBold-600" !important;
+    font-size: calc(24px - 20%)
+}
+
+.event_time {
+    color: #5a5a5a !important;
+    font-family: "MontserratSemiBold-600" !important;
+    font-size: calc(16px - 20%)
+}
+
+.event__type {
+    color: #5a5a5a !important;
+    font-family: "MontserratSemiBold-600" !important;
+    font-size: calc(16px - 20%);
+    text-transform: uppercase;
+}

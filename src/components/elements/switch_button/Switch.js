@@ -2,7 +2,7 @@ import React from "react";
 import { Switch } from "antd";
 import "./Switch.css";
 
-const CustomSwitch = ({ name, value, onChange, checkedValue, className }) => {
+const CustomSwitch = ({ name, value, onChange, checkedValue, className, onClick }) => {
   return (
     <>
       <Switch
@@ -10,6 +10,7 @@ const CustomSwitch = ({ name, value, onChange, checkedValue, className }) => {
         defaultChecked={value}
         checked={checkedValue}
         onChange={onChange}
+        onClick={onClick}
         className={className}
       />
     </>

@@ -127,12 +127,8 @@ const ScheduleNewResolution = ({
       value: 5,
     },
     {
-      label: "1 day before",
-      value: 6,
-    },
-    {
       label: "7 days before",
-      value: 7,
+      value: 6,
     },
   ]);
   const [circulationDateTime, setCirculationDateTime] = useState({
