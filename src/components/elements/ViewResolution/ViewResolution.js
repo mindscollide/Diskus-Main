@@ -217,7 +217,7 @@ const ViewResolution = ({ setViewresolution }) => {
                           checked={
                             resolutionData?.resolution?.isResolutionPublic
                           }
-
+                          disabled={true}
                           classNameDiv="checkboxParentClass"
                         ></Checkbox>
                       </Col>

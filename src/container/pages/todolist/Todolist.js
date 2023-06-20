@@ -191,8 +191,9 @@ const TodoList = () => {
   useEffect(() => {
     console.log("checkingthesocketdata is coming or not", rowsToDo);
     if (Object.keys(toDoListReducer.SocketTodoActivityData).length > 0) {
-      rowsToDo.unshift(toDoListReducer.SocketTodoActivityData);
-      setRowToDo([...rowsToDo]);
+      // rowsToDo.unshift(toDoListReducer.SocketTodoActivityData);
+      setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo])
+      // setRowToDo([...rowsToDo]);
       console.log("checkingthesocketdata is coming or not", rowsToDo);
     } else {
       setRowToDo(toDoListReducer.AllTodolistData);

@@ -1053,5 +1053,6 @@
   "Diskus-color-theme": "Diskus Color Theme",
   "Non-approved": "Non Approved",
   "This-user-already-exist-in-voter-list": "This user already exist in voter-list",
-  "This-voter-already-exist": "this Voter already Exist"
+  "This-voter-already-exist": "this Voter already Exist",
+  "No-events-available-on-this-date": "No Events Available on this date"
 }
