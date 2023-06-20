@@ -379,7 +379,10 @@ const TalkChat = () => {
 
   //Message Insert Data
   const [messageSendData, setMessageSendData] = useState({
-    SenderID: currentUserId.toString(),
+    SenderID:
+      currentUserId != null && currentUserId != undefined
+        ? currentUserId.toString()
+        : '',
     ReceiverID: '0',
     Body: '',
     MessageActivity: 'Direct Message',
@@ -2185,7 +2188,7 @@ const TalkChat = () => {
               senderName: apiInsertOtoMessageData.senderName,
               sentDate: apiInsertOtoMessageData.sentDate,
               shoutAll: apiInsertOtoMessageData.shoutAll,
-              uid: '',
+              uid: apiInsertOtoMessageData.uid,
             }
             console.log('Try 3')
             let allChatNewMessageOtoData = {
@@ -2375,7 +2378,7 @@ const TalkChat = () => {
               senderName: mqttInsertOtoMessageData.senderName,
               sentDate: mqttInsertOtoMessageData.sentDate,
               shoutAll: mqttInsertOtoMessageData.shoutAll,
-              uid: '',
+              uid: mqttInsertOtoMessageData.uid,
             }
             let allChatNewMessageOtoData = {
               id:
@@ -2549,7 +2552,7 @@ const TalkChat = () => {
               senderName: mqttInsertOtoMessageData.senderName,
               sentDate: mqttInsertOtoMessageData.sentDate,
               shoutAll: mqttInsertOtoMessageData.shoutAll,
-              uid: '',
+              uid: mqttInsertOtoMessageData.uid,
             }
             let allChatNewMessageOtoData = {
               id:
@@ -3843,13 +3846,14 @@ const TalkChat = () => {
     }
   }, [talkStateData.MessageSendOTO])
 
+  // Generate the unique ID
+  const uniqueId = generateGUID()
+
   //Send Chat
   const sendChat = async (e) => {
     e.preventDefault()
     dispatch(activeChatID(activeChat))
     if (messageSendData.Body !== '') {
-      // Generate the unique ID
-      const uniqueId = generateGUID()
       console.log('uniqueId', uniqueId)
 
       if (chatClickData.messageType === 'O') {
@@ -3891,7 +3895,7 @@ const TalkChat = () => {
           fileName: '',
           messageCount: 0,
           attachmentLocation: '',
-          uid: uniqueId,
+          uid: '',
           blockCount: 0,
           sourceMessageBody: 'Direct Message',
           sourceMessageId: 0,
@@ -4267,26 +4271,15 @@ const TalkChat = () => {
       let newMessageData = [...messageSendDataLS]
       let dataItem
 
-      newMessageData.reduce(async (previousPromise, dataItem, i) => {
-        await previousPromise
-        console.log('LocalStorageManagement Promise', previousPromise)
+      for (let i = 0; i < newMessageData.length; i++) {
+        dataItem = newMessageData[i]
         console.log('LocalStorageManagement Interval', i)
-        console.log('LocalStorageManagement dataItem', dataItem)
 
-        return dispatch(
+        console.log('LocalStorageManagement dataItem', dataItem)
+        await dispatch(
           InsertOTOMessages(navigate, dataItem, uploadFileTalk, t, counter),
         )
-      }, Promise.resolve())
-
-      // for (let i = 0; i < newMessageData.length; i++) {
-      //   dataItem = newMessageData[i]
-      //   console.log('LocalStorageManagement Interval', i)
-
-      //   console.log('LocalStorageManagement dataItem', dataItem)
-      //   await dispatch(
-      //     InsertOTOMessages(navigate, dataItem, uploadFileTalk, t, counter),
-      //   )
-      // }
+      }
       console.log('Maximum retries reached. Stopping API calls.', counter)
       // Check if maximum retries reached
       if (counter >= 16) {
@@ -4323,19 +4316,15 @@ const TalkChat = () => {
         }
       }, 4000)
     }
-
-    // Cleanup the interval when the component unmounts or loop is terminated
     return () => {
       clearInterval(interval)
     }
-
-    // Clean up the interval on component unmount
   }, [talkStateData.OtoMessageFlag])
 
   const retryAttempt = () => {
     setIsRetryAttemptComplete(false)
     let interval
-    if (talkStateData.OtoMessageFlag === true) {
+    if (talkStateData.OtoMessageFlag === false) {
       let counter = 0
       interval = setInterval(() => {
         console.log('LocalStorageManagement Interval')
@@ -4354,6 +4343,13 @@ const TalkChat = () => {
       clearInterval(interval)
     }
   }
+
+  const deleteAttempt = () => {
+    console.log('DeleteAttempt')
+    // localStorage.setItem('messageArray', [])
+  }
+
+  console.log('All OTO Messages', allOtoMessages)
 
   return (
     <>
@@ -7588,7 +7584,12 @@ const TalkChat = () => {
                                 <span onClick={retryAttempt} className="retry">
                                   Retry
                                 </span>
-                                <span className="delete">Delete</span>
+                                <span
+                                  onClick={deleteAttempt}
+                                  className="delete"
+                                >
+                                  Delete
+                                </span>
                               </div>
                             ) : null}
                           </div>

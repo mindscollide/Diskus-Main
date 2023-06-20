@@ -2327,7 +2327,13 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
               if (flag === undefined) {
                 console.log('LocalStorageManagement Interval')
                 dispatch(OtoMessageRetryFlag(false))
-              } else if (flag === 16) {
+              } else if (
+                flag === 0 ||
+                flag === 4 ||
+                flag === 8 ||
+                flag === 12 ||
+                flag === 16
+              ) {
                 dispatch(OtoMessageRetryFlag(false))
               }
               console.log('LocalStorageManagement Interval')
@@ -2357,7 +2363,13 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
                 console.log('LocalStorageManagement Interval')
 
                 dispatch(OtoMessageRetryFlag(false))
-              } else if (flag === 16) {
+              } else if (
+                flag === 0 ||
+                flag === 4 ||
+                flag === 8 ||
+                flag === 12 ||
+                flag === 16
+              ) {
                 dispatch(OtoMessageRetryFlag(false))
               }
               console.log('LocalStorageManagement Interval')
@@ -2387,7 +2399,13 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
                 console.log('LocalStorageManagement Interval')
 
                 dispatch(OtoMessageRetryFlag(false))
-              } else if (flag === 16) {
+              } else if (
+                flag === 0 ||
+                flag === 4 ||
+                flag === 8 ||
+                flag === 12 ||
+                flag === 16
+              ) {
                 dispatch(OtoMessageRetryFlag(false))
               }
               console.log('LocalStorageManagement Interval')
@@ -2417,7 +2435,13 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
                 console.log('LocalStorageManagement Interval')
 
                 dispatch(OtoMessageRetryFlag(false))
-              } else if (flag === 16) {
+              } else if (
+                flag === 0 ||
+                flag === 4 ||
+                flag === 8 ||
+                flag === 12 ||
+                flag === 16
+              ) {
                 dispatch(OtoMessageRetryFlag(false))
               }
               console.log('LocalStorageManagement Interval')
