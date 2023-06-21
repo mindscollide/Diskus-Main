@@ -146,7 +146,7 @@ const Home = () => {
   const [events, setEvents] = useState([])
   const userID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
-  let CalenderMonthsSpan = localStorage.getItem("calenderMonthsSpan");
+  let CalenderMonthsSpan = localStorage.getItem("calenderMonthsSpan")?localStorage.getItem("calenderMonthsSpan"):1;
   let currentDate = new Date(); // Get the current date
   // Add CalenderMonthsSpan months and set the day to the last day of the month
   let startDate = CalenderMonthsSpan && new Date(
@@ -188,7 +188,7 @@ const Home = () => {
     dispatch(GetWeeklyToDoCount(navigate, Data2, t));
     dispatch(GetUpcomingEvents(navigate, Data2, t));
     dispatch(getNotifications(navigate, createrID, t));
-  }, []);
+  }, [CalenderMonthsSpan]);
 
   useEffect(() => {
     if (Blur != undefined) {

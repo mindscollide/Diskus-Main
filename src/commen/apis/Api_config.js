@@ -675,7 +675,15 @@ const updateShoutAll = {
   RequestMethod: 'ServiceManager.UpdateBroadcast',
 }
 
+const googleValidToken = {
+  RequestMethod: 'ServiceManager.GetGoogleValidToken',
+}
+const revoketoken = {
+  RequestMethod: 'ServiceManager.RevokeToken',
+}
 export {
+  revoketoken,
+  googleValidToken,
   signuprequest,
   signinauthenication,
   forgetpassword,
