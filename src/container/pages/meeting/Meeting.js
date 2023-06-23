@@ -128,8 +128,9 @@ const Meeting = () => {
         });
         setRow(newState);
       } else {
-        tableRowsData.unshift(allMeetingsSocketData);
-        setRow(tableRowsData);
+        setRow([allMeetingsSocketData, ...rows])
+        // tableRowsData.unshift(allMeetingsSocketData);
+        // setRow(tableRowsData);
       }
     }
   }, [allMeetingsSocketData]);
@@ -162,7 +163,7 @@ const Meeting = () => {
     }
   }, [MeetingStatusSocket]);
 
-  useEffect(() => {}, [rows]);
+  useEffect(() => { }, [rows]);
 
   useEffect(() => {
     if (Object.keys(AllMeetingIdData).length > 0) {
@@ -246,7 +247,7 @@ const Meeting = () => {
           return false;
         }
       });
-    } catch (e) {}
+    } catch (e) { }
   };
 
   const columns = [
@@ -561,9 +562,9 @@ const Meeting = () => {
     if (
       minuteofMeetingReducer.AddMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.AddMeetingofMinutesMessage !=
-        t("The-record-has-been-saved-successfully") &&
+      t("The-record-has-been-saved-successfully") &&
       minuteofMeetingReducer.AddMeetingofMinutesMessage !==
-        t("No-records-found")
+      t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -582,9 +583,9 @@ const Meeting = () => {
     } else if (
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage !=
-        t("The-record-has-been-saved-successfully") &&
+      t("The-record-has-been-saved-successfully") &&
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage !==
-        t("No-records-found")
+      t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -603,7 +604,7 @@ const Meeting = () => {
     } else if (
       minuteofMeetingReducer.ResponseMessage != "" &&
       assignees.ResponseMessage !=
-        t("The-record-has-been-saved-successfully") &&
+      t("The-record-has-been-saved-successfully") &&
       minuteofMeetingReducer.ResponseMessage !== t("No-records-found") &&
       assignees.ResponseMessage !== t("No-records-found")
     ) {
@@ -858,7 +859,7 @@ const Meeting = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowLeft />}
-                        // onClick={search}
+                      // onClick={search}
                       />
                     </Form>
                   </div>
@@ -903,7 +904,7 @@ const Meeting = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowRight />}
-                        // onClick={search}
+                      // onClick={search}
                       />
                     </Form>
                   </div>

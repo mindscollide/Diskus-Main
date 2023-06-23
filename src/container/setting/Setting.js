@@ -27,7 +27,7 @@ import {
 import { getUserSetting } from "../../store/actions/GetUserSetting";
 import { useNavigate } from "react-router-dom";
 import dropIcon from "../../assets/images/dropdown-icon.png";
-
+import { GoogleOAuthProvider, useGoogleLogin, useGoogleLogout } from '@react-oauth/google';
 const Organization = () => {
   //for translation
   const { settingReducer } = useSelector((state) => state);
@@ -81,6 +81,50 @@ const Organization = () => {
   });
   console.log(organizationStates, "organizationStatesorganizationStates");
   const roleID = localStorage.getItem("roleID");
+
+
+  const { loaded, clientId } = useGoogleLogin({
+    clientId: '509020224191-pst82a2kqjq33phenb35b0bg1i0q762o.apps.googleusercontent.com'
+  });
+
+
+
+  const handleGoogleLoginSuccess = (response) => {
+    console.log(response.code)
+  }
+  const handleGoogleLoginFailure = (response) => {
+    console.log(response)
+  }
+  const signIn = useGoogleLogin({
+    onSuccess: handleGoogleLoginSuccess,
+    onError: handleGoogleLoginFailure,
+    flow: "auth-code",
+    cookiePolicy: 'single_host_origin',
+    scope: 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/calendar.events',//openid email profile 
+    access_type: 'offline',
+    responseType: 'code',
+    prompt: 'consent',
+  })
+  const handleGoogleLogoutSuccess = () => { }
+  const handleGoogleLogoutFailure = () => { }
+
+  const handleLogout = () => {
+    if (loaded) {
+      const authProvider = new GoogleOAuthProvider();
+      console.log(authProvider, "authProviderauthProvider")
+      authProvider.logout().then(() => {
+        // Handle successful logout
+        console.log('Google logout successful');
+      }).catch((error) => {
+        // Handle logout failure
+        console.error('Google logout failed:', error);
+      });
+    }
+
+  };
+
+
+
   useEffect(() => {
     dispatch(getUserSetting(navigate, t));
   }, []);
@@ -286,6 +330,14 @@ const Organization = () => {
   };
 
   const changeUserAllowGoogleCalendarSynch = (checked) => {
+    if (checked) {
+      signIn()
+    } else {
+      handleLogout()
+      // signOut()
+      // googleLogout()
+      // signOut()
+    }
     setOrganizationStates({
       ...organizationStates,
       UserAllowGoogleCalendarSynch: checked,
@@ -1286,8 +1338,8 @@ const Organization = () => {
               </Col>
             </Row>
             {organizationStates.UserAllowGoogleCalendarSynch !== null &&
-            roleID != 1 &&
-            roleID != 2 ? (
+              roleID != 1 &&
+              roleID != 2 ? (
               <>
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3 FontArabicRegular">
@@ -1321,8 +1373,8 @@ const Organization = () => {
               <></>
             )}
             {organizationStates.UserAllowGoogleCalendarSynch === true &&
-            roleID != 1 &&
-            roleID != 2 ? (
+              roleID != 1 &&
+              roleID != 2 ? (
               <>
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3 FontArabicRegular">
@@ -1360,8 +1412,8 @@ const Organization = () => {
               <></>
             )}
             {organizationStates.UserAllowMicrosoftCalendarSynch !== null &&
-            roleID != 1 &&
-            roleID != 2 ? (
+              roleID != 1 &&
+              roleID != 2 ? (
               <>
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3 FontArabicRegular">
@@ -1397,8 +1449,8 @@ const Organization = () => {
             )}
 
             {organizationStates.UserAllowMicrosoftCalendarSynch === true &&
-            roleID != 1 &&
-            roleID != 2 ? (
+              roleID != 1 &&
+              roleID != 2 ? (
               <>
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3 FontArabicRegular">
