@@ -33,6 +33,7 @@ import {
   DeleteShout,
   UpdateShoutAll,
   OtoMessageRetryFlag,
+  InsertBulkMessages,
 } from '../../../../store/actions/Talk_action'
 import {
   newTimeFormaterAsPerUTCTalkTime,
@@ -3866,6 +3867,71 @@ const TalkChat = () => {
             },
           },
         }
+        // let checkLocalData = localStorage.getItem('messageArray')
+        // if (checkLocalData === undefined && checkLocalData === null) {
+        //   let localData = {
+        //     TalkRequest: {
+        //       AllMessages: {
+        //         Messages: [
+        //           {
+        //             AttachmentLocation: '',
+        //             BroadcastID: '0',
+        //             ChannelID: 1,
+        //             ChatID: '2',
+        //             ChatType: 1,
+        //             FileExtension: '',
+        //             FileGeneratedName: '',
+        //             FileName: '',
+        //             FRMessages: 'Direct Message',
+        //             HasTagUser: false,
+        //             isAttempedFail: false,
+        //             isForThisWindowOnly: true,
+        //             MessageBody: 'Hello OTO 10',
+        //             MessageDate: '2023-06-16T11:50:29.393Z',
+        //             MessageStatus: 1,
+        //             MessageType: 'Direct Message',
+        //             retyCount: 3,
+        //             SenderID: '1',
+        //             SenderName: 'Muhammad Ovais',
+        //             TagUserEmails: '',
+        //             TagUserIds: '',
+        //             UID: 'oto10',
+        //           },
+        //         ],
+        //       },
+        //       UserID: 1,
+        //     },
+        //   }
+        //   // save this data into local,
+        // } else {
+        //   let dataforPushinLocal = {
+        //     AttachmentLocation: '',
+        //     BroadcastID: '0',
+        //     ChannelID: 1,
+        //     ChatID: '2',
+        //     ChatType: 1,
+        //     FileExtension: '',
+        //     FileGeneratedName: '',
+        //     FileName: '',
+        //     FRMessages: 'Direct Message',
+        //     HasTagUser: false,
+        //     isAttempedFail: false,
+        //     isForThisWindowOnly: true,
+        //     MessageBody: 'Hello OTO 10',
+        //     MessageDate: '2023-06-16T11:50:29.393Z',
+        //     MessageStatus: 1,
+        //     MessageType: 'Direct Message',
+        //     retyCount: 3,
+        //     SenderID: '1',
+        //     SenderName: 'Muhammad Ovais',
+        //     TagUserEmails: '',
+        //     TagUserIds: '',
+        //     UID: 'oto10',
+        //   }
+        //   checkLocalData.TalkRequest.AllMessages.Messages.push(
+        //     dataforPushinLocal,
+        //   )
+        // }
         const existingArray =
           JSON.parse(localStorage.getItem('messageArray')) || []
         existingArray.push(Data)
@@ -4265,21 +4331,24 @@ const TalkChat = () => {
 
   const [isRetryAttemptComplete, setIsRetryAttemptComplete] = useState(false)
 
-  const storeDataInAPI = async (counter) => {
+  const storeDataInAPI = async (counter, flag) => {
     try {
       console.log('LocalStorageManagement Interval', counter)
       let newMessageData = [...messageSendDataLS]
       let dataItem
+      if (flag) {
+        for (let i = 0; i < newMessageData.length; i++) {
+          dataItem = newMessageData[i]
+          console.log('LocalStorageManagement Interval', i)
 
-      for (let i = 0; i < newMessageData.length; i++) {
-        dataItem = newMessageData[i]
-        console.log('LocalStorageManagement Interval', i)
-
-        console.log('LocalStorageManagement dataItem', dataItem)
-        await dispatch(
-          InsertOTOMessages(navigate, dataItem, uploadFileTalk, t, counter),
-        )
+          console.log('LocalStorageManagement dataItem', dataItem)
+          await dispatch(
+            InsertOTOMessages(navigate, dataItem, uploadFileTalk, t, counter),
+          )
+        }
+      } else {
       }
+
       console.log('Maximum retries reached. Stopping API calls.', counter)
       // Check if maximum retries reached
       if (counter >= 16) {
@@ -4308,7 +4377,7 @@ const TalkChat = () => {
       interval = setInterval(() => {
         console.log('LocalStorageManagement Interval')
 
-        storeDataInAPI(counter)
+        storeDataInAPI(counter, false)
         counter += 4
         if (counter >= 20) {
           clearInterval(interval)
@@ -4329,7 +4398,7 @@ const TalkChat = () => {
       interval = setInterval(() => {
         console.log('LocalStorageManagement Interval')
 
-        storeDataInAPI(counter)
+        storeDataInAPI(counter, true)
         counter += 4
         if (counter >= 20) {
           clearInterval(interval)
@@ -7582,7 +7651,7 @@ const TalkChat = () => {
                             {isRetryAttemptComplete === true ? (
                               <div className="Retry-Delete-Feature">
                                 <span onClick={retryAttempt} className="retry">
-                                  Retry
+                                  {t('Retry')}
                                 </span>
                                 <span
                                   onClick={deleteAttempt}

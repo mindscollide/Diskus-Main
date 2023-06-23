@@ -204,6 +204,11 @@ const initialState = {
     GetPrivateGroupMembersResponseMessage: '',
   },
 
+  InsertBulkMessageData: {
+    InsertBulkMessageResponse: [],
+    InsertBulkMessageResponseMessage: '',
+  },
+
   MarkStarUnstarMessage: {
     MarkStarUnstarMessageResponseMessage: '',
   },
@@ -1426,6 +1431,36 @@ const talkReducer = (state = initialState, action) => {
         UpdateShoutAllData: {
           UpdateShoutAllResponse: [],
           UpdateShoutAllResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.INSERT_BULKMESSAGES_INIT: {
+      return {
+        ...state,
+        InsertBulkMessageData: {
+          InsertBulkMessageResponse: [],
+          InsertBulkMessageResponseMessage: '',
+        },
+      }
+    }
+
+    case actions.INSERT_BULKMESSAGES_SUCCESS: {
+      return {
+        ...state,
+        InsertBulkMessageData: {
+          InsertBulkMessageResponse: action.response,
+          InsertBulkMessageResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.INSERT_BULKMESSAGES_FAIL: {
+      return {
+        ...state,
+        InsertBulkMessageData: {
+          InsertBulkMessageResponse: [],
+          InsertBulkMessageResponseMessage: action.message,
         },
       }
     }

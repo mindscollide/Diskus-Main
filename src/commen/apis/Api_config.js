@@ -675,6 +675,10 @@ const updateShoutAll = {
   RequestMethod: 'ServiceManager.UpdateBroadcast',
 }
 
+const insertBulkMessages = {
+  RequestMethod: 'ServiceManager.InsertBulkMessages',
+}
+
 export {
   signuprequest,
   signinauthenication,
@@ -857,4 +861,5 @@ export {
   createShoutAll,
   deleteShoutAll,
   updateShoutAll,
+  insertBulkMessages,
 }
