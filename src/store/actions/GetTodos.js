@@ -3,7 +3,7 @@ import axios from "axios";
 import { toDoListApi } from "../../commen/apis/Api_ends_points";
 import { todosStatus, updateTodoStatus } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
-import { GetTodoListByUser } from "./ToDoList_action";
+import { GetTodoListByUser, SearchTodoListApi } from "./ToDoList_action";
 
 const getTodoStatusInit = () => {
   return {
@@ -161,8 +161,12 @@ const updateTodoStatusFunc = (navigate, value, data, t, flag) => {
                 );
               }
               if (flag === false) {
-                let data2 = { UserID: parseInt(createrID), NumberOfRecords: 300 };
-                dispatch(GetTodoListByUser(navigate, data2, t));
+                let data2 = {
+                  Date: "",
+                  Title: "",
+                  AssignedToName: "",
+                };
+                dispatch(SearchTodoListApi(navigate, data2, t));
               }
             } else if (
               response.data.responseResult.responseMessage

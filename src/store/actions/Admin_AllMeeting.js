@@ -23,10 +23,9 @@ const allMeetingSuccess = (response, message) => {
   };
 };
 
-const allMeetingFail = (response, message) => {
+const allMeetingFail = (message) => {
   return {
     type: actions.ADMIN_ALLMEETING_FAIL,
-    response: response,
     message: message,
   };
 };
@@ -43,6 +42,7 @@ const OrganizationMeetings = (navigate, t) => {
   let data = {
     OrganizationID: parseInt(organizationId),
     RequestingUserID: parseInt(userID),
+    Title: "", PageNumber: 1, Length: 50
   };
 
   return (dispatch) => {
@@ -69,12 +69,11 @@ const OrganizationMeetings = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_AllOrganizationMeetings_01".toLowerCase()
+                  "Admin_AdminServiceManager_SearchOrganizationMeetings_01".toLowerCase()
                 )
             ) {
               await dispatch(
-                allMeetingSuccess(
-                  response.data.responseResult.meetings,
+                allMeetingFail(
                   t("You-are-not-an-admin-Please-contact-support")
                 )
               );
@@ -82,12 +81,12 @@ const OrganizationMeetings = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_AllOrganizationMeetings_02".toLowerCase()
+                  "Admin_AdminServiceManager_SearchOrganizationMeetings_02".toLowerCase()
                 )
             ) {
               await dispatch(
                 allMeetingSuccess(
-                  response.data.responseResult.meetings,
+                  response.data.responseResult,
                   t("Data-available")
                 )
               );
@@ -95,12 +94,11 @@ const OrganizationMeetings = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_AllOrganizationMeetings_03".toLowerCase()
+                  "Admin_AdminServiceManager_SearchOrganizationMeetings_03".toLowerCase()
                 )
             ) {
               await dispatch(
-                allMeetingSuccess(
-                  response.data.responseResult.meetings,
+                allMeetingFail(
                   t("No-data-available-against-this-organization")
                 )
               );
@@ -108,12 +106,11 @@ const OrganizationMeetings = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Admin_AdminServiceManager_AllOrganizationMeetings_04".toLowerCase()
+                  "Admin_AdminServiceManager_SearchOrganizationMeetings_04".toLowerCase()
                 )
             ) {
               await dispatch(
-                allMeetingSuccess(
-                  response.data.responseResult.meetings,
+                allMeetingFail(
                   t("No-data-available-against-this-organization")
                 )
               );

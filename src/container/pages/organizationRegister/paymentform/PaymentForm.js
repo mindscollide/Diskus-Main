@@ -24,7 +24,7 @@ import Cookies from "js-cookie";
 const PaymentForm = () => {
   const { t, i18n } = useTranslation();
   const [annualPackageShow, setAnnualPackageShow] = useState(false);
-  const [monthlyPackageShow, setMonthlyPackageShow] = useState(true);
+  const [monthlyPackageShow, setMonthlyPackageShow] = useState(false);
   const { Authreducer } = useSelector((state) => state);
   console.log("AuthreducerAuthreducer", Authreducer);
   const [isSelectedPacakage, setSelectedPackage] = useState({
@@ -90,7 +90,15 @@ const PaymentForm = () => {
     if (Authreducer.GetSelectedPacakgeDetails !== null) {
       let packageData =
         Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage;
+      if (packageData.fK_TenureOfSubscription === 1) {
+        setAnnualPackageShow(true)
+        setMonthlyPackageShow(false)
+      } else {
+        setAnnualPackageShow(false)
+        setMonthlyPackageShow(true)
+      }
       setSelectedPackage({
+        ...isSelectedPacakage,
         PackageCategory: packageData.packageName,
         MonthlyAmount: packageData.packageActualPrice,
         AnnuallyAmount: "",
@@ -98,7 +106,7 @@ const PaymentForm = () => {
         OrderAmount: "",
       });
     }
-  }, []);
+  }, [Authreducer.GetSelectedPacakgeDetails]);
   return (
     <>
       <Row>
@@ -134,9 +142,8 @@ const PaymentForm = () => {
             className="mx-auto mt-5 mb-4 col-lg-12 col-md-12 col-sm-12"
           >
             <h3
-              className={`${"Payment-Method-Heading MontserratSemiBold-600"} ${
-                styles["paymentform_heading"]
-              }`}
+              className={`${"Payment-Method-Heading MontserratSemiBold-600"} ${styles["paymentform_heading"]
+                }`}
             >
               {t("Choose-payment-method")}
             </h3>
@@ -226,7 +233,7 @@ const PaymentForm = () => {
                               ? styles["spanActive"]
                               : styles["span-formontly"]
                           }
-                          onClick={handleManualPackage}
+                        // onClick={handleManualPackage}
                         >
                           {/* Monthly */}
                           {t("Monthly")}
@@ -237,7 +244,7 @@ const PaymentForm = () => {
                               ? styles["spanActive"]
                               : styles["span-forAnnually"]
                           }
-                          onClick={handleAnnualPackage}
+                        // onClick={handleAnnualPackage}
                         >
                           {/* Annually */}
                           {t("Annually")}
@@ -275,9 +282,8 @@ const PaymentForm = () => {
                   {annualPackageShow && (
                     <>
                       <div
-                        className={`${
-                          styles["disount_per"]
-                        } ${"MontserratMedium-500 text-center border w-25 mx-auto mb-3 fs-4"}`}
+                        className={`${styles["disount_per"]
+                          } ${"MontserratMedium-500 text-center border w-25 mx-auto mb-3 fs-4"}`}
                       >
                         <span className={styles["Arabic_Styles_Percent"]}>
                           13% {t("off")}
@@ -297,9 +303,8 @@ const PaymentForm = () => {
                     sm={12}
                     lg={12}
                     md={12}
-                    className={`${
-                      styles["Ordersummaryheading"]
-                    } ${"MontserratMedium-500"}`}
+                    className={`${styles["Ordersummaryheading"]
+                      } ${"MontserratMedium-500"}`}
                   >
                     {t("Order-summary")}
                   </Col>
@@ -340,16 +345,14 @@ const PaymentForm = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className={` ${"MontserratMedium-500 mt-2"} ${
-                      styles["link_text"]
-                    }`}
+                    className={` ${"MontserratMedium-500 mt-2"} ${styles["link_text"]
+                      }`}
                   >
                     <Link to="">{t("Have-a-promo-code")}</Link>
                   </Col>
                   <Col
-                    className={` ${"MontserratMedium-500 mt-2"} ${
-                      styles["link_text"]
-                    }`}
+                    className={` ${"MontserratMedium-500 mt-2"} ${styles["link_text"]
+                      }`}
                     sm={12}
                     md={12}
                     lg={12}

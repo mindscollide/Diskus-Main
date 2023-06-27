@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { Row, Col, Nav, Container, Navbar, NavDropdown } from "react-bootstrap";
+import Tooltip from '../../elements/tooltip/Tooltip'
 import Logo from "../../../assets/images/sidebar-menu-icon.png";
 import CalendarIcon from "../../../assets/images/newElements/newCalenderIcon.svg";
 import LockIcon from "../../../assets/images/newElements/newlockIcon.svg";
@@ -477,6 +478,7 @@ const Sidebar = () => {
 
               <>
                 {/* Meeting Menu */}
+
                 <Nav.Link
                   as={Link}
                   to="meeting"
@@ -490,12 +492,14 @@ const Sidebar = () => {
                       : "m-0 p-0 icon"
                   }
                 >
+                  {/* <Tooltip placement="top" title="Meeting" className="in"> */}
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="34"
                     height="39.078"
                     viewBox="0 0 51.227 39.078"
                   >
+                    <title >Meeting </title>
                     <defs>
                       <linearGradient
                         id="linear-gradient"
@@ -523,6 +527,7 @@ const Sidebar = () => {
                       />
                     </g>
                   </svg>
+                  {/* </Tooltip> */}
 
                   {/* <i className="icon-meeting" /> */}
                 </Nav.Link>
@@ -544,6 +549,7 @@ const Sidebar = () => {
                     height="46.081"
                     viewBox="0 0 48.346 46.081"
                   >
+                    <title className="tooltip">Todo </title>
                     <defs>
                       <linearGradient
                         id="linear-gradient"
@@ -589,6 +595,7 @@ const Sidebar = () => {
                     height="44.281"
                     viewBox="0 0 44.281 44.281"
                   >
+                    <title className="tooltip">Calendar </title>
                     <defs>
                       <linearGradient
                         id="linear-gradient"
@@ -680,6 +687,7 @@ const Sidebar = () => {
                     height="48.231"
                     viewBox="0 0 49.694 48.231"
                   >
+                    <title className="tooltip">DataRoom </title>
                     <defs>
                       <linearGradient
                         id="linear-gradient"
@@ -890,6 +898,7 @@ const Sidebar = () => {
                     height="39.841"
                     viewBox="0 0 35.237 39.841"
                   >
+                    <title className="tooltip">Notes </title>
                     <defs>
                       <linearGradient
                         id="linear-gradient"
@@ -975,6 +984,7 @@ const Sidebar = () => {
                     height="31.032"
                     viewBox="0 0 34.562 31.032"
                   >
+                    <title className="sidebar-tool">Groups</title>
                     <path
                       id="Path_635"
                       data-name="Path 635"
@@ -999,6 +1009,7 @@ const Sidebar = () => {
                   }
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="43.97" height="24.96" viewBox="0 0 43.97 24.96">
+                    <title className="tooltip">Committee</title>
                     <defs>
                       <linearGradient id="linear-gradient" x1="0.78" x2="0.081" y2="1" gradientUnits="objectBoundingBox">
                         <stop offset="0" stopColor="#4adede" />
@@ -1023,6 +1034,7 @@ const Sidebar = () => {
                       : "m-0 p-0 icon"
                   }>
                   <svg xmlns="http://www.w3.org/2000/svg" width="28.997" height="32.417" viewBox="0 0 28.997 32.417">
+                    <title className="sidebar-tool">Resolution</title>
                     <defs>
                       <linearGradient id="linear-gradient" x1="1" y1="0.078" x2="0.087" y2="1.078" gradientUnits="objectBoundingBox">
                         <stop offset="0" stopColor="#4adede" />

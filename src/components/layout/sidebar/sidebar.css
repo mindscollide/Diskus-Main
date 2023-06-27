@@ -192,3 +192,11 @@ a.m-0.p-0.icon.nav-link:hover rect#Rectangle_831 {
 /* svg {
   margin: 0 auto;
 } */
+.sidebar-tool {
+  fill: white !important;
+  font-size: 12px !important;
+  background-color: black !important;
+  padding: 4px !important;
+  border-radius: 4px !important;
+  color: white !important;
+}

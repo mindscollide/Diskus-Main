@@ -4,7 +4,7 @@
   margin: 0px 20px;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 260px !important;
+  width: auto !important;
   overflow: hidden;
   font-size: 14px;
   font-family: "MontserratSemiBold-600";
@@ -147,9 +147,9 @@ body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:n
   min-width: 100px !important;
 }
 
-.Status-Todo_todo .ant-select-dropdown span.ant-select-arrow {
+/* .Status-Todo_todo .ant-select-dropdown span.ant-select-arrow {
   display: none !important;
-}
+} */
 
 /* .ant-tooltip-inner {
     display: none !important;
@@ -345,7 +345,7 @@ body[dir="rtl"] .Completed {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-.Status-Todo .rc-virtual-list-holder-inner {
+/* .Status-Todo .rc-virtual-list-holder-inner {
   width: 300px !important;
   overflow: hidden !important;
   display: grid !important;
@@ -354,4 +354,4 @@ body[dir="rtl"] .Completed {
 
 .Status-Todo:focus-visible {
   outline: none !important;
-}
+} */

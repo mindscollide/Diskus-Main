@@ -13,6 +13,7 @@ const initialState = {
     realtimeGroupCreateResponse: null,
     realtimeGroupStatus: null,
     getAllGroups: null,
+    ArcheivedGroups: null
 }
 
 const GroupsReducer = (state = initialState, action) => {
@@ -24,11 +25,12 @@ const GroupsReducer = (state = initialState, action) => {
             }
         }
         case actions.GET_GROUPS_BYUSERID_SUCCESS: {
+            console.log(action, "GET_GROUPS_BYUSERID_SUCCESS")
             return {
                 ...state,
                 Loading: false,
-                ResponseMessage: action.message,
-                getAllGroupsResponse: action.response
+                getAllGroupsResponse: action.response,
+                ResponseMessage: action.message
             }
         }
         case actions.GET_GROUPS_BYUSERID_FAIL: {
@@ -185,7 +187,7 @@ const GroupsReducer = (state = initialState, action) => {
             }
         }
         case actions.REALTIME_GROUPS_STATUS_RESPONSE: {
-            console.log("realtimeGroupStatusResponse",action)
+            console.log("realtimeGroupStatusResponse", action)
             return {
                 ...state,
                 realtimeGroupStatus: action.response
@@ -198,7 +200,7 @@ const GroupsReducer = (state = initialState, action) => {
             }
         }
         case actions.GET_ALL_ORGANIZATION_GROUPS_SUCCESS: {
-            console.log(action,"GET_ALL_ORGANIZATION_GROUPS_SUCCESS")
+            console.log(action, "GET_ALL_ORGANIZATION_GROUPS_SUCCESS")
             return {
                 ...state,
                 Loading: false,
@@ -221,7 +223,29 @@ const GroupsReducer = (state = initialState, action) => {
                 ResponseMessage: ""
             }
         }
-        
+        case actions.ARCHEIVED_GROUPS_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.ARCHEIVED_GROUPS_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                ArcheivedGroups: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.ARCHEIVED_GROUPS_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                ArcheivedGroups: null,
+                ResponseMessage: action.message
+            }
+        }
+
         default: return { ...state };
     }
 }

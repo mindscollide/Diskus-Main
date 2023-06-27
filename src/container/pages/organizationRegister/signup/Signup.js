@@ -107,6 +107,7 @@ const Signup = () => {
     FK_CCID: 230,
     PhoneNumberCountryID: 212,
   });
+  console.log(signUpDetails, "signUpDetailssignUpDetails")
   console.log(signUpDetails, "signUpDetailssignUpDetailssignUpDetails");
   const [open, setOpen] = useState({
     open: false,

@@ -269,36 +269,36 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       dataIndex: "agenda",
       key: "agenda",
       align: "left",
-      render: (text, record) => {
-        return (
-          <p className={styles["agenda-title"]}>
-            {record.meetingAgenda[0].objMeetingAgenda.title}
-          </p>
-        );
-      },
+      // render: (text, record) => {
+      //   return (
+      //     <p className={styles["agenda-title"]}>
+      //       {record.meetingAgenda[0].objMeetingAgenda.title}
+      //     </p>
+      //   );
+      // },
     },
     {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
       align: "left",
-      render: (text, record) => {
-        if (record.status === "1") {
-          return <p className="m-0 FontArabicRegular">UpComing</p>;
-        } else if (record.status === "2") {
-          return <p className="m-0 FontArabicRegular">Start</p>;
-        } else if (record.status === "3") {
-          return <p className="m-0 FontArabicRegular">End</p>;
-        } else if (record.status === "4") {
-          return <p className="m-0 FontArabicRegular">Cancel</p>;
-        } else if (record.status === "5") {
-          return <p className="m-0 FontArabicRegular">Reschudule</p>;
-        } else if (record.status === "6") {
-          return <p className="m-0 FontArabicRegular">Close</p>;
-        } else if (record.status === "7") {
-          return <p className="m-0 FontArabicRegular">Delete</p>;
-        }
-      },
+      // render: (text, record) => {
+      //   if (record.status === "1") {
+      //     return <p className="m-0 FontArabicRegular">UpComing</p>;
+      //   } else if (record.status === "2") {
+      //     return <p className="m-0 FontArabicRegular">Start</p>;
+      //   } else if (record.status === "3") {
+      //     return <p className="m-0 FontArabicRegular">End</p>;
+      //   } else if (record.status === "4") {
+      //     return <p className="m-0 FontArabicRegular">Cancel</p>;
+      //   } else if (record.status === "5") {
+      //     return <p className="m-0 FontArabicRegular">Reschudule</p>;
+      //   } else if (record.status === "6") {
+      //     return <p className="m-0 FontArabicRegular">Close</p>;
+      //   } else if (record.status === "7") {
+      //     return <p className="m-0 FontArabicRegular">Delete</p>;
+      //   }
+      // },
     },
     {
       title: t("Organizer"),
@@ -306,7 +306,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       key: "host",
       align: "left",
       className: "FontArabicRegular",
-      sorter: (a, b) => a.host.localeCompare(b.host.toLowerCase),
+      // sorter: (a, b) => a.host.localeCompare(b.host.toLowerCase),
     },
     {
       title: t("Date-or-time"),
@@ -315,9 +315,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       align: "left",
       className: "dateTimeColumn FontArabicRegular",
       render: (text, record) => {
-        if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
+        if (record?.createdTime !== null && record?.createdDate !== null) {
           return newTimeFormaterAsPerUTCFullDate(
-            record.dateOfMeeting + record.meetingStartTime
+            record?.createdDate + record?.createdTime
           );
         }
       },
@@ -327,31 +327,31 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       key: "Delete",
       align: "left",
       width: "120px",
-      render: (text, record) => {
-        console.log("textDelete123123", text, record);
-        return (
-          <>
-            <div
-              onClick={() => {
-                handleEditOrganizatioMeeting(record);
-              }}
-              className="edit-icon-edituser icon-edit-list icon-size-one beachGreen "
-            >
-              <i>
-                <img src={EditIcon2} />
-              </i>
-            </div>
-            <i style={{ cursor: "pointer", color: "#000" }}>
-              <Trash
-                size={22}
-                onClick={() => {
-                  openDeleteModal(record.pK_MDID, record.status);
-                }}
-              />
-            </i>
-          </>
-        );
-      },
+      // render: (text, record) => {
+      //   console.log("textDelete123123", text, record);
+      //   return (
+      //     <>
+      //       <div
+      //         onClick={() => {
+      //           handleEditOrganizatioMeeting(record);
+      //         }}
+      //         className="edit-icon-edituser icon-edit-list icon-size-one beachGreen "
+      //       >
+      //         <i>
+      //           <img src={EditIcon2} />
+      //         </i>
+      //       </div>
+      //       <i style={{ cursor: "pointer", color: "#000" }}>
+      //         <Trash
+      //           size={22}
+      //           onClick={() => {
+      //             openDeleteModal(record?.pK_MDID, record?.status);
+      //           }}
+      //         />
+      //       </i>
+      //     </>
+      //   );
+      // },
     },
   ];
 
@@ -482,7 +482,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       console.log(
         "filter a.dateOfMeeting + a.meetingStartTime",
         removeDashesFromDate(
-          editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+          editResolutionDate(a?.dateOfMeeting + a?.meetingStartTime)
         )
       );
 
@@ -716,10 +716,12 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     if (
       adminReducer.AllOrganizationMeeting != null &&
-      adminReducer.AllOrganizationMeeting.length > 0
+      adminReducer.AllOrganizationMeeting !== undefined
     ) {
-      setRows(adminReducer.AllOrganizationMeeting);
-      setAllMeetingData(adminReducer.AllOrganizationMeeting);
+      if (adminReducer.AllOrganizationMeeting.organizationMeetings.length > 0) {
+        setRows(adminReducer.AllOrganizationMeeting.organizationMeetings);
+        setAllMeetingData(adminReducer.AllOrganizationMeeting.organizationMeetings);
+      }
     }
   }, [adminReducer.AllOrganizationMeeting]);
 
@@ -823,11 +825,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                   column={AllMeetingColumn}
                   className="AllUserTable"
                   scroll={{ y: 400 }}
-                  pagination={{
-                    pageSize: rowSize,
-                    showSizeChanger: true,
-                    pageSizeOptions: ["100 ", "150", "200"],
-                  }}
+                  pagination={false}
                 />
               </>
             )}
