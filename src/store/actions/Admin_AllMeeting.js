@@ -35,14 +35,14 @@ const allMeetingMQTT = (response) => {
     response: response
   }
 }
-const OrganizationMeetings = (navigate, t) => {
+const OrganizationMeetings = (navigate, currentPage, currentPageSize, t) => {
   let userID = localStorage.getItem("userID");
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationId = localStorage.getItem("organizationID");
   let data = {
     OrganizationID: parseInt(organizationId),
     RequestingUserID: parseInt(userID),
-    Title: "", PageNumber: 1, Length: 50
+    Title: "", PageNumber: JSON.parse(currentPage), Length: JSON.parse(currentPageSize)
   };
 
   return (dispatch) => {

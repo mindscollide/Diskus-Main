@@ -39,6 +39,7 @@ import {
   TimeDisplayFormat,
 } from "../../../../commen/functions/date_formater";
 import { cleareMessage } from "../../../../store/actions/Admin_AddUser";
+import { Pagination } from "antd";
 
 const AllMeetings = ({ show, setShow, ModalTitle }) => {
   //for translation
@@ -91,7 +92,10 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   });
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
-
+  const [totalRecords, setTotalRecords] = useState(0);
+  let currentPageSize = JSON.parse(localStorage.getItem("MeetingPageSize"));
+  let currentPage = JSON.parse(localStorage.getItem("MeetingCurrentPage"))
+  console.log(currentPage, currentPageSize, "currentPageSizecurrentPageSize")
   const [modalEditMeetingStates, setModalEditMeetingStates] = useState({
     Titles: "",
     Agendas: "",
@@ -313,6 +317,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
       align: "left",
+      width: "220px",
       className: "dateTimeColumn FontArabicRegular",
       render: (text, record) => {
         if (record?.createdTime !== null && record?.createdDate !== null) {
@@ -327,31 +332,31 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       key: "Delete",
       align: "left",
       width: "120px",
-      // render: (text, record) => {
-      //   console.log("textDelete123123", text, record);
-      //   return (
-      //     <>
-      //       <div
-      //         onClick={() => {
-      //           handleEditOrganizatioMeeting(record);
-      //         }}
-      //         className="edit-icon-edituser icon-edit-list icon-size-one beachGreen "
-      //       >
-      //         <i>
-      //           <img src={EditIcon2} />
-      //         </i>
-      //       </div>
-      //       <i style={{ cursor: "pointer", color: "#000" }}>
-      //         <Trash
-      //           size={22}
-      //           onClick={() => {
-      //             openDeleteModal(record?.pK_MDID, record?.status);
-      //           }}
-      //         />
-      //       </i>
-      //     </>
-      //   );
-      // },
+      render: (text, record) => {
+        console.log("textDelete123123", text, record);
+        return (
+          <>
+            <div
+              onClick={() => {
+                handleEditOrganizatioMeeting(record);
+              }}
+              className="edit-icon-edituser icon-edit-list icon-size-one beachGreen "
+            >
+              <i>
+                <img src={EditIcon2} />
+              </i>
+            </div>
+            <i style={{ cursor: "pointer", color: "#000" }}>
+              <Trash
+                size={22}
+                onClick={() => {
+                  openDeleteModal(record?.pK_MDID, record?.status);
+                }}
+              />
+            </i>
+          </>
+        );
+      },
     },
   ];
 
@@ -599,7 +604,14 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   };
 
   useEffect(() => {
-    dispatch(OrganizationMeetings(navigate, t));
+    if (currentPage !== null && currentPageSize !== null) {
+      dispatch(OrganizationMeetings(navigate, currentPage, currentPageSize, t));
+    } else {
+      dispatch(OrganizationMeetings(navigate, 1, 50, t));
+      localStorage.setItem("MeetingPageSize", 50)
+      localStorage.setItem("MeetingCurrentPage", 1)
+    }
+    // dispatch(OrganizationMeetings(navigate, currentPage, t));
     dispatch(GetMeetingStatus(navigate, t));
   }, []);
 
@@ -718,6 +730,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       adminReducer.AllOrganizationMeeting != null &&
       adminReducer.AllOrganizationMeeting !== undefined
     ) {
+      setTotalRecords(adminReducer.AllOrganizationMeeting.totalRecords)
       if (adminReducer.AllOrganizationMeeting.organizationMeetings.length > 0) {
         setRows(adminReducer.AllOrganizationMeeting.organizationMeetings);
         setAllMeetingData(adminReducer.AllOrganizationMeeting.organizationMeetings);
@@ -741,6 +754,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       });
     }
   };
+
   const changeStatusEditModal = (e) => {
     console.log("eee", e);
     setModalEditMeetingStates({
@@ -767,6 +781,12 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       },
     }),
   };
+
+  const AdminMeetingPagination = async (current, pageSize) => {
+    await dispatch(OrganizationMeetings(navigate, current, pageSize, t));
+    localStorage.setItem("MeetingPageSize", pageSize)
+    localStorage.setItem("MeetingCurrentPage", current)
+  }
 
   return (
     <>
@@ -824,14 +844,19 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                   rows={rows}
                   column={AllMeetingColumn}
                   className="AllUserTable"
-                  scroll={{ y: 400 }}
+                  scroll={{ y: 320 }}
                   pagination={false}
                 />
               </>
             )}
           </Col>
-        </Row>
 
+        </Row>
+        <Row>
+          <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-2 pagination-groups-table">
+            <Pagination total={totalRecords} onChange={AdminMeetingPagination} showSizeChanger pageSizeOptions={[30, 50, 100, 200]} current={currentPage} pageSize={currentPageSize} className={styles["PaginationStyle-AllMeeting"]} />
+          </Col>
+        </Row>
         <Modal
           show={meetingModal || filterBarMeetingModal || meetingDeleteModal}
           setShow={() => {

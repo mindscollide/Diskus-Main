@@ -102,8 +102,10 @@ const PaymentForm = () => {
         PackageCategory: packageData.packageName,
         MonthlyAmount: packageData.packageActualPrice,
         AnnuallyAmount: "",
+        AnnualyDiscountRate: packageData.yearlyPurchaseDiscountPercentage,
         DisountPer: "",
         OrderAmount: "",
+        ActualAmount: packageData.packageActualPrice,
       });
     }
   }, [Authreducer.GetSelectedPacakgeDetails]);
@@ -261,7 +263,7 @@ const PaymentForm = () => {
                           : "MontserratBold-700 fs-4 invisible Arabicstyles  "
                       }
                     >
-                      $35/
+                      ${isSelectedPacakage.ActualAmount}/
                       <span className="fs-6 text-lowercase">{t("Month")}</span>
                     </span>
 
@@ -286,7 +288,7 @@ const PaymentForm = () => {
                           } ${"MontserratMedium-500 text-center border w-25 mx-auto mb-3 fs-4"}`}
                       >
                         <span className={styles["Arabic_Styles_Percent"]}>
-                          13% {t("off")}
+                          {isSelectedPacakage.AnnualyDiscountRate}% {t("off")}
                         </span>
                       </div>
                       <div className={styles["descriptionline"]}>
@@ -329,7 +331,7 @@ const PaymentForm = () => {
                         lg={6}
                         className="Subtotal-Value d-flex justify-content-end MontserratSemiBold-600 text-white"
                       >
-                        $35
+                        ${isSelectedPacakage.ActualAmount}
                       </Col>
                     </Row>
                   </Col>
