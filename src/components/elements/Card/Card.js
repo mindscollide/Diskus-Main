@@ -27,6 +27,7 @@ const Card = ({
   setUniqCardID,
   uniqCardID,
   Icon,
+  associatedTags
 }) => {
   const { t } = useTranslation();
   const [editItems, setEditItems] = useState([
@@ -36,6 +37,8 @@ const Card = ({
   ]);
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const [editdropdown, setEditdropdown] = useState(false);
+  const findLengthofGroups = associatedTags && associatedTags.length;
+  console.log(findLengthofGroups, "findLengthofGroupsfindLengthofGroups")
 
   useEffect(() => {
     console.log("click");
@@ -76,6 +79,7 @@ const Card = ({
       console.log("error");
     }
   }, []);
+  console.log(associatedTags, "associatedTagsassociatedTags")
   useEffect(() => {
     console.log("click", editdropdown, dropdownthreedots);
   }, [editdropdown, dropdownthreedots]);
@@ -85,8 +89,8 @@ const Card = ({
         StatusID === 1
           ? styles["Committee_InActive"]
           : StatusID === 2
-          ? styles["Committee_Archived"]
-          : styles["Committee"]
+            ? styles["Committee_Archived"]
+            : styles["Committee"]
       }
     >
       <Col
@@ -97,8 +101,8 @@ const Card = ({
           StatusID === 1
             ? styles["In-Active-status-Committee-Group-background"]
             : StatusID === 2
-            ? styles["Archived-status-Committee-Group-background"]
-            : styles["Active-status-Committee-Group-background"]
+              ? styles["Archived-status-Committee-Group-background"]
+              : styles["Active-status-Committee-Group-background"]
         }
       >
         {StatusID === 1 ? (
@@ -182,45 +186,45 @@ const Card = ({
                   >
                     {editItems.length > 0
                       ? editItems.map((editItem, index) => {
-                          return (
-                            <>
-                              <Row className="mt-1" key={index}>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-center cursor-pointer Saved_money_Tagline "
+                        return (
+                          <>
+                            <Row className="mt-1" key={index}>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center cursor-pointer Saved_money_Tagline "
+                              >
+                                <span
+                                  className={styles["dropdown-text"]}
+                                  onClick={() =>
+                                    changeHandleStatus(
+                                      editItem,
+                                      CardID,
+                                      setEditdropdown
+                                    )
+                                  }
                                 >
-                                  <span
-                                    className={styles["dropdown-text"]}
-                                    onClick={() =>
-                                      changeHandleStatus(
-                                        editItem,
-                                        CardID,
-                                        setEditdropdown
-                                      )
-                                    }
-                                  >
-                                    {editItem.key}
-                                  </span>
-                                </Col>
-                              </Row>
-                              <hr
-                                className={
-                                  index === 2
-                                    ? "d-none"
-                                    : styles["HR-line-Committee-group"]
-                                }
-                              />
-                            </>
-                          );
-                        })
+                                  {editItem.key}
+                                </span>
+                              </Col>
+                            </Row>
+                            <hr
+                              className={
+                                index === 2
+                                  ? "d-none"
+                                  : styles["HR-line-Committee-group"]
+                              }
+                            />
+                          </>
+                        );
+                      })
                       : null}
                   </Container>
                 </>
               ) : null}
               {dropdownthreedots &&
-              parseInt(CardID) === parseInt(uniqCardID) ? (
+                parseInt(CardID) === parseInt(uniqCardID) ? (
                 <>
                   <Container className={styles["Dropdown-container-Committee"]}>
                     <Row className="mt-1">
@@ -343,9 +347,9 @@ const Card = ({
                             </span>
                             <span
                               className={styles["dropdown-text"]}
-                              // onClick={() =>
-                              //   setdropdownthreedots(!dropdownthreedots)
-                              // }
+                            // onClick={() =>
+                            //   setdropdownthreedots(!dropdownthreedots)
+                            // }
                             >
                               {t("Assign-remove-group")}
                             </span>
@@ -376,35 +380,47 @@ const Card = ({
           </div>
         </Col>
       </Row>
+      <Row><Col sm={12} md={12} lg={12}>
+        {associatedTags !== null && associatedTags !== undefined && associatedTags.length === 1 ?
+          <>
+            <span className={styles["associated_tagLine_groupTitle"]}>{associatedTags[0].groupTitle + " "}</span>
+            <span className={styles["associated_tagLine"]}>{t("associated-with-this-committee")}</span>
+          </> : null}
+        {associatedTags && associatedTags.length > 1 ? <>
+          <span className={styles["associated_tagLine_groupTitle"]}>{associatedTags[0].groupTitle}{`& + ${associatedTags.length}` + " "} </span>
+          <span className={styles["associated_tagLine"]}>{t("associated-with-this-committee")}</span>
+        </> : ""}
+      </Col>
+      </Row>
 
       <Row className="m-0 p-0 ">
         <Col lg={10} md={10} sm={10} className={styles["profile_cards"]}>
           <Row className="justify-content-center">
             {profile != undefined && profile != null
               ? profile.map((data, index) => {
-                  if (index <= 3) {
-                    return (
-                      <Col
-                        sm={2}
-                        md={2}
-                        lg={2}
-                        key={index}
-                        className={
-                          StatusID === 1
-                            ? styles["card_profile_box_InActive"]
-                            : StatusID === 2
+                if (index <= 3) {
+                  return (
+                    <Col
+                      sm={2}
+                      md={2}
+                      lg={2}
+                      key={index}
+                      className={
+                        StatusID === 1
+                          ? styles["card_profile_box_InActive"]
+                          : StatusID === 2
                             ? styles["card_profile_box_Archived"]
                             : styles["card_profile_box"]
-                        }
-                      >
-                        <img src={picprofile} width="37px" height="37px" />
-                        <p className={styles["namesCards-Committee-Group"]}>
-                          {data.userName}
-                        </p>
-                      </Col>
-                    );
-                  }
-                })
+                      }
+                    >
+                      <img src={picprofile} width="37px" height="37px" />
+                      <p className={styles["namesCards-Committee-Group"]}>
+                        {data.userName}
+                      </p>
+                    </Col>
+                  );
+                }
+              })
               : null}
             {profile && profile.length - 4 > 0 ? (
               <Col sm={2} md={2} lg={2} className={styles["card_profile_box"]}>
@@ -424,6 +440,7 @@ const Card = ({
         </Col>
       </Row>
 
+
       <Row className="m-0 p-0 ">
         <Col
           lg={12}
@@ -438,7 +455,7 @@ const Card = ({
           />
         </Col>
       </Row>
-    </Row>
+    </Row >
   );
 };
 

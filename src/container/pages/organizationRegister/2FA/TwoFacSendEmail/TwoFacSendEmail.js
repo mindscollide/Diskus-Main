@@ -25,6 +25,7 @@ import {
 } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
+import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 
 const TwoFacSendEmail = () => {
   const { Authreducer } = useSelector((state) => state);
@@ -187,7 +188,7 @@ const TwoFacSendEmail = () => {
 
   return (
     <>
-      <Row>
+      {/* <Row>
         <Col className="languageselect-box">
           <select
             className="select-language-signin_twofacmultidevice"
@@ -205,8 +206,13 @@ const TwoFacSendEmail = () => {
             className="languageIcon_twofacmultidevice"
           />
         </Col>
-      </Row>
+      </Row> */}
       <Container fluid className="auth_container">
+        <Row className="position-relative">
+          <Col className="languageSelector" >
+            <LanguageSelector />
+          </Col>
+        </Row>
         <Row>
           <Col lg={5} md={5} sm={12}>
             <Row>
@@ -376,8 +382,8 @@ const TwoFacSendEmail = () => {
                             onClick={onClickSendOnDevice}
                             disableBtn={
                               notificationsms ||
-                              notificationemail ||
-                              notificationdevice
+                                notificationemail ||
+                                notificationdevice
                                 ? false
                                 : true
                             }

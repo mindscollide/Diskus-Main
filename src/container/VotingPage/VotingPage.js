@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import thumbsup from "../../assets/images/thumbsup.svg";
 import thumbsdown from "../../assets/images/thumbsdown.svg";
-import result from "../../assets/images/Path 1708.svg";
+import result from "../../assets/images/result.svg";
 import { Paper } from "@material-ui/core";
 import Clock from "../../assets/images/Clock.svg";
 import line from "../../assets/images/line.png";
@@ -13,11 +13,11 @@ import { Button, Notification } from "./../../components/elements";
 import { useTranslation } from "react-i18next";
 import styles from "./VotingPage.module.css";
 import EmployeeinfoCard from "../../components/elements/Employeeinfocard/EmployeeinfoCard";
-
+import SeceretBallotingIcon from '../../assets/images/resolutions/Secret_Balloting_icon.svg'
 import { useSelector, useDispatch } from "react-redux";
 import { updateVoteApi } from "../../store/actions/Resolution_actions";
 import { useNavigate } from "react-router-dom";
-const VotingPage = ({ setVoteresolution, voteresolution }) => {
+const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
   const { t } = useTranslation();
   const { ResolutionReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
@@ -26,7 +26,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
     ResolutionTitle: "",
     ResolutionMethod: "",
   });
-  const [voterID, setVoterID] = useState(0);
+  // const [voterID, setVoterID] = useState(0);
   const [approved, setApproved] = useState(0);
   const [nonApproved, setNonApproved] = useState(0);
   const [pending, setPending] = useState(0);
@@ -34,10 +34,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   const [totalVoters, setTotalVoters] = useState(0);
   const [isResolutionTitle, setResolutionTitle] = useState("");
   const [isVotingMethod, setVotingMethod] = useState("");
-  const [voteId, setVoteId] = useState(0);
-  const [isAbstain, setIsAbstain] = useState(false);
-  const [notApproved, setNotApproved] = useState(false);
-  const [isApproved, setIsApproved] = useState(false);
+  const [voteId, setVoteId] = useState(1);
   const [voter, setVoter] = useState([]);
   const userID = JSON.parse(localStorage.getItem("userID"));
   const [decision, setDecision] = useState("");
@@ -98,7 +95,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
       "stroke-color: #000; stroke-color:#949494;  stroke-width: 4; fill-color: #949494 ; fill-opacity:1",
     ],
   ];
-
+  console.log(voterID, "voterIDvoterIDvoterID")
   const isApprovedBtn = (statusID) => {
     setVoteId(statusID);
   };
@@ -110,7 +107,7 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
   };
   const handleUpdateVote = () => {
     let Data = {
-      PK_RV_ID: userID,
+      PK_RV_ID: voterID,
       FK_VotingStatusID: voteId,
     };
     dispatch(updateVoteApi(navigate, Data, t, setVoteresolution));
@@ -154,7 +151,8 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                         {isResolutionTitle || ""}
                       </span>
                       <span>
-                        <img src={result} height="23.19px" width="23.19px" />
+                        {isVotingMethod === "Secret Balloting" ? <img src={SeceretBallotingIcon} height="23.19px" width="23.19px" /> : <img src={result} height="23.19px" width="23.19px" />}
+                        {/* <img src={result} height="23.19px" width="23.19px" /> */}
                       </span>
                     </Col>
                   </Row>
@@ -247,10 +245,13 @@ const VotingPage = ({ setVoteresolution, voteresolution }) => {
                         </Col>
                       </Row>
                       <Row className="mt-4">
-                        <Col lg={12} md={12} sm={12}>
+                        <Col lg={6} md={6} sm={12}>
                           <span className={styles["Voters_voteResolution"]}>
                             {t("Voters")}
                           </span>
+                        </Col>
+                        <Col sm={12} md={6} lg={6} className="d-flex align-items-center justify-content-end">
+                          <span className={styles["voting_method_heading"]}>{t("Voting-method") + " : "}   </span>  <span className={styles["voting_methong_value"]}> {isVotingMethod === "Secret Balloting" ? t("Secret Balloting") : t("Show of Hands")}</span>
                         </Col>
                       </Row>
                       {isVotingMethod === "Secret Balloting" ? (

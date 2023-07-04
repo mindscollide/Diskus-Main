@@ -351,3 +351,16 @@ body[dir="rtl"] .Your_vote_voteresolution {
   height: 100%;
   background-color: #5a5a5a !important;
 }
+
+.voting_method_heading {
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+}
+
+.voting_methong_value {
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  margin-left: 3px !important;
+}

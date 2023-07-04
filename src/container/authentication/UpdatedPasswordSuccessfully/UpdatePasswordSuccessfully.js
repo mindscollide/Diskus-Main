@@ -18,6 +18,7 @@ import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
 import LanguageChangeIcon from "../../../assets/images/newElements/Language.svg";
 import { useDispatch, useSelector } from "react-redux";
+import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
 
 const UpdatePasswordSuccessfully = () => {
   const { Authreducer } = useSelector((state) => state);
@@ -56,7 +57,7 @@ const UpdatePasswordSuccessfully = () => {
     if (
       Authreducer.passwordUpdateOnForgotPasswordMessege !== "" &&
       Authreducer.passwordUpdateOnForgotPasswordMessege !==
-        t("Password-updated-successfully")
+      t("Password-updated-successfully")
     ) {
       setOpen({
         ...open,
@@ -79,31 +80,11 @@ const UpdatePasswordSuccessfully = () => {
     <>
       <Container fluid className={styles["auth_container"]}>
         <Row>
-          <Col className={styles["languageselect-box"]}>
-            <select
-              className={
-                styles["Update_Password_Successfull_select-language-signin"]
-              }
-              onChange={handleChangeLocale}
-              value={language}
-            >
-              {languages.map(({ name, code }) => (
-                <option
-                  key={code}
-                  value={code}
-                  className={
-                    styles["Update_password_successful_language_options"]
-                  }
-                >
-                  {name}
-                </option>
-              ))}
-            </select>
-            <img
-              src={LanguageChangeIcon}
-              className={styles["Update_password_languageIcon"]}
-            />
+          <Col className={styles["languageSelector"]} >
+            <LanguageSelector />
+
           </Col>
+
         </Row>
 
         <Row>
@@ -168,7 +149,7 @@ const UpdatePasswordSuccessfully = () => {
                         text={t("Back-to-sign-in")}
                         className={
                           styles[
-                            "Update_Password_successfull_Next_button_EmailVerify"
+                          "Update_Password_successfull_Next_button_EmailVerify"
                           ]
                         }
                         onClick={handlechange}

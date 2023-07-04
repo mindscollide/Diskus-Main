@@ -13,7 +13,7 @@ import hollowstar from "../../assets/images/Hollowstar.svg";
 import PlusExpand from "../../assets/images/Plus-notesExpand.svg";
 import MinusExpand from "../../assets/images/close-accordion.svg";
 import EditIconNote from "../../assets/images/EditIconNotes.svg";
-import { Collapse } from "antd";
+import { Collapse, Pagination } from "antd";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -62,6 +62,9 @@ const Notes = () => {
   const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
+  let notesPage = JSON.parse(localStorage.getItem("notesPage"))
+  let notesPagesize = JSON.parse(localStorage.getItem("notesPageSize"))
+  const [totalRecords, setTotalRecords] = useState(0)
   // for modal Add notes
   const [addNotes, setAddNotes] = useState(false);
 
@@ -103,35 +106,47 @@ const Notes = () => {
 
   // render Notes Data
   useEffect(() => {
-    if (
-      NotesReducer.GetAllNotesResponse !== null &&
-      NotesReducer.GetAllNotesResponse.length > 0
-    ) {
-      let notes = [];
-      NotesReducer.GetAllNotesResponse.map((data, index) => {
-        notes.push({
-          date: data.date,
-          description: data.description,
-          fK_NotesStatus: data.fK_NotesStatus,
-          fK_OrganizationID: data.fK_OrganizationID,
-          fK_UserID: data.fK_UserID,
-          isAttachment: data.isAttachment,
-          isStarred: data.isStarred,
-          modifiedDate: data.modifiedDate,
-          modifiedTime: data.modifiedTime,
-          notesAttachments: data.notesAttachments,
-          notesStatus: data.notesStatus,
-          organizationName: data.organizationName,
-          pK_NotesID: data.pK_NotesID,
-          time: data.time,
-          title: data.title,
-          username: data.username,
-        });
-      });
-      setNotes(notes);
-    } else {
-      setNotes([]);
+    console.log(NotesReducer, "NotesReducerNotesReducer")
+    try {
+      if (
+        NotesReducer.GetAllNotesResponse !== null &&
+        NotesReducer.GetAllNotesResponse !== undefined
+      ) {
+        setTotalRecords(NotesReducer.GetAllNotesResponse.totalRecords)
+        if (NotesReducer.GetAllNotesResponse.getNotes.length > 0) {
+          let notes = [];
+          NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
+            notes.push({
+              date: data.date,
+              description: data.description,
+              fK_NotesStatus: data.fK_NotesStatus,
+              fK_OrganizationID: data.fK_OrganizationID,
+              fK_UserID: data.fK_UserID,
+              isAttachment: data.isAttachment,
+              isStarred: data.isStarred,
+              modifiedDate: data.modifiedDate,
+              modifiedTime: data.modifiedTime,
+              notesAttachments: data.notesAttachments,
+              notesStatus: data.notesStatus,
+              organizationName: data.organizationName,
+              pK_NotesID: data.pK_NotesID,
+              time: data.time,
+              title: data.title,
+              username: data.username,
+            });
+          });
+          setNotes(notes);
+        } else {
+          setNotes([]);
+        }
+
+      } else {
+        setNotes([]);
+      }
+    } catch (error) {
+
     }
+
   }, [NotesReducer.GetAllNotesResponse]);
   //for open View User Notes Modal
   const viewNotesModal = async (id, event) => {
@@ -152,12 +167,32 @@ const Notes = () => {
     );
   };
   useEffect(() => {
-    let OrganizationID = localStorage.getItem("organizationID");
-    let Data = {
-      UserID: parseInt(createrID),
-      OrganizationID: JSON.parse(OrganizationID),
-    };
-    dispatch(GetNotes(navigate, Data, t));
+    if (notesPagesize !== null && notesPage !== null) {
+      let Data = {
+        UserID: parseInt(createrID),
+        OrganizationID: JSON.parse(OrganizationID),
+        Title: "",
+        PageNumber: notesPage,
+        Length: notesPagesize
+      };
+      dispatch(GetNotes(navigate, Data, t));
+    } else {
+      localStorage.setItem("notesPage", 1)
+      localStorage.setItem("notesPageSize", 50)
+      let Data = {
+        UserID: parseInt(createrID),
+        OrganizationID: JSON.parse(OrganizationID),
+        Title: "",
+        PageNumber: 1,
+        Length: 50
+      };
+      dispatch(GetNotes(navigate, Data, t));
+    }
+    return () => {
+      localStorage.removeItem("notesPage")
+      localStorage.removeItem("notesPageSize")
+    }
+
   }, []);
 
   const ColorStarIcon = (id, index) => {
@@ -167,6 +202,19 @@ const Notes = () => {
   const handleChangeExpanded = (id) => (event, newExpanded) => {
     setExpanded(newExpanded ? id : false);
   };
+
+  const handelChangeNotesPagination = async (current, pageSize) => {
+    localStorage.setItem("notesPage", current)
+    localStorage.setItem("notesPageSize", pageSize)
+    let Data = {
+      UserID: parseInt(createrID),
+      OrganizationID: JSON.parse(OrganizationID),
+      Title: "",
+      PageNumber: current,
+      Length: pageSize
+    };
+    dispatch(GetNotes(navigate, Data, t));
+  }
 
   useEffect(() => {
     if (
@@ -191,31 +239,9 @@ const Notes = () => {
       });
       dispatch(ClearNotesResponseMessage());
     }
-  }, []);
-
-  useEffect(() => {
-    if (
-      NotesReducer.ResponseMessage !== "" &&
-      NotesReducer.ResponseMessage.toLowerCase() !==
-        t("Data-available").toLowerCase() &&
-      NotesReducer.ResponseMessage !== t("No-data-available")
-    ) {
-      setOpen({
-        open: true,
-        message: NotesReducer.ResponseMessage,
-      });
-      setTimeout(() => {
-        setOpen(
-          {
-            open: false,
-            message: "",
-          },
-          3000
-        );
-        dispatch(ClearNotesResponseMessage());
-      });
-    }
   }, [NotesReducer.ResponseMessage]);
+
+
   const toggleAcordion = (e) => {
     setExpanded(e);
   };
@@ -357,9 +383,8 @@ const Notes = () => {
                               lg={3}
                               md={3}
                               sm={12}
-                              className={`${"d-flex justify-content-end align-items-center"} ${
-                                styles["editIconBox"]
-                              }`}
+                              className={`${"d-flex justify-content-end align-items-center"} ${styles["editIconBox"]
+                                }`}
                             >
                               <img
                                 src={EditIconNote}
@@ -383,102 +408,102 @@ const Notes = () => {
                             >
                               {data?.notesAttachments.length > 0
                                 ? data?.notesAttachments.map((file, index) => {
-                                    console.log("file ", file);
-                                    var ext = file.displayAttachmentName
-                                      .split(".")
-                                      .pop();
-                                    const first =
-                                      file.displayAttachmentName.split(" ")[0];
+                                  console.log("file ", file);
+                                  var ext = file.displayAttachmentName
+                                    .split(".")
+                                    .pop();
+                                  const first =
+                                    file.displayAttachmentName.split(" ")[0];
 
-                                    return (
-                                      <Col
-                                        sm={12}
-                                        lg={2}
-                                        md={2}
+                                  return (
+                                    <Col
+                                      sm={12}
+                                      lg={2}
+                                      md={2}
+                                      className={
+                                        styles["notes-attachment-icon"]
+                                      }
+                                    >
+                                      {ext === "doc" ? (
+                                        <FileIcon
+                                          extension={"docx"}
+                                          size={78}
+                                          type={"document"}
+                                          labelColor={"rgba(44, 88, 152)"}
+                                        />
+                                      ) : ext === "docx" ? (
+                                        <FileIcon
+                                          extension={"docx"}
+                                          size={78}
+                                          type={"font"}
+                                          labelColor={"rgba(44, 88, 152)"}
+                                        />
+                                      ) : ext === "xls" ? (
+                                        <FileIcon
+                                          extension={"xls"}
+                                          type={"spreadsheet"}
+                                          size={78}
+                                          labelColor={"rgba(16, 121, 63)"}
+                                        />
+                                      ) : ext === "xlsx" ? (
+                                        <FileIcon
+                                          extension={"xls"}
+                                          type={"spreadsheet"}
+                                          size={78}
+                                          labelColor={"rgba(16, 121, 63)"}
+                                        />
+                                      ) : ext === "pdf" ? (
+                                        <FileIcon
+                                          extension={"pdf"}
+                                          size={78}
+                                          {...defaultStyles.pdf}
+                                        />
+                                      ) : ext === "png" ? (
+                                        <FileIcon
+                                          extension={"png"}
+                                          size={78}
+                                          type={"image"}
+                                          labelColor={"rgba(102, 102, 224)"}
+                                        />
+                                      ) : ext === "txt" ? (
+                                        <FileIcon
+                                          extension={"txt"}
+                                          size={78}
+                                          type={"document"}
+                                          labelColor={"rgba(52, 120, 199)"}
+                                        />
+                                      ) : ext === "jpg" ? (
+                                        <FileIcon
+                                          extension={"jpg"}
+                                          size={78}
+                                          type={"image"}
+                                          labelColor={"rgba(102, 102, 224)"}
+                                        />
+                                      ) : ext === "jpeg" ? (
+                                        <FileIcon
+                                          extension={"jpeg"}
+                                          size={78}
+                                          type={"image"}
+                                          labelColor={"rgba(102, 102, 224)"}
+                                        />
+                                      ) : ext === "gif" ? (
+                                        <FileIcon
+                                          extension={"gif"}
+                                          size={78}
+                                          {...defaultStyles.gif}
+                                        />
+                                      ) : null}
+
+                                      <p
                                         className={
-                                          styles["notes-attachment-icon"]
+                                          styles["notes-attachment-text"]
                                         }
                                       >
-                                        {ext === "doc" ? (
-                                          <FileIcon
-                                            extension={"docx"}
-                                            size={78}
-                                            type={"document"}
-                                            labelColor={"rgba(44, 88, 152)"}
-                                          />
-                                        ) : ext === "docx" ? (
-                                          <FileIcon
-                                            extension={"docx"}
-                                            size={78}
-                                            type={"font"}
-                                            labelColor={"rgba(44, 88, 152)"}
-                                          />
-                                        ) : ext === "xls" ? (
-                                          <FileIcon
-                                            extension={"xls"}
-                                            type={"spreadsheet"}
-                                            size={78}
-                                            labelColor={"rgba(16, 121, 63)"}
-                                          />
-                                        ) : ext === "xlsx" ? (
-                                          <FileIcon
-                                            extension={"xls"}
-                                            type={"spreadsheet"}
-                                            size={78}
-                                            labelColor={"rgba(16, 121, 63)"}
-                                          />
-                                        ) : ext === "pdf" ? (
-                                          <FileIcon
-                                            extension={"pdf"}
-                                            size={78}
-                                            {...defaultStyles.pdf}
-                                          />
-                                        ) : ext === "png" ? (
-                                          <FileIcon
-                                            extension={"png"}
-                                            size={78}
-                                            type={"image"}
-                                            labelColor={"rgba(102, 102, 224)"}
-                                          />
-                                        ) : ext === "txt" ? (
-                                          <FileIcon
-                                            extension={"txt"}
-                                            size={78}
-                                            type={"document"}
-                                            labelColor={"rgba(52, 120, 199)"}
-                                          />
-                                        ) : ext === "jpg" ? (
-                                          <FileIcon
-                                            extension={"jpg"}
-                                            size={78}
-                                            type={"image"}
-                                            labelColor={"rgba(102, 102, 224)"}
-                                          />
-                                        ) : ext === "jpeg" ? (
-                                          <FileIcon
-                                            extension={"jpeg"}
-                                            size={78}
-                                            type={"image"}
-                                            labelColor={"rgba(102, 102, 224)"}
-                                          />
-                                        ) : ext === "gif" ? (
-                                          <FileIcon
-                                            extension={"gif"}
-                                            size={78}
-                                            {...defaultStyles.gif}
-                                          />
-                                        ) : null}
-
-                                        <p
-                                          className={
-                                            styles["notes-attachment-text"]
-                                          }
-                                        >
-                                          {first}
-                                        </p>
-                                      </Col>
-                                    );
-                                  })
+                                        {first}
+                                      </p>
+                                    </Col>
+                                  );
+                                })
                                 : null}
                             </Col>
                           </Row>
@@ -503,6 +528,9 @@ const Notes = () => {
                 </Col>
               </Row>
             )}
+          </Col>
+          <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
+            <Pagination current={notesPage} onChange={handelChangeNotesPagination} showSizeChanger total={totalRecords} pageSizeOptions={[30, 50, 100, 200]} pageSize={notesPagesize} className={styles["PaginationStyle-Notes"]} />
           </Col>
         </Row>
         {/* Test Accordian Ends  */}

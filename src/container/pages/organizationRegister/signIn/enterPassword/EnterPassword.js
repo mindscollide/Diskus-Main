@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
 import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
+import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 
 const EnterPassword = () => {
   const { t, i18n } = useTranslation();
@@ -269,25 +270,12 @@ const EnterPassword = () => {
 
   return (
     <>
-      <Row>
-        <Col className={styles["languageselect-box"]}>
-          <select
-            className={styles["select-language-signin"]}
-            onChange={handleChangeLocale}
-            value={language}
-          >
-            {languages.map(({ name, code }) => (
-              <option
-                key={code}
-                value={code}
-                className={styles["language_options"]}
-              >
-                {name}
-              </option>
-            ))}
-          </select>
-          <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
+      <Row className="position-relative">
+        <Col className={styles["languageSelector"]} >
+          <LanguageSelector />
+
         </Col>
+
       </Row>
 
       <Container fluid className={styles["auth_container"]}>
@@ -344,7 +332,7 @@ const EnterPassword = () => {
                         labelClass="lightLabel"
                         autoComplete="false"
                         maxLength={200}
-                        // clickIcon={showNewPassowrd}
+                      // clickIcon={showNewPassowrd}
                       />
                       <span
                         className={styles["passwordIcon"]}

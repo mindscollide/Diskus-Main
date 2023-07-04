@@ -598,7 +598,7 @@
   "User-otp-generated-successfully": "User OTP generated successfully.",
   "User-otp-not-generated-successfully": "User OTP not generated successfully.",
   "The-user-email-is-not-active": "The user email is not active.",
-  "Subtotal-pkr": "Subtotal (PKR)",
+  "Subtotal-pkr": "Subtotal (USD)",
   "Order-summary": "Order Summary",
   "Satisfaction-guaranteed": "Satisfaction Guaranteed",
   "If-youre-not-completely-with-purhcase-contact-our-Diskus-Guides-24/7/365-and-well-make-it-right": " If you're not completely with purhcase, contact our Diskus Guides 24/7/365 and we'll make it right.",
@@ -866,7 +866,7 @@
   "There-are-no-items-here": "There are no items here!",
   "Already-exists-in-this-location": "already exists in this location. Do you want to replacethe file you're moving? Replacing the file won’t changethe sharing settings",
   "You-can-add-data-only-from-one-form-option-at-a-time": "You can add data from only one form option at a time",
-  "Send-notification-on-device": "Send notification on device",
+  "Send-notification-on-device": "Send Notification on Device",
   "Folder-removed": "Folder Removed",
   "File-removed": "File Removed",
   "View-detail": "View Detail",
@@ -985,7 +985,7 @@
   "Last-year-(2022)": "Last Year (2022)",
   "Location-anywhere": "Location Anywhere",
   "Date-modified": "Date Modified",
-  "Enter-a-team-the-matches-part-of-the-file-name": "Enter a team the matches part of the file name",
+  "Enter-a-team-the-matches-part-of-the-file-name": "Enter a term that matches part of the file name",
   "Has-the-words-found-inside-the-file": "Has the words found inside the file",
   "Any-time": "Any time",
   "Last-modified": "Last modified",
@@ -1054,5 +1054,9 @@
   "Non-approved": "Non Approved",
   "This-user-already-exist-in-voter-list": "This user already exist in voter-list",
   "This-voter-already-exist": "this Voter already Exist",
-  "No-events-available-on-this-date": "No Events Available on this date"
+  "No-events-available-on-this-date": "No Events Available on this date",
+  "Notes-to-voters-is-required": "Notes To Voters is required",
+  "This-voter-is-already-exist-in-non-voter-list": "This voter-is already exist in non voter list",
+  "Secret-balloting": "Secret balloting",
+  "Show-of-hands": "Show of hands"
 }

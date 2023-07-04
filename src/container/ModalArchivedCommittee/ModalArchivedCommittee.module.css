@@ -10,6 +10,7 @@
   font-weight: 600 !important;
   font-family: "MontserratSemiBold-600" !important;
 }
+
 /* 
   .create-Group-btn {
     width: 150px;
@@ -97,10 +98,12 @@ body[dir="rtl"] .Dropdown-container-editIcon-Archived-groups {
   left: auto !important;
   right: 243px !important;
 }
+
 .Dropdown-container:hover {
   border-color: #6172d6 !important;
   border-radius: 4px !important;
 }
+
 .Dropdown-container-editIcon-Archived-groups {
   background: #fff !important;
   height: 15.8vh !important;
@@ -114,6 +117,7 @@ body[dir="rtl"] .Dropdown-container-editIcon-Archived-groups {
   border-radius: 4px !important;
   box-shadow: 0px 0px 5px #ccc;
 }
+
 .card-heading-Archived-Group {
   font-size: 20px !important;
   margin: 0 !important;
@@ -159,6 +163,7 @@ body[dir="rtl"] .Dropdown-container-editIcon-Archived-groups {
 .Tagline-Archived-Group {
   line-height: 1rem !important;
 }
+
 .cvgicon {
   fill: white;
 }
@@ -193,10 +198,12 @@ body[dir="rtl"] .Two-Icons-style-Archived-group {
   color: #6172d6 !important;
   margin-left: 10px !important;
 }
+
 body[dir="rtl"] .Archived-heading {
   margin-right: 10px !important;
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
+
 .PaginationStyle-Committee-Archived_modal {
   background-color: #fff !important;
   display: flex !important;
@@ -215,10 +222,10 @@ body[dir="rtl"] .PaginationStyle-Committee-Archived_modal {
 }
 
 .Archived_modal_scrollbar {
-  max-height: 70vh !important;
+  max-height: 50vh !important;
   height: auto !important;
   overflow-x: hidden !important;
-  margin-top: -70px !important;
+  margin-top: 0 !important;
 }
 
 .Archived_modal_scrollbar::-webkit-scrollbar {
@@ -236,6 +243,7 @@ body[dir="rtl"] .PaginationStyle-Committee-Archived_modal {
 .HeaderArchivedCommittee .btn-close {
   display: none !important;
 }
+
 button .btn-close {
   display: none !important;
 }
@@ -244,8 +252,8 @@ button .btn-close {
   background: none !important;
   border: none;
 }
-.ArrowIcon_modal_archived_comiitee {
-}
+
+/* .ArrowIcon_modal_archived_comiitee {} */
 
 body[dir="rtl"] .ArrowIcon_modal_archived_comiitee {
   transform: rotate(180deg) !important;

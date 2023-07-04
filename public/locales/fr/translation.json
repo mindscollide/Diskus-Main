@@ -681,5 +681,9 @@
   "Non-Approved": "Non Approved",
   "This-user-already-exist-in-voter-list": "This user already exist in voter-list",
   "This-voter-already-exist": "this Voter already Exist",
-  "No-events-available-on-this-date": "No Events Available on this date"
+  "No-events-available-on-this-date": "No Events Available on this date",
+  "Enter-a-team-the-matches-part-of-the-file-name": "Enter a term that matches part of the file name",
+  "Notes-to-voters-is-required": "Notes To Voters is required",
+  "Secret-balloting": "Secret balloting",
+  "Show-of-hands": "Show of hands"
 }

@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { closeResolutionApi } from "../../../store/actions/Resolution_actions";
 import { resolutionResultTable } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
+import SeceretBallotingIcon from '../../../assets/images/resolutions/Secret_Balloting_icon.svg'
 
 const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const { t } = useTranslation();
@@ -29,6 +30,8 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const [nonApproved, setNonApproved] = useState(0);
   const [pending, setPending] = useState(0);
   const [abstain, setAbstain] = useState(0);
+  const [votingMethod, setVotingMethod] = useState("")
+  console.log(votingMethod, "votingMethodvotingMethod")
   const [notes, setNotes] = useState("");
   const [totalVoters, setTotalVoters] = useState(0);
   const [decisionDateExpiry, setDesicionDateExpiry] = useState(false);
@@ -98,31 +101,38 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
       ResolutionReducer.getResolutionResult,
       "ResolutionReducerResolutionReducerResolutionReducer"
     );
-    if (ResolutionReducer.getResolutionResult !== null) {
-      let resolutionresult = ResolutionReducer.getResolutionResult;
-      setApproved(resolutionresult.approvedVotes);
-      setAbstain();
-      setPending(resolutionresult.pendingVoters);
-      setNonApproved(resolutionresult.nonApprovedVotes);
-      setTotalVoters(resolutionresult.totalVoters);
-      setDecision(resolutionresult.decision);
-      setVoter(resolutionresult.voters);
-      setResolutionID(resolutionresult.resolutionID);
-      setResolutionTitle(resolutionresult.resolutionTite);
-      let newDate = new Date();
-      let DecisionDateExpiry = resolutionResultTable(
-        resolutionresult.decisionAnnouncementDateTime
-      );
-      if (DecisionDateExpiry < newDate) {
-        setDesicionDateExpiry(true);
-      } else {
-        setDesicionDateExpiry(false);
+    try {
+      if (ResolutionReducer.getResolutionResult !== null) {
+        let resolutionresult = ResolutionReducer.getResolutionResult;
+        setApproved(resolutionresult.approvedVotes);
+        setAbstain();
+
+        setVotingMethod(resolutionresult.votingMethod)
+        setPending(resolutionresult.pendingVoters);
+        setNonApproved(resolutionresult.nonApprovedVotes);
+        setTotalVoters(resolutionresult.totalVoters);
+        setDecision(resolutionresult.decision);
+        setVoter(resolutionresult.voters);
+        setResolutionID(resolutionresult.resolutionID);
+        setResolutionTitle(resolutionresult.resolutionTite);
+        let newDate = new Date();
+        let DecisionDateExpiry = resolutionResultTable(
+          resolutionresult.decisionAnnouncementDateTime
+        );
+        if (DecisionDateExpiry < newDate) {
+          setDesicionDateExpiry(true);
+        } else {
+          setDesicionDateExpiry(false);
+        }
       }
+    } catch (error) {
+
     }
+
   }, [ResolutionReducer.getResolutionResult]);
   return (
     <section>
-      <Row className="my-4">
+      <Row className="my-2">
         <Col lg={12} md={12} sm={12}>
           <span className={styles["Result_Heading_resolution"]}>
             {t("Result")}
@@ -134,11 +144,14 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
         <Col lg={12} md={12} sm={12}>
           <Paper className={styles["Result_page_paper"]}>
             <Row>
-              <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+              <Col lg={6} md={6} sm={12} className="d-flex gap-2">
                 <span className={styles["results_paper_heading"]}>
-                  {resolutionTitle || ""} {" "} <img src={result} height="30.97px" width="20.96px" />
+                  {resolutionTitle || ""} {" "}{votingMethod === "Secret Balloting" ? <img src={SeceretBallotingIcon} height="23.19px" width="23.19px" /> : <img src={result} height="23.19px" width="23.19px" />}
                 </span>
 
+              </Col>
+              <Col sm={12} md={6} lg={6} className="d-flex align-items-center justify-content-end">
+                <span className={styles["voting_method_heading"]}>{t("Voting-method") + " : "}   </span>  <span className={styles["voting_methong_value"]}> {votingMethod === "Secret Balloting" ? t("Secret-balloting") : t("Show-of-hands")}</span>
               </Col>
             </Row>
             <Row className="mt-2">

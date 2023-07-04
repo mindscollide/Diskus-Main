@@ -19,6 +19,7 @@ import {
   clearMessagesGroup,
   getbyGroupID,
   getGroups,
+  realtimeGroupStatusResponse,
   updateGroupStatus,
 } from "../../store/actions/Groups_actions";
 import { Plus } from "react-bootstrap-icons";
@@ -31,7 +32,6 @@ const Groups = () => {
   const [showModal, setShowModal] = useState(false);
   const [statusValue, setStatusValue] = useState("");
   const [showActiveGroup, setShowActivegroup] = useState(false);
-  const [editFlag, setEditFlag] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
@@ -43,26 +43,17 @@ const Groups = () => {
     message: "",
   });
   //Pagination states
-  const [totalLength, setTotalLength] = useState(1);
+  const [totalLength, setTotalLength] = useState(0);
   const [groupStatusUpdateData, setGroupStatusUpdateData] = useState({
     StatusID: 0,
     GroupID: 0,
   });
-  const [pagedata, setPagedata] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postperpage, setPostperpage] = useState(8);
-  const Lastpostindex = currentPage * postperpage;
-  const firstpostindex = Lastpostindex - postperpage;
-  let newdata = groupsData ? groupsData : [];
-  const currentposts = newdata.slice(firstpostindex, Lastpostindex);
   const [uniqCardID, setUniqCardID] = useState(0);
-  console.log("currentposts", currentposts);
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"))
 
   const handlechange = (value) => {
-    console.log("valuevalue", value);
-    setCurrentPage(value);
-
-    // setCurrentPage(newdata);
+    localStorage.setItem("groupsCurrent", value)
+    dispatch(getGroups(navigate, t, 0, value));
   };
 
   const archivedmodaluser = (e) => {
@@ -117,6 +108,7 @@ const Groups = () => {
       StatusID: JSON.parse(e.value),
     });
   };
+
   const handleStatusUpdate = async () => {
     let OrganizationID = localStorage.getItem("organizationID");
     let Data = {
@@ -131,35 +123,51 @@ const Groups = () => {
     });
     setStatusValue("");
   };
+
   useEffect(() => {
     setShowModal(false);
     setUpdateComponentpage(false);
     setViewGroupPage(false);
   }, []);
+
+  useEffect(() => {
+    localStorage.removeItem("groupsArCurrent")
+    localStorage.setItem("groupsCurrent", 1)
+    dispatch(getGroups(navigate, t, 0, 1));
+  }, []);
+
   useEffect(() => {
     if (GroupsReducer.realtimeGroupStatus !== null) {
-      let findGroupIndex = groupsData.findIndex(
-        (data, index) =>
-          data.groupID === GroupsReducer.realtimeGroupStatus.groupID
-      );
-      console.log(
-        "findGroupIndexfindGroupIndexfindGroupIndex",
-        findGroupIndex,
-        groupsData,
-        GroupsReducer.realtimeGroupStatus
-      );
-      if (findGroupIndex !== -1) {
-        let newArr = groupsData.map((data, index) => {
-          if (findGroupIndex === index) {
-            let newData = {
-              ...data,
-              groupStatusID: GroupsReducer.realtimeGroupStatus.groupStatusID,
-            };
-            return newData;
-          }
-          return data;
-        });
-        setgroupsData(newArr);
+      let status = GroupsReducer.realtimeGroupStatus.groupStatusID;
+      if (status === 2) {
+        let findGroupIndex = groupsData.findIndex(
+          (data, index) =>
+            data.groupID === GroupsReducer.realtimeGroupStatus.groupID
+        );
+        if (findGroupIndex !== -1) {
+          let newArr = [...groupsData];
+          newArr.splice(findGroupIndex, 1)
+          setgroupsData(newArr);
+          dispatch(realtimeGroupStatusResponse(null))
+        }
+      } else {
+        let findGroupIndex = groupsData.findIndex(
+          (data, index) =>
+            data.groupID === GroupsReducer.realtimeGroupStatus.groupID
+        );
+        if (findGroupIndex !== -1) {
+          let newArr = groupsData.map((data, index) => {
+            if (findGroupIndex === index) {
+              let newData = {
+                ...data,
+                groupStatusID: GroupsReducer.realtimeGroupStatus.groupStatusID,
+              };
+              return newData;
+            }
+            return data;
+          });
+          setgroupsData(newArr);
+        }
       }
     }
   }, [GroupsReducer.realtimeGroupStatus]);
@@ -168,55 +176,42 @@ const Groups = () => {
     if (GroupsReducer.realtimeGroupCreateResponse !== null) {
       let groupData = GroupsReducer.realtimeGroupCreateResponse;
       console.log(groupData, "groupDatagroupDatagroupDatagroupData");
-      groupsData.unshift(groupData);
-      setgroupsData([...groupsData]);
+      setgroupsData((prev) => [groupsData, ...prev])
     }
   }, [GroupsReducer.realtimeGroupCreateResponse]);
 
   useEffect(() => {
-    if (
-      GroupsReducer.getAllGroupsResponse !== null &&
-      GroupsReducer.getAllGroupsResponse !== undefined &&
-      GroupsReducer.getAllGroupsResponse.length > 0
-    ) {
-      let newArr = [];
-      let arr = GroupsReducer.getAllGroupsResponse.filter(
-        (data, index) => data.groupStatusID !== 2
-      );
-      console.log("arrarr", arr);
-      arr.map((data, index) => {
-        console.log("datavvvvvvvv", data);
-        newArr.push({
-          groupDescription: data.groupDescription,
-          groupID: data.groupID,
-          groupMembers: data.groupMembers,
-          groupStatusID: data.groupStatusID,
-          groupTitle: data.groupTitle,
-          userCount: data.userCount,
-        });
-      });
-      setgroupsData(newArr);
-      let Totallength = Math.ceil(arr.length / 8);
-      setTotalLength(arr.length);
-      if (Totallength >= 10) {
-      } else {
-        Totallength = Totallength + "0";
-      }
-      setPagedata(parseInt(Totallength));
-    }
-  }, [GroupsReducer.getAllGroupsResponse]);
+    console.log(GroupsReducer, "GroupsReducerGroupsReducerGroupsReducer")
+    try {
+      if (
+        GroupsReducer.getAllGroupsResponse !== null &&
+        GroupsReducer.getAllGroupsResponse !== undefined
+      ) {
+        if (GroupsReducer.getAllGroupsResponse?.groups?.length > 0) {
+          setTotalLength(GroupsReducer.getAllGroupsResponse.totalRecords)
+          let newArr = [];
+          let arr = GroupsReducer.getAllGroupsResponse.groups;
+          console.log("arrarr", arr);
+          arr.map((data, index) => {
+            console.log("datavvvvvvvv", data);
+            newArr.push({
+              groupDescription: data.groupDescription,
+              groupID: data.groupID,
+              groupMembers: data.groupMembers,
+              groupStatusID: data.groupStatusID,
+              groupTitle: data.groupTitle,
+              userCount: data.userCount,
+            });
+          });
+          setgroupsData(newArr);
+        }
 
-  useEffect(() => {
-    if (groupsData.length > 0) {
-      let Totallength = Math.ceil(groupsData.length / 8);
-      setTotalLength(groupsData.length);
-      if (Totallength >= 10) {
-      } else {
-        Totallength = Totallength + "0";
       }
-      setPagedata(parseInt(Totallength));
+    } catch (error) {
+
     }
-  }, [groupsData]);
+
+  }, [GroupsReducer.getAllGroupsResponse]);
 
   useEffect(() => {
     if (
@@ -241,10 +236,6 @@ const Groups = () => {
       dispatch(clearMessagesGroup());
     }
   }, [GroupsReducer.ResponseMessage]);
-
-  useEffect(() => {
-    dispatch(getGroups(navigate, t));
-  }, []);
 
   return (
     <>
@@ -298,47 +289,45 @@ const Groups = () => {
 
             <Row>
               <Col lg={12} sm={12} md={12}>
-                <Row className="d-flex text-center  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-3">
+                <Row className={`${"d-flex text-center MontserratSemiBold-600 color-5a5a5a m-0 p-0"} ${styles["groups_box"]}`}>
                   <Col sm={12} md={12} lg={12} className="m-0 p-0">
                     <Row>
                       {groupsData.length > 0 ? (
-                        currentposts.map((data, index) => {
-                          if (data.groupStatusID !== 2) {
-                            return (
-                              <Col lg={3} md={3} sm={12} className="mb-3">
-                                <Card
-                                  setUniqCardID={setUniqCardID}
-                                  uniqCardID={uniqCardID}
-                                  key={index}
-                                  CardID={data.groupID}
-                                  StatusID={data.groupStatusID}
-                                  flag={false}
-                                  Icon={
-                                    <img
-                                      src={GroupIcon}
-                                      height="29.23px"
-                                      width="32.39px"
-                                    />
-                                  }
-                                  profile={data.groupMembers}
-                                  onClickFunction={() =>
-                                    viewmodal(data.groupID, data.groupStatusID)
-                                  }
-                                  BtnText={
-                                    data.groupStatusID === 1
-                                      ? t("View-group")
-                                      : data.groupStatusID === 2
+                        groupsData.map((data, index) => {
+                          return (
+                            <Col lg={3} md={3} sm={12} className="mb-3">
+                              <Card
+                                setUniqCardID={setUniqCardID}
+                                uniqCardID={uniqCardID}
+                                key={index}
+                                CardID={data.groupID}
+                                StatusID={data.groupStatusID}
+                                flag={false}
+                                Icon={
+                                  <img
+                                    src={GroupIcon}
+                                    height="29.23px"
+                                    width="32.39px"
+                                  />
+                                }
+                                profile={data.groupMembers}
+                                onClickFunction={() =>
+                                  viewmodal(data.groupID, data.groupStatusID)
+                                }
+                                BtnText={
+                                  data.groupStatusID === 1
+                                    ? t("View-group")
+                                    : data.groupStatusID === 2
                                       ? t("View-group")
                                       : data.groupStatusID === 3
-                                      ? t("Update-group")
-                                      : ""
-                                  }
-                                  CardHeading={data?.groupTitle}
-                                  changeHandleStatus={changeHandleStatus}
-                                />
-                              </Col>
-                            );
-                          }
+                                        ? t("Update-group")
+                                        : ""
+                                }
+                                CardHeading={data?.groupTitle}
+                                changeHandleStatus={changeHandleStatus}
+                              />
+                            </Col>
+                          );
                         })
                       ) : (
                         <Col
@@ -406,22 +395,23 @@ const Groups = () => {
                   sm={4}
                   className="d-flex justify-content-center "
                 >
-                  <Container className={styles["PaginationStyle-Committee"]}>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={"pagination-groups-table"}
-                      >
-                        <Pagination
-                          defaultCurrent={currentposts}
-                          total={pagedata}
-                          onChange={handlechange}
-                        />
-                      </Col>
-                    </Row>
-                  </Container>
+                  {/* <Container className={styles["PaginationStyle-Committee"]}> */}
+                  <Row className={styles["PaginationStyle-Committee"]}>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={"pagination-groups-table "}
+                    >
+                      <Pagination
+                        current={currentPage}
+                        total={totalLength}
+                        pageSize={9}
+                        onChange={handlechange}
+                      />
+                    </Col>
+                  </Row>
+                  {/* </Container> */}
                 </Col>
               </Row>
             )}
@@ -433,6 +423,7 @@ const Groups = () => {
           archivedCommittee={showModal}
           setArchivedCommittee={setShowModal}
           setViewGroupPage={setViewGroupPage}
+          setUpdateComponentpage={setUpdateComponentpage}
         />
       ) : null}
       {modalStatusChange ? (

@@ -876,7 +876,7 @@ const ScheduleNewResolution = ({
                         >
                           <Select
                             name="Participant"
-                            placeholder={t("Voting-deadline") + "*"}
+                            placeholder={t("Voting-method") + "*"}
                             className="select-voting-deadline"
                             options={votingMethods}
                             isSearchable={false}
@@ -944,7 +944,7 @@ const ScheduleNewResolution = ({
                                     : `${styles["errorMessage_hidden"]}`
                                 }
                               >
-                                {t("Resolution-description-is-required")}
+                                {t("Notes-to-voters-is-required")}
                               </p>
                             </Col>
                           </Row>
@@ -953,8 +953,9 @@ const ScheduleNewResolution = ({
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Circulation_heading"]}>
-                            {t("Circulation-date") + "*"}
+                            {t("Circulation-date")}
                           </span>
+                          <span style={{ color: "#F16B6B" }}>*</span>
                         </Col>
                       </Row>
                       <Row className="mt-0">
@@ -995,6 +996,7 @@ const ScheduleNewResolution = ({
                               >
                                 {t("Circulation-date-is-required")}
                               </p>
+
                             </Col>
                           </Row>
                         </Col>
@@ -1039,8 +1041,9 @@ const ScheduleNewResolution = ({
                               styles["Voting_deadline_Create_resolution"]
                             }
                           >
-                            {t("Voting-deadline") + "*"}
+                            {t("Voting-deadline")}
                           </span>
+                          <span style={{ color: "#F16B6B" }}>*</span>
                         </Col>
                       </Row>
                       <Row className="mt-0">
@@ -1129,8 +1132,9 @@ const ScheduleNewResolution = ({
                               styles["decision_annoucement_Createresoulution"]
                             }
                           >
-                            {t("Decision-announcement") + "*"}
+                            {t("Decision-announcement")}
                           </span>
+                          <span style={{ color: "#F16B6B" }}>*</span>
                         </Col>
                       </Row>
                       <Row className="mt-0">
@@ -1215,8 +1219,9 @@ const ScheduleNewResolution = ({
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Reminder"]}>
-                            {t("Reminder-frequency") + "*"}
+                            {t("Reminder-frequency")}
                           </span>
+                          <span style={{ color: "#F16B6B" }}>*</span>
                         </Col>
                       </Row>
                       <Row className="mt-0">
@@ -1331,7 +1336,7 @@ const ScheduleNewResolution = ({
                                   className="CreateMeetingInput resolution-search-input  "
                                 >
                                   <InputSearchFilter
-                                    placeholder={t("Add-attendees")}
+                                    placeholder={`${t("Add-attendees")}*`}
                                     className="taskassignee"
                                     value={taskAssignedToInput}
                                     filteredDataHandler={searchFilterHandler(
@@ -1364,7 +1369,7 @@ const ScheduleNewResolution = ({
                                   <TextField
                                     applyClass="text-area-create-group"
                                     type="text"
-                                    placeholder={t("Email")}
+                                    placeholder={`${t("Email")}*`}
                                     required={true}
                                     value={emailValue}
                                     disable={true}
@@ -1728,7 +1733,7 @@ const ScheduleNewResolution = ({
                             <Col lg={12} md={12} sm={12}>
                               <Dragger {...props} className={styles["dragdrop_attachment_create_resolution"]}>
                                 <p className="ant-upload-drag-icon">
-                                  <span>
+                                  <span className={styles["create_resolution_dragger"]}>
                                     <img
                                       src={featherupload}
                                       width="18.87px"

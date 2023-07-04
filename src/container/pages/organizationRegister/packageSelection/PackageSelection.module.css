@@ -234,7 +234,7 @@ body[dir="rtl"] .packagecard_disoucntprice_para {
   text-align: center;
 }
 
-.packagecard_usersallows + p {
+.packagecard_usersallows+p {
   font-size: 12px;
 }
 
@@ -281,6 +281,7 @@ body[dir="rtl"] .packagecard_usersallows_members {
   text-transform: uppercase;
   font-size: calc(18px - 20%) !important;
 }
+
 body[dir="rtl"] .packagecard_btn {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
@@ -480,9 +481,11 @@ img.package-icon {
   left: 20px;
   width: 60px;
 }
+
 body[dir="rtl"] img.package-icon {
   left: 77%;
 }
+
 .Package-select-language {
   position: absolute;
   overflow: hidden !important;
@@ -563,6 +566,7 @@ body[dir="rtl"] .languageIcon {
   margin-top: 3px;
   padding-top: 2px;
 }
+
 body[dir="rtl"] .span-foranually {
   border-right: 0px !important;
   border-left: 1px solid #e1e1e1 !important;
@@ -572,6 +576,7 @@ body[dir="rtl"] .span-foranually {
   border-bottom-left-radius: 4px;
   font-family: "IBMPlexSansArabic-Medium" !important;
 }
+
 .span-formontly {
   width: 100%;
   background-color: none;
@@ -588,6 +593,7 @@ body[dir="rtl"] .span-foranually {
   margin-top: 3px;
   padding-top: 3px;
 }
+
 body[dir="rtl"] .span-formontly {
   border-right: 1px solid #e1e1e1 !important;
   border-top-right-radius: 4px !important;
@@ -597,6 +603,7 @@ body[dir="rtl"] .span-formontly {
   border-left: 0px;
   font-family: "IBMPlexSansArabic-Medium" !important;
 }
+
 .spanActive {
   background: #6172d6;
   width: 100%;
@@ -611,4 +618,24 @@ body[dir="rtl"] .span-formontly {
 
 body[dir="rtl"] .spanActive {
   font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+.languageSelector {
+  position: absolute;
+  right: 0;
+  z-index: 99999 !important;
+  margin-top: 20px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+body[dir="rtl"] .languageSelector {
+  position: absolute;
+  right: 0;
+  z-index: 99999 !important;
+  margin-top: 20px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
 }

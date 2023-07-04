@@ -14,6 +14,7 @@ import LanguageChangeIcon from "../../../../../assets/images/newElements/Languag
 import DiskusAuthPageLogo from "../../../../../assets/images/newElements/Diskus_newRoundIcon.svg";
 import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
+import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 const VerificationCodeThree = () => {
   const { t, i18n } = useTranslation();
   const { Authreducer } = useSelector((state) => state);
@@ -189,7 +190,7 @@ const VerificationCodeThree = () => {
   }, []);
   return (
     <>
-      <Row>
+      {/* <Row>
         <Col className="languageselect-box">
           <select
             className="select-language-signin_2FAverificationdevieotp"
@@ -207,8 +208,13 @@ const VerificationCodeThree = () => {
             className="languageIcon_2FAverificationdevieotp"
           />
         </Col>
-      </Row>
+      </Row> */}
       <Container fluid className="VerificationCodeThree">
+        <Row className="position-relative">
+          <Col className="languageSelector" >
+            <LanguageSelector />
+          </Col>
+        </Row>
         <Row>
           <Col
             lg={5}
@@ -234,9 +240,9 @@ const VerificationCodeThree = () => {
                       src={img1}
                       width="220px"
                       height="69px"
-                      // width="229.58px"
-                      // height="72.03px"
-                      // alt="diskus_logo"
+                    // width="229.58px"
+                    // height="72.03px"
+                    // alt="diskus_logo"
                     />
                   </Col>
                 </Row>
@@ -315,10 +321,10 @@ const VerificationCodeThree = () => {
                         parseInt(GobackSelection) === 1
                           ? "/twofac"
                           : parseInt(GobackSelection) === 2
-                          ? "/sendmailwithdevice"
-                          : parseInt(GobackSelection) === 3
-                          ? "/twofacmultidevice"
-                          : "/twofac"
+                            ? "/sendmailwithdevice"
+                            : parseInt(GobackSelection) === 3
+                              ? "/twofacmultidevice"
+                              : "/twofac"
                       }
                     >
                       {t("Go-back")}
