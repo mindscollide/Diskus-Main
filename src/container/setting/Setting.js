@@ -21,6 +21,8 @@ import {
   updateOrganizationLevelSetting,
 } from "../../store/actions/OrganizationSettings";
 import {
+  getGoogleValidToken,
+  revokeToken,
   updateUserMessageCleare,
   updateUserSettingFunc,
 } from "../../store/actions/UpdateUserGeneralSetting";
@@ -28,6 +30,7 @@ import { getUserSetting } from "../../store/actions/GetUserSetting";
 import { useNavigate } from "react-router-dom";
 import dropIcon from "../../assets/images/dropdown-icon.png";
 import { GoogleOAuthProvider, useGoogleLogin, useGoogleLogout } from '@react-oauth/google';
+import { async } from "q";
 const Organization = () => {
   //for translation
   const { settingReducer } = useSelector((state) => state);
@@ -86,14 +89,28 @@ const Organization = () => {
   const { loaded, clientId } = useGoogleLogin({
     clientId: '509020224191-pst82a2kqjq33phenb35b0bg1i0q762o.apps.googleusercontent.com'
   });
+  const [signUpCodeToken, setSignUpCodeToken] = useState("");
 
 
-
+  useEffect(() => {
+    dispatch(getUserSetting(navigate, t));
+  }, []);
+  
   const handleGoogleLoginSuccess = (response) => {
     console.log(response.code)
+    setSignUpCodeToken(response.code)
+    setOrganizationStates({
+      ...organizationStates,
+      UserAllowGoogleCalendarSynch: true,
+    });
   }
   const handleGoogleLoginFailure = (response) => {
     console.log(response)
+    setSignUpCodeToken("")
+    setOrganizationStates({
+      ...organizationStates,
+      UserAllowGoogleCalendarSynch: organizationStates.UserAllowGoogleCalendarSynch,
+    });
   }
   const signIn = useGoogleLogin({
     onSuccess: handleGoogleLoginSuccess,
@@ -105,29 +122,11 @@ const Organization = () => {
     responseType: 'code',
     prompt: 'consent',
   })
-  const handleGoogleLogoutSuccess = () => { }
-  const handleGoogleLogoutFailure = () => { }
-
-  const handleLogout = () => {
-    if (loaded) {
-      const authProvider = new GoogleOAuthProvider();
-      console.log(authProvider, "authProviderauthProvider")
-      authProvider.logout().then(() => {
-        // Handle successful logout
-        console.log('Google logout successful');
-      }).catch((error) => {
-        // Handle logout failure
-        console.error('Google logout failed:', error);
-      });
-    }
-
-  };
 
 
 
-  useEffect(() => {
-    dispatch(getUserSetting(navigate, t));
-  }, []);
+
+
   console.log("organizationStatesorganizationStates", organizationStates);
 
   const emailOnNewMeeting = (checked) => {
@@ -333,15 +332,11 @@ const Organization = () => {
     if (checked) {
       signIn()
     } else {
-      handleLogout()
-      // signOut()
-      // googleLogout()
-      // signOut()
+      setOrganizationStates({
+        ...organizationStates,
+        UserAllowGoogleCalendarSynch: false,
+      });
     }
-    setOrganizationStates({
-      ...organizationStates,
-      UserAllowGoogleCalendarSynch: checked,
-    });
   };
 
   const ChangeUserAllowMicrosoftCalendarSynch = (checked) => {
@@ -365,8 +360,14 @@ const Organization = () => {
     });
   };
 
-  const updateOrganizationLevelSettings = () => {
-    dispatch(updateUserSettingFunc(navigate, organizationStates, t));
+  const updateOrganizationLevelSettings = async() => {
+    if(signUpCodeToken!=""){
+      console.log("organizationStatesorganizationStates",organizationStates)
+      await dispatch(getGoogleValidToken(navigate, signUpCodeToken,organizationStates, t));
+      setSignUpCodeToken("")
+    }else{
+      await dispatch(revokeToken(navigate, organizationStates, t));
+    }
   };
 
   useEffect(() => {

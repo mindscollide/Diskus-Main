@@ -226,15 +226,15 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         ResponseMessage: action.message
       }
     }
-    case actions.ARCHEIVED_COMMITTES_SUCCESS: {
-      return {
-        ...state,
-        Loading: false,
-        ArcheivedCommittees: [],
-        ResponseMessage: action.message
-      }
+    // case actions.ARCHEIVED_COMMITTES_SUCCESS: {
+    //   return {
+    //     ...state,
+    //     Loading: false,
+    //     ArcheivedCommittees: [],
+    //     ResponseMessage: action.message
+    //   }
 
-    }
+    // }
     case actions.ARCHEIVED_COMMITTES_FAIL: { }
     default:
       return { ...state };
