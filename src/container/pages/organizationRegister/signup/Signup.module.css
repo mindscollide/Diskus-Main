@@ -19,7 +19,7 @@ body[dir="rtl"] .signup_organization_title {
 .signup_admin_title {
   color: #6172d6;
   font-weight: 400;
-  margin: 60px 0 25px 0;
+  margin: 40px 0 25px 0;
   font-family: "MontserratSemiBold";
   font-size: calc(32px - 20%);
 }
@@ -77,11 +77,11 @@ body[dir="rtl"] .signUp_NextBtn {
   color: #000;
 }
 
-body[dir="rtl"] .signUp_goBack + a {
+body[dir="rtl"] .signUp_goBack+a {
   font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
-.signUp_goBack + a {
+.signUp_goBack+a {
   color: #000;
   margin: 21px 0 0 0 !important;
   text-decoration: underline;
@@ -111,6 +111,7 @@ body[dir="rtl"] .signUp_goBack + a {
   right: -90px;
   z-index: 9999999;
 }
+
 body[dir="rtl"] .sigup_form_leftSection {
   position: absolute;
   left: 40px;
@@ -124,7 +125,17 @@ body[dir="rtl"] .sigup_form_leftSection {
   background: linear-gradient(to top, #49dbdb 0%, #6172d6 100%);
   min-height: 100vmin !important;
   overflow: hidden !important;
-  position: relative;
+  position: fixed;
+  right: 0;
+}
+
+body[dir="rtl"] .signUp_rightSection {
+  background: linear-gradient(to top, #49dbdb 0%, #6172d6 100%);
+  min-height: 100vmin !important;
+  overflow: hidden !important;
+  position: fixed;
+  left: 0;
+  right: auto;
 }
 
 .rightsection_roundLogo {
@@ -133,6 +144,7 @@ body[dir="rtl"] .sigup_form_leftSection {
   right: -150px;
   /* overflow: hidden; */
 }
+
 body[dir="rtl"] .rightsection_roundLogo {
   position: absolute;
   top: -120px;
@@ -147,9 +159,11 @@ body[dir="rtl"] .rightsection_roundLogo {
   color: #f16b6b;
   visibility: visible !important;
 }
+
 body[dir="rtl"] .errorMessage {
   font-family: "IBMPlexSansArabic-Regular" !important;
 }
+
 .errorMessage_hidden {
   visibility: hidden;
   margin: 0;
@@ -327,6 +341,7 @@ body[dir="rtl"] .errorMessage_hidden {
   font-family: "MontserratSemiBold-600" !important;
   border-radius: 4px;
 }
+
 body[dir="rtl"] .select-language-signin {
   position: absolute;
   overflow: hidden !important;
@@ -338,6 +353,7 @@ body[dir="rtl"] .select-language-signin {
   border: 1px solid #e1e1e1 !important;
   box-shadow: none !important;
 }
+
 .language_options {
   -webkit-appearance: none !important;
   -mox-appearance: none !important;
@@ -377,16 +393,19 @@ body[dir="rtl"] .languageIcon {
   color: rgba(23, 29, 45, 0.7) !important;
   font-family: "MontserratMedium-500" !important;
 }
+
 .countrydropdown .form-select::placeholder {
   color: rgba(23, 29, 45, 0.5) !important;
   border-color: #e1e1e1 !important;
 }
+
 .countrydropdown .form-select:focus,
 .countrydropdown .form-select:focus-visible {
   box-shadow: none !important;
   border: 1px solid #e1e1e1 !important;
   border-color: #e1e1e1 !important;
 }
+
 .SignUp_inputField::placeholder {
   color: rgba(23, 29, 45, 0.5);
 }
@@ -398,6 +417,7 @@ body[dir="rtl"] .languageIcon {
   border: none !important;
   border-color: white !important;
 }
+
 .countrySelector:focus,
 .countrySelector:focus-visible {
   box-shadow: none !important;
@@ -501,4 +521,25 @@ body[dir="rtl"] .languageIcon {
 
 .sign-up-textfield-input {
   height: 30px !important;
+}
+
+.languageSelector {
+  position: absolute;
+  right: 100px;
+  z-index: 99999 !important;
+  margin-top: 40px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+
+}
+
+body[dir="rtl"] .languageSelector {
+  position: absolute;
+  right: -100px;
+  z-index: 99999 !important;
+  margin-top: 40px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
 }

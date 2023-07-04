@@ -23,6 +23,7 @@ const Dragger = ({
 
   return (
     <Dragger
+      className={className}
       showUploadList={false}
       onProgress={(onprogress) => setProgress(onprogress.percent)}
       customRequest={handleFileDraggerUploadRequest}

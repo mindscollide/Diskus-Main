@@ -237,7 +237,7 @@ body[dir="rtl"] .Archived-Group-btn {
   height: 54px !important;
   box-shadow: 0px 0px 5px #ccc !important;
   border-radius: 4px !important;
-  margin-top: 3px !important;
+  margin-top: 10px !important;
   /* position: fixed !important; */
 }
 
@@ -276,13 +276,11 @@ body[dir="rtl"] .Confirm-activegroup-modal {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-.Confirm-activegroup-modal:is(
-    :hover,
-    :active,
-    :focus,
-    :focus-visible,
-    :visited
-  ) {
+.Confirm-activegroup-modal:is( :hover,
+  :active,
+  :focus,
+  :focus-visible,
+  :visited) {
   font-size: 12px;
   background: #6172d6 !important;
   color: #fff !important;
@@ -307,13 +305,11 @@ body[dir="rtl"] .Cancel-activegroup-modal {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-.Cancel-activegroup-modal:is(
-    :hover,
-    :active,
-    :focus,
-    :focus-visible,
-    :visited
-  ) {
+.Cancel-activegroup-modal:is( :hover,
+  :active,
+  :focus,
+  :focus-visible,
+  :visited) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
@@ -322,14 +318,34 @@ body[dir="rtl"] .Cancel-activegroup-modal {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
 }
+
 .NoGroupsData {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
   min-height: 65vh !important;
 }
+
 .NoGroupsDataFoundText {
   font-family: "MontserratSemiBold" !important;
   color: #bbbbbb !important;
   font-size: 20px !important;
+}
+
+.groups_box {
+  max-height: 65vh !important;
+  min-height: 71vh !important;
+  overflow: hidden auto;
+}
+
+.groups_box::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.groups_box::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px !important;
 }

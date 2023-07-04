@@ -112,9 +112,11 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
   transform: rotate(0deg);
   z-index: 99999;
 }
+
 body[dir="rtl"] .Auth_Icon {
   transform: scaleX(-1);
 }
+
 /* .signInError {
     background-color: #fff !important;
     color: #000 !important;
@@ -164,6 +166,7 @@ body[dir="rtl"] .inputEmailField {
   border: 1px solid #e1e1e1 !important;
   height: 30px;
 }
+
 .inputEmailField::placeholder {
   color: #171d2d !important;
   opacity: 50%;
@@ -213,6 +216,7 @@ body[dir="rtl"] .heading-2 {
 body[dir="rtl"] .signup-text-inloginpage {
   font-family: "IBMPlexSansArabic-Regular" !important;
 }
+
 .errorMessage-inLogin {
   margin: 2px;
   height: 13px;
@@ -224,6 +228,7 @@ body[dir="rtl"] .signup-text-inloginpage {
 body[dir="rtl"] .errorMessage-inLogin {
   font-family: "IBMPlexSansArabic-Medium" !important;
 }
+
 .errorMessage-inLogin_hidden {
   visibility: hidden;
   margin: 0;
@@ -254,6 +259,7 @@ body[dir="rtl"] .errorMessage-inLogin {
   box-shadow: none !important;
   outline: none !important;
 }
+
 body[dir="rtl"] .select-language-signin {
   position: absolute;
   overflow: hidden !important;
@@ -269,6 +275,7 @@ body[dir="rtl"] .select-language-signin {
   width: 181px !important;
   height: 38px !important;
 }
+
 .languageIcon {
   z-index: 99999 !important;
   position: absolute;
@@ -291,4 +298,25 @@ body[dir="rtl"] .languageIcon {
 .Remember_checkbox_styles {
   font-family: "MontserratMedium-500";
   color: #5a5a5a !important;
+}
+
+.languageSelector {
+  position: absolute;
+  right: 100px;
+  z-index: 99999 !important;
+  margin-top: 50px !important;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
+
+}
+
+body[dir="rtl"] .languageSelector {
+  position: absolute;
+  right: -100px;
+  z-index: 99999 !important;
+  margin-top: 50px !important;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
 }

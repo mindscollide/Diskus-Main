@@ -688,6 +688,9 @@
   "Failed-to-insert-configuration":"Failed to insert Configuration",
   "Code-is-invalid":"Code is Invalid",
   "UnSuccessful":"UnSuccessful",
-  "Successful":"Successful"
-
+  "Successful":"Successful",
+  "Enter-a-team-the-matches-part-of-the-file-name": "Enter a term that matches part of the file name",
+  "Notes-to-voters-is-required": "Notes To Voters is required",
+  "Secret-balloting": "Secret balloting",
+  "Show-of-hands": "Show of hands"
 }

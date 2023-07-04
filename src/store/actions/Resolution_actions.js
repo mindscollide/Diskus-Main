@@ -702,7 +702,7 @@ const updateVote_Fail = (message) => {
 }
 const updateVoteApi = (navigate, Data, t, setVoteresolution) => {
     let token = JSON.parse(localStorage.getItem("token"));
-    let userID = JSON.parse(localStorage.getItem("userID"))
+    let userID = JSON.parse(localStorage.getItem("userID"));
     return (dispatch) => {
         dispatch(updateVote_Init());
         let form = new FormData();
@@ -725,6 +725,7 @@ const updateVoteApi = (navigate, Data, t, setVoteresolution) => {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_01".toLowerCase()) {
                             dispatch(updateVote_Success(response.data.responseResult, t("Record-updated-successfully")))
                             setVoteresolution(false)
+                            localStorage.removeItem("voterID")
                             dispatch(getVoterResolution(navigate, 3, t))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_02".toLowerCase()) {
                             dispatch(updateVote_Fail(t("No-record-updated")))

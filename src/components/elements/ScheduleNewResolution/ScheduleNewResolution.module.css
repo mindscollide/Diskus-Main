@@ -454,6 +454,7 @@ body[dir="rtl"] .here_text {
 
 .dragdrop_attachment_create_resolution {
   height: auto !important;
+  border: 1px dashed #49dbdb !important;
 }
 
 .react_datePicker {

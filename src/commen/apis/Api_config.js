@@ -265,7 +265,7 @@ const IsPackageExpiryDetail = {
   RequestMethod: 'ServiceManager.GetOrganizationSelectedPackageExpiryDetails',
 }
 const AllMeetingOrganization = {
-  RequestMethod: 'ServiceManager.AllOrganizationMeetings',
+  RequestMethod: 'ServiceManager.SearchOrganizationMeetings',
 }
 const OrganizationMeetingStatus = {
   RequestMethod: 'ServiceManager.OrganizationMeetingStatusUpdate',
@@ -477,7 +477,7 @@ const getCommitteeByIdRequestMethod = {
   RequestMethod: 'ServiceManager.GetCommitteeByCommitteeID',
 }
 const getGroupsByUserIdRequestMethod = {
-  RequestMethod: 'ServiceManager.GetGroupByUserID',
+  RequestMethod: 'ServiceManager.SearchGroups',
 }
 const getGroupsByGroupIdRequestMethod = {
   RequestMethod: 'ServiceManager.GetGroupByGroupID',
@@ -498,7 +498,7 @@ const updateGroupStatusRequestMethod = {
   RequestMethod: 'ServiceManager.UpdateGroupStatus',
 }
 const getCommitteesByUserID = {
-  RequestMethod: 'ServiceManager.GetCommitteesByUserID',
+  RequestMethod: 'ServiceManager.SearchCommittees',
 }
 const getallOrganizationCommitteType = {
   RequestMethod: 'ServiceManager.GetallOrganizationCommitteType',
@@ -680,6 +680,21 @@ const googleValidToken = {
 }
 const revoketoken = {
   RequestMethod: 'ServiceManager.RevokeToken',
+}
+const searchUserMeetings = {
+  RequestMethod: "ServiceManager.SearchMeetings"
+}
+
+const searchTodoListRequestMethod = {
+  RequestMethod: 'ServiceManager.SearchToDoList',
+}
+
+const searchNoteRequetMethod = {
+  RequestMethod: 'ServiceManager.SearchNotes'
+}
+const paymentMethodsRequestMethod = {
+  RequestMethod: "ServiceManager.GetPaymentMethods"
+
 }
 export {
   revoketoken,
@@ -865,4 +880,8 @@ export {
   createShoutAll,
   deleteShoutAll,
   updateShoutAll,
+  searchUserMeetings,
+  searchTodoListRequestMethod,
+  searchNoteRequetMethod,
+  paymentMethodsRequestMethod
 }

@@ -12,6 +12,7 @@ const initialState = {
   EndMeetingData: [],
   RemindersData: [],
   ShowNotification: false,
+  SearchMeetingData: null
 };
 
 const assigneesReducer = (state = initialState, action) => {
@@ -38,7 +39,7 @@ const assigneesReducer = (state = initialState, action) => {
       };
     }
     case actions.ASSIGNESS_LIST_SUCCESS: {
-  console.log("allassignesslistsuccess")
+      console.log("allassignesslistsuccess")
 
       return {
         ...state,
@@ -215,6 +216,28 @@ const assigneesReducer = (state = initialState, action) => {
         ...state,
         ResponseMessage: "",
       };
+    }
+    case actions.SEARCH_USER_MEETINGS_INIT: {
+      return {
+        ...state,
+        Loading: true
+      }
+    }
+    case actions.SEARCH_USER_MEETINGS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        SearchMeetingData: action.response,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.SEARCH_USER_MEETINGS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        SearchMeetingData: [],
+        ResponseMessage: action.message
+      }
     }
     default:
       return { ...state };

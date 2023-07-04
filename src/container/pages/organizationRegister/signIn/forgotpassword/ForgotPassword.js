@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 
 import ErrorBar from "../../../../authentication/sign_up/errorbar/ErrorBar";
 import { validationEmail } from "../../../../../commen/functions/validations";
+import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 const ForgotPassword = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -83,6 +84,13 @@ const ForgotPassword = () => {
   return (
     <>
       <Container>
+        <Row className="position-relative">
+          <Col className={styles["languageSelector"]} >
+            <LanguageSelector />
+
+          </Col>
+
+        </Row>
         <Row>
           <Col
             lg={12}

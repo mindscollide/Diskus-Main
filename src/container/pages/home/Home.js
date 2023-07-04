@@ -178,12 +178,16 @@ const Home = () => {
     let Data = {
       UserID: parseInt(createrID),
       OrganizationID: JSON.parse(OrganizationID),
-    };
+      Title: "",
+      PageNumber: 1,
+      Length: 50
+    }
 
     dispatch(GetNotes(navigate, Data, t));
     let Data2 = {
       UserID: parseInt(createrID),
     };
+    dispatch(GetTodoListByUser(navigate, Data2, t))
     dispatch(GetWeeklyMeetingsCount(navigate, createrID, t));
     dispatch(GetWeeklyToDoCount(navigate, Data2, t));
     dispatch(GetUpcomingEvents(navigate, Data2, t));
@@ -297,18 +301,27 @@ const Home = () => {
 
   // render Notes Data
   useEffect(() => {
-    if (
-      NotesReducer.GetAllNotesResponse !== null &&
-      NotesReducer.GetAllNotesResponse.length > 0
-    ) {
-      let notes = [];
-      NotesReducer.GetAllNotesResponse.map((data, index) => {
-        notes.push(data);
-      });
-      setNotes(notes);
-    } else {
-      setNotes([]);
+    try {
+      if (
+        NotesReducer.GetAllNotesResponse !== null &&
+        NotesReducer.GetAllNotesResponse !== undefined
+      ) {
+        if (NotesReducer.GetAllNotesResponse.getNotes.length > 0) {
+          let notes = [];
+          NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
+            notes.push(data);
+          });
+          setNotes(notes);
+        } else {
+          setNotes([]);
+        }
+      } else {
+        setNotes([]);
+      }
+    } catch (error) {
+
     }
+
   }, [NotesReducer.GetAllNotesResponse]);
 
   useEffect(() => {
@@ -616,7 +629,7 @@ const Home = () => {
         "upcomingEventsDataupcomingEventsDataupcomingEventsData"
       );
       if (
-        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) !== getCurrentDate
+        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) === getCurrentDate
       ) {
         if (indexforUndeline === null && flag === false) {
           // if (index - 1 >= 0) {

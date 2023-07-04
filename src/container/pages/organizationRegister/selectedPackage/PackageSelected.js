@@ -14,6 +14,7 @@ import LanguageChangeIcon from "../../../../assets/images/newElements/Language.s
 import Cookies from "js-cookie";
 import { getCountryNamesAction } from "../../../../store/actions/GetCountryNames";
 import { isHTML } from "../../../../commen/functions/html_formater";
+import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 
 const PackageSelected = () => {
   const { Authreducer, countryNamesReducer } = useSelector((state) => state);
@@ -343,34 +344,20 @@ const PackageSelected = () => {
 
   return (
     <>
-      <Row>
-        <Col className={styles["languageselect-box"]}>
-          <select
-            className={styles["select-language-signin"]}
-            onChange={handleChangeLocale}
-            value={language}
-          >
-            {languages.map(({ name, code }) => (
-              <option
-                key={code}
-                value={code}
-                className={styles["language_options"]}
-              >
-                {name}
-              </option>
-            ))}
-          </select>
-          <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
-        </Col>
+      <Row >
+
       </Row>
       <Container>
         <Row>
           <Col sm={12} lg={10} md={10} className="mx-auto my-auto">
-            <Row>
+            <Row className="position-relative">
               <Col className="d-flex justify-content-center mb-3 mt-5">
                 <h2 className={styles["selectedpackagepage_heading"]}>
                   {t("Subscription-details")}
                 </h2>
+              </Col>
+              <Col className={styles["languageSelector"]} >
+                <LanguageSelector />
               </Col>
             </Row>
             <Row>
