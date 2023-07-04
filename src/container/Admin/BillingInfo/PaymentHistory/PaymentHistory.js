@@ -37,17 +37,19 @@ import {
 import { invoiceandpaymenthistory } from "../../../../store/actions/OrganizationBillings_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import getPaymentMethodApi from "../../../../store/actions/Admin_PaymentMethod";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
-  const { OrganizationBillingReducer } = useSelector((state) => state);
+  const { OrganizationBillingReducer, adminReducer } = useSelector((state) => state);
+  console.log(adminReducer, "adminReduceradminReduceradminReducer")
   const [filterBarModal, setFilterBarModal] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [paymentMethods, setPaymentMethods] = useState([])
   const [isUpdateSuccessfully, setIsUpdateSuccessfully] = useState(false);
   const [deleteEditModal, setDeleteEditModal] = useState(false);
-
+  console.log(paymentMethods, "paymentMethodspaymentMethodspaymentMethods")
   // for payment history
   const [paymentHistoryModal, setPaymentHistoryModal] = useState(false);
 
@@ -120,7 +122,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   const [invoiceStartDate, setInvoiceStartDate] = useState("");
   const [invoiceEndDate, setInvoiceEndDate] = useState("");
-
+  const [paymentMethodValue, setPaymentMethodValue] = useState({
+    label: "",
+    value: 0
+  })
   const [paymentStartDate, setPaymentStartDate] = useState("");
   const [paymentEndDate, setPaymentEndDate] = useState("");
 
@@ -153,7 +158,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   //Open payment history modal
 
-  const openPaymentModal = async () => {};
+  const openPaymentModal = async () => { };
 
   // open delete modal on search button
 
@@ -269,6 +274,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       dataIndex: "paidamount",
       key: "paidamount",
       width: "13rem",
+      render: (text, data) => {
+        return <span>${text}</span>
+      }
     },
   ];
 
@@ -312,7 +320,18 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   };
 
   const [lateSurcharge, setLateSurcharge] = useState(false);
-
+  const handleChangePaymentMethod = (data) => {
+    setpaymentInvoiceSection({
+      ...paymentInvoiceSection,
+      PaymentBy: data.value
+    })
+    setPaymentMethodValue({
+      ...paymentMethodValue,
+      label: data.label,
+      value: data.value
+    })
+  }
+  console.log(paymentMethodValue, "paymentMethodValuepaymentMethodValuepaymentMethodValue")
   function onChangeSurcharge(e) {
     setLateSurcharge(e.target.checked);
   }
@@ -339,7 +358,32 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     }
   }, [OrganizationBillingReducer.getInvoiceAndPaymentHistory]);
   useEffect(() => {
+    try {
+      if (adminReducer.PaymentMethods !== null && adminReducer.PaymentMethods.length > 0) {
+        let newArr = []
+        adminReducer.PaymentMethods.map((data, index) => {
+          newArr.push({
+            label: data.methodName,
+            value: data.pK_PaymentMethodID
+          })
+        })
+        setPaymentMethods(newArr)
+      }
+    } catch (error) {
+
+    }
+    return () => {
+      setPaymentMethodValue({
+        ...paymentMethodValue,
+        label: "",
+        value: 0
+      })
+    }
+
+  }, [adminReducer.PaymentMethods])
+  useEffect(() => {
     dispatch(invoiceandpaymenthistory(navigate, t));
+    dispatch(getPaymentMethodApi(navigate, t))
   }, []);
   return (
     <>
@@ -562,9 +606,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       ref={PaymentBy}
                       onKeyDown={(event) => enterHandler(event, Invoice)}
                       applyClass="form-control2"
+                      options={paymentMethods}
+                      onChange={handleChangePaymentMethod}
                       // className={"payment-history-select"}
                       placeholder={t("Payment-by")}
-                      value={paymentInvoiceSection.PaymentBy}
+                      value={{
+                        label: paymentMethodValue.label,
+                        value: paymentMethodValue.value
+                      }}
                       name="PaymentBy"
                     />
                   </Col>

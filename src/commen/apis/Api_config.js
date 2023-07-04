@@ -686,6 +686,9 @@ const searchTodoListRequestMethod = {
 const searchNoteRequetMethod = {
   RequestMethod: 'ServiceManager.SearchNotes'
 }
+const paymentMethodsRequestMethod = {
+  RequestMethod: "ServiceManager.GetPaymentMethods"
+}
 export {
   signuprequest,
   signinauthenication,
@@ -870,5 +873,6 @@ export {
   updateShoutAll,
   searchUserMeetings,
   searchTodoListRequestMethod,
-  searchNoteRequetMethod
+  searchNoteRequetMethod,
+  paymentMethodsRequestMethod
 }

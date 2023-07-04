@@ -5,15 +5,15 @@
 
 .tooltip-text {
     visibility: hidden;
-    background-color: black;
+    background-color: #707070;
     color: white;
     text-align: center;
-    padding: 4px;
+    padding: 5px;
     border-radius: 4px;
     position: absolute;
     z-index: 9999999999999999999999999999999999999;
-    bottom: 125%;
-    left: 50%;
+    bottom: 100%;
+    left: 150%;
     transform: translateX(-50%);
     white-space: nowrap;
 }

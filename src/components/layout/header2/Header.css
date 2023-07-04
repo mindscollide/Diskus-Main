@@ -1,8 +1,10 @@
 .header2-container {
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
   z-index: 2;
-  padding-left: 55px;
-  padding-right: 25px;
+  display: flex;
+  align-items: center;
+  /* padding-left: 55px; */
+  /* padding-right: 25px; */
 }
 
 body[dir="rtl"] .header2-container {
@@ -194,7 +196,7 @@ button.dropdown-toggle.dropdown-toggle.btn.btn-primary:has(p.user-name) {
   overflow: auto;
 }
 
-.notification-dropdown > [data-bs-toggle="dropdown"].show:before {
+.notification-dropdown>[data-bs-toggle="dropdown"].show:before {
   width: 0;
   height: 0;
   border-left: 7px solid transparent;
@@ -368,31 +370,32 @@ body[dir="rtl"] .user-name {
 
 .language-dropdown {
   background: transparent;
-  border: 1px solid #e1e1e1 !important;
-  padding: 16px;
-  padding: 5px 10px;
+  border: none !important;
+  /* padding: 16px; */
+  color: #fff !important;
+  padding: 5px;
   border-radius: 6px;
   font-size: 10px;
-  margin-right: 14px;
-  width: 130px;
   height: 32px;
-  margin-top: 4px;
 }
 
 .language-dropdown:focus-visible,
 .language-dropdown:active,
 .language-dropdown:focus {
   background: transparent;
-  border: 1px solid #e1e1e1 !important;
-  padding: 16px;
-  /* border-top-right-radius: 6px; */
-  /* border-top-left-radius: 6px; */
-  padding: 5px 10px;
+  border: none !important;
+  /* padding: 16px; */
+  color: #fff !important;
+  padding: 5px;
   border-radius: 6px;
   font-size: 10px;
-  margin-right: 14px;
-  /* border: none !important; */
-  outline: none;
+  height: 32px;
+  outline: none !important;
+}
+
+.language-dropdown-value {
+  color: #000 !important;
+  width: 120px !important;
 }
 
 .navbar-nav .dropdown-menu {
@@ -485,6 +488,7 @@ label.logout-confirmation-label {
 body[dir="rtl"] label.logout-confirmation-label {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
+
 /* .mb-3.LogoutButtons.ar.row .text-end.ar.col-lg-6.col-md-6.col-sm-12 {
   text-align: left !important;
 }
@@ -510,6 +514,7 @@ body[dir="rtl"] a.text-black.nav-link {
 body[dir="rtl"] .title-className {
   font-family: "IBMPlexSansArabic-Regular" !important;
 }
+
 a.SignOutOptionMenu.text-black.border-none.nav-link {
   border-bottom: none !important;
 }
@@ -531,8 +536,7 @@ body[dir="rtl"] .profilebtn-dropdown button::after {
   left: 10px;
 }
 
-body[dir="rtl"]
-  button.dropdown-toggle.dropdown-toggle.btn.btn-primary:has(p.user-name) {
+body[dir="rtl"] button.dropdown-toggle.dropdown-toggle.btn.btn-primary:has(p.user-name) {
   justify-content: right;
   border: none !important;
 }
@@ -549,4 +553,27 @@ body[dir="rtl"] .header2-container {
 .modal-header-logout {
   display: none !important;
   /* margin-top: 40px !important; */
+}
+
+.language-options {
+  visibility: hidden;
+  position: absolute;
+  top: 22px !important;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  width: 150px;
+  right: 0;
+  padding: 10px 15px 5px;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px;
+  gap: 10px;
+}
+
+.language-options.active {
+  visibility: visible;
+}
+
+.language-options span:not(:last-child) {
+  border-bottom: 2px solid #e1e1e1;
 }

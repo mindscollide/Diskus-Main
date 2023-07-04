@@ -8,7 +8,7 @@ import {
   X,
 } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { Accordian, Button, TextField } from "../../../../components/elements";
+import { Accordian, Button, Loader, TextField } from "../../../../components/elements";
 import PayonnerLogo from "../../../../assets/images/payoneer-logo.svg";
 import { Link, useNavigate } from "react-router-dom";
 import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/Diskus_newRoundIcon_SignUp.svg";
@@ -21,6 +21,7 @@ import LanguageChangeIcon from "../../../../assets/images/newElements/Language.s
 import { useTranslation } from "react-i18next";
 import { getSelectedPacakgeDetail } from "../../../../store/actions/Auth2_actions";
 import Cookies from "js-cookie";
+import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 const PaymentForm = () => {
   const { t, i18n } = useTranslation();
   const [annualPackageShow, setAnnualPackageShow] = useState(false);
@@ -111,29 +112,11 @@ const PaymentForm = () => {
   }, [Authreducer.GetSelectedPacakgeDetails]);
   return (
     <>
-      <Row>
-        <Col className={styles["languageselect-box"]}>
-          <select
-            className={styles["select-language-signin"]}
-            onChange={handleChangeLocale}
-            value={language}
-          >
-            {languages.map(({ name, code }) => (
-              <option
-                key={code}
-                value={code}
-                className={styles["language_options"]}
-              >
-                {name}
-              </option>
-            ))}
-          </select>
-          <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
-        </Col>
-      </Row>
+
 
       <Container className={styles["paymentformBackground"]}>
-        <Row>
+
+        <Row className="position-relative">
           <Col sm={12} md={12} lg={12} className={styles["bg_roundimage"]}>
             <img src={DiskusnewRoundIconSignUp} alt="" />
           </Col>
@@ -149,6 +132,9 @@ const PaymentForm = () => {
             >
               {t("Choose-payment-method")}
             </h3>
+          </Col>
+          <Col className={styles["languageSelector"]} >
+            <LanguageSelector />
           </Col>
           <Col
             sm={12}
@@ -419,6 +405,7 @@ const PaymentForm = () => {
           </Col>
         </Row>
       </Container>
+      {Authreducer.Loading && <Loader />}
     </>
   );
 };

@@ -1,0 +1,36 @@
+.language_options {
+    visibility: hidden;
+    position: absolute;
+    top: 22px !important;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    width: 150px;
+    right: 0;
+    padding: 10px 15px 5px;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    gap: 10px;
+    opacity: 0;
+}
+
+.language_options_active {
+    visibility: visible;
+    position: absolute;
+    top: 22px !important;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    width: 150px;
+    right: 0;
+    padding: 10px 15px 5px;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    gap: 10px;
+    opacity: 1;
+
+}
+
+.language_options_active span:not(:last-child) {
+    border-bottom: 2px solid #e1e1e1;
+}

@@ -42,7 +42,9 @@ const OrganizationMeetings = (navigate, currentPage, currentPageSize, t) => {
   let data = {
     OrganizationID: parseInt(organizationId),
     RequestingUserID: parseInt(userID),
-    Title: "", PageNumber: JSON.parse(currentPage), Length: JSON.parse(currentPageSize)
+    Title: "",
+    PageNumber: JSON.parse(currentPage),
+    Length: JSON.parse(currentPageSize)
   };
 
   return (dispatch) => {
