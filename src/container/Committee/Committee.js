@@ -47,10 +47,10 @@ const Committee = () => {
     open: false,
     message: "",
   });
-  const [mapgroupsData, setMapGroupData] = useState(null)
+  const [mapgroupsData, setMapGroupData] = useState(null);
   useEffect(() => {
-    localStorage.removeItem("CoArcurrentPage")
-    localStorage.setItem("CocurrentPage", 1)
+    localStorage.removeItem("CoArcurrentPage");
+    localStorage.setItem("CocurrentPage", 1);
     dispatch(getAllCommitteesByUserIdActions(navigate, t, 0, 1));
   }, []);
 
@@ -66,9 +66,11 @@ const Committee = () => {
     setMarketingTeamModal(true);
     setCommitteeID(id);
     if (getcommitteedata.length > 0) {
-      let findMapGroups = getcommitteedata.filter((data, index) => data.committeeID === id);
-      setMapGroupData(findMapGroups)
-      console.log(findMapGroups, "findMapGroupsfindMapGroupsfindMapGroups")
+      let findMapGroups = getcommitteedata.filter(
+        (data, index) => data.committeeID === id
+      );
+      setMapGroupData(findMapGroups);
+      console.log(findMapGroups, "findMapGroupsfindMapGroupsfindMapGroups");
     }
   };
 
@@ -92,7 +94,7 @@ const Committee = () => {
 
   const handlechange = (value) => {
     console.log("valuevalue", value);
-    localStorage.setItem("CocurrentPage", value)
+    localStorage.setItem("CocurrentPage", value);
     dispatch(getAllCommitteesByUserIdActions(navigate, t, 0, value));
   };
 
@@ -102,7 +104,7 @@ const Committee = () => {
         "findINdexCommitteeStatusfindINdexCommitteeStatus",
         CommitteeReducer.realtimeCommitteeStatus
       );
-      let status = CommitteeReducer.realtimeCommitteeStatus.committeeStatusID
+      let status = CommitteeReducer.realtimeCommitteeStatus.committeeStatusID;
       if (status === 2) {
         let findINdexCommitteeStatus = getcommitteedata.findIndex(
           (data, index) =>
@@ -114,11 +116,10 @@ const Committee = () => {
           findINdexCommitteeStatus
         );
         if (findINdexCommitteeStatus !== -1) {
-          let newData = [...getcommitteedata]
-          newData.splice(findINdexCommitteeStatus, 1)
+          let newData = [...getcommitteedata];
+          newData.splice(findINdexCommitteeStatus, 1);
           setGetCommitteeData(newData);
-          dispatch(realtimeCommitteeStatusResponse(null))
-
+          dispatch(realtimeCommitteeStatusResponse(null));
         }
       } else {
         let findINdexCommitteeStatus = getcommitteedata.findIndex(
@@ -143,10 +144,9 @@ const Committee = () => {
             return committeeCard;
           });
           setGetCommitteeData(newArr);
-          dispatch(realtimeCommitteeStatusResponse(null))
+          dispatch(realtimeCommitteeStatusResponse(null));
         }
       }
-
     }
   }, [CommitteeReducer.realtimeCommitteeStatus]);
 
@@ -185,9 +185,12 @@ const Committee = () => {
       CommitteeReducer.GetAllCommitteesByUserIDResponse !== undefined &&
       CommitteeReducer.GetAllCommitteesByUserIDResponse.committees.length > 0
     ) {
-      setTotalRecords(CommitteeReducer.GetAllCommitteesByUserIDResponse.totalRecords)
+      setTotalRecords(
+        CommitteeReducer.GetAllCommitteesByUserIDResponse.totalRecords
+      );
       let newArr = [];
-      let filteritems = CommitteeReducer.GetAllCommitteesByUserIDResponse.committees
+      let filteritems =
+        CommitteeReducer.GetAllCommitteesByUserIDResponse.committees;
       filteritems.map((data, index) => {
         console.log(CommitteeReducer, "datadatadatadata212");
         newArr.push({
@@ -291,14 +294,18 @@ const Committee = () => {
                 lg={12}
                 md={12}
                 sm={12}
-              // className={styles["Committee-Main_Scrollbar"]}
+                // className={styles["Committee-Main_Scrollbar"]}
               >
-                <Row className={`${"d-flex text-center committees_box  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1"} ${styles["committess_box"]}`}>
+                <Row
+                  className={`${"d-flex text-center committees_box  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1"} ${
+                    styles["committess_box"]
+                  }`}
+                >
                   <Col sm={12} md={12} lg={12} className="m-0 p-0 mt-2 ">
                     <Row>
                       {getcommitteedata.length > 0 ? (
                         getcommitteedata.map((data, index) => {
-                          console.log(data, "datadatadata")
+                          console.log(data, "datadatadata");
                           return (
                             <Col lg={3} md={3} sm={12} className="mb-3">
                               <Card
@@ -332,10 +339,10 @@ const Committee = () => {
                                   data.committeeStatusID === 1
                                     ? t("View-committee")
                                     : data.committeeStatusID === 2
-                                      ? ""
-                                      : data.committeeStatusID === 3
-                                        ? t("Update-committee")
-                                        : ""
+                                    ? ""
+                                    : data.committeeStatusID === 3
+                                    ? t("Update-committee")
+                                    : ""
                                 }
                               />
                             </Col>

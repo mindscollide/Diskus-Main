@@ -45,7 +45,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const [committeeMemberRolesValues, setCommitteeMemberRolesValues] = useState(
     []
   );
-
+  const [onclickFlag, setOnclickFlag] = useState(false);
   const CommitteeTitle = useRef(null);
   // for   select participant Role Name
   const [participantRoleName, setParticipantRoleName] = useState("");
@@ -121,7 +121,39 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   }, [CommitteeReducer.getCommitteeTypes]);
 
   //Drop Down Values
+  // const searchFilterHandler = (value) => {
+  //   if (
+  //     meetingAttendeesList != undefined &&
+  //     meetingAttendeesList != null &&
+  //     meetingAttendeesList != NaN &&
+  //     meetingAttendeesList != []
+  //   ) {
+  //     return meetingAttendeesList
+  //       .filter((item) => {
+  //         const searchTerm = value.toLowerCase();
+  //         const assigneesName = item.name.toLowerCase();
+  //         return (
+  //           searchTerm &&
+  //           assigneesName.startsWith(searchTerm) &&
+  //           assigneesName !== searchTerm
+  //         );
+  //       })
+  //       .slice(0, 3)
+  //       .map((item) => (
+  //         <div
+  //           onClick={() => onSearch(item.name, item.pK_UID)}
+  //           className="dropdown-row-assignee d-flex flex-row align-items-center"
+  //           key={item.pK_UID}
+  //         >
+  //           <img src={userImage} />
+  //           <p className="p-0 m-0">{item.name}</p>
+  //         </div>
+  //       ));
+  //   } else {
+  //   }
+  // };
   const searchFilterHandler = (value) => {
+    console.log("Input Value", meetingAttendeesList);
     if (
       meetingAttendeesList != undefined &&
       meetingAttendeesList != null &&
@@ -132,27 +164,30 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
+          console.log("Input Value in searchTerm", searchTerm);
+          console.log("Input Value in assigneesName", assigneesName);
+
           return (
-            searchTerm &&
-            assigneesName.startsWith(searchTerm) &&
-            assigneesName !== searchTerm
+            searchTerm && assigneesName.startsWith(searchTerm)
+            // assigneesName !== searchTerm.toLowerCase()
           );
         })
-        .slice(0, 3)
+        .slice(0, 10)
         .map((item) => (
           <div
             onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex flex-row align-items-center"
+            className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
+            {console.log("itemitem", item)}
             <img src={userImage} />
             <p className="p-0 m-0">{item.name}</p>
           </div>
         ));
     } else {
+      console.log("not found");
     }
   };
-
   // Group type Change Handler
   const CommitteeTypeChangeHandler = (e, value) => {
     setCommitteeTypeValue(value);
@@ -170,6 +205,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   // on Search filter for add members
   const onSearch = (name, id) => {
     console.log("name id", name, id);
+    setOnclickFlag(true)
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
@@ -354,6 +390,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
+    setOnclickFlag(false)
     if (e.target.value.trimStart() != "") {
       setTaskAssignedToInput(e.target.value.trimStart());
     } else {
@@ -898,6 +935,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                   taskAssignedToInput
                                 )}
                                 change={onChangeSearch}
+                                onclickFlag={onclickFlag}
                               />
                             </Col>
                           </Row>

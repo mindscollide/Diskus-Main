@@ -861,9 +861,10 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       console.log('setMeetingAttendeesList error')
     }
   }, [meetingAttendeesList])
-
+const [onclickFlag,setOnclickFlag]=useState(false)  
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
+    setOnclickFlag(true)
     setTaskAssignedToInput(name)
     setTaskAssignedTo(id)
     setTaskAssignedName(name)
@@ -871,12 +872,46 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
+    setOnclickFlag(false)
     setTaskAssignedToInput(e.target.value.trimStart())
   }
 
   //Drop Down Values
+  // const searchFilterHandler = (value) => {
+  //   let allAssignees = assignees.user
+  //   if (
+  //     allAssignees != undefined &&
+  //     allAssignees != null &&
+  //     allAssignees != NaN &&
+  //     allAssignees != []
+  //   ) {
+  //     return allAssignees
+  //       .filter((item) => {
+  //         const searchTerm = value.toLowerCase()
+  //         const assigneesName = item.name.toLowerCase()
+  //         return (
+  //           searchTerm &&
+  //           assigneesName.startsWith(searchTerm) &&
+  //           assigneesName !== searchTerm
+  //         )
+  //       })
+  //       .slice(0, 3)
+  //       .map((item) => (
+  //         <div
+  //           onClick={() => onSearch(item.name, item.pK_UID)}
+  //           className="dropdown-row-assignee d-flex flex-row align-items-center"
+  //           key={item.pK_UID}
+  //         >
+  //           <img src={userImage} />
+  //           <p className="p-0 m-0">{item.name}</p>
+  //         </div>
+  //       ))
+  //   } else {
+  //   }
+  // }
   const searchFilterHandler = (value) => {
-    let allAssignees = assignees.user
+    let allAssignees = assignees.user;
+    console.log("Input Value", allAssignees);
     if (
       allAssignees != undefined &&
       allAssignees != null &&
@@ -885,29 +920,32 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     ) {
       return allAssignees
         .filter((item) => {
-          const searchTerm = value.toLowerCase()
-          const assigneesName = item.name.toLowerCase()
+          const searchTerm = value.toLowerCase();
+          const assigneesName = item.name.toLowerCase();
+          console.log("Input Value in searchTerm", searchTerm);
+          console.log("Input Value in assigneesName", assigneesName);
+
           return (
-            searchTerm &&
-            assigneesName.startsWith(searchTerm) &&
-            assigneesName !== searchTerm
-          )
+            searchTerm && assigneesName.startsWith(searchTerm)
+            // assigneesName !== searchTerm.toLowerCase()
+          );
         })
-        .slice(0, 3)
+        .slice(0, 10)
         .map((item) => (
           <div
             onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex flex-row align-items-center"
+            className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
+            {console.log("itemitem", item)}
             <img src={userImage} />
             <p className="p-0 m-0">{item.name}</p>
           </div>
-        ))
+        ));
     } else {
+      console.log("not found");
     }
-  }
-
+  };
   // for add Attendees handler
   const addAttendees = () => {
     let user1 = createMeeting.MeetingAttendees
@@ -1861,6 +1899,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         'attendee-title-field inputSearchFilter m-0  CreateMeetingParticipant addattendee-textfield-width'
                       }
                     >
+                      
                       <InputSearchFilter
                         placeholder={t('Add-attendees')}
                         className="taskassignee"
@@ -1870,6 +1909,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         )}
                         applyClass={"input_searchAttendees_createMeeting"}
                         change={onChangeSearch}
+                        onclickFlag={onclickFlag}
                       />
                     </Col>
                     <Col

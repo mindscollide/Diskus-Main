@@ -63,6 +63,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const [groupTypeValue, setGroupTypeValue] = useState("");
   const [organizationGroupType, setOrganizationGroupType] = useState([]);
   const [meetingAttendees, setMeetingAttendees] = useState([]);
+  const [onclickFlag, setOnclickFlag] = useState(false);
   // for Participant id's
   const participantOptionsWithIDs = [
     { label: t("Head"), id: 2 },
@@ -80,8 +81,41 @@ const CreateGroup = ({ setCreategrouppage }) => {
   }, []);
 
   //Drop Down Values
+  // const searchFilterHandler = (value) => {
+  //   let allAssignees = assignees.user;
+  //   if (
+  //     allAssignees != undefined &&
+  //     allAssignees != null &&
+  //     allAssignees != NaN &&
+  //     allAssignees != []
+  //   ) {
+  //     return allAssignees
+  //       .filter((item) => {
+  //         const searchTerm = value.toLowerCase();
+  //         const assigneesName = item.name.toLowerCase();
+  //         return (
+  //           searchTerm &&
+  //           assigneesName.startsWith(searchTerm) &&
+  //           assigneesName !== searchTerm
+  //         );
+  //       })
+  //       .slice(0, 3)
+  //       .map((item) => (
+  //         <div
+  //           onClick={() => onSearch(item.name, item.pK_UID)}
+  //           className="dropdown-row-assignee d-flex flex-row align-items-center"
+  //           key={item.pK_UID}
+  //         >
+  //           <img src={userImage} />
+  //           <p className="p-0 m-0">{item.name}</p>
+  //         </div>
+  //       ));
+  //   } else {
+  //   }
+  // };
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
+    console.log("Input Value", allAssignees);
     if (
       allAssignees != undefined &&
       allAssignees != null &&
@@ -92,29 +126,33 @@ const CreateGroup = ({ setCreategrouppage }) => {
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
+          console.log("Input Value in searchTerm", searchTerm);
+          console.log("Input Value in assigneesName", assigneesName);
+
           return (
-            searchTerm &&
-            assigneesName.startsWith(searchTerm) &&
-            assigneesName !== searchTerm
+            searchTerm && assigneesName.startsWith(searchTerm)
+            // assigneesName !== searchTerm.toLowerCase()
           );
         })
-        .slice(0, 3)
+        .slice(0, 10)
         .map((item) => (
           <div
             onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex flex-row align-items-center"
+            className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
+            {console.log("itemitem", item)}
             <img src={userImage} />
             <p className="p-0 m-0">{item.name}</p>
           </div>
         ));
     } else {
+      console.log("not found");
     }
   };
-
   const onSearch = (name, id) => {
     console.log("name id", name, id);
+    setOnclickFlag(true);
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
@@ -233,7 +271,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
         });
         if (meetingAttendeesList.length > 0) {
           meetingAttendeesList.map((data, index) => {
-            console.log("groupMembers",groupMembers)
+            console.log("groupMembers", groupMembers);
             if (data.pK_UID === taskAssignedTo) {
               groupMembers.push({
                 data,
@@ -355,6 +393,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
   };
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
+    setOnclickFlag(false);
     if (e.target.value.trimStart() != "") {
       setTaskAssignedToInput(e.target.value.trimStart());
     } else {
@@ -430,7 +469,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       return false;
     }
   };
-  
+
   const handleSubmitCreateGroup = async () => {
     if (
       createGroupDetails.Title !== "" &&
@@ -887,6 +926,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                   taskAssignedToInput
                                 )}
                                 change={onChangeSearch}
+                                onclickFlag={onclickFlag}
                               />
                             </Col>
                           </Row>
