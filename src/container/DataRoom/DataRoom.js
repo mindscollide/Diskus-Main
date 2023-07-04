@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import "react-dropzone-uploader/dist/styles.css";
 import { Progress, Space, Tooltip } from "antd";
-import Cancellicon from "../../assets/images/x-lg.svg";
+import Cancellicon from "../../assets/images/cross_dataroom.svg";
 import { FileUploadToDo } from "../../store/actions/Upload_action";
 import images from "../../assets/images/Imagesandphotos.svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +21,8 @@ import sitesIcon from "../../assets/images/sitesIcon.svg";
 import DrapDropIcon from "../../assets/images/DrapDropIcon.svg";
 import EmptyStateSharewithme from "../../assets/images/SharewithmeEmptyIcon.svg";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
-import chevdown from "../../assets/images/chevron-down.svg";
+import chevdown from "../../assets/images/chevron_down_white.svg";
+import chevronUp from '../../assets/images/chevron_up.svg';
 import documentIcon from "../../assets/images/color document.svg";
 import pdf from "../../assets/images/color pdf.svg";
 import rightIcon from "../../assets/images/chevron-right (1).svg";
@@ -117,6 +118,7 @@ const DataRoom = () => {
   const [optionsthreedoticon, setOptionsthreedoticon] = useState(false);
   const [actionundonenotification, setActionundonenotification] =
     useState(false);
+  const [collapes, setCollapes] = useState(false)
   const [sharehoverstyle, setSharehoverstyle] = useState(false);
   const [sharefoldermodal, setSharefoldermodal] = useState(false);
   const [mydocumentbtnactive, setMydocumentbtnactive] = useState(false);
@@ -239,8 +241,10 @@ const DataRoom = () => {
     }
     if (currentView !== null) {
       console.log("click");
-
       dispatch(getDocumentsAndFolderApi(navigate, currentView, t));
+    } else {
+      localStorage.setItem("setTableView", 3)
+      dispatch(getDocumentsAndFolderApi(navigate, 3, t));
     }
     return () => {
       localStorage.removeItem("setTableView")
@@ -2029,9 +2033,8 @@ const DataRoom = () => {
               lg={12}
               md={12}
               sm={12}
-              className={
-                styles["Back_ground_For_uploader"]
-              }
+              className={collapes ?
+                styles["Back_ground_For_uploader_active"] : styles["Back_ground_For_uploader"]}
             >
               <Row>
                 <Col
@@ -2075,20 +2078,23 @@ const DataRoom = () => {
                       md={3}
                       sm={3}
                       className="d-flex justify-content-end gap-2 mt-1"
-                    >
-                      <img
+                    >{collapes ? <img
+                      src={chevronUp}
+                      width={9}
+                      onClick={() => setCollapes(false)}
+                    />
+                      : <img
                         src={chevdown}
                         width={9}
-
-                      // width="8.49px"
-                      // height="4.46px"
+                        onClick={() => setCollapes(true)}
                       />
+
+                      }
+
                       <img
                         src={Cancellicon}
                         width={9}
                         onClick={closeSearchBar}
-                      // width="6.94px"
-                      // height="6.71px"
                       />
                     </Col>
                   </Row>

@@ -20,6 +20,8 @@ const InputSearchFilter = ({
       <div className="search-inner-textfield">
         <TextField
           type="text"
+          width={"100%"}
+          height={"100%"}
           labelClass={labelClass}
           value={value}
           change={change}

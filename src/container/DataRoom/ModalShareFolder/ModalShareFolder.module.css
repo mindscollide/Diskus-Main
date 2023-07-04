@@ -241,9 +241,10 @@
 .shareFolderAddMemberBtn {
   padding: 4px 30px !important;
   border-radius: 4px !important;
-  background-color: #6172d6 !important;
+  background: #6172D6 !important;
+  color: #F6F6F6 !important;
   width: 100%;
-  height: auto;
+  height: 100%;
   border: none !important;
   outline: none !important;
 }
@@ -256,4 +257,8 @@
   height: auto;
   border: none !important;
   outline: none !important;
+}
+
+.Editor_select {
+  height: 31px !important;
 }

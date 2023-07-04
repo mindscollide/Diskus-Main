@@ -5492,3 +5492,9 @@ body[dir="rtl"] .ant-result-subtitle {
 .UpdateCheckbox .checkboxParentClass .ant-checkbox-wrapper-disabled {
   cursor: default !important;
 }
+
+.editSelector__control {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  height: 30px !important;
+}

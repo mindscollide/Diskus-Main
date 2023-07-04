@@ -100,9 +100,9 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId, f
     { value: 3, label: "Add Expiration" },
   ];
   const optionsgeneralAccess = [
-    { value: "Restricted", label: "Restricted" },
-    { value: "My Organization", label: "My Organization" },
-    { value: "Any One With link", label: "Any One With link" },
+    { value: 1, label: "Restricted" },
+    { value: 2, label: "My Organization" },
+    { value: 3, label: "Any One With link" },
   ];
 
   //Drop Down Values
@@ -459,6 +459,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId, f
                         <InputSearchFilter
                           labelClass="d-none"
                           flag={flag}
+
                           applyClass="sharefoldersearchInput"
                           placeholder={t("Search-member-here")}
                           value={taskAssignedToInput}
@@ -474,6 +475,7 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId, f
                           placeholder={t("Editor")}
                           className={styles["Editor_select"]}
                           onChange={handlechange}
+                          classNamePrefix={"editSelector"}
                         />
                       </Col>
                       <Col lg={3} md={3} sm={3}>
@@ -481,10 +483,11 @@ const ModalShareFolder = ({ ModalTitle, sharefolder, setSharefolder, folderId, f
                           options={optionsgeneralAccess}
                           placeholder={t("General-access")}
                           className={styles["Editor_select"]}
+                          classNamePrefix={"editSelector"}
                         />
                       </Col>
                       <Col lg={2} md={2} sm={2}>
-                        <Button text="Add" size="lg" className={styles["shareFolderAddMemberBtn"]} onClick={handleAddMember} />
+                        <Button text="Add" className={styles["shareFolderAddMemberBtn"]} onClick={handleAddMember} />
                       </Col>
                     </Row>
                     <Row className="mt-2">
