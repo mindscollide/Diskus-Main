@@ -193,7 +193,7 @@ body[dir="rtl"] .editIconBox {
 }
 
 .notesViewContainer {
-  min-height: 75vh !important;
+  min-height: 68vh !important;
   overflow: hidden !important;
   overflow-y: auto !important;
   height: 100px !important;

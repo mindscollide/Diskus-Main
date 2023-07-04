@@ -39,6 +39,7 @@ import folderColor from "../../assets/images/folder_color.svg";
 import plus from "../../assets/images/Icon feather-folder.svg";
 import fileupload from "../../assets/images/Group 2891.svg";
 import PDFICON from "../../assets/images/pdf_icon.svg";
+import featherfolder from '../../assets/images/feather-folder.svg'
 import { Paper } from "@material-ui/core";
 import styles from "./DataRoom.module.css";
 
@@ -869,10 +870,7 @@ const DataRoom = () => {
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <CustomCheckbox
-                  checked={folderID.includes(data.id) ? true : false}
-                  onChange={() => foldersHandler(data.id, data)}
-                />
+                <img src={featherfolder} />
                 <span
                   className={styles["dataroom_table_heading"]}
                   onClick={() => getFolderDocuments(data.id)}
@@ -894,10 +892,7 @@ const DataRoom = () => {
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <CustomCheckbox
-                  checked={folderID.includes(data.id) ? true : false}
-                  onChange={() => foldersHandler(data.id, data)}
-                />
+                <img src={featherfolder} />
                 <span
                   className={styles["dataroom_table_heading"]}
                   onClick={() => getFolderDocuments(data.id)}

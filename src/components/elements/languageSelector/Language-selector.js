@@ -66,8 +66,8 @@ const LanguageSelector = () => {
     }, [i18n]);
     return (
         <section className="position-relative" ref={languageref}>
-            <span className={location.pathname.includes("/DisKus/") || location.pathname.includes("/paymentForm") || location.pathname.includes("/signuporganization") ? "text-white d-flex gap-2 align-items-center position-relative cursor-pointer" : "text-black d-flex gap-2 align-items-center position-relative cursor-pointer"} onClick={() => setLanguageDropdown(!languageDropdown)}>
-                <img src={location.pathname.includes("/DisKus/") || location.pathname.includes("/paymentForm") || location.pathname.includes("/signuporganization") ? LanguageIcon : LanguageBlack} />
+            <span className={location.pathname.includes("/DisKus/") || location.pathname.includes("/paymentForm") || location.pathname.includes("/signuporganization") || location.pathname.includes("/Diskus/Admin") ? "text-white d-flex gap-2 align-items-center position-relative cursor-pointer" : "text-black d-flex gap-2 align-items-center position-relative cursor-pointer"} onClick={() => setLanguageDropdown(!languageDropdown)}>
+                <img src={location.pathname.includes("/DisKus/") || location.pathname.includes("/paymentForm") || location.pathname.includes("/signuporganization") || location.pathname.includes("/Diskus/Admin") ? LanguageIcon : LanguageBlack} />
                 {languageforView}
                 {languageDropdown ? <ChevronUp fontWeight={"bold"} /> : < ChevronDown fontWeight={"bold"} />}
             </span>
