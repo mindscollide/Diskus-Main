@@ -675,6 +675,12 @@ const updateShoutAll = {
   RequestMethod: 'ServiceManager.UpdateBroadcast',
 }
 
+const googleValidToken = {
+  RequestMethod: 'ServiceManager.GetGoogleValidToken',
+}
+const revoketoken = {
+  RequestMethod: 'ServiceManager.RevokeToken',
+}
 const searchUserMeetings = {
   RequestMethod: "ServiceManager.SearchMeetings"
 }
@@ -688,8 +694,11 @@ const searchNoteRequetMethod = {
 }
 const paymentMethodsRequestMethod = {
   RequestMethod: "ServiceManager.GetPaymentMethods"
+
 }
 export {
+  revoketoken,
+  googleValidToken,
   signuprequest,
   signinauthenication,
   forgetpassword,

@@ -176,6 +176,7 @@ const EditResolution = ({
     pK_ResolutionID: 0,
     ResolutionStatus: "",
   });
+  const [onclickFlag, setOnclickFlag] = useState(false);
   console.log(editResolutionData, circulationDateTime, votingDateTime, decisionDateTime, "editResolutionDataeditResolutionDataeditResolutionData")
 
   const ShowVoter = () => {
@@ -271,6 +272,7 @@ const EditResolution = ({
 
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
+    setOnclickFlag(true)
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
@@ -289,6 +291,7 @@ const EditResolution = ({
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
+    setOnclickFlag(false)
     console.log(e.target.value, "eeeeeeee");
     setTaskAssignedToInput(e.target.value.trimStart());
     // setEmailValue
@@ -306,8 +309,41 @@ const EditResolution = ({
   };
 
   //Drop Down Values for voters
+  // const searchFilterHandler = (value) => {
+  //   let allAssignees = assignees.user;
+  //   if (
+  //     allAssignees != undefined &&
+  //     allAssignees != null &&
+  //     allAssignees != NaN &&
+  //     allAssignees != []
+  //   ) {
+  //     return allAssignees
+  //       .filter((item) => {
+  //         const searchTerm = value.toLowerCase();
+  //         const assigneesName = item.name.toLowerCase();
+  //         return (
+  //           searchTerm &&
+  //           assigneesName.startsWith(searchTerm) &&
+  //           assigneesName !== searchTerm
+  //         );
+  //       })
+  //       .slice(0, 3)
+  //       .map((item) => (
+  //         <div
+  //           onClick={() => onSearch(item.name, item.pK_UID)}
+  //           className="dropdown-row-assignee d-flex flex-row align-items-center"
+  //           key={item.pK_UID}
+  //         >
+  //           <img src={userImage} />
+  //           <p className="p-0 m-0">{item.name}</p>
+  //         </div>
+  //       ));
+  //   } else {
+  //   }
+  // };
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
+    console.log("Input Value", allAssignees);
     if (
       allAssignees != undefined &&
       allAssignees != null &&
@@ -318,27 +354,30 @@ const EditResolution = ({
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
+          console.log("Input Value in searchTerm", searchTerm);
+          console.log("Input Value in assigneesName", assigneesName);
+
           return (
-            searchTerm &&
-            assigneesName.startsWith(searchTerm) &&
-            assigneesName !== searchTerm
+            searchTerm && assigneesName.startsWith(searchTerm)
+            // assigneesName !== searchTerm.toLowerCase()
           );
         })
-        .slice(0, 3)
+        .slice(0, 10)
         .map((item) => (
           <div
             onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex flex-row align-items-center"
+            className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
+            {console.log("itemitem", item)}
             <img src={userImage} />
             <p className="p-0 m-0">{item.name}</p>
           </div>
         ));
     } else {
+      console.log("not found");
     }
   };
-
   const deleteFilefromAttachments = (data, index) => {
     console.log(data, data.fileSize, data.DisplayAttachmentName, fileForSend, fileSize, "checkingelemnaiteFile")
     let fileSizefound = fileSize - data.fileSize;
@@ -1597,6 +1636,7 @@ const EditResolution = ({
                                             taskAssignedToInput
                                           )}
                                           change={onChangeSearch}
+                                          onclickFlag={onclickFlag}
                                         />
                                         <Row>
                                           <Col>

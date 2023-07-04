@@ -55,8 +55,10 @@ const LanguageSelector = () => {
             document.removeEventListener('click', handleOutsideClick)
         }
     }, [languageDropdown])
+
     useEffect(() => {
         let currentLanguage = localStorage.getItem("i18nextLng");
+        const currentLangObj = languages.find((lang) => lang.code === currentLanguage);
         if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
             setTimeout(() => {
                 i18n.changeLanguage(currentLanguage);

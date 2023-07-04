@@ -114,12 +114,21 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   });
 
   const deleteFilefromAttachments = (data, index) => {
-    console.log(data, data.fileSize, data.DisplayAttachmentName, fileForSend, fileSize, "checkingelemnaiteFile")
+    console.log(
+      data,
+      data.fileSize,
+      data.DisplayAttachmentName,
+      fileForSend,
+      fileSize,
+      "checkingelemnaiteFile"
+    );
     let fileSizefound = fileSize - data.fileSize;
-    let fileForSendingIndex = fileForSend.findIndex((newData, index) => newData.name === data.DisplayAttachmentName)
-    setFileForSend(fileForSend)
-    setFileSize(fileSizefound)
-    fileForSend.splice(fileForSendingIndex, 1)
+    let fileForSendingIndex = fileForSend.findIndex(
+      (newData, index) => newData.name === data.DisplayAttachmentName
+    );
+    setFileForSend(fileForSend);
+    setFileSize(fileSizefound);
+    fileForSend.splice(fileForSendingIndex, 1);
     let searchIndex = tasksAttachments.TasksAttachments;
     searchIndex.splice(index, 1);
     setTasksAttachments({
@@ -216,7 +225,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           message: t("You-can-not-upload-more-then-100MB-files"),
         }),
         3000
-      )
+      );
     } else {
       const uploadFilePath = data.target.value;
       const uploadedFile = data.target.files[0];
@@ -291,7 +300,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
               OriginalAttachmentName: uploadFilePath,
               CreationDateTime: "",
               FK_TID: 0,
-              fileSize: uploadedFile.size
+              fileSize: uploadedFile.size,
             });
             setTasksAttachments({ ["TasksAttachments"]: file });
           }
@@ -328,7 +337,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
               OriginalAttachmentName: uploadFilePath,
               CreationDateTime: "",
               FK_TID: 0,
-              fileSize: uploadedFile.size
+              fileSize: uploadedFile.size,
             });
             setTasksAttachments({ ["TasksAttachments"]: file });
           }
@@ -416,6 +425,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
+          console.log("Input Value in searchTerm", searchTerm);
+          console.log("Input Value in assigneesName", assigneesName);
+
           return (
             searchTerm && assigneesName.startsWith(searchTerm)
             // assigneesName !== searchTerm.toLowerCase()
@@ -501,45 +513,48 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         flag: true,
         message: t("Please-add-assignees"),
       });
-    }
-    else {
+    } else {
       let counter = Object.keys(fileForSend).length - 1;
       if (Object.keys(fileForSend).length > 0) {
         const uploadFiles = (fileForSend) => {
           const uploadPromises = fileForSend.map((newData) => {
             dispatch(FileUploadToDo(navigate, newData, t));
-          })
-          return Promise.all(uploadPromises)
-        }
-        uploadFiles(fileForSend).then((response) => {
-          let Data = {
-            Task,
-            TaskCreatorID,
-            TaskAssignedTo,
-            TasksAttachments,
-          };
-          dispatch(CreateToDoList(navigate, Data, t));
-          setShow(false);
-          console.log("createToDoList", Data);
-          setTask({
-            ...task,
-            PK_TID: 1,
-            Title: "",
-            Description: "",
-            IsMainTask: true,
-            DeadLineDate: "",
-            DeadLineTime: "",
-            CreationDateTime: "",
           });
-          setCreateTodoDate("");
-          setCreateTodoTime("");
-          setTaskAssignedTo([]);
-          setTasksAttachments({ ["TasksAttachments"]: [] });
-          setTaskAssignedName([]);
-          setToDoDate("");
-          setFileForSend([])
-          setFileSize(0)
-        }).catch((error) => { console.log(error) })
+          return Promise.all(uploadPromises);
+        };
+        uploadFiles(fileForSend)
+          .then((response) => {
+            let Data = {
+              Task,
+              TaskCreatorID,
+              TaskAssignedTo,
+              TasksAttachments,
+            };
+            dispatch(CreateToDoList(navigate, Data, t));
+            setShow(false);
+            console.log("createToDoList", Data);
+            setTask({
+              ...task,
+              PK_TID: 1,
+              Title: "",
+              Description: "",
+              IsMainTask: true,
+              DeadLineDate: "",
+              DeadLineTime: "",
+              CreationDateTime: "",
+            });
+            setCreateTodoDate("");
+            setCreateTodoTime("");
+            setTaskAssignedTo([]);
+            setTasksAttachments({ ["TasksAttachments"]: [] });
+            setTaskAssignedName([]);
+            setToDoDate("");
+            setFileForSend([]);
+            setFileSize(0);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       } else {
         let Data = {
           Task,
@@ -566,11 +581,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setTasksAttachments({ ["TasksAttachments"]: [] });
         setTaskAssignedName([]);
         setToDoDate("");
-        setFileForSend([])
-        setFileSize(0)
+        setFileForSend([]);
+        setFileSize(0);
       }
-    };
-  }
+    }
+  };
   const handleDeleteAttendee = (data, index) => {
     TaskAssignedTo.splice(index, 1);
     taskAssignedName.splice(index, 1);
@@ -578,7 +593,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setTaskAssignedTo([...TaskAssignedTo]);
   };
 
-  useEffect(() => { }, [TaskAssignedTo, taskAssignedName]);
+  useEffect(() => {}, [TaskAssignedTo, taskAssignedName]);
   return (
     <>
       <Container>
@@ -619,18 +634,13 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     xs={12}
                     className="CreateMeetingDate text-center"
                   >
-                    {/* <CustomDatePicker
-                      change={taskHandler}
-                      name="DeadLineDate"
-                      value={task.DeadLineDate}
-                    /> */}
                     <MultiDatePicker
                       onChange={toDoDateHandler}
                       name="DeadLineDate"
                       value={toDoDate}
                       calendar={calendarValue}
                       locale={localValue}
-                    // newValue={createMeeting.MeetingDate}
+                      // newValue={createMeeting.MeetingDate}
                     />
                   </Col>
                   <Col
@@ -740,108 +750,108 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         >
                           {tasksAttachments.TasksAttachments.length > 0
                             ? tasksAttachments.TasksAttachments.map(
-                              (data, index) => {
-                                var ext =
-                                  data.DisplayAttachmentName.split(".").pop();
+                                (data, index) => {
+                                  var ext =
+                                    data.DisplayAttachmentName.split(".").pop();
 
-                                const first =
-                                  data.DisplayAttachmentName.split(" ")[0];
-                                return (
-                                  <Col
-                                    sm={12}
-                                    lg={2}
-                                    md={2}
-                                    className="modaltodolist-attachment-icon"
-                                  >
-                                    {ext === "doc" ? (
-                                      <FileIcon
-                                        extension={"docx"}
-                                        size={78}
-                                        type={"document"}
-                                        labelColor={"rgba(44, 88, 152)"}
-                                      />
-                                    ) : ext === "docx" ? (
-                                      <FileIcon
-                                        extension={"docx"}
-                                        size={78}
-                                        type={"font"}
-                                        labelColor={"rgba(44, 88, 152)"}
-                                      />
-                                    ) : ext === "xls" ? (
-                                      <FileIcon
-                                        extension={"xls"}
-                                        type={"spreadsheet"}
-                                        size={78}
-                                        labelColor={"rgba(16, 121, 63)"}
-                                      />
-                                    ) : ext === "xlsx" ? (
-                                      <FileIcon
-                                        extension={"xls"}
-                                        type={"spreadsheet"}
-                                        size={78}
-                                        labelColor={"rgba(16, 121, 63)"}
-                                      />
-                                    ) : ext === "pdf" ? (
-                                      <FileIcon
-                                        extension={"pdf"}
-                                        size={78}
-                                        {...defaultStyles.pdf}
-                                      />
-                                    ) : ext === "png" ? (
-                                      <FileIcon
-                                        extension={"png"}
-                                        size={78}
-                                        type={"image"}
-                                        labelColor={"rgba(102, 102, 224)"}
-                                      />
-                                    ) : ext === "txt" ? (
-                                      <FileIcon
-                                        extension={"txt"}
-                                        size={78}
-                                        type={"document"}
-                                        labelColor={"rgba(52, 120, 199)"}
-                                      />
-                                    ) : ext === "jpg" ? (
-                                      <FileIcon
-                                        extension={"jpg"}
-                                        size={78}
-                                        type={"image"}
-                                        labelColor={"rgba(102, 102, 224)"}
-                                      />
-                                    ) : ext === "jpeg" ? (
-                                      <FileIcon
-                                        extension={"jpeg"}
-                                        size={78}
-                                        type={"image"}
-                                        labelColor={"rgba(102, 102, 224)"}
-                                      />
-                                    ) : ext === "gif" ? (
-                                      <FileIcon
-                                        extension={"gif"}
-                                        size={78}
-                                        {...defaultStyles.gif}
-                                      />
-                                    ) : null}
-                                    <span className="deleteBtn">
-                                      <img
-                                        src={deleteButtonCreateMeeting}
-                                        width={15}
-                                        height={15}
-                                        onClick={() =>
-                                          deleteFilefromAttachments(
-                                            data,
-                                            index
-                                          )
-                                        }
-                                      />
-                                    </span>
-                                    <p className="modaltodolist-attachment-text">
-                                      {first}
-                                    </p>
-                                  </Col>
-                                );
-                              }
-                            )
+                                  const first =
+                                    data.DisplayAttachmentName.split(" ")[0];
+                                  return (
+                                    <Col
+                                      sm={12}
+                                      lg={2}
+                                      md={2}
+                                      className="modaltodolist-attachment-icon"
+                                    >
+                                      {ext === "doc" ? (
+                                        <FileIcon
+                                          extension={"docx"}
+                                          size={78}
+                                          type={"document"}
+                                          labelColor={"rgba(44, 88, 152)"}
+                                        />
+                                      ) : ext === "docx" ? (
+                                        <FileIcon
+                                          extension={"docx"}
+                                          size={78}
+                                          type={"font"}
+                                          labelColor={"rgba(44, 88, 152)"}
+                                        />
+                                      ) : ext === "xls" ? (
+                                        <FileIcon
+                                          extension={"xls"}
+                                          type={"spreadsheet"}
+                                          size={78}
+                                          labelColor={"rgba(16, 121, 63)"}
+                                        />
+                                      ) : ext === "xlsx" ? (
+                                        <FileIcon
+                                          extension={"xls"}
+                                          type={"spreadsheet"}
+                                          size={78}
+                                          labelColor={"rgba(16, 121, 63)"}
+                                        />
+                                      ) : ext === "pdf" ? (
+                                        <FileIcon
+                                          extension={"pdf"}
+                                          size={78}
+                                          {...defaultStyles.pdf}
+                                        />
+                                      ) : ext === "png" ? (
+                                        <FileIcon
+                                          extension={"png"}
+                                          size={78}
+                                          type={"image"}
+                                          labelColor={"rgba(102, 102, 224)"}
+                                        />
+                                      ) : ext === "txt" ? (
+                                        <FileIcon
+                                          extension={"txt"}
+                                          size={78}
+                                          type={"document"}
+                                          labelColor={"rgba(52, 120, 199)"}
+                                        />
+                                      ) : ext === "jpg" ? (
+                                        <FileIcon
+                                          extension={"jpg"}
+                                          size={78}
+                                          type={"image"}
+                                          labelColor={"rgba(102, 102, 224)"}
+                                        />
+                                      ) : ext === "jpeg" ? (
+                                        <FileIcon
+                                          extension={"jpeg"}
+                                          size={78}
+                                          type={"image"}
+                                          labelColor={"rgba(102, 102, 224)"}
+                                        />
+                                      ) : ext === "gif" ? (
+                                        <FileIcon
+                                          extension={"gif"}
+                                          size={78}
+                                          {...defaultStyles.gif}
+                                        />
+                                      ) : null}
+                                      <span className="deleteBtn">
+                                        <img
+                                          src={deleteButtonCreateMeeting}
+                                          width={15}
+                                          height={15}
+                                          onClick={() =>
+                                            deleteFilefromAttachments(
+                                              data,
+                                              index
+                                            )
+                                          }
+                                        />
+                                      </span>
+                                      <p className="modaltodolist-attachment-text">
+                                        {first}
+                                      </p>
+                                    </Col>
+                                  );
+                                }
+                              )
                             : null}
                         </Col>
                       </Row>
