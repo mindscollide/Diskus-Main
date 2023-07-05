@@ -3998,9 +3998,9 @@ select {
   text-align: center !important;
 }
 
-input[type="text"] {
+/* input[type="text"] {
   height: 30px !important;
-}
+} */
 
 .css-6j8wv5-Input {
   margin: 0 !important;
@@ -5494,7 +5494,5 @@ body[dir="rtl"] .ant-result-subtitle {
 }
 
 .editSelector__control {
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff !important;
   height: 30px !important;
 }

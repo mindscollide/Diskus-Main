@@ -123,7 +123,7 @@
 }
 
 .sharefoldersearchInput {
-  height: 31px !important;
+  height: 38px !important;
 }
 
 .dataRoomSearchInput {
@@ -164,6 +164,10 @@
   margin: 0 !important;
 } */
 .text-area-create-resolution {
+  height: 110px !important;
+  resize: none;
+}
+.text-area-sharefolder {
   height: 110px !important;
   resize: none;
 }

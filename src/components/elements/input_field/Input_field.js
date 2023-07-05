@@ -38,7 +38,7 @@ const TextField = ({
   maxLength,
   onDoubleClick,
   onClick,
-  height
+  height,
 }) => {
   console.log("applyClassapplyClass", applyClass);
   return (
@@ -58,7 +58,7 @@ const TextField = ({
           onFocus={focus}
           name={name && name}
           onChange={change}
-          style={{ width: `${width}`, margin: `${margin}`, height: `${height}` }}
+          style={{ width: `${width}`, margin: `${margin}` }}
           placeholder={placeholder && placeholder}
           rows={rows}
           as={as}
