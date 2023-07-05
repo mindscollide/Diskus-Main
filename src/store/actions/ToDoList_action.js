@@ -40,7 +40,7 @@ const toDoFail = (message) => {
   }
 }
 
-const SetSpinnerTrue = () => {
+const SetSpinnersTrue = () => {
   return {
     type: actions.SET_SPINNER_TRUE,
   }
@@ -596,7 +596,7 @@ const getWeeklyToDoCountFail = (message) => {
 const GetWeeklyToDoCount = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
-    dispatch(SetSpinnerTrue())
+    dispatch(SetSpinnersTrue())
     let form = new FormData()
     form.append('RequestMethod', getWeekToDo.RequestMethod)
     form.append('RequestData', JSON.stringify(data))
@@ -763,5 +763,7 @@ export {
   setTodoStatusDataFormSocket,
   clearResponce,
   TodoCounter,
-  SearchTodoListApi
+  SearchTodoListApi,
+  getTodoListInit,
+  SetSpinnersTrue
 }

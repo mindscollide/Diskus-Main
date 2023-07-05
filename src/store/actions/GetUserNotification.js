@@ -104,4 +104,4 @@ const HideNotificationUserNotificationData = () => {
   };
 };
 
-export { getNotifications, HideNotificationUserNotificationData };
+export { getNotifications, HideNotificationUserNotificationData,getusernotificationinit };
