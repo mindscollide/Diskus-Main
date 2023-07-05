@@ -22,6 +22,7 @@ import {
   MultiDatePicker,
   Modal,
   TextField,
+  Notification,
   InputSearchFilter,
 } from "../../../components/elements";
 import { style } from "@mui/system";
@@ -31,6 +32,7 @@ import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { shareFoldersApi } from "../../../store/actions/DataRoom_actions";
 import { useNavigate } from "react-router-dom";
 import ChevronDown from "../../../assets/images/chevron-down.svg";
+import ChevronDownWhite from "../../../assets/images/chevron_down_white.svg";
 
 const ModalShareFolder = ({
   ModalTitle,
@@ -47,9 +49,14 @@ const ModalShareFolder = ({
   const [expirationheader, setExpirationheader] = useState(false);
   const [calenderdate, setCalenderdate] = useState(false);
   const [inviteedit, setInviteedit] = useState(false);
+  const [notifyPeople, setNotifyPeople] = useState(false)
   const [folderData, setFolderData] = useState({
     Folders: [],
   });
+  const [open, setOpen] = useState({
+    flag: false,
+    message: ""
+  })
   console.log(folderData, "datadatadata");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -64,6 +71,10 @@ const ModalShareFolder = ({
     label: "",
     value: 0,
   });
+  const [generalAccess, setGeneralAccess] = useState({
+    label: "",
+    value: 0
+  })
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [organizationMembers, setOrganizationMembers] = useState([]);
   const [isMembers, setMembers] = useState([]);
@@ -132,8 +143,7 @@ const ModalShareFolder = ({
           const assigneesName = item.name.toLowerCase();
           return (
             searchTerm &&
-            assigneesName.startsWith(searchTerm) &&
-            assigneesName !== searchTerm
+            assigneesName.startsWith(searchTerm)
           );
         })
         .slice(0, 3)
@@ -203,18 +213,47 @@ const ModalShareFolder = ({
         return { ...prev, Folders: [...prev.Folders, Data] };
       });
     } else {
-      alert("User is already add");
+      setOpen({
+        flag: true,
+        message: t("User-is-already-exist")
+      })
     }
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
     setTaskAssignedName("");
+    setPermissionID({
+      label: "",
+      value: 0
+    })
+    setGeneralAccess({
+      label: "",
+      value: 0
+    })
   };
 
   const { t } = useTranslation();
   const closebtn = async () => {
     setSharefolder(false);
   };
+  const handleChangeGeneralAccess = (selectValue) => {
+    setGeneralAccess({
+      label: selectValue.label,
+      value: selectValue.value
+    })
+  }
+
+  const handleRemoveMember = (memberData) => {
+    let findIndexfromsendData = folderData.Folders.findIndex((data, index) => data.FK_UserID === memberData.pK_UID)
+    let findIndexfromViewData = isMembers.findIndex((data, index) => data.pK_UID === memberData.pK_UID)
+    folderData.Folders.splice(findIndexfromsendData, 1);
+    isMembers.splice(findIndexfromViewData, 1);
+    setMembers([...isMembers])
+    setFolderData((prev) => {
+      return { ...prev, Folders: [...prev.Folders] }
+    })
+
+  }
   useEffect(() => {
     dispatch(allAssignessList(navigate, t));
   }, []);
@@ -245,7 +284,7 @@ const ModalShareFolder = ({
                         value={meetingDate}
                         calendar={calendarValue}
                         locale={localValue}
-                        // newValue={createMeeting.MeetingDate}
+                      // newValue={createMeeting.MeetingDate}
                       />
                     </>
                   ) : null}
@@ -495,7 +534,7 @@ const ModalShareFolder = ({
                                   value: 0,
                                 });
                               }}
-                              src={ChevronDown}
+                              src={ChevronDownWhite}
                             />
                           </div>
                         ) : (
@@ -509,12 +548,29 @@ const ModalShareFolder = ({
                         )}
                       </Col>
                       <Col lg={3} md={3} sm={3}>
-                        <Select
+                        {generalAccess.value !== 0 ? <div className={styles["dropdown__Document_Value"]}>
+                          <span className={styles["overflow-text"]}>
+                            {generalAccess.label}
+                          </span>
+                          <img
+                            width="12px"
+                            height="12px"
+                            onClick={() => {
+                              setGeneralAccess({
+                                label: "",
+                                value: 0,
+                              });
+                            }}
+                            src={ChevronDownWhite}
+                          />
+                        </div> : <Select
                           options={optionsgeneralAccess}
                           placeholder={t("General-access")}
                           className={styles["Editor_select"]}
                           classNamePrefix={"editSelector"}
-                        />
+                          onChange={handleChangeGeneralAccess}
+                        />}
+
                       </Col>
                       <Col lg={2} md={2} sm={2}>
                         <Button
@@ -534,22 +590,23 @@ const ModalShareFolder = ({
                         <Row>
                           {isMembers.length > 0
                             ? isMembers.map((data, index) => {
-                                return (
-                                  <Col lg={4} md={4} sm={4} key={data.pK_UID}>
-                                    <ParticipantInfoShareFolder
-                                      participantname={data.name}
-                                      particiapantdesignation={data.designation}
-                                      icon={
-                                        <img
-                                          src={crossIcon}
-                                          height="14px"
-                                          width="14px"
-                                        />
-                                      }
-                                    />
-                                  </Col>
-                                );
-                              })
+                              return (
+                                <Col lg={4} md={4} sm={4} key={data.pK_UID}>
+                                  <ParticipantInfoShareFolder
+                                    participantname={data.name}
+                                    particiapantdesignation={data.designation}
+                                    icon={
+                                      <img
+                                        src={crossIcon}
+                                        height="14px"
+                                        width="14px"
+                                        onClick={() => handleRemoveMember(data)}
+                                      />
+                                    }
+                                  />
+                                </Col>
+                              );
+                            })
                             : null}
 
                           {/* <Col lg={4} md={4} sm={4}>
@@ -592,7 +649,8 @@ const ModalShareFolder = ({
                         sm={12}
                         className="d-flex gap-3 align-items-center"
                       >
-                        <Checkbox />
+                        <Checkbox checked={notifyPeople} onChange={() => setNotifyPeople(!notifyPeople)
+                        } />
                         <span className={styles["Notify_people_styles"]}>
                           {t("Notify-people")}
                         </span>
@@ -750,6 +808,8 @@ const ModalShareFolder = ({
           }
         />
       </Container>
+      <Notification open={open.flag} message={open.message}
+        setOpen={setOpen} />
     </>
   );
 };

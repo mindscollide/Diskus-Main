@@ -19,9 +19,11 @@ import {
   Checkbox,
   MultiDatePicker,
   Modal,
+  Notification,
   TextField,
   InputSearchFilter,
 } from "../../../components/elements";
+import ChevronDownWhite from "../../../assets/images/chevron_down_white.svg";
 import ParticipantInfoShareFolder from "../../../components/elements/ParticipantInfoShareFolder/ParticipantInfoShareFolder";
 import EditIconNote from "../../../assets/images/EditIconNotes.svg";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
@@ -38,6 +40,11 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
   const [expirationheader, setExpirationheader] = useState(false);
   const [calenderdate, setCalenderdate] = useState(false);
   const [inviteedit, setInviteedit] = useState(false);
+  const [notifyPeople, setNotifyPeople] = useState(false)
+  const [open, setOpen] = useState({
+    flag: false,
+    message: ""
+  })
   const [fileData, setFileData] = useState({
     Files: [],
   })
@@ -51,7 +58,14 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
   const [accessupdate, setAccessupdate] = useState(false);
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
-  const [permissionID, setPermissionID] = useState(0)
+  const [permissionID, setPermissionID] = useState({
+    label: "",
+    value: 0
+  })
+  const [generalAccess, setGeneralAccess] = useState({
+    label: "",
+    value: 0
+  })
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [organizationMembers, setOrganizationMembers] = useState([])
   const [isMembers, setMembers] = useState([])
@@ -72,7 +86,10 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
 
   const handlechange = (SelectedOptions) => {
     console.log("handlechangehandlechange", SelectedOptions);
-    setPermissionID(SelectedOptions.value)
+    setPermissionID({
+      label: SelectedOptions.label,
+      value: SelectedOptions.value
+    })
     if (SelectedOptions.value === 3) {
       console.log("yes add expiration selected ");
       setExpirationheader(true);
@@ -101,7 +118,7 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
     { value: "My Organization", label: "My Organization" },
     { value: "Any One With link", label: "Any One With link" },
   ];
-  const [onclickFlag,setOnclickFlag]=useState(false) 
+  const [onclickFlag, setOnclickFlag] = useState(false)
   const onSearch = (name, id) => {
     console.log("name id", name, id);
     setOnclickFlag(true)
@@ -157,7 +174,6 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
           const assigneesName = item.name.toLowerCase();
           console.log("Input Value in searchTerm", searchTerm);
           console.log("Input Value in assigneesName", assigneesName);
-
           return (
             searchTerm && assigneesName.startsWith(searchTerm)
             // assigneesName !== searchTerm.toLowerCase()
@@ -209,11 +225,12 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
   };
 
   const handleAddMember = () => {
+    console.log(fileData.Files, "handleAddMemberhandleAddMemberhandleAddMemberhandleAddMember")
     let findIndexData = fileData.Files.findIndex((listData, index) => listData.FK_UserID === taskAssignedTo)
     if (findIndexData === -1) {
       let Data = {
         FK_FileID: folderId,
-        FK_PermissionID: JSON.parse(permissionID),
+        FK_PermissionID: JSON.parse(permissionID.value),
         FK_UserID: taskAssignedTo
       }
       if (taskAssignedTo !== 0) {
@@ -229,19 +246,49 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
         return { ...prev, Files: [...prev.Files, Data] }
       })
     } else {
-      alert("User is already add")
+      setOpen({
+        flag: true,
+        message: t("User-is-already-exist")
+      })
     }
-
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
     setTaskAssignedName("");
+    setPermissionID({
+      label: "",
+      value: 0
+    })
+    setGeneralAccess({
+      label: "",
+      value: 0
+    })
   }
 
   const { t } = useTranslation();
   const closebtn = async () => {
     setShareFile(false);
   };
+
+  const handleChangeGeneralAccess = (selectedValue) => {
+    setGeneralAccess({
+      label: selectedValue.label,
+      value: selectedValue.value
+    })
+  }
+  const handleRemoveMember = (memberData) => {
+    let findIndexfromsendData = fileData.Files.findIndex((data, index) => data.FK_UserID === memberData.pK_UID)
+    let findIndexfromViewData = isMembers.findIndex((data, index) => data.pK_UID === memberData.pK_UID)
+    console.log(findIndexfromViewData, "findIndexfromsendData")
+    console.log(findIndexfromsendData, "findIndexfromsendData")
+    fileData.Files.splice(findIndexfromsendData, 1);
+    isMembers.splice(findIndexfromViewData, 1);
+    setMembers([...isMembers])
+    setFileData((prev) => {
+      return { ...prev, Files: [...prev.Files] }
+    })
+
+  }
   useEffect(() => {
     dispatch(allAssignessList(navigate, t));
   }, []);
@@ -505,26 +552,59 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
                             taskAssignedToInput
                           )}
                           change={onChangeSearch}
-                          onclickFlag={onclickFlag}
+                        // onclickFlag={onclickFlag}
                         />
                       </Col>
                       <Col lg={3} md={3} sm={3}>
-                        <Select
+                        {permissionID.value !== 0 ? <div className={styles["dropdown__Document_Value"]}>
+                          <span className={styles["overflow-text"]}>
+                            {permissionID.label}
+                          </span>
+                          <img
+                            width="12px"
+                            height="12px"
+                            onClick={() => {
+                              setPermissionID({
+                                label: "",
+                                value: 0,
+                              });
+                            }}
+                            src={ChevronDownWhite}
+                          />
+                        </div> : <Select
                           options={options}
                           placeholder={t("Editor")}
                           className={styles["Editor_select"]}
                           onChange={handlechange}
-                        />
+                        />}
+
                       </Col>
                       <Col lg={3} md={3} sm={3}>
-                        <Select
+                        {generalAccess.value !== 0 ? <div className={styles["dropdown__Document_Value"]}>
+                          <span className={styles["overflow-text"]}>
+                            {generalAccess.label}
+                          </span>
+                          <img
+                            width="12px"
+                            height="12px"
+                            onClick={() => {
+                              setGeneralAccess({
+                                label: "",
+                                value: 0,
+                              });
+                            }}
+                            src={ChevronDownWhite}
+                          />
+                        </div> : <Select
                           options={optionsgeneralAccess}
                           placeholder={t("General-access")}
                           className={styles["Editor_select"]}
-                        />
+                          onChange={handleChangeGeneralAccess}
+                        />}
+
                       </Col>
                       <Col lg={2} md={2} sm={2}>
-                        <Button text="Add" size="lg" className={styles["shareFolderAddMemberBtn"]} onClick={handleAddMember} />
+                        <Button text="Add" className={styles["shareFolderAddMemberBtn"]} onClick={handleAddMember} />
                       </Col>
                     </Row>
                     <Row className="mt-2">
@@ -545,6 +625,7 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
                                     src={crossIcon}
                                     height="14px"
                                     width="14px"
+                                    onClick={() => handleRemoveMember(data)}
                                   />
                                 }
                               />
@@ -574,7 +655,7 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
                     </Row>
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12} className="d-flex gap-3 align-items-center">
-                        <Checkbox />
+                        <Checkbox checked={notifyPeople} onChange={() => setNotifyPeople(!notifyPeople)} />
                         <span className={styles["Notify_people_styles"]}>
                           {t("Notify-people")}
                         </span>
@@ -732,6 +813,8 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
           }
         />
       </Container>
+      <Notification open={open.flag} message={open.message}
+        setOpen={setOpen} />
     </>
   );
 };

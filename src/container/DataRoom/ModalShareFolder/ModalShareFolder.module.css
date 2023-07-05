@@ -39,6 +39,7 @@
   background: #fff;
   border: 1px solid #e1e1e1;
 }
+
 .Copy_Link_btn:is(:active, :hover, :focus, :focus-visible, :target, :visited) {
   padding: 12px 30px !important;
   font-size: 12px;
@@ -269,9 +270,10 @@
 .shareFolderAddMemberBtn:is(:hover, :active, :focus, :focus-visible, :visited) {
   padding: 4px 30px !important;
   border-radius: 4px !important;
-  background-color: #6172d6 !important;
+  background: #6172d6 !important;
+  color: #f6f6f6 !important;
   width: 100%;
-  height: auto;
+  height: 100%;
   border: none !important;
   outline: none !important;
 }
@@ -279,6 +281,7 @@
 .Editor_select {
   height: 31px !important;
 }
+
 .dropdown__Document_Value {
   border: 1px solid #e1e1e1;
   height: 38px;

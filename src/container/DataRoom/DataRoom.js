@@ -1374,7 +1374,7 @@ const DataRoom = () => {
       DataRoomReducer.ResponseMessage !== t("Data-available") &&
       DataRoomReducer.ResponseMessage !== t("No-record-found") &&
       DataRoomReducer.ResponseMessage !==
-        t("No-folder-exist-against-this-name") &&
+      t("No-folder-exist-against-this-name") &&
       DataRoomReducer.ResponseMessage !== t("No-duplicate-found")
     ) {
       setOpen({
@@ -1474,7 +1474,7 @@ const DataRoom = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className="dropdown-item"
-                      // onClick={handleCreateTodo}
+                    // onClick={handleCreateTodo}
                     >
                       <Row className="mt-1">
                         <Col
@@ -1494,7 +1494,7 @@ const DataRoom = () => {
                     </Dropdown.Item>
                     <Dropdown.Item
                       className="dropdown-item_folder"
-                      // onClick={handleCreateTodo}
+                    // onClick={handleCreateTodo}
                     >
                       <Row className="mt-1">
                         <Col
@@ -1902,10 +1902,10 @@ const DataRoom = () => {
                                   placeholder={t("Documents")}
                                   isSearchable={false}
                                   onChange={handleChangeDocumentsinSearchResult}
-                                  // defaultValue={{
-                                  //   value: searchResultsFields.DocumentType.value,
-                                  //   label: searchResultsFields.DocumentType.label
-                                  // }}
+                                // defaultValue={{
+                                //   value: searchResultsFields.DocumentType.value,
+                                //   label: searchResultsFields.DocumentType.label
+                                // }}
                                 />
                               )}
                             </Col>
@@ -1916,7 +1916,7 @@ const DataRoom = () => {
                               className="select-dropdowns-height-DataRoom"
                             >
                               {searchResultsFields.documentLocation.value !==
-                              0 ? (
+                                0 ? (
                                 <div
                                   className={styles["dropdown__Document_Value"]}
                                 >
@@ -1951,10 +1951,10 @@ const DataRoom = () => {
                                   placeholder={t("Location")}
                                   isSearchable={false}
                                   onChange={handleChangeOptionsLocation}
-                                  // value={{
-                                  //   value: searchResultsFields.documentLocation.value,
-                                  //   label: searchResultsFields.documentLocation.label
-                                  // }}
+                                // value={{
+                                //   value: searchResultsFields.documentLocation.value,
+                                //   label: searchResultsFields.documentLocation.label
+                                // }}
                                 />
                               )}
                             </Col>
@@ -1965,7 +1965,7 @@ const DataRoom = () => {
                               className="select-dropdowns-height-DataRoom"
                             >
                               {searchResultsFields.userPermission.value !==
-                              0 ? (
+                                0 ? (
                                 <div
                                   className={styles["dropdown__Document_Value"]}
                                 >
@@ -2000,10 +2000,10 @@ const DataRoom = () => {
                                   classNamePrefix={"searchResult_Document"}
                                   onChange={handleChangeUserPermission}
                                   isSearchable={false}
-                                  // value={{
-                                  //   label: searchResultsFields.userPermission.label,
-                                  //   value: searchResultsFields.userPermission.value
-                                  // }}
+                                // value={{
+                                //   label: searchResultsFields.userPermission.label,
+                                //   value: searchResultsFields.userPermission.value
+                                // }}
                                 />
                               )}
                             </Col>
@@ -2014,7 +2014,7 @@ const DataRoom = () => {
                               className="select-dropdowns-height-DataRoom"
                             >
                               {searchResultsFields.lastModifiedDate.value !==
-                              0 ? (
+                                0 ? (
                                 <div
                                   className={styles["dropdown__Document_Value"]}
                                 >
@@ -2056,10 +2056,10 @@ const DataRoom = () => {
                                   }
                                   onChange={handleChange}
                                   isSearchable={false}
-                                  // value={{
-                                  //   value: searchResultsFields.lastModifiedDate.value,
-                                  //   label: searchResultsFields.lastModifiedDate.label
-                                  // }}
+                                // value={{
+                                //   value: searchResultsFields.lastModifiedDate.value,
+                                //   label: searchResultsFields.lastModifiedDate.label
+                                // }}
                                 />
                               )}
                             </Col>
@@ -2074,7 +2074,7 @@ const DataRoom = () => {
                           <span
                             className={styles["Clear_All_btn"]}
                             onClick={handleClearAllSearchOptions}
-                            // onClick={CleatingSearchOptions}
+                          // onClick={CleatingSearchOptions}
                           >
                             {t("Clear-all")}
                           </span>
@@ -2087,11 +2087,11 @@ const DataRoom = () => {
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
                           {getAllData.length > 0 &&
-                          getAllData !== undefined &&
-                          getAllData !== null &&
-                          gridbtnactive ? (
+                            getAllData !== undefined &&
+                            getAllData !== null &&
+                            gridbtnactive ? (
                             <>
-                              <GridViewDataRoom data={getAllData} />
+                              <GridViewDataRoom data={getAllData} optionsforFolder={optionsforFolder} optionsforFile={optionsforFile} />
                             </>
                           ) : getAllData.length > 0 &&
                             getAllData !== undefined &&
@@ -2157,11 +2157,11 @@ const DataRoom = () => {
                       <Row className="mt-3">
                         <Col lg={12} sm={12} md={12}>
                           {getAllData.length > 0 &&
-                          getAllData !== undefined &&
-                          getAllData !== null &&
-                          gridbtnactive ? (
+                            getAllData !== undefined &&
+                            getAllData !== null &&
+                            gridbtnactive ? (
                             <>
-                              <GridViewDataRoom data={getAllData} />
+                              <GridViewDataRoom data={getAllData} optionsforFolder={optionsforFolder} optionsforFile={optionsforFile} />
                             </>
                           ) : getAllData.length > 0 &&
                             getAllData !== undefined &&
@@ -2176,17 +2176,7 @@ const DataRoom = () => {
                                 pagination={false}
                                 // rowSelection={rowSelection}
                                 size={"middle"}
-                                onRow={(record, rowIndex) => {
-                                  return {
-                                    onClick: (event) => {
-                                      console.log(
-                                        event.target.lastChild.data,
-                                        record,
-                                        "asasasasas"
-                                      );
-                                    }, // click row
-                                  };
-                                }}
+
                               />
                             </>
                           ) : (
@@ -2322,38 +2312,38 @@ const DataRoom = () => {
                 >
                   {Object.values(tasksAttachments).length > 0
                     ? Object.values(tasksAttachments).map((data, index) => {
-                        console.log(
-                          data,
-                          "datadatadatadatadatadatadatadatadata"
-                        );
-                        return (
-                          <>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              key={index}
-                              className="d-flex gap-1 mt-2 flex-column"
+                      console.log(
+                        data,
+                        "datadatadatadatadatadatadatadatadata"
+                      );
+                      return (
+                        <>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            key={index}
+                            className="d-flex gap-1 mt-2 flex-column"
+                          >
+                            <Space
+                              direction="vertical"
+                              className="d-flex flex-row"
                             >
-                              <Space
-                                direction="vertical"
-                                className="d-flex flex-row"
-                              >
-                                <img
-                                  src={PDFICON}
-                                  height="16px"
-                                  width="16px"
-                                  className={styles["Icon_in_Bar"]}
-                                />
-                                <span className={styles["name_of_life_in_Bar"]}>
-                                  {data.name}
-                                </span>
-                              </Space>
-                              {progress > 0 && <Progress percent={progress} />}
-                            </Col>
-                          </>
-                        );
-                      })
+                              <img
+                                src={PDFICON}
+                                height="16px"
+                                width="16px"
+                                className={styles["Icon_in_Bar"]}
+                              />
+                              <span className={styles["name_of_life_in_Bar"]}>
+                                {data.name}
+                              </span>
+                            </Space>
+                            {progress > 0 && <Progress percent={progress} />}
+                          </Col>
+                        </>
+                      );
+                    })
                     : null}
                 </Col>
               </Row>

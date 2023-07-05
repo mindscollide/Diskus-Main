@@ -29,7 +29,7 @@ const InputSearchFilter = ({
           applyClass={applyClass}
         />
       </div>
-      {onclickFlag != true ? (
+      {onclickFlag !== true ? (
         <div
           className={
             flag === 1 ? "dropdown-assignee_sharefolder" : "dropdown-assignee"
