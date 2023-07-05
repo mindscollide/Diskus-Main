@@ -530,7 +530,7 @@ const Notes = () => {
             )}
           </Col>
           <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
-            <Pagination current={notesPage} onChange={handelChangeNotesPagination} showSizeChanger total={totalRecords} pageSizeOptions={[30, 50, 100, 200]} pageSize={notesPagesize} className={styles["PaginationStyle-Notes"]} />
+            <Pagination current={notesPage !== null ? notesPage : 1} onChange={handelChangeNotesPagination} showSizeChanger total={totalRecords} pageSizeOptions={[30, 50, 100, 200]} pageSize={notesPagesize !== null ? notesPagesize : 50} className={styles["PaginationStyle-Notes"]} />
           </Col>
         </Row>
         {/* Test Accordian Ends  */}

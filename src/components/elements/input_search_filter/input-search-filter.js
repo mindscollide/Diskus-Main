@@ -20,6 +20,7 @@ const InputSearchFilter = ({
       <div className="search-inner-textfield">
         <TextField
           type="text"
+          width={"100%"}
           labelClass={labelClass}
           value={value}
           change={change}
@@ -28,7 +29,7 @@ const InputSearchFilter = ({
           applyClass={applyClass}
         />
       </div>
-      {onclickFlag != true ? (
+      {onclickFlag !== true ? (
         <div
           className={
             flag === 1 ? "dropdown-assignee_sharefolder" : "dropdown-assignee"
