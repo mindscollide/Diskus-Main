@@ -72,6 +72,7 @@ import VerificationFailedIcon from "./../../../assets/images/failed.png";
 import {
   GetNotes,
   GetNotesByIdAPI,
+  getNotes_Init,
 } from "../../../store/actions/Notes_actions";
 import ModalAddNote from "../../modalAddNote/ModalAddNote";
 import ModalUpdateNote from "../../modalUpdateNote/ModalUpdateNote";
@@ -180,6 +181,7 @@ const Home = () => {
     dispatch(SetSpinnersTrue())
     dispatch(getusernotificationinit())
     dispatch(getCalendarDataInit(true))
+    dispatch(getNotes_Init())
     
     await dispatch(getUserSetting(navigate, t));
 
