@@ -33,8 +33,21 @@
   position: absolute;
   z-index: 9;
   border-top: none;
-  top: 32px;
+  top: 36px;
   background: #fff;
+  border: 1px solid #e1e1e1;
+}
+
+.dropdown-assignee_sharefolder::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.dropdown-assignee_sharefolder::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
 }
 
 .dropdown-assignee::-webkit-scrollbar {

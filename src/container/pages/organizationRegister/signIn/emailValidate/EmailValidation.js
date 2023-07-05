@@ -336,12 +336,13 @@ const EmailValidation = () => {
 
   return (
     <>
-      <Row className="position-relative">
-        <Col className={styles["languageSelector"]} >
-          <LanguageSelector />
-        </Col>
-      </Row>
+
       <Container fluid className={styles["auth_container"]}>
+        <Row className="position-relative">
+          <Col className={styles["languageSelector"]} >
+            <LanguageSelector />
+          </Col>
+        </Row>
         <Row>
           <Col
             lg={4}

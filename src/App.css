@@ -3998,9 +3998,9 @@ select {
   text-align: center !important;
 }
 
-input[type="text"] {
+/* input[type="text"] {
   height: 30px !important;
-}
+} */
 
 .css-6j8wv5-Input {
   margin: 0 !important;
@@ -5491,4 +5491,8 @@ body[dir="rtl"] .ant-result-subtitle {
 
 .UpdateCheckbox .checkboxParentClass .ant-checkbox-wrapper-disabled {
   cursor: default !important;
+}
+
+.editSelector__control {
+  height: 30px !important;
 }

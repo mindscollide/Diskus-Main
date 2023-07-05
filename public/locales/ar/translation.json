@@ -1026,14 +1026,15 @@
   "This-user-already-exist-in-voter-list": "This user already exist in voter-list",
   "This-voter-already-exist": "this Voter already Exist",
   "No-events-available-on-this-date": "No Events Available on this date",
-  "Token-updated-and-calender-list-saved-successful":"Token Updated and Calender List Saved Successful",
-  "Token-updated-but-failed-to-save-calender":"Token Updated but failed to Save Calender",
-  "No-email-exist":"No Email Exist",
-  "Failed-to-insert-configuration":"Failed to insert Configuration",
-  "Code-is-invalid":"Code is Invalid",
-  "UnSuccessful":"UnSuccessful",
-  "Successful":"Successful",
+  "Token-updated-and-calender-list-saved-successful": "Token Updated and Calender List Saved Successful",
+  "Token-updated-but-failed-to-save-calender": "Token Updated but failed to Save Calender",
+  "No-email-exist": "No Email Exist",
+  "Failed-to-insert-configuration": "Failed to insert Configuration",
+  "Code-is-invalid": "Code is Invalid",
+  "UnSuccessful": "UnSuccessful",
+  "Successful": "Successful",
   "Notes-to-voters-is-required": "Notes To Voters is required",
   "Secret-balloting": "Secret balloting",
-  "Show-of-hands": "Show of hands"
+  "Show-of-hands": "Show of hands",
+  "User-is-already-exist": "User is already exist"
 }
