@@ -28,6 +28,7 @@ import arabic_ar from "react-date-object/locales/arabic_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 
 import {
+  getCalendarDataInit,
   getCalendarDataResponse,
   HideNotificationCalendarData,
 } from "../../../store/actions/GetDataForCalendar";
@@ -46,18 +47,22 @@ import {
 import TimeAgo from "timeago-react";
 import {
   GetTodoListByUser,
+  getTodoListInit,
   GetWeeklyToDoCount,
   HideNotificationTodo,
+  SetSpinnersTrue,
 } from "../../../store/actions/ToDoList_action";
 import { HideNotificationAuth } from "../../../store/actions/Auth_action";
 import {
   GetWeeklyMeetingsCount,
   GetUpcomingEvents,
   HideNotificationMeetings,
+  SetSpinnerTrue,
 } from "../../../store/actions/GetMeetingUserId";
 import "./dashboard-module.css";
 import {
   getNotifications,
+  getusernotificationinit,
   HideNotificationUserNotificationData,
 } from "../../../store/actions/GetUserNotification";
 import { HideNotification } from "../../../store/actions/Get_List_Of_Assignees";
@@ -67,6 +72,7 @@ import VerificationFailedIcon from "./../../../assets/images/failed.png";
 import {
   GetNotes,
   GetNotesByIdAPI,
+  getNotes_Init,
 } from "../../../store/actions/Notes_actions";
 import ModalAddNote from "../../modalAddNote/ModalAddNote";
 import ModalUpdateNote from "../../modalUpdateNote/ModalUpdateNote";
@@ -146,9 +152,11 @@ const Home = () => {
   const [events, setEvents] = useState([]);
   const userID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
-  let CalenderMonthsSpan = localStorage.getItem("calenderMonthsSpan")!=undefined&&localStorage.getItem("calenderMonthsSpan")!=null
-    ? localStorage.getItem("calenderMonthsSpan")
-    : 1;
+  let CalenderMonthsSpan =
+    localStorage.getItem("calenderMonthsSpan") != undefined &&
+    localStorage.getItem("calenderMonthsSpan") != null
+      ? localStorage.getItem("calenderMonthsSpan")
+      : 1;
   let currentDate = new Date(); // Get the current date
   // Add CalenderMonthsSpan months and set the day to the last day of the month
   let startDate =
@@ -166,7 +174,15 @@ const Home = () => {
       0
     );
   console.log(startDate, endDate, "endDateendDateendDate");
+ 
   const callApi = async () => {
+    dispatch(getTodoListInit())
+    dispatch(SetSpinnerTrue())
+    dispatch(SetSpinnersTrue())
+    dispatch(getusernotificationinit())
+    dispatch(getCalendarDataInit(true))
+    dispatch(getNotes_Init())
+    
     await dispatch(getUserSetting(navigate, t));
 
     let Data = {
@@ -186,27 +202,28 @@ const Home = () => {
     dispatch(GetWeeklyToDoCount(navigate, Data2, t));
     dispatch(GetUpcomingEvents(navigate, Data2, t));
     dispatch(getNotifications(navigate, createrID, t));
-    let CalenderMonthsSpans = localStorage.getItem("calenderMonthsSpan")
+    let CalenderMonthsSpans = localStorage.getItem("calenderMonthsSpan");
     let startDates =
-    CalenderMonthsSpans &&
-    new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() - parseInt(CalenderMonthsSpans),
-      1
-    ); // Subtract CalenderMonthsSpan months and set the day to the 1st
-  let endDates =
-  CalenderMonthsSpans &&
-    new Date(
-      currentDate.getFullYear(),
-      currentDate.getMonth() + parseInt(CalenderMonthsSpans),
-      0
-    );
+      CalenderMonthsSpans &&
+      new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() - parseInt(CalenderMonthsSpans),
+        1
+      ); // Subtract CalenderMonthsSpan months and set the day to the 1st
+    let endDates =
+      CalenderMonthsSpans &&
+      new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + parseInt(CalenderMonthsSpans),
+        0
+      );
     let calendarData = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(OrganizationID),
       StartDate:
-      startDates !== null && newDateFormaterAsPerUTC(startDates) + "000000",
-      EndDate: endDates !== null && newDateFormaterAsPerUTC(endDates) + "000000",
+        startDates !== null && newDateFormaterAsPerUTC(startDates) + "000000",
+      EndDate:
+        endDates !== null && newDateFormaterAsPerUTC(endDates) + "000000",
     };
     setStartDataUpdate(startDates);
     setEndDataUpdate(endDates);

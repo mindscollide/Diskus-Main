@@ -133,7 +133,7 @@ const DataRoom = () => {
     useState(false);
   const [collapes, setCollapes] = useState(false);
   const [sharehoverstyle, setSharehoverstyle] = useState(false);
-  const [sharefoldermodal, setSharefoldermodal] = useState(true);
+  const [sharefoldermodal, setSharefoldermodal] = useState(false);
   const [mydocumentbtnactive, setMydocumentbtnactive] = useState(false);
   const [alldocumentAcitve, setAllDocumentActive] = useState(true);
   const [tasksAttachments, setTasksAttachments] = useState([]);

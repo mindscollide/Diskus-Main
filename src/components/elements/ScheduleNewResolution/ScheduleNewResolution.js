@@ -1496,6 +1496,7 @@ const ScheduleNewResolution = ({
                                       taskAssignedToInput
                                     )}
                                     change={onChangeSearch}
+                                    onclickFlag={onclickFlag}
                                   />
                                 </Col>
 

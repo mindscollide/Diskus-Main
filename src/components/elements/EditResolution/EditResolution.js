@@ -1755,6 +1755,7 @@ const EditResolution = ({
                                           )}
                                           change={onChangeSearch}
                                           applyClass={"search_voterInput"}
+                                          onclickFlag={onclickFlag}
                                         />
                                         {/* <Row>
                                         <Col>
