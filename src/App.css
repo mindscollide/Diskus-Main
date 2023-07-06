@@ -5496,3 +5496,24 @@ body[dir="rtl"] .ant-result-subtitle {
 .editSelector__control {
   height: 30px !important;
 }
+
+.dataroom_options .dropdown-menu.show {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding: 12px !important;
+}
+
+.dataroom_options .dropdown-menu.show .dropdown-item {
+  border-bottom: 1px solid #5a5a5a;
+  color: #5A5A5A !important;
+  font-family: "MontserratSemiBold" !important;
+  padding: 4px 0px;
+}
+
+.dataroom_options .dropdown-menu.show .dropdown-item:is(:hover, :focus, :focus-visible) {
+  background: none !important;
+}
+
+.dataroom_options .dropdown-menu.show .dropdown-item:last-child {
+  border: none !important;
+}
