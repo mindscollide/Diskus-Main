@@ -37,7 +37,8 @@ const TextField = ({
   max,
   maxLength,
   onDoubleClick,
-  onClick
+  onClick,
+  height,
 }) => {
   console.log("applyClassapplyClass", applyClass);
   return (

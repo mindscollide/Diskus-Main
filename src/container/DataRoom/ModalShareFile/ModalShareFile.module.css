@@ -53,14 +53,15 @@
   padding: 12px 30px !important;
   font-size: 12px !important;
   color: #fff;
-  background: #5a5a5a;
+  background: #6172d6;
+  font-family: "MontserratSemiBold";
   border: none;
   border-radius: 4px !important;
 }
 
 .Access_request_modal_heading {
   font-size: 20px !important;
-  color: #5a5a5a;
+  color: #6172d6;
   font-family: "MontserratSemiBold";
 }
 
@@ -243,7 +244,7 @@
   border-radius: 4px !important;
   background-color: #6172d6 !important;
   width: 100%;
-  height: auto;
+  height: 100%;
   border: none !important;
   outline: none !important;
 }
@@ -253,7 +254,20 @@
   border-radius: 4px !important;
   background-color: #6172d6 !important;
   width: 100%;
-  height: auto;
+  height: 100%;
   border: none !important;
   outline: none !important;
+}
+
+.dropdown__Document_Value {
+  border: 1px solid #e1e1e1;
+  height: 38px;
+  border-radius: 4px;
+  display: flex;
+  color: #fff;
+  margin: auto 0;
+  align-items: center;
+  padding: 0 10px;
+  justify-content: space-between;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
 }

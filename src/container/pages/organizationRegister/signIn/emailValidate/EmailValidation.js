@@ -27,6 +27,7 @@ import { authReducer, Authreducer } from "../../../../../store/reducers";
 import { useTranslation } from "react-i18next"; //ya
 import Cookies from "js-cookie"; //ya
 import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
+import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 
 const EmailValidation = () => {
   const navigate = useNavigate();
@@ -335,27 +336,13 @@ const EmailValidation = () => {
 
   return (
     <>
-      <Row>
-        <Col className={styles["languageselect-box"]}>
-          <select
-            className={styles["select-language-signin"]}
-            onChange={handleChangeLocale}
-            value={language}
-          >
-            {languages.map(({ name, code }) => (
-              <option
-                key={code}
-                value={code}
-                className={styles["language_options"]}
-              >
-                {name}
-              </option>
-            ))}
-          </select>
-          <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
-        </Col>
-      </Row>
+
       <Container fluid className={styles["auth_container"]}>
+        <Row className="position-relative">
+          <Col className={styles["languageSelector"]} >
+            <LanguageSelector />
+          </Col>
+        </Row>
         <Row>
           <Col
             lg={4}
@@ -515,3 +502,5 @@ const EmailValidation = () => {
 };
 
 export default EmailValidation;
+
+

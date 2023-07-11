@@ -6,7 +6,8 @@ import {
   SavesNotesRequestMethod,
   UpdateNotesRequestMethod,
   GetNotesByNotesIDRequestMethod,
-  deleteNotes
+  deleteNotes,
+  searchNoteRequetMethod
 } from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 
@@ -36,7 +37,7 @@ const GetNotes = (navigate, Data, t) => {
     let form = new FormData();
     form.append(
       "RequestMethod",
-      GetNotesByUserIDAndOrganizationID.RequestMethod
+      searchNoteRequetMethod.RequestMethod
     );
     form.append("RequestData", JSON.stringify(Data));
     axios({
@@ -57,12 +58,12 @@ const GetNotes = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_GetNotesByUserIDAndOrganizationID_01".toLowerCase()
+                  "Notes_NotesServiceManager_SearchNotes_01".toLowerCase()
                 )
             ) {
               dispatch(
                 getNotes_Success(
-                  response.data.responseResult.getNotes,
+                  response.data.responseResult,
                   t("Data-available")
                 )
               );
@@ -70,7 +71,7 @@ const GetNotes = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_GetNotesByUserIDAndOrganizationID_02".toLowerCase()
+                  "Notes_NotesServiceManager_SearchNotes_02".toLowerCase()
                 )
             ) {
               let data = []
@@ -79,7 +80,7 @@ const GetNotes = (navigate, Data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Notes_NotesServiceManager_GetNotesByUserIDAndOrganizationID_03".toLowerCase()
+                  "Notes_NotesServiceManager_SearchNotes_03".toLowerCase()
                 )
             ) {
               dispatch(getNotes_Fail(t("Something-went-wrong")));
@@ -535,4 +536,5 @@ export {
   GetNotesByIdAPI,
   deleteNotesApi,
   ClearNotesResponseMessage,
+  getNotes_Init,
 };

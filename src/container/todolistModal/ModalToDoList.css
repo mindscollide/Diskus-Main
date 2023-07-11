@@ -114,6 +114,7 @@
   /* height : 80px !important; */
   min-height: 20% !important;
   max-height: 20% !important;
+  display: block;
 }
 
 body[dir="rtl"] .footertodoCreateModal {
@@ -133,8 +134,7 @@ body[dir="rtl"] .footertodoCreateModal {
 
 .todocreate-createbtn {
   background-color: #6172d6;
-  width: 119px;
-  height: 46px;
+  padding: 12px 30px;
   border-radius: 4px !important;
   font-size: 14px !important;
   font-family: "MontserratSemiBold-600";
@@ -146,12 +146,11 @@ body[dir="rtl"] .footertodoCreateModal {
 .todocreate-createbtn:hover,
 .todocreate-createbtn:target,
 .todocreate-createbtn:visited {
-  background-color: #6172d6 !important;
-  width: 119px !important;
-  height: 46px !important;
+  background-color: #6172d6;
+  padding: 12px 30px;
   border-radius: 4px !important;
   font-size: 14px !important;
-  font-family: "MontserratSemiBold-600" !important;
+  font-family: "MontserratSemiBold-600";
   border: 1px solid #e1e1e1 !important;
 }
 
@@ -167,4 +166,22 @@ body[dir="rtl"] .footertodoCreateModal {
 
 body[dir="rtl"] .ArabicFontSemiBold {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Confirmationmodal_body_text {
+  padding: 0 20px !important;
+  text-align: center;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+  font-size: 16px;
+}
+
+.cancelButton_createTodo {
+  background-color: #fff !important;
+  color: #5a5a5a !important;
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 14px !important;
+  font-family: "MontserratSemiBold-600";
+  border: 1px solid #e1e1e1 !important;
 }

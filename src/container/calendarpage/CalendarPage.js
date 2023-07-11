@@ -164,7 +164,7 @@ const CalendarPage = () => {
       }
     });
   }, []);
-  
+
   function onChange(value) {
     let newDAte = moment(value._d).format("YYYY-MM-DD");
     let formattedDate = moment(value._d).format("YYYYMMDD");
@@ -209,8 +209,6 @@ const CalendarPage = () => {
     setOpen(false);
     setCalendarView(false);
   }
-
-
 
   // set Data for Calendar
   useEffect(() => {
@@ -311,7 +309,12 @@ const CalendarPage = () => {
   }
 
   useEffect(() => {
-    if (adminReducer.UpdateOrganizationMessageResponseMessage != "") {
+    if (
+      adminReducer.UpdateOrganizationMessageResponseMessage != "" &&
+      adminReducer.UpdateOrganizationMessageResponseMessage !=
+        t("No-records-found") &&
+      adminReducer.UpdateOrganizationMessageResponseMessage != t("Record-found")
+    ) {
       setOpenNotification({
         ...openNotification,
         flag: true,
@@ -325,7 +328,12 @@ const CalendarPage = () => {
         });
       }, 3000);
       dispatch(cleareMessage());
-    } else if (adminReducer.DeleteOrganizationMessageResponseMessage != "") {
+    } else if (
+      adminReducer.DeleteOrganizationMessageResponseMessage != "" &&
+      adminReducer.DeleteOrganizationMessageResponseMessage !=
+        t("No-records-found") &&
+      adminReducer.DeleteOrganizationMessageResponseMessage != t("Record-found")
+    ) {
       setOpenNotification({
         ...openNotification,
         flag: true,
@@ -340,7 +348,11 @@ const CalendarPage = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (adminReducer.AllOrganizationResponseMessage != "") {
+    } else if (
+      adminReducer.AllOrganizationResponseMessage != "" &&
+      adminReducer.AllOrganizationResponseMessage != t("No-records-found") &&
+      adminReducer.AllOrganizationResponseMessage != t("Record-found")
+    ) {
       setOpenNotification({
         ...openNotification,
         flag: true,
@@ -355,7 +367,11 @@ const CalendarPage = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (adminReducer.ResponseMessage != "") {
+    } else if (
+      adminReducer.ResponseMessage != "" &&
+      adminReducer.ResponseMessage != t("No-records-found") &&
+      adminReducer.ResponseMessage != t("Record-found")
+    ) {
       setOpenNotification({
         ...openNotification,
         flag: true,
@@ -383,7 +399,8 @@ const CalendarPage = () => {
   useEffect(() => {
     if (
       meetingIdReducer.ResponseMessage != "" &&
-      meetingIdReducer.ResponseMessage != t("Record-found")
+      meetingIdReducer.ResponseMessage != t("Record-found") &&
+      meetingIdReducer.ResponseMessage != t("No-records-found")
     ) {
       setOpenNotification({
         ...openNotification,
@@ -401,7 +418,8 @@ const CalendarPage = () => {
       dispatch(HideNotificationMeetings());
     } else if (
       assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != t("Record-found")
+      assignees.ResponseMessage != t("Record-found") &&
+      assignees.ResponseMessage != t("No-records-found")
     ) {
       setOpenNotification({
         ...openNotification,
@@ -430,7 +448,8 @@ const CalendarPage = () => {
     if (
       toDoListReducer.ResponseMessage != "" &&
       toDoListReducer.ResponseMessage != undefined &&
-      toDoListReducer.ResponseMessage != t("Record-found")
+      toDoListReducer.ResponseMessage != t("Record-found") &&
+      toDoListReducer.ResponseMessage != t("No-records-found")
     ) {
       setOpenNotification({
         ...openNotification,
@@ -448,7 +467,8 @@ const CalendarPage = () => {
       dispatch(clearResponce());
     } else if (
       assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != t("Record-found")
+      assignees.ResponseMessage != t("Record-found") &&
+      assignees.ResponseMessage != t("No-records-found")
     ) {
       setOpenNotification({
         ...openNotification,
@@ -477,7 +497,8 @@ const CalendarPage = () => {
     if (
       getTodosStatus.ResponseMessage != "" &&
       getTodosStatus.ResponseMessage != undefined &&
-      getTodosStatus.ResponseMessage != t("Record-found")
+      getTodosStatus.ResponseMessage != t("Record-found") &&
+      getTodosStatus.ResponseMessage != t("No-records-found")
     ) {
       setOpenNotification({
         ...openNotification,
@@ -496,7 +517,8 @@ const CalendarPage = () => {
     } else if (
       getTodosStatus.UpdateTodoStatusMessage != "" &&
       getTodosStatus.UpdateTodoStatusMessage != undefined &&
-      getTodosStatus.UpdateTodoStatusMessage != t("Record-found")
+      getTodosStatus.UpdateTodoStatusMessage != t("Record-found") &&
+      getTodosStatus.UpdateTodoStatusMessage != t("No-records-found")
     ) {
       setOpenNotification({
         ...openNotification,
@@ -515,7 +537,8 @@ const CalendarPage = () => {
     } else if (
       getTodosStatus.UpdateTodoStatus != "" &&
       getTodosStatus.UpdateTodoStatus != undefined &&
-      getTodosStatus.UpdateTodoStatus != t("Record-found")
+      getTodosStatus.UpdateTodoStatus != t("Record-found") &&
+      getTodosStatus.UpdateTodoStatus != t("No-records-found")
     ) {
       setOpenNotification({
         ...openNotification,

@@ -921,6 +921,7 @@ const FolderisExist = (navigate, FolderName, t, setAddfolder) => {
         if (response.data.responseResult.isExecuted === true) {
           if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_01".toLowerCase())) {
             dispatch(FolderisExist_fail(t("Folder-already-exist")))
+            setAddfolder(true)
           } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_02".toLowerCase())) {
             await dispatch(FolderisExist_fail(t("Folder-name-is-required")))
           } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_03".toLowerCase())) {

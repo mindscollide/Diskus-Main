@@ -21,6 +21,7 @@ body[dir="rtl"] .CloseModal {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
 }
+
 .Confirm-activegroup-modal {
   padding: 12px 30px !important;
   font-size: calc(14px - 20%) !important;
@@ -31,13 +32,11 @@ body[dir="rtl"] .CloseModal {
   border-radius: 4px !important;
 }
 
-.Confirm-activegroup-modal:has(
-    :hover,
-    :active,
-    :focus,
-    :focus-visible,
-    :visited
-  ) {
+.Confirm-activegroup-modal:has( :hover,
+  :active,
+  :focus,
+  :focus-visible,
+  :visited) {
   padding: 12px 30px !important;
   font-size: calc(14px - 20%) !important;
   background: #6172d6 !important;
@@ -75,7 +74,7 @@ body[dir="rtl"] .ADD-MarketingModal-btn {
 }
 
 .group_Icon_Box {
-  background: linear-gradient(to left #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -91,14 +90,16 @@ body[dir="rtl"] .group_Icon_Box {
 .group_Icon_Box img {
   object-fit: cover;
 }
+
 .MarketingTeamModalBody {
   padding: 0 30px !important;
 }
+
 .GroupsDataRow {
-  max-height: 195px !important;
   height: 195px !important;
   overflow-y: auto;
 }
+
 .GroupsDataRow::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
@@ -109,4 +110,29 @@ body[dir="rtl"] .group_Icon_Box {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
+}
+
+.mapping_groups_scroll {
+  max-height: 250px;
+  min-height: 250px !important;
+  overflow: hidden auto;
+  margin: 10px 0 0 0;
+}
+
+.mapping_groups_scroll::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.mapping_groups_scroll::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+
+.marketingDataCol {
+  height: auto !important;
+  margin: 3px 0;
 }

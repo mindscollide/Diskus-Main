@@ -11,7 +11,7 @@ import {
   endMeeting,
   getAllReminders,
 } from '../../commen/apis/Api_config'
-import { getMeetingUserId } from './GetMeetingUserId'
+import { getMeetingUserId, searchUserMeeting } from './GetMeetingUserId'
 import { RefreshToken } from '../actions/Auth_action'
 import { getCalendarDataResponse } from '../actions/GetDataForCalendar'
 
@@ -67,12 +67,12 @@ const allAssignessList = (navigate, t) => {
     // UserID: id,
     OrganizationID: OrganizationID,
   }
-  return async(dispatch) => {
+  return async (dispatch) => {
     dispatch(allassignesslistinit())
     let form = new FormData()
     form.append('RequestMethod', getAllAssigneesToDoList.RequestMethod)
     form.append('RequestData', JSON.stringify(Data))
-   await axios({
+    await axios({
       method: 'post',
       url: meetingApi,
       data: form,
@@ -153,7 +153,17 @@ const ScheduleMeetingFail = (message) => {
 const ScheduleNewMeeting = (navigate, object, calenderFlag, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let createrID = localStorage.getItem('userID')
-  let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 }
+  // let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 };
+  let meetingpageRow = JSON.parse(localStorage.getItem("MeetingPageRows"))
+  let meetingPageCurrent = JSON.parse(localStorage.getItem("MeetingPageCurrent"))
+  let Data = {
+    Date: "",
+    Title: "",
+    HostName: "",
+    UserID: JSON.parse(createrID),
+    PageNumber: meetingPageCurrent,
+    Length: meetingpageRow
+  }
   return (dispatch) => {
     dispatch(ScheculeMeetingInit())
     let form = new FormData()
@@ -191,7 +201,7 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t) => {
                 await dispatch(getCalendarDataResponse(navigate, createrID, t))
                 await dispatch(SetLoaderFalse())
               } else {
-                await dispatch(getMeetingUserId(navigate, dataForList, t))
+                await dispatch(searchUserMeeting(navigate, Data, t))
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -227,8 +237,18 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t) => {
 // update meeting
 const UpdateMeeting = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
-  let createrID = localStorage.getItem('userID')
-  let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 }
+  let createrID = JSON.plocalStorage.getItem('userID')
+  // let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 }
+  let meetingpageRow = JSON.parse(localStorage.getItem("MeetingPageRows"))
+  let meetingPageCurrent = JSON.parse(localStorage.getItem("MeetingPageCurrent"))
+  let Data = {
+    Date: "",
+    Title: "",
+    HostName: "",
+    UserID: JSON.parse(createrID),
+    PageNumber: meetingPageCurrent,
+    Length: meetingpageRow
+  }
   return (dispatch) => {
     dispatch(ScheculeMeetingInit())
     console.log('Update Loader start')
@@ -259,7 +279,7 @@ const UpdateMeeting = (navigate, object, t) => {
               await dispatch(
                 ShowNotification(t('The-record-has-been-updated-successfully')),
               )
-              await dispatch(getMeetingUserId(navigate, dataForList, t))
+              await dispatch(searchUserMeeting(navigate, Data, t))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -270,7 +290,7 @@ const UpdateMeeting = (navigate, object, t) => {
               await dispatch(
                 ScheduleMeetingFail(t('No-record-has-been-updated')),
               )
-              await dispatch(getMeetingUserId(navigate, dataForList, t))
+              await dispatch(searchUserMeeting(navigate, Data, t))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -279,15 +299,15 @@ const UpdateMeeting = (navigate, object, t) => {
                 )
             ) {
               await dispatch(ScheduleMeetingFail(t('Something-went-wrong')))
-              await dispatch(getMeetingUserId(dataForList, t))
+              await dispatch(searchUserMeeting(navigate, Data, t))
             }
           } else {
             dispatch(ScheduleMeetingFail(t('Something-went-wrong')))
-            await dispatch(getMeetingUserId(dataForList, t))
+            await dispatch(searchUserMeeting(navigate, Data, t))
           }
         } else {
           dispatch(ScheduleMeetingFail(t('Something-went-wrong')))
-          await dispatch(getMeetingUserId(dataForList, t))
+          await dispatch(searchUserMeeting(navigate, Data, t))
         }
       })
       .catch((response) => {
@@ -441,8 +461,18 @@ const CancelMeetingFail = (message) => {
 //Cancel Meeting
 const CancelMeeting = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
-  let createrID = localStorage.getItem('userID')
-  let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 }
+  let createrID = JSON.parse(localStorage.getItem('userID'));
+  let meetingpageRow = JSON.parse(localStorage.getItem("MeetingPageRows"))
+  let meetingPageCurrent = JSON.parse(localStorage.getItem("MeetingPageCurrent"))
+  let Data = {
+    Date: "",
+    Title: "",
+    HostName: "",
+    UserID: createrID,
+    PageNumber: meetingPageCurrent,
+    Length: meetingpageRow
+  }
+  // let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 }
   return (dispatch) => {
     dispatch(CancelMeetingInit())
     let form = new FormData()
@@ -475,7 +505,7 @@ const CancelMeeting = (navigate, object, t) => {
                   t('The-meeting-has-been-cancelled'),
                 ),
               )
-              await dispatch(getMeetingUserId(navigate, dataForList, t))
+              await dispatch(searchUserMeeting(navigate, Data, t))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -536,7 +566,7 @@ const StartMeetingFail = (message) => {
 }
 
 //START Meeting
-const StartMeeting = (navigate, object, t) => {
+const StartMeeting = (navigate, object, t, searchData) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let createrID = localStorage.getItem('userID')
   let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 }
@@ -573,7 +603,7 @@ const StartMeeting = (navigate, object, t) => {
                   t('The-meeting-has-been-started'),
                 ),
               )
-              await dispatch(getMeetingUserId(navigate, dataForList, t))
+              await dispatch(searchUserMeeting(navigate, searchData, t))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -647,7 +677,7 @@ const EndMeetingFail = (message) => {
 }
 
 //START Meeting
-const EndMeeting = (navigate, object, t) => {
+const EndMeeting = (navigate, object, t, searchData) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let createrID = localStorage.getItem('userID')
   let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 }
@@ -667,7 +697,7 @@ const EndMeeting = (navigate, object, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(EndMeeting(navigate, object, t))
+          dispatch(EndMeeting(navigate, object, t, searchData))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -683,7 +713,7 @@ const EndMeeting = (navigate, object, t) => {
                   t('The-meeting-has-been-ended'),
                 ),
               )
-              await dispatch(getMeetingUserId(navigate, dataForList, t))
+              await dispatch(searchUserMeeting(navigate, searchData, t))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -18,110 +18,76 @@ const ModalArchivedCommittee = ({
   archivedCommittee,
   setArchivedCommittee,
   setViewGroupPage,
+  setUpdateComponentpage
 }) => {
   const [archivedgroup, setArchivedGroups] = useState(true);
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [editdropdown, setEditdropdown] = useState(false);
-  const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const { GroupsReducer } = useSelector((state) => state);
-
   const [groupsArheivedData, setGroupsArheivedData] = useState([]);
-  const [pagedata, setPagedata] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  console.log("postperpage", currentPage);
-  const [postperpage, setPostperpage] = useState(6);
-  console.log("postperpage", postperpage);
-  const Lastpostindex = currentPage * postperpage;
-  console.log("postperpage", Lastpostindex);
-  const firstpostindex = Lastpostindex - postperpage;
-  console.log("postperpage", firstpostindex);
+  const [totalRecords, setTotalrecord] = useState(0)
+  let currentGroupPage = JSON.parse(localStorage.getItem("groupsArCurrent"));
 
-  let newdata = groupsArheivedData ? groupsArheivedData : [];
-  const currentposts = newdata.slice(firstpostindex, Lastpostindex);
-  console.log("postperpage", currentposts);
+  useEffect(() => {
+    if (currentGroupPage !== null && currentGroupPage !== undefined) {
+      dispatch(getGroups(navigate, t, 1, currentGroupPage));
+    } else {
+      localStorage.setItem("groupsArCurrent", 1)
+      dispatch(getGroups(navigate, t, 1, 1));
+    }
+
+  }, [currentGroupPage]);
 
   useEffect(() => {
     if (GroupsReducer.realtimeGroupStatus !== null) {
-      let findGroupIndex = GroupsReducer.getAllGroupsResponse.findIndex(
-        (data, index) => {
-          return data.groupID === GroupsReducer.realtimeGroupStatus.groupID;
-        }
-      );
-      if (findGroupIndex !== -1) {
-        let newArr = GroupsReducer.getAllGroupsResponse.map((data, index) => {
-          if (findGroupIndex === index) {
-            let newData = {
-              ...data,
-              groupStatusID: GroupsReducer.realtimeGroupStatus.groupStatusID,
-            };
-            return newData;
+      let status = GroupsReducer.realtimeGroupStatus.groupStatusID;
+      if (status === 2) {
+        let findGroupIndex = GroupsReducer.getAllGroupsResponse.groups.findIndex(
+          (data, index) => {
+            return data.groupID === GroupsReducer.realtimeGroupStatus.groupID;
           }
-          return data;
-        });
-        setGroupsArheivedData(newArr);
+        );
+        if (findGroupIndex !== -1) {
+          let allgroupData = GroupsReducer.getAllGroupsResponse.groups;
+          let copygroupData = [...allgroupData];
+          copygroupData.unshift({
+            groupDescription: allgroupData[findGroupIndex].groupDescription,
+            groupID: allgroupData[findGroupIndex].groupID,
+            groupMembers: allgroupData[findGroupIndex].groupMembers,
+            groupStatusID: status,
+            groupTitle: allgroupData[findGroupIndex].groupTitle,
+            userCount: allgroupData[findGroupIndex].userCount,
+          })
+          setGroupsArheivedData(copygroupData);
+        }
       }
     }
   }, [GroupsReducer.realtimeGroupStatus]);
 
-  // useEffect(() => {
-  //   console.log("postperpage", GroupsReducer.getAllGroupsResponse);
-
-  //   if (
-  //     GroupsReducer.getAllGroupsResponse !== null &&
-  //     GroupsReducer.getAllGroupsResponse.length > 0
-  //   ) {
-  //     let newArr = [];
-  //     let filterItems = GroupsReducer.getAllGroupsResponse.filter(
-  //       (data, index) => data.groupStatusID === 2
-  //     );
-  //     console.log("postperpage", filterItems);
-
-  //     GroupsReducer.getAllGroupsResponse.map((data, index) => {
-  //       newArr.push(data);
-  //     });
-  //     console.log("postperpage", newArr);
-
-  //     setGroupsArheivedData(newArr);
-  //     let Totallength = Math.ceil(filterItems.length / 6);
-  //     setTotalLength(filterItems.length);
-  //     if (Totallength >= 10) {
-  //     } else {
-  //       Totallength = Totallength + "0";
-  //     }
-  //     setPagedata(parseInt(Totallength));
-  //   }
-  // }, [GroupsReducer.getAllGroupsResponse]);
-
   useEffect(() => {
     if (
-      GroupsReducer.getAllGroupsResponse !== null &&
-      GroupsReducer.getAllGroupsResponse.length > 0 &&
-      GroupsReducer.getAllGroupsResponse !== t("No-data-available")
+      GroupsReducer.ArcheivedGroups !== null &&
+      GroupsReducer.ArcheivedGroups !== undefined
     ) {
-      let newArr = [];
-      let filterItems = GroupsReducer.getAllGroupsResponse.filter(
-        (data, index) => data.groupStatusID === 2
-      );
-      filterItems.map((data, index) => {
-        newArr.push(data);
-      });
-      setGroupsArheivedData(newArr);
-    }
-  }, [GroupsReducer.getAllGroupsResponse]);
+      try {
+        if (GroupsReducer.ArcheivedGroups.groups.length > 0) {
+          setTotalrecord(GroupsReducer.ArcheivedGroups.totalRecords)
+          let newArr = [];
+          let filterItems = GroupsReducer.ArcheivedGroups.groups;
+          filterItems.map((data, index) => {
+            newArr.push(data);
+          });
+          setGroupsArheivedData(newArr);
+        }
+      } catch (error) {
 
-  useEffect(() => {
-    if (groupsArheivedData !== null && groupsArheivedData.length > 0) {
-      let Totallength = Math.ceil(groupsArheivedData.length / 6);
-      if (Totallength >= 10) {
-      } else {
-        Totallength = Totallength + "0";
       }
-      setPagedata(parseInt(Totallength));
+
     }
-  }, [groupsArheivedData]);
+  }, [GroupsReducer.ArcheivedGroups]);
+
 
   const updateModal = async (e) => {
     setUpdateComponentpage(true);
@@ -143,88 +109,17 @@ const ModalArchivedCommittee = ({
   };
 
   const handlechange = (value) => {
-    setCurrentPage(value);
+    localStorage.setItem("groupsArCurrent", value)
+    dispatch(getGroups(navigate, t, 1, value));
   };
 
   const handleArrow = () => {
-    let count = Math.ceil(groupsArheivedData.length / 6);
-    console.log("clicked", count);
-    if (currentPage === count) {
-    } else {
-      setCurrentPage(currentPage + 1);
+    if (GroupsReducer.ArcheivedGroups.pageNumbers >= currentGroupPage + 1) {
+      let currentPage = currentGroupPage + 1;
+      localStorage.setItem("groupsArCurrent", currentPage)
+      dispatch(getGroups(navigate, t, 1, currentPage));
     }
   };
-
-  // useEffect(() => {
-  //   dispatch(getGroups(t));
-  // }, []);
-  // const CarouselStructure = () => {
-  //   let curentindex = 0;
-  //   let innerindex;
-  //   return (
-  //     <Carousel interval={null}>
-  //       {getcommitteedata.length > 0 &&
-  //       Object.values(getcommitteedata).length > 0
-  //         ? getcommitteedata.map((data, index) => {
-  //             if (index >= curentindex) {
-  //               if (index === 0) {
-  //                 curentindex = index + 7;
-  //                 console.log(curentindex, "datadatadata");
-  //               } else if (index === curentindex) {
-  //                 curentindex = index + 8;
-  //                 console.log(curentindex, "datadatadata");
-  //               }
-  //               return (
-  //                 <Carousel.Item>
-  //                   <Row className="text-center">
-  //                     {getcommitteedata.length > 0 &&
-  //                     Object.values(getcommitteedata).length > 0
-  //                       ? currentposts.map((data, index2) => {
-  //                           if (index === 0) {
-  //                             if (index2 <= curentindex) {
-  //                               console.log(innerindex, "datadatadata");
-  //                               return (
-  //                                 <Card
-  //                                   CardHeading={data.committeesTitle}
-  //                                   IconOnClick={updateModal}
-  //                                   profile={data.groupMembers}
-  //                                   Icon={
-  //                                     <img src={CommitteeICon} width={30} />
-  //                                   }
-  //                                   BtnText={t("Update-button")}
-  //                                 />
-  //                               );
-  //                             }
-  //                           } else {
-  //                             if (
-  //                               index2 <= curentindex &&
-  //                               index2 > curentindex - 8
-  //                             ) {
-  //                               console.log(innerindex, "datadatadata");
-  //                               return (
-  //                                 <Card
-  //                                   CardHeading={data.committeesTitle}
-  //                                   IconOnClick={updateModal}
-  //                                   profile={data.groupMembers}
-  //                                   Icon={
-  //                                     <img src={CommitteeICon} width={30} />
-  //                                   }
-  //                                   BtnText={t("Update-button")}
-  //                                 />
-  //                               );
-  //                             }
-  //                           }
-  //                         })
-  //                       : null}
-  //                   </Row>
-  //                 </Carousel.Item>
-  //               );
-  //             }
-  //           })
-  //         : null}
-  //     </Carousel>
-  //   );
-  // };
 
   return (
     <>
@@ -255,25 +150,29 @@ const ModalArchivedCommittee = ({
                       {t("Archived-groups")}
                     </p>
                   </Col>
-                  <Col
-                    lg={1}
-                    md={1}
-                    sm={1}
-                    className=" d-flex justify-content-end mb-4"
-                  >
-                    <Button
-                      icon={
-                        <img
-                          src={right}
-                          width="16.5px"
-                          height="33px"
-                          className={styles["Arrow_archiveed_icon_groups"]}
+                  {GroupsReducer.ArcheivedGroups !== null && GroupsReducer.ArcheivedGroups !== undefined ?
+                    GroupsReducer.ArcheivedGroups.pageNumbers >= currentGroupPage + 1 ?
+                      <Col
+                        lg={1}
+                        md={1}
+                        sm={1}
+                        className=" d-flex justify-content-end mb-4"
+                      >
+                        <Button
+                          icon={
+                            <img
+                              src={right}
+                              width="16.5px"
+                              height="33px"
+                              className={styles["Arrow_archiveed_icon_groups"]}
+                            />
+                          }
+                          onClick={handleArrow}
+                          className={styles["ArrowBtn"]}
                         />
-                      }
-                      onClick={handleArrow}
-                      className={styles["ArrowBtn"]}
-                    />
-                  </Col>
+                      </Col> : null
+                    : null}
+
                 </Row>
               </>
             }
@@ -282,40 +181,38 @@ const ModalArchivedCommittee = ({
                 <Container className={styles["Archived_modal_scrollbar"]}>
                   <Row className="text-center ">
                     {groupsArheivedData.length > 0 &&
-                    Object.values(groupsArheivedData).length > 0 ? (
-                      currentposts.map((data, index) => {
+                      Object.values(groupsArheivedData).length > 0 ? (
+                      groupsArheivedData.map((data, index) => {
                         console.log(data, "datadatadata1111");
                         // if(index+1===Lastpostindex||index+1>=)
-                        if (data.groupStatusID === 2) {
-                          return (
-                            <Col sm={12} md={4} lg={4} className="mb-3">
-                              <Card
-                                CardHeading={data.groupTitle}
-                                IconOnClick={updateModal}
-                                onClickFunction={() =>
-                                  ViewGroupmodal(
-                                    data.groupID,
-                                    data.groupStatusID
-                                  )
-                                }
-                                StatusID={data.groupStatusID}
-                                profile={data.groupMembers}
-                                Icon={
-                                  <img
-                                    src={GroupIcon}
-                                    width="32.39px"
-                                    height="29.23px"
-                                  />
-                                }
-                                BtnText={
-                                  data.groupStatusID === 2
-                                    ? t("View-group")
-                                    : ""
-                                }
-                              />
-                            </Col>
-                          );
-                        }
+                        return (
+                          <Col sm={12} md={4} lg={4} className="mb-3">
+                            <Card
+                              CardHeading={data.groupTitle}
+                              IconOnClick={updateModal}
+                              onClickFunction={() =>
+                                ViewGroupmodal(
+                                  data.groupID,
+                                  data.groupStatusID
+                                )
+                              }
+                              StatusID={data.groupStatusID}
+                              profile={data.groupMembers}
+                              Icon={
+                                <img
+                                  src={GroupIcon}
+                                  width="32.39px"
+                                  height="29.23px"
+                                />
+                              }
+                              BtnText={
+                                data.groupStatusID === 2
+                                  ? t("View-group")
+                                  : ""
+                              }
+                            />
+                          </Col>
+                        );
                       })
                     ) : (
                       <Row>
@@ -329,7 +226,7 @@ const ModalArchivedCommittee = ({
             ModalFooter={
               <>
                 {groupsArheivedData.length > 0 &&
-                Object.values(groupsArheivedData).length > 0 ? (
+                  Object.values(groupsArheivedData).length > 0 ? (
                   <>
                     <Row className="d-flex">
                       <Col lg={4} md={4} sm={4}></Col>
@@ -353,9 +250,10 @@ const ModalArchivedCommittee = ({
                                 className={"pagination-groups-table"}
                               >
                                 <Pagination
-                                  defaultCurrent={currentposts}
-                                  total={pagedata}
-                                  current={currentPage}
+                                  // defaultCurrent={currentposts}
+                                  total={totalRecords}
+                                  pageSize={8}
+                                  current={currentGroupPage}
                                   onChange={handlechange}
                                 />
                                 ;

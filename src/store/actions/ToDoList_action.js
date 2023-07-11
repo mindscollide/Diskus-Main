@@ -10,6 +10,7 @@ import {
   updateToDoList,
   searchTodoList,
   getWeekToDo,
+  searchTodoListRequestMethod,
 } from '../../commen/apis/Api_config'
 
 const ShowNotification = (message) => {
@@ -39,7 +40,7 @@ const toDoFail = (message) => {
   }
 }
 
-const SetSpinnerTrue = () => {
+const SetSpinnersTrue = () => {
   return {
     type: actions.SET_SPINNER_TRUE,
   }
@@ -192,7 +193,11 @@ const CreateToDoList = (navigate, object, t) => {
   //Data For ToDoList
   //Get Current User ID
   let createrID = localStorage.getItem('userID')
-  let dataForList = { UserID: parseInt(createrID), NumberOfRecords: 300 }
+  let dataForList = {
+    Date: "",
+    Title: "",
+    AssignedToName: "",
+  }
   return (dispatch) => {
     dispatch(toDoListLoaderStart())
     let form = new FormData()
@@ -222,7 +227,7 @@ const CreateToDoList = (navigate, object, t) => {
               await dispatch(
                 ShowNotification(t('The-record-has-been-saved-successfully')),
               )
-              await dispatch(GetTodoListByUser(navigate, dataForList, t))
+              await dispatch(SearchTodoListApi(navigate, dataForList, t))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -591,7 +596,7 @@ const getWeeklyToDoCountFail = (message) => {
 const GetWeeklyToDoCount = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
-    dispatch(SetSpinnerTrue())
+    dispatch(SetSpinnersTrue())
     let form = new FormData()
     form.append('RequestMethod', getWeekToDo.RequestMethod)
     form.append('RequestData', JSON.stringify(data))
@@ -657,6 +662,80 @@ const GetWeeklyToDoCount = (navigate, data, t) => {
       })
   }
 }
+
+const searchTodoList_init = () => {
+  return {
+    type: actions.SEARCH_TODOLIST_INIT
+  }
+}
+const searchTodoList_success = (response, message) => {
+  return {
+    type: actions.SEARCH_TODOLIST_SUCCESS,
+    response: response,
+    message: message
+  }
+}
+const searchTodoList_fail = (message) => {
+  return {
+    type: actions.SEARCH_TODOLIST_FAIL,
+    message: message
+  }
+}
+
+const SearchTodoListApi = (navigate, searchData, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  let createrID = localStorage.getItem('userID');
+  let meetingPage = localStorage.getItem("todoListPage")
+  let meetingRow = localStorage.getItem("todoListRow")
+  let Data = {
+    Date: searchData?.Date,
+    Title: searchData?.Title,
+    AssignedToName: searchData?.AssignedToName,
+    UserID: JSON.parse(createrID),
+    PageNumber: JSON.parse(meetingPage),
+    Length: JSON.parse(meetingRow)
+  }
+
+  return (dispatch) => {
+    dispatch(searchTodoList_init());
+    let form = new FormData()
+    form.append('RequestMethod', searchTodoListRequestMethod.RequestMethod)
+    form.append('RequestData', JSON.stringify(Data))
+    axios({
+      method: 'post',
+      url: toDoListApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(SearchTodoListApi(navigate, searchData, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (response.data.responseResult.responseMessage.toLowerCase().includes("ToDoList_ToDoListServiceManager_SearchToDoList_01".toLowerCase())) {
+              dispatch(searchTodoList_success(response.data.responseResult, t("Record-found")))
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ToDoList_ToDoListServiceManager_SearchToDoList_02".toLowerCase())) {
+              dispatch(searchTodoList_fail(t("No-records-found")))
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ToDoList_ToDoListServiceManager_SearchToDoList_03".toLowerCase())) {
+              dispatch(searchTodoList_fail(t("No-records-found")))
+            } else {
+              dispatch(searchTodoList_fail(t("No-records-found")))
+            }
+          } else {
+            dispatch(searchTodoList_fail(t("No-records-found")))
+          }
+        } else {
+          dispatch(searchTodoList_fail(t("No-records-found")))
+        }
+      })
+      .catch((error) => {
+        dispatch(searchTodoList_fail(t("No-records-found")))
+      })
+  }
+}
 const TodoCounter = (response) => {
   return {
     type: actions.RECENT_TODOCOUNTER,
@@ -684,4 +763,7 @@ export {
   setTodoStatusDataFormSocket,
   clearResponce,
   TodoCounter,
+  SearchTodoListApi,
+  getTodoListInit,
+  SetSpinnersTrue
 }

@@ -40,16 +40,45 @@ const getGroup_Fail = (message) => {
   };
 };
 
-const getGroups = (navigate, t) => {
+const getArchivedGroups_init = () => {
+  return {
+    type: actions.ARCHEIVED_GROUPS_INIT
+  }
+}
+const getArchivedGroups_success = (response, message) => {
+  return {
+    type: actions.ARCHEIVED_GROUPS_SUCCESS,
+    response: response,
+    message: message
+  }
+}
+const getArchivedGroups_fail = (message) => {
+  return {
+    type: actions.ARCHEIVED_GROUPS_FAIL,
+    message: message
+  }
+
+}
+
+const getGroups = (navigate, t, id, currentPage) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
+  // let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"))
   let Data = {
     UserID: JSON.parse(createrID),
     OrganizationID: JSON.parse(OrganizationID),
+    Title: "",
+    PageNumber: currentPage,
+    Length: 8,
+    Status: id
   };
   return (dispatch) => {
-    dispatch(getGroup_Init());
+    if (id === 1) {
+      dispatch(getArchivedGroups_init())
+    } else {
+      dispatch(getGroup_Init());
+    }
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getGroupsByUserIdRequestMethod.RequestMethod);
@@ -65,7 +94,7 @@ const getGroups = (navigate, t) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          await dispatch(getGroups(navigate, t));
+          await dispatch(getGroups(navigate, t, id));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -74,21 +103,28 @@ const getGroups = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetGroupByUserID_01".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                getGroup_Success(
-                  response.data.responseResult.groups,
-                  t("Data-available")
-                )
-              );
+
+              if (id === 1) {
+                dispatch(getArchivedGroups_success(
+                  response.data.responseResult,
+                  t("Data-available")))
+              } else {
+                dispatch(
+                  getGroup_Success(
+                    response.data.responseResult,
+                    t("Data-available")
+                  )
+                );
+              }
               console.log(response, "response");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetGroupByUserID_02".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_02".toLowerCase()
                 )
             ) {
               dispatch(getGroup_Fail(t("No-data-available")));
@@ -96,7 +132,7 @@ const getGroups = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetGroupByUserID_03".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_03".toLowerCase()
                 )
             ) {
               dispatch(getGroup_Fail(t("No-data-available")));
@@ -104,7 +140,7 @@ const getGroups = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetGroupByUserID_04".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_04".toLowerCase()
                 )
             ) {
               dispatch(getGroup_Fail(t("No-data-available")));
@@ -112,7 +148,7 @@ const getGroups = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetGroupByUserID_05".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_05".toLowerCase()
                 )
             ) {
               dispatch(getGroup_Fail(t("No-data-available")));
@@ -120,7 +156,7 @@ const getGroups = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Groups_GroupServiceManager_GetGroupByUserID_06".toLowerCase()
+                  "Groups_GroupServiceManager_SearchGroups_06".toLowerCase()
                 )
             ) {
               dispatch(getGroup_Fail(t("Something-went-wrong")));

@@ -355,7 +355,7 @@ const Summary = () => {
             ColOneKey={t("Invoice-number")}
             ColTwoKey={t("Payment-received-date")}
             ColThreeKey={t("Paid-amount")}
-            ColOneValue={lastPayment.PaymentReceivedDate}
+            ColOneValue={lastPayment.Invoice}
             ColTwoValue={_justShowDateformatBilling(
               lastPayment.PaymentReceivedDate
             )}

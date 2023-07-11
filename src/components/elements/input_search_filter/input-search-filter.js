@@ -2,7 +2,17 @@ import "./input-search-filter.css";
 import TextField from "./../input_field/Input_field";
 import { useTranslation } from "react-i18next";
 
-const InputSearchFilter = ({ filteredDataHandler, value, change, disable, applyClass, placeholder, labelClass, flag }) => {
+const InputSearchFilter = ({
+  onclickFlag,
+  filteredDataHandler,
+  value,
+  change,
+  disable,
+  applyClass,
+  placeholder,
+  labelClass,
+  flag,
+}) => {
   //For Localization
   const { t } = useTranslation();
   return (
@@ -10,6 +20,7 @@ const InputSearchFilter = ({ filteredDataHandler, value, change, disable, applyC
       <div className="search-inner-textfield">
         <TextField
           type="text"
+          width={"100%"}
           labelClass={labelClass}
           value={value}
           change={change}
@@ -18,7 +29,15 @@ const InputSearchFilter = ({ filteredDataHandler, value, change, disable, applyC
           applyClass={applyClass}
         />
       </div>
-      <div className={flag === 1 ? "dropdown-assignee_sharefolder" : "dropdown-assignee"}>{filteredDataHandler}</div>
+      {onclickFlag !== true ? (
+        <div
+          className={
+            flag === 1 ? "dropdown-assignee_sharefolder" : "dropdown-assignee"
+          }
+        >
+          {filteredDataHandler}
+        </div>
+      ) : null}
     </div>
   );
 };

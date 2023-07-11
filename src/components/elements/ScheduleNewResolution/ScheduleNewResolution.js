@@ -156,6 +156,7 @@ const ScheduleNewResolution = ({
   const [resolutionupdate, setResolutionupdate] = useState(false);
   const [discardresolution, setDsicardresolution] = useState(false);
   const [tasksAttachments, setTasksAttachments] = useState([]);
+  const [onclickFlag, setOnclickFlag] = useState(false);
   const [createResolutionData, setCreateResolutionData] = useState({
     FK_ResolutionStatusID: 0,
     FK_ResolutionVotingMethodID: 0,
@@ -249,6 +250,7 @@ const ScheduleNewResolution = ({
 
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
+    setOnclickFlag(true)
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
@@ -268,6 +270,7 @@ const ScheduleNewResolution = ({
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
     console.log(e.target.value, "eeeeeeee");
+    setOnclickFlag(false)
     setTaskAssignedToInput(e.target.value.trimStart());
     // setEmailValue
   };
@@ -280,9 +283,42 @@ const ScheduleNewResolution = ({
   };
 
   //Drop Down Values for voters
+  // const searchFilterHandler = (value) => {
+  //   let allAssignees = assignees.user;
+  //   console.log(allAssignees, "allAssigneesallAssigneesallAssignees");
+  //   if (
+  //     allAssignees != undefined &&
+  //     allAssignees != null &&
+  //     allAssignees != NaN &&
+  //     allAssignees != []
+  //   ) {
+  //     return allAssignees
+  //       .filter((item) => {
+  //         const searchTerm = value.toLowerCase();
+  //         const assigneesName = item.name.toLowerCase();
+  //         return (
+  //           searchTerm &&
+  //           assigneesName.includes(searchTerm) &&
+  //           assigneesName !== searchTerm
+  //         );
+  //       })
+  //       .slice(0, 3)
+  //       .map((item) => (
+  //         <div
+  //           onClick={() => onSearch(item.name, item.pK_UID)}
+  //           className="dropdown-row-assignee d-flex flex-row align-items-center"
+  //           key={item.pK_UID}
+  //         >
+  //           <img src={userImage} />
+  //           <p className="p-0 m-0">{item.name}</p>
+  //         </div>
+  //       ));
+  //   } else {
+  //   }
+  // };
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
-    console.log(allAssignees, "allAssigneesallAssigneesallAssignees");
+    console.log("Input Value", allAssignees);
     if (
       allAssignees != undefined &&
       allAssignees != null &&
@@ -293,27 +329,30 @@ const ScheduleNewResolution = ({
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
+          console.log("Input Value in searchTerm", searchTerm);
+          console.log("Input Value in assigneesName", assigneesName);
+
           return (
-            searchTerm &&
-            assigneesName.includes(searchTerm) &&
-            assigneesName !== searchTerm
+            searchTerm && assigneesName.startsWith(searchTerm)
+            // assigneesName !== searchTerm.toLowerCase()
           );
         })
-        .slice(0, 3)
+        .slice(0, 10)
         .map((item) => (
           <div
             onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex flex-row align-items-center"
+            className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
+            {console.log("itemitem", item)}
             <img src={userImage} />
             <p className="p-0 m-0">{item.name}</p>
           </div>
         ));
     } else {
+      console.log("not found");
     }
   };
-
   const deleteFilefromAttachments = (data, index) => {
     let fileSizefound = fileSize - data.fileSize;
     let fileForSendingIndex = fileForSend.findIndex(
@@ -876,7 +915,7 @@ const ScheduleNewResolution = ({
                         >
                           <Select
                             name="Participant"
-                            placeholder={t("Voting-deadline") + "*"}
+                            placeholder={t("Voting-method") + "*"}
                             className="select-voting-deadline"
                             options={votingMethods}
                             isSearchable={false}
@@ -944,7 +983,7 @@ const ScheduleNewResolution = ({
                                     : `${styles["errorMessage_hidden"]}`
                                 }
                               >
-                                {t("Resolution-description-is-required")}
+                                {t("Notes-to-voters-is-required")}
                               </p>
                             </Col>
                           </Row>
@@ -953,8 +992,9 @@ const ScheduleNewResolution = ({
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Circulation_heading"]}>
-                            {t("Circulation-date") + "*"}
+                            {t("Circulation-date")}
                           </span>
+                          <span style={{ color: "#F16B6B" }}>*</span>
                         </Col>
                       </Row>
                       <Row className="mt-0">
@@ -995,6 +1035,7 @@ const ScheduleNewResolution = ({
                               >
                                 {t("Circulation-date-is-required")}
                               </p>
+
                             </Col>
                           </Row>
                         </Col>
@@ -1039,8 +1080,9 @@ const ScheduleNewResolution = ({
                               styles["Voting_deadline_Create_resolution"]
                             }
                           >
-                            {t("Voting-deadline") + "*"}
+                            {t("Voting-deadline")}
                           </span>
+                          <span style={{ color: "#F16B6B" }}>*</span>
                         </Col>
                       </Row>
                       <Row className="mt-0">
@@ -1129,8 +1171,9 @@ const ScheduleNewResolution = ({
                               styles["decision_annoucement_Createresoulution"]
                             }
                           >
-                            {t("Decision-announcement") + "*"}
+                            {t("Decision-announcement")}
                           </span>
+                          <span style={{ color: "#F16B6B" }}>*</span>
                         </Col>
                       </Row>
                       <Row className="mt-0">
@@ -1215,8 +1258,9 @@ const ScheduleNewResolution = ({
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Reminder"]}>
-                            {t("Reminder-frequency") + "*"}
+                            {t("Reminder-frequency")}
                           </span>
+                          <span style={{ color: "#F16B6B" }}>*</span>
                         </Col>
                       </Row>
                       <Row className="mt-0">
@@ -1331,7 +1375,7 @@ const ScheduleNewResolution = ({
                                   className="CreateMeetingInput resolution-search-input  "
                                 >
                                   <InputSearchFilter
-                                    placeholder={t("Add-attendees")}
+                                    placeholder={`${t("Add-attendees")}*`}
                                     className="taskassignee"
                                     value={taskAssignedToInput}
                                     filteredDataHandler={searchFilterHandler(
@@ -1339,6 +1383,7 @@ const ScheduleNewResolution = ({
                                     )}
                                     applyClass={"search_voterInput"}
                                     change={onChangeSearch}
+                                    onclickFlag={onclickFlag}
                                   />
                                   <Row>
                                     <Col>
@@ -1364,7 +1409,7 @@ const ScheduleNewResolution = ({
                                   <TextField
                                     applyClass="text-area-create-group"
                                     type="text"
-                                    placeholder={t("Email")}
+                                    placeholder={`${t("Email")}*`}
                                     required={true}
                                     value={emailValue}
                                     disable={true}
@@ -1451,6 +1496,7 @@ const ScheduleNewResolution = ({
                                       taskAssignedToInput
                                     )}
                                     change={onChangeSearch}
+                                    onclickFlag={onclickFlag}
                                   />
                                 </Col>
 
@@ -1728,7 +1774,7 @@ const ScheduleNewResolution = ({
                             <Col lg={12} md={12} sm={12}>
                               <Dragger {...props} className={styles["dragdrop_attachment_create_resolution"]}>
                                 <p className="ant-upload-drag-icon">
-                                  <span>
+                                  <span className={styles["create_resolution_dragger"]}>
                                     <img
                                       src={featherupload}
                                       width="18.87px"

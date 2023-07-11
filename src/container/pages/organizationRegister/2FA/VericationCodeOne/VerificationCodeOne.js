@@ -31,6 +31,7 @@ import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 import { countryNameforPhoneNumber } from "../../../../Admin/AllUsers/AddUser/CountryJson";
 import { cleareMessage } from "../../../../../store/actions/Auth2_actions";
+import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 
 const VerificationCodeOne = () => {
   const location = useLocation();
@@ -244,7 +245,7 @@ const VerificationCodeOne = () => {
 
   return (
     <div>
-      <Row>
+      {/* <Row>
         <Col className="languageselect-box">
           <select
             className="select-language-signin_2FAverificationotp"
@@ -262,8 +263,13 @@ const VerificationCodeOne = () => {
             className="languageIcon_2FAverificationotp"
           />
         </Col>
-      </Row>
+      </Row> */}
       <Container fluid className="VerifyCodeOneOverflow">
+        <Row className="position-relative">
+          <Col className="languageSelector" >
+            <LanguageSelector />
+          </Col>
+        </Row>
         <Row>
           <Col
             lg={5}
@@ -382,10 +388,10 @@ const VerificationCodeOne = () => {
                         parseInt(GobackSelection) === 1
                           ? "/twofac"
                           : parseInt(GobackSelection) === 2
-                          ? "/sendmailwithdevice"
-                          : parseInt(GobackSelection) === 3
-                          ? "/twofacmultidevice"
-                          : "/twofac"
+                            ? "/sendmailwithdevice"
+                            : parseInt(GobackSelection) === 3
+                              ? "/twofacmultidevice"
+                              : "/twofac"
                       }
                     >
                       {t("Go-back")}

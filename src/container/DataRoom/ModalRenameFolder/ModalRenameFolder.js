@@ -34,28 +34,28 @@ const ModalRenameFolder = ({
           ButtonTitle={ModalTitle}
           modalFooterClassName="d-block"
           centered
-          size={setRenamefolder === true ? "md" : "md"}
+          // size={setRenamefolder === true ? "md" : "md"}
           ModalBody={
             <>
               <Container>
                 <Row>
-                  <Col lg={2} md={2} sm={2}></Col>
-                  <Col lg={8} md={8} sm={8}>
+                  {/* <Col lg={2} md={2} sm={2}></Col> */}
+                  <Col lg={12} md={12} sm={12}>
                     <span className={styles["Rename_Heading"]}>
                       {t("Rename")}
                     </span>
                   </Col>
-                  <Col lg={2} md={2} sm={2}></Col>
+                  {/* <Col lg={2} md={2} sm={2}></Col> */}
                 </Row>
                 <Row className="mt-3">
-                  <Col lg={2} md={2} sm={2}></Col>
-                  <Col lg={8} md={8} sm={8} className="rename-modal-field">
+                  {/* <Col lg={2} md={2} sm={2}></Col> */}
+                  <Col lg={12} md={12} sm={12} className="rename-modal-field">
                     <TextField
                       placeholder={t("Rename")}
                       labelClass="textFieldSearch d-none"
                     />
                   </Col>
-                  <Col lg={2} md={2} sm={2}></Col>
+                  {/* <Col lg={2} md={2} sm={2}></Col> */}
                 </Row>
               </Container>
             </>
@@ -63,11 +63,11 @@ const ModalRenameFolder = ({
           ModalFooter={
             <>
               <Row className="mt-3 mb-4">
-                <Col lg={2} md={2} sm={2}></Col>
+                {/* <Col lg={2} md={2} sm={2}></Col> */}
                 <Col
-                  lg={8}
-                  sm={8}
-                  md={8}
+                  lg={12}
+                  sm={12}
+                  md={12}
                   className="d-flex justify-content-end gap-2"
                 >
                   <Button
@@ -82,7 +82,7 @@ const ModalRenameFolder = ({
                     onClick={saveButton}
                   />
                 </Col>
-                <Col lg={2} md={2} sm={2}></Col>
+                {/* <Col lg={2} md={2} sm={2}></Col> */}
               </Row>
             </>
           }

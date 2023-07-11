@@ -21,6 +21,7 @@ import {
   cleareChangePasswordMessage,
 } from "../../../store/actions/Auth_Forgot_Password";
 import { useDispatch, useSelector } from "react-redux";
+import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -114,27 +115,11 @@ const ForgotPassword = () => {
     <>
       <Container fluid className={styles["auth_container"]}>
         <Row>
-          <Col className={styles["languageselect-box"]}>
-            <select
-              className={styles["Forgot_Password_select-language-signin"]}
-              onChange={handleChangeLocale}
-              value={language}
-            >
-              {languages.map(({ name, code }) => (
-                <option
-                  key={code}
-                  value={code}
-                  className={styles["Forgot_password_language_options"]}
-                >
-                  {name}
-                </option>
-              ))}
-            </select>
-            <img
-              src={LanguageChangeIcon}
-              className={styles["Forgot_password_languageIcon"]}
-            />
+          <Col className={styles["languageSelector"]} >
+            <LanguageSelector />
+
           </Col>
+
         </Row>
         <Row>
           <Col
@@ -201,8 +186,8 @@ const ForgotPassword = () => {
                         width="100%"
                         placeholder={t("Email")}
                         maxLength={160}
-                        // autoComplete={"off"}
-                        // autoComplete="on"
+                      // autoComplete={"off"}
+                      // autoComplete="on"
                       />
                       <p className={styles["ErrorMessege"]}>{messege}</p>
                     </Col>

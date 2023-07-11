@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { ChevronDown, Plus } from "react-bootstrap-icons";
-import { Select } from "antd";
+import {
+  ArrowCounterclockwise,
+  ChevronDown,
+  Plus,
+} from "react-bootstrap-icons";
+import { Pagination, Select } from "antd";
 import {
   Button,
   TableToDo,
@@ -28,6 +32,7 @@ import {
   GetTodoListByUser,
   searchTodoListByUser,
   clearResponce,
+  SearchTodoListApi,
 } from "../../../store/actions/ToDoList_action";
 import "antd/dist/antd.css";
 
@@ -72,7 +77,7 @@ const TodoList = () => {
   const [isExpand, setExpand] = useState(false);
   const { Option } = Select;
   const [rowsToDo, setRowToDo] = useState([]);
-
+  const [totalRecords, setTotalRecords] = useState(0);
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
@@ -83,6 +88,8 @@ const TodoList = () => {
     AssignedToName: "",
     UserID: 0,
   });
+  let todoListCurrentPage = JSON.parse(localStorage.getItem("todoListPage"));
+  let todoListPageSize = JSON.parse(localStorage.getItem("todoListRow"));
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -162,37 +169,40 @@ const TodoList = () => {
 
   //dispatch gettodolist api
   useEffect(() => {
-    let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
-    console.log("datadata", data);
-    dispatch(GetTodoListByUser(navigate, data, t));
+    if (todoListPageSize !== null && todoListCurrentPage !== null) {
+      dispatch(SearchTodoListApi(navigate, searchData, t));
+    } else {
+      localStorage.setItem("todoListPage", 1);
+      localStorage.setItem("todoListRow", 50);
+      dispatch(SearchTodoListApi(navigate, searchData, t));
+    }
+    return () => {
+      localStorage.removeItem("todoListPage");
+      localStorage.removeItem("todoListRow");
+    };
   }, []);
 
   //get todolist reducer
   useEffect(() => {
+    console.log(toDoListReducer, rowsToDo, "toDoListReducertoDoListReducertoDoListReducer")
     if (
-      Object.keys(toDoListReducer.AllTodolistData).length > 0 &&
-      toDoListReducer.AllTodolistData !== undefined
+      toDoListReducer.SearchTodolist !== null &&
+      toDoListReducer.SearchTodolist !== undefined
     ) {
-      console.log(
-        "todolistreducer.AllTodolistData",
-        toDoListReducer,
-        toDoListReducer.AllTodolistData
-      );
-      setRowToDo(toDoListReducer.AllTodolistData);
-    } else {
-      console.log(
-        "todolistreducer.AllTodolistData",
-        toDoListReducer.AllTodolistData
-      );
-      setRowToDo([]);
+      setTotalRecords(toDoListReducer.SearchTodolist.totalRecords);
+      if (toDoListReducer.SearchTodolist.toDoLists.length > 0) {
+        setRowToDo(toDoListReducer.SearchTodolist.toDoLists);
+      } else {
+        setRowToDo([]);
+      }
     }
-  }, [toDoListReducer.AllTodolistData, todoStatus.Loading]);
+  }, [toDoListReducer.SearchTodolist]);
 
   useEffect(() => {
     console.log("checkingthesocketdata is coming or not", rowsToDo);
     if (Object.keys(toDoListReducer.SocketTodoActivityData).length > 0) {
       // rowsToDo.unshift(toDoListReducer.SocketTodoActivityData);
-      setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo])
+      setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo]);
       // setRowToDo([...rowsToDo]);
       console.log("checkingthesocketdata is coming or not", rowsToDo);
     } else {
@@ -237,9 +247,20 @@ const TodoList = () => {
   };
   const deleteTodolist = (record) => {
     console.log("deleteTodolist", record);
-    dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t));
-    let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
-    dispatch(GetTodoListByUser(navigate, data, t));
+    dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t)).then(
+      (response) => {
+        console.log(response, "updateTodoStatusFuncupdateTodoStatusFunc");
+      }
+    );
+    if (todoListPageSize !== null && todoListCurrentPage !== null) {
+      dispatch(SearchTodoListApi(navigate, searchData, t));
+    } else {
+      localStorage.setItem("todoListPage", 1);
+      localStorage.setItem("todoListRow", 50);
+      dispatch(SearchTodoListApi(navigate, searchData, t));
+    }
+    // let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
+    // dispatch(GetTodoListByUser(navigate, data, t));
   };
 
   const columnsToDo = [
@@ -264,7 +285,7 @@ const TodoList = () => {
       title: t("Assigned-by"),
       dataIndex: "taskCreator",
       key: "taskCreator",
-      width: "220px",
+      // width: "220px",
       sortDirections: ["descend", "ascend"],
       // align: "left",
       render: (record, index) => {
@@ -287,7 +308,7 @@ const TodoList = () => {
     },
     {
       title: t("Assigned-to"),
-      width: "220px",
+      // width: "220px",
       dataIndex: "taskAssignedTo",
       key: "taskAssignedTo",
       sortDirections: ["descend", "ascend"],
@@ -339,7 +360,7 @@ const TodoList = () => {
       key: "deadlineDateTime",
       className: "deadLineTodo",
       align: "left",
-      width: "220px",
+      // width: "220px",
       render: (text, record) => {
         console.log("text1212", record);
         return newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime);
@@ -374,6 +395,7 @@ const TodoList = () => {
           value: "Completed",
         },
       ],
+      defaultFilteredValue: ['In Progress', "Pending", "Upcoming", "Cancelled", "Completed"],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
@@ -411,9 +433,9 @@ const TodoList = () => {
                 {statusOptions.map((optValue, index) => {
                   console.log("optValue", optValue);
                   return (
-                    <Option key={optValue.id} value={optValue.id}>
+                    <option key={optValue.id} value={optValue.id}>
                       {optValue.status}
-                    </Option>
+                    </option>
                   );
                 })}
               </Select>
@@ -524,6 +546,13 @@ const TodoList = () => {
     // console.log("searchData", searchData);
   };
 
+  const paginationChangeHandlerTodo = async (current, pageSize) => {
+    console.log(current, pageSize, "paginationChangeHandlerTodo");
+    localStorage.setItem("todoListPage", current);
+    localStorage.setItem("todoListRow", pageSize);
+    dispatch(SearchTodoListApi(navigate, searchData, t));
+  };
+
   // for search
   const search = (e) => {
     e.preventDefault();
@@ -538,7 +567,7 @@ const TodoList = () => {
         AssignedToName: "",
         UserID: parseInt(createrID),
       };
-      dispatch(searchTodoListByUser(navigate, newData, t));
+      dispatch(SearchTodoListApi(navigate, newData, t));
       setSearchData({
         ...searchData,
         Date: "",
@@ -548,7 +577,7 @@ const TodoList = () => {
       });
     } else {
       // make notification for if input fields is empty here
-      dispatch(searchTodoListByUser(navigate, searchData, t));
+      dispatch(SearchTodoListApi(navigate, searchData, t));
       setSearchData({
         Date: "",
         Title: "",
@@ -557,7 +586,23 @@ const TodoList = () => {
       });
     }
   };
-
+  const resetSearchBar = (e) => {
+    e.preventDefault();
+    let newData = {
+      Date: "",
+      Title: "",
+      AssignedToName: "",
+      UserID: parseInt(createrID),
+    };
+    localStorage.setItem("todoListPage", 1);
+    dispatch(SearchTodoListApi(navigate, newData, t));
+    setSearchData({
+      Date: "",
+      Title: "",
+      AssignedToName: "",
+      UserID: parseInt(0),
+    });
+  };
   useEffect(() => {
     if (
       toDoListReducer.ResponseMessage != "" &&
@@ -707,7 +752,7 @@ const TodoList = () => {
               <>
                 {currentLanguage === "ar" ? (
                   <div className="expandableMenuSearch">
-                    <Form onSubmit={search} className="d-flex">
+                    <Form className="d-flex">
                       {currentLanguage === "ar" ? (
                         <CustomDatePicker
                           value={searchData.Date}
@@ -744,12 +789,21 @@ const TodoList = () => {
                         className="btn btn-primary meeting search me-3"
                         variant={"Primary"}
                         text={<ArrowLeft />}
+                        type="submit"
+                        onClick={search}
+                      />
+                      <Button
+                        className="btn  btn-primary meeting search"
+                        variant={"Primary"}
+                        type="reset"
+                        text={<ArrowCounterclockwise />}
+                        onClick={resetSearchBar}
                       />
                     </Form>
                   </div>
                 ) : (
                   <div className="expandableMenuSearch">
-                    <Form onSubmit={search} className="d-flex">
+                    <Form className="d-flex">
                       {currentLanguage === "ar" ? (
                         <CustomDatePicker
                           value={searchData.Date}
@@ -784,9 +838,17 @@ const TodoList = () => {
                         change={searchHandler}
                       />
                       <Button
-                        className="btn btn-primary meeting search"
+                        className="btn btn-primary meeting search me-3"
                         variant={"Primary"}
                         text={<ArrowRight />}
+                        onClick={search}
+                      />
+                      <Button
+                        className="btn  btn-primary meeting search"
+                        variant={"Primary"}
+                        type="reset"
+                        text={<ArrowCounterclockwise />}
+                        onClick={resetSearchBar}
                       />
                     </Form>
                   </div>
@@ -807,13 +869,9 @@ const TodoList = () => {
                     column={columnsToDo}
                     className={"ToDo" + " " + currentLanguage}
                     rows={rowsToDo}
-                    scroll={{ y: 600, x: "max-content" }}
+                    scroll={{ y: 400 }}
                     onChange={tableTodoChange}
-                    pagination={{
-                      pageSize: 50,
-                      showSizeChanger: true,
-                      pageSizeOptions: ["100 ", "150", "200"],
-                    }}
+                    pagination={false}
                   />
                 ) : (
                   <Paper>
@@ -827,6 +885,17 @@ const TodoList = () => {
                     />
                   </Paper>
                 )}
+                {rowsToDo.length > 0 && <section className="pagination-groups-table d-flex justify-content-center my-3">
+                  <Pagination
+                    onChange={paginationChangeHandlerTodo}
+                    className="PaginationStyle-Meeting"
+                    current={todoListCurrentPage}
+                    total={totalRecords}
+                    pageSizeOptions={[30, 50, 100, 200]}
+                    pageSize={todoListPageSize}
+                  />
+                </section>}
+
               </Col>
             </Row>
           </Col>

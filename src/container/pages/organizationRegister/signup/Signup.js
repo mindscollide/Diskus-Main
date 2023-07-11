@@ -39,6 +39,7 @@ import {
   checkOraganisation,
 } from "../../../../store/actions/Admin_Organization";
 import { adminReducer } from "../../../../store/reducers";
+import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 
 const Signup = () => {
   const { t, i18n } = useTranslation();
@@ -107,6 +108,7 @@ const Signup = () => {
     FK_CCID: 230,
     PhoneNumberCountryID: 212,
   });
+  console.log(signUpDetails, "signUpDetailssignUpDetails")
   console.log(signUpDetails, "signUpDetailssignUpDetailssignUpDetails");
   const [open, setOpen] = useState({
     open: false,
@@ -745,30 +747,16 @@ const Signup = () => {
 
   return (
     <>
-      <Row>
-        <Col className={styles["languageselect-box"]}>
-          <select
-            className={styles["select-language-signin"]}
-            onChange={handleChangeLocale}
-            value={language}
-          >
-            {languages.map(({ name, code }) => (
-              <option
-                key={code}
-                value={code}
-                className={styles["language_options"]}
-              >
-                {name}
-              </option>
-            ))}
-          </select>
-          <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
-        </Col>
-      </Row>
+
       <Container
         fluid
         className={`${"SignupOrganization"} ${styles["signUp_Container"]}`}
       >
+        <Row className="position-relative">
+          <Col className={styles["languageSelector"]} >
+            <LanguageSelector />
+          </Col>
+        </Row>
         <Row>
           <Col sm={12} lg={7} md={7} className={styles["signUp_LeftSection"]}>
             <Col

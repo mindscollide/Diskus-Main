@@ -144,7 +144,11 @@ body[dir="rtl"] .Non_Voters_Btn_Createresolution {
   color: #fff;
   font-size: 12px !important;
   border: none !important;
+  display: flex;
+  max-width: 100%;
   margin-top: 13px !important;
+  justify-content: center;
+  align-items: center;
 }
 
 body[dir="rtl"] .ADD_Button_Createresolution {
@@ -459,4 +463,10 @@ body[dir="rtl"] .errorMessage_hidden {
   width: 1px;
   height: 100%;
   background-color: #5a5a5a !important;
+}
+
+.Go_Back_EditResolution {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+  padding: 12px 30px !important;
 }

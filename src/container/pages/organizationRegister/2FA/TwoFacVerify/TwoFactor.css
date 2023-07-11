@@ -21,6 +21,7 @@
 body[dir="rtl"] .Next_button_EmailVerifyForTwoFac button {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
+
 .Next_button_EmailVerifyForTwoFac button:disabled {
   filter: grayscale(0.5);
   display: flex;
@@ -28,9 +29,11 @@ body[dir="rtl"] .Next_button_EmailVerifyForTwoFac button {
   align-items: center;
   padding: auto 0 !important;
 }
+
 body[dir="rtl"] .Next_button_EmailVerifyForTwoFac button:disabled {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
+
 .Auth_Icon1_Two_fac {
   position: absolute;
   left: 25%;
@@ -66,9 +69,11 @@ body[dir="rtl"] .Next_button_EmailVerifyForTwoFac button:disabled {
   bottom: -205px;
   transform: rotate(264deg);
 }
+
 body[dir="rtl"] .Auth_Icon {
   transform: scaleX(-1);
 }
+
 body[dir="rtl"] .phone-image {
   position: absolute;
   top: 19%;
@@ -85,6 +90,10 @@ body[dir="rtl"] .Auth_Icon {
   bottom: -190px;
   right: 50px;
   transform: rotate(22deg);
+}
+
+.auth_container {
+  position: relative;
 }
 
 .auth_container.container-fluid {
@@ -125,6 +134,7 @@ body[dir="rtl"] .Auth_Icon {
 body[dir="rtl"] .EmailLabeltwofacboth {
   font-family: "IBMPlexSansArabic-SemiBold";
 }
+
 .EmailLabeltwofacboth_active {
   /* margin-left: 10px; */
   font-size: 12px;
@@ -207,6 +217,7 @@ body[dir="rtl"] .VerifyHeadingtwofac {
   border-radius: 4px;
   outline: none !important;
 }
+
 .select-language-signin_twofac:focus,
 .select-language-signin_twofac:focus-visible {
   border: 1px solid #e1e1e1 !important;
@@ -214,6 +225,7 @@ body[dir="rtl"] .VerifyHeadingtwofac {
   outline: none !important;
   border-color: #e1e1e1 !important;
 }
+
 body[dir="rtl"] .select-language-signin_twofac {
   right: 74.8%;
 }
@@ -245,12 +257,15 @@ body[dir="rtl"] .select-language-signin_twofac {
 body[dir="rtl"] .languageIcon_twofac {
   right: 75.5%;
 }
+
 .twoFac_checkbox {
   opacity: 0.5 !important;
 }
+
 .two_fac_image_active {
   opacity: 1 !important;
 }
+
 .two_fac_image {
   opacity: 0.4 !important;
 }
@@ -258,4 +273,25 @@ body[dir="rtl"] .languageIcon_twofac {
 body[dir="rtl"] .forogt_email_link a {
   font-size: 16px !important;
   font-family: "IBMPlexSansArabic-Regular" !important;
+}
+
+.languageSelector {
+  position: absolute;
+  right: 100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0;
+  display: flex;
+  justify-content: flex-end;
+
+}
+
+body[dir="rtl"] .languageSelector {
+  position: absolute;
+  right: -100px;
+  z-index: 99999 !important;
+  margin-top: 50px;
+  margin-right: 0 !important;
+  display: flex;
+  justify-content: flex-end;
 }

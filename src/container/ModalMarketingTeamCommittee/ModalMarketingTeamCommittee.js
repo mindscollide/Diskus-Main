@@ -7,7 +7,7 @@ import { style } from "@mui/system";
 import Crossicon from "../../assets/images/CrossIcon.svg";
 import { useTranslation } from "react-i18next";
 import { getAllGroups } from "../../store/actions/Groups_actions";
-import Group_Icon from "../../assets/images/group_Icons.svg";
+import Group_Icon from "../../assets/images/Path 636.png";
 import { useDispatch, useSelector } from "react-redux";
 import { assignGroups } from "../../store/actions/Committee_actions";
 import { useNavigate } from "react-router-dom";
@@ -16,18 +16,21 @@ const ModalMarketingTeamCommittee = ({
   MarketingTeam,
   setMarketingTeam,
   committeeID,
+  mapgroupsData
 }) => {
   const { GroupsReducer } = useSelector((state) => state);
   console.log("GroupsReducerGroupsReducer", GroupsReducer);
   const [Groups, setGroups] = useState([]);
   const [groupName, setGroupName] = useState("");
+  const [committeeData, setCommitteeData] = useState(mapgroupsData)
+  console.log("mapgroupsData", committeeData)
   const [groupID, setGroupID] = useState(0)
   const [groupData, setGroupData] = useState([])
   const [data, setData] = useState([])
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation()
-
+  console.log(groupData, data, "dasdasdasdasdasd")
   const closebtn = async () => {
     setMarketingTeam(false);
   };
@@ -95,18 +98,40 @@ const ModalMarketingTeamCommittee = ({
       setGroupID(0);
     }
   };
+
   const removeHandler = (id) => {
     let newData = data.filter((data, index) => data.GroupID !== id);
     let newGroupData = groupData.filter((data, index) => data.GroupID !== id);
     setData([...newData]);
     setGroupData([...newGroupData]);
   };
+
+  useEffect(() => {
+    if (committeeData !== null && committeeData !== undefined) {
+      if (committeeData[0].listofGroups.length > 0) {
+        let newDataforSend = [];
+        let newDataforView = []
+        committeeData[0].listofGroups.map((listgroupsData, index) => {
+          newDataforSend.push({
+            GroupID: listgroupsData.groupID,
+            CommitteeId: listgroupsData.committeeID,
+          })
+          newDataforView.push({
+            GroupID: listgroupsData.groupID,
+            GroupName: listgroupsData.groupTitle,
+          })
+        })
+        setGroupData(newDataforView)
+        setData(newDataforSend)
+      }
+    }
+  }, [committeeData])
   const handleUpdate = () => {
     if (data.length > 0) {
       let Data = {
         committeeGroupMapping: data
       }
-      dispatch(assignGroups(navigate, Data, t))
+      dispatch(assignGroups(navigate, Data, t, setMarketingTeam))
       console.log("DataData", Data)
     } else {
     }
@@ -175,42 +200,46 @@ const ModalMarketingTeamCommittee = ({
                       />
                     </Col>
                   </Row>
-                  <Row className={styles["GroupsDataRow"]}>
+                  <section className={styles["mapping_groups_scroll"]}>
+
                     {groupData.length > 0
                       ? groupData.map((data, index) => {
                         return (
-                          <Col
-                            sm={12}
-                            md={12}
-                            lg={12}
-                            className={styles["marketingDataCol"]}
-                          >
-                            <Row className="align-items-center my-2 ">
-                              <Col sm={1} md={1} lg={1}>
-                                <span className={styles["group_Icon_Box"]}>
-                                  <img src={Group_Icon} />
-                                </span>
-                              </Col>
-                              <Col sm={10} md={10} lg={10}>
-                                <span className="ms-3">{data.GroupName}</span>{" "}
-                              </Col>
-                              <Col
-                                sm={1}
-                                md={1}
-                                lg={1}
-                                className="d-flex justify-content-end"
-                              >
-                                <img
-                                  src={Crossicon}
-                                  onClick={() => removeHandler(data.GroupID)}
-                                />
-                              </Col>
-                            </Row>
-                          </Col>
+                          <Row >
+                            <Col
+                              sm={12}
+                              md={12}
+                              lg={12}
+                              className={styles["marketingDataCol"]}
+                            >
+                              <Row className="align-items-center my-2 ">
+                                <Col sm={1} md={1} lg={1}>
+                                  <span className={styles["group_Icon_Box"]}>
+                                    <img src={Group_Icon} width={30} height={30} />
+                                  </span>
+                                </Col>
+                                <Col sm={10} md={10} lg={10}>
+                                  <span className="ms-3">{data.GroupName}</span>{" "}
+                                </Col>
+                                <Col
+                                  sm={1}
+                                  md={1}
+                                  lg={1}
+                                  className="d-flex justify-content-end"
+                                >
+                                  <img
+                                    src={Crossicon}
+                                    onClick={() => removeHandler(data.GroupID)}
+                                  />
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
                         );
                       })
                       : null}
-                  </Row>
+
+                  </section>
                 </Col>
               </Row>
             </>
