@@ -230,17 +230,20 @@ body[dir="rtl"] .quill-update-height {
   padding: 0 !important;
   height: 120px !important;
 }
+
 .notes-updates-attachment::-webkit-scrollbar {
   width: 0.5rem;
   height: 0.5em;
   border-radius: 20px;
   background-color: #f2f2f2;
 }
+
 .notes-updates-attachment::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
 }
+
 .deleteUpdateNoteAttachment {
   width: 20px;
   height: 20px;
@@ -300,4 +303,12 @@ body[dir="rtl"] .errorUpdateMessage {
 
 body[dir="rtl"] .errorUpdateMessage_hidden {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Confirmationmodal_body_text {
+  padding: 0 20px !important;
+  text-align: center;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a;
+  font-size: 16px;
 }

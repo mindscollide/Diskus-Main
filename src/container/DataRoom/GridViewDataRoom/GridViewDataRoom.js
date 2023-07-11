@@ -23,20 +23,15 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile }) => {
     dispatch(getFolderDocumentsApi(navigate, folderid, t))
   }
   const handleClickFilter = (filterValue) => {
-    setFilterValue(filterValue)
     setFiltersOptions(false)
   }
 
   const handleClickforFolder = (dataId) => {
-    setThreeDotforFolder(dataId)
-    setFolderOptions(true)
+    console.log(first)
   }
 
   const handleClickforFile = (dataId) => {
-    setThreeDotforFile(dataId)
-    setFileOptions(true)
   }
-  console.log(data, 'datadatadata')
   return (
     <>
       <Row>
@@ -90,23 +85,8 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile }) => {
                                 })}
                               </Dropdown.Menu>
                             </Dropdown>
-                            {/* <img src={threedots_dataroom} onClick={() => handleClickforFolder(fileData.id)} /> */}
                           </span>
-                          {/* {folderOptions && threeDotforFolder === fileData.id ? <Col className={styles["FilterDropDown_TableView"]}>
-                            {optionsforFolder.map((navlink, index) => {
-                              if (threeDotforFolder === fileData.id) {
-                                return (
-                                  <NavLink
-                                    key={index}
-                                    className={styles["NavLink__filter"]}
-                                    onClick={() => setFolderOptions(false)}
-                                  >
-                                    {navlink.label}
-                                  </NavLink>
-                                );
-                              }
-                            })}
-                          </Col> : null} */}
+
 
                         </div>
                       </Col>

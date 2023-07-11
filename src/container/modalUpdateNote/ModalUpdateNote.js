@@ -37,6 +37,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   //For Localization
   const { NotesReducer } = useSelector((state) => state);
   const [isUpdateNote, setIsUpdateNote] = useState(true);
+  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false)
   const [isDeleteNote, setIsDeleteNote] = useState(false);
   const [erorbar, setErrorBar] = useState(false);
   const { t } = useTranslation();
@@ -520,7 +521,9 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
         <Modal
           show={updateNotes}
           onHide={() => {
-            setUpdateNotes(false);
+            setCloseConfirmationBox(true)
+            setIsDeleteNote(false)
+            setIsUpdateNote(false)
           }}
           modalHeaderClassName={
             isDeleteNote === true
@@ -537,7 +540,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           centered
           //   modalFooterClassName={styles["modal-userprofile-footer"]}
           size={
-            isUpdateNote === true ? "md" : updateNotes === true ? "md" : "md"
+            isUpdateNote === true ? "md" : updateNotes === true ? "md" : closeConfirmationBox ? null : "md"
           }
           ModalBody={
             <>
@@ -869,7 +872,13 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                     </Row>
                   </Container>
                 </>
-              ) : null}
+              ) : closeConfirmationBox ? (
+                <>
+                  <Row>
+                    <Col sm={12} md={12} lg={12} className={styles["Confirmationmodal_body_text"]}>
+                      Are you sure? If you click on close button the data will reset and modal will close.
+                    </Col>
+                  </Row></>) : null}
             </>
           }
           ModalFooter={
@@ -892,7 +901,9 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       text={t("Cancel")}
                       className={styles["cancel-Update-notes"]}
                       onClick={() => {
-                        setUpdateNotes(false);
+                        setCloseConfirmationBox(true)
+                        setIsDeleteNote(false)
+                        setIsUpdateNote(false)
                       }}
                     />
 
@@ -937,6 +948,13 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                     </Col>
                   </Row>
                 </>
+              ) : closeConfirmationBox ? (
+                <><Row>
+                  <Col sm={12} md={12} lg={12} className="d-flex justify-content-center gap-3">
+                    <Button onClick={() => setIsUpdateNote(true)} className={styles["cancel-Update-notes"]} text={"Cancel"} />
+                    <Button onClick={() => setUpdateNotes(false)} className={styles["Update-notes-Button"]} text={"Close"} />
+                  </Col>
+                </Row></>
               ) : null}
             </>
           }

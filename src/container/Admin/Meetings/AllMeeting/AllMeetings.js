@@ -45,6 +45,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   //for translation
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  let currentLanguage = localStorage.getItem("i18nextLng");
+  moment.locale(currentLanguage);
   const [filterBarMeetingModal, setFilterBarMeetingModal] = useState(false);
   const [meetingModal, setMeetingModal] = useState(false);
   const [meetingDeleteModal, setMeetingDeleteModal] = useState(false);

@@ -718,21 +718,21 @@ const SearchTodoListApi = (navigate, searchData, t) => {
             if (response.data.responseResult.responseMessage.toLowerCase().includes("ToDoList_ToDoListServiceManager_SearchToDoList_01".toLowerCase())) {
               dispatch(searchTodoList_success(response.data.responseResult, t("Record-found")))
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ToDoList_ToDoListServiceManager_SearchToDoList_02".toLowerCase())) {
-              dispatch(searchTodoList_fail(t("No-record-found")))
+              dispatch(searchTodoList_fail(t("No-records-found")))
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ToDoList_ToDoListServiceManager_SearchToDoList_03".toLowerCase())) {
-              dispatch(searchTodoList_fail(t("No-record-found")))
+              dispatch(searchTodoList_fail(t("No-records-found")))
             } else {
-              dispatch(searchTodoList_fail(t("No-record-found")))
+              dispatch(searchTodoList_fail(t("No-records-found")))
             }
           } else {
-            dispatch(searchTodoList_fail(t("No-record-found")))
+            dispatch(searchTodoList_fail(t("No-records-found")))
           }
         } else {
-          dispatch(searchTodoList_fail(t("No-record-found")))
+          dispatch(searchTodoList_fail(t("No-records-found")))
         }
       })
       .catch((error) => {
-        dispatch(searchTodoList_fail(t("No-record-found")))
+        dispatch(searchTodoList_fail(t("No-records-found")))
       })
   }
 }

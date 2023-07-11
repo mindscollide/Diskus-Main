@@ -67,9 +67,21 @@ export const CardNumberFormatter = (num) => {
 }
 
 export const newDateFormaterAsPerUTC = (date) => {
-  let dateConvert = moment(date, 'YYYYMMDD').format()
-  let newDate = new Date(dateConvert).toISOString()
+  // let dateConvert = moment(date, 'YYYYMMDD').format()
+
+  // let newDate = new Date(dateConvert).toISOString()
+  // return newDate.slice(0, 10).replace(/-/g, '')
+  let dateConvert = moment(date, 'YYYYMMDD').format();
+  console.log("getCalendarDataResponse", dateConvert)
+  const englishFormat = moment(dateConvert).format("MMMM Do, YYYY [at] HH:mm:ss");
+  console.log("getCalendarDataResponse", englishFormat)
+  let newDate = moment(dateConvert).toDate().toISOString();
+  console.log("getCalendarDataResponse", newDate)
+  let formattedDate = newDate.slice(0, 10).replace(/-/g, '');
+  console.log("getCalendarDataResponse", formattedDate)
+
   return newDate.slice(0, 10).replace(/-/g, '')
+
 }
 
 export const newTimeFormaterAsPerUTC = (dateTime) => {
@@ -203,6 +215,8 @@ export const forRecentActivity = (dateTime) => {
 }
 
 export const startDateTimeMeetingCalendar = (dateTime) => {
+  console.log("newListnewListnewList", dateTime);
+
   let fullDateYear =
     dateTime.slice(0, 4) +
     '-' +
@@ -216,9 +230,40 @@ export const startDateTimeMeetingCalendar = (dateTime) => {
     ':' +
     dateTime.slice(12, 14) +
     '.000Z'
-  let _dateTime = new Date(fullDateYear).toString('YYYYMMDDHHmmss')
+  console.log("newListnewListnewList", fullDateYear);
+
+  // let _dateTime = new Date(fullDateYear).toString('YYYYMMDDHHmmss')
+  let _dateTime = moment(fullDateYear, 'YYYY-MM-DDTHH:mm:ss.SSSZ').format('YYYYMMDD');
+  console.log("newListnewListnewList", _dateTime);
+
   return _dateTime
 }
+
+export const forSetstartDateTimeMeetingCalendar = (dateTime) => {
+  console.log("newListnewListnewList", dateTime);
+
+  let fullDateYear =
+    dateTime.slice(0, 4) +
+    '-' +
+    dateTime.slice(4, 6) +
+    '-' +
+    dateTime.slice(6, 8) +
+    'T' +
+    dateTime.slice(8, 10) +
+    ':' +
+    dateTime.slice(10, 12) +
+    ':' +
+    dateTime.slice(12, 14) +
+    '.000Z'
+  console.log("newListnewListnewList", fullDateYear);
+
+  let _dateTime = new Date(fullDateYear).toString('YYYYMMDDHHmmss')
+  // let _dateTime = moment(fullDateYear, 'YYYY-MM-DDTHH:mm:ss.SSSZ').format('YYYYMMDD');
+  // console.log("newListnewListnewList", _dateTime);
+
+  return _dateTime
+}
+
 
 export const endDateTimeMeetingCalender = (dateTime) => {
   let fullDateYear =

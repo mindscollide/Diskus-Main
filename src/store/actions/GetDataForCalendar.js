@@ -11,11 +11,11 @@ const getCalendarDataInit = (flag) => {
   };
 };
 
-const getCalendarDataSuccess = (response,flag, message) => {
+const getCalendarDataSuccess = (response, flag, message) => {
   return {
     type: actions.GET_DATA_FOR_CALENDAR_SUCCESS,
     response: response,
-    flag:flag,
+    flag: flag,
     message: message,
   };
 };
@@ -27,16 +27,10 @@ const getCalendarDataFail = (message) => {
   };
 };
 
-const getCalendarDataResponse = (navigate, data,flag, t) => {
+const getCalendarDataResponse = (navigate, data, flag, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
 
-  let Data = {
-    UserID: parseInt(data.UserID),
-    OrganizationID: parseInt(organizationID),
-    StartDate: "20220202121749",
-    EndDate: "20240202121749",
-  };
   return (dispatch) => {
     dispatch(getCalendarDataInit(flag));
     let form = new FormData();
@@ -54,7 +48,7 @@ const getCalendarDataResponse = (navigate, data,flag, t) => {
         console.log("calendar Data Response", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getCalendarDataResponse(navigate, data,flag, t));
+          dispatch(getCalendarDataResponse(navigate, data, flag, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -112,4 +106,4 @@ const HideNotificationCalendarData = () => {
   };
 };
 
-export { getCalendarDataResponse, HideNotificationCalendarData,getCalendarDataInit };
+export { getCalendarDataResponse, HideNotificationCalendarData, getCalendarDataInit };

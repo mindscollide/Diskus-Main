@@ -1066,5 +1066,6 @@
   "This-voter-is-already-exist-in-non-voter-list": "This voter-is already exist in non voter list",
   "Secret-balloting": "Secret balloting",
   "Show-of-hands": "Show of hands",
-  "User-is-already-exist": "User is already exist"
+  "User-is-already-exist": "User is already exist",
+  "Reschedule": "Reschedule"
 }
