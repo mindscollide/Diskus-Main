@@ -577,8 +577,11 @@ img.attachment-icon {
 .chat-upload-icon p.chat-upload-text {
   position: absolute;
   left: 65px;
-  top: 10px;
-  width: 150px;
+  top: 5px;
+  width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .delete-uplaoded-file {
@@ -920,7 +923,7 @@ body[dir="rtl"] span.securityicon-box {
 .upload-options {
   position: absolute;
   top: -200px;
-  left: -22px;
+  left: -45px;
 }
 
 .upload-options span.MuiButton-label {
@@ -929,10 +932,15 @@ body[dir="rtl"] span.securityicon-box {
   height: 30px;
   border-radius: 100%;
   padding: 18px;
+  visibility: visible !important;
+  position: relative;
 }
 
 .upload-options span.MuiButton-label img {
+  position: absolute;
   width: 17px;
+  top: 9px;
+  left: 10px;
 }
 
 .upload-options span.MuiButtonBase-root.MuiButton-root.MuiButton-contained.UploadFileButton.MuiButton-containedPrimary {
@@ -1726,4 +1734,10 @@ span.delete {
 span.delete:hover {
   text-decoration: underline;
   cursor: pointer !important;
+}
+
+button.UploadFileButton {
+  visibility: hidden !important;
+  margin-top: 11px;
+  margin-left: -3px;
 }

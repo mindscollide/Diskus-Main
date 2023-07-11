@@ -281,7 +281,7 @@ export const editResolutionDate = (dateTime) => {
     '.000Z'
   let convertGMT = new Date(fullDateYear)
   let convertDate = moment(convertGMT).format('YYYY-MM-DD')
-  console.log(convertDate, "convertDateconvertDateconvertDate")
+  console.log(convertDate, 'convertDateconvertDateconvertDate')
   return convertDate
 }
 
@@ -301,7 +301,7 @@ export const editResolutionTime = (dateTime) => {
     '.000Z'
   let convertGMT = new Date(fullDateYear).toString()
   let convertTime = moment(convertGMT).format('HH:mm')
-  console.log(convertTime, convertGMT, "convertDateconvertDateconvertDate")
+  console.log(convertTime, convertGMT, 'convertDateconvertDateconvertDate')
   return convertTime
 }
 

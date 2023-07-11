@@ -53,6 +53,7 @@ import {
   InputDatePicker,
   Button,
   NotificationBar,
+  UploadProgressBar,
 } from '../../../elements'
 // import Highlighter from 'react-highlight-words'
 import CustomUploadChat from '../../../elements/chat_upload/Chat-Upload'
@@ -1489,6 +1490,7 @@ const TalkChat = () => {
 
   //Show upload options or Hide
   const showUploadOptions = () => {
+    console.log('Upload Option Clicked')
     if (uploadOptions === false && chatClickData.isBlock === 0) {
       setUploadOptions(true)
     } else {
@@ -3867,77 +3869,93 @@ const TalkChat = () => {
             },
           },
         }
-        // let checkLocalData = localStorage.getItem('messageArray')
-        // if (checkLocalData === undefined && checkLocalData === null) {
-        //   let localData = {
-        //     TalkRequest: {
-        //       AllMessages: {
-        //         Messages: [
-        //           {
-        //             AttachmentLocation: '',
-        //             BroadcastID: '0',
-        //             ChannelID: 1,
-        //             ChatID: '2',
-        //             ChatType: 1,
-        //             FileExtension: '',
-        //             FileGeneratedName: '',
-        //             FileName: '',
-        //             FRMessages: 'Direct Message',
-        //             HasTagUser: false,
-        //             isAttempedFail: false,
-        //             isForThisWindowOnly: true,
-        //             MessageBody: 'Hello OTO 10',
-        //             MessageDate: '2023-06-16T11:50:29.393Z',
-        //             MessageStatus: 1,
-        //             MessageType: 'Direct Message',
-        //             retyCount: 3,
-        //             SenderID: '1',
-        //             SenderName: 'Muhammad Ovais',
-        //             TagUserEmails: '',
-        //             TagUserIds: '',
-        //             UID: 'oto10',
-        //           },
-        //         ],
-        //       },
-        //       UserID: 1,
-        //     },
-        //   }
-        //   // save this data into local,
-        // } else {
-        //   let dataforPushinLocal = {
-        //     AttachmentLocation: '',
-        //     BroadcastID: '0',
-        //     ChannelID: 1,
-        //     ChatID: '2',
-        //     ChatType: 1,
-        //     FileExtension: '',
-        //     FileGeneratedName: '',
-        //     FileName: '',
-        //     FRMessages: 'Direct Message',
-        //     HasTagUser: false,
-        //     isAttempedFail: false,
-        //     isForThisWindowOnly: true,
-        //     MessageBody: 'Hello OTO 10',
-        //     MessageDate: '2023-06-16T11:50:29.393Z',
-        //     MessageStatus: 1,
-        //     MessageType: 'Direct Message',
-        //     retyCount: 3,
-        //     SenderID: '1',
-        //     SenderName: 'Muhammad Ovais',
-        //     TagUserEmails: '',
-        //     TagUserIds: '',
-        //     UID: 'oto10',
-        //   }
-        //   checkLocalData.TalkRequest.AllMessages.Messages.push(
-        //     dataforPushinLocal,
-        //   )
-        // }
+        let checkLocalData = localStorage.getItem('messageArray')
+        if (checkLocalData === undefined && checkLocalData === null) {
+          checkLocalData = {
+            TalkRequest: {
+              AllMessages: {
+                Messages: [
+                  {
+                    AttachmentLocation: '',
+
+                    //Not in Use
+                    BroadcastID: '0',
+
+                    ChannelID: parseInt(currentOrganizationId),
+                    ChatID: messageSendData.ReceiverID,
+                    ChatType: 1,
+                    FileExtension: '',
+                    FileGeneratedName: '',
+                    FileName: '',
+                    FRMessages: 'Direct Message',
+                    //Not in Use
+                    HasTagUser: false,
+                    //Not in Use
+                    isAttempedFail: false,
+                    //Not in Use
+                    isForThisWindowOnly: true,
+                    MessageBody: messageSendData.Body,
+                    MessageDate: currentDateTimeUtc,
+                    MessageStatus: 1,
+                    MessageType: 'Direct Message',
+                    //Not in Use
+                    retyCount: 3,
+                    SenderID: messageSendData.SenderID,
+                    SenderName: 'Muhammad Ovais',
+                    //Not in Use
+                    TagUserEmails: '',
+                    //Not in Use
+                    TagUserIds: '',
+                    UID: uniqueId,
+                  },
+                ],
+              },
+              UserID: parseInt(currentUserId),
+            },
+          }
+          // save this data into local,
+        } else {
+          let dataforPushinLocal = {
+            AttachmentLocation: '',
+
+            //Not in Use
+            BroadcastID: '0',
+
+            ChannelID: parseInt(currentOrganizationId),
+            ChatID: messageSendData.ReceiverID,
+            ChatType: 1,
+            FileExtension: '',
+            FileGeneratedName: '',
+            FileName: '',
+            FRMessages: 'Direct Message',
+            //Not in Use
+            HasTagUser: false,
+            //Not in Use
+            isAttempedFail: false,
+            //Not in Use
+            isForThisWindowOnly: true,
+            MessageBody: messageSendData.Body,
+            MessageDate: currentDateTimeUtc,
+            MessageStatus: 1,
+            MessageType: 'Direct Message',
+            //Not in Use
+            retyCount: 3,
+            SenderID: messageSendData.SenderID,
+            SenderName: 'Muhammad Ovais',
+            //Not in Use
+            TagUserEmails: '',
+            //Not in Use
+            TagUserIds: '',
+            UID: uniqueId,
+          }
+          // checkLocalData.TalkRequest.AllMessages.Messages.push(
+          //   dataforPushinLocal,
+          // )
+        }
         const existingArray =
           JSON.parse(localStorage.getItem('messageArray')) || []
-        existingArray.push(Data)
-
+        existingArray.push(checkLocalData)
         localStorage.setItem('messageArray', JSON.stringify(existingArray))
-
         console.log('Insert OTO Message Response', Data)
         dispatch(InsertOTOMessages(navigate, Data, uploadFileTalk, t))
 
