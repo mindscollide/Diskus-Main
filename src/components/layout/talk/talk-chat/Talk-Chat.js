@@ -8199,6 +8199,7 @@ const TalkChat = () => {
                                 ) : null}
                               </span>
                             </div>
+                            <UploadProgressBar />
                             <div className="chat-input-field">
                               <Form onSubmit={sendChat}>
                                 <Form.Control

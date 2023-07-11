@@ -1,34 +1,40 @@
-import { UploadOutlined } from '@ant-design/icons'
-import { Button, message, Upload } from 'antd'
-import React from 'react'
-const props = {
-  name: 'file',
-  action: 'https://www.mocky.io/v2/5cc8019d300000980a055e76',
-  headers: {
-    authorization: 'authorization-text',
-  },
-  onChange(info) {
-    if (info.file.status !== 'uploading') {
-      console.log(info.file, info.fileList)
+import React, { useState, useEffect } from 'react'
+
+function UploadProgressBar() {
+  const [width, setWidth] = useState(1)
+  const [intervalId, setIntervalId] = useState(null)
+  const elemRef = React.useRef(null)
+
+  useEffect(() => {
+    if (width >= 100) {
+      clearInterval(intervalId)
+    } else {
+      setIntervalId(setInterval(frame, 100))
     }
-    if (info.file.status === 'done') {
-      message.success(`${info.file.name} file uploaded successfully`)
-    } else if (info.file.status === 'error') {
-      message.error(`${info.file.name} file upload failed.`)
+
+    function frame() {
+      setWidth((prevWidth) => prevWidth + 1)
+      elemRef.current.style.width = `${width}%`
     }
-  },
-  progress: {
-    strokeColor: {
-      '0%': '#108ee9',
-      '100%': '#87d068',
-    },
-    strokeWidth: 3,
-    format: (percent) => percent && `${parseFloat(percent.toFixed(2))}%`,
-  },
+
+    return () => {
+      clearInterval(intervalId)
+    }
+  }, [width, intervalId])
+
+  function resetProgressBar() {
+    setWidth(1)
+    clearInterval(intervalId)
+    elemRef.current.style.width = '1%'
+  }
+
+  return (
+    <div>
+      <div id="progress-bar" ref={elemRef} style={{ width: `${width}%` }}></div>
+      <button onClick={progressBar}>Start Progress</button>
+      <button onClick={resetProgressBar}>Reset Progress</button>
+    </div>
+  )
 }
-const UploadProgressBar = () => (
-  <Upload {...props}>
-    <Button icon={<UploadOutlined />}>Click to Upload</Button>
-  </Upload>
-)
+
 export default UploadProgressBar
