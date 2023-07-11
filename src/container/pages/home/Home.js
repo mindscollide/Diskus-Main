@@ -211,14 +211,14 @@ const Home = () => {
         CalenderMonthsSpans &&
         new Date(
           currentDate.getFullYear(),
-          currentDate.getMonth() - parseInt(1),
+          currentDate.getMonth() - parseInt(CalenderMonthsSpans),
           1
         ); // Subtract CalenderMonthsSpan months and set the day to the 1st
       let endDates =
         CalenderMonthsSpans &&
         new Date(
           currentDate.getFullYear(),
-          currentDate.getMonth() + parseInt(1),
+          currentDate.getMonth() + parseInt(CalenderMonthsSpans),
           0
         );
       let calendarData = {

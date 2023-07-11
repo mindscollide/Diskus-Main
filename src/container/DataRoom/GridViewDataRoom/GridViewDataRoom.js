@@ -27,10 +27,11 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile }) => {
   }
 
   const handleClickforFolder = (dataId) => {
-    console.log(first)
+    console.log(dataId)
   }
 
   const handleClickforFile = (dataId) => {
+    console.log(dataId)
   }
   return (
     <>
