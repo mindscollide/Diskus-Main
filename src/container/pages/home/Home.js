@@ -25,6 +25,7 @@ import moment from "moment";
 import gregorian from "react-date-object/calendars/gregorian";
 import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 
 import {
@@ -43,6 +44,7 @@ import {
   forRecentActivity,
   startDateTimeMeetingCalendar,
   newDateFormaterAsPerUTC,
+  forSetstartDateTimeMeetingCalendar,
 } from "../../../commen/functions/date_formater";
 import TimeAgo from "timeago-react";
 import {
@@ -115,6 +117,7 @@ const Home = () => {
   const calendarRef = useRef();
   const navigate = useNavigate();
   const [calenderData, setCalenderData] = useState([]);
+  console.log(calenderData, "calenderDatacalenderDatacalenderDatacalenderData")
   const [recentActivityData, setRecentActivityData] = useState([]);
   // get new date
   let date = new Date();
@@ -154,10 +157,11 @@ const Home = () => {
   let OrganizationID = localStorage.getItem("organizationID");
   let CalenderMonthsSpan =
     localStorage.getItem("calenderMonthsSpan") != undefined &&
-    localStorage.getItem("calenderMonthsSpan") != null
+      localStorage.getItem("calenderMonthsSpan") != null
       ? localStorage.getItem("calenderMonthsSpan")
       : 1;
   let currentDate = new Date(); // Get the current date
+
   // Add CalenderMonthsSpan months and set the day to the last day of the month
   let startDate =
     CalenderMonthsSpan &&
@@ -165,7 +169,10 @@ const Home = () => {
       currentDate.getFullYear(),
       currentDate.getMonth() - parseInt(CalenderMonthsSpan),
       1
-    ); // Subtract CalenderMonthsSpan months and set the day to the 1st
+    );
+
+  // Subtract CalenderMonthsSpan months and set the day to the 1st
+
   let endDate =
     CalenderMonthsSpan &&
     new Date(
@@ -173,8 +180,7 @@ const Home = () => {
       currentDate.getMonth() + parseInt(CalenderMonthsSpan),
       0
     );
-  console.log(startDate, endDate, "endDateendDateendDate");
- 
+
   const callApi = async () => {
     dispatch(getTodoListInit())
     dispatch(SetSpinnerTrue())
@@ -182,9 +188,7 @@ const Home = () => {
     dispatch(getusernotificationinit())
     dispatch(getCalendarDataInit(true))
     dispatch(getNotes_Init())
-    
     await dispatch(getUserSetting(navigate, t));
-
     let Data = {
       UserID: parseInt(createrID),
       OrganizationID: JSON.parse(OrganizationID),
@@ -192,7 +196,6 @@ const Home = () => {
       PageNumber: 1,
       Length: 50,
     };
-
     dispatch(GetNotes(navigate, Data, t));
     let Data2 = {
       UserID: parseInt(createrID),
@@ -203,46 +206,52 @@ const Home = () => {
     dispatch(GetUpcomingEvents(navigate, Data2, t));
     dispatch(getNotifications(navigate, createrID, t));
     let CalenderMonthsSpans = localStorage.getItem("calenderMonthsSpan");
-    let startDates =
-      CalenderMonthsSpans &&
-      new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() - parseInt(CalenderMonthsSpans),
-        1
-      ); // Subtract CalenderMonthsSpan months and set the day to the 1st
-    let endDates =
-      CalenderMonthsSpans &&
-      new Date(
-        currentDate.getFullYear(),
-        currentDate.getMonth() + parseInt(CalenderMonthsSpans),
-        0
-      );
-    let calendarData = {
-      UserID: parseInt(userID),
-      OrganizationID: parseInt(OrganizationID),
-      StartDate:
-        startDates !== null && newDateFormaterAsPerUTC(startDates) + "000000",
-      EndDate:
-        endDates !== null && newDateFormaterAsPerUTC(endDates) + "000000",
-    };
-    setStartDataUpdate(startDates);
-    setEndDataUpdate(endDates);
-    if (startDates !== null && endDates !== null) {
-      dispatch(getCalendarDataResponse(navigate, calendarData, true, t));
+    try {
+      let startDates =
+        CalenderMonthsSpans &&
+        new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() - parseInt(1),
+          1
+        ); // Subtract CalenderMonthsSpan months and set the day to the 1st
+      let endDates =
+        CalenderMonthsSpans &&
+        new Date(
+          currentDate.getFullYear(),
+          currentDate.getMonth() + parseInt(1),
+          0
+        );
+      let calendarData = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(OrganizationID),
+        StartDate:
+          startDates !== null && newDateFormaterAsPerUTC(startDates) + "000000",
+        EndDate:
+          endDates !== null && newDateFormaterAsPerUTC(endDates) + "000000",
+      };
+      console.log("newListnewListnewList12", startDates);
+      console.log("newListnewListnewList12", endDates);
+      console.log("newListnewListnewList12", calendarData);
+
+      setStartDataUpdate(startDates);
+      setEndDataUpdate(endDates);
+      if (startDates !== null && endDates !== null) {
+        console.log("getCalendarDataResponse")
+        dispatch(getCalendarDataResponse(navigate, calendarData, true, t));
+      }
+    } catch {
+      dispatch(getCalendarDataInit(false))
     }
   };
+
   useEffect(() => {
     callApi();
   }, []);
 
   useEffect(() => {
     if (Blur != undefined) {
-      // console.log("Blur", Blur);
-
       setActivateBlur(true);
     } else {
-      // console.log("Blur", Blur);
-
       setActivateBlur(false);
     }
   }, [Blur]);
@@ -250,31 +259,19 @@ const Home = () => {
   // set Data for Calendar
   useEffect(() => {
     let Data = calendarReducer.CalenderData;
-    // console.log("Data", Data);
-
     if (Object.keys(Data).length > 0) {
-      console.log("newListnewListnewList", Data);
-
       if (Object.keys(calenderData).length > 0) {
         let newList = calenderData;
         Data.map((cData, index) => {
-          let date = moment(
-            startDateTimeMeetingCalendar(cData.eventDate + cData.startTime)
-          ).format("YYYYMMDD");
-
+          let date = moment(startDateTimeMeetingCalendar(cData.eventDate + cData.startTime)).format("YYYYMMDDHHMMss")
           return newList.push({
             meetingDate: date,
           });
         });
-        console.log("newListnewListnewList", calenderData);
       } else {
         let newList = [];
-        console.log("newListnewListnewList", calenderData);
         Data.map((cData, index) => {
-          let date = moment(
-            startDateTimeMeetingCalendar(cData.eventDate + cData.startTime)
-          ).format("YYYYMMDD");
-
+          let date = moment(startDateTimeMeetingCalendar(cData.eventDate + cData.startTime)).format("YYYYMMDDHHMMss");
           return newList.push({
             meetingDate: date,
           });
@@ -285,29 +282,23 @@ const Home = () => {
   }, [calendarReducer.CalenderData]);
 
   useEffect(() => {
-    var temp = [];
+    let temp = [];
     console.log("newListnewListnewList", calenderData);
 
     calenderData.map((cal, index) => {
-      var year = moment(
-        startDateTimeMeetingCalendar(cal.meetingDate + "000000")
-      ).format("YYYY");
-      var month = moment(
-        startDateTimeMeetingCalendar(cal.meetingDate + "000000")
-      ).format("MM");
-      var day = moment(
-        startDateTimeMeetingCalendar(cal.meetingDate + "000000")
-      ).format("DD");
-      // console.log("calenderDatacalenderData", year, month, day);
-      var d = new DateObject().set({
+      let year = moment(forSetstartDateTimeMeetingCalendar(cal.meetingDate)).format("YYYY");
+      let month = moment(forSetstartDateTimeMeetingCalendar(cal.meetingDate)).format("MM");
+      let day = moment(forSetstartDateTimeMeetingCalendar(cal.meetingDate)).format("DD");
+      let d = new DateObject().set({
         year: year,
         month: month,
         day: day,
         format,
       });
-      // console.log("calenderDatacalenderData", d);
       temp.push(d);
     });
+    console.log("newListnewListnewList", temp);
+
     setDates(temp);
   }, [calenderData]);
 
@@ -327,14 +318,14 @@ const Home = () => {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
       } else if (lang === "ar") {
-        setCalendarValue(arabic);
-        setLocalValue(arabic_ar);
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
       }
     }
   }, [lang]);
 
   // for view modal  handler
-  const viewModalHandler = (id) => {};
+  const viewModalHandler = (id) => { };
 
   const handleClickNoteModal = () => {
     setModalNote(true);
@@ -359,7 +350,7 @@ const Home = () => {
       } else {
         setNotes([]);
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [NotesReducer.GetAllNotesResponse]);
 
   useEffect(() => {
@@ -498,7 +489,7 @@ const Home = () => {
     if (
       Authreducer.VerifyOTPEmailResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
+      t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -517,7 +508,7 @@ const Home = () => {
     } else if (
       Authreducer.EnterPasswordResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
+      t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -536,7 +527,7 @@ const Home = () => {
     } else if (
       Authreducer.OrganizationCreateResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
+      t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -555,7 +546,7 @@ const Home = () => {
     } else if (
       Authreducer.CreatePasswordResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
+      t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -574,7 +565,7 @@ const Home = () => {
     } else if (
       Authreducer.GetSelectedPackageResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
+      t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -593,7 +584,7 @@ const Home = () => {
     } else if (
       Authreducer.EmailValidationResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-        t("The-user-is-not-an-admin-user")
+      t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -633,6 +624,7 @@ const Home = () => {
     }
     // await setShow(true);
   };
+
   useEffect(() => {
     if (lang === "ar") {
       moment.locale(lang);
@@ -644,13 +636,6 @@ const Home = () => {
       moment.locale("en");
     }
   }, [lang]);
-
-  useEffect(() => {
-    console.log(
-      settingReducer,
-      "settingReducer.UserProfileDatasettingReducer.UserProfileData"
-    );
-  }, [settingReducer]);
 
   const closeModal = () => {
     setActivateBlur(false);
@@ -689,12 +674,12 @@ const Home = () => {
         console.log(
           "upcomingEvents index",
           upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-            getCurrentDate
+          getCurrentDate
         );
         return (
           <>
             {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-            getCurrentDate ? (
+              getCurrentDate ? (
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <div
@@ -711,7 +696,7 @@ const Home = () => {
                     <p className="events-dateTime MontserratSemiBold-600">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
-                          upcomingEventsData.meetingEvent.startTime
+                        upcomingEventsData.meetingEvent.startTime
                       )}
                     </p>
                   </div>
@@ -736,7 +721,7 @@ const Home = () => {
                       <p className="events-dateTime">
                         {newTimeFormaterAsPerUTCFullDate(
                           upcomingEventsData.meetingEvent.meetingDate +
-                            upcomingEventsData.meetingEvent.startTime
+                          upcomingEventsData.meetingEvent.startTime
                         )}
                       </p>
                     </div>
@@ -760,7 +745,7 @@ const Home = () => {
                     <p className="events-dateTime">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
-                          upcomingEventsData.meetingEvent.startTime
+                        upcomingEventsData.meetingEvent.startTime
                       )}
                     </p>
                   </div>
@@ -937,7 +922,7 @@ const Home = () => {
                               className="custom-multi-date-picker"
                               // onMonthChange={handleMonthChange}
                               onMonthChange={handleMonthChange}
-                              // format="YYYY-MM-DD"
+                            // format="YYYY-MM-DD"
                             />
                           </Col>
                         </Row>
@@ -961,7 +946,7 @@ const Home = () => {
 
                             <div className="Upcoming-Events-Box">
                               {meetingIdReducer.UpcomingEventsData.length ===
-                              0 ? (
+                                0 ? (
                                 <ResultMessage
                                   icon={
                                     <Mailbox className="notification-icon" />
@@ -1087,7 +1072,7 @@ const Home = () => {
                         <Row>
                           <Col sm={1}>
                             {recentActivityData.notificationTypes.pK_NTID ===
-                            1 ? (
+                              1 ? (
                               <div className="desc-notification-user ">
                                 {/* Bell Notification SVG Code */}
                                 <svg

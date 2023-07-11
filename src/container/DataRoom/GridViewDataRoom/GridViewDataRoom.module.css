@@ -197,3 +197,14 @@
     top: 32px;
     left: 90%;
 }
+
+.options_dropdown button {
+    border: none !important;
+    padding: 5px 0px !important;
+}
+
+
+
+.options_dropdown button:is(:hover, :active, :focus, :focus-visible, :visited) {
+    border: none !important;
+}

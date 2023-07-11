@@ -754,7 +754,7 @@ body[dir="rtl"] .dataroom_searchinput {
 }
 
 .share__Icon_img:hover path {
-  stroke: #f00009 !important;
+  stroke: #6172D6 !important;
 }
 
 .download__Icon {
@@ -844,7 +844,7 @@ body[dir="rtl"] .dataroom_searchinput {
   text-overflow: ellipsis !important;
 }
 
-.NavLink__filter {
+.NavLink__filter_Folder {
   border-bottom: 1px solid #5A5A5A !important;
   padding: 5px 0;
   color: #5A5A5A;
@@ -853,14 +853,34 @@ body[dir="rtl"] .dataroom_searchinput {
 
 }
 
-.NavLink__filter:is(:hover) {
+.NavLink__filter_Folder:is(:hover) {
   border-bottom: 1px solid #5A5A5A !important;
   padding: 5px 0;
   color: #5A5A5A;
   font-family: "MontserratSemiBold-600" !important;
 }
 
-.NavLink__filter:last-child {
+.NavLink__filter_Folder:last-child {
+  border: none !important;
+}
+
+.NavLink__filter__file {
+  border-bottom: 1px solid #5A5A5A !important;
+  padding: 5px 0;
+  color: #5A5A5A;
+  font-family: "MontserratSemiBold-600" !important;
+  display: flex;
+
+}
+
+.NavLink__filter__file:is(:hover) {
+  border-bottom: 1px solid #5A5A5A !important;
+  padding: 5px 0;
+  color: #5A5A5A;
+  font-family: "MontserratSemiBold-600" !important;
+}
+
+.NavLink__filter__file:last-child {
   border: none !important;
 }
 
@@ -916,4 +936,24 @@ body[dir="rtl"] .dataroom_searchinput {
   text-overflow: ellipsis;
   overflow: hidden;
   word-wrap: break-word;
+}
+
+.options_dropdown button {
+  border: none !important;
+  padding: 5px 0px !important;
+}
+
+
+
+.options_dropdown button:is(:hover, :active, :focus, :focus-visible, :visited) {
+  border: none !important;
+}
+
+.options_dropdown_toggle {
+  padding: 5px 0px !important;
+}
+
+.options_menu {
+  border-radius: 4px;
+  border: 1px solid #e1e1e1;
 }

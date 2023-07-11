@@ -347,6 +347,12 @@ const Meeting = () => {
               <span className="activebtn">{t("Cancelled")}</span>
             </div>
           );
+        } else if (text === "5") {
+          return (
+            <div className="activebtn ">
+              <span className="activebtn">{t("Reschedule")}</span>
+            </div>
+          );
         }
       },
     },
@@ -1031,7 +1037,7 @@ const Meeting = () => {
                   subTitle={t("Anything-important-thats-needs-discussion")}
                 />
                 <Row>
-                  <Col className="text-center">
+                  <Col className="d-flex justify-content-center">
                     <Button
                       className={"ScheduleAMeeting"}
                       variant={"Primary"}
@@ -1074,7 +1080,7 @@ const Meeting = () => {
 
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
 
-      {meetingIdReducer.Loading ||assignees.Loading ||uploadReducer.Loading||minuteofMeetingReducer.Loading? (<Loader />
+      {meetingIdReducer.Loading || assignees.Loading || uploadReducer.Loading || minuteofMeetingReducer.Loading ? (<Loader />
       ) : null}
     </>
   );

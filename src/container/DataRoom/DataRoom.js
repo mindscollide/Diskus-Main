@@ -90,21 +90,21 @@ import DeleteNotificationBox from "./DeleteNotification/deleteNotification";
 import FileRemoveBox from "./FileRemoved/FileRemoveBox";
 import ShowRenameNotification from "./ShowRenameNotification/ShowRenameNotification";
 import ActionUndoNotification from "./ActionUndoNotification/ActionUndoNotification";
+import ModalShareDocument from "./ModalSharedocument/ModalShareDocument";
+import CustomDropdown from "../../components/elements/dropdown/CustomDropdown";
 const DataRoom = () => {
   // tooltip
   const [showbarupload, setShowbarupload] = useState(false);
-  const [minimize, setMinimize] = useState(false);
   const [progress, setProgress] = useState(0);
-  const text = <span>Share</span>;
-  const Deltooltip = <span>Delete</span>;
+  const [inviteModal, setInviteModal] = useState(false)
   const [optionsFileisShown, setOptionsFileisShown] = useState(false);
   const [optionsFolderisShown, setOptionsFolderisShown] = useState(false);
   const [optionsforFolder, setOptionsforFolder] = useState([
-    { label: "Share", value: 1, labelIcon: PDFICON },
-    { label: "Rename", value: 2, labelIcon: PDFICON },
-    { label: "View Details", value: 3, labelIcon: PDFICON },
-    { label: "Download", value: 4, labelIcon: PDFICON },
-    { label: "Remove", value: 5, labelIcon: PDFICON },
+    { label: "Share", value: 1 },
+    { label: "Rename", value: 2 },
+    { label: "View Details", value: 3 },
+    { label: "Download", value: 4 },
+    { label: "Remove", value: 5 },
   ]);
   const [optionsforFile, setOptionsforFile] = useState([
     { label: "Open With", value: 1, labelIcon: PDFICON },
@@ -117,6 +117,8 @@ const DataRoom = () => {
   const { t } = useTranslation();
   const { uploadReducer, DataRoomReducer } = useSelector((state) => state);
   const searchBarRef = useRef();
+  const threedotFile = useRef();
+  const threedotFolder = useRef();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [shareFileModal, setShareFileModal] = useState(false);
   const [foldermodal, setFolderModal] = useState(false);
@@ -213,8 +215,6 @@ const DataRoom = () => {
         console.log("eeeeeeeee", e.target.className);
         let clsname = e.target.className;
         let arr = clsname && clsname.split("_");
-        let arrremoveminus = clsname.split("-");
-        console.log(arrremoveminus, "arrremoveminusarrremoveminus");
         // select-dropdowns-height
         console.log("click", arr[0]);
         console.log("click", arr[1]);
@@ -237,19 +237,6 @@ const DataRoom = () => {
             console.log("click");
           }
         }
-        // else if (optionsFileisShown === true || optionsFolderisShown === true) {
-        //   if (arr[0] === "DataRoom" && arr[1] === "NavLink" && arr[3] === "filter") {
-
-        //   } else {
-        //     setOptionsFileisShown(false)
-        //     setOptionsFolderisShown(false)
-        //   }
-        // }
-        // else {
-        //   if (searchbarshow === true) {
-        //     setSearchbarshow(false)
-        //   }
-        // }
       });
     } catch {
       console.log("error");
@@ -273,10 +260,6 @@ const DataRoom = () => {
     setShowrenamenotification(false);
   };
 
-  const OpenRenameFolderModal = () => {
-    setShowreanmemodal(true);
-  };
-
   const OpenCancelDownloadModal = () => {
     setShowcanceldownload(true);
   };
@@ -294,9 +277,6 @@ const DataRoom = () => {
     setTasksAttachments([]);
   };
 
-  const MinimizeOption = () => {
-    setMinimize(true);
-  };
 
   const deleteafterhover = () => {
     setDeltehoverstyle(true);
@@ -683,7 +663,6 @@ const DataRoom = () => {
       setSearchbarshow(false);
     }
   };
-  console.log("SearchiconClickOptions", searchbarsearchoptions);
 
   const showShareFolderModal = (id, name) => {
     setFolderId(id);
@@ -877,6 +856,19 @@ const DataRoom = () => {
     }
   };
 
+  const fileOptionsSelect = (data) => {
+    console.log(data, "datadatadata")
+
+  }
+
+  const folderOptionsSelect = (data) => {
+    if (data.value === 2) {
+      setShowreanmemodal(true)
+    }
+    console.log(data, "datadatadata")
+
+  }
+
   const MyDocumentsColumns = [
     {
       title: t("Name"),
@@ -884,6 +876,7 @@ const DataRoom = () => {
       key: "name",
       width: "150px",
       sortDirections: ["descend", "ascend"],
+
       render: (text, data) => {
         console.log(data, "21212");
         if (data.isShared) {
@@ -932,6 +925,7 @@ const DataRoom = () => {
           }
         }
       },
+      sorter: (a, b) => a.name.toLowerCase() < b.name.toLowerCase(),
     },
     {
       title: t("Owner"),
@@ -939,6 +933,7 @@ const DataRoom = () => {
       key: "owner",
       width: "90px",
       sortDirections: ["descend", "ascend"],
+      sorter: (a, b) => a.owner.toLowerCase() < b.owner.toLowerCase()
     },
     {
       title: t("Last_modified"),
@@ -949,6 +944,7 @@ const DataRoom = () => {
       render: (text, data) => {
         return <span>{_justShowDateformat(text)}</span>;
       },
+      sorter: (a, b) => _justShowDateformat(a.modifiedDate) < _justShowDateformat(b.modifiedDate)
     },
     {
       title: t("File-size"),
@@ -990,7 +986,7 @@ const DataRoom = () => {
                 className="d-flex justify-content-end gap-2 position-relative"
               >
                 <>
-                  <Tooltip placement="topRight" title={"Share"}>
+                  <Tooltip placement="topRight" title={t("Share")}>
                     <span className={styles["share__Icon"]}>
                       <svg
                         className={styles["share__Icon_img"]}
@@ -1019,7 +1015,7 @@ const DataRoom = () => {
                     </span>
                   </Tooltip>
                 </>
-                <Tooltip placement="topRight" title={"Download"}>
+                <Tooltip placement="topRight" title={t("Download")}>
                   <span className={styles["download__Icon"]}>
                     <img
                       src={download}
@@ -1031,7 +1027,7 @@ const DataRoom = () => {
                   </span>
                 </Tooltip>
                 <>
-                  <Tooltip placement="topRight" title={Deltooltip}>
+                  <Tooltip placement="topRight" title={t("Delete")}>
                     <span className={styles["delete__Icon"]}>
                       <img
                         src={del}
@@ -1049,7 +1045,7 @@ const DataRoom = () => {
                     </span>
                   </Tooltip>
                 </>
-                <Tooltip placement="topRight" title={"Start"}>
+                <Tooltip placement="topRight" title={t("Start")}>
                   <span className={styles["start__Icon"]}>
                     <img
                       src={start}
@@ -1059,41 +1055,62 @@ const DataRoom = () => {
                     />
                   </span>
                 </Tooltip>
-                <span className={styles["threeDot__Icon"]}>
-                  <img
-                    src={dot}
-                    height="10.71px"
-                    className="cursor-pointer position-relative"
-                    width="15.02px"
-                    onClick={() => handleClickDropDown(data)}
-                  />
+                <span className={styles["threeDot__Icon"]} >
+                  {data.isFolder ?
+                    <Dropdown className={`${styles["options_dropdown"]} ${"dataroom_options"}`} >
+                      <Dropdown.Toggle id="dropdown-autoclose-true">
+                        <img src={dot} width="15.02px" height="10.71px" />
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu >
+                        {optionsforFolder.map((data, index) => {
+                          return <Dropdown.Item key={index} onClick={() => folderOptionsSelect(data)}>{data.label}</Dropdown.Item>
+                        })}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                    : <Dropdown className={`${styles["options_dropdown"]} ${"dataroom_options"}`} >
+                      <Dropdown.Toggle id="dropdown-autoclose-true">
+                        <img src={dot} width="15.02px" height="10.71px" />
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu >
+                        {optionsforFile.map((data, index) => {
+                          return <Dropdown.Item key={index} onClick={() => fileOptionsSelect(data)}>{data.label}</Dropdown.Item>
+                        })}
+                      </Dropdown.Menu>
+                    </Dropdown>}
 
-                  {optionsFolderisShown && threeDotOptions === data.id ? (
-                    <Col className={styles["FilterDropDown_TableView"]}>
-                      {optionsforFolder.map((navlink, index) => {
+                  {/* {optionsFolderisShown && threeDotOptions === data.id ? (
+                    <Col className={styles["FilterDropDown_TableView"]}> */}
+                  {/* {threeDotOptions === data.id ? (
+                        <CustomDropdown />
+                      )
+                        : null} */}
+                  {/* {optionsforFolder.map((navlink, index) => {
                         {
                           if (threeDotOptions === data.id) {
                             return (
-                              <NavLink
-                                key={index}
-                                onClick={() => setOptionsFolderisShown(false)}
-                                className={styles["NavLink__filter"]}
-                              >
-                                {navlink.label}
-                              </NavLink>
+                              <span >
+                                <NavLink
+                                  key={index}
+                                  onClick={() => fileOptionsSelect(navlink)}
+                                  className={styles["NavLink__filter_Folder"]}
+                                >
+                                  {navlink.label}
+                                </NavLink>
+                              </span>
                             );
                           }
                         }
-                      })}
-                    </Col>
-                  ) : optionsFileisShown && threeDotOptions === data.id ? (
+                      })} */}
+                  {/* </Col>
+                  ) : null} */}
+                  {/* {optionsFileisShown && threeDotOptions === data.id ? (
                     <Col className={styles["FilterDropDown_TableView"]}>
                       {optionsforFile.map((navlink, index) => {
                         if (threeDotOptions === data.id) {
                           return (
                             <NavLink
                               key={index}
-                              className={styles["NavLink__filter"]}
+                              className={styles["NavLink__filter__file"]}
                               onClick={() => setOptionsFileisShown(false)}
                             >
                               {navlink.label}
@@ -1102,10 +1119,10 @@ const DataRoom = () => {
                         }
                       })}
                     </Col>
-                  ) : null}
+                  ) : null} */}
                 </span>
-              </Col>
-            </Row>
+              </Col >
+            </Row >
           </>
         );
       },
@@ -1115,10 +1132,10 @@ const DataRoom = () => {
   const handleClickDropDown = (rowData) => {
     setThreeDotOptions(rowData.id);
     if (rowData.isFolder === true) {
-      setOptionsFolderisShown(!optionsFolderisShown);
+      setOptionsFolderisShown(true);
       setOptionsFileisShown(false);
     } else {
-      setOptionsFileisShown(!optionsFileisShown);
+      setOptionsFileisShown(true);
       setOptionsFolderisShown(false);
     }
   };
@@ -1359,6 +1376,16 @@ const DataRoom = () => {
     ) {
       setSearchbarshow(false);
     }
+    if (threedotFolder.current &&
+      !threedotFolder.current.contains(event.target) &&
+      optionsFolderisShown) {
+      setOptionsFolderisShown(false)
+    }
+    if (threedotFile.current &&
+      !threedotFile.current.contains(event.target) &&
+      optionsFileisShown) {
+      setOptionsFileisShown(false)
+    }
   };
 
   useEffect(() => {
@@ -1366,7 +1393,7 @@ const DataRoom = () => {
     return () => {
       document.removeEventListener("click", handleOutsideClick);
     };
-  }, [searchbarshow]);
+  }, [searchbarshow, optionsFileisShown, optionsFolderisShown]);
 
   useEffect(() => {
     if (
@@ -2403,6 +2430,9 @@ const DataRoom = () => {
           shareFile={shareFileModal}
         />
       ) : null}
+      {inviteModal && (
+        <ModalShareDocument inviteModal={inviteModal} setInviteModal={setInviteModal} />
+      )}
       {DataRoomReducer.Loading ? <Loader /> : null}
       {/* <Loader /> */}
       <Notification open={open.open} message={open.message} setOpen={setOpen} />

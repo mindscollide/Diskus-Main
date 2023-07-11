@@ -29,7 +29,8 @@ const ModalrequestingAccess = ({
         modalHeaderClassName={styles["ModalRequestHeader"]}
         modalFooterClassName="d-block"
         centered
-        size={requestingAccess === true ? "md" : "md"}
+        modalBodyClassName={styles["ModalBodyClass"]}
+        // size={requestingAccess === true ? "md" : "md"}
         ModalTitle={
           <>
             <Row>
@@ -76,11 +77,11 @@ const ModalrequestingAccess = ({
                 <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                   <img src={newprofile} height="29px" width="29px" />
                   <Row>
-                    <Col lg={12} md={12} sm={12}>
+                    <Col lg={12} md={12} sm={12} className="MontserratSemiBold-600">
                       <span className={styles["Accessrequest"]}>
-                        Saad Fudda {t("Is")}
+                        Saad Fudda {t("Is") + " "}
                         <span className={styles["Bold_heading"]}>
-                          {t("Requesting-access")}
+                          {t("Requesting-access") + " "}
                         </span>
                         {t("To-the-folder")}
                       </span>
@@ -106,12 +107,12 @@ const ModalrequestingAccess = ({
                       sm={12}
                       className={styles["Box_Folder"]}
                     >
-                      <Row className="mt-2">
+                      <Row >
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
-                          className="d-flex justify-content-center gap-2"
+                          className="d-flex justify-content-center align-items-center gap-2"
                         >
                           <img src={folder} height="12.46px" width="14.95px" />
                           <span className={styles["Folder_name"]}>

@@ -24,11 +24,13 @@ import { useTranslation } from "react-i18next";
 import StarIcon from "../../assets/images/Star.svg";
 import hollowstar from "../../assets/images/Hollowstar.svg";
 import { useNavigate } from "react-router-dom";
+import ConfirmationModal from "../../components/elements/confirmationModal/ConfirmationModal";
 const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   //For Localization
   const { uploadReducer } = useSelector((state) => state);
   let createrID = localStorage.getItem("userID");
   const navigate = useNavigate();
+  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false)
   let OrganizationID = localStorage.getItem("organizationID");
   const [isAddNote, setIsAddNote] = useState(true);
   const [isCreateNote, setIsCreateNote] = useState(false);
@@ -47,6 +49,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     open: false,
     message: "",
   });
+
   const date = new Date();
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
@@ -333,7 +336,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   console.log(fileForSend, "fileSizefileSizefileSize");
 
   const cancelNewNoteModal = () => {
-    setAddNewModal(false);
+    setCloseConfirmationBox(true);
+    setIsCreateNote(false)
+    setIsAddNote(false)
   };
 
   const modules = {
@@ -431,13 +436,16 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       quill.focus();
     }
   };
+
   return (
     <>
       <Container>
         <Modal
           show={addNewModal}
           onHide={() => {
-            setAddNewModal(false);
+            setCloseConfirmationBox(true);
+            setIsCreateNote(false)
+            setIsAddNote(false)
           }}
           setShow={setAddNewModal}
           ButtonTitle={ModalTitle}
@@ -452,7 +460,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           }
           centered
           modalFooterClassName={styles["modal-userprofile-footer"]}
-          size={isAddNote === true ? "md" : isCreateNote ? "md" : "md"}
+          size={isAddNote === true ? "md" : isCreateNote ? "md" : closeConfirmationBox ? null : "md"}
           ModalBody={
             <>
               {isAddNote ? (
@@ -752,6 +760,13 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                     </Col>
                   </Row>
                 </>
+              ) : closeConfirmationBox ? (
+                <>
+                  <Row>
+                    <Col sm={12} md={12} lg={12} className={styles["Confirmationmodal_body_text"]}>
+                      Are you sure? If you click on close button the data will reset and modal will close.
+                    </Col>
+                  </Row></>
               ) : null}
             </>
           }
@@ -812,6 +827,14 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                     </Col>
                   </Row>
                 </>
+              ) : closeConfirmationBox ? (
+                <><Row>
+                  <Col sm={12} md={12} lg={12} className="d-flex justify-content-center gap-3">
+                    <Button onClick={() => setIsAddNote(true)} className={styles["cancel-Add-notes-Modal"]} text={"Cancel"} />
+                    <Button onClick={() => setAddNewModal(false)} className={styles["close-Add-notes-Modal"]} text={"Close"} />
+                  </Col>
+                  {/* <Col sm={12} md={6} lg={6} onClick={() => setAddNewModal(false)}>Close</Col> */}
+                </Row></>
               ) : null}
             </>
           }
