@@ -48,20 +48,20 @@ const getAllVotingMethods = (navigate, t) => {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_GetAllVotingMethod_01".toLowerCase()) {
                             dispatch(getAllVoting_Success(response.data.responseResult.resolutionMethod, t("Data-available")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_GetAllVotingMethod_02".toLowerCase()) {
-                            dispatch(getAllVoting_Fail("No-data-available"))
+                            dispatch(getAllVoting_Fail(t("No-data-available")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_GetAllVotingMethod_03".toLowerCase()) {
-                            dispatch(getAllVoting_Fail("Something-went-wrong"))
+                            dispatch(getAllVoting_Fail(t("Something-went-wrong")))
                         }
                     } else {
-                        dispatch(getAllVoting_Fail("Something-went-wrong"))
+                        dispatch(getAllVoting_Fail(t("Something-went-wrong")))
                     }
                 } else {
-                    dispatch(getAllVoting_Fail("Something-went-wrong"))
+                    dispatch(getAllVoting_Fail(t("Something-went-wrong")))
                 }
 
             })
             .catch((response) => {
-                dispatch(getAllVoting_Fail("Something-went-wrong"))
+                dispatch(getAllVoting_Fail(t("Something-went-wrong")))
             });
     };
 }
@@ -108,20 +108,20 @@ const getAllResolutionStatus = (navigate, t) => {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_GetAllResolutionStatus_01".toLowerCase()) {
                             dispatch(getAllResolutionStatus_Success(response.data.responseResult.resolutionStatus, t("Data-available")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_GetAllResolutionStatus_02".toLowerCase()) {
-                            dispatch(getAllResolutionStatus_Fail("No-data-available"))
+                            dispatch(getAllResolutionStatus_Fail(t("No-data-available")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_GetAllResolutionStatus_03".toLowerCase()) {
-                            dispatch(getAllResolutionStatus_Fail("Something-went-wrong"))
+                            dispatch(getAllResolutionStatus_Fail(t("Something-went-wrong")))
                         }
                     } else {
-                        dispatch(getAllResolutionStatus_Fail("Something-went-wrong"))
+                        dispatch(getAllResolutionStatus_Fail(t("Something-went-wrong")))
                     }
                 } else {
-                    dispatch(getAllResolutionStatus_Fail("Something-went-wrong"))
+                    dispatch(getAllResolutionStatus_Fail(t("Something-went-wrong")))
                 }
 
             })
             .catch((response) => {
-                dispatch(getAllResolutionStatus_Fail("Something-went-wrong"))
+                dispatch(getAllResolutionStatus_Fail(t("Something-went-wrong")))
             });
     };
 }
@@ -182,17 +182,17 @@ const getResolutions = (navigate, id, t) => {
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchResolutions_02".toLowerCase()) {
                             dispatch(getResolutions_Success(response.data.responseResult.resolutionTable, t("No-data-available")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_SearchResolutions_03".toLowerCase()) {
-                            dispatch(getResolutions_Fail("Something-went-wrong"))
+                            dispatch(getResolutions_Fail(t("Something-went-wrong")))
                         }
                     } else {
-                        dispatch(getResolutions_Fail("Something-went-wrong"))
+                        dispatch(getResolutions_Fail(t("Something-went-wrong")))
                     }
                 } else {
-                    dispatch(getResolutions_Fail("Something-went-wrong"))
+                    dispatch(getResolutions_Fail(t("Something-went-wrong")))
                 }
             })
             .catch((response) => {
-                dispatch(getResolutions_Fail("Something-went-wrong"))
+                dispatch(getResolutions_Fail(t("Something-went-wrong")))
             });
     };
 }

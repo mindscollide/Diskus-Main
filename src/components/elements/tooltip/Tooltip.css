@@ -21,3 +21,22 @@
 .tooltip-container:hover .tooltip-text {
     visibility: visible;
 }
+
+.tooltip-text-ar {
+    visibility: hidden;
+    background-color: #707070;
+    color: white;
+    text-align: center;
+    padding: 5px;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 9999999999999999999999999999999999999;
+    bottom: 100%;
+    left: 100%;
+    transform: translateX(-100%);
+    white-space: nowrap;
+}
+
+.tooltip-container:hover .tooltip-text-ar {
+    visibility: visible;
+}

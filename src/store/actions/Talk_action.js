@@ -301,8 +301,7 @@ const GetAllUserChats = (navigate, currentUserId, currentOrganizationId, t) => {
         }
       })
       .catch((response) => {
-        let newError = t('Something-went-wrong')
-        dispatch(getAllUserChatsFail(false, newError))
+        dispatch(getAllUserChatsFail(false, t('Something-went-wrong')))
       })
   }
 }
