@@ -231,16 +231,25 @@ const Organization = () => {
           userProfileData.userAllowMicrosoftCalendarSynch,
       };
       setOrganizationStates(settingData);
-      let countryCode = {
-        label: userProfileData.countryCode.code,
-        value: userProfileData.countryCode.pK_CCID,
-      };
-      setCountryCodeValue(countryCode);
+      // let countryCode = {
+      //   label: userProfileData.countryCode.code,
+      //   value: userProfileData.countryCode.pK_CCID,
+      // };
+      // setCountryCodeValue(countryCode);
       setWorldCountryID(userProfileData.worldCountry.fK_WorldCountryID);
       let timeZoneCode = {
-        label: userProfileData.timeZones.gmtOffset,
-        value: userProfileData.timeZones.pK_TZID,
+        label: userProfileData.timeZones
+          ? userProfileData.timeZones.countryName +
+          " " +
+          "(" +
+          userProfileData.timeZones.timeZone +
+          ")" +
+          " " +
+          userProfileData.timeZones.gmtOffset
+          : null,
+        value: userProfileData.timeZones?.pK_TZID,
       };
+      console.log(timeZoneCode, "timeZoneCodetimeZoneCodetimeZoneCode")
       setTimeZoneValue(timeZoneCode);
     }
   };
@@ -574,12 +583,12 @@ const Organization = () => {
         newData.push({
           label: data.gmtOffset
             ? data.countryName +
-              " " +
-              "(" +
-              data.timeZone +
-              ")" +
-              " " +
-              data.gmtOffset
+            " " +
+            "(" +
+            data.timeZone +
+            ")" +
+            " " +
+            data.gmtOffset
             : null,
           value: data.pK_TZID,
         });
@@ -597,6 +606,7 @@ const Organization = () => {
     );
     if (userProfileData !== null && userProfileData !== undefined) {
       let settingData = {
+        CalenderMonthsSpan: userProfileData.calenderMonthsSpan,
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
         EmailOnEditMeeting: userProfileData.emailOnEditMeeting,
         EmailOnCancelledDeletedMeeting: userProfileData.emailOnCancelledMeeting,
@@ -664,21 +674,21 @@ const Organization = () => {
           userProfileData.userAllowMicrosoftCalendarSynch,
       };
       setOrganizationStates(settingData);
-      let countryCode = {
-        label: userProfileData.worldCountry?.code,
-        value: userProfileData.worldCountry?.fK_WorldCountryID,
-      };
-      setCountryCodeValue(countryCode);
+      // let countryCode = {
+      //   label: userProfileData.worldCountry?.code,
+      //   value: userProfileData.worldCountry?.fK_WorldCountryID,
+      // };
+      // setCountryCodeValue(countryCode);
       setWorldCountryID(userProfileData.worldCountry?.fK_WorldCountryID);
       let timeZoneCode = {
         label: userProfileData.timeZones
           ? userProfileData.timeZones.countryName +
-            " " +
-            "(" +
-            userProfileData.timeZones.timeZone +
-            ")" +
-            " " +
-            userProfileData.timeZones.gmtOffset
+          " " +
+          "(" +
+          userProfileData.timeZones.timeZone +
+          ")" +
+          " " +
+          userProfileData.timeZones.gmtOffset
           : null,
         value: userProfileData.timeZones?.pK_TZID,
       };
@@ -741,7 +751,10 @@ const Organization = () => {
                       placeholder={t("Please-select")}
                       classNamePrefix={"Select_timezone"}
                       className={styles["select-timezone"]}
-                      value={timeZoneValue}
+                      value={{
+                        label: timeZoneValue.label,
+                        value: timeZoneValue.value,
+                      }}
                       defaultValue={{
                         label: timeZoneValue.label,
                         value: timeZoneValue.value,
@@ -780,7 +793,7 @@ const Organization = () => {
                       change={(e) => {
                         setOrganizationStates({
                           ...organizationStates,
-                          CalenderMonthsSpan: parseInt(e.target.value),
+                          CalenderMonthsSpan: parseInt(e.target.value) < 0 ? 0 : parseInt(e.target.value),
                         });
                       }}
                       maxLength={360}

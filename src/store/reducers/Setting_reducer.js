@@ -379,6 +379,44 @@ const settingReducer = (state = initialState, action) => {
         recentActivityDataFromMQTT: []
       }
     }
+    case actions.GOOGLEVALIDTOKEN_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      }
+    }
+    case actions.GOOGLEVALIDTOKEN_SUCCESS: {
+      return {
+        ...state,
+        Loading: true,
+      }
+    }
+    case actions.GOOGLEVALIDTOKEN_FAIL: {
+      return {
+        ...state,
+        Loading: true,
+        message:action.message
+      }
+    }
+    case actions.REVOKETOKEN_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      }
+    }
+    case actions.REVOKETOKEN_SUCCESS: {
+      return {
+        ...state,
+        Loading: true,
+      }
+    }
+    case actions.REVOKETOKEN_FAIL: {
+      return {
+        ...state,
+        Loading: true,
+        message:action.message
+      }
+    }
     default:
       return {
         ...state,

@@ -15,7 +15,7 @@ const initialState = {
   EmailCheckSpinner: false,
   AllOrganizationMeetingLoader: false,
   AllOrganizationMeeting: null,
-  AllOrganizationMeetingMQTT : null,
+  AllOrganizationMeetingMQTT: null,
   AllOrganizationResponseMessage: "",
   DeleteOrganizationMeetingResponse: null,
   DeleteOrganizationMessageResponseMessage: "",
@@ -27,13 +27,36 @@ const initialState = {
   CustomerInformationDataResponseMessage: "",
   UpdateCustomerInformationResponse: null,
   UpdateCustomerInformationResponseMessage: "",
-  DeleteOrganizationResponse:null,
-  DeleteOrganizationResponseMessage: ""
+  DeleteOrganizationResponse: null,
+  DeleteOrganizationResponseMessage: "",
+  PaymentMethods: null,
 };
 
 const adminReducer = (state = initialState, action) => {
   switch (action.type) {
     //action Case For Admin-AddUser
+    case actions.GET_PAYMENT_METHODS_INIT: {
+      return {
+        ...state,
+        Loading: true
+      }
+    }
+    case actions.GET_PAYMENT_METHODS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        PaymentMethods: action.response,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.GET_PAYMENT_METHODS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        PaymentMethods: null,
+        ResponseMessage: action.message
+      }
+    }
     case actions.ADMIN_ADDUSER_INIT:
       return {
         ...state,
@@ -439,34 +462,34 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         revokeResponseMessege: action.message,
       };
-      case actions.ALL_MEETINGS_MQTT: {
-        return {
-          ...state,
-          AllOrganizationMeetingMQTT: action.response
-        }
+    case actions.ALL_MEETINGS_MQTT: {
+      return {
+        ...state,
+        AllOrganizationMeetingMQTT: action.response
       }
-      case actions.DELETE_ORGANIZATION_INIT: {
-        return {
-          ...state,
-          Loading: true
-        }
-      } 
-      case actions.DELETE_ORGANIZATION_SUCCESS: {
-        return {
-          ...state,
-          Loading: false,
-          DeleteOrganizationResponse:action.response,
-          DeleteOrganizationResponseMessage: action.message
-        }
-      } 
-      case actions.DELETE_ORGANIZATION_FAIL: {
-        return {
-          ...state,
-          Loading: false,
-          DeleteOrganizationResponse:null,
-          DeleteOrganizationResponseMessage: action.message
-        }
+    }
+    case actions.DELETE_ORGANIZATION_INIT: {
+      return {
+        ...state,
+        Loading: true
       }
+    }
+    case actions.DELETE_ORGANIZATION_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        DeleteOrganizationResponse: action.response,
+        DeleteOrganizationResponseMessage: action.message
+      }
+    }
+    case actions.DELETE_ORGANIZATION_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        DeleteOrganizationResponse: null,
+        DeleteOrganizationResponseMessage: action.message
+      }
+    }
     default:
       return { ...state };
   }

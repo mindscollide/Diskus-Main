@@ -21,7 +21,9 @@ body[dir="rtl"] .Details_New_resolution {
 .Create_new_resolution_paper {
   width: 100% !important;
   height: auto !important;
-  padding: 58px 58px !important;
+  padding: 35px 58px !important;
+  position: relative !important;
+  margin: 20px 0;
 }
 
 .Circulation_heading {
@@ -142,7 +144,11 @@ body[dir="rtl"] .Non_Voters_Btn_Createresolution {
   color: #fff;
   font-size: 12px !important;
   border: none !important;
+  display: flex;
+  max-width: 100%;
   margin-top: 13px !important;
+  justify-content: center;
+  align-items: center;
 }
 
 body[dir="rtl"] .ADD_Button_Createresolution {
@@ -221,7 +227,7 @@ body[dir="rtl"] .Attachments_resolution {
 }
 
 .scroll-bar-Create-resolution {
-  height: 20vh !important;
+  height: 200px !important;
   overflow-x: hidden !important;
 }
 
@@ -355,8 +361,7 @@ body[dir="rtl"] .circulate_button_Createresolution {
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
   position: absolute !important;
-  top: 64px !important;
-  left: 8.7% !important;
+  top: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -442,6 +447,26 @@ body[dir="rtl"] .errorMessage_hidden {
   font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
-.attachments_height {
+.edit_resolution_attachments {
+  height: 200px;
+  margin-bottom: 95px !important;
+}
+
+/* .attachments_height {
   height: 100px !important;
+} */
+.EditResolution_dragger {
+  height: auto !important;
+}
+
+.line_Editresolution {
+  width: 1px;
+  height: 100%;
+  background-color: #5a5a5a !important;
+}
+
+.Go_Back_EditResolution {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  border: none !important;
+  padding: 12px 30px !important;
 }

@@ -13,6 +13,8 @@ import {
   momentLocalizer,
   DateLocalizer,
 } from "react-big-calendar";
+import { useSelector, useDispatch } from "react-redux";
+
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./Calendar.module.css";
@@ -23,6 +25,8 @@ import { Button } from "./../../../components/elements";
 import Helper from "../../../commen/functions/history_logout";
 import { useTranslation } from "react-i18next";
 import { color } from "@mui/system";
+import { newDateFormaterAsPerUTC } from "../../../commen/functions/date_formater";
+import { getCalendarDataResponse } from "../../../store/actions/GetDataForCalendar";
 require("moment/locale/ar");
 require("moment/locale/ar-sa");
 require("moment/locale/fr");
@@ -82,6 +86,10 @@ const lang = {
 };
 function CustomCalendar({
   events,
+  startDataUpdate,
+  setStartDataUpdate,
+  endDataUpdate,
+  setEndDataUpdate,
   handleEventSelect,
   className,
   onChange,
@@ -102,6 +110,10 @@ function CustomCalendar({
     (newDate) => setDefaultValue(newDate),
     [setDefaultValue]
   );
+  let CalenderMonthsSpan = localStorage.getItem("calenderMonthsSpan");
+  let OrganizationID = localStorage.getItem("organizationID");
+  const userID = localStorage.getItem("userID");
+  const dispatch = useDispatch();
   let lan = localStorage.getItem("i18nextLng");
   const customToolbar = (props) => {
     const navigate = (action) => {
@@ -110,16 +122,57 @@ function CustomCalendar({
     const goPrev = (value) => {
       navigate("PREV");
       console.log("navigate", navigate("PREV"));
+      if (startDataUpdate > defaultValue) {
+        console.log("navigate", defaultValue);
+        const date = new Date(defaultValue);
+        let updateStartDate = new Date(
+          date.getFullYear(),
+          date.getMonth() - parseInt(CalenderMonthsSpan),
+          1
+        );
+        let calendarData = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(OrganizationID),
+          StartDate: newDateFormaterAsPerUTC(updateStartDate) + "000000",
+          EndDate: newDateFormaterAsPerUTC(defaultValue) + "000000",
+        };
+        setStartDataUpdate(updateStartDate);
+        dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
+      }
     };
     const goNext = () => {
       navigate("NEXT");
+      if (endDataUpdate < defaultValue) {
+        console.log("navigate", defaultValue);
+        const date = new Date(defaultValue);
+        let updateEndDate = new Date(
+          date.getFullYear(),
+          date.getMonth() + parseInt(CalenderMonthsSpan),
+          0
+        );
+        let calendarData = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(OrganizationID),
+          StartDate: newDateFormaterAsPerUTC(endDataUpdate) + "000000",
+          EndDate: newDateFormaterAsPerUTC(updateEndDate) + "000000",
+        };
+        setEndDataUpdate(updateEndDate);
+        dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
+      }
     };
+ 
+
     const handleCurrent = () => {
       let date = moment(todayDate).format("YYYY-MM-DD");
       setDefaultValue(date);
       console.log("navigate", date, defaultValue);
     };
-
+    const handleMonthChange = (date, dateString) => {
+      // Handle the month change event here
+      console.log("Selected Month:", date.month() + 1);
+      console.log("Selected Year:", date.year());
+      console.log("Selected Date String:", dateString);
+    };
     return (
       <Container>
         <Row className="d-flex justify-content-center">
@@ -144,6 +197,7 @@ function CustomCalendar({
                   onChange(e);
                   setCalendarView(false);
                 }}
+                onPanelChange={handleMonthChange}
                 open={calendarView}
                 className="date-picker-style"
               />
@@ -240,13 +294,13 @@ function CustomCalendar({
   );
   const currentDate = new Date();
   const eventPropGetter = (event, start, end, isSelected) => {
-    const isPastEvent = event.start < currentDate;
+    // const isPastEvent = event.start < currentDate;
     let style = {};
 
-    if (isPastEvent) {
+    if (event) {
       style = {
-        pointerEvents: "none", // Disable pointer events for past events
-        opacity: 0.5, // Apply opacity to visually indicate past events
+        // Disable pointer events for past events
+        border: event.border, // Apply opacity to visually indicate past events
       };
     }
 
@@ -254,18 +308,18 @@ function CustomCalendar({
       style: style,
     };
   };
-  const dayPropGetter = (date) => {
-    const isPastDate = date < currentDate;
-    let className = "";
+  // const dayPropGetter = (date) => {
+  //   const isPastDate = date < currentDate;
+  //   let className = "";
 
-    if (isPastDate) {
-      className += " rbc-day-bg rbc-off-range-bg"; // Add classes for past dates
-    }
+  //   if (isPastDate) {
+  //     className += " rbc-day-bg rbc-off-range-bg"; // Add classes for past dates
+  //   }
 
-    return {
-      className: className,
-    };
-  };
+  //   return {
+  //     className: className,
+  //   };
+  // };
   return (
     <Container className="bg-white border-radius-4 border ">
       <Row>
@@ -286,7 +340,7 @@ function CustomCalendar({
               // header: customTimeSlotHeader,
               month: false,
             }}
-            dayPropGetter={dayPropGetter}
+            // dayPropGetter={dayPropGetter}
             eventPropGetter={eventPropGetter}
             onNavigate={onNavigate}
             step={15}

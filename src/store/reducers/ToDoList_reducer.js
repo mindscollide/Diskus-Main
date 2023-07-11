@@ -15,6 +15,7 @@ const initialState = {
   TotalTodoCountThisWeek: 0,
   TotalNumberOfUpcommingTodoInWeek: 0,
   TableSpinner: false,
+  SearchTodolist: null
 };
 
 const toDoListReducer = (state = initialState, action) => {
@@ -201,14 +202,38 @@ const toDoListReducer = (state = initialState, action) => {
         //   : action.response.responseMessage,
         ShowNotification: true,
       };
-      case actions.RECENT_TODOCOUNTER: {
-        return {
-          ...state,
-          TotalTodoCountThisWeek: action.response.totalNumberOfToDoListInThisWeek,
-          TotalNumberOfUpcommingTodoInWeek:
-            action.response.totalNumberOfAssignedToDoListInThisWeek,
-        }
+    case actions.RECENT_TODOCOUNTER: {
+      return {
+        ...state,
+        TotalTodoCountThisWeek: action.response.totalNumberOfToDoListInThisWeek,
+        TotalNumberOfUpcommingTodoInWeek:
+          action.response.totalNumberOfAssignedToDoListInThisWeek,
       }
+    }
+    case actions.SEARCH_TODOLIST_INIT: {
+      return {
+        ...state,
+        Loading: true
+      }
+    }
+    case actions.SEARCH_TODOLIST_SUCCESS: {
+      console.log(action.response, "SEARCH_TODOLIST_SUCCESSSEARCH_TODOLIST_SUCCESS")
+      return {
+        ...state,
+        Loading: false,
+        SearchTodolist: action.response,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.SEARCH_TODOLIST_FAIL: {
+      console.log(action, "SEARCH_TODOLIST_SUCCESSSEARCH_TODOLIST_SUCCESS")
+      return {
+        ...state,
+        Loading: false,
+        SearchTodolist: null,
+        ResponseMessage: action.message
+      }
+    }
     default:
       return { ...state };
   }

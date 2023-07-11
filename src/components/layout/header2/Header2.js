@@ -18,18 +18,25 @@ import "./Header.css";
 import "../../../i18n.js";
 import { useTranslation } from "react-i18next";
 import { signOut } from "../../../store/actions/Auth_Sign_Out";
+
 import {
   getUserDetails,
   getUserSetting,
 } from "../../../store/actions/GetUserSetting";
 import currentUserImage from "../../../assets/images/avatar.png";
+import LanguageIcon from '../../../assets/images/Language.svg'
 import { useLocation } from "react-router-dom";
 import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
 import { Button, Loader, Modal } from "../../../components/elements";
 import UserProfile from "../../../container/authentication/User_Profile/UserProfile";
+import { Select } from "antd";
+import { ChevronDown, ChevronUp } from 'react-bootstrap-icons'
+import { useRef } from "react";
+import LanguageSelector from "../../elements/languageSelector/Language-selector";
 
 const Header2 = () => {
   const location = useLocation();
+  // const languageref = useRef()
   const state = useSelector((state) => state);
   const { settingReducer } = state;
   const { NotificationData, UserProfileData } = settingReducer;
@@ -46,21 +53,28 @@ const Header2 = () => {
   //for userprofile edit modal
   const [editFlag, setEditFlag] = useState(false);
   const [modalsflag, setModalsflag] = useState(false);
-
+  // const [languageforView, setLanguageforView] = useState("")
   let Blur = localStorage.getItem("blur");
+  // const [languageDropdown, setLanguageDropdown] = useState(false)
   // Languages
-  const languages = [
-    { name: "English", code: "en" },
-    // { name: "日本語", code: "ja" },
-    { name: "Français", code: "fr" },
-    { name: "العربية", code: "ar", dir: "rtl" },
-  ];
+  // const languages = [
+  //   { name: "English", code: "en" },
+  //   // { name: "日本語", code: "ja" },
+  //   { name: "Français", code: "fr" },
+  //   { name: "العربية", code: "ar", dir: "rtl" },
+  // ];
 
   // const currentLocale = Cookies.get("i18next");
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [show, setShow] = useState(false);
   const { t, i18n } = useTranslation();
-
+  // useEffect(() => {
+  //   if (currentLanguage !== null) {
+  //     let currentLanguageForView = languages.filter((data, index) => data.code === currentLanguage)
+  //     console.log(currentLanguageForView, "currentLanguageForViewcurrentLanguageForViewcurrentLanguageForView")
+  //     setLanguageforView(currentLanguageForView[0].name)
+  //   }
+  // }, [])
   useEffect(() => {
     if (Blur != undefined) {
       console.log("Blur", Blur);
@@ -72,11 +86,13 @@ const Header2 = () => {
       setActivateBlur(false);
     }
   }, [Blur]);
+
   useEffect(() => {
     if (reload === false) {
       setReload(true);
     }
   }, []);
+
   useEffect(() => {
     let currentUserID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
@@ -91,29 +107,32 @@ const Header2 = () => {
     }
   }, [UserProfileData]);
 
-  const [language, setLanguage] = useState(currentLanguage);
+  // const [language, setLanguage] = useState(currentLanguage);
 
   const forgotPasswordCheck = () => {
     localStorage.setItem("globalPassowrdChecker", true);
   };
 
-  const handleChangeLocale = (e) => {
-    const lang = e.target.value;
-    setLanguage(lang);
-    localStorage.setItem("i18nextLng", lang);
-    window.location.reload();
-  };
-  const currentLangObj = languages.find((lang) => lang.code === language);
+  // const handleChangeLocale = (lang) => {
+  //   setLanguageDropdown(false)
+  //   setLanguage(lang);
+  //   let currentLanguageForView = languages.filter((data, index) => data.code === lang)
+  //   console.log(currentLanguageForView, "currentLanguageForViewcurrentLanguageForViewcurrentLanguageForView")
+  //   setLanguageforView(currentLanguageForView[0].name)
+  //   localStorage.setItem("i18nextLng", lang);
+  //   window.location.reload();
+  // };
+  // const currentLangObj = languages.find((lang) => lang.code === language);
 
-  useEffect(() => {
-    let currentLanguage = localStorage.getItem("i18nextLng");
-    if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-      setTimeout(() => {
-        i18n.changeLanguage(currentLanguage);
-        document.body.dir = currentLangObj.dir || "ltr";
-      }, 1000);
-    }
-  }, [language, i18n]);
+  // useEffect(() => {
+  //   let currentLanguage = localStorage.getItem("i18nextLng");
+  //   if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+  //     setTimeout(() => {
+  //       i18n.changeLanguage(currentLanguage);
+  //       document.body.dir = currentLangObj.dir || "ltr";
+  //     }, 1000);
+  //   }
+  // }, [i18n]);
 
   const dropDownMenuFunction = () => {
     setDropdownOpen(!dropdownOpen);
@@ -139,6 +158,22 @@ const Header2 = () => {
   const logoutFunction = () => {
     dispatch(signOut(navigate));
   };
+  // const handleOutsideClick = (event) => {
+  //   if (
+  //     languageref.current &&
+  //     !languageref.current.contains(event.target) &&
+  //     languageDropdown
+  //   ) {
+  //     setLanguageDropdown(false)
+  //   }
+  // }
+
+  // useEffect(() => {
+  //   document.addEventListener('click', handleOutsideClick)
+  //   return () => {
+  //     document.removeEventListener('click', handleOutsideClick)
+  //   }
+  // }, [languageDropdown])
 
   return (
     <>
@@ -151,22 +186,20 @@ const Header2 = () => {
               <img src={DiskusLogoHeader} width={120} />
             </Navbar.Brand>
             <Nav className="ml-auto">
-              <select
-                className={"language-dropdown" + " " + currentLanguage}
-                onChange={handleChangeLocale}
-                value={language}
-              >
-                {languages.map(({ name, code }) => (
-                  <option
-                    className="language-dropdown-value"
-                    key={code}
-                    value={code}
-                    defaultValue={code}
-                  >
-                    {name}
-                  </option>
-                ))}
-              </select>
+
+
+              {/* <section className="position-relative" ref={languageref}>
+                <span className="text-white d-flex gap-2 align-items-center position-relative" onClick={() => setLanguageDropdown(!languageDropdown)}>
+                  <img src={LanguageIcon} />
+                  {languageforView}
+                  {languageDropdown ? <ChevronUp fontWeight={"bold"} /> : < ChevronDown fontWeight={"bold"} />}
+                </span>
+                <div className={!languageDropdown ? "language-options" : "language-options active"}>
+                  {languages.map((data, index) => {
+                    return <span onClick={() => handleChangeLocale(data.code)}>{data.name}</span>
+                  }
+                  )}</div>
+              </section> */}
               <Nav.Link disabled={true} className="me-2">
                 <div className="dropdown-btn">
                   <DropdownButton
@@ -284,7 +317,7 @@ const Header2 = () => {
         </Navbar>
       ) : (
         <Navbar className="header2-container " sticky="top">
-          <Container fluid>
+          <Container >
             <Navbar.Brand
               as={Link}
               to={
@@ -295,8 +328,21 @@ const Header2 = () => {
             >
               <img src={DiskusLogoHeader} width={120} />
             </Navbar.Brand>
-            <Nav className="ml-auto">
-              <select
+            <Nav className="ml-auto align-items-center">
+              <LanguageSelector />
+              {/* <section className="position-relative" ref={languageref}>
+                <span className="text-white d-flex gap-2 align-items-center position-relative" onClick={() => setLanguageDropdown(!languageDropdown)}>
+                  <img src={LanguageIcon} />
+                  {languageforView}
+                  {languageDropdown ? <ChevronUp fontWeight={"bold"} /> : < ChevronDown fontWeight={"bold"} />}
+                </span>
+                <div className={!languageDropdown ? "language-options" : "language-options active"}>
+                  {languages.map((data, index) => {
+                    return <span onClick={() => handleChangeLocale(data.code)}>{data.name}</span>
+                  }
+                  )}</div>
+              </section> */}
+              {/* <select
                 className={"language-dropdown" + " " + currentLanguage}
                 onChange={handleChangeLocale}
                 value={language}
@@ -311,7 +357,7 @@ const Header2 = () => {
                     {name}
                   </option>
                 ))}
-              </select>
+              </select> */}
               <Nav.Link className="me-2">
                 <div className="dropdown-btn">
                   <DropdownButton
@@ -379,7 +425,7 @@ const Header2 = () => {
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item
-                      className={currentLanguage}
+                      // className={currentLanguage}
                       onClick={modalLogoutHandler}
                     >
                       {/* Sign Out */}

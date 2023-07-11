@@ -26,8 +26,8 @@ body[dir="rtl"] .Details_ViewResolution {
   font-family: "MontserratSemiBold";
   color: #6172d6 !important;
   word-break: break-word;
-  max-height: 14vh !important;
-  height: 14vh !important;
+  max-height: 95px;
+  height: 95px;
   display: block;
   overflow-y: auto;
 }
@@ -217,9 +217,9 @@ body[dir="rtl"] .Non_Voters_Btn_viewresolution_Active {
 }
 
 .scroll-bar-view-resolution {
-  height: 20vh !important;
+  height: 300px !important;
   overflow-x: hidden !important;
-  margin-bottom: 60px !important;
+  /* margin-bottom: 60px !important; */
 }
 
 .scroll-bar-view-resolution::-webkit-scrollbar {
@@ -260,7 +260,7 @@ body[dir="rtl"] .Backward_button_viewresolution {
   color: #5a5a5a !important;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
-  margin-top: 15px !important;
+  margin-top: 20px !important;
 }
 
 body[dir="rtl"] .CloseButton_ViewResolution {
@@ -316,4 +316,14 @@ body[dir="rtl"] .View_Tag_messege {
 
 body[dir="rtl"] .CheckboxAlignmnet {
   margin-right: -20px !important;
+}
+
+.line_Viewesolution {
+  width: 1px;
+  height: 100%;
+  background-color: #5a5a5a !important;
+}
+
+.viewResolutionCheckBox {
+  cursor: auto !important;
 }

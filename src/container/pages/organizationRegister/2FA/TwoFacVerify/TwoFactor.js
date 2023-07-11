@@ -14,6 +14,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
+import LanguageSelector from '../../../../../components/elements/languageSelector/Language-selector'
 // import DiskusAuthPageLogo from "../../../../../assets/images/newElements/DiskusAuthPageLogo.svg";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
@@ -98,23 +99,13 @@ const TwoFactor = () => {
   }, [Helper.socket]);
   return (
     <>
-      <Row>
-        <Col className="languageselect-box">
-          <select
-            className="select-language-signin_twofac"
-            onChange={handleChangeLocale}
-            value={language}
-          >
-            {languages.map(({ name, code }) => (
-              <option key={code} value={code} className="language_options">
-                {name}
-              </option>
-            ))}
-          </select>
-          <img src={LanguageChangeIcon} className="languageIcon_twofac" />
-        </Col>
-      </Row>
+
       <Container fluid className="auth_container">
+        <Row className="position-relative">
+          <Col className="languageSelector" >
+            <LanguageSelector />
+          </Col>
+        </Row>
         <Row>
           <Col
             lg={5}

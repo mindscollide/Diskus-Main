@@ -8,6 +8,9 @@
   max-width: 90%;
   width: 90%;
   margin: 0 auto;
+  max-height: 90vh !important;
+  min-height: 90vh !important;
+  height: 100%;
 }
 
 .Data_room_heading {
@@ -33,10 +36,9 @@
 }
 
 .Data_room_paper {
-  height: 708px !important;
+  height: auto !important;
   width: 1429px !important;
   width: 100% !important;
-  height: auto !important;
   padding: 30px 30px !important;
 }
 
@@ -313,7 +315,7 @@ body[dir="rtl"] .Drop_Down_searchBar {
 }
 
 body[dir="rtl"] .Drop_Down_searchBar_Options {
-  right: 49.2% !important;
+  right: 0 !important;
 }
 
 .CrossButton {
@@ -498,7 +500,22 @@ body[dir="rtl"] .Search_Icon {
   border-top-right-radius: 4px !important;
   border-top-left-radius: 4px !important;
   border: #e1e1e1;
-  position: absolute !important;
+  position: fixed;
+  z-index: 1 !important;
+  bottom: 0px !important;
+  border-radius: 4px !important;
+  right: 90px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Back_ground_For_uploader_active {
+  width: 425px !important;
+  height: 44px !important;
+  background: #fff;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+  border: #e1e1e1;
+  position: fixed;
   z-index: 1 !important;
   bottom: 0px !important;
   border-radius: 4px !important;
@@ -682,6 +699,16 @@ body[dir="rtl"] .Data_room_btn {
   margin-right: 10px;
 }
 
+body[dir="rtl"] .dataroom_searchinput {
+  display: inline-block;
+  position: absolute !important;
+  right: 93% !important;
+  width: auto;
+  left: 0;
+  top: 7px;
+  margin-right: 10px;
+}
+
 .delete__Icon {
   width: 25px;
   height: 25px;
@@ -838,7 +865,6 @@ body[dir="rtl"] .Data_room_btn {
 }
 
 .FilterDropDown_TableView {
-  position: fixed;
   padding: 5px 10px;
   width: 120px !important;
   height: auto !important;
@@ -848,6 +874,9 @@ body[dir="rtl"] .Data_room_btn {
   background-color: #fff;
   display: flex;
   flex-direction: column;
+  position: absolute;
+  top: 22px;
+  left: 0;
 }
 
 .Option_Document_button_selected {

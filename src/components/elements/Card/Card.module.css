@@ -37,6 +37,7 @@
   padding: 0px !important;
   margin: 0px !important;
 }
+
 .Committee_Archived {
   background: #fff !important;
   width: 100% !important;
@@ -70,7 +71,7 @@
 
 .Dropdown-container-editIcon-Committee-Group {
   background: #fff !important;
-  height: auto !important ;
+  height: auto !important;
   width: 103px !important;
   z-index: 99999 !important;
   position: absolute;
@@ -118,6 +119,7 @@ body[dir="rtl"] .Archived-Status-Committee-Group {
   border-top-left-radius: 4px !important;
   border-top-right-radius: 4px !important;
 }
+
 .Archived-status-Committee-Group-background {
   background-color: #ebeeff !important;
   color: #ebeeff !important;
@@ -131,6 +133,7 @@ body[dir="rtl"] .Archived-Status-Committee-Group {
   justify-content: center;
   align-items: center;
 }
+
 .Status-Committee-Group {
   padding-top: 10px !important;
 }
@@ -147,6 +150,7 @@ body[dir="rtl"] .Status-Committee-Group {
   font-size: 20px !important;
   padding: 10px !important;
 }
+
 .group-icon-Committee-Group_InActive {
   height: 55px;
   width: 55px;
@@ -156,6 +160,7 @@ body[dir="rtl"] .Status-Committee-Group {
   padding: 10px !important;
   opacity: 50%;
 }
+
 body[dir="rtl"] .group-icon-Committee-Group {
   margin-left: 18px !important;
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
@@ -225,12 +230,14 @@ body[dir="rtl"] .namesCards-Committee-Group {
   right: 0;
   cursor: pointer;
 }
+
 .Two-Icons-style-Committee-Group_InActive {
   position: absolute;
   top: 35px;
   right: 0;
   pointer-events: none;
 }
+
 body[dir="rtl"] .Two-Icons-style-Committee-Group {
   position: absolute;
   top: 35px;
@@ -248,6 +255,7 @@ body[dir="rtl"] .Two-Icons-style-Committee-Group {
   border-radius: 4px !important;
   border: none !important;
 }
+
 body[dir="rtl"] .update-Committee-btn {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
@@ -301,6 +309,7 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
   display: grid;
   margin: 10px 0 !important;
 }
+
 .card_profile_box_InActive {
   text-align: center !important;
   justify-content: center;
@@ -308,9 +317,11 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
   margin: 10px 0 !important;
   opacity: 50%;
 }
-.card_profile_box_Archived {
-  /* border: 1px solid #6172d6 !important; */
-}
+
+/* .card_profile_box_Archived { */
+/* border: 1px solid #6172d6 !important; */
+/* } */
+
 .namecards_morethan-3 {
   display: block;
   width: 36.48px !important;
@@ -323,6 +334,7 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
   color: #fff;
   font-family: "MontserratSemiBold";
 }
+
 .namecards_morethan-3_InActive {
   display: block;
   width: 36.48px !important;
@@ -340,9 +352,11 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
 .Edit_icon_styles {
   cursor: pointer !important;
 }
+
 .dot_icon_styles {
   cursor: pointer !important;
 }
+
 body[dir="rtl"] .dot_icon_styles {
   cursor: pointer !important;
   position: absolute !important;
@@ -353,4 +367,13 @@ body[dir="rtl"] .Edit_icon_styles {
   cursor: pointer !important;
   position: absolute !important;
   right: 275px !important;
+}
+
+.associated_tagLine {
+  font-size: 8px !important;
+}
+
+.associated_tagLine_groupTitle {
+  font-size: 8px;
+  color: #6172d6 !important;
 }

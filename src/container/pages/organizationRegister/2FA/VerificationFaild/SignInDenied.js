@@ -20,6 +20,7 @@ import logo from "../../../../../assets/images/signinlogo.svg";
 import { useTranslation } from "react-i18next";
 import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 import Helper from "../../../../../commen/functions/history_logout";
+import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 
 const SigninDenied = () => {
   const { t, i18n } = useTranslation();
@@ -123,7 +124,7 @@ const SigninDenied = () => {
     let RememberPasswordLocal = JSON.parse(
       localStorage.getItem("remeberPassword")
     );
-    let reLang=localStorage.getItem("i18nextLng");
+    let reLang = localStorage.getItem("i18nextLng");
     if (RememberEmailLocal === true && RememberPasswordLocal === true) {
       let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
 
@@ -132,7 +133,7 @@ const SigninDenied = () => {
       );
 
       localStorage.clear();
-      if(reLang!=undefined&&reLang!=null){
+      if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
       localStorage.setItem("remeberPassword", RememberPasswordLocal);
@@ -142,7 +143,7 @@ const SigninDenied = () => {
     } else if (RememberEmailLocal === true) {
       let RememberEmailLocalValue = localStorage.getItem("rememberEmailValue");
       localStorage.clear();
-      if(reLang!=undefined&&reLang!=null){
+      if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
       localStorage.setItem("rememberEmail", RememberEmailLocal);
@@ -152,14 +153,14 @@ const SigninDenied = () => {
         "rememberPasswordValue"
       );
       localStorage.clear();
-      if(reLang!=undefined&&reLang!=null){
+      if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
       localStorage.setItem("remeberPassword", RememberPasswordLocal);
       localStorage.setItem("rememberPasswordValue", RememberPasswordLocalValue);
     } else {
       localStorage.clear();
-      if(reLang!=undefined&&reLang!=null){
+      if (reLang != undefined && reLang != null) {
         localStorage.setItem("i18nextLng", reLang);
       }
       localStorage.setItem("rememberEmail", false);
@@ -171,7 +172,7 @@ const SigninDenied = () => {
 
   return (
     <>
-      <Row>
+      {/* <Row>
         <Col className="languageselect-box">
           <select
             className="select-language-signin_2FAverificationdevieotp"
@@ -189,8 +190,13 @@ const SigninDenied = () => {
             className="languageIcon_2FAverificationdevieotp"
           />
         </Col>
-      </Row>
+      </Row> */}
       <Container fluid className="SigninDenied">
+        <Row className="position-relative">
+          <Col className="languageSelector" >
+            <LanguageSelector />
+          </Col>
+        </Row>
         <Row>
           <Col
             lg={5}

@@ -21,13 +21,16 @@ import {
   updateOrganizationLevelSetting,
 } from "../../store/actions/OrganizationSettings";
 import {
+  getGoogleValidToken,
+  revokeToken,
   updateUserMessageCleare,
   updateUserSettingFunc,
 } from "../../store/actions/UpdateUserGeneralSetting";
 import { getUserSetting } from "../../store/actions/GetUserSetting";
 import { useNavigate } from "react-router-dom";
 import dropIcon from "../../assets/images/dropdown-icon.png";
-
+import { GoogleOAuthProvider, useGoogleLogin, useGoogleLogout } from '@react-oauth/google';
+import { async } from "q";
 const Organization = () => {
   //for translation
   const { settingReducer } = useSelector((state) => state);
@@ -81,9 +84,49 @@ const Organization = () => {
   });
   console.log(organizationStates, "organizationStatesorganizationStates");
   const roleID = localStorage.getItem("roleID");
+
+
+  const { loaded, clientId } = useGoogleLogin({
+    clientId: '509020224191-pst82a2kqjq33phenb35b0bg1i0q762o.apps.googleusercontent.com'
+  });
+  const [signUpCodeToken, setSignUpCodeToken] = useState("");
+
+
   useEffect(() => {
     dispatch(getUserSetting(navigate, t));
   }, []);
+  
+  const handleGoogleLoginSuccess = (response) => {
+    console.log(response.code)
+    setSignUpCodeToken(response.code)
+    setOrganizationStates({
+      ...organizationStates,
+      UserAllowGoogleCalendarSynch: true,
+    });
+  }
+  const handleGoogleLoginFailure = (response) => {
+    console.log(response)
+    setSignUpCodeToken("")
+    setOrganizationStates({
+      ...organizationStates,
+      UserAllowGoogleCalendarSynch: organizationStates.UserAllowGoogleCalendarSynch,
+    });
+  }
+  const signIn = useGoogleLogin({
+    onSuccess: handleGoogleLoginSuccess,
+    onError: handleGoogleLoginFailure,
+    flow: "auth-code",
+    cookiePolicy: 'single_host_origin',
+    scope: 'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/calendar.events',//openid email profile 
+    access_type: 'offline',
+    responseType: 'code',
+    prompt: 'consent',
+  })
+
+
+
+
+
   console.log("organizationStatesorganizationStates", organizationStates);
 
   const emailOnNewMeeting = (checked) => {
@@ -286,10 +329,14 @@ const Organization = () => {
   };
 
   const changeUserAllowGoogleCalendarSynch = (checked) => {
-    setOrganizationStates({
-      ...organizationStates,
-      UserAllowGoogleCalendarSynch: checked,
-    });
+    if (checked) {
+      signIn()
+    } else {
+      setOrganizationStates({
+        ...organizationStates,
+        UserAllowGoogleCalendarSynch: false,
+      });
+    }
   };
 
   const ChangeUserAllowMicrosoftCalendarSynch = (checked) => {
@@ -313,13 +360,31 @@ const Organization = () => {
     });
   };
 
-  const updateOrganizationLevelSettings = () => {
-    dispatch(updateUserSettingFunc(navigate, organizationStates, t));
+  const updateOrganizationLevelSettings = async() => {
+    if(signUpCodeToken!=""){
+      console.log("organizationStatesorganizationStates",organizationStates)
+      await dispatch(getGoogleValidToken(navigate, signUpCodeToken,organizationStates, t));
+      setSignUpCodeToken("")
+    }else{
+      await dispatch(revokeToken(navigate, organizationStates, t));
+    }
   };
 
   useEffect(() => {
     let userProfileData = settingReducer.UserProfileData;
     if (userProfileData !== null && userProfileData !== undefined) {
+      localStorage.setItem(
+        "officeEventColor",
+        userProfileData.officeEventColor
+      );
+      localStorage.setItem(
+        "googleEventColor",
+        userProfileData.googleEventColor
+      );
+      localStorage.setItem(
+        "diskusEventColor",
+        userProfileData.diskusEventColor
+      );
       console.log("userProfileDatauserProfileData", userProfileData);
       let settingData = {
         EmailOnNewMeeting: userProfileData.emailOnNewMeeting,
@@ -382,10 +447,8 @@ const Organization = () => {
         UserAllowMicrosoftCalendarSynch:
           userProfileData.userAllowMicrosoftCalendarSynch,
         UserName: userProfileData.userName,
-        GoogleEventColor: userProfileData.googleEventColor,
         OfficeEventColor: userProfileData.officeEventColor,
         GoogleEventColor: userProfileData.googleEventColor,
-        OfficeEventColor: userProfileData.officeEventColor,
       };
       setOrganizationStates(settingData);
     }
@@ -484,15 +547,7 @@ const Organization = () => {
       dispatch(updateUserMessageCleare());
     }
   }, [settingReducer.UpdateUserSettingResponseMessage]);
-  const [active, setActive] = useState(false);
-  // const handleColorChange = (selectedColor) => {
-  //   // setColor(selectedColor.hex);
-  //   setActive(true);
-  //   setOrganizationStates({
-  //     ...organizationStates,
-  //     OfficeEventColor: selectedColor.hex,
-  //   });
-  // };
+
   console.log("colorPicker", organizationStates.OfficeEventColor);
   return (
     <>
@@ -532,37 +587,44 @@ const Organization = () => {
             </Row>
             <span className={styles["bottom-line"]}></span>
             {/* New Data Started Inserting  */}
-            <Row className="mt-3 FontArabicRegular">
-              <Col
-                lg={10}
-                md={10}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-start fw-900"
-              >
-                <label>{t("Diskus-color-theme")}</label>
-              </Col>
-              <Col
-                lg={2}
-                md={2}
-                sm={12}
-                xs={12}
-                className="d-flex justify-content-end"
-              >
-                <input
-                  type="color"
-                  className="m-0 p-0 circle-color-picker"
-                  value={organizationStates.DiskusEventColor}
-                  onChange={(e) =>
-                    setOrganizationStates({
-                      ...organizationStates,
-                      DiskusEventColor: e.target.value,
-                    })
-                  }
-                />
-              </Col>
-            </Row>
-            <span className={styles["bottom-line"]}></span>
+            {roleID != 1 && roleID != 2 ? (
+              <>
+                <Row className="mt-3 FontArabicRegular">
+                  <Col
+                    lg={10}
+                    md={10}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-start fw-900"
+                  >
+                    <label>{t("Diskus-color-theme")}</label>
+                  </Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={12}
+                    xs={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <input
+                      type="color"
+                      className="m-0 p-0 circle-color-picker"
+                      value={organizationStates.DiskusEventColor}
+                      onChange={(e) =>
+                        setOrganizationStates({
+                          ...organizationStates,
+                          DiskusEventColor: e.target.value,
+                        })
+                      }
+                    />
+                  </Col>
+                </Row>
+                <span className={styles["bottom-line"]}></span>
+              </>
+            ) : (
+              <></>
+            )}
+
             <Row className="mt-3 FontArabicRegular">
               <Col
                 lg={10}
@@ -1277,8 +1339,8 @@ const Organization = () => {
               </Col>
             </Row>
             {organizationStates.UserAllowGoogleCalendarSynch !== null &&
-            roleID != 1 &&
-            roleID != 2 ? (
+              roleID != 1 &&
+              roleID != 2 ? (
               <>
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3 FontArabicRegular">
@@ -1312,8 +1374,8 @@ const Organization = () => {
               <></>
             )}
             {organizationStates.UserAllowGoogleCalendarSynch === true &&
-            roleID != 1 &&
-            roleID != 2 ? (
+              roleID != 1 &&
+              roleID != 2 ? (
               <>
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3 FontArabicRegular">
@@ -1351,8 +1413,8 @@ const Organization = () => {
               <></>
             )}
             {organizationStates.UserAllowMicrosoftCalendarSynch !== null &&
-            roleID != 1 &&
-            roleID != 2 ? (
+              roleID != 1 &&
+              roleID != 2 ? (
               <>
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3 FontArabicRegular">
@@ -1388,8 +1450,8 @@ const Organization = () => {
             )}
 
             {organizationStates.UserAllowMicrosoftCalendarSynch === true &&
-            roleID != 1 &&
-            roleID != 2 ? (
+              roleID != 1 &&
+              roleID != 2 ? (
               <>
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3 FontArabicRegular">

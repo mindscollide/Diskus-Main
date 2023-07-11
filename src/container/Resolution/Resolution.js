@@ -53,6 +53,7 @@ import EmptyResolution from "../../assets/images/resolutions/Empty_Resolution.sv
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { XSquare } from 'react-bootstrap-icons'
+import SearchInputSuggestion from "../../components/elements/searchInputResolution/searchInputsuggestion";
 
 const Resolution = () => {
   const { t } = useTranslation();
@@ -60,18 +61,14 @@ const Resolution = () => {
   const navigate = useNavigate();
   const { ResolutionReducer } = useSelector((state) => state);
   const [currentPageSize, setCurrentPageSize] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1);
   const [totalResolution, setTotalResolution] = useState(0)
   const [currentPageVoter, setCurrentPageVoter] = useState(1)
   const [totalVoterResolution, setTotalVoterResolution] = useState(0)
-  console.log(currentPage, totalResolution, "totalResolutiontotalResolutiontotalResolution")
   const [newresolution, setNewresolution] = useState(false);
   const [viewresolution, setViewresolution] = useState(false);
   const [resultresolution, setResultresolution] = useState(false);
   const [voteresolution, setVoteresolution] = useState(false);
-  // const [closedbtntable, setClosedbtntable] = useState(false);
-  // const [currentbtn, setCurrentbtn] = useState(true);
-  // const [getAll, setGetAll] = useState(false);
+  const [voterID, setVoterID] = useState(0);
   const [searchIcon, setSearchIcon] = useState(false);
   const [rows, setRows] = useState([]);
   const [isSearchVoter, setSearchVoter] = useState([]);
@@ -83,23 +80,12 @@ const Resolution = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [allSearchInput, setAllSearchInput] = useState("");
   let resolutionView = JSON.parse(localStorage.getItem("resolutionView"));
-  let voterView = JSON.parse(localStorage.getItem("voterResolutionView"));
   let moderatorPage = JSON.parse(localStorage.getItem("moderatorPage"));
   let moderatorRows = JSON.parse(localStorage.getItem("moderatorRows"));
   let voterPage = JSON.parse(localStorage.getItem("voterPage"));
   let voterRows = JSON.parse(localStorage.getItem("voterRows"));
-  let CurrentBtn = JSON.parse(localStorage.getItem("CurrentBtn"));
-  let AllBtn = JSON.parse(localStorage.getItem("AllBtn"));
-  let CloseBtn = JSON.parse(localStorage.getItem("CloseBtn"));
-  console.log(resolutionView, "voterViewvoterViewvoterView")
-  console.log(voterView, "voterViewvoterViewvoterView")
-  console.log(moderatorPage, "voterViewvoterViewvoterView")
-  console.log(moderatorRows, "voterViewvoterViewvoterView")
-  console.log(voterPage, "voterViewvoterViewvoterView")
-  console.log(voterRows, "voterViewvoterViewvoterView")
-  console.log(CurrentBtn, "voterViewvoterViewvoterView")
-  console.log(AllBtn, "voterViewvoterViewvoterView")
-  console.log(CloseBtn, "voterViewvoterViewvoterView")
+  let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"))
+
 
   const [searchModalDates, setSearchModalDates] = useState({
     circulationDate: "",
@@ -236,49 +222,39 @@ const Resolution = () => {
   };
 
   const currentbuttontable = () => {
-    localStorage.setItem("CurrentBtn", 1);
-    localStorage.removeItem("AllBtn");
-    localStorage.removeItem("CloseBtn");
+    localStorage.setItem("ButtonTab", 1);
     setAllSearchInput("");
     setSearchIcon(false);
     if (resolutionView !== null && resolutionView === 1) {
       if (moderatorPage !== null && moderatorRows !== null) {
-        dispatch(getResolutions(navigate, 1, t, moderatorPage, moderatorRows));
-        // dispatch(currentClosedView(1));
+        dispatch(getResolutions(navigate, 1, t));
       }
-    } else if (voterView !== null && voterView === 2) {
+    } else if (resolutionView !== null && resolutionView === 2) {
       if (voterPage !== null && voterRows !== null) {
-        // dispatch(getVoterResolution(navigate, 1, t, voterPage, voterRows));
+        dispatch(getVoterResolution(navigate, 1, t));
       }
     }
-    // dispatch(currentClosedView(1));
   };
 
   const allbtntable = () => {
-    localStorage.setItem("AllBtn", 3);
-    localStorage.removeItem("CloseBtn");
-    localStorage.removeItem("CurrentBtn");
+    localStorage.setItem("ButtonTab", 3);
     setAllSearchInput("");
     setSearchIcon(false);
     if (resolutionView !== null && resolutionView === 1) {
-      dispatch(getResolutions(navigate, 3, t, moderatorPage, moderatorRows));
-      // dispatch(currentClosedView(1));
-    } else if (voterView !== null && voterView === 2) {
-      // dispatch(getVoterResolution(navigate, 3, t, voterPage, voterRows));
-      // dispatch(currentClosedView(1));
+      dispatch(getResolutions(navigate, 3, t));
+    } else if (resolutionView !== null && resolutionView === 2) {
+      dispatch(getVoterResolution(navigate, 3, t));
     }
   };
 
   const buttonclosed = () => {
-    localStorage.setItem("CloseBtn", 2);
-    localStorage.removeItem("AllBtn");
-    localStorage.removeItem("CurrentBtn");
+    localStorage.setItem("ButtonTab", 2);
     setAllSearchInput("");
     setSearchIcon(false);
     if (resolutionView !== null && resolutionView === 1) {
-      dispatch(getResolutions(navigate, 2, t, moderatorPage, moderatorRows));
-    } else if (voterView !== null && voterView === 2) {
-      // dispatch(getVoterResolution(navigate, 2, t, voterPage, voterRows));
+      dispatch(getResolutions(navigate, 2, t));
+    } else if (resolutionView !== null && resolutionView === 2) {
+      dispatch(getVoterResolution(navigate, 2, t));
     }
   };
 
@@ -290,15 +266,6 @@ const Resolution = () => {
     });
     setSearchIcon(false);
     setNewresolution(true);
-  };
-
-
-  const resultpage = () => {
-    setResultresolution(true);
-    console.log("i am clicked ");
-  };
-  const viewresolutionpage = () => {
-    setViewresolution(true);
   };
 
   const handleUpdateResolutionAction = (id) => {
@@ -332,8 +299,9 @@ const Resolution = () => {
     dispatch(getResolutionResult(navigate, id, t, setResultresolution));
   };
 
-  const getVoteDetailHandler = (id) => {
+  const getVoteDetailHandler = (id, data) => {
     dispatch(getVotesDetails(navigate, id, t, setVoteresolution));
+    setVoterID(data.voterID)
   };
 
   const filterResolution = (e) => {
@@ -344,7 +312,7 @@ const Resolution = () => {
       value,
       "moderatorDatamoderatorDatamoderatorDatavalue"
     );
-    if (voterView !== null && voterView === 2) {
+    if (resolutionView !== null && resolutionView === 2) {
       let y = [...ResolutionReducer.searchVoterResolution];
       if (value != "") {
         let x = y.filter((a) => {
@@ -414,6 +382,7 @@ const Resolution = () => {
     setViewattachmentpage(true);
     setResolutionAttachments(data);
   };
+
   // moderator all and current columns
   const columnsModerator = [
     {
@@ -486,12 +455,13 @@ const Resolution = () => {
       align: "center",
       width: "76px",
       render: (text, data) => {
-        if (text === "Approved" || text === "Not Approved") {
+        if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
+        } else if (text === "Not Approved") {
+          return <span className={styles["decision_non_Approved"]}>{text}</span>;
         } else {
-          return <span className={styles["decision_text"]}>{text}</span>;
+          <span className={styles["decision_text_Pending"]}>{text}</span>;
         }
-        //  return <span>{text}</span>
       },
     },
     // {
@@ -539,7 +509,7 @@ const Resolution = () => {
           data,
           newDate > votingDeadline
         );
-        if (newDate > votingDeadline) {
+        if (votingDeadline < newDate) {
           return (
             <img
               src={ResultResolutionIcon}
@@ -548,9 +518,7 @@ const Resolution = () => {
             />
           );
         } else {
-          return (
-            <img src={ResultResolutionIcon} className={styles["Result_icon"]} />
-          );
+          return "";
         }
       },
     },
@@ -597,7 +565,6 @@ const Resolution = () => {
         );
       },
     },
-
     {
       title: t("Circulation-date"),
       dataIndex: "circulationDate",
@@ -650,34 +617,15 @@ const Resolution = () => {
       align: "center",
       width: "76px",
       render: (text, data) => {
-        if (text === "Approved" || text === "Not Approved") {
+        if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
+        } else if (text === "Not Approved") {
+          return <span className={styles["decision_non_Approved"]}>{text}</span>;
         } else {
-          <span className={styles["decision_text_Moderator_closed"]}>
-            {text}
-          </span>;
+          <span className={styles["decision_text_Pending"]}>{text}</span>;
         }
       },
     },
-    // {
-    //   title: t("Vote"),
-    //   dataIndex: "isVoter",
-    //   align: "Vote",
-    //   key: "isVoter",
-    //   width: "55px",
-    //   render: (table, data) => {
-    //     console.log(table, data, "VoteResolution");
-    //     if (table === false) {
-    //       return (
-    //         <Button
-    //           text="Vote"
-    //           className={styles["Resolution-vote-btn"]}
-    //           onClick={() => getVoteDetailHandler(data.resolutionID)}
-    //         />
-    //       );
-    //     } else return;
-    //   },
-    // },
     {
       title: t("Vote-count"),
       dataIndex: "voteCount",
@@ -701,13 +649,7 @@ const Resolution = () => {
       render: (table, data) => {
         let newDate = new Date();
         let votingDeadline = resolutionResultTable(data.votingDeadline);
-        console.log(
-          "ResultResolution",
-          votingDeadline,
-          newDate,
-          newDate > votingDeadline
-        );
-        if (newDate > votingDeadline) {
+        if (votingDeadline < newDate) {
           return (
             <img
               className={styles["Result_Icon_cursor_pointer"]}
@@ -716,14 +658,7 @@ const Resolution = () => {
             />
           );
         } else {
-          return (
-            <img
-              className={styles["Result_Icon_cursor_pointer"]}
-              src={ResultResolutionIcon}
-
-            // onClick={() => getResultHandle(data.resolutionID)}
-            />
-          );
+          return ""
         }
       },
     },
@@ -818,11 +753,10 @@ const Resolution = () => {
       width: "120px",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
-        console.log(data, text, "checkvote");
-        if (text === 1) {
-          console.log(data, text, "checkvote");
-          if (!data.isAlreadyVoted) {
-            console.log(data.fK_VotingStatus_ID, "checkvote");
+        console.log(data, text, "checkvotevote");
+        console.log(data, "checkvotevote2");
+        if (data.resolutionStatusID === 2) {
+          if (data.isVoter === 1) {
             if (data.fK_VotingStatus_ID === 1) {
               console.log(data.fK_VotingStatus_ID, "checkvote");
 
@@ -845,7 +779,7 @@ const Resolution = () => {
                 <Button
                   text={t("Vote")}
                   className={styles["Resolution-vote-btn"]}
-                  onClick={() => getVoteDetailHandler(data.resolutionID)}
+                  onClick={() => getVoteDetailHandler(data.resolutionID, data)}
                 />
               );
             } else if (data.fK_VotingStatus_ID === 4) {
@@ -857,10 +791,9 @@ const Resolution = () => {
                 </span>
               );
             }
-          } else if (data.isAlreadyVoted === false) {
+          } else {
+            return <p className="text-center"></p>;
           }
-        } else if (data.isVoter === 0) {
-          return <p className="text-center"></p>;
         }
       },
     },
@@ -871,35 +804,16 @@ const Resolution = () => {
       width: "90px",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
-        if (text === "Approved" || text === "Not Approved") {
+        if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
+        } else if (text === "Not Approved") {
+          return <span className={styles["decision_non_Approved"]}>{text}</span>;
         } else {
-          <span className={styles["decision_text"]}>{text}</span>;
+          <span className={styles["decision_text_Pending"]}>{text}</span>;
         }
       },
     },
   ];
-
-  const resolutionTable = (viewID) => {
-    // dispatch(currentResolutionView(viewID));
-    setAllSearchInput("");
-    setSearchModalDates({
-      circulationDate: "",
-      votingDate: "",
-    });
-    setSearchIcon(false);
-    if (viewID === 1) {
-      localStorage.setItem("resolutionView", 1)
-      localStorage.removeItem("voterResolutionView")
-      dispatch(getResolutions(navigate, 1, t, moderatorPage, moderatorRows));
-      // dispatch(currentClosedView(1));
-    } else {
-      localStorage.setItem("voterResolutionView", 2)
-      localStorage.removeItem("resolutionView")
-      dispatch(getVoterResolution(navigate, 1, t, voterPage, voterRows));
-      // dispatch(currentClosedView(1));
-    }
-  };
 
   // voters closed
   const columnsVotersClosed = [
@@ -907,7 +821,7 @@ const Resolution = () => {
       title: t("Resolution-title"),
       dataIndex: "resolutionTitle",
       key: "resolutionTitle",
-      width: "365px",
+      width: "350px",
       sortDirections: ["descend", "ascend"],
       render: (table, data) => {
         console.log(table, data, "checking");
@@ -953,7 +867,7 @@ const Resolution = () => {
       title: t("Voting-method"),
       dataIndex: "votingMethod",
       key: "votingMethod",
-      width: "131px",
+      width: "120px",
       align: "center",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
@@ -964,13 +878,15 @@ const Resolution = () => {
       title: t("Attachment"),
       dataIndex: "Attachment",
       key: "Attachment",
-      width: "104px",
+      width: "90px",
       align: "center",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
         console.log(data, "datadatadatadatadatadata");
         if (data.isAttachmentAvailable) {
-          return <img src={AttachmentIcon} />;
+          return <img className="text-center cursor-pointer"
+            src={AttachmentIcon}
+            onClick={() => viewAttachmentHandle(data.attachments)} />;
         } else {
         }
       },
@@ -983,40 +899,40 @@ const Resolution = () => {
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
         console.log(data, text, "checkvote");
-        if (text === 1) {
-          if (!data.isAlreadyVoted === true) {
+        if (data.resolutionStatusID === 3) {
+          if (data.isVoter === 1) {
             if (data.fK_VotingStatus_ID === 1) {
+              console.log(data.fK_VotingStatus_ID, "checkvote");
+
               return (
                 <span className="d-flex justify-content-center">
                   <img src={thumbsup} />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 2) {
+              console.log(data.fK_VotingStatus_ID, "checkvote");
               return (
                 <span className="d-flex justify-content-center">
                   <img src={thumbsdown} />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 3) {
-              return (
-                <Button
-                  text={t("Vote")}
-                  className={styles["Resolution-vote-btn"]}
-                  onClick={() => getVoteDetailHandler(data.resolutionID)}
-                />
-              );
+              console.log(data.fK_VotingStatus_ID, "checkvote");
+              return <p className="text-center"></p>;
             } else if (data.fK_VotingStatus_ID === 4) {
+              console.log(data.fK_VotingStatus_ID, "checkvote");
+
               return (
                 <span className="d-flex justify-content-center">
                   <img src={AbstainvoterIcon} />
                 </span>
               );
             }
-          } else if (data.isAlreadyVoted === false) {
+          } else {
+            return <p className="text-center"></p>;
           }
-        } else if (text === 0) {
-          return <p className="text-center"></p>;
         }
+
       },
     },
     {
@@ -1036,23 +952,70 @@ const Resolution = () => {
     },
   ];
 
+  // resolution view
+  const resolutionTable = (viewID) => {
+    // dispatch(currentResolutionView(viewID));
+    setAllSearchInput("");
+    setSearchModalDates({
+      circulationDate: "",
+      votingDate: "",
+    });
+    setSearchIcon(false);
+    if (viewID === 1) {
+      localStorage.setItem("resolutionView", 1)
+      if (buttonTab !== null && buttonTab === 3) {
+        dispatch(getResolutions(navigate, 3, t))
+      } else if (buttonTab !== null && buttonTab === 1) {
+        dispatch(getResolutions(navigate, 1, t))
+      } else if (buttonTab !== null && buttonTab === 2) {
+        dispatch(getResolutions(navigate, 2, t))
+      }
+      // dispatch(getResolutions(navigate, 1, t));
+      // dispatch(currentClosedView(1));
+    } else {
+      localStorage.setItem("resolutionView", 2)
+      if (buttonTab !== null && buttonTab === 3) {
+        dispatch(getVoterResolution(navigate, 3, t))
+      } else if (buttonTab !== null && buttonTab === 1) {
+        dispatch(getVoterResolution(navigate, 1, t))
+      } else if (buttonTab !== null && buttonTab === 2) {
+        dispatch(getVoterResolution(navigate, 2, t))
+      }
+      // dispatch(currentClosedView(1));
+    }
+  };
+
   // change resoltion moderator pagination
-  const handleChangeResolutionPagination = (current, pageSize) => {
-    dispatch(getResolutions(navigate, 1, t, current, pageSize))
-    localStorage.setItem("moderatorPage", current)
-    localStorage.setItem("moderatorRows", pageSize)
+  const handleChangeResolutionPagination = async (current, pageSize) => {
+    console.log(current, pageSize, "handleChangeResolutionPagination")
+    await localStorage.setItem("moderatorPage", current)
+    await localStorage.setItem("moderatorRows", pageSize)
+    if (buttonTab !== null && buttonTab === 3) {
+      dispatch(getResolutions(navigate, 3, t))
+    } else if (buttonTab !== null && buttonTab === 1) {
+      dispatch(getResolutions(navigate, 1, t))
+    } else if (buttonTab !== null && buttonTab === 2) {
+      dispatch(getResolutions(navigate, 2, t))
+    }
   }
 
   // change resolution voter pagination
-  const handleChangeVoterResolutionPagination = (current, pageSize) => {
-    dispatch(getVoterResolution(navigate, 1, t, current, pageSize))
-    localStorage.setItem("voterPage", current)
-    localStorage.setItem("voterRows", pageSize)
+  const handleChangeVoterResolutionPagination = async (current, pageSize) => {
+    await localStorage.setItem("voterPage", current)
+    await localStorage.setItem("voterRows", pageSize)
+    if (buttonTab !== null && buttonTab === 3) {
+      dispatch(getVoterResolution(navigate, 3, t))
+    } else if (buttonTab !== null && buttonTab === 1) {
+      dispatch(getVoterResolution(navigate, 1, t))
+    } else if (buttonTab !== null && buttonTab === 2) {
+      dispatch(getVoterResolution(navigate, 2, t))
+    }
   }
 
   // Resolution reducer ResponseMessage
   useEffect(() => {
-    if (ResolutionReducer.ResponseMessage !== null) {
+    console.log(ResolutionReducer, "ResolutionReducerResolutionReducerResolutionReducerResolutionReducer")
+    if (ResolutionReducer.ResponseMessage !== "" && ResolutionReducer.ResponseMessage !== t("Data-available") && ResolutionReducer.ResponseMessage !== t("No-data-available") && ResolutionReducer.ResponseMessage !== undefined) {
       setOpen({
         flag: true,
         message: ResolutionReducer.ResponseMessage,
@@ -1069,16 +1032,33 @@ const Resolution = () => {
 
   // call resolution
   useEffect(() => {
-    localStorage.setItem("moderatorPage", 1)
-    localStorage.setItem("moderatorRows", 50)
-    localStorage.setItem("voterPage", 1)
-    localStorage.setItem("voterRows", 50)
-    localStorage.setItem("resolutionView", 1);
-    localStorage.setItem("CurrentBtn", 1);
-    localStorage.removeItem("voterResolutionView")
-    localStorage.removeItem("AllBtn");
-    localStorage.removeItem("CloseBtn");
-    dispatch(getResolutions(navigate, 1, t, 1, 50));
+    if (resolutionView === 1 && buttonTab !== null) {
+      dispatch(getResolutions(navigate, buttonTab, t));
+      localStorage.setItem("resolutionView", resolutionView);
+      localStorage.setItem("ButtonTab", buttonTab);
+    } else if (resolutionView === 2 && buttonTab !== null) {
+      localStorage.setItem("resolutionView", resolutionView);
+      localStorage.setItem("ButtonTab", buttonTab);
+      dispatch(getVoterResolution(navigate, buttonTab, t))
+    } else {
+      localStorage.setItem("moderatorPage", 1)
+      localStorage.setItem("moderatorRows", 50)
+      localStorage.setItem("voterPage", 1)
+      localStorage.setItem("voterRows", 50)
+      localStorage.setItem("resolutionView", 1);
+      localStorage.setItem("ButtonTab", 1);
+      dispatch(getResolutions(navigate, 1, t));
+    }
+
+    return () => {
+      localStorage.removeItem("moderatorPage")
+      localStorage.removeItem("moderatorRows")
+      localStorage.removeItem("voterPage")
+      localStorage.removeItem("voterRows")
+      localStorage.removeItem("resolutionView")
+      localStorage.removeItem("ButtonTab")
+      localStorage.removeItem("ResolutionID")
+    }
   }, []);
 
   // voter resolution state manage
@@ -1095,7 +1075,7 @@ const Resolution = () => {
   // moderator resolution state manage
   useEffect(() => {
     if (ResolutionReducer.GetResolutions !== null) {
-      setCurrentPage(ResolutionReducer.GetResolutions.pageNumbers)
+      // setCurrentPage(ResolutionReducer.GetResolutions.pageNumbers)
       setTotalResolution(ResolutionReducer.GetResolutions.totalRecords)
       setRows(ResolutionReducer.GetResolutions.resolutionTable);
     } else {
@@ -1133,6 +1113,7 @@ const Resolution = () => {
             <VotingPage
               setVoteresolution={setVoteresolution}
               voteresolution={voteresolution}
+              voterID={voterID}
             />
           </>
         ) : viewattachmentpage ? (
@@ -1158,7 +1139,7 @@ const Resolution = () => {
                 <Row>
                   <Col
                     lg={7}
-                    md={12}
+                    md={7}
                     sm={12}
                     className=" d-flex justify-content-start align-items-center  gap-3 "
                   >
@@ -1184,7 +1165,7 @@ const Resolution = () => {
                     />
                     <Button
                       className={
-                        AllBtn !== null && AllBtn === 3
+                        buttonTab !== null && buttonTab === 3
                           ? styles["Resolution-All-btn_Active"]
                           : styles["Resolution-All-btn"]
                       }
@@ -1193,7 +1174,7 @@ const Resolution = () => {
                     />
                     <Button
                       className={
-                        CloseBtn !== null && CloseBtn === 2
+                        buttonTab !== null && buttonTab === 2
                           ? styles["Resolution-closed-btn_Active"]
                           : styles["Resolution-closed-btn"]
                       }
@@ -1202,7 +1183,7 @@ const Resolution = () => {
                     />
                     <Button
                       className={
-                        CurrentBtn !== null && CurrentBtn === 1
+                        buttonTab !== null && buttonTab === 1
                           ? styles["Resolution-Current-btn_Active"]
                           : styles["Resolution-Current-btn"]
                       }
@@ -1213,12 +1194,12 @@ const Resolution = () => {
 
                   <Col
                     lg={5}
-                    md={12}
+                    md={5}
                     sm={12}
                     className=" d-flex justify-content-end  align-items-center  Search-filed-resolution"
                   >
-                    <span>
-                      <TextField
+                    <span className={styles["search_input"]}>
+                      {/* <TextField
                         width="455px"
                         name="Title"
                         placeholder={t("Search")}
@@ -1229,8 +1210,8 @@ const Resolution = () => {
                         iconClassName={styles["Search_Icon"]}
                         inputicon={<img src={searchicon} />}
                         clickIcon={openSearchBox}
-                      />
-                      {/* <SearchInputSuggestion /> */}
+                      /> */}
+                      <SearchInputSuggestion />
 
                       {/* {searchIcon ? (
                         <>
@@ -1462,7 +1443,7 @@ const Resolution = () => {
                 />
                 <Button
                   className={
-                    voterView !== null && voterView === 2
+                    resolutionView !== null && resolutionView === 2
                       ? styles["Resolution-closed-btn_Active"]
                       : styles["Resolution-closed-btn"]
                   }
@@ -1479,18 +1460,13 @@ const Resolution = () => {
                       <TableToDo
                         sortDirections={["descend", "ascend"]}
                         column={
-                          CloseBtn !== null && CloseBtn === 2
+                          buttonTab !== null && buttonTab === 2
                             ? columnsModeratorClosed
                             : columnsModerator
                         }
                         className="Resolution_table"
                         scroll={{ y: "53vh" }}
                         pagination={false}
-                        // pagination={{
-                        //   pageSize: 50,
-                        //   showSizeChanger: true,
-                        //   pageSizeOptions: ["100 ", "150", "200"],
-                        // }}
                         loading={{
                           indicator: (
                             <div className={styles["resolution_spinner"]}>
@@ -1504,11 +1480,14 @@ const Resolution = () => {
                       <Row>
                         <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
                           <Pagination
-                            defaultCurrent={currentPage}
+                            defaultCurrent={moderatorPage}
+                            // totalBoundaryShowSizeChanger={}
                             total={totalResolution}
+                            showSizeChanger
+                            pageSizeOptions={[30, 50, 100, 200]}
                             className={styles["PaginationStyle-Resolution"]}
-                            totalBoundaryShowSizeChanger={false}
                             onChange={handleChangeResolutionPagination}
+                            defaultPageSize={moderatorRows}
                           />
                         </Col>
                       </Row>
@@ -1533,7 +1512,7 @@ const Resolution = () => {
                   )}
                 </Col>
               </Row>
-            ) : voterView !== null && voterView === 2 ? (
+            ) : resolutionView !== null && resolutionView === 2 ? (
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   {isSearchVoter !== null && isSearchVoter !== undefined && isSearchVoter.length > 0 ? (
@@ -1541,7 +1520,7 @@ const Resolution = () => {
                       <TableToDo
                         sortDirections={["descend", "ascend"]}
                         column={
-                          CloseBtn !== null && CloseBtn === 2
+                          buttonTab !== null && buttonTab === 2
                             ? columnsVotersClosed
                             : columnsvoters
                         }
@@ -1561,10 +1540,13 @@ const Resolution = () => {
                       <Row>
                         <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
                           <Pagination
-                            defaultCurrent={currentPageVoter}
+                            defaultCurrent={voterPage}
                             total={totalVoterResolution}
+                            defaultPageSize={voterRows}
+                            showSizeChanger
+                            pageSizeOptions={['30', '50', '100', '200']}
                             className={styles["PaginationStyle-Resolution"]}
-                            selectComponentClass={"pagination_resolution"}
+                            // selectComponentClass={"pagination_resolution"}
                             onChange={handleChangeVoterResolutionPagination}
                           />
                         </Col>

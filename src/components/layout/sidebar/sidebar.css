@@ -112,7 +112,7 @@ a.icon {
 }
 
 a.icon:hover {
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  /* background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important; */
   width: 100%;
   margin: 0 !important;
   padding: 0 !important;
@@ -123,9 +123,9 @@ body[dir="rtl"] a.icon:hover {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
-a.icon:hover svg path {
+/* a.icon:hover svg path {
   fill: #fff !important;
-}
+} */
 
 a.icon {
   height: 50px;
@@ -172,15 +172,14 @@ body[dir="rtl"] .icon-active-sidebar {
 }
 
 
-/* a.m-0.p-0.icon-active-sidebar.nav-link.active rect#Rectangle_830,
-a.m-0.p-0.icon.nav-link:hover rect#Rectangle_830 {
+a.m-0.p-0.icon-active-sidebar.nav-link.active rect#Rectangle_830 {
   fill: #fff !important;
 }
 
-a.m-0.p-0.icon-active-sidebar.nav-link.active rect#Rectangle_831,
-a.m-0.p-0.icon.nav-link:hover rect#Rectangle_831 {
+a.m-0.p-0.icon-active-sidebar.nav-link.active rect#Rectangle_831 {
   fill: #fff !important;
-} */
+}
+
 /* Aun Work */
 
 .admin-width {
@@ -192,3 +191,11 @@ a.m-0.p-0.icon.nav-link:hover rect#Rectangle_831 {
 /* svg {
   margin: 0 auto;
 } */
+.sidebar-tool {
+  fill: white !important;
+  font-size: 12px !important;
+  background-color: black !important;
+  padding: 4px !important;
+  border-radius: 4px !important;
+  color: white !important;
+}

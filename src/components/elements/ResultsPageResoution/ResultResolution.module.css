@@ -9,18 +9,36 @@ body[dir="rtl"] .Result_Heading_resolution {
 }
 
 .Result_page_paper {
-  height: 710px;
-  width: 1429px;
-  padding: 55px 55px !important;
+  height: auto;
+  width: 100%;
+  padding: 55px 80px !important;
+  margin: 0 0 30px 0;
 }
 
 .results_paper_heading {
   font-size: 20px !important;
   font-family: "MontserratSemiBold";
   color: #6172d6 !important;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  word-wrap: break-word;
+  max-height: 120px;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+
+.results_paper_heading::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.results_paper_heading::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
 }
 
 body[dir="rtl"] .results_paper_heading {
@@ -85,7 +103,11 @@ body[dir="rtl"] .voters_heading_result {
   font-size: 10pt !important;
   color: #6172d6 !important;
   font-family: "MontserratSemiBold";
+  width: 100% !important;
   text-decoration: underline;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .Lineheight {
@@ -95,7 +117,7 @@ body[dir="rtl"] .voters_heading_result {
 }
 
 .Result-Screen_scroller {
-  height: 16vh !important;
+  height: 180px !important;
   overflow-x: hidden !important;
 }
 
@@ -174,4 +196,23 @@ body[dir="rtl"] .Close_Btn_Resultresolution {
   font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
+}
+
+.line_Resultesolution {
+  width: 1px;
+  height: 100%;
+  background-color: #5a5a5a !important;
+}
+
+.voting_method_heading {
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+}
+
+.voting_methong_value {
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  margin-left: 3px !important;
 }

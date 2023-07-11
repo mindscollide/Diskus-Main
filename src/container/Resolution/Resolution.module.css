@@ -460,6 +460,14 @@ body[dir="rtl"] .Result_icon {
   cursor: pointer !important;
 }
 
+.Result_icon_disabled {
+  margin-right: 17px !important;
+}
+
+body[dir="rtl"] .Result_icon_disabled {
+  margin-right: 30px !important;
+}
+
 body[dir="rtl"] .resolution_date {
   margin-right: 15px !important;
   font-family: "IBMPlexSansArabic-SemiBold" !important;
@@ -580,6 +588,36 @@ body[dir="rtl"] .decision_Approved {
   margin-left: 8px !important;
 }
 
+.decision_non_Approved {
+  color: #F16B6B !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+  white-space: nowrap !important;
+  word-wrap: normal;
+}
+
+body[dir="rtl"] .decision_non_Approved {
+  display: flex !important;
+  justify-content: center !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  margin-left: 8px !important;
+}
+
+.decision_text_Pending {
+  color: #D8A709 !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+  white-space: nowrap !important;
+  word-wrap: normal;
+}
+
+body[dir="rtl"] .decision_text_Pending {
+  display: flex !important;
+  justify-content: center !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  margin-left: 8px !important;
+}
+
 .decision_text {
   color: #d8a709 !important;
   font-family: "MontserratSemiBold" !important;
@@ -627,7 +665,7 @@ body[dir="rtl"] .resolution_title {
   font-family: "MontserratSemiBold";
   font-size: 12px !important;
   color: #5a5a5a !important;
-  margin-left: 25px !important;
+  /* margin-left: 25px !important; */
 }
 
 .decision_text_Moderator_closed {
@@ -644,10 +682,12 @@ body[dir="rtl"] .decision_text_Moderator_closed {
 
 .Result_Icon_cursor_pointer {
   margin-right: 30px !important;
+  cursor: pointer;
 }
 
 body[dir="rtl"] .Result_Icon_cursor_pointer {
   margin-right: 30px !important;
+  cursor: pointer;
 }
 
 body[dir="rtl"] .cancel_icon_resolution {
@@ -704,6 +744,10 @@ body[dir="rtl"] .cancel_icon_resolution {
 }
 
 body[dir="rtl"] .PaginationStyle-Resolution {
-  width: 100% !important;
+  width: auto !important;
   padding: 12px 10px !important;
+}
+
+.search_input {
+  width: 100%;
 }

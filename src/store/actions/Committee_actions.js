@@ -35,16 +35,45 @@ const getallcommitteebyuserid_fail = (message) => {
   };
 };
 
-const getAllCommitteesByUserIdActions = (navigate, t) => {
+
+const getArcheivedCommittees_init = () => {
+  return {
+    type: actions.ARCHEIVED_COMMITTES_INIT
+  }
+}
+const getArcheivedCommittees_success = (response, message) => {
+  return {
+    type: actions.ARCHEIVED_COMMITTES_SUCCESS,
+    response: response,
+    message: message
+  }
+}
+const getArcheivedCommittees_fail = (message) => {
+  return {
+    type: actions.ARCHEIVED_COMMITTES_FAIL,
+    message: message
+  }
+}
+const getAllCommitteesByUserIdActions = (navigate, t, id, currentPage) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = localStorage.getItem("organizationID");
   let UserID = localStorage.getItem("userID");
+  // let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
+  // let currentPageSize = JSON.parse(localStorage.getItem("CoPageSize"));
   let Data = {
     UserId: parseInt(UserID),
     OrganizationID: JSON.parse(OrganizationID),
+    Title: "",
+    PageNumber: currentPage,
+    Length: 8,
+    Status: id
   };
   return (dispatch) => {
-    dispatch(getallcommitteesbyuserid_init());
+    if (id === 1) {
+      dispatch(getArcheivedCommittees_init())
+    } else {
+      dispatch(getallcommitteesbyuserid_init());
+    }
     let form = new FormData();
     form.append("RequestMethod", getCommitteesByUserID.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -57,9 +86,10 @@ const getAllCommitteesByUserIdActions = (navigate, t) => {
       },
     })
       .then(async (response) => {
+        console.log(response, "committees")
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getAllCommitteesByUserIdActions(navigate, t));
+          dispatch(getAllCommitteesByUserIdActions(navigate, t, id));
         } else if (response.data.responseCode === 200) {
           console.log("checking");
           if (response.data.responseResult.isExecuted === true) {
@@ -68,22 +98,29 @@ const getAllCommitteesByUserIdActions = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetCommitteesByUserID_01".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_01".toLowerCase()
                 )
             ) {
-              dispatch(
-                getallcommitteesbyuserid_success(
-                  response.data.responseResult.committees,
-                  t("Data-available")
-                )
-              );
+              if (id === 1) {
+                dispatch(getArcheivedCommittees_success(
+                  response.data.responseResult,
+                  t("Data-available")))
+              } else {
+                dispatch(
+                  getallcommitteesbyuserid_success(
+                    response.data.responseResult,
+                    t("Data-available")
+                  )
+                );
+              }
+
 
               console.log("checking");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetCommitteesByUserID_02".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_02".toLowerCase()
                 )
             ) {
               dispatch(getallcommitteebyuserid_fail(t("No-data-available")));
@@ -93,7 +130,7 @@ const getAllCommitteesByUserIdActions = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetCommitteesByUserID_03".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_03".toLowerCase()
                 )
             ) {
               dispatch(getallcommitteebyuserid_fail(t("No-data-available")));
@@ -101,7 +138,7 @@ const getAllCommitteesByUserIdActions = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetCommitteesByUserID_04".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_04".toLowerCase()
                 )
             ) {
               dispatch(getallcommitteebyuserid_fail(t("No-data-available")));
@@ -109,10 +146,18 @@ const getAllCommitteesByUserIdActions = (navigate, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Committees_CommitteeServiceManager_GetCommitteesByUserID_05".toLowerCase()
+                  "Committees_CommitteeServiceManager_SearchCommittees_05".toLowerCase()
                 )
             ) {
               dispatch(getallcommitteebyuserid_fail(t("No-data-available")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Committees_CommitteeServiceManager_SearchCommittees_06".toLowerCase()
+                )
+            ) {
+              dispatch(getallcommitteebyuserid_fail(t("Something-went-wrong")));
             }
           } else {
             dispatch(getallcommitteebyuserid_fail(t("Something-went-wrong")));
@@ -648,51 +693,6 @@ const committeeStatusUpdate = (navigate, Data, t) => {
         console.log(response, "response");
         dispatch(updateCommitteeStatus_Fail(t("Something-went-wrong")));
       })
-      .then(async (response) => {
-        console.log(response, "response");
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(committeeStatusUpdate(navigate, Data, t));
-        } else if (response.data.responseCode === 200) {
-          console.log(response, "response");
-          if (response.data.responseResult.isExecuted === true) {
-            console.log(response, "response");
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Committees_CommitteeServiceManager_UpdateCommitteeStatus_01".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                updateCommitteeStatus_Success(
-                  response.data.responseResult.committeeMemberRoles,
-                  t("Record-updated")
-                )
-              );
-              dispatch(getAllCommitteesByUserIdActions(navigate, t));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Committees_CommitteeServiceManager_UpdateCommitteeStatus_02".toLowerCase()
-                )
-            ) {
-              dispatch(updateCommitteeStatus_Fail(t("No-record-updated")));
-            } else {
-              console.log(response, "response");
-              dispatch(updateCommitteeStatus_Fail(t("Something-went-wrong")));
-            }
-          } else {
-            console.log(response, "response");
-            dispatch(updateCommitteeStatus_Fail(t("Something-went-wrong")));
-          }
-        }
-      })
-      .catch((response) => {
-        console.log(response, "response");
-        dispatch(updateCommitteeStatus_Fail(t("Something-went-wrong")));
-      });
   };
 };
 const updatecommittee_Init = () => {
@@ -838,7 +838,7 @@ const assignGroup_Failt = (message) => {
     message: message,
   };
 };
-const assignGroups = (navigate, Data, t) => {
+const assignGroups = (navigate, Data, t, setMarketingTeam) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(assignGroup_Init());
@@ -869,7 +869,8 @@ const assignGroups = (navigate, Data, t) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Committees_CommitteeServiceManager_CommitteeAndGroupMapping_01".toLowerCase()
             ) {
-              dispatch(assignGroup_Success(t("Record-save")));
+              await dispatch(assignGroup_Success(t("Record-save")));
+              setMarketingTeam(false)
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Committees_CommitteeServiceManager_CommitteeAndGroupMapping_02".toLowerCase()

@@ -15,6 +15,7 @@
     "@mui/material": "^5.10.2",
     "@mui/styles": "^5.10.2",
     "@popperjs/core": "^2.11.6",
+    "@react-oauth/google": "^0.11.0",
     "@reactour/mask": "^1.0.4",
     "@reactour/popover": "^1.0.5",
     "@reactour/tour": "^3.1.4",

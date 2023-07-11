@@ -1,21 +1,21 @@
 import * as actions from "../action_types";
 import { calendarDataRequest } from "../../commen/apis/Api_config";
-import { getCalenderApi } from "../../commen/apis/Api_ends_points";
+import { getCalender } from "../../commen/apis/Api_ends_points";
 import axios from "axios";
 import { RefreshToken } from "./Auth_action";
 
-const getCalendarDataInit = (response, message) => {
+const getCalendarDataInit = (flag) => {
   return {
     type: actions.GET_DATA_FOR_CALENDAR_INIT,
-    response: response,
-    message: message,
+    flag: flag,
   };
 };
 
-const getCalendarDataSuccess = (response, message) => {
+const getCalendarDataSuccess = (response,flag, message) => {
   return {
     type: actions.GET_DATA_FOR_CALENDAR_SUCCESS,
     response: response,
+    flag:flag,
     message: message,
   };
 };
@@ -27,19 +27,24 @@ const getCalendarDataFail = (message) => {
   };
 };
 
-const getCalendarDataResponse = (navigate, data, t) => {
+const getCalendarDataResponse = (navigate, data,flag, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+
   let Data = {
-    UserID: parseInt(data),
+    UserID: parseInt(data.UserID),
+    OrganizationID: parseInt(organizationID),
+    StartDate: "20220202121749",
+    EndDate: "20240202121749",
   };
   return (dispatch) => {
-    dispatch(getCalendarDataInit());
+    dispatch(getCalendarDataInit(flag));
     let form = new FormData();
     form.append("RequestMethod", calendarDataRequest.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestData", JSON.stringify(data));
     axios({
       method: "post",
-      url: getCalenderApi,
+      url: getCalender,
       data: form,
       headers: {
         _token: token,
@@ -49,19 +54,20 @@ const getCalendarDataResponse = (navigate, data, t) => {
         console.log("calendar Data Response", response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getCalendarDataResponse(navigate, data, t));
+          dispatch(getCalendarDataResponse(navigate, data,flag, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingEventsByUserId_01".toLowerCase()
+                  "Calender_CalenderServiceManager_GetCalenderList_01".toLowerCase()
                 )
             ) {
               await dispatch(
                 getCalendarDataSuccess(
                   response.data.responseResult,
+                  false,
                   t("Record-found")
                 )
               );
@@ -69,7 +75,7 @@ const getCalendarDataResponse = (navigate, data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingEventsByUserId_02".toLowerCase()
+                  "Calender_CalenderServiceManager_GetCalenderList_02".toLowerCase()
                 )
             ) {
               await dispatch(getCalendarDataFail(t("No-records-found")));
@@ -77,17 +83,11 @@ const getCalendarDataResponse = (navigate, data, t) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingEventsByUserId_03".toLowerCase()
+                  "Calender_CalenderServiceManager_GetCalenderList_03".toLowerCase()
                 )
             ) {
-              await dispatch(getCalendarDataFail(t("Empty-or-null-request")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "Meeting_MeetingServiceManager_GetMeetingEventsByUserId_04".toLowerCase()
-                )
-            ) {
+              await dispatch(getCalendarDataFail(t("Something-went-wrong")));
+            } else {
               await dispatch(getCalendarDataFail(t("Something-went-wrong")));
             }
 
@@ -112,4 +112,4 @@ const HideNotificationCalendarData = () => {
   };
 };
 
-export { getCalendarDataResponse, HideNotificationCalendarData };
+export { getCalendarDataResponse, HideNotificationCalendarData,getCalendarDataInit };

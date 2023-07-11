@@ -17,6 +17,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { closeResolutionApi } from "../../../store/actions/Resolution_actions";
 import { resolutionResultTable } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
+import SeceretBallotingIcon from '../../../assets/images/resolutions/Secret_Balloting_icon.svg'
 
 const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const { t } = useTranslation();
@@ -29,6 +30,8 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const [nonApproved, setNonApproved] = useState(0);
   const [pending, setPending] = useState(0);
   const [abstain, setAbstain] = useState(0);
+  const [votingMethod, setVotingMethod] = useState("")
+  console.log(votingMethod, "votingMethodvotingMethod")
   const [notes, setNotes] = useState("");
   const [totalVoters, setTotalVoters] = useState(0);
   const [decisionDateExpiry, setDesicionDateExpiry] = useState(false);
@@ -66,24 +69,24 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const data = [
     ["Year", "Visitations", { role: "style" }],
     [
-      "Approved",
+      t("Approved"),
       approved,
 
       "stroke-color: #6DE595; stroke-opacity: 1 ;  fill-color: #6DE595; fill-opacity:1",
     ],
     [
-      "Non-Approved",
+      t("Non-approved"),
       nonApproved,
 
       "stroke-color: #F16B6B; stroke-opacity: 1 ; stroke-color:#F16B6B; fill-color: #F16B6B; fill-opacity:1; text-color:#F16B6B",
     ],
     [
-      "Pending",
+      t("Pending"),
       pending,
       "stroke-color: #000; stroke-opacity: 1 ; stroke-color:#000000; fill-color: #000000; fill-opacity:1",
     ],
     [
-      "Abstain",
+      t("Abstain"),
       abstain,
       "stroke-color: #000; stroke-color:#949494;  stroke-width: 4; fill-color: #949494 ; fill-opacity:1",
     ],
@@ -98,31 +101,38 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
       ResolutionReducer.getResolutionResult,
       "ResolutionReducerResolutionReducerResolutionReducer"
     );
-    if (ResolutionReducer.getResolutionResult !== null) {
-      let resolutionresult = ResolutionReducer.getResolutionResult;
-      setApproved(resolutionresult.approvedVotes);
-      setAbstain();
-      setPending(resolutionresult.pendingVoters);
-      setNonApproved(resolutionresult.nonApprovedVotes);
-      setTotalVoters(resolutionresult.totalVoters);
-      setDecision(resolutionresult.decision);
-      setVoter(resolutionresult.voters);
-      setResolutionID(resolutionresult.resolutionID);
-      setResolutionTitle(resolutionresult.resolutionTite);
-      let newDate = new Date();
-      let DecisionDateExpiry = resolutionResultTable(
-        resolutionresult.decisionAnnouncementDateTime
-      );
-      if (newDate > DecisionDateExpiry) {
-        setDesicionDateExpiry(true);
-      } else {
-        setDesicionDateExpiry(false);
+    try {
+      if (ResolutionReducer.getResolutionResult !== null) {
+        let resolutionresult = ResolutionReducer.getResolutionResult;
+        setApproved(resolutionresult.approvedVotes);
+        setAbstain();
+
+        setVotingMethod(resolutionresult.votingMethod)
+        setPending(resolutionresult.pendingVoters);
+        setNonApproved(resolutionresult.nonApprovedVotes);
+        setTotalVoters(resolutionresult.totalVoters);
+        setDecision(resolutionresult.decision);
+        setVoter(resolutionresult.voters);
+        setResolutionID(resolutionresult.resolutionID);
+        setResolutionTitle(resolutionresult.resolutionTite);
+        let newDate = new Date();
+        let DecisionDateExpiry = resolutionResultTable(
+          resolutionresult.decisionAnnouncementDateTime
+        );
+        if (DecisionDateExpiry < newDate) {
+          setDesicionDateExpiry(true);
+        } else {
+          setDesicionDateExpiry(false);
+        }
       }
+    } catch (error) {
+
     }
+
   }, [ResolutionReducer.getResolutionResult]);
   return (
     <section>
-      <Row className="mt-2">
+      <Row className="my-2">
         <Col lg={12} md={12} sm={12}>
           <span className={styles["Result_Heading_resolution"]}>
             {t("Result")}
@@ -134,17 +144,18 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
         <Col lg={12} md={12} sm={12}>
           <Paper className={styles["Result_page_paper"]}>
             <Row>
-              <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+              <Col lg={6} md={6} sm={12} className="d-flex gap-2">
                 <span className={styles["results_paper_heading"]}>
-                  {resolutionTitle || ""}
+                  {resolutionTitle || ""} {" "}{votingMethod === "Secret Balloting" ? <img src={SeceretBallotingIcon} height="23.19px" width="23.19px" /> : <img src={result} height="23.19px" width="23.19px" />}
                 </span>
-                <span>
-                  <img src={result} height="30.97px" width="20.96px" />
-                </span>
+
+              </Col>
+              <Col sm={12} md={6} lg={6} className="d-flex align-items-center justify-content-end">
+                <span className={styles["voting_method_heading"]}>{t("Voting-method") + " : "}   </span>  <span className={styles["voting_methong_value"]}> {votingMethod === "Secret Balloting" ? t("Secret-balloting") : t("Show-of-hands")}</span>
               </Col>
             </Row>
-            <Row className="mt-5">
-              <Col lg={4} md={4} sm={4}>
+            <Row className="mt-2">
+              <Col lg={4} md={4} sm={12}>
                 <Row className="mt-5">
                   <Col
                     lg={12}
@@ -169,18 +180,18 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                             <img
                               src={
                                 decision.toLowerCase() ===
-                                "Approved".toLowerCase()
+                                  "Approved".toLowerCase()
                                   ? Clock
                                   : decision.toLowerCase() ===
                                     "Not Approved".toLowerCase()
-                                  ? thumbsdown
-                                  : decision.toLowerCase() ===
-                                    "Pending".toLowerCase()
-                                  ? Clock
-                                  : decision.toLowerCase() ===
-                                    "tie".toLowerCase()
-                                  ? Tie
-                                  : null
+                                    ? thumbsdown
+                                    : decision.toLowerCase() ===
+                                      "Pending".toLowerCase()
+                                      ? Clock
+                                      : decision.toLowerCase() ===
+                                        "tie".toLowerCase()
+                                        ? Tie
+                                        : null
                               }
                               width="36.98px"
                               height="37px"
@@ -204,11 +215,11 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col lg={12} md={12} sm={12}>
+                  <Col lg={12} md={12} sm={12} className="d-flex justify-content-center">
                     <Chart
                       // controls={false}
                       chartType="ColumnChart"
-                      width="100%"
+                      width="450px"
                       height="250px"
                       radius={10}
                       data={data}
@@ -233,10 +244,15 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                   </Col>
                 </Row>
               </Col>
-              <Col lg={1} md={1} sm={false}>
-                <img src={line} height="547px" />
+              <Col
+                lg={1}
+                md={1}
+                sm={false}
+                className="d-flex justify-content-center"
+              >
+                <span className={styles["line_Resultesolution"]}></span>
               </Col>
-              <Col lg={7} md={7} sm={7}>
+              <Col lg={7} md={7} sm={12}>
                 <Row className="mt-5">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["voters_heading_result"]}>
@@ -254,41 +270,41 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                     <Row>
                       {voter.length > 0
                         ? voter.map((data, index) => {
-                            console.log(data, "datadatadata");
-                            return (
-                              <>
-                                <Col
-                                  lg={6}
-                                  md={6}
-                                  sm={6}
-                                  key={data.pK_RV_ID}
-                                  className="mt-1"
-                                >
-                                  <EmployeeinfoCard
-                                    Employeename={data.username}
-                                    Employeeemail={data.email}
-                                    Icon={
-                                      <img
-                                        src={
-                                          data.fK_VotingStatus_ID === 1
-                                            ? thumbsup
-                                            : data.fK_VotingStatus_ID === 2
+                          console.log(data, "datadatadata");
+                          return (
+                            <>
+                              <Col
+                                lg={6}
+                                md={6}
+                                sm={6}
+                                key={data.pK_RV_ID}
+                                className="mt-1"
+                              >
+                                <EmployeeinfoCard
+                                  Employeename={data.username}
+                                  Employeeemail={data.email}
+                                  Icon={
+                                    <img
+                                      src={
+                                        data.fK_VotingStatus_ID === 1
+                                          ? thumbsup
+                                          : data.fK_VotingStatus_ID === 2
                                             ? thumbsdown
                                             : data.fK_VotingStatus_ID === 3
-                                            ? Clock
-                                            : data.fK_VotingStatus_ID === 4
-                                            ? Abstain
-                                            : null
-                                        }
-                                        width="20px"
-                                        height="20px"
-                                      />
-                                    }
-                                  />
-                                </Col>
-                              </>
-                            );
-                          })
+                                              ? Clock
+                                              : data.fK_VotingStatus_ID === 4
+                                                ? Abstain
+                                                : null
+                                      }
+                                      width="20px"
+                                      height="20px"
+                                    />
+                                  }
+                                />
+                              </Col>
+                            </>
+                          );
+                        })
                         : null}
                     </Row>
                   </Col>

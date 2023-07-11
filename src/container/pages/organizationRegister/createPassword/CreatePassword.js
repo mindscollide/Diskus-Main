@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
 import LanguageChangeIcon from "../../../../assets/images/newElements/Language.svg";
+import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 const CreatePassword = () => {
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
@@ -312,7 +313,7 @@ const CreatePassword = () => {
       Authreducer.passwordUpdateOnForgotPasswordMessege !== "" &&
       Authreducer.passwordUpdateOnForgotPasswordMessege !== undefined &&
       Authreducer.passwordUpdateOnForgotPasswordMessege !==
-        t("2fa-verification") &&
+      t("2fa-verification") &&
       Authreducer.passwordUpdateOnForgotPasswordMessege !== t("2fa-enabled")
     ) {
       setOpen({
@@ -370,27 +371,13 @@ const CreatePassword = () => {
 
   return (
     <>
-      <Row>
-        <Col className={styles["languageselect-box"]}>
-          <select
-            className={styles["select-language-signin"]}
-            onChange={handleChangeLocale}
-            value={language}
-          >
-            {languages.map(({ name, code }) => (
-              <option
-                key={code}
-                value={code}
-                className={styles["language_options"]}
-              >
-                {name}
-              </option>
-            ))}
-          </select>
-          <img src={LanguageChangeIcon} className={styles["languageIcon"]} />
-        </Col>
-      </Row>
+
       <Container fluid>
+        <Row className="position-relative">
+          <Col className="languageSelector" >
+            <LanguageSelector />
+          </Col>
+        </Row>
         <Row>
           <Col
             lg={4}
@@ -534,9 +521,9 @@ const CreatePassword = () => {
                         type="submit"
                         text={
                           updateCheckPasswordFlag !== undefined &&
-                          updateCheckPasswordFlag !== null &&
-                          (updateCheckPasswordFlag === true ||
-                            updateCheckPasswordFlag === "true")
+                            updateCheckPasswordFlag !== null &&
+                            (updateCheckPasswordFlag === true ||
+                              updateCheckPasswordFlag === "true")
                             ? t("Confirm")
                             : t("Sign-up")
                         }
@@ -544,10 +531,10 @@ const CreatePassword = () => {
                           passwordDetails.Password === ""
                             ? true
                             : passwordDetails.ConfirmPassword === ""
-                            ? true
-                            : !isPasswordStrong
-                            ? true
-                            : false
+                              ? true
+                              : !isPasswordStrong
+                                ? true
+                                : false
                         }
                         className={styles["subscribNow_button_EmailVerify"]}
                       />

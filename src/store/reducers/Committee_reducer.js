@@ -11,7 +11,8 @@ const initialState = {
   updateCommitteeStatus: null,
   updateCommitteeResponse: null,
   realtimeCommitteeCreateResponse: null,
-  realtimeCommitteeStatus: null
+  realtimeCommitteeStatus: null,
+  ArcheivedCommittees: null
 };
 
 const ComitteeGroupsReducer = (state = initialState, action) => {
@@ -211,6 +212,30 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
         ResponseMessage: action.message
       }
     }
+    case actions.ARCHEIVED_COMMITTES_INIT: {
+      return {
+        ...state,
+        Loading: true
+      }
+    }
+    case actions.ARCHEIVED_COMMITTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        ArcheivedCommittees: action.response,
+        ResponseMessage: action.message
+      }
+    }
+    // case actions.ARCHEIVED_COMMITTES_SUCCESS: {
+    //   return {
+    //     ...state,
+    //     Loading: false,
+    //     ArcheivedCommittees: [],
+    //     ResponseMessage: action.message
+    //   }
+
+    // }
+    case actions.ARCHEIVED_COMMITTES_FAIL: { }
     default:
       return { ...state };
   }

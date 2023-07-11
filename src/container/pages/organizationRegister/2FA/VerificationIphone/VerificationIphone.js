@@ -22,6 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 import Helper from "../../../../../commen/functions/history_logout";
+import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 
 const VerificationIphone = () => {
   const navigate = useNavigate();
@@ -135,7 +136,7 @@ const VerificationIphone = () => {
 
   return (
     <>
-      <Row>
+      {/* <Row>
         <Col className="languageselect-box">
           <select
             className="select-language-signin_selectfrommultidevices"
@@ -153,8 +154,13 @@ const VerificationIphone = () => {
             className="languageIcon_selectfrommultidevices"
           />
         </Col>
-      </Row>
+      </Row> */}
       <Container fluid className="auth_container">
+        <Row className="position-relative">
+          <Col className="languageSelector" >
+            <LanguageSelector />
+          </Col>
+        </Row>
         <Row>
           <Col
             lg={5}
@@ -200,48 +206,48 @@ const VerificationIphone = () => {
                   <Row className="Scroll_bar_For_devices mt-3">
                     {devices !== null && devices.length > 0
                       ? devices.map((data, index) => {
-                          return (
-                            <Col sm={12} lg={12} md={12} className="mx-2">
-                              <Row key={index} className="my-2">
-                                <Col sm={12} md={1} lg={1}>
-                                  <img
-                                    width={"15px"}
-                                    className={
-                                      selectDevice?.UserDeviceID ===
+                        return (
+                          <Col sm={12} lg={12} md={12} className="mx-2">
+                            <Row key={index} className="my-2">
+                              <Col sm={12} md={1} lg={1}>
+                                <img
+                                  width={"15px"}
+                                  className={
+                                    selectDevice?.UserDeviceID ===
                                       data?.UserDeviceID
-                                        ? "two_fac_image_active"
-                                        : "two_fac_image"
-                                    }
-                                    src={img10}
-                                    alt=""
-                                  />
-                                </Col>
-                                <Col sm={12} md={9} lg={9}>
-                                  <span
-                                    className={
-                                      selectDevice?.UserDeviceID ===
+                                      ? "two_fac_image_active"
+                                      : "two_fac_image"
+                                  }
+                                  src={img10}
+                                  alt=""
+                                />
+                              </Col>
+                              <Col sm={12} md={9} lg={9}>
+                                <span
+                                  className={
+                                    selectDevice?.UserDeviceID ===
                                       data?.UserDeviceID
-                                        ? "verificationIphoneLabels"
-                                        : "verificationIphoneLabels_active"
-                                    }
-                                  >
-                                    {data.DeviceName}
-                                  </span>
-                                </Col>
-                                <Col sm={12} md={2} lg={2}>
-                                  <Form.Check
-                                    type="radio"
-                                    name="2faVerificationIphone"
-                                    value={JSON.stringify(data)}
-                                    onChange={
-                                      onChangeHandlerVerificationIphone1
-                                    }
-                                  />
-                                </Col>
-                              </Row>
-                            </Col>
-                          );
-                        })
+                                      ? "verificationIphoneLabels"
+                                      : "verificationIphoneLabels_active"
+                                  }
+                                >
+                                  {data.DeviceName}
+                                </span>
+                              </Col>
+                              <Col sm={12} md={2} lg={2}>
+                                <Form.Check
+                                  type="radio"
+                                  name="2faVerificationIphone"
+                                  value={JSON.stringify(data)}
+                                  onChange={
+                                    onChangeHandlerVerificationIphone1
+                                  }
+                                />
+                              </Col>
+                            </Row>
+                          </Col>
+                        );
+                      })
                       : null}
                   </Row>
                   <Row className="mt-4 d-flex justify-content-center">

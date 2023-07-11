@@ -7,6 +7,7 @@ import {
   ChevronDown,
   ArrowLeft,
   Plus,
+  ArrowCounterclockwise
 } from "react-bootstrap-icons";
 import moment from "moment";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
@@ -34,6 +35,7 @@ import {
   getMeetingUserId,
   HideNotificationMeetings,
   searchMeetingUserId,
+  searchUserMeeting,
 } from "../.../../../../store/actions/GetMeetingUserId";
 import {
   ViewMeeting,
@@ -56,9 +58,11 @@ import {
   newTimeFormaterAsPerUTC,
   newTimeFormaterAsPerUTCFullDate,
 } from "../../../commen/functions/date_formater";
-
+import { Pagination, Select } from "antd";
+const { Option } = Select
 const Meeting = () => {
   //For Localization
+
   const { t } = useTranslation();
   registerLocale("ar", ar);
   registerLocale("en", enGB);
@@ -79,23 +83,38 @@ const Meeting = () => {
   const navigate = useNavigate();
   const UserID = localStorage.getItem("userID");
   const [show, setShow] = useState(false);
+  const [totalRecords, setTotalRecords] = useState(0)
+  let meetingpageRow = JSON.parse(localStorage.getItem("MeetingPageRows"))
+  let meetingPageCurrent = JSON.parse(localStorage.getItem("MeetingPageCurrent"))
 
   //import meetingReducer and gettodolistreducer from reducers
   const { meetingIdReducer, assignees, minuteofMeetingReducer, uploadReducer } =
     state;
-  const { allMeetingsSocketData, MeetingStatusSocket, AllMeetingIdData } =
+  const { allMeetingsSocketData, MeetingStatusSocket, AllMeetingIdData, SearchMeetingData } =
     meetingIdReducer;
+  console.log(meetingIdReducer, assignees, "meetingIdReducermeetingIdReducermeetingIdReducer")
   const dispatch = useDispatch();
+  const [flag, setFlag] = useState(true)
   const [searchData, setSearchData] = useState({
     Date: "",
     Title: "",
     HostName: "",
-    UserID: 0,
+    // UserID: 0,
   });
   useEffect(() => {
-    let data = { UserID: JSON.parse(UserID), NumberOfRecords: 300 };
-    dispatch(getMeetingUserId(navigate, data, t));
+    if (meetingpageRow !== null && meetingPageCurrent !== null) {
+      dispatch(searchUserMeeting(navigate, searchData, t))
+    } else {
+      localStorage.setItem("MeetingPageRows", 50)
+      localStorage.setItem("MeetingPageCurrent", 1)
+      dispatch(searchUserMeeting(navigate, searchData, t))
+    }
+    return () => {
+      localStorage.removeItem("MeetingPageRows")
+      localStorage.removeItem("MeetingPageCurrent")
+    }
   }, []);
+
   useEffect(() => {
     let organzier = [];
     if (assignees !== null && assignees !== undefined) {
@@ -128,8 +147,9 @@ const Meeting = () => {
         });
         setRow(newState);
       } else {
-        tableRowsData.unshift(allMeetingsSocketData);
-        setRow(tableRowsData);
+        setRow([allMeetingsSocketData, ...rows])
+        // tableRowsData.unshift(allMeetingsSocketData);
+        // setRow(tableRowsData);
       }
     }
   }, [allMeetingsSocketData]);
@@ -162,13 +182,20 @@ const Meeting = () => {
     }
   }, [MeetingStatusSocket]);
 
-  useEffect(() => {}, [rows]);
+  useEffect(() => { }, [rows]);
 
   useEffect(() => {
-    if (Object.keys(AllMeetingIdData).length > 0) {
-      setRow(AllMeetingIdData);
+    console.log(assignees, "SearchMeetingDataSearchMeetingDataSearchMeetingData")
+    if (assignees.SearchMeetingData !== null && assignees.SearchMeetingData !== undefined) {
+      setTotalRecords(assignees.SearchMeetingData.totalRecords)
+      if (assignees.SearchMeetingData.meetings !== null && assignees.SearchMeetingData.meetings !== undefined && assignees.SearchMeetingData.meetings.length > 0) {
+        setRow(assignees.SearchMeetingData.meetings);
+      }
     }
-  }, [AllMeetingIdData]);
+    // if (Object.keys(SearchMeetingData).length > 0) {
+    //   setRow(SearchMeetingData);
+    // }
+  }, [assignees.SearchMeetingData]);
 
   // for modal create  handler
   const modalHandler = async (e) => {
@@ -218,7 +245,7 @@ const Meeting = () => {
       MeetingID: meetingID,
       UserID: parseInt(UserID),
     };
-    dispatch(StartMeeting(navigate, Data, t));
+    dispatch(StartMeeting(navigate, Data, t, searchData));
   };
 
   const endMeeting = (record) => {
@@ -227,7 +254,7 @@ const Meeting = () => {
       MeetingID: meetingID,
       UserID: parseInt(UserID),
     };
-    dispatch(EndMeeting(navigate, Data, t));
+    dispatch(EndMeeting(navigate, Data, t, searchData));
   };
 
   const checkForEdit = (record) => {
@@ -246,7 +273,7 @@ const Meeting = () => {
           return false;
         }
       });
-    } catch (e) {}
+    } catch (e) { }
   };
 
   const columns = [
@@ -515,7 +542,8 @@ const Meeting = () => {
     if (
       meetingIdReducer.ResponseMessage != "" &&
       meetingIdReducer.ResponseMessage != t("Record-found") &&
-      meetingIdReducer.ResponseMessage !== t("No-records-found")
+      meetingIdReducer.ResponseMessage !== t("No-records-found") &&
+      meetingIdReducer.ResponseMessage !== t("No-record-found")
     ) {
       setOpen({
         ...open,
@@ -532,8 +560,8 @@ const Meeting = () => {
 
       dispatch(HideNotificationMeetings());
     } else if (
-      assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != t("Record-found") &&
+      assignees.ResponseMessage !== "" &&
+      assignees.ResponseMessage !== t("Record-found") &&
       assignees.ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
@@ -561,9 +589,9 @@ const Meeting = () => {
     if (
       minuteofMeetingReducer.AddMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.AddMeetingofMinutesMessage !=
-        t("The-record-has-been-saved-successfully") &&
+      t("The-record-has-been-saved-successfully") &&
       minuteofMeetingReducer.AddMeetingofMinutesMessage !==
-        t("No-records-found")
+      t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -582,9 +610,9 @@ const Meeting = () => {
     } else if (
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage !=
-        t("The-record-has-been-saved-successfully") &&
+      t("The-record-has-been-saved-successfully") &&
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage !==
-        t("No-records-found")
+      t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -603,7 +631,7 @@ const Meeting = () => {
     } else if (
       minuteofMeetingReducer.ResponseMessage != "" &&
       assignees.ResponseMessage !=
-        t("The-record-has-been-saved-successfully") &&
+      t("The-record-has-been-saved-successfully") &&
       minuteofMeetingReducer.ResponseMessage !== t("No-records-found") &&
       assignees.ResponseMessage !== t("No-records-found")
     ) {
@@ -694,9 +722,11 @@ const Meeting = () => {
       });
     }
   };
+
   // for search
-  const search = (e) => {
+  const search = async (e) => {
     e.preventDefault();
+
     if (
       searchData.Date === "" &&
       searchData.Title === "" &&
@@ -706,29 +736,35 @@ const Meeting = () => {
         Date: "",
         Title: "",
         HostName: "",
-        UserID: parseInt(UserID),
       };
-      dispatch(searchMeetingUserId(navigate, newData, t));
-      setSearchData({
-        ...searchData,
-        Date: "",
-        Title: "",
-        HostName: "",
-        UserID: parseInt(0),
-      });
+      await localStorage.setItem("MeetingPageCurrent", 1)
+      dispatch(searchUserMeeting(navigate, newData, t))
+      // setSearchData({
+      //   ...searchData,
+      //   Date: "",
+      //   Title: "",
+      //   HostName: "",
+      //   UserID: parseInt(0),
+      // });
     } else {
+      let newData = {
+        Date: searchData.Date,
+        Title: searchData.Title,
+        HostName: searchData.HostName,
+      };
+      await localStorage.setItem("MeetingPageCurrent", 1)
+      dispatch(searchUserMeeting(navigate, newData, t))
+      console.log(newData, "newDatanewDatanewData")
       // make notification for if input fields is empty here
-      dispatch(searchMeetingUserId(navigate, searchData, t));
-      setSearchData({
-        Date: "",
-        Title: "",
-        HostName: "",
-        UserID: parseInt(0),
-      });
+      // dispatch(searchMeetingUserId(navigate, searchData, t));
+      // setSearchData({
+      //   Date: "",
+      //   Title: "",
+      //   HostName: "",
+      //   UserID: parseInt(0),
+      // });
     }
   };
-
-  console.log("searchData.Date", searchData.Date);
 
   const tableChangeHandler = (pagination, organizerfilter) => {
     let newArray = [];
@@ -777,18 +813,46 @@ const Meeting = () => {
     setRow(newArray);
   };
 
+  const paginationChangeHandlerMeeting = (current, pageSize) => {
+    localStorage.setItem("MeetingPageRows", pageSize)
+    localStorage.setItem("MeetingPageCurrent", current)
+    let newData = {
+      Date: searchData.Date,
+      Title: searchData.Title,
+      HostName: searchData.HostName,
+    };
+    dispatch(searchUserMeeting(navigate, newData, t))
+  }
+
+  const resetSearchBar = async (e) => {
+    e.preventDefault()
+    let newData = {
+      Date: "",
+      Title: "",
+      HostName: "",
+    };
+    await localStorage.setItem("MeetingPageCurrent", 1)
+    dispatch(searchUserMeeting(navigate, newData, t))
+    setSearchData({
+      ...searchData,
+      Date: "",
+      HostName: "",
+      Title: ""
+    })
+  }
+
   return (
     <>
       <Col className="meeting_container">
         <Row className="d-flex justify-content-start align-items-center margin-bottom-15 mt-2">
-          <Col lg={2} md={2} sm={4} xs={12} className="meeting-heading mt-1">
+          <Col lg={2} md={2} sm={2} className="meeting-heading mt-1">
             {t("Meetings")}
           </Col>
           <Col
-            lg={3}
-            md={3}
-            sm={4}
-            xs={12}
+            lg={2}
+            md={2}
+            sm={2}
+            // xs={12}
             className="meeting-schedulenewmeeting-btn"
           >
             <Button
@@ -801,10 +865,10 @@ const Meeting = () => {
             />
           </Col>
           <Col
-            md={7}
-            lg={7}
-            sm={12}
-            xs={12}
+            md={8}
+            lg={8}
+            sm={8}
+            // xs={12}
             className="meeting-fields p-0 meeting-searchfileds"
           >
             <Search
@@ -815,7 +879,7 @@ const Meeting = () => {
               <>
                 {currentLanguage === "ar" ? (
                   <div className="expandableMenuSearch">
-                    <Form onSubmit={search} className="d-flex">
+                    <Form className="d-flex">
                       {currentLanguage === "ar" ? (
                         <CustomDatePicker
                           value={searchData.Date}
@@ -823,6 +887,7 @@ const Meeting = () => {
                           locale="ar"
                           className="meetingtablesearchDatePicker"
                           selected={searchData.Date}
+                          flag={flag}
                         />
                       ) : (
                         <CustomDatePicker
@@ -831,6 +896,7 @@ const Meeting = () => {
                           locale="en"
                           className="meetingtablesearchDatePicker"
                           selected={searchData.Date}
+                          flag={flag}
                         />
                       )}
                       <TextField
@@ -855,27 +921,35 @@ const Meeting = () => {
                       />
 
                       <Button
-                        className="btn btn-primary meeting search"
+                        className="btn  btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowLeft />}
-                        // onClick={search}
+                        onClick={search}
+                      />
+                      <Button className="btn  btn-primary meeting search"
+                        variant={"Primary"}
+                        type="reset"
+                        text={<ArrowCounterclockwise />}
+                        onClick={resetSearchBar}
                       />
                     </Form>
                   </div>
                 ) : (
                   <div className="expandableMenuSearch">
-                    <Form onSubmit={search} className="d-flex ">
+                    <Form className="d-flex gap-2 ">
                       {currentLanguage === "ar" ? (
                         <CustomDatePicker
                           value={searchData.Date}
                           change={searchHandlerDate}
                           locale="ar"
+                          flag={flag}
                         />
                       ) : (
                         <CustomDatePicker
                           value={searchData.Date}
                           change={searchHandlerDate}
                           locale="en"
+                          flag={flag}
                         />
                       )}
 
@@ -903,7 +977,12 @@ const Meeting = () => {
                         className="btn btn-primary meeting search"
                         variant={"Primary"}
                         text={<ArrowRight />}
-                        // onClick={search}
+                        onClick={search}
+                      />
+                      <Button className="btn btn-primary  meeting search"
+                        variant={"Primary"}
+                        text={<ArrowCounterclockwise />}
+                        onClick={resetSearchBar}
                       />
                     </Form>
                   </div>
@@ -915,31 +994,29 @@ const Meeting = () => {
         <Row className="mx-1 meeting-table-row">
           <Col>
             {rows.length > 0 && rows !== undefined && rows !== null ? (
-              <Table
-                column={columns}
-                className="hello"
-                onChange={tableChangeHandler}
-                rows={rows}
-                scroll={{ y: 600 }}
-                pagination={{
-                  pageSize: 50,
-                  defaultPageSize: 50,
-                  showSizeChanger: true,
-                  pageSizeOptions: ["100 ", "150", "200"],
-                }}
-                // key={flag}
-                labelTitle={t("Meetings")}
-                expandable={{
-                  expandedRowRender: (record) => {
-                    return record.meetingAgenda.map((data) => (
-                      <p className="meeting-expanded-row">
-                        {data.objMeetingAgenda.title}
-                      </p>
-                    ));
-                  },
-                  rowExpandable: (record) => record.host !== "Test",
-                }}
-              />
+              <>
+                <Table
+                  column={columns}
+                  className="hello"
+                  onChange={tableChangeHandler}
+                  rows={rows}
+                  scroll={{ y: "50vh" }}
+                  pagination={false}
+                  // key={flag}
+                  labelTitle={t("Meetings")}
+                  expandable={{
+                    expandedRowRender: (record) => {
+                      return record.meetingAgenda.map((data) => (
+                        <p className="meeting-expanded-row">
+                          {data.objMeetingAgenda.title}
+                        </p>
+                      ));
+                    },
+                    rowExpandable: (record) => record.host !== "Test",
+                  }}
+                />
+
+              </>
             ) : (
               <Paper className="No-Meeting-Table">
                 <ResultMessage
@@ -966,8 +1043,25 @@ const Meeting = () => {
                 </Row>
               </Paper>
             )}
+
+
           </Col>
         </Row>
+        {rows.length > 0 &&
+          <Row className="mb-3">
+            <Col className="pagination-groups-table d-flex justify-content-center" sm={12} md={12} lg={12}>
+              <Pagination className="PaginationStyle-Meeting"
+                onChange={paginationChangeHandlerMeeting}
+                current={meetingPageCurrent}
+                pageSize={meetingpageRow}
+                showSizeChanger
+                pageSizeOptions={[30, 50, 100, 200]}
+                total={totalRecords}
+              // onShowSizeChange={handlePageSizeChange}
+              />
+            </Col>
+          </Row>
+        }
       </Col>
       {show ? <ModalMeeting show={show} setShow={setShow} /> : null}
 
@@ -980,14 +1074,7 @@ const Meeting = () => {
 
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
 
-      {meetingIdReducer.Loading ? (
-        <Loader />
-      ) : assignees.Loading ? (
-        <Loader />
-      ) : uploadReducer.Loading ? (
-        <Loader />
-      ) : minuteofMeetingReducer.Loading ? (
-        <Loader />
+      {meetingIdReducer.Loading ||assignees.Loading ||uploadReducer.Loading||minuteofMeetingReducer.Loading? (<Loader />
       ) : null}
     </>
   );

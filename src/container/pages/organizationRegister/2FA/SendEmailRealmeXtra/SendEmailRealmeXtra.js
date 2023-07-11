@@ -25,6 +25,7 @@ import { useTranslation } from "react-i18next";
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
 import Helper from "../../../../../commen/functions/history_logout";
 import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
+import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 const SendEmailRealmeXtra = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -186,7 +187,7 @@ const SendEmailRealmeXtra = () => {
   }, [Helper.socket]);
   return (
     <>
-      <Row>
+      {/* <Row>
         <Col className="languageselect-box">
           <select
             className="select-language-signin_sendmailwithdevice"
@@ -204,8 +205,13 @@ const SendEmailRealmeXtra = () => {
             className="languageIcon_sendmailwithdevice"
           />
         </Col>
-      </Row>
+      </Row> */}
       <Container fluid className="auth_container">
+        <Row className="position-relative">
+          <Col className="languageSelector" >
+            <LanguageSelector />
+          </Col>
+        </Row>
         <Row>
           <Col lg={5} md={5} sm={12}>
             <Row>

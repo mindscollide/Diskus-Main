@@ -96,7 +96,7 @@ const ViewResolution = ({ setViewresolution }) => {
         <Row>
           <Col lg={12} md={12} sm={12}>
             <Row>
-              <Col lg={5} md={5} sm={5}>
+              <Col lg={5} md={5} sm={12}>
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Details_ViewResolution"]}>
@@ -205,16 +205,19 @@ const ViewResolution = ({ setViewresolution }) => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className="UpdateCheckbox  d-flex justify-content-start mt-5 FontArabicRegular"
+                        className="UpdateCheckbox view-resolution d-flex justify-content-start mt-5 FontArabicRegular"
                       >
                         <Checkbox
-                          className="SearchCheckbox MontserratSemiBold"
+                          className={`"MontserratSemiBold viewResolution_checkbox`}
+                          // prefixCls={"checkbox_viewResolution"}
                           name="IsChat"
+                          // disabled={true}
                           label2={t("Make-resolution-public")}
                           label2Class={styles["Public_resolution"]}
                           checked={
                             resolutionData?.resolution?.isResolutionPublic
                           }
+                          disabled={true}
                           classNameDiv="checkboxParentClass"
                         ></Checkbox>
                       </Col>
@@ -222,8 +225,13 @@ const ViewResolution = ({ setViewresolution }) => {
                   </Col>
                 </Row>
               </Col>
-              <Col lg={1} md={1} sm={false}>
-                <img src={line} height="586px" />
+              <Col
+                lg={1}
+                md={1}
+                sm={false}
+                className="d-flex justify-content-center"
+              >
+                <span className={styles["line_Viewesolution"]}></span>
               </Col>
 
               <Col lg={6} md={6} sm={6}>
@@ -371,7 +379,7 @@ const ViewResolution = ({ setViewresolution }) => {
                                         sm={12}
                                         lg={2}
                                         md={2}
-                                        className="file-icon-viewResolution"
+                                        className="file-icon-viewResolution text-center"
                                       >
                                         {ext === "doc" ? (
                                           <FileIcon
@@ -478,7 +486,7 @@ const ViewResolution = ({ setViewresolution }) => {
                     </Row>
                   </Col>
                 </Row>
-                <Row className="mt-5">
+                <Row>
                   <Col
                     lg={12}
                     md={12}

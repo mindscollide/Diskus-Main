@@ -1,15 +1,15 @@
-import React, { useRef, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Spin } from 'antd'
-import { Container, Row, Col } from 'react-bootstrap'
-import TodoMessageIcon1 from '../../../assets/images/Todomsg-1.png'
-import NoRecentActivity from '../../../assets/images/No-Recent-Activity.png'
-import IconAttachment from '../../../assets/images/AttachmentNotes.svg'
-import PlusButton from '../../../assets/images/PlusButton.svg'
-import styles from './dashboard-module.css'
-import StarIcon from '../../../assets/images/Star.svg'
-import hollowstar from '../../../assets/images/Hollowstar.svg'
-import NotesMainEmpty from '../../../assets/images/Notes_Dashboard.svg'
+import React, { useRef, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Spin } from "antd";
+import { Container, Row, Col } from "react-bootstrap";
+import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
+import NoRecentActivity from "../../../assets/images/No-Recent-Activity.png";
+import IconAttachment from "../../../assets/images/AttachmentNotes.svg";
+import PlusButton from "../../../assets/images/PlusButton.svg";
+import styles from "./dashboard-module.css";
+import StarIcon from "../../../assets/images/Star.svg";
+import hollowstar from "../../../assets/images/Hollowstar.svg";
+import NotesMainEmpty from "../../../assets/images/Notes_Dashboard.svg";
 // import TalkIcon from "../../../assets/images/newElemnts/Diskus_TalkIcon.svg";
 import {
   CustomTableToDoDashboard,
@@ -20,64 +20,74 @@ import {
   Modal,
   Button,
   Loader,
-} from '../../../components/elements'
-import moment from 'moment'
-import gregorian from 'react-date-object/calendars/gregorian'
-import arabic from 'react-date-object/calendars/arabic'
-import arabic_ar from 'react-date-object/locales/arabic_ar'
-import gregorian_en from 'react-date-object/locales/gregorian_en'
+} from "../../../components/elements";
+import moment from "moment";
+import gregorian from "react-date-object/calendars/gregorian";
+import arabic from "react-date-object/calendars/arabic";
+import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian_en from "react-date-object/locales/gregorian_en";
 
 import {
+  getCalendarDataInit,
   getCalendarDataResponse,
   HideNotificationCalendarData,
-} from '../../../store/actions/GetDataForCalendar'
-import { useTranslation } from 'react-i18next'
-import { Calendar, DateObject } from 'react-multi-date-picker'
-import ModalMeeting from '../../modalmeeting/ModalMeeting'
-import { Mailbox } from 'react-bootstrap-icons'
+} from "../../../store/actions/GetDataForCalendar";
+import { useTranslation } from "react-i18next";
+import { Calendar, DateObject } from "react-multi-date-picker";
+import ModalMeeting from "../../modalmeeting/ModalMeeting";
+import { Mailbox } from "react-bootstrap-icons";
 import {
   newTimeFormaterAsPerUTCFullDate,
   _justShowDateformat,
   _justShowDay,
   forRecentActivity,
   startDateTimeMeetingCalendar,
-} from '../../../commen/functions/date_formater'
-import TimeAgo from 'timeago-react'
+  newDateFormaterAsPerUTC,
+} from "../../../commen/functions/date_formater";
+import TimeAgo from "timeago-react";
 import {
   GetTodoListByUser,
+  getTodoListInit,
   GetWeeklyToDoCount,
   HideNotificationTodo,
-} from '../../../store/actions/ToDoList_action'
-import { HideNotificationAuth } from '../../../store/actions/Auth_action'
+  SetSpinnersTrue,
+} from "../../../store/actions/ToDoList_action";
+import { HideNotificationAuth } from "../../../store/actions/Auth_action";
 import {
   GetWeeklyMeetingsCount,
   GetUpcomingEvents,
   HideNotificationMeetings,
-} from '../../../store/actions/GetMeetingUserId'
-import './dashboard-module.css'
+  SetSpinnerTrue,
+} from "../../../store/actions/GetMeetingUserId";
+import "./dashboard-module.css";
 import {
   getNotifications,
+  getusernotificationinit,
   HideNotificationUserNotificationData,
-} from '../../../store/actions/GetUserNotification'
-import { HideNotification } from '../../../store/actions/Get_List_Of_Assignees'
-import { useLoaderData, useNavigate } from 'react-router-dom'
-import { cleareMessage, setLoader } from '../../../store/actions/Auth2_actions'
-import VerificationFailedIcon from './../../../assets/images/failed.png'
-import { GetNotes, GetNotesByIdAPI } from '../../../store/actions/Notes_actions'
-import ModalAddNote from '../../modalAddNote/ModalAddNote'
-import ModalUpdateNote from '../../modalUpdateNote/ModalUpdateNote'
-import { getUserSetting } from '../../../store/actions/GetUserSetting'
+} from "../../../store/actions/GetUserNotification";
+import { HideNotification } from "../../../store/actions/Get_List_Of_Assignees";
+import { useLoaderData, useNavigate } from "react-router-dom";
+import { cleareMessage, setLoader } from "../../../store/actions/Auth2_actions";
+import VerificationFailedIcon from "./../../../assets/images/failed.png";
+import {
+  GetNotes,
+  GetNotesByIdAPI,
+  getNotes_Init,
+} from "../../../store/actions/Notes_actions";
+import ModalAddNote from "../../modalAddNote/ModalAddNote";
+import ModalUpdateNote from "../../modalUpdateNote/ModalUpdateNote";
+import { getUserSetting } from "../../../store/actions/GetUserSetting";
+import EventsModal from "../../EventsModal/EventsModal";
 
 const Home = () => {
-  const dCheck = useLoaderData()
+  const dCheck = useLoaderData();
   // console.log("dCheck", dCheck);
   //For Localization
-  const { t } = useTranslation()
-  const [updateNotesModalHomePage, setUpdateNotesModalHomePage] = useState(
-    false,
-  )
+  const { t } = useTranslation();
+  const [updateNotesModalHomePage, setUpdateNotesModalHomePage] =
+    useState(false);
   // const [viewFlag, setViewFlag] = useState(false);
-  const state = useSelector((state) => state)
+  const state = useSelector((state) => state);
   const {
     settingReducer,
     calendarReducer,
@@ -86,118 +96,220 @@ const Home = () => {
     auth,
     Authreducer,
     NotesReducer,
-  } = state
-  const { RecentActivityData, SocketRecentActivityData } = settingReducer
-  const [notes, setNotes] = useState([])
+  } = state;
+  const { RecentActivityData, SocketRecentActivityData } = settingReducer;
+  const [notes, setNotes] = useState([]);
   const [open, setOpen] = useState({
     open: false,
-    message: '',
-  })
+    message: "",
+  });
   // for sub menus Icons
-  const [subIcons, setSubIcons] = useState(false)
+  const [subIcons, setSubIcons] = useState(false);
   //For Calendar
-  const dispatch = useDispatch()
-  const [modalNote, setModalNote] = useState(false)
-  const [updateShow, setUpdateShow] = useState(false)
+  const dispatch = useDispatch();
+  const [modalNote, setModalNote] = useState(false);
+  const [updateShow, setUpdateShow] = useState(false);
 
   //for view modal notes
-  const [viewModalShow, setViewModalShow] = useState(false)
-  const calendarRef = useRef()
-  const navigate = useNavigate()
-  const [calenderData, setCalenderData] = useState([])
-  const [recentActivityData, setRecentActivityData] = useState([])
-  // const [open, setOpen] = useState(false);
+  const [viewModalShow, setViewModalShow] = useState(false);
+  const calendarRef = useRef();
+  const navigate = useNavigate();
+  const [calenderData, setCalenderData] = useState([]);
+  const [recentActivityData, setRecentActivityData] = useState([]);
   // get new date
   let date = new Date();
   let getCurrentDate = moment(date).format("DD");
-  console.log(getCurrentDate, "getCurrentDategetCurrentDategetCurrentDate")
+  console.log(getCurrentDate, "getCurrentDategetCurrentDategetCurrentDate");
+
   let format = "YYYYMMDD";
 
-  const [dates, setDates] = useState([])
-  const [activateBlur, setActivateBlur] = useState(false)
+  const [dates, setDates] = useState([]);
+  const [activateBlur, setActivateBlur] = useState(false);
 
-  let Blur = localStorage.getItem('blur')
-  const [meetingCountThisWeek, setMeetingCountThisWeek] = useState(0)
-  const [
-    upcomingMeetingCountThisWeek,
-    setUpcomingMeetingCountThisWeek,
-  ] = useState(0)
+  let Blur = localStorage.getItem("blur");
+  const [meetingCountThisWeek, setMeetingCountThisWeek] = useState(0);
+  const [upcomingMeetingCountThisWeek, setUpcomingMeetingCountThisWeek] =
+    useState(0);
 
-  const [todoListThisWeek, setTodoListThisWeek] = useState(0)
-  const [todoListAssignedThisWeek, setTodoListAssignedThisWeek] = useState(0)
+  const [todoListThisWeek, setTodoListThisWeek] = useState(0);
+  const [todoListAssignedThisWeek, setTodoListAssignedThisWeek] = useState(0);
   //ToDo Table Data
-  const [rowsToDo, setRowToDo] = useState([])
+  const [rowsToDo, setRowToDo] = useState([]);
   // console.log(rowsToDo, "rowsToDorowsToDorowsToDo");
   //Get Current User ID
-  let createrID = localStorage.getItem('userID')
+  let createrID = localStorage.getItem("userID");
   //For Custom language datepicker
-  const [calendarValue, setCalendarValue] = useState(gregorian)
-  const [localValue, setLocalValue] = useState(gregorian_en)
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
+  const [eventModal, setEventsModal] = useState(false);
+  let lang = localStorage.getItem("i18nextLng");
+  let valueMeeting = meetingCountThisWeek - upcomingMeetingCountThisWeek;
+  let toDoValue = todoListThisWeek - todoListAssignedThisWeek;
+  const [show, setShow] = useState(false);
+  const [editFlag, setEditFlag] = useState(false);
+  const [startDataUpdate, setStartDataUpdate] = useState("");
+  const [endDataUpdate, setEndDataUpdate] = useState("");
+  const [events, setEvents] = useState([]);
+  const userID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
+  let CalenderMonthsSpan =
+    localStorage.getItem("calenderMonthsSpan") != undefined &&
+    localStorage.getItem("calenderMonthsSpan") != null
+      ? localStorage.getItem("calenderMonthsSpan")
+      : 1;
+  let currentDate = new Date(); // Get the current date
+  // Add CalenderMonthsSpan months and set the day to the last day of the month
+  let startDate =
+    CalenderMonthsSpan &&
+    new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() - parseInt(CalenderMonthsSpan),
+      1
+    ); // Subtract CalenderMonthsSpan months and set the day to the 1st
+  let endDate =
+    CalenderMonthsSpan &&
+    new Date(
+      currentDate.getFullYear(),
+      currentDate.getMonth() + parseInt(CalenderMonthsSpan),
+      0
+    );
+  console.log(startDate, endDate, "endDateendDateendDate");
+ 
+  const callApi = async () => {
+    dispatch(getTodoListInit())
+    dispatch(SetSpinnerTrue())
+    dispatch(SetSpinnersTrue())
+    dispatch(getusernotificationinit())
+    dispatch(getCalendarDataInit(true))
+    dispatch(getNotes_Init())
+    
+    await dispatch(getUserSetting(navigate, t));
 
-  let lang = localStorage.getItem('i18nextLng')
-  let valueMeeting = meetingCountThisWeek - upcomingMeetingCountThisWeek
-  let toDoValue = todoListThisWeek - todoListAssignedThisWeek
-  const [show, setShow] = useState(false)
-  const [editFlag, setEditFlag] = useState(false)
+    let Data = {
+      UserID: parseInt(createrID),
+      OrganizationID: JSON.parse(OrganizationID),
+      Title: "",
+      PageNumber: 1,
+      Length: 50,
+    };
+
+    dispatch(GetNotes(navigate, Data, t));
+    let Data2 = {
+      UserID: parseInt(createrID),
+    };
+    dispatch(GetTodoListByUser(navigate, Data2, t));
+    dispatch(GetWeeklyMeetingsCount(navigate, createrID, t));
+    dispatch(GetWeeklyToDoCount(navigate, Data2, t));
+    dispatch(GetUpcomingEvents(navigate, Data2, t));
+    dispatch(getNotifications(navigate, createrID, t));
+    let CalenderMonthsSpans = localStorage.getItem("calenderMonthsSpan");
+    let startDates =
+      CalenderMonthsSpans &&
+      new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() - parseInt(CalenderMonthsSpans),
+        1
+      ); // Subtract CalenderMonthsSpan months and set the day to the 1st
+    let endDates =
+      CalenderMonthsSpans &&
+      new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() + parseInt(CalenderMonthsSpans),
+        0
+      );
+    let calendarData = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(OrganizationID),
+      StartDate:
+        startDates !== null && newDateFormaterAsPerUTC(startDates) + "000000",
+      EndDate:
+        endDates !== null && newDateFormaterAsPerUTC(endDates) + "000000",
+    };
+    setStartDataUpdate(startDates);
+    setEndDataUpdate(endDates);
+    if (startDates !== null && endDates !== null) {
+      dispatch(getCalendarDataResponse(navigate, calendarData, true, t));
+    }
+  };
+  useEffect(() => {
+    callApi();
+  }, []);
 
   useEffect(() => {
     if (Blur != undefined) {
       // console.log("Blur", Blur);
 
-      setActivateBlur(true)
+      setActivateBlur(true);
     } else {
       // console.log("Blur", Blur);
 
-      setActivateBlur(false)
+      setActivateBlur(false);
     }
-  }, [Blur])
+  }, [Blur]);
+
   // set Data for Calendar
   useEffect(() => {
-    let Data = calendarReducer.CalenderData
+    let Data = calendarReducer.CalenderData;
     // console.log("Data", Data);
-    let newList = []
+
     if (Object.keys(Data).length > 0) {
-      Data.map((cData, index) => {
-        return newList.push({
-          meetingDate: cData.meetingDate,
-        })
-      })
-      setCalenderData(newList)
-      // console.log("newListnewListnewList", calenderData);
+      console.log("newListnewListnewList", Data);
+
+      if (Object.keys(calenderData).length > 0) {
+        let newList = calenderData;
+        Data.map((cData, index) => {
+          let date = moment(
+            startDateTimeMeetingCalendar(cData.eventDate + cData.startTime)
+          ).format("YYYYMMDD");
+
+          return newList.push({
+            meetingDate: date,
+          });
+        });
+        console.log("newListnewListnewList", calenderData);
+      } else {
+        let newList = [];
+        console.log("newListnewListnewList", calenderData);
+        Data.map((cData, index) => {
+          let date = moment(
+            startDateTimeMeetingCalendar(cData.eventDate + cData.startTime)
+          ).format("YYYYMMDD");
+
+          return newList.push({
+            meetingDate: date,
+          });
+        });
+        setCalenderData(newList);
+      }
     }
-  }, [calendarReducer.CalenderData])
+  }, [calendarReducer.CalenderData]);
 
   useEffect(() => {
-    var temp = []
-    // console.log("calenderDatacalenderData", calenderData);
+    var temp = [];
+    console.log("newListnewListnewList", calenderData);
+
     calenderData.map((cal, index) => {
       var year = moment(
-        startDateTimeMeetingCalendar(cal.meetingDate + '000000'),
-      ).format('YYYY')
+        startDateTimeMeetingCalendar(cal.meetingDate + "000000")
+      ).format("YYYY");
       var month = moment(
-        startDateTimeMeetingCalendar(cal.meetingDate + '000000'),
-      ).format('MM')
+        startDateTimeMeetingCalendar(cal.meetingDate + "000000")
+      ).format("MM");
       var day = moment(
-        startDateTimeMeetingCalendar(cal.meetingDate + '000000'),
-      ).format('DD')
+        startDateTimeMeetingCalendar(cal.meetingDate + "000000")
+      ).format("DD");
       // console.log("calenderDatacalenderData", year, month, day);
       var d = new DateObject().set({
         year: year,
         month: month,
         day: day,
         format,
-      })
+      });
       // console.log("calenderDatacalenderData", d);
-      temp.push(d)
-    })
-    setDates(temp)
-  }, [calenderData])
-
-  // calling Api for getting data for calendar
-  useEffect(() => {
-    const userID = localStorage.getItem('userID')
-    dispatch(getCalendarDataResponse(navigate, userID, t))
-  }, [])
+      temp.push(d);
+    });
+    setDates(temp);
+  }, [calenderData]);
 
   useEffect(() => {
     if (
@@ -205,72 +317,58 @@ const Home = () => {
       SocketRecentActivityData !== undefined &&
       Object.keys(SocketRecentActivityData).length > 0
     ) {
-      setRecentActivityData([SocketRecentActivityData, ...recentActivityData])
+      setRecentActivityData([SocketRecentActivityData, ...recentActivityData]);
     }
-  }, [SocketRecentActivityData])
+  }, [SocketRecentActivityData]);
 
   useEffect(() => {
     if (lang !== undefined) {
-      if (lang === 'en') {
-        setCalendarValue(gregorian)
-        setLocalValue(gregorian_en)
-      } else if (lang === 'ar') {
-        setCalendarValue(arabic)
-        setLocalValue(arabic_ar)
+      if (lang === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (lang === "ar") {
+        setCalendarValue(arabic);
+        setLocalValue(arabic_ar);
       }
     }
-  }, [lang])
+  }, [lang]);
 
-  //dispatch gettodolist api
-  useEffect(() => {
-    let data = { UserID: parseInt(createrID), NumberOfRecords: 300 }
-    dispatch(GetTodoListByUser(navigate, data, t))
-  }, [])
-
-  useEffect(() => {
-    let OrganizationID = localStorage.getItem('organizationID')
-    let Data = {
-      UserID: parseInt(createrID),
-      OrganizationID: JSON.parse(OrganizationID),
-    }
-    dispatch(GetNotes(navigate, Data, t))
-  }, [])
   // for view modal  handler
-  const viewModalHandler = (id) => {
-    // console.log("viewID", id);
-  }
+  const viewModalHandler = (id) => {};
 
   const handleClickNoteModal = () => {
-    setModalNote(true)
-  }
+    setModalNote(true);
+  };
 
-  // console.log(notes, "NotesReducerNotesReducer");
   // render Notes Data
   useEffect(() => {
-    if (
-      NotesReducer.GetAllNotesResponse !== null &&
-      NotesReducer.GetAllNotesResponse.length > 0
-    ) {
-      let notes = []
-      NotesReducer.GetAllNotesResponse.map((data, index) => {
-        notes.push(data)
-      })
-      setNotes(notes)
-    } else {
-      setNotes([])
-    }
-  }, [NotesReducer.GetAllNotesResponse])
+    try {
+      if (
+        NotesReducer.GetAllNotesResponse !== null &&
+        NotesReducer.GetAllNotesResponse !== undefined
+      ) {
+        if (NotesReducer.GetAllNotesResponse.getNotes.length > 0) {
+          let notes = [];
+          NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
+            notes.push(data);
+          });
+          setNotes(notes);
+        } else {
+          setNotes([]);
+        }
+      } else {
+        setNotes([]);
+      }
+    } catch (error) {}
+  }, [NotesReducer.GetAllNotesResponse]);
 
   useEffect(() => {
-    // console.log("checkingthesocketdata is coming or not", rowsToDo);
     if (Object.keys(toDoListReducer.SocketTodoActivityData).length > 0) {
-      // rowsToDo.unshift(toDoListReducer.SocketTodoActivityData);
-      setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo])
-      // console.log("checkingthesocketdata is coming or not", rowsToDo);
+      setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo]);
     } else {
-      setRowToDo(toDoListReducer.AllTodolistData)
+      setRowToDo(toDoListReducer.AllTodolistData);
     }
-  }, [toDoListReducer.SocketTodoActivityData])
+  }, [toDoListReducer.SocketTodoActivityData]);
 
   //get todolist reducer
   useEffect(() => {
@@ -278,47 +376,38 @@ const Home = () => {
       Object.keys(toDoListReducer.AllTodolistData).length > 0 &&
       toDoListReducer.AllTodolistData !== undefined
     ) {
-      // console.log(
-      //   "todolistreducer.AllTodolistData",
-      //   toDoListReducer,
-      //   toDoListReducer.AllTodolistData
-      // );
-      setRowToDo(toDoListReducer.AllTodolistData)
+      setRowToDo(toDoListReducer.AllTodolistData);
     } else {
-      // console.log(
-      //   "todolistreducer.AllTodolistData",
-      //   toDoListReducer.AllTodolistData
-      // );
-      setRowToDo([])
+      setRowToDo([]);
     }
-  }, [toDoListReducer.AllTodolistData])
+  }, [toDoListReducer.AllTodolistData]);
 
   const columnsToDo = [
     {
-      title: t('Task'),
-      dataIndex: 'title',
-      key: 'title',
-      width: '35%',
-      className: 'titleDashboard',
+      title: t("Task"),
+      dataIndex: "title",
+      key: "title",
+      width: "35%",
+      className: "titleDashboard",
       ellipsis: true,
       // render: (text) => <span className="fw-bold">{text}</span>,
     },
     {
-      title: t('Deadline'),
-      dataIndex: 'deadlineDateTime',
-      key: 'deadlineDateTime',
-      width: '40%',
-      className: 'deadlineDashboard',
+      title: t("Deadline"),
+      dataIndex: "deadlineDateTime",
+      key: "deadlineDateTime",
+      width: "40%",
+      className: "deadlineDashboard",
       render: (text) => {
-        return _justShowDateformat(text)
+        return _justShowDateformat(text);
       },
     },
     {
-      title: t('Status'),
-      dataIndex: 'status',
-      key: 'status',
-      width: '25%',
-      className: 'statusDashboard',
+      title: t("Status"),
+      dataIndex: "status",
+      key: "status",
+      width: "25%",
+      className: "statusDashboard",
       render: (text) => {
         // console.log("texttexttexttext", text);
         return toDoListReducer.AllTodolistData.map((data, index) => {
@@ -328,221 +417,204 @@ const Home = () => {
                 <span className="MontserratSemiBold-600 InProgress">
                   {text.status}
                 </span>
-              )
+              );
             } else if (text.pK_TSID === 2) {
               return (
                 <span className="MontserratSemiBold-600 Pending">
                   {text.status}
                 </span>
-              )
+              );
             } else if (text.pK_TSID === 3) {
               return (
                 <span className="MontserratSemiBold-600 Upcoming">
                   {text.status}
                 </span>
-              )
+              );
             } else if (text.pK_TSID === 4) {
               return (
                 <span className="MontserratSemiBold-600 Cancelled">
                   {text.status}
                 </span>
-              )
+              );
             } else if (text.pK_TSID === 5) {
               return (
                 <span className="MontserratSemiBold-600 Completed">
                   {text.status}
                 </span>
-              )
+              );
             } else if (text.pK_TSID === 6) {
               return (
                 <span className="MontserratSemiBold-600 color-F68732">
                   {text.status}
                 </span>
-              )
+              );
             }
           }
-        })
+        });
       },
     },
-  ]
-
-  // Api Hit Meeting Count
-  useEffect(() => {
-    let Data = {
-      UserId: parseInt(createrID),
-    }
-    let Data2 = {
-      UserID: parseInt(createrID),
-    }
-    dispatch(GetWeeklyMeetingsCount(navigate, createrID, t))
-    dispatch(GetWeeklyToDoCount(navigate, Data2, t))
-    dispatch(GetUpcomingEvents(navigate, Data2, t))
-  }, [])
+  ];
 
   useEffect(() => {
-    dispatch(getNotifications(navigate, createrID, t))
-  }, [])
-
-  useEffect(() => {
-    setMeetingCountThisWeek(meetingIdReducer.TotalMeetingCountThisWeek)
+    setMeetingCountThisWeek(meetingIdReducer.TotalMeetingCountThisWeek);
     setUpcomingMeetingCountThisWeek(
-      meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek,
-    )
-  }, [meetingIdReducer])
+      meetingIdReducer.TotalNumberOfUpcommingMeetingsInWeek
+    );
+  }, [meetingIdReducer]);
 
   useEffect(() => {
     if (meetingIdReducer.UpcomingEventsData.length > 0) {
       // console.log("NEW_UPCOMING123", meetingIdReducer.UpcomingEventsData);
     }
-  }, [meetingIdReducer.UpcomingEventsData])
+  }, [meetingIdReducer.UpcomingEventsData]);
 
   useEffect(() => {
-    setTodoListThisWeek(toDoListReducer.TotalTodoCountThisWeek)
+    setTodoListThisWeek(toDoListReducer.TotalTodoCountThisWeek);
     setTodoListAssignedThisWeek(
-      toDoListReducer.TotalNumberOfUpcommingTodoInWeek,
-    )
-  }, [toDoListReducer])
+      toDoListReducer.TotalNumberOfUpcommingTodoInWeek
+    );
+  }, [toDoListReducer]);
 
   useEffect(() => {
     if (Object.keys(RecentActivityData).length > 0) {
-      setRecentActivityData(RecentActivityData)
+      setRecentActivityData(RecentActivityData);
     }
-  }, [RecentActivityData])
+  }, [RecentActivityData]);
 
   useEffect(() => {
-    dispatch(HideNotificationAuth())
-    dispatch(HideNotificationCalendarData())
-    dispatch(HideNotificationTodo())
-    dispatch(HideNotificationUserNotificationData())
-    dispatch(HideNotificationMeetings())
-    dispatch(HideNotification())
-  }, [auth.ResponseMessage])
+    dispatch(HideNotificationAuth());
+    dispatch(HideNotificationCalendarData());
+    dispatch(HideNotificationTodo());
+    dispatch(HideNotificationUserNotificationData());
+    dispatch(HideNotificationMeetings());
+    dispatch(HideNotification());
+  }, [auth.ResponseMessage]);
 
   const showsubTalkIcons = () => {
-    setSubIcons(!subIcons)
-  }
+    setSubIcons(!subIcons);
+  };
 
   useEffect(() => {
     if (
-      Authreducer.VerifyOTPEmailResponseMessage !== '' &&
+      Authreducer.VerifyOTPEmailResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-      t('The-user-is-not-an-admin-user')
+        t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
         open: true,
         message: Authreducer.VerifyOTPEmailResponseMessage,
-      })
+      });
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: '',
-        })
-      }, 3000)
+          message: "",
+        });
+      }, 3000);
 
-      dispatch(cleareMessage())
+      dispatch(cleareMessage());
     } else if (
-      Authreducer.EnterPasswordResponseMessage !== '' &&
+      Authreducer.EnterPasswordResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-      t('The-user-is-not-an-admin-user')
+        t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
         open: false,
-        message: '',
-      })
+        message: "",
+      });
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: '',
-        })
-      }, 3000)
+          message: "",
+        });
+      }, 3000);
 
-      dispatch(cleareMessage())
+      dispatch(cleareMessage());
     } else if (
-      Authreducer.OrganizationCreateResponseMessage !== '' &&
+      Authreducer.OrganizationCreateResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-      t('The-user-is-not-an-admin-user')
+        t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
         open: true,
         message: Authreducer.OrganizationCreateResponseMessage,
-      })
+      });
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: '',
-        })
-      }, 3000)
+          message: "",
+        });
+      }, 3000);
 
-      dispatch(cleareMessage())
+      dispatch(cleareMessage());
     } else if (
-      Authreducer.CreatePasswordResponseMessage !== '' &&
+      Authreducer.CreatePasswordResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-      t('The-user-is-not-an-admin-user')
+        t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
         open: true,
         message: Authreducer.CreatePasswordResponseMessage,
-      })
+      });
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: '',
-        })
-      }, 3000)
+          message: "",
+        });
+      }, 3000);
 
-      dispatch(cleareMessage())
+      dispatch(cleareMessage());
     } else if (
-      Authreducer.GetSelectedPackageResponseMessage !== '' &&
+      Authreducer.GetSelectedPackageResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-      t('The-user-is-not-an-admin-user')
+        t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
         open: true,
         message: Authreducer.GetSelectedPackageResponseMessage,
-      })
+      });
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: '',
-        })
-      }, 3000)
+          message: "",
+        });
+      }, 3000);
 
-      dispatch(cleareMessage())
+      dispatch(cleareMessage());
     } else if (
-      Authreducer.EmailValidationResponseMessage !== '' &&
+      Authreducer.EmailValidationResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-      t('The-user-is-not-an-admin-user')
+        t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
         open: true,
         message: Authreducer.EmailValidationResponseMessage,
-      })
+      });
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: '',
-        })
-      }, 3000)
+          message: "",
+        });
+      }, 3000);
 
-      dispatch(cleareMessage())
+      dispatch(cleareMessage());
     } else {
       setOpen({
         ...open,
         open: false,
-        message: '',
-      })
+        message: "",
+      });
     }
   }, [
     Authreducer.EnterPasswordResponseMessage,
@@ -551,76 +623,85 @@ const Home = () => {
     Authreducer.CreatePasswordResponseMessage,
     Authreducer.EmailValidationResponseMessage,
     Authreducer.GetSelectedPackageResponseMessage,
-  ])
+  ]);
 
   const calendarClickFunction = async (value) => {
-    console.log("valuevaluevaluevalue", value)
+    console.log("valuevaluevaluevalue", value);
     // console.log("Calendar Clicked");
     if (!dates.includes(value)) {
-      setDates([...dates, value])
+      setDates([...dates, value]);
     }
     // await setShow(true);
-  }
-
+  };
   useEffect(() => {
-    if (lang === 'ar') {
-      moment.locale(lang)
-    } else if (lang === 'fr') {
-      moment.locale(lang)
-    } else if (lang === 'en') {
-      moment.locale(lang)
+    if (lang === "ar") {
+      moment.locale(lang);
+    } else if (lang === "fr") {
+      moment.locale(lang);
+    } else if (lang === "en") {
+      moment.locale(lang);
     } else {
-      moment.locale('en')
+      moment.locale("en");
     }
-  }, [lang])
+  }, [lang]);
 
   useEffect(() => {
-    console.log(settingReducer, "settingReducer.UserProfileDatasettingReducer.UserProfileData")
-  }, [settingReducer])
+    console.log(
+      settingReducer,
+      "settingReducer.UserProfileDatasettingReducer.UserProfileData"
+    );
+  }, [settingReducer]);
 
-  useEffect(() => {
-    dispatch(getUserSetting(navigate, t));
-  }, []);
   const closeModal = () => {
-    setActivateBlur(false)
-    setLoader(false)
-    navigate('/')
-  }
+    setActivateBlur(false);
+    setLoader(false);
+    navigate("/");
+  };
 
   const upcomingEventsHandler = (meetingIdReducer) => {
-    let flag = false
-    let indexforUndeline = null
+    let flag = false;
+    let indexforUndeline = null;
     meetingIdReducer.UpcomingEventsData.map((upcomingEventsData, index) => {
-      console.log(upcomingEventsData, "upcomingEventsDataupcomingEventsDataupcomingEventsData")
+      console.log(
+        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8),
+        getCurrentDate,
+        "upcomingEventsDataupcomingEventsDataupcomingEventsData"
+      );
       if (
-        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) !==
+        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
         getCurrentDate
       ) {
         if (indexforUndeline === null && flag === false) {
-          if (index - 1 >= 0) {
-            flag = true;
-            indexforUndeline = index;
-            console.log("upcomingEventsDataupcomingEventsDataupcomingEventsData", index);
-          }
+          // if (index - 1 >= 0) {
+          flag = true;
+          indexforUndeline = index;
+          console.log(
+            "upcomingEventsDataupcomingEventsDataupcomingEventsData",
+            index
+          );
+          // }
         }
       }
-    })
+    });
 
     return meetingIdReducer.UpcomingEventsData.map(
       (upcomingEventsData, index) => {
-        console.log("upcomingEvents index", upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-          getCurrentDate);
+        console.log(
+          "upcomingEvents index",
+          upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
+            getCurrentDate
+        );
         return (
           <>
             {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-              getCurrentDate ? (
+            getCurrentDate ? (
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <div
                     className="event-details upcoming_events todayEvent border-0"
                     onClick={() =>
                       viewModalHandler(
-                        upcomingEventsData.meetingDetails.pK_MDID,
+                        upcomingEventsData.meetingDetails.pK_MDID
                       )
                     }
                   >
@@ -630,23 +711,22 @@ const Home = () => {
                     <p className="events-dateTime MontserratSemiBold-600">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
-                        upcomingEventsData.meetingEvent.startTime,
+                          upcomingEventsData.meetingEvent.startTime
                       )}
                     </p>
                   </div>
                 </Col>
               </Row>
-            ) : indexforUndeline != null && indexforUndeline === index ? (
+            ) : indexforUndeline !== null && indexforUndeline === index ? (
               <>
                 <span className="bordertop" />
-
                 <Row>
                   <Col lg={12} md={12} sm={12}>
                     <div
                       className="event-details"
                       onClick={() =>
                         viewModalHandler(
-                          upcomingEventsData.meetingDetails.pK_MDID,
+                          upcomingEventsData.meetingDetails.pK_MDID
                         )
                       }
                     >
@@ -656,7 +736,7 @@ const Home = () => {
                       <p className="events-dateTime">
                         {newTimeFormaterAsPerUTCFullDate(
                           upcomingEventsData.meetingEvent.meetingDate +
-                          upcomingEventsData.meetingEvent.startTime,
+                            upcomingEventsData.meetingEvent.startTime
                         )}
                       </p>
                     </div>
@@ -670,7 +750,7 @@ const Home = () => {
                     className="event-details"
                     onClick={() =>
                       viewModalHandler(
-                        upcomingEventsData.meetingDetails.pK_MDID,
+                        upcomingEventsData.meetingDetails.pK_MDID
                       )
                     }
                   >
@@ -680,7 +760,7 @@ const Home = () => {
                     <p className="events-dateTime">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
-                        upcomingEventsData.meetingEvent.startTime,
+                          upcomingEventsData.meetingEvent.startTime
                       )}
                     </p>
                   </div>
@@ -688,10 +768,10 @@ const Home = () => {
               </Row>
             )}
           </>
-        )
-      },
-    )
-  }
+        );
+      }
+    );
+  };
 
   const OpenUpdateNotesModal = (id) => {
     dispatch(
@@ -701,20 +781,102 @@ const Home = () => {
         setViewModalShow,
         setUpdateShow,
         setUpdateNotesModalHomePage,
-        3,
-      ),
-    )
-  }
+        3
+      )
+    );
+  };
+
   const handleMonthChange = (value) => {
-    console.log("handleMonthChangehandleMonthChangehandleMonthChange", value)
-  }
+    const formattedDate = value.format("YYYYMMDD");
+    const dateString = value.toDate().toString();
+    let newStartDataUpdate = moment(startDataUpdate).format("YYYYMMDD");
+    let newEndDataUpdate = moment(endDataUpdate).format("YYYYMMDD");
+
+    // Subtract CalenderMonthsSpan months and set the day to the 1st
+
+    console.log(
+      "handleMonthChangehandleMonthChangehandleMonthChange past ",
+      newStartDataUpdate > formattedDate
+    );
+    if (newStartDataUpdate > formattedDate) {
+      console.log(
+        "handleMonthChangehandleMonthChangehandleMonthChange past ",
+        startDataUpdate
+      );
+      const date = new Date(dateString);
+      let updateStartDate = new Date(
+        date.getFullYear(),
+        date.getMonth() - parseInt(CalenderMonthsSpan),
+        1
+      );
+      console.log(
+        "handleMonthChangehandleMonthChangehandleMonthChange past ",
+        updateStartDate
+      );
+      let calendarData = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(OrganizationID),
+        StartDate: newDateFormaterAsPerUTC(updateStartDate) + "000000",
+        EndDate: newDateFormaterAsPerUTC(formattedDate) + "000000",
+      };
+      setStartDataUpdate(updateStartDate);
+      dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
+    } else if (newEndDataUpdate < formattedDate) {
+      console.log(
+        "handleMonthChangehandleMonthChangehandleMonthChange future",
+        formattedDate
+      );
+      const date = new Date(dateString);
+      let updateEndDate = new Date(
+        date.getFullYear(),
+        date.getMonth() + parseInt(CalenderMonthsSpan),
+        0
+      );
+      console.log(
+        "handleMonthChangehandleMonthChangehandleMonthChange past ",
+        updateEndDate
+      );
+      let calendarData = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(OrganizationID),
+        StartDate: newDateFormaterAsPerUTC(formattedDate) + "000000",
+        EndDate: newDateFormaterAsPerUTC(updateEndDate) + "000000",
+      };
+      setEndDataUpdate(updateEndDate);
+      dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
+    }
+  };
+
+  // console.log(dateFocused, dateClicked.toDate().getDate(), "onFocusedDateChangeonFocusedDateChangeonFocusedDateChange")
+  const handleClickonDate = (dateObject, dateSelect) => {
+    let selectDate = dateSelect.toString().split("/").join("");
+    if (
+      calendarReducer.CalenderData.length !== null &&
+      calendarReducer.CalenderData !== undefined &&
+      calendarReducer.CalenderData.length > 0
+    ) {
+      let findData = calendarReducer.CalenderData.filter(
+        (data, index) => data.eventDate === selectDate
+      );
+      if (findData.length > 0) {
+        setEvents(findData);
+        setEventsModal(true);
+      } else {
+        setOpen({
+          ...open,
+          open: true,
+          message: t("No-events-available-on-this-date"),
+        });
+      }
+    }
+  };
 
   return (
     <>
       <Container fluid className="Dashboard-Main-Container">
         <Row>
           <Col lg={4} md={4} sm={12} className="dashboard-container">
-            <section className='dashboard-col-1'>
+            <section className="dashboard-col-1">
               <Row className="mb-3">
                 <Col
                   lg={12}
@@ -733,20 +895,21 @@ const Home = () => {
                       >
                         <div className="progressbar-count m-0 ">
                           <strong>
-                            {upcomingMeetingCountThisWeek}/{meetingCountThisWeek}
+                            {upcomingMeetingCountThisWeek}/
+                            {meetingCountThisWeek}
                           </strong>
                         </div>
                         <div className="home-meetingcount-text Saved_money_Tagline">
                           {t("Meeting")} <br />
                           {t("This-month")}
-                        </div >
-                      </CustomTextProgressbar >
+                        </div>
+                      </CustomTextProgressbar>
                     )}
-                  </div >
-                </Col >
-              </Row >
+                  </div>
+                </Col>
+              </Row>
               <Row>
-                <Col lg={12} md={12} sm={12} >
+                <Col lg={12} md={12} sm={12}>
                   <div className="whiteBackground Spinner home-calendar-spinner calendar_home   ">
                     {calendarReducer.Spinner === true ? (
                       <Spin />
@@ -755,47 +918,36 @@ const Home = () => {
                         <Row>
                           <Col lg={12} md={12} sm={12} xs={12}>
                             <Calendar
+                              lazy
                               value={dates}
                               disabled={false}
-                              minDate={moment().toDate()}
+                              // minDate={moment().toDate()}
                               calendar={calendarValue}
                               locale={localValue}
                               ref={calendarRef}
                               showOtherDays={true}
+                              onFocusedDateChange={(
+                                dateFocused,
+                                dateClicked
+                              ) => {
+                                handleClickonDate(dateFocused, dateClicked);
+                              }}
                               multiple={false}
                               onChange={calendarClickFunction}
                               className="custom-multi-date-picker"
+                              // onMonthChange={handleMonthChange}
                               onMonthChange={handleMonthChange}
+                              // format="YYYY-MM-DD"
                             />
                           </Col>
                         </Row>
-                        {/* <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <h1 className="upcoming-events">
-                            {t('Up-coming-event')}
-                          </h1>
-
-                          <div className="Upcoming-Events-Box">
-                            {meetingIdReducer.UpcomingEventsData.length ===
-                              0 ? (
-                              <ResultMessage
-                                icon={<Mailbox className="notification-icon" />}
-                                subTitle={t('No-upcoming-events')}
-                                className="notification-text"
-                              />
-                            ) : (
-                              upcomingEventsHandler(meetingIdReducer)
-                            )}
-                          </div>
-                        </Col>
-                      </Row> */}
                       </>
                     )}
                   </div>
                 </Col>
               </Row>
               <Row>
-                <Col lg={12} md={12} sm={12} >
+                <Col lg={12} md={12} sm={12}>
                   <div className="whiteBackground Spinner home-meeting_event-spinner event_home ">
                     {meetingIdReducer.Spinner === true ? (
                       <Spin />
@@ -804,15 +956,17 @@ const Home = () => {
                         <Row>
                           <Col lg={12} md={12} sm={12}>
                             <h1 className="upcoming-events">
-                              {t('Up-coming-event')}
+                              {t("Up-coming-event")}
                             </h1>
 
                             <div className="Upcoming-Events-Box">
                               {meetingIdReducer.UpcomingEventsData.length ===
-                                0 ? (
+                              0 ? (
                                 <ResultMessage
-                                  icon={<Mailbox className="notification-icon" />}
-                                  subTitle={t('No-upcoming-events')}
+                                  icon={
+                                    <Mailbox className="notification-icon" />
+                                  }
+                                  subTitle={t("No-upcoming-events")}
                                   className="notification-text"
                                 />
                               ) : (
@@ -827,7 +981,7 @@ const Home = () => {
                 </Col>
               </Row>
             </section>
-          </Col >
+          </Col>
           <Col lg={4} md={4} sm={12} className="m-0 ">
             <Row className="mb-3">
               <Col
@@ -852,12 +1006,12 @@ const Home = () => {
                       <div className="home-todocount-text Saved_money_Tagline">
                         {t("Todo")} <br />
                         {t("This-month")}
-                      </div >
-                    </CustomTextProgressbar >
+                      </div>
+                    </CustomTextProgressbar>
                   )}
-                </div >
-              </Col >
-            </Row >
+                </div>
+              </Col>
+            </Row>
             <Row>
               <Col lg={12} md={12} sm={12} className="DashboardTodoTable ">
                 {toDoListReducer.TableSpinner === true ? (
@@ -868,7 +1022,7 @@ const Home = () => {
                     }}
                     column={columnsToDo}
                     className="dashboard-todo"
-                    labelTitle={t('Todo-list')}
+                    labelTitle={t("Todo-list")}
                     scroll={{ y: 600 }}
                     pagination={false}
                   />
@@ -879,14 +1033,14 @@ const Home = () => {
                     column={columnsToDo}
                     className="dashboard-todo"
                     rows={rowsToDo}
-                    labelTitle={t('Todo-list')}
+                    labelTitle={t("Todo-list")}
                     scroll={{ y: "49vh" }}
                     pagination={false}
                   />
                 ) : (
                   <Paper>
                     <h1 className="todo-Heading color-5a5a5a MontserratSemiBold-600">
-                      {t('Todo-list')}
+                      {t("Todo-list")}
                     </h1>
                     <ResultMessage
                       icon={
@@ -899,17 +1053,17 @@ const Home = () => {
                 )}
               </Col>
             </Row>
-          </Col >
+          </Col>
           <Col lg={4} md={4} sm={12} className="m-0 p-0">
             <h1 className="border recent-activity color-5a5a5a MontserratSemiBold-600">
-              {t('Recent-activity')}
+              {t("Recent-activity")}
             </h1>
             <div className="whiteBackground Spinner home-recentactivity-scrollbar-container mt-2 border">
               <div
                 className={
                   recentActivityData.length === 0
-                    ? 'Recent-Activity-Box-Empty '
-                    : 'Recent-Activity-Box '
+                    ? "Recent-Activity-Box-Empty "
+                    : "Recent-Activity-Box "
                 }
               >
                 {settingReducer.Spinner === true ? (
@@ -922,7 +1076,7 @@ const Home = () => {
                         className="recent-activity-icon"
                       />
                     }
-                    subTitle={t('No-activity')}
+                    subTitle={t("No-activity")}
                     className="recent-activity-text"
                   />
                 ) : recentActivityData !== null &&
@@ -933,7 +1087,7 @@ const Home = () => {
                         <Row>
                           <Col sm={1}>
                             {recentActivityData.notificationTypes.pK_NTID ===
-                              1 ? (
+                            1 ? (
                               <div className="desc-notification-user ">
                                 {/* Bell Notification SVG Code */}
                                 <svg
@@ -1177,7 +1331,7 @@ const Home = () => {
                               {
                                 <TimeAgo
                                   datetime={forRecentActivity(
-                                    recentActivityData.creationDateTime,
+                                    recentActivityData.creationDateTime
                                   )}
                                   locale="en"
                                 />
@@ -1186,7 +1340,7 @@ const Home = () => {
                           </Row>
                         </Row>
                       </>
-                    )
+                    );
                   })
                 ) : (
                   <Spin />
@@ -1203,7 +1357,7 @@ const Home = () => {
                     className=" d-flex align-items-center gap-3 justify-content-start"
                   >
                     <h1 className="noteheading color-5a5a5a MontserratSemiBold-600">
-                      {t('Notes')}
+                      {t("Notes")}
                     </h1>
                     <img
                       src={PlusButton}
@@ -1216,8 +1370,8 @@ const Home = () => {
                   <div
                     className={
                       notes.Loading > 0
-                        ? 'Notes-scrollbar'
-                        : 'Notes-scrollbar-spinner'
+                        ? "Notes-scrollbar"
+                        : "Notes-scrollbar-spinner"
                     }
                   >
                     {NotesReducer.Loading ? (
@@ -1226,7 +1380,7 @@ const Home = () => {
                           sm={12}
                           lg={12}
                           md={12}
-                          className={'notes-spinner'}
+                          className={"notes-spinner"}
                         >
                           <Spin />
                         </Col>
@@ -1267,7 +1421,7 @@ const Home = () => {
                                     width="17.26px"
                                     height="16.62px"
                                     className={
-                                      styles['starIcon-In-Collapse-material']
+                                      styles["starIcon-In-Collapse-material"]
                                     }
                                   />
                                 ) : (
@@ -1276,7 +1430,7 @@ const Home = () => {
                                     width="17.34px"
                                     height="16.62px"
                                     className={
-                                      styles['starIcon-In-Collapse-material']
+                                      styles["starIcon-In-Collapse-material"]
                                     }
                                   />
                                 )}
@@ -1299,7 +1453,7 @@ const Home = () => {
                               <Col lg={1} md={1} sm={1}></Col>
                             </Row>
                           </div>
-                        )
+                        );
                       })
                     ) : (
                       <Row>
@@ -1311,7 +1465,7 @@ const Home = () => {
                         >
                           <img src={NotesMainEmpty} width={150} height={150} />
                           <p className="emptystateNotesDashboard">
-                            {t('You-dont-have-any-notes')}
+                            {t("You-dont-have-any-notes")}
                           </p>
                         </Col>
                       </Row>
@@ -1321,8 +1475,8 @@ const Home = () => {
               </Col>
             </Row>
           </Col>
-        </Row >
-      </Container >
+        </Row>
+      </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       <ModalMeeting
         show={show}
@@ -1333,11 +1487,11 @@ const Home = () => {
       <Modal
         show={activateBlur}
         setShow={() => {
-          setActivateBlur()
+          setActivateBlur();
         }}
-        ButtonTitle={'Block'}
+        ButtonTitle={"Block"}
         centered
-        size={'md'}
+        size={"md"}
         modalHeaderClassName="d-none"
         ModalBody={
           <>
@@ -1349,15 +1503,15 @@ const Home = () => {
                       <img
                         src={VerificationFailedIcon}
                         width={60}
-                        className={'allowModalIcon'}
+                        className={"allowModalIcon"}
                       />
                     </Col>
                   </Row>
                   <Row>
                     <Col className="text-center mt-4">
-                      <label className={'allow-limit-modal-p'}>
+                      <label className={"allow-limit-modal-p"}>
                         {t(
-                          'The-organization-subscription-is-not-active-please-contact-your-admin',
+                          "The-organization-subscription-is-not-active-please-contact-your-admin"
                         )}
                       </label>
                     </Col>
@@ -1378,8 +1532,8 @@ const Home = () => {
                   className="d-flex justify-content-center"
                 >
                   <Button
-                    className={'Ok-Successfull-btn'}
-                    text={t('Ok')}
+                    className={"Ok-Successfull-btn"}
+                    text={t("Ok")}
                     onClick={closeModal}
                   />
                 </Col>
@@ -1388,21 +1542,26 @@ const Home = () => {
           </>
         }
       />
-      {
-        updateNotesModalHomePage ? (
-          <ModalUpdateNote
-            updateNotes={updateNotesModalHomePage}
-            setUpdateNotes={setUpdateNotesModalHomePage}
-            flag={true}
-          />
-        ) : null
-      }
-      {
-        modalNote ? (
-          <ModalAddNote addNewModal={modalNote} setAddNewModal={setModalNote} />
-        ) : null
-      }
+      {updateNotesModalHomePage ? (
+        <ModalUpdateNote
+          updateNotes={updateNotesModalHomePage}
+          setUpdateNotes={setUpdateNotesModalHomePage}
+          flag={true}
+        />
+      ) : null}
+      {modalNote ? (
+        <ModalAddNote addNewModal={modalNote} setAddNewModal={setModalNote} />
+      ) : null}
+
+      {eventModal && (
+        <EventsModal
+          events={events}
+          eventModal={eventModal}
+          setEventsModal={setEventsModal}
+        />
+      )}
+      {settingReducer.Loading ? <Loader /> : null}
     </>
-  )
-}
-export default Home
+  );
+};
+export default Home;

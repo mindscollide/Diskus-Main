@@ -36,7 +36,7 @@
     "EmailWhenAddedToGroup": false,
     "EmailWhenAddedToCommittee": false,
     "EmailwhenaResolutionisClosed": false,
-    "UserAllowGoogleCalendarSynch": false,
-    "UserAllowMicrosoftCalendarSynch": false
+    "UserAllowGoogleCalendarSynch": true,
+    "UserAllowMicrosoftCalendarSynch": true
   }
 }

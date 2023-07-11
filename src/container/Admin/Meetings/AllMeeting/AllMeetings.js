@@ -39,6 +39,7 @@ import {
   TimeDisplayFormat,
 } from "../../../../commen/functions/date_formater";
 import { cleareMessage } from "../../../../store/actions/Admin_AddUser";
+import { Pagination } from "antd";
 
 const AllMeetings = ({ show, setShow, ModalTitle }) => {
   //for translation
@@ -91,6 +92,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   });
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
+  const [totalRecords, setTotalRecords] = useState(0);
+  let currentPageSize = localStorage.getItem("MeetingPageSize");
+  let currentPage = JSON.parse(localStorage.getItem("MeetingCurrentPage"))
 
   const [modalEditMeetingStates, setModalEditMeetingStates] = useState({
     Titles: "",
@@ -269,36 +273,36 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       dataIndex: "agenda",
       key: "agenda",
       align: "left",
-      render: (text, record) => {
-        return (
-          <p className={styles["agenda-title"]}>
-            {record.meetingAgenda[0].objMeetingAgenda.title}
-          </p>
-        );
-      },
+      // render: (text, record) => {
+      //   return (
+      //     <p className={styles["agenda-title"]}>
+      //       {record.meetingAgenda[0].objMeetingAgenda.title}
+      //     </p>
+      //   );
+      // },
     },
     {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
       align: "left",
-      render: (text, record) => {
-        if (record.status === "1") {
-          return <p className="m-0 FontArabicRegular">UpComing</p>;
-        } else if (record.status === "2") {
-          return <p className="m-0 FontArabicRegular">Start</p>;
-        } else if (record.status === "3") {
-          return <p className="m-0 FontArabicRegular">End</p>;
-        } else if (record.status === "4") {
-          return <p className="m-0 FontArabicRegular">Cancel</p>;
-        } else if (record.status === "5") {
-          return <p className="m-0 FontArabicRegular">Reschudule</p>;
-        } else if (record.status === "6") {
-          return <p className="m-0 FontArabicRegular">Close</p>;
-        } else if (record.status === "7") {
-          return <p className="m-0 FontArabicRegular">Delete</p>;
-        }
-      },
+      // render: (text, record) => {
+      //   if (record.status === "1") {
+      //     return <p className="m-0 FontArabicRegular">UpComing</p>;
+      //   } else if (record.status === "2") {
+      //     return <p className="m-0 FontArabicRegular">Start</p>;
+      //   } else if (record.status === "3") {
+      //     return <p className="m-0 FontArabicRegular">End</p>;
+      //   } else if (record.status === "4") {
+      //     return <p className="m-0 FontArabicRegular">Cancel</p>;
+      //   } else if (record.status === "5") {
+      //     return <p className="m-0 FontArabicRegular">Reschudule</p>;
+      //   } else if (record.status === "6") {
+      //     return <p className="m-0 FontArabicRegular">Close</p>;
+      //   } else if (record.status === "7") {
+      //     return <p className="m-0 FontArabicRegular">Delete</p>;
+      //   }
+      // },
     },
     {
       title: t("Organizer"),
@@ -306,18 +310,19 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       key: "host",
       align: "left",
       className: "FontArabicRegular",
-      sorter: (a, b) => a.host.localeCompare(b.host.toLowerCase),
+      // sorter: (a, b) => a.host.localeCompare(b.host.toLowerCase),
     },
     {
       title: t("Date-or-time"),
       dataIndex: "dateOfMeeting",
       key: "dateOfMeeting",
       align: "left",
+      width: "220px",
       className: "dateTimeColumn FontArabicRegular",
       render: (text, record) => {
-        if (record.meetingStartTime !== null && record.dateOfMeeting !== null) {
+        if (record?.createdTime !== null && record?.createdDate !== null) {
           return newTimeFormaterAsPerUTCFullDate(
-            record.dateOfMeeting + record.meetingStartTime
+            record?.createdDate + record?.createdTime
           );
         }
       },
@@ -345,7 +350,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
               <Trash
                 size={22}
                 onClick={() => {
-                  openDeleteModal(record.pK_MDID, record.status);
+                  openDeleteModal(record?.pK_MDID, record?.status);
                 }}
               />
             </i>
@@ -482,7 +487,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       console.log(
         "filter a.dateOfMeeting + a.meetingStartTime",
         removeDashesFromDate(
-          editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+          editResolutionDate(a?.dateOfMeeting + a?.meetingStartTime)
         )
       );
 
@@ -599,7 +604,14 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   };
 
   useEffect(() => {
-    dispatch(OrganizationMeetings(navigate, t));
+    if (currentPage !== null && currentPageSize !== null) {
+      dispatch(OrganizationMeetings(navigate, currentPage, currentPageSize, t));
+    } else {
+      dispatch(OrganizationMeetings(navigate, 1, 50, t));
+      localStorage.setItem("MeetingPageSize", 50)
+      localStorage.setItem("MeetingCurrentPage", 1)
+    }
+    // dispatch(OrganizationMeetings(navigate, currentPage, t));
     dispatch(GetMeetingStatus(navigate, t));
   }, []);
 
@@ -716,10 +728,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     if (
       adminReducer.AllOrganizationMeeting != null &&
-      adminReducer.AllOrganizationMeeting.length > 0
+      adminReducer.AllOrganizationMeeting !== undefined
     ) {
-      setRows(adminReducer.AllOrganizationMeeting);
-      setAllMeetingData(adminReducer.AllOrganizationMeeting);
+      setTotalRecords(adminReducer.AllOrganizationMeeting.totalRecords)
+      if (adminReducer.AllOrganizationMeeting.organizationMeetings.length > 0) {
+        setRows(adminReducer.AllOrganizationMeeting.organizationMeetings);
+        setAllMeetingData(adminReducer.AllOrganizationMeeting.organizationMeetings);
+      }
     }
   }, [adminReducer.AllOrganizationMeeting]);
 
@@ -739,6 +754,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       });
     }
   };
+
   const changeStatusEditModal = (e) => {
     console.log("eee", e);
     setModalEditMeetingStates({
@@ -765,6 +781,12 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       },
     }),
   };
+
+  const AdminMeetingPagination = async (current, pageSize) => {
+    await dispatch(OrganizationMeetings(navigate, current, pageSize, t));
+    localStorage.setItem("MeetingPageSize", pageSize)
+    localStorage.setItem("MeetingCurrentPage", current)
+  }
 
   return (
     <>
@@ -822,18 +844,19 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                   rows={rows}
                   column={AllMeetingColumn}
                   className="AllUserTable"
-                  scroll={{ y: 400 }}
-                  pagination={{
-                    pageSize: rowSize,
-                    showSizeChanger: true,
-                    pageSizeOptions: ["100 ", "150", "200"],
-                  }}
+                  scroll={{ y: 320 }}
+                  pagination={false}
                 />
               </>
             )}
           </Col>
-        </Row>
 
+        </Row>
+        <Row>
+          <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-2 pagination-groups-table">
+            <Pagination total={totalRecords} onChange={AdminMeetingPagination} current={currentPage !== null ? currentPage : 1} showSizeChanger pageSizeOptions={[30, 50, 100, 200]} pageSize={currentPageSize !== null ? currentPageSize : 50} className={styles["PaginationStyle-AllMeeting"]} />
+          </Col>
+        </Row>
         <Modal
           show={meetingModal || filterBarMeetingModal || meetingDeleteModal}
           setShow={() => {

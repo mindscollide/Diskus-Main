@@ -342,3 +342,21 @@ body[dir="rtl"] .CommitteeNotFoundText {
   align-items: center !important;
   min-height: 65vh !important;
 }
+
+.committess_box {
+  max-height: 65vh !important;
+  min-height: 65vh !important;
+  overflow: hidden auto;
+}
+
+.committess_box::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.committess_box::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px !important;
+}

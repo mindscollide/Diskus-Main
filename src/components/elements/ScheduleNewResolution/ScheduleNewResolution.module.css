@@ -207,7 +207,7 @@ body[dir="rtl"] .Attachments_resolution {
 }
 
 .scroll-bar-Create-resolution {
-  height: 25vh !important;
+  height: 160px !important;
   overflow-x: hidden !important;
 }
 
@@ -405,9 +405,9 @@ body[dir="rtl"] .errorMessage_hidden {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-.attachments_height {
+/* .attachments_height {
   height: 100px !important;
-}
+} */
 
 .ant-upload-text {
   font-size: 12px !important;
@@ -439,4 +439,24 @@ body[dir="rtl"] .Choose_file_style {
 
 body[dir="rtl"] .here_text {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.create_resolution_attachmentattendeepart {
+  height: 200px;
+  margin-bottom: 95px;
+}
+
+.line_createresolution {
+  width: 1px;
+  height: 100%;
+  background-color: #5a5a5a !important;
+}
+
+.dragdrop_attachment_create_resolution {
+  height: auto !important;
+  border: 1px dashed #49dbdb !important;
+}
+
+.react_datePicker {
+  width: 100% !important;
 }

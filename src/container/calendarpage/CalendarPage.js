@@ -15,6 +15,7 @@ import moment from "moment";
 import { getCalendarDataResponse } from "../../store/actions/GetDataForCalendar";
 import {
   dateTime,
+  newDateFormaterAsPerUTC,
   newTimeFormaterAsPerUTC,
   startDateTimeMeetingCalendar,
   TimeDisplayFormat,
@@ -66,34 +67,54 @@ const CalendarPage = () => {
     flag: false,
     message: "",
   });
+  const [startDataUpdate, setStartDataUpdate] = useState("");
+  const [endDataUpdate, setEndDataUpdate] = useState("");
+  let CalenderMonthsSpan = localStorage.getItem("calenderMonthsSpan");
+  let OrganizationID = localStorage.getItem("organizationID");
+  const userID = localStorage.getItem("userID");
+  var currentDate = new Date(); // Get the current date
+  // Add CalenderMonthsSpan months and set the day to the last day of the month
+  var startDate = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() - parseInt(CalenderMonthsSpan),
+    1
+  ); // Subtract CalenderMonthsSpan months and set the day to the 1st
+  var endDate = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() + parseInt(CalenderMonthsSpan),
+    0
+  );
 
   // for view modal  handler
   const viewModalHandler = async (value) => {
-    let Data = { MeetingID: parseInt(value.id) };
-    await dispatch(
-      ViewMeeting(
-        navigate,
-        Data,
-        t,
-        setViewFlag,
-        setEditFlag,
-        setCalendarViewModal,
-        3
-      )
-    );
+    if (value.eventID === 3) {
+      let Data = { MeetingID: parseInt(value.id) };
+      await dispatch(
+        ViewMeeting(
+          navigate,
+          Data,
+          t,
+          setViewFlag,
+          setEditFlag,
+          setCalendarViewModal,
+          3
+        )
+      );
+    }
   };
-
-  function onChange(value) {
-    let newDAte = moment(value._d).format("YYYY-MM-DD");
-    setDefaultValue(newDAte);
-    setOpen(false);
-    setCalendarView(false);
-  }
-
   // calling Api for getting data for calendar
   useEffect(() => {
     const userID = localStorage.getItem("userID");
-    dispatch(getCalendarDataResponse(navigate, userID, t));
+    // dispatch(getCalendarDataResponse(navigate, userID,true, t));
+    let calendarData = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(OrganizationID),
+      StartDate: newDateFormaterAsPerUTC(startDate) + "000000",
+      EndDate: newDateFormaterAsPerUTC(endDate) + "000000",
+    };
+    setStartDataUpdate(startDate);
+    setEndDataUpdate(endDate);
+    dispatch(getCalendarDataResponse(navigate, calendarData, true, t));
     window.addEventListener("click", function (e) {
       var clsname = e.target.className;
       let prev = "ant-picker-prev-icon";
@@ -144,32 +165,108 @@ const CalendarPage = () => {
     });
   }, []);
 
+  function onChange(value) {
+    let newDAte = moment(value._d).format("YYYY-MM-DD");
+    let formattedDate = moment(value._d).format("YYYYMMDD");
+    // let formattedDate = moment(value._d).format("YYYYMMDD");
+
+    console.log("navigate", formattedDate);
+    console.log("navigate", value._d);
+    if (startDataUpdate > value._d) {
+      console.log("navigate", value._d);
+      const date = new Date(value._d);
+      let updateStartDate = new Date(
+        date.getFullYear(),
+        date.getMonth() - parseInt(CalenderMonthsSpan),
+        1
+      );
+      let calendarData = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(OrganizationID),
+        StartDate: newDateFormaterAsPerUTC(updateStartDate) + "000000",
+        EndDate: newDateFormaterAsPerUTC(startDataUpdate) + "000000",
+      };
+      setStartDataUpdate(updateStartDate);
+      dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
+    } else if (endDataUpdate < value._d) {
+      console.log("navigate", value._d);
+      const date = new Date(value._d);
+      let updateEndDate = new Date(
+        date.getFullYear(),
+        date.getMonth() + parseInt(CalenderMonthsSpan),
+        0
+      );
+      let calendarData = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(OrganizationID),
+        StartDate: newDateFormaterAsPerUTC(endDataUpdate) + "000000",
+        EndDate: newDateFormaterAsPerUTC(updateEndDate) + "000000",
+      };
+      setEndDataUpdate(updateEndDate);
+      dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
+    }
+    setDefaultValue(newDAte);
+    setOpen(false);
+    setCalendarView(false);
+  }
+
   // set Data for Calendar
   useEffect(() => {
     let Data = calendarReducer.CalenderData;
+    let officeEventColor = localStorage.getItem("officeEventColor");
+    let googleEventColor = localStorage.getItem("googleEventColor");
+    let diskusEventColor = localStorage.getItem("diskusEventColor");
     console.log("Data", Data);
-    let newList = [];
+    let newList;
+    if (Object.keys(calenderData).length > 0) {
+      newList = calenderData;
+    } else {
+      newList = [];
+    }
     if (Object.keys(Data).length > 0) {
       Data.map((cData, index) => {
         console.log("cData", cData);
         let StartingTime = startDateTimeMeetingCalendar(
-          cData.meetingDate + cData.startTime
+          cData.eventDate + cData.startTime
         );
         let EndingTime = startDateTimeMeetingCalendar(
-          cData.meetingDate + cData.endTime
+          cData.eventDate + cData.endTime
         );
         let meetingStartTime = newTimeFormaterAsPerUTC(
-          cData.meetingDate + cData.startTime
+          cData.eventDate + cData.startTime
         );
         console.log("newListnewListnewList", StartingTime, EndingTime);
-        newList.push({
-          id: parseInt(cData.fK_MDID),
-          title: meetingStartTime + " - " + cData.title,
-          allDay: true,
-          start: new Date(StartingTime),
-          end: new Date(EndingTime),
-          // startTime: meetingStartTime,
-        });
+        if (cData.fK_CESID === 1) {
+          newList.push({
+            id: parseInt(cData.pK_CEID),
+            eventID: parseInt(cData.fK_CESID),
+            title: meetingStartTime + " - " + cData.title,
+            allDay: true,
+            start: new Date(StartingTime),
+            end: new Date(EndingTime),
+            border: "2px solid" + googleEventColor,
+          });
+        } else if (cData.fK_CESID === 2) {
+          newList.push({
+            id: parseInt(cData.pK_CEID),
+            eventID: parseInt(cData.fK_CESID),
+            title: meetingStartTime + " - " + cData.title,
+            allDay: true,
+            start: new Date(StartingTime),
+            end: new Date(EndingTime),
+            border: "2px solid" + officeEventColor,
+          });
+        } else if (cData.fK_CESID === 3) {
+          newList.push({
+            id: parseInt(cData.pK_CEID),
+            eventID: parseInt(cData.fK_CESID),
+            title: meetingStartTime + " - " + cData.title,
+            allDay: true,
+            start: new Date(StartingTime),
+            end: new Date(EndingTime),
+            border: "2px solid" + diskusEventColor,
+          });
+        }
       });
       setCalenderDatae(newList);
       console.log("newListnewListnewList", newList);
@@ -212,7 +309,12 @@ const CalendarPage = () => {
   }
 
   useEffect(() => {
-    if (adminReducer.UpdateOrganizationMessageResponseMessage != "") {
+    if (
+      adminReducer.UpdateOrganizationMessageResponseMessage != "" &&
+      adminReducer.UpdateOrganizationMessageResponseMessage !=
+        t("No-records-found") &&
+      adminReducer.UpdateOrganizationMessageResponseMessage != t("Record-found")
+    ) {
       setOpenNotification({
         ...openNotification,
         flag: true,
@@ -226,7 +328,12 @@ const CalendarPage = () => {
         });
       }, 3000);
       dispatch(cleareMessage());
-    } else if (adminReducer.DeleteOrganizationMessageResponseMessage != "") {
+    } else if (
+      adminReducer.DeleteOrganizationMessageResponseMessage != "" &&
+      adminReducer.DeleteOrganizationMessageResponseMessage !=
+        t("No-records-found") &&
+      adminReducer.DeleteOrganizationMessageResponseMessage != t("Record-found")
+    ) {
       setOpenNotification({
         ...openNotification,
         flag: true,
@@ -241,7 +348,11 @@ const CalendarPage = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (adminReducer.AllOrganizationResponseMessage != "") {
+    } else if (
+      adminReducer.AllOrganizationResponseMessage != "" &&
+      adminReducer.AllOrganizationResponseMessage != t("No-records-found") &&
+      adminReducer.AllOrganizationResponseMessage != t("Record-found")
+    ) {
       setOpenNotification({
         ...openNotification,
         flag: true,
@@ -256,7 +367,11 @@ const CalendarPage = () => {
       }, 3000);
 
       dispatch(cleareMessage());
-    } else if (adminReducer.ResponseMessage != "") {
+    } else if (
+      adminReducer.ResponseMessage != "" &&
+      adminReducer.ResponseMessage != t("No-records-found") &&
+      adminReducer.ResponseMessage != t("Record-found")
+    ) {
       setOpenNotification({
         ...openNotification,
         flag: true,
@@ -284,7 +399,8 @@ const CalendarPage = () => {
   useEffect(() => {
     if (
       meetingIdReducer.ResponseMessage != "" &&
-      meetingIdReducer.ResponseMessage != t("Record-found")
+      meetingIdReducer.ResponseMessage != t("Record-found") &&
+      meetingIdReducer.ResponseMessage != t("No-records-found")
     ) {
       setOpenNotification({
         ...openNotification,
@@ -302,7 +418,8 @@ const CalendarPage = () => {
       dispatch(HideNotificationMeetings());
     } else if (
       assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != t("Record-found")
+      assignees.ResponseMessage != t("Record-found") &&
+      assignees.ResponseMessage != t("No-records-found")
     ) {
       setOpenNotification({
         ...openNotification,
@@ -331,7 +448,8 @@ const CalendarPage = () => {
     if (
       toDoListReducer.ResponseMessage != "" &&
       toDoListReducer.ResponseMessage != undefined &&
-      toDoListReducer.ResponseMessage != t("Record-found")
+      toDoListReducer.ResponseMessage != t("Record-found") &&
+      toDoListReducer.ResponseMessage != t("No-records-found")
     ) {
       setOpenNotification({
         ...openNotification,
@@ -349,7 +467,8 @@ const CalendarPage = () => {
       dispatch(clearResponce());
     } else if (
       assignees.ResponseMessage != "" &&
-      assignees.ResponseMessage != t("Record-found")
+      assignees.ResponseMessage != t("Record-found") &&
+      assignees.ResponseMessage != t("No-records-found")
     ) {
       setOpenNotification({
         ...openNotification,
@@ -378,7 +497,8 @@ const CalendarPage = () => {
     if (
       getTodosStatus.ResponseMessage != "" &&
       getTodosStatus.ResponseMessage != undefined &&
-      getTodosStatus.ResponseMessage != t("Record-found")
+      getTodosStatus.ResponseMessage != t("Record-found") &&
+      getTodosStatus.ResponseMessage != t("No-records-found")
     ) {
       setOpenNotification({
         ...openNotification,
@@ -397,7 +517,8 @@ const CalendarPage = () => {
     } else if (
       getTodosStatus.UpdateTodoStatusMessage != "" &&
       getTodosStatus.UpdateTodoStatusMessage != undefined &&
-      getTodosStatus.UpdateTodoStatusMessage != t("Record-found")
+      getTodosStatus.UpdateTodoStatusMessage != t("Record-found") &&
+      getTodosStatus.UpdateTodoStatusMessage != t("No-records-found")
     ) {
       setOpenNotification({
         ...openNotification,
@@ -416,7 +537,8 @@ const CalendarPage = () => {
     } else if (
       getTodosStatus.UpdateTodoStatus != "" &&
       getTodosStatus.UpdateTodoStatus != undefined &&
-      getTodosStatus.UpdateTodoStatus != t("Record-found")
+      getTodosStatus.UpdateTodoStatus != t("Record-found") &&
+      getTodosStatus.UpdateTodoStatus != t("No-records-found")
     ) {
       setOpenNotification({
         ...openNotification,
@@ -440,7 +562,9 @@ const CalendarPage = () => {
     getTodosStatus.UpdateTodoStatusMessage,
     getTodosStatus.UpdateTodoStatus,
   ]);
-
+  console.log("meetingIdReducermeetingIdReducer", calendarReducer.Loading);
+  console.log("meetingIdReducermeetingIdReducer", toDoListReducer.Loading);
+  console.log("meetingIdReducermeetingIdReducer", assignees.Loading);
   return (
     <>
       <Container id={"calender"}>
@@ -494,6 +618,10 @@ const CalendarPage = () => {
           <Col>
             <Calendar
               events={calenderData}
+              startDataUpdate={startDataUpdate}
+              setStartDataUpdate={setStartDataUpdate}
+              endDataUpdate={endDataUpdate}
+              setEndDataUpdate={setEndDataUpdate}
               handleEventSelect={viewModalHandler}
               className="calendar"
               onChange={onChange}

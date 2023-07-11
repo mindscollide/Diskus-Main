@@ -41,12 +41,12 @@ const getUserSetting = (navigate, t) => {
   let userSettingData = {
     UserID: JSON.parse(userID),
   };
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(settingInit());
     let form = new FormData();
     form.append("RequestMethod", getUserSettings.RequestMethod);
     form.append("RequestData", JSON.stringify(userSettingData));
-    axios({
+    await axios({
       method: "post",
       url: settingApi,
       data: form,
@@ -64,6 +64,26 @@ const getUserSetting = (navigate, t) => {
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_GetUserSettings_01"
             ) {
+              console.log(
+                "officeEventColor",
+                response.data.responseResult.userSettings
+              );
+              localStorage.setItem(
+                "calenderMonthsSpan",
+                response.data.responseResult.userSettings.calenderMonthsSpan
+              );
+              localStorage.setItem(
+                "officeEventColor",
+                response.data.responseResult.userSettings.officeEventColor
+              );
+              localStorage.setItem(
+                "googleEventColor",
+                response.data.responseResult.userSettings.googleEventColor
+              );
+              localStorage.setItem(
+                "diskusEventColor",
+                response.data.responseResult.userSettings.diskusEventColor
+              );
               await dispatch(
                 settingSuccess(
                   response.data.responseResult.userSettings,
@@ -80,6 +100,7 @@ const getUserSetting = (navigate, t) => {
                   t("No-records-found")
                 )
               );
+              
             } else if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_GetUserSettings_03"

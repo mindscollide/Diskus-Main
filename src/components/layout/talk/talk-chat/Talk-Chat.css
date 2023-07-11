@@ -188,6 +188,7 @@ body[dir="rtl"] .ant-select.chatFilter.ant-select-single.ant-select-show-arrow s
 .chat-icons {
   margin-top: 15px;
   margin-left: -5px;
+  cursor: pointer;
 }
 
 .chat-icons img {
@@ -1700,4 +1701,29 @@ input[placeholder="Search Chat"] {
   color: #F16B6B;
   font-size: 12px;
   margin-bottom: 10px !important;
+}
+
+.Retry-Delete-Feature {
+  text-align: center;
+}
+
+span.retry {
+  margin-right: 20px;
+  color: #0071c5;
+  cursor: default;
+}
+
+span.retry:hover {
+  text-decoration: underline;
+  cursor: pointer !important;
+}
+
+span.delete {
+  color: #ff0000;
+  cursor: default;
+}
+
+span.delete:hover {
+  text-decoration: underline;
+  cursor: pointer !important;
 }

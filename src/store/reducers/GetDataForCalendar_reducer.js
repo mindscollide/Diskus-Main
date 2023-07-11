@@ -14,18 +14,18 @@ const calendarReducer = (state = initialState, action) => {
     case actions.GET_DATA_FOR_CALENDAR_INIT: {
       return {
         ...state,
-        CalenderData: [],
-        Loading: true,
-        Spinner: true,
+        // CalenderData: [],
+        Loading: action.flag,
+        Spinner: action.flag,
       };
     }
     case actions.GET_DATA_FOR_CALENDAR_SUCCESS: {
       return {
         ...state,
         Loading: false,
-        CalenderData: action.response.meetingEvents,
+        CalenderData: action.response.calenderLists,
         ResponseMessage: action.message,
-        Spinner: false,
+        Spinner: action.flag,
       };
     }
     case actions.GET_DATA_FOR_CALENDAR_FAIL: {
