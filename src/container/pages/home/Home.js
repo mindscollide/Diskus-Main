@@ -45,6 +45,7 @@ import {
   startDateTimeMeetingCalendar,
   newDateFormaterAsPerUTC,
   forSetstartDateTimeMeetingCalendar,
+  forHomeCalendar,
 } from "../../../commen/functions/date_formater";
 import TimeAgo from "timeago-react";
 import {
@@ -117,7 +118,7 @@ const Home = () => {
   const calendarRef = useRef();
   const navigate = useNavigate();
   const [calenderData, setCalenderData] = useState([]);
-  console.log(calenderData, "calenderDatacalenderDatacalenderDatacalenderData")
+  console.log(calenderData, "calenderDatacalenderDatacalenderDatacalenderData");
   const [recentActivityData, setRecentActivityData] = useState([]);
   // get new date
   let date = new Date();
@@ -157,7 +158,7 @@ const Home = () => {
   let OrganizationID = localStorage.getItem("organizationID");
   let CalenderMonthsSpan =
     localStorage.getItem("calenderMonthsSpan") != undefined &&
-      localStorage.getItem("calenderMonthsSpan") != null
+    localStorage.getItem("calenderMonthsSpan") != null
       ? localStorage.getItem("calenderMonthsSpan")
       : 1;
   let currentDate = new Date(); // Get the current date
@@ -181,13 +182,25 @@ const Home = () => {
       0
     );
 
+    useEffect(() => {
+      if (lang !== undefined) {
+        if (lang === "en") {
+          setCalendarValue(gregorian);
+          setLocalValue(gregorian_en);
+        } else if (lang === "ar") {
+          setCalendarValue(gregorian);
+          setLocalValue(gregorian_ar);
+        }
+      }
+    }, [lang]);
+
   const callApi = async () => {
-    dispatch(getTodoListInit())
-    dispatch(SetSpinnerTrue())
-    dispatch(SetSpinnersTrue())
-    dispatch(getusernotificationinit())
-    dispatch(getCalendarDataInit(true))
-    dispatch(getNotes_Init())
+    dispatch(getTodoListInit());
+    dispatch(SetSpinnerTrue());
+    dispatch(SetSpinnersTrue());
+    dispatch(getusernotificationinit());
+    dispatch(getCalendarDataInit(true));
+    dispatch(getNotes_Init());
     await dispatch(getUserSetting(navigate, t));
     let Data = {
       UserID: parseInt(createrID),
@@ -236,15 +249,16 @@ const Home = () => {
       setStartDataUpdate(startDates);
       setEndDataUpdate(endDates);
       if (startDates !== null && endDates !== null) {
-        console.log("getCalendarDataResponse")
+        console.log("getCalendarDataResponse");
         dispatch(getCalendarDataResponse(navigate, calendarData, true, t));
       }
     } catch {
-      dispatch(getCalendarDataInit(false))
+      dispatch(getCalendarDataInit(false));
     }
   };
 
   useEffect(() => {
+    console.log("getCalendarDataResponse123123");
     callApi();
   }, []);
 
@@ -263,7 +277,9 @@ const Home = () => {
       if (Object.keys(calenderData).length > 0) {
         let newList = calenderData;
         Data.map((cData, index) => {
-          let date = moment(startDateTimeMeetingCalendar(cData.eventDate + cData.startTime)).format("YYYYMMDDHHMMss")
+          let date = startDateTimeMeetingCalendar(
+            cData.eventDate + cData.startTime
+          );
           return newList.push({
             meetingDate: date,
           });
@@ -271,7 +287,9 @@ const Home = () => {
       } else {
         let newList = [];
         Data.map((cData, index) => {
-          let date = moment(startDateTimeMeetingCalendar(cData.eventDate + cData.startTime)).format("YYYYMMDDHHMMss");
+          let date = moment(
+            startDateTimeMeetingCalendar(cData.eventDate + cData.startTime)
+          ).format("YYYYMMDDHHMMss");
           return newList.push({
             meetingDate: date,
           });
@@ -282,24 +300,16 @@ const Home = () => {
   }, [calendarReducer.CalenderData]);
 
   useEffect(() => {
-    let temp = [];
-    console.log("newListnewListnewList", calenderData);
+    if (Object.keys(calenderData).length > 0) {
+      let temp = [];
+      calenderData.map((cal, index) => {
+        let formattedDate = forHomeCalendar(cal.meetingDate);
+        let d = new DateObject(formattedDate);
 
-    calenderData.map((cal, index) => {
-      let year = moment(forSetstartDateTimeMeetingCalendar(cal.meetingDate)).format("YYYY");
-      let month = moment(forSetstartDateTimeMeetingCalendar(cal.meetingDate)).format("MM");
-      let day = moment(forSetstartDateTimeMeetingCalendar(cal.meetingDate)).format("DD");
-      let d = new DateObject().set({
-        year: year,
-        month: month,
-        day: day,
-        format,
+        temp.push(d);
       });
-      temp.push(d);
-    });
-    console.log("newListnewListnewList", temp);
-
-    setDates(temp);
+      setDates(temp);
+    }
   }, [calenderData]);
 
   useEffect(() => {
@@ -312,20 +322,9 @@ const Home = () => {
     }
   }, [SocketRecentActivityData]);
 
-  useEffect(() => {
-    if (lang !== undefined) {
-      if (lang === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (lang === "ar") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_ar);
-      }
-    }
-  }, [lang]);
 
   // for view modal  handler
-  const viewModalHandler = (id) => { };
+  const viewModalHandler = (id) => {};
 
   const handleClickNoteModal = () => {
     setModalNote(true);
@@ -350,7 +349,7 @@ const Home = () => {
       } else {
         setNotes([]);
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [NotesReducer.GetAllNotesResponse]);
 
   useEffect(() => {
@@ -489,7 +488,7 @@ const Home = () => {
     if (
       Authreducer.VerifyOTPEmailResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-      t("The-user-is-not-an-admin-user")
+        t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -508,7 +507,7 @@ const Home = () => {
     } else if (
       Authreducer.EnterPasswordResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-      t("The-user-is-not-an-admin-user")
+        t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -527,7 +526,7 @@ const Home = () => {
     } else if (
       Authreducer.OrganizationCreateResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-      t("The-user-is-not-an-admin-user")
+        t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -546,7 +545,7 @@ const Home = () => {
     } else if (
       Authreducer.CreatePasswordResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-      t("The-user-is-not-an-admin-user")
+        t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -565,7 +564,7 @@ const Home = () => {
     } else if (
       Authreducer.GetSelectedPackageResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-      t("The-user-is-not-an-admin-user")
+        t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -584,7 +583,7 @@ const Home = () => {
     } else if (
       Authreducer.EmailValidationResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !==
-      t("The-user-is-not-an-admin-user")
+        t("The-user-is-not-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -674,12 +673,12 @@ const Home = () => {
         console.log(
           "upcomingEvents index",
           upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-          getCurrentDate
+            getCurrentDate
         );
         return (
           <>
             {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
-              getCurrentDate ? (
+            getCurrentDate ? (
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <div
@@ -696,7 +695,7 @@ const Home = () => {
                     <p className="events-dateTime MontserratSemiBold-600">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
-                        upcomingEventsData.meetingEvent.startTime
+                          upcomingEventsData.meetingEvent.startTime
                       )}
                     </p>
                   </div>
@@ -721,7 +720,7 @@ const Home = () => {
                       <p className="events-dateTime">
                         {newTimeFormaterAsPerUTCFullDate(
                           upcomingEventsData.meetingEvent.meetingDate +
-                          upcomingEventsData.meetingEvent.startTime
+                            upcomingEventsData.meetingEvent.startTime
                         )}
                       </p>
                     </div>
@@ -745,7 +744,7 @@ const Home = () => {
                     <p className="events-dateTime">
                       {newTimeFormaterAsPerUTCFullDate(
                         upcomingEventsData.meetingEvent.meetingDate +
-                        upcomingEventsData.meetingEvent.startTime
+                          upcomingEventsData.meetingEvent.startTime
                       )}
                     </p>
                   </div>
@@ -906,7 +905,6 @@ const Home = () => {
                               lazy
                               value={dates}
                               disabled={false}
-                              // minDate={moment().toDate()}
                               calendar={calendarValue}
                               locale={localValue}
                               ref={calendarRef}
@@ -920,9 +918,8 @@ const Home = () => {
                               multiple={false}
                               onChange={calendarClickFunction}
                               className="custom-multi-date-picker"
-                              // onMonthChange={handleMonthChange}
                               onMonthChange={handleMonthChange}
-                            // format="YYYY-MM-DD"
+                              // format="YYYY-MM-DD"
                             />
                           </Col>
                         </Row>
@@ -946,7 +943,7 @@ const Home = () => {
 
                             <div className="Upcoming-Events-Box">
                               {meetingIdReducer.UpcomingEventsData.length ===
-                                0 ? (
+                              0 ? (
                                 <ResultMessage
                                   icon={
                                     <Mailbox className="notification-icon" />
@@ -1072,7 +1069,7 @@ const Home = () => {
                         <Row>
                           <Col sm={1}>
                             {recentActivityData.notificationTypes.pK_NTID ===
-                              1 ? (
+                            1 ? (
                               <div className="desc-notification-user ">
                                 {/* Bell Notification SVG Code */}
                                 <svg
