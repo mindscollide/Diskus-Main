@@ -36,6 +36,7 @@ import {
   createShoutAll,
   deleteShoutAll,
   updateShoutAll,
+  insertBulkMessages,
 } from '../../commen/apis/Api_config'
 import axios from 'axios'
 import { talkApi } from '../../commen/apis/Api_ends_points'
@@ -3596,6 +3597,97 @@ const UpdateShoutAll = (object, t, navigate) => {
   }
 }
 
+const insertBulkMessagesInit = () => {
+  return {
+    type: actions.INSERT_BULKMESSAGES_INIT,
+  }
+}
+
+const insertBulkMessagesSuccess = (response, message) => {
+  return {
+    type: actions.INSERT_BULKMESSAGES_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+const insertBulkMessagesFail = (message) => {
+  return {
+    type: actions.INSERT_BULKMESSAGES_FAIL,
+    message: message,
+  }
+}
+
+//Update Shout All
+const InsertBulkMessages = (object, t, navigate) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(insertBulkMessagesInit())
+    let form = new FormData()
+    form.append('RequestMethod', insertBulkMessages.RequestMethod)
+    form.append('RequestData', JSON.stringify(object))
+    axios({
+      method: 'post',
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(InsertBulkMessages(object, t, navigate))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_InsertBulkMessages_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                insertBulkMessagesSuccess(
+                  response.data.responseResult.talkResponse,
+                  t('Bulk-messages-processed'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_InsertBulkMessages_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                insertBulkMessagesSuccess(
+                  response.data.responseResult.talkResponse,
+                  t('Bulk-messages-not-processed'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_InsertBulkMessages_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(insertBulkMessagesFail(t('Something-went-wrong')))
+            }
+          } else {
+            await dispatch(insertBulkMessagesFail(t('Something-went-wrong')))
+          }
+        } else {
+          await dispatch(insertBulkMessagesFail(t('Something-went-wrong')))
+        }
+      })
+      .catch((response) => {
+        dispatch(insertBulkMessagesFail(t('Something-went-wrong')))
+      })
+  }
+}
+
 export {
   activeChatID,
   activeMessageID,
@@ -3648,4 +3740,5 @@ export {
   GetActiveUsersByBroadcastID,
   UpdateShoutAll,
   OtoMessageRetryFlag,
+  InsertBulkMessages,
 }

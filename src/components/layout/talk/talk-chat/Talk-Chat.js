@@ -33,6 +33,7 @@ import {
   DeleteShout,
   UpdateShoutAll,
   OtoMessageRetryFlag,
+  InsertBulkMessages,
 } from '../../../../store/actions/Talk_action'
 import {
   newTimeFormaterAsPerUTCTalkTime,
@@ -52,6 +53,7 @@ import {
   InputDatePicker,
   Button,
   NotificationBar,
+  UploadProgressBar,
 } from '../../../elements'
 // import Highlighter from 'react-highlight-words'
 import CustomUploadChat from '../../../elements/chat_upload/Chat-Upload'
@@ -1488,6 +1490,7 @@ const TalkChat = () => {
 
   //Show upload options or Hide
   const showUploadOptions = () => {
+    console.log('Upload Option Clicked')
     if (uploadOptions === false && chatClickData.isBlock === 0) {
       setUploadOptions(true)
     } else {
@@ -3866,12 +3869,93 @@ const TalkChat = () => {
             },
           },
         }
+        let checkLocalData = localStorage.getItem('messageArray')
+        if (checkLocalData === undefined && checkLocalData === null) {
+          checkLocalData = {
+            TalkRequest: {
+              AllMessages: {
+                Messages: [
+                  {
+                    AttachmentLocation: '',
+
+                    //Not in Use
+                    BroadcastID: '0',
+
+                    ChannelID: parseInt(currentOrganizationId),
+                    ChatID: messageSendData.ReceiverID,
+                    ChatType: 1,
+                    FileExtension: '',
+                    FileGeneratedName: '',
+                    FileName: '',
+                    FRMessages: 'Direct Message',
+                    //Not in Use
+                    HasTagUser: false,
+                    //Not in Use
+                    isAttempedFail: false,
+                    //Not in Use
+                    isForThisWindowOnly: true,
+                    MessageBody: messageSendData.Body,
+                    MessageDate: currentDateTimeUtc,
+                    MessageStatus: 1,
+                    MessageType: 'Direct Message',
+                    //Not in Use
+                    retyCount: 3,
+                    SenderID: messageSendData.SenderID,
+                    SenderName: 'Muhammad Ovais',
+                    //Not in Use
+                    TagUserEmails: '',
+                    //Not in Use
+                    TagUserIds: '',
+                    UID: uniqueId,
+                  },
+                ],
+              },
+              UserID: parseInt(currentUserId),
+            },
+          }
+          // save this data into local,
+        } else {
+          let dataforPushinLocal = {
+            AttachmentLocation: '',
+
+            //Not in Use
+            BroadcastID: '0',
+
+            ChannelID: parseInt(currentOrganizationId),
+            ChatID: messageSendData.ReceiverID,
+            ChatType: 1,
+            FileExtension: '',
+            FileGeneratedName: '',
+            FileName: '',
+            FRMessages: 'Direct Message',
+            //Not in Use
+            HasTagUser: false,
+            //Not in Use
+            isAttempedFail: false,
+            //Not in Use
+            isForThisWindowOnly: true,
+            MessageBody: messageSendData.Body,
+            MessageDate: currentDateTimeUtc,
+            MessageStatus: 1,
+            MessageType: 'Direct Message',
+            //Not in Use
+            retyCount: 3,
+            SenderID: messageSendData.SenderID,
+            SenderName: 'Muhammad Ovais',
+            //Not in Use
+            TagUserEmails: '',
+            //Not in Use
+            TagUserIds: '',
+            UID: uniqueId,
+          }
+          // checkLocalData.TalkRequest.AllMessages.Messages.push(
+          //   dataforPushinLocal,
+          // )
+        }
         const existingArray =
           JSON.parse(localStorage.getItem('messageArray')) || []
-        existingArray.push(Data)
-
+        existingArray.push(checkLocalData)
         localStorage.setItem('messageArray', JSON.stringify(existingArray))
-
         console.log('Insert OTO Message Response', Data)
         dispatch(InsertOTOMessages(navigate, Data, uploadFileTalk, t))
 
@@ -4265,21 +4349,24 @@ const TalkChat = () => {
 
   const [isRetryAttemptComplete, setIsRetryAttemptComplete] = useState(false)
 
-  const storeDataInAPI = async (counter) => {
+  const storeDataInAPI = async (counter, flag) => {
     try {
       console.log('LocalStorageManagement Interval', counter)
       let newMessageData = [...messageSendDataLS]
       let dataItem
+      if (flag) {
+        for (let i = 0; i < newMessageData.length; i++) {
+          dataItem = newMessageData[i]
+          console.log('LocalStorageManagement Interval', i)
 
-      for (let i = 0; i < newMessageData.length; i++) {
-        dataItem = newMessageData[i]
-        console.log('LocalStorageManagement Interval', i)
-
-        console.log('LocalStorageManagement dataItem', dataItem)
-        await dispatch(
-          InsertOTOMessages(navigate, dataItem, uploadFileTalk, t, counter),
-        )
+          console.log('LocalStorageManagement dataItem', dataItem)
+          await dispatch(
+            InsertOTOMessages(navigate, dataItem, uploadFileTalk, t, counter),
+          )
+        }
+      } else {
       }
+
       console.log('Maximum retries reached. Stopping API calls.', counter)
       // Check if maximum retries reached
       if (counter >= 16) {
@@ -4308,7 +4395,7 @@ const TalkChat = () => {
       interval = setInterval(() => {
         console.log('LocalStorageManagement Interval')
 
-        storeDataInAPI(counter)
+        storeDataInAPI(counter, false)
         counter += 4
         if (counter >= 20) {
           clearInterval(interval)
@@ -4329,7 +4416,7 @@ const TalkChat = () => {
       interval = setInterval(() => {
         console.log('LocalStorageManagement Interval')
 
-        storeDataInAPI(counter)
+        storeDataInAPI(counter, true)
         counter += 4
         if (counter >= 20) {
           clearInterval(interval)
@@ -7582,7 +7669,7 @@ const TalkChat = () => {
                             {isRetryAttemptComplete === true ? (
                               <div className="Retry-Delete-Feature">
                                 <span onClick={retryAttempt} className="retry">
-                                  Retry
+                                  {t('Retry')}
                                 </span>
                                 <span
                                   onClick={deleteAttempt}
@@ -8112,6 +8199,7 @@ const TalkChat = () => {
                                 ) : null}
                               </span>
                             </div>
+                            <UploadProgressBar />
                             <div className="chat-input-field">
                               <Form onSubmit={sendChat}>
                                 <Form.Control
