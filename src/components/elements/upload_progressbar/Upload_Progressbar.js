@@ -27,7 +27,7 @@ function UploadProgressBar() {
     clearInterval(intervalId)
     elemRef.current.style.width = '1%'
   }
-
+  const progressBar = () => { }
   return (
     <div>
       <div id="progress-bar" ref={elemRef} style={{ width: `${width}%` }}></div>
