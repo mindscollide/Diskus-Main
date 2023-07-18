@@ -23,9 +23,18 @@ import EditIcon from "../../../assets/images/Edit-Icon.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { getAllCommitteesandGroups } from "../../../store/actions/Polls_actions";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 
 const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
+  const animatedComponents = makeAnimated();
+  const optionsNew = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+  ];
+
   //For Custom language datepicker
   const { PollsReducer } = useSelector(state => state);
   console.log(PollsReducer, "PollsReducerPollsReducer")
@@ -430,13 +439,20 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className="group-fields d-flex align-items-center gap-2 "
+                          className="group-fields d-flex align-items-center gap-2  "
                         >
-                          <InputSearchFilter
+                          {/* <InputSearchFilter
                             labelClass="d-none"
                             placeholder={t("Enter-name-or-email")}
                             change={HandleSearch}
                             value={assignees}
+                          /> */}
+                          <Select
+                            classNamePrefix={"selectMember"}
+                            closeMenuOnSelect={false}
+                            components={animatedComponents}
+                            isMulti
+                            options={optionsNew}
                           />
                           <Button
                             text={t("ADD")}
