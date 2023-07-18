@@ -54,6 +54,7 @@ import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { XSquare } from 'react-bootstrap-icons'
 import SearchInputSuggestion from "../../components/elements/searchInputResolution/searchInputsuggestion";
+import numeral from "numeral";
 
 const Resolution = () => {
   const { t } = useTranslation();
@@ -65,6 +66,8 @@ const Resolution = () => {
   const [currentPageVoter, setCurrentPageVoter] = useState(1)
   const [totalVoterResolution, setTotalVoterResolution] = useState(0)
   const [newresolution, setNewresolution] = useState(false);
+  let currentLanguage = localStorage.getItem("i18nextLng");
+  moment.locale(currentLanguage)
   const [viewresolution, setViewresolution] = useState(false);
   const [resultresolution, setResultresolution] = useState(false);
   const [voteresolution, setVoteresolution] = useState(false);
@@ -80,10 +83,10 @@ const Resolution = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [allSearchInput, setAllSearchInput] = useState("");
   let resolutionView = JSON.parse(localStorage.getItem("resolutionView"));
-  let moderatorPage = JSON.parse(localStorage.getItem("moderatorPage"));
-  let moderatorRows = JSON.parse(localStorage.getItem("moderatorRows"));
-  let voterPage = JSON.parse(localStorage.getItem("voterPage"));
-  let voterRows = JSON.parse(localStorage.getItem("voterRows"));
+  let moderatorPage = localStorage.getItem("moderatorPage");
+  let moderatorRows = localStorage.getItem("moderatorRows");
+  let voterPage = localStorage.getItem("voterPage");
+  let voterRows = localStorage.getItem("voterRows");
   let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"))
 
 
@@ -91,10 +94,12 @@ const Resolution = () => {
     circulationDate: "",
     votingDate: "",
   });
+
   const [open, setOpen] = useState({
     flag: false,
     message: "",
   });
+
   const showSearchOptions = () => {
     if (ResolutionReducer.currentResolutionView === 1) {
       let moderatordata = [...ResolutionReducer.GetResolutions];
@@ -1083,6 +1088,9 @@ const Resolution = () => {
     }
   }, [ResolutionReducer.GetResolutions]);
 
+  const formatNumber = (value) => {
+    return numeral(value).format();
+  }
   return (
     <>
       <section className={styles["resolution_container"]}>
@@ -1484,7 +1492,11 @@ const Resolution = () => {
                             // totalBoundaryShowSizeChanger={}
                             total={totalResolution}
                             showSizeChanger
-                            pageSizeOptions={[30, 50, 100, 200]}
+                            locale={{
+                              items_per_page: t('items_per_page'),
+                              page: t('page')
+                            }}
+                            pageSizeOptions={["30", "50", "100", "200"]}
                             className={styles["PaginationStyle-Resolution"]}
                             onChange={handleChangeResolutionPagination}
                             defaultPageSize={moderatorRows}
@@ -1544,7 +1556,7 @@ const Resolution = () => {
                             total={totalVoterResolution}
                             defaultPageSize={voterRows}
                             showSizeChanger
-                            pageSizeOptions={['30', '50', '100', '200']}
+                            pageSizeOptions={["30", "50", "100", "200"]}
                             className={styles["PaginationStyle-Resolution"]}
                             // selectComponentClass={"pagination_resolution"}
                             onChange={handleChangeVoterResolutionPagination}

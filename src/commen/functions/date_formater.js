@@ -495,3 +495,22 @@ export const newTimeFormaterAsPerUTCTalkDateTime = (dateTime) => {
   let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
   return moment(_dateTime).format("h:mm A, Do MMM, YYYY");
 };
+
+
+export const convertGMTDateintoUTC = (GMTdate) => {
+  console.log(GMTdate, "convertGMTDateintoUTC")
+  const currentDate = new Date(GMTdate);
+  console.log(GMTdate, "convertGMTDateintoUTC")
+  // Extract the individual components of the date
+  const year = currentDate.getUTCFullYear();
+  const month = ("0" + (currentDate.getUTCMonth() + 1)).slice(-2);
+  const day = ("0" + currentDate.getUTCDate()).slice(-2);
+  const hours = ("0" + currentDate.getUTCHours()).slice(-2);
+  const minutes = ("0" + currentDate.getUTCMinutes()).slice(-2);
+  const seconds = ("0" + currentDate.getUTCSeconds()).slice(-2);
+
+  // Concatenate the components into the desired format
+  const result = `${year}${month}${day}${hours}${minutes}${seconds}`;
+  console.log(result, "convertGMTDateintoUTC")
+  return result;
+}

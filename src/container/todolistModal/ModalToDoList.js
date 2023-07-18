@@ -44,6 +44,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization
   const { t } = useTranslation();
   const [fileSize, setFileSize] = useState(0);
+  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false)
+  const [isCreateTodo, setIsCreateTodo] = useState(true)
   const [fileForSend, setFileForSend] = useState([]);
   const [createTodoTime, setCreateTodoTime] = useState("");
   const [createTodoDate, setCreateTodoDate] = useState("");
@@ -599,288 +601,307 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       <Container>
         <Modal
           onHide={() => {
-            setShow(false);
+            setCloseConfirmationBox(true);
+            setIsCreateTodo(false)
           }}
           show={show}
           setShow={setShow}
           className="modaldialogTodoCreate"
-          modalBodyClassName="bodytodoCreateModal"
+          modalBodyClassName={closeConfirmationBox ? null : "bodytodoCreateModal"}
           modalFooterClassName="footertodoCreateModal"
           modalHeaderClassName="headertodoCreateModal"
           ButtonTitle={ModalTitle}
-          size="md"
+          size={closeConfirmationBox ? null : "md"}
           // ModalTitle={"Modal Header"}
           ModalBody={
-            <>
-              <div>
-                <Row>
-                  <Col
-                    lg={2}
-                    md={2}
-                    sm={3}
-                    xs={12}
-                    className="CreateMeetingTime"
-                  >
-                    <TimePickers
-                      change={taskHandler}
-                      name="DeadLineTime"
-                      value={task.DeadLineTime}
-                    />
-                  </Col>
-                  <Col
-                    lg={3}
-                    md={3}
-                    sm={2}
-                    xs={12}
-                    className="CreateMeetingDate text-center"
-                  >
-                    <MultiDatePicker
-                      onChange={toDoDateHandler}
-                      name="DeadLineDate"
-                      value={toDoDate}
-                      calendar={calendarValue}
-                      locale={localValue}
-                    // newValue={createMeeting.MeetingDate}
-                    />
-                  </Col>
-                  <Col
-                    lg={7}
-                    md={7}
-                    sm={7}
-                    xs={12}
-                    className="todolist-modal-fields margin-top--20 d-flex  flex-column"
-                  >
-                    <InputSearchFilter
-                      placeholder={t("Add-attendees")}
-                      value={taskAssignedToInput}
-                      filteredDataHandler={searchFilterHandler(
-                        taskAssignedToInput
-                      )}
-                      applyClass="assigneeFindInCreateToDo"
-                      disable={taskAssigneeLength}
-                      change={onChangeSearch}
-                    />
-                    {taskAssignedName ? (
-                      <>
-                        {taskAssignedName.map((taskAssignedName, index) => (
-                          <span>
-                            <div className="dropdown-row-assignee dg-flex align-items-center flex-row">
-                              <div className="d-flex align-items-center position-relative">
-                                <img src={userImage} />
-                                <p className="p-0 m-0">{taskAssignedName}</p>
-                              </div>
-                              <span className="todolist-remove-assignee-icon">
-                                <img
-                                  width={20}
-                                  className="remove"
-                                  height={20}
-                                  src={deleteButtonCreateMeeting}
-                                  onClick={() =>
-                                    handleDeleteAttendee(
-                                      taskAssignedName,
-                                      index
-                                    )
-                                  }
-                                />
-                              </span>
-                            </div>
-                          </span>
-                        ))}
-                      </>
-                    ) : null}
-                  </Col>
-                </Row>
-                <Row className="my-0">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="todolist-modal-fields"
-                  >
-                    <TextField
-                      change={taskHandler}
-                      name="Title"
-                      applyClass="createtodo-title"
-                      type="text"
-                      placeholder={t("Title")}
-                      required
-                      value={task.Title}
-                      maxLength={200}
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col lg={12} md={12} xs={12} className="FontArabicRegular">
-                    <TextField
-                      change={taskHandler}
-                      name="Description"
-                      applyClass="createtodo-description"
-                      type="text"
-                      as={"textarea"}
-                      rows="7"
-                      placeholder={t("Description") + "*"}
-                      maxLength={300}
-                    />
-                  </Col>
-                </Row>
-                <Row className="mt-4">
-                  <Col
-                    lg={12}
-                    md={12}
-                    xs={12}
-                    className="MontserratSemiBold-600 attachmentCon margin-left-15"
-                  >
-                    <label className="ArabicFontSemiBold">
-                      {t("Attachement")}
-                    </label>
-                    <span className="custom-upload-input">
-                      <CustomUpload
-                        change={uploadFilesToDo}
-                        onClick={(event) => {
-                          event.target.value = null;
-                        }}
-                        className="UploadFileButton"
+            isCreateTodo ?
+              <>
+                <div>
+                  <Row>
+                    <Col
+                      lg={2}
+                      md={2}
+                      sm={3}
+                      xs={12}
+                      className="CreateMeetingTime"
+                    >
+                      <TimePickers
+                        change={taskHandler}
+                        name="DeadLineTime"
+                        value={task.DeadLineTime}
                       />
-                      <Row>
-                        <Col
-                          sm={12}
-                          lg={12}
-                          md={12}
-                          className="todoModalCreateModal"
-                        >
-                          {tasksAttachments.TasksAttachments.length > 0
-                            ? tasksAttachments.TasksAttachments.map(
-                              (data, index) => {
-                                var ext =
-                                  data.DisplayAttachmentName.split(".").pop();
+                    </Col>
+                    <Col
+                      lg={3}
+                      md={3}
+                      sm={2}
+                      xs={12}
+                      className="CreateMeetingDate text-center"
+                    >
+                      <MultiDatePicker
+                        onChange={toDoDateHandler}
+                        name="DeadLineDate"
+                        value={toDoDate}
+                        calendar={calendarValue}
+                        locale={localValue}
+                      // newValue={createMeeting.MeetingDate}
+                      />
+                    </Col>
+                    <Col
+                      lg={7}
+                      md={7}
+                      sm={7}
+                      xs={12}
+                      className="todolist-modal-fields margin-top--20 d-flex  flex-column"
+                    >
+                      <InputSearchFilter
+                        placeholder={t("Add-attendees")}
+                        value={taskAssignedToInput}
+                        filteredDataHandler={searchFilterHandler(
+                          taskAssignedToInput
+                        )}
+                        applyClass="assigneeFindInCreateToDo"
+                        disable={taskAssigneeLength}
+                        change={onChangeSearch}
+                      />
+                      {taskAssignedName ? (
+                        <>
+                          {taskAssignedName.map((taskAssignedName, index) => (
+                            <span>
+                              <div className="dropdown-row-assignee dg-flex align-items-center flex-row">
+                                <div className="d-flex align-items-center position-relative">
+                                  <img src={userImage} />
+                                  <p className="p-0 m-0">{taskAssignedName}</p>
+                                </div>
+                                <span className="todolist-remove-assignee-icon">
+                                  <img
+                                    width={20}
+                                    className="remove"
+                                    height={20}
+                                    src={deleteButtonCreateMeeting}
+                                    onClick={() =>
+                                      handleDeleteAttendee(
+                                        taskAssignedName,
+                                        index
+                                      )
+                                    }
+                                  />
+                                </span>
+                              </div>
+                            </span>
+                          ))}
+                        </>
+                      ) : null}
+                    </Col>
+                  </Row>
+                  <Row className="my-0">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="todolist-modal-fields"
+                    >
+                      <TextField
+                        change={taskHandler}
+                        name="Title"
+                        applyClass="createtodo-title"
+                        type="text"
+                        placeholder={t("Title")}
+                        required
+                        value={task.Title}
+                        maxLength={200}
+                      />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col lg={12} md={12} xs={12} className="FontArabicRegular">
+                      <TextField
+                        change={taskHandler}
+                        name="Description"
+                        applyClass="createtodo-description"
+                        type="text"
+                        as={"textarea"}
+                        rows="7"
+                        placeholder={t("Description") + "*"}
+                        maxLength={300}
+                      />
+                    </Col>
+                  </Row>
+                  <Row className="mt-4">
+                    <Col
+                      lg={12}
+                      md={12}
+                      xs={12}
+                      className="MontserratSemiBold-600 attachmentCon "
+                    >
+                      <label className="ArabicFontSemiBold">
+                        {t("Attachement")}
+                      </label>
+                      <span className="custom-upload-input">
+                        <CustomUpload
+                          change={uploadFilesToDo}
+                          onClick={(event) => {
+                            event.target.value = null;
+                          }}
+                          className="UploadFileButton"
+                        />
+                        <Row>
+                          <Col
+                            sm={12}
+                            lg={12}
+                            md={12}
+                            className="todoModalCreateModal"
+                          >
+                            {tasksAttachments.TasksAttachments.length > 0
+                              ? tasksAttachments.TasksAttachments.map(
+                                (data, index) => {
+                                  var ext =
+                                    data.DisplayAttachmentName.split(".").pop();
 
-                                const first =
-                                  data.DisplayAttachmentName.split(" ")[0];
-                                return (
-                                  <Col
-                                    sm={12}
-                                    lg={2}
-                                    md={2}
-                                    className="modaltodolist-attachment-icon"
-                                  >
-                                    {ext === "doc" ? (
-                                      <FileIcon
-                                        extension={"docx"}
-                                        size={78}
-                                        type={"document"}
-                                        labelColor={"rgba(44, 88, 152)"}
-                                      />
-                                    ) : ext === "docx" ? (
-                                      <FileIcon
-                                        extension={"docx"}
-                                        size={78}
-                                        type={"font"}
-                                        labelColor={"rgba(44, 88, 152)"}
-                                      />
-                                    ) : ext === "xls" ? (
-                                      <FileIcon
-                                        extension={"xls"}
-                                        type={"spreadsheet"}
-                                        size={78}
-                                        labelColor={"rgba(16, 121, 63)"}
-                                      />
-                                    ) : ext === "xlsx" ? (
-                                      <FileIcon
-                                        extension={"xls"}
-                                        type={"spreadsheet"}
-                                        size={78}
-                                        labelColor={"rgba(16, 121, 63)"}
-                                      />
-                                    ) : ext === "pdf" ? (
-                                      <FileIcon
-                                        extension={"pdf"}
-                                        size={78}
-                                        {...defaultStyles.pdf}
-                                      />
-                                    ) : ext === "png" ? (
-                                      <FileIcon
-                                        extension={"png"}
-                                        size={78}
-                                        type={"image"}
-                                        labelColor={"rgba(102, 102, 224)"}
-                                      />
-                                    ) : ext === "txt" ? (
-                                      <FileIcon
-                                        extension={"txt"}
-                                        size={78}
-                                        type={"document"}
-                                        labelColor={"rgba(52, 120, 199)"}
-                                      />
-                                    ) : ext === "jpg" ? (
-                                      <FileIcon
-                                        extension={"jpg"}
-                                        size={78}
-                                        type={"image"}
-                                        labelColor={"rgba(102, 102, 224)"}
-                                      />
-                                    ) : ext === "jpeg" ? (
-                                      <FileIcon
-                                        extension={"jpeg"}
-                                        size={78}
-                                        type={"image"}
-                                        labelColor={"rgba(102, 102, 224)"}
-                                      />
-                                    ) : ext === "gif" ? (
-                                      <FileIcon
-                                        extension={"gif"}
-                                        size={78}
-                                        {...defaultStyles.gif}
-                                      />
-                                    ) : null}
-                                    <span className="deleteBtn">
-                                      <img
-                                        src={deleteButtonCreateMeeting}
-                                        width={15}
-                                        height={15}
-                                        onClick={() =>
-                                          deleteFilefromAttachments(
-                                            data,
-                                            index
-                                          )
-                                        }
-                                      />
-                                    </span>
-                                    <p className="modaltodolist-attachment-text">
-                                      {first}
-                                    </p>
-                                  </Col>
-                                );
-                              }
-                            )
-                            : null}
-                        </Col>
-                      </Row>
-                    </span>
+                                  const first =
+                                    data.DisplayAttachmentName.split(" ")[0];
+                                  return (
+                                    <Col
+                                      sm={12}
+                                      lg={2}
+                                      md={2}
+                                      className="modaltodolist-attachment-icon"
+                                    >
+                                      {ext === "doc" ? (
+                                        <FileIcon
+                                          extension={"docx"}
+                                          size={78}
+                                          type={"document"}
+                                          labelColor={"rgba(44, 88, 152)"}
+                                        />
+                                      ) : ext === "docx" ? (
+                                        <FileIcon
+                                          extension={"docx"}
+                                          size={78}
+                                          type={"font"}
+                                          labelColor={"rgba(44, 88, 152)"}
+                                        />
+                                      ) : ext === "xls" ? (
+                                        <FileIcon
+                                          extension={"xls"}
+                                          type={"spreadsheet"}
+                                          size={78}
+                                          labelColor={"rgba(16, 121, 63)"}
+                                        />
+                                      ) : ext === "xlsx" ? (
+                                        <FileIcon
+                                          extension={"xls"}
+                                          type={"spreadsheet"}
+                                          size={78}
+                                          labelColor={"rgba(16, 121, 63)"}
+                                        />
+                                      ) : ext === "pdf" ? (
+                                        <FileIcon
+                                          extension={"pdf"}
+                                          size={78}
+                                          {...defaultStyles.pdf}
+                                        />
+                                      ) : ext === "png" ? (
+                                        <FileIcon
+                                          extension={"png"}
+                                          size={78}
+                                          type={"image"}
+                                          labelColor={"rgba(102, 102, 224)"}
+                                        />
+                                      ) : ext === "txt" ? (
+                                        <FileIcon
+                                          extension={"txt"}
+                                          size={78}
+                                          type={"document"}
+                                          labelColor={"rgba(52, 120, 199)"}
+                                        />
+                                      ) : ext === "jpg" ? (
+                                        <FileIcon
+                                          extension={"jpg"}
+                                          size={78}
+                                          type={"image"}
+                                          labelColor={"rgba(102, 102, 224)"}
+                                        />
+                                      ) : ext === "jpeg" ? (
+                                        <FileIcon
+                                          extension={"jpeg"}
+                                          size={78}
+                                          type={"image"}
+                                          labelColor={"rgba(102, 102, 224)"}
+                                        />
+                                      ) : ext === "gif" ? (
+                                        <FileIcon
+                                          extension={"gif"}
+                                          size={78}
+                                          {...defaultStyles.gif}
+                                        />
+                                      ) : null}
+                                      <span className="deleteBtn">
+                                        <img
+                                          src={deleteButtonCreateMeeting}
+                                          width={15}
+                                          height={15}
+                                          onClick={() =>
+                                            deleteFilefromAttachments(
+                                              data,
+                                              index
+                                            )
+                                          }
+                                        />
+                                      </span>
+                                      <p className="modaltodolist-attachment-text">
+                                        {first}
+                                      </p>
+                                    </Col>
+                                  );
+                                }
+                              )
+                              : null}
+                          </Col>
+                        </Row>
+                      </span>
+                    </Col>
+                  </Row>
+                </div>
+              </>
+              : closeConfirmationBox ? <>
+                <Row>
+                  <Col sm={12} md={12} lg={12} className={"Confirmationmodal_body_text"}>
+                    Are you sure? If you click on close button the data will reset and modal will close.
                   </Col>
-                </Row>
-              </div>
-            </>
+                </Row></> : null
           }
           ModalFooter={
-            <>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  xs={12}
-                  className="d-flex justify-content-end"
-                >
-                  <Button
-                    onClick={createToDoList}
-                    className={
-                      "btn btn-primary px-4 fw-600 todocreate-createbtn ArabicFontSemiBold"
-                    }
-                    variant={"Primary"}
-                    text={t("Create")}
-                  />
+            isCreateTodo ?
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    xs={12}
+                    className="d-flex justify-content-end gap-3 p-0"
+                  >
+                    <Button onClick={() => setCloseConfirmationBox(true)} className={"cancelButton_createTodo"} text={"Cancel"} />
+                    <Button
+                      onClick={createToDoList}
+                      className={
+                        "btn todocreate-createbtn ArabicFontSemiBold"
+                      }
+                      variant={"Primary"}
+                      text={t("Create")}
+                    />
+                  </Col>
+                </Row>
+              </> : closeConfirmationBox ? <><Row>
+                <Col sm={12} md={12} lg={12} className="d-flex justify-content-center gap-3">
+                  <Button onClick={() => setIsCreateTodo(true)} className={"cancelButton_createTodo"} text={"Cancel"} />
+                  <Button onClick={() => {
+                    setShow(false)
+                    setIsCreateTodo(true)
+                  }
+                  } className={"todocreate-createbtn"} text={"Close"} />
                 </Col>
-              </Row>
-            </>
+              </Row></> : null
           }
         />
       </Container>

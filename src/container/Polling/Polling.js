@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./Polling.module.css";
 import { Row, Col } from "react-bootstrap";
 import { Button, Table, TextField } from "../../components/elements";
@@ -15,7 +15,15 @@ import ViewPollProgress from "./ViewPoll/ViewPollProgress/ViewPollProgress";
 import PollDetails from "./PollDetails/PollDetails";
 import Votepoll from "./VotePoll/Votepoll";
 import UpdateSecond from "./UpdateSecond/UpdateSecond";
+import { useDispatch, useSelector } from "react-redux";
+import { searchPollsApi } from "../../store/actions/Polls_actions";
+import { useNavigate } from "react-router-dom";
+import { _justShowDateformatBilling, resolutionResultTable } from "../../commen/functions/date_formater";
+
 const Polling = () => {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { PollsReducer } = useSelector(state => state);
   const [isCreatePoll, setIsCreatePoll] = useState(false);
   const [isUpdatePoll, setIsUpdatePoll] = useState(false);
   const [viewprogress, setViewprogress] = useState(false);
@@ -23,15 +31,22 @@ const Polling = () => {
   const [isVotePoll, setisVotePoll] = useState(false);
   const [viewPollsDetails, setViewPollsDetails] = useState(false);
   const [isViewPoll, setIsViewPoll] = useState(false);
+  const [totalRecords, setTotalRecord] = useState(0)
   const [pollsState, setPollsState] = useState({
     searchValue: "",
   });
+  const [rows, setRows] = useState([])
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [searchBoxState, setsearchBoxState] = useState({
     searchByName: "",
     searchByTitle: "",
   });
+
   const [searchpoll, setSearchpoll] = useState(false);
+
+  useEffect(() => {
+    dispatch(searchPollsApi(navigate, t))
+  }, [])
   const showViewProgressBarModal = () => {
     setViewprogress(true);
   };
@@ -48,12 +63,22 @@ const Polling = () => {
     setUpdatePublished(true);
   };
   const { t } = useTranslation();
+
   const PollTableColumns = [
     {
       title: t("Post-title"),
-      dataIndex: "title",
-      key: "title",
+      dataIndex: "pollTitle",
+      key: "pollTitle",
       width: "365px",
+      render: (text, record) => {
+        let newDate = new Date();
+        let checkDate = resolutionResultTable(record.dueDate + "000000")
+        if (checkDate < newDate) {
+          return <span className="cursor-pointer" onClick={() => setViewPollsDetails(true)}>{text}</span>
+        } else {
+          return <span className="cursor-pointer" onClick={() => setisVotePoll(true)}> {text}</span>
+        }
+      }
     },
     {
       title: t("Status"),
@@ -63,21 +88,22 @@ const Polling = () => {
       filters: [
         {
           text: t("Published"),
-          value: "InProgress",
+          value: "Published",
           className: currentLanguage,
         },
         {
           text: t("Unpublished"),
-          value: "Pending",
+          value: "Unpublished",
         },
       ],
+      defaultFilteredValue: ["Published", "Unpublished"],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       render: (text, record) => {
-        if (text === 1) {
+        if (record.pollStatus.pollStatusId === 1) {
           return <span className="text-success">{t("Published")}</span>;
-        } else if (text === 2) {
+        } else if (record.pollStatus.pollStatusId === 2) {
           return <span className="text-success">{t("Unpublished")}</span>;
         }
       },
@@ -87,11 +113,14 @@ const Polling = () => {
       dataIndex: "dueDate",
       key: "dueDate",
       width: "89px",
+      render: (text, record) => {
+        return _justShowDateformatBilling(text + "000000")
+      }
     },
     {
       title: t("Created-by"),
-      dataIndex: "createBy",
-      key: "createBy",
+      dataIndex: "pollCreator",
+      key: "pollCreator",
       width: "97px",
     },
     {
@@ -99,187 +128,37 @@ const Polling = () => {
       dataIndex: "vote",
       key: "vote",
       width: "59px",
+      render: (text, record) => {
+        if (record.pollStatus.pollStatusId === 2) {
+          if (record.voteStatus === "Not Voted") {
+            return <Button className={styles["voteBtn"]} text={"Vote"} />
+          } else if (record.voteStatus === "Voted") {
+            return <Button className={styles["votedBtn"]} text={"Voted"} />
+          }
+        } else {
+          return ""
+        }
+
+      }
     },
     {
       title: t("Edit"),
       dataIndex: "Edit",
       key: "Edit",
       width: "33px",
-    },
-  ];
-  const RowsData = [
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span
-                className={styles["Table_title"]}
-                onClick={() => {
-                  setIsViewPoll(true);
-                }}
-              >
-                test title
-              </span>
-            </Col>
-          </Row>
-        </>
-      ),
-      status: 1,
-      dueDate: "2023-06-28",
-      createBy: "Ali Raza",
-      vote: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <Button text={t("Vote")} className={styles["Vote_button_poll"]} />
-            </Col>
-          </Row>
-        </>
-      ),
-      Edit: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex align-items-center cursor-pointer"
-            >
-              <img
-                src={EditIcon}
-                width="21.59px"
-                height="21.59px"
-                onClick={() => {
-                  setIsUpdatePoll(true);
-                }}
-              />
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      title: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-start"
-            >
-              <span onClick={showViewProgressBarModal}>
-                View Progress Modal
-              </span>
-            </Col>
-          </Row>
-        </>
-      ),
-      status: 2,
-      dueDate: "2023-06-28",
-      createBy: "Ali Raza",
-      vote: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-start"
-            >
-              <Button text={t("Vote")} className={styles["Voted_after"]} />
-            </Col>
-          </Row>
-        </>
-      ),
-    },
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span onClick={ShowPollsDetailsModal}>Poll Details</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      status: 2,
-      dueDate: "2023-06-28",
-      createBy: "Ali Raza",
-      vote: 4,
-    },
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span onClick={OpenVotePollModal}>Votepoll</span>
-            </Col>
-          </Row>
-        </>
-      ),
-      status: 2,
-      dueDate: "2023-06-28",
-      createBy: "Ali Raza",
-      vote: 2,
-    },
-    {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span onClick={OpenUpdatePublished}> Update Published </span>
-            </Col>
-          </Row>
-        </>
-      ),
-      status: 1,
-      dueDate: "2023-06-28",
-      createBy: "Ali Raza",
-      vote: 1,
-    },
-    {
-      title: "test title",
-      status: 1,
-      dueDate: "2023-06-28",
-      createBy: "Ali Raza",
-      vote: 1,
-    },
-    {
-      title: "test title",
-      status: 2,
-      dueDate: "2023-06-28",
-      createBy: "Ali Raza",
-      vote: 1,
-    },
-    {
-      title: "test title",
-      status: 2,
-      dueDate: "2023-06-28",
-      createBy: "Ali Raza",
-      vote: 1,
-    },
-    {
-      title: "test title",
-      status: 2,
-      dueDate: "2023-06-28",
-      createBy: "Ali Raza",
-      vote: 1,
-    },
-    {
-      title: "test title",
-      status: 1,
-      dueDate: "2023-06-28",
-      createBy: "Ali Raza",
-      vote: 1,
-    },
-    {
-      title: "test title",
-      status: 2,
-      dueDate: "2023-06-28",
-      createBy: "Ali Raza",
-      vote: 1,
+      render: (text, record) => {
+        return (
+          <img
+            src={EditIcon}
+            className="cursor-pointer"
+            width="21.59px"
+            height="21.59px"
+            onClick={() => {
+              setIsUpdatePoll(true);
+            }}
+          />
+        )
+      }
     },
   ];
 
@@ -347,6 +226,21 @@ const Polling = () => {
     setSearchpoll(true);
   };
 
+  useEffect(() => {
+    try {
+      if (PollsReducer.SearchPolls !== null && PollsReducer.SearchPolls !== undefined) {
+        setTotalRecord(PollsReducer.SearchPolls.totalRecords)
+        if (PollsReducer.SearchPolls.polls.length > 0) {
+          setRows(PollsReducer.SearchPolls.polls)
+        } else {
+          setRows([])
+        }
+      }
+    } catch (error) {
+
+    }
+  }, [PollsReducer.SearchPolls])
+
   const HandleCloseSearchModal = () => {
     setSearchpoll(false);
   };
@@ -393,7 +287,7 @@ const Polling = () => {
                   <img
                     src={searchicon}
                     className={styles["Search_Bar_icon_class"]}
-                    // className={styles["GlobalSearchFieldICon"]}
+                  // className={styles["GlobalSearchFieldICon"]}
                   />
                 }
                 // clickIcon={SearchiconClickOptions}
@@ -477,12 +371,7 @@ const Polling = () => {
           <Col sm={12} md={12} lg={12}>
             <Table
               column={PollTableColumns}
-              rows={RowsData}
-              pagination={{
-                pageSize: 50,
-                showSizeChanger: true,
-                pageSizeOptions: ["100 ", "150", "200"],
-              }}
+              rows={rows}
             />
           </Col>
         </Row>
@@ -493,7 +382,6 @@ const Polling = () => {
           showPollingModal={isCreatePoll}
         />
       )}
-
       {isUpdatePoll ? (
         <UpdatePolls
           showUpdatepollModal={isUpdatePoll}

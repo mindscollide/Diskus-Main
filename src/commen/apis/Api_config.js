@@ -694,7 +694,29 @@ const searchNoteRequetMethod = {
 }
 const paymentMethodsRequestMethod = {
   RequestMethod: "ServiceManager.GetPaymentMethods"
+}
 
+const searchPaymentHistoryRequestMethod = {
+  RequestMethod: "ServiceManager.InvoicesAndPaymentHistory"
+}
+
+const searcPollsRequestMethod = {
+  RequestMethod: "ServiceManager.SearchPolls"
+}
+
+const savePollsRequestMethod = {
+  RequestMethod: 'ServiceManager.SavePoll'
+}
+
+const getAllCommittesandGroupsforPolls = {
+  RequestMethod: 'ServiceManager.GetAllGroupsAndCommitteesByOrganizaitonID'
+}
+
+const renameFolderRequestMethod = {
+  RequestMethod: 'ServiceManager.RenameFolder'
+}
+const renameFileRequestMethod = {
+  RequestMethod: "ServiceManager.RenameFile"
 }
 export {
   revoketoken,
@@ -883,5 +905,11 @@ export {
   searchUserMeetings,
   searchTodoListRequestMethod,
   searchNoteRequetMethod,
-  paymentMethodsRequestMethod
+  paymentMethodsRequestMethod,
+  searchPaymentHistoryRequestMethod,
+  searcPollsRequestMethod,
+  savePollsRequestMethod,
+  getAllCommittesandGroupsforPolls,
+  renameFolderRequestMethod,
+  renameFileRequestMethod
 }

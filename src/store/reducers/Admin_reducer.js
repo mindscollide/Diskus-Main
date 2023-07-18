@@ -30,6 +30,8 @@ const initialState = {
   DeleteOrganizationResponse: null,
   DeleteOrganizationResponseMessage: "",
   PaymentMethods: null,
+  searchPaymentHistory: null,
+  Spinner: false
 };
 
 const adminReducer = (state = initialState, action) => {
@@ -488,6 +490,31 @@ const adminReducer = (state = initialState, action) => {
         Loading: false,
         DeleteOrganizationResponse: null,
         DeleteOrganizationResponseMessage: action.message
+      }
+    }
+    case actions.SEARCH_PAYMENT_HISTORY_INIT: {
+      return {
+        ...state,
+        Loading: true,
+        Spinner: true,
+      }
+    }
+    case actions.SEARCH_PAYMENT_HISTORY_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        Spinner: false,
+        searchPaymentHistory: action.response,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.SEARCH_PAYMENT_HISTORY_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        Spinner: false,
+        searchPaymentHistory: null,
+        ResponseMessage: action.message
       }
     }
     default:

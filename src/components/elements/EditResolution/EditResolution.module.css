@@ -363,6 +363,7 @@ body[dir="rtl"] .circulate_button_Createresolution {
   position: absolute !important;
   top: 0;
   display: flex;
+  left: 60px;
   justify-content: center;
   align-items: center;
 }
@@ -382,8 +383,8 @@ body[dir="rtl"] .Class_for_label_Edit_resolution {
 }
 
 body[dir="rtl"] .Draft_box_Edit {
-  width: auto !important;
-  left: 87.5% !important;
+  right: 58px;
+  left: auto;
 }
 
 body[dir="rtl"] .Leftpolygon {
@@ -469,4 +470,8 @@ body[dir="rtl"] .errorMessage_hidden {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
   padding: 12px 30px !important;
+}
+
+body[dir="rtl"] .Go_Back_EditResolution {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }

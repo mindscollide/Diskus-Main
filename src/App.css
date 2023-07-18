@@ -2706,6 +2706,7 @@ a.icon.nav-link.active i {
 
 input#Participant {
   padding: 0px 8px !important;
+  height: 15px;
 }
 
 input#Participant::placeholder {
