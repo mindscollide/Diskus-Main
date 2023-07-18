@@ -52,11 +52,14 @@ import {
 import { mqttConnection } from '../../commen/functions/mqttconnection'
 import { realtimeNotificationRecent } from '../../store/actions/RealtimeNotification_actions'
 import { useTranslation } from 'react-i18next'
+import numeral from 'numeral';
+import 'numeral/locales';
 
 const Dashboard = () => {
   const location = useLocation()
   const [client, setClient] = useState(null)
   const [searchVisible, setSearchVisible] = useState(false)
+
   const { videoCall } = useSelector((state) => state)
   // const [socket, setSocket] = useState(Helper.socket);
   const navigate = useNavigate()

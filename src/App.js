@@ -8,6 +8,7 @@ import moment from 'moment'
 import './assets/font-icons/font-icons.css'
 
 const App = () => {
+
   useEffect(() => {
     logoutAllTabs()
   }, [])

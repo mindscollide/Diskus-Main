@@ -161,3 +161,13 @@ body[dir="rtl"] .polling_searchinput {
 .Search_Bar_icon_class {
   cursor: pointer;
 }
+
+.voteBtn {
+  background-color: #81DB86 !important;
+  border: none !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  padding: 12px 30px;
+  font-family: "MontserratSemiBold" !important;
+
+}

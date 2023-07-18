@@ -92,6 +92,8 @@ import ShowRenameNotification from "./ShowRenameNotification/ShowRenameNotificat
 import ActionUndoNotification from "./ActionUndoNotification/ActionUndoNotification";
 import ModalShareDocument from "./ModalSharedocument/ModalShareDocument";
 import CustomDropdown from "../../components/elements/dropdown/CustomDropdown";
+import { FolderisExist2 } from "../../store/actions/FolderUploadDataroom";
+import ModalRenameFile from "./ModalRenameFile/ModalRenameFile";
 const DataRoom = () => {
   // tooltip
   const [showbarupload, setShowbarupload] = useState(false);
@@ -124,7 +126,7 @@ const DataRoom = () => {
   const [foldermodal, setFolderModal] = useState(false);
   const [uploadOptionsmodal, setUploadOptionsmodal] = useState(false);
   const [canceluploadmodal, setCanceluploadmodal] = useState(false);
-  const [sharemebtn, setSharemebtn] = useState(false);
+  // const [sharemebtn, setSharemebtn] = useState(false);
   const [searchbarshow, setSearchbarshow] = useState(false);
   const [searchbarsearchoptions, setSearchbarsearchoptions] = useState(false);
   const [searchoptions, setSearchoptions] = useState(false);
@@ -136,8 +138,8 @@ const DataRoom = () => {
   const [collapes, setCollapes] = useState(false);
   const [sharehoverstyle, setSharehoverstyle] = useState(false);
   const [sharefoldermodal, setSharefoldermodal] = useState(false);
-  const [mydocumentbtnactive, setMydocumentbtnactive] = useState(false);
-  const [alldocumentAcitve, setAllDocumentActive] = useState(true);
+  // const [mydocumentbtnactive, setMydocumentbtnactive] = useState(false);
+  // const [alldocumentAcitve, setAllDocumentActive] = useState(true);
   const [tasksAttachments, setTasksAttachments] = useState([]);
   const [deltehoverstyle, setDeltehoverstyle] = useState(false);
   const [sharedwithmebtn, setSharedwithmebtn] = useState(false);
@@ -145,10 +147,13 @@ const DataRoom = () => {
   const [customrangemoreoptions, setCustomerangemoreoptions] = useState(false);
   const [showrenamenotification, setShowrenamenotification] = useState(false);
   const [showrenamemodal, setShowreanmemodal] = useState(false);
+  const [showrenameFile, setShowRenameFile] = useState(false)
   const [requestingAccess, setRequestingAccess] = useState(false);
   const [fileremoved, setFileremoved] = useState(false);
   const [uploadCounter, setUploadCounter] = useState(0);
   const [deletenotification, setDeletenotification] = useState(false);
+  const [isRenameFolderData, setRenameFolderData] = useState(null)
+  const [isRenameFileData, setRenameFileData] = useState(null)
   const [remainingTime, setRemainingTime] = useState(null);
   const [data, setData] = useState([]);
   const [folderId, setFolderId] = useState(0);
@@ -160,6 +165,8 @@ const DataRoom = () => {
   const [threeDotOptions, setThreeDotOptions] = useState(0);
   const [folderID, setFolderID] = useState([]);
   const [rows, setRow] = useState([]);
+  const [uploadDocumentAgain, setUploadDocumentAgain] = useState(null)
+  console.log(uploadDocumentAgain, "uploadDocumentAgainuploadDocumentAgain")
   const [getAllData, setGetAllData] = useState([]);
   const [showsubmenu, setShowsubmenu] = useState(false);
   const [searchDocumentTypeValue, setSearchDocumentTypeValue] = useState(0);
@@ -754,10 +761,10 @@ const DataRoom = () => {
   const SharewithmeButonShow = async () => {
     localStorage.setItem("setTableView", 2);
     await dispatch(getDocumentsAndFolderApi(navigate, 2, t));
-    setSharemebtn(true);
+    // setSharemebtn(true);
     setSharedwithmebtn(true);
-    setAllDocumentActive(false);
-    setMydocumentbtnactive(false);
+    // setAllDocumentActive(false);
+    // setMydocumentbtnactive(false);
     localStorage.removeItem("folderID");
     if (searchoptions) {
       setSearchoptions(false);
@@ -768,9 +775,9 @@ const DataRoom = () => {
     localStorage.setItem("setTableView", 1);
     await dispatch(getDocumentsAndFolderApi(navigate, 1, t));
     localStorage.removeItem("folderID");
-    setAllDocumentActive(false);
-    setSharemebtn(false);
-    setMydocumentbtnactive(true);
+    // setAllDocumentActive(false);
+    // setSharemebtn(false);
+    // setMydocumentbtnactive(true);
     setSharedwithmebtn(false);
     if (searchoptions) {
       setSearchoptions(false);
@@ -781,9 +788,9 @@ const DataRoom = () => {
     localStorage.setItem("setTableView", 3);
     await dispatch(getDocumentsAndFolderApi(navigate, 3, t));
     localStorage.removeItem("folderID");
-    setSharemebtn(false);
-    setAllDocumentActive(true);
-    setMydocumentbtnactive(false);
+    // setSharemebtn(false);
+    // setAllDocumentActive(true);
+    // setMydocumentbtnactive(false);
     setSharedwithmebtn(false);
     if (searchoptions) {
       setSearchoptions(false);
@@ -856,14 +863,20 @@ const DataRoom = () => {
     }
   };
 
-  const fileOptionsSelect = (data) => {
+  const fileOptionsSelect = (data, record) => {
     console.log(data, "datadatadata")
+    if (data.value === 3) {
+      setShowRenameFile(true)
+      setRenameFileData(record)
+    }
 
   }
 
-  const folderOptionsSelect = (data) => {
+  const folderOptionsSelect = (data, record) => {
+    console.log(record, "recordrecord")
     if (data.value === 2) {
       setShowreanmemodal(true)
+      setRenameFolderData(record)
     }
     console.log(data, "datadatadata")
 
@@ -974,8 +987,8 @@ const DataRoom = () => {
       key: "OtherStuff",
       width: "180px",
       sortDirections: ["descend", "ascend"],
-      render: (text, data) => {
-        console.log(data, "datadatadatadatadatadatadata");
+      render: (text, record) => {
+        console.log(record, "datadatadatadatadatadatadata");
         return (
           <>
             <Row>
@@ -991,10 +1004,10 @@ const DataRoom = () => {
                       <svg
                         className={styles["share__Icon_img"]}
                         onClick={() => {
-                          if (data.isFolder) {
-                            showShareFolderModal(data.id, data.name);
+                          if (record.isFolder) {
+                            showShareFolderModal(record.id, record.name);
                           } else {
-                            showShareFileModal(data.id, data.name);
+                            showShareFileModal(record.id, record.name);
                           }
                         }}
                         xmlns="http://www.w3.org/2000/svg"
@@ -1035,10 +1048,10 @@ const DataRoom = () => {
                         width="15.02px"
                         className={styles["delete__Icon_img"]}
                         onClick={() => {
-                          if (data.isFolder) {
-                            dispatch(deleteFolder(navigate, data.id, t));
+                          if (record.isFolder) {
+                            dispatch(deleteFolder(navigate, record.id, t));
                           } else {
-                            dispatch(deleteFileDataroom(navigate, data.id, t));
+                            dispatch(deleteFileDataroom(navigate, record.id, t));
                           }
                         }}
                       />
@@ -1056,14 +1069,14 @@ const DataRoom = () => {
                   </span>
                 </Tooltip>
                 <span className={styles["threeDot__Icon"]} >
-                  {data.isFolder ?
+                  {record.isFolder ?
                     <Dropdown className={`${styles["options_dropdown"]} ${"dataroom_options"}`} >
                       <Dropdown.Toggle id="dropdown-autoclose-true">
                         <img src={dot} width="15.02px" height="10.71px" />
                       </Dropdown.Toggle>
                       <Dropdown.Menu >
                         {optionsforFolder.map((data, index) => {
-                          return <Dropdown.Item key={index} onClick={() => folderOptionsSelect(data)}>{data.label}</Dropdown.Item>
+                          return <Dropdown.Item key={index} onClick={() => folderOptionsSelect(data, record)}>{data.label}</Dropdown.Item>
                         })}
                       </Dropdown.Menu>
                     </Dropdown>
@@ -1073,53 +1086,10 @@ const DataRoom = () => {
                       </Dropdown.Toggle>
                       <Dropdown.Menu >
                         {optionsforFile.map((data, index) => {
-                          return <Dropdown.Item key={index} onClick={() => fileOptionsSelect(data)}>{data.label}</Dropdown.Item>
+                          return <Dropdown.Item key={index} onClick={() => fileOptionsSelect(data, record)}>{data.label}</Dropdown.Item>
                         })}
                       </Dropdown.Menu>
                     </Dropdown>}
-
-                  {/* {optionsFolderisShown && threeDotOptions === data.id ? (
-                    <Col className={styles["FilterDropDown_TableView"]}> */}
-                  {/* {threeDotOptions === data.id ? (
-                        <CustomDropdown />
-                      )
-                        : null} */}
-                  {/* {optionsforFolder.map((navlink, index) => {
-                        {
-                          if (threeDotOptions === data.id) {
-                            return (
-                              <span >
-                                <NavLink
-                                  key={index}
-                                  onClick={() => fileOptionsSelect(navlink)}
-                                  className={styles["NavLink__filter_Folder"]}
-                                >
-                                  {navlink.label}
-                                </NavLink>
-                              </span>
-                            );
-                          }
-                        }
-                      })} */}
-                  {/* </Col>
-                  ) : null} */}
-                  {/* {optionsFileisShown && threeDotOptions === data.id ? (
-                    <Col className={styles["FilterDropDown_TableView"]}>
-                      {optionsforFile.map((navlink, index) => {
-                        if (threeDotOptions === data.id) {
-                          return (
-                            <NavLink
-                              key={index}
-                              className={styles["NavLink__filter__file"]}
-                              onClick={() => setOptionsFileisShown(false)}
-                            >
-                              {navlink.label}
-                            </NavLink>
-                          );
-                        }
-                      })}
-                    </Col>
-                  ) : null} */}
                 </span>
               </Col >
             </Row >
@@ -1129,16 +1099,111 @@ const DataRoom = () => {
     },
   ];
 
-  const handleClickDropDown = (rowData) => {
-    setThreeDotOptions(rowData.id);
-    if (rowData.isFolder === true) {
-      setOptionsFolderisShown(true);
-      setOptionsFileisShown(false);
-    } else {
-      setOptionsFileisShown(true);
-      setOptionsFolderisShown(false);
-    }
-  };
+  const shareWithmeColoumns = [
+    {
+      title: t("Name"),
+      dataIndex: "name",
+      key: "name",
+      width: "250px",
+      sortDirections: ["descend", "ascend"],
+      sorter: (a, b) => a.name.toLowerCase() < b.name.toLowerCase(),
+      render: (text, record) => {
+        if (record.isFolder) {
+          return <div className={`${styles["dataFolderRow"]}`}>
+            <img src={featherfolder} />
+            <span
+              className={styles["dataroom_table_heading"]}
+              onClick={() => getFolderDocuments(data.id)}
+            >
+              {text} <img src={sharedIcon} />
+            </span>
+          </div>
+        } else {
+          return (
+            <div className={`${styles["dataFolderRow"]}`}>
+              <span
+                className={styles["dataroom_table_heading"]}
+              // onClick={() => getFolderDocuments(data.id)}
+              >
+                {text} <img src={sharedIcon} />
+              </span>
+            </div>
+          )
+        }
+
+      }
+    },
+    {
+      title: t("Shared-by"),
+      dataIndex: "owner",
+      key: "owner",
+      width: "90px",
+      sortDirections: ["descend", "ascend"],
+    },
+    {
+      title: t("Share-date"),
+      dataIndex: "modifiedDate",
+      key: "modifiedDate",
+      width: "90px",
+      sortDirections: ["descend", "ascend"],
+      filters: [
+        {
+          text: t("Share-date"),
+          value: "Shared date",
+          className: currentLanguage,
+        },
+        {
+          text: t("Last-modified"),
+          value: "Last modified",
+        },
+        {
+          text: t("Last-modified-by-me"),
+          value: "Last modified by me",
+        },
+        {
+          text: t("Last-open-by-me"),
+          value: "Last open by me",
+        },
+      ],
+      filterIcon: (filtered) => (
+        <ChevronDown className="filter-chevron-icon-todolist" />
+      ),
+      render: (text, record) => {
+        return <span>{_justShowDateformat(text)}</span>;
+      }
+    },
+    {
+      title: t("File-size"),
+      dataIndex: "fileSize",
+      key: "fileSize",
+      width: "90px",
+      sortDirections: ["descend", "ascend"],
+    },
+
+    {
+      dataIndex: "OtherStuff",
+      key: "OtherStuff",
+      width: "180px",
+      sortDirections: ["descend", "ascend"],
+      render: () => {
+        return (
+          <section className="d-flex justify-content-end">
+            <img src={dot} width="15.02px" height="10.71px" />
+          </section>
+        )
+      }
+    },
+  ];
+  // const handleClickDropDown = (rowData) => {
+  //   setThreeDotOptions(rowData.id);
+  //   if (rowData.isFolder === true) {
+  //     setOptionsFolderisShown(true);
+  //     setOptionsFileisShown(false);
+  //   } else {
+  //     setOptionsFileisShown(true);
+  //     setOptionsFolderisShown(false);
+  //   }
+  // };
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -1170,25 +1235,31 @@ const DataRoom = () => {
         setRemainingTime,
         remainingTime,
         setShowbarupload,
-        setTasksAttachments
+        setTasksAttachments,
+        setUploadOptionsmodal,
+        setUploadDocumentAgain
       )
     );
   };
 
-  const handleUploadFolder = ({ file }) => {
-    dispatch(
-      FileisExist(
-        navigate,
-        file.name,
-        t,
-        file,
-        setProgress,
-        setRemainingTime,
-        remainingTime,
-        setShowbarupload,
-        setTasksAttachments
-      )
-    );
+  const handleUploadFolder = ({ file }, data) => {
+    console.log(file.length, data, "handleUploadFolderhandleUploadFolderhandleUploadFolder")
+    console.log(file.webkitRelativePath.split("/")[0], "handleUploadFolderhandleUploadFolderhandleUploadFolder")
+    let folderName = file.webkitRelativePath.split("/")[0];
+    // dispatch(
+    //   FolderisExist2(
+    //     navigate,
+    //     folderName,
+    //     t,
+    //     file,
+    //     setProgress,
+    //     setRemainingTime,
+    //     remainingTime,
+    //     setShowbarupload,
+    //     setTasksAttachments,
+    //     setAddfolder
+    //   )
+    // );
   };
 
   const handleChangeLocationValue = (event) => {
@@ -1388,6 +1459,8 @@ const DataRoom = () => {
     }
   };
 
+  // const handleUploadDocuemtuploadOptions = () => { }
+
   useEffect(() => {
     document.addEventListener("click", handleOutsideClick);
     return () => {
@@ -1418,16 +1491,26 @@ const DataRoom = () => {
     }
   }, [DataRoomReducer.ResponseMessage]);
   console.log(DataRoomReducer, "DataRoomReducerDataRoomReducerDataRoomReducer");
+  console.log(getAllData, "DataRoomReducerDataRoomReducerDataRoomReducerDataRoomReducerDataRoomReducerDataRoomReducerDataRoomReducerDataRoomReducerDataRoomReducer")
   useEffect(() => {
-    if (
-      DataRoomReducer.getAllDocumentandShareFolderResponse !== null &&
-      DataRoomReducer.getAllDocumentandShareFolderResponse !== undefined &&
-      DataRoomReducer.getAllDocumentandShareFolderResponse.length > 0
-    ) {
-      setGetAllData(DataRoomReducer.getAllDocumentandShareFolderResponse);
-    } else {
-      setGetAllData([]);
+    try {
+      if (
+        DataRoomReducer.getAllDocumentandShareFolderResponse !== null &&
+        DataRoomReducer.getAllDocumentandShareFolderResponse !== undefined &&
+        DataRoomReducer.getAllDocumentandShareFolderResponse.length > 0
+      ) {
+        // DataRoomReducer.getAllDocumentandShareFolderResponse.map((data, index) => {
+        //   setGetAllData([...getAllData, data])
+        // })
+        setGetAllData(DataRoomReducer.getAllDocumentandShareFolderResponse)
+        // setGetAllData([DataRoomReducer.getAllDocumentandShareFolderResponse, getAllData]);
+      } else {
+        setGetAllData([]);
+      }
+    } catch (error) {
+
     }
+
   }, [DataRoomReducer.getAllDocumentandShareFolderResponse]);
 
   return (
@@ -1531,6 +1614,7 @@ const DataRoom = () => {
                           className=" d-flex gap-1 align-items-center"
                         >
                           <img src={plus} height="10.8" width="12px" />
+                          {/* <input type="file" webkitdirectory multiple  onChange={handleUploadFolder} /> */}
                           <UploadDataFolder
                             title={t("Folder-upload")}
                             setProgress={setProgress}
@@ -2127,7 +2211,7 @@ const DataRoom = () => {
                             <>
                               <TableToDo
                                 sortDirections={["descend", "ascend"]}
-                                column={MyDocumentsColumns}
+                                column={shareWithmeColoumns}
                                 className={"Resolution"}
                                 size={"small"}
                                 rows={getAllData}
@@ -2385,6 +2469,14 @@ const DataRoom = () => {
         <ModalOptions
           UploadOptions={uploadOptionsmodal}
           setUploadOptions={setUploadOptionsmodal}
+          uploadDocumentfile={uploadDocumentAgain}
+          setProgress={setProgress}
+          setRemainingTime={setRemainingTime}
+          remainingTime={remainingTime}
+          setShowbarupload={setShowbarupload}
+          setTasksAttachments={setTasksAttachments}
+        // uploadOptionsonClickBtn={handleUploadDocuemtuploadOptions}
+
         />
       ) : null}
       {canceluploadmodal ? (
@@ -2419,6 +2511,7 @@ const DataRoom = () => {
             renamefolder={showrenamemodal}
             setRenamefolder={setShowreanmemodal}
             setnotification={setShowrenamenotification}
+            isRenameFolderData={isRenameFolderData}
           />
         </>
       ) : null}
@@ -2433,6 +2526,7 @@ const DataRoom = () => {
       {inviteModal && (
         <ModalShareDocument inviteModal={inviteModal} setInviteModal={setInviteModal} />
       )}
+      {showrenameFile && <ModalRenameFile isRenameFileData={isRenameFileData} showrenameFile={showrenameFile} setShowRenameFile={setShowRenameFile} />}
       {DataRoomReducer.Loading ? <Loader /> : null}
       {/* <Loader /> */}
       <Notification open={open.open} message={open.message} setOpen={setOpen} />

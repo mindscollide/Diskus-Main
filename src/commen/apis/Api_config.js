@@ -675,6 +675,10 @@ const updateShoutAll = {
   RequestMethod: 'ServiceManager.UpdateBroadcast',
 }
 
+const insertBulkMessages = {
+  RequestMethod: 'ServiceManager.InsertBulkMessages',
+}
+
 const googleValidToken = {
   RequestMethod: 'ServiceManager.GetGoogleValidToken',
 }
@@ -682,7 +686,7 @@ const revoketoken = {
   RequestMethod: 'ServiceManager.RevokeToken',
 }
 const searchUserMeetings = {
-  RequestMethod: "ServiceManager.SearchMeetings"
+  RequestMethod: 'ServiceManager.SearchMeetings',
 }
 
 const searchTodoListRequestMethod = {
@@ -690,12 +694,35 @@ const searchTodoListRequestMethod = {
 }
 
 const searchNoteRequetMethod = {
-  RequestMethod: 'ServiceManager.SearchNotes'
+  RequestMethod: 'ServiceManager.SearchNotes',
 }
 const paymentMethodsRequestMethod = {
   RequestMethod: "ServiceManager.GetPaymentMethods"
-
 }
+
+const searchPaymentHistoryRequestMethod = {
+  RequestMethod: "ServiceManager.InvoicesAndPaymentHistory"
+}
+
+const searcPollsRequestMethod = {
+  RequestMethod: "ServiceManager.SearchPolls"
+}
+
+const savePollsRequestMethod = {
+  RequestMethod: 'ServiceManager.SavePoll'
+}
+
+const getAllCommittesandGroupsforPolls = {
+  RequestMethod: 'ServiceManager.GetAllGroupsAndCommitteesByOrganizaitonID'
+}
+
+const renameFolderRequestMethod = {
+  RequestMethod: 'ServiceManager.RenameFolder'
+}
+const renameFileRequestMethod = {
+  RequestMethod: "ServiceManager.RenameFile"
+}
+
 export {
   revoketoken,
   googleValidToken,
@@ -880,8 +907,15 @@ export {
   createShoutAll,
   deleteShoutAll,
   updateShoutAll,
+  insertBulkMessages,
   searchUserMeetings,
   searchTodoListRequestMethod,
   searchNoteRequetMethod,
-  paymentMethodsRequestMethod
+  paymentMethodsRequestMethod,
+  searchPaymentHistoryRequestMethod,
+  searcPollsRequestMethod,
+  savePollsRequestMethod,
+  getAllCommittesandGroupsforPolls,
+  renameFolderRequestMethod,
+  renameFileRequestMethod
 }

@@ -1,59 +1,53 @@
 import React, { useEffect, useState } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
-import styles from "./ModalRenameFolder.module.css"
+import styles from "./ModalRenameFile.module.css"
 import { useTranslation } from "react-i18next";
 import { Button, Modal, TextField } from "../../../components/elements";
-import { FolderisExistRename } from "../../../store/actions/DataRoom_actions";
+import { FileisExist2, FolderisExistRename } from "../../../store/actions/DataRoom_actions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-const ModalRenameFolder = ({
-  renamefolder,
-  setRenamefolder,
-  setnotification,
-  isRenameFolderData,
+const ModalRenameFile = ({
+  showrenameFile,
+  setShowRenameFile,
+  isRenameFileData,
 }) => {
-  console.log(isRenameFolderData, "isRenameFolderDataisRenameFolderDataisRenameFolderData")
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const [folderData, setFolderData] = useState({
-    FolderName: "",
-    folderId: 0
+  const [fileData, setFileData] = useState({
+    FileName: "",
+    FileId: 0
   })
-  console.log(folderData, "folderDatafolderDatafolderData")
+  console.log(fileData, "folderDatafolderDatafolderData")
   useEffect(() => {
-    if (isRenameFolderData !== null) {
-      setFolderData({
-        FolderName: isRenameFolderData.name,
-        folderId: isRenameFolderData.id
+    if (fileData !== null) {
+      setFileData({
+        FileName: isRenameFileData.name,
+        FileId: isRenameFileData.id
       })
     }
-  }, [isRenameFolderData])
-  const closebtn = async () => {
-    setRenamefolder(false);
-  };
+  }, [isRenameFileData])
+
   const saveButton = () => {
-    // setRenamefolder(false);
-    if (folderData.FolderName !== "") {
-      // setnotification(true);
-      dispatch(FolderisExistRename(navigate, folderData, t, setRenamefolder))
+    if (fileData.FileName !== "") {
+      dispatch(FileisExist2(navigate, fileData, t, setShowRenameFile))
 
     }
   };
 
   const CloseButton = () => {
-    setRenamefolder(false);
+    setShowRenameFile(false);
   };
   return (
     <>
       <Container>
         <Modal
-          show={renamefolder}
+          show={showrenameFile}
           onHide={() => {
-            setRenamefolder(false);
+            setShowRenameFile(false);
           }}
-          setShow={setRenamefolder}
+          setShow={setShowRenameFile}
           // ButtonTitle={ModalTitle}
           modalFooterClassName="d-block"
           centered
@@ -74,12 +68,12 @@ const ModalRenameFolder = ({
                   {/* <Col lg={2} md={2} sm={2}></Col> */}
                   <Col lg={12} md={12} sm={12} className="rename-modal-field">
                     <TextField
-                      value={folderData.FolderName}
+                      value={fileData.FileName}
                       placeholder={t("Rename")}
                       labelClass="textFieldSearch d-none"
-                      change={(e) => setFolderData({
-                        ...folderData,
-                        FolderName: e.target.value
+                      change={(e) => setFileData({
+                        ...fileData,
+                        FileName: e.target.value
                       })}
                     />
                   </Col>
@@ -120,4 +114,4 @@ const ModalRenameFolder = ({
   );
 };
 
-export default ModalRenameFolder;
+export default ModalRenameFile;

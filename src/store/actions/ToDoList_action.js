@@ -682,7 +682,7 @@ const searchTodoList_fail = (message) => {
   }
 }
 
-const SearchTodoListApi = (navigate, searchData, t) => {
+const SearchTodoListApi = (navigate, searchData, page, size, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let createrID = localStorage.getItem('userID');
   let meetingPage = localStorage.getItem("todoListPage")
@@ -692,8 +692,8 @@ const SearchTodoListApi = (navigate, searchData, t) => {
     Title: searchData?.Title,
     AssignedToName: searchData?.AssignedToName,
     UserID: JSON.parse(createrID),
-    PageNumber: JSON.parse(meetingPage),
-    Length: JSON.parse(meetingRow)
+    PageNumber: page !== null && page !== undefined ? JSON.parse(page) : 1,
+    Length: size !== null && size !== undefined ? JSON.parse(size) : 50
   }
 
   return (dispatch) => {
@@ -712,7 +712,7 @@ const SearchTodoListApi = (navigate, searchData, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(SearchTodoListApi(navigate, searchData, t))
+          dispatch(SearchTodoListApi(navigate, searchData, page, size, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (response.data.responseResult.responseMessage.toLowerCase().includes("ToDoList_ToDoListServiceManager_SearchToDoList_01".toLowerCase())) {

@@ -62,8 +62,8 @@ const Notes = () => {
   const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
-  let notesPage = JSON.parse(localStorage.getItem("notesPage"))
-  let notesPagesize = JSON.parse(localStorage.getItem("notesPageSize"))
+  let notesPage = parseInt(localStorage.getItem("notesPage"))
+  let notesPagesize = localStorage.getItem("notesPageSize")
   const [totalRecords, setTotalRecords] = useState(0)
   // for modal Add notes
   const [addNotes, setAddNotes] = useState(false);
@@ -530,7 +530,10 @@ const Notes = () => {
             )}
           </Col>
           <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
-            <Pagination current={notesPage !== null ? notesPage : 1} onChange={handelChangeNotesPagination} showSizeChanger total={totalRecords} pageSizeOptions={[30, 50, 100, 200]} pageSize={notesPagesize !== null ? notesPagesize : 50} className={styles["PaginationStyle-Notes"]} />
+            <Pagination current={notesPage !== null ? notesPage : 1} locale={{
+              items_per_page: t('items_per_page'),
+              page: t('page')
+            }} onChange={handelChangeNotesPagination} showSizeChanger total={totalRecords} pageSizeOptions={["30", "50", "100", "200"]} pageSize={notesPagesize !== null ? notesPagesize : 50} className={styles["PaginationStyle-Notes"]} />
           </Col>
         </Row>
         {/* Test Accordian Ends  */}
