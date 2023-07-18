@@ -4,6 +4,7 @@ import {
   InputSearchFilter,
   Modal,
   MultiDatePicker,
+  MultiDatePickers,
 } from "../../../components/elements";
 import styles from "./CreatePolling.module.css";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
@@ -22,24 +23,30 @@ import { useState } from "react";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getAllCommitteesandGroups } from "../../../store/actions/Polls_actions";
+import GroupIcon from "../../../assets/images/groupdropdown.svg";
+import committeeicon from "../../../assets/images/committeedropdown.svg";
+import profilepic from "../../../assets/images/profiledropdown.svg";
+import {
+  SavePollsApi,
+  getAllCommitteesandGroups,
+} from "../../../store/actions/Polls_actions";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
-
+import moment from "moment";
 
 const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
   const animatedComponents = makeAnimated();
   const optionsNew = [
-    { value: "chocolate", label: "Chocolate" },
+    { value: "chocolate", label: <></> },
     { value: "strawberry", label: "Strawberry" },
     { value: "vanilla", label: "Vanilla" },
   ];
 
   //For Custom language datepicker
-  const { PollsReducer } = useSelector(state => state);
-  console.log(PollsReducer, "PollsReducerPollsReducer")
+  const { PollsReducer } = useSelector((state) => state);
+  console.log(PollsReducer, "PollsReducerPollsReducer");
   const dispatch = useDispatch();
-  const navigat = useNavigate();
+  const navigate = useNavigate();
 
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -83,19 +90,149 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
       name: "Saif Rehman",
     },
   ]);
-
+  const [dropdowndata, setDropdowndata] = useState([]);
+  const [selectedsearch, setSelectedsearch] = useState([]);
   const [createPollData, setcreatePollData] = useState({
     TypingTitle: "",
     InputSearch: "",
+    date: "",
     AllowMultipleAnswers: true,
   });
 
-  const [assignees, setAssignees] = useState("");
+  useEffect(() => {
+    dispatch(getAllCommitteesandGroups(navigate, t));
+  }, []);
 
+  const SavePollsButtonFunc = () => {
+    // const createrid = localStorage.getItem()
+    const organizationid = localStorage.getItem("organizationID");
+    const createrid = localStorage.getItem("userID");
+    let data = {
+      PollDetails: {
+        PollTitle: createPollData.TypingTitle,
+        DueDate: createPollData.date,
+        AllowMultipleAnswers: createPollData.AllowMultipleAnswers,
+        CreatorID: createrid,
+        PollStatusID: 1,
+        OrganizationID: organizationid,
+      },
+      ParticipantIDs: [876, 864, 883, 883, 884],
+      PollAnswers: options.value,
+    };
+    dispatch(SavePollsApi(navigate, data, t));
+  };
 
   useEffect(() => {
-    dispatch(getAllCommitteesandGroups())
-  }, [])
+    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    if (pollsData !== null && pollsData !== undefined) {
+      let temp = [];
+      if (Object.keys(pollsData).length > 0) {
+        if (Object.keys(pollsData.groups).length > 0) {
+          pollsData.groups.map((a, index) => {
+            let newData = {
+              value: a.groupID,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img src={GroupIcon} height="16.45px" width="18.32px" />
+                      <span className={styles["NameDropDown"]}>
+                        {a.groupName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 1,
+            };
+            temp.push(newData);
+          });
+        }
+        if (Object.keys(pollsData.committees).length > 0) {
+          pollsData.committees.map((a, index) => {
+            let newData = {
+              value: a.committeeID,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={committeeicon}
+                        width="21.71px"
+                        height="18.61px"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.committeeName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 2,
+            };
+            temp.push(newData);
+          });
+        }
+        if (Object.keys(pollsData.organizationUsers).length > 0) {
+          pollsData.organizationUsers.map((a, index) => {
+            let newData = {
+              value: a.userID,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={profilepic}
+                        className={styles["UserProfilepic"]}
+                        width="18px"
+                        height="18px"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.userName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 3,
+            };
+            temp.push(newData);
+          });
+          setDropdowndata(temp);
+        }
+      }
+    }
+  }, [PollsReducer.gellAllCommittesandGroups]);
+
+  console.log(dropdowndata, "PollsReducerPollsReducer1212");
+
+  const changeDateStartHandler = (date) => {
+    let newDate = moment(date).format("YYYY-MM-DD");
+    setcreatePollData({
+      ...createPollData,
+      date: {
+        value: newDate,
+      },
+    });
+    console.log(newDate, "changeDateStartHandler");
+  };
+  const [assignees, setAssignees] = useState("");
+
   const HandleSearch = (e) => {
     if (e.target.value.trimStart() != "") {
       setAssignees(e.target.value.trimStart());
@@ -218,21 +355,20 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                           <span className={styles["Due_Date_heading"]}>
                             {t("Due-date")}
                           </span>
-                          <MultiDatePicker
+                          <MultiDatePickers
                             // onChange={meetingDateHandler}
+                            value={createPollData.date.value}
                             name="MeetingDate"
                             check={true}
-                            // IconName={
-                            //   <img
-                            //     src={EditIcon}
-                            //     width="11.54px"
-                            //     height="11.11px"
-                            //   />
-                            // }
                             // value={meetingDate}
                             calendar={calendarValue}
                             locale={localValue}
-                          // newValue={createMeeting.MeetingDate}
+                            onChange={(value) =>
+                              changeDateStartHandler(
+                                value?.toDate?.().toString()
+                              )
+                            }
+                            // newValue={createMeeting.MeetingDate}
                           />
                         </Col>
                       </Row>
@@ -320,72 +456,72 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                           </Row>
                           {options.length > 0
                             ? options.map((data, index) => {
-                              return (
-                                <>
-                                  {index <= 1 ? (
-                                    <Row className="mt-2">
-                                      <Col lg={12} md={12} sm={12}>
-                                        <span className="position-relative">
-                                          <TextField
-                                            placeholder={
-                                              "Option" +
-                                              " " +
-                                              parseInt(index + 1)
-                                            }
-                                            applyClass={"PollingCreateModal"}
-                                            labelClass="d-none"
-                                            name={data.name}
-                                            value={data.value}
-                                            change={(e) =>
-                                              HandleOptionChange(e)
-                                            }
-                                          />
-                                        </span>
-                                      </Col>
-                                    </Row>
-                                  ) : (
-                                    <Row className="mt-2">
-                                      <Col lg={12} md={12} sm={12}>
-                                        <span className="position-relative">
-                                          <TextField
-                                            placeholder={
-                                              "Option" +
-                                              " " +
-                                              parseInt(index + 1)
-                                            }
-                                            applyClass={"PollingCreateModal"}
-                                            labelClass="d-none"
-                                            name={data.name}
-                                            value={data.value}
-                                            change={(e) =>
-                                              HandleOptionChange(e)
-                                            }
-                                            inputicon={
-                                              <img
-                                                src={BlackCrossIcon}
-                                                width="31.76px"
-                                                height="31.76px"
-                                                onClick={HandleCancelFunction}
-                                                className={
-                                                  styles[
-                                                  "Cross-icon-Create_poll"
-                                                  ]
-                                                }
-                                              />
-                                            }
-                                            iconClassName={
-                                              styles[
-                                              "polling_Options_backGround"
-                                              ]
-                                            }
-                                          />
-                                        </span>
-                                      </Col>
-                                    </Row>
-                                  )}
-                                </>
-                              );
-                            })
+                                return (
+                                  <>
+                                    {index <= 1 ? (
+                                      <Row className="mt-2">
+                                        <Col lg={12} md={12} sm={12}>
+                                          <span className="position-relative">
+                                            <TextField
+                                              placeholder={
+                                                "Option" +
+                                                " " +
+                                                parseInt(index + 1)
+                                              }
+                                              applyClass={"PollingCreateModal"}
+                                              labelClass="d-none"
+                                              name={data.name}
+                                              value={data.value}
+                                              change={(e) =>
+                                                HandleOptionChange(e)
+                                              }
+                                            />
+                                          </span>
+                                        </Col>
+                                      </Row>
+                                    ) : (
+                                      <Row className="mt-2">
+                                        <Col lg={12} md={12} sm={12}>
+                                          <span className="position-relative">
+                                            <TextField
+                                              placeholder={
+                                                "Option" +
+                                                " " +
+                                                parseInt(index + 1)
+                                              }
+                                              applyClass={"PollingCreateModal"}
+                                              labelClass="d-none"
+                                              name={data.name}
+                                              value={data.value}
+                                              change={(e) =>
+                                                HandleOptionChange(e)
+                                              }
+                                              inputicon={
+                                                <img
+                                                  src={BlackCrossIcon}
+                                                  width="31.76px"
+                                                  height="31.76px"
+                                                  onClick={HandleCancelFunction}
+                                                  className={
+                                                    styles[
+                                                      "Cross-icon-Create_poll"
+                                                    ]
+                                                  }
+                                                />
+                                              }
+                                              iconClassName={
+                                                styles[
+                                                  "polling_Options_backGround"
+                                                ]
+                                              }
+                                            />
+                                          </span>
+                                        </Col>
+                                      </Row>
+                                    )}
+                                  </>
+                                );
+                              })
                             : null}
 
                           <Row className="mt-2">
@@ -452,7 +588,7 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                             closeMenuOnSelect={false}
                             components={animatedComponents}
                             isMulti
-                            options={optionsNew}
+                            options={dropdowndata}
                           />
                           <Button
                             text={t("ADD")}
@@ -557,6 +693,7 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                           <Button
                             text={t("Save")}
                             className={styles["Save_btn_class"]}
+                            onClick={SavePollsButtonFunc}
                           />
                           <Button
                             text={t("Save-and-publish")}
