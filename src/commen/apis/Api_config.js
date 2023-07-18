@@ -675,6 +675,10 @@ const updateShoutAll = {
   RequestMethod: 'ServiceManager.UpdateBroadcast',
 }
 
+const insertBulkMessages = {
+  RequestMethod: 'ServiceManager.InsertBulkMessages',
+}
+
 const googleValidToken = {
   RequestMethod: 'ServiceManager.GetGoogleValidToken',
 }
@@ -682,7 +686,7 @@ const revoketoken = {
   RequestMethod: 'ServiceManager.RevokeToken',
 }
 const searchUserMeetings = {
-  RequestMethod: "ServiceManager.SearchMeetings"
+  RequestMethod: 'ServiceManager.SearchMeetings',
 }
 
 const searchTodoListRequestMethod = {
@@ -690,7 +694,7 @@ const searchTodoListRequestMethod = {
 }
 
 const searchNoteRequetMethod = {
-  RequestMethod: 'ServiceManager.SearchNotes'
+  RequestMethod: 'ServiceManager.SearchNotes',
 }
 const paymentMethodsRequestMethod = {
   RequestMethod: "ServiceManager.GetPaymentMethods"
@@ -718,6 +722,7 @@ const renameFolderRequestMethod = {
 const renameFileRequestMethod = {
   RequestMethod: "ServiceManager.RenameFile"
 }
+
 export {
   revoketoken,
   googleValidToken,
@@ -902,6 +907,7 @@ export {
   createShoutAll,
   deleteShoutAll,
   updateShoutAll,
+  insertBulkMessages,
   searchUserMeetings,
   searchTodoListRequestMethod,
   searchNoteRequetMethod,
