@@ -111,6 +111,8 @@ const updateTodoStatusFunc = (navigate, value, data, t, flag) => {
   console.log(value, data, "updateTodoStatus");
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
+  let meetingPage = localStorage.getItem("todoListPage")
+  let meetingRow = localStorage.getItem("todoListRow")
   let Data = {
     TaskStatusID: value,
     TaskID: data,
@@ -166,7 +168,7 @@ const updateTodoStatusFunc = (navigate, value, data, t, flag) => {
                   Title: "",
                   AssignedToName: "",
                 };
-                dispatch(SearchTodoListApi(navigate, data2, t));
+                dispatch(SearchTodoListApi(navigate, data2, meetingPage, meetingRow, t));
               }
             } else if (
               response.data.responseResult.responseMessage

@@ -1037,5 +1037,11 @@
   "Secret-balloting": "Secret balloting",
   "Show-of-hands": "Show of hands",
   "User-is-already-exist": "User is already exist",
-  "Reschedule": "Reschedule"
+  "Reschedule": "Reschedule",
+  "items_per_page": "الصفحة",
+  "page": "",
+  "Shared-by": "Shared by",
+  "Share-date": "Share date",
+  "Last-modified-by-me": "Last modified by me",
+  "Last-open-by-me": "Last open by me"
 }

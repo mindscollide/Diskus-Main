@@ -29,6 +29,7 @@
   color: #5a5a5a;
   padding: 12px 30px !important;
   font-size: 12px !important;
+  font-family: "MontserratSemiBold";
 }
 
 .Cancel_button_UploadFile:focus,
@@ -40,6 +41,7 @@
   color: #5a5a5a !important;
   padding: 12px 30px !important;
   font-size: 12px !important;
+  font-family: "MontserratSemiBold";
 }
 
 .Create_button_UploadFile {
@@ -47,6 +49,7 @@
   color: #fff;
   padding: 12px 30px !important;
   font-size: 12px !important;
+  font-family: "MontserratSemiBold";
   border: none;
 }
 
@@ -57,6 +60,7 @@
   color: #fff !important;
   padding: 12px 30px !important;
   background: #6172d6 !important;
+  font-family: "MontserratSemiBold";
   font-size: 12px !important;
   border: none !important;
 }

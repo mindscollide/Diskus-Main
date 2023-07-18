@@ -23,8 +23,11 @@ import {
 } from "../../../store/actions/Groups_actions";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
+import CustomModal from "../modal/Modal";
+import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   const creatorID = JSON.parse(localStorage.getItem("userID"));
+  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false)
   const navigate = useNavigate();
   const [viewUpdateGroup, setViewUpdateGroup] = useState(true);
   const { t } = useTranslation();
@@ -619,7 +622,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                             placeholder={t("Description")}
                             required={true}
                             value={GroupDetails.Description}
-                            // className={styles["Height-of-textarea"]
+                          // className={styles["Height-of-textarea"]
                           />
                         </Col>
                       </Row>
@@ -740,7 +743,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "name-create-group"
+                                                      "name-create-group"
                                                       ]
                                                     }
                                                   >
@@ -753,7 +756,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "Designation-create-group"
+                                                      "Designation-create-group"
                                                       ]
                                                     }
                                                   >
@@ -766,7 +769,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "email-create-group"
+                                                      "email-create-group"
                                                       ]
                                                     }
                                                   >
@@ -777,23 +780,23 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                             </Col>
                                           </Row>
                                         </Col>
-                                          <Col
-                                            lg={2}
-                                            md={2}
-                                            sm={12}
-                                            className="mt-0  d-flex justify-content-center"
-                                          >
-                                            <img
-                                              src={CrossIcon}
-                                              className="cursor-pointer"
-                                              width={18}
-                                              onClick={() =>
-                                                removeMemberHandler(
-                                                  data.data.pK_UID
-                                                )
-                                              }
-                                            />
-                                          </Col>
+                                        <Col
+                                          lg={2}
+                                          md={2}
+                                          sm={12}
+                                          className="mt-0  d-flex justify-content-center"
+                                        >
+                                          <img
+                                            src={CrossIcon}
+                                            className="cursor-pointer"
+                                            width={18}
+                                            onClick={() =>
+                                              removeMemberHandler(
+                                                data.data.pK_UID
+                                              )
+                                            }
+                                          />
+                                        </Col>
                                       </Row>
                                     </Col>
                                   );
@@ -848,7 +851,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "name-create-group"
+                                                      "name-create-group"
                                                       ]
                                                     }
                                                   >
@@ -861,11 +864,11 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "Designation-create-group"
+                                                      "Designation-create-group"
                                                       ]
                                                     }
                                                   >
-                                                    {data.data.designation }
+                                                    {data.data.designation}
                                                   </span>
                                                 </Col>
                                               </Row>
@@ -874,7 +877,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "email-create-group"
+                                                      "email-create-group"
                                                       ]
                                                     }
                                                   >
@@ -993,102 +996,102 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                 <Col lg={12} md={12} sm={12}>
                                   {meetingAttendeesList.length > 0
                                     ? meetingAttendeesList.map(
-                                        (attendeelist, index) => {
-                                          return (
-                                            <Row className="d-flex gap-2 my-3">
-                                              <Col lg={2} md={2} sm={12}>
-                                                <img
-                                                  src={Newprofile}
-                                                  width={50}
-                                                />
-                                              </Col>
+                                      (attendeelist, index) => {
+                                        return (
+                                          <Row className="d-flex gap-2 my-3">
+                                            <Col lg={2} md={2} sm={12}>
+                                              <img
+                                                src={Newprofile}
+                                                width={50}
+                                              />
+                                            </Col>
 
-                                              <Col
-                                                lg={7}
-                                                md={7}
-                                                sm={12}
-                                                className={
-                                                  styles[
-                                                    "group-head-info-Add-Members"
-                                                  ]
+                                            <Col
+                                              lg={7}
+                                              md={7}
+                                              sm={12}
+                                              className={
+                                                styles[
+                                                "group-head-info-Add-Members"
+                                                ]
+                                              }
+                                            >
+                                              <Row className="mt-1">
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles[
+                                                      "name-create-group"
+                                                      ]
+                                                    }
+                                                  >
+                                                    {attendeelist.name}
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles[
+                                                      "Designation-create-group"
+                                                      ]
+                                                    }
+                                                  >
+                                                    {attendeelist.designation}
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles[
+                                                      "email-create-group"
+                                                      ]
+                                                    }
+                                                  >
+                                                    <a>
+                                                      {
+                                                        attendeelist.emailAddress
+                                                      }
+                                                    </a>
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                            </Col>
+                                            <Col
+                                              lg={2}
+                                              md={2}
+                                              sm={12}
+                                              className="mt-2 "
+                                            >
+                                              <Checkbox
+                                                // checked={false}
+                                                checked={
+                                                  attendees.includes(
+                                                    attendeelist.pK_UID
+                                                  )
+                                                    ? true
+                                                    : false
                                                 }
-                                              >
-                                                <Row className="mt-1">
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <span
-                                                      className={
-                                                        styles[
-                                                          "name-create-group"
-                                                        ]
-                                                      }
-                                                    >
-                                                      {attendeelist.name}
-                                                    </span>
-                                                  </Col>
-                                                </Row>
-                                                <Row>
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <span
-                                                      className={
-                                                        styles[
-                                                          "Designation-create-group"
-                                                        ]
-                                                      }
-                                                    >
-                                                      {attendeelist.designation}
-                                                    </span>
-                                                  </Col>
-                                                </Row>
-                                                <Row>
-                                                  <Col lg={12} md={12} sm={12}>
-                                                    <span
-                                                      className={
-                                                        styles[
-                                                          "email-create-group"
-                                                        ]
-                                                      }
-                                                    >
-                                                      <a>
-                                                        {
-                                                          attendeelist.emailAddress
-                                                        }
-                                                      </a>
-                                                    </span>
-                                                  </Col>
-                                                </Row>
-                                              </Col>
-                                              <Col
-                                                lg={2}
-                                                md={2}
-                                                sm={12}
-                                                className="mt-2 "
-                                              >
-                                                <Checkbox
-                                                  // checked={false}
-                                                  checked={
-                                                    attendees.includes(
-                                                      attendeelist.pK_UID
-                                                    )
-                                                      ? true
-                                                      : false
-                                                  }
-                                                  classNameDiv=""
-                                                  onChange={() =>
-                                                    checkAttendeeBox(
-                                                      attendeelist,
-                                                      attendeelist.pK_UID,
-                                                      index
-                                                    )
-                                                  }
-                                                  className={
-                                                    styles["RememberEmail"]
-                                                  }
-                                                />
-                                              </Col>
-                                            </Row>
-                                          );
-                                        }
-                                      )
+                                                classNameDiv=""
+                                                onChange={() =>
+                                                  checkAttendeeBox(
+                                                    attendeelist,
+                                                    attendeelist.pK_UID,
+                                                    index
+                                                  )
+                                                }
+                                                className={
+                                                  styles["RememberEmail"]
+                                                }
+                                              />
+                                            </Col>
+                                          </Row>
+                                        );
+                                      }
+                                    )
                                     : null}
                                 </Col>
                               </Row>
@@ -1107,7 +1110,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                           <Button
                             className={styles["Cancell-UpgradeGroup-btn"]}
                             text={t("Cancel")}
-                            onClick={() => setUpdateComponentpage(false)}
+                            onClick={() => setCloseConfirmationBox(true)}
                           />
                           <Button
                             className={styles["Create-UpgradeGroup-btn"]}
@@ -1124,6 +1127,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
           </Col>
         </Row>
       </section>
+      <ConfirmationModal showModal={closeConfirmationBox} setShowModal={setCloseConfirmationBox} cancelBtnClick={() => setCloseConfirmationBox(false)} closeBtnClick={() => setUpdateComponentpage(false)} onHide={() => setCloseConfirmationBox(false)} />
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
   );

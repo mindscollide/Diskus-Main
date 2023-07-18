@@ -15,7 +15,9 @@ const initialState = {
     DeleteFileResponse: null,
     DeleteFolderResponse: null,
     FolderisExistResponse: null,
-    FileisExistResponse: null
+    FileisExistResponse: null,
+    RenameFolderResponse: null,
+    RenameFileResponse: null
 }
 
 
@@ -284,6 +286,50 @@ const DataRoomReducer = (state = initialState, action) => {
                 ...state,
                 Loading: false,
                 DeleteFolderResponse: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.RENAMEFOLDER_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.RENAMEFOLDER_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                RenameFolderResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.RENAMEFOLDER_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                RenameFolderResponse: null,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.RENAMEFILE_INIT: {
+            return {
+                ...state,
+                Loading: true,
+            }
+        }
+        case actions.RENAMEFILE_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                RenameFileResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.RENAMEFILE_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                RenameFileResponse: null,
                 ResponseMessage: action.message
             }
         }

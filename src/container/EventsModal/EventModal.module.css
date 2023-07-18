@@ -12,6 +12,10 @@
     margin-right: 10px;
 }
 
+body[dir="rtl"] .eventsBox {
+    margin-right: 0px !important;
+}
+
 .eventsBox::-webkit-scrollbar {
     width: 0.5rem;
     border-radius: 20px;

@@ -84,8 +84,8 @@ const Meeting = () => {
   const UserID = localStorage.getItem("userID");
   const [show, setShow] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0)
-  let meetingpageRow = JSON.parse(localStorage.getItem("MeetingPageRows"))
-  let meetingPageCurrent = JSON.parse(localStorage.getItem("MeetingPageCurrent"))
+  let meetingpageRow = localStorage.getItem("MeetingPageRows")
+  let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"))
 
   //import meetingReducer and gettodolistreducer from reducers
   const { meetingIdReducer, assignees, minuteofMeetingReducer, uploadReducer } =
@@ -1061,7 +1061,11 @@ const Meeting = () => {
                 current={meetingPageCurrent}
                 pageSize={meetingpageRow}
                 showSizeChanger
-                pageSizeOptions={[30, 50, 100, 200]}
+                locale={{
+                  items_per_page: t('items_per_page'),
+                  page: t('page')
+                }}
+                pageSizeOptions={["30", "50", "100", "200"]}
                 total={totalRecords}
               // onShowSizeChange={handlePageSizeChange}
               />

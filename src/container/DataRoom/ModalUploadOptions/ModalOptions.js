@@ -3,13 +3,22 @@ import { Col, Container, Form, Row } from "react-bootstrap";
 import styles from "./ModalOptions.module.css";
 import { useTranslation } from "react-i18next";
 import { Button, Modal } from "../../../components/elements";
+import { uploadDocumentsApi } from "../../../store/actions/DataRoom_actions";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const ModalOptions = ({ ModalTitle, UploadOptions, setUploadOptions }) => {
-  console.log(UploadOptions, "uploadOptionsmodal");
+const ModalOptions = ({ ModalTitle, UploadOptions, setUploadOptions, uploadDocumentfile, setProgress, setRemainingTime, remainingTime, setShowbarupload, setTasksAttachments }) => {
   const { t } = useTranslation();
-  const closebtn = async () => {
-    setUploadOptions(false);
-  };
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [fileUploadOptions, setFileUploadOptions] = useState(1);
+  console.log(fileUploadOptions, "fileUploadOptionsfileUploadOptionsfileUploadOptions")
+
+  const handleuploadFile = async () => {
+    await dispatch(uploadDocumentsApi(navigate, uploadDocumentfile, t, setProgress, setRemainingTime, remainingTime, setShowbarupload, setTasksAttachments, fileUploadOptions, setUploadOptions))
+    setUploadOptions(false)
+  }
+  let fileName = localStorage.getItem("fileName");
   return (
     <>
       <Container>
@@ -22,7 +31,7 @@ const ModalOptions = ({ ModalTitle, UploadOptions, setUploadOptions }) => {
           ButtonTitle={ModalTitle}
           modalFooterClassName="d-block"
           centered
-          size={UploadOptions === true ? "md" : "md"}
+          // size={UploadOptions === true ? "md" : "md"}
           ModalBody={
             <>
               <Container>
@@ -36,11 +45,11 @@ const ModalOptions = ({ ModalTitle, UploadOptions, setUploadOptions }) => {
                 <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
                     <p className={styles["paragrapgh"]}>
-                      {t("An-item-named")}
+                      {t("An-item-named")} {" "}
                       <span className={styles["paragraph_fileName"]}>
-                        "{t("Dairalogo")}"
+                        "{fileName}"
                       </span>
-                      {t("Already-exists-in-this-location")}
+                      {" "}  {t("Already-exists-in-this-location")}
                     </p>
                   </Col>
                 </Row>
@@ -51,7 +60,7 @@ const ModalOptions = ({ ModalTitle, UploadOptions, setUploadOptions }) => {
                     sm={12}
                     className={"d-flex justify-content-start gap-3"}
                   >
-                    <Form.Check type="radio" name="dataroomfiles" />
+                    <Form.Check type="radio" checked={fileUploadOptions === 1 ? true : false} onChange={() => setFileUploadOptions(1)} name="dataroomfiles" />
                     <span className={styles["Options"]}>
                       {t("Replace-existing-file")}
                     </span>
@@ -64,7 +73,7 @@ const ModalOptions = ({ ModalTitle, UploadOptions, setUploadOptions }) => {
                     sm={12}
                     className="d-flex justify-content-start gap-3"
                   >
-                    <Form.Check type="radio" name="dataroomfiles" />
+                    <Form.Check type="radio" checked={fileUploadOptions === 2 ? true : false} onChange={() => setFileUploadOptions(2)} name="dataroomfiles" />
                     <span className={styles["Options"]}>
                       {t("Keep-both-files")}
                     </span>
@@ -90,6 +99,8 @@ const ModalOptions = ({ ModalTitle, UploadOptions, setUploadOptions }) => {
 
                   <Button
                     text={t("Upload")}
+                    onClick={handleuploadFile}
+                    // onClick={uploadOptionsonClickBtn}
                     className={styles["Create_button_UploadFile"]}
                   />
                 </Col>

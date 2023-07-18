@@ -106,6 +106,16 @@ body[dir="rtl"] .create-Resolution-btn {
   border: none !important;
 }
 
+body[dir="rtl"] .Resolution-moderator-btn_Active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+body[dir="rtl"] .Resolution-closed-btn_Active {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
 body[dir="rtl"] .Resolution-All-btn_Active {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
   font-family: "IBMPlexSansArabic-SemiBold" !important;

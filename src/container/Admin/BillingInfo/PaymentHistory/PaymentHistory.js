@@ -1,66 +1,43 @@
 import React, { useState, useRef, useMemo, useEffect } from "react";
 import styles from "./PaymentHistory.module.css";
 import countryList from "react-select-country-list";
-import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "./../../../../i18n";
 import { useTranslation } from "react-i18next";
 import DatePicker from "react-datepicker";
 import Paymenthistoryhamberge from "../../../../assets/images/newElements/paymenthistoryhamberge.png";
-import FailedIcon from "../../../../assets/images/failed.png";
-import DeletedIcon from "../../../../assets/images/Deleted-Icon.png";
 import Select from "react-select";
-
-// import { Select } from "antd";
 import {
   Button,
-  TextField,
   Checkbox,
-  Paper,
-  FilterBar,
-  SearchInput,
   Table,
   Modal,
+  Notification,
   Loader,
 } from "../../../../components/elements";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   removeDashesFromDate,
-  TimeDisplayFormat,
   _justShowDateformatBilling,
+  convertGMTDateintoUTC,
 } from "../../../../commen/functions/date_formater";
-import {
-  Sliders2,
-  Trash,
-  ExclamationTriangleFill,
-} from "react-bootstrap-icons";
 import { invoiceandpaymenthistory } from "../../../../store/actions/OrganizationBillings_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import getPaymentMethodApi from "../../../../store/actions/Admin_PaymentMethod";
+import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPaymentHistory";
+import { Spin } from "antd";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
   const { OrganizationBillingReducer, adminReducer } = useSelector((state) => state);
   console.log(adminReducer, "adminReduceradminReduceradminReducer")
-  const [filterBarModal, setFilterBarModal] = useState(false);
-  const [editModal, setEditModal] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [paymentMethods, setPaymentMethods] = useState([])
-  const [isUpdateSuccessfully, setIsUpdateSuccessfully] = useState(false);
-  const [deleteEditModal, setDeleteEditModal] = useState(false);
-  console.log(paymentMethods, "paymentMethodspaymentMethodspaymentMethods")
+
   // for payment history
   const [paymentHistoryModal, setPaymentHistoryModal] = useState(false);
-
-  const [errorBar, setErrorBar] = useState(false);
-  const [nameErrorMessage, setNameErrorMessage] = useState(
-    "Name Field Is Empty"
-  );
-  const [emailErrorMessage, setEmailErrorMessage] = useState(
-    "Email Field Is Empty"
-  );
-
+  const [InvoiceNumber, setInvoiceNumber] = useState("")
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -70,7 +47,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   const [rowSize, setRowSize] = useState(50);
   const [rows, setRows] = useState([]);
-  console.log("rowsrowsrowsrows", rows);
 
   const [selectedCountry, setSelectedCountry] = useState(null);
 
@@ -88,6 +64,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const PaymentStart = useRef(null);
   const PaymentEnd = useRef(null);
   const PaymentBy = useRef(null);
+
 
   //state for FilterbarModal
   const [filterSection, setFilterSection] = useState({
@@ -119,7 +96,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     PaymentEnd: "",
     PaymentBy: "",
   });
-
+  console.log(paymentInvoiceSection, "paymentInvoiceSectionpaymentInvoiceSectionpaymentInvoiceSection")
   const [invoiceStartDate, setInvoiceStartDate] = useState("");
   const [invoiceEndDate, setInvoiceEndDate] = useState("");
   const [paymentMethodValue, setPaymentMethodValue] = useState({
@@ -141,13 +118,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     let value = e.target.value;
 
     if (name === "Invoice" && value !== "") {
-      let valueCheck = value.replace(/[^0-9]/g, "");
-      if (valueCheck !== "") {
-        setpaymentInvoiceSection({
-          ...paymentInvoiceSection,
-          Invoice: valueCheck.trimStart(),
-        });
-      }
+      // let valueCheck = value.replace(/[^0-9]/g, "");
+      // if (valueCheck !== "") {
+      setpaymentInvoiceSection({
+        ...paymentInvoiceSection,
+        Invoice: value.trimStart(),
+      });
+      // }
     } else if (name === "Invoice" && value === "") {
       setpaymentInvoiceSection({
         ...paymentInvoiceSection,
@@ -176,9 +153,24 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setInvoiceEndDate("");
     setPaymentStartDate("");
     setPaymentEndDate("");
+    setLateSurcharge(false)
+    setPaymentMethodValue({
+      label: "",
+      value: 0
+    })
   };
 
   const resetPaymentHandler = () => {
+    let Data = {
+      InvoiceNo: "",
+      InvoiceStartDate: "",
+      InvoiceEndDate: "",
+      PaymentStartDate: "",
+      PaymentEndDate: "",
+      PaymentID: 0,
+      IsLateSurcharge: true
+    }
+    dispatch(searchPaymentHistoryApi(navigate, Data, t, setPaymentHistoryModal, 1))
     setpaymentInvoiceSection({
       Invoice: "",
       InvoiceStart: "",
@@ -192,10 +184,24 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setPaymentStartDate("");
     setPaymentEndDate("");
     setLateSurcharge(false);
+    setPaymentMethodValue({
+      value: 0,
+      label: ""
+    })
   };
+  // convertGMTDateintoUTC
 
   const searchPaymentHandler = () => {
-    setPaymentHistoryModal(false);
+    let Data = {
+      InvoiceNo: paymentInvoiceSection.Invoice,
+      InvoiceStartDate: invoiceStartDate !== "" ? convertGMTDateintoUTC(invoiceStartDate) : "",
+      InvoiceEndDate: invoiceEndDate !== "" ? convertGMTDateintoUTC(invoiceEndDate) : "",
+      PaymentStartDate: paymentStartDate !== "" ? convertGMTDateintoUTC(paymentStartDate) : "",
+      PaymentEndDate: paymentEndDate !== "" ? convertGMTDateintoUTC(paymentEndDate) : "",
+      PaymentID: paymentMethodValue.value,
+      IsLateSurcharge: lateSurcharge
+    }
+    dispatch(searchPaymentHistoryApi(navigate, Data, t, setPaymentHistoryModal, 1))
     setpaymentInvoiceSection({
       Invoice: "",
       InvoiceStart: "",
@@ -209,34 +215,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setPaymentStartDate("");
     setPaymentEndDate("");
     setLateSurcharge(false);
-  };
-  const handlerSearch = () => {
-    if (filterSection.Names !== "" && filterSection.Emails !== "") {
-      // if (validationEmail(signUpDetails.Email) === true) {
-      //   navigate("/packageselection");
-      // } else {
-      //   setOpen({
-      //     ...open,
-      //     open: true,
-      //     message: "Email should be in Email Format",
-      //   });
-      // }
-      setErrorBar(true);
-    } else {
-      setErrorBar(true);
-      setOpen({
-        ...open,
-        open: true,
-        message: "Please fill all the fields",
-      });
-    }
+    setPaymentMethodValue({
+      value: 0,
+      label: ""
+    })
   };
 
-  const Option = [
-    { value: 100, title: "100" },
-    { value: 250, title: "250" },
-    { value: 500, title: "500" },
-  ];
 
   const EditUserColumn = [
     {
@@ -320,6 +304,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   };
 
   const [lateSurcharge, setLateSurcharge] = useState(false);
+
   const handleChangePaymentMethod = (data) => {
     setpaymentInvoiceSection({
       ...paymentInvoiceSection,
@@ -332,31 +317,72 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     })
   }
   console.log(paymentMethodValue, "paymentMethodValuepaymentMethodValuepaymentMethodValue")
+
   function onChangeSurcharge(e) {
     setLateSurcharge(e.target.checked);
   }
+  const handleSearchInvoice = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "InvoiceNum" && value !== "") {
+      // let valueCheck = value.replace(/[^0-9]/g, "")
+      // if (valueCheck !== "") {
+      setInvoiceNumber(value)
+      // }
+    } else if (name === "InvoiceNum" && value === "") {
+      setInvoiceNumber("")
+    }
+  }
+  // useEffect(() => {
+  //   if (OrganizationBillingReducer.getInvoiceAndPaymentHistory !== null) {
+  //     console.log(
+  //       OrganizationBillingReducer,
+  //       "OrganizationBillingReducer.paymentInfoOrganizationBillingReducer.paymentInfo"
+  //     );
+  //     let paymentHistoryData = [];
+  //     if (OrganizationBillingReducer.getInvoiceAndPaymentHistory !== null) {
+  //       OrganizationBillingReducer.getInvoiceAndPaymentHistory.paymentInfo.paymentHistory.map(
+  //         (data, index) => {
+  //           paymentHistoryData.push({
+  //             InvoiceNo: data.invoiceCustomerNumber,
+  //             invoiceDate: data.invoiceDate,
+  //             paymentdate: data.paymentRecieveDate,
+  //             paidamount: data.paidAmount,
+  //           });
+  //         }
+  //       );
+  //     }
+  //     setRows(paymentHistoryData);
+  //   }
+  // }, [OrganizationBillingReducer.getInvoiceAndPaymentHistory]);
+
   useEffect(() => {
-    if (OrganizationBillingReducer.getInvoiceAndPaymentHistory !== null) {
-      console.log(
-        OrganizationBillingReducer,
-        "OrganizationBillingReducer.paymentInfoOrganizationBillingReducer.paymentInfo"
-      );
-      let paymentHistoryData = [];
-      if (OrganizationBillingReducer.getInvoiceAndPaymentHistory !== null) {
-        OrganizationBillingReducer.getInvoiceAndPaymentHistory.paymentInfo.paymentHistory.map(
-          (data, index) => {
-            paymentHistoryData.push({
+    try {
+      if (adminReducer.searchPaymentHistory !== null) {
+        let getPaymentHistory = adminReducer?.searchPaymentHistory?.paymentInfo?.paymentHistory;
+        if (getPaymentHistory.length > 0) {
+          let newArr = [];
+          getPaymentHistory.map((data, index) => {
+            newArr.push({
               InvoiceNo: data.invoiceCustomerNumber,
               invoiceDate: data.invoiceDate,
               paymentdate: data.paymentRecieveDate,
               paidamount: data.paidAmount,
-            });
-          }
-        );
+            })
+          })
+          setRows(newArr);
+        } else {
+          setRows([])
+        }
+      } else {
+        setRows([])
       }
-      setRows([...paymentHistoryData]);
+    } catch (error) {
+
     }
-  }, [OrganizationBillingReducer.getInvoiceAndPaymentHistory]);
+
+  }, [adminReducer.searchPaymentHistory])
+
   useEffect(() => {
     try {
       if (adminReducer.PaymentMethods !== null && adminReducer.PaymentMethods.length > 0) {
@@ -381,10 +407,79 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     }
 
   }, [adminReducer.PaymentMethods])
+
   useEffect(() => {
-    dispatch(invoiceandpaymenthistory(navigate, t));
+    let Data = {
+      InvoiceNo: "",
+      InvoiceStartDate: "",
+      InvoiceEndDate: "",
+      PaymentStartDate: "",
+      PaymentEndDate: "",
+      PaymentID: 0,
+      IsLateSurcharge: true
+    }
+    dispatch(searchPaymentHistoryApi(navigate, Data, t, setPaymentHistoryModal))
+    // dispatch(invoiceandpaymenthistory(navigate, t));
     dispatch(getPaymentMethodApi(navigate, t))
   }, []);
+
+  const handleSubmitSearchInvoice = (e) => {
+    e.preventDefault();
+    if (InvoiceNumber.trim() !== "") {
+      let Data = {
+        InvoiceNo: InvoiceNumber,
+        InvoiceStartDate: "",
+        InvoiceEndDate: "",
+        PaymentStartDate: "",
+        PaymentEndDate: "",
+        PaymentID: 0,
+        IsLateSurcharge: true
+      }
+      dispatch(searchPaymentHistoryApi(navigate, Data, t))
+    } else {
+      let Data = {
+        InvoiceNo: "",
+        InvoiceStartDate: "",
+        InvoiceEndDate: "",
+        PaymentStartDate: "",
+        PaymentEndDate: "",
+        PaymentID: 0,
+        IsLateSurcharge: true
+      }
+      dispatch(searchPaymentHistoryApi(navigate, Data, t))
+    }
+  }
+
+  useEffect(() => {
+    if (adminReducer.ResponseMessage !== "" && adminReducer.ResponseMessage !== t("Data-available") && adminReducer.ResponseMessage !== t("No-data-available")) {
+      setOpen({
+        open: true,
+        message: adminReducer.ResponseMessage
+      })
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: ""
+        })
+      }, 4000)
+    }
+  }, [adminReducer.ResponseMessage])
+
+  useEffect(() => {
+    if (OrganizationBillingReducer.ResponseMessage !== "" && OrganizationBillingReducer.ResponseMessage !== t("Data-available") && OrganizationBillingReducer.ResponseMessage !== t("No-data-available")) {
+      setOpen({
+        open: true,
+        message: OrganizationBillingReducer.ResponseMessage
+      })
+      setTimeout(() => {
+        setOpen({
+          open: false,
+          message: ""
+        })
+      }, 4000)
+    }
+  }, [OrganizationBillingReducer.ResponseMessage])
+
   return (
     <>
       <Container>
@@ -401,11 +496,16 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             xs={12}
             className={styles["searchbar-textfield"]}
           >
-            <Form.Control
-              className={styles["paymenthistory_searchbar"]}
-              labelClass="filter"
-              placeholder={t("Invoice-number")}
-            />
+            <Form onSubmit={handleSubmitSearchInvoice}>
+              <Form.Control
+                className={styles["paymenthistory_searchbar"]}
+                labelClass="filter"
+                name="InvoiceNum"
+                value={InvoiceNumber || ""}
+                onChange={handleSearchInvoice}
+                placeholder={t("Invoice-number")}
+              />
+            </Form>
             <div className={styles["filterModal"]}>
               <img
                 src={Paymenthistoryhamberge}
@@ -424,12 +524,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               column={EditUserColumn}
               rows={rows}
               className={styles["paymentHistoryTable"]}
+              loading={{ indicator: <Spin />, spinning: adminReducer?.Spinner }}
               // scroll={{ x: 'max-content' }}
-              pagination={{
-                pageSize: rowSize,
-                showSizeChanger: true,
-                pageSizeOptions: ["100 ", "150", "200"],
-              }}
+              pagination={false}
             />
           </Col>
         </Row>
@@ -608,12 +705,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       applyClass="form-control2"
                       options={paymentMethods}
                       onChange={handleChangePaymentMethod}
-                      // className={"payment-history-select"}
                       placeholder={t("Payment-by")}
-                      value={{
-                        label: paymentMethodValue.label,
-                        value: paymentMethodValue.value
-                      }}
                       name="PaymentBy"
                     />
                   </Col>
@@ -681,6 +773,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           }
         />
       </Container>
+      <Notification open={open.open} message={open.message} setOpen={setOpen} />
       {OrganizationBillingReducer.Loading ? <Loader /> : null}
     </>
   );
