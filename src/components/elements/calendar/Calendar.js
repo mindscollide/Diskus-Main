@@ -14,6 +14,7 @@ import {
   DateLocalizer,
 } from "react-big-calendar";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-datepicker/dist/react-datepicker.css";
@@ -25,7 +26,10 @@ import { Button } from "./../../../components/elements";
 import Helper from "../../../commen/functions/history_logout";
 import { useTranslation } from "react-i18next";
 import { color } from "@mui/system";
-import { newDateFormaterAsPerUTC } from "../../../commen/functions/date_formater";
+import {
+  convertintoGMTCalender,
+  newDateFormaterAsPerUTC,
+} from "../../../commen/functions/date_formater";
 import { getCalendarDataResponse } from "../../../store/actions/GetDataForCalendar";
 require("moment/locale/ar");
 require("moment/locale/ar-sa");
@@ -98,69 +102,41 @@ function CustomCalendar({
   calendarView,
   defaultValue,
   setDefaultValue,
-  pLanguage,
 }) {
   const [culture, setCulture] = useState("fr");
   const [rightToLeft, setRightToLeft] = useState(false);
+  const [prevCheck, setPrevCheck] = useState(false);
+  const [nextCheck, setNextCheck] = useState(false);
 
   let currentLanguage = localStorage.getItem("i18nextLng");
   const { t } = useTranslation();
   const todayDate = new Date();
+  const navigate = useNavigate();
+
   const onNavigate = useCallback(
     (newDate) => setDefaultValue(newDate),
     [setDefaultValue]
   );
+  console.log("defaultValuedefaultValue", defaultValue);
+
   let CalenderMonthsSpan = localStorage.getItem("calenderMonthsSpan");
   let OrganizationID = localStorage.getItem("organizationID");
   const userID = localStorage.getItem("userID");
   const dispatch = useDispatch();
   let lan = localStorage.getItem("i18nextLng");
+
   const customToolbar = (props) => {
     const navigate = (action) => {
       props.onNavigate(action);
     };
-    const goPrev = (value) => {
+    const goPrev = () => {
       navigate("PREV");
-      console.log("navigate", navigate("PREV"));
-      if (startDataUpdate > defaultValue) {
-        console.log("navigate", defaultValue);
-        const date = new Date(defaultValue);
-        let updateStartDate = new Date(
-          date.getFullYear(),
-          date.getMonth() - parseInt(CalenderMonthsSpan),
-          1
-        );
-        let calendarData = {
-          UserID: parseInt(userID),
-          OrganizationID: parseInt(OrganizationID),
-          StartDate: newDateFormaterAsPerUTC(updateStartDate) + "000000",
-          EndDate: newDateFormaterAsPerUTC(defaultValue) + "000000",
-        };
-        setStartDataUpdate(updateStartDate);
-        dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
-      }
+      setPrevCheck(true);
     };
     const goNext = () => {
       navigate("NEXT");
-      if (endDataUpdate < defaultValue) {
-        console.log("navigate", defaultValue);
-        const date = new Date(defaultValue);
-        let updateEndDate = new Date(
-          date.getFullYear(),
-          date.getMonth() + parseInt(CalenderMonthsSpan),
-          0
-        );
-        let calendarData = {
-          UserID: parseInt(userID),
-          OrganizationID: parseInt(OrganizationID),
-          StartDate: newDateFormaterAsPerUTC(endDataUpdate) + "000000",
-          EndDate: newDateFormaterAsPerUTC(updateEndDate) + "000000",
-        };
-        setEndDataUpdate(updateEndDate);
-        dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
-      }
+      setNextCheck(true);
     };
- 
 
     const handleCurrent = () => {
       let date = moment(todayDate).format("YYYY-MM-DD");
@@ -285,6 +261,91 @@ function CustomCalendar({
       // }
     }
   }, [lan]);
+  useEffect(() => {
+    if (prevCheck) {
+      let givenDate = new Date(defaultValue);
+      let previousDate = new Date(givenDate);
+      previousDate.setDate(givenDate.getDate() - 1);
+      let newcheckDate = convertintoGMTCalender(startDataUpdate);
+      const nextDay = new Date(newcheckDate);
+      nextDay.setDate(nextDay.getDate() + 1);
+
+      // Adding 2 days to the date
+      const twoDaysLater = new Date(newcheckDate);
+      twoDaysLater.setDate(twoDaysLater.getDate() + 2);
+      console.log("nextCheck twoDaysLater",nextDay);
+      console.log("nextCheck twoDaysLater",startDataUpdate);
+      console.log("nextCheck twoDaysLater",twoDaysLater);
+      console.log("nextCheck twoDaysLater",newDateFormaterAsPerUTC(previousDate));
+
+      if (
+        startDataUpdate >= newDateFormaterAsPerUTC(previousDate) ||
+        nextDay <= newDateFormaterAsPerUTC(previousDate) ||
+        twoDaysLater <= newDateFormaterAsPerUTC(previousDate)
+      ) {
+        setPrevCheck(false);
+        let updateNewStartDates = convertintoGMTCalender(startDataUpdate);
+        let updateNewStartDate = new Date(updateNewStartDates);
+        let updateStartDate = new Date(
+          updateNewStartDate.getFullYear(),
+          updateNewStartDate.getMonth() -
+            parseInt(
+              parseInt(CalenderMonthsSpan) === 0
+                ? 1
+                : parseInt(CalenderMonthsSpan)
+            ),
+          updateNewStartDate.getDate()
+        );
+        let calendarData = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(OrganizationID),
+          StartDate: newDateFormaterAsPerUTC(updateStartDate) + "000000",
+          EndDate: newDateFormaterAsPerUTC(startDataUpdate) + "000000",
+        };
+        setStartDataUpdate(newDateFormaterAsPerUTC(updateStartDate));
+        dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
+      } else {
+        setPrevCheck(false);
+      }
+    } else {
+      setPrevCheck(false);
+    }
+    if (nextCheck) {
+      console.log("nextCheck");
+
+      if (endDataUpdate <= newDateFormaterAsPerUTC(defaultValue)) {
+        console.log("nextCheck");
+
+        setNextCheck(false);
+        let updateNewEndDataUpdates = convertintoGMTCalender(endDataUpdate);
+        let updateNewEndDataUpdate = new Date(updateNewEndDataUpdates);
+        let nextDate = new Date(updateNewEndDataUpdate);
+        nextDate.setDate(updateNewEndDataUpdate.getDate() + 1);
+        let updateEndDate = new Date(
+          nextDate.getFullYear(),
+          nextDate.getMonth() +
+            parseInt(
+              parseInt(CalenderMonthsSpan) === 0
+                ? 1
+                : parseInt(CalenderMonthsSpan)
+            ),
+          nextDate.getDate()
+        );
+        let calendarData = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(OrganizationID),
+          StartDate: newDateFormaterAsPerUTC(nextDate) + "000000",
+          EndDate: newDateFormaterAsPerUTC(updateEndDate) + "000000",
+        };
+        setEndDataUpdate(newDateFormaterAsPerUTC(updateEndDate));
+        dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
+      } else {
+        setNextCheck(false);
+      }
+    } else {
+      setNextCheck(false);
+    }
+  }, [prevCheck, nextCheck]);
 
   const { messages } = useMemo(
     () => ({

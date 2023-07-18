@@ -168,7 +168,10 @@ const Home = () => {
     CalenderMonthsSpan &&
     new Date(
       currentDate.getFullYear(),
-      currentDate.getMonth() - parseInt(CalenderMonthsSpan),
+      currentDate.getMonth() -
+        parseInt(
+          parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)
+        ),
       1
     );
 
@@ -178,21 +181,24 @@ const Home = () => {
     CalenderMonthsSpan &&
     new Date(
       currentDate.getFullYear(),
-      currentDate.getMonth() + parseInt(CalenderMonthsSpan),
+      currentDate.getMonth() +
+        parseInt(
+          parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)
+        ),
       0
     );
 
-    useEffect(() => {
-      if (lang !== undefined) {
-        if (lang === "en") {
-          setCalendarValue(gregorian);
-          setLocalValue(gregorian_en);
-        } else if (lang === "ar") {
-          setCalendarValue(gregorian);
-          setLocalValue(gregorian_ar);
-        }
+  useEffect(() => {
+    if (lang !== undefined) {
+      if (lang === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (lang === "ar") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
       }
-    }, [lang]);
+    }
+  }, [lang]);
 
   const callApi = async () => {
     dispatch(getTodoListInit());
@@ -220,34 +226,53 @@ const Home = () => {
     dispatch(getNotifications(navigate, createrID, t));
     let CalenderMonthsSpans = localStorage.getItem("calenderMonthsSpan");
     try {
-      let startDates =
-        CalenderMonthsSpans &&
-        new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth() - parseInt(1),
-          1
-        ); // Subtract CalenderMonthsSpan months and set the day to the 1st
-      let endDates =
-        CalenderMonthsSpans &&
-        new Date(
-          currentDate.getFullYear(),
-          currentDate.getMonth() + parseInt(1),
-          0
-        );
+      // let startDates =
+      //   parseInt(CalenderMonthsSpans) &&
+      //   new Date(
+      //     currentDate.getFullYear(),
+      //     currentDate.getMonth() - parseInt(1),
+      //     1
+      //   );
+      let startDates = new Date(
+        currentDate.getFullYear(),
+        currentDate.getMonth() -
+          parseInt(
+            parseInt(CalenderMonthsSpans) === 0
+              ? 1
+              : parseInt(CalenderMonthsSpans)
+          ),
+        1
+      );
+      // Subtract CalenderMonthsSpan months and set the day to the 1st
+      // let endDates =
+      //   parseInt(CalenderMonthsSpans) &&
+      //   new Date(
+      //     currentDate.getFullYear(),
+      //     currentDate.getMonth() + parseInt(1),
+      //     0
+      //   );
+      let endDates = new Date(
+        date.getFullYear(),
+        date.getMonth() +
+          parseInt(
+            parseInt(CalenderMonthsSpans) === 0
+              ? 1
+              : parseInt(CalenderMonthsSpans)
+          ),
+        0
+      );
       let calendarData = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(OrganizationID),
-        StartDate:
-          startDates !== null && newDateFormaterAsPerUTC(startDates) + "000000",
-        EndDate:
-          endDates !== null && newDateFormaterAsPerUTC(endDates) + "000000",
+        StartDate: startDates !== null && newDateFormaterAsPerUTC(startDates)+ "000000",
+        EndDate: endDates !== null && newDateFormaterAsPerUTC(endDates)+ "000000",
       };
       console.log("newListnewListnewList12", startDates);
       console.log("newListnewListnewList12", endDates);
       console.log("newListnewListnewList12", calendarData);
 
-      setStartDataUpdate(startDates);
-      setEndDataUpdate(endDates);
+      setStartDataUpdate(newDateFormaterAsPerUTC(startDates));
+      setEndDataUpdate(newDateFormaterAsPerUTC(endDates));
       if (startDates !== null && endDates !== null) {
         console.log("getCalendarDataResponse");
         dispatch(getCalendarDataResponse(navigate, calendarData, true, t));
@@ -321,7 +346,6 @@ const Home = () => {
       setRecentActivityData([SocketRecentActivityData, ...recentActivityData]);
     }
   }, [SocketRecentActivityData]);
-
 
   // for view modal  handler
   const viewModalHandler = (id) => {};
@@ -776,44 +800,49 @@ const Home = () => {
     let newStartDataUpdate = moment(startDataUpdate).format("YYYYMMDD");
     let newEndDataUpdate = moment(endDataUpdate).format("YYYYMMDD");
 
-    // Subtract CalenderMonthsSpan months and set the day to the 1st
+    var year = parseInt(newEndDataUpdate.substring(0, 4));
+    var month = parseInt(newEndDataUpdate.substring(4, 6)) - 1; // Month is zero-based (0-11)
+    var day = parseInt(newEndDataUpdate.substring(6, 8));
 
-    console.log(
-      "handleMonthChangehandleMonthChangehandleMonthChange past ",
-      newStartDataUpdate > formattedDate
-    );
+    var endDataUpdateNew = new Date(year, month, day);
+    endDataUpdateNew.setDate(endDataUpdateNew.getDate() + 2);
+    const date = new Date(dateString);
     if (newStartDataUpdate > formattedDate) {
-      console.log(
-        "handleMonthChangehandleMonthChangehandleMonthChange past ",
-        startDataUpdate
-      );
-      const date = new Date(dateString);
       let updateStartDate = new Date(
         date.getFullYear(),
-        date.getMonth() - parseInt(CalenderMonthsSpan),
+        date.getMonth() -
+          parseInt(
+            parseInt(CalenderMonthsSpan) === 0
+              ? 1
+              : parseInt(CalenderMonthsSpan)
+          ),
         1
       );
-      console.log(
-        "handleMonthChangehandleMonthChangehandleMonthChange past ",
-        updateStartDate
-      );
+
+      // const date = new Date(dateString);
+      // let updateStartDate = new Date(
+      //   date.getFullYear(),
+      //   date.getMonth() -
+      //     parseInt(CalenderMonthsSpan === 0 ? CalenderMonthsSpan : 1),
+      //   1
+      // );
       let calendarData = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(OrganizationID),
-        StartDate: newDateFormaterAsPerUTC(updateStartDate) + "000000",
-        EndDate: newDateFormaterAsPerUTC(formattedDate) + "000000",
+        StartDate: newDateFormaterAsPerUTC(updateStartDate)+ "000000",
+        EndDate: newDateFormaterAsPerUTC(newStartDataUpdate)+ "000000",
       };
-      setStartDataUpdate(updateStartDate);
+      setStartDataUpdate(newDateFormaterAsPerUTC(updateStartDate));
       dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
     } else if (newEndDataUpdate < formattedDate) {
-      console.log(
-        "handleMonthChangehandleMonthChangehandleMonthChange future",
-        formattedDate
-      );
-      const date = new Date(dateString);
       let updateEndDate = new Date(
         date.getFullYear(),
-        date.getMonth() + parseInt(CalenderMonthsSpan),
+        date.getMonth() +
+          parseInt(
+            parseInt(CalenderMonthsSpan) === 0
+              ? 1
+              : parseInt(CalenderMonthsSpan)
+          ),
         0
       );
       console.log(
@@ -823,10 +852,10 @@ const Home = () => {
       let calendarData = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(OrganizationID),
-        StartDate: newDateFormaterAsPerUTC(formattedDate) + "000000",
-        EndDate: newDateFormaterAsPerUTC(updateEndDate) + "000000",
+        StartDate: newDateFormaterAsPerUTC(endDataUpdateNew)+ "000000",
+        EndDate: newDateFormaterAsPerUTC(updateEndDate)+ "000000",
       };
-      setEndDataUpdate(updateEndDate);
+      setEndDataUpdate(newDateFormaterAsPerUTC(updateEndDate));
       dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
     }
   };
