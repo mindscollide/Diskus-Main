@@ -1243,7 +1243,11 @@ const DataRoom = () => {
   };
 
   const handleUploadFolder = ({ file }, data) => {
-    console.log(file.length, data, "handleUploadFolderhandleUploadFolderhandleUploadFolder")
+    let files = [];
+    files.push(file);
+    console.log(files, "handleUploadFolderhandleUploadFolderhandleUploadFolder22")
+
+    console.log(file, data, "handleUploadFolderhandleUploadFolderhandleUploadFolder")
     console.log(file.webkitRelativePath.split("/")[0], "handleUploadFolderhandleUploadFolderhandleUploadFolder")
     let folderName = file.webkitRelativePath.split("/")[0];
     // dispatch(
