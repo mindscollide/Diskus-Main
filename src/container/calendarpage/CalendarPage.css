@@ -118,6 +118,7 @@
 
 .calendar .rbc-month-view .rbc-month-row {
   border: 1px solid #ccc !important;
+  display: inline-table !important;
 }
 
 .calendar .rbc-month-view .rbc-month-row .rbc-row-bg {
@@ -514,4 +515,7 @@ body[dir="rtl"] .heading_button {
 
 .Calendar_CreateBtn {
   margin-top: 10px !important;
+}
+.rbc-button-link {
+  color: #000 !important;
 }

@@ -1,8 +1,8 @@
 {
   "organizationSettings": {
-    "FK_TZID": 1,
-    "MaximumMeetingDuration": 15,
-    "CalenderMonthsSpan": 10,
+    "FK_TZID": 7,
+    "MaximumMeetingDuration": 1,
+    "CalenderMonthsSpan": 2,
     "EmailOnNewMeeting": true,
     "EmailOnEditMeeting": true,
     "PushNotificationOnNewMeeting": true,
