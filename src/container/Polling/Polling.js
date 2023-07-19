@@ -18,12 +18,15 @@ import UpdateSecond from "./UpdateSecond/UpdateSecond";
 import { useDispatch, useSelector } from "react-redux";
 import { searchPollsApi } from "../../store/actions/Polls_actions";
 import { useNavigate } from "react-router-dom";
-import { _justShowDateformatBilling, resolutionResultTable } from "../../commen/functions/date_formater";
+import {
+  _justShowDateformatBilling,
+  resolutionResultTable,
+} from "../../commen/functions/date_formater";
 
 const Polling = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { PollsReducer } = useSelector(state => state);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { PollsReducer } = useSelector((state) => state);
   const [isCreatePoll, setIsCreatePoll] = useState(false);
   const [isUpdatePoll, setIsUpdatePoll] = useState(false);
   const [viewprogress, setViewprogress] = useState(false);
@@ -31,11 +34,11 @@ const Polling = () => {
   const [isVotePoll, setisVotePoll] = useState(false);
   const [viewPollsDetails, setViewPollsDetails] = useState(false);
   const [isViewPoll, setIsViewPoll] = useState(false);
-  const [totalRecords, setTotalRecord] = useState(0)
+  const [totalRecords, setTotalRecord] = useState(0);
   const [pollsState, setPollsState] = useState({
     searchValue: "",
   });
-  const [rows, setRows] = useState([])
+  const [rows, setRows] = useState([]);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [searchBoxState, setsearchBoxState] = useState({
     searchByName: "",
@@ -45,8 +48,8 @@ const Polling = () => {
   const [searchpoll, setSearchpoll] = useState(false);
 
   useEffect(() => {
-    dispatch(searchPollsApi(navigate, t))
-  }, [])
+    dispatch(searchPollsApi(navigate, t));
+  }, []);
   const showViewProgressBarModal = () => {
     setViewprogress(true);
   };
@@ -72,13 +75,28 @@ const Polling = () => {
       width: "365px",
       render: (text, record) => {
         let newDate = new Date();
-        let checkDate = resolutionResultTable(record.dueDate + "000000")
+        let checkDate = resolutionResultTable(record.dueDate + "000000");
         if (checkDate < newDate) {
-          return <span className="cursor-pointer" onClick={() => setViewPollsDetails(true)}>{text}</span>
+          return (
+            <span
+              className="cursor-pointer"
+              onClick={() => setViewPollsDetails(true)}
+            >
+              {text}
+            </span>
+          );
         } else {
-          return <span className="cursor-pointer" onClick={() => setisVotePoll(true)}> {text}</span>
+          return (
+            <span
+              className="cursor-pointer"
+              onClick={() => setisVotePoll(true)}
+            >
+              {" "}
+              {text}
+            </span>
+          );
         }
-      }
+      },
     },
     {
       title: t("Status"),
@@ -114,8 +132,8 @@ const Polling = () => {
       key: "dueDate",
       width: "89px",
       render: (text, record) => {
-        return _justShowDateformatBilling(text + "000000")
-      }
+        return _justShowDateformatBilling(text + "000000");
+      },
     },
     {
       title: t("Created-by"),
@@ -131,15 +149,14 @@ const Polling = () => {
       render: (text, record) => {
         if (record.pollStatus.pollStatusId === 2) {
           if (record.voteStatus === "Not Voted") {
-            return <Button className={styles["voteBtn"]} text={"Vote"} />
+            return <Button className={styles["voteBtn"]} text={"Vote"} />;
           } else if (record.voteStatus === "Voted") {
-            return <Button className={styles["votedBtn"]} text={"Voted"} />
+            return <Button className={styles["votedBtn"]} text={"Voted"} />;
           }
         } else {
-          return ""
+          return "";
         }
-
-      }
+      },
     },
     {
       title: t("Edit"),
@@ -157,8 +174,8 @@ const Polling = () => {
               setIsUpdatePoll(true);
             }}
           />
-        )
-      }
+        );
+      },
     },
   ];
 
@@ -228,18 +245,19 @@ const Polling = () => {
 
   useEffect(() => {
     try {
-      if (PollsReducer.SearchPolls !== null && PollsReducer.SearchPolls !== undefined) {
-        setTotalRecord(PollsReducer.SearchPolls.totalRecords)
+      if (
+        PollsReducer.SearchPolls !== null &&
+        PollsReducer.SearchPolls !== undefined
+      ) {
+        setTotalRecord(PollsReducer.SearchPolls.totalRecords);
         if (PollsReducer.SearchPolls.polls.length > 0) {
-          setRows(PollsReducer.SearchPolls.polls)
+          setRows(PollsReducer.SearchPolls.polls);
         } else {
-          setRows([])
+          setRows([]);
         }
       }
-    } catch (error) {
-
-    }
-  }, [PollsReducer.SearchPolls])
+    } catch (error) {}
+  }, [PollsReducer.SearchPolls]);
 
   const HandleCloseSearchModal = () => {
     setSearchpoll(false);
@@ -287,7 +305,7 @@ const Polling = () => {
                   <img
                     src={searchicon}
                     className={styles["Search_Bar_icon_class"]}
-                  // className={styles["GlobalSearchFieldICon"]}
+                    // className={styles["GlobalSearchFieldICon"]}
                   />
                 }
                 // clickIcon={SearchiconClickOptions}
@@ -369,10 +387,7 @@ const Polling = () => {
         </Row>
         <Row>
           <Col sm={12} md={12} lg={12}>
-            <Table
-              column={PollTableColumns}
-              rows={rows}
-            />
+            <Table column={PollTableColumns} rows={rows} />
           </Col>
         </Row>
       </section>

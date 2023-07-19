@@ -36,12 +36,6 @@ import moment from "moment";
 
 const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
   const animatedComponents = makeAnimated();
-  const optionsNew = [
-    { value: "chocolate", label: <></> },
-    { value: "strawberry", label: "Strawberry" },
-    { value: "vanilla", label: "Vanilla" },
-  ];
-
   //For Custom language datepicker
   const { PollsReducer } = useSelector((state) => state);
   console.log(PollsReducer, "PollsReducerPollsReducer");
@@ -52,44 +46,7 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
   const [localValue, setLocalValue] = useState(gregorian_en);
   const { t } = useTranslation();
   const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
-  const [members, setMembers] = useState([
-    {
-      id: 1,
-      name: "Saad Fudda",
-    },
-    {
-      id: 2,
-      name: "Salman Memon",
-    },
-    {
-      id: 3,
-      name: "Talha Qamar",
-    },
-    {
-      id: 4,
-      name: "Saif Rehman",
-    },
-    {
-      id: 22,
-      name: "Saif Rehman",
-    },
-    {
-      id: 222,
-      name: "Saif Rehman",
-    },
-    {
-      id: 121,
-      name: "Saif Rehman",
-    },
-    {
-      id: 12121,
-      name: "Saif Rehman",
-    },
-    {
-      id: 222111,
-      name: "Saif Rehman",
-    },
-  ]);
+  const [members, setMembers] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [createPollData, setcreatePollData] = useState({
@@ -98,7 +55,21 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
     date: "",
     AllowMultipleAnswers: true,
   });
-
+  const [assignees, setAssignees] = useState("");
+  const [options, setOptions] = useState([
+    {
+      name: 1,
+      value: "",
+    },
+    {
+      name: 2,
+      value: "",
+    },
+    {
+      name: 3,
+      value: "",
+    },
+  ]);
   useEffect(() => {
     dispatch(getAllCommitteesandGroups(navigate, t));
   }, []);
@@ -213,13 +184,108 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
             };
             temp.push(newData);
           });
-          setDropdowndata(temp);
         }
+        setDropdowndata(temp);
+      } else {
+        setDropdowndata([]);
       }
     }
   }, [PollsReducer.gellAllCommittesandGroups]);
 
   console.log(dropdowndata, "PollsReducerPollsReducer1212");
+  // for selecgtion of data
+  const handleSelectValue = (value) => {
+    console.log(value, "sadasdawqerqweqw");
+    setSelectedsearch(value);
+  };
+
+  // for add user for assignes
+  const handleAddUsers = () => {
+    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    let tem = [...members];
+    if (Object.keys(selectedsearch).length > 0) {
+      try {
+        selectedsearch.map((seledtedData, index) => {
+          if (seledtedData.type === 1) {
+            let check1 = pollsData.groups.find(
+              (data, index) => data.groupID === seledtedData.value
+            );
+            if (check1 != undefined) {
+              let groupUsers = check1.groupUsers;
+              if (Object.keys(groupUsers).length > 0) {
+                groupUsers.map((gUser, index) => {
+                  let check2 = members.find(
+                    (data, index) => data.UserID === gUser.userID
+                  );
+                  if (check2 != undefined) {
+                  } else {
+                    let newUser = {
+                      userName: gUser.userName,
+                      userID: gUser.userID,
+                    };
+                    tem.push(newUser);
+                  }
+                });
+              }
+            }
+          } else if (seledtedData.type === 2) {
+            console.log("members check");
+            let check1 = pollsData.committees.find(
+              (data, index) => data.committeeID === seledtedData.value
+            );
+            if (check1 != undefined) {
+              let committeesUsers = check1.committeeUsers;
+              if (Object.keys(committeesUsers).length > 0) {
+                committeesUsers.map((cUser, index) => {
+                  let check2 = members.find(
+                    (data, index) => data.UserID === cUser.userID
+                  );
+                  if (check2 != undefined) {
+                  } else {
+                    let newUser = {
+                      userName: cUser.userName,
+                      userID: cUser.userID,
+                    };
+                    tem.push(newUser);
+                  }
+                });
+              }
+            }
+          } else if (seledtedData.type === 3) {
+            let check1 = members.find(
+              (data, index) => data.UserID === seledtedData.value
+            );
+            if (check1 != undefined) {
+            } else {
+              let check2 = pollsData.organizationUsers.find(
+                (data, index) => data.userID === seledtedData.value
+              );
+              if (check2 != undefined) {
+                let newUser = {
+                  userName: check2.userName,
+                  userID: check2.userID,
+                };
+                tem.push(newUser);
+              }
+            }
+          } else {
+          }
+        });
+      } catch {
+        console.log("error in add");
+      }
+      console.log("members check", tem);
+      const uniqueData = new Set(tem.map(JSON.stringify));
+
+      // Convert the Set back to an array of objects
+      const result = Array.from(uniqueData).map(JSON.parse);
+      setMembers(result);
+      setSelectedsearch([]);
+    } else {
+      // setopen notionation work here
+    }
+  };
+  console.log(members, "members check");
 
   const changeDateStartHandler = (date) => {
     let newDate = moment(date).format("YYYY-MM-DD");
@@ -231,7 +297,6 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
     });
     console.log(newDate, "changeDateStartHandler");
   };
-  const [assignees, setAssignees] = useState("");
 
   const HandleSearch = (e) => {
     if (e.target.value.trimStart() != "") {
@@ -243,20 +308,6 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
     console.log(assignees, "assigneesassignees");
   };
 
-  const [options, setOptions] = useState([
-    {
-      name: 1,
-      value: "",
-    },
-    {
-      name: 2,
-      value: "",
-    },
-    {
-      name: 3,
-      value: "",
-    },
-  ]);
   const HandleChange = (e, index) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -301,8 +352,16 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
   };
 
   const HandleCancelFunction = (index) => {
-    options.splice(index, 1);
-    setOptions([...options]);
+    let optionscross = [...options];
+    optionscross.splice(index, 1);
+    setOptions(optionscross);
+  };
+
+  const cancellAnyUser = (index) => {
+    console.log("indexindexindex", index);
+    let removeData = [...members];
+    removeData.splice(index, 1);
+    setMembers(removeData);
   };
 
   const HandlecancellButton = () => {
@@ -316,6 +375,7 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
       AllowMultipleAnswers: !createPollData.AllowMultipleAnswers,
     });
   };
+
   return (
     <>
       <Container>
@@ -577,13 +637,14 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                           sm={12}
                           className="group-fields d-flex align-items-center gap-2  "
                         >
-                          {/* <InputSearchFilter
-                            labelClass="d-none"
-                            placeholder={t("Enter-name-or-email")}
-                            change={HandleSearch}
-                            value={assignees}
-                          /> */}
                           <Select
+                            onChange={handleSelectValue}
+                            isDisabled={
+                              PollsReducer.gellAllCommittesandGroups === null
+                                ? true
+                                : false
+                            }
+                            value={selectedsearch}
                             classNamePrefix={"selectMember"}
                             closeMenuOnSelect={false}
                             components={animatedComponents}
@@ -593,10 +654,11 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                           <Button
                             text={t("ADD")}
                             className={styles["ADD_Btn_CreatePool_Modal"]}
+                            onClick={handleAddUsers}
                           />
                         </Col>
                       </Row>
-                      <Row>
+                      <Row className="mt-3">
                         <Col
                           lg={12}
                           md={12}
@@ -619,7 +681,7 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                                           <span
                                             className={styles["Name_cards"]}
                                           >
-                                            {data.name}
+                                            {data.userName}
                                           </span>
                                         </Col>
                                         <Col sm={12} md={2} lg={2}>
@@ -627,6 +689,7 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                                             src={CrossIcon}
                                             width="14px"
                                             height="14px"
+                                            onClick={cancellAnyUser}
                                           />
                                         </Col>
                                       </Row>
