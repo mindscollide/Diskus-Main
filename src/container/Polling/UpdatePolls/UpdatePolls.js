@@ -1,9 +1,8 @@
 import React from "react";
 import {
   Checkbox,
-  InputSearchFilter,
   Modal,
-  MultiDatePicker,
+  MultiDatePickers,
 } from "../../../components/elements";
 import styles from "./UpdatePolls.module.css";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
@@ -22,6 +21,7 @@ import { useState } from "react";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import moment from "moment";
 
 const UpdatePolls = ({ showUpdatepollModal, setShowUpdatepollModal }) => {
   const animatedComponents = makeAnimated();
@@ -107,6 +107,7 @@ const UpdatePolls = ({ showUpdatepollModal, setShowUpdatepollModal }) => {
   const [UpdatePolls, setUpdatePolls] = useState({
     TypingTitle: "",
     AllowMultipleUser: false,
+    date: "",
   });
   const addNewRow = () => {
     if (options.length > 1) {
@@ -139,6 +140,20 @@ const UpdatePolls = ({ showUpdatepollModal, setShowUpdatepollModal }) => {
         return item.name === name ? { ...item, value: newValue } : item;
       })
     );
+  };
+
+  const changeDateStartHandler = (date) => {
+    let newDate = moment(date).format("YYYYMMDD");
+    console.log(date, "SavePollsButtonFunc");
+
+    // let newDate = new DateObject(date).format("YYYYMMDD");
+    console.log(newDate, "SavePollsButtonFunc");
+
+    setUpdatePolls({
+      ...UpdatePolls,
+      date: newDate,
+    });
+    console.log(newDate, "changeDateStartHandler");
   };
 
   const HandleCancelFunction = (index) => {
@@ -220,20 +235,19 @@ const UpdatePolls = ({ showUpdatepollModal, setShowUpdatepollModal }) => {
                               34 May 2023
                             </span>
                           </span>
-                          <MultiDatePicker
+                          <MultiDatePickers
                             // onChange={meetingDateHandler}
+                            value={UpdatePolls.date}
                             name="MeetingDate"
                             check={true}
-                            IconName={
-                              <img
-                                src={EditIcon}
-                                width="11.54px"
-                                height="11.11px"
-                              />
-                            }
                             // value={meetingDate}
                             calendar={calendarValue}
                             locale={localValue}
+                            onChange={(value) =>
+                              changeDateStartHandler(
+                                value?.toDate?.().toString()
+                              )
+                            }
                             // newValue={createMeeting.MeetingDate}
                           />
                         </Col>

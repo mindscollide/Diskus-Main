@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import {
   Checkbox,
-  InputSearchFilter,
   Modal,
-  MultiDatePicker,
+  Loader,
+  Notification,
   MultiDatePickers,
 } from "../../../components/elements";
+import { DateObject } from "react-multi-date-picker";
+
 import styles from "./CreatePolling.module.css";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { Container, Row, Col } from "react-bootstrap";
@@ -29,12 +31,16 @@ import profilepic from "../../../assets/images/profiledropdown.svg";
 import {
   SavePollsApi,
   getAllCommitteesandGroups,
+  setCreatePollModal,
 } from "../../../store/actions/Polls_actions";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import moment from "moment";
+import { newDateFormaterAsPerUTC } from "../../../commen/functions/date_formater";
+import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees";
+import { clearMessagesGroup } from "../../../store/actions/Groups_actions";
 
-const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
+const CreatePolling = () => {
   const animatedComponents = makeAnimated();
   //For Custom language datepicker
   const { PollsReducer } = useSelector((state) => state);
@@ -48,6 +54,10 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
   const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
   const [members, setMembers] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [createPollData, setcreatePollData] = useState({
     TypingTitle: "",
@@ -73,25 +83,6 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
   useEffect(() => {
     dispatch(getAllCommitteesandGroups(navigate, t));
   }, []);
-
-  const SavePollsButtonFunc = () => {
-    // const createrid = localStorage.getItem()
-    const organizationid = localStorage.getItem("organizationID");
-    const createrid = localStorage.getItem("userID");
-    let data = {
-      PollDetails: {
-        PollTitle: createPollData.TypingTitle,
-        DueDate: createPollData.date,
-        AllowMultipleAnswers: createPollData.AllowMultipleAnswers,
-        CreatorID: createrid,
-        PollStatusID: 1,
-        OrganizationID: organizationid,
-      },
-      ParticipantIDs: [876, 864, 883, 883, 884],
-      PollAnswers: options.value,
-    };
-    dispatch(SavePollsApi(navigate, data, t));
-  };
 
   useEffect(() => {
     let pollsData = PollsReducer.gellAllCommittesandGroups;
@@ -195,7 +186,6 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
   console.log(dropdowndata, "PollsReducerPollsReducer1212");
   // for selecgtion of data
   const handleSelectValue = (value) => {
-    console.log(value, "sadasdawqerqweqw");
     setSelectedsearch(value);
   };
 
@@ -285,19 +275,89 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
       // setopen notionation work here
     }
   };
-  console.log(members, "members check");
+  console.log(members, "checkcheckcheckcheck");
 
   const changeDateStartHandler = (date) => {
-    let newDate = moment(date).format("YYYY-MM-DD");
+    let newDate = moment(date).format("YYYYMMDD");
+    console.log(date, "SavePollsButtonFunc");
+
+    // let newDate = new DateObject(date).format("YYYYMMDD");
+    console.log(newDate, "SavePollsButtonFunc");
+
     setcreatePollData({
       ...createPollData,
-      date: {
-        value: newDate,
-      },
+      date: newDate,
     });
     console.log(newDate, "changeDateStartHandler");
   };
+  const changeDateStartHandler2 = (date) => {
+    let newDate = moment(date).format("DD MMMM YYYY");
 
+    return newDate;
+  };
+  // for create polls
+  const SavePollsButtonFunc = async (value) => {
+    console.log(value, "SavePollsButtonFunc");
+
+    const organizationid = localStorage.getItem("organizationID");
+    const createrid = localStorage.getItem("userID");
+    let users = [];
+    let optionsListData = [];
+    console.log(value, "SavePollsButtonFunc");
+    console.log(options.length, "SavePollsButtonFunc");
+    if (Object.keys(options).length >= 2) {
+      console.log(value, "SavePollsButtonFunc");
+      if (Object.keys(members).length > 0) {
+        console.log(value, "SavePollsButtonFunc");
+        members.map((userdata, index) => {
+          users.push(userdata.userID);
+        });
+        console.log(value, "SavePollsButtonFunc");
+        options.map((optionData, index) => {
+          if (optionData.value != "") {
+            optionsListData.push(optionData.value);
+          } else if (index === 1) {
+            return setOpen({
+              flag: true,
+              message: t("Required-atleast-two-options"),
+            });
+          }
+        });
+        if (createPollData.date != "") {
+          console.log(createPollData.date, "SavePollsButtonFunc");
+          let data = {
+            PollDetails: {
+              PollTitle: createPollData.TypingTitle,
+              DueDate: newDateFormaterAsPerUTC(createPollData.date),
+              AllowMultipleAnswers: createPollData.AllowMultipleAnswers,
+              CreatorID: parseInt(createrid),
+              PollStatusID: parseInt(value),
+              OrganizationID: parseInt(organizationid),
+            },
+            ParticipantIDs: users,
+            PollAnswers: optionsListData,
+          };
+          console.log(data, "SavePollsButtonFunc");
+          await dispatch(SavePollsApi(navigate, data, t));
+        } else {
+          // setopen notfication for date
+          setOpen({
+            flag: true,
+            message: t("Select-date"),
+          });
+        }
+      } else {
+        // setopen notfication for error no assigni assiened
+        setOpen({
+          flag: true,
+          message: t("No-assignee-assigned"),
+        });
+      }
+    } else {
+      // console.log("Hellothereiamcoming");
+      // setopen notfication for polls add atlese 2 option
+    }
+  };
   const HandleSearch = (e) => {
     if (e.target.value.trimStart() != "") {
       setAssignees(e.target.value.trimStart());
@@ -365,7 +425,6 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
   };
 
   const HandlecancellButton = () => {
-    // setShowPollingModal(false);
     setDefineUnsaveModal(true);
   };
 
@@ -380,13 +439,13 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
     <>
       <Container>
         <Modal
-          show={showPollingModal}
-          setShow={setShowPollingModal}
+          show={PollsReducer.createPollmodal}
+          setShow={dispatch(setCreatePollModal)}
           modalTitleClassName={styles["ModalHeader_create_poll"]}
           modalHeaderClassName={styles["ModalRequestHeader_polling"]}
           modalFooterClassName={"d-block"}
           onHide={() => {
-            setShowPollingModal(false);
+            dispatch(setCreatePollModal(false));
           }}
           ModalTitle={
             <>
@@ -413,11 +472,12 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                             className={styles["classOFImage"]}
                           />
                           <span className={styles["Due_Date_heading"]}>
-                            {t("Due-date")}
+                            {t("Due-date")}{" "}
+                            {changeDateStartHandler2(createPollData.date)}
                           </span>
                           <MultiDatePickers
                             // onChange={meetingDateHandler}
-                            value={createPollData.date.value}
+                            value={createPollData.date}
                             name="MeetingDate"
                             check={true}
                             // value={meetingDate}
@@ -476,7 +536,7 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                         width="16px"
                         height="16px"
                         onClick={() => {
-                          setShowPollingModal(false);
+                          dispatch(setCreatePollModal(false));
                         }}
                       />
                     </Col>
@@ -508,6 +568,7 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                                 placeholder={t("Typing-tile")}
                                 applyClass={"PollingCreateModal"}
                                 labelClass="d-none"
+                                maxLength={500}
                                 name={"TypingTitle"}
                                 value={createPollData.TypingTitle}
                                 change={HandleChange}
@@ -531,6 +592,7 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                                               applyClass={"PollingCreateModal"}
                                               labelClass="d-none"
                                               name={data.name}
+                                              maxLength={500}
                                               value={data.value}
                                               change={(e) =>
                                                 HandleOptionChange(e)
@@ -561,7 +623,9 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                                                   src={BlackCrossIcon}
                                                   width="31.76px"
                                                   height="31.76px"
-                                                  onClick={HandleCancelFunction}
+                                                  onClick={() =>
+                                                    HandleCancelFunction(index)
+                                                  }
                                                   className={
                                                     styles[
                                                       "Cross-icon-Create_poll"
@@ -756,11 +820,12 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
                           <Button
                             text={t("Save")}
                             className={styles["Save_btn_class"]}
-                            onClick={SavePollsButtonFunc}
+                            onClick={() => SavePollsButtonFunc(1)}
                           />
                           <Button
                             text={t("Save-and-publish")}
                             className={styles["Save_Publish_btn_class"]}
+                            onClick={() => SavePollsButtonFunc(2)}
                           />
                         </Col>
                       </Row>
@@ -773,6 +838,8 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
           size={"md"}
         />
       </Container>
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      {/* {PollsReducer.Loading ? <Loader /> : null} */}
     </>
   );
 };

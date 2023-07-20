@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Polling.module.css";
 import { Row, Col } from "react-bootstrap";
-import { Button, Table, TextField } from "../../components/elements";
+import {
+  Button,
+  Table,
+  TextField,
+  Loader,
+  Notification,
+} from "../../components/elements";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
 import CreatePolling from "./CreatePolling/CreatePollingModal";
@@ -16,18 +22,22 @@ import PollDetails from "./PollDetails/PollDetails";
 import Votepoll from "./VotePoll/Votepoll";
 import UpdateSecond from "./UpdateSecond/UpdateSecond";
 import { useDispatch, useSelector } from "react-redux";
-import { searchPollsApi } from "../../store/actions/Polls_actions";
+import {
+  LoaderState,
+  searchPollsApi,
+  setCreatePollModal,
+} from "../../store/actions/Polls_actions";
 import { useNavigate } from "react-router-dom";
 import {
   _justShowDateformatBilling,
   resolutionResultTable,
 } from "../../commen/functions/date_formater";
+import { clearMessagesGroup } from "../../store/actions/Groups_actions";
 
 const Polling = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { PollsReducer } = useSelector((state) => state);
-  const [isCreatePoll, setIsCreatePoll] = useState(false);
   const [isUpdatePoll, setIsUpdatePoll] = useState(false);
   const [viewprogress, setViewprogress] = useState(false);
   const [updatePublished, setUpdatePublished] = useState(false);
@@ -35,6 +45,10 @@ const Polling = () => {
   const [viewPollsDetails, setViewPollsDetails] = useState(false);
   const [isViewPoll, setIsViewPoll] = useState(false);
   const [totalRecords, setTotalRecord] = useState(0);
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
   const [pollsState, setPollsState] = useState({
     searchValue: "",
   });
@@ -46,9 +60,18 @@ const Polling = () => {
   });
 
   const [searchpoll, setSearchpoll] = useState(false);
+  let userID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
 
   useEffect(() => {
-    dispatch(searchPollsApi(navigate, t));
+    let data = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(organizationID),
+      CreatorName: "",
+      PageNumber: 1,
+      Length: 50,
+    };
+    dispatch(searchPollsApi(navigate, t, data));
   }, []);
   const showViewProgressBarModal = () => {
     setViewprogress(true);
@@ -259,6 +282,30 @@ const Polling = () => {
     } catch (error) {}
   }, [PollsReducer.SearchPolls]);
 
+  useEffect(() => {
+    if (
+      PollsReducer.ResponseMessage !== "" &&
+      PollsReducer.ResponseMessage !== t("Data-available") &&
+      PollsReducer.ResponseMessage !== t("No-data-available")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: PollsReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(clearMessagesGroup());
+    } else {
+      dispatch(clearMessagesGroup());
+    }
+  }, [PollsReducer.ResponseMessage]);
+
   const HandleCloseSearchModal = () => {
     setSearchpoll(false);
   };
@@ -283,7 +330,9 @@ const Polling = () => {
                   className="align-items-center"
                 />
               }
-              onClick={() => setIsCreatePoll(true)}
+              onClick={() =>
+                dispatch(setCreatePollModal(true), dispatch(LoaderState(true)))
+              }
             />
           </Col>
           <Col sm={12} md={9} lg={9} className="justify-content-end d-flex ">
@@ -391,12 +440,7 @@ const Polling = () => {
           </Col>
         </Row>
       </section>
-      {isCreatePoll && (
-        <CreatePolling
-          setShowPollingModal={setIsCreatePoll}
-          showPollingModal={isCreatePoll}
-        />
-      )}
+      {PollsReducer.createPollmodal && <CreatePolling />}
       {isUpdatePoll ? (
         <UpdatePolls
           showUpdatepollModal={isUpdatePoll}
@@ -440,6 +484,8 @@ const Polling = () => {
           />
         </>
       ) : null}
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      {PollsReducer.Loading ? <Loader /> : null}
     </>
   );
 };

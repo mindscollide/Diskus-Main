@@ -32,22 +32,29 @@ const searchPolls_fail = (message) => {
   };
 };
 
+const setCreatePollModal = (response) => {
+  return {
+    type: actions.CREATE_POOL_MODAL,
+    response: response,
+  };
+};
+
+const LoaderState = () => {
+  return {
+    type: actions.LOADDER_STATE,
+  };
+};
+
 // search Polls
-const searchPollsApi = (navigate, t) => {
+const searchPollsApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = parseInt(localStorage.getItem("userID"));
   let OrganizationID = parseInt(localStorage.getItem("organizationID"));
-  let Data = {
-    UserID: createrID,
-    OrganizationID: OrganizationID,
-    CreatorName: "",
-    PageNumber: 1,
-    Length: 50,
-  };
+
   return (dispatch) => {
     dispatch(searchPolls_init());
     let form = new FormData();
-    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestData", JSON.stringify(data));
     form.append("RequestMethod", searcPollsRequestMethod.RequestMethod);
     axios({
       method: "post",
@@ -61,7 +68,7 @@ const searchPollsApi = (navigate, t) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(searchPollsApi(navigate, t));
+          dispatch(searchPollsApi(navigate, t, data));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -139,12 +146,12 @@ const savePolls_fail = (message) => {
 // Save polls Api
 const SavePollsApi = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(savePolls_init());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", savePollsRequestMethod.RequestMethod);
-    axios({
+    await axios({
       method: "post",
       url: pollApi,
       data: form,
@@ -163,12 +170,23 @@ const SavePollsApi = (navigate, Data, t) => {
                 .toLowerCase()
                 .includes("Polls_PollsServiceManager_SavePoll_01".toLowerCase())
             ) {
-              dispatch(
+              await dispatch(
                 savePolls_success(
                   response.data.responseResult,
                   t("Poll-created")
                 )
               );
+              let userID = localStorage.getItem("userID");
+              let organizationID = localStorage.getItem("organizationID");
+              let data = {
+                UserID: parseInt(userID),
+                OrganizationID: parseInt(organizationID),
+                CreatorName: "",
+                PageNumber: 1,
+                Length: 50,
+              };
+              await dispatch(searchPollsApi(navigate, t, data));
+              dispatch(setCreatePollModal(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -321,4 +339,10 @@ const getAllCommitteesandGroups = (navigate, t) => {
       });
   };
 };
-export { searchPollsApi, SavePollsApi, getAllCommitteesandGroups };
+export {
+  searchPollsApi,
+  SavePollsApi,
+  getAllCommitteesandGroups,
+  setCreatePollModal,
+  LoaderState,
+};
