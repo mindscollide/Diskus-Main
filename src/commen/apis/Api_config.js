@@ -723,6 +723,9 @@ const renameFileRequestMethod = {
   RequestMethod: "ServiceManager.RenameFile",
 };
 
+const searchPolls = {
+  RequestMethod: "ServiceManager.SearchPolls",
+};
 export {
   revoketoken,
   googleValidToken,
@@ -918,4 +921,5 @@ export {
   getAllCommittesandGroupsforPolls,
   renameFolderRequestMethod,
   renameFileRequestMethod,
+  searchPolls,
 };

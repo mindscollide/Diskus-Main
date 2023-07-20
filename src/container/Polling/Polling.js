@@ -24,6 +24,7 @@ import UpdateSecond from "./UpdateSecond/UpdateSecond";
 import { useDispatch, useSelector } from "react-redux";
 import {
   LoaderState,
+  globalFlag,
   searchPollsApi,
   setCreatePollModal,
   setEditpollModal,
@@ -38,6 +39,7 @@ import { clearMessagesGroup } from "../../store/actions/Groups_actions";
 const Polling = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { PollsReducer } = useSelector((state) => state);
   const [isUpdatePoll, setIsUpdatePoll] = useState(false);
   const [viewprogress, setViewprogress] = useState(false);
@@ -89,7 +91,29 @@ const Polling = () => {
   const OpenUpdatePublished = () => {
     setUpdatePublished(true);
   };
-  const { t } = useTranslation();
+
+  const handleEditpollModal = (record) => {
+    if (record.wasPollPublished === false) {
+      dispatch(setEditpollModal(true));
+      dispatch(globalFlag(true));
+    } else {
+      dispatch(setEditpollModal(true));
+      dispatch(globalFlag(true));
+    }
+  };
+
+  const handleSearchEvent = () => {
+    let userID = localStorage.getItem("userID");
+    let organizationID = localStorage.getItem("organizationID");
+    let data = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(organizationID),
+      CreatorName: searchBoxState.searchByName,
+      PageNumber: 1,
+      Length: 3,
+    };
+    dispatch(searchPollsApi(navigate, t, data));
+  };
 
   const PollTableColumns = [
     {
@@ -195,7 +219,7 @@ const Polling = () => {
             width="21.59px"
             height="21.59px"
             onClick={() => {
-              dispatch(setEditpollModal(true));
+              handleEditpollModal(record);
             }}
           />
         );
@@ -425,6 +449,7 @@ const Polling = () => {
                             className={
                               styles["Search_Button_polls_SearchModal"]
                             }
+                            onClick={handleSearchEvent}
                           />
                         </Col>
                       </Row>

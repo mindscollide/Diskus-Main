@@ -46,6 +46,13 @@ const setEditpollModal = (response) => {
   };
 };
 
+const globalFlag = (response) => {
+  return {
+    type: actions.GLOBAL_FLAG,
+    response: response,
+  };
+};
+
 const LoaderState = () => {
   return {
     type: actions.LOADDER_STATE,
@@ -353,4 +360,5 @@ export {
   setCreatePollModal,
   LoaderState,
   setEditpollModal,
+  globalFlag,
 };

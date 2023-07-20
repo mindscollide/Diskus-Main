@@ -6,6 +6,7 @@ const initialState = {
   SearchPolls: null,
   createPollmodal: false,
   editpollmodal: false,
+  editPollModalFlag: false,
   SavePoll: null,
   gellAllCommittesandGroups: null,
 };
@@ -89,6 +90,13 @@ const PollsReducer = (state = initialState, action) => {
       return {
         ...state,
         editpollmodal: action.response,
+      };
+    }
+
+    case actions.GLOBAL_FLAG: {
+      return {
+        ...state,
+        editPollModalFlag: action.response,
       };
     }
 

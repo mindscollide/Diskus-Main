@@ -196,7 +196,7 @@ const UpdatePolls = () => {
       AllowMultipleUser: !UpdatePolls.AllowMultipleUser,
     });
   };
-  console.log(options, "optionsFieldsoptionsFields");
+  console.log(PollsReducer.editPollModalFlag, "PollsReducer.editPollModalFlag");
   return (
     <>
       <Container>
@@ -334,6 +334,7 @@ const UpdatePolls = () => {
                                 applyClass={"PollingCreateModal"}
                                 labelClass="d-none"
                                 name={"TypingTitle"}
+                                disable={PollsReducer.editPollModalFlag}
                                 value={UpdatePolls.TypingTitle}
                                 change={HandleChangeUpdatePolls}
                               />
@@ -360,6 +361,9 @@ const UpdatePolls = () => {
                                                 }
                                                 labelClass="d-none"
                                                 name={data.name}
+                                                disable={
+                                                  PollsReducer.editPollModalFlag
+                                                }
                                                 value={data.value}
                                                 change={(e) =>
                                                   HandleOptionChange(e)
@@ -382,6 +386,9 @@ const UpdatePolls = () => {
                                                 }
                                                 applyClass={
                                                   "PollingCreateModal"
+                                                }
+                                                disable={
+                                                  PollsReducer.editPollModalFlag
                                                 }
                                                 labelClass="d-none"
                                                 name={data.name}
@@ -419,36 +426,39 @@ const UpdatePolls = () => {
                                 );
                               })
                             : null}
-
-                          <Row className="mt-2">
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={styles["Add_Another_field"]}
-                                onClick={addNewRow}
-                              >
-                                <Row className="mt-2">
-                                  <Col
-                                    lg={12}
-                                    md={12}
-                                    sm={12}
-                                    className="d-flex gap-1 align-items-center"
-                                  >
-                                    <img
-                                      src={plusFaddes}
-                                      height="15px"
-                                      width="15.87px"
-                                      className={styles["PlusFaddedClass"]}
-                                    />
-                                    <span
-                                      className={styles["Add_another_field"]}
+                          {PollsReducer.editPollModalFlag === false ? (
+                            <Row className="mt-2">
+                              <Col lg={12} md={12} sm={12}>
+                                <span
+                                  className={styles["Add_Another_field"]}
+                                  onClick={addNewRow}
+                                >
+                                  <Row className="mt-2">
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className="d-flex gap-1 align-items-center"
                                     >
-                                      {t("Add-another-field")}
-                                    </span>
-                                  </Col>
-                                </Row>
-                              </span>
-                            </Col>
-                          </Row>
+                                      <img
+                                        src={plusFaddes}
+                                        height="15px"
+                                        width="15.87px"
+                                        className={styles["PlusFaddedClass"]}
+                                      />
+                                      <span
+                                        className={styles["Add_another_field"]}
+                                      >
+                                        {t("Add-another-field")}
+                                      </span>
+                                    </Col>
+                                  </Row>
+                                </span>
+                              </Col>
+                            </Row>
+                          ) : (
+                            <></>
+                          )}
                         </Col>
                       </Row>
 
@@ -462,38 +472,40 @@ const UpdatePolls = () => {
                           <Checkbox
                             checked={UpdatePolls.AllowMultipleUser}
                             onChange={HandleCheckBox}
+                            disable={PollsReducer.editPollModalFlag}
                           />
                           <p className={styles["CheckBoxTitle"]}>
                             {t("Allow-multiple-answers")}
                           </p>
                         </Col>
                       </Row>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="group-fields d-flex align-items-center gap-2 "
-                        >
-                          {/* <InputSearchFilter
-                            labelClass="d-none"
-                            placeholder={t("Enter-name-or-email")}
-                            value={assignees}
-                            change={HandleSearchUpdatePolls}
-                          /> */}
-                          <Select
-                            classNamePrefix={"selectMember"}
-                            closeMenuOnSelect={false}
-                            components={animatedComponents}
-                            isMulti
-                            options={optionsNewUpdatePolls}
-                          />
-                          <Button
-                            text={t("ADD")}
-                            className={styles["ADD_Btn_CreatePool_Modal"]}
-                          />
-                        </Col>
-                      </Row>
+
+                      {PollsReducer.editPollModalFlag === false ? (
+                        <Row>
+                          {" "}
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="group-fields d-flex align-items-center gap-2 "
+                          >
+                            <Select
+                              classNamePrefix={"selectMember"}
+                              closeMenuOnSelect={false}
+                              components={animatedComponents}
+                              isMulti
+                              options={optionsNewUpdatePolls}
+                            />
+                            <Button
+                              text={t("ADD")}
+                              className={styles["ADD_Btn_CreatePool_Modal"]}
+                            />
+                          </Col>
+                        </Row>
+                      ) : (
+                        <></>
+                      )}
+
                       <Row>
                         <Col
                           lg={12}
@@ -522,13 +534,18 @@ const UpdatePolls = () => {
                                             {data.name}
                                           </span>
                                         </Col>
-                                        <Col sm={12} md={2} lg={2}>
-                                          <img
-                                            src={CrossIcon}
-                                            width="14px"
-                                            height="14px"
-                                          />
-                                        </Col>
+                                        {PollsReducer.editPollModalFlag ===
+                                        false ? (
+                                          <Col sm={12} md={2} lg={2}>
+                                            <img
+                                              src={CrossIcon}
+                                              width="14px"
+                                              height="14px"
+                                            />
+                                          </Col>
+                                        ) : (
+                                          <></>
+                                        )}
                                       </Row>
                                     </Col>
                                   </Row>
