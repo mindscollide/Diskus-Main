@@ -3,10 +3,12 @@ import {
   savePollsRequestMethod,
   getAllCommittesandGroupsforPolls,
   searcPollsRequestMethod,
+  castVote,
 } from "../../commen/apis/Api_config";
 import { pollApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
+import { message } from "antd";
 
 // search Poll Init
 const searchPolls_init = () => {
@@ -259,6 +261,92 @@ const SavePollsApi = (navigate, Data, t) => {
   };
 };
 
+const castVoteInit = () => {
+  return {
+    type: actions.CAST_VOTE_INIT,
+  };
+};
+
+const castVoteSuccess = (action, message) => {
+  return {
+    type: actions.CAST_VOTE_SUCCESS,
+    action: action,
+    message: message,
+  };
+};
+
+const castVoteFailed = (message) => {
+  return {
+    type: actions.CAST_VOTE_FAIL,
+    message: message,
+  };
+};
+
+const castVoteApi = (navigate, data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(castVoteInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", castVote.RequestMethod);
+    await axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    }).then(async (response) => {
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        dispatch(castVoteApi(navigate, data, t));
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_CastVote_01".toLowerCase())
+          ) {
+            await dispatch(
+              castVoteSuccess(response.data.responseResult, t("Vote-casted"))
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_CastVote_02".toLowerCase())
+          ) {
+            dispatch(castVoteFailed(t("No-vote-casted")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_CastVote_03".toLowerCase())
+          ) {
+            dispatch(castVoteFailed(t("Please-choose-a-suitable-option")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_CastVote_04".toLowerCase())
+          ) {
+            dispatch(
+              castVoteFailed(t("You-are-only-allowed-to-select-one-answer "))
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_CastVote_05".toLowerCase())
+          ) {
+            dispatch(castVoteFailed(t("Exception-Some-thing-went-wrong")));
+          }
+        } else {
+          dispatch(castVoteFailed(t("Something-went-wrong")));
+        }
+      } else {
+        dispatch(castVoteFailed(t("Something-went-wrong")));
+      }
+    });
+  };
+};
+
 const getAllcommittesandGroups_init = () => {
   return {
     type: actions.GETALLCOMMITESANDGROUPSFORPOLLS_INIT,
@@ -361,4 +449,5 @@ export {
   LoaderState,
   setEditpollModal,
   globalFlag,
+  castVoteApi,
 };

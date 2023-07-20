@@ -24,6 +24,7 @@ import UpdateSecond from "./UpdateSecond/UpdateSecond";
 import { useDispatch, useSelector } from "react-redux";
 import {
   LoaderState,
+  castVoteApi,
   globalFlag,
   searchPollsApi,
   setCreatePollModal,
@@ -43,6 +44,7 @@ const Polling = () => {
   const { PollsReducer } = useSelector((state) => state);
   const [isUpdatePoll, setIsUpdatePoll] = useState(false);
   const [viewprogress, setViewprogress] = useState(false);
+  const [pollData, setPollData] = useState([]);
   const [updatePublished, setUpdatePublished] = useState(false);
   const [isVotePoll, setisVotePoll] = useState(false);
   const [viewPollsDetails, setViewPollsDetails] = useState(false);
@@ -63,19 +65,7 @@ const Polling = () => {
   });
 
   const [searchpoll, setSearchpoll] = useState(false);
-  let userID = localStorage.getItem("userID");
-  let organizationID = localStorage.getItem("organizationID");
 
-  useEffect(() => {
-    let data = {
-      UserID: parseInt(userID),
-      OrganizationID: parseInt(organizationID),
-      CreatorName: "",
-      PageNumber: 1,
-      Length: 50,
-    };
-    dispatch(searchPollsApi(navigate, t, data));
-  }, []);
   const showViewProgressBarModal = () => {
     setViewprogress(true);
   };
@@ -100,6 +90,31 @@ const Polling = () => {
       dispatch(setEditpollModal(true));
       dispatch(globalFlag(true));
     }
+  };
+
+  // useEffect(() => {
+  //   console.log(PollsReducer.SearchPolls.polls, "PollsReducerPollsReducer");
+  //   let userIds = [];
+  //   if (Object.keys(PollsReducer.SearchPolls.polls).length > 0) {
+  //     PollsReducer.SearchPolls.polls.map((data, index) => {
+  //       console.log(data, "datadatadatadata");
+  //       userIds.push(data.pollID);
+  //     });
+  //     setPollData(userIds);
+  //   }
+  // }, [PollsReducer.SearchPolls.polls]);
+
+  console.log(pollData, "pollDatapollDatapollData");
+
+  const handleVotePolls = () => {
+    let userID = localStorage.getItem("userID");
+
+    let data = {
+      PollID: 1,
+      UserID: parseInt(userID),
+      PollOptionIDs: [4, 5, 6],
+    };
+    dispatch(castVoteApi(navigate, data, t));
   };
 
   const handleSearchEvent = () => {
@@ -197,7 +212,13 @@ const Polling = () => {
       render: (text, record) => {
         if (record.pollStatus.pollStatusId === 2) {
           if (record.voteStatus === "Not Voted") {
-            return <Button className={styles["voteBtn"]} text={"Vote"} />;
+            return (
+              <Button
+                className={styles["voteBtn"]}
+                text={"Vote"}
+                onClick={handleVotePolls}
+              />
+            );
           } else if (record.voteStatus === "Voted") {
             return <Button className={styles["votedBtn"]} text={"Voted"} />;
           }
@@ -330,6 +351,19 @@ const Polling = () => {
       dispatch(clearMessagesGroup());
     }
   }, [PollsReducer.ResponseMessage]);
+
+  let userID = localStorage.getItem("userID");
+  let organizationID = localStorage.getItem("organizationID");
+  useEffect(() => {
+    let data = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(organizationID),
+      CreatorName: searchBoxState.searchByName,
+      PageNumber: 1,
+      Length: 50,
+    };
+    dispatch(searchPollsApi(navigate, t, data));
+  }, []);
 
   const HandleCloseSearchModal = () => {
     setSearchpoll(false);

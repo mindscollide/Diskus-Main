@@ -9,6 +9,7 @@ const initialState = {
   editPollModalFlag: false,
   SavePoll: null,
   gellAllCommittesandGroups: null,
+  pollOptions: [],
 };
 
 const PollsReducer = (state = initialState, action) => {
@@ -90,6 +91,28 @@ const PollsReducer = (state = initialState, action) => {
       return {
         ...state,
         editpollmodal: action.response,
+      };
+    }
+
+    case actions.CAST_VOTE_INIT: {
+      return {
+        ...state,
+        Loading: false,
+      };
+    }
+
+    case actions.CAST_VOTE_SUCCESS: {
+      return {
+        ...state,
+        pollOptions: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.CAST_VOTE_FAIL: {
+      return {
+        ...state,
+        ResponseMessage: action.message,
       };
     }
 
