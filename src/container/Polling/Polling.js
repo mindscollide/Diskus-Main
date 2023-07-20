@@ -92,17 +92,22 @@ const Polling = () => {
     }
   };
 
-  // useEffect(() => {
-  //   console.log(PollsReducer.SearchPolls.polls, "PollsReducerPollsReducer");
-  //   let userIds = [];
-  //   if (Object.keys(PollsReducer.SearchPolls.polls).length > 0) {
-  //     PollsReducer.SearchPolls.polls.map((data, index) => {
-  //       console.log(data, "datadatadatadata");
-  //       userIds.push(data.pollID);
-  //     });
-  //     setPollData(userIds);
-  //   }
-  // }, [PollsReducer.SearchPolls.polls]);
+  useEffect(() => {
+    console.log(PollsReducer.SearchPolls, "PollsReducerPollsReducer");
+    let userIds = [];
+    if (
+      PollsReducer.SearchPolls !== null &&
+      PollsReducer.SearchPolls !== undefined
+    ) {
+      if (Object.keys(PollsReducer.SearchPolls.polls).length > 0) {
+        PollsReducer.SearchPolls.polls.map((data, index) => {
+          console.log(data, "datadatadatadata");
+          userIds.push(data.pollID);
+        });
+        setPollData(userIds);
+      }
+    }
+  }, [PollsReducer.SearchPolls]);
 
   console.log(pollData, "pollDatapollDatapollData");
 
