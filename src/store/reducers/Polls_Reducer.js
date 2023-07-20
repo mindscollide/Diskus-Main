@@ -5,6 +5,7 @@ const initialState = {
   ResponseMessage: "",
   SearchPolls: null,
   createPollmodal: false,
+  editpollmodal: false,
   SavePoll: null,
   gellAllCommittesandGroups: null,
 };
@@ -81,6 +82,13 @@ const PollsReducer = (state = initialState, action) => {
       return {
         ...state,
         createPollmodal: action.response,
+      };
+    }
+
+    case actions.EDIT_POLL_MODAL: {
+      return {
+        ...state,
+        editpollmodal: action.response,
       };
     }
 

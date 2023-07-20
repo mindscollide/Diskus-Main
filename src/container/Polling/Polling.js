@@ -26,6 +26,7 @@ import {
   LoaderState,
   searchPollsApi,
   setCreatePollModal,
+  setEditpollModal,
 } from "../../store/actions/Polls_actions";
 import { useNavigate } from "react-router-dom";
 import {
@@ -194,7 +195,7 @@ const Polling = () => {
             width="21.59px"
             height="21.59px"
             onClick={() => {
-              setIsUpdatePoll(true);
+              dispatch(setEditpollModal(true));
             }}
           />
         );
@@ -441,12 +442,8 @@ const Polling = () => {
         </Row>
       </section>
       {PollsReducer.createPollmodal && <CreatePolling />}
-      {isUpdatePoll ? (
-        <UpdatePolls
-          showUpdatepollModal={isUpdatePoll}
-          setShowUpdatepollModal={setIsUpdatePoll}
-        />
-      ) : null}
+      {PollsReducer.editpollmodal && <UpdatePolls />}
+
       {isViewPoll ? (
         <>
           <ViewPoll

@@ -39,6 +39,13 @@ const setCreatePollModal = (response) => {
   };
 };
 
+const setEditpollModal = (response) => {
+  return {
+    type: actions.EDIT_POLL_MODAL,
+    response: response,
+  };
+};
+
 const LoaderState = () => {
   return {
     type: actions.LOADDER_STATE,
@@ -345,4 +352,5 @@ export {
   getAllCommitteesandGroups,
   setCreatePollModal,
   LoaderState,
+  setEditpollModal,
 };

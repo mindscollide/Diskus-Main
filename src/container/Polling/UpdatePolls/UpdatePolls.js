@@ -22,9 +22,15 @@ import EditIcon from "../../../assets/images/Edit-Icon.png";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { setEditpollModal } from "../../../store/actions/Polls_actions";
+import { useNavigate } from "react-router-dom";
 
-const UpdatePolls = ({ showUpdatepollModal, setShowUpdatepollModal }) => {
+const UpdatePolls = () => {
   const animatedComponents = makeAnimated();
+  const { PollsReducer } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const optionsNewUpdatePolls = [
     {
       value: "chocolateUpdatedPolls",
@@ -162,7 +168,6 @@ const UpdatePolls = ({ showUpdatepollModal, setShowUpdatepollModal }) => {
   };
 
   const HandlecancellButton = () => {
-    // setShowUpdatepollModal(false);
     setDefineUnsaveModal(true);
   };
 
@@ -196,15 +201,15 @@ const UpdatePolls = ({ showUpdatepollModal, setShowUpdatepollModal }) => {
     <>
       <Container>
         <Modal
-          show={showUpdatepollModal}
-          setShow={setShowUpdatepollModal}
+          show={PollsReducer.editpollmodal}
+          setShow={dispatch(setEditpollModal)}
           modalTitleClassName={styles["ModalHeader_Update_poll"]}
           modalHeaderClassName={
             styles["ModalRequestHeader_polling_update_modal"]
           }
           modalFooterClassName={"d-block"}
           onHide={() => {
-            setShowUpdatepollModal(false);
+            dispatch(setEditpollModal(false));
           }}
           ModalTitle={
             <>
@@ -296,7 +301,7 @@ const UpdatePolls = ({ showUpdatepollModal, setShowUpdatepollModal }) => {
                         width="16px"
                         height="16px"
                         onClick={() => {
-                          setShowUpdatepollModal(false);
+                          dispatch(setEditpollModal(false));
                         }}
                       />
                     </Col>
