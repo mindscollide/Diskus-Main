@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Checkbox,
   Modal,
@@ -23,7 +23,10 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { setEditpollModal } from "../../../store/actions/Polls_actions";
+import {
+  getPollsByPollIdApi,
+  setEditpollModal,
+} from "../../../store/actions/Polls_actions";
 import { useNavigate } from "react-router-dom";
 
 const UpdatePolls = () => {
@@ -60,6 +63,15 @@ const UpdatePolls = () => {
   const { t } = useTranslation();
   const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
   const [assignees, setAssignees] = useState("");
+
+  useEffect(() => {
+    let data = {
+      PollID: 1,
+    };
+
+    dispatch(getPollsByPollIdApi(navigate, data, t));
+  }, []);
+
   const [members, setMembers] = useState([
     {
       id: 1,

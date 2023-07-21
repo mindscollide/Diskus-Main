@@ -731,6 +731,14 @@ const castVote = {
   RequestMethod: "ServiceManager.CastVote",
 };
 
+const getAllPollStatus = {
+  RequestMethod: "ServiceManager.GetAllPollStatus",
+};
+
+const getPollByPollID = {
+  RequestMethod: "ServiceManager.GetPollByPollID",
+};
+
 export {
   revoketoken,
   googleValidToken,
@@ -928,4 +936,6 @@ export {
   renameFileRequestMethod,
   searchPolls,
   castVote,
+  getAllPollStatus,
+  getPollByPollID,
 };

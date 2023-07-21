@@ -10,6 +10,8 @@ const initialState = {
   SavePoll: null,
   gellAllCommittesandGroups: null,
   pollOptions: [],
+  Statuspolls: [],
+  Allpolls: null,
 };
 
 const PollsReducer = (state = initialState, action) => {
@@ -97,7 +99,7 @@ const PollsReducer = (state = initialState, action) => {
     case actions.CAST_VOTE_INIT: {
       return {
         ...state,
-        Loading: false,
+        Loading: true,
       };
     }
 
@@ -120,6 +122,52 @@ const PollsReducer = (state = initialState, action) => {
       return {
         ...state,
         editPollModalFlag: action.response,
+      };
+    }
+
+    case actions.GET_ALL_POLL_STATUS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_ALL_POLL_STATUS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        Statuspolls: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_ALL_POLL_STATUS_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_POLLS_BY_POLLID_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.GET_POLLS_BY_POLLID_SUCCESS: {
+      return {
+        ...state,
+        Allpolls: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GET_POLLS_BY_POLLID_FAILED: {
+      return {
+        ...state,
+        ResponseMessage: action.message,
       };
     }
 

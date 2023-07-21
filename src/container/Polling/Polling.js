@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   LoaderState,
   castVoteApi,
+  getPollsByPollIdApi,
   globalFlag,
   searchPollsApi,
   setCreatePollModal,
@@ -368,6 +369,14 @@ const Polling = () => {
       Length: 50,
     };
     dispatch(searchPollsApi(navigate, t, data));
+  }, []);
+
+  useEffect(() => {
+    let data = {
+      PollID: 1,
+    };
+
+    dispatch(getPollsByPollIdApi(navigate, data, t));
   }, []);
 
   const HandleCloseSearchModal = () => {

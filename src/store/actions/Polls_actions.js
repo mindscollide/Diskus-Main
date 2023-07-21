@@ -4,6 +4,8 @@ import {
   getAllCommittesandGroupsforPolls,
   searcPollsRequestMethod,
   castVote,
+  getAllPollStatus,
+  getPollByPollID,
 } from "../../commen/apis/Api_config";
 import { pollApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -347,6 +349,176 @@ const castVoteApi = (navigate, data, t) => {
   };
 };
 
+const getAllPollsStatusInit = () => {
+  return {
+    type: actions.GET_ALL_POLL_STATUS_INIT,
+  };
+};
+
+const getAllPollsStatusSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_POLL_STATUS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getAllPollsStatusFailed = (message) => {
+  return {
+    type: actions.GET_ALL_POLL_STATUS_FAILED,
+    message: message,
+  };
+};
+
+const getAllPollsStatusApi = (navigate, data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(getAllPollsStatusInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", getAllPollStatus.RequestMethod);
+    await axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    }).then(async (response) => {
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        dispatch(getAllPollsStatusApi(navigate, data, t));
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Polls_PollsServiceManager_GetAllPollStatus_01".toLowerCase()
+              )
+          ) {
+            await dispatch(
+              getAllPollsStatusSuccess(
+                response.data.responseResult,
+                t("Record-found")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Polls_PollsServiceManager_GetAllPollStatus_02".toLowerCase()
+              )
+          ) {
+            dispatch(getAllPollsStatusFailed(t("No-record-found")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Polls_PollsServiceManager_GetAllPollStatus_03".toLowerCase()
+              )
+          ) {
+            dispatch(getAllPollsStatusFailed(t("Exception")));
+          }
+        } else {
+          dispatch(getAllPollsStatusFailed(t("Something-went-wrong")));
+        }
+      } else {
+        dispatch(getAllPollsStatusFailed(t("Something-went-wrong")));
+      }
+    });
+  };
+};
+
+const getAllPollsByPollsIDInit = () => {
+  return {
+    type: actions.GET_POLLS_BY_POLLID_INIT,
+  };
+};
+
+const getAllPollsByPollsIDSuccess = (response, message) => {
+  return {
+    type: actions.GET_POLLS_BY_POLLID_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const getAllPollsByPollsIDFailed = (message) => {
+  return {
+    type: actions.GET_POLLS_BY_POLLID_FAILED,
+    message: message,
+  };
+};
+
+const getPollsByPollIdApi = (navigate, data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(getAllPollsByPollsIDInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", getPollByPollID.RequestMethod);
+    await axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    }).then(async (response) => {
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        dispatch(getPollsByPollIdApi(navigate, data, t));
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Polls_PollsServiceManager_GetPollByPollID_01".toLowerCase()
+              )
+          ) {
+            await dispatch(
+              getAllPollsByPollsIDSuccess(
+                response.data.responseResult,
+                t("Record-found")
+              )
+            );
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Polls_PollsServiceManager_GetPollByPollID_02".toLowerCase()
+              )
+          ) {
+            dispatch(getAllPollsByPollsIDFailed(t("No-record-found")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Polls_PollsServiceManager_GetPollByPollID_03".toLowerCase()
+              )
+          ) {
+            dispatch(getAllPollsByPollsIDFailed(t("No-record-found")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes(
+                "Polls_PollsServiceManager_GetPollByPollID_04".toLowerCase()
+              )
+          ) {
+            dispatch(getAllPollsByPollsIDFailed(t("Exception")));
+          }
+        } else {
+          dispatch(getAllPollsByPollsIDFailed(t("Something-went-wrong")));
+        }
+      } else {
+        dispatch(getAllPollsByPollsIDFailed(t("Something-went-wrong")));
+      }
+    });
+  };
+};
+
 const getAllcommittesandGroups_init = () => {
   return {
     type: actions.GETALLCOMMITESANDGROUPSFORPOLLS_INIT,
@@ -450,4 +622,5 @@ export {
   setEditpollModal,
   globalFlag,
   castVoteApi,
+  getPollsByPollIdApi,
 };
