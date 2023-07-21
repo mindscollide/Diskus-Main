@@ -159,6 +159,7 @@ const PollsReducer = (state = initialState, action) => {
     case actions.GET_POLLS_BY_POLLID_SUCCESS: {
       return {
         ...state,
+        Loading: false,
         Allpolls: action.response,
         ResponseMessage: action.message,
       };
@@ -167,6 +168,7 @@ const PollsReducer = (state = initialState, action) => {
     case actions.GET_POLLS_BY_POLLID_FAILED: {
       return {
         ...state,
+        Loading: false,
         ResponseMessage: action.message,
       };
     }

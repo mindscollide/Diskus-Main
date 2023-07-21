@@ -451,7 +451,7 @@ const getAllPollsByPollsIDFailed = (message) => {
   };
 };
 
-const getPollsByPollIdApi = (navigate, data, t) => {
+const getPollsByPollIdApi = (navigate, data, check, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
     dispatch(getAllPollsByPollsIDInit());
@@ -468,7 +468,7 @@ const getPollsByPollIdApi = (navigate, data, t) => {
     }).then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t));
-        dispatch(getPollsByPollIdApi(navigate, data, t));
+        dispatch(getPollsByPollIdApi(navigate, data, check, t));
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
           if (
@@ -484,6 +484,13 @@ const getPollsByPollIdApi = (navigate, data, t) => {
                 t("Record-found")
               )
             );
+            if (check === false) {
+              dispatch(setEditpollModal(true));
+              dispatch(globalFlag(true));
+            } else {
+              dispatch(setEditpollModal(true));
+              dispatch(globalFlag(false));
+            }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()

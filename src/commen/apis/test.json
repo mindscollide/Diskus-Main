@@ -1,12 +1,49 @@
 {
-  "PollDetails": {
-    "PollTitle": "first poll hit ",
-    "DueDate": "20230718",
-    "AllowMultipleAnswers": true,
-    "CreatorID": "779",
-    "PollStatusID": 1,
-    "OrganizationID": "302"
+  "pollDetails": {
+    "pollID": 35,
+    "pollTitle": "SAIF POLL PUBLISHED",
+    "dueDate": "20230725",
+    "voteStatus": null,
+    "pollCreator": "Ali Raza",
+    "allowMultipleAnswers": true,
+    "wasPollPublished": true,
+    "pollStatus": {
+      "pollStatusId": 2,
+      "status": "Published"
+    }
   },
-  "ParticipantIDs": [738, 767, 779, 780, 778],
-  "PollAnswers": ["hello there one ", "hello there two "]
+  "pollOptions": [
+    {
+      "pollAnswerID": 81,
+      "answer": "asdasdasd",
+      "votePercentage": 0,
+      "totalVotes": 0
+    },
+    {
+      "pollAnswerID": 82,
+      "answer": "asdfadasdasd",
+      "votePercentage": 0,
+      "totalVotes": 0
+    }
+  ],
+  "pollParticipants": [
+    {
+      "userID": 779,
+      "userName": "Ali Raza",
+      "emailAddress": "raza6803@gmail.com",
+      "profilePicture": {
+        "userID": 779,
+        "orignalProfilePictureName": "logo.png"
+      }
+    },
+    {
+      "userID": 780,
+      "userName": "Ali Mamdani",
+      "emailAddress": "Ali.mamdani@Hotmail.com",
+      "profilePicture": {
+        "userID": 780,
+        "orignalProfilePictureName": "logo.png"
+      }
+    }
+  ]
 }

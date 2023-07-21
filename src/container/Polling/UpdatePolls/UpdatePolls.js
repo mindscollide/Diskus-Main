@@ -64,14 +64,6 @@ const UpdatePolls = () => {
   const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
   const [assignees, setAssignees] = useState("");
 
-  useEffect(() => {
-    let data = {
-      PollID: 1,
-    };
-
-    dispatch(getPollsByPollIdApi(navigate, data, t));
-  }, []);
-
   const [members, setMembers] = useState([
     {
       id: 1,

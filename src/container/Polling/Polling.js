@@ -84,12 +84,16 @@ const Polling = () => {
   };
 
   const handleEditpollModal = (record) => {
-    if (record.wasPollPublished === false) {
-      dispatch(setEditpollModal(true));
-      dispatch(globalFlag(true));
-    } else {
-      dispatch(setEditpollModal(true));
-      dispatch(globalFlag(true));
+    console.log("handleEditpollModal", record);
+    let check = record.wasPollPublished;
+    let data = {
+      PollID: record.pollID,
+    };
+    if (Object.keys(record).length > 0) {
+      console.log("handleEditpollModal", check);
+      console.log("handleEditpollModal", data);
+
+      dispatch(getPollsByPollIdApi(navigate, data, check, t));
     }
   };
 
@@ -369,14 +373,6 @@ const Polling = () => {
       Length: 50,
     };
     dispatch(searchPollsApi(navigate, t, data));
-  }, []);
-
-  useEffect(() => {
-    let data = {
-      PollID: 1,
-    };
-
-    dispatch(getPollsByPollIdApi(navigate, data, t));
   }, []);
 
   const HandleCloseSearchModal = () => {
