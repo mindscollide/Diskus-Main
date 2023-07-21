@@ -92,36 +92,6 @@ const Polling = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(PollsReducer.SearchPolls, "PollsReducerPollsReducer");
-    let userIds = [];
-    if (
-      PollsReducer.SearchPolls !== null &&
-      PollsReducer.SearchPolls !== undefined
-    ) {
-      if (Object.keys(PollsReducer.SearchPolls.polls).length > 0) {
-        PollsReducer.SearchPolls.polls.map((data, index) => {
-          console.log(data, "datadatadatadata");
-          userIds.push(data.pollID);
-        });
-        setPollData(userIds);
-      }
-    }
-  }, [PollsReducer.SearchPolls]);
-
-  console.log(pollData, "pollDatapollDatapollData");
-
-  const handleVotePolls = () => {
-    let userID = localStorage.getItem("userID");
-
-    let data = {
-      PollID: 1,
-      UserID: parseInt(userID),
-      PollOptionIDs: [4, 5, 6],
-    };
-    dispatch(castVoteApi(navigate, data, t));
-  };
-
   const handleSearchEvent = () => {
     let userID = localStorage.getItem("userID");
     let organizationID = localStorage.getItem("organizationID");
@@ -356,6 +326,36 @@ const Polling = () => {
       dispatch(clearMessagesGroup());
     }
   }, [PollsReducer.ResponseMessage]);
+
+  // useEffect(() => {
+  //   console.log(PollsReducer.SearchPolls, "PollsReducerPollsReducer");
+  //   let userIds = [];
+  //   if (
+  //     PollsReducer.SearchPolls !== null &&
+  //     PollsReducer.SearchPolls !== undefined
+  //   ) {
+  //     if (Object.keys(PollsReducer.SearchPolls.polls).length > 0) {
+  //       PollsReducer.SearchPolls.polls.map((data, index) => {
+  //         console.log(data, "datadatadatadata");
+  //         userIds.push(data.pollID);
+  //       });
+  //       setPollData(userIds);
+  //     }
+  //   }
+  // }, [PollsReducer.SearchPolls]);
+
+  console.log(pollData, "pollDatapollDatapollData");
+
+  const handleVotePolls = () => {
+    let userID = localStorage.getItem("userID");
+
+    let data = {
+      PollID: 1,
+      UserID: parseInt(userID),
+      PollOptionIDs: [4, 5, 6],
+    };
+    dispatch(castVoteApi(navigate, data, t));
+  };
 
   let userID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");

@@ -820,12 +820,12 @@ const CreatePolling = () => {
                           <Button
                             text={t("Save")}
                             className={styles["Save_btn_class"]}
-                            onClick={() => SavePollsButtonFunc(1)}
+                            onClick={() => SavePollsButtonFunc(2)}
                           />
                           <Button
                             text={t("Save-and-publish")}
                             className={styles["Save_Publish_btn_class"]}
-                            onClick={() => SavePollsButtonFunc(2)}
+                            onClick={() => SavePollsButtonFunc(1)}
                           />
                         </Col>
                       </Row>
