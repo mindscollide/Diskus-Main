@@ -32,6 +32,7 @@ import { useNavigate } from "react-router-dom";
 const UpdatePolls = () => {
   const animatedComponents = makeAnimated();
   const { PollsReducer } = useSelector((state) => state);
+  console.log(PollsReducer, "UPdateReducerUPdateReducerUPdateReducer");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const optionsNewUpdatePolls = [
@@ -56,6 +57,51 @@ const UpdatePolls = () => {
     { value: "VanillaUpdatedPolls", label: "chocolateUpdatedPolls" },
     { value: "zeroxUpdatedPolls", label: "chocolateUpdatedPolls" },
   ];
+
+  const [updatepollsdetails, setUpdatepollsdetails] = useState();
+  const [polloptions, setPolloptions] = useState([]);
+  const [pollmembers, setPollmembers] = useState([]);
+
+  useEffect(() => {
+    if (PollsReducer.Allpolls != null && PollsReducer.Allpolls != undefined) {
+      if (Object.keys(PollsReducer.Allpolls).length > 0) {
+        console.log(
+          PollsReducer.Allpolls.poll.pollOptions,
+          "pollOptionspollOptionspollOptionspollOptions"
+        );
+        let Options = [];
+        PollsReducer.Allpolls.poll.pollOptions.map((data, index) => {
+          console.log(data, "datadatadatadata");
+          Options.push(data);
+        });
+        setPolloptions(Options);
+      }
+    }
+  }, [PollsReducer.Allpolls]);
+
+  console.log(
+    polloptions,
+    "polloptionspolloptionspolloptionspolloptionspolloptions"
+  );
+
+  useEffect(() => {
+    if (PollsReducer.Allpolls != null && PollsReducer.Allpolls != undefined) {
+      if (Object.keys(PollsReducer.Allpolls).length > 0) {
+        console.log(
+          PollsReducer.Allpolls.poll.pollParticipants,
+          "PollsReducerPollsReducerPollsReducerPollsReducer"
+        );
+        let members = [];
+        PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
+          console.log(data, "datadatadatadata");
+          members.push(data);
+        });
+        setPollmembers(members);
+      }
+    }
+  }, [PollsReducer.Allpolls]);
+
+  console.log(pollmembers, "pollmemberspollmemberspollmembers");
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
@@ -345,8 +391,8 @@ const UpdatePolls = () => {
                             </Col>
                           </Row>
 
-                          {options.length > 0
-                            ? options.map((data, index) => {
+                          {polloptions.length > 0
+                            ? polloptions.map((data, index) => {
                                 return (
                                   <>
                                     {index <= 1 ? (
@@ -368,7 +414,7 @@ const UpdatePolls = () => {
                                                 disable={
                                                   PollsReducer.editPollModalFlag
                                                 }
-                                                value={data.value}
+                                                value={data.answer}
                                                 change={(e) =>
                                                   HandleOptionChange(e)
                                                 }
@@ -520,7 +566,7 @@ const UpdatePolls = () => {
                           }
                         >
                           <Row>
-                            {members.map((data, index) => {
+                            {pollmembers.map((data, index) => {
                               return (
                                 <Col lg={6} md={6} sm={12} className="mt-2">
                                   <Row>
@@ -535,7 +581,7 @@ const UpdatePolls = () => {
                                           <span
                                             className={styles["Name_cards"]}
                                           >
-                                            {data.name}
+                                            {data.userName}
                                           </span>
                                         </Col>
                                         {PollsReducer.editPollModalFlag ===
