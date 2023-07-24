@@ -556,7 +556,7 @@ const UpdatePolls = () => {
                           <span className={styles["Due_Date_heading"]}>
                             {t("Due-date-on")}{" "}
                             <span className={styles["Date_update_poll"]}>
-                              {changeDateStartHandler2(UpdatePolls.dueDate)}
+                              {changeDateStartHandler2(UpdatePolls.date)}
                             </span>
                           </span>
                           <MultiDatePickers
