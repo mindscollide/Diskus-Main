@@ -89,7 +89,9 @@ const TodoList = () => {
     UserID: 0,
   });
   let todoListCurrentPage = JSON.parse(localStorage.getItem("todoListPage"));
-  let todoListPageSize = JSON.parse(localStorage.getItem("todoListRow"));
+  let todoListPageSize = localStorage.getItem("todoListRow");
+  console.log(todoListPageSize, "todoListPageSize")
+  console.log(todoListCurrentPage, "todoListCurrentPage")
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -170,16 +172,12 @@ const TodoList = () => {
   //dispatch gettodolist api
   useEffect(() => {
     if (todoListPageSize !== null && todoListCurrentPage !== null) {
-      dispatch(SearchTodoListApi(navigate, searchData, t));
+      dispatch(SearchTodoListApi(navigate, searchData, todoListCurrentPage, todoListPageSize, t));
     } else {
       localStorage.setItem("todoListPage", 1);
       localStorage.setItem("todoListRow", 50);
-      dispatch(SearchTodoListApi(navigate, searchData, t));
+      dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
     }
-    return () => {
-      localStorage.removeItem("todoListPage");
-      localStorage.removeItem("todoListRow");
-    };
   }, []);
 
   //get todolist reducer
@@ -233,18 +231,29 @@ const TodoList = () => {
     console.log("Various parameters", filters);
     console.log("Various parameters", filters.status);
 
-    console.log("Various parameters", rowsToDo);
-    let newArray = toDoListReducer.AllTodolistData.filter((data, index) => {
-      // console.log("newArraynewArraynewArray", data.status, filters)
-      return data.status.status === filters;
-    });
-    console.log("newArraynewArraynewArray", newArray);
-    if (newArray.length > 0) {
-      setRowToDo(newArray);
-    } else {
-      setRowToDo(toDoListReducer.AllTodolistData);
+    if (filters.status.length > 0) {
+      filters.status.map((data, index) => {
+        console.log(data, index)
+        let newArry = toDoListReducer.AllTodolistData.filter((filterData, index) => {
+          console.log("newArraynewArraynewArray", data.status, filterData)
+          return filterData.status.status === data;
+        })
+        console.log(newArry, "newArrynewArrynewArry")
+      })
     }
+    // console.log("Various parameters", rowsToDo);
+    // let newArray = toDoListReducer.AllTodolistData.filter((data, index) => {
+    //   // console.log("newArraynewArraynewArray", data.status, filters)
+    //   return data.status.status === filters;
+    // });
+    // console.log("newArraynewArraynewArray", newArray);
+    // if (newArray.length > 0) {
+    //   setRowToDo(newArray);
+    // } else {
+    //   setRowToDo(toDoListReducer.AllTodolistData);
+    // }
   };
+
   const deleteTodolist = (record) => {
     console.log("deleteTodolist", record);
     dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t)).then(
@@ -253,11 +262,11 @@ const TodoList = () => {
       }
     );
     if (todoListPageSize !== null && todoListCurrentPage !== null) {
-      dispatch(SearchTodoListApi(navigate, searchData, t));
+      dispatch(SearchTodoListApi(navigate, searchData, todoListCurrentPage, todoListPageSize, t));
     } else {
       localStorage.setItem("todoListPage", 1);
       localStorage.setItem("todoListRow", 50);
-      dispatch(SearchTodoListApi(navigate, searchData, t));
+      dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
     }
     // let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
     // dispatch(GetTodoListByUser(navigate, data, t));
@@ -395,7 +404,7 @@ const TodoList = () => {
           value: "Completed",
         },
       ],
-      defaultFilteredValue: ['In Progress', "Pending", "Upcoming", "Cancelled", "Completed"],
+      defaultFilteredValue: ["InProgress", "Pending", "Upcoming", "Cancelled", "Completed"],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
@@ -550,7 +559,7 @@ const TodoList = () => {
     console.log(current, pageSize, "paginationChangeHandlerTodo");
     localStorage.setItem("todoListPage", current);
     localStorage.setItem("todoListRow", pageSize);
-    dispatch(SearchTodoListApi(navigate, searchData, t));
+    dispatch(SearchTodoListApi(navigate, searchData, current, pageSize, t));
   };
 
   // for search
@@ -567,7 +576,7 @@ const TodoList = () => {
         AssignedToName: "",
         UserID: parseInt(createrID),
       };
-      dispatch(SearchTodoListApi(navigate, newData, t));
+      dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
       setSearchData({
         ...searchData,
         Date: "",
@@ -577,7 +586,7 @@ const TodoList = () => {
       });
     } else {
       // make notification for if input fields is empty here
-      dispatch(SearchTodoListApi(navigate, searchData, t));
+      dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
       setSearchData({
         Date: "",
         Title: "",
@@ -595,7 +604,7 @@ const TodoList = () => {
       UserID: parseInt(createrID),
     };
     localStorage.setItem("todoListPage", 1);
-    dispatch(SearchTodoListApi(navigate, newData, t));
+    dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
     setSearchData({
       Date: "",
       Title: "",
@@ -891,7 +900,11 @@ const TodoList = () => {
                     className="PaginationStyle-Meeting"
                     current={todoListCurrentPage}
                     total={totalRecords}
-                    pageSizeOptions={[30, 50, 100, 200]}
+                    locale={{
+                      items_per_page: t('items_per_page'),
+                      page: t('page')
+                    }}
+                    pageSizeOptions={["30", "50", "100", "200"]}
                     pageSize={todoListPageSize}
                   />
                 </section>}

@@ -58,6 +58,7 @@
 .folderContainer {
     height: 70vh !important;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .folderContainer::-webkit-scrollbar {

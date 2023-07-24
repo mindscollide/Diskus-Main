@@ -7,18 +7,17 @@ import {
   Loader,
   Notification,
 } from "./../../components/elements";
-import { ChevronBarDown, ChevronDown } from "react-bootstrap-icons";
 import "./CalendarPage.css";
 import { Plus } from "react-bootstrap-icons";
 import { useSelector, useDispatch } from "react-redux";
 import moment from "moment";
 import { getCalendarDataResponse } from "../../store/actions/GetDataForCalendar";
 import {
+  covertDateForCalenderIntoUTC,
   dateTime,
+  forMainCalendar,
   newDateFormaterAsPerUTC,
   newTimeFormaterAsPerUTC,
-  startDateTimeMeetingCalendar,
-  TimeDisplayFormat,
   _justShowDateformat,
 } from "../../commen/functions/date_formater";
 import ModalMeeting from "../modalmeeting/ModalMeeting";
@@ -52,16 +51,13 @@ const CalendarPage = () => {
     meetingIdReducer,
     getTodosStatus,
   } = state;
-  const [value, setValue] = useState(moment("2017-01-25"));
-  // const [selectedValue, setSelectedValue] = useState(moment("2017-01-25"));
   const [calenderData, setCalenderDatae] = useState([]);
-  console.log("assignees", assignees);
   const [calendarView, setCalendarView] = useState(false);
   const [calendarViewModal, setCalendarViewModal] = useState(false);
   const [open, setOpen] = useState(false);
   const [defaultValue, setDefaultValue] = useState("");
-  console.log("calendarReducer", calendarReducer.CalenderData);
   const [editFlag, setEditFlag] = useState(false);
+  const [defaultState, setDefaultState] = useState(false);
 
   const [openNotification, setOpenNotification] = useState({
     flag: false,
@@ -73,17 +69,25 @@ const CalendarPage = () => {
   let OrganizationID = localStorage.getItem("organizationID");
   const userID = localStorage.getItem("userID");
   var currentDate = new Date(); // Get the current date
-  // Add CalenderMonthsSpan months and set the day to the last day of the month
-  var startDate = new Date(
+
+  // Calculate the start date
+  let startDate = new Date(
     currentDate.getFullYear(),
-    currentDate.getMonth() - parseInt(CalenderMonthsSpan),
-    1
-  ); // Subtract CalenderMonthsSpan months and set the day to the 1st
-  var endDate = new Date(
-    currentDate.getFullYear(),
-    currentDate.getMonth() + parseInt(CalenderMonthsSpan),
-    0
+    currentDate.getMonth() -
+      parseInt(parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)),
+    currentDate.getDate()
   );
+  console.log("DateDate startDate", startDate);
+
+  // Calculate the end date
+  let endDate = new Date(
+    currentDate.getFullYear(),
+    currentDate.getMonth() +
+      parseInt(parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)),
+    currentDate.getDate()
+  );
+
+  console.log("DateDate currentDatecurrentDate", currentDate);
 
   // for view modal  handler
   const viewModalHandler = async (value) => {
@@ -105,15 +109,17 @@ const CalendarPage = () => {
   // calling Api for getting data for calendar
   useEffect(() => {
     const userID = localStorage.getItem("userID");
-    // dispatch(getCalendarDataResponse(navigate, userID,true, t));
+    console.log("DateDate startDate", startDate);
+    console.log("DateDate endDate", endDate);
     let calendarData = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(OrganizationID),
-      StartDate: newDateFormaterAsPerUTC(startDate) + "000000",
-      EndDate: newDateFormaterAsPerUTC(endDate) + "000000",
+      StartDate: newDateFormaterAsPerUTC(startDate)+ "000000",
+      EndDate: newDateFormaterAsPerUTC(endDate)+ "000000",
     };
-    setStartDataUpdate(startDate);
-    setEndDataUpdate(endDate);
+    console.log("DateDate calendarData", calendarData);
+    setStartDataUpdate(newDateFormaterAsPerUTC(startDate));
+    setEndDataUpdate(newDateFormaterAsPerUTC(endDate));
     dispatch(getCalendarDataResponse(navigate, calendarData, true, t));
     window.addEventListener("click", function (e) {
       var clsname = e.target.className;
@@ -164,27 +170,24 @@ const CalendarPage = () => {
       }
     });
   }, []);
-
+  
   function onChange(value) {
     let newDAte = moment(value._d).format("YYYY-MM-DD");
-    let formattedDate = moment(value._d).format("YYYYMMDD");
-    // let formattedDate = moment(value._d).format("YYYYMMDD");
-
-    console.log("navigate", formattedDate);
-    console.log("navigate", value._d);
+    setCalendarView(false);
     if (startDataUpdate > value._d) {
       console.log("navigate", value._d);
       const date = new Date(value._d);
       let updateStartDate = new Date(
         date.getFullYear(),
-        date.getMonth() - parseInt(CalenderMonthsSpan),
+        date.getMonth() -
+          parseInt(parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)),
         1
       );
       let calendarData = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(OrganizationID),
-        StartDate: newDateFormaterAsPerUTC(updateStartDate) + "000000",
-        EndDate: newDateFormaterAsPerUTC(startDataUpdate) + "000000",
+        StartDate: newDateFormaterAsPerUTC(updateStartDate)+ "000000" ,
+        EndDate: newDateFormaterAsPerUTC(startDataUpdate)+ "000000" ,
       };
       setStartDataUpdate(updateStartDate);
       dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
@@ -193,13 +196,14 @@ const CalendarPage = () => {
       const date = new Date(value._d);
       let updateEndDate = new Date(
         date.getFullYear(),
-        date.getMonth() + parseInt(CalenderMonthsSpan),
+        date.getMonth() +
+          parseInt(parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)),
         0
       );
       let calendarData = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(OrganizationID),
-        StartDate: newDateFormaterAsPerUTC(endDataUpdate) + "000000",
+        StartDate: newDateFormaterAsPerUTC(endDataUpdate)+ "000000" ,
         EndDate: newDateFormaterAsPerUTC(updateEndDate) + "000000",
       };
       setEndDataUpdate(updateEndDate);
@@ -219,23 +223,23 @@ const CalendarPage = () => {
     console.log("Data", Data);
     let newList;
     if (Object.keys(calenderData).length > 0) {
-      newList = calenderData;
+      if (defaultState) {
+        newList = calenderData;
+      } else {
+        newList = [];
+        setDefaultState(true);
+      }
     } else {
       newList = [];
     }
     if (Object.keys(Data).length > 0) {
       Data.map((cData, index) => {
         console.log("cData", cData);
-        let StartingTime = startDateTimeMeetingCalendar(
-          cData.eventDate + cData.startTime
-        );
-        let EndingTime = startDateTimeMeetingCalendar(
-          cData.eventDate + cData.endTime
-        );
+        let StartingTime = forMainCalendar(cData.eventDate + cData.startTime);
+        let EndingTime = forMainCalendar(cData.eventDate + cData.endTime);
         let meetingStartTime = newTimeFormaterAsPerUTC(
           cData.eventDate + cData.startTime
         );
-        console.log("newListnewListnewList", StartingTime, EndingTime);
         if (cData.fK_CESID === 1) {
           newList.push({
             id: parseInt(cData.pK_CEID),
@@ -269,7 +273,6 @@ const CalendarPage = () => {
         }
       });
       setCalenderDatae(newList);
-      console.log("newListnewListnewList", newList);
     }
   }, [calendarReducer.CalenderData]);
 
@@ -631,8 +634,6 @@ const CalendarPage = () => {
               defaultValue={defaultValue}
               setDefaultValue={setDefaultValue}
               setOpen={setOpen}
-              // onPanelChange={onPanelChange}
-              // value={value}
               selectable={true}
             />
           </Col>

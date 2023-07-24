@@ -96,7 +96,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   const [toDate, setToDate] = useState("");
   const [totalRecords, setTotalRecords] = useState(0);
   let currentPageSize = localStorage.getItem("MeetingPageSize");
-  let currentPage = JSON.parse(localStorage.getItem("MeetingCurrentPage"))
+  let currentPage = localStorage.getItem("MeetingCurrentPage");
 
   const [modalEditMeetingStates, setModalEditMeetingStates] = useState({
     Titles: "",
@@ -856,7 +856,16 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         </Row>
         <Row>
           <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-2 pagination-groups-table">
-            <Pagination total={totalRecords} onChange={AdminMeetingPagination} current={currentPage !== null ? currentPage : 1} showSizeChanger pageSizeOptions={[30, 50, 100, 200]} pageSize={currentPageSize !== null ? currentPageSize : 50} className={styles["PaginationStyle-AllMeeting"]} />
+            <Pagination total={totalRecords}
+              locale={{
+                items_per_page: t('items_per_page'),
+                page: t('page')
+              }}
+              onChange={AdminMeetingPagination}
+              current={currentPage !== null ? currentPage : 1}
+              showSizeChanger pageSizeOptions={["30", "50", "100", "200"]}
+              pageSize={currentPageSize !== null ? currentPageSize : 50}
+              className={styles["PaginationStyle-AllMeeting"]} />
           </Col>
         </Row>
         <Modal

@@ -35,6 +35,9 @@ const talkURL = ':11014/Talk'
 // Calender
 const calenderURL = ':11016/Calender'
 
+// Polls
+const PollURL = ':11018/Polls'
+
 //this is our final api's
 const authenticationApi = baseURL + serviceAuthenticationURL
 
@@ -72,6 +75,8 @@ const getCommitteesApi = baseURL + getCommitteeURL
 // get Calender
 const getCalender = baseURL + calenderURL
 
+const pollApi = baseURL + PollURL
+
 export {
   authenticationApi,
   toDoListApi,
@@ -88,4 +93,5 @@ export {
   getResolutionApi,
   dataRoomApi,
   getCalender,
+  pollApi
 }

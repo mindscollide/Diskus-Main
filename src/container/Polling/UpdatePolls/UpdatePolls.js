@@ -20,8 +20,34 @@ import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import profile from "../../../assets/images/profile_polls.svg";
 import { useState } from "react";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
 
 const UpdatePolls = ({ showUpdatepollModal, setShowUpdatepollModal }) => {
+  const animatedComponents = makeAnimated();
+  const optionsNewUpdatePolls = [
+    {
+      value: "chocolateUpdatedPolls",
+      label: (
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-start align-items-center gap-2"
+            >
+              <img src={profile} />
+              <span>SaifEnterprisesasasdasdasdasd</span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    { value: "VanillaUpdatedPolls", label: "chocolateUpdatedPolls" },
+    { value: "zeroxUpdatedPolls", label: "chocolateUpdatedPolls" },
+  ];
+
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -430,11 +456,18 @@ const UpdatePolls = ({ showUpdatepollModal, setShowUpdatepollModal }) => {
                           sm={12}
                           className="group-fields d-flex align-items-center gap-2 "
                         >
-                          <InputSearchFilter
+                          {/* <InputSearchFilter
                             labelClass="d-none"
                             placeholder={t("Enter-name-or-email")}
                             value={assignees}
                             change={HandleSearchUpdatePolls}
+                          /> */}
+                          <Select
+                            classNamePrefix={"selectMember"}
+                            closeMenuOnSelect={false}
+                            components={animatedComponents}
+                            isMulti
+                            options={optionsNewUpdatePolls}
                           />
                           <Button
                             text={t("ADD")}
@@ -554,7 +587,7 @@ const UpdatePolls = ({ showUpdatepollModal, setShowUpdatepollModal }) => {
               )}
             </>
           }
-          size={defineUnsaveModal ? "md" : "md"}
+          size={defineUnsaveModal ? null : "md"}
         />
       </Container>
     </>

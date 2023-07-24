@@ -39,6 +39,7 @@
     "js-cookie": "^3.0.1",
     "mobiscroll-react": "^4.0.0",
     "moment": "^2.29.4",
+    "numeral": "^2.0.6",
     "paho-mqtt": "^1.1.0",
     "react": "^18.2.0",
     "react-big-calendar": "^1.5.0",

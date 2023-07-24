@@ -35,9 +35,14 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile }) => {
     setFiltersOptions(false)
   }
 
-  const handleClickforFolder = (dataId) => {}
+  const handleClickforFolder = (dataId) => {
+    console.log(dataId)
+  }
 
-  const handleClickforFile = (dataId) => {}
+  const handleClickforFile = (dataId) => {
+    console.log(dataId)
+  }
+
   return (
     <>
       <Row>
@@ -82,54 +87,53 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile }) => {
           <Row>
             {data?.length > 0
               ? data.map((fileData, index) => {
-                  if (fileData.isFolder) {
-                    return (
-                      <>
-                        <Col sm={12} md={2} lg={2}>
-                          <div className={styles['gridViewFolder__name']}>
-                            <span
-                              className={styles['folderName__text']}
-                              onClick={() => getFolderDocuments(fileData.id)}
-                            >
-                              <img src={folder_icon_gridview} /> {fileData.name}
-                            </span>
-                            <span className={styles['three_dot__gridView']}>
-                              <Dropdown
-                                drop="down"
-                                align="start"
-                                className={`${
-                                  styles['options_dropdown']
+                if (fileData.isFolder) {
+                  return (
+                    <>
+                      <Col sm={12} md={2} lg={2}>
+                        <div className={styles['gridViewFolder__name']}>
+                          <span
+                            className={styles['folderName__text']}
+                            onClick={() => getFolderDocuments(fileData.id)}
+                          >
+                            <img src={folder_icon_gridview} /> {fileData.name}
+                          </span>
+                          <span className={styles['three_dot__gridView']}>
+                            <Dropdown
+                              drop="down"
+                              align="start"
+                              className={`${styles['options_dropdown']
                                 } ${'dataroom_options'}`}
-                              >
-                                <Dropdown.Toggle id="dropdown-autoclose-true">
-                                  <img
-                                    src={threedots_dataroom}
-                                    width="15.02px"
-                                    height="10.71px"
-                                  />
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu>
-                                  {optionsforFolder.map((data, index) => {
-                                    return (
-                                      <Dropdown.Item
-                                        key={index}
-                                        onClick={() =>
-                                          handleClickforFolder(data)
-                                        }
-                                      >
-                                        {data.label}
-                                      </Dropdown.Item>
-                                    )
-                                  })}
-                                </Dropdown.Menu>
-                              </Dropdown>
-                            </span>
-                          </div>
-                        </Col>
-                      </>
-                    )
-                  }
-                })
+                            >
+                              <Dropdown.Toggle id="dropdown-autoclose-true">
+                                <img
+                                  src={threedots_dataroom}
+                                  width="15.02px"
+                                  height="10.71px"
+                                />
+                              </Dropdown.Toggle>
+                              <Dropdown.Menu>
+                                {optionsforFolder.map((data, index) => {
+                                  return (
+                                    <Dropdown.Item
+                                      key={index}
+                                      onClick={() =>
+                                        handleClickforFolder(data)
+                                      }
+                                    >
+                                      {data.label}
+                                    </Dropdown.Item>
+                                  )
+                                })}
+                              </Dropdown.Menu>
+                            </Dropdown>
+                          </span>
+                        </div>
+                      </Col>
+                    </>
+                  )
+                }
+              })
               : null}
           </Row>
           <Row>
@@ -140,69 +144,68 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile }) => {
           <Row>
             {data?.length > 0
               ? data.map((fileData, index) => {
-                  if (!fileData.isFolder) {
-                    return (
-                      <>
-                        <Col
-                          sm={12}
-                          md={2}
-                          lg={2}
-                          className={styles['gridViewFolder']}
-                        >
-                          <div className={styles['fileview__Box']}>
-                            <Row>
-                              <Col sm={12} md={12} lg={12}>
-                                <img src={file_image} width={'100%'} />
-                              </Col>
-                              <Col sm={12} md={12} lg={12}>
-                                <div className={styles['gridViewFile__name']}>
-                                  <span className={styles['folderFile__text']}>
-                                    <img src={folder_icon_gridview} />{' '}
-                                    {fileData.name}
-                                  </span>
-                                  <span
-                                    className={styles['three_dot__gridView']}
-                                  >
-                                    <Dropdown
-                                      drop="down"
-                                      align="start"
-                                      className={`${
-                                        styles['options_dropdown']
+                if (!fileData.isFolder) {
+                  return (
+                    <>
+                      <Col
+                        sm={12}
+                        md={2}
+                        lg={2}
+                        className={styles['gridViewFolder']}
+                      >
+                        <div className={styles['fileview__Box']}>
+                          <Row>
+                            <Col sm={12} md={12} lg={12}>
+                              <img src={file_image} width={'100%'} />
+                            </Col>
+                            <Col sm={12} md={12} lg={12}>
+                              <div className={styles['gridViewFile__name']}>
+                                <span className={styles['folderFile__text']}>
+                                  <img src={folder_icon_gridview} />{' '}
+                                  {fileData.name}
+                                </span>
+                                <span
+                                  className={styles['three_dot__gridView']}
+                                >
+                                  <Dropdown
+                                    drop="down"
+                                    align="start"
+                                    className={`${styles['options_dropdown']
                                       } ${'dataroom_options'}`}
-                                    >
-                                      <Dropdown.Toggle id="dropdown-autoclose-true">
-                                        <img
-                                          src={threedots_dataroom}
-                                          width="15.02px"
-                                          height="10.71px"
-                                        />
-                                      </Dropdown.Toggle>
-                                      <Dropdown.Menu>
-                                        {optionsforFile.map((data, index) => {
-                                          return (
-                                            <Dropdown.Item
-                                              key={index}
-                                              onClick={() =>
-                                                handleClickforFile(data)
-                                              }
-                                            >
-                                              {data.label}
-                                            </Dropdown.Item>
-                                          )
-                                        })}
-                                      </Dropdown.Menu>
-                                    </Dropdown>
-                                    {/* <img src={threedots_dataroom} onClick={() => handleClickforFile(fileData.id)} /> */}
-                                  </span>
-                                </div>
-                              </Col>
-                            </Row>
-                          </div>
-                        </Col>
-                      </>
-                    )
-                  }
-                })
+                                  >
+                                    <Dropdown.Toggle id="dropdown-autoclose-true">
+                                      <img
+                                        src={threedots_dataroom}
+                                        width="15.02px"
+                                        height="10.71px"
+                                      />
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                      {optionsforFile.map((data, index) => {
+                                        return (
+                                          <Dropdown.Item
+                                            key={index}
+                                            onClick={() =>
+                                              handleClickforFile(data)
+                                            }
+                                          >
+                                            {data.label}
+                                          </Dropdown.Item>
+                                        )
+                                      })}
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+                                  {/* <img src={threedots_dataroom} onClick={() => handleClickforFile(fileData.id)} /> */}
+                                </span>
+                              </div>
+                            </Col>
+                          </Row>
+                        </div>
+                      </Col>
+                    </>
+                  )
+                }
+              })
               : null}
           </Row>
         </Col>

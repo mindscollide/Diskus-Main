@@ -110,7 +110,6 @@ body[dir="rtl"] .Add_another_field {
 
 .polling_Options_backGround {
   background: #f16b6b !important;
-  display: block !important;
   position: absolute;
   width: auto !important;
   right: 0;
@@ -118,10 +117,10 @@ body[dir="rtl"] .Add_another_field {
   top: 0;
   height: 100%;
   z-index: 1;
-  display: flex;
+  display: flex !important;
   justify-content: center;
   border-top-right-radius: 4px !important;
-  border-bottom-right-radius: 4px !important ;
+  border-bottom-right-radius: 4px !important;
   align-items: center;
 }
 
@@ -136,9 +135,9 @@ body[dir="rtl"] .polling_Options_backGround {
   margin-top: 0 !important;
   top: 0 !important;
   border-top-left-radius: 4px !important;
-  border-bottom-left-radius: 4px !important ;
+  border-bottom-left-radius: 4px !important;
   border-top-right-radius: 0px !important;
-  border-bottom-right-radius: 0px !important ;
+  border-bottom-right-radius: 0px !important;
   height: 100% !important;
   align-items: start !important;
 }

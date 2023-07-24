@@ -7,6 +7,8 @@ import styles from "./Language-selector.module.css";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
+import moment from "moment";
+import numeral from "numeral";
 
 const LanguageSelector = () => {
   const languageref = useRef();
@@ -41,6 +43,7 @@ const LanguageSelector = () => {
   const handleChangeLocale = (lang) => {
     setLanguageDropdown(false);
     setLanguage(lang);
+
     let currentLanguageForView = languages.filter(
       (data, index) => data.code === lang
     );
@@ -49,7 +52,9 @@ const LanguageSelector = () => {
       "currentLanguageForViewcurrentLanguageForViewcurrentLanguageForView"
     );
     setLanguageforView(currentLanguageForView[0].name);
+    numeral.locale(currentLanguageForView[0].code);
     localStorage.setItem("i18nextLng", lang);
+
     window.location.reload();
   };
   const handleOutsideClick = (event) => {
@@ -85,9 +90,9 @@ const LanguageSelector = () => {
       <span
         className={
           location.pathname.includes("/DisKus/") ||
-          location.pathname.includes("/paymentForm") ||
-          location.pathname.includes("/signuporganization") ||
-          location.pathname.includes("/Diskus/Admin")
+            location.pathname.includes("/paymentForm") ||
+            location.pathname.includes("/signuporganization") ||
+            location.pathname.includes("/Diskus/Admin")
             ? "text-white d-flex gap-2 align-items-center position-relative cursor-pointer"
             : "text-black d-flex gap-2 align-items-center position-relative cursor-pointer"
         }
@@ -96,9 +101,9 @@ const LanguageSelector = () => {
         <img
           src={
             location.pathname.includes("/DisKus/") ||
-            location.pathname.includes("/paymentForm") ||
-            location.pathname.includes("/signuporganization") ||
-            location.pathname.includes("/Diskus/Admin")
+              location.pathname.includes("/paymentForm") ||
+              location.pathname.includes("/signuporganization") ||
+              location.pathname.includes("/Diskus/Admin")
               ? LanguageIcon
               : LanguageBlack
           }

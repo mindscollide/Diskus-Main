@@ -697,7 +697,30 @@ const searchNoteRequetMethod = {
   RequestMethod: 'ServiceManager.SearchNotes',
 }
 const paymentMethodsRequestMethod = {
-  RequestMethod: 'ServiceManager.GetPaymentMethods',
+  RequestMethod: "ServiceManager.GetPaymentMethods"
+}
+
+const searchPaymentHistoryRequestMethod = {
+  RequestMethod: "ServiceManager.InvoicesAndPaymentHistory"
+}
+
+const searcPollsRequestMethod = {
+  RequestMethod: "ServiceManager.SearchPolls"
+}
+
+const savePollsRequestMethod = {
+  RequestMethod: 'ServiceManager.SavePoll'
+}
+
+const getAllCommittesandGroupsforPolls = {
+  RequestMethod: 'ServiceManager.GetAllGroupsAndCommitteesByOrganizaitonID'
+}
+
+const renameFolderRequestMethod = {
+  RequestMethod: 'ServiceManager.RenameFolder'
+}
+const renameFileRequestMethod = {
+  RequestMethod: "ServiceManager.RenameFile"
 }
 
 export {
@@ -889,4 +912,10 @@ export {
   searchTodoListRequestMethod,
   searchNoteRequetMethod,
   paymentMethodsRequestMethod,
+  searchPaymentHistoryRequestMethod,
+  searcPollsRequestMethod,
+  savePollsRequestMethod,
+  getAllCommittesandGroupsforPolls,
+  renameFolderRequestMethod,
+  renameFileRequestMethod
 }
