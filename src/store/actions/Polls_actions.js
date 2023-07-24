@@ -331,7 +331,7 @@ const castVoteApi = (navigate, data, t) => {
               .includes("Polls_PollsServiceManager_CastVote_04".toLowerCase())
           ) {
             dispatch(
-              castVoteFailed(t("You-are-only-allowed-to-select-one-answer "))
+              castVoteFailed(t("You-are-only-allowed-to-select-one-answer"))
             );
           } else if (
             response.data.responseResult.responseMessage
@@ -674,7 +674,7 @@ const updatePollsApi = (navigate, Data, t) => {
               await dispatch(
                 updatePollsSuccess(
                   response.data.responseResult,
-                  t("Polls-due-date-update-successFully ")
+                  t("Polls-due-date-update-successFully")
                 )
               );
               let userID = localStorage.getItem("userID");
@@ -695,7 +695,7 @@ const updatePollsApi = (navigate, Data, t) => {
                   "Polls_PollsServiceManager_UpdatePoll_02".toLowerCase()
                 )
             ) {
-              dispatch(updatePollsFailed(t("Poll-not-updated ")));
+              dispatch(updatePollsFailed(t("Poll-not-updated")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
