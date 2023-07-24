@@ -514,7 +514,7 @@ const UpdatePolls = () => {
         CreatorID: parseInt(createrid),
         PollStatusID: parseInt(value),
         OrganizationID: parseInt(organizationid),
-        PollID: Number(UpdatePolls.pollID),
+        PollID: parseInt(UpdatePolls.pollID),
       },
       ParticipantIDs: users,
       PollAnswers: optionsListData,
@@ -562,7 +562,7 @@ const UpdatePolls = () => {
                           <span className={styles["Due_Date_heading"]}>
                             {t("Due-date-on")}{" "}
                             <span className={styles["Date_update_poll"]}>
-                              {changeDateStartHandler2(UpdatePolls.dueDate)}
+                              {changeDateStartHandler2(UpdatePolls.date)}
                             </span>
                           </span>
                           <MultiDatePickers

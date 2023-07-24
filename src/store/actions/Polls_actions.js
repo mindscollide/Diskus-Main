@@ -677,6 +677,17 @@ const updatePollsApi = (navigate, Data, t) => {
                   t("Polls-due-date-update-successFully ")
                 )
               );
+              let userID = localStorage.getItem("userID");
+              let organizationID = localStorage.getItem("organizationID");
+              let data = {
+                UserID: parseInt(userID),
+                OrganizationID: parseInt(organizationID),
+                CreatorName: "",
+                PageNumber: 1,
+                Length: 50,
+              };
+              await dispatch(searchPollsApi(navigate, t, data));
+              dispatch(setEditpollModal(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -698,6 +709,17 @@ const updatePollsApi = (navigate, Data, t) => {
                   t("Poll-details-updated")
                 )
               );
+              let userID = localStorage.getItem("userID");
+              let organizationID = localStorage.getItem("organizationID");
+              let data = {
+                UserID: parseInt(userID),
+                OrganizationID: parseInt(organizationID),
+                CreatorName: "",
+                PageNumber: 1,
+                Length: 50,
+              };
+              await dispatch(searchPollsApi(navigate, t, data));
+              dispatch(setEditpollModal(false));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

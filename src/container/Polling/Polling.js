@@ -162,10 +162,12 @@ const Polling = () => {
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       render: (text, record) => {
-        if (record.pollStatus.pollStatusId === 1) {
+        if (record.pollStatus.pollStatusId === 2) {
           return <span className="text-success">{t("Published")}</span>;
-        } else if (record.pollStatus.pollStatusId === 2) {
+        } else if (record.pollStatus.pollStatusId === 1) {
           return <span className="text-success">{t("Unpublished")}</span>;
+        } else if (record.pollStatus.pollStatusId === 3) {
+          return <span className="text-success">{t("Expired")}</span>;
         }
       },
     },
