@@ -66,7 +66,7 @@ const UpdatePolls = () => {
     if (PollsReducer.Allpolls != null && PollsReducer.Allpolls != undefined) {
       if (Object.keys(PollsReducer.Allpolls).length > 0) {
         console.log(
-          PollsReducer.Allpolls.poll.pollOptions,
+          PollsReducer.Allpolls,
           "pollOptionspollOptionspollOptionspollOptions"
         );
         let Options = [];
@@ -83,23 +83,6 @@ const UpdatePolls = () => {
     polloptions,
     "polloptionspolloptionspolloptionspolloptionspolloptions"
   );
-
-  useEffect(() => {
-    if (PollsReducer.Allpolls != null && PollsReducer.Allpolls != undefined) {
-      if (Object.keys(PollsReducer.Allpolls).length > 0) {
-        console.log(
-          PollsReducer.Allpolls.poll.pollParticipants,
-          "PollsReducerPollsReducerPollsReducerPollsReducer"
-        );
-        let members = [];
-        PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
-          console.log(data, "datadatadatadata");
-          members.push(data);
-        });
-        setPollmembers(members);
-      }
-    }
-  }, [PollsReducer.Allpolls]);
 
   console.log(pollmembers, "pollmemberspollmemberspollmembers");
 
@@ -165,6 +148,31 @@ const UpdatePolls = () => {
     AllowMultipleUser: false,
     date: "",
   });
+
+  useEffect(() => {
+    if (PollsReducer.Allpolls != null && PollsReducer.Allpolls != undefined) {
+      let pollsDetails = PollsReducer.Allpolls;
+      if (Object.keys(PollsReducer.Allpolls).length > 0) {
+        console.log(
+          PollsReducer.Allpolls.poll.pollParticipants,
+          "PollsReducerPollsReducerPollsReducerPollsReducer"
+        );
+        let members = [];
+        PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
+          console.log(data, "datadatadatadata");
+          members.push(data);
+        });
+        setPollmembers(members);
+        setUpdatePolls({
+          ...UpdatePolls,
+          Title: pollsDetails.poll.pollDetails.pollTitle,
+          allowMultipleAnswers:
+            pollsDetails.poll.pollDetails.allowMultipleAnswers,
+          dueDate: pollsDetails.poll.pollDetails.dueDate,
+        });
+      }
+    }
+  }, [PollsReducer.Allpolls]);
   const addNewRow = () => {
     if (options.length > 1) {
       let lastIndex = options.length - 1;
@@ -217,6 +225,12 @@ const UpdatePolls = () => {
     setOptions([...options]);
   };
 
+  const changeDateStartHandler2 = (date) => {
+    let newDate = moment(date).format("DD MMMM YYYY");
+
+    return newDate;
+  };
+
   const HandlecancellButton = () => {
     setDefineUnsaveModal(true);
   };
@@ -243,10 +257,9 @@ const UpdatePolls = () => {
   const HandleCheckBox = () => {
     setUpdatePolls({
       ...UpdatePolls,
-      AllowMultipleUser: !UpdatePolls.AllowMultipleUser,
+      allowMultipleAnswers: !UpdatePolls.allowMultipleAnswers,
     });
   };
-  console.log(PollsReducer.editPollModalFlag, "PollsReducer.editPollModalFlag");
   return (
     <>
       <Container>
@@ -287,12 +300,12 @@ const UpdatePolls = () => {
                           <span className={styles["Due_Date_heading"]}>
                             {t("Due-date-on")}{" "}
                             <span className={styles["Date_update_poll"]}>
-                              34 May 2023
+                              {changeDateStartHandler2(UpdatePolls.dueDate)}
                             </span>
                           </span>
                           <MultiDatePickers
                             // onChange={meetingDateHandler}
-                            value={UpdatePolls.date}
+                            value={UpdatePolls.dueDate}
                             name="MeetingDate"
                             check={true}
                             // value={meetingDate}
@@ -385,7 +398,7 @@ const UpdatePolls = () => {
                                 labelClass="d-none"
                                 name={"TypingTitle"}
                                 disable={PollsReducer.editPollModalFlag}
-                                value={UpdatePolls.TypingTitle}
+                                value={UpdatePolls.Title}
                                 change={HandleChangeUpdatePolls}
                               />
                             </Col>
@@ -520,7 +533,7 @@ const UpdatePolls = () => {
                           className="d-flex align-items-center gap-2"
                         >
                           <Checkbox
-                            checked={UpdatePolls.AllowMultipleUser}
+                            checked={UpdatePolls.allowMultipleAnswers}
                             onChange={HandleCheckBox}
                             disable={PollsReducer.editPollModalFlag}
                           />
