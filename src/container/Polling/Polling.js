@@ -198,7 +198,7 @@ const Polling = () => {
               <Button
                 className={styles["voteBtn"]}
                 text={"Vote"}
-                onClick={() => handleVotePolls(1)}
+                onClick={handleVotePolls(record)}
               />
             );
           } else if (record.voteStatus === "Voted") {
@@ -346,15 +346,14 @@ const Polling = () => {
 
   console.log(pollData, "pollDatapollDatapollData");
 
-  const handleVotePolls = (value) => {
+  const handleVotePolls = (record) => {
     let userID = localStorage.getItem("userID");
-
     let data = {
-      PollID: parseInt(value),
+      PollID: parseInt(record.pollID),
       UserID: parseInt(userID),
       PollOptionIDs: [4],
     };
-    dispatch(castVoteApi(navigate, data, t));
+    // dispatch(castVoteApi(navigate, data, t));
   };
 
   let userID = localStorage.getItem("userID");
