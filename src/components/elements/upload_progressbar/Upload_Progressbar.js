@@ -1,38 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 
-function UploadProgressBar() {
-  const [width, setWidth] = useState(1)
-  const [intervalId, setIntervalId] = useState(null)
-  const elemRef = React.useRef(null)
-
-  useEffect(() => {
-    if (width >= 100) {
-      clearInterval(intervalId)
-    } else {
-      setIntervalId(setInterval(frame, 100))
-    }
-
-    function frame() {
-      setWidth((prevWidth) => prevWidth + 1)
-      elemRef.current.style.width = `${width}%`
-    }
-
-    return () => {
-      clearInterval(intervalId)
-    }
-  }, [width, intervalId])
-
-  function resetProgressBar() {
-    setWidth(1)
-    clearInterval(intervalId)
-    elemRef.current.style.width = '1%'
+const UploadProgressBar = () => {
+  const [file, setFile] = useState()
+  function handleChange(e) {
+    console.log(e.target.files)
+    setFile(URL.createObjectURL(e.target.files[0]))
   }
 
   return (
-    <div>
-      <div id="progress-bar" ref={elemRef} style={{ width: `${width}%` }}></div>
-      <button onClick={progressBar}>Start Progress</button>
-      <button onClick={resetProgressBar}>Reset Progress</button>
+    <div className="App">
+      <h2>Add Image:</h2>
+      <input type="file" onChange={handleChange} />
+      <img src={file} />
     </div>
   )
 }

@@ -29,9 +29,10 @@ const getResolutionURL = ':11015/Resolution'
 const getSocketURL = ':9999'
 
 //talk url
+const talkImageUrl = ':11014'
 const talkURL = ':11014/Talk'
 
-// Calender 
+// Calender
 const calenderURL = ':11016/Calender'
 
 //this is our final api's
@@ -62,6 +63,8 @@ const getResolutionApi = baseURL + getResolutionURL
 // get Talk Api
 const talkApi = baseURL + talkURL
 
+const filesUrlTalk = baseURL + talkImageUrl
+
 const getGroupsApi = baseURL + getGroupsURL
 
 const getCommitteesApi = baseURL + getCommitteeURL
@@ -79,6 +82,7 @@ export {
   getAdminURLs,
   getNotesApi,
   talkApi,
+  filesUrlTalk,
   getGroupsApi,
   getCommitteesApi,
   getResolutionApi,

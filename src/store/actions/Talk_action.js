@@ -2517,13 +2517,14 @@ const GroupPrivateSendNotification = (message) => {
 }
 
 //Insert Private Group Messages
-const InsertPrivateGroupMessages = (navigate, object, t) => {
+const InsertPrivateGroupMessages = (navigate, object, fileUploadData, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(GroupPrivateMessageSendInit())
     let form = new FormData()
     form.append('RequestMethod', insertPrivateGroupMessage.RequestMethod)
     form.append('RequestData', JSON.stringify(object))
+    form.append('Files', fileUploadData)
     axios({
       method: 'post',
       url: talkApi,
@@ -2535,7 +2536,9 @@ const InsertPrivateGroupMessages = (navigate, object, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(InsertPrivateGroupMessages(navigate, object, t))
+          dispatch(
+            InsertPrivateGroupMessages(navigate, object, fileUploadData, t),
+          )
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2782,13 +2785,14 @@ const broadcastMessageSendNotification = (message) => {
 }
 
 //Insert Private Group Messages
-const InsertBroadcastMessages = (navigate, object, t) => {
+const InsertBroadcastMessages = (navigate, object, fileUploadData, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(broadcastMessageSendInit())
     let form = new FormData()
     form.append('RequestMethod', insertBroadcastMessage.RequestMethod)
     form.append('RequestData', JSON.stringify(object))
+    form.append('Files', fileUploadData)
     axios({
       method: 'post',
       url: talkApi,
@@ -2800,7 +2804,7 @@ const InsertBroadcastMessages = (navigate, object, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(InsertBroadcastMessages(navigate, object, t))
+          dispatch(InsertBroadcastMessages(navigate, object, fileUploadData, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
