@@ -198,7 +198,7 @@ const Polling = () => {
               <Button
                 className={styles["voteBtn"]}
                 text={"Vote"}
-                onClick={handleVotePolls}
+                onClick={() => handleVotePolls(1)}
               />
             );
           } else if (record.voteStatus === "Voted") {
@@ -334,32 +334,25 @@ const Polling = () => {
     }
   }, [PollsReducer.ResponseMessage]);
 
-  // useEffect(() => {
-  //   console.log(PollsReducer.SearchPolls, "PollsReducerPollsReducer");
-  //   let userIds = [];
-  //   if (
-  //     PollsReducer.SearchPolls !== null &&
-  //     PollsReducer.SearchPolls !== undefined
-  //   ) {
-  //     if (Object.keys(PollsReducer.SearchPolls.polls).length > 0) {
-  //       PollsReducer.SearchPolls.polls.map((data, index) => {
-  //         console.log(data, "datadatadatadata");
-  //         userIds.push(data.pollID);
-  //       });
-  //       setPollData(userIds);
-  //     }
-  //   }
-  // }, [PollsReducer.SearchPolls]);
+  useEffect(() => {
+    console.log(PollsReducer, "PollsReducerPollsReducer");
+    let userIds = [];
+    if (
+      PollsReducer.SearchPolls !== null &&
+      PollsReducer.SearchPolls !== undefined
+    ) {
+    }
+  }, [PollsReducer.SearchPolls]);
 
   console.log(pollData, "pollDatapollDatapollData");
 
-  const handleVotePolls = () => {
+  const handleVotePolls = (value) => {
     let userID = localStorage.getItem("userID");
 
     let data = {
-      PollID: 1,
+      PollID: parseInt(value),
       UserID: parseInt(userID),
-      PollOptionIDs: [4, 5, 6],
+      PollOptionIDs: [4],
     };
     dispatch(castVoteApi(navigate, data, t));
   };
