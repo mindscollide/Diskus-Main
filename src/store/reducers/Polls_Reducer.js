@@ -12,6 +12,7 @@ const initialState = {
   pollOptions: [],
   Statuspolls: [],
   Allpolls: null,
+  updatedPolls: null,
 };
 
 const PollsReducer = (state = initialState, action) => {
@@ -166,6 +167,30 @@ const PollsReducer = (state = initialState, action) => {
     }
 
     case actions.GET_POLLS_BY_POLLID_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.UPDATE_POLLS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.UPDATE_POLLS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        updatedPolls: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.UPDATE_POLLS_FAILED: {
       return {
         ...state,
         Loading: false,

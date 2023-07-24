@@ -17,6 +17,9 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import plusFaddes from "../../../assets/images/PlusFadded.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import profile from "../../../assets/images/profile_polls.svg";
+import GroupIcon from "../../../assets/images/groupdropdown.svg";
+import committeeicon from "../../../assets/images/committeedropdown.svg";
+import profilepic from "../../../assets/images/profiledropdown.svg";
 import { useState } from "react";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import Select from "react-select";
@@ -26,8 +29,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getPollsByPollIdApi,
   setEditpollModal,
+  updatePollsApi,
 } from "../../../store/actions/Polls_actions";
 import { useNavigate } from "react-router-dom";
+import { newDateFormaterAsPerUTC } from "../../../commen/functions/date_formater";
 
 const UpdatePolls = () => {
   const animatedComponents = makeAnimated();
@@ -60,7 +65,113 @@ const UpdatePolls = () => {
 
   const [updatepollsdetails, setUpdatepollsdetails] = useState();
   const [polloptions, setPolloptions] = useState([]);
+  const [selectedsearch, setSelectedsearch] = useState([]);
+  const [dropdowndata, setDropdowndata] = useState([]);
   const [pollmembers, setPollmembers] = useState([]);
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
+
+  useEffect(() => {
+    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    console.log(pollsData, "pollsDatapollsDatapollsDatapollsData");
+    if (pollsData !== null && pollsData !== undefined) {
+      let temp = [];
+      if (Object.keys(pollsData).length > 0) {
+        if (Object.keys(pollsData.groups).length > 0) {
+          pollsData.groups.map((a, index) => {
+            let newData = {
+              value: a.groupID,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img src={GroupIcon} height="16.45px" width="18.32px" />
+                      <span className={styles["NameDropDown"]}>
+                        {a.groupName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 1,
+            };
+            temp.push(newData);
+          });
+        }
+        if (Object.keys(pollsData.committees).length > 0) {
+          pollsData.committees.map((a, index) => {
+            let newData = {
+              value: a.committeeID,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={committeeicon}
+                        width="21.71px"
+                        height="18.61px"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.committeeName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 2,
+            };
+            temp.push(newData);
+          });
+        }
+        if (Object.keys(pollsData.organizationUsers).length > 0) {
+          pollsData.organizationUsers.map((a, index) => {
+            let newData = {
+              value: a.userID,
+              label: (
+                <>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 align-items-center"
+                    >
+                      <img
+                        src={profilepic}
+                        className={styles["UserProfilepic"]}
+                        width="18px"
+                        height="18px"
+                      />
+                      <span className={styles["NameDropDown"]}>
+                        {a.userName}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ),
+              type: 3,
+            };
+            temp.push(newData);
+          });
+        }
+        setDropdowndata(temp);
+      } else {
+        setDropdowndata([]);
+      }
+    }
+  }, [PollsReducer.gellAllCommittesandGroups]);
 
   useEffect(() => {
     if (PollsReducer.Allpolls != null && PollsReducer.Allpolls != undefined) {
@@ -80,9 +191,101 @@ const UpdatePolls = () => {
   }, [PollsReducer.Allpolls]);
 
   console.log(
+    dropdowndata,
+    "PollsReducerPollsReducer1212PollsReducerPollsReducer1212"
+  );
+
+  console.log(
     polloptions,
     "polloptionspolloptionspolloptionspolloptionspolloptions"
   );
+
+  // for add user for assignes
+  const handleAddUsers = () => {
+    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    let tem = [...pollmembers];
+    if (Object.keys(selectedsearch).length > 0) {
+      try {
+        selectedsearch.map((seledtedData, index) => {
+          if (seledtedData.type === 1) {
+            let check1 = pollsData.groups.find(
+              (data, index) => data.groupID === seledtedData.value
+            );
+            if (check1 != undefined) {
+              let groupUsers = check1.groupUsers;
+              if (Object.keys(groupUsers).length > 0) {
+                groupUsers.map((gUser, index) => {
+                  let check2 = pollmembers.find(
+                    (data, index) => data.UserID === gUser.userID
+                  );
+                  if (check2 != undefined) {
+                  } else {
+                    let newUser = {
+                      userName: gUser.userName,
+                      userID: gUser.userID,
+                    };
+                    tem.push(newUser);
+                  }
+                });
+              }
+            }
+          } else if (seledtedData.type === 2) {
+            console.log("members check");
+            let check1 = pollsData.committees.find(
+              (data, index) => data.committeeID === seledtedData.value
+            );
+            if (check1 != undefined) {
+              let committeesUsers = check1.committeeUsers;
+              if (Object.keys(committeesUsers).length > 0) {
+                committeesUsers.map((cUser, index) => {
+                  let check2 = pollmembers.find(
+                    (data, index) => data.UserID === cUser.userID
+                  );
+                  if (check2 != undefined) {
+                  } else {
+                    let newUser = {
+                      userName: cUser.userName,
+                      userID: cUser.userID,
+                    };
+                    tem.push(newUser);
+                  }
+                });
+              }
+            }
+          } else if (seledtedData.type === 3) {
+            let check1 = pollmembers.find(
+              (data, index) => data.UserID === seledtedData.value
+            );
+            if (check1 != undefined) {
+            } else {
+              let check2 = pollsData.organizationUsers.find(
+                (data, index) => data.userID === seledtedData.value
+              );
+              if (check2 != undefined) {
+                let newUser = {
+                  userName: check2.userName,
+                  userID: check2.userID,
+                };
+                tem.push(newUser);
+              }
+            }
+          } else {
+          }
+        });
+      } catch {
+        console.log("error in add");
+      }
+      console.log("members check", tem);
+      const uniqueData = new Set(tem.map(JSON.stringify));
+
+      // Convert the Set back to an array of objects
+      const result = Array.from(uniqueData).map(JSON.parse);
+      setPollmembers(result);
+      setSelectedsearch([]);
+    } else {
+      // setopen notionation work here
+    }
+  };
 
   console.log(pollmembers, "pollmemberspollmemberspollmembers");
 
@@ -177,6 +380,7 @@ const UpdatePolls = () => {
       }
     }
   }, [PollsReducer.Allpolls]);
+
   const addNewRow = () => {
     if (options.length > 1) {
       let lastIndex = options.length - 1;
@@ -198,6 +402,13 @@ const UpdatePolls = () => {
     console.log(assignees, "assigneesassignees");
   };
 
+  const cancellAnyUser = (index) => {
+    console.log("indexindexindex", index);
+    let removeData = [...pollmembers];
+    removeData.splice(index, 1);
+    setPollmembers(removeData);
+  };
+
   const HandleOptionChange = (e) => {
     let name = parseInt(e.target.name);
     let newValue = e.target.value;
@@ -208,6 +419,10 @@ const UpdatePolls = () => {
         return item.name === name ? { ...item, value: newValue } : item;
       })
     );
+  };
+
+  const handleSelectValue = (value) => {
+    setSelectedsearch(value);
   };
 
   const changeDateStartHandler = (date) => {
@@ -263,6 +478,43 @@ const UpdatePolls = () => {
       ...UpdatePolls,
       allowMultipleAnswers: !UpdatePolls.allowMultipleAnswers,
     });
+  };
+
+  const handleUpdateClick = (value) => {
+    const organizationid = localStorage.getItem("organizationID");
+    const createrid = localStorage.getItem("userID");
+    let users = [];
+    let optionsListData = [];
+    if (Object.keys(pollmembers).length > 0) {
+      pollmembers.map((data, index) => {
+        console.log(data, "datadatadatadatadata");
+        users.push(data.userID);
+      });
+    }
+
+    polloptions.map((optionData, index) => {
+      if (optionData.value != "") {
+        optionsListData.push(optionData.value);
+      } else if (index === 1) {
+        return setOpen({
+          flag: true,
+          message: t("Required-atleast-two-options"),
+        });
+      }
+    });
+    let data = {
+      PollDetails: {
+        PollTitle: UpdatePolls.Title,
+        DueDate: newDateFormaterAsPerUTC(UpdatePolls.dueDate),
+        AllowMultipleAnswers: UpdatePolls.allowMultipleAnswers,
+        CreatorID: parseInt(createrid),
+        PollStatusID: parseInt(value),
+        OrganizationID: parseInt(organizationid),
+      },
+      ParticipantIDs: users,
+      PollAnswers: optionsListData,
+    };
+    dispatch(updatePollsApi(navigate, data, t));
   };
   return (
     <>
@@ -557,15 +809,23 @@ const UpdatePolls = () => {
                             className="group-fields d-flex align-items-center gap-2 "
                           >
                             <Select
+                              onChange={handleSelectValue}
+                              // isDisabled={
+                              //   PollsReducer.gellAllCommittesandGroups === null
+                              //     ? true
+                              //     : false
+                              // }
+                              value={selectedsearch}
                               classNamePrefix={"selectMember"}
                               closeMenuOnSelect={false}
                               components={animatedComponents}
                               isMulti
-                              options={optionsNewUpdatePolls}
+                              options={dropdowndata}
                             />
                             <Button
                               text={t("ADD")}
                               className={styles["ADD_Btn_CreatePool_Modal"]}
+                              onClick={handleAddUsers}
                             />
                           </Col>
                         </Row>
@@ -608,6 +868,7 @@ const UpdatePolls = () => {
                                               src={CrossIcon}
                                               width="14px"
                                               height="14px"
+                                              onClick={cancellAnyUser}
                                             />
                                           </Col>
                                         ) : (
@@ -677,6 +938,7 @@ const UpdatePolls = () => {
                           <Button
                             text={t("Update")}
                             className={styles["Update_btn_class"]}
+                            onClick={handleUpdateClick}
                           />
                           <Button
                             text={t("Update-and-publish")}

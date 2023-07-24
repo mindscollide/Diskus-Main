@@ -6,6 +6,7 @@ import {
   castVote,
   getAllPollStatus,
   getPollByPollID,
+  updatePolls,
 } from "../../commen/apis/Api_config";
 import { pollApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -620,6 +621,129 @@ const getAllCommitteesandGroups = (navigate, t) => {
       });
   };
 };
+
+const updatePollsInit = () => {
+  return {
+    type: actions.UPDATE_POLLS_INIT,
+  };
+};
+
+const updatePollsSuccess = (response, message) => {
+  return {
+    type: actions.UPDATE_POLLS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const updatePollsFailed = (message) => {
+  return {
+    type: actions.UPDATE_POLLS_FAILED,
+    message: message,
+  };
+};
+
+const updatePollsApi = (navigate, Data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(updatePollsInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestMethod", updatePolls.RequestMethod);
+    await axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(updatePollsApi(navigate, Data, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_UpdatePoll_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                updatePollsSuccess(
+                  response.data.responseResult,
+                  t("Polls-due-date-update-successFully ")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_UpdatePoll_02".toLowerCase()
+                )
+            ) {
+              dispatch(updatePollsFailed(t("Poll-not-updated ")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_UpdatePoll_03".toLowerCase()
+                )
+            ) {
+              dispatch(
+                updatePollsSuccess(
+                  response.data.responseResult,
+                  t("Poll-details-updated")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_UpdatePoll_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                updatePollsFailed(t("There-must-be-atleast-two-Poll-options"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_UpdatePoll_05".toLowerCase()
+                )
+            ) {
+              dispatch(
+                updatePollsFailed(
+                  t("Participant-list-consists-of-duplicate-members")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_UpdatePoll_06".toLowerCase()
+                )
+            ) {
+              dispatch(updatePollsFailed(t("Exception")));
+            } else {
+              dispatch(updatePollsFailed(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(updatePollsFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(updatePollsFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        dispatch(updatePollsFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 export {
   searchPollsApi,
   SavePollsApi,
@@ -630,4 +754,5 @@ export {
   globalFlag,
   castVoteApi,
   getPollsByPollIdApi,
+  updatePollsApi,
 };
