@@ -371,7 +371,7 @@ const UpdatePolls = () => {
           ...UpdatePolls,
           TypingTitle: pollsDetails.poll.pollDetails.pollTitle,
           AllowMultipleUser: pollsDetails.poll.pollDetails.allowMultipleAnswers,
-          dueDate: pollsDetails.poll.pollDetails.dueDate,
+          date: pollsDetails.poll.pollDetails.dueDate,
           pollID: pollsDetails.poll.pollDetails.pollID,
         });
         setOptions({
@@ -509,7 +509,7 @@ const UpdatePolls = () => {
     let data = {
       PollDetails: {
         PollTitle: UpdatePolls.TypingTitle,
-        DueDate: newDateFormaterAsPerUTC(UpdatePolls.dueDate),
+        DueDate: newDateFormaterAsPerUTC(UpdatePolls.date),
         AllowMultipleAnswers: UpdatePolls.AllowMultipleUser,
         CreatorID: parseInt(createrid),
         PollStatusID: parseInt(value),
@@ -567,7 +567,7 @@ const UpdatePolls = () => {
                           </span>
                           <MultiDatePickers
                             // onChange={meetingDateHandler}
-                            value={UpdatePolls.dueDate}
+                            value={UpdatePolls.date}
                             name="MeetingDate"
                             check={true}
                             // value={meetingDate}
