@@ -353,7 +353,7 @@ const Polling = () => {
       UserID: parseInt(userID),
       PollOptionIDs: [4],
     };
-    // dispatch(castVoteApi(navigate, data, t));
+    dispatch(castVoteApi(navigate, data, t));
   };
 
   let userID = localStorage.getItem("userID");
