@@ -296,40 +296,40 @@ const UpdatePolls = () => {
   const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
   const [assignees, setAssignees] = useState("");
 
-  const [members, setMembers] = useState([
-    {
-      id: 1,
-      name: "Saad Fudda",
-    },
-    {
-      id: 2,
-      name: "Salman Memon",
-    },
-    {
-      id: 3,
-      name: "Talha Qamar",
-    },
-    {
-      id: 4,
-      name: "Saif Rehman",
-    },
-    {
-      id: 5,
-      name: "Saif Rehman",
-    },
-    {
-      id: 6,
-      name: "Saif test1",
-    },
-    {
-      id: 7,
-      name: "Saif test2",
-    },
-    {
-      id: 8,
-      name: "Saif test3",
-    },
-  ]);
+  // const [members, setMembers] = useState([
+  //   {
+  //     id: 1,
+  //     name: "Saad Fudda",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Salman Memon",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Talha Qamar",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Saif Rehman",
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Saif Rehman",
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "Saif test1",
+  //   },
+  //   {
+  //     id: 7,
+  //     name: "Saif test2",
+  //   },
+  //   {
+  //     id: 8,
+  //     name: "Saif test3",
+  //   },
+  // ]);
 
   const [options, setOptions] = useState([
     {
@@ -350,6 +350,7 @@ const UpdatePolls = () => {
     TypingTitle: "",
     AllowMultipleUser: false,
     date: "",
+    pollID: 0,
   });
 
   useEffect(() => {
@@ -368,10 +369,10 @@ const UpdatePolls = () => {
         setPollmembers(members);
         setUpdatePolls({
           ...UpdatePolls,
-          Title: pollsDetails.poll.pollDetails.pollTitle,
-          allowMultipleAnswers:
-            pollsDetails.poll.pollDetails.allowMultipleAnswers,
+          TypingTitle: pollsDetails.poll.pollDetails.pollTitle,
+          AllowMultipleUser: pollsDetails.poll.pollDetails.allowMultipleAnswers,
           dueDate: pollsDetails.poll.pollDetails.dueDate,
+          pollID: pollsDetails.poll.pollDetails.pollID,
         });
         setOptions({
           ...options,
@@ -382,12 +383,12 @@ const UpdatePolls = () => {
   }, [PollsReducer.Allpolls]);
 
   const addNewRow = () => {
-    if (options.length > 1) {
-      let lastIndex = options.length - 1;
-      if (options[lastIndex].value != "") {
+    if (polloptions.length > 1) {
+      let lastIndex = polloptions.length - 1;
+      if (polloptions[lastIndex].value != "") {
         const randomNumber = Math.floor(Math.random() * 100) + 1;
         let newOptions = { name: randomNumber, value: "" };
-        setOptions([...options, newOptions]);
+        setPolloptions([...polloptions, newOptions]);
       }
     }
   };
@@ -413,7 +414,7 @@ const UpdatePolls = () => {
     let name = parseInt(e.target.name);
     let newValue = e.target.value;
 
-    setOptions((prevState) =>
+    setPolloptions((prevState) =>
       prevState.map((item) => {
         console.log(item, "HandleOptionChange");
         return item.name === name ? { ...item, value: newValue } : item;
@@ -476,7 +477,7 @@ const UpdatePolls = () => {
   const HandleCheckBox = () => {
     setUpdatePolls({
       ...UpdatePolls,
-      allowMultipleAnswers: !UpdatePolls.allowMultipleAnswers,
+      AllowMultipleUsera: !UpdatePolls.AllowMultipleUsera,
     });
   };
 
@@ -485,35 +486,40 @@ const UpdatePolls = () => {
     const createrid = localStorage.getItem("userID");
     let users = [];
     let optionsListData = [];
+
     if (Object.keys(pollmembers).length > 0) {
       pollmembers.map((data, index) => {
         console.log(data, "datadatadatadatadata");
         users.push(data.userID);
       });
     }
+    if (polloptions.length > 0) {
+      polloptions.map((optionData, index) => {
+        if (optionData.answer !== "") {
+          optionsListData.push(optionData.answer);
+        }
+      });
+    } else {
+      setOpen({
+        flag: true,
+        message: t("Required-atleast-two-options"),
+      });
+    }
 
-    polloptions.map((optionData, index) => {
-      if (optionData.value != "") {
-        optionsListData.push(optionData.value);
-      } else if (index === 1) {
-        return setOpen({
-          flag: true,
-          message: t("Required-atleast-two-options"),
-        });
-      }
-    });
     let data = {
       PollDetails: {
-        PollTitle: UpdatePolls.Title,
+        PollTitle: UpdatePolls.TypingTitle,
         DueDate: newDateFormaterAsPerUTC(UpdatePolls.dueDate),
-        AllowMultipleAnswers: UpdatePolls.allowMultipleAnswers,
+        AllowMultipleAnswers: UpdatePolls.AllowMultipleUser,
         CreatorID: parseInt(createrid),
         PollStatusID: parseInt(value),
         OrganizationID: parseInt(organizationid),
+        PollID: Number(UpdatePolls.pollID),
       },
       ParticipantIDs: users,
       PollAnswers: optionsListData,
     };
+
     dispatch(updatePollsApi(navigate, data, t));
   };
   return (
@@ -556,7 +562,7 @@ const UpdatePolls = () => {
                           <span className={styles["Due_Date_heading"]}>
                             {t("Due-date-on")}{" "}
                             <span className={styles["Date_update_poll"]}>
-                              {changeDateStartHandler2(UpdatePolls.date)}
+                              {changeDateStartHandler2(UpdatePolls.dueDate)}
                             </span>
                           </span>
                           <MultiDatePickers
@@ -654,7 +660,7 @@ const UpdatePolls = () => {
                                 labelClass="d-none"
                                 name={"TypingTitle"}
                                 disable={PollsReducer.editPollModalFlag}
-                                value={UpdatePolls.Title}
+                                value={UpdatePolls.TypingTitle}
                                 change={HandleChangeUpdatePolls}
                               />
                             </Col>
@@ -662,6 +668,10 @@ const UpdatePolls = () => {
 
                           {polloptions.length > 0
                             ? polloptions.map((data, index) => {
+                                console.log(
+                                  data,
+                                  "datadatadatadatadatadatadata"
+                                );
                                 return (
                                   <>
                                     {index <= 1 ? (
@@ -789,7 +799,7 @@ const UpdatePolls = () => {
                           className="d-flex align-items-center gap-2"
                         >
                           <Checkbox
-                            checked={UpdatePolls.allowMultipleAnswers}
+                            checked={UpdatePolls.AllowMultipleUser}
                             onChange={HandleCheckBox}
                             disable={PollsReducer.editPollModalFlag}
                           />
@@ -938,11 +948,12 @@ const UpdatePolls = () => {
                           <Button
                             text={t("Update")}
                             className={styles["Update_btn_class"]}
-                            onClick={handleUpdateClick}
+                            onClick={() => handleUpdateClick(1)}
                           />
                           <Button
                             text={t("Update-and-publish")}
                             className={styles["Update_Publish_btn_class"]}
+                            onClick={() => handleUpdateClick(2)}
                           />
                         </Col>
                       </Row>
