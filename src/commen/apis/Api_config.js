@@ -739,6 +739,10 @@ const getPollByPollID = {
   RequestMethod: "ServiceManager.GetPollByPollID",
 };
 
+const updatePolls = {
+  RequestMethod: "ServiceManager.UpdatePoll",
+};
+
 export {
   revoketoken,
   googleValidToken,
@@ -938,4 +942,5 @@ export {
   castVote,
   getAllPollStatus,
   getPollByPollID,
+  updatePolls,
 };

@@ -170,6 +170,10 @@ const UpdatePolls = () => {
             pollsDetails.poll.pollDetails.allowMultipleAnswers,
           dueDate: pollsDetails.poll.pollDetails.dueDate,
         });
+        setOptions({
+          ...options,
+          pollOptions: pollsDetails.poll.pollOptions.answer,
+        });
       }
     }
   }, [PollsReducer.Allpolls]);
@@ -455,7 +459,7 @@ const UpdatePolls = () => {
                                                 }
                                                 labelClass="d-none"
                                                 name={data.name}
-                                                value={data.value}
+                                                value={data.answer}
                                                 change={(e) =>
                                                   HandleOptionChange(e)
                                                 }
