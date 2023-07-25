@@ -87,8 +87,9 @@ const Votepoll = ({ showVotePoll, setShowVotePoll }) => {
                   <Col lg={12} md={12} sm={12} className={styles["Border_box"]}>
                     <Row>
                       <Col lg={12} md={12} sm={12}>
-                        {votePollUpdatedDetails.pollTitle}
-                        {/* <span className={styles["ViewTitleTOShowOnProgress"]}></span> */}
+                        <span className={styles["ViewTitleTOShowOnProgress"]}>
+                          {votePollUpdatedDetails.PollTitle}
+                        </span>
                       </Col>
                     </Row>
                   </Col>
