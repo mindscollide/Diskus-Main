@@ -473,7 +473,9 @@ const CreatePolling = () => {
                           />
                           <span className={styles["Due_Date_heading"]}>
                             {t("Due-date")}{" "}
-                            {changeDateStartHandler2(createPollData.date)}
+                            {createPollData.date !== ""
+                              ? changeDateStartHandler2(createPollData.date)
+                              : ""}
                           </span>
                           <MultiDatePickers
                             // onChange={meetingDateHandler}

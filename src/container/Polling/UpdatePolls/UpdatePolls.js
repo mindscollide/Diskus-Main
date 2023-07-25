@@ -27,7 +27,6 @@ import makeAnimated from "react-select/animated";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getPollsByPollIdApi,
   setEditpollModal,
   updatePollsApi,
 } from "../../../store/actions/Polls_actions";

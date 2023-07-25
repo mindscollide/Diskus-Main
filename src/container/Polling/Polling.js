@@ -26,10 +26,8 @@ import {
   LoaderState,
   castVoteApi,
   getPollsByPollIdApi,
-  globalFlag,
   searchPollsApi,
   setCreatePollModal,
-  setEditpollModal,
 } from "../../store/actions/Polls_actions";
 import { useNavigate } from "react-router-dom";
 import {
@@ -353,7 +351,7 @@ const Polling = () => {
       UserID: parseInt(userID),
       PollOptionIDs: [4],
     };
-    dispatch(castVoteApi(navigate, data, t));
+    // dispatch(castVoteApi(navigate, data, t));
   };
 
   let userID = localStorage.getItem("userID");

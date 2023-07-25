@@ -487,10 +487,10 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
             );
             if (check === false) {
               dispatch(setEditpollModal(true));
-              dispatch(globalFlag(true));
+              dispatch(globalFlag(false));
             } else {
               dispatch(setEditpollModal(true));
-              dispatch(globalFlag(false));
+              dispatch(globalFlag(true));
             }
           } else if (
             response.data.responseResult.responseMessage
