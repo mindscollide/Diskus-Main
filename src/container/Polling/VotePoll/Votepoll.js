@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Votepoll.module.css";
 import { Modal, Button, Checkbox } from "../../../components/elements";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
@@ -6,8 +6,28 @@ import { useSSR, useTranslation } from "react-i18next";
 import { Progress } from "antd";
 import { Col, Container, Row } from "react-bootstrap";
 import { style } from "@material-ui/system";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const Votepoll = ({ showVotePoll, setShowVotePoll }) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { PollsReducer } = useSelector((state) => state);
+  console.log(PollsReducer, "PollsReducerPollsReducerPollsReducerPollsReducer");
   const { t } = useTranslation();
+  const [votePollUpdatedDetails, setvotePollUpdatedDetails] = useState({
+    PollTitle: "",
+  });
+
+  useEffect(() => {
+    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
+      setvotePollUpdatedDetails({
+        ...votePollUpdatedDetails,
+        PollTitle: PollsReducer.Allpolls.poll.pollDetails.pollTitle,
+      });
+    }
+  }, [PollsReducer.Allpolls]);
+  console.log(votePollUpdatedDetails, "votePollUpdatedDetailsvotePollUp");
+
   const [votepollcheck, setVotepollcheck] = useState({
     checkedYes: false,
     checkedNo: false,
@@ -67,10 +87,8 @@ const Votepoll = ({ showVotePoll, setShowVotePoll }) => {
                   <Col lg={12} md={12} sm={12} className={styles["Border_box"]}>
                     <Row>
                       <Col lg={12} md={12} sm={12}>
-                        <span className={styles["ViewTitleTOShowOnProgress"]}>
-                          Did you receive the material In a sufficient time for
-                          you to prepare for the board meeting, Including agenda
-                        </span>
+                        {votePollUpdatedDetails.pollTitle}
+                        {/* <span className={styles["ViewTitleTOShowOnProgress"]}></span> */}
                       </Col>
                     </Row>
                   </Col>
