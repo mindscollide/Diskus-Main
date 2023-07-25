@@ -51,6 +51,13 @@ const setEditpollModal = (response) => {
   };
 };
 
+const setviewpollModal = (response) => {
+  return {
+    type: actions.VIEW_POLL_MODAL,
+    response: response,
+  };
+};
+
 const globalFlag = (response) => {
   return {
     type: actions.GLOBAL_FLAG,
@@ -479,19 +486,37 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
                 "Polls_PollsServiceManager_GetPollByPollID_01".toLowerCase()
               )
           ) {
+            if (parseInt(check) === 1) {
+              await dispatch(setviewpollModal(false));
+              await dispatch(setCreatePollModal(false));
+              await dispatch(globalFlag(true));
+              await dispatch(setEditpollModal(true));
+              console.log("handleEditpollModal", check);
+            } else if (parseInt(check) === 2) {
+              await dispatch(setviewpollModal(false));
+              await dispatch(setCreatePollModal(false));
+              await dispatch(globalFlag(false));
+              await dispatch(setEditpollModal(true));
+              console.log("handleEditpollModal", check);
+            } else if (parseInt(check) === 3) {
+              await dispatch(setEditpollModal(false));
+              await dispatch(setCreatePollModal(false));
+              await dispatch(globalFlag(true));
+              await dispatch(setviewpollModal(true));
+              console.log("handleEditpollModal", check);
+            } else if (parseInt(check) === 4) {
+              await dispatch(setEditpollModal(false));
+              await dispatch(setCreatePollModal(false));
+              await dispatch(globalFlag(false));
+              await dispatch(setviewpollModal(true));
+              console.log("handleEditpollModal", check);
+            }
             await dispatch(
               getAllPollsByPollsIDSuccess(
                 response.data.responseResult,
                 t("Record-found")
               )
             );
-            if (check === false) {
-              dispatch(setEditpollModal(true));
-              dispatch(globalFlag(false));
-            } else {
-              dispatch(setEditpollModal(true));
-              dispatch(globalFlag(true));
-            }
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -777,4 +802,5 @@ export {
   castVoteApi,
   getPollsByPollIdApi,
   updatePollsApi,
+  setviewpollModal,
 };

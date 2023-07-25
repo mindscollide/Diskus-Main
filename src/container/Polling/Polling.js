@@ -28,6 +28,8 @@ import {
   getPollsByPollIdApi,
   searchPollsApi,
   setCreatePollModal,
+  setEditpollModal,
+  setviewpollModal,
 } from "../../store/actions/Polls_actions";
 import { useNavigate } from "react-router-dom";
 import {
@@ -83,14 +85,38 @@ const Polling = () => {
 
   const handleEditpollModal = (record) => {
     console.log("handleEditpollModal", record);
-    let check = record.wasPollPublished;
+    let check = 0;
+    if (record.wasPollPublished) {
+      check = 1;
+    } else {
+      check = 2;
+    }
+
     let data = {
       PollID: record.pollID,
     };
     if (Object.keys(record).length > 0) {
       console.log("handleEditpollModal", check);
       console.log("handleEditpollModal", data);
+      dispatch(getPollsByPollIdApi(navigate, data, check, t));
+    }
+  };
 
+  const handleViewModal = (record) => {
+    console.log("recordrecordrecordrecordrecord", record);
+    let check = 0;
+    if (record.wasPollPublished) {
+      check = 3;
+    } else {
+      check = 4;
+    }
+
+    let data = {
+      PollID: record.pollID,
+    };
+    if (Object.keys(record).length > 0) {
+      console.log("handleEditpollModal", check);
+      console.log("handleEditpollModal", data);
       dispatch(getPollsByPollIdApi(navigate, data, check, t));
     }
   };
@@ -110,7 +136,15 @@ const Polling = () => {
 
   const PollTableColumns = [
     {
-      title: t("Post-title"),
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span>{t("Post-title")}</span>
+            </Col>
+          </Row>
+        </>
+      ),
       dataIndex: "pollTitle",
       key: "pollTitle",
       width: "365px",
@@ -121,7 +155,9 @@ const Polling = () => {
           return (
             <span
               className="cursor-pointer"
-              onClick={() => setViewPollsDetails(true)}
+              onClick={() => {
+                handleViewModal(record);
+              }}
             >
               {text}
             </span>
@@ -370,6 +406,9 @@ const Polling = () => {
   const HandleCloseSearchModal = () => {
     setSearchpoll(false);
   };
+  console.log(PollsReducer.createPollmodal, "handleEditpollModal ");
+  console.log(PollsReducer.viewPollModal, "handleEditpollModal ");
+  console.log(PollsReducer.editpollmodal, "handleEditpollModal ");
   return (
     <>
       <section className={styles["Poll_Container"]}>
@@ -449,7 +488,7 @@ const Polling = () => {
                       <Row className="mt-3">
                         <Col lg={6} md={6} sm={6}>
                           <TextField
-                            placeholder={t("Search-by-Title")}
+                            placeholder={t("Search-by-title")}
                             applyClass={"Search_Modal_Fields"}
                             labelClass="d-none"
                             name={"searchbytitle"}
@@ -503,16 +542,9 @@ const Polling = () => {
         </Row>
       </section>
       {PollsReducer.createPollmodal && <CreatePolling />}
-      {PollsReducer.editpollmodal && <UpdatePolls />}
 
-      {isViewPoll ? (
-        <>
-          <ViewPoll
-            showViewPollModal={isViewPoll}
-            setShowViewPollModal={setIsViewPoll}
-          />
-        </>
-      ) : null}
+      {PollsReducer.editpollmodal && <UpdatePolls />}
+      {PollsReducer.viewPollModal && <ViewPoll />}
       {viewprogress ? (
         <>
           <ViewPollProgress

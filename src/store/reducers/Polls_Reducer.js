@@ -6,6 +6,7 @@ const initialState = {
   SearchPolls: null,
   createPollmodal: false,
   editpollmodal: false,
+  viewPollModal: false,
   editPollModalFlag: false,
   SavePoll: null,
   gellAllCommittesandGroups: null,
@@ -97,6 +98,12 @@ const PollsReducer = (state = initialState, action) => {
       };
     }
 
+    case actions.VIEW_POLL_MODAL: {
+      return {
+        viewPollModal: action.response,
+      };
+    }
+
     case actions.CAST_VOTE_INIT: {
       return {
         ...state,
@@ -158,6 +165,7 @@ const PollsReducer = (state = initialState, action) => {
     }
 
     case actions.GET_POLLS_BY_POLLID_SUCCESS: {
+      console.log(action, "getAllPollsByPollsIDSuccess");
       return {
         ...state,
         Loading: false,
