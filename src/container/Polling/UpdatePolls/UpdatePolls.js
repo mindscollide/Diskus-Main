@@ -31,7 +31,10 @@ import {
   updatePollsApi,
 } from "../../../store/actions/Polls_actions";
 import { useNavigate } from "react-router-dom";
-import { newDateFormaterAsPerUTC } from "../../../commen/functions/date_formater";
+import {
+  convertintoGMTCalender,
+  newDateFormaterAsPerUTC,
+} from "../../../commen/functions/date_formater";
 
 const UpdatePolls = () => {
   const animatedComponents = makeAnimated();
@@ -366,11 +369,16 @@ const UpdatePolls = () => {
           members.push(data);
         });
         setPollmembers(members);
+        let newDateGmt = convertintoGMTCalender(
+          pollsDetails.poll.pollDetails.dueDate
+        );
+        console.log(newDateGmt, "newDateGmt");
+
         setUpdatePolls({
           ...UpdatePolls,
           TypingTitle: pollsDetails.poll.pollDetails.pollTitle,
           AllowMultipleUser: pollsDetails.poll.pollDetails.allowMultipleAnswers,
-          date: pollsDetails.poll.pollDetails.dueDate,
+          date: newDateGmt,
           pollID: pollsDetails.poll.pollDetails.pollID,
         });
         setOptions({

@@ -43,6 +43,7 @@ const Polling = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { PollsReducer } = useSelector((state) => state);
+  console.log(PollsReducer, "PollsReducerPollsReducerPollsReducerPollsReducer");
   const [isUpdatePoll, setIsUpdatePoll] = useState(false);
   const [viewprogress, setViewprogress] = useState(false);
   const [pollData, setPollData] = useState([]);
@@ -223,7 +224,9 @@ const Polling = () => {
               <Button
                 className={styles["voteBtn"]}
                 text={"Vote"}
-                onClick={handleVotePolls(record)}
+                onClick={() => {
+                  handleVotePolls(record);
+                }}
               />
             );
           } else if (record.voteStatus === "Voted") {
@@ -377,8 +380,10 @@ const Polling = () => {
       UserID: parseInt(userID),
       PollOptionIDs: [4],
     };
+    console.log(data, "datadatadatadatadatadata");
     // dispatch(castVoteApi(navigate, data, t));
   };
+
   let organizationID = localStorage.getItem("organizationID");
   useEffect(() => {
     let data = {
