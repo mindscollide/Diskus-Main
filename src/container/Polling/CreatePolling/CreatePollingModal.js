@@ -42,6 +42,7 @@ import { clearMessagesGroup } from "../../../store/actions/Groups_actions";
 
 const CreatePolling = () => {
   const animatedComponents = makeAnimated();
+  let currentLanguage = localStorage.getItem("i18nextLng");
   //For Custom language datepicker
   const { PollsReducer } = useSelector((state) => state);
   console.log(PollsReducer, "PollsReducerPollsReducer");
@@ -80,6 +81,18 @@ const CreatePolling = () => {
       value: "",
     },
   ]);
+
+  useEffect(() => {
+    if (currentLanguage != undefined) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(arabic);
+        setLocalValue(arabic_ar);
+      }
+    }
+  }, [currentLanguage]);
   useEffect(() => {
     dispatch(getAllCommitteesandGroups(navigate, t));
   }, []);
