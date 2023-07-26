@@ -8,7 +8,8 @@ import { Col, Container, Row } from "react-bootstrap";
 import { style } from "@material-ui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-const Votepoll = ({ showVotePoll, setShowVotePoll }) => {
+import { setVotePollModal } from "../../../store/actions/Polls_actions";
+const Votepoll = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { PollsReducer } = useSelector((state) => state);
@@ -17,16 +18,6 @@ const Votepoll = ({ showVotePoll, setShowVotePoll }) => {
   const [votePollUpdatedDetails, setvotePollUpdatedDetails] = useState({
     PollTitle: "",
   });
-
-  useEffect(() => {
-    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
-      setvotePollUpdatedDetails({
-        ...votePollUpdatedDetails,
-        PollTitle: PollsReducer.Allpolls.poll.pollDetails.pollTitle,
-      });
-    }
-  }, [PollsReducer.Allpolls]);
-  console.log(votePollUpdatedDetails, "votePollUpdatedDetailsvotePollUp");
 
   const [votepollcheck, setVotepollcheck] = useState({
     checkedYes: false,
@@ -46,13 +37,25 @@ const Votepoll = ({ showVotePoll, setShowVotePoll }) => {
       checkedYes: !votepollcheck.checkedYes,
     });
   };
+  useEffect(() => {
+    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
+      console.log(PollsReducer.Allpolls, "PollsReducerAllpolls");
+      let pollData = PollsReducer.Allpolls.poll.pollDetails;
+      setvotePollUpdatedDetails({
+        ...votePollUpdatedDetails,
+        PollTitle: pollData.PollTitle,
+      });
+    }
+  }, [PollsReducer.Allpolls]);
+
+  console.log(votePollUpdatedDetails, "votePollUpdatedDetailsvotePollUp");
   return (
     <Container>
       <Modal
-        show={showVotePoll}
-        setShow={setShowVotePoll}
+        show={PollsReducer.isVotePollModal}
+        setShow={dispatch(setVotePollModal)}
         onHide={() => {
-          setShowVotePoll(false);
+          dispatch(setVotePollModal(false));
         }}
         ModalBody={
           <>
@@ -69,7 +72,7 @@ const Votepoll = ({ showVotePoll, setShowVotePoll }) => {
                   height="16px"
                   width="16px"
                   onClick={() => {
-                    setShowVotePoll(false);
+                    dispatch(setVotePollModal(false));
                   }}
                 />
               </Col>
@@ -196,7 +199,7 @@ const Votepoll = ({ showVotePoll, setShowVotePoll }) => {
                       text={t("Close")}
                       className={styles["Close_Btn_votepoll"]}
                       onClick={() => {
-                        setShowVotePoll(false);
+                        dispatch(setVotePollModal(false));
                       }}
                     />
                     <Button

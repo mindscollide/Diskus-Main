@@ -7,12 +7,15 @@ import profile from "../../../../assets/images/profile_polls.svg";
 import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 import { Progress } from "antd";
 import { useTranslation } from "react-i18next";
+import { setviewpollProgressModal } from "../../../../store/actions/Polls_actions";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-const ViewPollProgress = ({
-  showViewProgress,
-  setShowViewProgress,
-  percent,
-}) => {
+const ViewPollProgress = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { PollsReducer } = useSelector((state) => state);
+  console.log(PollsReducer, "PollsReducerPollsReducerPollsReducerPollsReducer");
   const [viewpollMembers, setViewPollmembers] = useState([
     {
       id: 1,
@@ -81,15 +84,15 @@ const ViewPollProgress = ({
   return (
     <Container>
       <Modal
-        show={showViewProgress}
-        setShow={setShowViewProgress}
+        show={PollsReducer.viewPollProgress}
+        setShow={dispatch(setviewpollProgressModal)}
         modalTitleClassName={styles["ModalHeader_View_poll_progress"]}
         modalHeaderClassName={
           styles["ModalRequestHeader_polling_View_modal_progress"]
         }
         modalFooterClassName={"d-block"}
         onHide={() => {
-          setShowViewProgress(false);
+          dispatch(setviewpollProgressModal(false));
         }}
         ModalTitle={
           <>
@@ -132,7 +135,7 @@ const ViewPollProgress = ({
                   height="16px"
                   className={styles["View_cross_icon"]}
                   onClick={() => {
-                    setShowViewProgress(false);
+                    dispatch(setviewpollProgressModal(false));
                   }}
                 />
               </Col>
@@ -320,7 +323,7 @@ const ViewPollProgress = ({
                       text={t("Close")}
                       className={styles["Close_Button_viewprogress"]}
                       onClick={() => {
-                        setShowViewProgress(false);
+                        dispatch(setviewpollProgressModal(false));
                       }}
                     />
                     <Button

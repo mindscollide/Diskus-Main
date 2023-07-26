@@ -58,6 +58,20 @@ const setviewpollModal = (response) => {
   };
 };
 
+const setviewpollProgressModal = (response) => {
+  return {
+    type: actions.VIEW_POLL_PROGRESS,
+    response: response,
+  };
+};
+
+const setVotePollModal = (response) => {
+  return {
+    type: actions.VOTE_POLL_MODAL,
+    response: response,
+  };
+};
+
 const globalFlag = (response) => {
   return {
     type: actions.GLOBAL_FLAG,
@@ -489,24 +503,28 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
             if (parseInt(check) === 1) {
               await dispatch(setviewpollModal(false));
               await dispatch(setCreatePollModal(false));
+              await dispatch(setviewpollProgressModal(false));
               await dispatch(globalFlag(true));
               await dispatch(setEditpollModal(true));
               console.log("handleEditpollModal", check);
             } else if (parseInt(check) === 2) {
               await dispatch(setviewpollModal(false));
               await dispatch(setCreatePollModal(false));
+              await dispatch(setviewpollProgressModal(false));
               await dispatch(globalFlag(false));
               await dispatch(setEditpollModal(true));
               console.log("handleEditpollModal", check);
             } else if (parseInt(check) === 3) {
               await dispatch(setEditpollModal(false));
               await dispatch(setCreatePollModal(false));
-              await dispatch(globalFlag(true));
-              await dispatch(setviewpollModal(true));
+              await dispatch(setviewpollModal(false));
+              await dispatch(globalFlag(false));
+              await dispatch(setviewpollProgressModal(true));
               console.log("handleEditpollModal", check);
             } else if (parseInt(check) === 4) {
               await dispatch(setEditpollModal(false));
               await dispatch(setCreatePollModal(false));
+              await dispatch(setviewpollProgressModal(false));
               await dispatch(globalFlag(false));
               await dispatch(setviewpollModal(true));
               console.log("handleEditpollModal", check);
@@ -803,4 +821,6 @@ export {
   getPollsByPollIdApi,
   updatePollsApi,
   setviewpollModal,
+  setVotePollModal,
+  setviewpollProgressModal,
 };

@@ -102,15 +102,35 @@ const Polling = () => {
     }
   };
 
+  // const handleVotePoll = (record) => {
+  //   let check = 0;
+  //   if (record.wasPollPublished) {
+  //     check = 5;
+  //   } else {
+  //     check = 6;
+  //   }
+  //   let data = {
+  //     PollID: record.pollID,
+  //   };
+  //   if (Object.keys(record).length > 0) {
+  //     console.log("handleEditpollModal", check);
+  //     console.log("handleEditpollModal", data);
+  //     dispatch(getPollsByPollIdApi(navigate, data, check, t));
+  //   }
+  // };
+
   const handleViewModal = (record) => {
     console.log("recordrecordrecordrecordrecord", record);
     let check = 0;
     if (record.wasPollPublished) {
-      check = 3;
+      if (record.pollStatus.pollStatusId === 3) {
+        check = 4;
+      } else {
+        check = 3;
+      }
     } else {
       check = 4;
     }
-
     let data = {
       PollID: record.pollID,
     };
@@ -149,30 +169,16 @@ const Polling = () => {
       key: "pollTitle",
       width: "365px",
       render: (text, record) => {
-        let newDate = new Date();
-        let checkDate = resolutionResultTable(record.dueDate + "000000");
-        if (checkDate < newDate) {
-          return (
-            <span
-              className="cursor-pointer"
-              onClick={() => {
-                handleViewModal(record);
-              }}
-            >
-              {text}
-            </span>
-          );
-        } else {
-          return (
-            <span
-              className="cursor-pointer"
-              onClick={() => setisVotePoll(true)}
-            >
-              {" "}
-              {text}
-            </span>
-          );
-        }
+        return (
+          <span
+            className="cursor-pointer"
+            onClick={() => {
+              handleViewModal(record);
+            }}
+          >
+            {text}
+          </span>
+        );
       },
     },
     {
@@ -545,14 +551,8 @@ const Polling = () => {
 
       {PollsReducer.editpollmodal && <UpdatePolls />}
       {PollsReducer.viewPollModal && <ViewPoll />}
-      {viewprogress ? (
-        <>
-          <ViewPollProgress
-            showViewProgress={viewprogress}
-            setShowViewProgress={setViewprogress}
-          />
-        </>
-      ) : null}
+      {PollsReducer.isVotePollModal && <Votepoll />}
+      {PollsReducer.viewPollProgress && <ViewPollProgress />}
       {viewPollsDetails ? (
         <>
           <PollDetails
@@ -561,11 +561,7 @@ const Polling = () => {
           />
         </>
       ) : null}
-      {isVotePoll ? (
-        <>
-          <Votepoll showVotePoll={isVotePoll} setShowVotePoll={setisVotePoll} />
-        </>
-      ) : null}
+
       {updatePublished ? (
         <>
           <UpdateSecond
