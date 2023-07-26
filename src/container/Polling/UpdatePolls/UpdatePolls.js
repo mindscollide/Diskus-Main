@@ -647,7 +647,7 @@ const UpdatePolls = () => {
                         width="16px"
                         height="16px"
                         onClick={() => {
-                          dispatch(setEditpollModal(false));
+                          setDefineUnsaveModal(true);
                         }}
                       />
                     </Col>
