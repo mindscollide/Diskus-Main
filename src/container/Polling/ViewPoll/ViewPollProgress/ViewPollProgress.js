@@ -23,40 +23,79 @@ const ViewPollProgress = () => {
     Date: "",
     AllowMultipleAnswers: false,
   });
-  const [viewpollMembers, setViewPollmembers] = useState([]);
-  useEffect(() => {
-    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
-      let pollData = PollsReducer.Allpolls.poll.pollDetails;
-      let memberpollsprogressView = [];
-      if (Object.keys(PollsReducer.Allpolls.poll.pollParticipants).length > 0) {
-        PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
-          console.log(data, "datadatadatadatadatadatadatadata");
-          memberpollsprogressView.push(data);
-        });
-      }
-      setViewPollmembers(memberpollsprogressView);
-      setViewProgressPollsDetails({
-        ...viewProgressPollsDetails,
-        PollTitle: pollData.pollTitle,
-        Date: pollData.dueDate,
-        AllowMultipleAnswers: pollData.allowMultipleAnswers,
-      });
-    }
-  }, [PollsReducer.Allpolls]);
-
-  console.log(
-    viewpollMembers,
-    "viewpollMembersviewpollMembersviewpollMembersviewpollMembers"
-  );
-
-  console.log(
-    viewProgressPollsDetails.PollTitle,
-    "viewProgressPollsDetailsviewProgressPollsDetailsviewProgressPollsDetails"
-  );
   const [checkboxesState, setCheckboxesState] = useState({
     checkedYes: false,
     checkedNO: false,
   });
+  const [viewpollMembers, setViewPollmembers] = useState([]);
+  const [pollsOption, setPollsOption] = useState([]);
+
+  useEffect(() => {
+    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
+      let pollData = PollsReducer.Allpolls.poll;
+      let pollDetails = pollData.pollDetails;
+      let pollParticipants = pollData.pollParticipants;
+      let pollOptions = pollData.pollOptions;
+      let pollSelectedAnswers = pollData.selectedAnswers;
+
+      let memberpollsprogressView = [];
+      let newOption = [];
+
+      if (Object.keys(pollParticipants).length > 0) {
+        pollParticipants.map((data, index) => {
+          memberpollsprogressView.push(data);
+        });
+      }
+      if (pollSelectedAnswers.length > 0) {
+        pollOptions.map((newdata, index) => {
+          let find = pollSelectedAnswers.find(
+            (data, index) => data.pollAnswerID === newdata.pollAnswerID
+          );
+          if (find != undefined) {
+            let changeOptionData = {
+              answer: newdata.answer,
+              pollAnswerID: newdata.pollAnswerID,
+              totalVotes: newdata.totalVotes,
+              votePercentage: newdata.votePercentage,
+              voted: true,
+            };
+            newOption.push(changeOptionData);
+          } else {
+            let changeOptionData = {
+              answer: newdata.answer,
+              pollAnswerID: newdata.pollAnswerID,
+              totalVotes: newdata.totalVotes,
+              votePercentage: newdata.votePercentage,
+              voted: false,
+            };
+            newOption.push(changeOptionData);
+          }
+        });
+        setPollsOption(newOption);
+      } else {
+        pollOptions.map((newdata, index) => {
+          let changeOptionData = {
+            answer: newdata.answer,
+            pollAnswerID: newdata.pollAnswerID,
+            totalVotes: newdata.totalVotes,
+            votePercentage: newdata.votePercentage,
+            voted: false,
+          };
+          newOption.push(changeOptionData);
+        });
+        setPollsOption(newOption);
+      }
+      setViewPollmembers(memberpollsprogressView);
+      setViewProgressPollsDetails({
+        ...viewProgressPollsDetails,
+        PollTitle: pollDetails.pollTitle,
+        Date: pollDetails.dueDate,
+        AllowMultipleAnswers: pollDetails.allowMultipleAnswers,
+      });
+    }
+  }, [PollsReducer.Allpolls]);
+
+  console.log(pollsOption, "pollsOptionpollsOptionpollsOptionpollsOption");
 
   const HandleCheckBoxYes = () => {
     setCheckboxesState({
@@ -171,95 +210,167 @@ const ViewPollProgress = () => {
                     </Row>
                   </Col>
                 </Row>
-                <Row>
-                  <Col lg={1} md={1} sm={12}></Col>
-                  <Col lg={11} md={11} sm={12} className="m-0 p-0 ">
-                    <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["Yes_ViewProgress"]}>
-                          {t("Yes")}
-                          <span>(20)</span>
-                        </span>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col
-                    lg={1}
-                    ms={1}
-                    sm={12}
-                    className={styles["CheckBox_ViewProgressPolls"]}
-                  >
-                    {/* <Checkbox
-                      checked={checkboxesState.checkedYes}
-                      onChange={HandleCheckBoxYes}
-                      classNameCheckBoxP="d-none"
-                    /> */}
-                    {viewProgressPollsDetails.AllowMultipleAnswers === true ? (
-                      ""
-                    ) : (
-                      <CustomRadio
-                        change={HandleCheckBoxYes}
-                        className={styles["Custom_radio_button"]}
-                      />
-                    )}
-                  </Col>
-                  <Col
-                    lg={11}
-                    md={11}
-                    sm={12}
-                    className={styles["Progress_bar_view_polls"]}
-                  >
-                    <Progress
-                      className="Progress_bar_Polls"
-                      percent={59}
-                      status="active"
-                    />
-                  </Col>
-                </Row>
-                <Row>
-                  <Col lg={1} md={1} sm={1}></Col>
-                  <Col lg={11} md={11} sm={12} className="m-0 p-0">
-                    <span className={styles["Yes_ViewProgress"]}>
-                      {t("NO")} <span>(9)</span>
-                    </span>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col
-                    lg={1}
-                    ms={1}
-                    sm={12}
-                    className={styles["CheckBox_ViewProgressPolls"]}
-                  >
-                    {/* <Checkbox
-                      checked={checkboxesState.checkedNO}
-                      onChange={HandleCheckBoxNo}
-                      classNameCheckBoxP="d-none"
-                    /> */}
-                    {viewProgressPollsDetails.AllowMultipleAnswers === true ? (
-                      ""
-                    ) : (
-                      <CustomRadio
-                        change={HandleCheckBoxYes}
-                        className={styles["Custom_radio_button"]}
-                      />
-                    )}
-                  </Col>
-                  <Col
-                    lg={11}
-                    md={11}
-                    sm={12}
-                    className={styles["Progress_bar_view_polls"]}
-                  >
-                    <Progress
-                      className="Progress_bar_Polls"
-                      percent={9}
-                      status="active"
-                    />
-                  </Col>
-                </Row>
+                {pollsOption.length > 4 ? (
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={styles["Scroller_View_Poll_Published"]}
+                    >
+                      {pollsOption.length > 0
+                        ? pollsOption.map((data, index) => {
+                            return (
+                              <>
+                                <Row>
+                                  <Col lg={1} md={1} sm={12}></Col>
+                                  <Col
+                                    lg={11}
+                                    md={11}
+                                    sm={12}
+                                    className="m-0 p-0 "
+                                  >
+                                    <Row className="mt-2">
+                                      <Col lg={12} md={12} sm={12}>
+                                        <span
+                                          className={styles["Yes_ViewProgress"]}
+                                        >
+                                          {data.answer}
+                                          <span>
+                                            {"(" + data.totalVotes + ")"}
+                                          </span>
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col
+                                    lg={1}
+                                    ms={1}
+                                    sm={12}
+                                    className={
+                                      styles["CheckBox_ViewProgressPolls"]
+                                    }
+                                  >
+                                    {viewProgressPollsDetails.AllowMultipleAnswers ===
+                                    true ? (
+                                      <Checkbox
+                                        disabled={true}
+                                        checked={data.voted}
+                                        onChange={HandleCheckBoxYes}
+                                        classNameCheckBoxP="d-none"
+                                      />
+                                    ) : (
+                                      <CustomRadio
+                                        checked={data.voted}
+                                        change={HandleCheckBoxYes}
+                                        className={
+                                          styles["Custom_radio_button"]
+                                        }
+                                      />
+                                    )}
+                                  </Col>
+                                  <Col
+                                    lg={11}
+                                    md={11}
+                                    sm={12}
+                                    className={
+                                      styles["Progress_bar_view_polls"]
+                                    }
+                                  >
+                                    <Progress
+                                      className="Progress_bar_Polls"
+                                      percent={data.votePercentage}
+                                      status="active"
+                                    />
+                                  </Col>
+                                </Row>
+                              </>
+                            );
+                          })
+                        : null}
+                    </Col>
+                  </Row>
+                ) : (
+                  <Row>
+                    <Col lg={12} md={12} sm={12}>
+                      {pollsOption.length > 0
+                        ? pollsOption.map((data, index) => {
+                            return (
+                              <>
+                                <Row>
+                                  <Col lg={1} md={1} sm={12}></Col>
+                                  <Col
+                                    lg={11}
+                                    md={11}
+                                    sm={12}
+                                    className="m-0 p-0 "
+                                  >
+                                    <Row className="mt-2">
+                                      <Col lg={12} md={12} sm={12}>
+                                        <span
+                                          className={styles["Yes_ViewProgress"]}
+                                        >
+                                          {data.answer}
+                                          <span>
+                                            {"(" + data.totalVotes + ")"}
+                                          </span>
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col
+                                    lg={1}
+                                    ms={1}
+                                    sm={12}
+                                    className={
+                                      styles["CheckBox_ViewProgressPolls"]
+                                    }
+                                  >
+                                    {viewProgressPollsDetails.AllowMultipleAnswers ===
+                                    true ? (
+                                      <Checkbox
+                                        disabled={true}
+                                        checked={data.voted}
+                                        onChange={HandleCheckBoxYes}
+                                        classNameCheckBoxP="d-none"
+                                      />
+                                    ) : (
+                                      <CustomRadio
+                                        checked={data.voted}
+                                        change={HandleCheckBoxYes}
+                                        className={
+                                          styles["Custom_radio_button"]
+                                        }
+                                      />
+                                    )}
+                                  </Col>
+                                  <Col
+                                    lg={11}
+                                    md={11}
+                                    sm={12}
+                                    className={
+                                      styles["Progress_bar_view_polls"]
+                                    }
+                                  >
+                                    <Progress
+                                      className="Progress_bar_Polls"
+                                      percent={data.votePercentage}
+                                      status="active"
+                                    />
+                                  </Col>
+                                </Row>
+                              </>
+                            );
+                          })
+                        : null}
+                    </Col>
+                  </Row>
+                )}
+
                 <Row>
                   <Col lg={1} md={1} sm={1}></Col>
                   <Col

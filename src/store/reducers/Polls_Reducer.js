@@ -9,6 +9,7 @@ const initialState = {
   viewPollModal: false,
   isVotePollModal: false,
   viewPollProgress: false,
+  viewVotesDetails: false,
   editPollModalFlag: false,
   SavePoll: null,
   gellAllCommittesandGroups: null,
@@ -224,6 +225,12 @@ const PollsReducer = (state = initialState, action) => {
     case actions.VIEW_POLL_PROGRESS: {
       return {
         viewPollProgress: action.response,
+      };
+    }
+
+    case actions.VIEW_VOTES_DETAILS: {
+      return {
+        viewVotesDetails: action.response,
       };
     }
     default: {

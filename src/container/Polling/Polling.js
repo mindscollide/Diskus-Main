@@ -55,6 +55,7 @@ const Polling = () => {
     flag: false,
     message: "",
   });
+  let userID = localStorage.getItem("userID");
   const [pollsState, setPollsState] = useState({
     searchValue: "",
   });
@@ -94,6 +95,7 @@ const Polling = () => {
 
     let data = {
       PollID: record.pollID,
+      UserID: parseInt(userID),
     };
     if (Object.keys(record).length > 0) {
       console.log("handleEditpollModal", check);
@@ -116,6 +118,7 @@ const Polling = () => {
     }
     let data = {
       PollID: record.pollID,
+      UserID: parseInt(userID),
     };
     if (Object.keys(record).length > 0) {
       console.log("handleEditpollModal", check);
@@ -125,7 +128,6 @@ const Polling = () => {
   };
 
   const handleSearchEvent = () => {
-    let userID = localStorage.getItem("userID");
     let organizationID = localStorage.getItem("organizationID");
     let data = {
       UserID: parseInt(userID),
@@ -370,7 +372,6 @@ const Polling = () => {
   console.log(pollData, "pollDatapollDatapollData");
 
   const handleVotePolls = (record) => {
-    let userID = localStorage.getItem("userID");
     let data = {
       PollID: parseInt(record.pollID),
       UserID: parseInt(userID),
@@ -378,8 +379,6 @@ const Polling = () => {
     };
     // dispatch(castVoteApi(navigate, data, t));
   };
-
-  let userID = localStorage.getItem("userID");
   let organizationID = localStorage.getItem("organizationID");
   useEffect(() => {
     let data = {
@@ -531,11 +530,10 @@ const Polling = () => {
         </Row>
       </section>
       {PollsReducer.createPollmodal && <CreatePolling />}
-
       {PollsReducer.editpollmodal && <UpdatePolls />}
       {PollsReducer.viewPollModal && <ViewPoll />}
-      {PollsReducer.isVotePollModal && <Votepoll />}
       {PollsReducer.viewPollProgress && <ViewPollProgress />}
+      {PollsReducer.isVotePollModal && <Votepoll />}
       {viewPollsDetails ? (
         <>
           <PollDetails

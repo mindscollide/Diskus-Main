@@ -127,6 +127,23 @@ body[dir="rtl"] .Card_border2 {
   padding: 0;
 }
 
+.Scroller_View_Poll_Published {
+  height: 32vh !important;
+  overflow-x: hidden !important;
+  width: 100%;
+}
+
+.Scroller_View_Poll_Published::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+.Scroller_View_Poll_Published::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
 .Close_Button_viewprogress {
   padding: 12px 30px !important;
   font-size: 12px !important;
