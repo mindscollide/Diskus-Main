@@ -533,7 +533,7 @@ const UpdatePolls = () => {
           }
           modalFooterClassName={"d-block"}
           onHide={() => {
-            dispatch(setEditpollModal(false));
+            setDefineUnsaveModal(true);
           }}
           ModalTitle={
             <>
@@ -919,6 +919,9 @@ const UpdatePolls = () => {
                       <Button
                         text={t("Yes")}
                         className={styles["Yes_Btn_polls_delModal"]}
+                        onClick={() => {
+                          dispatch(setEditpollModal(false));
+                        }}
                       />
                     </Col>
                   </Row>

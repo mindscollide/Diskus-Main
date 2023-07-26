@@ -102,23 +102,6 @@ const Polling = () => {
     }
   };
 
-  // const handleVotePoll = (record) => {
-  //   let check = 0;
-  //   if (record.wasPollPublished) {
-  //     check = 5;
-  //   } else {
-  //     check = 6;
-  //   }
-  //   let data = {
-  //     PollID: record.pollID,
-  //   };
-  //   if (Object.keys(record).length > 0) {
-  //     console.log("handleEditpollModal", check);
-  //     console.log("handleEditpollModal", data);
-  //     dispatch(getPollsByPollIdApi(navigate, data, check, t));
-  //   }
-  // };
-
   const handleViewModal = (record) => {
     console.log("recordrecordrecordrecordrecord", record);
     let check = 0;
