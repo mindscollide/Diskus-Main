@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import AlarmClock from "../../../assets/images/AlarmOptions.svg";
 import { Button, TextField } from "../../../components/elements";
 import gregorian from "react-date-object/calendars/gregorian";
+
 import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
@@ -27,6 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import GroupIcon from "../../../assets/images/groupdropdown.svg";
 import committeeicon from "../../../assets/images/committeedropdown.svg";
+import { enGB, ar } from "date-fns/locale";
 import profilepic from "../../../assets/images/profiledropdown.svg";
 import {
   SavePollsApi,
@@ -35,14 +37,18 @@ import {
 } from "../../../store/actions/Polls_actions";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import { registerLocale } from "react-datepicker";
 import moment from "moment";
 import { newDateFormaterAsPerUTC } from "../../../commen/functions/date_formater";
+
 import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees";
 import { clearMessagesGroup } from "../../../store/actions/Groups_actions";
 
 const CreatePolling = () => {
   const animatedComponents = makeAnimated();
   let currentLanguage = localStorage.getItem("i18nextLng");
+  registerLocale("ar", ar);
+  registerLocale("en", enGB);
   //For Custom language datepicker
   const { PollsReducer } = useSelector((state) => state);
   console.log(PollsReducer, "PollsReducerPollsReducer");
@@ -83,6 +89,16 @@ const CreatePolling = () => {
   ]);
 
   useEffect(() => {
+    if (currentLanguage === "ar") {
+      moment.locale(currentLanguage);
+    } else if (currentLanguage === "fr") {
+      moment.locale(currentLanguage);
+    } else {
+      moment.locale(currentLanguage);
+    }
+  }, [currentLanguage]);
+
+  useEffect(() => {
     if (currentLanguage != undefined) {
       if (currentLanguage === "en") {
         setCalendarValue(gregorian);
@@ -93,6 +109,7 @@ const CreatePolling = () => {
       }
     }
   }, [currentLanguage]);
+
   useEffect(() => {
     dispatch(getAllCommitteesandGroups(navigate, t));
   }, []);
