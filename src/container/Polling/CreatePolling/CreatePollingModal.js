@@ -328,7 +328,7 @@ const CreatePolling = () => {
           let data = {
             PollDetails: {
               PollTitle: createPollData.TypingTitle,
-              DueDate: createPollData.date,
+              DueDate: newDateFormaterAsPerUTC(createPollData.date),
               AllowMultipleAnswers: createPollData.AllowMultipleAnswers,
               CreatorID: parseInt(createrid),
               PollStatusID: parseInt(value),

@@ -7,7 +7,10 @@ import profile from "../../../../assets/images/profile_polls.svg";
 import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
 import { Progress } from "antd";
 import { useTranslation } from "react-i18next";
-import { setviewpollProgressModal } from "../../../../store/actions/Polls_actions";
+import {
+  setviewpollProgressModal,
+  viewVotesDetailsModal,
+} from "../../../../store/actions/Polls_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
@@ -458,6 +461,9 @@ const ViewPollProgress = () => {
                     <Button
                       text={t("View-votes")}
                       className={styles["View_votes_btn"]}
+                      onClick={() => {
+                        dispatch(viewVotesDetailsModal(true));
+                      }}
                     />
                   </Col>
                 </Row>

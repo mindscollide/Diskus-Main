@@ -534,14 +534,7 @@ const Polling = () => {
       {PollsReducer.viewPollModal && <ViewPoll />}
       {PollsReducer.viewPollProgress && <ViewPollProgress />}
       {PollsReducer.isVotePollModal && <Votepoll />}
-      {viewPollsDetails ? (
-        <>
-          <PollDetails
-            showpollDetails={viewPollsDetails}
-            setShowpollDetails={setViewPollsDetails}
-          />
-        </>
-      ) : null}
+      {PollsReducer.viewVotesDetails && <PollDetails />}
 
       {updatePublished ? (
         <>

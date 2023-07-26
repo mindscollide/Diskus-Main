@@ -9,6 +9,7 @@ import { Progress } from "antd";
 import { style } from "@material-ui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { viewVotesDetailsModal } from "../../../store/actions/Polls_actions";
 const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,10 +63,10 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
   return (
     <Container>
       <Modal
-        show={showpollDetails}
-        setShow={setShowpollDetails}
+        show={PollsReducer.viewVotesDetails}
+        setShow={dispatch(viewVotesDetailsModal)}
         onHide={() => {
-          setShowpollDetails(false);
+          dispatch(viewVotesDetailsModal(false));
         }}
         ModalBody={
           <>
@@ -82,7 +83,7 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
                   width="16px"
                   height="16px"
                   onClick={() => {
-                    setShowpollDetails(false);
+                    dispatch(viewVotesDetailsModal(false));
                   }}
                 />
               </Col>
@@ -356,7 +357,7 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
                       text={t("Close")}
                       className={styles["Class_Close"]}
                       onClick={() => {
-                        setShowpollDetails(false);
+                        dispatch(viewVotesDetailsModal(false));
                       }}
                     />
                   </Col>

@@ -65,6 +65,13 @@ const setviewpollProgressModal = (response) => {
   };
 };
 
+const viewVotesDetailsModal = (response) => {
+  return {
+    type: actions.VIEW_VOTES_DETAILS,
+    response: response,
+  };
+};
+
 const setVotePollModal = (response) => {
   return {
     type: actions.VOTE_POLL_MODAL,
@@ -823,4 +830,5 @@ export {
   setviewpollModal,
   setVotePollModal,
   setviewpollProgressModal,
+  viewVotesDetailsModal,
 };

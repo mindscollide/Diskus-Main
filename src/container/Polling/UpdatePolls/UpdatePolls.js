@@ -508,7 +508,7 @@ const UpdatePolls = () => {
     let data = {
       PollDetails: {
         PollTitle: UpdatePolls.TypingTitle,
-        DueDate: UpdatePolls.date,
+        DueDate: newDateFormaterAsPerUTC(UpdatePolls.date),
         AllowMultipleAnswers: UpdatePolls.AllowMultipleUser,
         CreatorID: parseInt(createrid),
         PollStatusID: parseInt(value),
