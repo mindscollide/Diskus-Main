@@ -5652,3 +5652,15 @@ body[dir="rtl"] .ant-result-subtitle {
 .dataroom_options .dropdown-menu.show .dropdown-item:last-child {
   border: none !important;
 }
+
+.form-check-input:checked {
+  background: #4adede !important;
+  border-radius: none !important;
+  border: none;
+}
+
+.form-check-input {
+  width: 1.2em !important;
+  height: 1.2em !important;
+  border-radius: none !important;
+}

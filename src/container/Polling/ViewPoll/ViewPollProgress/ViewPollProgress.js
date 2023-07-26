@@ -11,6 +11,7 @@ import { setviewpollProgressModal } from "../../../../store/actions/Polls_action
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import CustomRadio from "../../../../components/elements/radio/Radio";
 
 const ViewPollProgress = () => {
   const dispatch = useDispatch();
@@ -155,7 +156,7 @@ const ViewPollProgress = () => {
                     sm={12}
                     className={styles["Box_For_Title_toShow"]}
                   >
-                    <Row>
+                    <Row className="mt-2">
                       <Col
                         lg={12}
                         md={12}
@@ -189,11 +190,16 @@ const ViewPollProgress = () => {
                     sm={12}
                     className={styles["CheckBox_ViewProgressPolls"]}
                   >
-                    <Checkbox
+                    {/* <Checkbox
                       checked={checkboxesState.checkedYes}
                       onChange={HandleCheckBoxYes}
                       classNameCheckBoxP="d-none"
-                    />
+                    /> */}
+                    {viewProgressPollsDetails.AllowMultipleAnswers === true ? (
+                      ""
+                    ) : (
+                      <CustomRadio className={styles["Custom_radio_button"]} />
+                    )}
                   </Col>
                   <Col
                     lg={11}
@@ -223,11 +229,16 @@ const ViewPollProgress = () => {
                     sm={12}
                     className={styles["CheckBox_ViewProgressPolls"]}
                   >
-                    <Checkbox
+                    {/* <Checkbox
                       checked={checkboxesState.checkedNO}
                       onChange={HandleCheckBoxNo}
                       classNameCheckBoxP="d-none"
-                    />
+                    /> */}
+                    {viewProgressPollsDetails.AllowMultipleAnswers === true ? (
+                      ""
+                    ) : (
+                      <CustomRadio className={styles["Custom_radio_button"]} />
+                    )}
                   </Col>
                   <Col
                     lg={11}
