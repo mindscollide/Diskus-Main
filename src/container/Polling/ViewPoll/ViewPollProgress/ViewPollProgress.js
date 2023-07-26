@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { Modal, Button, Checkbox } from "../../../../components/elements";
 import AlarmClock from "../../../../assets/images/AlarmOptions.svg";
@@ -10,58 +10,48 @@ import { useTranslation } from "react-i18next";
 import { setviewpollProgressModal } from "../../../../store/actions/Polls_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const ViewPollProgress = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { PollsReducer } = useSelector((state) => state);
   console.log(PollsReducer, "PollsReducerPollsReducerPollsReducerPollsReducer");
-  const [viewpollMembers, setViewPollmembers] = useState([
-    {
-      id: 1,
-      name: "Saad Fudda",
-    },
-    {
-      id: 2,
-      name: "Saif ul islam",
-    },
-    {
-      id: 3,
-      name: "Owais Wajid kha",
-    },
-    {
-      id: 4,
-      name: "Huzeifa Jahangir",
-    },
-    {
-      id: 5,
-      name: "Ali mamdani",
-    },
-    {
-      id: 6,
-      name: "Syed Ali raza",
-    },
-    {
-      id: 7,
-      name: "Talha Yameen khan",
-    },
-    {
-      id: 8,
-      name: "Aun Naqvi",
-    },
-    {
-      id: 9,
-      name: "Hussain Raza",
-    },
-    {
-      id: 11,
-      name: "jawad Faisal",
-    },
-    {
-      id: 12,
-      name: "Waseem",
-    },
-  ]);
+  const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
+    PollTitle: "",
+    Date: "",
+    AllowMultipleAnswers: false,
+  });
+  const [viewpollMembers, setViewPollmembers] = useState([]);
+  useEffect(() => {
+    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
+      let pollData = PollsReducer.Allpolls.poll.pollDetails;
+      let memberpollsprogressView = [];
+      if (Object.keys(PollsReducer.Allpolls.poll.pollParticipants).length > 0) {
+        PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
+          console.log(data, "datadatadatadatadatadatadatadata");
+          memberpollsprogressView.push(data);
+        });
+      }
+      setViewPollmembers(memberpollsprogressView);
+      setViewProgressPollsDetails({
+        ...viewProgressPollsDetails,
+        PollTitle: pollData.pollTitle,
+        Date: pollData.dueDate,
+        AllowMultipleAnswers: pollData.allowMultipleAnswers,
+      });
+    }
+  }, [PollsReducer.Allpolls]);
+
+  console.log(
+    viewpollMembers,
+    "viewpollMembersviewpollMembersviewpollMembersviewpollMembers"
+  );
+
+  console.log(
+    viewProgressPollsDetails.PollTitle,
+    "viewProgressPollsDetailsviewProgressPollsDetailsviewProgressPollsDetails"
+  );
   const [checkboxesState, setCheckboxesState] = useState({
     checkedYes: false,
     checkedNO: false,
@@ -72,6 +62,12 @@ const ViewPollProgress = () => {
       ...checkboxesState,
       checkedYes: !checkboxesState.checkedYes,
     });
+  };
+
+  const changeDateStartHandler2 = (date) => {
+    let newDate = moment(date).format("DD MMMM YYYY");
+
+    return newDate;
   };
 
   const HandleCheckBoxNo = () => {
@@ -112,7 +108,10 @@ const ViewPollProgress = () => {
                   >
                     <img src={AlarmClock} width="14.97px" height="14.66px" />
                     <span className={styles["ViewPRogressDueDate"]}>
-                      {t("Due-date-on")} <span>34 May 2023</span>
+                      {t("Due-date-on")}{" "}
+                      <span>
+                        {changeDateStartHandler2(viewProgressPollsDetails.Date)}
+                      </span>
                     </span>
                   </Col>
                 </Row>
@@ -164,8 +163,7 @@ const ViewPollProgress = () => {
                         className="d-flex align-items-center"
                       >
                         <span className={styles["ViewTitleTOShowOnProgress"]}>
-                          Did you receive the material In a sufficient time for
-                          you to prepare for the board meeting, Including agenda
+                          {viewProgressPollsDetails.PollTitle}
                         </span>
                       </Col>
                     </Row>
@@ -253,7 +251,9 @@ const ViewPollProgress = () => {
                     className="d-flex justify-content-start m-0 p-0 mt-2"
                   >
                     <span className={styles["Multiple_answer"]}>
-                      Mutiple Answer Allowed
+                      {viewProgressPollsDetails.AllowMultipleAnswers === true
+                        ? "Mutiple Answer Allowed"
+                        : null}
                     </span>
                   </Col>
                 </Row>
@@ -287,7 +287,7 @@ const ViewPollProgress = () => {
                                       height="33px"
                                     />
                                     <span className={styles["Name_cards"]}>
-                                      {data.name}
+                                      {data.userName}
                                     </span>
                                   </Col>
                                 </Row>
