@@ -1073,5 +1073,19 @@
   "Shared-by": "Shared by",
   "Share-date": "Share date",
   "Last-modified-by-me": "Last modified by me",
-  "Last-open-by-me": "Last open by me"
+  "Last-open-by-me": "Last open by me",
+  "Participant-list-consists-of-duplicate-members": "Participant List Consists Of Duplicate Members",
+  "There-must-be-atleast-two-Poll-options": "There Must Be Atleast Two Poll Options",
+  "Poll-details-updated": "Poll Details Updated",
+  "Poll-not-updated": "Poll not Updated",
+  "Polls-due-date-update-successFully": "Poll Due Date Update SuccessFully",
+  "Vote-casted": "Vote Casted",
+  "No-vote-casted": "No Vote Casted",
+  "Please-choose-a-suitable-option": "Please Choose A Suitable Option",
+  "You-are-only-allowed-to-select-one-answer": "You Are Only Allowed To Select One Answer",
+  "Poll-created": "Poll Created",
+  "Poll-not-created": "Poll Not Created",
+  "Participant-list-of-consists-of-duplicate-members": "Participant List Consists Of Duplicate Members",
+  "There-must-be-at-least-two-poll-options": "There must be at least two Poll options",
+  "Search-by-title": "Search by Title"
 }

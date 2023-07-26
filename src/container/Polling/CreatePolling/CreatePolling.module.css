@@ -350,3 +350,25 @@ body[dir="rtl"] .Card_border2 {
   padding: 0px 45px !important;
   margin-top: -25px !important;
 }
+
+.date-picker-icon {
+  background: none;
+  border: none;
+}
+
+.date-picker-icon:hover,
+.date-picker-icon:active,
+.date-picker-icon:focus,
+.date-picker-icon:focus-visible {
+  background: none;
+  border: none;
+}
+
+.UserProfilepic {
+  border-radius: 50%;
+}
+
+.NameDropDown {
+  font-size: 12px;
+  font-family: "MontserratSemiBold" !important;
+}
