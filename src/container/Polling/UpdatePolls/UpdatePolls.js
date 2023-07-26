@@ -38,6 +38,7 @@ import {
 
 const UpdatePolls = () => {
   const animatedComponents = makeAnimated();
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const { PollsReducer } = useSelector((state) => state);
   console.log(PollsReducer, "UPdateReducerUPdateReducerUPdateReducer");
   const dispatch = useDispatch();
@@ -68,12 +69,25 @@ const UpdatePolls = () => {
   const [updatepollsdetails, setUpdatepollsdetails] = useState();
   const [polloptions, setPolloptions] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
+
   const [dropdowndata, setDropdowndata] = useState([]);
   const [pollmembers, setPollmembers] = useState([]);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
   });
+
+  useEffect(() => {
+    if (currentLanguage != undefined) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(arabic);
+        setLocalValue(arabic_ar);
+      }
+    }
+  }, [currentLanguage]);
 
   useEffect(() => {
     let pollsData = PollsReducer.gellAllCommittesandGroups;
