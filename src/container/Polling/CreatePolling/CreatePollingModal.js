@@ -94,7 +94,7 @@ const CreatePolling = ({ showPollingModal, setShowPollingModal }) => {
 
 
   useEffect(() => {
-    dispatch(getAllCommitteesandGroups())
+    dispatch(getAllCommitteesandGroups(navigate, t))
   }, [])
   const HandleSearch = (e) => {
     if (e.target.value.trimStart() != "") {

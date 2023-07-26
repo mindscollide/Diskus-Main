@@ -84,7 +84,7 @@ export const convertintoGMTCalender = (date) => {
   let year = parseInt(date.substr(0, 4));
   let month = parseInt(date.substr(4, 2)) - 1; // Month is zero-based in JavaScript's Date object
   let day = parseInt(date.substr(6, 2));
-  
+
   let formattedDate = new Date(year, month, day, 18, 10, 36).toString();
   return formattedDate;
 };
@@ -110,7 +110,7 @@ export const newTimeFormaterAsPerUTC = (dateTime) => {
 };
 
 export const newTimeFormaterAsPerUTCFullDate = (dateTime) => {
-  // console.log('dateTimedateTimedateTime', dateTime)
+  console.log('dateTimedateTimedateTime', dateTime)
   let fullDateyear =
     dateTime?.slice(0, 4) +
     "-" +
@@ -124,7 +124,9 @@ export const newTimeFormaterAsPerUTCFullDate = (dateTime) => {
     ":" +
     dateTime?.slice(12, 14) +
     ".000Z";
+  console.log(fullDateyear, "dateTimedateTimedateTime2")
   let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
+  console.log(_dateTime, "dateTimedateTimedateTime3")
   return moment(_dateTime).format("h:mm A, Do MMM, YYYY");
 };
 

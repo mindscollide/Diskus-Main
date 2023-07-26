@@ -402,7 +402,7 @@ const createFolder_fail = (message) => {
 };
 
 // Create Folder API
-const createFolderApi = (navigate, folder, t, setAddfolder) => {
+const createFolderApi = (navigate, folder, t, setAddfolder, type, setIsExistFolder) => {
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let token = JSON.parse(localStorage.getItem("token"));
@@ -411,7 +411,8 @@ const createFolderApi = (navigate, folder, t, setAddfolder) => {
     FolderName: folder,
     UserID: parseInt(createrID),
     OrganizationID: parseInt(OrganizationID),
-    ParentFolderID: folderID !== null ? folderID : 0
+    ParentFolderID: folderID !== null ? folderID : 0,
+    Type: type !== null && type !== undefined ? type : 0
   }
   return (dispatch) => {
     dispatch(createFolder_init())
@@ -439,6 +440,7 @@ const createFolderApi = (navigate, folder, t, setAddfolder) => {
               dispatch(getDocumentsAndFolderApi(navigate, 3, t))
             }
             setAddfolder(false)
+            setIsExistFolder(false)
           } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_02".toLowerCase())) {
             dispatch(createFolder_fail(t("Failed-to-create-folder")))
           } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_CreateFolder_03".toLowerCase())) {
@@ -911,7 +913,7 @@ const FolderisExist_fail = (message) => {
 };
 
 // Folder Exist API
-const FolderisExist = (navigate, FolderName, t, setAddfolder) => {
+const FolderisExist = (navigate, FolderName, t, setAddfolder, setIsExistFolder) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let folderID = JSON.parse(localStorage.getItem("folderID"));
@@ -940,7 +942,9 @@ const FolderisExist = (navigate, FolderName, t, setAddfolder) => {
         if (response.data.responseResult.isExecuted === true) {
           if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_01".toLowerCase())) {
             dispatch(FolderisExist_fail(t("Folder-already-exist")))
-            setAddfolder(true)
+            localStorage.setItem("folderName", FolderName)
+            setIsExistFolder(true)
+            setAddfolder(false)
           } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_02".toLowerCase())) {
             await dispatch(FolderisExist_fail(t("Folder-name-is-required")))
           } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_03".toLowerCase())) {
@@ -1082,7 +1086,7 @@ const FolderisExistRename = (navigate, folderData, t, setRenamefolder) => {
     }).then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t))
-        dispatch(FolderisExist(navigate, FolderName, t, setAddfolder))
+        dispatch(FolderisExist(navigate, folderData, t, setRenamefolder))
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
           if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_01".toLowerCase())) {
@@ -1267,7 +1271,7 @@ const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
     }).then(async (response) => {
       if (response.data.responseCode === 417) {
         await dispatch(RefreshToken(navigate, t))
-        dispatch(renameFileApi(navigate, filedata, t,))
+        dispatch(renameFileApi(navigate, filedata, t, setShowRenameFile))
       } else if (response.data.responseCode === 200) {
         if (response.data.responseResult.isExecuted === true) {
           if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_RenameFile_01".toLowerCase())) {

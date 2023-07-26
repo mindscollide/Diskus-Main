@@ -593,7 +593,11 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                                 size={78}
                                 {...defaultStyles.gif}
                               />
-                            ) : null}
+                            ) : <FileIcon
+                              extension={ext}
+                              size={78}
+                              {...defaultStyles.ext}
+                            />}
                             <p className="todoModalFileAttach FontArabicRegular">
                               {first}
                             </p>

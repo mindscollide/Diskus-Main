@@ -155,7 +155,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       if (valueCheck.length > 199) {
         setOpen({
           flag: true,
-          message: "Title Limit is 200",
+          message: t("Title-limit-is-200"),
         });
       } else {
         setOpen({
@@ -167,25 +167,17 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           [name]: valueCheck.trimStart(),
         });
       }
-    } else if (name === "DeadLineDate") {
+    } else if (name === "DeadLineTime") {
       console.log("DeadLineDate12", name, value);
       setTask({
         ...task,
         [name]: value,
       });
-    } else if (name === "DeadLineTime") {
-      console.log("DeadLineDate", name, value);
-      setTask({
-        ...task,
-        [name]: RemoveTimeDashes(value),
-      });
-
-      console.log("12123123", setCreateTodoTime(RemoveTimeDashes(value)));
     } else if (name === "Description") {
       if (valueCheck.length > 299) {
         setOpen({
           flag: true,
-          message: "Description Limit is 300",
+          message: t("Description-limit-is-300"),
         });
       } else {
         setOpen({
@@ -453,6 +445,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   };
 
   const toDoDateHandler = (date, format = "YYYYMMDD") => {
+    console.log(date, "toDoDateHandlertoDoDateHandlertoDoDateHandlertoDoDateHandler")
     let toDoDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let toDoDateSaveFormat = new DateObject(date).format("YYYYMMDD");
     setCreateTodoDate(toDoDateSaveFormat);
@@ -467,15 +460,20 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const createToDoList = async () => {
     let TasksAttachments = tasksAttachments.TasksAttachments;
     console.log("TasksAttachments", TasksAttachments);
-    let finalDateTime = createConvert(createTodoDate + createTodoTime);
+    let newDate;
+    let newTime;
+    console.log(createTodoDate, task.DeadLineTime, "TaskTaskTaskTaskTaskTaskTaskTaskTaskTaskTaskTask")
+    if (createTodoDate !== "" && task.DeadLineTime !== "") {
+      let finalDateTime = createConvert(createTodoDate + task.DeadLineTime);
+      newDate = finalDateTime.slice(0, 8);
+      newTime = finalDateTime.slice(8, 14);
+    }
 
-    let newDate = finalDateTime.slice(0, 8);
-    let newTime = finalDateTime.slice(8, 14);
-    console.log(finalDateTime, "DateTimeTodo");
+    // console.log(finalDateTime, "DateTimeTodo");
     console.log(newDate, "DateTimeTodo");
     console.log(newTime, "DateTimeTodo");
-    console.log(createTodoDate, "DateTimeTodo");
-    console.log(createTodoTime, "DateTimeTodo");
+    // console.log(createTodoDate, "DateTimeTodo");
+    // console.log(createTodoTime, "DateTimeTodo");
     let Task = {
       PK_TID: task.PK_TID,
       Title: task.Title,
@@ -485,13 +483,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       DeadLineTime: newTime,
       CreationDateTime: "",
     };
-    if (Task.DeadLineDate === "") {
-      setOpen({
-        ...open,
-        flag: true,
-        message: t("Date-missing"),
-      });
-    } else if (Task.DeadLineTime === "") {
+    console.log(Task, "TaskTaskTaskTaskTaskTaskTaskTaskTaskTaskTaskTask")
+    if (Task.DeadLineTime === undefined) {
       setOpen({
         ...open,
         flag: true,
@@ -514,6 +507,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         ...open,
         flag: true,
         message: t("Please-add-assignees"),
+      });
+    } else if (Task.DeadLineDate === undefined) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: t("Enter-date-must"),
       });
     } else {
       let counter = Object.keys(fileForSend).length - 1;
@@ -835,7 +834,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                                           size={78}
                                           {...defaultStyles.gif}
                                         />
-                                      ) : null}
+                                      ) : <FileIcon
+                                        extension={ext}
+                                        size={78}
+                                        {...defaultStyles.ext}
+                                      />}
                                       <span className="deleteBtn">
                                         <img
                                           src={deleteButtonCreateMeeting}

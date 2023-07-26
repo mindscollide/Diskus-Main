@@ -1043,5 +1043,7 @@
   "Shared-by": "Shared by",
   "Share-date": "Share date",
   "Last-modified-by-me": "Last modified by me",
-  "Last-open-by-me": "Last open by me"
+  "Last-open-by-me": "Last open by me",
+  "this-voter-already-exist": "This voter already exist",
+  "Upgrade-your-package-to-enable-the-user-other-changes-if-any-are-updated": "Upgrade your package to Enable the user. Other changes, if any, are updated"
 }

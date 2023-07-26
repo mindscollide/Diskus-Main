@@ -35,6 +35,10 @@ const PaymentForm = () => {
     DisountPer: "",
     OrderAmount: "",
   });
+  const [totalBillAmount, setTotalBillAmount] = useState({
+    MonthlyBill: 0,
+    TotalBill: 0
+  })
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const goBack = () => {
@@ -87,6 +91,16 @@ const PaymentForm = () => {
       calculateActualYearlyAmount - calculateAnnuallyPerAmount;
     return annuallyAmount.toFixed() / 12;
   };
+
+  useEffect(() => {
+    if (Authreducer.getSubscriptiondetails !== null) {
+      setTotalBillAmount({
+        TotalBill: Authreducer.getSubscriptiondetails.totalBill,
+        MonthlyBill: Authreducer.getSubscriptiondetails.monthlyBill
+      })
+    }
+  }, [Authreducer.getSubscriptiondetails])
+
   useEffect(() => {
     if (Authreducer.GetSelectedPacakgeDetails !== null) {
       let packageData =
@@ -249,8 +263,8 @@ const PaymentForm = () => {
                           : "MontserratBold-700 fs-4 invisible Arabicstyles  "
                       }
                     >
-                      ${isSelectedPacakage.ActualAmount}/
-                      <span className="fs-6 text-lowercase">{t("Month")}</span>
+                      ${totalBillAmount.TotalBill}/
+                      <span className="fs-6">{t("Annually")}</span>
                     </span>
 
                     <br />
@@ -261,9 +275,9 @@ const PaymentForm = () => {
                           : "MontserratBold-700 fs-4 color-5a5a5a Arabicstyles"
                       }
                     >
-                      $40/
-                      <span className="text-xs text-lowercase">
-                        {t("Month")}
+                      ${totalBillAmount.MonthlyBill}/
+                      <span className="text-xs ">
+                        {t("Annually")}
                       </span>
                     </span>
                   </div>
@@ -317,7 +331,7 @@ const PaymentForm = () => {
                         lg={6}
                         className="Subtotal-Value d-flex justify-content-end MontserratSemiBold-600 text-white"
                       >
-                        ${isSelectedPacakage.ActualAmount}
+                        ${totalBillAmount.TotalBill}
                       </Col>
                     </Row>
                   </Col>

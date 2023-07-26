@@ -1,6 +1,6 @@
 import axios from "axios";
-import { GetOrganizationSeletedPackageByOrganizationID } from "../../commen/apis/Api_config";
-import { getAdminURLs } from "../../commen/apis/Api_ends_points";
+import { GetOrganizationSeletedPackageByOrganizationID, subscriptiondetailsRequestMethod } from "../../commen/apis/Api_config";
+import { getAdminURLs, authenticationApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
 import { RefreshToken } from "./Auth_action";
 
@@ -106,4 +106,67 @@ const getSubscribeOrganizationPackage = (navigate, t) => {
       });
   };
 };
-export { getSubscribeOrganizationPackage };
+
+const getSubscriptionDetailPaymentDetails_init = () => {
+  return {
+    type: actions.GETSUBSCRIPTIONDETAIL_INIT
+  }
+}
+const getSubscriptionDetailPaymentDetails_success = (response, message) => {
+  return {
+    type: actions.GETSUBSCRIPTIONDETAIL_SUCCESS,
+    response: response,
+    message: message
+  }
+}
+const getSubscriptionDetailPaymentDetails_fail = (message) => {
+  return {
+    type: actions.GETSUBSCRIPTIONDETAIL_FAIL,
+    message: message
+  }
+}
+
+const getSubscriptionPaymentDetail = (navigate, TenureID, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+  let Data = { OrganizationID: organizationID, TenureOfSuscriptionID: TenureID }
+  return (dispatch) => {
+    dispatch(getSubscriptionDetailPaymentDetails_init());
+    let form = new FormData();
+    form.append("RequestMethod", subscriptiondetailsRequestMethod.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: authenticationApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(getSubscriptionPaymentDetail(navigate, TenureID, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(response, "responseresponseresponse");
+            if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_SignUpManager_SubscriptionDetail_01".toLowerCase())) {
+              dispatch(getSubscriptionDetailPaymentDetails_success(response.data.responseResult, t("Data-available")))
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_SignUpManager_SubscriptionDetail_02".toLowerCase())) {
+              dispatch(getSubscriptionDetailPaymentDetails_fail(t("No-data-available")))
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_SignUpManager_SubscriptionDetail_03".toLowerCase())) {
+              dispatch(getSubscriptionDetailPaymentDetails_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getSubscriptionDetailPaymentDetails_fail(t("Something-went-wrong")))
+          }
+        }
+      })
+      .catch((response) => {
+        dispatch(getSubscriptionDetailPaymentDetails_fail(t("Something-went-wrong"))
+        );
+      });
+  };
+}
+
+export { getSubscribeOrganizationPackage, getSubscriptionPaymentDetail };

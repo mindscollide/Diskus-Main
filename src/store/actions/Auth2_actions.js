@@ -18,6 +18,7 @@ import { RefreshToken } from "./Auth_action";
 import { TwoFaAuthenticate } from "./TwoFactorsAuthenticate_actions";
 import { mqttConnection } from "../../commen/functions/mqttconnection";
 import Helper from "../../commen/functions/history_logout";
+import { getSubscriptionPaymentDetail } from "./Admin_PackageDetail";
 const createOrganizationInit = () => {
   return {
     type: actions.SIGNUPORGANIZATION_INIT,
@@ -2625,6 +2626,8 @@ const getSelectedPacakgeDetail = (navigate, t) => {
                   t("Data-available")
                 )
               );
+              let TenureID = response.data.responseResult.organizationSelectedPackage.fK_TenureOfSubscription
+              dispatch(getSubscriptionPaymentDetail(navigate, TenureID, t))
               // navigate("/paymentForm")
             } else if (
               response.data.responseResult.responseMessage

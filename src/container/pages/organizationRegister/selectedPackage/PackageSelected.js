@@ -30,6 +30,10 @@ const PackageSelected = () => {
     City: "",
     PostalCode: "",
   });
+  const [totalBillAmount, setTotalBillAmount] = useState({
+    MonthlyBill: 0,
+    TotalBill: 0
+  })
   const [organizationDataRole, setorganizationDataRole] = useState({});
   const [countryData, setCountyData] = useState("");
   const [open, setOpen] = useState({
@@ -43,6 +47,7 @@ const PackageSelected = () => {
       PackageAllowedBoardMembers: "",
       PackageAllowedAdminMembers: "",
       PackageDescriptive: "",
+      TenureSubscription: 0
     });
   const [organizationDataSubscription, setorganizationDataSubscription] =
     useState({});
@@ -88,6 +93,7 @@ const PackageSelected = () => {
     City: "",
     PostalCode: "",
   });
+  console.log(packageSelectedData, "packageSelectedDatapackageSelectedData")
   console.log(Authreducer, countryNamesReducer, "AuthreducerAuthreducer");
   useEffect(() => {
     localStorage.removeItem("flagForSelectedPackeg");
@@ -154,21 +160,12 @@ const PackageSelected = () => {
       };
       setPackageSelectedData(Organizationdata);
       let PackageDetails = {
-        PackageTitle:
-          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
-            .packageName,
-        SelectedPackageAmount:
-          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
-            .packageActualPrice,
-        PackageAllowedBoardMembers:
-          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
-            .packageAllowedBoardMemberUsers,
-        PackageAllowedAdminMembers:
-          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
-            .packageAllowedAdminUsers,
-        PackageDescriptive:
-          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
-            .packageDescriptiveDetails,
+        PackageTitle: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageName,
+        SelectedPackageAmount: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageActualPrice,
+        PackageAllowedBoardMembers: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageAllowedBoardMemberUsers,
+        PackageAllowedAdminMembers: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageAllowedAdminUsers,
+        PackageDescriptive: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageDescriptiveDetails,
+        TenureSubscription: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.fK_TenureOfSubscription
       };
       console.log(
         "packageDetailpackageDetailpackageDetailpackageDetail",
@@ -179,6 +176,14 @@ const PackageSelected = () => {
     }
   }, [Authreducer.GetSelectedPacakgeDetails]);
 
+  useEffect(() => {
+    if (Authreducer.getSubscriptiondetails !== null) {
+      setTotalBillAmount({
+        TotalBill: Authreducer.getSubscriptiondetails.totalBill,
+        MonthlyBill: Authreducer.getSubscriptiondetails.monthlyBill
+      })
+    }
+  }, [Authreducer.getSubscriptiondetails])
   const goBacktoSignUp = () => {
     localStorage.setItem("flagForSelectedPackeg", true);
     navigate("/packageselection");
@@ -383,9 +388,9 @@ const PackageSelected = () => {
                             <h4 className="selected-amount d-flex justify-content-center align-items-end text-capitalize mb-2">
                               $
                               {
-                                organizationDataSelectedPackage.SelectedPackageAmount
+                                totalBillAmount.TotalBill
                               }
-                              /<p className=" m-0 p-0">{t("Month")}</p>
+                              /<p className=" m-0 p-0">{organizationDataSelectedPackage.TenureSubscription === 1 ? t("Annually") : organizationDataSelectedPackage.TenureSubscription === 2 ? t("Month") : null}</p>
                             </h4>
                             <p
                               className={

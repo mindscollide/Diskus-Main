@@ -360,10 +360,10 @@ const Summary = () => {
               lastPayment.PaymentReceivedDate
             )}
             ColThreeValue={
-              lastPayment.PaidAmount != 0 ? (
+              lastPayment.PaidAmount !== 0 ? (
                 <>$ {lastPayment.PaidAmount}</>
               ) : (
-                <>{lastPayment.PaidAmount}</>
+                <>{"--"}</>
               )
             }
           />

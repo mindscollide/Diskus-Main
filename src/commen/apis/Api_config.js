@@ -284,7 +284,7 @@ const GetOrganizationSeletedPackageByOrganizationID = {
   RequestMethod: 'ServiceManager.GetOrganizationSeletedPackageByOrganizationID',
 }
 const GetSubscriptionPackagesByOrganizationID = {
-  RequestMethod: 'ServiceManager.GetSubscriptionPackagesByOrganizationID',
+  RequestMethod: 'ServiceManager.GetSubscriptionPackagesForUpgrade',
 }
 const getMeetingStatus = {
   RequestMethod: 'ServiceManager.GetMeetingStatus',
@@ -722,6 +722,10 @@ const renameFolderRequestMethod = {
 const renameFileRequestMethod = {
   RequestMethod: "ServiceManager.RenameFile"
 }
+const subscriptiondetailsRequestMethod = {
+  RequestMethod: "ServiceManager.SubscriptionDetail"
+
+}
 
 export {
   revoketoken,
@@ -917,5 +921,6 @@ export {
   savePollsRequestMethod,
   getAllCommittesandGroupsforPolls,
   renameFolderRequestMethod,
-  renameFileRequestMethod
+  renameFileRequestMethod,
+  subscriptiondetailsRequestMethod
 }

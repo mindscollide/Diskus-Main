@@ -86,7 +86,7 @@ const LanguageSelector = () => {
     }
   }, [i18n]);
   return (
-    <section className="position-relative" ref={languageref}>
+    <section className="position-relative" ref={languageref} onClick={() => setLanguageDropdown(!languageDropdown)}  >
       <span
         className={
           location.pathname.includes("/DisKus/") ||
@@ -96,7 +96,7 @@ const LanguageSelector = () => {
             ? "text-white d-flex gap-2 align-items-center position-relative cursor-pointer"
             : "text-black d-flex gap-2 align-items-center position-relative cursor-pointer"
         }
-        onClick={() => setLanguageDropdown(!languageDropdown)}
+
       >
         <img
           src={
@@ -110,9 +110,9 @@ const LanguageSelector = () => {
         />
         {languageforView}
         {languageDropdown ? (
-          <ChevronUp fontWeight={"bold"} />
+          <ChevronUp />
         ) : (
-          <ChevronDown fontWeight={"bold"} />
+          <ChevronDown />
         )}
       </span>
       <div

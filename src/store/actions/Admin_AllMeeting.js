@@ -160,7 +160,8 @@ const updateOrganizationMeeting = (navigate, MeetingID, MeetingStatusID, t) => {
   let userID = localStorage.getItem("userID");
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationId = localStorage.getItem("organizationID");
-
+  let currentPageSize = JSON.parse(localStorage.getItem("MeetingPageSize"));
+  let currentPage = JSON.parse(localStorage.getItem("MeetingCurrentPage"));
   let data = {
     OrganizationID: parseInt(organizationId),
     RequestingUserID: parseInt(userID),
@@ -213,7 +214,7 @@ const updateOrganizationMeeting = (navigate, MeetingID, MeetingStatusID, t) => {
                 t("Meeting-updated")
               )
             );
-            dispatch(OrganizationMeetings(navigate, t));
+            dispatch(OrganizationMeetings(navigate, currentPage, currentPageSize, t));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -232,17 +233,17 @@ const updateOrganizationMeeting = (navigate, MeetingID, MeetingStatusID, t) => {
               )
           ) {
             dispatch(
-              updateOrganizationMeetingFail(t("Failed-to-update-meetingr"))
+              updateOrganizationMeetingFail(t("Failed-to-update-meeting"))
             );
           }
         } else {
           dispatch(
-            updateOrganizationMeetingFail(t("Failed-to-update-meetingr"))
+            updateOrganizationMeetingFail(t("Failed-to-update-meeting"))
           );
         }
       })
       .catch((response) => {
-        dispatch(updateOrganizationMeetingFail(t("Failed-to-update-meetingr")));
+        dispatch(updateOrganizationMeetingFail(t("Failed-to-update-meeting")));
       });
   };
 };
