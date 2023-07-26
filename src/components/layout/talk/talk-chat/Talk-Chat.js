@@ -4,6 +4,8 @@ import Picker from '@emoji-mart/react'
 import moment from 'moment'
 import './Talk-Chat.css'
 import { Triangle } from 'react-bootstrap-icons'
+import enUS from 'antd/es/date-picker/locale/en_US'
+
 import { Box } from '@material-ui/core'
 import {
   GetAllUserChats,
@@ -35,6 +37,7 @@ import {
   UpdateShoutAll,
   OtoMessageRetryFlag,
   InsertBulkMessages,
+  DownloadChat,
 } from '../../../../store/actions/Talk_action'
 import {
   newTimeFormaterAsPerUTCTalkTime,
@@ -135,7 +138,11 @@ const TalkChat = () => {
   //Current Date Time in variable
   // var currentDateTime = moment().format('YYYYMMDDHHmmss')
   // var currentDateYesterday = moment().subtract(1, 'days').format('YYYYMMDD')
-  // var currentDate = moment().format('YYYYMMDD')
+  var currentDateToday = moment().format('YYYYMMDD')
+
+  var minimumDate = moment.min().format('YYYYMMDD')
+  var maximumDate = moment.max().format('YYYYMMDD')
+
   // var currentTime = moment().format('HHmmss')
 
   const date = new Date()
@@ -1435,7 +1442,8 @@ const TalkChat = () => {
   }
 
   // for save chat
-  const modalHandlerSave = async (e) => {
+  const modalHandlerSave = async (data) => {
+    console.log('modalHandlerSave', data)
     setSave(true)
     setPrint(false)
     setEmail(false)
@@ -1486,6 +1494,101 @@ const TalkChat = () => {
     setCustomCheckState(e.target.checked)
     setTodayCheckState(false)
     setAllCheckState(false)
+  }
+
+  console.log(
+    'todayCheckState',
+    todayCheckState,
+    allCheckState,
+    customCheckState,
+  )
+
+  const downloadChat = () => {
+    let Data = {
+      TalkRequest: {
+        AdditionalChatFunctionsModel: {
+          MyID: parseInt(currentUserId),
+          ChatID: activeChat.id,
+          ChatType: activeChat.messageType,
+          ChannelID: parseInt(currentOrganizationId),
+          FromDate:
+            todayCheckState === true &&
+            allCheckState === false &&
+            customCheckState === false
+              ? currentDateToday
+              : todayCheckState === false &&
+                allCheckState === true &&
+                customCheckState === false
+              ? '19700101'
+              : todayCheckState === false &&
+                allCheckState === false &&
+                customCheckState === true
+              ? chatDateState.StartDate
+              : '',
+          ToDate:
+            todayCheckState === true &&
+            allCheckState === false &&
+            customCheckState === false
+              ? currentDateToday
+              : todayCheckState === false &&
+                allCheckState === true &&
+                customCheckState === false
+              ? '20991231'
+              : todayCheckState === false &&
+                allCheckState === false &&
+                customCheckState === true
+              ? chatDateState.EndDate
+              : '',
+        },
+      },
+    }
+    dispatch(DownloadChat(Data, t, navigate))
+    console.log('downloadChat', Data)
+    setSave(false)
+  }
+
+  const printChat = () => {
+    let Data = {
+      TalkRequest: {
+        AdditionalChatFunctionsModel: {
+          MyID: parseInt(currentUserId),
+          ChatID: activeChat.id,
+          ChatType: activeChat.messageType,
+          ChannelID: parseInt(currentOrganizationId),
+          FromDate:
+            todayCheckState === true &&
+            allCheckState === false &&
+            customCheckState === false
+              ? currentDateToday
+              : todayCheckState === false &&
+                allCheckState === true &&
+                customCheckState === false
+              ? '19700101'
+              : todayCheckState === false &&
+                allCheckState === false &&
+                customCheckState === true
+              ? chatDateState.StartDate
+              : '',
+          ToDate:
+            todayCheckState === true &&
+            allCheckState === false &&
+            customCheckState === false
+              ? currentDateToday
+              : todayCheckState === false &&
+                allCheckState === true &&
+                customCheckState === false
+              ? '20991231'
+              : todayCheckState === false &&
+                allCheckState === false &&
+                customCheckState === true
+              ? chatDateState.EndDate
+              : '',
+        },
+      },
+    }
+    dispatch(DownloadChat(Data, t, navigate))
+    console.log('downloadChat', Data)
+    setSave(false)
   }
 
   // Cancel Modal
@@ -1578,6 +1681,7 @@ const TalkChat = () => {
         [name]: DateSendingFormat(value),
       })
     }
+    console.log('Custom Dates', chatDateState.StartDate, chatDateState.EndDate)
   }
 
   //Show upload options or Hide
@@ -4547,6 +4651,41 @@ const TalkChat = () => {
 
   console.log('All OTO Messages', allOtoMessages)
 
+  useEffect(() => {
+    // Check the condition to trigger the link
+    if (
+      talkStateData.DownloadChatData.DownloadChatResponse !== null &&
+      talkStateData.DownloadChatData.DownloadChatResponse !== undefined &&
+      talkStateData.DownloadChatData.DownloadChatResponse.length !== 0
+    ) {
+      let fileDownloadURL =
+        filesUrlTalk +
+        talkStateData.DownloadChatData.DownloadChatResponse.filePath
+      window.open(fileDownloadURL, '_blank')
+    }
+  }, [talkStateData?.DownloadChatData?.DownloadChatResponse])
+
+  useEffect(() => {
+    if (
+      talkStateData.DownloadChatData.DownloadChatResponse !== null &&
+      talkStateData.DownloadChatData.DownloadChatResponse !== undefined &&
+      talkStateData.DownloadChatData.DownloadChatResponse.length !== 0
+    ) {
+    let fileDownloadURL =
+        filesUrlTalk +
+        talkStateData.DownloadChatData.DownloadChatResponse.filePath
+      window.open(fileDownloadURL, '_blank')
+    const newTab = window.open(fileDownloadURL, '_blank');
+
+    // Wait for the new tab to load the content before triggering print
+    setTimeout(() => {
+      newTab.print();
+      newTab.close(); // Optional: Close the tab after printing
+    }, 1000); // Adjust the delay time as needed
+  }
+
+  }, [talkStateData?.DownloadChatData?.DownloadChatResponse]);
+
   return (
     <>
       <div className={chatOpen === true ? 'chatBox height' : 'chatBox'}>
@@ -6412,11 +6551,23 @@ const TalkChat = () => {
                             <div className="dropdown-menus-chat">
                               {activeChat.messageType === 'O' && (
                                 <>
-                                  <span onClick={modalHandlerSave}>Save</span>
-                                  <span onClick={modalHandlerPrint}>Print</span>
+                                  <span
+                                    onClick={() => modalHandlerSave(activeChat)}
+                                  >
+                                    Save
+                                  </span>
+                                  <span
+                                    onClick={() =>
+                                      modalHandlerPrint(activeChat)
+                                    }
+                                  >
+                                    Print
+                                  </span>
                                   <span
                                     style={{ borderBottom: 'none' }}
-                                    onClick={modalHandlerEmail}
+                                    onClick={() =>
+                                      modalHandlerEmail(activeChat)
+                                    }
                                   >
                                     Email
                                   </span>
@@ -6424,9 +6575,25 @@ const TalkChat = () => {
                               )}
                               {activeChat.messageType === 'G' && (
                                 <>
-                                  <span onClick={modalHandlerSave}>Save</span>
-                                  <span onClick={modalHandlerPrint}>Print</span>
-                                  <span onClick={modalHandlerEmail}>Email</span>
+                                  <span
+                                    onClick={() => modalHandlerSave(activeChat)}
+                                  >
+                                    Save
+                                  </span>
+                                  <span
+                                    onClick={() =>
+                                      modalHandlerPrint(activeChat)
+                                    }
+                                  >
+                                    Print
+                                  </span>
+                                  <span
+                                    onClick={() =>
+                                      modalHandlerEmail(activeChat)
+                                    }
+                                  >
+                                    Email
+                                  </span>
                                   <span onClick={modalHandlerGroupInfo}>
                                     Group Info
                                   </span>
@@ -6448,9 +6615,25 @@ const TalkChat = () => {
                               )}
                               {activeChat.messageType === 'B' && (
                                 <>
-                                  <span onClick={modalHandlerSave}>Save</span>
-                                  <span onClick={modalHandlerPrint}>Print</span>
-                                  <span onClick={modalHandlerEmail}>Email</span>
+                                  <span
+                                    onClick={() => modalHandlerSave(activeChat)}
+                                  >
+                                    Save
+                                  </span>
+                                  <span
+                                    onClick={() =>
+                                      modalHandlerPrint(activeChat)
+                                    }
+                                  >
+                                    Print
+                                  </span>
+                                  <span
+                                    onClick={() =>
+                                      modalHandlerEmail(activeChat)
+                                    }
+                                  >
+                                    Email
+                                  </span>
                                   <span onClick={deleteShoutFunction}>
                                     Delete Shout
                                   </span>
@@ -7958,7 +8141,7 @@ const TalkChat = () => {
                                 </>
                               )}
                               <div ref={chatMessages} />
-                              {isRetryAttemptComplete === true ? (
+                              {/* {isRetryAttemptComplete === true ? (
                                 <div className="Retry-Delete-Feature">
                                   <span
                                     onClick={retryAttempt}
@@ -7973,7 +8156,7 @@ const TalkChat = () => {
                                     Delete
                                   </span>
                                 </div>
-                              ) : null}
+                              ) : null} */}
                             </div>
                           ) : (
                             <>
@@ -8089,6 +8272,7 @@ const TalkChat = () => {
                                           DateRange
                                           placeholder={t('Select-date')}
                                           change={onChangeDate}
+                                          locale={enUS}
                                         />
                                       </Col>
                                       <Col lg={5} md={5} sm={12}>
@@ -8112,6 +8296,7 @@ const TalkChat = () => {
                                           placeholder={'Select Date'}
                                           change={onChangeDate}
                                           disable={endDatedisable}
+                                          locale={enUS}
                                         />
                                       </Col>
                                       <Col lg={1} md={1} sm={12}></Col>
@@ -8129,7 +8314,7 @@ const TalkChat = () => {
                                   <Button
                                     className="MontserratSemiBold Ok-btn"
                                     text="Okay"
-                                    onClick={handleCancel}
+                                    onClick={downloadChat}
                                   />
                                 </Col>
                               </Row>
@@ -8230,7 +8415,7 @@ const TalkChat = () => {
                                   <Button
                                     className="MontserratSemiBold Ok-btn"
                                     text="Okay"
-                                    onClick={handleCancel}
+                                    onClick={printChat}
                                   />
                                 </Col>
                               </Row>

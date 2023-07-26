@@ -697,30 +697,34 @@ const searchNoteRequetMethod = {
   RequestMethod: 'ServiceManager.SearchNotes',
 }
 const paymentMethodsRequestMethod = {
-  RequestMethod: "ServiceManager.GetPaymentMethods"
+  RequestMethod: 'ServiceManager.GetPaymentMethods',
 }
 
 const searchPaymentHistoryRequestMethod = {
-  RequestMethod: "ServiceManager.InvoicesAndPaymentHistory"
+  RequestMethod: 'ServiceManager.InvoicesAndPaymentHistory',
 }
 
 const searcPollsRequestMethod = {
-  RequestMethod: "ServiceManager.SearchPolls"
+  RequestMethod: 'ServiceManager.SearchPolls',
 }
 
 const savePollsRequestMethod = {
-  RequestMethod: 'ServiceManager.SavePoll'
+  RequestMethod: 'ServiceManager.SavePoll',
 }
 
 const getAllCommittesandGroupsforPolls = {
-  RequestMethod: 'ServiceManager.GetAllGroupsAndCommitteesByOrganizaitonID'
+  RequestMethod: 'ServiceManager.GetAllGroupsAndCommitteesByOrganizaitonID',
 }
 
 const renameFolderRequestMethod = {
-  RequestMethod: 'ServiceManager.RenameFolder'
+  RequestMethod: 'ServiceManager.RenameFolder',
 }
 const renameFileRequestMethod = {
-  RequestMethod: "ServiceManager.RenameFile"
+  RequestMethod: 'ServiceManager.RenameFile',
+}
+
+const downloadChat = {
+  RequestMethod: 'ServiceManager.DownloadChat',
 }
 
 export {
@@ -917,5 +921,6 @@ export {
   savePollsRequestMethod,
   getAllCommittesandGroupsforPolls,
   renameFolderRequestMethod,
-  renameFileRequestMethod
+  renameFileRequestMethod,
+  downloadChat,
 }
