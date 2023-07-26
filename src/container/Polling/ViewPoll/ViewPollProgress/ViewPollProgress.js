@@ -63,6 +63,7 @@ const ViewPollProgress = () => {
       ...checkboxesState,
       checkedYes: !checkboxesState.checkedYes,
     });
+    console.log(checkboxesState.checkedYes, "checkedYescheckedYescheckedYes");
   };
 
   const changeDateStartHandler2 = (date) => {
@@ -198,7 +199,10 @@ const ViewPollProgress = () => {
                     {viewProgressPollsDetails.AllowMultipleAnswers === true ? (
                       ""
                     ) : (
-                      <CustomRadio className={styles["Custom_radio_button"]} />
+                      <CustomRadio
+                        change={HandleCheckBoxYes}
+                        className={styles["Custom_radio_button"]}
+                      />
                     )}
                   </Col>
                   <Col
@@ -237,7 +241,10 @@ const ViewPollProgress = () => {
                     {viewProgressPollsDetails.AllowMultipleAnswers === true ? (
                       ""
                     ) : (
-                      <CustomRadio className={styles["Custom_radio_button"]} />
+                      <CustomRadio
+                        change={HandleCheckBoxYes}
+                        className={styles["Custom_radio_button"]}
+                      />
                     )}
                   </Col>
                   <Col
