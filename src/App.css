@@ -5654,7 +5654,7 @@ body[dir="rtl"] .ant-result-subtitle {
 }
 
 .form-check-input:checked {
-  background: #4adede !important;
+  /* background: #4adede !important; */
   border-radius: none !important;
   border: none;
 }

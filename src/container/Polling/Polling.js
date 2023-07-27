@@ -18,9 +18,12 @@ import UpdatePolls from "./UpdatePolls/UpdatePolls";
 import plusbutton from "../../assets/images/Group 119.svg";
 import ViewPoll from "./ViewPoll/ViewPoll";
 import ViewPollProgress from "./ViewPoll/ViewPollProgress/ViewPollProgress";
+import moment from "moment";
+import { registerLocale } from "react-datepicker";
 import PollDetails from "./PollDetails/PollDetails";
 import Votepoll from "./VotePoll/Votepoll";
 import UpdateSecond from "./UpdateSecond/UpdateSecond";
+import { enGB, ar } from "date-fns/locale";
 import { useDispatch, useSelector } from "react-redux";
 import {
   LoaderState,
@@ -62,6 +65,8 @@ const Polling = () => {
   });
   const [rows, setRows] = useState([]);
   let currentLanguage = localStorage.getItem("i18nextLng");
+  registerLocale("ar", ar);
+  registerLocale("en", enGB);
   const [searchBoxState, setsearchBoxState] = useState({
     searchByName: "",
     searchByTitle: "",
@@ -321,6 +326,16 @@ const Polling = () => {
   const HandleShowSearch = () => {
     setSearchpoll(true);
   };
+
+  useEffect(() => {
+    if (currentLanguage === "ar") {
+      moment.locale(currentLanguage);
+    } else if (currentLanguage === "fr") {
+      moment.locale(currentLanguage);
+    } else {
+      moment.locale(currentLanguage);
+    }
+  }, [currentLanguage]);
 
   useEffect(() => {
     try {
