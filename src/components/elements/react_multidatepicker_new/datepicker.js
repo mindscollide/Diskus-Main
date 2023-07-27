@@ -18,7 +18,6 @@ const MultiDatePickers = ({
 }) => {
   let dateFormat = "DD/MM/YYYY";
   const datePickerRef = useRef(null);
-
   const handleIconClick = () => {
     if (datePickerRef.current) {
       datePickerRef.current.openCalendar();

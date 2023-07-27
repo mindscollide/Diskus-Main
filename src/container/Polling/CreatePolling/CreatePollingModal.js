@@ -40,9 +40,7 @@ import makeAnimated from "react-select/animated";
 import { registerLocale } from "react-datepicker";
 import moment from "moment";
 import { newDateFormaterAsPerUTC } from "../../../commen/functions/date_formater";
-
-import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees";
-import { clearMessagesGroup } from "../../../store/actions/Groups_actions";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
 
 const CreatePolling = () => {
   const animatedComponents = makeAnimated();
@@ -104,8 +102,8 @@ const CreatePolling = () => {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
       } else if (currentLanguage === "ar") {
-        setCalendarValue(arabic);
-        setLocalValue(arabic_ar);
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
       }
     }
   }, [currentLanguage]);
@@ -213,8 +211,7 @@ const CreatePolling = () => {
     }
   }, [PollsReducer.gellAllCommittesandGroups]);
 
-  console.log(dropdowndata, "PollsReducerPollsReducer1212");
-  // for selecgtion of data
+  // for selection of data
   const handleSelectValue = (value) => {
     setSelectedsearch(value);
   };
@@ -309,40 +306,28 @@ const CreatePolling = () => {
 
   const changeDateStartHandler = (date) => {
     let newDate = moment(date).format("YYYYMMDD");
-    console.log(date, "SavePollsButtonFunc");
-
-    // let newDate = new DateObject(date).format("YYYYMMDD");
-    console.log(newDate, "SavePollsButtonFunc");
-
     setcreatePollData({
       ...createPollData,
       date: newDate,
     });
-    console.log(newDate, "changeDateStartHandler");
   };
+
   const changeDateStartHandler2 = (date) => {
     let newDate = moment(date).format("DD MMMM YYYY");
-
     return newDate;
   };
+
   // for create polls
   const SavePollsButtonFunc = async (value) => {
-    console.log(value, "SavePollsButtonFunc");
-
     const organizationid = localStorage.getItem("organizationID");
     const createrid = localStorage.getItem("userID");
     let users = [];
     let optionsListData = [];
-    console.log(value, "SavePollsButtonFunc");
-    console.log(options.length, "SavePollsButtonFunc");
     if (Object.keys(options).length >= 2) {
-      console.log(value, "SavePollsButtonFunc");
       if (Object.keys(members).length > 0) {
-        console.log(value, "SavePollsButtonFunc");
         members.map((userdata, index) => {
           users.push(userdata.userID);
         });
-        console.log(value, "SavePollsButtonFunc");
         options.map((optionData, index) => {
           if (optionData.value != "") {
             optionsListData.push(optionData.value);
@@ -354,7 +339,6 @@ const CreatePolling = () => {
           }
         });
         if (createPollData.date != "") {
-          console.log(createPollData.date, "SavePollsButtonFunc");
           let data = {
             PollDetails: {
               PollTitle: createPollData.TypingTitle,
@@ -367,7 +351,7 @@ const CreatePolling = () => {
             ParticipantIDs: users,
             PollAnswers: optionsListData,
           };
-          console.log(data, "SavePollsButtonFunc");
+
           await dispatch(SavePollsApi(navigate, data, t));
         } else {
           // setopen notfication for date
@@ -417,18 +401,16 @@ const CreatePolling = () => {
       }
     }
   };
+
   const HandleOptionChange = (e) => {
     let name = parseInt(e.target.name);
     let newValue = e.target.value;
-
     setOptions((prevState) =>
       prevState.map((item) => {
-        console.log(item, "HandleOptionChange");
         return item.name === name ? { ...item, value: newValue } : item;
       })
     );
   };
-  console.log("HandleOptionChange", options);
 
   const addNewRow = () => {
     if (options.length > 1) {
@@ -508,11 +490,9 @@ const CreatePolling = () => {
                               : ""}
                           </span>
                           <MultiDatePickers
-                            // onChange={meetingDateHandler}
                             value={createPollData.date}
                             name="MeetingDate"
                             check={true}
-                            // value={meetingDate}
                             calendar={calendarValue}
                             locale={localValue}
                             onChange={(value) =>
@@ -520,7 +500,6 @@ const CreatePolling = () => {
                                 value?.toDate?.().toString()
                               )
                             }
-                            // newValue={createMeeting.MeetingDate}
                           />
                         </Col>
                       </Row>
