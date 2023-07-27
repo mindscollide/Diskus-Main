@@ -375,15 +375,6 @@ const CreatePolling = () => {
       // setopen notfication for polls add atlese 2 option
     }
   };
-  const HandleSearch = (e) => {
-    if (e.target.value.trimStart() != "") {
-      setAssignees(e.target.value.trimStart());
-    } else {
-      setAssignees("");
-    }
-
-    console.log(assignees, "assigneesassignees");
-  };
 
   const HandleChange = (e, index) => {
     let name = e.target.name;

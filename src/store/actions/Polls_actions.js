@@ -342,6 +342,23 @@ const castVoteApi = (navigate, data, t) => {
             await dispatch(
               castVoteSuccess(response.data.responseResult, t("Vote-casted"))
             );
+            let organizationID = localStorage.getItem("organizationID");
+            let userID = localStorage.getItem("userID");
+            let data = {
+              UserID: parseInt(userID),
+              OrganizationID: parseInt(organizationID),
+              CreatorName: "",
+              PageNumber: 1,
+              Length: 50,
+            };
+            dispatch(setEditpollModal(false));
+            dispatch(setCreatePollModal(false));
+            dispatch(setviewpollProgressModal(false));
+            dispatch(globalFlag(false));
+            dispatch(viewVotesDetailsModal(false));
+            dispatch(setviewpollModal(false));
+            dispatch(setVotePollModal(false));
+            dispatch(searchPollsApi(navigate, t, data));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -513,6 +530,7 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
               await dispatch(setCreatePollModal(false));
               await dispatch(setviewpollProgressModal(false));
               await dispatch(viewVotesDetailsModal(false));
+              await dispatch(setVotePollModal(false));
               await dispatch(globalFlag(true));
               await dispatch(setEditpollModal(true));
               console.log("handleEditpollModal", check);
@@ -522,6 +540,7 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
               await dispatch(setviewpollProgressModal(false));
               await dispatch(globalFlag(false));
               await dispatch(viewVotesDetailsModal(false));
+              await dispatch(setVotePollModal(false));
               await dispatch(setEditpollModal(true));
               console.log("handleEditpollModal", check);
             } else if (parseInt(check) === 3) {
@@ -530,6 +549,7 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
               await dispatch(setviewpollModal(false));
               await dispatch(viewVotesDetailsModal(false));
               await dispatch(globalFlag(false));
+              await dispatch(setVotePollModal(false));
               await dispatch(setviewpollProgressModal(true));
               console.log("handleEditpollModal", check);
             } else if (parseInt(check) === 4) {
@@ -538,8 +558,17 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
               await dispatch(setviewpollProgressModal(false));
               await dispatch(globalFlag(false));
               await dispatch(viewVotesDetailsModal(false));
+              await dispatch(setVotePollModal(false));
               await dispatch(setviewpollModal(true));
               console.log("handleEditpollModal", check);
+            } else if (parseInt(check) === 5) {
+              await dispatch(setEditpollModal(false));
+              await dispatch(setCreatePollModal(false));
+              await dispatch(setviewpollProgressModal(false));
+              await dispatch(globalFlag(false));
+              await dispatch(viewVotesDetailsModal(false));
+              await dispatch(setviewpollModal(false));
+              await dispatch(setVotePollModal(true));
             }
             await dispatch(
               getAllPollsByPollsIDSuccess(

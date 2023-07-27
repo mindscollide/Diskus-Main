@@ -28,7 +28,7 @@
 
 .Border_box {
   width: 100%;
-  height: auto !important;
+  height: 46px !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
 }

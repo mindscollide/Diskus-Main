@@ -29,10 +29,14 @@ import {
   LoaderState,
   castVoteApi,
   getPollsByPollIdApi,
+  globalFlag,
   searchPollsApi,
   setCreatePollModal,
   setEditpollModal,
+  setVotePollModal,
   setviewpollModal,
+  setviewpollProgressModal,
+  viewVotesDetailsModal,
 } from "../../store/actions/Polls_actions";
 import { useNavigate } from "react-router-dom";
 import {
@@ -51,7 +55,6 @@ const Polling = () => {
     flag: false,
     message: "",
   });
-  let userID = localStorage.getItem("userID");
   const [pollsState, setPollsState] = useState({
     searchValue: "",
   });
@@ -63,9 +66,10 @@ const Polling = () => {
     searchByName: "",
     searchByTitle: "",
   });
+  let organizationID = localStorage.getItem("organizationID");
+  let userID = localStorage.getItem("userID");
 
   const [searchpoll, setSearchpoll] = useState(false);
-  let organizationID = localStorage.getItem("organizationID");
 
   useEffect(() => {
     let data = {
@@ -75,6 +79,13 @@ const Polling = () => {
       PageNumber: 1,
       Length: 50,
     };
+    dispatch(setEditpollModal(false));
+    dispatch(setCreatePollModal(false));
+    dispatch(setviewpollProgressModal(false));
+    dispatch(globalFlag(false));
+    dispatch(viewVotesDetailsModal(false));
+    dispatch(setviewpollModal(false));
+    dispatch(setVotePollModal(false));
     dispatch(searchPollsApi(navigate, t, data));
   }, []);
 
@@ -119,7 +130,6 @@ const Polling = () => {
   };
 
   const handleSearchEvent = () => {
-    let organizationID = localStorage.getItem("organizationID");
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
@@ -362,13 +372,13 @@ const Polling = () => {
   }, [PollsReducer.ResponseMessage]);
 
   const handleVotePolls = (record) => {
-    let data = {
-      PollID: parseInt(record.pollID),
-      UserID: parseInt(userID),
-      PollOptionIDs: [4],
-    };
-    console.log(data, "datadatadatadatadatadata");
-    // dispatch(castVoteApi(navigate, data, t));
+    if (Object.keys(record).length > 0) {
+      let data = {
+        PollID: record.pollID,
+        UserID: parseInt(userID),
+      };
+      dispatch(getPollsByPollIdApi(navigate, data, 5, t));
+    }
   };
 
   const HandleCloseSearchModal = () => {

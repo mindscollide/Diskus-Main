@@ -712,5 +712,6 @@
   "Poll-not-created": "Poll Not Created",
   "Participant-list-of-consists-of-duplicate-members": "Participant List Consists Of Duplicate Members",
   "There-must-be-at-least-two-poll-options": "There must be at least two Poll options",
-  "Search-by-title": "Search by Title"
+  "Search-by-title": "Search by Title",
+  "Required-atleast-one-vote": "Required Atleast One Vote"
 }
