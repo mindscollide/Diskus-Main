@@ -102,12 +102,6 @@ const ViewPollProgress = () => {
     }
   }, [PollsReducer.Allpolls]);
 
-  console.log(pollsOption, "pollsOptionpollsOptionpollsOptionpollsOption");
-  console.log(
-    viewProgressPollsDetails.PollID,
-    "viewProgressPollsDetailsviewProgressPollsDetailsviewProgressPollsDetails"
-  );
-
   const HandleCheckBoxYes = () => {
     setCheckboxesState({
       ...checkboxesState,
@@ -122,15 +116,7 @@ const ViewPollProgress = () => {
     return newDate;
   };
 
-  const HandleCheckBoxNo = () => {
-    setCheckboxesState({
-      ...checkboxesState,
-      checkedNO: !checkboxesState.checkedNO,
-    });
-  };
-
   const handleViewVotes = () => {
-    dispatch(viewVotesDetailsModal(true));
     let data = {
       PollID: viewProgressPollsDetails.PollID,
     };

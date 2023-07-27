@@ -46,15 +46,7 @@ const Polling = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { PollsReducer } = useSelector((state) => state);
-  console.log(PollsReducer, "PollsReducerPollsReducerPollsReducerPollsReducer");
-  const [isUpdatePoll, setIsUpdatePoll] = useState(false);
-  const [viewprogress, setViewprogress] = useState(false);
-  const [pollData, setPollData] = useState([]);
   const [updatePublished, setUpdatePublished] = useState(false);
-  const [isVotePoll, setisVotePoll] = useState(false);
-  const [viewPollsDetails, setViewPollsDetails] = useState(false);
-  const [isViewPoll, setIsViewPoll] = useState(false);
-  const [totalRecords, setTotalRecord] = useState(0);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -73,22 +65,18 @@ const Polling = () => {
   });
 
   const [searchpoll, setSearchpoll] = useState(false);
+  let organizationID = localStorage.getItem("organizationID");
 
-  const showViewProgressBarModal = () => {
-    setViewprogress(true);
-  };
-
-  const ShowPollsDetailsModal = () => {
-    setViewPollsDetails(true);
-  };
-
-  const OpenVotePollModal = () => {
-    setisVotePoll(true);
-  };
-
-  const OpenUpdatePublished = () => {
-    setUpdatePublished(true);
-  };
+  useEffect(() => {
+    let data = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(organizationID),
+      CreatorName: searchBoxState.searchByName,
+      PageNumber: 1,
+      Length: 50,
+    };
+    dispatch(searchPollsApi(navigate, t, data));
+  }, []);
 
   const handleEditpollModal = (record) => {
     console.log("handleEditpollModal", record);
@@ -111,7 +99,6 @@ const Polling = () => {
   };
 
   const handleViewModal = (record) => {
-    console.log("recordrecordrecordrecordrecord", record);
     let check = 0;
     if (record.wasPollPublished) {
       if (record.pollStatus.pollStatusId === 3) {
@@ -127,8 +114,6 @@ const Polling = () => {
       UserID: parseInt(userID),
     };
     if (Object.keys(record).length > 0) {
-      console.log("handleEditpollModal", check);
-      console.log("handleEditpollModal", data);
       dispatch(getPollsByPollIdApi(navigate, data, check, t));
     }
   };
@@ -343,7 +328,6 @@ const Polling = () => {
         PollsReducer.SearchPolls !== null &&
         PollsReducer.SearchPolls !== undefined
       ) {
-        setTotalRecord(PollsReducer.SearchPolls.totalRecords);
         if (PollsReducer.SearchPolls.polls.length > 0) {
           setRows(PollsReducer.SearchPolls.polls);
         } else {
@@ -377,18 +361,6 @@ const Polling = () => {
     }
   }, [PollsReducer.ResponseMessage]);
 
-  useEffect(() => {
-    console.log(PollsReducer, "PollsReducerPollsReducer");
-    let userIds = [];
-    if (
-      PollsReducer.SearchPolls !== null &&
-      PollsReducer.SearchPolls !== undefined
-    ) {
-    }
-  }, [PollsReducer.SearchPolls]);
-
-  console.log(pollData, "pollDatapollDatapollData");
-
   const handleVotePolls = (record) => {
     let data = {
       PollID: parseInt(record.pollID),
@@ -399,24 +371,9 @@ const Polling = () => {
     // dispatch(castVoteApi(navigate, data, t));
   };
 
-  let organizationID = localStorage.getItem("organizationID");
-  useEffect(() => {
-    let data = {
-      UserID: parseInt(userID),
-      OrganizationID: parseInt(organizationID),
-      CreatorName: searchBoxState.searchByName,
-      PageNumber: 1,
-      Length: 50,
-    };
-    dispatch(searchPollsApi(navigate, t, data));
-  }, []);
-
   const HandleCloseSearchModal = () => {
     setSearchpoll(false);
   };
-  console.log(PollsReducer.createPollmodal, "handleEditpollModal ");
-  console.log(PollsReducer.viewPollModal, "handleEditpollModal ");
-  console.log(PollsReducer.editpollmodal, "handleEditpollModal ");
   return (
     <>
       <section className={styles["Poll_Container"]}>
@@ -446,9 +403,7 @@ const Polling = () => {
           <Col sm={12} md={9} lg={9} className="justify-content-end d-flex ">
             <span className="position-relative">
               <TextField
-                // value={filterVal}
                 width={"502px"}
-                // change={handleFilter}
                 placeholder={t("Search")}
                 applyClass={"PollingSearchInput"}
                 name={"SearchVal"}
@@ -456,16 +411,12 @@ const Polling = () => {
                 change={HandleSearchPollsMain}
                 labelClass="d-none"
                 clickIcon={HandleShowSearch}
-                // onDoubleClick={searchbardropdownShow}
-
                 inputicon={
                   <img
                     src={searchicon}
                     className={styles["Search_Bar_icon_class"]}
-                    // className={styles["GlobalSearchFieldICon"]}
                   />
                 }
-                // clickIcon={SearchiconClickOptions}
                 iconClassName={styles["polling_searchinput"]}
               />
               {searchpoll ? (

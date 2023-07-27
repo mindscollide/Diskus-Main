@@ -10,27 +10,16 @@ import { style } from "@material-ui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
+  getPollsByPollIdApi,
+  setviewpollProgressModal,
   viewVotesApi,
   viewVotesDetailsModal,
 } from "../../../store/actions/Polls_actions";
-const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
+const PollDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { PollsReducer } = useSelector((state) => state);
-  console.log(
-    PollsReducer.Allpolls,
-    "PollsReducerPollsReducerPollsReducerPollsReducer"
-  );
-
-  useEffect(() => {
-    // let data = {
-    //   PollID: 1,
-    // };
-    // dispatch(viewVotesApi(navigate, data, t));
-  }, []);
-
   const [yesParticipants, setyesParticipants] = useState([]);
-
   const [noParticipants, setNoParticipants] = useState([
     {
       id: 1,
@@ -58,6 +47,28 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
     },
   ]);
   const { t } = useTranslation();
+  const [pollId, setPollId] = useState(0);
+  let userID = localStorage.getItem("userID");
+
+  useEffect(() => {
+    let vieVotePollDetails = PollsReducer.viewVotes;
+    console.log("handleClosed", vieVotePollDetails);
+
+    if (vieVotePollDetails != undefined && vieVotePollDetails != null) {
+      if (Object.keys(vieVotePollDetails).length > 0) {
+        setPollId(vieVotePollDetails.pollDetails.pollID);
+      }
+    }
+  }, [PollsReducer.viewVotes]);
+
+  const handleClosed = async () => {
+    let data = {
+      PollID: pollId,
+      UserID: parseInt(userID),
+    };
+    dispatch(getPollsByPollIdApi(navigate, data, 3, t));
+    // await dispatch(setviewpollProgressModal(true));
+  };
   return (
     <Container>
       <Modal
@@ -354,9 +365,7 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
                     <Button
                       text={t("Close")}
                       className={styles["Class_Close"]}
-                      onClick={() => {
-                        dispatch(viewVotesDetailsModal(false));
-                      }}
+                      onClick={() => handleClosed()}
                     />
                   </Col>
                 </Row>

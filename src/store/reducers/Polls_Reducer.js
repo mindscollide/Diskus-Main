@@ -104,12 +104,14 @@ const PollsReducer = (state = initialState, action) => {
 
     case actions.VIEW_POLL_MODAL: {
       return {
+        ...state,
         viewPollModal: action.response,
       };
     }
 
     case actions.VOTE_POLL_MODAL: {
       return {
+        ...state,
         isVotePollModal: action.response,
       };
     }
@@ -225,12 +227,14 @@ const PollsReducer = (state = initialState, action) => {
 
     case actions.VIEW_POLL_PROGRESS: {
       return {
+        ...state,
         viewPollProgress: action.response,
       };
     }
 
     case actions.VIEW_VOTES_DETAILS: {
       return {
+        ...state,
         viewVotesDetails: action.response,
       };
     }
@@ -243,11 +247,13 @@ const PollsReducer = (state = initialState, action) => {
     }
 
     case actions.VIEW_VOTES_SUCCESS: {
+      console.log("handleClosed", action.response);
+
       return {
         ...state,
         Loading: false,
         viewVotes: action.response,
-        ResponseMessage: action.response,
+        ResponseMessage: action.message,
       };
     }
 
@@ -255,7 +261,7 @@ const PollsReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.response,
+        ResponseMessage: action.message,
       };
     }
     default: {

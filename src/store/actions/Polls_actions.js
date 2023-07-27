@@ -512,6 +512,7 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
               await dispatch(setviewpollModal(false));
               await dispatch(setCreatePollModal(false));
               await dispatch(setviewpollProgressModal(false));
+              await dispatch(viewVotesDetailsModal(false));
               await dispatch(globalFlag(true));
               await dispatch(setEditpollModal(true));
               console.log("handleEditpollModal", check);
@@ -520,12 +521,14 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
               await dispatch(setCreatePollModal(false));
               await dispatch(setviewpollProgressModal(false));
               await dispatch(globalFlag(false));
+              await dispatch(viewVotesDetailsModal(false));
               await dispatch(setEditpollModal(true));
               console.log("handleEditpollModal", check);
             } else if (parseInt(check) === 3) {
               await dispatch(setEditpollModal(false));
               await dispatch(setCreatePollModal(false));
               await dispatch(setviewpollModal(false));
+              await dispatch(viewVotesDetailsModal(false));
               await dispatch(globalFlag(false));
               await dispatch(setviewpollProgressModal(true));
               console.log("handleEditpollModal", check);
@@ -534,6 +537,7 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
               await dispatch(setCreatePollModal(false));
               await dispatch(setviewpollProgressModal(false));
               await dispatch(globalFlag(false));
+              await dispatch(viewVotesDetailsModal(false));
               await dispatch(setviewpollModal(true));
               console.log("handleEditpollModal", check);
             }
@@ -585,6 +589,9 @@ const viewVotesInit = () => {
 };
 
 const viewVotesSuccess = (response, message) => {
+  console.log("handleClosed", response);
+  console.log("handleClosed", message);
+
   return {
     type: actions.VIEW_VOTES_SUCCESS,
     response: response,
@@ -624,10 +631,20 @@ const viewVotesApi = (navigate, data, t) => {
               .toLowerCase()
               .includes("Polls_PollsServiceManager_ViewVotes_01".toLowerCase())
           ) {
+            await dispatch(setEditpollModal(false));
+            await dispatch(setCreatePollModal(false));
+            await dispatch(setviewpollModal(false));
+            await dispatch(globalFlag(false));
+            await dispatch(setviewpollProgressModal(false));
             await dispatch(
-              viewVotesSuccess(response.data.responseResult, t("Record-found"))
+              viewVotesSuccess(
+                response.data.responseResult.voteDetails,
+                t("Record-found")
+              )
             );
-            dispatch(viewVotesDetailsModal(true));
+            console.log("handleClosed", response.data.responseResult);
+
+            await dispatch(viewVotesDetailsModal(true));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -645,7 +662,7 @@ const viewVotesApi = (navigate, data, t) => {
               .toLowerCase()
               .includes("Polls_PollsServiceManager_ViewVotes_04".toLowerCase())
           ) {
-            dispatch(viewVoteFailed(t("Exception")));
+            dispatch(viewVoteFailed(t("Something-went-wrong")));
           }
         } else {
           dispatch(viewVoteFailed(t("Something-went-wrong")));
