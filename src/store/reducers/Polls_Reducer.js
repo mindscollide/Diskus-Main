@@ -126,6 +126,7 @@ const PollsReducer = (state = initialState, action) => {
     case actions.CAST_VOTE_SUCCESS: {
       return {
         ...state,
+        Loading: false,
         pollOptions: action.response,
         ResponseMessage: action.message,
       };
@@ -134,6 +135,7 @@ const PollsReducer = (state = initialState, action) => {
     case actions.CAST_VOTE_FAIL: {
       return {
         ...state,
+        Loading: false,
         ResponseMessage: action.message,
       };
     }
