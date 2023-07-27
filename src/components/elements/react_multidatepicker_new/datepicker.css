@@ -1,0 +1,17 @@
+.react-multi-date-picker {
+  /* Add your default styles for the date picker here */
+}
+
+/* Remove the default current date color */
+.react-multi-date-picker .rmdp-day--current {
+  background-color: transparent;
+}
+
+/* Apply custom styles to the selected date */
+.react-multi-date-picker .rmdp-day--selected {
+  color: #fff !important;
+  background-image: linear-gradient(
+    #4bdbde,
+    #5f7ad7
+  ) !important; /* Set the text color for the selected date */
+}

@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import DatePicker from "react-multi-date-picker";
 import moment from "moment";
 import { PencilSquare } from "react-bootstrap-icons";
+import "./datepicker.css";
 // import Icon from "react-multi-date-picker/components/icon";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 
@@ -15,6 +16,7 @@ const MultiDatePickers = ({
   calendar,
   locale,
   check,
+  multiple,
 }) => {
   let dateFormat = "DD/MM/YYYY";
   const datePickerRef = useRef(null);
@@ -40,6 +42,7 @@ const MultiDatePickers = ({
     <>
       <label className="f-0">
         <DatePicker
+          defaultValue={value}
           ref={datePickerRef}
           render={<CustomIcon />}
           onChange={onChange}
@@ -47,7 +50,7 @@ const MultiDatePickers = ({
           minDate={moment().toDate()}
           disabled={disabled}
           name={name}
-          value={value}
+          multiple={multiple}
           calendar={calendar}
           locale={locale}
         />

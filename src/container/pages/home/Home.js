@@ -817,14 +817,6 @@ const Home = () => {
           ),
         1
       );
-
-      // const date = new Date(dateString);
-      // let updateStartDate = new Date(
-      //   date.getFullYear(),
-      //   date.getMonth() -
-      //     parseInt(CalenderMonthsSpan === 0 ? CalenderMonthsSpan : 1),
-      //   1
-      // );
       let calendarData = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(OrganizationID),

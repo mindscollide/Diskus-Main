@@ -11,6 +11,7 @@ const initialState = {
   viewPollProgress: false,
   viewVotesDetails: false,
   editPollModalFlag: false,
+  viewVotes: null,
   SavePoll: null,
   gellAllCommittesandGroups: null,
   pollOptions: [],
@@ -231,6 +232,30 @@ const PollsReducer = (state = initialState, action) => {
     case actions.VIEW_VOTES_DETAILS: {
       return {
         viewVotesDetails: action.response,
+      };
+    }
+
+    case actions.VIEW_VOTES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.VIEW_VOTES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        viewVotes: action.response,
+        ResponseMessage: action.response,
+      };
+    }
+
+    case actions.VIEW_VOTES_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.response,
       };
     }
     default: {

@@ -313,7 +313,7 @@ const UpdatePolls = () => {
       }
     }
   }, [PollsReducer.Allpolls]);
-
+  useEffect(() => {}, [UpdatePolls.date]);
   const addNewRow = () => {
     if (polloptions.length > 1) {
       let lastIndex = polloptions.length - 1;
@@ -348,11 +348,13 @@ const UpdatePolls = () => {
 
   const changeDateStartHandler = (date) => {
     let newDate = moment(date).format("YYYYMMDD");
+    console.log("changeDateStartHandler", newDate);
     setUpdatePolls({
       ...UpdatePolls,
       date: newDate,
     });
   };
+  console.log("changeDateStartHandler", UpdatePolls.date);
 
   const HandleCancelFunction = (index) => {
     options.splice(index, 1);
@@ -481,7 +483,7 @@ const UpdatePolls = () => {
                           <MultiDatePickers
                             value={UpdatePolls.date}
                             name="MeetingDate"
-                            check={true}
+                            multiple={false}
                             calendar={calendarValue}
                             locale={localValue}
                             onChange={(value) =>

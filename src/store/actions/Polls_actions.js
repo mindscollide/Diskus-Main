@@ -7,6 +7,7 @@ import {
   getAllPollStatus,
   getPollByPollID,
   updatePolls,
+  viewvotes,
 } from "../../commen/apis/Api_config";
 import { pollApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -577,6 +578,85 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
   };
 };
 
+const viewVotesInit = () => {
+  return {
+    type: actions.VIEW_VOTES_INIT,
+  };
+};
+
+const viewVotesSuccess = (response, message) => {
+  return {
+    type: actions.VIEW_VOTES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const viewVoteFailed = (message) => {
+  return {
+    type: actions.VIEW_VOTES_FAILED,
+    message: message,
+  };
+};
+
+const viewVotesApi = (navigate, data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(viewVotesInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", viewvotes.RequestMethod);
+    await axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    }).then(async (response) => {
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        dispatch(viewVotesApi(navigate, data, t));
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_ViewVotes_01".toLowerCase())
+          ) {
+            await dispatch(
+              viewVotesSuccess(response.data.responseResult, t("Record-found"))
+            );
+            dispatch(viewVotesDetailsModal(true));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_ViewVotes_02".toLowerCase())
+          ) {
+            dispatch(viewVoteFailed(t("No-record-found")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_ViewVotes_03".toLowerCase())
+          ) {
+            dispatch(viewVoteFailed(t("No-record-found")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_ViewVotes_04".toLowerCase())
+          ) {
+            dispatch(viewVoteFailed(t("Exception")));
+          }
+        } else {
+          dispatch(viewVoteFailed(t("Something-went-wrong")));
+        }
+      } else {
+        dispatch(viewVoteFailed(t("Something-went-wrong")));
+      }
+    });
+  };
+};
+
 const getAllcommittesandGroups_init = () => {
   return {
     type: actions.GETALLCOMMITESANDGROUPSFORPOLLS_INIT,
@@ -831,4 +911,5 @@ export {
   setVotePollModal,
   setviewpollProgressModal,
   viewVotesDetailsModal,
+  viewVotesApi,
 };

@@ -747,6 +747,10 @@ const getPollByPollId = {
   RequestMethod: "ServiceManager.GetAllPollOptionsByPollId",
 };
 
+const viewvotes = {
+  RequestMethod: "ServiceManager.ViewVotes",
+};
+
 export {
   revoketoken,
   googleValidToken,
@@ -948,4 +952,5 @@ export {
   getPollByPollID,
   updatePolls,
   getPollByPollId,
+  viewvotes,
 };

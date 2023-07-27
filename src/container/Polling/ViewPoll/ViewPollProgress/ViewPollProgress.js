@@ -9,6 +9,7 @@ import { Progress } from "antd";
 import { useTranslation } from "react-i18next";
 import {
   setviewpollProgressModal,
+  viewVotesApi,
   viewVotesDetailsModal,
 } from "../../../../store/actions/Polls_actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,10 +19,12 @@ import CustomRadio from "../../../../components/elements/radio/Radio";
 
 const ViewPollProgress = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { PollsReducer } = useSelector((state) => state);
   console.log(PollsReducer, "PollsReducerPollsReducerPollsReducerPollsReducer");
   const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
+    PollID: 0,
     PollTitle: "",
     Date: "",
     AllowMultipleAnswers: false,
@@ -94,11 +97,16 @@ const ViewPollProgress = () => {
         PollTitle: pollDetails.pollTitle,
         Date: pollDetails.dueDate,
         AllowMultipleAnswers: pollDetails.allowMultipleAnswers,
+        PollID: pollDetails.pollID,
       });
     }
   }, [PollsReducer.Allpolls]);
 
   console.log(pollsOption, "pollsOptionpollsOptionpollsOptionpollsOption");
+  console.log(
+    viewProgressPollsDetails.PollID,
+    "viewProgressPollsDetailsviewProgressPollsDetailsviewProgressPollsDetails"
+  );
 
   const HandleCheckBoxYes = () => {
     setCheckboxesState({
@@ -120,7 +128,15 @@ const ViewPollProgress = () => {
       checkedNO: !checkboxesState.checkedNO,
     });
   };
-  const { t } = useTranslation();
+
+  const handleViewVotes = () => {
+    dispatch(viewVotesDetailsModal(true));
+    let data = {
+      PollID: viewProgressPollsDetails.PollID,
+    };
+    dispatch(viewVotesApi(navigate, data, t));
+  };
+
   return (
     <Container>
       <Modal
@@ -461,9 +477,7 @@ const ViewPollProgress = () => {
                     <Button
                       text={t("View-votes")}
                       className={styles["View_votes_btn"]}
-                      onClick={() => {
-                        dispatch(viewVotesDetailsModal(true));
-                      }}
+                      onClick={handleViewVotes}
                     />
                   </Col>
                 </Row>

@@ -57,6 +57,7 @@ const CreatePolling = () => {
   const [localValue, setLocalValue] = useState(gregorian_en);
   const { t } = useTranslation();
   const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
+  const [meetingDate, setMeetingDate] = useState("");
   const [members, setMembers] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const [open, setOpen] = useState({
@@ -304,11 +305,13 @@ const CreatePolling = () => {
   };
   console.log(members, "checkcheckcheckcheck");
 
-  const changeDateStartHandler = (date) => {
-    let newDate = moment(date).format("YYYYMMDD");
+  const changeDateStartHandler = (date, format = "YYYYMMDD") => {
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
+    setMeetingDate(meetingDateValueFormat);
     setcreatePollData({
       ...createPollData,
-      date: newDate,
+      date: meetingDateSaveFormat,
     });
   };
 
@@ -490,16 +493,17 @@ const CreatePolling = () => {
                               : ""}
                           </span>
                           <MultiDatePickers
-                            value={createPollData.date}
+                            value={meetingDate}
                             name="MeetingDate"
                             check={true}
                             calendar={calendarValue}
                             locale={localValue}
-                            onChange={(value) =>
-                              changeDateStartHandler(
-                                value?.toDate?.().toString()
-                              )
-                            }
+                            onChange={(value) => changeDateStartHandler(value)}
+                            // onChange={(value) =>
+                            //   changeDateStartHandler(
+                            //     value?.toDate?.().toString()
+                            //   )
+                            // }
                           />
                         </Col>
                       </Row>

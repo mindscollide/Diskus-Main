@@ -9,7 +9,10 @@ import { Progress } from "antd";
 import { style } from "@material-ui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { viewVotesDetailsModal } from "../../../store/actions/Polls_actions";
+import {
+  viewVotesApi,
+  viewVotesDetailsModal,
+} from "../../../store/actions/Polls_actions";
 const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,19 +22,14 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
     "PollsReducerPollsReducerPollsReducerPollsReducer"
   );
 
-  const [yesParticipants, setyesParticipants] = useState([]);
   useEffect(() => {
-    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
-      let users = [];
-      if (Object.keys(PollsReducer.Allpolls.poll.pollParticipants).length > 0) {
-        PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
-          console.log(data, "datadatadatadatadatadata");
-          users.push(data.userName);
-        });
-      }
-      setyesParticipants(users);
-    }
-  }, [PollsReducer.Allpolls]);
+    // let data = {
+    //   PollID: 1,
+    // };
+    // dispatch(viewVotesApi(navigate, data, t));
+  }, []);
+
+  const [yesParticipants, setyesParticipants] = useState([]);
 
   const [noParticipants, setNoParticipants] = useState([
     {
