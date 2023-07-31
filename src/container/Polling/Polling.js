@@ -8,82 +8,114 @@ import {
   Loader,
   Notification,
 } from "../../components/elements";
+import { Pagination, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
 import CreatePolling from "./CreatePolling/CreatePollingModal";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import BlackCrossIcon from "../../assets/images/BlackCrossIconModals.svg";
 import EditIcon from "../../assets/images/Edit-Icon.png";
+import BinIcon from "../../assets/images/bin.svg";
 import UpdatePolls from "./UpdatePolls/UpdatePolls";
 import plusbutton from "../../assets/images/Group 119.svg";
 import ViewPoll from "./ViewPoll/ViewPoll";
 import ViewPollProgress from "./ViewPoll/ViewPollProgress/ViewPollProgress";
+import moment from "moment";
+import { registerLocale } from "react-datepicker";
 import PollDetails from "./PollDetails/PollDetails";
 import Votepoll from "./VotePoll/Votepoll";
 import UpdateSecond from "./UpdateSecond/UpdateSecond";
+import { enGB, ar } from "date-fns/locale";
 import { useDispatch, useSelector } from "react-redux";
 import {
   LoaderState,
   castVoteApi,
   getPollsByPollIdApi,
+  globalFlag,
   searchPollsApi,
   setCreatePollModal,
+  setDeltePollModal,
   setEditpollModal,
+  setVotePollModal,
   setviewpollModal,
+  setviewpollProgressModal,
+  viewVotesDetailsModal,
 } from "../../store/actions/Polls_actions";
 import { useNavigate } from "react-router-dom";
+
 import {
   _justShowDateformatBilling,
   resolutionResultTable,
 } from "../../commen/functions/date_formater";
 import { clearMessagesGroup } from "../../store/actions/Groups_actions";
+import DeletePoll from "./DeletePolls/DeletePoll";
 
 const Polling = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { PollsReducer } = useSelector((state) => state);
-  console.log(PollsReducer, "PollsReducerPollsReducerPollsReducerPollsReducer");
-  const [isUpdatePoll, setIsUpdatePoll] = useState(false);
-  const [viewprogress, setViewprogress] = useState(false);
-  const [pollData, setPollData] = useState([]);
   const [updatePublished, setUpdatePublished] = useState(false);
-  const [isVotePoll, setisVotePoll] = useState(false);
-  const [viewPollsDetails, setViewPollsDetails] = useState(false);
-  const [isViewPoll, setIsViewPoll] = useState(false);
-  const [totalRecords, setTotalRecord] = useState(0);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
   });
-  let userID = localStorage.getItem("userID");
   const [pollsState, setPollsState] = useState({
     searchValue: "",
   });
   const [rows, setRows] = useState([]);
   let currentLanguage = localStorage.getItem("i18nextLng");
+  registerLocale("ar", ar);
+  registerLocale("en", enGB);
   const [searchBoxState, setsearchBoxState] = useState({
     searchByName: "",
     searchByTitle: "",
   });
+  let organizationID = localStorage.getItem("organizationID");
+  let userID = localStorage.getItem("userID");
+  const [isTotalRecords, setTotalRecords] = useState(0);
 
   const [searchpoll, setSearchpoll] = useState(false);
+  const [idForDelete, setIdForDelete] = useState(0);
 
-  const showViewProgressBarModal = () => {
-    setViewprogress(true);
-  };
+  const currentPage = JSON.parse(localStorage.getItem("pollingPage"));
+  const currentPageSize = localStorage.getItem("pollingPageSize");
+  useEffect(() => {
+    if (currentPage !== null && currentPageSize !== null) {
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        CreatorName: searchBoxState.searchByName,
+        PageNumber: JSON.parse(currentPage),
+        Length: JSON.parse(currentPageSize),
+      };
+      dispatch(searchPollsApi(navigate, t, data));
+    } else {
+      localStorage.setItem("pollingPage", 1);
+      localStorage.setItem("pollingPageSize", 50);
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        CreatorName: searchBoxState.searchByName,
+        PageNumber: 1,
+        Length: 50,
+      };
+      dispatch(searchPollsApi(navigate, t, data));
+    }
 
-  const ShowPollsDetailsModal = () => {
-    setViewPollsDetails(true);
-  };
+    dispatch(setEditpollModal(false));
+    dispatch(setCreatePollModal(false));
+    dispatch(setviewpollProgressModal(false));
+    dispatch(globalFlag(false));
+    dispatch(viewVotesDetailsModal(false));
+    dispatch(setviewpollModal(false));
+    dispatch(setVotePollModal(false));
 
-  const OpenVotePollModal = () => {
-    setisVotePoll(true);
-  };
-
-  const OpenUpdatePublished = () => {
-    setUpdatePublished(true);
-  };
+    return () => {
+      localStorage.removeItem("pollingPage");
+      localStorage.removeItem("pollingPageSize");
+    };
+  }, []);
 
   const handleEditpollModal = (record) => {
     console.log("handleEditpollModal", record);
@@ -106,7 +138,6 @@ const Polling = () => {
   };
 
   const handleViewModal = (record) => {
-    console.log("recordrecordrecordrecordrecord", record);
     let check = 0;
     if (record.wasPollPublished) {
       if (record.pollStatus.pollStatusId === 3) {
@@ -122,14 +153,19 @@ const Polling = () => {
       UserID: parseInt(userID),
     };
     if (Object.keys(record).length > 0) {
-      console.log("handleEditpollModal", check);
-      console.log("handleEditpollModal", data);
       dispatch(getPollsByPollIdApi(navigate, data, check, t));
     }
   };
 
+  const deletePollingModal = (record) => {
+    console.log("deletePollingModal");
+    setIdForDelete(record.pollID);
+    dispatch(setDeltePollModal(true));
+
+    // setIdForDelete
+  };
+
   const handleSearchEvent = () => {
-    let organizationID = localStorage.getItem("organizationID");
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
@@ -171,7 +207,7 @@ const Polling = () => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "62px",
+      width: "78px",
       filters: [
         {
           text: t("Published"),
@@ -213,24 +249,72 @@ const Polling = () => {
       width: "97px",
     },
     {
-      title: t("Vote"),
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span>{t("Vote")}</span>
+            </Col>
+          </Row>
+        </>
+      ),
       dataIndex: "vote",
       key: "vote",
-      width: "59px",
+      width: "69px",
       render: (text, record) => {
+        console.log("record.pollStatus", record);
         if (record.pollStatus.pollStatusId === 2) {
           if (record.voteStatus === "Not Voted") {
             return (
               <Button
                 className={styles["voteBtn"]}
-                text={"Vote"}
+                text={t("Vote")}
                 onClick={() => {
                   handleVotePolls(record);
                 }}
               />
             );
           } else if (record.voteStatus === "Voted") {
-            return <Button className={styles["votedBtn"]} text={"Voted"} />;
+            return (
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className={styles["Background-nonvoted-Button"]}
+              >
+                <span className={styles["Not-voted"]}>{t("Voted")}</span>
+              </Col>
+            );
+          }
+        } else if (record.pollStatus.pollStatusId === 1) {
+          return "";
+        } else if (record.pollStatus.pollStatusId === 3) {
+          if (record.wasPollPublished) {
+            if (record.voteStatus === "Not Voted") {
+              return (
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className={styles["Background-nonvoted-Button"]}
+                >
+                  <span className={styles["Not-voted"]}>{t("Not-voted")}</span>
+                </Col>
+              );
+            } else {
+              return (
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className={styles["Background-nonvoted-Button"]}
+                >
+                  <span className={styles["Not-voted"]}>{t("Voted")}</span>
+                </Col>
+              );
+            }
+          } else {
+            return "";
           }
         } else {
           return "";
@@ -238,21 +322,41 @@ const Polling = () => {
       },
     },
     {
-      title: t("Edit"),
       dataIndex: "Edit",
       key: "Edit",
-      width: "33px",
+      width: "53px",
       render: (text, record) => {
         return (
-          <img
-            src={EditIcon}
-            className="cursor-pointer"
-            width="21.59px"
-            height="21.59px"
-            onClick={() => {
-              handleEditpollModal(record);
-            }}
-          />
+          <>
+            <Row>
+              <Col sm={12} md={5} lg={5}>
+                <Tooltip placement="topRight" title={t("Edit")}>
+                  <img
+                    src={EditIcon}
+                    className="cursor-pointer"
+                    width="21.59px"
+                    height="21.59px"
+                    onClick={() => {
+                      handleEditpollModal(record);
+                    }}
+                  />
+                </Tooltip>
+              </Col>
+              <Col sm={12} md={5} lg={5}>
+                <Tooltip placement="topLeft" title={t("Delete")}>
+                  <img
+                    src={BinIcon}
+                    className="cursor-pointer"
+                    width="21.59px"
+                    height="21.59px"
+                    onClick={() => {
+                      deletePollingModal(record);
+                    }}
+                  />
+                </Tooltip>
+              </Col>
+            </Row>
+          </>
         );
       },
     },
@@ -322,14 +426,36 @@ const Polling = () => {
     setSearchpoll(true);
   };
 
+  const handleChangePagination = (current, pageSize) => {
+    console.log(current, pageSize, "handleChangePagination");
+    let data = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(organizationID),
+      CreatorName: searchBoxState.searchByName,
+      PageNumber: current,
+      Length: pageSize,
+    };
+    dispatch(searchPollsApi(navigate, t, data));
+  };
+
+  useEffect(() => {
+    if (currentLanguage === "ar") {
+      moment.locale(currentLanguage);
+    } else if (currentLanguage === "fr") {
+      moment.locale(currentLanguage);
+    } else {
+      moment.locale(currentLanguage);
+    }
+  }, [currentLanguage]);
+
   useEffect(() => {
     try {
       if (
         PollsReducer.SearchPolls !== null &&
         PollsReducer.SearchPolls !== undefined
       ) {
-        setTotalRecord(PollsReducer.SearchPolls.totalRecords);
         if (PollsReducer.SearchPolls.polls.length > 0) {
+          setTotalRecords(PollsReducer.SearchPolls.totalRecords);
           setRows(PollsReducer.SearchPolls.polls);
         } else {
           setRows([]);
@@ -341,7 +467,7 @@ const Polling = () => {
   useEffect(() => {
     if (
       PollsReducer.ResponseMessage !== "" &&
-      PollsReducer.ResponseMessage !== t("Data-available") &&
+      PollsReducer.ResponseMessage !== t("Record-found") &&
       PollsReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({
@@ -362,46 +488,19 @@ const Polling = () => {
     }
   }, [PollsReducer.ResponseMessage]);
 
-  useEffect(() => {
-    console.log(PollsReducer, "PollsReducerPollsReducer");
-    let userIds = [];
-    if (
-      PollsReducer.SearchPolls !== null &&
-      PollsReducer.SearchPolls !== undefined
-    ) {
-    }
-  }, [PollsReducer.SearchPolls]);
-
-  console.log(pollData, "pollDatapollDatapollData");
-
   const handleVotePolls = (record) => {
-    let data = {
-      PollID: parseInt(record.pollID),
-      UserID: parseInt(userID),
-      PollOptionIDs: [4],
-    };
-    console.log(data, "datadatadatadatadatadata");
-    // dispatch(castVoteApi(navigate, data, t));
+    if (Object.keys(record).length > 0) {
+      let data = {
+        PollID: record.pollID,
+        UserID: parseInt(userID),
+      };
+      dispatch(getPollsByPollIdApi(navigate, data, 5, t));
+    }
   };
-
-  let organizationID = localStorage.getItem("organizationID");
-  useEffect(() => {
-    let data = {
-      UserID: parseInt(userID),
-      OrganizationID: parseInt(organizationID),
-      CreatorName: searchBoxState.searchByName,
-      PageNumber: 1,
-      Length: 50,
-    };
-    dispatch(searchPollsApi(navigate, t, data));
-  }, []);
-
+  console.log("rows", rows);
   const HandleCloseSearchModal = () => {
     setSearchpoll(false);
   };
-  console.log(PollsReducer.createPollmodal, "handleEditpollModal ");
-  console.log(PollsReducer.viewPollModal, "handleEditpollModal ");
-  console.log(PollsReducer.editpollmodal, "handleEditpollModal ");
   return (
     <>
       <section className={styles["Poll_Container"]}>
@@ -431,9 +530,7 @@ const Polling = () => {
           <Col sm={12} md={9} lg={9} className="justify-content-end d-flex ">
             <span className="position-relative">
               <TextField
-                // value={filterVal}
                 width={"502px"}
-                // change={handleFilter}
                 placeholder={t("Search")}
                 applyClass={"PollingSearchInput"}
                 name={"SearchVal"}
@@ -441,16 +538,12 @@ const Polling = () => {
                 change={HandleSearchPollsMain}
                 labelClass="d-none"
                 clickIcon={HandleShowSearch}
-                // onDoubleClick={searchbardropdownShow}
-
                 inputicon={
                   <img
                     src={searchicon}
                     className={styles["Search_Bar_icon_class"]}
-                    // className={styles["GlobalSearchFieldICon"]}
                   />
                 }
-                // clickIcon={SearchiconClickOptions}
                 iconClassName={styles["polling_searchinput"]}
               />
               {searchpoll ? (
@@ -530,7 +623,29 @@ const Polling = () => {
         </Row>
         <Row>
           <Col sm={12} md={12} lg={12}>
-            <Table column={PollTableColumns} rows={rows} />
+            <Table
+              column={PollTableColumns}
+              scroll={{ y: 350 }}
+              pagination={false}
+              rows={rows}
+            />
+            <Row>
+              <Col className="pagination-groups-table">
+                <Pagination
+                  pageSize={currentPageSize !== null ? currentPageSize : 50}
+                  showSizeChanger
+                  onChange={handleChangePagination}
+                  pageSizeOptions={["30", "50", "100", "200"]}
+                  current={currentPage !== null ? currentPage : 1}
+                  locale={{
+                    items_per_page: t("items_per_page"),
+                    page: t("page"),
+                  }}
+                  total={isTotalRecords}
+                  className={styles["PaginationStyle-polling"]}
+                />
+              </Col>
+            </Row>
           </Col>
         </Row>
       </section>
@@ -540,6 +655,7 @@ const Polling = () => {
       {PollsReducer.viewPollProgress && <ViewPollProgress />}
       {PollsReducer.isVotePollModal && <Votepoll />}
       {PollsReducer.viewVotesDetails && <PollDetails />}
+      {PollsReducer.deletePollsModal && <DeletePoll id={idForDelete} />}
 
       {updatePublished ? (
         <>
