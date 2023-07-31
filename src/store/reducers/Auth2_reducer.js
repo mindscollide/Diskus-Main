@@ -24,6 +24,10 @@ const initialState = {
   VerifyTwoFacOTPResponseMessage: "",
   passwordUpdateOnForgotPasswordMessege: "",
   client: null,
+  getSubscriptiondetails: null,
+  getSubscriptionUpgradePaymentDetail: null,
+  getSubscriptionPaymentComplete: null,
+  paymentCompleteResponse: null,
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -329,6 +333,30 @@ const AuthReducer = (state = initialState, action) => {
         passwordUpdateOnForgotPasswordMessege: action.message,
       };
     }
+    case actions.GETSUBSCRIPTIONDETAIL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETSUBSCRIPTIONDETAIL_SUCCESS: {
+      return {
+        ...state,
+
+        Loading: false,
+        getSubscriptiondetails: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETSUBSCRIPTIONDETAIL_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getSubscriptiondetails: null,
+        ResponseMessage: action.message,
+      };
+    }
+
     case actions.CLEARE_MESSAGE: {
       return {
         ...state,
