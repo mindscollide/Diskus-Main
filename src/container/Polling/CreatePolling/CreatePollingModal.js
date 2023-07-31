@@ -490,7 +490,7 @@ const CreatePolling = () => {
                                 value?.toDate?.().toString()
                               )
                             }
-                            // newValue={createMeeting.MeetingDate}
+                          // newValue={createMeeting.MeetingDate}
                           />
                         </Col>
                       </Row>
@@ -579,75 +579,75 @@ const CreatePolling = () => {
                           </Row>
                           {options.length > 0
                             ? options.map((data, index) => {
-                                return (
-                                  <>
-                                    {index <= 1 ? (
-                                      <Row className="mt-2">
-                                        <Col lg={12} md={12} sm={12}>
-                                          <span className="position-relative">
-                                            <TextField
-                                              placeholder={
-                                                "Option" +
-                                                " " +
-                                                parseInt(index + 1)
-                                              }
-                                              applyClass={"PollingCreateModal"}
-                                              labelClass="d-none"
-                                              name={data.name}
-                                              maxLength={500}
-                                              value={data.value}
-                                              change={(e) =>
-                                                HandleOptionChange(e)
-                                              }
-                                            />
-                                          </span>
-                                        </Col>
-                                      </Row>
-                                    ) : (
-                                      <Row className="mt-2">
-                                        <Col lg={12} md={12} sm={12}>
-                                          <span className="position-relative">
-                                            <TextField
-                                              placeholder={
-                                                "Option" +
-                                                " " +
-                                                parseInt(index + 1)
-                                              }
-                                              applyClass={"PollingCreateModal"}
-                                              labelClass="d-none"
-                                              name={data.name}
-                                              value={data.value}
-                                              change={(e) =>
-                                                HandleOptionChange(e)
-                                              }
-                                              inputicon={
-                                                <img
-                                                  src={BlackCrossIcon}
-                                                  width="31.76px"
-                                                  height="31.76px"
-                                                  onClick={() =>
-                                                    HandleCancelFunction(index)
-                                                  }
-                                                  className={
-                                                    styles[
-                                                      "Cross-icon-Create_poll"
-                                                    ]
-                                                  }
-                                                />
-                                              }
-                                              iconClassName={
-                                                styles[
-                                                  "polling_Options_backGround"
-                                                ]
-                                              }
-                                            />
-                                          </span>
-                                        </Col>
-                                      </Row>
-                                    )}
-                                  </>
-                                );
-                              })
+                              return (
+                                <>
+                                  {index <= 1 ? (
+                                    <Row className="mt-2">
+                                      <Col lg={12} md={12} sm={12}>
+                                        <span className="position-relative">
+                                          <TextField
+                                            placeholder={
+                                              "Option" +
+                                              " " +
+                                              parseInt(index + 1)
+                                            }
+                                            applyClass={"PollingCreateModal"}
+                                            labelClass="d-none"
+                                            name={data.name}
+                                            maxLength={500}
+                                            value={data.value}
+                                            change={(e) =>
+                                              HandleOptionChange(e)
+                                            }
+                                          />
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  ) : (
+                                    <Row className="mt-2">
+                                      <Col lg={12} md={12} sm={12}>
+                                        <span className="position-relative">
+                                          <TextField
+                                            placeholder={
+                                              "Option" +
+                                              " " +
+                                              parseInt(index + 1)
+                                            }
+                                            applyClass={"PollingCreateModal"}
+                                            labelClass="d-none"
+                                            name={data.name}
+                                            value={data.value}
+                                            change={(e) =>
+                                              HandleOptionChange(e)
+                                            }
+                                            inputicon={
+                                              <img
+                                                src={BlackCrossIcon}
+                                                width="31.76px"
+                                                height="31.76px"
+                                                onClick={() =>
+                                                  HandleCancelFunction(index)
+                                                }
+                                                className={
+                                                  styles[
+                                                  "Cross-icon-Create_poll"
+                                                  ]
+                                                }
+                                              />
+                                            }
+                                            iconClassName={
+                                              styles[
+                                              "polling_Options_backGround"
+                                              ]
+                                            }
+                                          />
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  )}
+                                </>
+                              );
+                            })
                             : null}
 
                           <Row className="mt-2">

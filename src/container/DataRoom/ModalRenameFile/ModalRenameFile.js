@@ -19,14 +19,19 @@ const ModalRenameFile = ({
     FileName: "",
     FileId: 0
   })
-  console.log(fileData, "folderDatafolderDatafolderData")
+  console.log(isRenameFileData, "folderDatafolderDatafolderData")
   useEffect(() => {
-    if (fileData !== null) {
-      setFileData({
-        FileName: isRenameFileData.name,
-        FileId: isRenameFileData.id
-      })
+    try {
+      if (isRenameFileData !== null && isRenameFileData !== undefined) {
+        setFileData({
+          FileName: isRenameFileData.name,
+          FileId: isRenameFileData.id
+        })
+      }
+    } catch (error) {
+
     }
+
   }, [isRenameFileData])
 
   const saveButton = () => {

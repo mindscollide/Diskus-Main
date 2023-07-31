@@ -221,36 +221,54 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
     }
   };
   const openAccessRequestModalClick = () => {
-    setShowaccessrequest(true);
-  };
-
-  const handleAddMember = () => {
-    console.log(fileData.Files, "handleAddMemberhandleAddMemberhandleAddMemberhandleAddMember")
-    let findIndexData = fileData.Files.findIndex((listData, index) => listData.FK_UserID === taskAssignedTo)
-    if (findIndexData === -1) {
-      let Data = {
-        FK_FileID: folderId,
-        FK_PermissionID: JSON.parse(permissionID.value),
-        FK_UserID: taskAssignedTo
-      }
-      if (taskAssignedTo !== 0) {
-        if (assignees.user.length > 0) {
-          assignees.user.map((data, index) => {
-            if (data.pK_UID === taskAssignedTo) {
-              setMembers([...isMembers, data])
-            }
-          })
-        }
-      }
-      setFileData((prev) => {
-        return { ...prev, Files: [...prev.Files, Data] }
-      })
+    if (fileData.Files.length > 0) {
+      setShowaccessrequest(true);
     } else {
       setOpen({
         flag: true,
-        message: t("User-is-already-exist")
+        message: t("User-required-must-for-share")
       })
     }
+
+  };
+
+  const handleAddMember = () => {
+    console.log(taskAssignedName, "taskAssignedNametaskAssignedName")
+    console.log(fileData.Files, "handleAddMemberhandleAddMemberhandleAddMemberhandleAddMember")
+    let findIndexData = fileData.Files.findIndex((listData, index) => listData.FK_UserID === taskAssignedTo)
+
+    if (taskAssignedName !== "") {
+      if (findIndexData === -1) {
+        let Data = {
+          FK_FileID: folderId,
+          FK_PermissionID: JSON.parse(permissionID.value),
+          FK_UserID: taskAssignedTo
+        }
+        if (taskAssignedTo !== 0) {
+          if (assignees.user.length > 0) {
+            assignees.user.map((data, index) => {
+              if (data.pK_UID === taskAssignedTo) {
+                setMembers([...isMembers, data])
+              }
+            })
+          }
+        }
+        setFileData((prev) => {
+          return { ...prev, Files: [...prev.Files, Data] }
+        })
+      } else {
+        setOpen({
+          flag: true,
+          message: t("User-is-already-exist")
+        })
+      }
+    } else {
+      setOpen({
+        flag: true,
+        message: t("Please-select-user")
+      })
+    }
+
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
