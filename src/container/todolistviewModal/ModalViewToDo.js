@@ -13,6 +13,7 @@ import {
   Loader,
   TodoAssgineeEmployeeCard,
   TextArea,
+  Button
 } from "./../../components/elements";
 import userImage from "../../assets/images/user.png";
 import {
@@ -602,10 +603,17 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                       }
                     )
                     : null}
+
                 </Col>
+              </Row>
+              <Row>
+                <Col className="d-flex justify-content-end" sm={12} md={12} lg={12}><Button className={"cancelButton_createTodo"} text="Close" /></Col>
               </Row>
             </>
           }
+        // ModalFooter = {() }
+
+
         />
       </Container>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
