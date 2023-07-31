@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { ArrowCounterclockwise, ChevronDown, Plus } from 'react-bootstrap-icons'
-import { Pagination, Select } from 'antd'
+import { Input, Pagination, Select } from 'antd'
 import {
   Button,
   TableToDo,
@@ -16,7 +16,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import UserImage from '../../../assets/images/user.png'
 import TodoMessageIcon1 from '../../../assets/images/Todomsg-1.png'
 import del from '../../../assets/images/del.png'
-
+import { Dropdown, Space, Typography } from 'antd'
 import { Paragraph, Search, ArrowRight, ArrowLeft } from 'react-bootstrap-icons'
 import {
   ViewToDoList,
@@ -53,8 +53,8 @@ const TodoList = () => {
   //For Localization
   const { t } = useTranslation()
   let currentLanguage = localStorage.getItem('i18nextLng')
-  registerLocale('ar', ar)
-  registerLocale('en', enGB)
+  // registerLocale("ar", ar);
+  // registerLocale("en", enGB);
   const state = useSelector((state) => state)
   const {
     toDoListReducer,
@@ -88,6 +88,7 @@ const TodoList = () => {
     message: '',
   })
   const [statusOptions, setStatusOptions] = useState([])
+  const [tableFilterOptions, setTableFilterOptions] = useState([])
   //Get Current User ID
   let createrID = localStorage.getItem('userID')
   // for modal create  handler
@@ -218,34 +219,77 @@ const TodoList = () => {
   useEffect(() => {
     console.log(todoStatus, 'todoStatustodoStatustodoStatus')
     let optionsArr = []
+    let newOptionsFilter = []
     if (todoStatus.Response !== null && todoStatus.Response !== '') {
       todoStatus.Response.map((data, index) => {
-        return optionsArr.push({
+        optionsArr.push({
           id: data.pK_TSID,
           status: data.status,
         })
+        newOptionsFilter.push({
+          key: data.pK_TSID,
+          label: data.status,
+        })
       })
     }
-    setStatusOptions([...optionsArr])
+    setStatusOptions(optionsArr)
+    setTableFilterOptions(newOptionsFilter)
   }, [todoStatus])
 
   // for search Date handler
   const tableTodoChange = (pagination, filters, sorter) => {
     console.log('Various parameters', filters)
+    let newArrData = []
+    let todoStatus = filters.status
     console.log('Various parameters', filters.status)
-
-    if (filters.status.length > 0) {
-      filters.status.map((data, index) => {
-        console.log(data, index)
-        let newArry = toDoListReducer.AllTodolistData.filter(
-          (filterData, index) => {
-            console.log('newArraynewArraynewArray', data.status, filterData)
-            return filterData.status.status === data
+    if (
+      todoStatus !== null &&
+      todoStatus !== undefined &&
+      todoStatus.length > 0
+    ) {
+      console.log(todoStatus, 'tableTodoChangetableTodoChange')
+      todoStatus.map((statusValue, index) => {
+        console.log(statusValue, 'tableTodoChangetableTodoChange')
+        let newArr = toDoListReducer.SearchTodolist.toDoLists.filter(
+          (data, index) => {
+            console.log(data, 'tableTodoChangetableTodoChange')
+            // console.log(data.status.status === statusValue, "tableTodoChangetableTodoChange")
+            return data.status.status === statusValue
           },
         )
-        console.log(newArry, 'newArrynewArrynewArry')
+        console.log(
+          toDoListReducer.SearchTodolist.toDoLists,
+          'tableTodoChangetableTodoChange',
+        )
+        console.log(newArr, 'newArrnewArrnewArr')
+        if (newArr.length > 0) {
+          setRowToDo(newArr)
+        } else {
+          setRowToDo([])
+        }
       })
+    } else if (todoStatus === null) {
+      setRowToDo(toDoListReducer.SearchTodolist.toDoLists)
     }
+
+    // if (filters.status.length > 0) {
+    //   filters.status.map((data, index) => {
+    //     console.log(data, index)
+    //     let newArry = toDoListReducer.AllTodolistData.filter((filterData, index) => {
+    //       return filterData.status.status.toLowerCase() === data.toLowerCase();
+    //     })
+    //     if (newArry.length > 0) {
+    //       setRowToDo(newArry);
+    //     } else {
+    //       setRowToDo(toDoListReducer.AllTodolistData);
+    //     }
+    //   })
+    // }
+    // if (newArray.length > 0) {
+    //   setRowToDo(newArray);
+    // } else {
+    //   setRowToDo(toDoListReducer.AllTodolistData);
+    // }
     // console.log("Various parameters", rowsToDo);
     // let newArray = toDoListReducer.AllTodolistData.filter((data, index) => {
     //   // console.log("newArraynewArraynewArray", data.status, filters)
@@ -382,6 +426,10 @@ const TodoList = () => {
       key: 'deadlineDateTime',
       className: 'deadLineTodo',
       align: 'left',
+      sortDirections: ['descend', 'ascend'],
+      sorter: (a, b) =>
+        newTimeFormaterAsPerUTCFullDate(a.deadlineDateTime) <
+        newTimeFormaterAsPerUTCFullDate(b.deadlineDateTime),
       // width: "220px",
       render: (text, record) => {
         console.log('text1212', record)
@@ -397,8 +445,8 @@ const TodoList = () => {
       filters: [
         {
           text: t('In-progress'),
-          value: 'InProgress',
-          className: currentLanguage,
+          value: 'In Progress',
+          // className: currentLanguage,
         },
         {
           text: t('Pending'),
@@ -418,15 +466,56 @@ const TodoList = () => {
         },
       ],
       defaultFilteredValue: [
-        'InProgress',
-        'Pending',
-        'Upcoming',
-        'Cancelled',
-        'Completed',
+        t('In-progress'),
+        t('Pending'),
+        t('Upcoming'),
+        t('Cancelled'),
+        t('Completed'),
       ],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
+      // filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+      //   <div style={{ padding: 8, display: "flex", flexDirection: "column" }}>
+      //     <Select
+      //       prefixCls="filterValues"
+      //       style={{ width: 150 }}
+      //       mode="multiple"
+      //     >
+      //       {tableFilterOptions.length > 0 && tableFilterOptions.map((value, index) => {
+      //         return <Option value={value.key}>{value.label}</Option>
+      //       })}
+
+      //       {/* Add more options here as needed */}
+      //     </Select>
+      //     <Row>
+      //       <Col sm={12} md={6} lg={6}>
+      //         <Button type="primary" text="OK" />
+      //       </Col>
+      //       <Col sm={12} md={6} lg={6}>
+      //         <Button text={"Reset"} />
+      //       </Col>
+      //     </Row>
+
+      //   </div>
+      //   // <div style={{ padding: 8 }}>
+      //   //   <Input
+      //   //     // placeholder={`Search ${dataIndex}`}
+      //   //     value={selectedKeys[0]}
+      //   //     // onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+      //   //     // onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+      //   //     style={{ marginBottom: 8, display: 'block' }}
+      //   //   />
+      //   //   <Button
+      //   //     type="primary"
+      //   //     text={"Search"}
+      //   //     // onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+      //   //     size="small"
+      //   //     style={{ width: 90, marginRight: 8 }}
+      //   //   />
+      //   //   <Button size="small" text=" Reset" style={{ width: 90 }} />
+      //   // </div >
+      // ),
       onFilter: (value, record) => {
         return (
           console.log(value, 'filter222'),
@@ -502,21 +591,25 @@ const TodoList = () => {
         console.log('recording', index)
         console.log('recordsrecords', record)
         if (parseInt(record.pK_UID) === parseInt(createrID)) {
-          return (
-            <i
-              className="meeting-editbutton"
-              onClick={(e) => deleteTodolist(index)}
-            >
-              <img src={del} alt="" />
-            </i>
-          )
+          if (index.status.pK_TSID !== 3) {
+            return (
+              <i
+                className="meeting-editbutton"
+                onClick={(e) => deleteTodolist(index)}
+              >
+                <img src={del} alt="" />
+              </i>
+            )
+          } else {
+            ;<></>
+          }
         } else {
           ;<></>
         }
       },
     },
   ]
-
+  console.log(tableFilterOptions, 'tableFilterOptionstableFilterOptions')
   useEffect(() => {
     setViewFlagToDo(false)
     if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
@@ -659,8 +752,8 @@ const TodoList = () => {
 
       dispatch(clearResponce())
     } else if (
-      assignees.ResponseMessage != '' &&
-      assignees.ResponseMessage != t('Record-found') &&
+      assignees.ResponseMessage !== '' &&
+      assignees.ResponseMessage !== t('Record-found') &&
       assignees.ResponseMessage !== t('No-records-found')
     ) {
       setOpen({
@@ -901,10 +994,10 @@ const TodoList = () => {
                   <TableToDo
                     sortDirections={['descend', 'ascend']}
                     column={columnsToDo}
-                    className={'ToDo' + ' ' + currentLanguage}
+                    className={'ToDo'}
                     rows={rowsToDo}
                     scroll={{ y: 400 }}
-                    onChange={tableTodoChange}
+                    // onChange={tableTodoChange}
                     pagination={false}
                   />
                 ) : (
@@ -957,6 +1050,8 @@ const TodoList = () => {
         />
       </Col>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
+
+      {/* {toDoListReducer.Loading && <Loader />} */}
       {toDoListReducer.Loading ? (
         <Loader />
       ) : todoStatus.Loading ? (
