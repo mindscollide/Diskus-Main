@@ -700,6 +700,10 @@ const paymentMethodsRequestMethod = {
   RequestMethod: "ServiceManager.GetPaymentMethods",
 };
 
+const downloadChat = {
+  RequestMethod: "ServiceManager.DownloadChat",
+};
+
 const searchPaymentHistoryRequestMethod = {
   RequestMethod: "ServiceManager.InvoicesAndPaymentHistory",
 };
@@ -721,6 +725,10 @@ const renameFolderRequestMethod = {
 };
 const renameFileRequestMethod = {
   RequestMethod: "ServiceManager.RenameFile",
+};
+
+const subscriptiondetailsRequestMethod = {
+  RequestMethod: "ServiceManager.SubscriptionDetail",
 };
 
 const searchPolls = {
@@ -753,6 +761,17 @@ const viewvotes = {
 
 const deltePolls = {
   RequestMethod: "ServiceManager.UpdatePollStatusByPollId",
+};
+
+const subscriptionPackageUpgradeAmount = {
+  RequestMethod: "ServiceManager.GetPackageUpgradeTotalAmount",
+};
+
+const subscriptionPackageUpgradePayment = {
+  RequestMethod: "ServiceManager.PackageUpgradePaymentComplete",
+};
+const paymentCompleteMethod = {
+  RequestMethod: "ServiceManager.PaymentComplete",
 };
 
 export {
@@ -950,6 +969,8 @@ export {
   getAllCommittesandGroupsforPolls,
   renameFolderRequestMethod,
   renameFileRequestMethod,
+  downloadChat,
+  subscriptiondetailsRequestMethod,
   searchPolls,
   castVote,
   getAllPollStatus,
@@ -958,4 +979,7 @@ export {
   getPollByPollId,
   viewvotes,
   deltePolls,
+  subscriptionPackageUpgradeAmount,
+  paymentCompleteMethod,
+  subscriptionPackageUpgradePayment,
 };

@@ -487,7 +487,14 @@ const createFolder_fail = (message) => {
 };
 
 // Create Folder API
-const createFolderApi = (navigate, folder, t, setAddfolder) => {
+const createFolderApi = (
+  navigate,
+  folder,
+  t,
+  setAddfolder,
+  type,
+  setIsExistFolder
+) => {
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let token = JSON.parse(localStorage.getItem("token"));
@@ -497,6 +504,7 @@ const createFolderApi = (navigate, folder, t, setAddfolder) => {
     UserID: parseInt(createrID),
     OrganizationID: parseInt(OrganizationID),
     ParentFolderID: folderID !== null ? folderID : 0,
+    Type: type !== null && type !== undefined ? type : 0,
   };
   return (dispatch) => {
     dispatch(createFolder_init());
@@ -553,8 +561,8 @@ const createFolderApi = (navigate, folder, t, setAddfolder) => {
             ) {
               dispatch(createFolder_fail(t("Something-went-wrong")));
             }
-          } else {
-            dispatch(createFolder_fail(t("Something-went-wrong")));
+            setAddfolder(false);
+            setIsExistFolder(false);
           }
         } else {
           dispatch(createFolder_fail(t("Something-went-wrong")));
@@ -1105,7 +1113,13 @@ const FolderisExist_fail = (message) => {
 };
 
 // Folder Exist API
-const FolderisExist = (navigate, FolderName, t, setAddfolder) => {
+const FolderisExist = (
+  navigate,
+  FolderName,
+  t,
+  setAddfolder,
+  setIsExistFolder
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let folderID = JSON.parse(localStorage.getItem("folderID"));
@@ -1141,7 +1155,9 @@ const FolderisExist = (navigate, FolderName, t, setAddfolder) => {
                 )
             ) {
               dispatch(FolderisExist_fail(t("Folder-already-exist")));
-              setAddfolder(true);
+              localStorage.setItem("folderName", FolderName);
+              setIsExistFolder(true);
+              setAddfolder(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1374,8 +1390,6 @@ const FolderisExistRename = (navigate, folderData, t, setRenamefolder) => {
           } else {
             dispatch(FolderisExistrename_fail(t("Something-went-wrong")));
           }
-        } else {
-          dispatch(FolderisExistrename_fail(t("Something-went-wrong")));
         }
       })
       .catch(() => {
@@ -1592,7 +1606,7 @@ const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(renameFileApi(navigate, filedata, t));
+          dispatch(renameFileApi(navigate, filedata, t, setShowRenameFile));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1634,8 +1648,6 @@ const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
           } else {
             dispatch(renameFile_fail(t("Something-went-wrong")));
           }
-        } else {
-          dispatch(renameFile_fail(t("Something-went-wrong")));
         }
       })
       .catch((error) => {
