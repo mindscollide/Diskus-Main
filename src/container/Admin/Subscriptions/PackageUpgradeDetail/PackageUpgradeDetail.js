@@ -18,7 +18,7 @@ import { getSubscriptionUpgradeAmountInfoApi } from "../../../../store/actions/A
 
 const PackageUpgradeDetail = () => {
   const Data = useSelector((state) => state);
-  const { GetSubscriptionPackage, AuthReducer } = Data;
+  const { GetSubscriptionPackage, Authreducer } = Data;
   console.log("GetSubscriptionPackage", GetSubscriptionPackage);
   const [open, setOpen] = useState({
     open: false,
@@ -75,10 +75,10 @@ const PackageUpgradeDetail = () => {
     }
   }, [GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage]);
   useEffect(() => {
-    if (AuthReducer.ResponseMessage !== "" && AuthReducer.ResponseMessage !== t("Data-available")) {
+    if (Authreducer.ResponseMessage !== "" && Authreducer.ResponseMessage !== t("Data-available")) {
 
     }
-  }, [AuthReducer.ResponseMessage])
+  }, [Authreducer?.ResponseMessage])
   return (
     <>
       <Container className="py-4">
@@ -214,7 +214,7 @@ const PackageUpgradeDetail = () => {
           </Col>
         </Row>
       </Container>
-      {GetSubscriptionPackage.Loading || AuthReducer.Loading ? <Loader /> : null}
+      {GetSubscriptionPackage.Loading || Authreducer.Loading ? <Loader /> : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );

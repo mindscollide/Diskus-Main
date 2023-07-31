@@ -7,6 +7,8 @@ import {
   getAllPollStatus,
   getPollByPollID,
   updatePolls,
+  viewvotes,
+  deltePolls,
 } from "../../commen/apis/Api_config";
 import { pollApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -75,6 +77,13 @@ const viewVotesDetailsModal = (response) => {
 const setVotePollModal = (response) => {
   return {
     type: actions.VOTE_POLL_MODAL,
+    response: response,
+  };
+};
+
+const setDeltePollModal = (response) => {
+  return {
+    type: actions.DELETE_POLL_MODAL,
     response: response,
   };
 };
@@ -162,6 +171,113 @@ const searchPollsApi = (navigate, t, data) => {
       .catch((response) => {
         console.log(response, "response");
         dispatch(searchPolls_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+//Delete Polls
+
+const deltePollsInit = () => {
+  return {
+    type: actions.DELETE_POLL_INIT,
+  };
+};
+
+const deltePollsSuccess = (response, message) => {
+  return {
+    type: actions.DELETE_POLL_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const deltePollsFailed = (message) => {
+  return {
+    type: actions.DELETE_POLL_FAILED,
+    message: message,
+  };
+};
+
+//Delete polls APi
+
+const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let createrID = parseInt(localStorage.getItem("userID"));
+  let OrganizationID = parseInt(localStorage.getItem("organizationID"));
+  return (dispatch) => {
+    dispatch(deltePollsInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", deltePolls.RequestMethod);
+    axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(UpdatePollStatusByPollIdApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_UpdatePollStatusByPollId_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                deltePollsSuccess(
+                  response.data.responseResult,
+                  t("Poll Status Updated Successfully")
+                )
+              );
+              let Data = {
+                UserID: parseInt(createrID),
+                OrganizationID: parseInt(OrganizationID),
+                CreatorName: "",
+                PageNumber: 1,
+                Length: 50,
+              };
+              dispatch(setDeltePollModal(false));
+              dispatch(searchPollsApi(navigate, t, Data));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_UpdatePollStatusByPollId_02".toLowerCase()
+                )
+            ) {
+              dispatch(setDeltePollModal(false));
+              dispatch(deltePollsFailed(t("Poll Status Not Updated")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_UpdatePollStatusByPollId_03".toLowerCase()
+                )
+            ) {
+              dispatch(deltePollsFailed(t("Something-went-wrong")));
+            } else {
+              dispatch(deltePollsFailed(t("Something-went-wrong")));
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(deltePollsFailed(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(deltePollsFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(deltePollsFailed(t("Something-went-wrong")));
       });
   };
 };
@@ -341,6 +457,23 @@ const castVoteApi = (navigate, data, t) => {
             await dispatch(
               castVoteSuccess(response.data.responseResult, t("Vote-casted"))
             );
+            let organizationID = localStorage.getItem("organizationID");
+            let userID = localStorage.getItem("userID");
+            let data = {
+              UserID: parseInt(userID),
+              OrganizationID: parseInt(organizationID),
+              CreatorName: "",
+              PageNumber: 1,
+              Length: 50,
+            };
+            dispatch(setEditpollModal(false));
+            dispatch(setCreatePollModal(false));
+            dispatch(setviewpollProgressModal(false));
+            dispatch(globalFlag(false));
+            dispatch(viewVotesDetailsModal(false));
+            dispatch(setviewpollModal(false));
+            dispatch(setVotePollModal(false));
+            dispatch(searchPollsApi(navigate, t, data));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -511,6 +644,8 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
               await dispatch(setviewpollModal(false));
               await dispatch(setCreatePollModal(false));
               await dispatch(setviewpollProgressModal(false));
+              await dispatch(viewVotesDetailsModal(false));
+              await dispatch(setVotePollModal(false));
               await dispatch(globalFlag(true));
               await dispatch(setEditpollModal(true));
               console.log("handleEditpollModal", check);
@@ -519,13 +654,17 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
               await dispatch(setCreatePollModal(false));
               await dispatch(setviewpollProgressModal(false));
               await dispatch(globalFlag(false));
+              await dispatch(viewVotesDetailsModal(false));
+              await dispatch(setVotePollModal(false));
               await dispatch(setEditpollModal(true));
               console.log("handleEditpollModal", check);
             } else if (parseInt(check) === 3) {
               await dispatch(setEditpollModal(false));
               await dispatch(setCreatePollModal(false));
               await dispatch(setviewpollModal(false));
+              await dispatch(viewVotesDetailsModal(false));
               await dispatch(globalFlag(false));
+              await dispatch(setVotePollModal(false));
               await dispatch(setviewpollProgressModal(true));
               console.log("handleEditpollModal", check);
             } else if (parseInt(check) === 4) {
@@ -533,8 +672,18 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
               await dispatch(setCreatePollModal(false));
               await dispatch(setviewpollProgressModal(false));
               await dispatch(globalFlag(false));
+              await dispatch(viewVotesDetailsModal(false));
+              await dispatch(setVotePollModal(false));
               await dispatch(setviewpollModal(true));
               console.log("handleEditpollModal", check);
+            } else if (parseInt(check) === 5) {
+              await dispatch(setEditpollModal(false));
+              await dispatch(setCreatePollModal(false));
+              await dispatch(setviewpollProgressModal(false));
+              await dispatch(globalFlag(false));
+              await dispatch(viewVotesDetailsModal(false));
+              await dispatch(setviewpollModal(false));
+              await dispatch(setVotePollModal(true));
             }
             await dispatch(
               getAllPollsByPollsIDSuccess(
@@ -572,6 +721,98 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
         }
       } else {
         dispatch(getAllPollsByPollsIDFailed(t("Something-went-wrong")));
+      }
+    });
+  };
+};
+
+const viewVotesInit = () => {
+  return {
+    type: actions.VIEW_VOTES_INIT,
+  };
+};
+
+const viewVotesSuccess = (response, message) => {
+  console.log("handleClosed", response);
+  console.log("handleClosed", message);
+
+  return {
+    type: actions.VIEW_VOTES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const viewVoteFailed = (message) => {
+  return {
+    type: actions.VIEW_VOTES_FAILED,
+    message: message,
+  };
+};
+
+const viewVotesApi = (navigate, data, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  return async (dispatch) => {
+    dispatch(viewVotesInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", viewvotes.RequestMethod);
+    await axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    }).then(async (response) => {
+      if (response.data.responseCode === 417) {
+        await dispatch(RefreshToken(navigate, t));
+        dispatch(viewVotesApi(navigate, data, t));
+      } else if (response.data.responseCode === 200) {
+        if (response.data.responseResult.isExecuted === true) {
+          if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_ViewVotes_01".toLowerCase())
+          ) {
+            await dispatch(setEditpollModal(false));
+            await dispatch(setCreatePollModal(false));
+            await dispatch(setviewpollModal(false));
+            await dispatch(globalFlag(false));
+            await dispatch(setviewpollProgressModal(false));
+            await dispatch(
+              viewVotesSuccess(
+                response.data.responseResult.voteDetails,
+                t("Record-found")
+              )
+            );
+            console.log("handleClosed", response.data.responseResult);
+
+            await dispatch(viewVotesDetailsModal(true));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_ViewVotes_02".toLowerCase())
+          ) {
+            dispatch(viewVoteFailed(t("No-record-found")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_ViewVotes_03".toLowerCase())
+          ) {
+            dispatch(viewVoteFailed(t("No-record-found")));
+          } else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_ViewVotes_04".toLowerCase())
+          ) {
+            dispatch(viewVoteFailed(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(viewVoteFailed(t("Something-went-wrong")));
+        }
+      } else {
+        dispatch(viewVoteFailed(t("Something-went-wrong")));
       }
     });
   };
@@ -831,4 +1072,7 @@ export {
   setVotePollModal,
   setviewpollProgressModal,
   viewVotesDetailsModal,
+  viewVotesApi,
+  setDeltePollModal,
+  UpdatePollStatusByPollIdApi,
 };

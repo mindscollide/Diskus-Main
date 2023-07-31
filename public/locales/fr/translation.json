@@ -400,12 +400,13 @@
   "Archived": "Archived",
   "Active": "Active",
   "Committee-title": "Committee Title",
+
   "No-member-selected": "No member selected!",
   "Committee-description-is-required": "Committee description is required",
-  "Please-select-group-member-type-also": "Please select group member type also",
-  "No-group-heads-found": "No group head found",
-  "No-group-memebers-found": "No group members found",
-  "Please-select-group-head-type-also": "Please select group head type also",
+  "Please-select-group-member-type-also": "Pleases elect group member type also",
+  "No-group-heads-found": "No group heads found",
+  "No-group-memebers-found": "No group memebers found",
+  "Please-select-group-head-type-also": "Pleases elect group head type also",
   "Resolution": "Resolution",
   "Create-new-resolution": "Create New Resolution",
   "All": "All",
@@ -712,5 +713,9 @@
   "Poll-not-created": "Poll Not Created",
   "Participant-list-of-consists-of-duplicate-members": "Participant List Consists Of Duplicate Members",
   "There-must-be-at-least-two-poll-options": "There must be at least two Poll options",
-  "Search-by-title": "Search by Title"
+  "Search-by-title": "Search by Title",
+  "Required-atleast-one-vote": "Required Atleast One Vote",
+  "Voted": "Voted",
+  "Not-voted": "Not Voted",
+  "Are-you-sure-you-want-to-continue?": "Are you sure you want to continue?"
 }

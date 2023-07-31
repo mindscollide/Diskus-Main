@@ -141,7 +141,7 @@ const PaymentForm2 = () => {
                   />
                 )}{" "}
                 <Link
-                  to="/selectedpackage"
+                  to="/Diskus/Admin/PackageDetail"
                   className={`${styles["goBackChevRon"]}`}
                 >
                   {t("Go-back")}
