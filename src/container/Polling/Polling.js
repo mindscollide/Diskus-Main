@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Polling.module.css";
 import { Row, Col } from "react-bootstrap";
-import { Button, Table, TextField } from "../../components/elements";
+import {
+  Button,
+  Table,
+  TextField,
+  Loader,
+  Notification,
+} from "../../components/elements";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
 import CreatePolling from "./CreatePolling/CreatePollingModal";
@@ -16,26 +22,45 @@ import PollDetails from "./PollDetails/PollDetails";
 import Votepoll from "./VotePoll/Votepoll";
 import UpdateSecond from "./UpdateSecond/UpdateSecond";
 import { useDispatch, useSelector } from "react-redux";
-import { searchPollsApi } from "../../store/actions/Polls_actions";
+import {
+  LoaderState,
+  castVoteApi,
+  getPollsByPollIdApi,
+  searchPollsApi,
+  setCreatePollModal,
+  setEditpollModal,
+  setviewpollModal,
+} from "../../store/actions/Polls_actions";
 import { useNavigate } from "react-router-dom";
-import { _justShowDateformatBilling, resolutionResultTable } from "../../commen/functions/date_formater";
+import {
+  _justShowDateformatBilling,
+  resolutionResultTable,
+} from "../../commen/functions/date_formater";
+import { clearMessagesGroup } from "../../store/actions/Groups_actions";
 
 const Polling = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { PollsReducer } = useSelector(state => state);
-  const [isCreatePoll, setIsCreatePoll] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const { PollsReducer } = useSelector((state) => state);
+  console.log(PollsReducer, "PollsReducerPollsReducerPollsReducerPollsReducer");
   const [isUpdatePoll, setIsUpdatePoll] = useState(false);
   const [viewprogress, setViewprogress] = useState(false);
+  const [pollData, setPollData] = useState([]);
   const [updatePublished, setUpdatePublished] = useState(false);
   const [isVotePoll, setisVotePoll] = useState(false);
   const [viewPollsDetails, setViewPollsDetails] = useState(false);
   const [isViewPoll, setIsViewPoll] = useState(false);
-  const [totalRecords, setTotalRecord] = useState(0)
+  const [totalRecords, setTotalRecord] = useState(0);
+  const [open, setOpen] = useState({
+    flag: false,
+    message: "",
+  });
+  let userID = localStorage.getItem("userID");
   const [pollsState, setPollsState] = useState({
     searchValue: "",
   });
-  const [rows, setRows] = useState([])
+  const [rows, setRows] = useState([]);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [searchBoxState, setsearchBoxState] = useState({
     searchByName: "",
@@ -44,9 +69,6 @@ const Polling = () => {
 
   const [searchpoll, setSearchpoll] = useState(false);
 
-  useEffect(() => {
-    dispatch(searchPollsApi(navigate, t))
-  }, [])
   const showViewProgressBarModal = () => {
     setViewprogress(true);
   };
@@ -62,23 +84,88 @@ const Polling = () => {
   const OpenUpdatePublished = () => {
     setUpdatePublished(true);
   };
-  const { t } = useTranslation();
+
+  const handleEditpollModal = (record) => {
+    console.log("handleEditpollModal", record);
+    let check = 0;
+    if (record.wasPollPublished) {
+      check = 1;
+    } else {
+      check = 2;
+    }
+
+    let data = {
+      PollID: record.pollID,
+      UserID: parseInt(userID),
+    };
+    if (Object.keys(record).length > 0) {
+      console.log("handleEditpollModal", check);
+      console.log("handleEditpollModal", data);
+      dispatch(getPollsByPollIdApi(navigate, data, check, t));
+    }
+  };
+
+  const handleViewModal = (record) => {
+    console.log("recordrecordrecordrecordrecord", record);
+    let check = 0;
+    if (record.wasPollPublished) {
+      if (record.pollStatus.pollStatusId === 3) {
+        check = 4;
+      } else {
+        check = 3;
+      }
+    } else {
+      check = 4;
+    }
+    let data = {
+      PollID: record.pollID,
+      UserID: parseInt(userID),
+    };
+    if (Object.keys(record).length > 0) {
+      console.log("handleEditpollModal", check);
+      console.log("handleEditpollModal", data);
+      dispatch(getPollsByPollIdApi(navigate, data, check, t));
+    }
+  };
+
+  const handleSearchEvent = () => {
+    let organizationID = localStorage.getItem("organizationID");
+    let data = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(organizationID),
+      CreatorName: searchBoxState.searchByName,
+      PageNumber: 1,
+      Length: 3,
+    };
+    dispatch(searchPollsApi(navigate, t, data));
+  };
 
   const PollTableColumns = [
     {
-      title: t("Post-title"),
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span>{t("Post-title")}</span>
+            </Col>
+          </Row>
+        </>
+      ),
       dataIndex: "pollTitle",
       key: "pollTitle",
       width: "365px",
       render: (text, record) => {
-        let newDate = new Date();
-        let checkDate = resolutionResultTable(record.dueDate + "000000")
-        if (checkDate < newDate) {
-          return <span className="cursor-pointer" onClick={() => setViewPollsDetails(true)}>{text}</span>
-        } else {
-          return <span className="cursor-pointer" onClick={() => setisVotePoll(true)}> {text}</span>
-        }
-      }
+        return (
+          <span
+            className="cursor-pointer"
+            onClick={() => {
+              handleViewModal(record);
+            }}
+          >
+            {text}
+          </span>
+        );
+      },
     },
     {
       title: t("Status"),
@@ -101,10 +188,12 @@ const Polling = () => {
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       render: (text, record) => {
-        if (record.pollStatus.pollStatusId === 1) {
+        if (record.pollStatus.pollStatusId === 2) {
           return <span className="text-success">{t("Published")}</span>;
-        } else if (record.pollStatus.pollStatusId === 2) {
+        } else if (record.pollStatus.pollStatusId === 1) {
           return <span className="text-success">{t("Unpublished")}</span>;
+        } else if (record.pollStatus.pollStatusId === 3) {
+          return <span className="text-success">{t("Expired")}</span>;
         }
       },
     },
@@ -114,8 +203,8 @@ const Polling = () => {
       key: "dueDate",
       width: "89px",
       render: (text, record) => {
-        return _justShowDateformatBilling(text + "000000")
-      }
+        return _justShowDateformatBilling(text + "000000");
+      },
     },
     {
       title: t("Created-by"),
@@ -131,15 +220,22 @@ const Polling = () => {
       render: (text, record) => {
         if (record.pollStatus.pollStatusId === 2) {
           if (record.voteStatus === "Not Voted") {
-            return <Button className={styles["voteBtn"]} text={"Vote"} />
+            return (
+              <Button
+                className={styles["voteBtn"]}
+                text={"Vote"}
+                onClick={() => {
+                  handleVotePolls(record);
+                }}
+              />
+            );
           } else if (record.voteStatus === "Voted") {
-            return <Button className={styles["votedBtn"]} text={"Voted"} />
+            return <Button className={styles["votedBtn"]} text={"Voted"} />;
           }
         } else {
-          return ""
+          return "";
         }
-
-      }
+      },
     },
     {
       title: t("Edit"),
@@ -154,11 +250,11 @@ const Polling = () => {
             width="21.59px"
             height="21.59px"
             onClick={() => {
-              setIsUpdatePoll(true);
+              handleEditpollModal(record);
             }}
           />
-        )
-      }
+        );
+      },
     },
   ];
 
@@ -228,22 +324,84 @@ const Polling = () => {
 
   useEffect(() => {
     try {
-      if (PollsReducer.SearchPolls !== null && PollsReducer.SearchPolls !== undefined) {
-        setTotalRecord(PollsReducer.SearchPolls.totalRecords)
+      if (
+        PollsReducer.SearchPolls !== null &&
+        PollsReducer.SearchPolls !== undefined
+      ) {
+        setTotalRecord(PollsReducer.SearchPolls.totalRecords);
         if (PollsReducer.SearchPolls.polls.length > 0) {
-          setRows(PollsReducer.SearchPolls.polls)
+          setRows(PollsReducer.SearchPolls.polls);
         } else {
-          setRows([])
+          setRows([]);
         }
       }
-    } catch (error) {
+    } catch (error) {}
+  }, [PollsReducer.SearchPolls]);
 
+  useEffect(() => {
+    if (
+      PollsReducer.ResponseMessage !== "" &&
+      PollsReducer.ResponseMessage !== t("Data-available") &&
+      PollsReducer.ResponseMessage !== t("No-data-available")
+    ) {
+      setOpen({
+        ...open,
+        flag: true,
+        message: PollsReducer.ResponseMessage,
+      });
+      setTimeout(() => {
+        setOpen({
+          ...open,
+          flag: false,
+          message: "",
+        });
+      }, 3000);
+      dispatch(clearMessagesGroup());
+    } else {
+      dispatch(clearMessagesGroup());
     }
-  }, [PollsReducer.SearchPolls])
+  }, [PollsReducer.ResponseMessage]);
+
+  useEffect(() => {
+    console.log(PollsReducer, "PollsReducerPollsReducer");
+    let userIds = [];
+    if (
+      PollsReducer.SearchPolls !== null &&
+      PollsReducer.SearchPolls !== undefined
+    ) {
+    }
+  }, [PollsReducer.SearchPolls]);
+
+  console.log(pollData, "pollDatapollDatapollData");
+
+  const handleVotePolls = (record) => {
+    let data = {
+      PollID: parseInt(record.pollID),
+      UserID: parseInt(userID),
+      PollOptionIDs: [4],
+    };
+    console.log(data, "datadatadatadatadatadata");
+    // dispatch(castVoteApi(navigate, data, t));
+  };
+
+  let organizationID = localStorage.getItem("organizationID");
+  useEffect(() => {
+    let data = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(organizationID),
+      CreatorName: searchBoxState.searchByName,
+      PageNumber: 1,
+      Length: 50,
+    };
+    dispatch(searchPollsApi(navigate, t, data));
+  }, []);
 
   const HandleCloseSearchModal = () => {
     setSearchpoll(false);
   };
+  console.log(PollsReducer.createPollmodal, "handleEditpollModal ");
+  console.log(PollsReducer.viewPollModal, "handleEditpollModal ");
+  console.log(PollsReducer.editpollmodal, "handleEditpollModal ");
   return (
     <>
       <section className={styles["Poll_Container"]}>
@@ -265,7 +423,9 @@ const Polling = () => {
                   className="align-items-center"
                 />
               }
-              onClick={() => setIsCreatePoll(true)}
+              onClick={() =>
+                dispatch(setCreatePollModal(true), dispatch(LoaderState(true)))
+              }
             />
           </Col>
           <Col sm={12} md={9} lg={9} className="justify-content-end d-flex ">
@@ -287,7 +447,7 @@ const Polling = () => {
                   <img
                     src={searchicon}
                     className={styles["Search_Bar_icon_class"]}
-                  // className={styles["GlobalSearchFieldICon"]}
+                    // className={styles["GlobalSearchFieldICon"]}
                   />
                 }
                 // clickIcon={SearchiconClickOptions}
@@ -321,7 +481,7 @@ const Polling = () => {
                       <Row className="mt-3">
                         <Col lg={6} md={6} sm={6}>
                           <TextField
-                            placeholder={t("Search-by-Title")}
+                            placeholder={t("Search-by-title")}
                             applyClass={"Search_Modal_Fields"}
                             labelClass="d-none"
                             name={"searchbytitle"}
@@ -357,6 +517,7 @@ const Polling = () => {
                             className={
                               styles["Search_Button_polls_SearchModal"]
                             }
+                            onClick={handleSearchEvent}
                           />
                         </Col>
                       </Row>
@@ -369,54 +530,17 @@ const Polling = () => {
         </Row>
         <Row>
           <Col sm={12} md={12} lg={12}>
-            <Table
-              column={PollTableColumns}
-              rows={rows}
-            />
+            <Table column={PollTableColumns} rows={rows} />
           </Col>
         </Row>
       </section>
-      {isCreatePoll && (
-        <CreatePolling
-          setShowPollingModal={setIsCreatePoll}
-          showPollingModal={isCreatePoll}
-        />
-      )}
-      {isUpdatePoll ? (
-        <UpdatePolls
-          showUpdatepollModal={isUpdatePoll}
-          setShowUpdatepollModal={setIsUpdatePoll}
-        />
-      ) : null}
-      {isViewPoll ? (
-        <>
-          <ViewPoll
-            showViewPollModal={isViewPoll}
-            setShowViewPollModal={setIsViewPoll}
-          />
-        </>
-      ) : null}
-      {viewprogress ? (
-        <>
-          <ViewPollProgress
-            showViewProgress={viewprogress}
-            setShowViewProgress={setViewprogress}
-          />
-        </>
-      ) : null}
-      {viewPollsDetails ? (
-        <>
-          <PollDetails
-            showpollDetails={viewPollsDetails}
-            setShowpollDetails={setViewPollsDetails}
-          />
-        </>
-      ) : null}
-      {isVotePoll ? (
-        <>
-          <Votepoll showVotePoll={isVotePoll} setShowVotePoll={setisVotePoll} />
-        </>
-      ) : null}
+      {PollsReducer.createPollmodal && <CreatePolling />}
+      {PollsReducer.editpollmodal && <UpdatePolls />}
+      {PollsReducer.viewPollModal && <ViewPoll />}
+      {PollsReducer.viewPollProgress && <ViewPollProgress />}
+      {PollsReducer.isVotePollModal && <Votepoll />}
+      {PollsReducer.viewVotesDetails && <PollDetails />}
+
       {updatePublished ? (
         <>
           <UpdateSecond
@@ -425,6 +549,8 @@ const Polling = () => {
           />
         </>
       ) : null}
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
+      {PollsReducer.Loading ? <Loader /> : null}
     </>
   );
 };

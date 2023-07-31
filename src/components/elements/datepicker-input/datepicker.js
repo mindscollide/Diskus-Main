@@ -14,6 +14,7 @@ const InputDatePicker = ({
   DateRange,
   required,
   locale,
+  height,
 }) => {
   const { Text } = Typography
   let dateFormat = 'DD-MM-YYYY'
@@ -37,7 +38,7 @@ const InputDatePicker = ({
           placeholder={placeholder}
           onChange={onChange}
           size={size}
-          style={{ width: `${width}`, marginLeft: '5px' }}
+          style={{ width: `${width}`, marginLeft: '5px', height: `${height}` }}
           required={required}
           locale={locale}
         />

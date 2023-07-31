@@ -1621,21 +1621,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                                     <FileIcon
                                       extension={'docx'}
                                       size={78}
-                                      type={'document'}
-                                      labelColor={'rgba(44, 88, 152)'}
-                                    />
-                                  ) : ext === 'docx' ? (
-                                    <FileIcon
-                                      extension={'docx'}
-                                      size={78}
-                                      type={'font'}
-                                      labelColor={'rgba(44, 88, 152)'}
-                                    />
-                                  ) : ext === 'xls' ? (
-                                    <FileIcon
-                                      extension={'xls'}
-                                      type={'spreadsheet'}
-                                      size={78}
                                       labelColor={'rgba(16, 121, 63)'}
                                     />
                                   ) : ext === 'xlsx' ? (
@@ -1685,7 +1670,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                                       size={78}
                                       {...defaultStyles.gif}
                                     />
-                                  ) : null}
+                                  ) : (
+                                    <FileIcon
+                                      extension={ext}
+                                      size={78}
+                                      {...defaultStyles.ext}
+                                    />
+                                  )}
                                   <span className="deleteBtn">
                                     <img
                                       src={deleteButtonCreateMeeting}

@@ -425,7 +425,7 @@ const editUserAction = (navigate,
   setIsUpdateSuccessfully,
   setEditModal,
   updateData,
-  t
+  t, setIsUserNotUpdate
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return async (dispatch) => {
@@ -469,6 +469,7 @@ const editUserAction = (navigate,
               editUserSuccess(response.data.responseResult, newMessage)
             );
             try {
+              setIsUserNotUpdate(false)
               setIsUpdateSuccessfully(true);
               setEditModal(false);
             } catch (response) { }
@@ -495,7 +496,8 @@ const editUserAction = (navigate,
               editUserSuccess(response.data.responseResult, newMessage)
             );
             try {
-              setIsUpdateSuccessfully(true);
+              setIsUserNotUpdate(true)
+              setIsUpdateSuccessfully(false);
               setEditModal(false);
             } catch (response) { }
           } else if (

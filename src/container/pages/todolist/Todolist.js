@@ -605,6 +605,12 @@ const TodoList = () => {
       })
     } else {
       // make notification for if input fields is empty here
+      let newData = {
+        Date: '',
+        Title: '',
+        AssignedToName: '',
+        UserID: parseInt(createrID),
+      }
       dispatch(SearchTodoListApi(navigate, newData, 1, 50, t))
       setSearchData({
         Date: '',

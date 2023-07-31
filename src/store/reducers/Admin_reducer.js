@@ -31,7 +31,8 @@ const initialState = {
   DeleteOrganizationResponseMessage: "",
   PaymentMethods: null,
   searchPaymentHistory: null,
-  Spinner: false
+  Spinner: false,
+  getSubscriptiondetails: null
 };
 
 const adminReducer = (state = initialState, action) => {
