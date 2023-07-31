@@ -28,8 +28,6 @@ const initialState = {
   getSubscriptiondetails: null,
   getSubscriptionUpgradePaymentDetail: null,
   getSubscriptionPaymentComplete: null,
-
-
   paymentCompleteResponse: null
 };
 
@@ -65,6 +63,7 @@ const AuthReducer = (state = initialState, action) => {
     }
     case actions.GETSUBSCRIPTIONUPGRADEAMOUNTDETAIL_SUCCESS: {
       return {
+
         ...state,
         Loading: false,
         getSubscriptionUpgradePaymentDetail: action.response,
@@ -90,6 +89,7 @@ const AuthReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+
         getSubscriptionPaymentComplete: action.response,
         ResponseMessage: action.message
       }
