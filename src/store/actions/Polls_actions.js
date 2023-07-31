@@ -174,6 +174,112 @@ const searchPollsApi = (navigate, t, data) => {
   };
 };
 
+//Delete Polls
+
+const deltePollsInit = () => {
+  return {
+    type: actions.DELETE_POLL_INIT,
+  };
+};
+
+const deltePollsSuccess = (response, message) => {
+  return {
+    type: actions.DELETE_POLL_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+const deltePollsFailed = (message) => {
+  return {
+    type: actions.DELETE_POLL_FAILED,
+    message: message,
+  };
+};
+
+//Delete polls APi
+
+const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+  let createrID = parseInt(localStorage.getItem("userID"));
+  let OrganizationID = parseInt(localStorage.getItem("organizationID"));
+  return (dispatch) => {
+    dispatch(deltePollsInit());
+    let form = new FormData();
+    form.append("RequestData", JSON.stringify(data));
+    form.append("RequestMethod", searcPollsRequestMethod.RequestMethod);
+    axios({
+      method: "post",
+      url: pollApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log(response, "response");
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(UpdatePollStatusByPollIdApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_UpdatePollStatusByPollId_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                deltePollsSuccess(
+                  response.data.responseResult,
+                  t("Poll Status Updated Successfully")
+                )
+              );
+              let Data = {
+                UserID: parseInt(createrID),
+                OrganizationID: parseInt(OrganizationID),
+                CreatorName: "",
+                PageNumber: 1,
+                Length: 50,
+              };
+              dispatch(setDeltePollModal(false));
+              dispatch(searchPollsApi(navigate, t, Data));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_UpdatePollStatusByPollId_02".toLowerCase()
+                )
+            ) {
+              dispatch(deltePollsFailed(t("Poll Status Not Updated")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Polls_PollsServiceManager_UpdatePollStatusByPollId_03".toLowerCase()
+                )
+            ) {
+              dispatch(deltePollsFailed(t("Something-went-wrong")));
+            } else {
+              dispatch(deltePollsFailed(t("Something-went-wrong")));
+            }
+          } else {
+            console.log(response, "response");
+            dispatch(deltePollsFailed(t("Something-went-wrong")));
+          }
+        } else {
+          console.log(response, "response");
+          dispatch(deltePollsFailed(t("Something-went-wrong")));
+        }
+      })
+      .catch((response) => {
+        console.log(response, "response");
+        dispatch(deltePollsFailed(t("Something-went-wrong")));
+      });
+  };
+};
+
 // save poll Init
 const savePolls_init = () => {
   return {
@@ -966,4 +1072,5 @@ export {
   viewVotesDetailsModal,
   viewVotesApi,
   setDeltePollModal,
+  UpdatePollStatusByPollIdApi,
 };

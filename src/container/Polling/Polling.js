@@ -8,6 +8,7 @@ import {
   Loader,
   Notification,
 } from "../../components/elements";
+import { Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
 import CreatePolling from "./CreatePolling/CreatePollingModal";
@@ -73,6 +74,7 @@ const Polling = () => {
   let userID = localStorage.getItem("userID");
 
   const [searchpoll, setSearchpoll] = useState(false);
+  const [idForDelete, setIdForDelete] = useState(0);
 
   useEffect(() => {
     let data = {
@@ -133,7 +135,11 @@ const Polling = () => {
   };
 
   const deletePollingModal = (record) => {
+    console.log("deletePollingModal");
+    setIdForDelete(record.pollID);
     dispatch(setDeltePollModal(true));
+
+    // setIdForDelete
   };
 
   const handleSearchEvent = () => {
@@ -301,26 +307,30 @@ const Polling = () => {
           <>
             <Row>
               <Col sm={12} md={5} lg={5}>
-                <img
-                  src={EditIcon}
-                  className="cursor-pointer"
-                  width="21.59px"
-                  height="21.59px"
-                  onClick={() => {
-                    handleEditpollModal(record);
-                  }}
-                />
+                <Tooltip placement="topRight" title={t("Edit")}>
+                  <img
+                    src={EditIcon}
+                    className="cursor-pointer"
+                    width="21.59px"
+                    height="21.59px"
+                    onClick={() => {
+                      handleEditpollModal(record);
+                    }}
+                  />
+                </Tooltip>
               </Col>
               <Col sm={12} md={5} lg={5}>
-                <img
-                  src={BinIcon}
-                  className="cursor-pointer"
-                  width="21.59px"
-                  height="21.59px"
-                  onClick={() => {
-                    deletePollingModal(record);
-                  }}
-                />
+                <Tooltip placement="topLeft" title={t("Delete")}>
+                  <img
+                    src={BinIcon}
+                    className="cursor-pointer"
+                    width="21.59px"
+                    height="21.59px"
+                    onClick={() => {
+                      deletePollingModal(record);
+                    }}
+                  />
+                </Tooltip>
               </Col>
             </Row>
           </>
@@ -587,7 +597,7 @@ const Polling = () => {
       {PollsReducer.viewPollProgress && <ViewPollProgress />}
       {PollsReducer.isVotePollModal && <Votepoll />}
       {PollsReducer.viewVotesDetails && <PollDetails />}
-      {PollsReducer.deletePollsModal && <DeletePoll />}
+      {PollsReducer.deletePollsModal && <DeletePoll id={idForDelete} />}
 
       {updatePublished ? (
         <>

@@ -751,6 +751,10 @@ const viewvotes = {
   RequestMethod: "ServiceManager.ViewVotes",
 };
 
+const deltePolls = {
+  RequestMethod: "ServiceManager.UpdatePollStatusByPollId",
+};
+
 export {
   revoketoken,
   googleValidToken,
@@ -953,4 +957,5 @@ export {
   updatePolls,
   getPollByPollId,
   viewvotes,
+  deltePolls,
 };

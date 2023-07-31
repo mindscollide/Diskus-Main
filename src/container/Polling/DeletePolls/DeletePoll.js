@@ -5,16 +5,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSSR, useTranslation } from "react-i18next";
 import { Col, Container, Row } from "react-bootstrap";
-import { setDeltePollModal } from "../../../store/actions/Polls_actions";
+import {
+  UpdatePollStatusByPollIdApi,
+  setDeltePollModal,
+} from "../../../store/actions/Polls_actions";
 
-const DeletePoll = () => {
+const DeletePoll = ({ id }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { PollsReducer } = useSelector((state) => state);
+  console.log(PollsReducer, "PollsReducerPollsReducerPollsReducer");
 
   const handleNofunction = () => {
     dispatch(setDeltePollModal(false));
+  };
+
+  const deletePollFunction = () => {
+    let data = {
+      PollID: parseInt(id),
+      PollStatusID: 4,
+    };
+    dispatch(UpdatePollStatusByPollIdApi(navigate, t, data));
   };
   return (
     <Container>
@@ -43,9 +55,13 @@ const DeletePoll = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-center gap-2 m-0 p-0"
+                className="d-flex justify-content-center gap-1"
               >
-                <Button text={t("Yes")} className={styles["Yes_Button"]} />
+                <Button
+                  text={t("Yes")}
+                  className={styles["Yes_Button"]}
+                  onClick={deletePollFunction}
+                />
                 <Button
                   text={t("No")}
                   className={styles["No_Button"]}

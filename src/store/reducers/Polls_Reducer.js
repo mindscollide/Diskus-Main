@@ -14,6 +14,7 @@ const initialState = {
   editPollModalFlag: false,
   viewVotes: null,
   SavePoll: null,
+  deletedPolls: null,
   gellAllCommittesandGroups: null,
   pollOptions: [],
   Statuspolls: [],
@@ -274,6 +275,31 @@ const PollsReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       };
     }
+
+    case actions.DELETE_POLL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+
+    case actions.DELETE_POLL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        deletedPolls: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.DELETE_POLL_FAILED: {
+      return {
+        ...state,
+        Loading: false,
+        ResponseMessage: action.message,
+      };
+    }
+
     default: {
       return { ...state };
     }
