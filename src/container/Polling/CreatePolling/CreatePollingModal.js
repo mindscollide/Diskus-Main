@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import AlarmClock from "../../../assets/images/AlarmOptions.svg";
 import { Button, TextField } from "../../../components/elements";
 import gregorian from "react-date-object/calendars/gregorian";
+
 import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
@@ -27,6 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import GroupIcon from "../../../assets/images/groupdropdown.svg";
 import committeeicon from "../../../assets/images/committeedropdown.svg";
+import { enGB, ar } from "date-fns/locale";
 import profilepic from "../../../assets/images/profiledropdown.svg";
 import {
   SavePollsApi,
@@ -35,13 +37,16 @@ import {
 } from "../../../store/actions/Polls_actions";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import { registerLocale } from "react-datepicker";
 import moment from "moment";
 import { newDateFormaterAsPerUTC } from "../../../commen/functions/date_formater";
-import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees";
-import { clearMessagesGroup } from "../../../store/actions/Groups_actions";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
 
 const CreatePolling = () => {
   const animatedComponents = makeAnimated();
+  let currentLanguage = localStorage.getItem("i18nextLng");
+  registerLocale("ar", ar);
+  registerLocale("en", enGB);
   //For Custom language datepicker
   const { PollsReducer } = useSelector((state) => state);
   console.log(PollsReducer, "PollsReducerPollsReducer");
@@ -52,6 +57,7 @@ const CreatePolling = () => {
   const [localValue, setLocalValue] = useState(gregorian_en);
   const { t } = useTranslation();
   const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
+  const [meetingDate, setMeetingDate] = useState("");
   const [members, setMembers] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
   const [open, setOpen] = useState({
@@ -80,6 +86,29 @@ const CreatePolling = () => {
       value: "",
     },
   ]);
+
+  useEffect(() => {
+    if (currentLanguage === "ar") {
+      moment.locale(currentLanguage);
+    } else if (currentLanguage === "fr") {
+      moment.locale(currentLanguage);
+    } else {
+      moment.locale(currentLanguage);
+    }
+  }, [currentLanguage]);
+
+  useEffect(() => {
+    if (currentLanguage != undefined) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
+      }
+    }
+  }, [currentLanguage]);
+
   useEffect(() => {
     dispatch(getAllCommitteesandGroups(navigate, t));
   }, []);
@@ -183,8 +212,7 @@ const CreatePolling = () => {
     }
   }, [PollsReducer.gellAllCommittesandGroups]);
 
-  console.log(dropdowndata, "PollsReducerPollsReducer1212");
-  // for selecgtion of data
+  // for selection of data
   const handleSelectValue = (value) => {
     setSelectedsearch(value);
   };
@@ -275,44 +303,33 @@ const CreatePolling = () => {
       // setopen notionation work here
     }
   };
-  console.log(members, "checkcheckcheckcheck");
 
-  const changeDateStartHandler = (date) => {
-    let newDate = moment(date).format("YYYYMMDD");
-    console.log(date, "SavePollsButtonFunc");
-
-    // let newDate = new DateObject(date).format("YYYYMMDD");
-    console.log(newDate, "SavePollsButtonFunc");
-
+  const changeDateStartHandler = (date, format = "YYYYMMDD") => {
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
+    setMeetingDate(meetingDateValueFormat);
     setcreatePollData({
       ...createPollData,
-      date: newDate,
+      date: meetingDateSaveFormat,
     });
-    console.log(newDate, "changeDateStartHandler");
   };
+
   const changeDateStartHandler2 = (date) => {
     let newDate = moment(date).format("DD MMMM YYYY");
-
     return newDate;
   };
+
   // for create polls
   const SavePollsButtonFunc = async (value) => {
-    console.log(value, "SavePollsButtonFunc");
-
     const organizationid = localStorage.getItem("organizationID");
     const createrid = localStorage.getItem("userID");
     let users = [];
     let optionsListData = [];
-    console.log(value, "SavePollsButtonFunc");
-    console.log(options.length, "SavePollsButtonFunc");
     if (Object.keys(options).length >= 2) {
-      console.log(value, "SavePollsButtonFunc");
       if (Object.keys(members).length > 0) {
-        console.log(value, "SavePollsButtonFunc");
         members.map((userdata, index) => {
           users.push(userdata.userID);
         });
-        console.log(value, "SavePollsButtonFunc");
         options.map((optionData, index) => {
           if (optionData.value != "") {
             optionsListData.push(optionData.value);
@@ -324,7 +341,6 @@ const CreatePolling = () => {
           }
         });
         if (createPollData.date != "") {
-          console.log(createPollData.date, "SavePollsButtonFunc");
           let data = {
             PollDetails: {
               PollTitle: createPollData.TypingTitle,
@@ -337,7 +353,7 @@ const CreatePolling = () => {
             ParticipantIDs: users,
             PollAnswers: optionsListData,
           };
-          console.log(data, "SavePollsButtonFunc");
+
           await dispatch(SavePollsApi(navigate, data, t));
         } else {
           // setopen notfication for date
@@ -357,15 +373,6 @@ const CreatePolling = () => {
       // console.log("Hellothereiamcoming");
       // setopen notfication for polls add atlese 2 option
     }
-  };
-  const HandleSearch = (e) => {
-    if (e.target.value.trimStart() != "") {
-      setAssignees(e.target.value.trimStart());
-    } else {
-      setAssignees("");
-    }
-
-    console.log(assignees, "assigneesassignees");
   };
 
   const HandleChange = (e, index) => {
@@ -387,18 +394,16 @@ const CreatePolling = () => {
       }
     }
   };
+
   const HandleOptionChange = (e) => {
     let name = parseInt(e.target.name);
     let newValue = e.target.value;
-
     setOptions((prevState) =>
       prevState.map((item) => {
-        console.log(item, "HandleOptionChange");
         return item.name === name ? { ...item, value: newValue } : item;
       })
     );
   };
-  console.log("HandleOptionChange", options);
 
   const addNewRow = () => {
     if (options.length > 1) {
@@ -478,19 +483,17 @@ const CreatePolling = () => {
                               : ""}
                           </span>
                           <MultiDatePickers
-                            // onChange={meetingDateHandler}
-                            value={createPollData.date}
+                            value={meetingDate}
                             name="MeetingDate"
                             check={true}
-                            // value={meetingDate}
                             calendar={calendarValue}
                             locale={localValue}
-                            onChange={(value) =>
-                              changeDateStartHandler(
-                                value?.toDate?.().toString()
-                              )
-                            }
-                          // newValue={createMeeting.MeetingDate}
+                            onChange={(value) => changeDateStartHandler(value)}
+                            // onChange={(value) =>
+                            //   changeDateStartHandler(
+                            //     value?.toDate?.().toString()
+                            //   )
+                            // }
                           />
                         </Col>
                       </Row>
@@ -579,75 +582,75 @@ const CreatePolling = () => {
                           </Row>
                           {options.length > 0
                             ? options.map((data, index) => {
-                              return (
-                                <>
-                                  {index <= 1 ? (
-                                    <Row className="mt-2">
-                                      <Col lg={12} md={12} sm={12}>
-                                        <span className="position-relative">
-                                          <TextField
-                                            placeholder={
-                                              "Option" +
-                                              " " +
-                                              parseInt(index + 1)
-                                            }
-                                            applyClass={"PollingCreateModal"}
-                                            labelClass="d-none"
-                                            name={data.name}
-                                            maxLength={500}
-                                            value={data.value}
-                                            change={(e) =>
-                                              HandleOptionChange(e)
-                                            }
-                                          />
-                                        </span>
-                                      </Col>
-                                    </Row>
-                                  ) : (
-                                    <Row className="mt-2">
-                                      <Col lg={12} md={12} sm={12}>
-                                        <span className="position-relative">
-                                          <TextField
-                                            placeholder={
-                                              "Option" +
-                                              " " +
-                                              parseInt(index + 1)
-                                            }
-                                            applyClass={"PollingCreateModal"}
-                                            labelClass="d-none"
-                                            name={data.name}
-                                            value={data.value}
-                                            change={(e) =>
-                                              HandleOptionChange(e)
-                                            }
-                                            inputicon={
-                                              <img
-                                                src={BlackCrossIcon}
-                                                width="31.76px"
-                                                height="31.76px"
-                                                onClick={() =>
-                                                  HandleCancelFunction(index)
-                                                }
-                                                className={
-                                                  styles[
-                                                  "Cross-icon-Create_poll"
-                                                  ]
-                                                }
-                                              />
-                                            }
-                                            iconClassName={
-                                              styles[
-                                              "polling_Options_backGround"
-                                              ]
-                                            }
-                                          />
-                                        </span>
-                                      </Col>
-                                    </Row>
-                                  )}
-                                </>
-                              );
-                            })
+                                return (
+                                  <>
+                                    {index <= 1 ? (
+                                      <Row className="mt-2">
+                                        <Col lg={12} md={12} sm={12}>
+                                          <span className="position-relative">
+                                            <TextField
+                                              placeholder={
+                                                "Option" +
+                                                " " +
+                                                parseInt(index + 1)
+                                              }
+                                              applyClass={"PollingCreateModal"}
+                                              labelClass="d-none"
+                                              name={data.name}
+                                              maxLength={500}
+                                              value={data.value}
+                                              change={(e) =>
+                                                HandleOptionChange(e)
+                                              }
+                                            />
+                                          </span>
+                                        </Col>
+                                      </Row>
+                                    ) : (
+                                      <Row className="mt-2">
+                                        <Col lg={12} md={12} sm={12}>
+                                          <span className="position-relative">
+                                            <TextField
+                                              placeholder={
+                                                "Option" +
+                                                " " +
+                                                parseInt(index + 1)
+                                              }
+                                              applyClass={"PollingCreateModal"}
+                                              labelClass="d-none"
+                                              name={data.name}
+                                              value={data.value}
+                                              change={(e) =>
+                                                HandleOptionChange(e)
+                                              }
+                                              inputicon={
+                                                <img
+                                                  src={BlackCrossIcon}
+                                                  width="31.76px"
+                                                  height="31.76px"
+                                                  onClick={() =>
+                                                    HandleCancelFunction(index)
+                                                  }
+                                                  className={
+                                                    styles[
+                                                      "Cross-icon-Create_poll"
+                                                    ]
+                                                  }
+                                                />
+                                              }
+                                              iconClassName={
+                                                styles[
+                                                  "polling_Options_backGround"
+                                                ]
+                                              }
+                                            />
+                                          </span>
+                                        </Col>
+                                      </Row>
+                                    )}
+                                  </>
+                                );
+                              })
                             : null}
 
                           <Row className="mt-2">

@@ -94,7 +94,7 @@ const getGroups = (navigate, t, id, currentPage) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          await dispatch(getGroups(navigate, t, id, currentPage));
+          await dispatch(getGroups(navigate, t, id));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -337,7 +337,6 @@ const createGroup_Fail = (message) => {
 };
 const createGroup = (navigate, Data, t, setCreategrouppage) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"))
   return (dispatch) => {
     dispatch(createGroup_Init());
     let form = new FormData();
@@ -373,7 +372,7 @@ const createGroup = (navigate, Data, t, setCreategrouppage) => {
                   t("Data-available")
                 )
               );
-              dispatch(getGroups(navigate, t, 0, currentPage,));
+              dispatch(getGroups(navigate, t));
               setCreategrouppage(false);
             } else if (
               response.data.responseResult.responseMessage
@@ -633,7 +632,6 @@ const updateGroup_Fail = (message) => {
 };
 const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"))
   return (dispatch) => {
     dispatch(updateGroup_Init());
     let form = new FormData();
@@ -669,7 +667,7 @@ const updateGroup = (navigate, Data, t, setViewUpdateGroup) => {
                   t("Group-updated")
                 )
               );
-              dispatch(getGroups(navigate, t, 0, currentPage));
+              dispatch(getGroups(navigate, t));
               setViewUpdateGroup(false);
               console.log("Group-updated");
             } else if (
@@ -749,7 +747,6 @@ const updateGroupStatus_Fail = (message) => {
 };
 const updateGroupStatus = (navigate, Data, t, setModalStatusChange) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"))
   return (dispatch) => {
     dispatch(updateGroupStatus_Init());
     let form = new FormData();
@@ -785,7 +782,7 @@ const updateGroupStatus = (navigate, Data, t, setModalStatusChange) => {
                   t("Group-status-update")
                 )
               );
-              dispatch(getGroups(navigate, t, 0, currentPage));
+              dispatch(getGroups(navigate, t));
               setModalStatusChange(false);
             } else if (
               response.data.responseResult.responseMessage

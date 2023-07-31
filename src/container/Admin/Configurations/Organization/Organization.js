@@ -133,7 +133,6 @@ const Organization = () => {
     UserAllowMicrosoftCalendarSynch: false,
     CalenderMonthsSpan: 0,
   });
-  console.log(organizationStates, "organizationStates")
   const [timeZoneValue, setTimeZoneValue] = useState({
     label: "",
     value: "",
@@ -308,7 +307,7 @@ const Organization = () => {
     let organizationID = JSON.parse(localStorage.getItem("organizationID"));
     let organizationSettings = {
       FK_TZID: timeZoneValue.value,
-      MaximumMeetingDuration: parseInt(organizationStates.MaximumMeetingDuration),
+      MaximumMeetingDuration: organizationStates.MaximumMeetingDuration,
       CalenderMonthsSpan: organizationStates.CalenderMonthsSpan,
       EmailOnNewMeeting: organizationStates.EmailOnNewMeeting,
       EmailOnEditMeeting: organizationStates.EmailOnEditMeeting,
@@ -566,18 +565,12 @@ const Organization = () => {
     });
   };
 
-  // const hoursHandler = (event) => {
-  //   setOrganizationStates({
-  //     ...organizationStates,
-  //     MaximumMeetingDuration: event.value,
-  //   });
-  // };
-  const handleChangeMaximumMeeting = (e) => {
+  const hoursHandler = (event) => {
     setOrganizationStates({
       ...organizationStates,
-      MaximumMeetingDuration: e.target.value,
+      MaximumMeetingDuration: event.value,
     });
-  }
+  };
 
   console.log("changeFlage", organizationStates);
 
@@ -820,7 +813,7 @@ const Organization = () => {
                     className="d-flex justify-content-start align-items-center"
                   >
                     <label className="organization-labels">
-                      {t("Maximum-meeting-duration-in-minutes")}
+                      {t("Maximum-meeting-duration")}
                     </label>
                   </Col>
                   <Col
@@ -832,8 +825,7 @@ const Organization = () => {
                       "d-flex justify-content-end organization-timezone-col2"
                     }
                   >
-                    <TextField type={"number"} change={handleChangeMaximumMeeting} value={organizationStates.MaximumMeetingDuration} name={"maximumduration"} labelClass={"d-none"} />
-                    {/* <Select
+                    <Select
                       options={timedurationValues}
                       placeholder={t("Select")}
                       className={styles["select-timeDuration"]}
@@ -854,7 +846,7 @@ const Organization = () => {
                       menuShouldScrollIntoView={false}
                       onChange={hoursHandler}
                       styles={borderChanges}
-                    /> */}
+                    />
                   </Col>
                 </Row>
 

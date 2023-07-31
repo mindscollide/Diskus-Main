@@ -38,12 +38,6 @@ const CustomTableToDo = ({
         rowSelection={rowSelection}
         size={size}
         pagination={pagination}
-      // filterDropdown={(filterProps) => (
-      //   <div>
-      //     {/* filter dropdown content */}
-      //     <Button onClick={filterProps.confirmFilter}>Custom OK Text</Button>
-      //   </div>
-      // )}
       // scroll={scroll}
       />
     </>

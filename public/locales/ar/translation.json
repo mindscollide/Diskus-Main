@@ -404,7 +404,7 @@
   "Invalid-data": "بيانات غير صالحة",
   "Meeting-deleted-successfully": "تم حذف الاجتماع بنجاح",
   "Meeting-not-deleted-successfully": "لم يتم حذف الاجتماع بنجاح",
-  "Maximum-meeting-duration-in-minutes": "Maximum Meeting Duration (In minutes)",
+  "Maximum-meeting-duration": "مدة الاجتماع القصوى",
   "Dormant-in-active-users-for-days": "المستخدمون الخاملون غير النشطين لأيام",
   "Organization-subscription-cancelled": "تم إلغاء اشتراك المؤسسة",
   "Organization-subscription-not-cancelled": "لم يتم إلغاء اشتراك المؤسسة",
@@ -1045,15 +1045,6 @@
 
   "Last-modified-by-me": "Last modified by me",
   "Last-open-by-me": "Last open by me",
-  "this-voter-already-exist": "This voter already exist",
-  "Upgrade-your-package-to-enable-the-user-other-changes-if-any-are-updated": "Upgrade your package to Enable the user. Other changes, if any, are updated",
-  "Payment-procced": "Payment Procced",
-  "Failed-to-update-organization-invoice": "Failed to update Organization Invoice",
-  "Payment-complete-successfully": "Payment Completed Successfully",
-  "Failed-to-update-organziation-subscription": "Failed to Update Organziation Subscription",
-  "Failed-to-insert-organization-invoice": "Failed to insert Organization Invoice",
-  "Failed-to-insert organization-invoice-payment": "Failed to Insert Organization Invoice Payment",
-  "Failed-to-updated-organization-subscription": "Failed to updated Organization Subscription",
   "Participant-list-consists-of-duplicate-members": "Participant List Consists Of Duplicate Members",
   "There-must-be-atleast-two-Poll-options": "There Must Be Atleast Two Poll Options",
   "Poll-details-updated": "Poll Details Updated",
@@ -1067,5 +1058,9 @@
   "Poll-not-created": "Poll Not Created",
   "Participant-list-of-consists-of-duplicate-members": "Participant List Consists Of Duplicate Members",
   "There-must-be-at-least-two-poll-options": "There must be at least two Poll options",
-  "Search-by-title": "Search by Title"
+  "Search-by-title": "Search by Title",
+  "Required-atleast-one-vote": "Required Atleast One Vote",
+  "Voted": "Voted",
+  "Not-voted": "Not Voted",
+  "Are-you-sure-you-want-to-continue?": "Are you sure you want to continue?"
 }

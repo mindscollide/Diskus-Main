@@ -228,53 +228,37 @@ const ModalShareFolder = ({
     }
   };
   const openAccessRequestModalClick = () => {
-    if (folderData.Folders.length > 0) {
-      setShowaccessrequest(true);
-
-    } else {
-      setOpen({
-        flag: true,
-        message: t("User-required-must-for-share")
-      })
-    }
+    setShowaccessrequest(true);
   };
 
   const handleAddMember = () => {
     let findIndexData = folderData.Folders.findIndex(
       (listData, index) => listData.FK_UserID === taskAssignedTo
     );
-    if (taskAssignedName !== "") {
-      if (findIndexData === -1) {
-        let Data = {
-          FK_FolderID: folderId,
-          FK_PermissionID: JSON.parse(permissionID.value),
-          FK_UserID: taskAssignedTo,
-        };
-        if (taskAssignedTo !== 0) {
-          if (assignees.user.length > 0) {
-            assignees.user.map((data, index) => {
-              if (data.pK_UID === taskAssignedTo) {
-                setMembers([...isMembers, data]);
-              }
-            });
-          }
+    if (findIndexData === -1) {
+      let Data = {
+        FK_FolderID: folderId,
+        FK_PermissionID: JSON.parse(permissionID.value),
+        FK_UserID: taskAssignedTo,
+      };
+      if (taskAssignedTo !== 0) {
+        if (assignees.user.length > 0) {
+          assignees.user.map((data, index) => {
+            if (data.pK_UID === taskAssignedTo) {
+              setMembers([...isMembers, data]);
+            }
+          });
         }
-        setFolderData((prev) => {
-          return { ...prev, Folders: [...prev.Folders, Data] };
-        });
-      } else {
-        setOpen({
-          flag: true,
-          message: t("User-is-already-exist")
-        })
       }
+      setFolderData((prev) => {
+        return { ...prev, Folders: [...prev.Folders, Data] };
+      });
     } else {
       setOpen({
         flag: true,
-        message: t("Please-select-user")
+        message: t("User-is-already-exist")
       })
     }
-
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
@@ -328,7 +312,7 @@ const ModalShareFolder = ({
           modalTitleClassName={styles["ModalHeader"]}
           modalHeaderClassName={styles["ModalRequestHeader"]}
           centered
-          size={sharefolder === true ? "lg" : inviteedit === true ? "sm" : "md"}
+          size={sharefolder === true ? "lg" : "md"}
           ModalTitle={
             <>
               {expirationheader ? (

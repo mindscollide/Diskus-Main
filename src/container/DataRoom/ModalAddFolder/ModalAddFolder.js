@@ -16,7 +16,7 @@ import {
 } from "../../../store/actions/DataRoom_actions";
 import { useNavigate } from "react-router-dom";
 
-const ModalAddFolder = ({ addfolder, setAddfolder, setIsExistFolder }) => {
+const ModalAddFolder = ({ addfolder, setAddfolder }) => {
   const { t } = useTranslation();
   const [FolderName, setFolderName] = useState({
     content: "",
@@ -30,7 +30,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder, setIsExistFolder }) => {
   };
   const handleAddFolder = () => {
     if (FolderName.content !== "") {
-      dispatch(FolderisExist(navigate, FolderName.content, t, setAddfolder, setIsExistFolder));
+      dispatch(FolderisExist(navigate, FolderName.content, t, setAddfolder));
     } else {
       setFolderName({
         content: "",

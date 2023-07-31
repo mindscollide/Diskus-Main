@@ -69,7 +69,6 @@ import Committee from "../container/Committee/Committee";
 import Resolution from "../container/Resolution/Resolution";
 import DataRoom from "../container/DataRoom/DataRoom";
 import Polling from "../container/Polling/Polling";
-import PaymentForm2 from "../container/Admin/Subscriptions/PaymentForm2/PaymentForm2";
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -146,7 +145,6 @@ export const router = createHashRouter(
           <Route path="changePassword" element={<ChangePassword />} />
           <Route path="faq's" element={<CustomMiscellaneous />} />
           <Route path="deleteorganization" element={<DeleteOrganization />} />
-          <Route path="paymentForm" element={<PaymentForm2 />} />
           <Route
             path="UpgradePackageDetail"
             element={<PackageUpgradeDetail />}

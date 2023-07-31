@@ -506,7 +506,6 @@ body[dir="rtl"] .Arabicstyles {
   margin-right: 0;
   display: flex;
   justify-content: flex-end;
-
 }
 
 body[dir="rtl"] .languageSelector {
@@ -518,7 +517,6 @@ body[dir="rtl"] .languageSelector {
   display: flex;
   justify-content: flex-end;
 }
-
 .PaymentFormSubmitPayment {
   width: calc(100% - 250px);
   margin: 50px 0;
