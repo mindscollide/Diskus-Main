@@ -4,8 +4,8 @@ import Button from '@material-ui/core/Button'
 import { Box } from '@material-ui/core'
 import UploadChatIcon from '../../../assets/images/Upload-Chat-Icon.png'
 
-const CustomUploadChat = ({
-  onChange,
+const CustomUploadImageChat = ({
+  change,
   onClick,
   className,
   disable,
@@ -17,12 +17,12 @@ const CustomUploadChat = ({
         className={styles.uploadText}
         id="contained-button-file"
         type="file"
-        onChange={onChange}
+        onChange={change}
         disable={disable}
         onClick={onClick}
         maxfilesize={10000000}
         disabled={disable}
-        accept=".doc, .docx, .xls, .xlsx,.pdf,.png,.txt,.jpg, .jpeg, .gif"
+        accept={'image/*'}
       />
       <label htmlFor="contained-button-file">
         <Button
@@ -38,4 +38,4 @@ const CustomUploadChat = ({
   )
 }
 
-export default CustomUploadChat
+export default CustomUploadImageChat

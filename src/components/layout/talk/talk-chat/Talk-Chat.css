@@ -383,11 +383,13 @@ body[dir="rtl"] .encryption-level-chat p.level-heading {
 
 .chat-input-section {
   border-top: 1px solid #e1e1e1;
-  height: 45px;
+  height: auto;
+  /* Update the height to be dynamic based on the input field */
   display: flex;
   position: fixed;
-  bottom: 8px;
+  bottom: 9px;
   width: 323px !important;
+  background: #fff
 }
 
 .chat-input-section:has(.Ok-btn) {
@@ -485,7 +487,6 @@ em-emoji-picker {
 }
 
 .upload-click {
-  height: 45px;
   width: 35px;
   vertical-align: middle;
   align-items: center;
@@ -494,7 +495,6 @@ em-emoji-picker {
 }
 
 .sendChat-click {
-  height: 45px;
   width: 45px;
   vertical-align: middle;
   align-items: center;
@@ -507,10 +507,8 @@ body[dir="rtl"] .sendChat-click {
 }
 
 .chat-input-field {
-  vertical-align: middle;
-  align-items: center;
-  justify-content: center;
-  display: flex;
+  margin: 5px 0px;
+  width: 250px;
 }
 
 .emoji-click img {
@@ -1148,6 +1146,7 @@ span.direct-chat-body {
   font-family: "MontserratRegular";
   font-size: 15px;
   display: flex;
+  word-break: break-all;
 }
 
 body[dir="rtl"] .direct-chat-text .chatmessage-box-icons img.dropdown-icon {
@@ -1740,4 +1739,108 @@ button.UploadFileButton {
   visibility: hidden !important;
   margin-top: 11px;
   margin-left: -3px;
+}
+
+.image-thumbnail {
+  display: block;
+  height: 270px;
+  width: 91%;
+  text-align: center;
+  padding-top: 35px;
+  /* border: 1px solid #ccc; */
+  position: absolute;
+  background: #e1e1e1;
+}
+
+img.thumbnailImage {
+  height: 200px;
+  width: 70%;
+}
+
+.removeImage-thumbnail {
+  position: absolute;
+  z-index: 9;
+  right: 20px;
+  top: 17px;
+}
+
+.chat-input-field.no-upload-options input {
+  width: 250px !important;
+}
+
+.image-thumbnail-chat {
+  height: 165px;
+}
+
+.image-thumbnail-chat img {
+  height: 165px;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.file-upload-options {
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  padding: 18px;
+  position: relative;
+  margin: 8px 11px;
+}
+
+label.image-upload {
+  position: absolute;
+  top: 7px;
+  left: 8px;
+}
+
+.file-uploaded-chat {
+  background: #e1e1e1;
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.file-uploaded-chat.received {
+  background: #E9F6FF !important;
+}
+
+span.attached-file {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #171D2D;
+  font-weight: 600;
+  margin-right: 10px;
+  display: inline-block;
+  width: 120px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+}
+
+.chat-input-field textarea.chat-message-input.form-control:focus {
+  box-shadow: none !important;
+}
+
+textarea.chat-message-input.form-control {
+  width: 100%;
+}
+
+textarea.chat-message-input.form-control::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+textarea.chat-message-input.form-control::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.emoji-section {
+  display: flex;
+  align-items: center;
+  vertical-align: middle;
+  justify-content: center;
 }

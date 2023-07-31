@@ -37,6 +37,7 @@ import {
   deleteShoutAll,
   updateShoutAll,
   insertBulkMessages,
+  downloadChat,
 } from '../../commen/apis/Api_config'
 import axios from 'axios'
 import { talkApi } from '../../commen/apis/Api_ends_points'
@@ -214,6 +215,14 @@ const mqttUnreadMessageCount = (response) => {
     response: response,
   }
 }
+
+//Unread Message Count
+// const mqttMessageDeleted = (response) => {
+//   return {
+//     type: actions.MQTT_UNREAD_MESSAGE_COUNT,
+//     response: response,
+//   }
+// }
 
 //get all user chat init
 const getAllUserChatsInit = (response) => {
@@ -2517,13 +2526,14 @@ const GroupPrivateSendNotification = (message) => {
 }
 
 //Insert Private Group Messages
-const InsertPrivateGroupMessages = (navigate, object, t) => {
+const InsertPrivateGroupMessages = (navigate, object, fileUploadData, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(GroupPrivateMessageSendInit())
     let form = new FormData()
     form.append('RequestMethod', insertPrivateGroupMessage.RequestMethod)
     form.append('RequestData', JSON.stringify(object))
+    form.append('Files', fileUploadData)
     axios({
       method: 'post',
       url: talkApi,
@@ -2535,7 +2545,9 @@ const InsertPrivateGroupMessages = (navigate, object, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(InsertPrivateGroupMessages(navigate, object, t))
+          dispatch(
+            InsertPrivateGroupMessages(navigate, object, fileUploadData, t),
+          )
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2782,13 +2794,14 @@ const broadcastMessageSendNotification = (message) => {
 }
 
 //Insert Private Group Messages
-const InsertBroadcastMessages = (navigate, object, t) => {
+const InsertBroadcastMessages = (navigate, object, fileUploadData, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   return (dispatch) => {
     dispatch(broadcastMessageSendInit())
     let form = new FormData()
     form.append('RequestMethod', insertBroadcastMessage.RequestMethod)
     form.append('RequestData', JSON.stringify(object))
+    form.append('Files', fileUploadData)
     axios({
       method: 'post',
       url: talkApi,
@@ -2800,7 +2813,7 @@ const InsertBroadcastMessages = (navigate, object, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(InsertBroadcastMessages(navigate, object, t))
+          dispatch(InsertBroadcastMessages(navigate, object, fileUploadData, t))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -3688,6 +3701,107 @@ const InsertBulkMessages = (object, t, navigate) => {
   }
 }
 
+const downloadChatInit = () => {
+  return {
+    type: actions.DOWNLOAD_CHAT_INIT,
+  }
+}
+
+const downloadChatSuccess = (response, message) => {
+  return {
+    type: actions.DOWNLOAD_CHAT_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+const downloadChatFail = (message) => {
+  return {
+    type: actions.DOWNLOAD_CHAT_FAIL,
+    message: message,
+  }
+}
+
+//Download Chat
+const DownloadChat = (object, t, navigate) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(downloadChatInit())
+    let form = new FormData()
+    form.append('RequestMethod', downloadChat.RequestMethod)
+    form.append('RequestData', JSON.stringify(object))
+    axios({
+      method: 'post',
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(DownloadChat(object, t, navigate))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_DownloadChat_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                downloadChatSuccess(
+                  response.data.responseResult.talkResponse,
+                  t('Chat-downloaded-successfully'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_DownloadChat_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                downloadChatSuccess(
+                  response.data.responseResult.talkResponse,
+                  t('No-data-found'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_DownloadChat_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(downloadChatFail(t('Exception')))
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_DownloadChat_04'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                downloadChatFail(t('Exception-while-writing-to-stream')),
+              )
+            }
+          } else {
+            await dispatch(downloadChatFail(t('Something-went-wrong')))
+          }
+        } else {
+          await dispatch(downloadChatFail(t('Something-went-wrong')))
+        }
+      })
+      .catch((response) => {
+        dispatch(downloadChatFail(t('Something-went-wrong')))
+      })
+  }
+}
+
 export {
   activeChatID,
   activeMessageID,
@@ -3741,4 +3855,5 @@ export {
   UpdateShoutAll,
   OtoMessageRetryFlag,
   InsertBulkMessages,
+  DownloadChat,
 }
