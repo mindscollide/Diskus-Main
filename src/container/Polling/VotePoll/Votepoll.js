@@ -82,6 +82,28 @@ const Votepoll = () => {
       }
     }
   };
+
+  const handleCheckBoxForOneOnly = (e) => {
+    let checked = e.target.checked;
+    let name = e.target.name;
+    let array = [...viewProgressPollsDetails.answer];
+    console.log(checked, "checkedYescheckedYescheckedYes");
+    console.log(name, "checkedYescheckedYescheckedYes");
+    if (checked) {
+      setViewProgressPollsDetails({
+        ...viewProgressPollsDetails,
+        answer: array,
+      });
+    } else {
+      const findID = viewProgressPollsDetails.answer.indexOf(name);
+      if (findID) {
+        setViewProgressPollsDetails({
+          ...viewProgressPollsDetails,
+          answer: findID,
+        });
+      }
+    }
+  };
   console.log(
     viewProgressPollsDetails.answer,
     "checkedYescheckedYescheckedYes"
@@ -218,7 +240,7 @@ const Votepoll = () => {
                                       ) : (
                                         <CustomRadio
                                           checked={data.voted}
-                                          change={handleCheckBoxYes}
+                                          change={handleCheckBoxForOneOnly}
                                           className={
                                             styles["Custom_radio_button"]
                                           }
@@ -298,7 +320,7 @@ const Votepoll = () => {
                                       ) : (
                                         <CustomRadio
                                           checked={data.voted}
-                                          change={handleCheckBoxYes}
+                                          change={handleCheckBoxForOneOnly}
                                           className={
                                             styles["Custom_radio_button"]
                                           }
