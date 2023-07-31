@@ -32,6 +32,74 @@ const initialState = {
 
 const AuthReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.PAYMENTCOMPLETE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.PAYMENTCOMPLETE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        paymentCompleteResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.PAYMENTCOMPLETE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        paymentCompleteResponse: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETSUBSCRIPTIONUPGRADEAMOUNTDETAIL_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETSUBSCRIPTIONUPGRADEAMOUNTDETAIL_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getSubscriptionUpgradePaymentDetail: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETSUBSCRIPTIONUPGRADEAMOUNTDETAIL_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getSubscriptionUpgradePaymentDetail: null,
+        ResponseMessage: action.message,
+      };
+    }
+
+    case actions.GETSUBSCRIPTIONUPGRADEPAYMENTCOMPLETE_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETSUBSCRIPTIONUPGRADEPAYMENTCOMPLETE_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+
+        getSubscriptionPaymentComplete: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETSUBSCRIPTIONUPGRADEPAYMENTCOMPLETE_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getSubscriptionPaymentComplete: null,
+        ResponseMessage: action.message,
+      };
+    }
     case actions.EMAILVALIDATION_INIT: {
       console.log(state, "action");
       return {
