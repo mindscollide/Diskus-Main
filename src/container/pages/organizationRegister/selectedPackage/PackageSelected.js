@@ -183,8 +183,8 @@ const PackageSelected = () => {
   useEffect(() => {
     if (Authreducer.getSubscriptiondetails !== null) {
       setTotalBillAmount({
-        TotalBill: Authreducer.getSubscriptiondetails.totalBill,
-        MonthlyBill: Authreducer.getSubscriptiondetails.monthlyBill
+        TotalBill: Authreducer.getSubscriptiondetails?.totalBill,
+        MonthlyBill: Authreducer.getSubscriptiondetails?.monthlyBill
       })
     } else {
       setTotalBillAmount({
