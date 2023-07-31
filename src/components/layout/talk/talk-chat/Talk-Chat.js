@@ -4055,7 +4055,10 @@ const TalkChat = () => {
   const sendChat = async (e) => {
     e.preventDefault()
     dispatch(activeChatID(activeChat))
-    if (messageSendData.Body !== '' || uploadFileTalk !== {}) {
+    if (
+      (messageSendData.Body !== '' && uploadFileTalk !== {}) ||
+      messageSendData.Body !== ''
+    ) {
       console.log('uniqueId', uniqueId)
 
       if (chatClickData.messageType === 'O') {
@@ -4652,35 +4655,31 @@ const TalkChat = () => {
 
   console.log('All OTO Messages', allOtoMessages)
 
+  useEffect(() => {
+    // Check the condition to trigger the link
+    if (
+      talkStateData.DownloadChatData.DownloadChatResponse !== null &&
+      talkStateData.DownloadChatData.DownloadChatResponse !== undefined &&
+      talkStateData.DownloadChatData.DownloadChatResponse.length !== 0
+    ) {
+      let fileDownloadURL =
+        filesUrlTalk +
+        talkStateData.DownloadChatData.DownloadChatResponse.filePath
+      window.open(fileDownloadURL, '_blank')
+    }
+  }, [talkStateData?.DownloadChatData?.DownloadChatResponse])
   // useEffect(() => {
-  //   // Check the condition to trigger the link
   //   if (
   //     talkStateData.DownloadChatData.DownloadChatResponse !== null &&
   //     talkStateData.DownloadChatData.DownloadChatResponse !== undefined &&
   //     talkStateData.DownloadChatData.DownloadChatResponse.length !== 0
   //   ) {
-  //     // let fileDownloadURL =
-  //     //   filesUrlTalk +
-  //     //   talkStateData.DownloadChatData.DownloadChatResponse.filePath
-  //     // window.open(fileDownloadURL, '_blank')
   //     const newTab = window.open('/print.html', '_blank')
   //     newTab.onload = function () {
   //       newTab.print()
   //     }
   //   }
   // }, [talkStateData?.DownloadChatData?.DownloadChatResponse])
-  useEffect(() => {
-    if (
-      talkStateData.DownloadChatData.DownloadChatResponse !== null &&
-      talkStateData.DownloadChatData.DownloadChatResponse !== undefined &&
-      talkStateData.DownloadChatData.DownloadChatResponse.length !== 0
-    ) {
-      const newTab = window.open('/print.html', '_blank')
-      newTab.onload = function () {
-        newTab.print()
-      }
-    }
-  }, [talkStateData?.DownloadChatData?.DownloadChatResponse])
 
   return (
     <>
@@ -9390,9 +9389,9 @@ const TalkChat = () => {
           </div>
         ) : null}
       </div>
-      <div>
+      {/* <div>
         <PrintPage filesUrlTalk={filesUrlTalk} talkStateData={talkStateData} />
-      </div>
+      </div> */}
       <NotificationBar
         iconName={<img src={SecurityIcon} />}
         notificationMessage={notification.message}
