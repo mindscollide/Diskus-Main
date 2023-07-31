@@ -4519,11 +4519,20 @@ input.form-control {
 .ant-radio-checked .ant-radio-inner:after {
   background-color: #6172d6;
 }
+.custom-radio .ant-radio-checked .ant-radio-inner {
+  border-color: #6172d6 !important; /* Replace with your desired color */
+}
 
+.custom-radio .ant-radio-inner::after {
+  background-color: #6172d6 !important; /* Replace with your desired color */
+}
 .ant-radio:hover .ant-radio-inner {
   border-color: #6172d6;
 }
-
+.ant-radio-disabled .ant-radio-inner {
+  background-color: #6172d6 !important;
+  cursor: not-allowed;
+}
 .css-6j8wv5-Input {
   padding: 0 !important;
 }

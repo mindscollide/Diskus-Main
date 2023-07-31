@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { Modal, Button, Checkbox } from "../../../../components/elements";
+import {
+  Modal,
+  Button,
+  Checkbox,
+  CustomRadio2,
+} from "../../../../components/elements";
 import AlarmClock from "../../../../assets/images/AlarmOptions.svg";
 import styles from "./ViewPollProgress.module.css";
 import profile from "../../../../assets/images/profile_polls.svg";
@@ -30,8 +35,7 @@ const ViewPollProgress = () => {
     AllowMultipleAnswers: false,
   });
   const [checkboxesState, setCheckboxesState] = useState({
-    checkedYes: false,
-    checkedNO: false,
+    checkedYes: true,
   });
   const [viewpollMembers, setViewPollmembers] = useState([]);
   const [pollsOption, setPollsOption] = useState([]);
@@ -52,6 +56,7 @@ const ViewPollProgress = () => {
           memberpollsprogressView.push(data);
         });
       }
+
       if (pollSelectedAnswers.length > 0) {
         pollOptions.map((newdata, index) => {
           let find = pollSelectedAnswers.find(
@@ -101,15 +106,7 @@ const ViewPollProgress = () => {
       });
     }
   }, [PollsReducer.Allpolls]);
-
-  const HandleCheckBoxYes = () => {
-    setCheckboxesState({
-      ...checkboxesState,
-      checkedYes: !checkboxesState.checkedYes,
-    });
-    console.log(checkboxesState.checkedYes, "checkedYescheckedYescheckedYes");
-  };
-
+  console.log("CustomRadio2", pollsOption);
   const changeDateStartHandler2 = (date) => {
     let newDate = moment(date).format("DD MMMM YYYY");
 
@@ -216,7 +213,7 @@ const ViewPollProgress = () => {
                   </Col>
                 </Row>
                 {pollsOption.length > 4 ? (
-                  <Row>
+                  <Row className="mt-2">
                     <Col
                       lg={12}
                       md={12}
@@ -263,16 +260,19 @@ const ViewPollProgress = () => {
                                       <Checkbox
                                         disabled={true}
                                         checked={data.voted}
-                                        onChange={HandleCheckBoxYes}
                                         classNameCheckBoxP="d-none"
                                       />
+                                    ) : data.voted ? (
+                                      <CustomRadio2
+                                        disabled={true}
+                                        value={[data.pollAnswerID]}
+                                        Optios={data.pollAnswerID}
+                                      />
                                     ) : (
-                                      <CustomRadio
-                                        checked={data.voted}
-                                        change={HandleCheckBoxYes}
-                                        className={
-                                          styles["Custom_radio_button"]
-                                        }
+                                      <CustomRadio2
+                                        disabled={true}
+                                        value={[]}
+                                        Optios={data.pollAnswerID}
                                       />
                                     )}
                                   </Col>
@@ -298,10 +298,12 @@ const ViewPollProgress = () => {
                     </Col>
                   </Row>
                 ) : (
-                  <Row>
+                  <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
                       {pollsOption.length > 0
                         ? pollsOption.map((data, index) => {
+                            console.log("CustomRadio2", data);
+
                             return (
                               <>
                                 <Row>
@@ -340,16 +342,19 @@ const ViewPollProgress = () => {
                                       <Checkbox
                                         disabled={true}
                                         checked={data.voted}
-                                        onChange={HandleCheckBoxYes}
                                         classNameCheckBoxP="d-none"
                                       />
+                                    ) : data.voted ? (
+                                      <CustomRadio2
+                                        disabled={true}
+                                        value={[data.pollAnswerID]}
+                                        Optios={data.pollAnswerID}
+                                      />
                                     ) : (
-                                      <CustomRadio
-                                        checked={data.voted}
-                                        change={HandleCheckBoxYes}
-                                        className={
-                                          styles["Custom_radio_button"]
-                                        }
+                                      <CustomRadio2
+                                        disabled={true}
+                                        value={[]}
+                                        Optios={data.pollAnswerID}
                                       />
                                     )}
                                   </Col>

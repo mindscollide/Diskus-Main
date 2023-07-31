@@ -218,21 +218,35 @@ const Polling = () => {
       key: "vote",
       width: "59px",
       render: (text, record) => {
+        console.log("record.pollStatus", record);
         if (record.pollStatus.pollStatusId === 2) {
           if (record.voteStatus === "Not Voted") {
             return (
               <Button
                 className={styles["voteBtn"]}
-                text={"Vote"}
+                text={t("Vote")}
                 onClick={() => {
                   handleVotePolls(record);
                 }}
               />
             );
           } else if (record.voteStatus === "Voted") {
-            return <Button className={styles["votedBtn"]} text={"Voted"} />;
+            return <Button className={styles["votedBtn"]} text={t("Voted")} />;
           }
-          if (record.pollStatus.pollStatusId === 3) {
+        } else if (record.pollStatus.pollStatusId === 1) {
+          return "";
+        } else if (record.pollStatus.pollStatusId === 3) {
+          if (record.wasPollPublished) {
+            if (record.voteStatus === "Not Voted") {
+              return (
+                <Button className={styles["votedBtn"]} text={t("Not-voted")} />
+              );
+            } else {
+              return (
+                <Button className={styles["votedBtn"]} text={t("Voted")} />
+              );
+            }
+          } else {
             return "";
           }
         } else {
@@ -353,7 +367,7 @@ const Polling = () => {
   useEffect(() => {
     if (
       PollsReducer.ResponseMessage !== "" &&
-      PollsReducer.ResponseMessage !== t("Data-available") &&
+      PollsReducer.ResponseMessage !== t("Record-found") &&
       PollsReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({
@@ -383,7 +397,7 @@ const Polling = () => {
       dispatch(getPollsByPollIdApi(navigate, data, 5, t));
     }
   };
-
+  console.log("rows", rows);
   const HandleCloseSearchModal = () => {
     setSearchpoll(false);
   };

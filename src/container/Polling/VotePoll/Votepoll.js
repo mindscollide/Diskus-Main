@@ -5,6 +5,7 @@ import {
   Button,
   Checkbox,
   Notification,
+  CustomRadio2,
 } from "../../../components/elements";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { useSSR, useTranslation } from "react-i18next";
@@ -84,25 +85,13 @@ const Votepoll = () => {
   };
 
   const handleCheckBoxForOneOnly = (e) => {
-    let checked = e.target.checked;
-    let name = e.target.name;
-    let array = [...viewProgressPollsDetails.answer];
-    console.log(checked, "checkedYescheckedYescheckedYes");
-    console.log(name, "checkedYescheckedYescheckedYes");
-    if (checked) {
-      setViewProgressPollsDetails({
-        ...viewProgressPollsDetails,
-        answer: array,
-      });
-    } else {
-      const findID = viewProgressPollsDetails.answer.indexOf(name);
-      if (findID) {
-        setViewProgressPollsDetails({
-          ...viewProgressPollsDetails,
-          answer: findID,
-        });
-      }
-    }
+    let value = e.target.value;
+    console.log(value, "checkedYescheckedYescheckedYes");
+
+    setViewProgressPollsDetails({
+      ...viewProgressPollsDetails,
+      answer: [value],
+    });
   };
   console.log(
     viewProgressPollsDetails.answer,
@@ -202,6 +191,7 @@ const Votepoll = () => {
                         >
                           {pollsOption.length > 0 ? (
                             pollsOption.map((data, index) => {
+                              console.log(data, "datadatadatadatadatadatadata");
                               return (
                                 <>
                                   <Row>
@@ -238,12 +228,16 @@ const Votepoll = () => {
                                           classNameCheckBoxP="d-none"
                                         />
                                       ) : (
-                                        <CustomRadio
-                                          checked={data.voted}
-                                          change={handleCheckBoxForOneOnly}
-                                          className={
-                                            styles["Custom_radio_button"]
+                                        <CustomRadio2
+                                          value={
+                                            viewProgressPollsDetails.answer
                                           }
+                                          Optios={data.pollAnswerID}
+                                          onChange={handleCheckBoxForOneOnly}
+
+                                          // className={
+                                          //   styles["Custom_radio_button"]
+                                          // }
                                         />
                                       )}
                                     </Col>
@@ -318,12 +312,23 @@ const Votepoll = () => {
                                           classNameCheckBoxP="d-none"
                                         />
                                       ) : (
-                                        <CustomRadio
-                                          checked={data.voted}
-                                          change={handleCheckBoxForOneOnly}
-                                          className={
-                                            styles["Custom_radio_button"]
+                                        // <CustomRadio
+                                        //   checked={data.voted}
+                                        //   change={handleCheckBoxForOneOnly}
+                                        //   className={
+                                        //     styles["Custom_radio_button"]
+                                        //   }
+                                        // />
+                                        <CustomRadio2
+                                          value={
+                                            viewProgressPollsDetails.answer
                                           }
+                                          Optios={data.pollAnswerID}
+                                          className="custom-radio"
+                                          onChange={handleCheckBoxForOneOnly}
+                                          // className={
+                                          //   styles["Custom_radio_button"]
+                                          // }
                                         />
                                       )}
                                     </Col>
