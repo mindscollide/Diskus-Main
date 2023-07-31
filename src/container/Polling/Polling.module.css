@@ -163,11 +163,19 @@ body[dir="rtl"] .polling_searchinput {
 }
 
 .voteBtn {
-  background-color: #81DB86 !important;
+  background-color: #81db86 !important;
   border: none !important;
   color: #fff !important;
   border-radius: 4px !important;
   padding: 12px 30px;
   font-family: "MontserratSemiBold" !important;
+}
 
+.votedBtn {
+  background-color: #ecefff !important;
+  border: none !important;
+  color: #6172d6 !important;
+  border-radius: 4px !important;
+  padding: 12px 30px;
+  font-family: "MontserratSemiBold" !important;
 }
