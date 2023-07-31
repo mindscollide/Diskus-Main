@@ -355,3 +355,8 @@ body[dir="rtl"] .Completed {
 .Status-Todo:focus-visible {
   outline: none !important;
 } */
+.filterValues-dropdown div .rc-virtual-list .rc-virtual-list-holder div .rc-virtual-list-holder-inner {
+  display: block !important;
+  width: auto;
+
+}

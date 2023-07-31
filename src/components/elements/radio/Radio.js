@@ -10,6 +10,8 @@ const CustomRadio = ({
   size,
   onClick,
   className,
+  disabled,
+  checked,
 }) => {
   return (
     <div>
@@ -19,6 +21,8 @@ const CustomRadio = ({
         name={name}
         type={type}
         id={val}
+        checked={checked}
+        disabled={disabled}
         onChange={change}
         onClick={onClick}
         size={size}

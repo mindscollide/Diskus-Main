@@ -1106,6 +1106,50 @@ const EditResolution = ({
       }
     }
   }, [ResolutionReducer.getResolutionbyID, meetingAttendeesList]);
+
+  const handleChangeDateSelection = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    console.log("handleChangeCiculationDate", name)
+    console.log("handleChangeCiculationDate", value)
+    if (name === "circulation") {
+      setCirculationDateTime({
+        ...circulationDateTime,
+        date: value,
+      });
+    } else if (name === "voting") {
+      setVotingDateTime({
+        ...votingDateTime,
+        date: value,
+      });
+    } else if (name === "decision") {
+      setDecisionDateTime({
+        ...decisionDateTime,
+        date: value,
+      });
+    }
+  };
+
+  const handleChangeTimeSelection = (e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "circulation") {
+      setCirculationDateTime({
+        ...circulationDateTime,
+        time: value,
+      });
+    } else if (name === "voting") {
+      setVotingDateTime({
+        ...votingDateTime,
+        time: value,
+      });
+    } else if (name === "decision") {
+      setDecisionDateTime({
+        ...decisionDateTime,
+        time: value,
+      });
+    }
+  }
   return (
     <>
       <section>
@@ -1290,13 +1334,15 @@ const EditResolution = ({
                               <TextFieldDateTime
                                 min={minDate}
                                 labelClass="d-none"
+                                name="circulation"
                                 applyClass={"search_voterInput"}
                                 value={circulationDateTime.date}
                                 change={(e) => {
-                                  setCirculationDateTime({
-                                    ...circulationDateTime,
-                                    date: e.target.value,
-                                  });
+                                  handleChangeDateSelection(e)
+                                  // setCirculationDateTime({
+                                  //   ...circulationDateTime,
+                                  //   date: e.target.value,
+                                  // });
                                 }}
                               />
                               <Row>
@@ -1320,16 +1366,19 @@ const EditResolution = ({
                               className="CreateMeetingReminder resolution-search-input FontArabicRegular"
                             >
                               <TextField
-                                min={minDate}
+                                // min={minDate}
                                 type="time"
+                                name="circulation"
                                 labelClass="d-none"
+                                onKeyDown={(e) => e.preventDefault()}
                                 applyClass={"search_voterInput"}
                                 value={circulationDateTime.time}
                                 change={(e) => {
-                                  setCirculationDateTime({
-                                    ...circulationDateTime,
-                                    time: e.target.value,
-                                  });
+                                  handleChangeTimeSelection(e)
+                                  // setCirculationDateTime({
+                                  //   ...circulationDateTime,
+                                  //   time: e.target.value,
+                                  // });
                                 }}
                               />
                               <Row>
@@ -1368,14 +1417,16 @@ const EditResolution = ({
                             >
                               <TextFieldDateTime
                                 min={minDate}
+                                name="voting"
                                 labelClass="d-none"
                                 applyClass={"search_voterInput"}
                                 value={votingDateTime.date}
                                 change={(e) => {
-                                  setVotingDateTime({
-                                    ...votingDateTime,
-                                    date: e.target.value,
-                                  });
+                                  handleChangeDateSelection(e)
+                                  // setVotingDateTime({
+                                  //   ...votingDateTime,
+                                  //   date: e.target.value,
+                                  // });
                                 }}
                               />
 
@@ -1402,13 +1453,16 @@ const EditResolution = ({
                               <TextField
                                 type="time"
                                 labelClass="d-none"
+                                name="voting"
+                                onKeyDown={(e) => e.preventDefault()}
                                 applyClass={"search_voterInput"}
                                 value={votingDateTime.time}
                                 change={(e) => {
-                                  setVotingDateTime({
-                                    ...votingDateTime,
-                                    time: e.target.value,
-                                  });
+                                  handleChangeTimeSelection(e)
+                                  // setVotingDateTime({
+                                  //   ...votingDateTime,
+                                  //   time: e.target.value,
+                                  // });
                                 }}
                               />
                               <Row>
@@ -1450,13 +1504,15 @@ const EditResolution = ({
                               <TextFieldDateTime
                                 applyClass={"search_voterInput"}
                                 min={minDate}
+                                name="decision"
                                 labelClass="d-none"
                                 value={decisionDateTime.date}
                                 change={(e) => {
-                                  setDecisionDateTime({
-                                    ...decisionDateTime,
-                                    date: e.target.value,
-                                  });
+                                  handleChangeDateSelection(e)
+                                  // setDecisionDateTime({
+                                  //   ...decisionDateTime,
+                                  //   date: e.target.value,
+                                  // });
                                 }}
                               />
                               <Row>
@@ -1482,13 +1538,16 @@ const EditResolution = ({
                               <TextField
                                 type="time"
                                 labelClass="d-none"
+                                name="decision"
+                                onKeyDown={(e) => e.preventDefault()}
                                 applyClass={"search_voterInput"}
                                 value={decisionDateTime.time}
                                 change={(e) => {
-                                  setDecisionDateTime({
-                                    ...decisionDateTime,
-                                    time: e.target.value,
-                                  });
+                                  handleChangeTimeSelection(e)
+                                  // setDecisionDateTime({
+                                  //   ...decisionDateTime,
+                                  //   time: e.target.value,
+                                  // });
                                 }}
                               />
                               <Row>
@@ -2001,7 +2060,11 @@ const EditResolution = ({
                                                             size={78}
                                                             {...defaultStyles.gif}
                                                           />
-                                                        ) : null}
+                                                        ) : <FileIcon
+                                                          extension={ext}
+                                                          size={78}
+                                                          {...defaultStyles.ext}
+                                                        />}
                                                         <span className="deleteBtn">
                                                           <img
                                                             src={
@@ -2061,7 +2124,7 @@ const EditResolution = ({
                                         </span>
                                       </p>
                                       <p className="ant-upload-text FontArabicRegular">
-                                        {t("Drag-&-drop-or")}
+                                        {t("Drag-&-drop-or")} {" "}
                                         <span className="FontArabicRegular">
                                           {t("Choose-file")}
                                         </span>{" "}

@@ -159,10 +159,7 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t) => {
   let Data = {
     Date: "",
     Title: "",
-    HostName: "",
-    UserID: JSON.parse(createrID),
-    PageNumber: meetingPageCurrent,
-    Length: meetingpageRow
+    HostName: ""
   }
   return (dispatch) => {
     dispatch(ScheculeMeetingInit())
@@ -237,7 +234,7 @@ const ScheduleNewMeeting = (navigate, object, calenderFlag, t) => {
 // update meeting
 const UpdateMeeting = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
-  let createrID = JSON.plocalStorage.getItem('userID')
+  let createrID = JSON.parse(localStorage.getItem('userID'))
   // let dataForList = { UserID: JSON.parse(createrID), NumberOfRecords: 300 }
   let meetingpageRow = JSON.parse(localStorage.getItem("MeetingPageRows"))
   let meetingPageCurrent = JSON.parse(localStorage.getItem("MeetingPageCurrent"))
@@ -316,6 +313,7 @@ const UpdateMeeting = (navigate, object, t) => {
       })
   }
 }
+
 const ViewMeetingInit = () => {
   return {
     type: actions.VIEW_MEETING_INIT,

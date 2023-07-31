@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, Button, Checkbox } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import styles from "./PollDetails.module.css";
@@ -7,33 +7,32 @@ import { Col, Container, Row } from "react-bootstrap";
 import profile from "../../../assets/images/profile_polls.svg";
 import { Progress } from "antd";
 import { style } from "@material-ui/system";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { viewVotesDetailsModal } from "../../../store/actions/Polls_actions";
 const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
-  const [yesParticipants, setyesParticipants] = useState([
-    {
-      id: 1,
-      name: "Saad Fudda",
-    },
-    {
-      id: 2,
-      name: "Saif ul islam",
-    },
-    {
-      id: 3,
-      name: "Owais Wajid kha",
-    },
-    {
-      id: 4,
-      name: "Huzeifa Jahangir",
-    },
-    {
-      id: 5,
-      name: "Ali mamdani",
-    },
-    {
-      id: 6,
-      name: "Syed Ali raza",
-    },
-  ]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { PollsReducer } = useSelector((state) => state);
+  console.log(
+    PollsReducer.Allpolls,
+    "PollsReducerPollsReducerPollsReducerPollsReducer"
+  );
+
+  const [yesParticipants, setyesParticipants] = useState([]);
+  useEffect(() => {
+    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
+      let users = [];
+      if (Object.keys(PollsReducer.Allpolls.poll.pollParticipants).length > 0) {
+        PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
+          console.log(data, "datadatadatadatadatadata");
+          users.push(data.userName);
+        });
+      }
+      setyesParticipants(users);
+    }
+  }, [PollsReducer.Allpolls]);
+
   const [noParticipants, setNoParticipants] = useState([
     {
       id: 1,
@@ -64,10 +63,10 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
   return (
     <Container>
       <Modal
-        show={showpollDetails}
-        setShow={setShowpollDetails}
+        show={PollsReducer.viewVotesDetails}
+        setShow={dispatch(viewVotesDetailsModal)}
         onHide={() => {
-          setShowpollDetails(false);
+          dispatch(viewVotesDetailsModal(false));
         }}
         ModalBody={
           <>
@@ -84,7 +83,7 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
                   width="16px"
                   height="16px"
                   onClick={() => {
-                    setShowpollDetails(false);
+                    dispatch(viewVotesDetailsModal(false));
                   }}
                 />
               </Col>
@@ -264,6 +263,7 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
                       <Col lg={12} md={12} sm={12}>
                         <Row>
                           {yesParticipants.map((data, index) => {
+                            console.log(data, "datadatadatadata");
                             return (
                               <Col lg={6} md={6} sm={12} className="mt-2">
                                 <Row>
@@ -281,7 +281,7 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
                                           height="33px"
                                         />
                                         <span className={styles["Name_cards"]}>
-                                          {data.name}
+                                          {data.userName}
                                         </span>
                                       </Col>
                                     </Row>
@@ -357,7 +357,7 @@ const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
                       text={t("Close")}
                       className={styles["Class_Close"]}
                       onClick={() => {
-                        setShowpollDetails(false);
+                        dispatch(viewVotesDetailsModal(false));
                       }}
                     />
                   </Col>

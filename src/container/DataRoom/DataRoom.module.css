@@ -300,6 +300,7 @@ body[dir="rtl"] .Drop_Down_searchBar {
   font-family: "MontserratSemiBold";
   color: #5a5a5a;
   cursor: pointer;
+  position: relative;
 }
 
 .Drop_Down_searchBar_Options {
@@ -661,7 +662,7 @@ body[dir="rtl"] .Search_Icon {
 }
 
 .dropdown_menu_dataroom {
-  width: 137px !important;
+  width: 100% !important;
 }
 
 .dataFolderRow {
@@ -831,11 +832,11 @@ body[dir="rtl"] .dataroom_searchinput {
 }
 
 .dataroom_table_heading {
-  white-space: nowrap;
-  overflow: hidden;
+  overflow: hidden !important;
   text-overflow: ellipsis !important;
-  display: flex;
-  gap: 10px !important;
+  display: block !important;
+  width: 300px;
+  white-space: nowrap;
 }
 
 .Dataroom__mydocument_location {

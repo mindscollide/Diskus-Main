@@ -1,42 +1,49 @@
 {
-  "organizationSettings": {
-    "FK_TZID": 7,
-    "MaximumMeetingDuration": 1,
-    "CalenderMonthsSpan": 2,
-    "EmailOnNewMeeting": true,
-    "EmailOnEditMeeting": true,
-    "PushNotificationOnNewMeeting": true,
-    "PushNotificationOnEditMeeting": true,
-    "ShowNotificationOnParticipantJoining": true,
-    "DormantInactiveUsersForDays": 30,
-    "FK_OrganizationID": 302,
-    "FK_WorldCountryID": 153,
-    "Is2FAEnabled": false,
-    "PushNotificationonCancelledDeletedMeeting": true,
-    "EmailOnCancelledDeletedMeeting": true,
-    "PushNotificationWhenResolutionIsClosed": false,
-    "PushNotificationwhenResolutionisCancelledafterCirculation": false,
-    "PushNotificationwhenRemovedfromGroup": false,
-    "PushNotificationwhenRemovedfromCommittee": false,
-    "PushNotificationwhenNewResolutionisCirculated": false,
-    "PushNotificationwhenGroupissetInActive": false,
-    "PushNotificationwhenGroupisClosedArchived": false,
-    "PushNotificationwhenCommitteeissetInActive": false,
-    "PushNotificationwhenCommitteeisDissolvedArchived": false,
-    "PushNotificationwhenAddedtoGroup": false,
-    "PushNotificationwhenAddedtoCommittee": false,
-    "EmailwhenResolutionisCancelledafterCirculation": false,
-    "EmailWhenRemovedFromGroup": false,
-    "EmailWhenRemovedFromCommittee": false,
-    "EmailwhenNewResolutionisCirculated": false,
-    "EmailWhenGroupIsInActive": false,
-    "EmailWhenGroupIsClosedArchived": false,
-    "EmailWhenCommitteeIsInActive": false,
-    "EmailWhenCommitteeIsDissolvedArchived": false,
-    "EmailWhenAddedToGroup": false,
-    "EmailWhenAddedToCommittee": false,
-    "EmailwhenaResolutionisClosed": false,
-    "UserAllowGoogleCalendarSynch": true,
-    "UserAllowMicrosoftCalendarSynch": true
-  }
+  "pollDetails": {
+    "pollID": 35,
+    "pollTitle": "SAIF POLL PUBLISHED",
+    "dueDate": "20230725",
+    "voteStatus": null,
+    "pollCreator": "Ali Raza",
+    "allowMultipleAnswers": true,
+    "wasPollPublished": true,
+    "pollStatus": {
+      "pollStatusId": 2,
+      "status": "Published"
+    }
+  },
+  "pollOptions": [
+    {
+      "pollAnswerID": 81,
+      "answer": "asdasdasd",
+      "votePercentage": 0,
+      "totalVotes": 0
+    },
+    {
+      "pollAnswerID": 82,
+      "answer": "asdfadasdasd",
+      "votePercentage": 0,
+      "totalVotes": 0
+    }
+  ],
+  "pollParticipants": [
+    {
+      "userID": 779,
+      "userName": "Ali Raza",
+      "emailAddress": "raza6803@gmail.com",
+      "profilePicture": {
+        "userID": 779,
+        "orignalProfilePictureName": "logo.png"
+      }
+    },
+    {
+      "userID": 780,
+      "userName": "Ali Mamdani",
+      "emailAddress": "Ali.mamdani@Hotmail.com",
+      "profilePicture": {
+        "userID": 780,
+        "orignalProfilePictureName": "logo.png"
+      }
+    }
+  ]
 }

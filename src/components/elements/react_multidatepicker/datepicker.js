@@ -22,13 +22,7 @@ const MultiDatePicker = ({
     <>
       <label className="f-0">
         <DatePicker
-          render={
-            check === true ? (
-              <img src={EditIcon} width="11.54px" height="11.11px" />
-            ) : (
-              <Icon />
-            )
-          }
+          render={<Icon />}
           onChange={onChange}
           format={dateFormat}
           minDate={moment().toDate()}

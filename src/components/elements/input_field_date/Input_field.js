@@ -40,6 +40,7 @@ const TextFieldDateTime = ({
               ? styles[applyClass]
               : "form-control2 Saved_money_Tagline"
           }
+
           ref={ref}
           id={id && id}
           name={name && name}
@@ -52,12 +53,12 @@ const TextFieldDateTime = ({
           type="date"
           max={max}
           min={min}
-          readonly
+          // readOnly
           required={required ? true : false}
-          onkeydown={(event) => event.preventDefault()}
+          onKeyDown={(event) => event.preventDefault()}
           onInput={(event) => event.preventDefault()}
           onPaste={(event) => event.preventDefault()}
-        // readOnly={true}
+        // readOnly
         />
         <FormControl.Feedback className={iconClassName} onClick={clickIcon}>
           {inputicon}

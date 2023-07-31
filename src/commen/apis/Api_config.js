@@ -284,7 +284,7 @@ const GetOrganizationSeletedPackageByOrganizationID = {
   RequestMethod: 'ServiceManager.GetOrganizationSeletedPackageByOrganizationID',
 }
 const GetSubscriptionPackagesByOrganizationID = {
-  RequestMethod: 'ServiceManager.GetSubscriptionPackagesByOrganizationID',
+  RequestMethod: 'ServiceManager.GetSubscriptionPackagesForUpgrade',
 }
 const getMeetingStatus = {
   RequestMethod: 'ServiceManager.GetMeetingStatus',
@@ -697,33 +697,77 @@ const searchNoteRequetMethod = {
   RequestMethod: 'ServiceManager.SearchNotes',
 }
 const paymentMethodsRequestMethod = {
-  RequestMethod: "ServiceManager.GetPaymentMethods"
+  RequestMethod: 'ServiceManager.GetPaymentMethods',
+}
+
+const downloadChat = {
+  RequestMethod: 'ServiceManager.DownloadChat',
 }
 
 const searchPaymentHistoryRequestMethod = {
-  RequestMethod: "ServiceManager.InvoicesAndPaymentHistory"
+  RequestMethod: 'ServiceManager.InvoicesAndPaymentHistory',
 }
 
 const searcPollsRequestMethod = {
-  RequestMethod: "ServiceManager.SearchPolls"
+  RequestMethod: 'ServiceManager.SearchPolls',
 }
 
 const savePollsRequestMethod = {
-  RequestMethod: 'ServiceManager.SavePoll'
+  RequestMethod: 'ServiceManager.SavePoll',
 }
 
 const getAllCommittesandGroupsforPolls = {
-  RequestMethod: 'ServiceManager.GetAllGroupsAndCommitteesByOrganizaitonID'
+  RequestMethod: 'ServiceManager.GetAllGroupsAndCommitteesByOrganizaitonID',
 }
 
 const renameFolderRequestMethod = {
-  RequestMethod: 'ServiceManager.RenameFolder'
+  RequestMethod: 'ServiceManager.RenameFolder',
 }
 const renameFileRequestMethod = {
-  RequestMethod: "ServiceManager.RenameFile"
+  RequestMethod: 'ServiceManager.RenameFile',
+}
+const subscriptiondetailsRequestMethod = {
+  RequestMethod: 'ServiceManager.SubscriptionDetail',
 }
 
+const searchPolls = {
+  RequestMethod: 'ServiceManager.SearchPolls',
+}
+
+const castVote = {
+  RequestMethod: 'ServiceManager.CastVote',
+}
+
+const getAllPollStatus = {
+  RequestMethod: 'ServiceManager.GetAllPollStatus',
+}
+
+const getPollByPollID = {
+  RequestMethod: 'ServiceManager.GetPollByPollID',
+}
+
+const updatePolls = {
+  RequestMethod: 'ServiceManager.UpdatePoll',
+}
+
+const getPollByPollId = {
+  RequestMethod: 'ServiceManager.GetAllPollOptionsByPollId',
+}
+
+const subscriptionPackageUpgradeAmount = {
+  RequestMethod: 'ServiceManager.GetPackageUpgradeTotalAmount',
+}
+
+const subscriptionPackageUpgradePayment = {
+  RequestMethod: 'ServiceManager.PackageUpgradePaymentComplete',
+}
+const paymentCompleteMethod = {
+  RequestMethod: 'ServiceManager.PaymentComplete',
+}
 export {
+  subscriptionPackageUpgradeAmount,
+  paymentCompleteMethod,
+  subscriptionPackageUpgradePayment,
   revoketoken,
   googleValidToken,
   signuprequest,
@@ -917,5 +961,13 @@ export {
   savePollsRequestMethod,
   getAllCommittesandGroupsforPolls,
   renameFolderRequestMethod,
-  renameFileRequestMethod
+  renameFileRequestMethod,
+  downloadChat,
+  subscriptiondetailsRequestMethod,
+  searchPolls,
+  castVote,
+  getAllPollStatus,
+  getPollByPollID,
+  updatePolls,
+  getPollByPollId,
 }

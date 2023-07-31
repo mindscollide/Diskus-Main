@@ -5,7 +5,7 @@ import FileIcon, { defaultStyles } from "react-file-icon";
 import moment from "moment";
 import { ChevronRight, ChevronLeft } from "react-bootstrap-icons";
 import Form from "react-bootstrap/Form";
-
+import CrossIcon from '../../assets/images/CrossIcon.svg'
 import {
   TextField,
   Modal,
@@ -13,6 +13,7 @@ import {
   Loader,
   TodoAssgineeEmployeeCard,
   TextArea,
+  Button
 } from "./../../components/elements";
 import userImage from "../../assets/images/user.png";
 import {
@@ -391,7 +392,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                             sm={12}
                             lg={12}
                             md={12}
-                            className="MontserratRegular my-1 FontArabicRegular"
+                            className="MontserratRegular my-1 FontArabicRegular position-relative"
                             key={commentData.taskCommentID}
                           >
                             <TextArea
@@ -400,13 +401,14 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                                 commentData.DateTime
                               )}
                               label={commentData.taskCommentUserName}
-                              labelClassName="MontserratSemiBold-600 d-flex justify-content-end mx-2 fw-bold"
+                              labelClassName="MontserratSemiBold-600 d-flex justify-content-start  fw-bold "
                               disable="false"
-                              className="comment-view sender text-white text-right "
+                              className="comment-view sender text-white  "
                               value={commentData.Comment}
                               timeClass={"timeClass"}
                               formClassPosition="relative-position-form"
                             />
+                            <img src={CrossIcon} width={14} className="crossIconTodoComment" />
                           </Col>
                         </>
                       );
@@ -593,7 +595,11 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                                 size={78}
                                 {...defaultStyles.gif}
                               />
-                            ) : null}
+                            ) : <FileIcon
+                              extension={ext}
+                              size={78}
+                              {...defaultStyles.ext}
+                            />}
                             <p className="todoModalFileAttach FontArabicRegular">
                               {first}
                             </p>
@@ -602,10 +608,17 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                       }
                     )
                     : null}
+
                 </Col>
+              </Row>
+              <Row>
+                <Col className="d-flex justify-content-end" sm={12} md={12} lg={12}><Button className={"cancelButton_createTodo"} text="Close" /></Col>
               </Row>
             </>
           }
+        // ModalFooter = {() }
+
+
         />
       </Container>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />

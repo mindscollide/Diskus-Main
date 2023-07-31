@@ -254,6 +254,11 @@ const initialState = {
     UpdateShoutAllResponse: [],
     UpdateShoutAllResponseMessage: '',
   },
+
+  DownloadChatData: {
+    DownloadChatResponse: [],
+    DownloadChatResponseMessage: '',
+  },
 }
 
 const talkReducer = (state = initialState, action) => {
@@ -1461,6 +1466,36 @@ const talkReducer = (state = initialState, action) => {
         InsertBulkMessageData: {
           InsertBulkMessageResponse: [],
           InsertBulkMessageResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.DOWNLOAD_CHAT_INIT: {
+      return {
+        ...state,
+        DownloadChatData: {
+          DownloadChatResponse: [],
+          DownloadChatResponseMessage: '',
+        },
+      }
+    }
+
+    case actions.DOWNLOAD_CHAT_SUCCESS: {
+      return {
+        ...state,
+        DownloadChatData: {
+          DownloadChatResponse: action.response,
+          DownloadChatResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.DOWNLOAD_CHAT_FAIL: {
+      return {
+        ...state,
+        DownloadChatData: {
+          DownloadChatResponse: [],
+          DownloadChatResponseMessage: action.message,
         },
       }
     }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styles from "./ViewPoll.module.css";
 import { Container, Row, Col } from "react-bootstrap";
 import { Modal, Button, TextField } from "../../../components/elements";
@@ -8,65 +8,73 @@ import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import profile from "../../../assets/images/profile_polls.svg";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setviewpollModal } from "../../../store/actions/Polls_actions";
+import moment from "moment";
 
-const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
-  const [viewpollMembers, setViewPollmembers] = useState([
-    {
-      id: 1,
-      name: "Saad Fudda",
-    },
-    {
-      id: 2,
-      name: "Saif ul islam",
-    },
-    {
-      id: 3,
-      name: "Owais Wajid kha",
-    },
-    {
-      id: 4,
-      name: "Huzeifa Jahangir",
-    },
-    {
-      id: 5,
-      name: "Ali mamdani",
-    },
-    {
-      id: 6,
-      name: "Syed Ali raza",
-    },
-    {
-      id: 7,
-      name: "Talha Yameen khan",
-    },
-    {
-      id: 8,
-      name: "Aun Naqvi",
-    },
-    {
-      id: 9,
-      name: "Hussain Raza",
-    },
-    {
-      id: 11,
-      name: "jawad Faisal",
-    },
-    {
-      id: 12,
-      name: "Waseem",
-    },
-  ]);
+const ViewPoll = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { PollsReducer } = useSelector((state) => state);
+  console.log(PollsReducer, "PollsReducerPollsReducerPollsReducerPollsReducer");
+  const [viewpollMembers, setViewPollmembers] = useState([]);
+  const [pollAnswersDetailsView, setPollAnswersDetailsView] = useState([]);
+  const [viewPollsDetails, setViewPollsDetails] = useState({
+    date: "",
+    Title: "",
+    allowmultipleanswers: false,
+  });
   const { t } = useTranslation();
+
+  const changeDateStartHandler2 = (date) => {
+    let newDate = moment(date).format("DD MMMM YYYY");
+
+    return newDate;
+  };
+
+  useEffect(() => {
+    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
+      let pollanswers = [];
+      if (Object.keys(PollsReducer.Allpolls.poll.pollOptions).length > 0) {
+        // PollsReducer.Allpolls.poll.pollOptions.map((data, index) => {
+        //   console.log(data, "222222222222222222222222");
+        //   pollanswers.push(data.userName);
+        // });
+        setPollAnswersDetailsView(PollsReducer.Allpolls.poll.pollOptions);
+      }
+    }
+  }, [PollsReducer.Allpolls]);
+
+  useEffect(() => {
+    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
+      let users = [];
+      if (Object.keys(PollsReducer.Allpolls.poll.pollParticipants).length > 0) {
+        PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
+          console.log(data, "datadatadatadatadatadata");
+          users.push(data.userName);
+        });
+      }
+      setViewPollsDetails({
+        ...viewPollsDetails,
+        date: PollsReducer.Allpolls.poll.pollDetails.dueDate,
+        Title: PollsReducer.Allpolls.poll.pollDetails.pollTitle,
+        allowmultipleanswers:
+          PollsReducer.Allpolls.poll.pollDetails.allowMultipleAnswers,
+      });
+      setViewPollmembers(users);
+    }
+  }, [PollsReducer.Allpolls]);
   return (
     <Container>
       <Modal
-        show={showViewPollModal}
-        setShow={setShowViewPollModal}
+        show={PollsReducer.viewPollModal}
+        setShow={dispatch(setviewpollModal)}
         modalTitleClassName={styles["ModalHeader_View_poll"]}
         modalHeaderClassName={styles["ModalRequestHeader_polling_View_modal"]}
         modalFooterClassName={"d-block"}
         onHide={() => {
-          setShowViewPollModal(false);
+          dispatch(setviewpollModal(false));
         }}
         ModalTitle={
           <>
@@ -86,7 +94,10 @@ const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
                   >
                     <img src={AlarmClock} width="14.97px" height="14.66px" />
                     <span className={styles["Due_Date_viewPoll"]}>
-                      {t("Due-date-on")} <span>34 May 2023</span>
+                      {t("Due-date-on")}{" "}
+                      <span>
+                        {changeDateStartHandler2(viewPollsDetails.date)}
+                      </span>
                     </span>
                   </Col>
                 </Row>
@@ -109,7 +120,7 @@ const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
                   height="16px"
                   className={styles["View_cross_icon"]}
                   onClick={() => {
-                    setShowViewPollModal(false);
+                    dispatch(setviewpollModal(false));
                   }}
                 />
               </Col>
@@ -128,62 +139,52 @@ const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Box_ViewPoll_after_publish"]}
+                    className={styles["BOx_for_yes"]}
                   >
-                    <Row>
+                    <Row className="mt-2">
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["View_Title"]}>
-                          Did you receive the material In a sufficient time for
-                          you to prepare for the board meeting, Including agenda
+                          {viewPollsDetails.Title}
                         </span>
                       </Col>
                     </Row>
                   </Col>
                 </Row>
-                <Row className="mt-2">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={styles["BOx_for_yes"]}
-                  >
-                    <Row>
-                      <Col
-                        lg={12}
-                        sm={12}
-                        md={12}
-                        className="d-flex align-items-center mt-2"
-                      >
-                        <span>{t("Yes")}</span>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
 
-                <Row className="mt-2">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={styles["BOx_for_yes"]}
-                  >
-                    <Row>
+                {pollAnswersDetailsView.map((data, index) => {
+                  console.log(
+                    pollAnswersDetailsView,
+                    "pollAnswersDetailsViewpollAnswersDetailsViewpollAnswersDetailsView"
+                  );
+                  return (
+                    <Row className="mt-2">
                       <Col
                         lg={12}
-                        sm={12}
                         md={12}
-                        className="d-flex align-items-center mt-2"
+                        sm={12}
+                        className={styles["BOx_for_yes"]}
                       >
-                        <span>{t("No")}</span>
+                        <Row>
+                          <Col
+                            lg={12}
+                            sm={12}
+                            md={12}
+                            className="d-flex align-items-center mt-2"
+                          >
+                            {data.answer}
+                          </Col>
+                        </Row>
                       </Col>
                     </Row>
-                  </Col>
-                </Row>
+                  );
+                })}
 
                 <Row className="mt-3">
                   <Col lg={12} md={12} sm={12} className="m-0 p-0">
                     <span className={styles["Multiple_viewModal"]}>
-                      Multiple Answers Allowed
+                      {viewPollsDetails.allowmultipleanswers === true
+                        ? "Multiple Answers Allowed"
+                        : ""}
                     </span>
                   </Col>
                 </Row>
@@ -206,6 +207,7 @@ const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
                   >
                     <Row>
                       {viewpollMembers.map((data, index) => {
+                        console.log(data, "saifdatasaifdatasaifdatasaifdata");
                         return (
                           <Col lg={6} md={6} sm={12} className="mt-2">
                             <Row>
@@ -218,7 +220,7 @@ const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
                                       height="33px"
                                     />
                                     <span className={styles["Name_cards"]}>
-                                      {data.name}
+                                      {data}
                                     </span>
                                   </Col>
                                 </Row>
@@ -249,7 +251,7 @@ const ViewPoll = ({ showViewPollModal, setShowViewPollModal }) => {
                       text={t("Close")}
                       className={styles["Close_btn_ViewPoll"]}
                       onClick={() => {
-                        setShowViewPollModal(false);
+                        dispatch(setviewpollModal(false));
                       }}
                     />
                   </Col>

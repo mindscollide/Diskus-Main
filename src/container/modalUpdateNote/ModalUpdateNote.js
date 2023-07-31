@@ -826,7 +826,11 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                                         size={78}
                                         {...defaultStyles.gif}
                                       />
-                                    ) : null}
+                                    ) : <FileIcon
+                                      extension={ext}
+                                      size={78}
+                                      {...defaultStyles.ext}
+                                    />}
                                     <span
                                       className={
                                         styles["deleteUpdateNoteAttachment"]
