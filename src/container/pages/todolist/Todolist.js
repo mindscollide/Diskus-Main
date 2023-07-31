@@ -1046,14 +1046,14 @@ const TodoList = () => {
       </Col>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
 
-      {toDoListReducer.Loading || getTodosStatus.Loading && <Loader />}
-      {/* {
-      toDoListReducer.Loading ? (
-        <Loader />
-      ) : todoStatus.Loading ? (
-        <Loader />
-      ) : null
-      } */}
+      {/* {toDoListReducer.Loading && <Loader />} */}
+      {
+        toDoListReducer.Loading ? (
+          <Loader />
+        ) : todoStatus.Loading ? (
+          <Loader />
+        ) : null
+      }
     </>
   );
 };

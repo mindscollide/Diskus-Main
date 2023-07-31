@@ -9255,10 +9255,17 @@
     "prop-types" "^15.5.10"
     "raf" "^3.1.0"
 
+<<<<<<< HEAD
 "react-date-object@^2.1.5":
   "integrity" "sha512-iAtF2nz+jZjy3w36qKx2MsxXqbiL7UgGljz9jPjLWxWCl4rDTZUMS/i7hKKiVbL1lJlmubz1Xu6W3i6CW06kTg=="
   "resolved" "https://registry.npmjs.org/react-date-object/-/react-date-object-2.1.5.tgz"
   "version" "2.1.5"
+=======
+react-date-object@^2.1.5:
+  version "2.1.7"
+  resolved "https://registry.npmjs.org/react-date-object/-/react-date-object-2.1.7.tgz"
+  integrity sha512-810eaGk/xvQBJNncPvhwXaKcSwPRKX48jtY/5U5T1bSUnGFqmBdMvl4EVl76cyzQ8U3KX6hpF6xZ1c0eY9vvJA==
+>>>>>>> main
 
 "react-datepicker@^4.8.0":
   "integrity" "sha512-u69zXGHMpxAa4LeYR83vucQoUCJQ6m/WBsSxmUMu/M8ahTSVMMyiyQzauHgZA2NUr9y0FUgOAix71hGYUb6tvg=="
@@ -9527,10 +9534,17 @@
   "resolved" "https://registry.npmjs.org/react-multi-carousel/-/react-multi-carousel-2.8.2.tgz"
   "version" "2.8.2"
 
+<<<<<<< HEAD
 "react-multi-date-picker@^3.3.1":
   "integrity" "sha512-W6SUBCULMgfNJstQx7BNzojkNdG9LVpOdYJIMjqTS1scWZ9BqG8nIIOhHUAObrTEdwz2S7eMxcDg6UeXe5D6uw=="
   "resolved" "https://registry.npmjs.org/react-multi-date-picker/-/react-multi-date-picker-3.3.1.tgz"
   "version" "3.3.1"
+=======
+react-multi-date-picker@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.npmjs.org/react-multi-date-picker/-/react-multi-date-picker-4.1.2.tgz"
+  integrity sha512-slpfl4uzXs9mA31WvJQGqbOVbFVUR+dogSya2SEjC2AVvIKPMHf3fAaEmF6OKpgd7NDldlSpfVG7Ubhju/wB8w==
+>>>>>>> main
   dependencies:
     "react-date-object" "^2.1.5"
     "react-element-popper" "^2.1.6"
