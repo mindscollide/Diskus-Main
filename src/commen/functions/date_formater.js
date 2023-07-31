@@ -72,6 +72,7 @@ export const CardNumberFormatter = (num) => {
 export const newDateFormaterAsPerUTC = (date) => {
   let dateConvert = moment(date, "YYYYMMDD").format();
   console.log("getCalendarDataResponse", dateConvert);
+  console.log("getCalendarDataResponse", date);
   const englishFormat = moment(dateConvert).format(
     "MMMM Do, YYYY [at] HH:mm:ss"
   );

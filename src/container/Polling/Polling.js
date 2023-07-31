@@ -14,6 +14,7 @@ import CreatePolling from "./CreatePolling/CreatePollingModal";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import BlackCrossIcon from "../../assets/images/BlackCrossIconModals.svg";
 import EditIcon from "../../assets/images/Edit-Icon.png";
+import BinIcon from "../../assets/images/bin.svg";
 import UpdatePolls from "./UpdatePolls/UpdatePolls";
 import plusbutton from "../../assets/images/Group 119.svg";
 import ViewPoll from "./ViewPoll/ViewPoll";
@@ -213,10 +214,18 @@ const Polling = () => {
       width: "97px",
     },
     {
-      title: t("Vote"),
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span>{t("Vote")}</span>
+            </Col>
+          </Row>
+        </>
+      ),
       dataIndex: "vote",
       key: "vote",
-      width: "59px",
+      width: "69px",
       render: (text, record) => {
         console.log("record.pollStatus", record);
         if (record.pollStatus.pollStatusId === 2) {
@@ -231,7 +240,16 @@ const Polling = () => {
               />
             );
           } else if (record.voteStatus === "Voted") {
-            return <Button className={styles["votedBtn"]} text={t("Voted")} />;
+            return (
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className={styles["Background-nonvoted-Button"]}
+              >
+                <span className={styles["Not-voted"]}>{t("Voted")}</span>
+              </Col>
+            );
           }
         } else if (record.pollStatus.pollStatusId === 1) {
           return "";
@@ -239,11 +257,25 @@ const Polling = () => {
           if (record.wasPollPublished) {
             if (record.voteStatus === "Not Voted") {
               return (
-                <Button className={styles["votedBtn"]} text={t("Not-voted")} />
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className={styles["Background-nonvoted-Button"]}
+                >
+                  <span className={styles["Not-voted"]}>{t("Not-voted")}</span>
+                </Col>
               );
             } else {
               return (
-                <Button className={styles["votedBtn"]} text={t("Voted")} />
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className={styles["Background-nonvoted-Button"]}
+                >
+                  <span className={styles["Not-voted"]}>{t("Voted")}</span>
+                </Col>
               );
             }
           } else {
@@ -255,21 +287,34 @@ const Polling = () => {
       },
     },
     {
-      title: t("Edit"),
       dataIndex: "Edit",
       key: "Edit",
-      width: "33px",
+      width: "53px",
       render: (text, record) => {
         return (
-          <img
-            src={EditIcon}
-            className="cursor-pointer"
-            width="21.59px"
-            height="21.59px"
-            onClick={() => {
-              handleEditpollModal(record);
-            }}
-          />
+          <>
+            <Row>
+              <Col sm={12} md={5} lg={5}>
+                <img
+                  src={EditIcon}
+                  className="cursor-pointer"
+                  width="21.59px"
+                  height="21.59px"
+                  onClick={() => {
+                    handleEditpollModal(record);
+                  }}
+                />
+              </Col>
+              <Col sm={12} md={5} lg={5}>
+                <img
+                  src={BinIcon}
+                  className="cursor-pointer"
+                  width="21.59px"
+                  height="21.59px"
+                />
+              </Col>
+            </Row>
+          </>
         );
       },
     },

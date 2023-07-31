@@ -181,3 +181,18 @@ body[dir="rtl"] .polling_searchinput {
   padding: 12px 30px;
   font-family: "MontserratSemiBold" !important;
 }
+
+.Not-voted {
+  font-size: 12px !important;
+  margin-top: 12px !important;
+}
+
+.Background-nonvoted-Button {
+  max-width: 89px !important;
+  border-radius: 4px !important;
+  display: flex !important;
+  justify-content: center !important;
+  height: 42px !important;
+  color: #6172d6 !important;
+  background-color: #ecefff !important;
+}
