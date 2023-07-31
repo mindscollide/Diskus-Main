@@ -63,6 +63,7 @@ const PaymentForm = () => {
   const handleSubmit = async () => {
     dispatch(subscriptionPaymentApi(navigate, BillDetails, t))
   }
+  console.log("test")
 
   useEffect(() => {
     dispatch(getSelectedPacakgeDetail(navigate, t));
