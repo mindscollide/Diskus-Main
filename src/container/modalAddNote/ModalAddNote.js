@@ -713,7 +713,11 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                                               size={78}
                                               {...defaultStyles.gif}
                                             />
-                                          ) : null}
+                                          ) : <FileIcon
+                                            extension={ext}
+                                            size={78}
+                                            {...defaultStyles.ext}
+                                          />}
 
                                           <span className="deleteBtn">
                                             <img

@@ -81,7 +81,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [organaizationRolesOptions, setOrganaizationRolesOptions] = useState(
     []
   );
-
+  const [isUserNotUpdate, setIsUserNotUpdate] = useState(false)
   const [editOrganization, setEditOrganization] = useState([]);
   const [editUserStatus, setEditUserStatus] = useState([]);
   const [editUserRole, setEditUserRole] = useState([]);
@@ -349,7 +349,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       FK_NumberWorldCountryID: editUserSection.FK_CCID,
     };
     await dispatch(
-      editUserAction(navigate, setIsUpdateSuccessfully, setEditModal, updateData, t)
+      editUserAction(navigate, setIsUpdateSuccessfully, setEditModal, updateData, t, setIsUserNotUpdate)
     );
     let OrganizationID = localStorage.getItem("organizationID");
     let RequestingUserID = localStorage.getItem("userID");
@@ -929,10 +929,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.ResponseMessage !== "" &&
       adminReducer.ResponseMessage !== t("Record-found") &&
       adminReducer.ResponseMessage !== t("Data-available") &&
-      adminReducer.ResponseMessage !==
-      t("The-user-has-been-edited-successfully") &&
-      adminReducer.ResponseMessage !==
-      t("The-user-has-been-updated-but-the-status-has-not-been-updated")
+      adminReducer.ResponseMessage !== t("The-user-has-been-edited-successfully") &&
+      adminReducer.ResponseMessage !== t("The-user-has-been-updated-but-the-status-has-not-been-updated")
     ) {
       console.log("checkreponce");
 
@@ -1232,8 +1230,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const handleClose = () => {
     setFilterBarModal(false);
     setEditModal(false);
-    setIsUpdateSuccessfully(false);
+    // setIsUpdateSuccessfully(false);
     setDeleteEditModal(false);
+    // setIsUserNotUpdate(false)
   };
 
   return (
@@ -1288,13 +1287,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       {adminReducer.Loading ? <Loader /> : null}
       <Modal
         show={
-          editModal || isUpdateSuccessfully || filterBarModal || deleteEditModal
+          editModal || isUpdateSuccessfully || filterBarModal || deleteEditModal || isUserNotUpdate
         }
         setShow={() => {
           setEditModal();
           setFilterBarModal();
           setIsUpdateSuccessfully();
           setDeleteEditModal();
+          setIsUserNotUpdate()
         }}
         ButtonTitle={ModalTitle}
         centered
@@ -1719,6 +1719,21 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Col>
                 </Row>
               </>
+            ) : isUserNotUpdate ? (
+              <>
+                <Row className="mb-3">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center"
+                  >
+                    <label className={styles["successfull-label-status-not-updated"]}>
+                      {t("Upgrade-your-package-to-enable-the-user-other-changes-if-any-are-updated")}
+                    </label>
+                  </Col>
+                </Row>
+              </>
             ) : null}
           </>
         }
@@ -1814,6 +1829,24 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   </Col>
                 </Row>
               </Col>
+            ) : isUserNotUpdate ? (
+              <>
+                <Col sm={12} md={12} lg={12}>
+                  <Row className="mb-3">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex justify-content-center"
+                    >
+                      <Button
+                        className={styles["Ok-Successfull-btn"]}
+                        text={t("Ok")}
+                        onClick={() => setIsUserNotUpdate(false)}
+                      />
+                    </Col>
+                  </Row>
+                </Col></>
             ) : null}
           </>
         }

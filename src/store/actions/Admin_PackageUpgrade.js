@@ -4,7 +4,7 @@ import {
   GetSubscriptionPackagesByOrganizationID,
   updateSubscriptionPackage,
 } from "../../commen/apis/Api_config";
-import { getAdminURLs } from "../../commen/apis/Api_ends_points";
+import { authenticationApi, getAdminURLs } from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "./Auth_action";
 
 const packageUpgradeInit = () => {
@@ -48,7 +48,7 @@ const packagesforUpgrade = (navigate, t) => {
     form.append("RequestData", JSON.stringify(data));
     axios({
       method: "post",
-      url: getAdminURLs,
+      url: authenticationApi,
       data: form,
       headers: {
         _token: token,
@@ -62,7 +62,7 @@ const packagesforUpgrade = (navigate, t) => {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage ===
-              "Admin_AdminServiceManager_GetSubscriptionPackagesByOrganizationID_01"
+              "ERM_AuthService_SignUpManager_GetSubscriptionPackagesForUpgrade_01"
             ) {
               dispatch(
                 packageUpgradeSuccess(
@@ -72,12 +72,12 @@ const packagesforUpgrade = (navigate, t) => {
               );
             } else if (
               response.data.responseResult.responseMessage ===
-              "Admin_AdminServiceManager_GetSubscriptionPackagesByOrganizationID_02"
+              "ERM_AuthService_SignUpManager_GetSubscriptionPackagesForUpgrade_02"
             ) {
               dispatch(packageUpgradeFail(t("Record-found")));
             } else if (
               response.data.responseResult.responseMessage ===
-              "Admin_AdminServiceManager_GetSubscriptionPackagesByOrganizationID_03"
+              "ERM_AuthService_SignUpManager_GetSubscriptionPackagesForUpgrade_03"
             ) {
               dispatch(packageUpgradeFail(t("Something-went-wrong")));
             } else {

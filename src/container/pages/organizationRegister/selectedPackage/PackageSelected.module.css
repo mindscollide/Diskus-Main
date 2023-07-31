@@ -191,8 +191,10 @@ body[dir="rtl"] .ProcessToPayment_SelectedPackage {
 }
 
 .packagecard_priceBox_container {
-  width: 180px;
+  min-width: 150px !important;
   margin: 20px auto 10px auto;
+  padding: 0 40px !important;
+  max-width: 100%;
 }
 
 .packagecard_priceBox_container h4 {
