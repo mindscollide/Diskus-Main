@@ -2,6 +2,7 @@ import * as actions from "../action_types";
 
 const initialState = {
   Loading: false,
+  ResponseMessage: "",
   EmailValidationResponse: null,
   EmailValidationResponseMessage: "",
   EnterPasswordResponse: null,
@@ -27,7 +28,7 @@ const initialState = {
   getSubscriptiondetails: null,
   getSubscriptionUpgradePaymentDetail: null,
   getSubscriptionPaymentComplete: null,
-  paymentCompleteResponse: null,
+  paymentCompleteResponse: null
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -35,53 +36,54 @@ const AuthReducer = (state = initialState, action) => {
     case actions.PAYMENTCOMPLETE_INIT: {
       return {
         ...state,
-        Loading: true,
-      };
+        Loading: true
+      }
     }
     case actions.PAYMENTCOMPLETE_SUCCESS: {
       return {
         ...state,
         Loading: false,
         paymentCompleteResponse: action.response,
-        ResponseMessage: action.message,
-      };
+        ResponseMessage: action.message
+      }
     }
     case actions.PAYMENTCOMPLETE_FAIL: {
       return {
         ...state,
         Loading: false,
         paymentCompleteResponse: null,
-        ResponseMessage: action.message,
-      };
+        ResponseMessage: action.message
+      }
     }
     case actions.GETSUBSCRIPTIONUPGRADEAMOUNTDETAIL_INIT: {
       return {
         ...state,
-        Loading: true,
-      };
+        Loading: true
+      }
     }
     case actions.GETSUBSCRIPTIONUPGRADEAMOUNTDETAIL_SUCCESS: {
       return {
+
         ...state,
         Loading: false,
         getSubscriptionUpgradePaymentDetail: action.response,
-        ResponseMessage: action.message,
-      };
+        ResponseMessage: action.message
+      }
     }
     case actions.GETSUBSCRIPTIONUPGRADEAMOUNTDETAIL_FAIL: {
       return {
         ...state,
         Loading: false,
         getSubscriptionUpgradePaymentDetail: null,
-        ResponseMessage: action.message,
-      };
+        ResponseMessage: action.message
+      }
     }
 
     case actions.GETSUBSCRIPTIONUPGRADEPAYMENTCOMPLETE_INIT: {
       return {
         ...state,
-        Loading: true,
-      };
+        Loading: true
+      }
     }
     case actions.GETSUBSCRIPTIONUPGRADEPAYMENTCOMPLETE_SUCCESS: {
       return {
@@ -89,17 +91,18 @@ const AuthReducer = (state = initialState, action) => {
         Loading: false,
 
         getSubscriptionPaymentComplete: action.response,
-        ResponseMessage: action.message,
-      };
+        ResponseMessage: action.message
+      }
     }
     case actions.GETSUBSCRIPTIONUPGRADEPAYMENTCOMPLETE_FAIL: {
       return {
         ...state,
         Loading: false,
         getSubscriptionPaymentComplete: null,
-        ResponseMessage: action.message,
-      };
+        ResponseMessage: action.message
+      }
     }
+
     case actions.EMAILVALIDATION_INIT: {
       console.log(state, "action");
       return {
@@ -174,8 +177,8 @@ const AuthReducer = (state = initialState, action) => {
         ...state,
         Loading:
           action.response != undefined &&
-          action.response != null &&
-          action.response === true
+            action.response != null &&
+            action.response === true
             ? true
             : false,
         EnterPasswordResponse: null,
@@ -404,8 +407,8 @@ const AuthReducer = (state = initialState, action) => {
     case actions.GETSUBSCRIPTIONDETAIL_INIT: {
       return {
         ...state,
-        Loading: true,
-      };
+        Loading: true
+      }
     }
     case actions.GETSUBSCRIPTIONDETAIL_SUCCESS: {
       return {
@@ -413,18 +416,18 @@ const AuthReducer = (state = initialState, action) => {
 
         Loading: false,
         getSubscriptiondetails: action.response,
-        ResponseMessage: action.message,
-      };
+        ResponseMessage: action.message
+      }
     }
     case actions.GETSUBSCRIPTIONDETAIL_FAIL: {
       return {
         ...state,
         Loading: false,
-        getSubscriptiondetails: null,
-        ResponseMessage: action.message,
-      };
-    }
 
+        getSubscriptiondetails: null,
+        ResponseMessage: action.message
+      }
+    }
     case actions.CLEARE_MESSAGE: {
       return {
         ...state,

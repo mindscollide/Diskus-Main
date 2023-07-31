@@ -37,6 +37,10 @@ const ViewPoll = () => {
     if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
       let pollanswers = [];
       if (Object.keys(PollsReducer.Allpolls.poll.pollOptions).length > 0) {
+        // PollsReducer.Allpolls.poll.pollOptions.map((data, index) => {
+        //   console.log(data, "222222222222222222222222");
+        //   pollanswers.push(data.userName);
+        // });
         setPollAnswersDetailsView(PollsReducer.Allpolls.poll.pollOptions);
       }
     }
@@ -47,6 +51,7 @@ const ViewPoll = () => {
       let users = [];
       if (Object.keys(PollsReducer.Allpolls.poll.pollParticipants).length > 0) {
         PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
+          console.log(data, "datadatadatadatadatadata");
           users.push(data.userName);
         });
       }

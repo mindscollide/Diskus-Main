@@ -11,6 +11,8 @@ import { useTranslation } from "react-i18next";
 import AlarmClock from "../../../assets/images/AlarmOptions.svg";
 import { Button, TextField } from "../../../components/elements";
 import gregorian from "react-date-object/calendars/gregorian";
+import arabic from "react-date-object/calendars/arabic";
+import arabic_ar from "react-date-object/locales/arabic_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import plusFaddes from "../../../assets/images/PlusFadded.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
@@ -19,11 +21,11 @@ import GroupIcon from "../../../assets/images/groupdropdown.svg";
 import committeeicon from "../../../assets/images/committeedropdown.svg";
 import profilepic from "../../../assets/images/profiledropdown.svg";
 import { useState } from "react";
+import EditIcon from "../../../assets/images/Edit-Icon.png";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import {
   setEditpollModal,
   updatePollsApi,
@@ -35,12 +37,35 @@ import {
 } from "../../../commen/functions/date_formater";
 
 const UpdatePolls = () => {
+  const animatedComponents = makeAnimated();
+  const { PollsReducer } = useSelector((state) => state);
+  console.log(PollsReducer, "UPdateReducerUPdateReducerUPdateReducer");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { t } = useTranslation();
-  const animatedComponents = makeAnimated();
-  let currentLanguage = localStorage.getItem("i18nextLng");
-  const { PollsReducer } = useSelector((state) => state);
+  const optionsNewUpdatePolls = [
+    {
+      value: "chocolateUpdatedPolls",
+      label: (
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-start align-items-center gap-2"
+            >
+              <img src={profile} />
+              <span>SaifEnterprisesasasdasdasdasd</span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    { value: "VanillaUpdatedPolls", label: "chocolateUpdatedPolls" },
+    { value: "zeroxUpdatedPolls", label: "chocolateUpdatedPolls" },
+  ];
+
+  const [updatepollsdetails, setUpdatepollsdetails] = useState();
   const [polloptions, setPolloptions] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
@@ -49,44 +74,6 @@ const UpdatePolls = () => {
     flag: false,
     message: "",
   });
-
-  //For Custom language datepicker
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
-  const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
-  const [options, setOptions] = useState([
-    {
-      name: 1,
-      value: "",
-    },
-    {
-      name: 2,
-      value: "",
-    },
-    {
-      name: 3,
-      value: "",
-    },
-  ]);
-
-  const [UpdatePolls, setUpdatePolls] = useState({
-    TypingTitle: "",
-    AllowMultipleUser: false,
-    date: "",
-    pollID: 0,
-  });
-
-  useEffect(() => {
-    if (currentLanguage != undefined) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_ar);
-      }
-    }
-  }, [currentLanguage]);
 
   useEffect(() => {
     let pollsData = PollsReducer.gellAllCommittesandGroups;
@@ -191,14 +178,29 @@ const UpdatePolls = () => {
   useEffect(() => {
     if (PollsReducer.Allpolls != null && PollsReducer.Allpolls != undefined) {
       if (Object.keys(PollsReducer.Allpolls).length > 0) {
+        console.log(
+          PollsReducer.Allpolls,
+          "pollOptionspollOptionspollOptionspollOptions"
+        );
         let Options = [];
         PollsReducer.Allpolls.poll.pollOptions.map((data, index) => {
+          console.log(data, "datadatadatadata");
           Options.push(data);
         });
         setPolloptions(Options);
       }
     }
   }, [PollsReducer.Allpolls]);
+
+  console.log(
+    dropdowndata,
+    "PollsReducerPollsReducer1212PollsReducerPollsReducer1212"
+  );
+
+  console.log(
+    polloptions,
+    "polloptionspolloptionspolloptionspolloptionspolloptions"
+  );
 
   // for add user for assignes
   const handleAddUsers = () => {
@@ -287,18 +289,91 @@ const UpdatePolls = () => {
     }
   };
 
+  console.log(pollmembers, "pollmemberspollmemberspollmembers");
+
+  //For Custom language datepicker
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
+  const { t } = useTranslation();
+  const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
+  const [assignees, setAssignees] = useState("");
+
+  // const [members, setMembers] = useState([
+  //   {
+  //     id: 1,
+  //     name: "Saad Fudda",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Salman Memon",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Talha Qamar",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Saif Rehman",
+  //   },
+  //   {
+  //     id: 5,
+  //     name: "Saif Rehman",
+  //   },
+  //   {
+  //     id: 6,
+  //     name: "Saif test1",
+  //   },
+  //   {
+  //     id: 7,
+  //     name: "Saif test2",
+  //   },
+  //   {
+  //     id: 8,
+  //     name: "Saif test3",
+  //   },
+  // ]);
+
+  const [options, setOptions] = useState([
+    {
+      name: 1,
+      value: "",
+    },
+    {
+      name: 2,
+      value: "",
+    },
+    {
+      name: 3,
+      value: "",
+    },
+  ]);
+
+  const [UpdatePolls, setUpdatePolls] = useState({
+    TypingTitle: "",
+    AllowMultipleUser: false,
+    date: "",
+    pollID: 0,
+  });
+
   useEffect(() => {
     if (PollsReducer.Allpolls != null && PollsReducer.Allpolls != undefined) {
       let pollsDetails = PollsReducer.Allpolls;
       if (Object.keys(PollsReducer.Allpolls).length > 0) {
+        console.log(
+          PollsReducer.Allpolls.poll.pollParticipants,
+          "PollsReducerPollsReducerPollsReducerPollsReducer"
+        );
         let members = [];
         PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
+          console.log(data, "datadatadatadata");
           members.push(data);
         });
         setPollmembers(members);
         let newDateGmt = convertintoGMTCalender(
           pollsDetails.poll.pollDetails.dueDate
         );
+        console.log(newDateGmt, "newDateGmt");
+
         setUpdatePolls({
           ...UpdatePolls,
           TypingTitle: pollsDetails.poll.pollDetails.pollTitle,
@@ -313,7 +388,7 @@ const UpdatePolls = () => {
       }
     }
   }, [PollsReducer.Allpolls]);
-  useEffect(() => {}, [UpdatePolls.date]);
+
   const addNewRow = () => {
     if (polloptions.length > 1) {
       let lastIndex = polloptions.length - 1;
@@ -325,7 +400,18 @@ const UpdatePolls = () => {
     }
   };
 
+  const HandleSearchUpdatePolls = (e) => {
+    if (e.target.value.trimStart() != "") {
+      setAssignees(e.target.value.trimStart());
+    } else {
+      setAssignees("");
+    }
+
+    console.log(assignees, "assigneesassignees");
+  };
+
   const cancellAnyUser = (index) => {
+    console.log("indexindexindex", index);
     let removeData = [...pollmembers];
     removeData.splice(index, 1);
     setPollmembers(removeData);
@@ -337,6 +423,7 @@ const UpdatePolls = () => {
 
     setPolloptions((prevState) =>
       prevState.map((item) => {
+        console.log(item, "HandleOptionChange");
         return item.name === name ? { ...item, value: newValue } : item;
       })
     );
@@ -348,13 +435,17 @@ const UpdatePolls = () => {
 
   const changeDateStartHandler = (date) => {
     let newDate = moment(date).format("YYYYMMDD");
-    console.log("changeDateStartHandler", newDate);
+    console.log(date, "SavePollsButtonFunc");
+
+    // let newDate = new DateObject(date).format("YYYYMMDD");
+    console.log(newDate, "SavePollsButtonFunc");
+
     setUpdatePolls({
       ...UpdatePolls,
       date: newDate,
     });
+    console.log(newDate, "changeDateStartHandler");
   };
-  console.log("changeDateStartHandler", UpdatePolls.date);
 
   const HandleCancelFunction = (index) => {
     options.splice(index, 1);
@@ -363,6 +454,7 @@ const UpdatePolls = () => {
 
   const changeDateStartHandler2 = (date) => {
     let newDate = moment(date).format("DD MMMM YYYY");
+
     return newDate;
   };
 
@@ -404,6 +496,7 @@ const UpdatePolls = () => {
 
     if (Object.keys(pollmembers).length > 0) {
       pollmembers.map((data, index) => {
+        console.log(data, "datadatadatadatadata");
         users.push(data.userID);
       });
     }
@@ -436,7 +529,6 @@ const UpdatePolls = () => {
 
     dispatch(updatePollsApi(navigate, data, t));
   };
-
   return (
     <>
       <Container>
@@ -481,9 +573,11 @@ const UpdatePolls = () => {
                             </span>
                           </span>
                           <MultiDatePickers
+                            // onChange={meetingDateHandler}
                             value={UpdatePolls.date}
                             name="MeetingDate"
-                            multiple={false}
+                            check={true}
+                            // value={meetingDate}
                             calendar={calendarValue}
                             locale={localValue}
                             onChange={(value) =>
@@ -491,6 +585,7 @@ const UpdatePolls = () => {
                                 value?.toDate?.().toString()
                               )
                             }
+                            // newValue={createMeeting.MeetingDate}
                           />
                         </Col>
                       </Row>
@@ -538,7 +633,7 @@ const UpdatePolls = () => {
                         width="16px"
                         height="16px"
                         onClick={() => {
-                          setDefineUnsaveModal(true);
+                          dispatch(setEditpollModal(false));
                         }}
                       />
                     </Col>
@@ -580,6 +675,10 @@ const UpdatePolls = () => {
 
                           {polloptions.length > 0
                             ? polloptions.map((data, index) => {
+                                console.log(
+                                  data,
+                                  "datadatadatadatadatadatadata"
+                                );
                                 return (
                                   <>
                                     {index <= 1 ? (
@@ -728,6 +827,11 @@ const UpdatePolls = () => {
                           >
                             <Select
                               onChange={handleSelectValue}
+                              // isDisabled={
+                              //   PollsReducer.gellAllCommittesandGroups === null
+                              //     ? true
+                              //     : false
+                              // }
                               value={selectedsearch}
                               classNamePrefix={"selectMember"}
                               closeMenuOnSelect={false}

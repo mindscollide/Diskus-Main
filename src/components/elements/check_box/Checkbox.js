@@ -4,7 +4,6 @@ import { Checkbox } from "antd";
 
 const CustomCheckbox = ({
   label,
-  name,
   label2,
   checked,
   onChange,
@@ -13,14 +12,13 @@ const CustomCheckbox = ({
   className,
   label2Class,
   classNameCheckBoxP,
-  prefixCls,
+  prefixCls
 }) => {
   return (
     <>
       <div className={classNameDiv}>
         <p className={classNameCheckBoxP}>{label}</p>
         <Checkbox
-          name={name}
           className={className}
           checked={checked}
           onChange={onChange}

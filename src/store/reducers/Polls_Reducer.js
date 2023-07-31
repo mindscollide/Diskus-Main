@@ -10,11 +10,8 @@ const initialState = {
   isVotePollModal: false,
   viewPollProgress: false,
   viewVotesDetails: false,
-  deletePollsModal: false,
   editPollModalFlag: false,
-  viewVotes: null,
   SavePoll: null,
-  deletedPolls: null,
   gellAllCommittesandGroups: null,
   pollOptions: [],
   Statuspolls: [],
@@ -106,21 +103,12 @@ const PollsReducer = (state = initialState, action) => {
 
     case actions.VIEW_POLL_MODAL: {
       return {
-        ...state,
         viewPollModal: action.response,
-      };
-    }
-
-    case actions.DELETE_POLL_MODAL: {
-      return {
-        ...state,
-        deletePollsModal: action.response,
       };
     }
 
     case actions.VOTE_POLL_MODAL: {
       return {
-        ...state,
         isVotePollModal: action.response,
       };
     }
@@ -135,7 +123,6 @@ const PollsReducer = (state = initialState, action) => {
     case actions.CAST_VOTE_SUCCESS: {
       return {
         ...state,
-        Loading: false,
         pollOptions: action.response,
         ResponseMessage: action.message,
       };
@@ -144,7 +131,6 @@ const PollsReducer = (state = initialState, action) => {
     case actions.CAST_VOTE_FAIL: {
       return {
         ...state,
-        Loading: false,
         ResponseMessage: action.message,
       };
     }
@@ -238,67 +224,15 @@ const PollsReducer = (state = initialState, action) => {
 
     case actions.VIEW_POLL_PROGRESS: {
       return {
-        ...state,
         viewPollProgress: action.response,
       };
     }
 
     case actions.VIEW_VOTES_DETAILS: {
       return {
-        ...state,
         viewVotesDetails: action.response,
       };
     }
-
-    case actions.VIEW_VOTES_INIT: {
-      return {
-        ...state,
-        Loading: true,
-      };
-    }
-
-    case actions.VIEW_VOTES_SUCCESS: {
-      console.log("handleClosed", action.response);
-
-      return {
-        ...state,
-        Loading: false,
-        viewVotes: action.response,
-        ResponseMessage: action.message,
-      };
-    }
-
-    case actions.VIEW_VOTES_FAILED: {
-      return {
-        ...state,
-        Loading: false,
-        ResponseMessage: action.message,
-      };
-    }
-
-    case actions.DELETE_POLL_INIT: {
-      return {
-        ...state,
-        Loading: true,
-      };
-    }
-
-    case actions.DELETE_POLL_SUCCESS: {
-      return {
-        ...state,
-        deletedPolls: action.response,
-        ResponseMessage: action.message,
-      };
-    }
-
-    case actions.DELETE_POLL_FAILED: {
-      return {
-        ...state,
-        Loading: false,
-        ResponseMessage: action.message,
-      };
-    }
-
     default: {
       return { ...state };
     }

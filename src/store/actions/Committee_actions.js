@@ -340,6 +340,7 @@ const createcommittee_fail = (message) => {
 
 const createcommittee = (navigate, Data, t, setCreategrouppage) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
   return (dispatch) => {
     dispatch(createcommittee_init());
     let form = new FormData();
@@ -376,7 +377,7 @@ const createcommittee = (navigate, Data, t, setCreategrouppage) => {
                 )
               );
               await setCreategrouppage(false);
-              await dispatch(getAllCommitteesByUserIdActions(navigate, t));
+              await dispatch(getAllCommitteesByUserIdActions(navigate, t, 0, currentPage));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -632,6 +633,8 @@ const updateCommitteeStatus_Fail = (message) => {
 };
 const committeeStatusUpdate = (navigate, Data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
+
   return (dispatch) => {
     dispatch(updateCommitteeStatus_Init());
     let form = new FormData();
@@ -670,7 +673,7 @@ const committeeStatusUpdate = (navigate, Data, t) => {
                   t("Record-updated-successfully")
                 )
               );
-              dispatch(getAllCommitteesByUserIdActions(navigate, t));
+              dispatch(getAllCommitteesByUserIdActions(navigate, t, 0, currentPage));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -715,6 +718,7 @@ const updateCommittee_Fail = (message) => {
 };
 const updateCommittee = (navigate, Data, t, setUpdateComponentpage) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
   return (dispatch) => {
     dispatch(updatecommittee_Init());
     let form = new FormData();
@@ -751,7 +755,7 @@ const updateCommittee = (navigate, Data, t, setUpdateComponentpage) => {
                 )
               );
               await setUpdateComponentpage(false);
-              await dispatch(getAllCommitteesByUserIdActions(navigate, t));
+              await dispatch(getAllCommitteesByUserIdActions(navigate, t, 0, currentPage));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

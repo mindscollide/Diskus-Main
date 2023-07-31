@@ -38,7 +38,10 @@ body[dir="rtl"] .eventsBox {
 .event__title {
     color: #5a5a5a !important;
     font-family: "MontserratSemiBold-600" !important;
-    font-size: calc(24px - 20%)
+    font-size: calc(24px - 20%);
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .event_time {

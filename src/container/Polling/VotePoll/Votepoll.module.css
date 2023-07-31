@@ -24,12 +24,11 @@
 
 .ViewTitleTOShowOnProgress {
   font-size: 12px !important;
-  margin-top: 10px !important;
 }
 
 .Border_box {
   width: 100%;
-  height: 46px !important;
+  height: auto !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
 }
@@ -37,6 +36,11 @@
 .OverAll_padding {
   padding: 0px 45px !important;
   margin-top: -25px !important;
+}
+
+.ViewTitleTOShowOnProgress {
+  width: 100%;
+  font-size: 12px !important;
 }
 
 .CheckBox_ViewProgressPolls {
@@ -90,21 +94,4 @@
   color: #fff !important;
   border-radius: 4px !important;
   border: none !important;
-}
-
-.Scroller-Vote-Poll {
-  height: 20vh !important;
-  overflow-x: hidden !important;
-  width: 100%;
-}
-
-.Scroller-Vote-Poll::-webkit-scrollbar {
-  width: 0.5rem;
-  border-radius: 20px;
-  background-color: #f2f2f2;
-}
-.Scroller-Vote-Poll::-webkit-scrollbar-thumb {
-  border-radius: 20px;
-  background: #ccc;
-  margin-left: -15px;
 }

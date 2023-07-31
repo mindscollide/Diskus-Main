@@ -6,13 +6,9 @@
 
 .Box_For_Title_toShow {
   width: 100% !important;
-  height: 46px !important;
+  height: auto !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-}
-
-.ViewTitleTOShowOnProgress {
-  margin-top: 5px !important;
 }
 
 .no-Of-Yes {
