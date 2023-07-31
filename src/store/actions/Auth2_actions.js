@@ -2628,6 +2628,7 @@ const getSelectedPacakgeDetail = (navigate, t) => {
               );
               let TenureID = response.data.responseResult.organizationSelectedPackage.fK_TenureOfSubscription
               dispatch(getSubscriptionPaymentDetail(navigate, TenureID, t))
+              console.log("test")
               // navigate("/paymentForm")
             } else if (
               response.data.responseResult.responseMessage
