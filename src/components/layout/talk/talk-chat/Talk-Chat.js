@@ -5,7 +5,7 @@ import moment from 'moment'
 import './Talk-Chat.css'
 import { Triangle } from 'react-bootstrap-icons'
 import enUS from 'antd/es/date-picker/locale/en_US'
-
+import PrintPage from './Print-Page'
 import { Box } from '@material-ui/core'
 import {
   GetAllUserChats,
@@ -1588,7 +1588,7 @@ const TalkChat = () => {
     }
     dispatch(DownloadChat(Data, t, navigate))
     console.log('downloadChat', Data)
-    setSave(false)
+    setPrint(false)
   }
 
   // Cancel Modal
@@ -4651,6 +4651,20 @@ const TalkChat = () => {
 
   console.log('All OTO Messages', allOtoMessages)
 
+  // useEffect(() => {
+  //   // Check the condition to trigger the link
+  //   if (
+  //     talkStateData.DownloadChatData.DownloadChatResponse !== null &&
+  //     talkStateData.DownloadChatData.DownloadChatResponse !== undefined &&
+  //     talkStateData.DownloadChatData.DownloadChatResponse.length !== 0
+  //   ) {
+  //     let fileDownloadURL =
+  //       filesUrlTalk +
+  //       talkStateData.DownloadChatData.DownloadChatResponse.filePath
+  //     window.open(fileDownloadURL, '_blank')
+  //   }
+  // }, [talkStateData?.DownloadChatData?.DownloadChatResponse])
+
   useEffect(() => {
     // Check the condition to trigger the link
     if (
@@ -4661,30 +4675,34 @@ const TalkChat = () => {
       let fileDownloadURL =
         filesUrlTalk +
         talkStateData.DownloadChatData.DownloadChatResponse.filePath
-      window.open(fileDownloadURL, '_blank')
+      // window.open(fileDownloadURL, '_blank')
+      // Open the link in a new tab
+      // Create a hidden iframe to load the content
+      const iframe = document.createElement('iframe')
+      iframe.style.display = 'none'
+      iframe.src = fileDownloadURL
+
+      // Append the iframe to the current document's body
+      document.body.appendChild(iframe)
+
+      // Wait for the iframe to load, then trigger the print function
+      iframe.onload = function () {
+        iframe.contentWindow.print()
+      }
+      // if (fileDownloadURL) {
+      //   fileDownloadURL.document.title = 'Link Page' // Set the title of the new tab
+      //   fileDownloadURL.document.body.innerHTML = '<div id="root"></div>' // Create a root element for React rendering
+
+      //   // Render the LinkPage component inside the new tab
+      //   // ReactDOM.render(
+      //   //   <React.StrictMode>
+      //   //     <PrintPage />
+      //   //   </React.StrictMode>,
+      //   //   fileDownloadURL.document.getElementById('root'),
+      //   // )
+      // }
     }
   }, [talkStateData?.DownloadChatData?.DownloadChatResponse])
-
-  useEffect(() => {
-    if (
-      talkStateData.DownloadChatData.DownloadChatResponse !== null &&
-      talkStateData.DownloadChatData.DownloadChatResponse !== undefined &&
-      talkStateData.DownloadChatData.DownloadChatResponse.length !== 0
-    ) {
-    let fileDownloadURL =
-        filesUrlTalk +
-        talkStateData.DownloadChatData.DownloadChatResponse.filePath
-      window.open(fileDownloadURL, '_blank')
-    const newTab = window.open(fileDownloadURL, '_blank');
-
-    // Wait for the new tab to load the content before triggering print
-    setTimeout(() => {
-      newTab.print();
-      newTab.close(); // Optional: Close the tab after printing
-    }, 1000); // Adjust the delay time as needed
-  }
-
-  }, [talkStateData?.DownloadChatData?.DownloadChatResponse]);
 
   return (
     <>
