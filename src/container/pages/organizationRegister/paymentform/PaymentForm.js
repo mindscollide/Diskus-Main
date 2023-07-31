@@ -360,7 +360,7 @@ const PaymentForm = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className="d-flex justify-content-center"
+                    className="d-flex mt-4 justify-content-center"
                   >
                     <Button
                       text={t("Payment-procced")}
