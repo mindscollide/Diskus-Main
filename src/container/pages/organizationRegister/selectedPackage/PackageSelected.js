@@ -96,7 +96,7 @@ const PackageSelected = () => {
     await dispatch(getCountryNamesAction(navigate, t));
     dispatch(getSelectedPacakgeDetail(navigate, t));
   };
-
+  console.log("test")
   useEffect(() => {
     dataCallForDetails();
   }, []);

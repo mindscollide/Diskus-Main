@@ -8,7 +8,12 @@ import {
   X,
 } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { Accordian, Button, Loader, TextField } from "../../../../components/elements";
+import {
+  Accordian,
+  Button,
+  Loader,
+  TextField,
+} from "../../../../components/elements";
 import PayonnerLogo from "../../../../assets/images/payoneer-logo.svg";
 import { Link, useNavigate } from "react-router-dom";
 import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/Diskus_newRoundIcon_SignUp.svg";
@@ -21,7 +26,9 @@ import LanguageChangeIcon from "../../../../assets/images/newElements/Language.s
 import { useTranslation } from "react-i18next";
 import { getSelectedPacakgeDetail } from "../../../../store/actions/Auth2_actions";
 import Cookies from "js-cookie";
+
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
+import { subscriptionPaymentApi } from "../../../../store/actions/Admin_PackageDetail";
 const PaymentForm = () => {
   const { t, i18n } = useTranslation();
   const [annualPackageShow, setAnnualPackageShow] = useState(false);
@@ -34,6 +41,15 @@ const PaymentForm = () => {
     AnnuallyAmount: "",
     DisountPer: "",
     OrderAmount: "",
+  });
+  const [BillDetails, setBillDetails] = useState({
+    MonthlyBill: 0,
+    TotalBill: 0,
+    AnuallyDiscount: 0,
+    InvoiceID: 0,
+    OrganizationSubscriptionID: 0,
+    AnuallyDiscountRate: 0,
+    PaymentBeforeDiscount: 0,
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -48,14 +64,18 @@ const PaymentForm = () => {
     setAnnualPackageShow(true);
     setMonthlyPackageShow(false);
   };
+  const handleSubmit = async () => {
+    dispatch(subscriptionPaymentApi(navigate, BillDetails, t));
+  };
+
   useEffect(() => {
     dispatch(getSelectedPacakgeDetail(navigate, t));
   }, []);
   // Languages
   const languages = [
     { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
-    { name: "العربية", code: "ar", dir: "rtl" },
+    { name: "FranÃ§ais", code: "fr" },
+    { name: "Ø§Ù„Ø¹Ø±Ø¨ÙŠØ©", code: "ar", dir: "rtl" },
   ];
 
   const currentLocale = Cookies.get("i18next") || "en";
@@ -87,16 +107,33 @@ const PaymentForm = () => {
       calculateActualYearlyAmount - calculateAnnuallyPerAmount;
     return annuallyAmount.toFixed() / 12;
   };
+
+  useEffect(() => {
+    if (Authreducer.getSubscriptiondetails !== null) {
+      setBillDetails({
+        MonthlyBill: Authreducer.getSubscriptiondetails?.monthlyBill,
+        TotalBill: Authreducer.getSubscriptiondetails?.totalBill,
+        InvoiceID: Authreducer.getSubscriptiondetails?.pk_OrganizationInvoiceID,
+        OrganizationSubscriptionID:
+          Authreducer.getSubscriptiondetails?.pK_OrganizationSubscriptionID,
+        AnuallyDiscountRate:
+          Authreducer.getSubscriptiondetails?.firstYearDiscountPercentage,
+        PaymentBeforeDiscount:
+          Authreducer.getSubscriptiondetails?.amountBeforeDiscount,
+      });
+    }
+  }, [Authreducer.getSubscriptiondetails]);
+
   useEffect(() => {
     if (Authreducer.GetSelectedPacakgeDetails !== null) {
       let packageData =
         Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage;
       if (packageData.fK_TenureOfSubscription === 1) {
-        setAnnualPackageShow(true)
-        setMonthlyPackageShow(false)
+        setAnnualPackageShow(true);
+        setMonthlyPackageShow(false);
       } else {
-        setAnnualPackageShow(false)
-        setMonthlyPackageShow(true)
+        setAnnualPackageShow(false);
+        setMonthlyPackageShow(true);
       }
       setSelectedPackage({
         ...isSelectedPacakage,
@@ -112,10 +149,7 @@ const PaymentForm = () => {
   }, [Authreducer.GetSelectedPacakgeDetails]);
   return (
     <>
-
-
       <Container className={styles["paymentformBackground"]}>
-
         <Row className="position-relative">
           <Col sm={12} md={12} lg={12} className={styles["bg_roundimage"]}>
             <img src={DiskusnewRoundIconSignUp} alt="" />
@@ -127,13 +161,14 @@ const PaymentForm = () => {
             className="mx-auto mt-5 mb-4 col-lg-12 col-md-12 col-sm-12"
           >
             <h3
-              className={`${"Payment-Method-Heading MontserratSemiBold-600"} ${styles["paymentform_heading"]
-                }`}
+              className={`${"Payment-Method-Heading MontserratSemiBold-600"} ${
+                styles["paymentform_heading"]
+              }`}
             >
               {t("Choose-payment-method")}
             </h3>
           </Col>
-          <Col className={styles["languageSelector"]} >
+          <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
           <Col
@@ -221,7 +256,7 @@ const PaymentForm = () => {
                               ? styles["spanActive"]
                               : styles["span-formontly"]
                           }
-                        // onClick={handleManualPackage}
+                          // onClick={handleManualPackage}
                         >
                           {/* Monthly */}
                           {t("Monthly")}
@@ -232,7 +267,7 @@ const PaymentForm = () => {
                               ? styles["spanActive"]
                               : styles["span-forAnnually"]
                           }
-                        // onClick={handleAnnualPackage}
+                          // onClick={handleAnnualPackage}
                         >
                           {/* Annually */}
                           {t("Annually")}
@@ -249,8 +284,8 @@ const PaymentForm = () => {
                           : "MontserratBold-700 fs-4 invisible Arabicstyles  "
                       }
                     >
-                      ${isSelectedPacakage.ActualAmount}/
-                      <span className="fs-6 text-lowercase">{t("Month")}</span>
+                      ${BillDetails.TotalBill}/
+                      <span className="fs-6">{t("Annually")}</span>
                     </span>
 
                     <br />
@@ -261,20 +296,19 @@ const PaymentForm = () => {
                           : "MontserratBold-700 fs-4 color-5a5a5a Arabicstyles"
                       }
                     >
-                      $40/
-                      <span className="text-xs text-lowercase">
-                        {t("Month")}
-                      </span>
+                      ${BillDetails.PaymentBeforeDiscount}/
+                      <span className="text-xs ">{t("Annually")}</span>
                     </span>
                   </div>
                   {annualPackageShow && (
                     <>
                       <div
-                        className={`${styles["disount_per"]
-                          } ${"MontserratMedium-500 text-center border w-25 mx-auto mb-3 fs-4"}`}
+                        className={`${
+                          styles["disount_per"]
+                        } ${"MontserratMedium-500 text-center border w-25 mx-auto mb-3 fs-4"}`}
                       >
                         <span className={styles["Arabic_Styles_Percent"]}>
-                          {isSelectedPacakage.AnnualyDiscountRate}% {t("off")}
+                          {BillDetails.AnuallyDiscountRate}% {t("off")}
                         </span>
                       </div>
                       <div className={styles["descriptionline"]}>
@@ -291,8 +325,9 @@ const PaymentForm = () => {
                     sm={12}
                     lg={12}
                     md={12}
-                    className={`${styles["Ordersummaryheading"]
-                      } ${"MontserratMedium-500"}`}
+                    className={`${
+                      styles["Ordersummaryheading"]
+                    } ${"MontserratMedium-500"}`}
                   >
                     {t("Order-summary")}
                   </Col>
@@ -317,7 +352,7 @@ const PaymentForm = () => {
                         lg={6}
                         className="Subtotal-Value d-flex justify-content-end MontserratSemiBold-600 text-white"
                       >
-                        ${isSelectedPacakage.ActualAmount}
+                        ${BillDetails.TotalBill}
                       </Col>
                     </Row>
                   </Col>
@@ -325,11 +360,23 @@ const PaymentForm = () => {
                     sm={12}
                     md={12}
                     lg={12}
+                    className="d-flex justify-content-center"
+                  >
+                    <Button
+                      text={t("Payment-procced")}
+                      onClick={handleSubmit}
+                      className={styles["PaymentFormSubmitPayment"]}
+                    />
+                  </Col>
+                  {/* <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
                     className="MontserratMedium-500 text-center small Arabicstyles_Subtotal_Not_include_taxes"
                   >
                     {t("Subtotal-does-not-include-applicable-taxes")}
-                  </Col>
-                  <Col
+                  </Col> */}
+                  {/* <Col
                     sm={12}
                     md={12}
                     lg={12}
@@ -337,8 +384,8 @@ const PaymentForm = () => {
                       }`}
                   >
                     <Link to="">{t("Have-a-promo-code")}</Link>
-                  </Col>
-                  <Col
+                  </Col> */}
+                  {/* <Col
                     className={` ${"MontserratMedium-500 mt-2"} ${styles["link_text"]
                       }`}
                     sm={12}
@@ -346,8 +393,8 @@ const PaymentForm = () => {
                     lg={12}
                   >
                     <Link to="">{t("View-all-promo-codes")}</Link>
-                  </Col>
-                  <Col sm={12} md={12} lg={12} className="mt-4">
+                  </Col> */}
+                  {/* <Col sm={12} md={12} lg={12} className="mt-4">
                     <Row>
                       <Col
                         sm={12}
@@ -389,8 +436,8 @@ const PaymentForm = () => {
                         </div>
                       </Col>
                     </Row>
-                  </Col>
-                  <Col
+                  </Col> */}
+                  {/* <Col
                     className="MontserratSemiBold-600 text-center mt-2 Saved_money_Tagline"
                     style={{ color: "5a5a5a" }}
                     md={12}
@@ -398,7 +445,7 @@ const PaymentForm = () => {
                     lg={12}
                   >
                     {t("Nice-you-saved-$5/-month-on-you-subscription")}
-                  </Col>
+                  </Col> */}
                 </Col>
               </Row>
             </Col>
