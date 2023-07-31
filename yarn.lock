@@ -9256,9 +9256,9 @@ react-custom-scrollbars@^4.2.1:
     raf "^3.1.0"
 
 react-date-object@^2.1.5:
-  version "2.1.7"
-  resolved "https://registry.npmjs.org/react-date-object/-/react-date-object-2.1.7.tgz"
-  integrity sha512-810eaGk/xvQBJNncPvhwXaKcSwPRKX48jtY/5U5T1bSUnGFqmBdMvl4EVl76cyzQ8U3KX6hpF6xZ1c0eY9vvJA==
+  version "2.1.5"
+  resolved "https://registry.npmjs.org/react-date-object/-/react-date-object-2.1.5.tgz"
+  integrity sha512-iAtF2nz+jZjy3w36qKx2MsxXqbiL7UgGljz9jPjLWxWCl4rDTZUMS/i7hKKiVbL1lJlmubz1Xu6W3i6CW06kTg==
 
 react-datepicker@^4.8.0:
   version "4.8.0"
@@ -9527,10 +9527,10 @@ react-multi-carousel@^2.8.2:
   resolved "https://registry.npmjs.org/react-multi-carousel/-/react-multi-carousel-2.8.2.tgz"
   integrity sha512-M9Y7DfAp8bA/r6yexttU6RLA7uyppje4c0ELRuCHZWswH+u7nr0uVP6qHNPjc4XGOEY1MYFOb5nBg7JvoKutuQ==
 
-react-multi-date-picker@^4.1.2:
-  version "4.1.2"
-  resolved "https://registry.npmjs.org/react-multi-date-picker/-/react-multi-date-picker-4.1.2.tgz"
-  integrity sha512-slpfl4uzXs9mA31WvJQGqbOVbFVUR+dogSya2SEjC2AVvIKPMHf3fAaEmF6OKpgd7NDldlSpfVG7Ubhju/wB8w==
+react-multi-date-picker@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.npmjs.org/react-multi-date-picker/-/react-multi-date-picker-3.3.1.tgz"
+  integrity sha512-W6SUBCULMgfNJstQx7BNzojkNdG9LVpOdYJIMjqTS1scWZ9BqG8nIIOhHUAObrTEdwz2S7eMxcDg6UeXe5D6uw==
   dependencies:
     react-date-object "^2.1.5"
     react-element-popper "^2.1.6"
