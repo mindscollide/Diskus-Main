@@ -80,6 +80,13 @@ const setVotePollModal = (response) => {
   };
 };
 
+const setDeltePollModal = (response) => {
+  return {
+    type: actions.DELETE_POLL_MODAL,
+    response: response,
+  };
+};
+
 const globalFlag = (response) => {
   return {
     type: actions.GLOBAL_FLAG,
@@ -958,4 +965,5 @@ export {
   setviewpollProgressModal,
   viewVotesDetailsModal,
   viewVotesApi,
+  setDeltePollModal,
 };

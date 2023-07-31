@@ -10,6 +10,7 @@ const initialState = {
   isVotePollModal: false,
   viewPollProgress: false,
   viewVotesDetails: false,
+  deletePollsModal: false,
   editPollModalFlag: false,
   viewVotes: null,
   SavePoll: null,
@@ -106,6 +107,13 @@ const PollsReducer = (state = initialState, action) => {
       return {
         ...state,
         viewPollModal: action.response,
+      };
+    }
+
+    case actions.DELETE_POLL_MODAL: {
+      return {
+        ...state,
+        deletePollsModal: action.response,
       };
     }
 

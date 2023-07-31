@@ -1,0 +1,48 @@
+.Yes_Button {
+  padding: 12px 30px;
+  border-radius: 4px !important;
+  background: #6172d6;
+  color: #fff;
+  border: none;
+  font-size: 12px !important;
+}
+
+.Yes_Button:hover,
+.Yes_Button:hover,
+.Yes_Button:hover,
+.Yes_Button:hover {
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  font-size: 12px !important;
+}
+
+.No_Button {
+  padding: 12px 30px;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #fff;
+  color: #5a5a5a;
+  border: 1px solid #e1e1e1;
+}
+
+.No_Button:hover,
+.No_Button:active,
+.No_Button:focus,
+.No_Button:focus-visible {
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: none !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Confirmation_delete {
+  font-size: 16px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold" !important;
+}

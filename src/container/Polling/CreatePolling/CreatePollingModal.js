@@ -303,7 +303,6 @@ const CreatePolling = () => {
       // setopen notionation work here
     }
   };
-  console.log(members, "checkcheckcheckcheck");
 
   const changeDateStartHandler = (date, format = "YYYYMMDD") => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");

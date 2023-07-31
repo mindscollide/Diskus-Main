@@ -33,6 +33,7 @@ import {
   globalFlag,
   searchPollsApi,
   setCreatePollModal,
+  setDeltePollModal,
   setEditpollModal,
   setVotePollModal,
   setviewpollModal,
@@ -45,6 +46,7 @@ import {
   resolutionResultTable,
 } from "../../commen/functions/date_formater";
 import { clearMessagesGroup } from "../../store/actions/Groups_actions";
+import DeletePoll from "./DeletePolls/DeletePoll";
 
 const Polling = () => {
   const dispatch = useDispatch();
@@ -128,6 +130,10 @@ const Polling = () => {
     if (Object.keys(record).length > 0) {
       dispatch(getPollsByPollIdApi(navigate, data, check, t));
     }
+  };
+
+  const deletePollingModal = (record) => {
+    dispatch(setDeltePollModal(true));
   };
 
   const handleSearchEvent = () => {
@@ -311,6 +317,9 @@ const Polling = () => {
                   className="cursor-pointer"
                   width="21.59px"
                   height="21.59px"
+                  onClick={() => {
+                    deletePollingModal(record);
+                  }}
                 />
               </Col>
             </Row>
@@ -578,6 +587,7 @@ const Polling = () => {
       {PollsReducer.viewPollProgress && <ViewPollProgress />}
       {PollsReducer.isVotePollModal && <Votepoll />}
       {PollsReducer.viewVotesDetails && <PollDetails />}
+      {PollsReducer.deletePollsModal && <DeletePoll />}
 
       {updatePublished ? (
         <>
