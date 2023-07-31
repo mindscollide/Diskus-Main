@@ -18,6 +18,7 @@ import { RefreshToken } from "./Auth_action";
 import { TwoFaAuthenticate } from "./TwoFactorsAuthenticate_actions";
 import { mqttConnection } from "../../commen/functions/mqttconnection";
 import Helper from "../../commen/functions/history_logout";
+import { getSubscriptionPaymentDetail } from "./Admin_PackageDetail";
 const createOrganizationInit = () => {
   return {
     type: actions.SIGNUPORGANIZATION_INIT,
@@ -1100,7 +1101,10 @@ const enterPasswordvalidation = (value, navigate, t) => {
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
                 dispatch(
-                  enterPasswordFail(t("Your-organization-is-not-activated"), true)
+                  enterPasswordFail(
+                    t("Your-organization-is-not-activated"),
+                    true
+                  )
                 );
                 localStorage.setItem(
                   "organizationID",
@@ -1309,29 +1313,17 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 )
             ) {
               if (JSON.parse(response.data.responseResult.userRoleId) === 1) {
-                dispatch(
-                  enterPasswordFail(
-                    t("The-user-is-blocked")
-                  )
-                );
+                dispatch(enterPasswordFail(t("The-user-is-blocked")));
                 navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 2
               ) {
-                dispatch(
-                  enterPasswordFail(
-                    t("The-user-is-blocked")
-                  )
-                );
+                dispatch(enterPasswordFail(t("The-user-is-blocked")));
                 navigate("/");
               } else if (
                 JSON.parse(response.data.responseResult.userRoleId) === 3
               ) {
-                dispatch(
-                  enterPasswordFail(
-                    t("The-user-is-blocked")
-                  )
-                );
+                dispatch(enterPasswordFail(t("The-user-is-blocked")));
                 navigate("/");
               }
             } else {
@@ -1439,11 +1431,19 @@ const verificationEmailOTP = (
                 verifyOTPFail(t("The-users-email-has-not-been-verified"))
               );
               // return setSeconds(0), setMinutes(0);
-            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ERM_AuthService_SignUpManager_UserEmailVerification_04".toLowerCase())) {
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ERM_AuthService_SignUpManager_UserEmailVerification_04".toLowerCase()
+                )
+            ) {
               dispatch(
-                verifyOTPFail(t("The-user-has-reached-the-maximum-faileda-attempts"))
+                verifyOTPFail(
+                  t("The-user-has-reached-the-maximum-faileda-attempts")
+                )
               );
-              navigate("/")
+              navigate("/");
             }
             // navigate("/createpasswordorganization")
             //    dispatch(verifyOTPSuccess(response.data.responseResult, response.data.responseResult.responseMessage))
@@ -2625,6 +2625,11 @@ const getSelectedPacakgeDetail = (navigate, t) => {
                   t("Data-available")
                 )
               );
+              let TenureID =
+                response.data.responseResult.organizationSelectedPackage
+                  .fK_TenureOfSubscription;
+              dispatch(getSubscriptionPaymentDetail(navigate, TenureID, t));
+              console.log("test");
               // navigate("/paymentForm")
             } else if (
               response.data.responseResult.responseMessage
@@ -2815,7 +2820,7 @@ const organizationPackageReselection = (
       .then(async (response) => {
         console.log("flagForSelectedPackeg", response);
         if (response.data.responseCode === 417) {
-          dispatch(RefreshToken(navigate, t))
+          dispatch(RefreshToken(navigate, t));
           await dispatch(
             organizationPackageReselection(
               ID,
