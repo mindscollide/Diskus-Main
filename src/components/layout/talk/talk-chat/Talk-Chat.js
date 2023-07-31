@@ -4,6 +4,9 @@ import Picker from '@emoji-mart/react'
 import moment from 'moment'
 import './Talk-Chat.css'
 import { Triangle } from 'react-bootstrap-icons'
+import enUS from 'antd/es/date-picker/locale/en_US'
+
+import { Box } from '@material-ui/core'
 import {
   GetAllUserChats,
   GetBlockedUsers,
@@ -34,6 +37,7 @@ import {
   UpdateShoutAll,
   OtoMessageRetryFlag,
   InsertBulkMessages,
+  DownloadChat,
 } from '../../../../store/actions/Talk_action'
 import {
   newTimeFormaterAsPerUTCTalkTime,
@@ -57,6 +61,7 @@ import {
 } from '../../../elements'
 // import Highlighter from 'react-highlight-words'
 import CustomUploadChat from '../../../elements/chat_upload/Chat-Upload'
+import CustomUploadImageChat from '../../../elements/chat_upload/Chat-Upload-Image'
 import Keywords from 'react-keywords'
 import { Spin } from 'antd'
 import SearchIcon from '../../../../assets/images/Search-Icon.png'
@@ -79,6 +84,7 @@ import MicIcon from '../../../../assets/images/Mic-Icon.png'
 import DeleteUploadIcon from '../../../../assets/images/Delete-Upload-Icon.png'
 import DeleteChatFeature from '../../../../assets/images/Delete-ChatFeature-Icon.png'
 import ChatSendIcon from '../../../../assets/images/Chat-Send-Icon.png'
+import DownloadIcon from '../../../../assets/images/Download-Icon.png'
 import DocumentIcon from '../../../../assets/images/Document-Icon.png'
 import DropDownIcon from '../../../../assets/images/dropdown-icon.png'
 import DropDownChatIcon from '../../../../assets/images/dropdown-icon-chatmessage.png'
@@ -102,6 +108,8 @@ import {
 } from './oneToOneMessage'
 import { sendChatFunction } from './sendChat'
 import { useNavigate } from 'react-router-dom'
+import { filesUrlTalk } from '../../../../commen/apis/Api_ends_points'
+import PrintPage from './printScript'
 
 const TalkChat = () => {
   //Use Navigate
@@ -131,7 +139,11 @@ const TalkChat = () => {
   //Current Date Time in variable
   // var currentDateTime = moment().format('YYYYMMDDHHmmss')
   // var currentDateYesterday = moment().subtract(1, 'days').format('YYYYMMDD')
-  // var currentDate = moment().format('YYYYMMDD')
+  var currentDateToday = moment().format('YYYYMMDD')
+
+  var minimumDate = moment.min().format('YYYYMMDD')
+  var maximumDate = moment.max().format('YYYYMMDD')
+
   // var currentTime = moment().format('HHmmss')
 
   const date = new Date()
@@ -187,6 +199,11 @@ const TalkChat = () => {
   //search chat states
   const [searchChatValue, setSearchChatValue] = useState('')
   const [allChatData, setAllChatData] = useState([])
+
+  //File Thumbnail States
+  const [file, setFile] = useState('')
+
+  console.log('file', file)
 
   //Input Chat Autofocus state
   const [inputChat, setInputChat] = useState(true)
@@ -462,6 +479,21 @@ const TalkChat = () => {
 
   const [notificationID, setNotificationID] = useState(0)
 
+  const autoResize = (event) => {
+    const textarea = event.target
+    textarea.style.height = 'auto' // Reset the height to auto to calculate the new height
+    textarea.style.height = `${textarea.scrollHeight}px` // Set the height to fit the content
+
+    const lineHeight = parseInt(getComputedStyle(textarea).lineHeight, 10)
+    const maxHeight = lineHeight * 4 // Limit the input to 4 lines
+    if (textarea.scrollHeight > maxHeight) {
+      textarea.style.overflowY = 'scroll' // Enable vertical scrolling
+      textarea.style.height = `${maxHeight}px` // Set the fixed height
+    } else {
+      textarea.style.overflowY = 'hidden' // Disable vertical scrolling
+    }
+  }
+
   //Calling API
   useEffect(() => {
     dispatch(
@@ -689,58 +721,126 @@ const TalkChat = () => {
   const [uploadFileTalk, setUploadFileTalk] = useState({})
 
   //File Upload click Function
-  const fileUploadTalk = (data) => {
-    const uploadFilePath = data.target.value
-    const uploadedFile = data.target.files[0]
-    var ext = uploadedFile.name.split('.').pop()
-    let file = []
-    if (
-      ext === 'doc' ||
-      ext === 'docx' ||
-      ext === 'xls' ||
-      ext === 'xlsx' ||
-      ext === 'pdf' ||
-      ext === 'png' ||
-      ext === 'txt' ||
-      ext === 'jpg' ||
-      ext === 'jpeg' ||
-      ext === 'gif'
-    ) {
-      let data
-      let sizezero
-      let size
-      if (file.length > 0) {
-        file.map((filename, index) => {
-          if (filename.DisplayFileName === uploadedFile.name) {
-            data = false
-          }
-        })
-        if (uploadedFile.size > 10000000) {
-          size = false
-        } else if (uploadedFile.size === 0) {
-          sizezero = false
-        }
-        if (data === false) {
-        } else if (size === false) {
-        } else if (sizezero === false) {
-        } else {
-          setUploadFileTalk(uploadedFile)
-        }
+  // const fileUploadTalkImage = (data) => {
 
-        if (size === false) {
-        } else if (sizezero === false) {
-        } else {
-          setUploadFileTalk(uploadedFile)
+  // }
+
+  console.log('Task Attachments', tasksAttachments)
+
+  const handleFileUpload = (data, uploadType) => {
+    // Your common logic for file upload
+
+    // Different logic for the specific upload type
+    if (uploadType === 'document') {
+      // Handle document upload
+      console.log('function fileUploadTalk')
+      const uploadFilePath = data.target.value
+      const uploadedFile = data.target.files[0]
+      var ext = uploadedFile.name.split('.').pop()
+      let file = []
+      if (
+        ext === 'doc' ||
+        ext === 'docx' ||
+        ext === 'xls' ||
+        ext === 'xlsx' ||
+        ext === 'pdf' ||
+        ext === 'png' ||
+        ext === 'txt' ||
+        ext === 'jpg' ||
+        ext === 'jpeg' ||
+        ext === 'gif'
+      ) {
+        let data
+        let sizezero
+        let size
+        if (file.length > 0) {
+          file.map((filename, index) => {
+            if (filename.DisplayFileName === uploadedFile.name) {
+              data = false
+            }
+          })
+          if (uploadedFile.size > 10000000) {
+            size = false
+          } else if (uploadedFile.size === 0) {
+            sizezero = false
+          }
+          if (data === false) {
+          } else if (size === false) {
+          } else if (sizezero === false) {
+          } else {
+            setUploadFileTalk(uploadedFile)
+          }
+
+          if (size === false) {
+          } else if (sizezero === false) {
+          } else {
+            setUploadFileTalk(uploadedFile)
+          }
         }
       }
+      file.push({
+        DisplayAttachmentName: uploadedFile.name,
+        OriginalAttachmentName: uploadFilePath,
+      })
+      setTasksAttachments({ ['TasksAttachments']: file })
+      setUploadOptions(false)
+      setUploadFileTalk(uploadedFile)
+    } else if (uploadType === 'image') {
+      // Handle image upload
+      console.log('function fileUploadTalkImage')
+      const uploadFilePath = data.target.value
+      const uploadedFile = data.target.files[0]
+      var ext = uploadedFile.name.split('.').pop()
+      let file = []
+      if (
+        ext === 'doc' ||
+        ext === 'docx' ||
+        ext === 'xls' ||
+        ext === 'xlsx' ||
+        ext === 'pdf' ||
+        ext === 'png' ||
+        ext === 'txt' ||
+        ext === 'jpg' ||
+        ext === 'jpeg' ||
+        ext === 'gif'
+      ) {
+        let data
+        let sizezero
+        let size
+        if (file.length > 0) {
+          file.map((filename, index) => {
+            if (filename.DisplayFileName === uploadedFile.name) {
+              data = false
+            }
+          })
+          if (uploadedFile.size > 10000000) {
+            size = false
+          } else if (uploadedFile.size === 0) {
+            sizezero = false
+          }
+          if (data === false) {
+          } else if (size === false) {
+          } else if (sizezero === false) {
+          } else {
+            setUploadFileTalk(uploadedFile)
+          }
+
+          if (size === false) {
+          } else if (sizezero === false) {
+          } else {
+            setUploadFileTalk(uploadedFile)
+          }
+        }
+      }
+      // file.push({
+      //   DisplayAttachmentName: uploadedFile.name,
+      //   OriginalAttachmentName: uploadFilePath,
+      // })
+      setFile(URL.createObjectURL(data.target.files[0]))
+      // setTasksAttachments({ ['TasksAttachments']: file })
+      setUploadOptions(false)
+      setUploadFileTalk(uploadedFile)
     }
-    file.push({
-      DisplayAttachmentName: uploadedFile.name,
-      OriginalAttachmentName: uploadFilePath,
-    })
-    setTasksAttachments({ ['TasksAttachments']: file })
-    setUploadOptions(false)
-    setUploadFileTalk(uploadedFile)
   }
 
   //Delete uploaded File
@@ -1343,7 +1443,8 @@ const TalkChat = () => {
   }
 
   // for save chat
-  const modalHandlerSave = async (e) => {
+  const modalHandlerSave = async (data) => {
+    console.log('modalHandlerSave', data)
     setSave(true)
     setPrint(false)
     setEmail(false)
@@ -1394,6 +1495,101 @@ const TalkChat = () => {
     setCustomCheckState(e.target.checked)
     setTodayCheckState(false)
     setAllCheckState(false)
+  }
+
+  console.log(
+    'todayCheckState',
+    todayCheckState,
+    allCheckState,
+    customCheckState,
+  )
+
+  const downloadChat = () => {
+    let Data = {
+      TalkRequest: {
+        AdditionalChatFunctionsModel: {
+          MyID: parseInt(currentUserId),
+          ChatID: activeChat.id,
+          ChatType: activeChat.messageType,
+          ChannelID: parseInt(currentOrganizationId),
+          FromDate:
+            todayCheckState === true &&
+            allCheckState === false &&
+            customCheckState === false
+              ? currentDateToday
+              : todayCheckState === false &&
+                allCheckState === true &&
+                customCheckState === false
+              ? '19700101'
+              : todayCheckState === false &&
+                allCheckState === false &&
+                customCheckState === true
+              ? chatDateState.StartDate
+              : '',
+          ToDate:
+            todayCheckState === true &&
+            allCheckState === false &&
+            customCheckState === false
+              ? currentDateToday
+              : todayCheckState === false &&
+                allCheckState === true &&
+                customCheckState === false
+              ? '20991231'
+              : todayCheckState === false &&
+                allCheckState === false &&
+                customCheckState === true
+              ? chatDateState.EndDate
+              : '',
+        },
+      },
+    }
+    dispatch(DownloadChat(Data, t, navigate))
+    console.log('downloadChat', Data)
+    setSave(false)
+  }
+
+  const printChat = () => {
+    let Data = {
+      TalkRequest: {
+        AdditionalChatFunctionsModel: {
+          MyID: parseInt(currentUserId),
+          ChatID: activeChat.id,
+          ChatType: activeChat.messageType,
+          ChannelID: parseInt(currentOrganizationId),
+          FromDate:
+            todayCheckState === true &&
+            allCheckState === false &&
+            customCheckState === false
+              ? currentDateToday
+              : todayCheckState === false &&
+                allCheckState === true &&
+                customCheckState === false
+              ? '19700101'
+              : todayCheckState === false &&
+                allCheckState === false &&
+                customCheckState === true
+              ? chatDateState.StartDate
+              : '',
+          ToDate:
+            todayCheckState === true &&
+            allCheckState === false &&
+            customCheckState === false
+              ? currentDateToday
+              : todayCheckState === false &&
+                allCheckState === true &&
+                customCheckState === false
+              ? '20991231'
+              : todayCheckState === false &&
+                allCheckState === false &&
+                customCheckState === true
+              ? chatDateState.EndDate
+              : '',
+        },
+      },
+    }
+    dispatch(DownloadChat(Data, t, navigate))
+    console.log('downloadChat', Data)
+    setPrint(false)
   }
 
   // Cancel Modal
@@ -1486,6 +1682,7 @@ const TalkChat = () => {
         [name]: DateSendingFormat(value),
       })
     }
+    console.log('Custom Dates', chatDateState.StartDate, chatDateState.EndDate)
   }
 
   //Show upload options or Hide
@@ -3852,11 +4049,13 @@ const TalkChat = () => {
   // Generate the unique ID
   const uniqueId = generateGUID()
 
+  console.log('uploadFileTalk', uploadFileTalk)
+
   //Send Chat
   const sendChat = async (e) => {
     e.preventDefault()
     dispatch(activeChatID(activeChat))
-    if (messageSendData.Body !== '') {
+    if (messageSendData.Body !== '' || uploadFileTalk !== {}) {
       console.log('uniqueId', uniqueId)
 
       if (chatClickData.messageType === 'O') {
@@ -4036,7 +4235,7 @@ const TalkChat = () => {
             Message: messageSendData,
           },
         }
-        dispatch(InsertPrivateGroupMessages(navigate, Data, t))
+        dispatch(InsertPrivateGroupMessages(navigate, Data, uploadFileTalk, t))
 
         let newMessageGroup = {
           messageID: 0,
@@ -4107,7 +4306,7 @@ const TalkChat = () => {
             Message: messageSendData,
           },
         }
-        dispatch(InsertBroadcastMessages(navigate, Data, t))
+        dispatch(InsertBroadcastMessages(navigate, Data, uploadFileTalk, t))
         let newMessage = {
           attachmentLocation: '',
           blockCount: 0,
@@ -4180,6 +4379,16 @@ const TalkChat = () => {
     }
     setReplyFeature(false)
     setInputChat(true)
+    setFile('')
+    setTasksAttachments({
+      ...tasksAttachments,
+      ['TasksAttachments']: [],
+    })
+    setUploadFileTalk({})
+    if (inputRef.current) {
+      inputRef.current.style.height = 'auto'
+      inputRef.current.style.overflowY = 'hidden'
+    }
   }
 
   //Set Timer For Loading
@@ -4436,7 +4645,42 @@ const TalkChat = () => {
     // localStorage.setItem('messageArray', [])
   }
 
+  const removeFileFunction = () => {
+    setFile('')
+    chatMessages.current?.scrollIntoView({ behavior: 'auto' })
+  }
+
   console.log('All OTO Messages', allOtoMessages)
+
+  // useEffect(() => {
+  //   // Check the condition to trigger the link
+  //   if (
+  //     talkStateData.DownloadChatData.DownloadChatResponse !== null &&
+  //     talkStateData.DownloadChatData.DownloadChatResponse !== undefined &&
+  //     talkStateData.DownloadChatData.DownloadChatResponse.length !== 0
+  //   ) {
+  //     // let fileDownloadURL =
+  //     //   filesUrlTalk +
+  //     //   talkStateData.DownloadChatData.DownloadChatResponse.filePath
+  //     // window.open(fileDownloadURL, '_blank')
+  //     const newTab = window.open('/print.html', '_blank')
+  //     newTab.onload = function () {
+  //       newTab.print()
+  //     }
+  //   }
+  // }, [talkStateData?.DownloadChatData?.DownloadChatResponse])
+  useEffect(() => {
+    if (
+      talkStateData.DownloadChatData.DownloadChatResponse !== null &&
+      talkStateData.DownloadChatData.DownloadChatResponse !== undefined &&
+      talkStateData.DownloadChatData.DownloadChatResponse.length !== 0
+    ) {
+      const newTab = window.open('/print.html', '_blank')
+      newTab.onload = function () {
+        newTab.print()
+      }
+    }
+  }, [talkStateData?.DownloadChatData?.DownloadChatResponse])
 
   return (
     <>
@@ -6303,11 +6547,23 @@ const TalkChat = () => {
                             <div className="dropdown-menus-chat">
                               {activeChat.messageType === 'O' && (
                                 <>
-                                  <span onClick={modalHandlerSave}>Save</span>
-                                  <span onClick={modalHandlerPrint}>Print</span>
+                                  <span
+                                    onClick={() => modalHandlerSave(activeChat)}
+                                  >
+                                    Save
+                                  </span>
+                                  <span
+                                    onClick={() =>
+                                      modalHandlerPrint(activeChat)
+                                    }
+                                  >
+                                    Print
+                                  </span>
                                   <span
                                     style={{ borderBottom: 'none' }}
-                                    onClick={modalHandlerEmail}
+                                    onClick={() =>
+                                      modalHandlerEmail(activeChat)
+                                    }
                                   >
                                     Email
                                   </span>
@@ -6315,9 +6571,25 @@ const TalkChat = () => {
                               )}
                               {activeChat.messageType === 'G' && (
                                 <>
-                                  <span onClick={modalHandlerSave}>Save</span>
-                                  <span onClick={modalHandlerPrint}>Print</span>
-                                  <span onClick={modalHandlerEmail}>Email</span>
+                                  <span
+                                    onClick={() => modalHandlerSave(activeChat)}
+                                  >
+                                    Save
+                                  </span>
+                                  <span
+                                    onClick={() =>
+                                      modalHandlerPrint(activeChat)
+                                    }
+                                  >
+                                    Print
+                                  </span>
+                                  <span
+                                    onClick={() =>
+                                      modalHandlerEmail(activeChat)
+                                    }
+                                  >
+                                    Email
+                                  </span>
                                   <span onClick={modalHandlerGroupInfo}>
                                     Group Info
                                   </span>
@@ -6339,9 +6611,25 @@ const TalkChat = () => {
                               )}
                               {activeChat.messageType === 'B' && (
                                 <>
-                                  <span onClick={modalHandlerSave}>Save</span>
-                                  <span onClick={modalHandlerPrint}>Print</span>
-                                  <span onClick={modalHandlerEmail}>Email</span>
+                                  <span
+                                    onClick={() => modalHandlerSave(activeChat)}
+                                  >
+                                    Save
+                                  </span>
+                                  <span
+                                    onClick={() =>
+                                      modalHandlerPrint(activeChat)
+                                    }
+                                  >
+                                    Print
+                                  </span>
+                                  <span
+                                    onClick={() =>
+                                      modalHandlerEmail(activeChat)
+                                    }
+                                  >
+                                    Email
+                                  </span>
                                   <span onClick={deleteShoutFunction}>
                                     Delete Shout
                                   </span>
@@ -6434,830 +6722,640 @@ const TalkChat = () => {
                         }
                       >
                         <>
-                          <div className="chat-messages-section">
-                            {allOtoMessages.length > 0 &&
-                            allBroadcastMessages.length === 0 &&
-                            allGroupMessages.length === 0 ? (
-                              allOtoMessages.map((messageData, index) => {
-                                if (
-                                  messageData.senderID ===
-                                  parseInt(currentUserId)
-                                ) {
-                                  return (
-                                    <>
-                                      <div className="direct-chat-msg text-right mb-2 ">
-                                        <div className="direct-chat-text message-outbox message-box text-start">
-                                          <div
-                                            className="chatmessage-box-icons"
-                                            onClick={() =>
-                                              chatFeatureSelected(
-                                                messageData,
-                                                messageData.messageID,
-                                              )
-                                            }
-                                            ref={chatMessageRefs}
-                                          >
-                                            <img
-                                              className="dropdown-icon"
-                                              src={DropDownIcon}
-                                            />
-                                            {chatFeatureActive ===
-                                            messageData.messageID ? (
-                                              <div className="dropdown-menus-chatmessage">
-                                                <span
-                                                  onClick={() =>
-                                                    replyFeatureHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                >
-                                                  Reply
-                                                </span>
-                                                <span
-                                                  onClick={
-                                                    forwardFeatureHandler
-                                                  }
-                                                >
-                                                  Forward
-                                                </span>
-                                                <span
-                                                  onClick={() =>
-                                                    deleteFeatureHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                >
-                                                  Delete
-                                                </span>
-                                                <span
-                                                  onClick={() =>
-                                                    messageInfoHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                >
-                                                  Message Info
-                                                </span>
-                                                <span
-                                                  onClick={() =>
-                                                    markUnmarkStarMessageHandler(
-                                                      messageData,
-                                                    )
-                                                  }
-                                                  style={{
-                                                    borderBottom: 'none',
-                                                  }}
-                                                >
-                                                  {messageData.isFlag === 0 ? (
-                                                    <>Star Message</>
-                                                  ) : (
-                                                    <>Unstar Message</>
-                                                  )}
-                                                </span>
-                                              </div>
-                                            ) : null}
-                                          </div>
-                                          {messageData.frMessages ===
-                                          'Direct Message' ? (
-                                            <span className="direct-chat-body color-5a5a5a">
-                                              <Keywords
-                                                value={searchChatWord}
-                                                render={highlight}
-                                              >
-                                                {messageData.messageBody}
-                                              </Keywords>
-                                            </span>
-                                          ) : (
-                                            <>
-                                              <div className="replied-message-send">
-                                                <p className="replied-message-sender m-0">
-                                                  {messageData.frMessages[3]}
-                                                </p>
-                                                <p className="replied-message m-0">
-                                                  {
-                                                    messageData.sourceMessageBody
-                                                  }
-                                                </p>
-                                              </div>
-                                              <span className="direct-chat-body color-5a5a5a">
-                                                <Keywords
-                                                  value={searchChatWord}
-                                                  render={highlight}
-                                                >
-                                                  {messageData.messageBody}
-                                                </Keywords>
-                                              </span>
-                                            </>
-                                          )}
-
-                                          <div className="d-flex mt-1 justify-content-end">
-                                            <div className="star-time-status ml-auto text-end">
-                                              <span className="starred-status">
-                                                {messageData.isFlag === 1 ? (
-                                                  <img
-                                                    src={StarredMessageIcon}
-                                                    alt=""
-                                                  />
-                                                ) : null}
-                                              </span>
-                                              <span className="direct-chat-sent-time chat-datetime">
-                                                {messageData.sentDate.slice(
-                                                  0,
-                                                  8,
-                                                ) === currentUtcDate ? (
-                                                  <>
-                                                    {/* {moment(
-                                                      messageData.sentDate.slice(
-                                                        8,
-                                                        15,
-                                                      ),
-                                                      'hhmmss',
-                                                    ).format('hh:mm a')} */}
-                                                    {newTimeFormaterAsPerUTCTalkTime(
-                                                      messageData.sentDate,
-                                                    )}
-                                                  </>
-                                                ) : messageData.sentDate.slice(
-                                                    0,
-                                                    8,
-                                                  ) === yesterdayDateUtc ? (
-                                                  <>
-                                                    {/* {moment(
-                                                      messageData.sentDate.slice(
-                                                        0,
-                                                        8,
-                                                      ),
-                                                    ).format(
-                                                      'DD-MMM-YYYY',
-                                                    )}{' '} */}
-                                                    {newTimeFormaterAsPerUTCTalkDate(
-                                                      messageData.sentDate,
-                                                    ) + ' '}
-                                                    | Yesterday
-                                                  </>
-                                                ) : messageData.sentDate ===
-                                                  '' ? null : (
-                                                  <>
-                                                    {/* {moment(
-                                                      messageData.sentDate.slice(
-                                                        0,
-                                                        8,
-                                                      ),
-                                                    ).format('DD-MMM-YYYY')} */}
-                                                    {newTimeFormaterAsPerUTCTalkDate(
-                                                      messageData.sentDate,
-                                                    )}
-                                                  </>
-                                                )}
-                                              </span>
-                                              <div className="message-status">
-                                                {messageData.messageStatus ===
-                                                'Sent' ? (
-                                                  <img
-                                                    src={SingleTickIcon}
-                                                    alt=""
-                                                  />
-                                                ) : messageData.messageStatus ===
-                                                  'Delivered' ? (
-                                                  <img
-                                                    src={
-                                                      DoubleTickDeliveredIcon
-                                                    }
-                                                    alt=""
-                                                  />
-                                                ) : messageData.messageStatus ===
-                                                  'Seen' ? (
-                                                  <img
-                                                    src={DoubleTickIcon}
-                                                    alt=""
-                                                  />
-                                                ) : messageData.messageStatus ===
-                                                  'Undelivered' ? (
-                                                  <img src={TimerIcon} alt="" />
-                                                ) : null}
-                                              </div>
-                                            </div>
-                                          </div>
-                                        </div>
-                                        {showCheckboxes === true ? (
-                                          <Checkbox
-                                            // checked={receiverCheckbox}
-                                            checked={
-                                              messagesChecked.includes(
-                                                messageData,
-                                              )
-                                                ? true
-                                                : false
-                                            }
-                                            onChange={() =>
-                                              messagesCheckedHandler(
-                                                messageData,
-                                                index,
-                                              )
-                                            }
-                                            className="chat-message-checkbox-receiver"
-                                          />
-                                        ) : null}
-                                      </div>
-                                    </>
-                                  )
-                                } else if (
-                                  messageData.senderID !==
-                                  parseInt(currentUserId)
-                                ) {
-                                  return (
-                                    <div className="direct-chat-msg text-left mb-2 ">
-                                      {showCheckboxes === true ? (
-                                        <Checkbox
-                                          checked={
-                                            messagesChecked.includes(
-                                              messageData,
-                                            )
-                                              ? true
-                                              : false
-                                          }
-                                          onChange={() =>
-                                            messagesCheckedHandler(
-                                              messageData,
-                                              index,
-                                            )
-                                          }
-                                          className="chat-message-checkbox-sender"
-                                        />
-                                      ) : null}
-
-                                      <div className="direct-chat-text message-inbox message-box text-start">
-                                        <div
-                                          className="chatmessage-box-icons"
-                                          onClick={() =>
-                                            chatFeatureSelected(
-                                              messageData,
-                                              messageData.messageID,
-                                            )
-                                          }
-                                          ref={chatMessageRefs}
-                                        >
-                                          <img
-                                            className="dropdown-icon"
-                                            src={DropDownChatIcon}
-                                          />
-                                          {chatFeatureActive ===
-                                          messageData.messageID ? (
-                                            <div className="dropdown-menus-chatmessage">
-                                              <span
-                                                onClick={() =>
-                                                  replyFeatureHandler(
-                                                    messageData,
-                                                  )
-                                                }
-                                              >
-                                                Reply
-                                              </span>
-                                              <span
-                                                onClick={forwardFeatureHandler}
-                                              >
-                                                Forward
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  deleteFeatureHandler(
-                                                    messageData,
-                                                  )
-                                                }
-                                              >
-                                                Delete
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  messageInfoHandler(
-                                                    messageData,
-                                                  )
-                                                }
-                                              >
-                                                Message Info
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  markUnmarkStarMessageHandler(
-                                                    messageData,
-                                                  )
-                                                }
-                                                style={{
-                                                  borderBottom: 'none',
-                                                }}
-                                              >
-                                                {messageData.isFlag === 0 ? (
-                                                  <>Star Message</>
-                                                ) : (
-                                                  <>Unstar Message</>
-                                                )}
-                                              </span>
-                                            </div>
-                                          ) : null}
-                                        </div>
-                                        {messageData.frMessages ===
-                                        'Direct Message' ? (
-                                          <span className="direct-chat-body color-white">
-                                            <Keywords
-                                              value={searchChatWord}
-                                              render={highlight}
-                                            >
-                                              {messageData.messageBody}
-                                            </Keywords>
-                                          </span>
-                                        ) : (
-                                          <>
-                                            <div className="replied-message-receive">
-                                              <p className="replied-message-receiver m-0">
-                                                {messageData.frMessages[3]}
-                                              </p>
-                                              <p className="replied-message m-0">
-                                                {messageData.sourceMessageBody}
-                                              </p>
-                                            </div>
-                                            <span className="direct-chat-body color-white">
-                                              <Keywords
-                                                value={searchChatWord}
-                                                render={highlight}
-                                              >
-                                                {messageData.messageBody}
-                                              </Keywords>
-                                            </span>
-                                          </>
-                                        )}
-                                        <div className="d-flex mt-1 justify-content-end">
-                                          <div className="star-time-status ml-auto text-end">
-                                            <span className="starred-status">
-                                              {messageData.isFlag === 1 ? (
-                                                <img
-                                                  src={StarredMessageIcon}
-                                                  alt=""
-                                                />
-                                              ) : null}
-                                            </span>
-                                            <span className="direct-chat-sent-time chat-datetime">
-                                              {messageData.sentDate.slice(
-                                                0,
-                                                8,
-                                              ) === currentUtcDate ? (
-                                                <>
-                                                  {/* {moment(
-                                                    messageData.sentDate.slice(
-                                                      8,
-                                                      15,
-                                                    ),
-                                                    'hhmmss',
-                                                  ).format('hh:mm a')} */}
-                                                  {newTimeFormaterAsPerUTCTalkTime(
-                                                    messageData.sentDate,
-                                                  )}
-                                                </>
-                                              ) : messageData.sentDate.slice(
-                                                  0,
-                                                  8,
-                                                ) === yesterdayDateUtc ? (
-                                                <>
-                                                  {/* {moment(
-                                                    messageData.sentDate.slice(
-                                                      0,
-                                                      8,
-                                                    ),
-                                                  ).format('DD-MMM-YYYY')}{' '} */}
-                                                  {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate,
-                                                  ) + ' '}
-                                                  | Yesterday
-                                                </>
-                                              ) : (
-                                                <>
-                                                  {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate,
-                                                  )}
-                                                </>
-                                              )}
-                                            </span>
-                                            <div className="message-status"></div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  )
-                                }
-                              })
-                            ) : allOtoMessages.length === 0 &&
+                          {file === '' ? (
+                            <div className="chat-messages-section">
+                              {allOtoMessages.length > 0 &&
                               allBroadcastMessages.length === 0 &&
-                              allGroupMessages.length > 0 ? (
-                              allGroupMessages.map((messageData, index) => {
-                                if (
-                                  messageData.senderID ===
-                                  parseInt(currentUserId)
-                                ) {
-                                  return (
-                                    <div className="direct-chat-msg text-right mb-2 ">
-                                      <div className="direct-chat-text message-outbox message-box text-start">
-                                        <p className="group-sender-name">
-                                          {messageData.senderName}
-                                        </p>
-                                        <div
-                                          className="chatmessage-box-icons"
-                                          onClick={() =>
-                                            chatFeatureSelected(
-                                              messageData,
-                                              messageData.messageID,
-                                            )
-                                          }
-                                          ref={chatMessageRefs}
-                                        >
-                                          <img
-                                            className="dropdown-icon"
-                                            src={DropDownIcon}
-                                          />
-                                          {chatFeatureActive ===
-                                          messageData.messageID ? (
-                                            <div className="dropdown-menus-chatmessage">
-                                              <span
-                                                onClick={() =>
-                                                  replyFeatureHandler(
-                                                    messageData,
-                                                  )
-                                                }
-                                              >
-                                                Reply
-                                              </span>
-                                              <span
-                                                onClick={forwardFeatureHandler}
-                                              >
-                                                Forward
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  deleteFeatureHandler(
-                                                    messageData,
-                                                  )
-                                                }
-                                              >
-                                                Delete
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  messageInfoHandler(
-                                                    messageData,
-                                                  )
-                                                }
-                                              >
-                                                Message Info
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  markUnmarkStarMessageHandler(
-                                                    messageData,
-                                                  )
-                                                }
-                                                style={{
-                                                  borderBottom: 'none',
-                                                }}
-                                              >
-                                                {messageData.isFlag === 0 ? (
-                                                  <>Star Message</>
-                                                ) : (
-                                                  <>Unstar Message</>
-                                                )}
-                                              </span>
-                                            </div>
-                                          ) : null}
-                                        </div>
-                                        {messageData.frMessages ===
-                                        'Direct Message' ? (
-                                          <span className="direct-chat-body color-5a5a5a">
-                                            <Keywords
-                                              value={searchChatWord}
-                                              render={highlight}
+                              allGroupMessages.length === 0 ? (
+                                allOtoMessages.map((messageData, index) => {
+                                  var ext = messageData.attachmentLocation
+                                    .split('.')
+                                    .pop()
+                                  if (
+                                    messageData.senderID ===
+                                    parseInt(currentUserId)
+                                  ) {
+                                    return (
+                                      <>
+                                        <div className="direct-chat-msg text-right mb-2 ">
+                                          <div className="direct-chat-text message-outbox message-box text-start">
+                                            <div
+                                              className="chatmessage-box-icons"
+                                              onClick={() =>
+                                                chatFeatureSelected(
+                                                  messageData,
+                                                  messageData.messageID,
+                                                )
+                                              }
+                                              ref={chatMessageRefs}
                                             >
-                                              {messageData.messageBody}
-                                            </Keywords>
-                                          </span>
-                                        ) : (
-                                          <>
-                                            <div className="replied-message-send">
-                                              <p className="replied-message-sender m-0">
-                                                {messageData.frMessages[3]}
-                                              </p>
-                                              <p className="replied-message m-0">
-                                                {messageData.sourceMessageBody}
-                                              </p>
-                                            </div>
-                                            <span className="direct-chat-body color-5a5a5a">
-                                              <Keywords
-                                                value={searchChatWord}
-                                                render={highlight}
-                                              >
-                                                {messageData.messageBody}
-                                              </Keywords>
-                                            </span>
-                                          </>
-                                        )}
-                                        <div className="d-flex mt-1 justify-content-end">
-                                          <div className="star-time-status ml-auto text-end">
-                                            <span className="starred-status">
-                                              {messageData.isFlag === 1 ? (
-                                                <img
-                                                  src={StarredMessageIcon}
-                                                  alt=""
-                                                />
+                                              <img
+                                                className="dropdown-icon"
+                                                src={DropDownIcon}
+                                              />
+                                              {chatFeatureActive ===
+                                              messageData.messageID ? (
+                                                <div className="dropdown-menus-chatmessage">
+                                                  <span
+                                                    onClick={() =>
+                                                      replyFeatureHandler(
+                                                        messageData,
+                                                      )
+                                                    }
+                                                  >
+                                                    Reply
+                                                  </span>
+                                                  <span
+                                                    onClick={
+                                                      forwardFeatureHandler
+                                                    }
+                                                  >
+                                                    Forward
+                                                  </span>
+                                                  <span
+                                                    onClick={() =>
+                                                      deleteFeatureHandler(
+                                                        messageData,
+                                                      )
+                                                    }
+                                                  >
+                                                    Delete
+                                                  </span>
+                                                  <span
+                                                    onClick={() =>
+                                                      messageInfoHandler(
+                                                        messageData,
+                                                      )
+                                                    }
+                                                  >
+                                                    Message Info
+                                                  </span>
+                                                  <span
+                                                    onClick={() =>
+                                                      markUnmarkStarMessageHandler(
+                                                        messageData,
+                                                      )
+                                                    }
+                                                    style={{
+                                                      borderBottom: 'none',
+                                                    }}
+                                                  >
+                                                    {messageData.isFlag ===
+                                                    0 ? (
+                                                      <>Star Message</>
+                                                    ) : (
+                                                      <>Unstar Message</>
+                                                    )}
+                                                  </span>
+                                                </div>
                                               ) : null}
-                                            </span>
-                                            <span className="direct-chat-sent-time chat-datetime">
-                                              {messageData.sentDate.slice(
-                                                0,
-                                                8,
-                                              ) === currentUtcDate ? (
-                                                <>
-                                                  {/* {moment(
-                                                    messageData.sentDate.slice(
-                                                      8,
-                                                      15,
-                                                    ),
-                                                    'hhmmss',
-                                                  ).format('hh:mm a')} */}
-                                                  {newTimeFormaterAsPerUTCTalkTime(
-                                                    messageData.sentDate,
-                                                  )}
-                                                </>
-                                              ) : messageData.sentDate.slice(
-                                                  0,
-                                                  8,
-                                                ) === yesterdayDateUtc ? (
-                                                <>
-                                                  {/* {moment(
-                                                    messageData.sentDate.slice(
+                                            </div>
+                                            {messageData.frMessages ===
+                                            'Direct Message' ? (
+                                              <>
+                                                {messageData.attachmentLocation !==
+                                                  '' &&
+                                                (ext === 'jpg' ||
+                                                  ext === 'png' ||
+                                                  ext === 'jpeg') ? (
+                                                  <div className="image-thumbnail-chat">
+                                                    <a
+                                                      href={
+                                                        filesUrlTalk +
+                                                        messageData.attachmentLocation
+                                                      }
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                    >
+                                                      <img
+                                                        src={
+                                                          filesUrlTalk +
+                                                          messageData.attachmentLocation
+                                                        }
+                                                        alt=""
+                                                      />
+                                                    </a>
+                                                  </div>
+                                                ) : messageData.attachmentLocation !==
+                                                    '' &&
+                                                  (ext === 'doc' ||
+                                                    ext === 'docx' ||
+                                                    ext === 'xls' ||
+                                                    ext === 'xlsx' ||
+                                                    ext === 'pdf' ||
+                                                    ext === 'txt' ||
+                                                    ext === 'gif') ? (
+                                                  <div className="file-uploaded-chat">
+                                                    <img
+                                                      src={DocumentIcon}
+                                                      alt=""
+                                                    />
+                                                    <span className="attached-file">
+                                                      {messageData.attachmentLocation
+                                                        .substring(
+                                                          messageData.attachmentLocation.lastIndexOf(
+                                                            '/',
+                                                          ) + 1,
+                                                        )
+                                                        .replace(/^\d+_/, '')}
+                                                    </span>
+                                                    <a
+                                                      href={
+                                                        filesUrlTalk +
+                                                        messageData.attachmentLocation
+                                                      }
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                    >
+                                                      <img
+                                                        src={DownloadIcon}
+                                                        alt=""
+                                                      />
+                                                    </a>
+                                                  </div>
+                                                ) : null}
+                                                <span className="direct-chat-body color-5a5a5a">
+                                                  <Keywords
+                                                    value={searchChatWord}
+                                                    render={highlight}
+                                                  >
+                                                    {messageData.messageBody}
+                                                  </Keywords>
+                                                </span>
+                                              </>
+                                            ) : messageData.frMessages ===
+                                              'Broadcast Message' ? (
+                                              <>
+                                                {messageData.attachmentLocation !==
+                                                  '' &&
+                                                (ext === 'jpg' ||
+                                                  ext === 'png' ||
+                                                  ext === 'jpeg') ? (
+                                                  <div className="image-thumbnail-chat">
+                                                    <a
+                                                      href={
+                                                        filesUrlTalk +
+                                                        messageData.attachmentLocation
+                                                      }
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                    >
+                                                      <img
+                                                        src={
+                                                          filesUrlTalk +
+                                                          messageData.attachmentLocation
+                                                        }
+                                                        alt=""
+                                                      />
+                                                    </a>
+                                                  </div>
+                                                ) : messageData.attachmentLocation !==
+                                                    '' &&
+                                                  (ext === 'doc' ||
+                                                    ext === 'docx' ||
+                                                    ext === 'xls' ||
+                                                    ext === 'xlsx' ||
+                                                    ext === 'pdf' ||
+                                                    ext === 'txt' ||
+                                                    ext === 'gif') ? (
+                                                  <div className="file-uploaded-chat">
+                                                    <img
+                                                      src={DocumentIcon}
+                                                      alt=""
+                                                    />
+                                                    <span className="attached-file">
+                                                      {messageData.attachmentLocation
+                                                        .substring(
+                                                          messageData.attachmentLocation.lastIndexOf(
+                                                            '/',
+                                                          ) + 1,
+                                                        )
+                                                        .replace(/^\d+_/, '')}
+                                                    </span>
+                                                    <a
+                                                      href={
+                                                        filesUrlTalk +
+                                                        messageData.attachmentLocation
+                                                      }
+                                                      target="_blank"
+                                                      rel="noopener noreferrer"
+                                                    >
+                                                      <img
+                                                        src={DownloadIcon}
+                                                        alt=""
+                                                      />
+                                                    </a>
+                                                  </div>
+                                                ) : (
+                                                  <div className="replied-message-send">
+                                                    <p className="replied-message-sender m-0">
+                                                      {
+                                                        messageData
+                                                          .frMessages[3]
+                                                      }
+                                                    </p>
+                                                    <p className="replied-message m-0">
+                                                      {
+                                                        messageData.sourceMessageBody
+                                                      }
+                                                    </p>
+                                                  </div>
+                                                )}
+
+                                                <span className="direct-chat-body color-5a5a5a">
+                                                  <Keywords
+                                                    value={searchChatWord}
+                                                    render={highlight}
+                                                  >
+                                                    {messageData.messageBody}
+                                                  </Keywords>
+                                                </span>
+                                              </>
+                                            ) : null}
+
+                                            <div className="d-flex mt-1 justify-content-end">
+                                              <div className="star-time-status ml-auto text-end">
+                                                <span className="starred-status">
+                                                  {messageData.isFlag === 1 ? (
+                                                    <img
+                                                      src={StarredMessageIcon}
+                                                      alt=""
+                                                    />
+                                                  ) : null}
+                                                </span>
+                                                <span className="direct-chat-sent-time chat-datetime">
+                                                  {messageData.sentDate.slice(
+                                                    0,
+                                                    8,
+                                                  ) === currentUtcDate ? (
+                                                    <>
+                                                      {/* {moment(
+                                                                              messageData.sentDate.slice(
+                                                                                8,
+                                                                                15,
+                                                                              ),
+                                                                              'hhmmss',
+                                                                            ).format('hh:mm a')} */}
+                                                      {newTimeFormaterAsPerUTCTalkTime(
+                                                        messageData.sentDate,
+                                                      )}
+                                                    </>
+                                                  ) : messageData.sentDate.slice(
                                                       0,
                                                       8,
-                                                    ),
-                                                  ).format('DD-MMM-YYYY')}{' '} */}
-                                                  {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate,
-                                                  ) + ' '}
-                                                  | Yesterday
-                                                </>
-                                              ) : (
-                                                <>
-                                                  {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate,
+                                                    ) === yesterdayDateUtc ? (
+                                                    <>
+                                                      {/* {moment(
+                                                                              messageData.sentDate.slice(
+                                                                                0,
+                                                                                8,
+                                                                              ),
+                                                                            ).format(
+                                                                              'DD-MMM-YYYY',
+                                                                            )}{' '} */}
+                                                      {newTimeFormaterAsPerUTCTalkDate(
+                                                        messageData.sentDate,
+                                                      ) + ' '}
+                                                      | Yesterday
+                                                    </>
+                                                  ) : messageData.sentDate ===
+                                                    '' ? null : (
+                                                    <>
+                                                      {/* {moment(
+                                                                              messageData.sentDate.slice(
+                                                                                0,
+                                                                                8,
+                                                                              ),
+                                                                            ).format('DD-MMM-YYYY')} */}
+                                                      {newTimeFormaterAsPerUTCTalkDate(
+                                                        messageData.sentDate,
+                                                      )}
+                                                    </>
                                                   )}
-                                                </>
-                                              )}
-                                            </span>
-                                            <div className="message-status">
-                                              {messageData.messageStatus ===
-                                              'Sent' ? (
-                                                <img
-                                                  src={SingleTickIcon}
-                                                  alt=""
-                                                />
-                                              ) : messageData.messageStatus ===
-                                                'Delivered' ? (
-                                                <img
-                                                  src={DoubleTickDeliveredIcon}
-                                                  alt=""
-                                                />
-                                              ) : messageData.messageStatus ===
-                                                'Seen' ? (
-                                                <img
-                                                  src={DoubleTickIcon}
-                                                  alt=""
-                                                />
-                                              ) : messageData.messageStatus ===
-                                                'Undelivered' ? (
-                                                <img src={TimerIcon} alt="" />
-                                              ) : null}
+                                                </span>
+                                                <div className="message-status">
+                                                  {messageData.messageStatus ===
+                                                  'Sent' ? (
+                                                    <img
+                                                      src={SingleTickIcon}
+                                                      alt=""
+                                                    />
+                                                  ) : messageData.messageStatus ===
+                                                    'Delivered' ? (
+                                                    <img
+                                                      src={
+                                                        DoubleTickDeliveredIcon
+                                                      }
+                                                      alt=""
+                                                    />
+                                                  ) : messageData.messageStatus ===
+                                                    'Seen' ? (
+                                                    <img
+                                                      src={DoubleTickIcon}
+                                                      alt=""
+                                                    />
+                                                  ) : messageData.messageStatus ===
+                                                    'Undelivered' ? (
+                                                    <img
+                                                      src={TimerIcon}
+                                                      alt=""
+                                                    />
+                                                  ) : null}
+                                                </div>
+                                              </div>
                                             </div>
                                           </div>
-                                        </div>
-                                      </div>
-                                      {showCheckboxes === true ? (
-                                        <Checkbox
-                                          checked={
-                                            messagesChecked.includes(
-                                              messageData,
-                                            )
-                                              ? true
-                                              : false
-                                          }
-                                          onChange={() =>
-                                            messagesCheckedHandler(
-                                              messageData,
-                                              index,
-                                            )
-                                          }
-                                          className="chat-message-checkbox-receiver"
-                                        />
-                                      ) : null}
-                                    </div>
-                                  )
-                                } else {
-                                  return (
-                                    <div className="direct-chat-msg text-left mb-2 ">
-                                      {showCheckboxes === true ? (
-                                        <Checkbox
-                                          checked={
-                                            messagesChecked.includes(
-                                              messageData,
-                                            )
-                                              ? true
-                                              : false
-                                          }
-                                          onChange={() =>
-                                            messagesCheckedHandler(
-                                              messageData,
-                                              index,
-                                            )
-                                          }
-                                          className="chat-message-checkbox-sender"
-                                        />
-                                      ) : null}
-
-                                      <div className="direct-chat-text message-inbox message-box text-start">
-                                        <div
-                                          className="chatmessage-box-icons"
-                                          onClick={() =>
-                                            chatFeatureSelected(
-                                              messageData,
-                                              messageData.messageID,
-                                            )
-                                          }
-                                          ref={chatMessageRefs}
-                                        >
-                                          <img
-                                            className="dropdown-icon"
-                                            src={DropDownChatIcon}
-                                          />
-                                          {chatFeatureActive ===
-                                          messageData.messageID ? (
-                                            <div className="dropdown-menus-chatmessage">
-                                              <span
-                                                onClick={() =>
-                                                  replyFeatureHandler(
-                                                    messageData,
-                                                  )
-                                                }
-                                              >
-                                                Reply
-                                              </span>
-                                              <span
-                                                onClick={forwardFeatureHandler}
-                                              >
-                                                Forward
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  deleteFeatureHandler(
-                                                    messageData,
-                                                  )
-                                                }
-                                              >
-                                                Delete
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  messageInfoHandler(
-                                                    messageData,
-                                                  )
-                                                }
-                                              >
-                                                Message Info
-                                              </span>
-                                              <span
-                                                onClick={() =>
-                                                  markUnmarkStarMessageHandler(
-                                                    messageData,
-                                                  )
-                                                }
-                                                style={{
-                                                  borderBottom: 'none',
-                                                }}
-                                              >
-                                                {messageData.isFlag === 0 ? (
-                                                  <>Star Message</>
-                                                ) : (
-                                                  <>Unstar Message</>
-                                                )}
-                                              </span>
-                                            </div>
+                                          {showCheckboxes === true ? (
+                                            <Checkbox
+                                              // checked={receiverCheckbox}
+                                              checked={
+                                                messagesChecked.includes(
+                                                  messageData,
+                                                )
+                                                  ? true
+                                                  : false
+                                              }
+                                              onChange={() =>
+                                                messagesCheckedHandler(
+                                                  messageData,
+                                                  index,
+                                                )
+                                              }
+                                              className="chat-message-checkbox-receiver"
+                                            />
                                           ) : null}
                                         </div>
-                                        {messageData.frMessages ===
-                                        'Direct Message' ? (
-                                          <>
-                                            <p className="group-sender-name">
-                                              {messageData.senderName}
-                                            </p>
-                                            <span className="direct-chat-body color-white">
-                                              <Keywords
-                                                value={searchChatWord}
-                                                render={highlight}
-                                              >
-                                                {messageData.messageBody}
-                                              </Keywords>
-                                            </span>
-                                          </>
-                                        ) : (
-                                          <>
-                                            <p className="group-sender-name">
-                                              {messageData.senderName}
-                                            </p>
-                                            <div className="replied-message-receive">
-                                              <p className="replied-message-receiver m-0">
-                                                {messageData.frMessages[3]}
-                                              </p>
-                                              <p className="replied-message m-0">
-                                                {messageData.sourceMessageBody}
-                                              </p>
-                                            </div>
-                                            <span className="direct-chat-body color-white">
-                                              <Keywords
-                                                value={searchChatWord}
-                                                render={highlight}
-                                              >
-                                                {messageData.messageBody}
-                                              </Keywords>
-                                            </span>
-                                          </>
-                                        )}
-                                        <div className="d-flex mt-1 justify-content-end">
-                                          <div className="star-time-status ml-auto text-end">
-                                            <span className="starred-status">
-                                              {messageData.isFlag === 1 ? (
-                                                <img
-                                                  src={StarredMessageIcon}
-                                                  alt=""
-                                                />
-                                              ) : null}
-                                            </span>
-                                            <span className="direct-chat-sent-time chat-datetime">
-                                              {messageData.sentDate.slice(
-                                                0,
-                                                8,
-                                              ) === currentUtcDate ? (
-                                                <>
-                                                  {/* {moment(
-                                                    messageData.sentDate.slice(
-                                                      8,
-                                                      15,
-                                                    ),
-                                                    'hhmmss',
-                                                  ).format('hh:mm a')} */}
-                                                  {newTimeFormaterAsPerUTCTalkTime(
-                                                    messageData.sentDate,
+                                      </>
+                                    )
+                                  } else if (
+                                    messageData.senderID !==
+                                    parseInt(currentUserId)
+                                  ) {
+                                    return (
+                                      <div className="direct-chat-msg text-left mb-2 ">
+                                        {showCheckboxes === true ? (
+                                          <Checkbox
+                                            checked={
+                                              messagesChecked.includes(
+                                                messageData,
+                                              )
+                                                ? true
+                                                : false
+                                            }
+                                            onChange={() =>
+                                              messagesCheckedHandler(
+                                                messageData,
+                                                index,
+                                              )
+                                            }
+                                            className="chat-message-checkbox-sender"
+                                          />
+                                        ) : null}
+
+                                        <div className="direct-chat-text message-inbox message-box text-start">
+                                          <div
+                                            className="chatmessage-box-icons"
+                                            onClick={() =>
+                                              chatFeatureSelected(
+                                                messageData,
+                                                messageData.messageID,
+                                              )
+                                            }
+                                            ref={chatMessageRefs}
+                                          >
+                                            <img
+                                              className="dropdown-icon"
+                                              src={DropDownChatIcon}
+                                            />
+                                            {chatFeatureActive ===
+                                            messageData.messageID ? (
+                                              <div className="dropdown-menus-chatmessage">
+                                                <span
+                                                  onClick={() =>
+                                                    replyFeatureHandler(
+                                                      messageData,
+                                                    )
+                                                  }
+                                                >
+                                                  Reply
+                                                </span>
+                                                <span
+                                                  onClick={
+                                                    forwardFeatureHandler
+                                                  }
+                                                >
+                                                  Forward
+                                                </span>
+                                                <span
+                                                  onClick={() =>
+                                                    deleteFeatureHandler(
+                                                      messageData,
+                                                    )
+                                                  }
+                                                >
+                                                  Delete
+                                                </span>
+                                                <span
+                                                  onClick={() =>
+                                                    messageInfoHandler(
+                                                      messageData,
+                                                    )
+                                                  }
+                                                >
+                                                  Message Info
+                                                </span>
+                                                <span
+                                                  onClick={() =>
+                                                    markUnmarkStarMessageHandler(
+                                                      messageData,
+                                                    )
+                                                  }
+                                                  style={{
+                                                    borderBottom: 'none',
+                                                  }}
+                                                >
+                                                  {messageData.isFlag === 0 ? (
+                                                    <>Star Message</>
+                                                  ) : (
+                                                    <>Unstar Message</>
                                                   )}
-                                                </>
-                                              ) : messageData.sentDate.slice(
+                                                </span>
+                                              </div>
+                                            ) : null}
+                                          </div>
+                                          {messageData.frMessages ===
+                                            'Direct Message' ||
+                                          messageData.frMessages ===
+                                            'Broadcast Message' ? (
+                                            <>
+                                              {messageData.attachmentLocation !==
+                                                '' &&
+                                              (ext === 'jpg' ||
+                                                ext === 'png' ||
+                                                ext === 'jpeg') ? (
+                                                <div className="image-thumbnail-chat">
+                                                  <a
+                                                    href={
+                                                      filesUrlTalk +
+                                                      messageData.attachmentLocation
+                                                    }
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                  >
+                                                    <img
+                                                      src={
+                                                        filesUrlTalk +
+                                                        messageData.attachmentLocation
+                                                      }
+                                                      alt=""
+                                                    />
+                                                  </a>
+                                                </div>
+                                              ) : messageData.attachmentLocation !==
+                                                  '' &&
+                                                (ext === 'doc' ||
+                                                  ext === 'docx' ||
+                                                  ext === 'xls' ||
+                                                  ext === 'xlsx' ||
+                                                  ext === 'pdf' ||
+                                                  ext === 'txt' ||
+                                                  ext === 'gif') ? (
+                                                <div className="file-uploaded-chat received">
+                                                  <img
+                                                    src={DocumentIcon}
+                                                    alt=""
+                                                  />
+                                                  <span className="attached-file">
+                                                    {messageData.attachmentLocation
+                                                      .substring(
+                                                        messageData.attachmentLocation.lastIndexOf(
+                                                          '/',
+                                                        ) + 1,
+                                                      )
+                                                      .replace(/^\d+_/, '')}
+                                                  </span>
+                                                  <a
+                                                    href={
+                                                      filesUrlTalk +
+                                                      messageData.attachmentLocation
+                                                    }
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                  >
+                                                    <img
+                                                      src={DownloadIcon}
+                                                      alt=""
+                                                    />
+                                                  </a>
+                                                </div>
+                                              ) : null}
+                                              <span className="direct-chat-body color-white">
+                                                <Keywords
+                                                  value={searchChatWord}
+                                                  render={highlight}
+                                                >
+                                                  {messageData.messageBody}
+                                                </Keywords>
+                                              </span>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <div className="replied-message-receive">
+                                                <p className="replied-message-receiver m-0">
+                                                  {messageData.frMessages[3]}
+                                                </p>
+                                                <p className="replied-message m-0">
+                                                  {
+                                                    messageData.sourceMessageBody
+                                                  }
+                                                </p>
+                                              </div>
+                                              <span className="direct-chat-body color-white">
+                                                <Keywords
+                                                  value={searchChatWord}
+                                                  render={highlight}
+                                                >
+                                                  {messageData.messageBody}
+                                                </Keywords>
+                                              </span>
+                                            </>
+                                          )}
+                                          <div className="d-flex mt-1 justify-content-end">
+                                            <div className="star-time-status ml-auto text-end">
+                                              <span className="starred-status">
+                                                {messageData.isFlag === 1 ? (
+                                                  <img
+                                                    src={StarredMessageIcon}
+                                                    alt=""
+                                                  />
+                                                ) : null}
+                                              </span>
+                                              <span className="direct-chat-sent-time chat-datetime">
+                                                {messageData.sentDate.slice(
                                                   0,
                                                   8,
-                                                ) === yesterdayDateUtc ? (
-                                                <>
-                                                  {/* {moment(
-                                                    messageData.sentDate.slice(
-                                                      0,
-                                                      8,
-                                                    ),
-                                                  ).format('DD-MMM-YYYY')}{' '} */}
-                                                  {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate,
-                                                  ) + ' '}
-                                                  | Yesterday
-                                                </>
-                                              ) : (
-                                                <>
-                                                  {newTimeFormaterAsPerUTCTalkDate(
-                                                    messageData.sentDate,
-                                                  )}
-                                                </>
-                                              )}
-                                            </span>
-                                            <div className="message-status"></div>
+                                                ) === currentUtcDate ? (
+                                                  <>
+                                                    {/* {moment(
+                                                                            messageData.sentDate.slice(
+                                                                              8,
+                                                                              15,
+                                                                            ),
+                                                                            'hhmmss',
+                                                                          ).format('hh:mm a')} */}
+                                                    {newTimeFormaterAsPerUTCTalkTime(
+                                                      messageData.sentDate,
+                                                    )}
+                                                  </>
+                                                ) : messageData.sentDate.slice(
+                                                    0,
+                                                    8,
+                                                  ) === yesterdayDateUtc ? (
+                                                  <>
+                                                    {/* {moment(
+                                                                            messageData.sentDate.slice(
+                                                                              0,
+                                                                              8,
+                                                                            ),
+                                                                          ).format('DD-MMM-YYYY')}{' '} */}
+                                                    {newTimeFormaterAsPerUTCTalkDate(
+                                                      messageData.sentDate,
+                                                    ) + ' '}
+                                                    | Yesterday
+                                                  </>
+                                                ) : (
+                                                  <>
+                                                    {newTimeFormaterAsPerUTCTalkDate(
+                                                      messageData.sentDate,
+                                                    )}
+                                                  </>
+                                                )}
+                                              </span>
+                                              <div className="message-status"></div>
+                                            </div>
                                           </div>
                                         </div>
                                       </div>
-                                    </div>
-                                  )
-                                }
-                              })
-                            ) : allOtoMessages.length === 0 &&
-                              allGroupMessages.length === 0 &&
-                              allBroadcastMessages.length > 0 ? (
-                              allBroadcastMessages.map((messageData, index) => {
-                                console.log(
-                                  'All Broadcast Messages',
-                                  messageData,
-                                )
-                                if (
-                                  messageData.senderID ===
-                                  parseInt(currentUserId)
-                                ) {
-                                  return (
-                                    <>
+                                    )
+                                  }
+                                })
+                              ) : allOtoMessages.length === 0 &&
+                                allBroadcastMessages.length === 0 &&
+                                allGroupMessages.length > 0 ? (
+                                allGroupMessages.map((messageData, index) => {
+                                  var ext = messageData.attachmentLocation
+                                    .split('.')
+                                    .pop()
+                                  if (
+                                    messageData.senderID ===
+                                    parseInt(currentUserId)
+                                  ) {
+                                    return (
                                       <div className="direct-chat-msg text-right mb-2 ">
                                         <div className="direct-chat-text message-outbox message-box text-start">
+                                          <p className="group-sender-name">
+                                            {messageData.senderName}
+                                          </p>
                                           <div
                                             className="chatmessage-box-icons"
                                             onClick={() =>
@@ -7329,15 +7427,80 @@ const TalkChat = () => {
                                             ) : null}
                                           </div>
                                           {messageData.frMessages ===
-                                          'Direct Message' ? (
-                                            <span className="direct-chat-body color-5a5a5a">
-                                              <Keywords
-                                                value={searchChatWord}
-                                                render={highlight}
-                                              >
-                                                {messageData.messageBody}
-                                              </Keywords>
-                                            </span>
+                                            'Direct Message' ||
+                                          messageData.frMessages ===
+                                            'Broadcast Message' ? (
+                                            <>
+                                              {messageData.attachmentLocation !==
+                                                '' &&
+                                              (ext === 'jpg' ||
+                                                ext === 'png' ||
+                                                ext === 'jpeg') ? (
+                                                <div className="image-thumbnail-chat">
+                                                  <a
+                                                    href={
+                                                      filesUrlTalk +
+                                                      messageData.attachmentLocation
+                                                    }
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                  >
+                                                    <img
+                                                      src={
+                                                        filesUrlTalk +
+                                                        messageData.attachmentLocation
+                                                      }
+                                                      alt=""
+                                                    />
+                                                  </a>
+                                                </div>
+                                              ) : messageData.attachmentLocation !==
+                                                  '' &&
+                                                (ext === 'doc' ||
+                                                  ext === 'docx' ||
+                                                  ext === 'xls' ||
+                                                  ext === 'xlsx' ||
+                                                  ext === 'pdf' ||
+                                                  ext === 'txt' ||
+                                                  ext === 'gif') ? (
+                                                <div className="file-uploaded-chat">
+                                                  <img
+                                                    src={DocumentIcon}
+                                                    alt=""
+                                                  />
+                                                  <span className="attached-file">
+                                                    {messageData.attachmentLocation
+                                                      .substring(
+                                                        messageData.attachmentLocation.lastIndexOf(
+                                                          '/',
+                                                        ) + 1,
+                                                      )
+                                                      .replace(/^\d+_/, '')}
+                                                  </span>
+                                                  <a
+                                                    href={
+                                                      filesUrlTalk +
+                                                      messageData.attachmentLocation
+                                                    }
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                  >
+                                                    <img
+                                                      src={DownloadIcon}
+                                                      alt=""
+                                                    />
+                                                  </a>
+                                                </div>
+                                              ) : null}
+                                              <span className="direct-chat-body color-5a5a5a">
+                                                <Keywords
+                                                  value={searchChatWord}
+                                                  render={highlight}
+                                                >
+                                                  {messageData.messageBody}
+                                                </Keywords>
+                                              </span>
+                                            </>
                                           ) : (
                                             <>
                                               <div className="replied-message-send">
@@ -7360,7 +7523,6 @@ const TalkChat = () => {
                                               </span>
                                             </>
                                           )}
-
                                           <div className="d-flex mt-1 justify-content-end">
                                             <div className="star-time-status ml-auto text-end">
                                               <span className="starred-status">
@@ -7378,12 +7540,12 @@ const TalkChat = () => {
                                                 ) === currentUtcDate ? (
                                                   <>
                                                     {/* {moment(
-                                                      messageData.sentDate.slice(
-                                                        8,
-                                                        15,
-                                                      ),
-                                                      'hhmmss',
-                                                    ).format('hh:mm a')} */}
+                                                                            messageData.sentDate.slice(
+                                                                              8,
+                                                                              15,
+                                                                            ),
+                                                                            'hhmmss',
+                                                                          ).format('hh:mm a')} */}
                                                     {newTimeFormaterAsPerUTCTalkTime(
                                                       messageData.sentDate,
                                                     )}
@@ -7394,27 +7556,18 @@ const TalkChat = () => {
                                                   ) === yesterdayDateUtc ? (
                                                   <>
                                                     {/* {moment(
-                                                      messageData.sentDate.slice(
-                                                        0,
-                                                        8,
-                                                      ),
-                                                    ).format(
-                                                      'DD-MMM-YYYY',
-                                                    )}{' '} */}
+                                                                            messageData.sentDate.slice(
+                                                                              0,
+                                                                              8,
+                                                                            ),
+                                                                          ).format('DD-MMM-YYYY')}{' '} */}
                                                     {newTimeFormaterAsPerUTCTalkDate(
                                                       messageData.sentDate,
                                                     ) + ' '}
                                                     | Yesterday
                                                   </>
-                                                ) : messageData.sentDate ===
-                                                  '' ? null : (
+                                                ) : (
                                                   <>
-                                                    {/* {moment(
-                                                      messageData.sentDate.slice(
-                                                        0,
-                                                        8,
-                                                      ),
-                                                    ).format('DD-MMM-YYYY')} */}
                                                     {newTimeFormaterAsPerUTCTalkDate(
                                                       messageData.sentDate,
                                                     )}
@@ -7452,7 +7605,6 @@ const TalkChat = () => {
                                         </div>
                                         {showCheckboxes === true ? (
                                           <Checkbox
-                                            // checked={receiverCheckbox}
                                             checked={
                                               messagesChecked.includes(
                                                 messageData,
@@ -7470,216 +7622,554 @@ const TalkChat = () => {
                                           />
                                         ) : null}
                                       </div>
-                                    </>
-                                  )
-                                }
-                                // else if (
-                                //   messageData.senderID !==
-                                //   parseInt(currentUserId)
-                                // ) {
-                                //   return (
-                                //     <div className="direct-chat-msg text-left mb-2 ">
-                                //       {showCheckboxes === true ? (
-                                //         <Checkbox
-                                //           checked={
-                                //             messagesChecked.includes(
-                                //               messageData,
-                                //             )
-                                //               ? true
-                                //               : false
-                                //           }
-                                //           onChange={() =>
-                                //             messagesCheckedHandler(
-                                //               messageData,
-                                //               index,
-                                //             )
-                                //           }
-                                //           className="chat-message-checkbox-sender"
-                                //         />
-                                //       ) : null}
+                                    )
+                                  } else {
+                                    return (
+                                      <div className="direct-chat-msg text-left mb-2 ">
+                                        {showCheckboxes === true ? (
+                                          <Checkbox
+                                            checked={
+                                              messagesChecked.includes(
+                                                messageData,
+                                              )
+                                                ? true
+                                                : false
+                                            }
+                                            onChange={() =>
+                                              messagesCheckedHandler(
+                                                messageData,
+                                                index,
+                                              )
+                                            }
+                                            className="chat-message-checkbox-sender"
+                                          />
+                                        ) : null}
 
-                                //       <div className="direct-chat-text message-inbox message-box text-start">
-                                //         <div
-                                //           className="chatmessage-box-icons"
-                                //           onClick={() =>
-                                //             chatFeatureSelected(
-                                //               messageData,
-                                //               messageData.messageID,
-                                //             )
-                                //           }
-                                //           ref={chatMessageRefs}
-                                //         >
-                                //           <img
-                                //             className="dropdown-icon"
-                                //             src={DropDownChatIcon}
-                                //           />
-                                //           {chatFeatureActive ===
-                                //           messageData.messageID ? (
-                                //             <div className="dropdown-menus-chatmessage">
-                                //               <span
-                                //                 onClick={() =>
-                                //                   replyFeatureHandler(
-                                //                     messageData,
-                                //                   )
-                                //                 }
-                                //               >
-                                //                 Reply
-                                //               </span>
-                                //               <span
-                                //                 onClick={forwardFeatureHandler}
-                                //               >
-                                //                 Forward
-                                //               </span>
-                                //               <span
-                                //                 onClick={() =>
-                                //                   deleteFeatureHandler(
-                                //                     messageData,
-                                //                   )
-                                //                 }
-                                //               >
-                                //                 Delete
-                                //               </span>
-                                //               <span
-                                //                 onClick={() =>
-                                //                   messageInfoHandler(
-                                //                     messageData,
-                                //                   )
-                                //                 }
-                                //               >
-                                //                 Message Info
-                                //               </span>
-                                //               <span
-                                //                 onClick={() =>
-                                //                   markUnmarkStarMessageHandler(
-                                //                     messageData,
-                                //                   )
-                                //                 }
-                                //                 style={{
-                                //                   borderBottom: 'none',
-                                //                 }}
-                                //               >
-                                //                 {messageData.isFlag === 0 ? (
-                                //                   <>Star Message</>
-                                //                 ) : (
-                                //                   <>Unstar Message</>
-                                //                 )}
-                                //               </span>
-                                //             </div>
-                                //           ) : null}
-                                //         </div>
-                                //         {messageData.frMessages ===
-                                //         'Direct Message' ? (
-                                //           <span className="direct-chat-body color-white">
-                                //             <Keywords
-                                //               value={searchChatWord}
-                                //               render={highlight}
-                                //             >
-                                //               {messageData.messageBody}
-                                //             </Keywords>
-                                //           </span>
-                                //         ) : (
-                                //           <>
-                                //             <div className="replied-message-receive">
-                                //               <p className="replied-message-receiver m-0">
-                                //                 {messageData.frMessages[3]}
-                                //               </p>
-                                //               <p className="replied-message m-0">
-                                //                 {messageData.sourceMessageBody}
-                                //               </p>
-                                //             </div>
-                                //             <span className="direct-chat-body color-white">
-                                //               <Keywords
-                                //                 value={searchChatWord}
-                                //                 render={highlight}
-                                //               >
-                                //                 {messageData.messageBody}
-                                //               </Keywords>
-                                //             </span>
-                                //           </>
-                                //         )}
-                                //         <div className="d-flex mt-1 justify-content-end">
-                                //           <div className="star-time-status ml-auto text-end">
-                                //             <span className="starred-status">
-                                //               {messageData.isFlag === 1 ? (
-                                //                 <img
-                                //                   src={StarredMessageIcon}
-                                //                   alt=""
-                                //                 />
-                                //               ) : null}
-                                //             </span>
-                                //             <span className="direct-chat-sent-time chat-datetime">
-                                //               {messageData.sentDate.slice(
-                                //                 0,
-                                //                 8,
-                                //               ) === currentUtcDate ? (
-                                //                 <>
-                                //                   {/* {moment(
-                                //                     messageData.sentDate.slice(
-                                //                       8,
-                                //                       15,
-                                //                     ),
-                                //                     'hhmmss',
-                                //                   ).format('hh:mm a')} */}
-                                //                   {newTimeFormaterAsPerUTCTalkTime(
-                                //                     messageData.sentDate,
-                                //                   )}
-                                //                 </>
-                                //               ) : messageData.sentDate.slice(
-                                //                   0,
-                                //                   8,
-                                //                 ) === yesterdayDateUtc ? (
-                                //                 <>
-                                //                   {/* {moment(
-                                //                     messageData.sentDate.slice(
-                                //                       0,
-                                //                       8,
-                                //                     ),
-                                //                   ).format('DD-MMM-YYYY')}{' '} */}
-                                //                   {newTimeFormaterAsPerUTCTalkDate(
-                                //                     messageData.sentDate,
-                                //                   ) + ' '}
-                                //                   | Yesterday
-                                //                 </>
-                                //               ) : (
-                                //                 <>
-                                //                   {newTimeFormaterAsPerUTCTalkDate(
-                                //                     messageData.sentDate,
-                                //                   )}
-                                //                 </>
-                                //               )}
-                                //             </span>
-                                //             <div className="message-status"></div>
-                                //           </div>
-                                //         </div>
-                                //       </div>
-                                //     </div>
-                                //   )
-                                // }
-                              })
-                            ) : (
-                              <>
-                                {isLoading ? (
-                                  <Spin className="talk-overallchat-spinner" />
-                                ) : (
-                                  <p>No Chat Messages</p>
-                                )}
-                              </>
-                            )}
-                            <div ref={chatMessages} />
-                            {isRetryAttemptComplete === true ? (
-                              <div className="Retry-Delete-Feature">
-                                <span onClick={retryAttempt} className="retry">
-                                  {t('Retry')}
-                                </span>
-                                <span
-                                  onClick={deleteAttempt}
-                                  className="delete"
-                                >
-                                  Delete
-                                </span>
+                                        <div className="direct-chat-text message-inbox message-box text-start">
+                                          <div
+                                            className="chatmessage-box-icons"
+                                            onClick={() =>
+                                              chatFeatureSelected(
+                                                messageData,
+                                                messageData.messageID,
+                                              )
+                                            }
+                                            ref={chatMessageRefs}
+                                          >
+                                            <img
+                                              className="dropdown-icon"
+                                              src={DropDownChatIcon}
+                                            />
+                                            {chatFeatureActive ===
+                                            messageData.messageID ? (
+                                              <div className="dropdown-menus-chatmessage">
+                                                <span
+                                                  onClick={() =>
+                                                    replyFeatureHandler(
+                                                      messageData,
+                                                    )
+                                                  }
+                                                >
+                                                  Reply
+                                                </span>
+                                                <span
+                                                  onClick={
+                                                    forwardFeatureHandler
+                                                  }
+                                                >
+                                                  Forward
+                                                </span>
+                                                <span
+                                                  onClick={() =>
+                                                    deleteFeatureHandler(
+                                                      messageData,
+                                                    )
+                                                  }
+                                                >
+                                                  Delete
+                                                </span>
+                                                <span
+                                                  onClick={() =>
+                                                    messageInfoHandler(
+                                                      messageData,
+                                                    )
+                                                  }
+                                                >
+                                                  Message Info
+                                                </span>
+                                                <span
+                                                  onClick={() =>
+                                                    markUnmarkStarMessageHandler(
+                                                      messageData,
+                                                    )
+                                                  }
+                                                  style={{
+                                                    borderBottom: 'none',
+                                                  }}
+                                                >
+                                                  {messageData.isFlag === 0 ? (
+                                                    <>Star Message</>
+                                                  ) : (
+                                                    <>Unstar Message</>
+                                                  )}
+                                                </span>
+                                              </div>
+                                            ) : null}
+                                          </div>
+                                          {messageData.frMessages ===
+                                            'Direct Message' ||
+                                          messageData.frMessages ===
+                                            'Broadcast Message' ? (
+                                            <>
+                                              <p className="group-sender-name">
+                                                {messageData.senderName}
+                                              </p>
+                                              <span className="direct-chat-body color-white">
+                                                <Keywords
+                                                  value={searchChatWord}
+                                                  render={highlight}
+                                                >
+                                                  {messageData.messageBody}
+                                                </Keywords>
+                                              </span>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <p className="group-sender-name">
+                                                {messageData.senderName}
+                                              </p>
+                                              <div className="replied-message-receive">
+                                                <p className="replied-message-receiver m-0">
+                                                  {messageData.frMessages[3]}
+                                                </p>
+                                                <p className="replied-message m-0">
+                                                  {
+                                                    messageData.sourceMessageBody
+                                                  }
+                                                </p>
+                                              </div>
+                                              <span className="direct-chat-body color-white">
+                                                <Keywords
+                                                  value={searchChatWord}
+                                                  render={highlight}
+                                                >
+                                                  {messageData.messageBody}
+                                                </Keywords>
+                                              </span>
+                                            </>
+                                          )}
+                                          <div className="d-flex mt-1 justify-content-end">
+                                            <div className="star-time-status ml-auto text-end">
+                                              <span className="starred-status">
+                                                {messageData.isFlag === 1 ? (
+                                                  <img
+                                                    src={StarredMessageIcon}
+                                                    alt=""
+                                                  />
+                                                ) : null}
+                                              </span>
+                                              <span className="direct-chat-sent-time chat-datetime">
+                                                {messageData.sentDate.slice(
+                                                  0,
+                                                  8,
+                                                ) === currentUtcDate ? (
+                                                  <>
+                                                    {/* {moment(
+                                                                            messageData.sentDate.slice(
+                                                                              8,
+                                                                              15,
+                                                                            ),
+                                                                            'hhmmss',
+                                                                          ).format('hh:mm a')} */}
+                                                    {newTimeFormaterAsPerUTCTalkTime(
+                                                      messageData.sentDate,
+                                                    )}
+                                                  </>
+                                                ) : messageData.sentDate.slice(
+                                                    0,
+                                                    8,
+                                                  ) === yesterdayDateUtc ? (
+                                                  <>
+                                                    {/* {moment(
+                                                                            messageData.sentDate.slice(
+                                                                              0,
+                                                                              8,
+                                                                            ),
+                                                                          ).format('DD-MMM-YYYY')}{' '} */}
+                                                    {newTimeFormaterAsPerUTCTalkDate(
+                                                      messageData.sentDate,
+                                                    ) + ' '}
+                                                    | Yesterday
+                                                  </>
+                                                ) : (
+                                                  <>
+                                                    {newTimeFormaterAsPerUTCTalkDate(
+                                                      messageData.sentDate,
+                                                    )}
+                                                  </>
+                                                )}
+                                              </span>
+                                              <div className="message-status"></div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    )
+                                  }
+                                })
+                              ) : allOtoMessages.length === 0 &&
+                                allGroupMessages.length === 0 &&
+                                allBroadcastMessages.length > 0 ? (
+                                allBroadcastMessages.map(
+                                  (messageData, index) => {
+                                    console.log(
+                                      'All Broadcast Messages',
+                                      messageData,
+                                    )
+                                    var ext = messageData.attachmentLocation
+                                      .split('.')
+                                      .pop()
+                                    if (
+                                      messageData.senderID ===
+                                      parseInt(currentUserId)
+                                    ) {
+                                      return (
+                                        <>
+                                          <div className="direct-chat-msg text-right mb-2 ">
+                                            <div className="direct-chat-text message-outbox message-box text-start">
+                                              <div
+                                                className="chatmessage-box-icons"
+                                                onClick={() =>
+                                                  chatFeatureSelected(
+                                                    messageData,
+                                                    messageData.messageID,
+                                                  )
+                                                }
+                                                ref={chatMessageRefs}
+                                              >
+                                                <img
+                                                  className="dropdown-icon"
+                                                  src={DropDownIcon}
+                                                />
+                                                {chatFeatureActive ===
+                                                messageData.messageID ? (
+                                                  <div className="dropdown-menus-chatmessage">
+                                                    <span
+                                                      onClick={() =>
+                                                        replyFeatureHandler(
+                                                          messageData,
+                                                        )
+                                                      }
+                                                    >
+                                                      Reply
+                                                    </span>
+                                                    <span
+                                                      onClick={
+                                                        forwardFeatureHandler
+                                                      }
+                                                    >
+                                                      Forward
+                                                    </span>
+                                                    <span
+                                                      onClick={() =>
+                                                        deleteFeatureHandler(
+                                                          messageData,
+                                                        )
+                                                      }
+                                                    >
+                                                      Delete
+                                                    </span>
+                                                    <span
+                                                      onClick={() =>
+                                                        messageInfoHandler(
+                                                          messageData,
+                                                        )
+                                                      }
+                                                    >
+                                                      Message Info
+                                                    </span>
+                                                    <span
+                                                      onClick={() =>
+                                                        markUnmarkStarMessageHandler(
+                                                          messageData,
+                                                        )
+                                                      }
+                                                      style={{
+                                                        borderBottom: 'none',
+                                                      }}
+                                                    >
+                                                      {messageData.isFlag ===
+                                                      0 ? (
+                                                        <>Star Message</>
+                                                      ) : (
+                                                        <>Unstar Message</>
+                                                      )}
+                                                    </span>
+                                                  </div>
+                                                ) : null}
+                                              </div>
+                                              {messageData.frMessages ===
+                                                'Direct Message' ||
+                                              messageData.frMessages ===
+                                                'Broadcast Message' ? (
+                                                <>
+                                                  {messageData.attachmentLocation !==
+                                                    '' &&
+                                                  (ext === 'jpg' ||
+                                                    ext === 'png' ||
+                                                    ext === 'jpeg') ? (
+                                                    <div className="image-thumbnail-chat">
+                                                      <a
+                                                        href={
+                                                          filesUrlTalk +
+                                                          messageData.attachmentLocation
+                                                        }
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                      >
+                                                        <img
+                                                          src={
+                                                            filesUrlTalk +
+                                                            messageData.attachmentLocation
+                                                          }
+                                                          alt=""
+                                                        />
+                                                      </a>
+                                                    </div>
+                                                  ) : messageData.attachmentLocation !==
+                                                      '' &&
+                                                    (ext === 'doc' ||
+                                                      ext === 'docx' ||
+                                                      ext === 'xls' ||
+                                                      ext === 'xlsx' ||
+                                                      ext === 'pdf' ||
+                                                      ext === 'txt' ||
+                                                      ext === 'gif') ? (
+                                                    <div className="file-uploaded-chat">
+                                                      <img
+                                                        src={DocumentIcon}
+                                                        alt=""
+                                                      />
+                                                      <span className="attached-file">
+                                                        {messageData.attachmentLocation
+                                                          .substring(
+                                                            messageData.attachmentLocation.lastIndexOf(
+                                                              '/',
+                                                            ) + 1,
+                                                          )
+                                                          .replace(/^\d+_/, '')}
+                                                      </span>
+                                                      <a
+                                                        href={
+                                                          filesUrlTalk +
+                                                          messageData.attachmentLocation
+                                                        }
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                      >
+                                                        <img
+                                                          src={DownloadIcon}
+                                                          alt=""
+                                                        />
+                                                      </a>
+                                                    </div>
+                                                  ) : null}
+                                                  <span className="direct-chat-body color-5a5a5a">
+                                                    <Keywords
+                                                      value={searchChatWord}
+                                                      render={highlight}
+                                                    >
+                                                      {messageData.messageBody}
+                                                    </Keywords>
+                                                  </span>
+                                                </>
+                                              ) : (
+                                                <>
+                                                  <div className="replied-message-send">
+                                                    <p className="replied-message-sender m-0">
+                                                      {
+                                                        messageData
+                                                          .frMessages[3]
+                                                      }
+                                                    </p>
+                                                    <p className="replied-message m-0">
+                                                      {
+                                                        messageData.sourceMessageBody
+                                                      }
+                                                    </p>
+                                                  </div>
+                                                  <span className="direct-chat-body color-5a5a5a">
+                                                    <Keywords
+                                                      value={searchChatWord}
+                                                      render={highlight}
+                                                    >
+                                                      {messageData.messageBody}
+                                                    </Keywords>
+                                                  </span>
+                                                </>
+                                              )}
+
+                                              <div className="d-flex mt-1 justify-content-end">
+                                                <div className="star-time-status ml-auto text-end">
+                                                  <span className="starred-status">
+                                                    {messageData.isFlag ===
+                                                    1 ? (
+                                                      <img
+                                                        src={StarredMessageIcon}
+                                                        alt=""
+                                                      />
+                                                    ) : null}
+                                                  </span>
+                                                  <span className="direct-chat-sent-time chat-datetime">
+                                                    {messageData.sentDate.slice(
+                                                      0,
+                                                      8,
+                                                    ) === currentUtcDate ? (
+                                                      <>
+                                                        {/* {moment(
+                                                                              messageData.sentDate.slice(
+                                                                                8,
+                                                                                15,
+                                                                              ),
+                                                                              'hhmmss',
+                                                                            ).format('hh:mm a')} */}
+                                                        {newTimeFormaterAsPerUTCTalkTime(
+                                                          messageData.sentDate,
+                                                        )}
+                                                      </>
+                                                    ) : messageData.sentDate.slice(
+                                                        0,
+                                                        8,
+                                                      ) === yesterdayDateUtc ? (
+                                                      <>
+                                                        {/* {moment(
+                                                                              messageData.sentDate.slice(
+                                                                                0,
+                                                                                8,
+                                                                              ),
+                                                                            ).format(
+                                                                              'DD-MMM-YYYY',
+                                                                            )}{' '} */}
+                                                        {newTimeFormaterAsPerUTCTalkDate(
+                                                          messageData.sentDate,
+                                                        ) + ' '}
+                                                        | Yesterday
+                                                      </>
+                                                    ) : messageData.sentDate ===
+                                                      '' ? null : (
+                                                      <>
+                                                        {/* {moment(
+                                                                              messageData.sentDate.slice(
+                                                                                0,
+                                                                                8,
+                                                                              ),
+                                                                            ).format('DD-MMM-YYYY')} */}
+                                                        {newTimeFormaterAsPerUTCTalkDate(
+                                                          messageData.sentDate,
+                                                        )}
+                                                      </>
+                                                    )}
+                                                  </span>
+                                                  <div className="message-status">
+                                                    {messageData.messageStatus ===
+                                                    'Sent' ? (
+                                                      <img
+                                                        src={SingleTickIcon}
+                                                        alt=""
+                                                      />
+                                                    ) : messageData.messageStatus ===
+                                                      'Delivered' ? (
+                                                      <img
+                                                        src={
+                                                          DoubleTickDeliveredIcon
+                                                        }
+                                                        alt=""
+                                                      />
+                                                    ) : messageData.messageStatus ===
+                                                      'Seen' ? (
+                                                      <img
+                                                        src={DoubleTickIcon}
+                                                        alt=""
+                                                      />
+                                                    ) : messageData.messageStatus ===
+                                                      'Undelivered' ? (
+                                                      <img
+                                                        src={TimerIcon}
+                                                        alt=""
+                                                      />
+                                                    ) : null}
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            {showCheckboxes === true ? (
+                                              <Checkbox
+                                                // checked={receiverCheckbox}
+                                                checked={
+                                                  messagesChecked.includes(
+                                                    messageData,
+                                                  )
+                                                    ? true
+                                                    : false
+                                                }
+                                                onChange={() =>
+                                                  messagesCheckedHandler(
+                                                    messageData,
+                                                    index,
+                                                  )
+                                                }
+                                                className="chat-message-checkbox-receiver"
+                                              />
+                                            ) : null}
+                                          </div>
+                                        </>
+                                      )
+                                    }
+                                  },
+                                )
+                              ) : (
+                                <>
+                                  {isLoading ? (
+                                    <Spin className="talk-overallchat-spinner" />
+                                  ) : (
+                                    <p>No Chat Messages</p>
+                                  )}
+                                </>
+                              )}
+                              <div ref={chatMessages} />
+                              {/* {isRetryAttemptComplete === true ? (
+                                <div className="Retry-Delete-Feature">
+                                  <span
+                                    onClick={retryAttempt}
+                                    className="retry"
+                                  >
+                                    {t('Retry')}
+                                  </span>
+                                  <span
+                                    onClick={deleteAttempt}
+                                    className="delete"
+                                  >
+                                    Delete
+                                  </span>
+                                </div>
+                              ) : null} */}
+                            </div>
+                          ) : (
+                            <>
+                              <div className="removeImage-thumbnail">
+                                <img
+                                  onClick={removeFileFunction}
+                                  src={CrossIcon}
+                                />
                               </div>
-                            ) : null}
-                          </div>
+                              <div className="image-thumbnail">
+                                <img
+                                  className="img-cover thumbnailImage"
+                                  src={file}
+                                />
+                              </div>
+                            </>
+                          )}
                         </>
 
                         {replyFeature === true ? (
@@ -7778,6 +8268,7 @@ const TalkChat = () => {
                                           DateRange
                                           placeholder={t('Select-date')}
                                           change={onChangeDate}
+                                          locale={enUS}
                                         />
                                       </Col>
                                       <Col lg={5} md={5} sm={12}>
@@ -7801,6 +8292,7 @@ const TalkChat = () => {
                                           placeholder={'Select Date'}
                                           change={onChangeDate}
                                           disable={endDatedisable}
+                                          locale={enUS}
                                         />
                                       </Col>
                                       <Col lg={1} md={1} sm={12}></Col>
@@ -7818,7 +8310,7 @@ const TalkChat = () => {
                                   <Button
                                     className="MontserratSemiBold Ok-btn"
                                     text="Okay"
-                                    onClick={handleCancel}
+                                    onClick={downloadChat}
                                   />
                                 </Col>
                               </Row>
@@ -7919,7 +8411,7 @@ const TalkChat = () => {
                                   <Button
                                     className="MontserratSemiBold Ok-btn"
                                     text="Okay"
-                                    onClick={handleCancel}
+                                    onClick={printChat}
                                   />
                                 </Col>
                               </Row>
@@ -8088,7 +8580,8 @@ const TalkChat = () => {
                       >
                         {showCheckboxes === false ? (
                           <>
-                            {tasksAttachments.TasksAttachments.length > 0 ? (
+                            {file === '' &&
+                            tasksAttachments.TasksAttachments.length > 0 ? (
                               <div className="uploaded-file-section">
                                 <div className="file-upload">
                                   <Row>
@@ -8140,7 +8633,7 @@ const TalkChat = () => {
                                 </div>
                               </div>
                             ) : null}
-                            <div ref={emojiMenuRef}>
+                            <div className="emoji-section" ref={emojiMenuRef}>
                               <div className="emoji-click" onClick={emojiClick}>
                                 <img src={EmojiIcon} alt="" />
                               </div>
@@ -8152,55 +8645,115 @@ const TalkChat = () => {
                                 />
                               ) : null}
                             </div>
+                            {file === '' ? (
+                              <div
+                                className="upload-click positionRelative"
+                                ref={uploadFileRef}
+                              >
+                                <span className="custom-upload-input">
+                                  <img
+                                    src={UploadChatIcon}
+                                    onClick={showUploadOptions}
+                                  />
+                                  {uploadOptions === true ? (
+                                    <div className="upload-options">
+                                      <div className="file-upload-options">
+                                        <label
+                                          className="image-upload"
+                                          htmlFor="document-upload"
+                                        >
+                                          <img src={UploadContact} alt="" />
+                                        </label>
+                                        <input
+                                          id="document-upload"
+                                          type="file"
+                                          onChange={(event) =>
+                                            handleFileUpload(event, 'document')
+                                          }
+                                          onClick={(event) => {
+                                            event.target.value = null
+                                          }}
+                                          maxfilesize={10000000}
+                                          accept=".doc, .docx, .xls, .xlsx,.pdf,.png,.txt,.jpg, .jpeg, .gif"
+                                          style={{ display: 'none' }}
+                                        />
+                                      </div>
+                                      <div className="file-upload-options">
+                                        <label
+                                          className="image-upload"
+                                          htmlFor="document-upload"
+                                        >
+                                          <img src={UploadDocument} alt="" />
+                                        </label>
+                                        <input
+                                          id="document-upload"
+                                          type="file"
+                                          onChange={(event) =>
+                                            handleFileUpload(event, 'document')
+                                          }
+                                          onClick={(event) => {
+                                            event.target.value = null
+                                          }}
+                                          maxfilesize={10000000}
+                                          accept=".doc, .docx, .xls, .xlsx,.pdf,.png,.txt,.jpg, .jpeg, .gif"
+                                          style={{ display: 'none' }}
+                                        />
+                                      </div>
+                                      <div className="file-upload-options">
+                                        <label
+                                          className="image-upload"
+                                          htmlFor="sticker-upload"
+                                        >
+                                          <img src={UploadSticker} alt="" />
+                                        </label>
+                                        <input
+                                          id="sticker-upload"
+                                          type="file"
+                                          onChange={(event) =>
+                                            handleFileUpload(event, 'document')
+                                          }
+                                          onClick={(event) => {
+                                            event.target.value = null
+                                          }}
+                                          maxfilesize={10000000}
+                                          accept=".doc, .docx, .xls, .xlsx,.pdf,.png,.txt,.jpg, .jpeg, .gif"
+                                          style={{ display: 'none' }}
+                                        />
+                                      </div>
+                                      <div className="file-upload-options">
+                                        <label
+                                          className="image-upload"
+                                          htmlFor="image-upload"
+                                        >
+                                          <img src={UploadPicVid} alt="" />
+                                        </label>
+                                        <input
+                                          id="image-upload"
+                                          type="file"
+                                          onChange={(event) =>
+                                            handleFileUpload(event, 'image')
+                                          }
+                                          onClick={(event) => {
+                                            event.target.value = null
+                                          }}
+                                          maxfilesize={10000000}
+                                          accept="image/*"
+                                          style={{ display: 'none' }}
+                                        />
+                                      </div>
+                                    </div>
+                                  ) : null}
+                                </span>
+                              </div>
+                            ) : null}
+
                             <div
-                              className="upload-click positionRelative"
-                              ref={uploadFileRef}
+                              className={
+                                file === ''
+                                  ? 'chat-input-field'
+                                  : 'chat-input-field no-upload-options'
+                              }
                             >
-                              <span className="custom-upload-input">
-                                <img
-                                  src={UploadChatIcon}
-                                  onClick={showUploadOptions}
-                                />
-                                {uploadOptions === true ? (
-                                  <div className="upload-options">
-                                    <CustomUploadChat
-                                      change={fileUploadTalk}
-                                      onClick={(event) => {
-                                        event.target.value = null
-                                      }}
-                                      className="UploadFileButton"
-                                      uploadIcon={UploadContact}
-                                    />
-                                    <CustomUploadChat
-                                      change={fileUploadTalk}
-                                      onClick={(event) => {
-                                        event.target.value = null
-                                      }}
-                                      className="UploadFileButton"
-                                      uploadIcon={UploadDocument}
-                                    />
-                                    <CustomUploadChat
-                                      change={fileUploadTalk}
-                                      onClick={(event) => {
-                                        event.target.value = null
-                                      }}
-                                      className="UploadFileButton"
-                                      uploadIcon={UploadSticker}
-                                    />
-                                    <CustomUploadChat
-                                      change={fileUploadTalk}
-                                      onClick={(event) => {
-                                        event.target.value = null
-                                      }}
-                                      className="UploadFileButton"
-                                      uploadIcon={UploadPicVid}
-                                    />
-                                  </div>
-                                ) : null}
-                              </span>
-                            </div>
-                            <UploadProgressBar />
-                            <div className="chat-input-field">
                               <Form onSubmit={sendChat}>
                                 <Form.Control
                                   ref={inputRef}
@@ -8215,6 +8768,10 @@ const TalkChat = () => {
                                     chatClickData.isBlock === 1 ? true : false
                                   }
                                   autoFocus={inputChat}
+                                  style={{ resize: 'none', height: '100%' }} // Update the style of the input field
+                                  as="textarea" // Use textarea instead of input for multi-line input
+                                  rows={1} // Start with a single row
+                                  onInput={autoResize} // Call autoResize function when input changes
                                 />
                               </Form>
                             </div>
@@ -8833,7 +9390,9 @@ const TalkChat = () => {
           </div>
         ) : null}
       </div>
-
+      <div>
+        <PrintPage filesUrlTalk={filesUrlTalk} talkStateData={talkStateData} />
+      </div>
       <NotificationBar
         iconName={<img src={SecurityIcon} />}
         notificationMessage={notification.message}
