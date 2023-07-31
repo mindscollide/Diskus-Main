@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import {
-  Modal,
-  Button,
-  Checkbox,
-  CustomRadio2,
-} from "../../../../components/elements";
+import { Modal, Button, Checkbox } from "../../../../components/elements";
 import AlarmClock from "../../../../assets/images/AlarmOptions.svg";
 import styles from "./ViewPollProgress.module.css";
 import profile from "../../../../assets/images/profile_polls.svg";
@@ -14,7 +9,6 @@ import { Progress } from "antd";
 import { useTranslation } from "react-i18next";
 import {
   setviewpollProgressModal,
-  viewVotesApi,
   viewVotesDetailsModal,
 } from "../../../../store/actions/Polls_actions";
 import { useDispatch, useSelector } from "react-redux";
@@ -24,18 +18,17 @@ import CustomRadio from "../../../../components/elements/radio/Radio";
 
 const ViewPollProgress = () => {
   const dispatch = useDispatch();
-  const { t } = useTranslation();
   const navigate = useNavigate();
   const { PollsReducer } = useSelector((state) => state);
   console.log(PollsReducer, "PollsReducerPollsReducerPollsReducerPollsReducer");
   const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
-    PollID: 0,
     PollTitle: "",
     Date: "",
     AllowMultipleAnswers: false,
   });
   const [checkboxesState, setCheckboxesState] = useState({
-    checkedYes: true,
+    checkedYes: false,
+    checkedNO: false,
   });
   const [viewpollMembers, setViewPollmembers] = useState([]);
   const [pollsOption, setPollsOption] = useState([]);
@@ -56,7 +49,6 @@ const ViewPollProgress = () => {
           memberpollsprogressView.push(data);
         });
       }
-
       if (pollSelectedAnswers.length > 0) {
         pollOptions.map((newdata, index) => {
           let find = pollSelectedAnswers.find(
@@ -102,24 +94,33 @@ const ViewPollProgress = () => {
         PollTitle: pollDetails.pollTitle,
         Date: pollDetails.dueDate,
         AllowMultipleAnswers: pollDetails.allowMultipleAnswers,
-        PollID: pollDetails.pollID,
       });
     }
   }, [PollsReducer.Allpolls]);
-  console.log("CustomRadio2", pollsOption);
+
+  console.log(pollsOption, "pollsOptionpollsOptionpollsOptionpollsOption");
+
+  const HandleCheckBoxYes = () => {
+    setCheckboxesState({
+      ...checkboxesState,
+      checkedYes: !checkboxesState.checkedYes,
+    });
+    console.log(checkboxesState.checkedYes, "checkedYescheckedYescheckedYes");
+  };
+
   const changeDateStartHandler2 = (date) => {
     let newDate = moment(date).format("DD MMMM YYYY");
 
     return newDate;
   };
 
-  const handleViewVotes = () => {
-    let data = {
-      PollID: viewProgressPollsDetails.PollID,
-    };
-    dispatch(viewVotesApi(navigate, data, t));
+  const HandleCheckBoxNo = () => {
+    setCheckboxesState({
+      ...checkboxesState,
+      checkedNO: !checkboxesState.checkedNO,
+    });
   };
-
+  const { t } = useTranslation();
   return (
     <Container>
       <Modal
@@ -213,7 +214,7 @@ const ViewPollProgress = () => {
                   </Col>
                 </Row>
                 {pollsOption.length > 4 ? (
-                  <Row className="mt-2">
+                  <Row>
                     <Col
                       lg={12}
                       md={12}
@@ -260,19 +261,16 @@ const ViewPollProgress = () => {
                                       <Checkbox
                                         disabled={true}
                                         checked={data.voted}
+                                        onChange={HandleCheckBoxYes}
                                         classNameCheckBoxP="d-none"
                                       />
-                                    ) : data.voted ? (
-                                      <CustomRadio2
-                                        disabled={true}
-                                        value={[data.pollAnswerID]}
-                                        Optios={data.pollAnswerID}
-                                      />
                                     ) : (
-                                      <CustomRadio2
-                                        disabled={true}
-                                        value={[]}
-                                        Optios={data.pollAnswerID}
+                                      <CustomRadio
+                                        checked={data.voted}
+                                        change={HandleCheckBoxYes}
+                                        className={
+                                          styles["Custom_radio_button"]
+                                        }
                                       />
                                     )}
                                   </Col>
@@ -298,12 +296,10 @@ const ViewPollProgress = () => {
                     </Col>
                   </Row>
                 ) : (
-                  <Row className="mt-2">
+                  <Row>
                     <Col lg={12} md={12} sm={12}>
                       {pollsOption.length > 0
                         ? pollsOption.map((data, index) => {
-                            console.log("CustomRadio2", data);
-
                             return (
                               <>
                                 <Row>
@@ -342,19 +338,16 @@ const ViewPollProgress = () => {
                                       <Checkbox
                                         disabled={true}
                                         checked={data.voted}
+                                        onChange={HandleCheckBoxYes}
                                         classNameCheckBoxP="d-none"
                                       />
-                                    ) : data.voted ? (
-                                      <CustomRadio2
-                                        disabled={true}
-                                        value={[data.pollAnswerID]}
-                                        Optios={data.pollAnswerID}
-                                      />
                                     ) : (
-                                      <CustomRadio2
-                                        disabled={true}
-                                        value={[]}
-                                        Optios={data.pollAnswerID}
+                                      <CustomRadio
+                                        checked={data.voted}
+                                        change={HandleCheckBoxYes}
+                                        className={
+                                          styles["Custom_radio_button"]
+                                        }
                                       />
                                     )}
                                   </Col>
@@ -468,7 +461,9 @@ const ViewPollProgress = () => {
                     <Button
                       text={t("View-votes")}
                       className={styles["View_votes_btn"]}
-                      onClick={handleViewVotes}
+                      onClick={() => {
+                        dispatch(viewVotesDetailsModal(true));
+                      }}
                     />
                   </Col>
                 </Row>

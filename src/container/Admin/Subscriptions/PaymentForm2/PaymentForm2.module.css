@@ -1,4 +1,4 @@
-.paymentformBackground {
+/* .paymentformBackground {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   min-width: 100%;
   min-height: 100vh;
@@ -37,13 +37,17 @@ body[dir="rtl"] .bg_roundimage img {
   width: 600px;
   height: 600px;
   transform: rotate(40deg);
+} */
+
+.paymentbox {
+  border: 1px solid #e1e1e1 !important;
 }
 
 .paymentform_heading {
   text-align: center;
   font-size: calc(36px - 20%);
   margin: 0 auto;
-  color: #fff;
+  color: #6172d6 !important;
   /* font-weight: 600; */
   letter-spacing: 1px;
 }
@@ -237,7 +241,7 @@ body[dir="rtl"] .Arabicstyles {
 }
 
 .paymentdetailbox {
-  margin: 15px 0 10px 0;
+  margin: 15px auto 10px auto;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
   padding: 10px;
   color: #fff;
@@ -253,6 +257,7 @@ body[dir="rtl"] .paymentdetailbox {
   /* font-weight: 900; */
   /* margin-left: 5px; */
   color: #6172d6;
+  text-align: center;
 }
 
 body[dir="rtl"] .Ordersummaryheading {
@@ -520,8 +525,8 @@ body[dir="rtl"] .languageSelector {
 }
 
 .PaymentFormSubmitPayment {
-  width: calc(100% - 250px);
-  margin: 50px 0;
+  width: auto;
+  margin: 30px 0;
   padding: 8px 30px !important;
   font-size: calc(16px -20%);
   font-family: "MontserratSemiBold-600" !important;

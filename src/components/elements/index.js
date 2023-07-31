@@ -44,7 +44,6 @@ import Subscriptionwarninglimit from "./subscriptionwarninglimit/subscriptionwar
 import NotificationBar from "./notification-bar/Notification-bar";
 import UploadTextField from "./Dragger/UploadFile";
 import UploadProgressBar from "./upload_progressbar/Upload_Progressbar";
-import CustomRadio2 from "./radio/Radio2";
 
 export {
   CustomOnboardModal,
@@ -95,5 +94,4 @@ export {
   Subscriptionwarninglimit,
   UploadTextField,
   UploadProgressBar,
-  CustomRadio2,
 };

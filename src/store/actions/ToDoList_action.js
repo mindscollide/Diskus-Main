@@ -190,6 +190,8 @@ const setTodoStatusDataFormSocket = (response) => {
 
 const CreateToDoList = (navigate, object, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
+  let meetingPage = JSON.parse(localStorage.getItem("todoListPage"))
+  let meetingRow = JSON.parse(localStorage.getItem("todoListRow"))
   //Data For ToDoList
   //Get Current User ID
   let createrID = localStorage.getItem('userID')
@@ -227,7 +229,7 @@ const CreateToDoList = (navigate, object, t) => {
               await dispatch(
                 ShowNotification(t('The-record-has-been-saved-successfully')),
               )
-              await dispatch(SearchTodoListApi(navigate, dataForList, t))
+              await dispatch(SearchTodoListApi(navigate, dataForList, meetingPage, meetingRow, t))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -685,12 +687,12 @@ const searchTodoList_fail = (message) => {
 const SearchTodoListApi = (navigate, searchData, page, size, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let createrID = localStorage.getItem('userID');
-  let meetingPage = localStorage.getItem("todoListPage")
-  let meetingRow = localStorage.getItem("todoListRow")
+  let meetingPage = JSON.parse(localStorage.getItem("todoListPage"))
+  let meetingRow = JSON.parse(localStorage.getItem("todoListRow"))
   let Data = {
-    Date: searchData?.Date,
-    Title: searchData?.Title,
-    AssignedToName: searchData?.AssignedToName,
+    Date: searchData !== null && searchData !== undefined ? searchData?.Date : "",
+    Title: searchData !== null && searchData !== undefined ? searchData?.Title : "",
+    AssignedToName: searchData !== null && searchData !== undefined ? searchData?.AssignedToName : "",
     UserID: JSON.parse(createrID),
     PageNumber: page !== null && page !== undefined ? JSON.parse(page) : 1,
     Length: size !== null && size !== undefined ? JSON.parse(size) : 50

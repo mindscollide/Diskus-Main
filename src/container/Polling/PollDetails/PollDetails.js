@@ -9,65 +9,57 @@ import { Progress } from "antd";
 import { style } from "@material-ui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  getPollsByPollIdApi,
-  setviewpollProgressModal,
-  viewVotesApi,
-  viewVotesDetailsModal,
-} from "../../../store/actions/Polls_actions";
-const PollDetails = () => {
+import { viewVotesDetailsModal } from "../../../store/actions/Polls_actions";
+const PollDetails = ({ showpollDetails, setShowpollDetails }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { PollsReducer } = useSelector((state) => state);
-  const { t } = useTranslation();
-  const [pollId, setPollId] = useState(0);
-  let userID = localStorage.getItem("userID");
-  const [pollTitle, setPollTitle] = useState("");
-  const [pollAttendiesOpptionsVise, setPollAttendiesOpptionsVise] = useState(
-    []
+  console.log(
+    PollsReducer.Allpolls,
+    "PollsReducerPollsReducerPollsReducerPollsReducer"
   );
-  const [votePollDetailsOptions, setVotePollDetailsOptions] = useState([]);
-  const [votepollParticipants, setVotePollParticipants] = useState([]);
 
+  const [yesParticipants, setyesParticipants] = useState([]);
   useEffect(() => {
-    let vieVotePollDetails = PollsReducer.viewVotes;
-    let pollOptions = vieVotePollDetails.pollOptions;
-    let pollAttendies = vieVotePollDetails.pollParticipants;
-    let Options = [];
-    console.log("handleClosed", vieVotePollDetails);
-
-    if (vieVotePollDetails != undefined && vieVotePollDetails != null) {
-      if (Object.keys(vieVotePollDetails).length > 0) {
-        // for poll ID
-        setPollId(vieVotePollDetails.pollDetails.pollID);
-
-        // for poll Title
-        setPollTitle(vieVotePollDetails.pollDetails.pollTitle);
-
-        // for options
-        if (Object.keys(pollOptions).length > 0) {
-          pollOptions.map((data, index) => {
-            Options.push(data);
-          });
-          setVotePollDetailsOptions(Options);
-        }
-
-        if (Object.keys(pollAttendies).length > 0) {
-          setPollAttendiesOpptionsVise(pollAttendies);
-        }
+    if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
+      let users = [];
+      if (Object.keys(PollsReducer.Allpolls.poll.pollParticipants).length > 0) {
+        PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
+          console.log(data, "datadatadatadatadatadata");
+          users.push(data.userName);
+        });
       }
+      setyesParticipants(users);
     }
-  }, [PollsReducer.viewVotes]);
+  }, [PollsReducer.Allpolls]);
 
-  const handleClosed = async () => {
-    let data = {
-      PollID: pollId,
-      UserID: parseInt(userID),
-    };
-    dispatch(getPollsByPollIdApi(navigate, data, 3, t));
-    // await dispatch(setviewpollProgressModal(true));
-  };
-
+  const [noParticipants, setNoParticipants] = useState([
+    {
+      id: 1,
+      name: "Saad Fudda No",
+    },
+    {
+      id: 2,
+      name: "Saif ul islam No",
+    },
+    {
+      id: 3,
+      name: "Owais Wajid kha No",
+    },
+    {
+      id: 4,
+      name: "Huzeifa Jahangir No",
+    },
+    {
+      id: 5,
+      name: "Ali mamdani No",
+    },
+    {
+      id: 6,
+      name: "Syed Ali raza No",
+    },
+  ]);
+  const { t } = useTranslation();
   return (
     <Container>
       <Modal
@@ -123,10 +115,11 @@ const PollDetails = () => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex align-items-center mt-2"
+                        className="d-flex align-items-center"
                       >
                         <span className={styles["ViewTitleTOShowOnProgress"]}>
-                          {pollTitle}
+                          Did you receive the material In a sufficient time for
+                          you to prepare for the board meeting, Including agenda
                         </span>
                       </Col>
                     </Row>
@@ -139,33 +132,111 @@ const PollDetails = () => {
                     sm={12}
                     className={styles["Scroller_Options"]}
                   >
-                    {votePollDetailsOptions.map((data, index) => {
-                      return (
-                        <>
-                          <Row className="mt-3">
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className="m-0 p-0 d-flex gap-5"
-                            >
-                              <span className={styles["no-Of-Yes"]}>
-                                {data.answer} - {data.votePercentage}%
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12} className="m-0 p-0">
-                              <Progress
-                                percent={data.votePercentage}
-                                className="pollsDetailsProgress"
-                                status="active"
-                              />
-                            </Col>
-                          </Row>
-                        </>
-                      );
-                    })}
+                    <Row className="mt-3">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="m-0 p-0 d-flex gap-5"
+                      >
+                        <span className={styles["no-Of-Yes"]}>
+                          Option 1 - 20%
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <Progress
+                          percent={20}
+                          className="pollsDetailsProgress"
+                          status="active"
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="m-0 p-0 d-flex gap-5"
+                      >
+                        <span className={styles["no-Of-Yes"]}>
+                          Option 2 - 30%
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <Progress
+                          percent={30}
+                          className="pollsDetailsProgress"
+                          status="active"
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="m-0 p-0 d-flex gap-5"
+                      >
+                        <span className={styles["no-Of-Yes"]}>
+                          Option 3 - 10%
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <Progress
+                          percent={10}
+                          className="pollsDetailsProgress"
+                          status="active"
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="m-0 p-0 d-flex gap-5"
+                      >
+                        <span className={styles["no-Of-Yes"]}>
+                          Option 4 - 20%
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <Progress
+                          percent={20}
+                          className="pollsDetailsProgress"
+                          status="active"
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="m-0 p-0 d-flex gap-5"
+                      >
+                        <span className={styles["no-Of-Yes"]}>
+                          Option 5 - 20%
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <Progress
+                          percent={20}
+                          className="pollsDetailsProgress"
+                          status="active"
+                        />
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
 
@@ -183,71 +254,83 @@ const PollDetails = () => {
                     sm={12}
                     className={styles["Scroller_participants"]}
                   >
-                    {pollAttendiesOpptionsVise.map((data, index) => {
-                      return (
-                        <>
-                          <Row className="mt-2">
-                            <Col lg={12} md={12} sm={12} className="m-0 p-0">
-                              <span className={styles["Yes_voters"]}>
-                                {data.answer +
-                                  " " +
-                                  "(" +
-                                  data.totalVotes +
-                                  ")"}
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            {Object.keys(data.pollParticipants).length > 0
-                              ? data.pollParticipants.map(
-                                  (innerData, index) => {
-                                    return (
-                                      <>
-                                        <Col
-                                          lg={6}
-                                          md={6}
-                                          sm={12}
-                                          className="mt-2"
-                                        >
-                                          <Row>
-                                            <Col
-                                              lg={11}
-                                              md={11}
-                                              sm={12}
-                                              className="m-0 p-0"
-                                            >
-                                              <Row
-                                                className={
-                                                  styles["Card_border2"]
-                                                }
-                                              >
-                                                <Col sm={12} md={12} lg={12}>
-                                                  <img
-                                                    src={profile}
-                                                    width="33px"
-                                                    height="33px"
-                                                  />
-                                                  <span
-                                                    className={
-                                                      styles["Name_cards"]
-                                                    }
-                                                  >
-                                                    {innerData.userName}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                      </>
-                                    );
-                                  }
-                                )
-                              : null}
-                          </Row>
-                        </>
-                      );
-                    })}
+                    <Row>
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0 mt-2">
+                        <span className={styles["Yes_voters"]}>{t("Yes")}</span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <Row>
+                          {yesParticipants.map((data, index) => {
+                            console.log(data, "datadatadatadata");
+                            return (
+                              <Col lg={6} md={6} sm={12} className="mt-2">
+                                <Row>
+                                  <Col
+                                    lg={11}
+                                    md={11}
+                                    sm={12}
+                                    className="m-0 p-0"
+                                  >
+                                    <Row className={styles["Card_border2"]}>
+                                      <Col sm={12} md={12} lg={12}>
+                                        <img
+                                          src={profile}
+                                          width="33px"
+                                          height="33px"
+                                        />
+                                        <span className={styles["Name_cards"]}>
+                                          {data.userName}
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            );
+                          })}
+                        </Row>
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                        <span className={styles["Yes_voters"]}>{t("No")}</span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <Row>
+                          {noParticipants.map((data, index) => {
+                            return (
+                              <Col lg={6} md={6} sm={12} className="mt-2">
+                                <Row>
+                                  <Col
+                                    lg={11}
+                                    md={11}
+                                    sm={12}
+                                    className="m-0 p-0"
+                                  >
+                                    <Row className={styles["Card_border2"]}>
+                                      <Col sm={12} md={12} lg={12}>
+                                        <img
+                                          src={profile}
+                                          width="33px"
+                                          height="33px"
+                                        />
+                                        <span className={styles["Name_cards"]}>
+                                          {data.name}
+                                        </span>
+                                      </Col>
+                                    </Row>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            );
+                          })}
+                        </Row>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               </Col>
@@ -273,7 +356,9 @@ const PollDetails = () => {
                     <Button
                       text={t("Close")}
                       className={styles["Class_Close"]}
-                      onClick={() => handleClosed()}
+                      onClick={() => {
+                        dispatch(viewVotesDetailsModal(false));
+                      }}
                     />
                   </Col>
                 </Row>
