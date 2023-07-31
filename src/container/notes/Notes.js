@@ -45,6 +45,7 @@ import {
   _justShowDay,
 } from "../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
+import PaginationElement from "../../components/elements/pagination/Pagination";
 
 const Notes = () => {
   const [editFlag, setEditFlag] = useState(false);
@@ -249,13 +250,13 @@ const Notes = () => {
     <>
       <Col className={styles["notescontainer"]}>
         <Row className="mt-3">
-          <Col md={2} sm={2} lg={2}>
+          <Col md={1} sm={12} lg={1}>
             <h1 className={styles["notes-heading-size"]}>{t("Notes")}</h1>
           </Col>
           <Col
-            lg={10}
-            md={10}
-            sm={10}
+            lg={11}
+            md={11}
+            sm={12}
             className="d-flex justify-content-start mt-0 "
           >
             <Button
@@ -492,7 +493,11 @@ const Notes = () => {
                                           size={78}
                                           {...defaultStyles.gif}
                                         />
-                                      ) : null}
+                                      ) : <FileIcon
+                                        extension={ext}
+                                        size={78}
+                                        {...defaultStyles.ext}
+                                      />}
 
                                       <p
                                         className={
@@ -530,6 +535,17 @@ const Notes = () => {
             )}
           </Col>
           <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
+            {/* <PaginationElement
+              current={notesPage !== null ? notesPage : 1}
+              showSizeChanger={true}
+              total={totalRecords}
+              pageSizeOptions={["30", "50", "100", "200"]}
+              pageSize={notesPagesize !== null ? notesPagesize : 50}
+              onChange={handelChangeNotesPagination}
+              locale={{
+                items_per_page: t('items_per_page'),
+                page: t('page')
+              }} /> */}
             <Pagination current={notesPage !== null ? notesPage : 1} locale={{
               items_per_page: t('items_per_page'),
               page: t('page')

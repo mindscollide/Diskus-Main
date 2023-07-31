@@ -14,10 +14,11 @@ import {
 import SilverPackage from "./../../../../assets/images/Silver-Package.png";
 import GoldPackage from "./../../../../assets/images/Gold-Package.png";
 import PremiumPackage from "./../../../../assets/images/Premium-Package.png";
+import { getSubscriptionUpgradeAmountInfoApi } from "../../../../store/actions/Admin_PackageDetail";
 
 const PackageUpgradeDetail = () => {
   const Data = useSelector((state) => state);
-  const { GetSubscriptionPackage } = Data;
+  const { GetSubscriptionPackage, AuthReducer } = Data;
   console.log("GetSubscriptionPackage", GetSubscriptionPackage);
   const [open, setOpen] = useState({
     open: false,
@@ -26,6 +27,7 @@ const PackageUpgradeDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
+  let tenureId = JSON.parse(localStorage.getItem("TenureOfSuscriptionID"))
   let packageColorPath1 = "";
   let packageColorPath2 = "";
   console.log(
@@ -37,7 +39,7 @@ const PackageUpgradeDetail = () => {
   console.log(state, "statestatestate");
   //for Translation
   const upgradePackage = (id) => {
-    dispatch(updateSubscribePackage(navigate, id, t));
+    dispatch(getSubscriptionUpgradeAmountInfoApi(navigate, id, tenureId, t));
   };
   const { t } = useTranslation();
 
@@ -52,7 +54,7 @@ const PackageUpgradeDetail = () => {
     if (
       GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== "" &&
       GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !==
-        t("Organization-subscription-update")
+      t("Organization-subscription-update")
     ) {
       setOpen({
         ...open,
@@ -72,7 +74,11 @@ const PackageUpgradeDetail = () => {
       dispatch(cleareMessage());
     }
   }, [GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage]);
+  useEffect(() => {
+    if (AuthReducer.ResponseMessage !== "" && AuthReducer.ResponseMessage !== t("Data-available")) {
 
+    }
+  }, [AuthReducer.ResponseMessage])
   return (
     <>
       <Container className="py-4">
@@ -136,12 +142,13 @@ const PackageUpgradeDetail = () => {
                     {state.PackageTitle}
                   </h3>
                   <h4 className={styles["packageheading_amount"]}>
-                    ${state.PackageAmount}/
+                    ${tenureId !== null && tenureId !== undefined && tenureId === 1 ? state.FirstYearDiscountedPrice : state.PackageAmount}/
                     <span className="fs-6">{t("Month")}</span>
                   </h4>
-                  <p className={styles["packageheading_desciprtion"]}>
+                  {tenureId !== null && tenureId !== undefined && tenureId === 1 ? <p className={styles["packageheading_desciprtion"]}>
                     {t("Annually-subscription")}
-                  </p>
+                  </p> : null}
+
                   <div className={styles["packageDetails"]}>
                     <p>{t("Get-more-users")}</p>
                     <p className="text-center">
@@ -163,9 +170,10 @@ const PackageUpgradeDetail = () => {
                     >
                       <h4>{t("Included-features")}</h4>
                       <p>
-                        Lorem Ipsum is simply dummy text of the printing and
+                        {t("Get-more-features-by-upgrading-your-plan")}
+                        {/* Lorem Ipsum is simply dummy text of the printing and
                         typesetting industry. Lorem Ipsum has been the
-                        industry's standard dummy text ever since the 1500s
+                        industry's standard dummy text ever since the 1500s */}
                       </p>
                       <ul>
                         <li>{t("Get-more-users")}</li>
@@ -206,7 +214,7 @@ const PackageUpgradeDetail = () => {
           </Col>
         </Row>
       </Container>
-      {Data.GetSubscriptionPackage.Loading ? <Loader /> : null}
+      {GetSubscriptionPackage.Loading || AuthReducer.Loading ? <Loader /> : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );
