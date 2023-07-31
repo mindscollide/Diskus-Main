@@ -286,7 +286,6 @@ const PollsReducer = (state = initialState, action) => {
     case actions.DELETE_POLL_SUCCESS: {
       return {
         ...state,
-        Loading: false,
         deletedPolls: action.response,
         ResponseMessage: action.message,
       };

@@ -8,7 +8,7 @@ import {
   Loader,
   Notification,
 } from "../../components/elements";
-import { Tooltip } from "antd";
+import { Pagination, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
 import searchicon from "../../assets/images/searchicon.svg";
 import CreatePolling from "./CreatePolling/CreatePollingModal";
@@ -42,6 +42,7 @@ import {
   viewVotesDetailsModal,
 } from "../../store/actions/Polls_actions";
 import { useNavigate } from "react-router-dom";
+
 import {
   _justShowDateformatBilling,
   resolutionResultTable,
@@ -72,18 +73,36 @@ const Polling = () => {
   });
   let organizationID = localStorage.getItem("organizationID");
   let userID = localStorage.getItem("userID");
+  const [isTotalRecords, setTotalRecords] = useState(0);
 
   const [searchpoll, setSearchpoll] = useState(false);
   const [idForDelete, setIdForDelete] = useState(0);
 
+  const currentPage = JSON.parse(localStorage.getItem("pollingPage"));
+  const currentPageSize = localStorage.getItem("pollingPageSize");
   useEffect(() => {
-    let data = {
-      UserID: parseInt(userID),
-      OrganizationID: parseInt(organizationID),
-      CreatorName: searchBoxState.searchByName,
-      PageNumber: 1,
-      Length: 50,
-    };
+    if (currentPage !== null && currentPageSize !== null) {
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        CreatorName: searchBoxState.searchByName,
+        PageNumber: JSON.parse(currentPage),
+        Length: JSON.parse(currentPageSize),
+      };
+      dispatch(searchPollsApi(navigate, t, data));
+    } else {
+      localStorage.setItem("pollingPage", 1);
+      localStorage.setItem("pollingPageSize", 50);
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        CreatorName: searchBoxState.searchByName,
+        PageNumber: 1,
+        Length: 50,
+      };
+      dispatch(searchPollsApi(navigate, t, data));
+    }
+
     dispatch(setEditpollModal(false));
     dispatch(setCreatePollModal(false));
     dispatch(setviewpollProgressModal(false));
@@ -91,7 +110,11 @@ const Polling = () => {
     dispatch(viewVotesDetailsModal(false));
     dispatch(setviewpollModal(false));
     dispatch(setVotePollModal(false));
-    dispatch(searchPollsApi(navigate, t, data));
+
+    return () => {
+      localStorage.removeItem("pollingPage");
+      localStorage.removeItem("pollingPageSize");
+    };
   }, []);
 
   const handleEditpollModal = (record) => {
@@ -184,7 +207,7 @@ const Polling = () => {
       title: t("Status"),
       dataIndex: "status",
       key: "status",
-      width: "62px",
+      width: "78px",
       filters: [
         {
           text: t("Published"),
@@ -403,6 +426,18 @@ const Polling = () => {
     setSearchpoll(true);
   };
 
+  const handleChangePagination = (current, pageSize) => {
+    console.log(current, pageSize, "handleChangePagination");
+    let data = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(organizationID),
+      CreatorName: searchBoxState.searchByName,
+      PageNumber: current,
+      Length: pageSize,
+    };
+    dispatch(searchPollsApi(navigate, t, data));
+  };
+
   useEffect(() => {
     if (currentLanguage === "ar") {
       moment.locale(currentLanguage);
@@ -420,6 +455,7 @@ const Polling = () => {
         PollsReducer.SearchPolls !== undefined
       ) {
         if (PollsReducer.SearchPolls.polls.length > 0) {
+          setTotalRecords(PollsReducer.SearchPolls.totalRecords);
           setRows(PollsReducer.SearchPolls.polls);
         } else {
           setRows([]);
@@ -587,7 +623,29 @@ const Polling = () => {
         </Row>
         <Row>
           <Col sm={12} md={12} lg={12}>
-            <Table column={PollTableColumns} rows={rows} />
+            <Table
+              column={PollTableColumns}
+              scroll={{ y: 350 }}
+              pagination={false}
+              rows={rows}
+            />
+            <Row>
+              <Col className="pagination-groups-table">
+                <Pagination
+                  pageSize={currentPageSize !== null ? currentPageSize : 50}
+                  showSizeChanger
+                  onChange={handleChangePagination}
+                  pageSizeOptions={["30", "50", "100", "200"]}
+                  current={currentPage !== null ? currentPage : 1}
+                  locale={{
+                    items_per_page: t("items_per_page"),
+                    page: t("page"),
+                  }}
+                  total={isTotalRecords}
+                  className={styles["PaginationStyle-polling"]}
+                />
+              </Col>
+            </Row>
           </Col>
         </Row>
       </section>

@@ -8,6 +8,7 @@ import {
   getPollByPollID,
   updatePolls,
   viewvotes,
+  deltePolls,
 } from "../../commen/apis/Api_config";
 import { pollApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -207,7 +208,7 @@ const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
     dispatch(deltePollsInit());
     let form = new FormData();
     form.append("RequestData", JSON.stringify(data));
-    form.append("RequestMethod", searcPollsRequestMethod.RequestMethod);
+    form.append("RequestMethod", deltePolls.RequestMethod);
     axios({
       method: "post",
       url: pollApi,
@@ -252,6 +253,7 @@ const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
                   "Polls_PollsServiceManager_UpdatePollStatusByPollId_02".toLowerCase()
                 )
             ) {
+              dispatch(setDeltePollModal(false));
               dispatch(deltePollsFailed(t("Poll Status Not Updated")));
             } else if (
               response.data.responseResult.responseMessage
