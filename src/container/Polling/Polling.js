@@ -232,6 +232,9 @@ const Polling = () => {
           } else if (record.voteStatus === "Voted") {
             return <Button className={styles["votedBtn"]} text={"Voted"} />;
           }
+          if (record.pollStatus.pollStatusId === 3) {
+            return "";
+          }
         } else {
           return "";
         }
