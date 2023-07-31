@@ -30,7 +30,6 @@ import {
   InputSearchFilter,
   Notification,
   MultiDatePicker,
-  InputDatePicker,
 } from "./../../../components/elements";
 import { useState } from "react";
 import ModalresolutionRemove from "../../../container/ModalresolutionRemove/ModalresolutionRemove";
@@ -56,9 +55,7 @@ import moment from "moment";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
 import TextFieldDateTime from "../input_field_date/Input_field";
-// import { DatePicker, TimePicker } from 'antd';
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
+import { DatePicker, TimePicker } from 'antd';
 
 const ScheduleNewResolution = ({
   newresolution,
@@ -71,7 +68,6 @@ const ScheduleNewResolution = ({
   const navigate = useNavigate();
   const [minDate, setMinDate] = useState("");
   console.log(minDate, "minDateminDateminDate");
-  const [selectedDate, setSelectedDate] = useState(null)
   useEffect(() => {
     const min_date = new Date();
     setMinDate(moment(min_date).format("YYYY-MM-DD"));
@@ -397,20 +393,20 @@ const ScheduleNewResolution = ({
           } else {
             setOpen({
               flag: true,
-              message: t("this-voter-already-exist"),
+              message: "this Voter already Exist",
             });
           }
         }
       } else {
         setOpen({
           flag: true,
-          message: t("this-Voter-already-exist"),
+          message: "this Voter already Exist",
         });
       }
     } else {
       setOpen({
         flag: true,
-        message: t("This-voter-is-already-exist-in-non-voter-list"),
+        message: "This Voter is already exist in non voter list",
       });
     }
 
@@ -788,7 +784,7 @@ const ScheduleNewResolution = ({
   useEffect(() => {
     if (
       ResolutionReducer.ResponseMessage !== "" &&
-      ResolutionReducer.ResponseMessage !== t("Data-available") && ResolutionReducer.ResponseMessage !== undefined && ResolutionReducer.ResponseMessage !== t("No-data-available")
+      ResolutionReducer.ResponseMessage !== t("Data-available") && ResolutionReducer.ResponseMessage !== undefined
     ) {
       setOpen({
         flag: true,
@@ -842,51 +838,6 @@ const ScheduleNewResolution = ({
     dispatch(getAllResolutionStatus(navigate, t));
     dispatch(allAssignessList(navigate, t));
   }, []);
-  const handleChangeDateSelection = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    console.log("handleChangeCiculationDate", name)
-    console.log("handleChangeCiculationDate", value)
-    if (name === "circulation") {
-      setCirculationDateTime({
-        ...circulationDateTime,
-        date: value,
-      });
-    } else if (name === "voting") {
-      setVotingDateTime({
-        ...votingDateTime,
-        date: value,
-      });
-    } else if (name === "decision") {
-      setDecisionDateTime({
-        ...decisionDateTime,
-        date: value,
-      });
-    }
-  };
-  const handleChangeTimeSelection = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    if (name === "circulation") {
-      setCirculationDateTime({
-        ...circulationDateTime,
-        time: value,
-      });
-    } else if (name === "voting") {
-      setVotingDateTime({
-        ...votingDateTime,
-        time: value,
-      });
-    } else if (name === "decision") {
-      setDecisionDateTime({
-        ...decisionDateTime,
-        time: value,
-      });
-    }
-  }
-  console.log("handleChangeCiculationDate decisionDateTime", decisionDateTime)
-  console.log("handleChangeCiculationDate votingDateTime", votingDateTime)
-  console.log("handleChangeCiculationDate circulationDateTime", circulationDateTime)
 
   return (
     <>
@@ -1053,24 +1004,24 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input  date_Picker FontArabicRegular "
                         >
-
-                          {/* <DatePicker
-                            selected={selectedDate}
-                            onChange={(date) => setSelectedDate(date)}
-                          /> */}
-                          {/* <InputDatePicker width={"100%"} height={"100%"} /> */}
+                          {/* <DatePicker disabledDate={disabledDate} style={{ width: "100%", height: "39px" }} onChange={(date) => {
+                            setCirculationDateTime({
+                              ...circulationDateTime,
+                              date: moment(date._d).format("YYYY-MM-DD"),
+                            });
+                          }} /> */}
                           <TextFieldDateTime
                             min={minDate}
                             labelClass="d-none"
-                            name={"circulation"}
                             applyClass={"search_voterInput"}
+                            onkeyDown={(e) => e.preventDefault()}
                             change={(e) => {
                               // e.preventDefault()
-                              handleChangeDateSelection(e)
-                              //  setCirculationDateTime({
-                              //   ...circulationDateTime,
-                              //   date: e.target.value,
-                              // });
+                              console.log(e.target.value, "DatePickerDatePickerDatePicker")
+                              setCirculationDateTime({
+                                ...circulationDateTime,
+                                date: e.target.value,
+                              });
                             }}
                           />
                           <Row>
@@ -1098,16 +1049,13 @@ const ScheduleNewResolution = ({
                           <TextField
                             type="time"
                             labelClass="d-none"
-                            name="circulation"
-                            onKeyDown={(e) => e.preventDefault()}
                             applyClass={"search_voterInput"}
                             change={(e) => {
-                              handleChangeTimeSelection(e)
-                              // e.preventDefault()
-                              // setCirculationDateTime({
-                              //   ...circulationDateTime,
-                              //   time: e.target.value,
-                              // });
+                              e.preventDefault()
+                              setCirculationDateTime({
+                                ...circulationDateTime,
+                                time: e.target.value,
+                              });
                             }}
                           />
                           <Row>
@@ -1152,12 +1100,14 @@ const ScheduleNewResolution = ({
                           }} /> */}
                           <TextFieldDateTime
                             min={minDate}
-                            name={"voting"}
                             applyClass={"search_voterInput"}
                             labelClass="d-none"
                             change={(e) => {
-                              handleChangeDateSelection(e)
-
+                              e.preventDefault()
+                              setVotingDateTime({
+                                ...votingDateTime,
+                                date: e.target.value,
+                              });
                             }}
                           />
                           <Row>
@@ -1191,15 +1141,12 @@ const ScheduleNewResolution = ({
                             type="time"
                             applyClass={"search_voterInput"}
                             labelClass="d-none"
-                            name="voting"
-                            onKeyDown={(e) => e.preventDefault()}
                             change={(e) => {
-                              handleChangeTimeSelection(e)
-                              // e.preventDefault()
-                              // setVotingDateTime({
-                              //   ...votingDateTime,
-                              //   time: e.target.value,
-                              // });
+                              e.preventDefault()
+                              setVotingDateTime({
+                                ...votingDateTime,
+                                time: e.target.value,
+                              });
                             }}
                           />
                           <Row>
@@ -1246,12 +1193,13 @@ const ScheduleNewResolution = ({
                             applyClass={"search_voterInput"}
                             min={minDate}
                             labelClass="d-none"
-                            name={"decision"}
                             change={(e) => {
-                              handleChangeDateSelection(e)
-
+                              e.preventDefault()
+                              setDecisionDateTime({
+                                ...decisionDateTime,
+                                date: e.target.value,
+                              });
                             }}
-
                           />
                           <Row>
                             <Col>
@@ -1283,16 +1231,13 @@ const ScheduleNewResolution = ({
                           <TextField
                             applyClass={"search_voterInput"}
                             type="time"
-                            onKeyDown={(e) => e.preventDefault()}
-                            name="decision"
                             labelClass="d-none"
                             change={(e) => {
-                              handleChangeTimeSelection(e)
-                              // e.preventDefault()
-                              // setDecisionDateTime({
-                              //   ...decisionDateTime,
-                              //   time: e.target.value,
-                              // });
+                              e.preventDefault()
+                              setDecisionDateTime({
+                                ...decisionDateTime,
+                                time: e.target.value,
+                              });
                             }}
                           />
                           <Row>
@@ -1779,11 +1724,7 @@ const ScheduleNewResolution = ({
                                                     size={78}
                                                     {...defaultStyles.gif}
                                                   />
-                                                ) : <FileIcon
-                                                  extension={ext}
-                                                  size={78}
-                                                  {...defaultStyles.ext}
-                                                />}
+                                                ) : null}
                                                 <span className="deleteBtn">
                                                   <img
                                                     src={

@@ -7,8 +7,6 @@
 .paragrapgh {
   font-size: 16px !important;
   color: #5a5a5a;
-  overflow: hidden;
-  word-wrap: break-word;
   font-family: "MontserratSemiBold";
 }
 

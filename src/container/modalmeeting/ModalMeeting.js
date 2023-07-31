@@ -861,7 +861,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       console.log('setMeetingAttendeesList error')
     }
   }, [meetingAttendeesList])
-  const [onclickFlag, setOnclickFlag] = useState(false)
+const [onclickFlag,setOnclickFlag]=useState(false)  
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
     setOnclickFlag(true)
@@ -1687,11 +1687,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                                                     size={78}
 
                                                     {...defaultStyles.gif}
-                                                  /> : <FileIcon
-                                                    extension={ext}
-                                                    size={78}
-                                                    {...defaultStyles.ext}
-                                                  />}
+                                                  /> : null}
                                 <span className="deleteBtn">
                                   <img
                                     src={deleteButtonCreateMeeting}
@@ -1903,7 +1899,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         'attendee-title-field inputSearchFilter m-0  CreateMeetingParticipant addattendee-textfield-width'
                       }
                     >
-
+                      
                       <InputSearchFilter
                         placeholder={t('Add-attendees')}
                         className="taskassignee"

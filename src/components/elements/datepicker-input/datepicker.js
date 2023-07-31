@@ -13,7 +13,6 @@ const InputDatePicker = ({
   value,
   DateRange,
   required,
-  height
 }) => {
   const { Text } = Typography;
   let dateFormat = "DD-MM-YYYY";
@@ -30,7 +29,6 @@ const InputDatePicker = ({
       <Box display="flex" alignItems="center">
         <Text>{label}</Text>
         <DatePicker
-          locale={"en"}
           disabledDate={DateRange ? disabledDate : false}
           disabled={disable}
           format={dateFormat}
@@ -38,7 +36,7 @@ const InputDatePicker = ({
           placeholder={placeholder}
           onChange={onChange}
           size={size}
-          style={{ width: `${width}`, marginLeft: "5px", height: `${height}` }}
+          style={{ width: `${width}`, marginLeft: "5px" }}
           required={required}
         />
       </Box>

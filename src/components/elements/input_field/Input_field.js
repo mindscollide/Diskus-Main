@@ -39,7 +39,6 @@ const TextField = ({
   onDoubleClick,
   onClick,
   height,
-  onKeyDown
 }) => {
   console.log("applyClassapplyClass", applyClass);
   return (
@@ -77,7 +76,6 @@ const TextField = ({
           required={required ? true : false}
           onDoubleClick={onDoubleClick}
           onClick={onClick}
-          onKeyDown={onKeyDown}
         />
         <FormControl.Feedback className={iconClassName} onClick={clickIcon}>
           {inputicon}

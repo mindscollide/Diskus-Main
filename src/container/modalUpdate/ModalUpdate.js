@@ -2392,11 +2392,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
                                                                 size={78}
 
                                                                 {...defaultStyles.gif}
-                                                              /> : <FileIcon
-                                                                extension={ext}
-                                                                size={78}
-                                                                {...defaultStyles.ext}
-                                                              />}
+                                                              /> : null}
                                             <span className="deleteBtn">
                                               <img
                                                 src={

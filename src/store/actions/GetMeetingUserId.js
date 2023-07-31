@@ -464,8 +464,8 @@ const searchUserMeeting = (navigate, searchData, t) => {
     Title: searchData?.Title !== "" ? searchData?.Title : "",
     HostName: searchData?.HostName !== "" ? searchData?.HostName : "",
     UserID: userID,
-    PageNumber: meetingPageCurrent !== null && meetingPageCurrent !== undefined ? meetingPageCurrent : 1,
-    Length: meetingpageRow !== null && meetingpageRow !== undefined ? meetingpageRow : 50
+    PageNumber: meetingPageCurrent,
+    Length: meetingpageRow
   }
   return (dispatch) => {
     dispatch(SearchMeeting_Init())

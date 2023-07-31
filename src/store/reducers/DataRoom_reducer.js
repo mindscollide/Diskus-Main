@@ -225,7 +225,7 @@ const DataRoomReducer = (state = initialState, action) => {
         case actions.FILEISEXIST_INIT: {
             return {
                 ...state,
-                Loading: true,
+                Loading: false,
 
             }
         }
@@ -248,7 +248,7 @@ const DataRoomReducer = (state = initialState, action) => {
         case actions.FOLDERISEXIST_INIT: {
             return {
                 ...state,
-                Loading: true
+                Loading: false
             }
         }
         case actions.FOLDERISEXIST_SUCCESS: {

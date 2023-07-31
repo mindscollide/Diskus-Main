@@ -368,7 +368,7 @@ const saveFolderApi = () => {
         } else {
         }
       })
-      .catch((error) => { });
+      .catch((error) => {});
   };
 };
 
@@ -487,7 +487,7 @@ const createFolder_fail = (message) => {
 };
 
 // Create Folder API
-const createFolderApi = (navigate, folder, t, setAddfolder, type, setIsExistFolder) => {
+const createFolderApi = (navigate, folder, t, setAddfolder) => {
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let token = JSON.parse(localStorage.getItem("token"));
@@ -497,8 +497,7 @@ const createFolderApi = (navigate, folder, t, setAddfolder, type, setIsExistFold
     UserID: parseInt(createrID),
     OrganizationID: parseInt(OrganizationID),
     ParentFolderID: folderID !== null ? folderID : 0,
-    Type: type !== null && type !== undefined ? type : 0
-  }
+  };
   return (dispatch) => {
     dispatch(createFolder_init());
     let form = new FormData();
@@ -554,8 +553,8 @@ const createFolderApi = (navigate, folder, t, setAddfolder, type, setIsExistFold
             ) {
               dispatch(createFolder_fail(t("Something-went-wrong")));
             }
-            setAddfolder(false)
-            setIsExistFolder(false)
+          } else {
+            dispatch(createFolder_fail(t("Something-went-wrong")));
           }
         } else {
           dispatch(createFolder_fail(t("Something-went-wrong")));
@@ -1106,7 +1105,7 @@ const FolderisExist_fail = (message) => {
 };
 
 // Folder Exist API
-const FolderisExist = (navigate, FolderName, t, setAddfolder, setIsExistFolder) => {
+const FolderisExist = (navigate, FolderName, t, setAddfolder) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let folderID = JSON.parse(localStorage.getItem("folderID"));
@@ -1127,32 +1126,57 @@ const FolderisExist = (navigate, FolderName, t, setAddfolder, setIsExistFolder) 
       headers: {
         _token: token,
       },
-    }).then(async (response) => {
-      if (response.data.responseCode === 417) {
-        await dispatch(RefreshToken(navigate, t))
-        dispatch(FolderisExist(navigate, FolderName, t, setAddfolder))
-      } else if (response.data.responseCode === 200) {
-        if (response.data.responseResult.isExecuted === true) {
-          if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_01".toLowerCase())) {
-            dispatch(FolderisExist_fail(t("Folder-already-exist")))
-            localStorage.setItem("folderName", FolderName)
-            setIsExistFolder(true)
-            setAddfolder(false)
-          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_02".toLowerCase())) {
-            await dispatch(FolderisExist_fail(t("Folder-name-is-required")))
-          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_03".toLowerCase())) {
-            await dispatch(FolderisExist_fail(t("No-folder-exist-against-this-name")))
-            dispatch(createFolderApi(navigate, FolderName, t, setAddfolder))
-          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_04".toLowerCase())) {
-            dispatch(FolderisExist_fail(t("Something-went-wrong")))
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(FolderisExist(navigate, FolderName, t, setAddfolder));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_FolderExist_01".toLowerCase()
+                )
+            ) {
+              dispatch(FolderisExist_fail(t("Folder-already-exist")));
+              setAddfolder(true);
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_FolderExist_02".toLowerCase()
+                )
+            ) {
+              await dispatch(FolderisExist_fail(t("Folder-name-is-required")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_FolderExist_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                FolderisExist_fail(t("No-folder-exist-against-this-name"))
+              );
+              dispatch(createFolderApi(navigate, FolderName, t, setAddfolder));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_FolderExist_04".toLowerCase()
+                )
+            ) {
+              dispatch(FolderisExist_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(FolderisExist_fail(t("Something-went-wrong")));
           }
         } else {
           dispatch(FolderisExist_fail(t("Something-went-wrong")));
         }
-      } else {
-        dispatch(FolderisExist_fail(t("Something-went-wrong")));
-      }
-    })
+      })
       .catch(() => {
         dispatch(FolderisExist_fail(t("Something-went-wrong")));
       });
@@ -1299,28 +1323,61 @@ const FolderisExistRename = (navigate, folderData, t, setRenamefolder) => {
       headers: {
         _token: token,
       },
-    }).then(async (response) => {
-      if (response.data.responseCode === 417) {
-        await dispatch(RefreshToken(navigate, t))
-        dispatch(FolderisExist(navigate, folderData, t, setRenamefolder))
-      } else if (response.data.responseCode === 200) {
-        if (response.data.responseResult.isExecuted === true) {
-          if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_01".toLowerCase())) {
-            dispatch(FolderisExistrename_fail(t("Folder-already-exist")))
-            // setAddfolder(true)
-          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_02".toLowerCase())) {
-            await dispatch(FolderisExistrename_fail(t("Folder-name-is-required")))
-          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_03".toLowerCase())) {
-            await dispatch(FolderisExistrename_fail(t("No-folder-exist-against-this-name")))
-            dispatch(renameFolderApi(navigate, folderData, t, setRenamefolder))
-          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_FolderExist_04".toLowerCase())) {
-            dispatch(FolderisExistrename_fail(t("Something-went-wrong")))
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(FolderisExist(navigate, folderData, t, setRenamefolder));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_FolderExist_01".toLowerCase()
+                )
+            ) {
+              dispatch(FolderisExistrename_fail(t("Folder-already-exist")));
+              // setAddfolder(true)
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_FolderExist_02".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                FolderisExistrename_fail(t("Folder-name-is-required"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_FolderExist_03".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                FolderisExistrename_fail(t("No-folder-exist-against-this-name"))
+              );
+              dispatch(
+                renameFolderApi(navigate, folderData, t, setRenamefolder)
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_FolderExist_04".toLowerCase()
+                )
+            ) {
+              dispatch(FolderisExistrename_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(FolderisExistrename_fail(t("Something-went-wrong")));
           }
         } else {
           dispatch(FolderisExistrename_fail(t("Something-went-wrong")));
         }
-      }
-    })
+      })
       .catch(() => {
         dispatch(FolderisExistrename_fail(t("Something-went-wrong")));
       });
@@ -1531,29 +1588,56 @@ const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
       headers: {
         _token: token,
       },
-    }).then(async (response) => {
-      if (response.data.responseCode === 417) {
-        await dispatch(RefreshToken(navigate, t))
-        dispatch(renameFileApi(navigate, filedata, t, setShowRenameFile))
-      } else if (response.data.responseCode === 200) {
-        if (response.data.responseResult.isExecuted === true) {
-          if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_RenameFile_01".toLowerCase())) {
-            setShowRenameFile(false)
-            dispatch(getDocumentsAndFolderApi(navigate, currentView, t))
-          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_RenameFile_02".toLowerCase())) {
-            dispatch(renameFile_fail(t("Folder-name-is-required")))
-          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_RenameFile_03".toLowerCase())) {
-            dispatch(renameFile_fail(t("Failed-to-rename-folder")))
-          } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_RenameFile_03".toLowerCase())) {
-            dispatch(renameFile_fail(t("Something-went-wrong")))
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(renameFileApi(navigate, filedata, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_RenameFile_01".toLowerCase()
+                )
+            ) {
+              setShowRenameFile(false);
+              dispatch(getDocumentsAndFolderApi(navigate, currentView, t));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_RenameFile_02".toLowerCase()
+                )
+            ) {
+              dispatch(renameFile_fail(t("Folder-name-is-required")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_RenameFile_03".toLowerCase()
+                )
+            ) {
+              dispatch(renameFile_fail(t("Failed-to-rename-folder")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_RenameFile_03".toLowerCase()
+                )
+            ) {
+              dispatch(renameFile_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(renameFile_fail(t("Something-went-wrong")));
+            }
           } else {
             dispatch(renameFile_fail(t("Something-went-wrong")));
           }
         } else {
           dispatch(renameFile_fail(t("Something-went-wrong")));
         }
-      }
-    })
+      })
       .catch((error) => {
         dispatch(renameFile_fail(t("Something-went-wrong")));
       });

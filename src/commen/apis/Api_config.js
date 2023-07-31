@@ -284,7 +284,7 @@ const GetOrganizationSeletedPackageByOrganizationID = {
   RequestMethod: "ServiceManager.GetOrganizationSeletedPackageByOrganizationID",
 };
 const GetSubscriptionPackagesByOrganizationID = {
-  RequestMethod: "ServiceManager.GetSubscriptionPackagesForUpgrade",
+  RequestMethod: "ServiceManager.GetSubscriptionPackagesByOrganizationID",
 };
 const getMeetingStatus = {
   RequestMethod: "ServiceManager.GetMeetingStatus",
@@ -722,9 +722,6 @@ const renameFolderRequestMethod = {
 const renameFileRequestMethod = {
   RequestMethod: "ServiceManager.RenameFile",
 };
-const subscriptiondetailsRequestMethod = {
-  RequestMethod: "ServiceManager.SubscriptionDetail",
-};
 
 const searchPolls = {
   RequestMethod: "ServiceManager.SearchPolls",
@@ -758,21 +755,7 @@ const deltePolls = {
   RequestMethod: "ServiceManager.UpdatePollStatusByPollId",
 };
 
-const subscriptionPackageUpgradeAmount = {
-  RequestMethod: "ServiceManager.GetPackageUpgradeTotalAmount",
-};
-
-const subscriptionPackageUpgradePayment = {
-  RequestMethod: "ServiceManager.PackageUpgradePaymentComplete",
-};
-const paymentCompleteMethod = {
-  RequestMethod: "ServiceManager.PaymentComplete",
-};
-
 export {
-  subscriptionPackageUpgradeAmount,
-  paymentCompleteMethod,
-  subscriptionPackageUpgradePayment,
   revoketoken,
   googleValidToken,
   signuprequest,
@@ -967,7 +950,6 @@ export {
   getAllCommittesandGroupsforPolls,
   renameFolderRequestMethod,
   renameFileRequestMethod,
-  subscriptiondetailsRequestMethod,
   searchPolls,
   castVote,
   getAllPollStatus,

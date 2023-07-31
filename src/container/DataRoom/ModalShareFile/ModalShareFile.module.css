@@ -42,11 +42,11 @@
 
 .send_btn {
   padding: 12px 30px !important;
-  font-size: 12px !important;
-  font-family: "MontserratSemiBold" !important;
-  color: #fff !important;
-  background: #6172d6 !important;
-  border: none !important;
+  font-size: 12px;
+  font-family: "MontserratSemiBold";
+  color: #fff;
+  background: #5a5a5a;
+  border: none;
 }
 
 .Request_Access_btn {
@@ -240,7 +240,7 @@
 }
 
 .shareFolderAddMemberBtn {
-  padding: 4px 20px !important;
+  padding: 4px 30px !important;
   border-radius: 4px !important;
   background-color: #6172d6 !important;
   width: 100%;
@@ -250,7 +250,7 @@
 }
 
 .shareFolderAddMemberBtn:is(:hover, :active, :focus, :focus-visible, :visited) {
-  padding: 4px 20px !important;
+  padding: 4px 30px !important;
   border-radius: 4px !important;
   background-color: #6172d6 !important;
   width: 100%;

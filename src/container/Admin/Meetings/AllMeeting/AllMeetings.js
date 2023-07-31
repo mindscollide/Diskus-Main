@@ -96,7 +96,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   const [toDate, setToDate] = useState("");
   const [totalRecords, setTotalRecords] = useState(0);
   let currentPageSize = localStorage.getItem("MeetingPageSize");
-  let currentPage = JSON.parse(localStorage.getItem("MeetingCurrentPage"));
+  let currentPage = localStorage.getItem("MeetingCurrentPage");
 
   const [modalEditMeetingStates, setModalEditMeetingStates] = useState({
     Titles: "",
@@ -105,7 +105,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     DateTime: "",
     Status: "",
   });
-  console.log(modalEditMeetingStates, "modalEditMeetingStatesmodalEditMeetingStatesmodalEditMeetingStates")
+
   const [rows, setRows] = useState([]);
 
   // validations for fields
@@ -397,16 +397,16 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   const handleEditOrganizatioMeeting = (Data) => {
     console.log(Data, "DataDatadasdasj");
     // let Time = TimeDisplayFormat(Data.meetingStartTime);
-    setMeetingId(Data.meetingID);
+    setMeetingId(Data.pK_MDID);
     setMeetingModal(true);
     setModalEditMeetingStates({
       Titles: Data.title,
-      Agendas: Data.agenda,
+      Agendas: "",
       Organizers: Data.host,
       DateTime: newTimeFormaterAsPerUTCFullDate(
-        Data.createdDate + Data.createdTime
+        Data.dateOfMeeting + Data.meetingStartTime
       ),
-      Status: JSON.parse(Data.fK_StatusID),
+      Status: JSON.parse(Data.status),
     });
   };
 

@@ -916,11 +916,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                                                                 size={78}
 
                                                                 {...defaultStyles.gif}
-                                                              /> : <FileIcon
-                                                                extension={ext}
-                                                                size={78}
-                                                                {...defaultStyles.ext}
-                                                              />}
+                                                              /> : null}
                                             <p className="fileUploadLabel">
                                               {first}
                                             </p>

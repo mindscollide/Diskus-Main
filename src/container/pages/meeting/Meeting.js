@@ -245,7 +245,6 @@ const Meeting = () => {
       MeetingID: meetingID,
       UserID: parseInt(UserID),
     };
-
     dispatch(StartMeeting(navigate, Data, t, searchData));
   };
 
@@ -319,10 +318,6 @@ const Meeting = () => {
           text: t("Cancelled"),
           value: "4",
         },
-        {
-          text: t("Reschedule"),
-          value: "5"
-        }
       ],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-meeting" />
@@ -1064,7 +1059,7 @@ const Meeting = () => {
               <Pagination className="PaginationStyle-Meeting"
                 onChange={paginationChangeHandlerMeeting}
                 current={meetingPageCurrent}
-                pageSize={meetingpageRow !== null && meetingpageRow !== undefined ? meetingpageRow : 0}
+                pageSize={meetingpageRow}
                 showSizeChanger
                 locale={{
                   items_per_page: t('items_per_page'),

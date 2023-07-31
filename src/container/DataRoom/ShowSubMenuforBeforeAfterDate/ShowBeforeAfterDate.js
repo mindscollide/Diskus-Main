@@ -7,7 +7,7 @@ import line from "../../../assets/images/Path 1810.svg";
 import { Button } from '../../../components/elements';
 
 
-const ShowBeforeAfterDate = ({ showsubmenu, setShowsubmenu }) => {
+const ShowBeforeAfterDate = () => {
     const { t } = useTranslation()
     return (
         <Row>
@@ -52,7 +52,6 @@ const ShowBeforeAfterDate = ({ showsubmenu, setShowsubmenu }) => {
                     >
                         <Button
                             text={t("Cancel")}
-                            onClick={() => setShowsubmenu(false)}
                             className={styles["cancell_button_expandDropdown"]}
                         />
                         <Button
