@@ -74,7 +74,9 @@ const CalendarPage = () => {
   let startDate = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth() -
-      parseInt(parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)),
+      parseInt(
+        parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)
+      ),
     currentDate.getDate()
   );
   console.log("DateDate startDate", startDate);
@@ -83,7 +85,9 @@ const CalendarPage = () => {
   let endDate = new Date(
     currentDate.getFullYear(),
     currentDate.getMonth() +
-      parseInt(parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)),
+      parseInt(
+        parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)
+      ),
     currentDate.getDate()
   );
 
@@ -114,8 +118,8 @@ const CalendarPage = () => {
     let calendarData = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(OrganizationID),
-      StartDate: newDateFormaterAsPerUTC(startDate)+ "000000",
-      EndDate: newDateFormaterAsPerUTC(endDate)+ "000000",
+      StartDate: newDateFormaterAsPerUTC(startDate) + "000000",
+      EndDate: newDateFormaterAsPerUTC(endDate) + "000000",
     };
     console.log("DateDate calendarData", calendarData);
     setStartDataUpdate(newDateFormaterAsPerUTC(startDate));
@@ -170,7 +174,7 @@ const CalendarPage = () => {
       }
     });
   }, []);
-  
+
   function onChange(value) {
     let newDAte = moment(value._d).format("YYYY-MM-DD");
     setCalendarView(false);
@@ -180,14 +184,18 @@ const CalendarPage = () => {
       let updateStartDate = new Date(
         date.getFullYear(),
         date.getMonth() -
-          parseInt(parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)),
+          parseInt(
+            parseInt(CalenderMonthsSpan) === 0
+              ? 1
+              : parseInt(CalenderMonthsSpan)
+          ),
         1
       );
       let calendarData = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(OrganizationID),
-        StartDate: newDateFormaterAsPerUTC(updateStartDate)+ "000000" ,
-        EndDate: newDateFormaterAsPerUTC(startDataUpdate)+ "000000" ,
+        StartDate: newDateFormaterAsPerUTC(updateStartDate) + "000000",
+        EndDate: newDateFormaterAsPerUTC(startDataUpdate) + "000000",
       };
       setStartDataUpdate(updateStartDate);
       dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
@@ -197,13 +205,17 @@ const CalendarPage = () => {
       let updateEndDate = new Date(
         date.getFullYear(),
         date.getMonth() +
-          parseInt(parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)),
+          parseInt(
+            parseInt(CalenderMonthsSpan) === 0
+              ? 1
+              : parseInt(CalenderMonthsSpan)
+          ),
         0
       );
       let calendarData = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(OrganizationID),
-        StartDate: newDateFormaterAsPerUTC(endDataUpdate)+ "000000" ,
+        StartDate: newDateFormaterAsPerUTC(endDataUpdate) + "000000",
         EndDate: newDateFormaterAsPerUTC(updateEndDate) + "000000",
       };
       setEndDataUpdate(updateEndDate);
@@ -301,14 +313,11 @@ const CalendarPage = () => {
   //click handler for create events button
   const eventClickHandler = () => {};
 
-  console.log("handleAddEventhandleAddEvent 4", open);
-
   useEffect(() => {}, [defaultValue]);
 
   function handleAddEvent() {
     setOpen(true);
     setCalendarView(!calendarView);
-    console.log("calendarView", calendarView);
   }
 
   useEffect(() => {
@@ -565,9 +574,7 @@ const CalendarPage = () => {
     getTodosStatus.UpdateTodoStatusMessage,
     getTodosStatus.UpdateTodoStatus,
   ]);
-  console.log("meetingIdReducermeetingIdReducer", calendarReducer.Loading);
-  console.log("meetingIdReducermeetingIdReducer", toDoListReducer.Loading);
-  console.log("meetingIdReducermeetingIdReducer", assignees.Loading);
+
   return (
     <>
       <Container id={"calender"}>
@@ -639,11 +646,9 @@ const CalendarPage = () => {
           </Col>
         </Row>
       </Container>
-      {assignees.Loading ? (
-        <Loader />
-      ) : calendarReducer.Loading ? (
-        <Loader />
-      ) : toDoListReducer.Loading ? (
+      {assignees.Loading ||
+      calendarReducer.Loading ||
+      toDoListReducer.Loading ? (
         <Loader />
       ) : null}
       <ModalView

@@ -36,18 +36,8 @@ require("moment/locale/ar-sa");
 require("moment/locale/fr");
 require("moment/locale/en-gb");
 moment.locale("en-US");
-// require("moment-hijri");
-// const locales = {
-//   "en-US": require("date-fns/locale/en-US"),
-// };
-// const localizer = dateFnsLocalizer({
-//   format,
-//   parse,
-//   startOfWeek,
-//   getDay,
-//   locales,
-// });
 const localizer = momentLocalizer(moment);
+
 const lang = {
   en: null,
   "en-GB": null,
@@ -117,8 +107,6 @@ function CustomCalendar({
     (newDate) => setDefaultValue(newDate),
     [setDefaultValue]
   );
-  console.log("defaultValuedefaultValue", defaultValue);
-
   let CalenderMonthsSpan = localStorage.getItem("calenderMonthsSpan");
   let OrganizationID = localStorage.getItem("organizationID");
   const userID = localStorage.getItem("userID");
@@ -145,10 +133,8 @@ function CustomCalendar({
     };
     const handleMonthChange = (date, dateString) => {
       // Handle the month change event here
-      console.log("Selected Month:", date.month() + 1);
-      console.log("Selected Year:", date.year());
-      console.log("Selected Date String:", dateString);
     };
+
     return (
       <Container>
         <Row className="d-flex justify-content-center">
@@ -178,7 +164,6 @@ function CustomCalendar({
                 className="date-picker-style"
               />
             </div>
-
             <h3
               onClick={() => handleAddEvent()}
               className={styles["calendar-add-event-label"]}
@@ -220,47 +205,21 @@ function CustomCalendar({
 
   useEffect(() => {
     setCulture(lan);
-
-    console.log("hjsdhad", "hahahaah");
-
     if (lan === "hijri") {
-      console.log("hjsdhad", "hahahaah");
-
       setRightToLeft(true);
       moment.locale(lan);
-
-      // if (Helper.isReload) {
-      //   window.location.reload();
-      //   Helper.isReload = false;
-      // }
     } else if (lan === "ar") {
       setRightToLeft(true);
       moment.locale(lan);
-
-      // if (Helper.isReload) {
-      //   window.location.reload();
-      //   Helper.isReload = false;
-      // }
     } else if (lan === "fr") {
-      console.log("hjsdhad", "hahahaah");
       setRightToLeft(true);
       moment.locale(lan);
-
-      // if (Helper.isReload) {
-      //   window.location.reload();
-      //   Helper.isReload = false;
-      // }
     } else {
-      console.log("hjsdhad", "hahahaah");
       setRightToLeft(false);
       moment.locale(lan);
-
-      // if (Helper.isReload) {
-      //   window.location.reload();
-      //   Helper.isReload = false;
-      // }
     }
   }, [lan]);
+
   useEffect(() => {
     if (prevCheck) {
       let givenDate = new Date(defaultValue);
@@ -273,11 +232,6 @@ function CustomCalendar({
       // Adding 2 days to the date
       const twoDaysLater = new Date(newcheckDate);
       twoDaysLater.setDate(twoDaysLater.getDate() + 2);
-      console.log("nextCheck twoDaysLater",nextDay);
-      console.log("nextCheck twoDaysLater",startDataUpdate);
-      console.log("nextCheck twoDaysLater",twoDaysLater);
-      console.log("nextCheck twoDaysLater",newDateFormaterAsPerUTC(previousDate));
-
       if (
         startDataUpdate >= newDateFormaterAsPerUTC(previousDate) ||
         nextDay <= newDateFormaterAsPerUTC(previousDate) ||
@@ -311,11 +265,7 @@ function CustomCalendar({
       setPrevCheck(false);
     }
     if (nextCheck) {
-      console.log("nextCheck");
-
       if (endDataUpdate <= newDateFormaterAsPerUTC(defaultValue)) {
-        console.log("nextCheck");
-
         setNextCheck(false);
         let updateNewEndDataUpdates = convertintoGMTCalender(endDataUpdate);
         let updateNewEndDataUpdate = new Date(updateNewEndDataUpdates);
