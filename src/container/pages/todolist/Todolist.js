@@ -90,8 +90,8 @@ const TodoList = () => {
   });
   let todoListCurrentPage = JSON.parse(localStorage.getItem("todoListPage"));
   let todoListPageSize = localStorage.getItem("todoListRow");
-  console.log(todoListPageSize, "todoListPageSize")
-  console.log(todoListCurrentPage, "todoListCurrentPage")
+  console.log(todoListPageSize, "todoListPageSize");
+  console.log(todoListCurrentPage, "todoListCurrentPage");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -173,7 +173,15 @@ const TodoList = () => {
   //dispatch gettodolist api
   useEffect(() => {
     if (todoListPageSize !== null && todoListCurrentPage !== null) {
-      dispatch(SearchTodoListApi(navigate, searchData, todoListCurrentPage, todoListPageSize, t));
+      dispatch(
+        SearchTodoListApi(
+          navigate,
+          searchData,
+          todoListCurrentPage,
+          todoListPageSize,
+          t
+        )
+      );
     } else {
       localStorage.setItem("todoListPage", 1);
       localStorage.setItem("todoListRow", 50);
@@ -183,7 +191,11 @@ const TodoList = () => {
 
   //get todolist reducer
   useEffect(() => {
-    console.log(toDoListReducer, rowsToDo, "toDoListReducertoDoListReducertoDoListReducer")
+    console.log(
+      toDoListReducer,
+      rowsToDo,
+      "toDoListReducertoDoListReducertoDoListReducer"
+    );
     if (
       toDoListReducer.SearchTodolist !== null &&
       toDoListReducer.SearchTodolist !== undefined
@@ -300,7 +312,15 @@ const TodoList = () => {
       }
     );
     if (todoListPageSize !== null && todoListCurrentPage !== null) {
-      dispatch(SearchTodoListApi(navigate, searchData, todoListCurrentPage, todoListPageSize, t));
+      dispatch(
+        SearchTodoListApi(
+          navigate,
+          searchData,
+          todoListCurrentPage,
+          todoListPageSize,
+          t
+        )
+      );
     } else {
       localStorage.setItem("todoListPage", 1);
       localStorage.setItem("todoListRow", 50);
@@ -672,6 +692,12 @@ const TodoList = () => {
       });
     } else {
       // make notification for if input fields is empty here
+      let newData = {
+        Date: "",
+        Title: "",
+        AssignedToName: "",
+        UserID: parseInt(createrID),
+      };
       dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
       setSearchData({
         Date: "",
@@ -981,21 +1007,22 @@ const TodoList = () => {
                     />
                   </Paper>
                 )}
-                {rowsToDo.length > 0 && <section className="pagination-groups-table d-flex justify-content-center my-3">
-                  <Pagination
-                    onChange={paginationChangeHandlerTodo}
-                    className="PaginationStyle-Meeting"
-                    current={todoListCurrentPage}
-                    total={totalRecords}
-                    locale={{
-                      items_per_page: t('items_per_page'),
-                      page: t('page')
-                    }}
-                    pageSizeOptions={["30", "50", "100", "200"]}
-                    pageSize={todoListPageSize}
-                  />
-                </section>}
-
+                {rowsToDo.length > 0 && (
+                  <section className="pagination-groups-table d-flex justify-content-center my-3">
+                    <Pagination
+                      onChange={paginationChangeHandlerTodo}
+                      className="PaginationStyle-Meeting"
+                      current={todoListCurrentPage}
+                      total={totalRecords}
+                      locale={{
+                        items_per_page: t("items_per_page"),
+                        page: t("page"),
+                      }}
+                      pageSizeOptions={["30", "50", "100", "200"]}
+                      pageSize={todoListPageSize}
+                    />
+                  </section>
+                )}
               </Col>
             </Row>
           </Col>

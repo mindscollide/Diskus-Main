@@ -5590,3 +5590,15 @@ abbr[title] {
   border-bottom: 0px !important;
   cursor: default !important;
 }
+
+.form-check-input:checked {
+  background: #4adede !important;
+  border-radius: none !important;
+  border: none;
+}
+
+.form-check-input {
+  width: 1.2em !important;
+  height: 1.2em !important;
+  border-radius: none !important;
+}

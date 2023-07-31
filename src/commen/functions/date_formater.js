@@ -36,6 +36,7 @@ export const currentToOneYearBackDate = (format) => {
   let fromDate = _moment.subtract(1, "years").format(format);
   return { toThisDate: toDate, fromThisDate: fromDate };
 };
+
 export const NumberFormater = (value) => {
   return parseFloat(parseFloat(value).toFixed(2));
 };
@@ -46,6 +47,7 @@ export const CommaFormter = (num) => {
 export const dateforCalendar = (date) => {
   return date.slice(0, 4) + " ," + date.slice(4, 6) + " , " + date.slice(6, 8);
 };
+
 export const dateTime = (data) => {
   let newtime =
     data.slice(0, 4) +
@@ -62,6 +64,7 @@ export const dateTime = (data) => {
   console.log(newtime, "checkingdatetimtconvertcheckingdatetimtconvert");
   return newtime;
 };
+
 export const CardNumberFormatter = (num) => {
   return num.match(/.{1,4}/g).join(" ");
 };
@@ -80,6 +83,7 @@ export const newDateFormaterAsPerUTC = (date) => {
 
   return newDate.slice(0, 10).replace(/-/g, "");
 };
+
 export const convertintoGMTCalender = (date) => {
   let year = parseInt(date.substr(0, 4));
   let month = parseInt(date.substr(4, 2)) - 1; // Month is zero-based in JavaScript's Date object
@@ -305,7 +309,7 @@ export const forMainCalendar = (dateTime) => {
     ".000Z";
   console.log("newListnewListnewListcalender", fullDateYear);
 
-  let _dateTime = new Date(fullDateYear).toString('YYYYMMDDHHmmss')
+  let _dateTime = new Date(fullDateYear).toString("YYYYMMDDHHmmss");
   // let _dateTime = moment(fullDateYear, "YYYY-MM-DDTHH:mm:ss.SSSZ").format(
   //   "YYYYMMDD"
   // );
@@ -531,9 +535,9 @@ export const newTimeFormaterAsPerUTCTalkDateTime = (dateTime) => {
 };
 
 export const convertGMTDateintoUTC = (GMTdate) => {
-  console.log(GMTdate, "convertGMTDateintoUTC")
+  console.log(GMTdate, "convertGMTDateintoUTC");
   const currentDate = new Date(GMTdate);
-  console.log(GMTdate, "convertGMTDateintoUTC")
+  console.log(GMTdate, "convertGMTDateintoUTC");
   // Extract the individual components of the date
   const year = currentDate.getUTCFullYear();
   const month = ("0" + (currentDate.getUTCMonth() + 1)).slice(-2);
@@ -544,6 +548,6 @@ export const convertGMTDateintoUTC = (GMTdate) => {
 
   // Concatenate the components into the desired format
   const result = `${year}${month}${day}${hours}${minutes}${seconds}`;
-  console.log(result, "convertGMTDateintoUTC")
+  console.log(result, "convertGMTDateintoUTC");
   return result;
-}
+};
