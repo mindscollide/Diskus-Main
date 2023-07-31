@@ -5,7 +5,7 @@ import moment from 'moment'
 import './Talk-Chat.css'
 import { Triangle } from 'react-bootstrap-icons'
 import enUS from 'antd/es/date-picker/locale/en_US'
-import PrintPage from './Print-Page'
+
 import { Box } from '@material-ui/core'
 import {
   GetAllUserChats,
@@ -109,6 +109,7 @@ import {
 import { sendChatFunction } from './sendChat'
 import { useNavigate } from 'react-router-dom'
 import { filesUrlTalk } from '../../../../commen/apis/Api_ends_points'
+import PrintPage from './printScript'
 
 const TalkChat = () => {
   //Use Navigate
@@ -4658,49 +4659,26 @@ const TalkChat = () => {
   //     talkStateData.DownloadChatData.DownloadChatResponse !== undefined &&
   //     talkStateData.DownloadChatData.DownloadChatResponse.length !== 0
   //   ) {
-  //     let fileDownloadURL =
-  //       filesUrlTalk +
-  //       talkStateData.DownloadChatData.DownloadChatResponse.filePath
-  //     window.open(fileDownloadURL, '_blank')
+  //     // let fileDownloadURL =
+  //     //   filesUrlTalk +
+  //     //   talkStateData.DownloadChatData.DownloadChatResponse.filePath
+  //     // window.open(fileDownloadURL, '_blank')
+  //     const newTab = window.open('/print.html', '_blank')
+  //     newTab.onload = function () {
+  //       newTab.print()
+  //     }
   //   }
   // }, [talkStateData?.DownloadChatData?.DownloadChatResponse])
-
   useEffect(() => {
-    // Check the condition to trigger the link
     if (
       talkStateData.DownloadChatData.DownloadChatResponse !== null &&
       talkStateData.DownloadChatData.DownloadChatResponse !== undefined &&
       talkStateData.DownloadChatData.DownloadChatResponse.length !== 0
     ) {
-      let fileDownloadURL =
-        filesUrlTalk +
-        talkStateData.DownloadChatData.DownloadChatResponse.filePath
-      // window.open(fileDownloadURL, '_blank')
-      // Open the link in a new tab
-      // Create a hidden iframe to load the content
-      const iframe = document.createElement('iframe')
-      iframe.style.display = 'none'
-      iframe.src = fileDownloadURL
-
-      // Append the iframe to the current document's body
-      document.body.appendChild(iframe)
-
-      // Wait for the iframe to load, then trigger the print function
-      iframe.onload = function () {
-        iframe.contentWindow.print()
+      const newTab = window.open('/print.html', '_blank')
+      newTab.onload = function () {
+        newTab.print()
       }
-      // if (fileDownloadURL) {
-      //   fileDownloadURL.document.title = 'Link Page' // Set the title of the new tab
-      //   fileDownloadURL.document.body.innerHTML = '<div id="root"></div>' // Create a root element for React rendering
-
-      //   // Render the LinkPage component inside the new tab
-      //   // ReactDOM.render(
-      //   //   <React.StrictMode>
-      //   //     <PrintPage />
-      //   //   </React.StrictMode>,
-      //   //   fileDownloadURL.document.getElementById('root'),
-      //   // )
-      // }
     }
   }, [talkStateData?.DownloadChatData?.DownloadChatResponse])
 
@@ -9412,7 +9390,9 @@ const TalkChat = () => {
           </div>
         ) : null}
       </div>
-
+      <div>
+        <PrintPage filesUrlTalk={filesUrlTalk} talkStateData={talkStateData} />
+      </div>
       <NotificationBar
         iconName={<img src={SecurityIcon} />}
         notificationMessage={notification.message}
