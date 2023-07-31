@@ -128,7 +128,7 @@ const TodoList = () => {
                 pK_TSID: statusID,
                 status:
                   statusID === 1
-                    ? "InProgress"
+                    ? "In Progress"
                     : statusID === 2
                       ? "Pending"
                       : statusID === 3
@@ -1046,14 +1046,14 @@ const TodoList = () => {
       </Col>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
 
-      {/* {toDoListReducer.Loading && <Loader />} */}
-      {
+      {toDoListReducer.Loading || todoStatus.Loading && <Loader />}
+      {/* {
         toDoListReducer.Loading ? (
           <Loader />
         ) : todoStatus.Loading ? (
           <Loader />
         ) : null
-      }
+      } */}
     </>
   );
 };
