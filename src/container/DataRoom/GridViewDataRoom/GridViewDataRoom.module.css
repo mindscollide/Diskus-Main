@@ -8,6 +8,8 @@
     justify-content: space-between;
     align-items: flex-end;
     position: relative;
+    cursor: pointer;
+    user-select: none !important;
 }
 
 .gridViewFolder__name {
@@ -20,6 +22,7 @@
     justify-content: space-between;
     margin-bottom: 10px !important;
     position: relative;
+    cursor: pointer;
 }
 
 

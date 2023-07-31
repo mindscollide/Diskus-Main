@@ -3034,6 +3034,7 @@ const updatePasswordAction = (value, navigate, t) => {
       });
   };
 };
+
 const setClient = (response) => {
   return {
     type: actions.SET_MQTT_CLIENT,

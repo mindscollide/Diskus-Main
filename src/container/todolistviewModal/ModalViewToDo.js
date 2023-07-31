@@ -5,7 +5,7 @@ import FileIcon, { defaultStyles } from "react-file-icon";
 import moment from "moment";
 import { ChevronRight, ChevronLeft } from "react-bootstrap-icons";
 import Form from "react-bootstrap/Form";
-
+import CrossIcon from '../../assets/images/CrossIcon.svg'
 import {
   TextField,
   Modal,
@@ -391,7 +391,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                             sm={12}
                             lg={12}
                             md={12}
-                            className="MontserratRegular my-1 FontArabicRegular"
+                            className="MontserratRegular my-1 FontArabicRegular position-relative"
                             key={commentData.taskCommentID}
                           >
                             <TextArea
@@ -400,13 +400,14 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                                 commentData.DateTime
                               )}
                               label={commentData.taskCommentUserName}
-                              labelClassName="MontserratSemiBold-600 d-flex justify-content-end mx-2 fw-bold"
+                              labelClassName="MontserratSemiBold-600 d-flex justify-content-start  fw-bold "
                               disable="false"
-                              className="comment-view sender text-white text-right "
+                              className="comment-view sender text-white  "
                               value={commentData.Comment}
                               timeClass={"timeClass"}
                               formClassPosition="relative-position-form"
                             />
+                            <img src={CrossIcon} width={14} className="crossIconTodoComment" />
                           </Col>
                         </>
                       );

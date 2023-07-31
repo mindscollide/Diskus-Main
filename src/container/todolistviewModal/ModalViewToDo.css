@@ -186,7 +186,7 @@ p.todoModalFileAttach {
 
 .timeClass {
   position: absolute;
-  left: 20px;
+  right: 10px;
   bottom: 0;
   color: #fff;
 }
@@ -232,6 +232,7 @@ textarea.comment-view.text-right.form-control {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   padding-bottom: 10px;
+  text-align: left !important;
 }
 
 .InputFieldStyle input {
@@ -290,4 +291,10 @@ body[dir="rtl"] label.MontserratSemiBold-600.todo-employee-name-card {
   word-wrap: break-word !important;
   text-overflow: ellipsis !important;
   white-space: normal !important;
+}
+
+.crossIconTodoComment {
+  position: absolute;
+  right: 8px;
+  top: 15px;
 }

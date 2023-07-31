@@ -724,10 +724,22 @@ const renameFileRequestMethod = {
 }
 const subscriptiondetailsRequestMethod = {
   RequestMethod: "ServiceManager.SubscriptionDetail"
-
 }
 
+const subscriptionPackageUpgradeAmount = {
+  RequestMethod: "ServiceManager.GetPackageUpgradeTotalAmount"
+}
+
+const subscriptionPackageUpgradePayment = {
+  RequestMethod: "ServiceManager.PackageUpgradePaymentComplete"
+}
+const paymentCompleteMethod = {
+  RequestMethod: "ServiceManager.PaymentComplete"
+}
 export {
+  subscriptionPackageUpgradeAmount,
+  paymentCompleteMethod,
+  subscriptionPackageUpgradePayment,
   revoketoken,
   googleValidToken,
   signuprequest,

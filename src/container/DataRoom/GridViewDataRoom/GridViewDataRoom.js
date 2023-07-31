@@ -145,13 +145,14 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile }) => {
                           >
                             <img src={folder_icon_gridview} /> {fileData.name}
                           </span>
-                          <span className={styles['three_dot__gridView']}>
+                          {!fileData.isShared && <span className={styles['three_dot__gridView']}>
                             <Dropdown
                               drop="down"
                               align="start"
                               className={`${styles['options_dropdown']
                                 } ${'dataroom_options'}`}
                             >
+
                               <Dropdown.Toggle id="dropdown-autoclose-true">
                                 <img
                                   src={threedots_dataroom}
@@ -174,7 +175,8 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile }) => {
                                 })}
                               </Dropdown.Menu>
                             </Dropdown>
-                          </span>
+                          </span>}
+
                         </div>
                       </Col>
                     </>
@@ -211,7 +213,7 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile }) => {
                                   <img src={folder_icon_gridview} />{' '}
                                   {fileData.name}
                                 </span>
-                                <span
+                                {!fileData.isShared && <span
                                   className={styles['three_dot__gridView']}
                                 >
                                   <Dropdown
@@ -243,7 +245,8 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile }) => {
                                     </Dropdown.Menu>
                                   </Dropdown>
                                   {/* <img src={threedots_dataroom} onClick={() => handleClickforFile(fileData.id)} /> */}
-                                </span>
+                                </span>}
+
                               </div>
                             </Col>
                           </Row>

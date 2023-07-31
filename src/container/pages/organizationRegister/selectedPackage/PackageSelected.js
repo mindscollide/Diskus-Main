@@ -34,6 +34,7 @@ const PackageSelected = () => {
     MonthlyBill: 0,
     TotalBill: 0
   })
+  console.log(totalBillAmount, "totalBillAmounttotalBillAmounttotalBillAmount")
   const [organizationDataRole, setorganizationDataRole] = useState({});
   const [countryData, setCountyData] = useState("");
   const [open, setOpen] = useState({
@@ -181,6 +182,11 @@ const PackageSelected = () => {
       setTotalBillAmount({
         TotalBill: Authreducer.getSubscriptiondetails.totalBill,
         MonthlyBill: Authreducer.getSubscriptiondetails.monthlyBill
+      })
+    } else {
+      setTotalBillAmount({
+        TotalBill: 0,
+        MonthlyBill: 0
       })
     }
   }, [Authreducer.getSubscriptiondetails])

@@ -79,7 +79,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   let currentLanguage = localStorage.getItem("i18nextLng");
 
   useEffect(() => {
-    if (currentLanguage != undefined) {
+    if (currentLanguage !== undefined && currentLanguage !== null) {
       if (currentLanguage === "en") {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
@@ -626,6 +626,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     >
                       <TimePickers
                         change={taskHandler}
+                        placeholder={"00:00:00"}
                         name="DeadLineTime"
                         value={task.DeadLineTime}
                       />
@@ -654,7 +655,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       className="todolist-modal-fields margin-top--20 d-flex  flex-column"
                     >
                       <InputSearchFilter
-                        placeholder={t("Add-attendees")}
+                        placeholder={t("Add-attendees") + "*"}
                         value={taskAssignedToInput}
                         filteredDataHandler={searchFilterHandler(
                           taskAssignedToInput
@@ -705,7 +706,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         name="Title"
                         applyClass="createtodo-title"
                         type="text"
-                        placeholder={t("Title")}
+                        placeholder={t("Title") + "*"}
                         required
                         value={task.Title}
                         maxLength={200}
