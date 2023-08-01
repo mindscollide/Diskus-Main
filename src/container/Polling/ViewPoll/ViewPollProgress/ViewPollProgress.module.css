@@ -128,7 +128,7 @@ body[dir="rtl"] .Card_border2 {
 }
 
 .Scroller_View_Poll_Published {
-  height: 32vh !important;
+  height: 28vh !important;
   overflow-x: hidden !important;
   width: 100%;
 }
