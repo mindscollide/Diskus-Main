@@ -1736,6 +1736,10 @@ i.icon-add-square.uploadfile {
   background: #fff !important;
 }
 
+.Polling_table tr.ant-table-row {
+  height: 65px !important;
+}
+
 /* .css-1s2u09g-control {
   width: 125px !important;
 }
