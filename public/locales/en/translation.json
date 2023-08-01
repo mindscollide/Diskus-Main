@@ -906,7 +906,7 @@
   "Circulation-date-is-required": "Circulation date is required",
   "Resolution-description-is-required": "Resolution description is required",
   "Voting-method-is-required": "Voting method is required",
-  "Resolution-Title-is-required": "Resolution Title is required",
+  "Resolution-Title-is-required": "Resolution title is required",
   "Your-session-has-expired-please-login-again": "Your Session has expired. Please login again",
   "Refresh-token-update-successfully": "Refresh Token Update Successfully",
   "Reminder-frequency-is-required": "Reminder frequency is required",
