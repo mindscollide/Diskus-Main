@@ -1012,23 +1012,26 @@ const TodoList = () => {
                     />
                   </Paper>
                 )}
-                {rowsToDo.length > 0 && (
-                  <section className="pagination-groups-table d-flex justify-content-center my-3">
-                    <Pagination
-                      onChange={paginationChangeHandlerTodo}
-                      className="PaginationStyle-Meeting"
-                      current={todoListCurrentPage}
-                      total={totalRecords}
-                      locale={{
-                        items_per_page: t('items_per_page'),
-                        page: t('page'),
-                      }}
-                      pageSizeOptions={['30', '50', '100', '200']}
-                      pageSize={todoListPageSize}
-                    />
-                  </section>
-                )}
+
               </Col>
+            </Row>
+            <Row>
+              {rowsToDo.length > 0 && (
+                <section className="pagination-groups-table d-flex justify-content-center my-3">
+                  <Pagination
+                    onChange={paginationChangeHandlerTodo}
+                    className="PaginationStyle-Meeting"
+                    current={todoListCurrentPage}
+                    total={totalRecords}
+                    locale={{
+                      items_per_page: t('items_per_page'),
+                      page: t('page'),
+                    }}
+                    pageSizeOptions={['30', '50', '100', '200']}
+                    pageSize={todoListPageSize}
+                  />
+                </section>
+              )}
             </Row>
           </Col>
         </Row>
