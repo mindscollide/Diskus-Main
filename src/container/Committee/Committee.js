@@ -307,7 +307,7 @@ const Committee = () => {
                         getcommitteedata.map((data, index) => {
                           console.log(data, "datadatadata");
                           return (
-                            <Col lg={3} md={3} sm={12} className="mb-3">
+                            <Col key={index} lg={3} md={3} sm={12} className="mb-3">
                               <Card
                                 setUniqCardID={setUniqCardID}
                                 uniqCardID={uniqCardID}

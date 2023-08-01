@@ -39,7 +39,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { registerLocale } from "react-datepicker";
 import moment from "moment";
-import { newDateFormaterAsPerUTC } from "../../../commen/functions/date_formater";
+import { multiDatePickerDateChangIntoUTC, newDateFormaterAsPerUTC } from "../../../commen/functions/date_formater";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 
 const CreatePolling = () => {
@@ -49,10 +49,8 @@ const CreatePolling = () => {
   registerLocale("en", enGB);
   //For Custom language datepicker
   const { PollsReducer } = useSelector((state) => state);
-  console.log(PollsReducer, "PollsReducerPollsReducer");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const { t } = useTranslation();
@@ -71,7 +69,6 @@ const CreatePolling = () => {
     date: "",
     AllowMultipleAnswers: true,
   });
-  const [assignees, setAssignees] = useState("");
   const [options, setOptions] = useState([
     {
       name: 1,
@@ -304,13 +301,13 @@ const CreatePolling = () => {
     }
   };
 
-  const changeDateStartHandler = (date, format = "YYYYMMDD") => {
+  const changeDateStartHandler = (date) => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
+    let DateDate = new Date(date);
     setMeetingDate(meetingDateValueFormat);
     setcreatePollData({
       ...createPollData,
-      date: meetingDateSaveFormat,
+      date: DateDate,
     });
   };
 
@@ -344,7 +341,7 @@ const CreatePolling = () => {
           let data = {
             PollDetails: {
               PollTitle: createPollData.TypingTitle,
-              DueDate: newDateFormaterAsPerUTC(createPollData.date),
+              DueDate: multiDatePickerDateChangIntoUTC(createPollData.date),
               AllowMultipleAnswers: createPollData.AllowMultipleAnswers,
               CreatorID: parseInt(createrid),
               PollStatusID: parseInt(value),
@@ -423,7 +420,6 @@ const CreatePolling = () => {
   };
 
   const cancellAnyUser = (index) => {
-    console.log("indexindexindex", index);
     let removeData = [...members];
     removeData.splice(index, 1);
     setMembers(removeData);

@@ -80,6 +80,7 @@ const Polling = () => {
 
   const currentPage = JSON.parse(localStorage.getItem("pollingPage"));
   const currentPageSize = localStorage.getItem("pollingPageSize");
+
   useEffect(() => {
     if (currentPage !== null && currentPageSize !== null) {
       let data = {
@@ -117,9 +118,20 @@ const Polling = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (currentLanguage === "ar") {
+      moment.locale(currentLanguage);
+    } else if (currentLanguage === "fr") {
+      moment.locale(currentLanguage);
+    } else {
+      moment.locale(currentLanguage);
+    }
+  }, [currentLanguage]);
+
   const handleEditpollModal = (record) => {
     console.log("handleEditpollModal", record);
     let check = 0;
+
     if (record.wasPollPublished) {
       check = 1;
     } else {
@@ -130,15 +142,15 @@ const Polling = () => {
       PollID: record.pollID,
       UserID: parseInt(userID),
     };
+
     if (Object.keys(record).length > 0) {
-      console.log("handleEditpollModal", check);
-      console.log("handleEditpollModal", data);
       dispatch(getPollsByPollIdApi(navigate, data, check, t));
     }
   };
 
   const handleViewModal = (record) => {
     let check = 0;
+
     if (record.wasPollPublished) {
       if (record.pollStatus.pollStatusId === 3) {
         check = 4;
@@ -148,17 +160,18 @@ const Polling = () => {
     } else {
       check = 4;
     }
+
     let data = {
       PollID: record.pollID,
       UserID: parseInt(userID),
     };
+
     if (Object.keys(record).length > 0) {
       dispatch(getPollsByPollIdApi(navigate, data, check, t));
     }
   };
 
   const deletePollingModal = (record) => {
-    console.log("deletePollingModal");
     setIdForDelete(record.pollID);
     dispatch(setDeltePollModal(true));
 
@@ -262,7 +275,6 @@ const Polling = () => {
       key: "vote",
       width: "69px",
       render: (text, record) => {
-        console.log("record.pollStatus", record);
         if (record.pollStatus.pollStatusId === 2) {
           if (record.voteStatus === "Not Voted") {
             return (
@@ -439,16 +451,6 @@ const Polling = () => {
   };
 
   useEffect(() => {
-    if (currentLanguage === "ar") {
-      moment.locale(currentLanguage);
-    } else if (currentLanguage === "fr") {
-      moment.locale(currentLanguage);
-    } else {
-      moment.locale(currentLanguage);
-    }
-  }, [currentLanguage]);
-
-  useEffect(() => {
     try {
       if (
         PollsReducer.SearchPolls !== null &&
@@ -497,10 +499,11 @@ const Polling = () => {
       dispatch(getPollsByPollIdApi(navigate, data, 5, t));
     }
   };
-  console.log("rows", rows);
+  
   const HandleCloseSearchModal = () => {
     setSearchpoll(false);
   };
+
   return (
     <>
       <section className={styles["Poll_Container"]}>
@@ -625,7 +628,7 @@ const Polling = () => {
           <Col sm={12} md={12} lg={12}>
             <Table
               column={PollTableColumns}
-              scroll={{ y: 350 }}
+              scroll={{ y: "62vh" }}
               pagination={false}
               rows={rows}
             />
