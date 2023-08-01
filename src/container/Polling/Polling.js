@@ -499,7 +499,7 @@ const Polling = () => {
       dispatch(getPollsByPollIdApi(navigate, data, 5, t));
     }
   };
-  
+
   const HandleCloseSearchModal = () => {
     setSearchpoll(false);
   };
@@ -630,6 +630,7 @@ const Polling = () => {
               column={PollTableColumns}
               scroll={{ y: "62vh" }}
               pagination={false}
+              className="Polling_table"
               rows={rows}
             />
             <Row>

@@ -212,7 +212,7 @@ const ViewPollProgress = () => {
                     </Row>
                   </Col>
                 </Row>
-                {pollsOption.length > 4 ? (
+                {pollsOption.length > 2 ? (
                   <Row className="mt-2">
                     <Col
                       lg={12}
