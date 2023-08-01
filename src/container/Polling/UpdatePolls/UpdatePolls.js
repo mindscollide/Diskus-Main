@@ -212,13 +212,13 @@ const UpdatePolls = () => {
         let newDateGmt = convertintoGMTCalender(
           pollsDetails.poll.pollDetails.dueDate
         );
-        console.log("newDateGmtnewDateGmt",newDateGmt)
+        let DateDate = new Date(newDateGmt)
 
         setUpdatePolls({
           ...UpdatePolls,
           TypingTitle: pollsDetails.poll.pollDetails.pollTitle,
           AllowMultipleUser: pollsDetails.poll.pollDetails.allowMultipleAnswers,
-          date: newDateGmt,
+          date: DateDate,
           pollID: pollsDetails.poll.pollDetails.pollID,
         });
         setOptions({

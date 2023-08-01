@@ -23,7 +23,7 @@ const Votepoll = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { PollsReducer } = useSelector((state) => state);
-  console.log(PollsReducer, "VotevoteVotevoteVotevoteVotevoteVotevoteVotevote");
+  let userID = localStorage.getItem("userID");
   const { t } = useTranslation();
   const [pollsOption, setPollsOption] = useState([]);
   const [open, setOpen] = useState({
@@ -47,7 +47,7 @@ const Votepoll = () => {
       if (pollOptions.length > 0) {
         setPollsOption(pollOptions);
       }
-      console.log("pollDetails", pollDetails);
+      console.log("pollOptions", pollOptions);
       if (Object.keys(pollDetails).length > 0) {
         setViewProgressPollsDetails({
           ...viewProgressPollsDetails,
@@ -93,10 +93,7 @@ const Votepoll = () => {
       answer: [value],
     });
   };
-  console.log(
-    viewProgressPollsDetails.answer,
-    "checkedYescheckedYescheckedYes"
-  );
+
   const handleForCheck = (value) => {
     let findID = viewProgressPollsDetails.answer.find(
       (data, index) => data === value
@@ -107,7 +104,7 @@ const Votepoll = () => {
       return false;
     }
   };
-  let userID = localStorage.getItem("userID");
+
   const handleSubmitVote = () => {
     if (viewProgressPollsDetails.answer.length > 0) {
       let data = {
@@ -194,7 +191,7 @@ const Votepoll = () => {
                               console.log(data, "datadatadatadatadatadatadata");
                               return (
                                 <>
-                                  <Row>
+                                  <Row key={index}>
                                     <Col lg={1} md={1} sm={12}></Col>
                                     <Col
                                       lg={11}
@@ -278,7 +275,7 @@ const Votepoll = () => {
                             pollsOption.map((data, index) => {
                               return (
                                 <>
-                                  <Row>
+                                  <Row key={index}>
                                     <Col lg={1} md={1} sm={12}></Col>
                                     <Col
                                       lg={11}
@@ -308,7 +305,7 @@ const Votepoll = () => {
                                           checked={handleForCheck(
                                             data.pollAnswerID
                                           )}
-                                          onChange={handleCheckBoxYes}
+                                          onChange={(e)=>handleCheckBoxYes(e)}
                                           classNameCheckBoxP="d-none"
                                         />
                                       ) : (
