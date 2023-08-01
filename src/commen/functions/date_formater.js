@@ -70,6 +70,7 @@ export const CardNumberFormatter = (num) => {
 };
 
 export const newDateFormaterAsPerUTC = (date) => {
+  console.log("getCalendarDataResponse", date);
   let dateConvert = moment(date, "YYYYMMDD").format();
   console.log("getCalendarDataResponse", dateConvert);
   const englishFormat = moment(dateConvert).format(
@@ -551,3 +552,21 @@ export const convertGMTDateintoUTC = (GMTdate) => {
   console.log(result, "convertGMTDateintoUTC");
   return result;
 };
+
+
+// this work is create by huzeifa please dont write any thing below thi line 
+
+export const multiDatePickerDateChangIntoUTC = (date) => {
+  const utcTime = new Date(
+    date.getTime() - date.getTimezoneOffset() * 60000
+  );
+
+  // Extract the year, month, and day components from the UTC time
+  const year = utcTime.getUTCFullYear();
+  const month = String(utcTime.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(utcTime.getUTCDate()).padStart(2, "0");
+  const utcFormatted = `${year}${month}${day}`;
+
+  return utcFormatted;
+};
+   
