@@ -31,6 +31,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import {
   convertintoGMTCalender,
+  multiDatePickerDateChangIntoUTC,
   newDateFormaterAsPerUTC,
 } from "../../../commen/functions/date_formater";
 
@@ -90,7 +91,6 @@ const UpdatePolls = () => {
 
   useEffect(() => {
     let pollsData = PollsReducer.gellAllCommittesandGroups;
-    console.log(pollsData, "pollsDatapollsDatapollsDatapollsData");
     if (pollsData !== null && pollsData !== undefined) {
       let temp = [];
       if (Object.keys(pollsData).length > 0) {
@@ -200,6 +200,35 @@ const UpdatePolls = () => {
     }
   }, [PollsReducer.Allpolls]);
 
+  useEffect(() => {
+    if (PollsReducer.Allpolls != null && PollsReducer.Allpolls != undefined) {
+      let pollsDetails = PollsReducer.Allpolls;
+      if (Object.keys(PollsReducer.Allpolls).length > 0) {
+        let members = [];
+        PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
+          members.push(data);
+        });
+        setPollmembers(members);
+        let newDateGmt = convertintoGMTCalender(
+          pollsDetails.poll.pollDetails.dueDate
+        );
+        console.log("newDateGmtnewDateGmt",newDateGmt)
+
+        setUpdatePolls({
+          ...UpdatePolls,
+          TypingTitle: pollsDetails.poll.pollDetails.pollTitle,
+          AllowMultipleUser: pollsDetails.poll.pollDetails.allowMultipleAnswers,
+          date: newDateGmt,
+          pollID: pollsDetails.poll.pollDetails.pollID,
+        });
+        setOptions({
+          ...options,
+          pollOptions: pollsDetails.poll.pollOptions.answer,
+        });
+      }
+    }
+  }, [PollsReducer.Allpolls]);
+
   // for add user for assignes
   const handleAddUsers = () => {
     let pollsData = PollsReducer.gellAllCommittesandGroups;
@@ -287,32 +316,6 @@ const UpdatePolls = () => {
     }
   };
 
-  useEffect(() => {
-    if (PollsReducer.Allpolls != null && PollsReducer.Allpolls != undefined) {
-      let pollsDetails = PollsReducer.Allpolls;
-      if (Object.keys(PollsReducer.Allpolls).length > 0) {
-        let members = [];
-        PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
-          members.push(data);
-        });
-        setPollmembers(members);
-        let newDateGmt = convertintoGMTCalender(
-          pollsDetails.poll.pollDetails.dueDate
-        );
-        setUpdatePolls({
-          ...UpdatePolls,
-          TypingTitle: pollsDetails.poll.pollDetails.pollTitle,
-          AllowMultipleUser: pollsDetails.poll.pollDetails.allowMultipleAnswers,
-          date: newDateGmt,
-          pollID: pollsDetails.poll.pollDetails.pollID,
-        });
-        setOptions({
-          ...options,
-          pollOptions: pollsDetails.poll.pollOptions.answer,
-        });
-      }
-    }
-  }, [PollsReducer.Allpolls]);
   useEffect(() => {}, [UpdatePolls.date]);
   const addNewRow = () => {
     if (polloptions.length > 1) {
@@ -348,10 +351,11 @@ const UpdatePolls = () => {
 
   const changeDateStartHandler = (date) => {
     let newDate = moment(date).format("YYYYMMDD");
+    let DateDate = new Date(date);
     console.log("changeDateStartHandler", newDate);
     setUpdatePolls({
       ...UpdatePolls,
-      date: newDate,
+      date: DateDate,
     });
   };
   console.log("changeDateStartHandler", UpdatePolls.date);
@@ -423,7 +427,7 @@ const UpdatePolls = () => {
     let data = {
       PollDetails: {
         PollTitle: UpdatePolls.TypingTitle,
-        DueDate: newDateFormaterAsPerUTC(UpdatePolls.date),
+        DueDate: multiDatePickerDateChangIntoUTC(UpdatePolls.date),
         AllowMultipleAnswers: UpdatePolls.AllowMultipleUser,
         CreatorID: parseInt(createrid),
         PollStatusID: parseInt(value),
