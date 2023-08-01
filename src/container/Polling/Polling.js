@@ -628,7 +628,7 @@ const Polling = () => {
           <Col sm={12} md={12} lg={12}>
             <Table
               column={PollTableColumns}
-              scroll={{ y: 350 }}
+              scroll={{ y: "62vh" }}
               pagination={false}
               rows={rows}
             />
