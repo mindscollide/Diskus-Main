@@ -717,5 +717,6 @@
   "Required-atleast-one-vote": "Required Atleast One Vote",
   "Voted": "Voted",
   "Not-voted": "Not Voted",
-  "Are-you-sure-you-want-to-continue?": "Are you sure you want to continue?"
+  "Are-you-sure-you-want-to-continue?": "Are you sure you want to continue?",
+  "Maximum-meeting-duration-in-minutes": "Maximum meeting duration in minutes"
 }

@@ -43,6 +43,7 @@ import { clearResponseMessage } from '../../../store/actions/Get_List_Of_Assigne
 import { enGB, ar } from 'date-fns/locale'
 import { registerLocale } from 'react-datepicker'
 import {
+  _justShowDateformat,
   newDateFormaterAsPerUTC,
   newTimeFormaterAsPerUTC,
   newTimeFormaterAsPerUTCFullDate,
@@ -351,7 +352,7 @@ const TodoList = () => {
       title: t('Assigned-by'),
       dataIndex: 'taskCreator',
       key: 'taskCreator',
-      // width: "220px",
+      width: "160px",
       sortDirections: ['descend', 'ascend'],
       // align: "left",
       render: (record, index) => {
@@ -374,7 +375,7 @@ const TodoList = () => {
     },
     {
       title: t('Assigned-to'),
-      // width: "220px",
+      width: "160px",
       dataIndex: 'taskAssignedTo',
       key: 'taskAssignedTo',
       sortDirections: ['descend', 'ascend'],
@@ -425,11 +426,12 @@ const TodoList = () => {
       dataIndex: 'deadlineDateTime',
       key: 'deadlineDateTime',
       className: 'deadLineTodo',
-      align: 'left',
+      width: "200px",
+      align: 'center',
       sortDirections: ['descend', 'ascend'],
       sorter: (a, b) =>
-        newTimeFormaterAsPerUTCFullDate(a.deadlineDateTime) <
-        newTimeFormaterAsPerUTCFullDate(b.deadlineDateTime),
+        _justShowDateformat(a.deadlineDateTime) <
+        _justShowDateformat(b.deadlineDateTime),
       // width: "220px",
       render: (text, record) => {
         console.log('text1212', record)
@@ -996,7 +998,7 @@ const TodoList = () => {
                     column={columnsToDo}
                     className={'ToDo'}
                     rows={rowsToDo}
-                    scroll={{ y: 400 }}
+                    scroll={{ y: 400, x: 400 }}
                     // onChange={tableTodoChange}
                     pagination={false}
                   />

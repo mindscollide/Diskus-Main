@@ -291,9 +291,19 @@ const EditResolution = ({
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setOnclickFlag(false)
+
     console.log(e.target.value, "eeeeeeee");
-    setTaskAssignedToInput(e.target.value.trimStart());
+    if (e.target.value === "") {
+      setEmailValue("")
+      // setOnclickFlag(false)
+      setTaskAssignedToInput("");
+      setTaskAssignedTo("");
+      setTaskAssignedName("");
+    } else if (e.target.value !== "") {
+      setOnclickFlag(false)
+      setTaskAssignedToInput(e.target.value.trimStart());
+    }
+
     // setEmailValue
   };
 
@@ -1730,6 +1740,7 @@ const EditResolution = ({
                                       <Col lg={2} md={2} sm={2}>
                                         <Button
                                           text={t("Add")}
+                                          disableBtn={taskAssignedTo !== 0 ? false : true}
                                           className={
                                             styles["ADD_Button_Createresolution"]
                                           }
