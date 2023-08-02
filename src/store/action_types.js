@@ -280,6 +280,10 @@ export const MEETING_STATUS_SOCKET = "MEETING_STATUS_SOCKET";
 // For comments Socket
 export const POST_COMMENTS = "POST_COMMENTS";
 
+// Polling Socket
+
+export const ALL_POLLINGS_SOCKET = "ALL_POLLINGS_SOCKET";
+
 // Aun work on admin action types (START) //
 
 //For Admin AddUser
