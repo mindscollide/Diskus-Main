@@ -1,0 +1,40 @@
+.NewMeeting_container {
+  width: 90% !important;
+  height: 80vh !important;
+  margin: 0 auto !important;
+}
+
+.NewMeetinHeading {
+  color: #5f78d6 !important;
+  font-size: 30px !important;
+  font-family: "MontserratSemiBold";
+}
+
+.Newmeeting_Scehedule_meet {
+  width: auto;
+  white-space: nowrap;
+  height: 39px;
+  border-radius: 4px;
+  font-size: 12px !important;
+  color: #fff;
+  background: #5f78d6 !important;
+  border: none !important;
+  font-weight: 600;
+  padding: 12px 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Search_Bar_icon_class {
+  cursor: pointer;
+}
+
+.polling_searchinput {
+  display: inline-block;
+  position: absolute !important;
+  right: 0 !important;
+  width: auto;
+  top: 5px;
+  margin-right: 25px;
+}

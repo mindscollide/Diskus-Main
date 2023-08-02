@@ -62,7 +62,6 @@ import VerificationIphone from "../container/pages/organizationRegister/2FA/Veri
 import VerificationCodeOne from "../container/pages/organizationRegister/2FA/VericationCodeOne/VerificationCodeOne";
 import VerificationCodeThree from "../container/pages/organizationRegister/2FA/VerficationCodeThree/VerificationCodeThree";
 import SigninDenied from "../container/pages/organizationRegister/2FA/VerificationFaild/SignInDenied";
-
 import ForgotPasswordVerification from "../container/authentication/ForgotpasswordVerification/ForgotPasswordVerification";
 import UpdatePasswordSuccessfully from "../container/authentication/UpdatedPasswordSuccessfully/UpdatePasswordSuccessfully";
 import Committee from "../container/Committee/Committee";
@@ -70,6 +69,8 @@ import Resolution from "../container/Resolution/Resolution";
 import DataRoom from "../container/DataRoom/DataRoom";
 import Polling from "../container/Polling/Polling";
 import PaymentForm2 from "../container/Admin/Subscriptions/PaymentForm2/PaymentForm2";
+import NewMeeting from "../container/pages/meeting/MeetingTwo";
+
 export const router = createHashRouter(
   createRoutesFromElements(
     <>
@@ -112,6 +113,7 @@ export const router = createHashRouter(
           <Route path="forgotpassword" element={<ForgotPassword />} />
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="meeting" element={<Meeting />} />
+          <Route path="Meeting2" element={<NewMeeting />} />
           <Route path="videochat" element={<VideoChat />} />
           <Route path="setting" element={<CustomSetting />} />
           <Route path="faq's" element={<CustomMiscellaneous />} />

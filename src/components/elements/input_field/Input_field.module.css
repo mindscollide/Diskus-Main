@@ -137,6 +137,12 @@
   height: 39px !important;
 }
 
+.meetingSearch {
+  width: 502px;
+  position: relative !important;
+  height: 39px !important;
+}
+
 .Search_Modal_Fields {
   height: 39px !important;
 }
