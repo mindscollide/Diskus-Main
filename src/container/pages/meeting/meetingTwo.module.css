@@ -7,7 +7,7 @@
 .NewMeetinHeading {
   color: #5f78d6 !important;
   font-size: 30px !important;
-  font-family: "MontserratSemiBold";
+  font-family: "Montserrat";
 }
 
 .Newmeeting_Scehedule_meet {
@@ -26,6 +26,25 @@
   align-items: center;
 }
 
+.Newmeeting_Scehedule_meet:hover,
+.Newmeeting_Scehedule_meet:active,
+.Newmeeting_Scehedule_meet:focus,
+.Newmeeting_Scehedule_meet:focus-visible {
+  width: auto !important;
+  white-space: nowrap !important;
+  height: 39px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #5f78d6 !important;
+  border: none !important;
+  font-weight: 600 !important;
+  padding: 12px 30px !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
 .Search_Bar_icon_class {
   cursor: pointer;
 }
@@ -37,4 +56,77 @@
   width: auto;
   top: 5px;
   margin-right: 25px;
+}
+
+.Search-Box_meeting {
+  width: 502px !important;
+  height: 242px !important;
+  background: #fff;
+  border: 1px solid #e1e1e1;
+  position: absolute !important;
+  right: 0;
+  z-index: 1 !important;
+  top: 39px !important;
+}
+
+.Cross_Icon_Styling {
+  cursor: pointer;
+}
+
+body[dir="rtl"] .polling_searchinput {
+  position: absolute !important;
+  right: 88% !important;
+  cursor: pointer !important;
+}
+.ResetButtonMeeting {
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #fff;
+  border: 1px solid #e1e1e1;
+  color: #5a5a5a;
+}
+
+.ResetButtonMeeting:hover,
+.ResetButtonMeeting:hover,
+.ResetButtonMeeting:hover,
+.ResetButtonMeeting:hover {
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+}
+
+.SearchButtonMeetings {
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+.SearchButtonMeetings:hover,
+.SearchButtonMeetings:active,
+.SearchButtonMeetings:focus-visible,
+.SearchButtonMeetings:focus {
+  padding: 12px 30px !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+.joining-Meeting {
+  /* padding: 12px 30px !important; */
+  width: 118px;
+  height: 28px;
+  font-size: 12px;
+  color: #fff;
+  background: #5f78d6;
+  border: none;
+  border-radius: 4px !important;
 }

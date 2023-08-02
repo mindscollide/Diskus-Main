@@ -143,6 +143,11 @@
   height: 39px !important;
 }
 
+.meetinInnerSearch {
+  position: relative !important;
+  height: 39px !important;
+}
+
 .Search_Modal_Fields {
   height: 39px !important;
 }

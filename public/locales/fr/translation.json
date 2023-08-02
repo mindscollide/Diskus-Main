@@ -718,5 +718,9 @@
   "Voted": "Voted",
   "Not-voted": "Not Voted",
   "Are-you-sure-you-want-to-continue?": "Are you sure you want to continue?",
-  "Maximum-meeting-duration-in-minutes": "Maximum meeting duration in minutes"
+  "Maximum-meeting-duration-in-minutes": "Maximum meeting duration in minutes",
+  "Meeting-title": "Meeting Title",
+  "Organizer-name": "Organizer Name",
+  "Date-time": "Date/Time",
+  "Join-meeting": "Join Meeting"
 }
