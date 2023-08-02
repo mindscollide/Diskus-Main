@@ -74,6 +74,14 @@ const viewVotesDetailsModal = (response) => {
   };
 };
 
+const notifyPollingSocket = (response) => {
+  console.log(response, "ALL_POLLINGS_SOCKET");
+  return {
+    type: actions.ALL_POLLINGS_SOCKET,
+    response: response,
+  };
+};
+
 const setVotePollModal = (response) => {
   return {
     type: actions.VOTE_POLL_MODAL,
@@ -1075,4 +1083,5 @@ export {
   viewVotesApi,
   setDeltePollModal,
   UpdatePollStatusByPollIdApi,
+  notifyPollingSocket,
 };
