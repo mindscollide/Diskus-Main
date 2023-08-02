@@ -3,7 +3,7 @@
   z-index: 2;
   display: flex;
   align-items: center;
-  height: 70px;
+  height: 65px !important;
   /* padding-left: 55px; */
   /* padding-right: 25px; */
 }

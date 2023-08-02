@@ -254,6 +254,7 @@ const ScheduleNewResolution = ({
 
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
+    console.log(name, id, "onSearchonSearchonSearchonSearch")
     setOnclickFlag(true)
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
@@ -269,13 +270,25 @@ const ScheduleNewResolution = ({
         findAttendeeEmail.emailAddress
       );
     }
+    console.log(taskAssignedToInput, "onSearchonSearchonSearchonSearch")
+    console.log(taskAssignedTo, "onSearchonSearchonSearchonSearch")
+    console.log(taskAssignedName, "onSearchonSearchonSearchonSearch")
   };
+
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
     console.log(e.target.value, "eeeeeeee");
-    setOnclickFlag(false)
-    setTaskAssignedToInput(e.target.value.trimStart());
+    if (e.target.value === "") {
+      setEmailValue("")
+      setTaskAssignedToInput("");
+      setTaskAssignedTo(0);
+      setTaskAssignedName("");
+    } else if (e.target.value !== "") {
+      setOnclickFlag(false)
+      setTaskAssignedToInput(e.target.value.trimStart());
+    }
+
     // setEmailValue
   };
 
@@ -354,6 +367,7 @@ const ScheduleNewResolution = ({
           </div>
         ));
     } else {
+      setEmailValue("")
       console.log("not found");
     }
   };
