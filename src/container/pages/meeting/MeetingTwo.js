@@ -19,9 +19,11 @@ import {
 import { Col, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import moment from "moment";
+import SceduleMeeting from "./scedulemeeting/SceduleMeeting";
 const NewMeeting = () => {
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
+  const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
   // data for rows for first table
   const data = [
@@ -45,6 +47,10 @@ const NewMeeting = () => {
   };
   const HandleCloseSearchModalMeeting = () => {
     setSearchMeeting(false);
+  };
+
+  const openSceduleMeetingPage = () => {
+    setSceduleMeeting(true);
   };
 
   useEffect(() => {
@@ -202,128 +208,152 @@ const NewMeeting = () => {
 
   return (
     <section className={styles["NewMeeting_container"]}>
-      <Row className="mt-2">
-        <Col sm={12} md={6} lg={6} className="d-flex gap-3 align-items-center">
-          <span className={styles["NewMeetinHeading"]}>{t("Meetings")}</span>
-          <Button
-            text={t("Schedule-a-meeting")}
-            className={styles["Newmeeting_Scehedule_meet"]}
-            icon={<Plus width={20} height={20} fontWeight={800} />}
-          />
-        </Col>
-        <Col
-          sm={12}
-          md={6}
-          lg={6}
-          className="d-flex justify-content-end align-items-center"
-        >
-          <span className="position-relative">
-            <TextField
-              width={"502px"}
-              placeholder={t("Search")}
-              applyClass={"meetingSearch"}
-              name={"SearchVal"}
-              labelClass="d-none"
-              clickIcon={HandleShowSearch}
-              inputicon={
-                <img
-                  src={searchicon}
-                  className={styles["Search_Bar_icon_class"]}
+      {sceduleMeeting ? (
+        <SceduleMeeting setSceduleMeeting={setSceduleMeeting} />
+      ) : (
+        <>
+          <Row className="mt-2">
+            <Col
+              sm={12}
+              md={6}
+              lg={6}
+              className="d-flex gap-3 align-items-center"
+            >
+              <span className={styles["NewMeetinHeading"]}>
+                {t("Meetings")}
+              </span>
+              <Button
+                text={t("Schedule-a-meeting")}
+                className={styles["Newmeeting_Scehedule_meet"]}
+                icon={<Plus width={20} height={20} fontWeight={800} />}
+                onClick={openSceduleMeetingPage}
+              />
+            </Col>
+            <Col
+              sm={12}
+              md={6}
+              lg={6}
+              className="d-flex justify-content-end align-items-center"
+            >
+              <span className="position-relative">
+                <TextField
+                  width={"502px"}
+                  placeholder={t("Search")}
+                  applyClass={"meetingSearch"}
+                  name={"SearchVal"}
+                  labelClass="d-none"
+                  clickIcon={HandleShowSearch}
+                  inputicon={
+                    <img
+                      src={searchicon}
+                      className={styles["Search_Bar_icon_class"]}
+                    />
+                  }
+                  iconClassName={styles["polling_searchinput"]}
                 />
-              }
-              iconClassName={styles["polling_searchinput"]}
-            />
-            {searchMeeting ? (
-              <>
-                <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={styles["Search-Box_meeting"]}
-                  >
-                    <Row className="mt-2">
+                {searchMeeting ? (
+                  <>
+                    <Row>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className="d-flex justify-content-end"
+                        className={styles["Search-Box_meeting"]}
                       >
-                        <img
-                          src={BlackCrossIcon}
-                          className={styles["Cross_Icon_Styling"]}
-                          width="16px"
-                          height="16px"
-                          onClick={HandleCloseSearchModalMeeting}
-                        />
+                        <Row className="mt-2">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-end"
+                          >
+                            <img
+                              src={BlackCrossIcon}
+                              className={styles["Cross_Icon_Styling"]}
+                              width="16px"
+                              height="16px"
+                              onClick={HandleCloseSearchModalMeeting}
+                            />
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <TextField
+                              placeholder={t("Meeting-title")}
+                              applyClass={"meetinInnerSearch"}
+                              labelClass="d-none"
+                            />
+                          </Col>
+                        </Row>
+                        <Row className="mt-3">
+                          <Col lg={6} md={6} sm={12}>
+                            <Select />
+                          </Col>
+                          <Col lg={6} md={6} sm={12}>
+                            <TextField
+                              placeholder={t("Organizer-name")}
+                              labelClass="d-none"
+                              applyClass={"meetinInnerSearch"}
+                            />
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-end gap-2"
+                          >
+                            <Button
+                              text={t("Reset")}
+                              className={styles["ResetButtonMeeting"]}
+                            />
+                            <Button
+                              text={t("Search")}
+                              className={styles["SearchButtonMeetings"]}
+                            />
+                          </Col>
+                        </Row>
                       </Col>
                     </Row>
-                    <Row className="mt-4">
-                      <Col lg={12} md={12} sm={12}>
-                        <TextField
-                          placeholder={t("Meeting-title")}
-                          applyClass={"meetinInnerSearch"}
-                          labelClass="d-none"
-                        />
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col lg={6} md={6} sm={12}>
-                        <Select />
-                      </Col>
-                      <Col lg={6} md={6} sm={12}>
-                        <TextField
-                          placeholder={t("Organizer-name")}
-                          labelClass="d-none"
-                          applyClass={"meetinInnerSearch"}
-                        />
-                      </Col>
-                    </Row>
-                    <Row className="mt-4">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-end gap-2"
-                      >
-                        <Button
-                          text={t("Reset")}
-                          className={styles["ResetButtonMeeting"]}
-                        />
-                        <Button
-                          text={t("Search")}
-                          className={styles["SearchButtonMeetings"]}
-                        />
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </>
-            ) : null}
-          </span>
-        </Col>
-      </Row>
-      <Row>
-        <Col lg={12} md={12} sm={12}>
-          <Table
-            column={MeetingColoumns}
-            scroll={{ y: "62vh" }}
-            pagination={false}
-            className="Polling_table"
-            rows={rowsData}
-          />
-        </Col>
-      </Row>
-      <Row className="mt-5">
-        <Col lg={4} md={4} sm={4}></Col>
-        <Col lg={4} md={4} sm={4} className="d-flex justify-content-center ">
-          <Row className={styles["PaginationStyle-Committee"]}>
-            <Col lg={12} md={12} sm={12} className={"pagination-groups-table"}>
-              <Pagination />
+                  </>
+                ) : null}
+              </span>
             </Col>
           </Row>
-        </Col>
-      </Row>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <Table
+                column={MeetingColoumns}
+                scroll={{ y: "62vh" }}
+                pagination={false}
+                className="Polling_table"
+                rows={rowsData}
+              />
+            </Col>
+          </Row>
+          <Row className="mt-5">
+            <Col lg={4} md={4} sm={4}></Col>
+            <Col
+              lg={4}
+              md={4}
+              sm={4}
+              className="d-flex justify-content-center "
+            >
+              <Row className={styles["PaginationStyle-Committee"]}>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className={"pagination-groups-table"}
+                >
+                  <Pagination />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </>
+      )}
     </section>
   );
 };
