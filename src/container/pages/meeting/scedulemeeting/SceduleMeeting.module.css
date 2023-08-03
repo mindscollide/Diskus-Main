@@ -25,7 +25,7 @@
 .Schedule_meetings_options:focus-visible {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  border: none !important;
+  border: 1px solid #5f78d6 !important;
   border-radius: 4px !important;
   background: #5f78d6 !important;
   font-family: "MontserratSemiBold" !important;

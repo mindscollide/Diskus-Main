@@ -5752,6 +5752,7 @@ abbr[title] {
   width: 200px !important;
   height: 39px !important;
   border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
   color: #000 !important;
 }
 .inputTIme:is(:focus, :focus-visible, :active, :visited) {
@@ -5761,8 +5762,25 @@ abbr[title] {
 }
 .containerClassTimePicker input[type="text"] {
   color: #5f78d6 !important;
-  width: 30px;
-  height: 20px;
+  width: 42px;
+  height: 18px;
+  border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
   font-family: "MontserratSemiBold" !important;
+  padding: 10px !important;
+}
+
+.containerClassTimePicker
+  input[type="text"]:is(:focus, :focus-visible, :active, :visited) {
+  outline: none !important;
+}
+
+.containerClassTimePicker .rmdp-time-picker div .rmdp-am {
+  color: #5f78d6 !important;
+  width: 42px !important;
+  height: 12px !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold" !important;
+  padding: 0px !important;
 }

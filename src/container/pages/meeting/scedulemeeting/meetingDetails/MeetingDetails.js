@@ -147,8 +147,8 @@ const MeetingDetails = () => {
                         className="timePicker"
                         disableDayPicker
                         inputClass="inputTIme"
-                        format="HH:mm:ss"
-                        plugins={[<TimePicker />]}
+                        format="HH:mm A"
+                        plugins={[<TimePicker hideSeconds />]}
                       />
                     </Col>
                     <Col lg={4} md={4} sm={12}></Col>
