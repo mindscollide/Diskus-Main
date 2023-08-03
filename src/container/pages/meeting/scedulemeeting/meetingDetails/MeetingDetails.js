@@ -19,6 +19,9 @@ import {
 const MeetingDetails = () => {
   const { t } = useTranslation();
   const [options, setOptions] = useState([]);
+  const [rows, setRows] = useState([
+    { selectedOption: null, startDate: null, endDate: null },
+  ]);
   const handleSelectChange = (selectedOption) => {
     setOptions({ ...options, selectedOption });
   };
@@ -30,9 +33,6 @@ const MeetingDetails = () => {
   const handleEndDateChange = (date) => {
     setOptions({ ...options, endDate: date });
   };
-  const [rows, setRows] = useState([
-    { selectedOption: null, startDate: null, endDate: null },
-  ]);
 
   const addRow = () => {
     setRows([
@@ -41,12 +41,18 @@ const MeetingDetails = () => {
     ]);
   };
 
+  const HandleCancelFunction = (index) => {
+    let optionscross = [...rows];
+    optionscross.splice(index, 1);
+    setRows(optionscross);
+  };
+
   console.log(rows, "optionsoptionsoptions");
   return (
     <section>
       <Row>
         {/* First Half */}
-        <Col lg={7} md={7} sm={12}>
+        <Col lg={8} md={8} sm={12}>
           <Row className="mt-5">
             <Col lg={12} md={12} sm={12}>
               <TextField
@@ -188,7 +194,12 @@ const MeetingDetails = () => {
                                     onChange={handleStartDateChange}
                                   />
                                 </Col>
-                                <Col lg={3} md={3} sm={12} className="m-0 p-0">
+                                <Col
+                                  lg={3}
+                                  md={3}
+                                  sm={12}
+                                  className="d-flex justify-content-start"
+                                >
                                   <Row>
                                     <Col lg={12} md={12} sm={12}>
                                       <DatePicker
@@ -209,13 +220,16 @@ const MeetingDetails = () => {
                                   lg={1}
                                   md={1}
                                   sm={12}
-                                  className="d-flex justify-content-end align-items-center"
+                                  className="d-flex justify-content-end position-relative align-items-center"
                                 >
                                   <img
                                     src={redcrossIcon}
                                     width="23px"
                                     height="23px"
                                     className={styles["Cross_icon_class"]}
+                                    onClick={() => {
+                                      HandleCancelFunction(index);
+                                    }}
                                   />
                                 </Col>
                               </Row>
@@ -247,32 +261,36 @@ const MeetingDetails = () => {
                                     plugins={[<TimePicker hideSeconds />]}
                                   />
                                 </Col>
-                                <Col lg={3} md={3} sm={12} className="m-0 p-0">
-                                  <Row>
-                                    <Col lg={12} md={12} sm={12}>
-                                      <DatePicker
-                                        arrowClassName="arrowClass"
-                                        containerClassName="containerClassTimePicker"
-                                        className="timePicker"
-                                        disableDayPicker
-                                        inputClass="inputTIme"
-                                        format="HH:mm A"
-                                        plugins={[<TimePicker hideSeconds />]}
-                                      />
-                                    </Col>
-                                  </Row>
+                                <Col
+                                  lg={3}
+                                  md={3}
+                                  sm={12}
+                                  className="d-flex justify-content-start"
+                                >
+                                  <DatePicker
+                                    arrowClassName="arrowClass"
+                                    containerClassName="containerClassTimePicker"
+                                    className="timePicker"
+                                    disableDayPicker
+                                    inputClass="inputTIme"
+                                    format="HH:mm A"
+                                    plugins={[<TimePicker hideSeconds />]}
+                                  />
                                 </Col>
                                 <Col
                                   lg={1}
                                   md={1}
                                   sm={12}
-                                  className="d-flex justify-content-end align-items-center"
+                                  className="d-flex justify-content-end position-relative align-items-center"
                                 >
                                   <img
                                     src={redcrossIcon}
                                     width="23px"
                                     height="23px"
                                     className={styles["Cross_icon_class"]}
+                                    onClick={() => {
+                                      HandleCancelFunction(index);
+                                    }}
                                   />
                                 </Col>
                               </Row>
@@ -285,7 +303,7 @@ const MeetingDetails = () => {
                 : null}
             </Col>
           </Row>
-          <Row className="mt-4">
+          <Row className="mt-2">
             <Col lg={12} md={12} sm={12}>
               <Button
                 text={
@@ -316,7 +334,7 @@ const MeetingDetails = () => {
           </Row>
         </Col>
         {/* Second Half */}
-        <Col lg={5} md={5} sm={12}></Col>
+        <Col lg={4} md={4} sm={12}></Col>
       </Row>
     </section>
   );

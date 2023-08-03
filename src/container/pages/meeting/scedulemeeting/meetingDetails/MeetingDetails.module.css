@@ -40,7 +40,7 @@
 }
 
 .Scroller_meeting {
-  height: 16vh !important;
+  height: 20vh !important;
   overflow-x: hidden !important;
 }
 
@@ -57,8 +57,8 @@
 }
 
 .Cross_icon_class {
-  position: absolute !important;
-  right: 43%;
+  /* position: absolute !important; */
+  /* right: 43%; */
   margin: 0;
   padding: 0;
 }

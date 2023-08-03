@@ -70,7 +70,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                 />
               </Col>
             </Row>
-            {meetingDetails ? <MeetingDetails /> : null}
+            {meetingDetails && <MeetingDetails />}
           </Paper>
         </Col>
       </Row>
