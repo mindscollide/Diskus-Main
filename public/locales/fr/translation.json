@@ -731,5 +731,9 @@
   "Organizers": "Organizers",
   "Agenda-contributors": "Agenda Contributors",
   "Meeting-material": "Meeting Material",
-  "Actions": "Actions"
+  "Actions": "Actions",
+  "Meeting-type": "Meeting Type",
+  "Create-group-chat": "Create Group Chat",
+  "Paste-microsoft-team-zoom-link": "Paste Microsoft Team / Zoom Link",
+  "Scheduled-on": "Scheduled on"
 }

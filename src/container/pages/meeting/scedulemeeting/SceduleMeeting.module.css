@@ -14,6 +14,7 @@
   font-size: 12px !important;
   border: 1px solid #d4d4d4;
   border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
   background: #fff !important;
   color: #545454;
 }
@@ -27,5 +28,6 @@
   border: none !important;
   border-radius: 4px !important;
   background: #5f78d6 !important;
+  font-family: "MontserratSemiBold" !important;
   color: #fff !important;
 }

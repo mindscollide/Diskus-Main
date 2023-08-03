@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./SceduleMeeting.module.css";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -9,8 +9,14 @@ import {
   Loader,
   Notification,
 } from "../../../../components/elements";
+import MeetingDetails from "./meetingDetails/MeetingDetails";
 const SceduleMeeting = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
+  const [meetingDetails, setmeetingDetails] = useState(false);
+
+  const showMeetingDeitals = () => {
+    setmeetingDetails(true);
+  };
   return (
     <section>
       <Row className="mt-2">
@@ -28,6 +34,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                 <Button
                   text={t("Meeting-details")}
                   className={styles["Schedule_meetings_options"]}
+                  onClick={showMeetingDeitals}
                 />
                 <Button
                   text={t("Organizers")}
@@ -63,6 +70,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                 />
               </Col>
             </Row>
+            {meetingDetails ? <MeetingDetails /> : null}
           </Paper>
         </Col>
       </Row>

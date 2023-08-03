@@ -1,0 +1,57 @@
+.Meeting_type_heading {
+  color: #5f78d6;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Button_not_active {
+  height: 39px !important;
+  width: 39px !important;
+  background: #fff !important;
+  border: 1px solid #bbbbbb !important;
+  border-radius: 4px !important;
+}
+
+.Button_not_active:hover,
+.Button_not_active:active,
+.Button_not_active:focus,
+.Button_not_active:focus-visible {
+  height: 39px !important;
+  width: 39px !important;
+  background: #fff !important;
+  border: 1px solid #bbbbbb !important;
+  border-radius: 4px !important;
+}
+
+.Camera_icon {
+  margin-left: -4px !important;
+}
+
+.Create_group_chat_heading {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Scedule_heading {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5f78d6;
+}
+
+.Scroller_meeting {
+  height: 16vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_meeting::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_meeting::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}

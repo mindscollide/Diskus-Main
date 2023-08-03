@@ -5717,3 +5717,52 @@ abbr[title] {
   height: 1.2em !important;
   border-radius: none !important;
 }
+/* timePicker */
+
+.containerClassTimePicker .rmdp-input {
+  height: 39px !important;
+}
+
+.containerClassTimePicker .rmdp-time-picker.bottom {
+  border: 1px solid #ccc !important;
+  border-radius: 4px !important;
+  box-shadow: 0px 0px 5px #ccc;
+  width: 188px !important;
+}
+
+/* .containerClassTimePicker span.rmdp-arrow-container.rmdp-up:hover {
+  background: #5f78d6 !important;
+} */
+
+/* .containerClassTimePicker span.rmdp-arrow-container.rmdp-down:hover {
+  background: #5f78d6 !important;
+} */
+
+.containerClassTimePicker i.rmdp-arrow {
+  border: solid #0074d9 !important;
+  border-width: 0 2px 2px 0 !important;
+  display: inline-block !important;
+  height: 3px !important;
+  margin-top: 5px !important;
+  padding: 4px !important;
+  width: 3px !important;
+}
+
+.inputTIme {
+  width: 200px !important;
+  height: 39px !important;
+  border-radius: 4px !important;
+  color: #000 !important;
+}
+.inputTIme:is(:focus, :focus-visible, :active, :visited) {
+  border: 1px solid #ccc !important;
+  outline: none !important;
+  color: #000 !important;
+}
+.containerClassTimePicker input[type="text"] {
+  color: #5f78d6 !important;
+  width: 30px;
+  height: 20px;
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold" !important;
+}
