@@ -1,0 +1,31 @@
+.Scedule_newMeeting_Heading {
+  font-size: 30px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5f78d6;
+}
+
+.Scedule_meeting_paper {
+  height: 710px !important;
+  padding: 40px 40px !important;
+}
+
+.Schedule_meetings_options {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #d4d4d4;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #545454;
+}
+
+.Schedule_meetings_options:hover,
+.Schedule_meetings_options:active,
+.Schedule_meetings_options:focus,
+.Schedule_meetings_options:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+}

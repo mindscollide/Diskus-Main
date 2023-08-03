@@ -1100,5 +1100,11 @@
   "Join-meeting": "Join Meeting",
   "Chat": "Chat",
   "Ended": "Ended",
-  "Not-conducted": "Not Conducted"
+  "Not-conducted": "Not Conducted",
+  "Schedule-new-meeting": "Schedule New Meeting",
+  "Meeting-details": "Meeting Details",
+  "Organizers": "Organizers",
+  "Agenda-contributors": "Agenda Contributors",
+  "Meeting-material": "Meeting Material",
+  "Actions": "Actions"
 }
