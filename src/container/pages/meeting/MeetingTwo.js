@@ -4,6 +4,7 @@ import searchicon from "../../../assets/images/searchicon.svg";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import ClipIcon from "../../../assets/images/ClipIcon.png";
 import CommentIcon from "../../../assets/images/Comment-Icon.png";
+import member from "../../../assets/images/member.svg";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import { useTranslation } from "react-i18next";
 import { Pagination, Tooltip } from "antd";
@@ -27,8 +28,9 @@ const NewMeeting = () => {
     {
       key: "1",
       pollTitle: (
-        <label className="column-boldness">
-          Board Member Executive Meeting from Boss's exe...
+        <label className={styles["Title_desc"]}>
+          Board Member Executive Meeting from Boss's exe Board Member Executive
+          Meeting from Boss's exe
         </label>
       ),
       status: <label className="column-boldness">Active</label>,
@@ -76,13 +78,21 @@ const NewMeeting = () => {
       width: "40px",
       filters: [
         {
-          text: t("Published"),
-          value: "Published",
+          text: t("Active"),
+          value: "Active",
           className: currentLanguage,
         },
         {
-          text: t("Unpublished"),
-          value: "Unpublished",
+          text: t("Upcoming"),
+          value: "Upcoming",
+        },
+        {
+          text: t("Ended"),
+          value: "Ended",
+        },
+        {
+          text: t("Not-conducted"),
+          value: "Not conducted",
         },
       ],
       defaultFilteredValue: ["Published", "Unpublished"],
@@ -105,7 +115,7 @@ const NewMeeting = () => {
     {
       dataIndex: "Chat",
       key: "Chat",
-      width: "33px",
+      width: "46px",
       render: (text, record) => {
         return (
           <>
@@ -119,12 +129,20 @@ const NewMeeting = () => {
                     height="16.03px"
                   />
                 </Tooltip>
-                <Tooltip placement="topLeft" title={t("Delete")}>
+                <Tooltip placement="topLeft" title={t("Chat")}>
                   <img
                     src={CommentIcon}
                     className="cursor-pointer"
                     width="20.06px"
                     height="15.95px"
+                  />
+                </Tooltip>
+                <Tooltip placement="topLeft" title={t("member")}>
+                  <img
+                    src={member}
+                    className="cursor-pointer"
+                    width="17.1px"
+                    height="16.72px"
                   />
                 </Tooltip>
               </Col>
@@ -136,7 +154,7 @@ const NewMeeting = () => {
     {
       dataIndex: "Join",
       key: "Join",
-      width: "53px",
+      width: "55px",
       render: (text, record) => {
         return (
           <>
@@ -294,6 +312,16 @@ const NewMeeting = () => {
             className="Polling_table"
             rows={rowsData}
           />
+        </Col>
+      </Row>
+      <Row className="mt-5">
+        <Col lg={4} md={4} sm={4}></Col>
+        <Col lg={4} md={4} sm={4} className="d-flex justify-content-center ">
+          <Row className={styles["PaginationStyle-Committee"]}>
+            <Col lg={12} md={12} sm={12} className={"pagination-groups-table"}>
+              <Pagination />
+            </Col>
+          </Row>
         </Col>
       </Row>
     </section>

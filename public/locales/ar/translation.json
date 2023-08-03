@@ -1068,5 +1068,8 @@
   "Meeting-title": "Meeting Title",
   "Organizer-name": "Organizer Name",
   "Date-time": "Date/Time",
-  "Join-meeting": "Join Meeting"
+  "Join-meeting": "Join Meeting",
+  "Chat": "Chat",
+  "Ended": "Ended",
+  "Not-conducted": "Not Conducted"
 }
