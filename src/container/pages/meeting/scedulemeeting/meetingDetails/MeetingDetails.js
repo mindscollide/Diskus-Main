@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./MeetingDetails.module.css";
 import { useTranslation } from "react-i18next";
 import MeetingVideoChatIcon from "../../../../../assets/images/newElements/Icon feather-video1.png";
 import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
+import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
+import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import { Col, Row } from "react-bootstrap";
 import {
   Button,
@@ -16,11 +18,35 @@ import {
 
 const MeetingDetails = () => {
   const { t } = useTranslation();
+  const [options, setOptions] = useState([]);
+  const handleSelectChange = (selectedOption) => {
+    setOptions({ ...options, selectedOption });
+  };
+
+  const handleStartDateChange = (date) => {
+    setOptions({ ...options, startDate: date });
+  };
+
+  const handleEndDateChange = (date) => {
+    setOptions({ ...options, endDate: date });
+  };
+  const [rows, setRows] = useState([
+    { selectedOption: null, startDate: null, endDate: null },
+  ]);
+
+  const addRow = () => {
+    setRows([
+      ...rows,
+      { selectedOption: null, startDate: null, endDate: null },
+    ]);
+  };
+
+  console.log(rows, "optionsoptionsoptions");
   return (
     <section>
       <Row>
         {/* First Half */}
-        <Col lg={6} md={6} sm={12}>
+        <Col lg={7} md={7} sm={12}>
           <Row className="mt-5">
             <Col lg={12} md={12} sm={12}>
               <TextField
@@ -121,45 +147,176 @@ const MeetingDetails = () => {
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <Row>
-                <Col lg={12} md={12} sm={12}>
-                  <span className={styles["Scedule_heading"]}>
-                    {t("Scheduled-on")}
-                    <span>*</span>
-                  </span>
-                </Col>
-              </Row>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className={styles["Scroller_meeting"]}
-                >
-                  <Row className="mt-2">
-                    <Col lg={4} md={4} sm={12}>
-                      <Select />
-                    </Col>
-                    <Col lg={4} md={4} sm={12} className="timePicker">
-                      <DatePicker
-                        arrowClassName="arrowClass"
-                        containerClassName="containerClassTimePicker"
-                        className="timePicker"
-                        disableDayPicker
-                        inputClass="inputTIme"
-                        format="HH:mm A"
-                        plugins={[<TimePicker hideSeconds />]}
-                      />
-                    </Col>
-                    <Col lg={4} md={4} sm={12}></Col>
-                  </Row>
-                </Col>
-              </Row>
+              <span className={styles["Scedule_heading"]}>
+                {t("Scheduled-on")}
+                <span>*</span>
+              </span>
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={12} md={12} sm={12} className={styles["Scroller_meeting"]}>
+              {rows.length > 0
+                ? rows.map((data, index) => {
+                    return (
+                      <>
+                        {index <= 1 ? (
+                          <Row>
+                            <Col lg={12} md={12} sm={12} key={index}>
+                              <Row className="mt-2">
+                                <Col lg={4} md={4} sm={12}>
+                                  <Select
+                                    value={rows.selectedOption}
+                                    onChange={handleSelectChange}
+                                    isSearchable={false}
+                                  />
+                                </Col>
+                                <Col
+                                  lg={4}
+                                  md={4}
+                                  sm={12}
+                                  className="timePicker"
+                                >
+                                  <DatePicker
+                                    arrowClassName="arrowClass"
+                                    containerClassName="containerClassTimePicker"
+                                    className="timePicker"
+                                    disableDayPicker
+                                    inputClass="inputTIme"
+                                    format="HH:mm A"
+                                    plugins={[<TimePicker hideSeconds />]}
+                                    selected={rows.startDate}
+                                    onChange={handleStartDateChange}
+                                  />
+                                </Col>
+                                <Col lg={3} md={3} sm={12} className="m-0 p-0">
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <DatePicker
+                                        arrowClassName="arrowClass"
+                                        containerClassName="containerClassTimePicker"
+                                        className="timePicker"
+                                        disableDayPicker
+                                        inputClass="inputTIme"
+                                        format="HH:mm A"
+                                        plugins={[<TimePicker hideSeconds />]}
+                                        selected={rows.endDate}
+                                        onChange={handleEndDateChange}
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col
+                                  lg={1}
+                                  md={1}
+                                  sm={12}
+                                  className="d-flex justify-content-end align-items-center"
+                                >
+                                  <img
+                                    src={redcrossIcon}
+                                    width="23px"
+                                    height="23px"
+                                    className={styles["Cross_icon_class"]}
+                                  />
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        ) : (
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <Row className="mt-2">
+                                <Col lg={4} md={4} sm={12}>
+                                  <Select
+                                    value={data.value}
+                                    isSearchable={false}
+                                  />
+                                </Col>
+                                <Col
+                                  lg={4}
+                                  md={4}
+                                  sm={12}
+                                  className="timePicker"
+                                >
+                                  <DatePicker
+                                    arrowClassName="arrowClass"
+                                    containerClassName="containerClassTimePicker"
+                                    className="timePicker"
+                                    disableDayPicker
+                                    inputClass="inputTIme"
+                                    format="HH:mm A"
+                                    plugins={[<TimePicker hideSeconds />]}
+                                  />
+                                </Col>
+                                <Col lg={3} md={3} sm={12} className="m-0 p-0">
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <DatePicker
+                                        arrowClassName="arrowClass"
+                                        containerClassName="containerClassTimePicker"
+                                        className="timePicker"
+                                        disableDayPicker
+                                        inputClass="inputTIme"
+                                        format="HH:mm A"
+                                        plugins={[<TimePicker hideSeconds />]}
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col
+                                  lg={1}
+                                  md={1}
+                                  sm={12}
+                                  className="d-flex justify-content-end align-items-center"
+                                >
+                                  <img
+                                    src={redcrossIcon}
+                                    width="23px"
+                                    height="23px"
+                                    className={styles["Cross_icon_class"]}
+                                  />
+                                </Col>
+                              </Row>
+                            </Col>
+                          </Row>
+                        )}
+                      </>
+                    );
+                  })
+                : null}
+            </Col>
+          </Row>
+          <Row className="mt-4">
+            <Col lg={12} md={12} sm={12}>
+              <Button
+                text={
+                  <>
+                    <Row className="mt-1">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justify-content-center gap-2 align-items-center"
+                      >
+                        <img
+                          src={plusFaddes}
+                          width="15.87px"
+                          height="15.87px"
+                        />
+                        <span className={styles["Add_dates_label"]}>
+                          {t("Add-dates")}
+                        </span>
+                      </Col>
+                    </Row>
+                  </>
+                }
+                className={styles["Add_Dates_Btn_Class"]}
+                onClick={addRow}
+              />
             </Col>
           </Row>
         </Col>
-        {/* First Half */}
-        <Col lg={6} md={6} sm={12}></Col>
+        {/* Second Half */}
+        <Col lg={5} md={5} sm={12}></Col>
       </Row>
     </section>
   );

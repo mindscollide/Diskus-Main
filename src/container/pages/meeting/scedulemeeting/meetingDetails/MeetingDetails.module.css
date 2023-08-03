@@ -55,3 +55,24 @@
   background: #ccc;
   margin-left: -15px;
 }
+
+.Cross_icon_class {
+  position: absolute !important;
+  right: 43%;
+  margin: 0;
+  padding: 0;
+}
+
+.Add_Dates_Btn_Class {
+  border: 1px dotted #ccc !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  height: 39px !important;
+  width: 100%;
+}
+
+.Add_dates_label {
+  font-size: 12px !important;
+  color: #5f78d6 !important;
+  font-family: "MontserratMedium-500" !important;
+}
