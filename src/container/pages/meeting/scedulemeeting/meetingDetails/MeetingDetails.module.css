@@ -97,9 +97,24 @@
   border: none !important;
 }
 
-.PLus_Icon {
+.Frequency_heading {
+  font-size: 12px !important;
+  color: #5f78d6 !important;
+  font-family: "MontserratSemiBold" !important;
 }
 
 .Plus_Button_class {
   margin-top: 4px !important;
+}
+
+.Notify_heading {
+  color: #5a5a5a !important;
+  color: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.reccurring_heading {
+  font-size: 12px !important;
+  color: #5f78d6 !important;
+  font-family: "MontserratSemiBold" !important;
 }

@@ -179,6 +179,11 @@
   resize: none;
 }
 
+.text-area-create-meeting {
+  height: 222.8px !important;
+  resize: none;
+}
+
 .text-area-sharefolder {
   height: 110px !important;
   resize: none;

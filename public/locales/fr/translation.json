@@ -736,5 +736,9 @@
   "Create-group-chat": "Create Group Chat",
   "Paste-microsoft-team-zoom-link": "Paste Microsoft Team / Zoom Link",
   "Scheduled-on": "Scheduled on",
-  "Add-dates": "Add Dates"
+  "Add-dates": "Add Dates",
+  "Note-for-this-meeting": "Note for this meeting",
+  "Allow-rspv": "Allow RSPV",
+  "Notify-meeting-organizer-when-members-rspv": "Notify meeting organizer when members RSPV",
+  "Recurring": "Recurring"
 }
