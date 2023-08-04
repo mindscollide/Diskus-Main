@@ -1088,10 +1088,11 @@
   "Notify-meeting-organizer-when-members-rspv": "Notify meeting organizer when members RSPV",
   "Recurring": "Recurring",
   "Update-and-next": "Update and Next",
-  "Add-more": "Add-more",
+  "Add-more": "Add More",
   "Organizer-title": "Organizer Title",
   "Add-organizers": "Add Organizers",
   "Notify-organizers": "Notify organizers",
   "Message": "Message",
-  "All-organizer-except-me": "All organizer except me"
+  "All-organizer-except-me": "All organizer except me",
+  "Notification1": "Notification"
 }

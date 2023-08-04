@@ -187,7 +187,7 @@ const Organizers = () => {
             className="d-flex justify-content-end gap-2"
           >
             <Button
-              text={t("Notification")}
+              text={t("Notification1")}
               className={styles["Notification_button"]}
               icon={<img src={mail} width="17.18px" height="12.08px" />}
             />
