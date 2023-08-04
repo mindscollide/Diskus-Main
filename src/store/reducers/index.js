@@ -1,4 +1,3 @@
-
 export { default as authReducer } from "./Auth_reducer";
 export { default as toDoListReducer } from "./ToDoList_reducer";
 export { default as settingReducer } from "./Setting_reducer";
@@ -29,8 +28,9 @@ export { default as NotesReducer } from "./Notes_reducer";
 
 export { default as CommitteeReducer } from "./Committee_reducer";
 export { default as GroupsReducer } from "./Groups_reducer";
-export { default as ResolutionReducer } from './Resolution_reducer'
-export { default as RealtimeNotificationReducer } from './RealtimeNotification_reducer'
-export { default as OrganizationBillingReducer } from './Billing_reducer'
-export { default as DataRoomReducer } from './DataRoom_reducer'
-export { default as PollsReducer } from './Polls_Reducer'
+export { default as ResolutionReducer } from "./Resolution_reducer";
+export { default as RealtimeNotificationReducer } from "./RealtimeNotification_reducer";
+export { default as OrganizationBillingReducer } from "./Billing_reducer";
+export { default as DataRoomReducer } from "./DataRoom_reducer";
+export { default as PollsReducer } from "./Polls_Reducer";
+export { default as NewMeetingReducer } from "./NewMeetingreducer";
