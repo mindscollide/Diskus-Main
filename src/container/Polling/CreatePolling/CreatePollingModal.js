@@ -10,6 +10,8 @@ import { DateObject } from "react-multi-date-picker";
 
 import styles from "./CreatePolling.module.css";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
+import WhiteCrossIcon from "../../../assets/images/PollCrossIcon.svg";
+
 import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import AlarmClock from "../../../assets/images/AlarmOptions.svg";
@@ -39,8 +41,12 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { registerLocale } from "react-datepicker";
 import moment from "moment";
-import { multiDatePickerDateChangIntoUTC, newDateFormaterAsPerUTC } from "../../../commen/functions/date_formater";
+import {
+  multiDatePickerDateChangIntoUTC,
+  newDateFormaterAsPerUTC,
+} from "../../../commen/functions/date_formater";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
+import { regexOnlyForNumberNCharacters } from "../../../commen/functions/regex";
 
 const CreatePolling = () => {
   const animatedComponents = makeAnimated();
@@ -315,70 +321,219 @@ const CreatePolling = () => {
     let newDate = moment(date).format("DD MMMM YYYY");
     return newDate;
   };
-
+  const checkOptions = (data) => {
+    if (data[0].value === "" || data[1].value === "") {
+      return false;
+    } else {
+      return true;
+    }
+  };
   // for create polls
   const SavePollsButtonFunc = async (value) => {
     const organizationid = localStorage.getItem("organizationID");
     const createrid = localStorage.getItem("userID");
     let users = [];
     let optionsListData = [];
-    if (Object.keys(options).length >= 2) {
-      if (Object.keys(members).length > 0) {
-        members.map((userdata, index) => {
-          users.push(userdata.userID);
-        });
-        options.map((optionData, index) => {
-          if (optionData.value != "") {
-            optionsListData.push(optionData.value);
-          } else if (index === 1) {
-            return setOpen({
-              flag: true,
-              message: t("Required-atleast-two-options"),
-            });
-          }
-        });
-        if (createPollData.date != "") {
-          let data = {
-            PollDetails: {
-              PollTitle: createPollData.TypingTitle,
-              DueDate: multiDatePickerDateChangIntoUTC(createPollData.date),
-              AllowMultipleAnswers: createPollData.AllowMultipleAnswers,
-              CreatorID: parseInt(createrid),
-              PollStatusID: parseInt(value),
-              OrganizationID: parseInt(organizationid),
-            },
-            ParticipantIDs: users,
-            PollAnswers: optionsListData,
-          };
-
-          await dispatch(SavePollsApi(navigate, data, t));
-        } else {
-          // setopen notfication for date
-          setOpen({
-            flag: true,
-            message: t("Select-date"),
-          });
+    if (
+      createPollData.date != "" &&
+      createPollData.TypingTitle != "" &&
+      Object.keys(members).length > 0 &&
+      Object.keys(options).length >= 2 &&
+      checkOptions(options)
+    ) {
+      members.map((userdata, index) => {
+        users.push(userdata.userID);
+      });
+      options.map((optionData, index) => {
+        if (optionData.value != "") {
+          optionsListData.push(optionData.value);
         }
-      } else {
-        // setopen notfication for error no assigni assiened
+      });
+      let data = {
+        PollDetails: {
+          PollTitle: createPollData.TypingTitle,
+          DueDate: multiDatePickerDateChangIntoUTC(createPollData.date),
+          AllowMultipleAnswers: createPollData.AllowMultipleAnswers,
+          CreatorID: parseInt(createrid),
+          PollStatusID: parseInt(value),
+          OrganizationID: parseInt(organizationid),
+        },
+        ParticipantIDs: users,
+        PollAnswers: optionsListData,
+      };
+
+      await dispatch(SavePollsApi(navigate, data, t));
+    } else {
+      if (createPollData.TypingTitle === "") {
         setOpen({
+          ...open,
           flag: true,
-          message: t("No-assignee-assigned"),
+          message: t("Title-is-required"),
+        });
+      } else if (createPollData.date === "") {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Select-date"),
+        });
+      } else if (Object.keys(members).length > 0) {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Atleat-one-member-required"),
+        });
+      } else if (Object.keys(options).length >= 2) {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Required-atleast-two-options"),
+        });
+      } else if (checkOptions(options)) {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Please-fill-all-reqired-fields"),
+        });
+      } else {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Please-fill-all-reqired-fields"),
         });
       }
-    } else {
-      // console.log("Hellothereiamcoming");
-      // setopen notfication for polls add atlese 2 option
     }
+    // if (Object.keys(options).length >= 2) {
+    //   if (Object.keys(members).length > 0) {
+    //     members.map((userdata, index) => {
+    //       users.push(userdata.userID);
+    //     });
+    //     options.map((optionData, index) => {
+    //       if (optionData.value != "") {
+    //         optionsListData.push(optionData.value);
+    //       } else if (index === 1) {
+    //         return setOpen({
+    //           flag: true,
+    //           message: t("Required-atleast-two-options"),
+    //         });
+    //       }
+    //     });
+    //     if (createPollData.date != "") {
+    //       if (createPollData.TypingTitle != "") {
+    //         let data = {
+    //           PollDetails: {
+    //             PollTitle: createPollData.TypingTitle,
+    //             DueDate: multiDatePickerDateChangIntoUTC(createPollData.date),
+    //             AllowMultipleAnswers: createPollData.AllowMultipleAnswers,
+    //             CreatorID: parseInt(createrid),
+    //             PollStatusID: parseInt(value),
+    //             OrganizationID: parseInt(organizationid),
+    //           },
+    //           ParticipantIDs: users,
+    //           PollAnswers: optionsListData,
+    //         };
+
+    //         await dispatch(SavePollsApi(navigate, data, t));
+    //       } else {
+    //         setOpen({
+    //           flag: true,
+    //           message: t("Please-enter-title"),
+    //         });
+    //       }
+    //     } else {
+    //       // setopen notfication for date
+    //       setOpen({
+    //         flag: true,
+    //         message: t("Select-date"),
+    //       });
+    //     }
+    //   } else {
+    //     // setopen notfication for error no assigni assiened
+    //     if (createPollData.date != "") {
+    //       if (createPollData.TypingTitle != "") {
+    //         options.map((optionData, index) => {
+    //           if (optionData.value != "") {
+    //             if (Object.keys(members).length > 0) {
+    //             } else {
+    //               return setOpen({
+    //                 flag: true,
+    //                 message: t("Atleat-one-member-required"),
+    //               });
+    //             }
+    //           } else if (index === 1) {
+    //             if (Object.keys(members).length > 0) {
+    //               return setOpen({
+    //                 flag: true,
+    //                 message: t("Required-atleast-two-options"),
+    //               });
+    //             } else {
+    //               return setOpen({
+    //                 flag: true,
+    //                 message: t("Atleat-one-member-required"),
+    //               });
+    //             }
+    //           }
+    //         });
+    //         setOpen({
+    //           flag: true,
+    //           message: t("Please-fill-all-reqired-fields"),
+    //         });
+    //       } else {
+    //         setOpen({
+    //           flag: true,
+    //           message: t("Please-fill-all-reqired-fields"),
+    //         });
+    //       }
+    //     } else {
+    //       if (createPollData.TypingTitle != "") {
+    //         setOpen({
+    //           flag: true,
+    //           message: t("Please-fill-all-reqired-fields"),
+    //         });
+    //       } else {
+    //         setOpen({
+    //           flag: true,
+    //           message: t("Please-fill-all-reqired-fields"),
+    //         });
+    //       }
+    //     }
+    //   }
+    // } else {
+    //   if (createPollData.date != "") {
+    //     if (createPollData.TypingTitle != "") {
+    //       setOpen({
+    //         flag: true,
+    //         message: t("Required-atleast-two-options"),
+    //       });
+    //     } else {
+    //       setOpen({
+    //         flag: true,
+    //         message: t("Please-fill-all-reqired-fields"),
+    //       });
+    //     }
+    //   } else {
+    //     if (createPollData.TypingTitle != "") {
+    //       setOpen({
+    //         flag: true,
+    //         message: t("Please-fill-all-reqired-fields"),
+    //       });
+    //     } else {
+    //       setOpen({
+    //         flag: true,
+    //         message: t("Please-fill-all-reqired-fields"),
+    //       });
+    //     }
+    //   }
+    //   // console.log("Hellothereiamcoming");
+    //   // setopen notfication for polls add atlese 2 option
+    // }
   };
 
   const HandleChange = (e, index) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log(name, value, index, "checkvalue");
     if (name === "TypingTitle") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (value !== "") {
+      let valueCheck = regexOnlyForNumberNCharacters(value);
+      if (valueCheck !== "") {
         setcreatePollData({
           ...createPollData,
           TypingTitle: valueCheck,
@@ -395,21 +550,35 @@ const CreatePolling = () => {
   const HandleOptionChange = (e) => {
     let name = parseInt(e.target.name);
     let newValue = e.target.value;
+    let valueCheck = regexOnlyForNumberNCharacters(newValue);
     setOptions((prevState) =>
       prevState.map((item) => {
-        return item.name === name ? { ...item, value: newValue } : item;
+        return item.name === name ? { ...item, value: valueCheck } : item;
       })
     );
   };
 
   const addNewRow = () => {
+    const allValuesNotEmpty = options.every((item) => item.value !== "");
     if (options.length > 1) {
-      let lastIndex = options.length - 1;
-      if (options[lastIndex].value != "") {
-        const randomNumber = Math.floor(Math.random() * 100) + 1;
-        let newOptions = { name: randomNumber, value: "" };
-        setOptions([...options, newOptions]);
+      if (allValuesNotEmpty) {
+        let lastIndex = options.length - 1;
+        if (options[lastIndex].value != "") {
+          const randomNumber = Math.floor(Math.random() * 100) + 1;
+          let newOptions = { name: randomNumber, value: "" };
+          setOptions([...options, newOptions]);
+        }
+      } else {
+        setOpen({
+          flag: true,
+          message: t("Please-fill-options"),
+        });
       }
+    }else{
+      setOpen({
+        flag: true,
+        message: t("Please-fill-options"),
+      });
     }
   };
 
@@ -485,11 +654,6 @@ const CreatePolling = () => {
                             calendar={calendarValue}
                             locale={localValue}
                             onChange={(value) => changeDateStartHandler(value)}
-                            // onChange={(value) =>
-                            //   changeDateStartHandler(
-                            //     value?.toDate?.().toString()
-                            //   )
-                            // }
                           />
                         </Col>
                       </Row>
@@ -537,7 +701,7 @@ const CreatePolling = () => {
                         width="16px"
                         height="16px"
                         onClick={() => {
-                          dispatch(setCreatePollModal(false));
+                          setDefineUnsaveModal(true);
                         }}
                       />
                     </Col>
@@ -566,7 +730,7 @@ const CreatePolling = () => {
                           <Row className="mt-2">
                             <Col lg={12} md={12} sm={12}>
                               <TextField
-                                placeholder={t("Typing-tile")}
+                                placeholder={t("Tile")}
                                 applyClass={"PollingCreateModal"}
                                 labelClass="d-none"
                                 maxLength={500}
@@ -581,7 +745,7 @@ const CreatePolling = () => {
                                 return (
                                   <>
                                     {index <= 1 ? (
-                                      <Row className="mt-2">
+                                      <Row key={index} className="mt-2">
                                         <Col lg={12} md={12} sm={12}>
                                           <span className="position-relative">
                                             <TextField
@@ -603,7 +767,7 @@ const CreatePolling = () => {
                                         </Col>
                                       </Row>
                                     ) : (
-                                      <Row className="mt-2">
+                                      <Row key={index} className="mt-2">
                                         <Col lg={12} md={12} sm={12}>
                                           <span className="position-relative">
                                             <TextField
@@ -621,7 +785,7 @@ const CreatePolling = () => {
                                               }
                                               inputicon={
                                                 <img
-                                                  src={BlackCrossIcon}
+                                                  src={WhiteCrossIcon}
                                                   width="31.76px"
                                                   height="31.76px"
                                                   onClick={() =>
@@ -793,6 +957,10 @@ const CreatePolling = () => {
                       <Button
                         text={t("Yes")}
                         className={styles["Yes_Btn_polls_delModal"]}
+                        onClick={() => {
+                          dispatch(setCreatePollModal(false));
+                          setDefineUnsaveModal(false);
+                        }}
                       />
                     </Col>
                   </Row>

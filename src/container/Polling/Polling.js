@@ -49,6 +49,10 @@ import {
 } from "../../commen/functions/date_formater";
 import { clearMessagesGroup } from "../../store/actions/Groups_actions";
 import DeletePoll from "./DeletePolls/DeletePoll";
+import {
+  regexOnlyCharacters,
+  regexOnlyForNumberNCharacters,
+} from "../../commen/functions/regex";
 
 const Polling = () => {
   const dispatch = useDispatch();
@@ -179,16 +183,24 @@ const Polling = () => {
   };
 
   const handleSearchEvent = () => {
+    setSearchpoll(false);
+    setsearchBoxState({
+      ...searchBoxState,
+      searchByName: "",
+      searchByTitle: "",
+    });
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
       CreatorName: searchBoxState.searchByName,
+      Title: searchBoxState.searchByTitle,
       PageNumber: 1,
-      Length: 3,
+      Length: 50,
     };
     dispatch(searchPollsApi(navigate, t, data));
   };
-
+  console.log("handleSearchEvent","UnPublished".toLowerCase().includes("Published".toLowerCase()))
+  console.log("handleSearchEvent","Published".toLowerCase().includes("UnPublished".toLowerCase()))
   const PollTableColumns = [
     {
       title: (
@@ -218,30 +230,36 @@ const Polling = () => {
     },
     {
       title: t("Status"),
-      dataIndex: "status",
-      key: "status",
+      dataIndex: "pollStatus",
+      key: "pollStatus",
       width: "78px",
       filters: [
         {
-          text: t("Published"),
-          value: "Published",
-          className: currentLanguage,
+          text: t('Published'),
+          value: 'Published', // Use the actual status value
         },
         {
-          text: t("Unpublished"),
-          value: "Unpublished",
+          text: t('UnPublished'),
+          value: 'UnPublished', // Use the actual status value
         },
       ],
-      defaultFilteredValue: ["Published", "Unpublished"],
+      defaultFilteredValue: ['Published', 'UnPublished'], // Use the actual status values here
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
+      onFilter: (value, record) => {
+        // No need to change anything in this function
+        console.log("handleSearchEvent",record.pollStatus.status.toLowerCase().includes(value.toLowerCase()))
+        console.log("handleSearchEvent",value)
+        return record.pollStatus.status.toLowerCase().includes(value.toLowerCase());
+      },
       render: (text, record) => {
-        if (record.pollStatus.pollStatusId === 2) {
-          return <span className="text-success">{t("Published")}</span>;
-        } else if (record.pollStatus.pollStatusId === 1) {
-          return <span className="text-success">{t("Unpublished")}</span>;
-        } else if (record.pollStatus.pollStatusId === 3) {
+        // No need to change anything in this function
+        if (text.pollStatusId === 2) {
+          return <span className="text-success">{t('Published')}</span>;
+        } else if (text.pollStatusId === 1) {
+          return <span className="text-success">{t('UnPublished')}</span>;
+        } else if (text.pollStatusId === 3) {
           return <span className="text-success">{t("Expired")}</span>;
         }
       },
@@ -378,11 +396,11 @@ const Polling = () => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "SearchVal") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (value !== "") {
+      let UpdateValue = regexOnlyForNumberNCharacters(value);
+      if (UpdateValue !== "") {
         setPollsState({
           ...pollsState,
-          searchValue: valueCheck,
+          searchValue: UpdateValue,
         });
       } else {
         setPollsState({
@@ -393,15 +411,32 @@ const Polling = () => {
     }
   };
 
+  const handleKeyDownSearch = (e) => {
+    if (e.key === 'Enter') {
+      setPollsState({
+        ...pollsState,
+        searchValue: "",
+      });
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        CreatorName: "",
+        Title: pollsState.searchValue,
+        PageNumber: JSON.parse(currentPage),
+        Length: JSON.parse(currentPageSize),
+      };
+      dispatch(searchPollsApi(navigate, t, data));
+    }
+  };
   const HandleSearchboxNameTitle = (e) => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "searchbytitle") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (value !== "") {
+      let UpdateValue = regexOnlyForNumberNCharacters(value);
+      if (UpdateValue !== "") {
         setsearchBoxState({
           ...searchBoxState,
-          searchByTitle: valueCheck,
+          searchByTitle: UpdateValue,
         });
       } else {
         setsearchBoxState({
@@ -411,11 +446,11 @@ const Polling = () => {
       }
     }
     if (name === "seachbyname") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (value !== "") {
+      let UpdateValue = regexOnlyCharacters(value);
+      if (UpdateValue !== "") {
         setsearchBoxState({
           ...searchBoxState,
-          searchByName: valueCheck,
+          searchByName: UpdateValue,
         });
       } else {
         setsearchBoxState({
@@ -432,9 +467,23 @@ const Polling = () => {
       searchByName: "",
       searchByTitle: "",
     });
+    setSearchpoll(false);
+    let data = {
+      UserID: parseInt(userID),
+      OrganizationID: parseInt(organizationID),
+      CreatorName: "",
+      Title: "",
+      PageNumber: JSON.parse(currentPage),
+      Length: JSON.parse(currentPageSize),
+    };
+    dispatch(searchPollsApi(navigate, t, data));
   };
 
   const HandleShowSearch = () => {
+    setPollsState({
+      ...pollsState,
+      searchValue: "",
+    });
     setSearchpoll(true);
   };
 
@@ -470,6 +519,7 @@ const Polling = () => {
     if (
       PollsReducer.ResponseMessage !== "" &&
       PollsReducer.ResponseMessage !== t("Record-found") &&
+      PollsReducer.ResponseMessage !== t("No-record-found") &&
       PollsReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({
@@ -502,6 +552,11 @@ const Polling = () => {
 
   const HandleCloseSearchModal = () => {
     setSearchpoll(false);
+    setsearchBoxState({
+      ...searchBoxState,
+      searchByName: "",
+      searchByTitle: "",
+    });
   };
 
   return (
@@ -539,6 +594,7 @@ const Polling = () => {
                 name={"SearchVal"}
                 value={pollsState.searchValue}
                 change={HandleSearchPollsMain}
+                onKeyDown={handleKeyDownSearch}
                 labelClass="d-none"
                 clickIcon={HandleShowSearch}
                 inputicon={

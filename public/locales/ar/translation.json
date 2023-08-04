@@ -1064,5 +1064,14 @@
   "Not-voted": "Not Voted",
   "Are-you-sure-you-want-to-continue?": "Are you sure you want to continue?",
   "Payment-procced": "Payment Procced",
-  "Maximum-meeting-duration-in-minutes": "Maximum meeting duration in minutes"
+  "Maximum-meeting-duration-in-minutes": "Maximum meeting duration in minutes",
+  "Please-enter-title": "Please enter title",
+  "No-assignee-assigned": "No assignee assigned",
+  "Required-atleast-two-options":"Required atleast two options",
+  "Please-fill-all-reqired-fields":"Please fill all reqired fields",
+  "Atleat-one-member-required":"Atleast one member required",
+  "Please-fill-options":"Please fill options",
+  "Published":"Published",
+  "UnPublished":"UnPublished"
+  
 }
