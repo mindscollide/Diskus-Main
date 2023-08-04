@@ -40,7 +40,7 @@
 }
 
 .Scroller_meeting {
-  height: 20vh !important;
+  height: 15vh !important;
   overflow-x: hidden !important;
 }
 
@@ -61,6 +61,7 @@
   /* right: 43%; */
   margin: 0;
   padding: 0;
+  cursor: pointer !important;
 }
 
 .Add_Dates_Btn_Class {
@@ -75,4 +76,30 @@
   font-size: 12px !important;
   color: #5f78d6 !important;
   font-family: "MontserratMedium-500" !important;
+}
+
+.Plus_Button_class {
+  height: 39px !important;
+  width: 39px;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+.Plus_Button_class:hover,
+.Plus_Button_class:active,
+.Plus_Button_class:focus,
+.Plus_Button_class:focus-visible {
+  height: 39px !important;
+  width: 39px !important;
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+.PLus_Icon {
+}
+
+.Plus_Button_class {
+  margin-top: 4px !important;
 }

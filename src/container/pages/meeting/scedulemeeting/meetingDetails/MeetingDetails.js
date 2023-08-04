@@ -15,6 +15,7 @@ import {
   Loader,
   Notification,
 } from "../../../../../components/elements";
+import { Plus } from "react-bootstrap-icons";
 
 const MeetingDetails = () => {
   const { t } = useTranslation();
@@ -63,7 +64,7 @@ const MeetingDetails = () => {
             </Col>
           </Row>
           <Row className="mt-3">
-            <Col lg={6} md={6} sm={12}>
+            <Col lg={5} md={5} sm={12}>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["Meeting_type_heading"]}>
@@ -82,7 +83,7 @@ const MeetingDetails = () => {
                 </Col>
               </Row>
             </Col>
-            <Col lg={6} md={6} sm={12}>
+            <Col lg={5} md={5} sm={12}>
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["Meeting_type_heading"]}>
@@ -98,6 +99,13 @@ const MeetingDetails = () => {
                     applyClass={"meetinInnerSearch"}
                     labelClass="d-none"
                   />
+                </Col>
+              </Row>
+            </Col>
+            <Col lg={2} md={2} sm={12}>
+              <Row className="mt-3">
+                <Col lg={12} md={12} sm={12}>
+                  <Button className={styles["Plus_Button_class"]} />
                 </Col>
               </Row>
             </Col>
@@ -198,23 +206,19 @@ const MeetingDetails = () => {
                                   lg={3}
                                   md={3}
                                   sm={12}
-                                  className="d-flex justify-content-start"
+                                  // className="d-flex justify-content-end"
                                 >
-                                  <Row>
-                                    <Col lg={12} md={12} sm={12}>
-                                      <DatePicker
-                                        arrowClassName="arrowClass"
-                                        containerClassName="containerClassTimePicker"
-                                        className="timePicker"
-                                        disableDayPicker
-                                        inputClass="inputTIme"
-                                        format="HH:mm A"
-                                        plugins={[<TimePicker hideSeconds />]}
-                                        selected={rows.endDate}
-                                        onChange={handleEndDateChange}
-                                      />
-                                    </Col>
-                                  </Row>
+                                  <DatePicker
+                                    arrowClassName="arrowClass"
+                                    containerClassName="containerClassTimePicker"
+                                    className="timePicker"
+                                    disableDayPicker
+                                    inputClass="inputTIme"
+                                    format="HH:mm A"
+                                    plugins={[<TimePicker hideSeconds />]}
+                                    selected={rows.endDate}
+                                    onChange={handleEndDateChange}
+                                  />
                                 </Col>
                                 <Col
                                   lg={1}
@@ -303,7 +307,7 @@ const MeetingDetails = () => {
                 : null}
             </Col>
           </Row>
-          <Row className="mt-2">
+          <Row className="mt-4">
             <Col lg={12} md={12} sm={12}>
               <Button
                 text={
