@@ -19,9 +19,11 @@ import { useNavigate } from "react-router-dom";
 import {
   showAddUserModal,
   showCrossConfirmationModal,
+  showNotifyOrganizors,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
 import ModalCrossIcon from "./ModalCrossIconClick/ModalCrossIcon";
+import NotifyOrganizers from "./NotifyOrganizers/NotifyOrganizers";
 const Organizers = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -31,10 +33,20 @@ const Organizers = () => {
   const openCrossIconModal = () => {
     dispatch(showCrossConfirmationModal(true));
   };
+  const openNotifyOrganizorModal = () => {
+    dispatch(showNotifyOrganizors(true));
+  };
   const data = [
     {
       key: "1",
-      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
+      Name: (
+        <label
+          className={styles["Title_desc"]}
+          onClick={openNotifyOrganizorModal}
+        >
+          Muahmmad Saif
+        </label>
+      ),
       Email: (
         <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
       ),
@@ -218,6 +230,7 @@ const Organizers = () => {
       </section>
       {NewMeetingreducer.adduserModal && <ModalOrganizor />}
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
+      {NewMeetingreducer.notifyOrganizors && <NotifyOrganizers />}
     </>
   );
 };

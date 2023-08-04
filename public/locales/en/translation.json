@@ -1118,5 +1118,8 @@
   "Recurring": "Recurring",
   "Update-and-next": "Update and Next",
   "Organizer-title": "Organizer Title",
-  "Add-organizers": "Add Organizers"
+  "Add-organizers": "Add Organizers",
+  "Notify-organizers": "Notify organizers",
+  "Message": "Message",
+  "All-organizer-except-me": "All organizer except me"
 }

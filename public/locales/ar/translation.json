@@ -1090,5 +1090,8 @@
   "Update-and-next": "Update and Next",
   "Add-more": "Add-more",
   "Organizer-title": "Organizer Title",
-  "Add-organizers": "Add Organizers"
+  "Add-organizers": "Add Organizers",
+  "Notify-organizers": "Notify organizers",
+  "Message": "Message",
+  "All-organizer-except-me": "All organizer except me"
 }

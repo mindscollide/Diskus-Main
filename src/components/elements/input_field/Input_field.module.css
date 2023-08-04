@@ -192,3 +192,8 @@
 .Organizer_table {
   height: 39px !important;
 }
+
+.text-area-create-Notify-organizors {
+  height: 136px !important;
+  resize: none !important;
+}
