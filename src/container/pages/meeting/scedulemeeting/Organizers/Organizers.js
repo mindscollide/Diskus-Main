@@ -11,6 +11,7 @@ import {
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import addmore from "../../../../../assets/images/addmore.png";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
+import mail from "../../../../../assets/images/mail.svg";
 import { useTranslation } from "react-i18next";
 import { Col, Row } from "react-bootstrap";
 import { Tooltip } from "antd";
@@ -185,6 +186,11 @@ const Organizers = () => {
             sm={12}
             className="d-flex justify-content-end gap-2"
           >
+            <Button
+              text={t("Notification")}
+              className={styles["Notification_button"]}
+              icon={<img src={mail} width="17.18px" height="12.08px" />}
+            />
             <Button
               text={t("Edit")}
               className={styles["Edit_Button_Organizers"]}
