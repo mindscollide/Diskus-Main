@@ -58,6 +58,7 @@ const EditResolution = ({
   setEditResoutionPage,
   editresolutionPage,
   setNewresolution,
+  setCancelResolutionModal
 }) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
@@ -799,7 +800,7 @@ const EditResolution = ({
       }
     }
     if (name === "ResolutionDescription") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      let valueCheck = value.replace(/[^a-zA-Z0-9!@#$%^&*()]/g, "");
       if (valueCheck !== "") {
         setEditResolutionData({
           ...editResolutionData,
@@ -816,7 +817,7 @@ const EditResolution = ({
 
   const handleClickCancelResolution = () => {
     if (cancelResolutionID !== 0) {
-      dispatch(cancelResolutionApi(navigate, cancelResolutionID, t, setEditResoutionPage))
+      dispatch(cancelResolutionApi(navigate, cancelResolutionID, t, setEditResoutionPage, setCancelResolutionModal))
     }
   }
 
@@ -1827,19 +1828,14 @@ const EditResolution = ({
                                           applyClass={"search_voterInput"}
                                           onclickFlag={onclickFlag}
                                         />
-                                        {/* <Row>
-                                        <Col>
-                                          <p
-                                            className={
-                                              nonVoter.length === 0 && error
-                                                ? ` ${styles["errorMessage"]}`
-                                                : `${styles["errorMessage_hidden"]}`
-                                            }
-                                          >
-                                            {t("At-least-add-one-voter")}
-                                          </p>
-                                        </Col>
-                                      </Row> */}
+                                        <Row>
+                                          <Col>
+                                            <p
+                                              className={`${styles["errorMessage_hidden"]}`}
+                                            >
+                                            </p>
+                                          </Col>
+                                        </Row>
                                       </Col>
 
                                       <Col
@@ -1860,6 +1856,7 @@ const EditResolution = ({
                                       <Col lg={2} md={2} sm={2}>
                                         <Button
                                           text={t("Add")}
+                                          disableBtn={taskAssignedTo !== 0 ? false : true}
                                           className={
                                             styles["ADD_Button_Createresolution"]
                                           }
@@ -2154,13 +2151,13 @@ const EditResolution = ({
                                     lg={12}
                                     md={12}
                                     sm={12}
-                                    className="d-flex justify-content-end gap-3"
+                                    className="d-flex justify-content-end gap-2 flex-wrap "
                                   >
                                     <Button text={<ArrowLeft size={30} />} onClick={() => { setEditResoutionPage(false) }} className={styles["Go_Back_EditResolution"]} />
                                     <Button
-                                      text={t("Cancel")}
+                                      text={t("Cancel-resolution")}
                                       className={
-                                        styles["Save_button_Createresolution"]
+                                        styles["Cancel_button_Createresolution"]
                                       }
                                       onClick={() => resolutioncancell(editResolutionData.pK_ResolutionID)}
                                     />

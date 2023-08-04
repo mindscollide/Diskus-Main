@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, Form } from "react-bootstrap";
+
 import { Paper } from "@material-ui/core";
+import DatePicker from "react-multi-date-picker";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { useTranslation } from "react-i18next";
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
 import "react-horizontal-scrolling-menu/dist/styles.css";
@@ -22,6 +25,7 @@ import featherupload from "../../../assets/images/featherupload.svg";
 import newprofile from "../../../assets/images/newprofile.png";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import { message, Upload } from "antd";
+import dayjs from 'dayjs';
 import {
   TextField,
   Button,
@@ -56,9 +60,10 @@ import moment from "moment";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
 import TextFieldDateTime from "../input_field_date/Input_field";
-// import { DatePicker, TimePicker } from 'antd';
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
+
+import 'react-datepicker/dist/react-datepicker.css';
+import TextFieldTime from "../input_field_time/Input_field";
+import TimePickerResolution from "../timePickerNew/timePickerNew";
 
 const ScheduleNewResolution = ({
   newresolution,
@@ -70,12 +75,25 @@ const ScheduleNewResolution = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [minDate, setMinDate] = useState("");
+  const [circulationDate, setCirculationDate] = useState("")
+  const [votingDeadLine, setVotingDeadLine] = useState("")
+  const [decisionDate, setDecisionDate] = useState("")
   console.log(minDate, "minDateminDateminDate");
   const [selectedDate, setSelectedDate] = useState(null)
   useEffect(() => {
     const min_date = new Date();
     setMinDate(moment(min_date).format("YYYY-MM-DD"));
   }, []);
+
+  const dateformatYYYYMMDD = (date) => {
+    console.log(date, "dateformatYYYYMMDDdateformatYYYYMMDD")
+    if (!!date && typeof date === "string") {
+      console.log("dateformatYYYYMMDDdateformatYYYYMMDD", typeof (moment(date).format("YYYY-MM-DD")))
+      return moment(date).subtract(1, "days").format("YYYY-MM-DD")
+    }
+  }
+
+  useEffect(() => { }, [])
   const SlideLeft = () => {
     var Slider = document.getElementById("Slider");
     Slider.scrollLeft = Slider.scrollLeft - 300;
@@ -371,6 +389,7 @@ const ScheduleNewResolution = ({
       console.log("not found");
     }
   };
+
   const deleteFilefromAttachments = (data, index) => {
     let fileSizefound = fileSize - data.fileSize;
     let fileForSendingIndex = fileForSend.findIndex(
@@ -383,6 +402,7 @@ const ScheduleNewResolution = ({
     searchIndex.splice(index, 1);
     setTasksAttachments([...tasksAttachments]);
   };
+
   const addVoters = () => {
     let findVoter = voters.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo
@@ -621,7 +641,7 @@ const ScheduleNewResolution = ({
       setError(true);
       setOpen({
         flag: true,
-        message: "Please fill all the fields",
+        message: t("Please-fill-all-the-fields"),
       });
     }
 
@@ -771,7 +791,7 @@ const ScheduleNewResolution = ({
       }
     }
     if (name === "ResolutionDescription") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      let valueCheck = value.replace(/[^a-zA-Z0-9!@#$%^&*()]/g, "");
       if (valueCheck !== "") {
         setCreateResolutionData({
           ...createResolutionData,
@@ -898,19 +918,40 @@ const ScheduleNewResolution = ({
       });
     }
   }
-  console.log("handleChangeCiculationDate decisionDateTime", decisionDateTime)
-  console.log("handleChangeCiculationDate votingDateTime", votingDateTime)
-  console.log("handleChangeCiculationDate circulationDateTime", circulationDateTime)
+  // const handleChangeCirculationTimeSelection = (e) => {
+  //   let setTime = moment(e.$d).format("HH:mm")
+  //   setCirculationDateTime({
+  //     ...circulationDateTime,
+  //     time: setTime,
+  //   });
+  // }
 
+  // const handleChangeVotingTimeSelection = (e) => {
+  //   let setTime = moment(e.$d).format("HH:mm")
+  //   setVotingDateTime({
+  //     ...votingDateTime,
+  //     time: setTime,
+  //   });
+  // }
+  // const handleChangeDecisionTimeSelection = (e) => {
+  //   let setTime = moment(e.$d).format("HH:mm")
+  //   setDecisionDateTime({
+  //     ...decisionDateTime,
+  //     time: setTime,
+  //   });
+  // }
   return (
     <>
+
       <section>
+
         <Row>
           <Col lg={12} md={12} sm={12}>
             <Row className="my-2">
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Resolution_create_heading"]}>
                   {t("Schedule-new-resolution")}
+                  {/* {} */}
                 </span>
               </Col>
             </Row>
@@ -1067,24 +1108,14 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input  date_Picker FontArabicRegular "
                         >
-
-                          {/* <DatePicker
-                            selected={selectedDate}
-                            onChange={(date) => setSelectedDate(date)}
-                          /> */}
-                          {/* <InputDatePicker width={"100%"} height={"100%"} /> */}
                           <TextFieldDateTime
                             min={minDate}
                             labelClass="d-none"
                             name={"circulation"}
                             applyClass={"search_voterInput"}
                             change={(e) => {
-                              // e.preventDefault()
                               handleChangeDateSelection(e)
-                              //  setCirculationDateTime({
-                              //   ...circulationDateTime,
-                              //   date: e.target.value,
-                              // });
+
                             }}
                           />
                           <Row>
@@ -1098,7 +1129,6 @@ const ScheduleNewResolution = ({
                               >
                                 {t("Circulation-date-is-required")}
                               </p>
-
                             </Col>
                           </Row>
                         </Col>
@@ -1108,8 +1138,8 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
-                          {/* <TimePicker style={{ width: "100%", height: "39px" }} onChange={(time) => console.log(time, "onChangeonChange")} /> */}
-                          <TextField
+                          {/* Circualtion Time */}
+                          <TextFieldTime
                             type="time"
                             labelClass="d-none"
                             name="circulation"
@@ -1124,6 +1154,7 @@ const ScheduleNewResolution = ({
                               // });
                             }}
                           />
+                          {/* <TimePickerResolution onChange={handleChangeCirculationTimeSelection} /> */}
                           <Row>
                             <Col>
                               <p
@@ -1158,14 +1189,8 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
-                          {/* <DatePicker disabledDate={disabledDate} style={{ width: "100%", height: "39px" }} onChange={(date) => {
-                            setVotingDateTime({
-                              ...votingDateTime,
-                              date: moment(date._d).format("YYYY-MM-DD"),
-                            });
-                          }} /> */}
                           <TextFieldDateTime
-                            min={minDate}
+                            min={circulationDateTime.date !== "" ? dateformatYYYYMMDD(circulationDateTime.date) : minDate}
                             name={"voting"}
                             applyClass={"search_voterInput"}
                             labelClass="d-none"
@@ -1194,14 +1219,8 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
-                          {/* <TimePicker style={{ width: "100%", height: "39px" }} onChange={(e) => {
-                            setVotingDateTime({
-                              ...votingDateTime,
-                              time: e.target.value,
-                            })
-                          }
-                          } /> */}
-                          <TextField
+                          {/* Voting Time */}
+                          <TextFieldTime
                             type="time"
                             applyClass={"search_voterInput"}
                             labelClass="d-none"
@@ -1216,6 +1235,11 @@ const ScheduleNewResolution = ({
                               // });
                             }}
                           />
+                          {/* <TimePickerResolution
+
+                            disabled={circulationDateTime.date === "" && circulationDateTime.time === "" ? true : false}
+                            onChange={handleChangeVotingTimeSelection}
+                            minTime={dayjs(`${circulationDateTime.date}T${circulationDateTime.time}`)} /> */}
                           <Row>
                             <Col>
                               <p
@@ -1250,22 +1274,14 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
-                          {/* <DatePicker disabledDate={disabledDate} style={{ width: "100%", height: "39px" }} onChange={(date) => {
-                            setDecisionDateTime({
-                              ...decisionDateTime,
-                              date: moment(date._d).format("YYYY-MM-DD"),
-                            });
-                          }} /> */}
                           <TextFieldDateTime
                             applyClass={"search_voterInput"}
-                            min={minDate}
+                            min={votingDateTime.date !== "" ? dateformatYYYYMMDD(votingDateTime.date) : minDate}
                             labelClass="d-none"
                             name={"decision"}
                             change={(e) => {
                               handleChangeDateSelection(e)
-
                             }}
-
                           />
                           <Row>
                             <Col>
@@ -1287,14 +1303,13 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
-                          {/* <TimePicker style={{ width: "100%", height: "39px" }} onChange={(e) => {
-                            setDecisionDateTime({
-                              ...decisionDateTime,
-                              time: e.target.value,
-                            })
-                          }
-                          } /> */}
-                          <TextField
+                          {/* Decision Time */}
+                          {/* <TimePickerResolution
+                            onChange={handleChangeDecisionTimeSelection}
+                            disabled={votingDateTime.date === "" && votingDateTime.time === "" ? true : false}
+                            minTime={dayjs(`${votingDateTime.date}T${votingDateTime.time}`)}
+                          /> */}
+                          <TextFieldTime
                             applyClass={"search_voterInput"}
                             type="time"
                             onKeyDown={(e) => e.preventDefault()}
@@ -1487,6 +1502,7 @@ const ScheduleNewResolution = ({
                                 <Col lg={2} md={2} sm={2}>
                                   <Button
                                     text={t("Add")}
+                                    disableBtn={taskAssignedTo !== 0 ? false : true}
                                     className={
                                       styles["ADD_Button_Createresolution"]
                                     }
@@ -1587,6 +1603,7 @@ const ScheduleNewResolution = ({
                                 <Col lg={2} md={2} sm={2}>
                                   <Button
                                     text={t("Add")}
+                                    disableBtn={taskAssignedTo !== 0 ? false : true}
                                     className={
                                       styles["ADD_Button_Createresolution"]
                                     }
@@ -1880,7 +1897,7 @@ const ScheduleNewResolution = ({
                               className="d-flex justify-content-end gap-3"
                             >
                               <Button
-                                text={t("Cancel")}
+                                text={t("Discard")}
                                 className={
                                   styles["Save_button_Createresolution"]
                                 }

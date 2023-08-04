@@ -875,7 +875,7 @@
   "Rename": "Rename",
   "Cancel-download": "Cancel Download",
   "Continue-download": "Continue download",
-  "File-already-exisit": "File already exisit",
+  "File-already-exisit": "File already exists",
   "Show-search-options": "Show Search Options",
   "Photos": " Photos",
   "Custome-range": "Custome Range",
@@ -1069,7 +1069,7 @@
   "User-is-already-exist": "User is already exist",
   "Reschedule": "Reschedule",
   "items_per_page": "page",
-  "page": "",
+  "page": "page {pageNumber}",
   "Shared-by": "Shared by",
   "Share-date": "Share date",
   "Last-modified-by-me": "Last modified by me",
@@ -1094,5 +1094,8 @@
   "Not-voted": "Not Voted",
   "Are-you-sure-you-want-to-continue?": "Are you sure you want to continue?",
   "Payment-procced": "Payment Procced",
-  "Maximum-meeting-duration-in-minutes": "Maximum meeting duration in minutes"
+  "Maximum-meeting-duration-in-minutes": "Maximum meeting duration in minutes",
+  "Are-you-sure-you-want-to-cancel-this-resolution": "Are you sure you want to Cancel this Resolution?",
+  "The-resolution-is-currently-circulated-are-you-sure-you-want-to-cancel-the-resolution-before-voting-and-decision-date": "The resolution is currently circulated. Are you sure you want to cancel the resolution before Voting and Decision Date",
+  "Cancel-resolution": "Cancel Resolution"
 }

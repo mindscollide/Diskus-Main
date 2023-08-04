@@ -43,6 +43,7 @@ import { useNavigate } from "react-router-dom";
 const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization
   const { t } = useTranslation();
+  const datePickerRef = useRef(null);
   const [fileSize, setFileSize] = useState(0);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false)
   const [isCreateTodo, setIsCreateTodo] = useState(true)
@@ -446,6 +447,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   const toDoDateHandler = (date, format = "YYYYMMDD") => {
     console.log(date, "toDoDateHandlertoDoDateHandlertoDoDateHandlertoDoDateHandler")
+    console.log(datePickerRef, "toDoDateHandlertoDoDateHandlertoDoDateHandlertoDoDateHandler")
+    if (datePickerRef.current) {
+      console.log(datePickerRef.current, "toDoDateHandlertoDoDateHandlertoDoDateHandlertoDoDateHandler")
+      datePickerRef.current.closePicker();
+    }
     let toDoDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let toDoDateSaveFormat = new DateObject(date).format("YYYYMMDD");
     setCreateTodoDate(toDoDateSaveFormat);
@@ -454,6 +460,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       ...task,
       DeadLineDate: toDoDateSaveFormat,
     });
+
   };
 
   //Save To-Do List Function
@@ -606,11 +613,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           show={show}
           setShow={setShow}
           className="modaldialogTodoCreate"
-          modalBodyClassName={closeConfirmationBox ? null : "bodytodoCreateModal"}
+          modalBodyClassName={closeConfirmationBox === true ? null : "bodytodoCreateModal"}
           modalFooterClassName="footertodoCreateModal"
           modalHeaderClassName="headertodoCreateModal"
           ButtonTitle={ModalTitle}
-          size={closeConfirmationBox ? null : "md"}
+          size={closeConfirmationBox === true ? "md" : "md"}
           // ModalTitle={"Modal Header"}
           ModalBody={
             isCreateTodo ?
@@ -641,9 +648,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       <MultiDatePicker
                         onChange={toDoDateHandler}
                         name="DeadLineDate"
+                        spanClass={"todoCreate"}
                         value={toDoDate}
                         calendar={calendarValue}
                         locale={localValue}
+                        ref={datePickerRef}
+
                       // newValue={createMeeting.MeetingDate}
                       />
                     </Col>
@@ -885,7 +895,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     xs={12}
                     className="d-flex justify-content-end gap-3 p-0"
                   >
-                    <Button onClick={() => setCloseConfirmationBox(true)} className={"cancelButton_createTodo"} text={"Cancel"} />
+                    <Button onClick={() => setCloseConfirmationBox(true)} className={"cancelButton_createTodo"} text={t("Cancel")} />
                     <Button
                       onClick={createToDoList}
                       className={
