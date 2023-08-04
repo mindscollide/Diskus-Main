@@ -1067,5 +1067,13 @@
   "Maximum-meeting-duration-in-minutes": "Maximum meeting duration in minutes",
   "Are-you-sure-you-want-to-cancel-this-resolution": "Are you sure you want to Cancel this Resolution?",
   "The-resolution-is-currently-circulated-are-you-sure-you-want-to-cancel-the-resolution-before-voting-and-decision-date": "The resolution is currently circulated. Are you sure you want to cancel the resolution before Voting and Decision Date",
-  "Cancel-resolution": "Cancel Resolution"
+  "Cancel-resolution": "Cancel Resolution",
+  "Please-enter-title": "Please enter title",
+  "No-assignee-assigned": "No assignee assigned",
+  "Required-atleast-two-options": "Required atleast two options",
+  "Please-fill-all-reqired-fields": "Please fill all reqired fields",
+  "Atleat-one-member-required": "Atleast one member required",
+  "Please-fill-options": "Please fill options",
+  "Published": "Published",
+  "UnPublished": "UnPublished"
 }

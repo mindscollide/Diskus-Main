@@ -5640,3 +5640,8 @@ input::-webkit-calendar-picker-indicator {
   justify-content: center !important;
   align-items: center !important;
 }
+
+.ant-checkbox-disabled.ant-checkbox-checked .ant-checkbox-inner::after {
+  border-color: rgb(255, 255, 255) !important;
+  animation-name: none;
+}
