@@ -3,9 +3,11 @@ import {
   Checkbox,
   Modal,
   MultiDatePickers,
+  Notification,
 } from "../../../components/elements";
 import styles from "./UpdatePolls.module.css";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
+import WhiteCrossIcon from "../../../assets/images/PollCrossIcon.svg";
 import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import AlarmClock from "../../../assets/images/AlarmOptions.svg";
@@ -34,6 +36,7 @@ import {
   multiDatePickerDateChangIntoUTC,
   newDateFormaterAsPerUTC,
 } from "../../../commen/functions/date_formater";
+import { regexOnlyForNumberNCharacters } from "../../../commen/functions/regex";
 
 const UpdatePolls = () => {
   const dispatch = useDispatch();
@@ -190,18 +193,6 @@ const UpdatePolls = () => {
 
   useEffect(() => {
     if (PollsReducer.Allpolls != null && PollsReducer.Allpolls != undefined) {
-      if (Object.keys(PollsReducer.Allpolls).length > 0) {
-        let Options = [];
-        PollsReducer.Allpolls.poll.pollOptions.map((data, index) => {
-          Options.push(data);
-        });
-        setPolloptions(Options);
-      }
-    }
-  }, [PollsReducer.Allpolls]);
-
-  useEffect(() => {
-    if (PollsReducer.Allpolls != null && PollsReducer.Allpolls != undefined) {
       let pollsDetails = PollsReducer.Allpolls;
       if (Object.keys(PollsReducer.Allpolls).length > 0) {
         let members = [];
@@ -212,7 +203,7 @@ const UpdatePolls = () => {
         let newDateGmt = convertintoGMTCalender(
           pollsDetails.poll.pollDetails.dueDate
         );
-        let DateDate = new Date(newDateGmt)
+        let DateDate = new Date(newDateGmt);
 
         setUpdatePolls({
           ...UpdatePolls,
@@ -221,13 +212,30 @@ const UpdatePolls = () => {
           date: DateDate,
           pollID: pollsDetails.poll.pollDetails.pollID,
         });
-        setOptions({
-          ...options,
-          pollOptions: pollsDetails.poll.pollOptions.answer,
-        });
+        try {
+          if (Object.keys(PollsReducer.Allpolls.poll.pollOptions).length > 2) {
+            let Option = [];
+            PollsReducer.Allpolls.poll.pollOptions.map((data, index) => {
+              let dataAdd = { name: index + 1, value: data.answer };
+              Option.push(dataAdd);
+            });
+            setOptions(Option);
+          } else if (
+            Object.keys(PollsReducer.Allpolls.poll.pollOptions).length <= 2
+          ) {
+            const updatedOptions = options.map((option) => {
+              const apiData = PollsReducer.Allpolls.poll.pollOptions.find(
+                (apiOption, index) => index + 1 === option.name
+              );
+              return apiData ? { ...option, value: apiData.answer } : option;
+            });
+            setOptions(updatedOptions);
+          }
+        } catch {}
       }
     }
   }, [PollsReducer.Allpolls]);
+  console.log("HandleOptionChange", options);
 
   // for add user for assignes
   const handleAddUsers = () => {
@@ -317,14 +325,28 @@ const UpdatePolls = () => {
   };
 
   useEffect(() => {}, [UpdatePolls.date]);
+
   const addNewRow = () => {
-    if (polloptions.length > 1) {
-      let lastIndex = polloptions.length - 1;
-      if (polloptions[lastIndex].value != "") {
-        const randomNumber = Math.floor(Math.random() * 100) + 1;
-        let newOptions = { name: randomNumber, value: "" };
-        setPolloptions([...polloptions, newOptions]);
+    const allValuesNotEmpty = options.every((item) => item.value !== "");
+    if (options.length > 1) {
+      if (allValuesNotEmpty) {
+        let lastIndex = options.length - 1;
+        if (options[lastIndex].value != "") {
+          const randomNumber = Math.floor(Math.random() * 100) + 1;
+          let newOptions = { name: randomNumber, value: "" };
+          setOptions([...options, newOptions]);
+        }
+      } else {
+        setOpen({
+          flag: true,
+          message: t("Please-fill-options"),
+        });
       }
+    } else {
+      setOpen({
+        flag: true,
+        message: t("Please-fill-options"),
+      });
     }
   };
 
@@ -337,10 +359,10 @@ const UpdatePolls = () => {
   const HandleOptionChange = (e) => {
     let name = parseInt(e.target.name);
     let newValue = e.target.value;
-
-    setPolloptions((prevState) =>
+    let valueCheck = regexOnlyForNumberNCharacters(newValue);
+    setOptions((prevState) =>
       prevState.map((item) => {
-        return item.name === name ? { ...item, value: newValue } : item;
+        return item.name === name ? { ...item, value: valueCheck } : item;
       })
     );
   };
@@ -358,11 +380,11 @@ const UpdatePolls = () => {
       date: DateDate,
     });
   };
-  console.log("changeDateStartHandler", UpdatePolls.date);
 
   const HandleCancelFunction = (index) => {
-    options.splice(index, 1);
-    setOptions([...options]);
+    let optionscross = [...options];
+    optionscross.splice(index, 1);
+    setOptions(optionscross);
   };
 
   const changeDateStartHandler2 = (date) => {
@@ -378,8 +400,8 @@ const UpdatePolls = () => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "TypingTitle") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
-      if (value !== "") {
+      let valueCheck = regexOnlyForNumberNCharacters(value);
+      if (valueCheck !== "") {
         setUpdatePolls({
           ...UpdatePolls,
           TypingTitle: valueCheck,
@@ -396,50 +418,98 @@ const UpdatePolls = () => {
   const HandleCheckBox = () => {
     setUpdatePolls({
       ...UpdatePolls,
-      AllowMultipleUsera: !UpdatePolls.AllowMultipleUsera,
+      AllowMultipleUser: !UpdatePolls.AllowMultipleUser, // Corrected property name
     });
   };
 
+  const checkOptions = (data) => {
+    if (data[0].value === "" || data[1].value === "") {
+      return false;
+    } else {
+      return true;
+    }
+  };
   const handleUpdateClick = (value) => {
     const organizationid = localStorage.getItem("organizationID");
     const createrid = localStorage.getItem("userID");
     let users = [];
     let optionsListData = [];
-
-    if (Object.keys(pollmembers).length > 0) {
-      pollmembers.map((data, index) => {
-        users.push(data.userID);
-      });
-    }
-    if (polloptions.length > 0) {
-      polloptions.map((optionData, index) => {
-        if (optionData.answer !== "") {
-          optionsListData.push(optionData.answer);
-        }
-      });
+    if (
+      UpdatePolls.TypingTitle != "" &&
+      UpdatePolls.datepoll != "" &&
+      Object.keys(pollmembers).length > 0 &&
+      Object.keys(options).length >= 2 &&
+      checkOptions(options)
+    ) {
+      if (Object.keys(pollmembers).length > 0) {
+        pollmembers.map((data, index) => {
+          users.push(data.userID);
+        });
+      }
+      if (Object.keys(options).length > 0) {
+        options.map((optionData, index) => {
+          if (optionData.value !== "") {
+            optionsListData.push(optionData.value);
+          }
+        });
+      }
+      let data = {
+        PollDetails: {
+          PollTitle: UpdatePolls.TypingTitle,
+          DueDate: multiDatePickerDateChangIntoUTC(UpdatePolls.date),
+          AllowMultipleAnswers: UpdatePolls.AllowMultipleUser,
+          CreatorID: parseInt(createrid),
+          PollStatusID: parseInt(value),
+          OrganizationID: parseInt(organizationid),
+          PollID: parseInt(UpdatePolls.pollID),
+        },
+        ParticipantIDs: users,
+        PollAnswers: optionsListData,
+      };
+      console.log("handleUpdateClick");
+      dispatch(updatePollsApi(navigate, data, t));
     } else {
-      setOpen({
-        flag: true,
-        message: t("Required-atleast-two-options"),
-      });
+      console.log("handleUpdateClick");
+      if (UpdatePolls.TypingTitle === "") {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Title-is-required"),
+        });
+      } else if (UpdatePolls.datepoll === "") {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Select-date"),
+        });
+      } else if (Object.keys(pollmembers).length > 0) {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Atleat-one-member-required"),
+        });
+      } else if (Object.keys(options).length >= 2) {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Required-atleast-two-options"),
+        });
+      } else if (checkOptions(options)) {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Please-fill-all-reqired-fields"),
+        });
+      } else {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Please-fill-all-reqired-fields"),
+        });
+      }
     }
-
-    let data = {
-      PollDetails: {
-        PollTitle: UpdatePolls.TypingTitle,
-        DueDate: multiDatePickerDateChangIntoUTC(UpdatePolls.date),
-        AllowMultipleAnswers: UpdatePolls.AllowMultipleUser,
-        CreatorID: parseInt(createrid),
-        PollStatusID: parseInt(value),
-        OrganizationID: parseInt(organizationid),
-        PollID: parseInt(UpdatePolls.pollID),
-      },
-      ParticipantIDs: users,
-      PollAnswers: optionsListData,
-    };
-
-    dispatch(updatePollsApi(navigate, data, t));
   };
+  console.log("handleUpdateClick", open);
 
   return (
     <>
@@ -571,7 +641,7 @@ const UpdatePolls = () => {
                           <Row className="mt-2">
                             <Col lg={12} md={12} sm={12}>
                               <TextField
-                                placeholder={t("Typing-tile")}
+                                placeholder={t("Tile")}
                                 applyClass={"PollingCreateModal"}
                                 labelClass="d-none"
                                 name={"TypingTitle"}
@@ -582,13 +652,13 @@ const UpdatePolls = () => {
                             </Col>
                           </Row>
 
-                          {polloptions.length > 0
-                            ? polloptions.map((data, index) => {
+                          {options.length > 0
+                            ? options.map((data, index) => {
                                 return (
                                   <>
                                     {index <= 1 ? (
                                       <>
-                                        <Row className="mt-2">
+                                        <Row key={index} className="mt-2">
                                           <Col lg={12} md={12} sm={12}>
                                             <span className="position-relative">
                                               <TextField
@@ -605,7 +675,7 @@ const UpdatePolls = () => {
                                                 disable={
                                                   PollsReducer.editPollModalFlag
                                                 }
-                                                value={data.answer}
+                                                value={data.value}
                                                 change={(e) =>
                                                   HandleOptionChange(e)
                                                 }
@@ -616,7 +686,7 @@ const UpdatePolls = () => {
                                       </>
                                     ) : (
                                       <>
-                                        <Row className="mt-2">
+                                        <Row key={index} className="mt-2">
                                           <Col lg={12} md={12} sm={12}>
                                             <span className="position-relative">
                                               <TextField
@@ -633,13 +703,13 @@ const UpdatePolls = () => {
                                                 }
                                                 labelClass="d-none"
                                                 name={data.name}
-                                                value={data.answer}
+                                                value={data.value}
                                                 change={(e) =>
                                                   HandleOptionChange(e)
                                                 }
                                                 inputicon={
                                                   <img
-                                                    src={BlackCrossIcon}
+                                                    src={WhiteCrossIcon}
                                                     width="31.76px"
                                                     height="31.76px"
                                                     onClick={
@@ -670,34 +740,61 @@ const UpdatePolls = () => {
                           {PollsReducer.editPollModalFlag === false ? (
                             <Row className="mt-2">
                               <Col lg={12} md={12} sm={12}>
-                                <span
-                                  className={styles["Add_Another_field"]}
+                                <Button
+                                  text={
+                                    <>
+                                      <Row>
+                                        <Col
+                                          lg={12}
+                                          md={12}
+                                          sm={12}
+                                          className={styles["ClassAddButton"]}
+                                        >
+                                          <img
+                                            src={plusFaddes}
+                                            width="15.87px"
+                                            height="15.87px"
+                                          />
+                                          <span>{t("Add-another-field")}</span>
+                                        </Col>
+                                      </Row>
+                                    </>
+                                  }
                                   onClick={addNewRow}
-                                >
-                                  <Row className="mt-2">
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className="d-flex gap-1 align-items-center"
-                                    >
-                                      <img
-                                        src={plusFaddes}
-                                        height="15px"
-                                        width="15.87px"
-                                        className={styles["PlusFaddedClass"]}
-                                      />
-                                      <span
-                                        className={styles["Add_another_field"]}
-                                      >
-                                        {t("Add-another-field")}
-                                      </span>
-                                    </Col>
-                                  </Row>
-                                </span>
+                                  className={styles["Add_another_options"]}
+                                />
                               </Col>
                             </Row>
                           ) : (
+                            // <Row className="mt-2">
+                            //   <Col lg={12} md={12} sm={12}>
+                            //     <span
+                            //       className={styles["Add_Another_field"]}
+                            //       onClick={addNewRow}
+                            //     >
+                            //       <Row className="mt-2">
+                            //         <Col
+                            //           lg={12}
+                            //           md={12}
+                            //           sm={12}
+                            //           className="d-flex gap-1 align-items-center"
+                            //         >
+                            //           <img
+                            //             src={plusFaddes}
+                            //             height="15px"
+                            //             width="15.87px"
+                            //             className={styles["PlusFaddedClass"]}
+                            //           />
+                            //           <span
+                            //             className={styles["Add_another_field"]}
+                            //           >
+                            //             {t("Add-another-field")}
+                            //           </span>
+                            //         </Col>
+                            //       </Row>
+                            //     </span>
+                            //   </Col>
+                            // </Row>
                             <></>
                           )}
                         </Col>
@@ -713,7 +810,9 @@ const UpdatePolls = () => {
                           <Checkbox
                             checked={UpdatePolls.AllowMultipleUser}
                             onChange={HandleCheckBox}
-                            disable={PollsReducer.editPollModalFlag}
+                            disabled={
+                              PollsReducer.editPollModalFlag ? true : false
+                            }
                           />
                           <p className={styles["CheckBoxTitle"]}>
                             {t("Allow-multiple-answers")}
@@ -762,7 +861,13 @@ const UpdatePolls = () => {
                           <Row>
                             {pollmembers.map((data, index) => {
                               return (
-                                <Col lg={6} md={6} sm={12} className="mt-2">
+                                <Col
+                                  key={index}
+                                  lg={6}
+                                  md={6}
+                                  sm={12}
+                                  className="mt-2"
+                                >
                                   <Row>
                                     <Col lg={11} md={11} sm={12}>
                                       <Row className={styles["Card_border2"]}>
@@ -828,6 +933,7 @@ const UpdatePolls = () => {
                         text={t("Yes")}
                         className={styles["Yes_Btn_polls_delModal"]}
                         onClick={() => {
+                          setDefineUnsaveModal(false);
                           dispatch(setEditpollModal(false));
                         }}
                       />
@@ -876,6 +982,7 @@ const UpdatePolls = () => {
           size={defineUnsaveModal ? null : "md"}
         />
       </Container>
+      <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
 };
