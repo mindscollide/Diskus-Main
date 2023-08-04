@@ -325,7 +325,7 @@ const MeetingDetails = () => {
                 : null}
             </Col>
           </Row>
-          <Row className="mt-4">
+          <Row className="mt-1">
             <Col lg={12} md={12} sm={12}>
               <Button
                 text={
@@ -421,6 +421,20 @@ const MeetingDetails = () => {
           <Row className="mt-2">
             <Col lg={12} md={12} sm={12}>
               <Select />
+            </Col>
+          </Row>
+          <Row className="mt-5">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex gap-3 justify-content-end"
+            >
+              <Button text={t("Publish")} className={styles["Published"]} />
+              <Button
+                text={t("Update-and-next")}
+                className={styles["Update_Next"]}
+              />
             </Col>
           </Row>
         </Col>
