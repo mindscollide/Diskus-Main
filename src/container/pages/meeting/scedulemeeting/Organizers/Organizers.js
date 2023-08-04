@@ -1,0 +1,143 @@
+import React, { useState } from "react";
+import styles from "./Organizers.module.css";
+import {
+  Button,
+  Table,
+  TextField,
+  Loader,
+  Notification,
+} from "../../../../../components/elements";
+import EditIcon from "../../../../../assets/images/Edit-Icon.png";
+import addmore from "../../../../../assets/images/addmore.png";
+import { useTranslation } from "react-i18next";
+import { Col, Row } from "react-bootstrap";
+import { Tooltip } from "antd";
+const Organizers = () => {
+  const { t } = useTranslation();
+  let currentLanguage = localStorage.getItem("i18nextLng");
+
+  const data = [
+    {
+      key: "1",
+      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
+      Email: (
+        <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
+      ),
+      OrganizerTitle: <label className="column-boldness">Organizer</label>,
+      Primary: <label className="column-boldness">Primary</label>,
+    },
+  ];
+  const [rowsData, setRowsData] = useState(data);
+  const MeetingColoumns = [
+    {
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span>{t("Name")}</span>
+            </Col>
+          </Row>
+        </>
+      ),
+      dataIndex: "Name",
+      key: "Name",
+      //   width: "185px",
+    },
+
+    {
+      title: t("Email"),
+      dataIndex: "Email",
+      key: "Email",
+      //   width: "60px",
+    },
+    {
+      title: t("Organizer-title"),
+      dataIndex: "OrganizerTitle",
+      key: "OrganizerTitle",
+      //   width: "87px",
+    },
+
+    {
+      dataIndex: "Primary",
+      key: "Primary",
+      //   width: "33px",
+      //   render: (text, record) => {
+      //     return (
+      //       <>
+      //         <Row>
+      //           <Col
+      //             sm={12}
+      //             md={12}
+      //             lg={12}
+      //             className="d-flex justify-content-end"
+      //           >
+      //             <Tooltip placement="topRight" title={t("Edit")}>
+      //               <img
+      //                 // src={EditIcon}
+      //                 className="cursor-pointer"
+      //                 width="17.11px"
+      //                 height="17.11px"
+      //               />
+      //             </Tooltip>
+      //           </Col>
+      //         </Row>
+      //       </>
+      //     );
+      //   },
+    },
+  ];
+  return (
+    <section>
+      <Row className="mt-4 m-0 p-0">
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className="d-flex justify-content-end gap-2"
+        >
+          <Button
+            text={t("Edit")}
+            className={styles["Edit_Button_Organizers"]}
+            icon={<img src={EditIcon} width="11.75px" height="11.75px" />}
+          />
+          <Button
+            text={t("Add-more")}
+            icon={<img src={addmore} />}
+            className={styles["AddMoreBtn"]}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col lg={12} md={12} sm={12}>
+          <Table
+            column={MeetingColoumns}
+            scroll={{ y: "62vh" }}
+            pagination={false}
+            className="Polling_table"
+            rows={rowsData}
+          />
+        </Col>
+      </Row>
+      <Row className="mt-3">
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className="d-flex gap-2 justify-content-end"
+        >
+          <Button
+            text={t("Cancel")}
+            className={styles["Cancel_Organization"]}
+          />
+          <Button
+            text={t("Publish")}
+            className={styles["Cancel_Organization"]}
+          />
+          <Button text={t("Next")} className={styles["Next_Organization"]} />
+        </Col>
+      </Row>
+    </section>
+  );
+};
+
+export default Organizers;

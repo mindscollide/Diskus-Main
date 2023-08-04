@@ -10,12 +10,19 @@ import {
   Notification,
 } from "../../../../components/elements";
 import MeetingDetails from "./meetingDetails/MeetingDetails";
+import Organizers from "./Organizers/Organizers";
 const SceduleMeeting = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const [meetingDetails, setmeetingDetails] = useState(false);
+  const [organizers, setorganizers] = useState(false);
 
   const showMeetingDeitals = () => {
     setmeetingDetails(true);
+    setorganizers(false);
+  };
+  const showOrganizers = () => {
+    setorganizers(true);
+    setmeetingDetails(false);
   };
   return (
     <section>
@@ -39,6 +46,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                 <Button
                   text={t("Organizers")}
                   className={styles["Schedule_meetings_options"]}
+                  onClick={showOrganizers}
                 />
                 <Button
                   text={t("Agenda-contributors")}
@@ -70,7 +78,13 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                 />
               </Col>
             </Row>
-            {meetingDetails && <MeetingDetails />}
+            {meetingDetails && (
+              <MeetingDetails
+                setorganizers={setorganizers}
+                setmeetingDetails={setmeetingDetails}
+              />
+            )}
+            {organizers && <Organizers />}
           </Paper>
         </Col>
       </Row>

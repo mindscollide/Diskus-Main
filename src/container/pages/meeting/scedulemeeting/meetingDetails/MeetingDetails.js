@@ -18,7 +18,7 @@ import {
 import { Plus } from "react-bootstrap-icons";
 import desh from "../../../../../assets/images/desh.svg";
 
-const MeetingDetails = () => {
+const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   const { t } = useTranslation();
   const [options, setOptions] = useState([]);
   const [rows, setRows] = useState([
@@ -47,6 +47,11 @@ const MeetingDetails = () => {
     let optionscross = [...rows];
     optionscross.splice(index, 1);
     setRows(optionscross);
+  };
+
+  const handleUpdateNext = () => {
+    setorganizers(true);
+    setmeetingDetails(false);
   };
 
   console.log(rows, "optionsoptionsoptions");
@@ -434,6 +439,7 @@ const MeetingDetails = () => {
               <Button
                 text={t("Update-and-next")}
                 className={styles["Update_Next"]}
+                onClick={handleUpdateNext}
               />
             </Col>
           </Row>
