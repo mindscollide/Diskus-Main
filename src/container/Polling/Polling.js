@@ -59,6 +59,7 @@ const Polling = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { PollsReducer } = useSelector((state) => state);
+  console.log(PollsReducer, "pollingSocketpollingSocketpollingSocket");
   const [updatePublished, setUpdatePublished] = useState(false);
   const [open, setOpen] = useState({
     flag: false,
@@ -68,6 +69,7 @@ const Polling = () => {
     searchValue: "",
   });
   const [rows, setRows] = useState([]);
+  console.log(rows, "rowsrowsrowsrows");
   let currentLanguage = localStorage.getItem("i18nextLng");
   registerLocale("ar", ar);
   registerLocale("en", enGB);
@@ -131,6 +133,28 @@ const Polling = () => {
       moment.locale(currentLanguage);
     }
   }, [currentLanguage]);
+
+  useEffect(() => {
+    if (PollsReducer.pollingSocket !== null) {
+      let pollData = PollsReducer.pollingSocket;
+      let rowCopy = [...rows];
+      let findIndex = rowCopy.findIndex(
+        (rowData, index) => rowData?.pollID === pollData?.pollID
+      );
+      if (findIndex !== -1) {
+        const newState = rowCopy.map((obj, index) => {
+          // 👇️ if id equals 2 replace object
+          if (findIndex === index) {
+            return pollData;
+          }
+          return obj;
+        });
+        setRows(newState);
+      } else {
+        setRows([pollData, ...rowCopy]);
+      }
+    }
+  }, [PollsReducer.pollingSocket]);
 
   const handleEditpollModal = (record) => {
     console.log("handleEditpollModal", record);
@@ -254,12 +278,11 @@ const Polling = () => {
         return record.pollStatus.status.toLowerCase().includes(value.toLowerCase());
       },
       render: (text, record) => {
-        // No need to change anything in this function
-        if (text.pollStatusId === 2) {
-          return <span className="text-success">{t('Published')}</span>;
-        } else if (text.pollStatusId === 1) {
-          return <span className="text-success">{t('UnPublished')}</span>;
-        } else if (text.pollStatusId === 3) {
+        if (record.pollStatus?.pollStatusId === 2) {
+          return <span className="text-success">{t("Published")}</span>;
+        } else if (record.pollStatus?.pollStatusId === 1) {
+          return <span className="text-success">{t("Unpublished")}</span>;
+        } else if (record.pollStatus?.pollStatusId === 3) {
           return <span className="text-success">{t("Expired")}</span>;
         }
       },
