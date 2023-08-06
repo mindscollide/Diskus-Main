@@ -460,3 +460,6 @@ body[dir="rtl"] .here_text {
 .react_datePicker {
   width: 100% !important;
 }
+.timePicker {
+  width: 100%;
+}

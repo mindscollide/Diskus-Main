@@ -1075,5 +1075,6 @@
   "Atleat-one-member-required": "Atleast one member required",
   "Please-fill-options": "Please fill options",
   "Published": "Published",
-  "UnPublished": "UnPublished"
+  "UnPublished": "UnPublished",
+  "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close": "Are you sure? If you click on close button the data will reset and modal will close."
 }
