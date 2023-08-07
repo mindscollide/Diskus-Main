@@ -346,9 +346,29 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   );
   //Get All Assignees API hit
   useEffect(() => {
-    // dispatch(GetAllAssigneesToDoList(parseInt(createrID)));
-    dispatch(GetAllAssigneesToDoList(navigate, parseInt(createrID), t));
-  }, []);
+    if (show) {
+      dispatch(GetAllAssigneesToDoList(navigate, parseInt(createrID), t));
+    } else {
+      setShow(false);
+      setTask({
+        ...task,
+        PK_TID: 1,
+        Title: "",
+        Description: "",
+        IsMainTask: true,
+        DeadLineDate: "",
+        DeadLineTime: "",
+        CreationDateTime: "",
+      });
+      setToDoDate("");
+      setTaskAssignedTo([]);
+      setTasksAttachments({
+        ...tasksAttachments,
+        TasksAttachments: [],
+      });
+      setTaskAssignedName([]);
+    }
+  }, [show]);
 
   console.log("test");
 
@@ -380,16 +400,16 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     console.log("Input Value OnChange", e.target.value);
   };
 
-  useEffect(() => {
-    if (taskAssignedName.length > 1) {
-      setOpen({
-        flag: true,
-        message: t("Only-one-assignee-allow"),
-      });
-    } else {
-      setTaskAssigneeLength(false);
-    }
-  }, [taskAssignedName, t]);
+  // useEffect(() => {
+  //   if (taskAssignedName.length > 1) {
+  //     setOpen({
+  //       flag: true,
+  //       message: t("Only-one-assignee-allow"),
+  //     });
+  //   } else {
+  //     setTaskAssigneeLength(false);
+  //   }
+  // }, [taskAssignedName, t]);
 
   //Drop Down Values
   const searchFilterHandler = (value) => {
@@ -597,7 +617,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setTaskAssignedTo([...TaskAssignedTo]);
   };
 
-  useEffect(() => {}, [TaskAssignedTo, taskAssignedName]);
+  useEffect(() => { }, [TaskAssignedTo, taskAssignedName]);
   return (
     <>
       <Container>
@@ -613,8 +633,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             closeConfirmationBox === true
               ? null
               : isCreateTodo
-              ? "bodytodoCreateModal"
-              : "bodytodoCreateModal"
+                ? "bodytodoCreateModal"
+                : "bodytodoCreateModal"
           }
           modalFooterClassName="footertodoCreateModal"
           modalHeaderClassName="headertodoCreateModal"
@@ -656,7 +676,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         locale={localValue}
                         ref={datePickerRef}
 
-                        // newValue={createMeeting.MeetingDate}
+                      // newValue={createMeeting.MeetingDate}
                       />
                     </Col>
                     <Col
@@ -767,117 +787,117 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                           >
                             {tasksAttachments.TasksAttachments.length > 0
                               ? tasksAttachments.TasksAttachments.map(
-                                  (data, index) => {
-                                    var ext =
-                                      data.DisplayAttachmentName.split(
-                                        "."
-                                      ).pop();
+                                (data, index) => {
+                                  var ext =
+                                    data.DisplayAttachmentName.split(
+                                      "."
+                                    ).pop();
 
-                                    const first =
-                                      data.DisplayAttachmentName.split(" ")[0];
-                                    return (
-                                      <Col
-                                        sm={12}
-                                        lg={2}
-                                        md={2}
-                                        className="modaltodolist-attachment-icon"
-                                      >
-                                        {ext === "doc" ? (
-                                          <FileIcon
-                                            extension={"docx"}
-                                            size={78}
-                                            type={"document"}
-                                            labelColor={"rgba(44, 88, 152)"}
-                                          />
-                                        ) : ext === "docx" ? (
-                                          <FileIcon
-                                            extension={"docx"}
-                                            size={78}
-                                            type={"font"}
-                                            labelColor={"rgba(44, 88, 152)"}
-                                          />
-                                        ) : ext === "xls" ? (
-                                          <FileIcon
-                                            extension={"xls"}
-                                            type={"spreadsheet"}
-                                            size={78}
-                                            labelColor={"rgba(16, 121, 63)"}
-                                          />
-                                        ) : ext === "xlsx" ? (
-                                          <FileIcon
-                                            extension={"xls"}
-                                            type={"spreadsheet"}
-                                            size={78}
-                                            labelColor={"rgba(16, 121, 63)"}
-                                          />
-                                        ) : ext === "pdf" ? (
-                                          <FileIcon
-                                            extension={"pdf"}
-                                            size={78}
-                                            {...defaultStyles.pdf}
-                                          />
-                                        ) : ext === "png" ? (
-                                          <FileIcon
-                                            extension={"png"}
-                                            size={78}
-                                            type={"image"}
-                                            labelColor={"rgba(102, 102, 224)"}
-                                          />
-                                        ) : ext === "txt" ? (
-                                          <FileIcon
-                                            extension={"txt"}
-                                            size={78}
-                                            type={"document"}
-                                            labelColor={"rgba(52, 120, 199)"}
-                                          />
-                                        ) : ext === "jpg" ? (
-                                          <FileIcon
-                                            extension={"jpg"}
-                                            size={78}
-                                            type={"image"}
-                                            labelColor={"rgba(102, 102, 224)"}
-                                          />
-                                        ) : ext === "jpeg" ? (
-                                          <FileIcon
-                                            extension={"jpeg"}
-                                            size={78}
-                                            type={"image"}
-                                            labelColor={"rgba(102, 102, 224)"}
-                                          />
-                                        ) : ext === "gif" ? (
-                                          <FileIcon
-                                            extension={"gif"}
-                                            size={78}
-                                            {...defaultStyles.gif}
-                                          />
-                                        ) : (
-                                          <FileIcon
-                                            extension={ext}
-                                            size={78}
-                                            {...defaultStyles.ext}
-                                          />
-                                        )}
-                                        <span className="deleteBtn">
-                                          <img
-                                            src={deleteButtonCreateMeeting}
-                                            width={15}
-                                            height={15}
-                                            alt=""
-                                            onClick={() =>
-                                              deleteFilefromAttachments(
-                                                data,
-                                                index
-                                              )
-                                            }
-                                          />
-                                        </span>
-                                        <p className="modaltodolist-attachment-text">
-                                          {first}
-                                        </p>
-                                      </Col>
-                                    );
-                                  }
-                                )
+                                  const first =
+                                    data.DisplayAttachmentName.split(" ")[0];
+                                  return (
+                                    <Col
+                                      sm={12}
+                                      lg={2}
+                                      md={2}
+                                      className="modaltodolist-attachment-icon"
+                                    >
+                                      {ext === "doc" ? (
+                                        <FileIcon
+                                          extension={"docx"}
+                                          size={78}
+                                          type={"document"}
+                                          labelColor={"rgba(44, 88, 152)"}
+                                        />
+                                      ) : ext === "docx" ? (
+                                        <FileIcon
+                                          extension={"docx"}
+                                          size={78}
+                                          type={"font"}
+                                          labelColor={"rgba(44, 88, 152)"}
+                                        />
+                                      ) : ext === "xls" ? (
+                                        <FileIcon
+                                          extension={"xls"}
+                                          type={"spreadsheet"}
+                                          size={78}
+                                          labelColor={"rgba(16, 121, 63)"}
+                                        />
+                                      ) : ext === "xlsx" ? (
+                                        <FileIcon
+                                          extension={"xls"}
+                                          type={"spreadsheet"}
+                                          size={78}
+                                          labelColor={"rgba(16, 121, 63)"}
+                                        />
+                                      ) : ext === "pdf" ? (
+                                        <FileIcon
+                                          extension={"pdf"}
+                                          size={78}
+                                          {...defaultStyles.pdf}
+                                        />
+                                      ) : ext === "png" ? (
+                                        <FileIcon
+                                          extension={"png"}
+                                          size={78}
+                                          type={"image"}
+                                          labelColor={"rgba(102, 102, 224)"}
+                                        />
+                                      ) : ext === "txt" ? (
+                                        <FileIcon
+                                          extension={"txt"}
+                                          size={78}
+                                          type={"document"}
+                                          labelColor={"rgba(52, 120, 199)"}
+                                        />
+                                      ) : ext === "jpg" ? (
+                                        <FileIcon
+                                          extension={"jpg"}
+                                          size={78}
+                                          type={"image"}
+                                          labelColor={"rgba(102, 102, 224)"}
+                                        />
+                                      ) : ext === "jpeg" ? (
+                                        <FileIcon
+                                          extension={"jpeg"}
+                                          size={78}
+                                          type={"image"}
+                                          labelColor={"rgba(102, 102, 224)"}
+                                        />
+                                      ) : ext === "gif" ? (
+                                        <FileIcon
+                                          extension={"gif"}
+                                          size={78}
+                                          {...defaultStyles.gif}
+                                        />
+                                      ) : (
+                                        <FileIcon
+                                          extension={ext}
+                                          size={78}
+                                          {...defaultStyles.ext}
+                                        />
+                                      )}
+                                      <span className="deleteBtn">
+                                        <img
+                                          src={deleteButtonCreateMeeting}
+                                          width={15}
+                                          height={15}
+                                          alt=""
+                                          onClick={() =>
+                                            deleteFilefromAttachments(
+                                              data,
+                                              index
+                                            )
+                                          }
+                                        />
+                                      </span>
+                                      <p className="modaltodolist-attachment-text">
+                                        {first}
+                                      </p>
+                                    </Col>
+                                  );
+                                }
+                              )
                               : null}
                           </Col>
                         </Row>

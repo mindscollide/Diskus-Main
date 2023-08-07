@@ -1184,12 +1184,16 @@ const TodoList = () => {
                           value={searchData.Date}
                           change={searchHandlerDate}
                           locale="ar"
+                          className="meetingtablesearchDatePicker"
+                          flag={true}
                         />
                       ) : (
                         <CustomDatePicker
                           value={searchData.Date}
                           change={searchHandlerDate}
                           locale="en"
+                          className={"meetingtablesearchDatePicker"}
+                          flag={true}
                         />
                       )}
                       <TextField
@@ -1235,12 +1239,14 @@ const TodoList = () => {
                           value={searchData.Date}
                           change={searchHandlerDate}
                           locale="ar"
+                          flag={true}
                         />
                       ) : (
                         <CustomDatePicker
                           value={searchData.Date}
                           change={searchHandlerDate}
                           locale="en"
+                          flag={true}
                         />
                       )}
                       <TextField
