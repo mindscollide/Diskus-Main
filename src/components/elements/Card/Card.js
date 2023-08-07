@@ -27,6 +27,7 @@ const Card = ({
   setUniqCardID,
   uniqCardID,
   Icon,
+  groupState,
   associatedTags,
 }) => {
   const { t } = useTranslation();
@@ -391,34 +392,68 @@ const Card = ({
           </div>
         </Col>
       </Row>
-      <Row>
-        <Col sm={12} md={12} lg={12}>
+      <Row className="m-0 p-0">
+        {groupState === true ? <Col sm={12} md={12} lg={12}>
           {associatedTags !== null &&
             associatedTags !== undefined &&
             associatedTags.length === 1 ? (
             <>
-              <span className={styles["associated_tagLine_groupTitle"]}>
-                {associatedTags[0].groupTitle + " "}
+              <span className={styles["associated_tagLine_single"]}>
+                {t("Associated-with")} {" "}
+                <span className={styles["associated_tagLine_groupTitle_single"]}>
+                  {`${associatedTags[0].committeeTitle} ${t("Committee")}`}
+                </span>
               </span>
-              <span className={styles["associated_tagLine"]}>
-                {t("associated-with-this-committee")}
-              </span>
+
+
             </>
           ) : null}
           {associatedTags && associatedTags.length > 1 ? (
             <>
-              <span className={styles["associated_tagLine_groupTitle"]}>
-                {associatedTags[0].groupTitle}
-                {`& + ${associatedTags.length}` + " "}{" "}
-              </span>
               <span className={styles["associated_tagLine"]}>
-                {t("associated-with-this-committee")}
+                {`${t("Associated-with")} ${" "}`}
+                <span className={styles["associated_tagLine_groupTitle"]}>
+                  {`${associatedTags.length}  ${t("Committees")} `}
+                </span>
               </span>
+
+
             </>
           ) : (
             ""
           )}
-        </Col>
+        </Col> : <Col sm={12} md={12} lg={12}>
+          {associatedTags !== null &&
+            associatedTags !== undefined &&
+            associatedTags.length === 1 ? (
+            <>
+              <span className={styles["associated_tagLine_single"]}>
+                {`${t("Associated-with")} ${" "}`}
+                <span className={styles["associated_tagLine_groupTitle_single"]}>
+                  {`${associatedTags[0].groupTitle} ${t("Group")}` + " "}
+                </span>
+              </span>
+
+
+            </>
+          ) : null}
+          {associatedTags && associatedTags.length > 1 ? (
+            <>
+              <span className={styles["associated_tagLine"]}>
+                {t("Associated-with")} {" "}
+                <span className={styles["associated_tagLine_groupTitle"]}>
+                  {/* {associatedTags[0].groupTitle} */}
+                  {`${associatedTags.length} ${t("Groups")}`}
+                </span>
+              </span>
+
+
+            </>
+          ) : (
+            ""
+          )}
+        </Col>}
+
       </Row>
 
       <Row className="m-0 p-0 ">

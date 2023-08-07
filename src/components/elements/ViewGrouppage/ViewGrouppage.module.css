@@ -27,6 +27,7 @@ body[dir="rtl"] .View-group-Subheading {
 body[dir="rtl"] .Management-Heading-View-Group {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
+
 .paragraph-content-View-Group {
   font-size: 16px !important;
   font-family: "MontserratSemiBold";
@@ -36,6 +37,7 @@ body[dir="rtl"] .Management-Heading-View-Group {
 body[dir="rtl"] .paragraph-content-View-Group {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
+
 .Create-group-Head-Heading {
   font-size: 20px !important;
   color: #6172d6 !important;
@@ -45,6 +47,7 @@ body[dir="rtl"] .paragraph-content-View-Group {
 body[dir="rtl"] .Create-group-Head-Heading {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
+
 .group-head-info {
   line-height: 15px !important;
 }
@@ -110,7 +113,8 @@ body[dir="rtl"] .members-create-group-page {
 .View-group-paper {
   height: auto !important;
   width: 100% !important;
-  padding: 60px 60px !important;
+  padding: 60px 60px 20px 60px !important;
+  margin-bottom: 15px;
 }
 
 .Close-ViewGroup-btn {
@@ -122,6 +126,7 @@ body[dir="rtl"] .members-create-group-page {
   border-radius: 4px !important;
   border: none !important;
 }
+
 body[dir="rtl"] .Close-ViewGroup-btn {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }

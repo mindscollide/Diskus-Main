@@ -321,6 +321,7 @@ const Committee = () => {
                                 }
                                 associatedTags={data.listofGroups}
                                 flag={true}
+                                groupState={false}
                                 assignGroupBtn={() =>
                                   showMarketingModal(data.committeeID)
                                 }
