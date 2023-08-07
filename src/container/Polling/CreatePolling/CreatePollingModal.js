@@ -309,6 +309,7 @@ const CreatePolling = () => {
   };
 
   const changeDateStartHandler = (date) => {
+    console.log("changeDateStartHandler",date)
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
     setMeetingDate(meetingDateValueFormat);
@@ -407,130 +408,6 @@ const CreatePolling = () => {
         });
       }
     }
-    // if (Object.keys(options).length >= 2) {
-    //   if (Object.keys(members).length > 0) {
-    //     members.map((userdata, index) => {
-    //       users.push(userdata.userID);
-    //     });
-    //     options.map((optionData, index) => {
-    //       if (optionData.value != "") {
-    //         optionsListData.push(optionData.value);
-    //       } else if (index === 1) {
-    //         return setOpen({
-    //           flag: true,
-    //           message: t("Required-atleast-two-options"),
-    //         });
-    //       }
-    //     });
-    //     if (createPollData.date != "") {
-    //       if (createPollData.TypingTitle != "") {
-    //         let data = {
-    //           PollDetails: {
-    //             PollTitle: createPollData.TypingTitle,
-    //             DueDate: multiDatePickerDateChangIntoUTC(createPollData.date),
-    //             AllowMultipleAnswers: createPollData.AllowMultipleAnswers,
-    //             CreatorID: parseInt(createrid),
-    //             PollStatusID: parseInt(value),
-    //             OrganizationID: parseInt(organizationid),
-    //           },
-    //           ParticipantIDs: users,
-    //           PollAnswers: optionsListData,
-    //         };
-
-    //         await dispatch(SavePollsApi(navigate, data, t));
-    //       } else {
-    //         setOpen({
-    //           flag: true,
-    //           message: t("Please-enter-title"),
-    //         });
-    //       }
-    //     } else {
-    //       // setopen notfication for date
-    //       setOpen({
-    //         flag: true,
-    //         message: t("Select-date"),
-    //       });
-    //     }
-    //   } else {
-    //     // setopen notfication for error no assigni assiened
-    //     if (createPollData.date != "") {
-    //       if (createPollData.TypingTitle != "") {
-    //         options.map((optionData, index) => {
-    //           if (optionData.value != "") {
-    //             if (Object.keys(members).length > 0) {
-    //             } else {
-    //               return setOpen({
-    //                 flag: true,
-    //                 message: t("Atleat-one-member-required"),
-    //               });
-    //             }
-    //           } else if (index === 1) {
-    //             if (Object.keys(members).length > 0) {
-    //               return setOpen({
-    //                 flag: true,
-    //                 message: t("Required-atleast-two-options"),
-    //               });
-    //             } else {
-    //               return setOpen({
-    //                 flag: true,
-    //                 message: t("Atleat-one-member-required"),
-    //               });
-    //             }
-    //           }
-    //         });
-    //         setOpen({
-    //           flag: true,
-    //           message: t("Please-fill-all-reqired-fields"),
-    //         });
-    //       } else {
-    //         setOpen({
-    //           flag: true,
-    //           message: t("Please-fill-all-reqired-fields"),
-    //         });
-    //       }
-    //     } else {
-    //       if (createPollData.TypingTitle != "") {
-    //         setOpen({
-    //           flag: true,
-    //           message: t("Please-fill-all-reqired-fields"),
-    //         });
-    //       } else {
-    //         setOpen({
-    //           flag: true,
-    //           message: t("Please-fill-all-reqired-fields"),
-    //         });
-    //       }
-    //     }
-    //   }
-    // } else {
-    //   if (createPollData.date != "") {
-    //     if (createPollData.TypingTitle != "") {
-    //       setOpen({
-    //         flag: true,
-    //         message: t("Required-atleast-two-options"),
-    //       });
-    //     } else {
-    //       setOpen({
-    //         flag: true,
-    //         message: t("Please-fill-all-reqired-fields"),
-    //       });
-    //     }
-    //   } else {
-    //     if (createPollData.TypingTitle != "") {
-    //       setOpen({
-    //         flag: true,
-    //         message: t("Please-fill-all-reqired-fields"),
-    //       });
-    //     } else {
-    //       setOpen({
-    //         flag: true,
-    //         message: t("Please-fill-all-reqired-fields"),
-    //       });
-    //     }
-    //   }
-    //   // console.log("Hellothereiamcoming");
-    //   // setopen notfication for polls add atlese 2 option
-    // }
   };
 
   const HandleChange = (e, index) => {
@@ -565,7 +442,6 @@ const CreatePolling = () => {
   const allValuesNotEmpty = options.every((item) => item.value !== "");
 
   const addNewRow = () => {
-    HandleCancelFunction;
     if (options.length > 1) {
       if (allValuesNotEmpty) {
         let lastIndex = options.length - 1;
