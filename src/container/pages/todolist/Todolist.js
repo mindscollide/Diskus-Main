@@ -44,6 +44,7 @@ import { enGB, ar } from 'date-fns/locale'
 import { registerLocale } from 'react-datepicker'
 import {
   _justShowDateformat,
+  forRecentActivity,
   newDateFormaterAsPerUTC,
   newTimeFormaterAsPerUTC,
   newTimeFormaterAsPerUTCFullDate,
@@ -724,12 +725,7 @@ const TodoList = () => {
       width: "200px",
       align: 'center',
       sortDirections: ['descend', 'ascend'],
-      sorter: (a, b) => {
-        console.log(_justShowDateformat(a.deadlineDateTime), _justShowDateformat(b.deadlineDateTime), "deadlineDateTimedeadlineDateTimedeadlineDateTime")
-        return _justShowDateformat(a.deadlineDateTime) < _justShowDateformat(b.deadlineDateTime)
-      },
-
-      // width: "220px",
+      sorter: (a, b) => moment(forRecentActivity(a.deadlineDateTime)).unix() - moment(forRecentActivity(b.deadlineDateTime)).unix(),
       render: (text, record) => {
         console.log('text1212', record)
         return newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime)
@@ -1307,7 +1303,7 @@ const TodoList = () => {
                   <Paper>
                     <ResultMessage
                       icon={<img src={TodoMessageIcon1} width={250} />}
-                      title="NO TASK"
+                      title={t("No-task")}
                       className="NoTaskTodo"
                     // title={t("Nothing-to-do")}
                     // subTitle={t("Enjoy-or-discuss-with-your-colleagues")}

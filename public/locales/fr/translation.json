@@ -452,7 +452,7 @@
   "You-can-not-upload-more-then-10-files": "You can not upload more then 10 files",
   "Last-modified-on": "Last modified on",
   "You-can-add-data-only-from-one-form-option-at-a-time": "You can add data from only one form option at a time",
-  "Please-select-atleast-one-members": "Please select atleast one members",
+  "Please-select-atleast-one-members": "Please select atleast one member",
   "Please-select-committee-member-type-also": "Please select committee member type also",
   "Create-new-note": " Create New Note",
   "User-email-already-exists": "User email already exists",
@@ -730,5 +730,6 @@
   "Please-fill-options": "Please fill options",
   "Published": "Published",
   "UnPublished": "UnPublished",
-  "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close": "Are you sure? If you click on close button the data will reset and modal will close."
+  "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close": "Are you sure? If you click on close button the data will reset and modal will close.",
+  "No-task": "No Task"
 }

@@ -809,7 +809,7 @@
   "Last-modified-on": "Last modified on",
   "Title-is-required": "Title is required",
   "Description-is-required": "Description is required",
-  "Please-select-atleast-one-members": "Please select atleast one members",
+  "Please-select-atleast-one-members": "Please select atleast one member",
   "Please-select-committee-member-type-also": "Please select committee member type also",
   "Profile-designation-is-required": "Profile designation is required",
   "Create-new-note": " Create New Note",
@@ -1106,5 +1106,10 @@
   "Please-fill-options": "Please fill options",
   "Published": "Published",
   "UnPublished": "UnPublished",
-  "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close": "Are you sure? If you click on close button the data will reset and modal will close."
+  "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close": "Are you sure? If you click on close button the data will reset and modal will close.",
+  "No-task": "No Task",
+  "Associated-with-this-group": "Associated with this group",
+  "Associated-with": "Associated with",
+  "Group": "Group",
+  "Committee": "Committee"
 }

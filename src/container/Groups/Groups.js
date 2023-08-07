@@ -201,12 +201,13 @@ const Groups = () => {
               groupStatusID: data.groupStatusID,
               groupTitle: data.groupTitle,
               userCount: data.userCount,
+              listOfCommittees: data.listOfCommittees
             });
           });
           setgroupsData(newArr);
         }
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [GroupsReducer.getAllGroupsResponse]);
 
   useEffect(() => {
@@ -287,9 +288,8 @@ const Groups = () => {
             <Row>
               <Col lg={12} sm={12} md={12}>
                 <Row
-                  className={`${"d-flex text-center MontserratSemiBold-600 color-5a5a5a m-0 p-0"} ${
-                    styles["groups_box"]
-                  }`}
+                  className={`${"d-flex text-center MontserratSemiBold-600 color-5a5a5a m-0 p-0"} ${styles["groups_box"]
+                    }`}
                 >
                   <Col sm={12} md={12} lg={12} className="m-0 p-0">
                     <Row>
@@ -303,6 +303,7 @@ const Groups = () => {
                                 key={index}
                                 CardID={data.groupID}
                                 StatusID={data.groupStatusID}
+                                associatedTags={data.listOfCommittees}
                                 flag={false}
                                 Icon={
                                   <img
@@ -316,14 +317,15 @@ const Groups = () => {
                                 onClickFunction={() =>
                                   viewmodal(data.groupID, data.groupStatusID)
                                 }
+                                groupState={true}
                                 BtnText={
                                   data.groupStatusID === 1
                                     ? t("View-group")
                                     : data.groupStatusID === 2
-                                    ? t("View-group")
-                                    : data.groupStatusID === 3
-                                    ? t("Update-group")
-                                    : ""
+                                      ? t("View-group")
+                                      : data.groupStatusID === 3
+                                        ? t("Update-group")
+                                        : ""
                                 }
                                 CardHeading={data?.groupTitle}
                                 changeHandleStatus={changeHandleStatus}
