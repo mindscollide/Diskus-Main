@@ -7,6 +7,7 @@ const initialState = {
   notifyOrganizors: false,
   agendaContributors: false,
   notifyAgendaContributors: false,
+  participantModal: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -42,6 +43,13 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         notifyAgendaContributors: action.response,
+      };
+    }
+
+    case actions.ADD_PARTICIPANTS_MODAL: {
+      return {
+        ...state,
+        participantModal: action.response,
       };
     }
 

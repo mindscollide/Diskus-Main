@@ -35,10 +35,18 @@ const showAgendaContributorsModals = (response) => {
   };
 };
 
+const showAddParticipantsModal = (response) => {
+  return {
+    type: actions.ADD_PARTICIPANTS_MODAL,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
   showNotifyOrganizors,
   showAddAgendaContributor,
   showAgendaContributorsModals,
+  showAddParticipantsModal,
 };

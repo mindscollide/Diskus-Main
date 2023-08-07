@@ -16,7 +16,11 @@ import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
-import { showCrossConfirmationModal } from "../../../../../store/actions/NewMeetingActions";
+import {
+  showAddParticipantsModal,
+  showCrossConfirmationModal,
+} from "../../../../../store/actions/NewMeetingActions";
+import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
 const Participants = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -25,6 +29,10 @@ const Participants = () => {
 
   const openCrossIconModal = () => {
     dispatch(showCrossConfirmationModal(true));
+  };
+
+  const openAddPartcipantModal = () => {
+    dispatch(showAddParticipantsModal(true));
   };
   const data = [
     {
@@ -136,6 +144,7 @@ const Participants = () => {
               text={t("Add-more")}
               icon={<img src={addmore} />}
               className={styles["AddMoreBtn"]}
+              onClick={openAddPartcipantModal}
             />
           </Col>
         </Row>
@@ -179,6 +188,7 @@ const Participants = () => {
         </Row>
       </section>
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
+      {NewMeetingreducer.participantModal && <AddParticipantModal />}
     </>
   );
 };
