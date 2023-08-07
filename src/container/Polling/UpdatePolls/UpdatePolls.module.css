@@ -82,8 +82,10 @@ body[dir="rtl"] .Due_Date_heading {
 }
 
 .Scroller_For_UpdatePollModal {
-  height: 26vh !important;
+  height: 22vh !important;
   overflow-x: hidden !important;
+  overflow-y: auto;
+  margin-top: 5px;
 }
 
 .Scroller_For_UpdatePollModal::-webkit-scrollbar {
@@ -147,9 +149,11 @@ body[dir="rtl"] .Cross-icon-Create_poll {
   margin-top: 4px !important;
   cursor: pointer !important;
 }
+
 body[dir="ltr"] .Cross-icon-Create_poll {
   cursor: pointer !important;
 }
+
 .PlusFaddedClass {
   margin-left: 10px !important;
 }
@@ -327,12 +331,14 @@ body[dir="rtl"] .Card_border2 {
   font-size: 12px !important;
   color: #5a5a5a;
 }
+
 .ClassAddButton {
   height: 0 !important;
   display: flex;
   justify-content: start !important;
   gap: 10px !important;
 }
+
 .Add_another_options {
   padding: 12px 30px !important;
   background: #fff;
@@ -352,4 +358,130 @@ body[dir="rtl"] .Card_border2 {
   width: 100% !important;
   border: 1px dashed #e1e1e1 !important;
   font-size: 12px !important;
+}
+
+.errorMessage-inLogin {
+  margin: 2px;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
+  font-family: "MontserratMedium-500";
+}
+
+body[dir="rtl"] .errorMessage-inLogin {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+body[dir="rtl"] .errorMessage-inLogin_1 {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+.errorMessage-inLogin_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 0px;
+  color: #f16b6b;
+}
+
+.errorMessage-inLogin_1 {
+  margin: 2px;
+  height: 13px;
+  font-size: 12px;
+  color: #f16b6b;
+  visibility: visible;
+  font-family: "MontserratMedium-500";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.errorMessage-inLogin_1_hidden {
+  visibility: hidden;
+  margin: 0;
+  font-size: 12px;
+  height: 13px;
+  color: #f16b6b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Participant_heading {
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold" !important;
+  margin-top: 10px;
+}
+
+.Box_For_Title_toShow {
+  width: 100% !important;
+  height: auto !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.ViewTitleTOShowOnProgress {
+  width: 100%;
+  font-size: 14px !important;
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important;
+  margin: 4px !important;
+}
+
+.scroll-height {
+  height: 17vh !important;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  /* padding-right: 10px !important; */
+}
+
+.scroll-height::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.scroll-height::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.BOx_for_yes {
+  width: 100%;
+  height: auto !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding-left: 10px;
+  margin: 0 0 10px 0;
+}
+
+.scrollable-title {
+  max-height: 100px;
+  min-height: 39px; /* Set the maximum height you desire for the title */
+  overflow: hidden;
+  overflow-y: auto; /* Enable vertical scrolling when text overflows */
+  
+}
+.scrollable-title::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+.scrollable-title::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+.OptionBodyMaxHeight{
+  margin-top: 14px;
+  max-height: 17vh; /* Set the maximum height you desire for the title */
+  overflow: hidden;
+  overflow-y: auto; /* Enable vertical scrolling when text overflows */
+  margin-right: 0 !important;
+}
+
+.scrollable-title2{
+  min-height: 39px!important;
 }

@@ -163,16 +163,49 @@ const Votepoll = () => {
                     </Col>
                   </Row>
                   <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12} className="m-0 p-0">
-                      <TextField
-                        applyClass={"PollingCViewText"}
-                        labelClass="d-none"
-                        maxLength={500}
-                        value={viewProgressPollsDetails.PollTitle}
-                        disable={true}
-                      />
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={`${styles["BOx_for_yes"]} d-flex`}
+                  >
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}>
+                        {viewProgressPollsDetails.PollTitle.length > 100 ? (
+                          // Add d-flex class and justify-content-center to center the text
+                          <div
+                            className={`${styles["scrollable-title"]} d-flex justify-content-center`}
+                          >
+                            {viewProgressPollsDetails.PollTitle}
+                          </div>
+                        ) : (
+                          // Add d-flex class and align-items-center to center the text
+                          <div
+                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}
+                          >
+                            {viewProgressPollsDetails.PollTitle}
+                          </div>
+                        )}
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                  {/* <Row className="mt-2">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={styles["Border_box"]}
+                    >
+                      <Row className="mt-2">
+                        <Col lg={12} md={12} sm={12}>
+                          <span className={styles["ViewTitleTOShowOnProgress"]}>
+                            {viewProgressPollsDetails.PollTitle}
+                          </span>
+                        </Col>
+                      </Row>
                     </Col>
-                  </Row>
+                  </Row> */}
                   {pollsOption.length > 3 ? (
                     <>
                       <Row className="mt-2">

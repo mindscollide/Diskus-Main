@@ -104,7 +104,7 @@ const ViewPollProgress = () => {
       });
     }
   }, [PollsReducer.Allpolls]);
-  
+
   const changeDateStartHandler2 = (date) => {
     let newDate = moment(date).format("DD MMMM YYYY");
 
@@ -192,58 +192,54 @@ const ViewPollProgress = () => {
                 <Row className="mt-2">
                   <Col
                     lg={12}
-                    sm={12}
                     md={12}
-                    className="mt-2 m-0 p-0"
+                    sm={12}
+                    className={`${styles["BOx_for_yes"]} d-flex`}
                   >
-                    <TextField
-                      applyClass={"PollingCViewText"}
-                      labelClass="d-none"
-                      maxLength={500}
-                      value={viewProgressPollsDetails.PollTitle}
-                      disable={true}
-                    />
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}>
+                        {viewProgressPollsDetails.PollTitle.length > 100 ? (
+                          // Add d-flex class and justify-content-center to center the text
+                          <div
+                            className={`${styles["scrollable-title"]} d-flex justify-content-center`}
+                          >
+                            {viewProgressPollsDetails.PollTitle}
+                          </div>
+                        ) : (
+                          // Add d-flex class and align-items-center to center the text
+                          <div
+                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}
+                          >
+                            {viewProgressPollsDetails.PollTitle}
+                          </div>
+                        )}
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
                 {pollsOption.length > 2 ? (
-                  <Row className="mt-2">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className={styles["Scroller_View_Poll_Published"]}
-                    >
+                  // <Row className="mt-2">
+                  <Row className={styles["Scroller_View_Poll_Published"]}>
+                    <Col lg={12} ms={12} sm={12}>
                       {pollsOption.length > 0
                         ? pollsOption.map((data, index) => {
                             return (
                               <>
                                 <Row key={index}>
-                                  <Col lg={1} md={1} sm={12}></Col>
-                                  <Col
-                                    lg={11}
-                                    md={11}
-                                    sm={12}
-                                    className="m-0 p-0 "
-                                  >
-                                    <Row className="mt-2">
-                                      <Col lg={12} md={12} sm={12}>
-                                        <span
-                                          className={styles["Yes_ViewProgress"]}
-                                        >
-                                          {data.answer}{" "}
-                                          <span>
-                                            {"(" + data.totalVotes + ")"}
-                                          </span>
-                                        </span>
-                                      </Col>
-                                    </Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={styles["Yes_ViewProgress"]}
+                                    >
+                                      {data.answer}{" "}
+                                      <span>{"(" + data.totalVotes + ")"}</span>
+                                    </span>
                                   </Col>
                                 </Row>
                                 <Row>
                                   <Col
                                     lg={1}
                                     ms={1}
-                                    sm={12}
+                                    sm={1}
                                     className={
                                       styles["CheckBox_ViewProgressPolls"]
                                     }
@@ -272,7 +268,7 @@ const ViewPollProgress = () => {
                                   <Col
                                     lg={11}
                                     md={11}
-                                    sm={12}
+                                    sm={11}
                                     className={
                                       styles["Progress_bar_view_polls"]
                                     }
@@ -291,6 +287,7 @@ const ViewPollProgress = () => {
                     </Col>
                   </Row>
                 ) : (
+                  // </Row>
                   <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
                       {pollsOption.length > 0
@@ -312,7 +309,6 @@ const ViewPollProgress = () => {
                                         <span
                                           className={styles["Yes_ViewProgress"]}
                                         >
-
                                           {data.answer}
                                           <span>
                                             {"(" + data.totalVotes + ")"}
@@ -326,7 +322,7 @@ const ViewPollProgress = () => {
                                   <Col
                                     lg={1}
                                     ms={1}
-                                    sm={12}
+                                    sm={1}
                                     className={
                                       styles["CheckBox_ViewProgressPolls"]
                                     }
@@ -353,9 +349,9 @@ const ViewPollProgress = () => {
                                     )}
                                   </Col>
                                   <Col
-                                    lg={11}
-                                    md={11}
-                                    sm={12}
+                                    lg={10}
+                                    md={10}
+                                    sm={10}
                                     className={
                                       styles["Progress_bar_view_polls"]
                                     }
@@ -408,7 +404,13 @@ const ViewPollProgress = () => {
                     <Row>
                       {viewpollMembers.map((data, index) => {
                         return (
-                          <Col key={index}lg={6} md={6} sm={12} className="mt-2">
+                          <Col
+                            key={index}
+                            lg={6}
+                            md={6}
+                            sm={12}
+                            className="mt-2"
+                          >
                             <Row>
                               <Col lg={11} md={11} sm={12} className="m-0 p-0">
                                 <Row className={styles["Card_border2"]}>

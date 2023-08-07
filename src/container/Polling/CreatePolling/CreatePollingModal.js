@@ -69,6 +69,7 @@ const CreatePolling = () => {
     message: "",
   });
   const [selectedsearch, setSelectedsearch] = useState([]);
+  const [error, setError] = useState(false);
   const [createPollData, setcreatePollData] = useState({
     TypingTitle: "",
     InputSearch: "",
@@ -334,12 +335,14 @@ const CreatePolling = () => {
     const createrid = localStorage.getItem("userID");
     let users = [];
     let optionsListData = [];
+    const allValuesNotEmpty = options.every((item) => item.value !== "");
+    console.log("SavePollsButtonFunc",allValuesNotEmpty)
     if (
       createPollData.date != "" &&
       createPollData.TypingTitle != "" &&
       Object.keys(members).length > 0 &&
       Object.keys(options).length >= 2 &&
-      checkOptions(options)
+      allValuesNotEmpty
     ) {
       members.map((userdata, index) => {
         users.push(userdata.userID);
@@ -364,6 +367,8 @@ const CreatePolling = () => {
 
       await dispatch(SavePollsApi(navigate, data, t));
     } else {
+      setError(true);
+
       if (createPollData.TypingTitle === "") {
         setOpen({
           ...open,
@@ -557,9 +562,10 @@ const CreatePolling = () => {
       })
     );
   };
+  const allValuesNotEmpty = options.every((item) => item.value !== "");
 
-  const addNewRow = () => {HandleCancelFunction
-    const allValuesNotEmpty = options.every((item) => item.value !== "");
+  const addNewRow = () => {
+    HandleCancelFunction;
     if (options.length > 1) {
       if (allValuesNotEmpty) {
         let lastIndex = options.length - 1;
@@ -574,7 +580,7 @@ const CreatePolling = () => {
           message: t("Please-fill-options"),
         });
       }
-    }else{
+    } else {
       setOpen({
         flag: true,
         message: t("Please-fill-options"),
@@ -656,8 +662,22 @@ const CreatePolling = () => {
                             locale={localValue}
                             onChange={(value) => changeDateStartHandler(value)}
                           />
+                        
                         </Col>
                       </Row>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          error && meetingDate === ""
+                            ? ` ${styles["errorMessage-inLogin_1"]} `
+                            : `${styles["errorMessage-inLogin_1_hidden"]}`
+                        }
+                      >
+                        {t("Please-select-due-date")}
+                      </p>
                     </Col>
                   </Row>
                 </>
@@ -687,6 +707,7 @@ const CreatePolling = () => {
                 </>
               ) : (
                 <>
+                 
                   <Row>
                     <Col
                       lg={12}
@@ -721,6 +742,32 @@ const CreatePolling = () => {
                           </span>
                         </Col>
                       </Row>
+                        <Row className="mt-2">
+                          <Col lg={12} md={12} sm={12}>
+                            <TextField
+                              placeholder={t("Tile")}
+                              applyClass={"PollingCreateModal"}
+                              labelClass="d-none"
+                              maxLength={500}
+                              name={"TypingTitle"}
+                              value={createPollData.TypingTitle}
+                              change={HandleChange}
+                            />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col>
+                            <p
+                              className={
+                                error && createPollData.TypingTitle === ""
+                                  ? ` ${styles["errorMessage-inLogin"]} `
+                                  : `${styles["errorMessage-inLogin_hidden"]}`
+                              }
+                            >
+                              {t("Please-enter-title")}
+                            </p>
+                          </Col>
+                      </Row>
                       <Row>
                         <Col
                           lg={12}
@@ -728,19 +775,6 @@ const CreatePolling = () => {
                           sm={12}
                           className={styles["Scroller_For_CreatePollModal"]}
                         >
-                          <Row className="mt-2">
-                            <Col lg={12} md={12} sm={12}>
-                              <TextField
-                                placeholder={t("Tile")}
-                                applyClass={"PollingCreateModal"}
-                                labelClass="d-none"
-                                maxLength={500}
-                                name={"TypingTitle"}
-                                value={createPollData.TypingTitle}
-                                change={HandleChange}
-                              />
-                            </Col>
-                          </Row>
                           {options.length > 0
                             ? options.map((data, index) => {
                                 return (
@@ -842,6 +876,19 @@ const CreatePolling = () => {
                               />
                             </Col>
                           </Row>
+                          <Row>
+                          <Col>
+                            <p
+                              className={
+                                error && allValuesNotEmpty === false
+                                  ? ` ${styles["errorMessage-inLogin"]} `
+                                  : `${styles["errorMessage-inLogin_hidden"]}`
+                              }
+                            >
+                              {t("Options-must-be-more-than-2")}
+                            </p>
+                          </Col>
+                        </Row>
                         </Col>
                       </Row>
 
@@ -888,8 +935,22 @@ const CreatePolling = () => {
                             onClick={handleAddUsers}
                           />
                         </Col>
+                        <Row>
+                          <Col>
+                            <p
+                              className={
+                                error && members.length === 0
+                                  ? ` ${styles["errorMessage-inLogin"]} `
+                                  : `${styles["errorMessage-inLogin_hidden"]}`
+                              }
+                            >
+                              {t("Select-atleast-one-participants")}
+                            </p>
+                          </Col>
+                        </Row>
+                        <Col sm={12} md={12} lg={12} className={styles["Participant_heading"]}>{t("Participants")}</Col>
                       </Row>
-                      <Row className="mt-3">
+                      <Row className="mt-1">
                         <Col
                           lg={12}
                           md={12}
