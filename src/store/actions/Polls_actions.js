@@ -243,7 +243,7 @@ const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
                 UserID: parseInt(createrID),
                 OrganizationID: parseInt(OrganizationID),
                 CreatorName: "",
-                PollTitle:"",
+                PollTitle: "",
                 PageNumber: 1,
                 Length: 50,
               };
@@ -255,8 +255,6 @@ const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
                   t("Poll Status Updated Successfully")
                 )
               );
-         
-
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -356,7 +354,7 @@ const SavePollsApi = (navigate, Data, t) => {
                 UserID: parseInt(userID),
                 OrganizationID: parseInt(organizationID),
                 CreatorName: "",
-                PollTitle:"",
+                PollTitle: "",
                 PageNumber: 1,
                 Length: 50,
               };
@@ -475,7 +473,7 @@ const castVoteApi = (navigate, data, t) => {
               UserID: parseInt(userID),
               OrganizationID: parseInt(organizationID),
               CreatorName: "",
-              PollTitle:"",
+              PollTitle: "",
               PageNumber: 1,
               Length: 50,
             };
@@ -669,7 +667,9 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
               await dispatch(globalFlag(false));
               await dispatch(viewVotesDetailsModal(false));
               await dispatch(setVotePollModal(false));
+              await dispatch(getAllCommitteesandGroups(navigate, t));
               await dispatch(setEditpollModal(true));
+
               console.log("handleEditpollModal", check);
             } else if (parseInt(check) === 3) {
               await dispatch(setEditpollModal(false));
@@ -987,7 +987,7 @@ const updatePollsApi = (navigate, Data, t) => {
                 UserID: parseInt(userID),
                 OrganizationID: parseInt(organizationID),
                 CreatorName: "",
-                PollTitle:"",
+                PollTitle: "",
                 PageNumber: 1,
                 Length: 50,
               };
@@ -1020,7 +1020,7 @@ const updatePollsApi = (navigate, Data, t) => {
                 UserID: parseInt(userID),
                 OrganizationID: parseInt(organizationID),
                 CreatorName: "",
-                PollTitle:"",
+                PollTitle: "",
                 PageNumber: 1,
                 Length: 50,
               };

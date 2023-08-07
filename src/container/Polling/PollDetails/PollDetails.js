@@ -119,19 +119,47 @@ const PollDetails = () => {
                 <Row className="mt-2">
                   <Col
                     lg={12}
-                    sm={12}
                     md={12}
-                    className="mt-2 m-0 p-0"
+                    sm={12}
+                    className={`${styles["BOx_for_yes"]} d-flex`}
                   >
-                    <TextField
-                      applyClass={"PollingCViewText"}
-                      labelClass="d-none"
-                      maxLength={500}
-                      value={pollTitle}
-                      disable={true}
-                    />
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}>
+                        {pollTitle.length > 100 ? (
+                          // Add d-flex class and justify-content-center to center the text
+                          <div
+                            className={`${styles["scrollable-title"]} d-flex justify-content-center`}
+                          >
+                            {pollTitle}
+                          </div>
+                        ) : (
+                          // Add d-flex class and align-items-center to center the text
+                          <div
+                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}
+                          >
+                            {pollTitle}
+                          </div>
+                        )}
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
+                {/* <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Box_For_Title_toShow"]}
+                  >
+                    <Row>
+                      <Col lg={12} sm={12} md={12}>
+                        <span className={styles["ViewTitleTOShowOnProgress"]}>
+                          {pollTitle}
+                        </span>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row> */}
                 <Row className="mt-1">
                   <Col
                     lg={12}

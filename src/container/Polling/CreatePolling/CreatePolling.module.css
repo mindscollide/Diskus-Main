@@ -372,3 +372,52 @@ body[dir="rtl"] .Card_border2 {
   font-size: 12px;
   font-family: "MontserratSemiBold" !important;
 }
+
+.errorMessage-inLogin {
+  margin: 2px;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
+  font-family: "MontserratMedium-500";
+}
+
+body[dir="rtl"] .errorMessage-inLogin {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+body[dir="rtl"] .errorMessage-inLogin_1 {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+.errorMessage-inLogin_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 0px;
+  color: #f16b6b;
+}
+.errorMessage-inLogin_1 {
+  margin: 2px;
+  height: 13px;
+  font-size: 12px;
+  color: #f16b6b;
+  visibility: visible;
+  font-family: "MontserratMedium-500";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.errorMessage-inLogin_1_hidden {
+  visibility: hidden;
+  margin: 0;
+  font-size: 12px;
+  height: 13px;
+  color: #f16b6b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.Participant_heading{ 
+  font-size: 20px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold" !important;
+  margin-top: 10px;
+}
