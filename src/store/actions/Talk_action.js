@@ -38,6 +38,7 @@ import {
   updateShoutAll,
   insertBulkMessages,
   downloadChat,
+  updateMessageAcknowledgement,
 } from '../../commen/apis/Api_config'
 import axios from 'axios'
 import { talkApi } from '../../commen/apis/Api_ends_points'
@@ -224,6 +225,15 @@ const mqttUnreadMessageCount = (response) => {
 //   }
 // }
 
+//Message Status Update
+const mqttMessageStatusUpdate = (response) => {
+  console.log('responseresponseresponse', response)
+  return {
+    type: actions.MQTT_MESSAGE_STATUS_UPDATE,
+    response: response,
+  }
+}
+
 //get all user chat init
 const getAllUserChatsInit = (response) => {
   return {
@@ -311,7 +321,8 @@ const GetAllUserChats = (navigate, currentUserId, currentOrganizationId, t) => {
         }
       })
       .catch((response) => {
-        dispatch(getAllUserChatsFail(false, t('Something-went-wrong')))
+        let newError = t('Something-went-wrong')
+        dispatch(getAllUserChatsFail(false, newError))
       })
   }
 }
@@ -3802,6 +3813,94 @@ const DownloadChat = (object, t, navigate) => {
   }
 }
 
+const updateMessageAcknowledgementInit = () => {
+  return {
+    type: actions.UPDATE_MESSAGE_ACKNOWLEDGEMENT_INIT,
+  }
+}
+
+const updateMessageAcknowledgementSuccess = (response, message) => {
+  return {
+    type: actions.UPDATE_MESSAGE_ACKNOWLEDGEMENT_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+const updateMessageAcknowledgementFail = (message) => {
+  return {
+    type: actions.UPDATE_MESSAGE_ACKNOWLEDGEMENT_FAIL,
+    message: message,
+  }
+}
+
+//UpdateMessageAcknowledgement
+const UpdateMessageAcknowledgement = (object, t, navigate) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(updateMessageAcknowledgementInit())
+    let form = new FormData()
+    form.append('RequestMethod', updateMessageAcknowledgement.RequestMethod)
+    form.append('RequestData', JSON.stringify(object))
+    axios({
+      method: 'post',
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(UpdateMessageAcknowledgement(object, t, navigate))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_UpdateMessageAcknowledgement_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                updateMessageAcknowledgementSuccess(
+                  response.data.responseResult.talkResponse,
+                  t('Message-acknowledged'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_UpdateMessageAcknowledgement_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                updateMessageAcknowledgementFail(t('Message-not-acknowledged')),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_UpdateMessageAcknowledgement_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(updateMessageAcknowledgementFail(t('Exception')))
+            }
+          } else {
+            await dispatch(updateMessageAcknowledgementFail(t('Exception')))
+          }
+        } else {
+          await dispatch(updateMessageAcknowledgementFail(t('Exception')))
+        }
+      })
+      .catch((response) => {
+        dispatch(updateMessageAcknowledgementFail(t('Exception')))
+      })
+  }
+}
+
 export {
   activeChatID,
   activeMessageID,
@@ -3856,4 +3955,6 @@ export {
   OtoMessageRetryFlag,
   InsertBulkMessages,
   DownloadChat,
+  UpdateMessageAcknowledgement,
+  mqttMessageStatusUpdate,
 }

@@ -5,8 +5,6 @@ import moment from 'moment'
 import './Talk-Chat.css'
 import { Triangle } from 'react-bootstrap-icons'
 import enUS from 'antd/es/date-picker/locale/en_US'
-
-import { Box } from '@material-ui/core'
 import {
   GetAllUserChats,
   GetBlockedUsers,
@@ -1098,6 +1096,7 @@ const TalkChat = () => {
     setPrivateGroupsData([])
     setStarredMessagesData([])
     setBlockedUsersData([])
+    localStorage.setItem('activeChatID', record.id)
   }
 
   const chatClickNewChat = (record) => {
@@ -1216,6 +1215,7 @@ const TalkChat = () => {
       ...messageSendData,
       Body: '',
     })
+    localStorage.setItem('activeChatID', null)
   }
 
   //Add Click Function
@@ -1645,6 +1645,7 @@ const TalkChat = () => {
     setSearchShoutAllUserValue('')
     setGroupUsersChecked([])
     setShowShoutEdit(false)
+    localStorage.setItem('activeChatID', null)
   }
 
   const cancelForwardSection = () => {
@@ -4025,7 +4026,59 @@ const TalkChat = () => {
     talkStateData?.talkSocketUnreadMessageCount?.unreadMessageData,
   ])
 
-  localStorage.setItem('activeChatID', activeChat.id)
+  //MQTT Message Status Update
+  useEffect(() => {
+    if (
+      talkStateData?.MessageStatusUpdateData.MessageStatusUpdateResponse !==
+        null &&
+      talkStateData?.MessageStatusUpdateData.MessageStatusUpdateResponse !==
+        undefined &&
+      talkStateData?.MessageStatusUpdateData.MessageStatusUpdateResponse
+        .length !== 0
+    ) {
+      // Get the messageID from the talkStateData
+      if (
+        talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse.data
+          .length !== 0
+      ) {
+        if (
+          talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse
+            .data[0].receiverID === parseInt(currentUserId)
+        ) {
+          const {
+            messageID,
+          } = talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse.data[0]
+
+          let checkLength =
+            talkStateData.MessageStatusUpdateData.MessageStatusUpdateResponse
+              .data
+
+          console.log('checkLengthcheckLength', Object.keys(checkLength).length)
+          // Function to update messageStatus in allOtoMessages state
+          setAllOtoMessages((prevAllOtoMessages) =>
+            prevAllOtoMessages.map((message) =>
+              message.messageID === messageID
+                ? {
+                    ...message,
+                    messageStatus:
+                      talkStateData.MessageStatusUpdateData
+                        .MessageStatusUpdateResponse.data[0].messageStatus,
+                  }
+                : message,
+            ),
+          )
+        }
+      } else {
+        setAllOtoMessages((prevAllOtoMessages) =>
+          prevAllOtoMessages.map((message) => ({
+            ...message,
+            messageStatus: 'Seen',
+          })),
+        )
+      }
+    }
+  }, [talkStateData?.MessageStatusUpdateData.MessageStatusUpdateResponse])
+
   // localStorage.setItem('activeChatMessageType', activeChat.messageType)
 
   const closeNotification = () => {
@@ -4052,11 +4105,12 @@ const TalkChat = () => {
   console.log('uploadFileTalk', uploadFileTalk)
 
   //Send Chat
-  const sendChat = async (e) => {
-    e.preventDefault()
+  const sendChat = async () => {
+    // e.preventDefault()
     dispatch(activeChatID(activeChat))
     if (
       (messageSendData.Body !== '' && uploadFileTalk !== {}) ||
+      (messageSendData.Body === '' && uploadFileTalk !== {}) ||
       messageSendData.Body !== ''
     ) {
       console.log('uniqueId', uniqueId)
@@ -4071,93 +4125,93 @@ const TalkChat = () => {
             },
           },
         }
-        let checkLocalData = localStorage.getItem('messageArray')
-        if (checkLocalData === undefined && checkLocalData === null) {
-          checkLocalData = {
-            TalkRequest: {
-              AllMessages: {
-                Messages: [
-                  {
-                    AttachmentLocation: '',
+        // let checkLocalData = localStorage.getItem('messageArray')
+        // if (checkLocalData === undefined && checkLocalData === null) {
+        //   checkLocalData = {
+        //     TalkRequest: {
+        //       AllMessages: {
+        //         Messages: [
+        //           {
+        //             AttachmentLocation: '',
 
-                    //Not in Use
-                    BroadcastID: '0',
+        //             //Not in Use
+        //             BroadcastID: '0',
 
-                    ChannelID: parseInt(currentOrganizationId),
-                    ChatID: messageSendData.ReceiverID,
-                    ChatType: 1,
-                    FileExtension: '',
-                    FileGeneratedName: '',
-                    FileName: '',
-                    FRMessages: 'Direct Message',
-                    //Not in Use
-                    HasTagUser: false,
-                    //Not in Use
-                    isAttempedFail: false,
-                    //Not in Use
-                    isForThisWindowOnly: true,
-                    MessageBody: messageSendData.Body,
-                    MessageDate: currentDateTimeUtc,
-                    MessageStatus: 1,
-                    MessageType: 'Direct Message',
-                    //Not in Use
-                    retyCount: 3,
-                    SenderID: messageSendData.SenderID,
-                    SenderName: 'Muhammad Ovais',
-                    //Not in Use
-                    TagUserEmails: '',
-                    //Not in Use
-                    TagUserIds: '',
-                    UID: uniqueId,
-                  },
-                ],
-              },
-              UserID: parseInt(currentUserId),
-            },
-          }
-          // save this data into local,
-        } else {
-          let dataforPushinLocal = {
-            AttachmentLocation: '',
+        //             ChannelID: parseInt(currentOrganizationId),
+        //             ChatID: messageSendData.ReceiverID,
+        //             ChatType: 1,
+        //             FileExtension: '',
+        //             FileGeneratedName: '',
+        //             FileName: '',
+        //             FRMessages: 'Direct Message',
+        //             //Not in Use
+        //             HasTagUser: false,
+        //             //Not in Use
+        //             isAttempedFail: false,
+        //             //Not in Use
+        //             isForThisWindowOnly: true,
+        //             MessageBody: messageSendData.Body,
+        //             MessageDate: currentDateTimeUtc,
+        //             MessageStatus: 1,
+        //             MessageType: 'Direct Message',
+        //             //Not in Use
+        //             retyCount: 3,
+        //             SenderID: messageSendData.SenderID,
+        //             SenderName: 'Muhammad Ovais',
+        //             //Not in Use
+        //             TagUserEmails: '',
+        //             //Not in Use
+        //             TagUserIds: '',
+        //             UID: uniqueId,
+        //           },
+        //         ],
+        //       },
+        //       UserID: parseInt(currentUserId),
+        //     },
+        //   }
+        //   // save this data into local,
+        // } else {
+        //   let dataforPushinLocal = {
+        //     AttachmentLocation: '',
 
-            //Not in Use
-            BroadcastID: '0',
+        //     //Not in Use
+        //     BroadcastID: '0',
 
-            ChannelID: parseInt(currentOrganizationId),
-            ChatID: messageSendData.ReceiverID,
-            ChatType: 1,
-            FileExtension: '',
-            FileGeneratedName: '',
-            FileName: '',
-            FRMessages: 'Direct Message',
-            //Not in Use
-            HasTagUser: false,
-            //Not in Use
-            isAttempedFail: false,
-            //Not in Use
-            isForThisWindowOnly: true,
-            MessageBody: messageSendData.Body,
-            MessageDate: currentDateTimeUtc,
-            MessageStatus: 1,
-            MessageType: 'Direct Message',
-            //Not in Use
-            retyCount: 3,
-            SenderID: messageSendData.SenderID,
-            SenderName: 'Muhammad Ovais',
-            //Not in Use
-            TagUserEmails: '',
-            //Not in Use
-            TagUserIds: '',
-            UID: uniqueId,
-          }
-          // checkLocalData.TalkRequest.AllMessages.Messages.push(
-          //   dataforPushinLocal,
-          // )
-        }
-        const existingArray =
-          JSON.parse(localStorage.getItem('messageArray')) || []
-        existingArray.push(checkLocalData)
-        localStorage.setItem('messageArray', JSON.stringify(existingArray))
+        //     ChannelID: parseInt(currentOrganizationId),
+        //     ChatID: messageSendData.ReceiverID,
+        //     ChatType: 1,
+        //     FileExtension: '',
+        //     FileGeneratedName: '',
+        //     FileName: '',
+        //     FRMessages: 'Direct Message',
+        //     //Not in Use
+        //     HasTagUser: false,
+        //     //Not in Use
+        //     isAttempedFail: false,
+        //     //Not in Use
+        //     isForThisWindowOnly: true,
+        //     MessageBody: messageSendData.Body,
+        //     MessageDate: currentDateTimeUtc,
+        //     MessageStatus: 1,
+        //     MessageType: 'Direct Message',
+        //     //Not in Use
+        //     retyCount: 3,
+        //     SenderID: messageSendData.SenderID,
+        //     SenderName: 'Muhammad Ovais',
+        //     //Not in Use
+        //     TagUserEmails: '',
+        //     //Not in Use
+        //     TagUserIds: '',
+        //     UID: uniqueId,
+        //   }
+        //   // checkLocalData.TalkRequest.AllMessages.Messages.push(
+        //   //   dataforPushinLocal,
+        //   // )
+        // }
+        // const existingArray =
+        //   JSON.parse(localStorage.getItem('messageArray')) || []
+        // existingArray.push(checkLocalData)
+        // localStorage.setItem('messageArray', JSON.stringify(existingArray))
         console.log('Insert OTO Message Response', Data)
         dispatch(InsertOTOMessages(navigate, Data, uploadFileTalk, t))
 
@@ -4644,7 +4698,6 @@ const TalkChat = () => {
   }
 
   const deleteAttempt = () => {
-    console.log('DeleteAttempt')
     // localStorage.setItem('messageArray', [])
   }
 
@@ -4668,6 +4721,7 @@ const TalkChat = () => {
       window.open(fileDownloadURL, '_blank')
     }
   }, [talkStateData?.DownloadChatData?.DownloadChatResponse])
+
   // useEffect(() => {
   //   if (
   //     talkStateData.DownloadChatData.DownloadChatResponse !== null &&
@@ -8753,7 +8807,7 @@ const TalkChat = () => {
                                   : 'chat-input-field no-upload-options'
                               }
                             >
-                              <Form onSubmit={sendChat}>
+                              <Form>
                                 <Form.Control
                                   ref={inputRef}
                                   value={messageSendData.Body}
@@ -8771,6 +8825,13 @@ const TalkChat = () => {
                                   as="textarea" // Use textarea instead of input for multi-line input
                                   rows={1} // Start with a single row
                                   onInput={autoResize} // Call autoResize function when input changes
+                                  onKeyPress={(event) => {
+                                    // Check if the key pressed is "Enter" (keyCode 13) and trigger sendChat function
+                                    if (event.key === 'Enter') {
+                                      event.preventDefault() // Prevent the default behavior (e.g., new line)
+                                      sendChat() // Call your sendChat function
+                                    }
+                                  }}
                                 />
                               </Form>
                             </div>

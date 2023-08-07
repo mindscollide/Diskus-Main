@@ -950,6 +950,8 @@ body[dir="rtl"] span.securityicon-box {
   height: 34.7vh;
   padding: 15px;
   overflow: hidden auto;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .chat-box-content .message-box {
@@ -1146,7 +1148,7 @@ span.direct-chat-body {
   font-family: "MontserratRegular";
   font-size: 15px;
   display: flex;
-  word-break: break-all;
+  word-break: break-word;
 }
 
 body[dir="rtl"] .direct-chat-text .chatmessage-box-icons img.dropdown-icon {

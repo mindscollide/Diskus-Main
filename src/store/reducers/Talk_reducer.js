@@ -259,6 +259,15 @@ const initialState = {
     DownloadChatResponse: [],
     DownloadChatResponseMessage: '',
   },
+
+  UpdateMessageAcknowledgementData: {
+    UpdateMessageAcknowledgementResponse: [],
+    UpdateMessageAcknowledgementResponseMessage: '',
+  },
+
+  MessageStatusUpdateData: {
+    MessageStatusUpdateResponse: [],
+  },
 }
 
 const talkReducer = (state = initialState, action) => {
@@ -1496,6 +1505,45 @@ const talkReducer = (state = initialState, action) => {
         DownloadChatData: {
           DownloadChatResponse: [],
           DownloadChatResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.DOWNLOAD_CHAT_INIT: {
+      return {
+        ...state,
+        UpdateMessageAcknowledgementData: {
+          UpdateMessageAcknowledgementResponse: [],
+          UpdateMessageAcknowledgementResponseMessage: '',
+        },
+      }
+    }
+
+    case actions.DOWNLOAD_CHAT_SUCCESS: {
+      return {
+        ...state,
+        UpdateMessageAcknowledgementData: {
+          UpdateMessageAcknowledgementResponse: action.response,
+          UpdateMessageAcknowledgementResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.DOWNLOAD_CHAT_FAIL: {
+      return {
+        ...state,
+        UpdateMessageAcknowledgementData: {
+          UpdateMessageAcknowledgementResponse: [],
+          UpdateMessageAcknowledgementResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.MQTT_MESSAGE_STATUS_UPDATE: {
+      return {
+        ...state,
+        MessageStatusUpdateData: {
+          MessageStatusUpdateResponse: action.response,
         },
       }
     }
