@@ -209,3 +209,13 @@ body[dir="rtl"] .PaginationStyle-polling {
   width: auto !important;
   padding: 12px 10px !important;
 }
+
+.Ellipses_Class{
+  overflow: hidden !important;
+  white-space: nowrap;
+  text-overflow: ellipsis !important;
+  cursor: pointer !important;
+  width: 100%;
+  display: inline-block;
+
+}

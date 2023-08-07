@@ -14,6 +14,10 @@
   font-size: 16px !important;
   color: #5a5a5a;
   font-family: "MontserratSemiBold" !important;
+  word-wrap: break-word!important;
+  white-space: pre-wrap!important;
+  width: 100% !important;
+ 
 }
 
 .Vote_Poll_cross_ICon {

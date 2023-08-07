@@ -21,6 +21,16 @@
   color: #5a5a5a;
 }
 
+.No-of-Yes-Answers{
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a;
+  word-wrap: break-word!important;
+  white-space: pre-wrap!important;
+  width: 100%  !important;
+ 
+}
+
 .no-Of-No {
   font-size: 16px !important;
   font-family: "MontserratSemiBold" !important;
@@ -103,6 +113,8 @@ body[dir="rtl"] .Card_border2 {
   font-size: 16px !important;
   color: #5a5a5a;
   font-family: "MontserratSemiBold" !important;
+  word-wrap: break-word!important;
+  white-space: pre-wrap!important;
 }
 
 .Class_Close {
