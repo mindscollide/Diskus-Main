@@ -6,6 +6,7 @@ import {
   Checkbox,
   Notification,
   CustomRadio2,
+  TextField,
 } from "../../../components/elements";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { useSSR, useTranslation } from "react-i18next";
@@ -23,7 +24,7 @@ const Votepoll = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { PollsReducer } = useSelector((state) => state);
-  console.log(PollsReducer, "VotevoteVotevoteVotevoteVotevoteVotevoteVotevote");
+  let userID = localStorage.getItem("userID");
   const { t } = useTranslation();
   const [pollsOption, setPollsOption] = useState([]);
   const [open, setOpen] = useState({
@@ -47,7 +48,7 @@ const Votepoll = () => {
       if (pollOptions.length > 0) {
         setPollsOption(pollOptions);
       }
-      console.log("pollDetails", pollDetails);
+      console.log("pollOptions", pollOptions);
       if (Object.keys(pollDetails).length > 0) {
         setViewProgressPollsDetails({
           ...viewProgressPollsDetails,
@@ -93,10 +94,7 @@ const Votepoll = () => {
       answer: [value],
     });
   };
-  console.log(
-    viewProgressPollsDetails.answer,
-    "checkedYescheckedYescheckedYes"
-  );
+
   const handleForCheck = (value) => {
     let findID = viewProgressPollsDetails.answer.find(
       (data, index) => data === value
@@ -107,7 +105,7 @@ const Votepoll = () => {
       return false;
     }
   };
-  let userID = localStorage.getItem("userID");
+
   const handleSubmitVote = () => {
     if (viewProgressPollsDetails.answer.length > 0) {
       let data = {
@@ -165,6 +163,34 @@ const Votepoll = () => {
                     </Col>
                   </Row>
                   <Row className="mt-2">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={`${styles["BOx_for_yes"]} d-flex`}
+                  >
+                    <Row className="mt-2">
+                      <Col lg={12} md={12} sm={12}>
+                        {viewProgressPollsDetails.PollTitle.length > 100 ? (
+                          // Add d-flex class and justify-content-center to center the text
+                          <div
+                            className={`${styles["scrollable-title"]} d-flex justify-content-center`}
+                          >
+                            {viewProgressPollsDetails.PollTitle}
+                          </div>
+                        ) : (
+                          // Add d-flex class and align-items-center to center the text
+                          <div
+                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}
+                          >
+                            {viewProgressPollsDetails.PollTitle}
+                          </div>
+                        )}
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                  {/* <Row className="mt-2">
                     <Col
                       lg={12}
                       md={12}
@@ -179,7 +205,7 @@ const Votepoll = () => {
                         </Col>
                       </Row>
                     </Col>
-                  </Row>
+                  </Row> */}
                   {pollsOption.length > 3 ? (
                     <>
                       <Row className="mt-2">
@@ -191,10 +217,9 @@ const Votepoll = () => {
                         >
                           {pollsOption.length > 0 ? (
                             pollsOption.map((data, index) => {
-                              console.log(data, "datadatadatadatadatadatadata");
                               return (
                                 <>
-                                  <Row>
+                                  <Row key={index}>
                                     <Col lg={1} md={1} sm={12}></Col>
                                     <Col
                                       lg={11}
@@ -203,7 +228,7 @@ const Votepoll = () => {
                                       className="m-0 p-0"
                                     >
                                       <span className={styles["Yes_Vote_poll"]}>
-                                        {data.answer}
+                                        {data.answer}{" "}
                                         <span>({data.totalVotes})</span>
                                       </span>
                                     </Col>
@@ -278,7 +303,7 @@ const Votepoll = () => {
                             pollsOption.map((data, index) => {
                               return (
                                 <>
-                                  <Row>
+                                  <Row key={index}>
                                     <Col lg={1} md={1} sm={12}></Col>
                                     <Col
                                       lg={11}
@@ -308,7 +333,7 @@ const Votepoll = () => {
                                           checked={handleForCheck(
                                             data.pollAnswerID
                                           )}
-                                          onChange={handleCheckBoxYes}
+                                          onChange={(e) => handleCheckBoxYes(e)}
                                           classNameCheckBoxP="d-none"
                                         />
                                       ) : (

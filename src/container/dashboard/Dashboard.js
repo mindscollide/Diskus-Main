@@ -56,6 +56,7 @@ import { realtimeNotificationRecent } from '../../store/actions/RealtimeNotifica
 import { useTranslation } from 'react-i18next'
 import numeral from 'numeral'
 import 'numeral/locales'
+import { notifyPollingSocket } from '../../store/actions/Polls_actions'
 
 const Dashboard = () => {
   const location = useLocation()
@@ -419,6 +420,10 @@ const Dashboard = () => {
           }
           dispatch(setRecentActivityDataNotification(data2))
         }
+      } else if (
+        data.payload.message.toLowerCase() ===
+        'POLL_DELETED_RECENT_ACTIVITY'.toLowerCase()
+      ) {
       }
     }
     if (data.action.toLowerCase() === 'Committee'.toLowerCase()) {
@@ -642,6 +647,41 @@ const Dashboard = () => {
       ) {
         console.log('MESSAGE_SEEN', data.payload.data)
         dispatch(mqttMessageStatusUpdate(data.payload))
+        setNotificationID(id)
+      }
+    }
+    if (data.action.toLowerCase() === 'Polls'.toLowerCase()) {
+      if (
+        data.payload.message.toLowerCase() ===
+        'NEW_POLL_PUBLISHED'.toLowerCase()
+      ) {
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `A new Poll ${data.payload.pollTitle} is published for your review..`,
+        })
+        console.log(data.payload)
+        dispatch(notifyPollingSocket(data.payload.polls))
+        setNotificationID(id)
+      } else if (
+        data.payload.message.toLowerCase() === 'POLL_UPDATED'.toLowerCase()
+      ) {
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `The Poll ${data.payload.pollTitle} has been updated`,
+        })
+        dispatch(notifyPollingSocket(data.payload.polls))
+        setNotificationID(id)
+      } else if (
+        data.payload.message.toLowerCase() === 'POLL_EXPIRED'.toLowerCase()
+      ) {
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `Due date of Poll ${data.payload.pollTitle} has passed.`,
+        })
+        dispatch(notifyPollingSocket(data.payload.polls))
         setNotificationID(id)
       }
     }

@@ -14,6 +14,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
+import { ArrowLeft } from "react-bootstrap-icons";
 const ViewGrouppage = ({ setViewGroupPage }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -128,7 +129,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
                               <span
                                 className={styles["Designation-create-group"]}
                               >
-                                {data?.designation }
+                                {data?.designation}
                               </span>
                             </Col>
                           </Row>
@@ -180,7 +181,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
                               <span
                                 className={styles["Designation-create-group"]}
                               >
-                                {data?.designation }
+                                {data?.designation}
                               </span>
                             </Col>
                           </Row>
@@ -204,7 +205,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
           <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
             <Button
               className={styles["Close-ViewGroup-btn"]}
-              text={t("Close")}
+              text={<ArrowLeft size={30} color="#fff" />}
               onClick={() => setViewGroupPage(false)}
             />
           </Col>

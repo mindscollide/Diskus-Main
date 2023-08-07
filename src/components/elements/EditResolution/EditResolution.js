@@ -31,7 +31,7 @@ import ModalresolutionRemove from "../../../container/ModalresolutionRemove/Moda
 import ModalCancellResolution from "../../../container/ModalCancellResolution/ModalCancellResolution";
 import ModalUpdateresolution from "../../../container/ModalUpdateResolution/ModalUpdateresolution";
 import ModalDiscardResolution from "../../../container/ModalDiscardResolution/ModalDiscardResolution";
-import ModalResolutionUpdated from '../../../container/ModalResolutionUpdated/ModalResolutionUpdated'
+import ModalResolutionUpdated from "../../../container/ModalResolutionUpdated/ModalResolutionUpdated";
 import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
 import {
   createResolution,
@@ -58,12 +58,15 @@ const EditResolution = ({
   setEditResoutionPage,
   editresolutionPage,
   setNewresolution,
+  setCancelResolutionModal,
 }) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { ResolutionReducer, assignees, uploadReducer } = useSelector((state) => state);
+  const { ResolutionReducer, assignees, uploadReducer } = useSelector(
+    (state) => state
+  );
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [resolutionID, setResolutionID] = useState(0);
   console.log(
@@ -72,12 +75,12 @@ const EditResolution = ({
     meetingAttendeesList,
     "ResolutionReducerResolutionReducerResolutionReducer"
   );
-  const [minDate, setMinDate] = useState("")
-  console.log(minDate, "minDateminDateminDate")
+  const [minDate, setMinDate] = useState("");
+  console.log(minDate, "minDateminDateminDate");
   useEffect(() => {
     const min_date = new Date();
-    setMinDate(moment(min_date).format('YYYY-MM-DD'));
-  }, [])
+    setMinDate(moment(min_date).format("YYYY-MM-DD"));
+  }, []);
   const [isVoter, setVoter] = useState(true);
   const [open, setOpen] = useState({
     flag: false,
@@ -127,6 +130,17 @@ const EditResolution = ({
       value: 7,
     },
   ]);
+
+  const dateformatYYYYMMDD = (date) => {
+    console.log(date, "dateformatYYYYMMDDdateformatYYYYMMDD");
+    if (!!date && typeof date === "string") {
+      console.log(
+        "dateformatYYYYMMDDdateformatYYYYMMDD",
+        typeof moment(date).format("YYYY-MM-DD")
+      );
+      return moment(date).add(1, "days").format("YYYY-MM-DD");
+    }
+  };
   const [circulationDateTime, setCirculationDateTime] = useState({
     date: "",
     time: "",
@@ -155,10 +169,11 @@ const EditResolution = ({
   const [resolutioncancel, setResolutioncancel] = useState(false);
   const [showmodal, setShowmodal] = useState(false);
   const [fileSize, setFileSize] = useState(0);
-  const [cancelResolutionID, setCancelResolutionID] = useState(0)
+  const [cancelResolutionID, setCancelResolutionID] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
   const [resolutionupdate, setResolutionupdate] = useState(false);
-  const [resolutionUpdateSuccessfully, setResolutionUpdateSuccessfully] = useState(false)
+  const [resolutionUpdateSuccessfully, setResolutionUpdateSuccessfully] =
+    useState(false);
   const [discardresolution, setDsicardresolution] = useState(false);
   const [tasksAttachments, setTasksAttachments] = useState([]);
   const [editResolutionData, setEditResolutionData] = useState({
@@ -177,7 +192,13 @@ const EditResolution = ({
     ResolutionStatus: "",
   });
   const [onclickFlag, setOnclickFlag] = useState(false);
-  console.log(editResolutionData, circulationDateTime, votingDateTime, decisionDateTime, "editResolutionDataeditResolutionDataeditResolutionData")
+  console.log(
+    editResolutionData,
+    circulationDateTime,
+    votingDateTime,
+    decisionDateTime,
+    "editResolutionDataeditResolutionDataeditResolutionData"
+  );
 
   const ShowVoter = () => {
     setVoter(true);
@@ -208,7 +229,7 @@ const EditResolution = ({
   };
 
   const resolutioncancell = (id) => {
-    setCancelResolutionID(id)
+    setCancelResolutionID(id);
     setResolutioncancel(true);
   };
 
@@ -272,7 +293,7 @@ const EditResolution = ({
 
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
-    setOnclickFlag(true)
+    setOnclickFlag(true);
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
@@ -291,9 +312,18 @@ const EditResolution = ({
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setOnclickFlag(false)
     console.log(e.target.value, "eeeeeeee");
-    setTaskAssignedToInput(e.target.value.trimStart());
+    if (e.target.value === "") {
+      setEmailValue("");
+      // setOnclickFlag(false)
+      setTaskAssignedToInput("");
+      setTaskAssignedTo("");
+      setTaskAssignedName("");
+    } else if (e.target.value !== "") {
+      setOnclickFlag(false);
+      setTaskAssignedToInput(e.target.value.trimStart());
+    }
+
     // setEmailValue
   };
 
@@ -379,12 +409,21 @@ const EditResolution = ({
     }
   };
   const deleteFilefromAttachments = (data, index) => {
-    console.log(data, data.fileSize, data.DisplayAttachmentName, fileForSend, fileSize, "checkingelemnaiteFile")
+    console.log(
+      data,
+      data.fileSize,
+      data.DisplayAttachmentName,
+      fileForSend,
+      fileSize,
+      "checkingelemnaiteFile"
+    );
     let fileSizefound = fileSize - data.fileSize;
-    let fileForSendingIndex = fileForSend.findIndex((newData, index) => newData.name === data.DisplayAttachmentName)
-    fileForSend.splice(fileForSendingIndex, 1)
-    setFileForSend(fileForSend)
-    setFileSize(fileSizefound)
+    let fileForSendingIndex = fileForSend.findIndex(
+      (newData, index) => newData.name === data.DisplayAttachmentName
+    );
+    fileForSend.splice(fileForSendingIndex, 1);
+    setFileForSend(fileForSend);
+    setFileSize(fileSizefound);
     let searchIndex = tasksAttachments;
     searchIndex.splice(index, 1);
     setTasksAttachments([...tasksAttachments]);
@@ -426,7 +465,7 @@ const EditResolution = ({
       } else {
         setOpen({
           flag: true,
-          message: t("This-voter-already-exist")
+          message: t("This-voter-already-exist"),
         });
       }
     } else {
@@ -477,7 +516,7 @@ const EditResolution = ({
       } else {
         setOpen({
           flag: true,
-          message: t("This-voter-already-exist")
+          message: t("This-voter-already-exist"),
         });
       }
     } else {
@@ -492,8 +531,6 @@ const EditResolution = ({
     setTaskAssignedName("");
     setEmailValue("");
   };
-
-
 
   const props = {
     name: "file",
@@ -558,9 +595,9 @@ const EditResolution = ({
           let file = {
             DisplayAttachmentName: data.file.name,
             OriginalAttachmentName: data.file.name,
-            fileSize: data.file.originFileObj.size
-          }
-          setTasksAttachments([...tasksAttachments, file])
+            fileSize: data.file.originFileObj.size,
+          };
+          setTasksAttachments([...tasksAttachments, file]);
           fileSizeArr = data.file.originFileObj.size + fileSize;
           setFileForSend([...fileForSend, data.file.originFileObj]);
           setFileSize(fileSizeArr);
@@ -594,9 +631,9 @@ const EditResolution = ({
           let file = {
             DisplayAttachmentName: data.file.name,
             OriginalAttachmentName: data.file.name,
-            fileSize: data.file.originFileObj.size
-          }
-          setTasksAttachments([...tasksAttachments, file])
+            fileSize: data.file.originFileObj.size,
+          };
+          setTasksAttachments([...tasksAttachments, file]);
           fileSizeArr = data.file.originFileObj.size + fileSize;
           setFileForSend([...fileForSend, data.file.originFileObj]);
           setFileSize(fileSizeArr);
@@ -622,14 +659,13 @@ const EditResolution = ({
       editResolutionData.FK_ResolutionVotingMethodID !== 0 &&
       editResolutionData.FK_ResolutionReminderFrequency_ID !== 0
     ) {
-
       if (fileForSend.length > 0) {
         let counter = fileForSend.length;
-        console.log(counter, "countercountercounter")
+        console.log(counter, "countercountercounter");
         fileForSend.map(async (newData, index) => {
           await dispatch(FileUploadToDo(navigate, newData, t));
           counter = counter - 1;
-        })
+        });
         let Data = {
           ResolutionModel: {
             FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
@@ -647,24 +683,42 @@ const EditResolution = ({
             ),
             FK_ResolutionReminderFrequency_ID:
               editResolutionData.FK_ResolutionReminderFrequency_ID,
-            FK_ResolutionDecision_ID: editResolutionData.FK_ResolutionDecision_ID,
+            FK_ResolutionDecision_ID:
+              editResolutionData.FK_ResolutionDecision_ID,
             PK_ResolutionID: editResolutionData.pK_ResolutionID,
             DecisionAnnouncementDateTime: createConvert(
               removeDashesFromDate(decisionDateTime.date) +
               RemoveTimeDashes(decisionDateTime.time)
             ),
             IsResolutionPublic: editResolutionData.IsResolutionPublic,
-            FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
+            FK_OrganizationID: JSON.parse(
+              localStorage.getItem("organizationID")
+            ),
             FK_UID: JSON.parse(localStorage.getItem("userID")),
           },
         };
-        console.log(typeof voters, voters.length, voters, "DataDataDataDataDataDataData");
+        console.log(
+          typeof voters,
+          voters.length,
+          voters,
+          "DataDataDataDataDataDataData"
+        );
         if (id === 2 && Object.keys(voters).length <= 0) {
-          console.log(typeof voters, voters.length, voters, "DataDataDataDataDataDataData");
+          console.log(
+            typeof voters,
+            voters.length,
+            voters,
+            "DataDataDataDataDataDataData"
+          );
 
           setError(true);
         } else {
-          console.log(typeof voters, voters.length, voters, "DataDataDataDataDataDataData");
+          console.log(
+            typeof voters,
+            voters.length,
+            voters,
+            "DataDataDataDataDataDataData"
+          );
 
           dispatch(
             createResolution(
@@ -679,7 +733,6 @@ const EditResolution = ({
               2,
               id,
               setResolutionUpdateSuccessfully
-
             )
           );
         }
@@ -701,25 +754,38 @@ const EditResolution = ({
             ),
             FK_ResolutionReminderFrequency_ID:
               editResolutionData.FK_ResolutionReminderFrequency_ID,
-            FK_ResolutionDecision_ID: editResolutionData.FK_ResolutionDecision_ID,
+            FK_ResolutionDecision_ID:
+              editResolutionData.FK_ResolutionDecision_ID,
             PK_ResolutionID: editResolutionData.pK_ResolutionID,
             DecisionAnnouncementDateTime: createConvert(
               removeDashesFromDate(decisionDateTime.date) +
               RemoveTimeDashes(decisionDateTime.time)
             ),
             IsResolutionPublic: editResolutionData.IsResolutionPublic,
-            FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
+            FK_OrganizationID: JSON.parse(
+              localStorage.getItem("organizationID")
+            ),
             FK_UID: JSON.parse(localStorage.getItem("userID")),
           },
         };
         console.log(Data, "DataDataDataDataDataDataData");
         console.log(typeof voters, voters, "DataDataDataDataDataDataData");
         if (id === 2 && Object.keys(voters).length <= 0) {
-          console.log(typeof voters, voters.length, voters, "DataDataDataDataDataDataData");
+          console.log(
+            typeof voters,
+            voters.length,
+            voters,
+            "DataDataDataDataDataDataData"
+          );
 
           setError(true);
         } else {
-          console.log(typeof voters, voters.length, voters, "DataDataDataDataDataDataData");
+          console.log(
+            typeof voters,
+            voters.length,
+            voters,
+            "DataDataDataDataDataDataData"
+          );
 
           dispatch(
             createResolution(
@@ -738,7 +804,6 @@ const EditResolution = ({
           );
         }
       }
-
     } else {
       setError(true);
       setOpen({
@@ -789,7 +854,7 @@ const EditResolution = ({
       }
     }
     if (name === "ResolutionDescription") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      let valueCheck = value.replace(/[^a-zA-Z0-9!@#$%^&*()]/g, "");
       if (valueCheck !== "") {
         setEditResolutionData({
           ...editResolutionData,
@@ -806,18 +871,25 @@ const EditResolution = ({
 
   const handleClickCancelResolution = () => {
     if (cancelResolutionID !== 0) {
-      dispatch(cancelResolutionApi(navigate, cancelResolutionID, t, setEditResoutionPage))
+      dispatch(
+        cancelResolutionApi(
+          navigate,
+          cancelResolutionID,
+          t,
+          setEditResoutionPage,
+          setCancelResolutionModal
+        )
+      );
     }
-  }
+  };
 
   const handleDiscardBtnFunc = () => {
-    setDsicardresolution(false)
+    setDsicardresolution(false);
     let resolutionData = ResolutionReducer.getResolutionbyID.resolution;
     let votersResolutionMembers = ResolutionReducer.getResolutionbyID.voters;
     let nonVotersResolutionMembers =
       ResolutionReducer.getResolutionbyID.nonVoters;
-    let attachmentsResolution =
-      ResolutionReducer.getResolutionbyID.attachments;
+    let attachmentsResolution = ResolutionReducer.getResolutionbyID.attachments;
     setEditResolutionData({
       FK_ResolutionStatusID: resolutionData.fK_ResolutionDecision_ID,
       FK_ResolutionVotingMethodID: resolutionData.fK_ResolutionVotingMethodID,
@@ -888,8 +960,7 @@ const EditResolution = ({
       votersResolutionMembers.map((voterMember, index) => {
         meetingAttendeesList
           .filter(
-            (assigneeData, index) =>
-              assigneeData.pK_UID === voterMember.fK_UID
+            (assigneeData, index) => assigneeData.pK_UID === voterMember.fK_UID
           )
           .map((data, index) => {
             sendVoter.push({
@@ -910,8 +981,7 @@ const EditResolution = ({
       nonVotersResolutionMembers.map((voterMember, index) => {
         meetingAttendeesList
           .filter(
-            (assigneeData, index) =>
-              assigneeData.pK_UID === voterMember.fK_UID
+            (assigneeData, index) => assigneeData.pK_UID === voterMember.fK_UID
           )
           .map((data, index) => {
             sendVoter.push({
@@ -952,7 +1022,10 @@ const EditResolution = ({
   }, [ResolutionReducer.GetAllVotingMethods]);
 
   useEffect(() => {
-    if (ResolutionReducer.ResponseMessage !== "" && ResolutionReducer.ResponseMessage !== t("Data-available")) {
+    if (
+      ResolutionReducer.ResponseMessage !== "" &&
+      ResolutionReducer.ResponseMessage !== t("Data-available")
+    ) {
       setOpen({
         flag: true,
         message: ResolutionReducer.ResponseMessage,
@@ -1110,8 +1183,8 @@ const EditResolution = ({
   const handleChangeDateSelection = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log("handleChangeCiculationDate", name)
-    console.log("handleChangeCiculationDate", value)
+    console.log("handleChangeCiculationDate", name);
+    console.log("handleChangeCiculationDate", value);
     if (name === "circulation") {
       setCirculationDateTime({
         ...circulationDateTime,
@@ -1149,7 +1222,7 @@ const EditResolution = ({
         time: value,
       });
     }
-  }
+  };
   return (
     <>
       <section>
@@ -1164,7 +1237,7 @@ const EditResolution = ({
             </Row>
 
             <Paper className={styles["Create_new_resolution_paper"]}>
-              <Row >
+              <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
                     <Col
@@ -1332,13 +1405,17 @@ const EditResolution = ({
                             >
                               {/* <DatePicker format='YYYY-MM-DD' value={circulationDateTime.date} /> */}
                               <TextFieldDateTime
-                                min={minDate}
+                                min={
+                                  circulationDateTime.date !== ""
+                                    ? circulationDateTime.date
+                                    : minDate
+                                }
                                 labelClass="d-none"
                                 name="circulation"
                                 applyClass={"search_voterInput"}
                                 value={circulationDateTime.date}
                                 change={(e) => {
-                                  handleChangeDateSelection(e)
+                                  handleChangeDateSelection(e);
                                   // setCirculationDateTime({
                                   //   ...circulationDateTime,
                                   //   date: e.target.value,
@@ -1374,7 +1451,7 @@ const EditResolution = ({
                                 applyClass={"search_voterInput"}
                                 value={circulationDateTime.time}
                                 change={(e) => {
-                                  handleChangeTimeSelection(e)
+                                  handleChangeTimeSelection(e);
                                   // setCirculationDateTime({
                                   //   ...circulationDateTime,
                                   //   time: e.target.value,
@@ -1416,13 +1493,17 @@ const EditResolution = ({
                               className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
                               <TextFieldDateTime
-                                min={minDate}
+                                min={
+                                  votingDateTime.date !== ""
+                                    ? dateformatYYYYMMDD(circulationDateTime.date)
+                                    : minDate
+                                }
                                 name="voting"
                                 labelClass="d-none"
                                 applyClass={"search_voterInput"}
                                 value={votingDateTime.date}
                                 change={(e) => {
-                                  handleChangeDateSelection(e)
+                                  handleChangeDateSelection(e);
                                   // setVotingDateTime({
                                   //   ...votingDateTime,
                                   //   date: e.target.value,
@@ -1458,7 +1539,7 @@ const EditResolution = ({
                                 applyClass={"search_voterInput"}
                                 value={votingDateTime.time}
                                 change={(e) => {
-                                  handleChangeTimeSelection(e)
+                                  handleChangeTimeSelection(e);
                                   // setVotingDateTime({
                                   //   ...votingDateTime,
                                   //   time: e.target.value,
@@ -1503,12 +1584,16 @@ const EditResolution = ({
                             >
                               <TextFieldDateTime
                                 applyClass={"search_voterInput"}
-                                min={minDate}
+                                min={
+                                  decisionDateTime.date !== ""
+                                    ? dateformatYYYYMMDD(votingDateTime.date)
+                                    : minDate
+                                }
                                 name="decision"
                                 labelClass="d-none"
                                 value={decisionDateTime.date}
                                 change={(e) => {
-                                  handleChangeDateSelection(e)
+                                  handleChangeDateSelection(e);
                                   // setDecisionDateTime({
                                   //   ...decisionDateTime,
                                   //   date: e.target.value,
@@ -1524,7 +1609,9 @@ const EditResolution = ({
                                         : `${styles["errorMessage_hidden"]}`
                                     }
                                   >
-                                    {t("Decision-announcement-date-is-required")}
+                                    {t(
+                                      "Decision-announcement-date-is-required"
+                                    )}
                                   </p>
                                 </Col>
                               </Row>
@@ -1543,7 +1630,7 @@ const EditResolution = ({
                                 applyClass={"search_voterInput"}
                                 value={decisionDateTime.time}
                                 change={(e) => {
-                                  handleChangeTimeSelection(e)
+                                  handleChangeTimeSelection(e);
                                   // setDecisionDateTime({
                                   //   ...decisionDateTime,
                                   //   time: e.target.value,
@@ -1559,7 +1646,9 @@ const EditResolution = ({
                                         : `${styles["errorMessage_hidden"]}`
                                     }
                                   >
-                                    {t("Decision-announcement-time-is-required")}
+                                    {t(
+                                      "Decision-announcement-time-is-required"
+                                    )}
                                   </p>
                                 </Col>
                               </Row>
@@ -1644,7 +1733,9 @@ const EditResolution = ({
                           sm={false}
                           className="d-flex justify-content-center"
                         >
-                          <span className={styles["line_Editresolution"]}></span>
+                          <span
+                            className={styles["line_Editresolution"]}
+                          ></span>
                         </Col>
                         <Col lg={6} md={6} sm={12}>
                           <Row>
@@ -1730,8 +1821,13 @@ const EditResolution = ({
                                       <Col lg={2} md={2} sm={2}>
                                         <Button
                                           text={t("Add")}
+                                          disableBtn={
+                                            taskAssignedTo !== 0 ? false : true
+                                          }
                                           className={
-                                            styles["ADD_Button_Createresolution"]
+                                            styles[
+                                            "ADD_Button_Createresolution"
+                                            ]
                                           }
                                           onClick={addVoters}
                                         />
@@ -1749,48 +1845,52 @@ const EditResolution = ({
                                       >
                                         <Row>
                                           {votersForView.length > 0
-                                            ? votersForView.map((data, index) => {
-                                              return (
-                                                <>
-                                                  <Col
-                                                    lg={6}
-                                                    md={6}
-                                                    sm={6}
-                                                    className="mt-2"
-                                                  >
-                                                    <Row>
-                                                      <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
-                                                      >
-                                                        <EmployeeinfoCard
-                                                          Employeename={
-                                                            data?.name
-                                                          }
-                                                          Employeeemail={
-                                                            data?.emailAddress
-                                                          }
-                                                          Icon={
-                                                            <img
-                                                              src={CrossIcon}
-                                                              width="18px"
-                                                              height="18px"
-                                                              onClick={() =>
-                                                                removeUserForVoter(
-                                                                  data.pK_UID,
-                                                                  data.name
-                                                                )
-                                                              }
-                                                            />
-                                                          }
-                                                        />
-                                                      </Col>
-                                                    </Row>
-                                                  </Col>
-                                                </>
-                                              );
-                                            })
+                                            ? votersForView.map(
+                                              (data, index) => {
+                                                return (
+                                                  <>
+                                                    <Col
+                                                      lg={6}
+                                                      md={6}
+                                                      sm={6}
+                                                      className="mt-2"
+                                                    >
+                                                      <Row>
+                                                        <Col
+                                                          lg={12}
+                                                          md={12}
+                                                          sm={12}
+                                                        >
+                                                          <EmployeeinfoCard
+                                                            Employeename={
+                                                              data?.name
+                                                            }
+                                                            Employeeemail={
+                                                              data?.emailAddress
+                                                            }
+                                                            Icon={
+                                                              <img
+                                                                src={
+                                                                  CrossIcon
+                                                                }
+                                                                width="18px"
+                                                                height="18px"
+                                                                onClick={() =>
+                                                                  removeUserForVoter(
+                                                                    data.pK_UID,
+                                                                    data.name
+                                                                  )
+                                                                }
+                                                              />
+                                                            }
+                                                          />
+                                                        </Col>
+                                                      </Row>
+                                                    </Col>
+                                                  </>
+                                                );
+                                              }
+                                            )
                                             : null}
                                         </Row>
                                       </Col>
@@ -1816,19 +1916,13 @@ const EditResolution = ({
                                           applyClass={"search_voterInput"}
                                           onclickFlag={onclickFlag}
                                         />
-                                        {/* <Row>
-                                        <Col>
-                                          <p
-                                            className={
-                                              nonVoter.length === 0 && error
-                                                ? ` ${styles["errorMessage"]}`
-                                                : `${styles["errorMessage_hidden"]}`
-                                            }
-                                          >
-                                            {t("At-least-add-one-voter")}
-                                          </p>
-                                        </Col>
-                                      </Row> */}
+                                        <Row>
+                                          <Col>
+                                            <p
+                                              className={`${styles["errorMessage_hidden"]}`}
+                                            ></p>
+                                          </Col>
+                                        </Row>
                                       </Col>
 
                                       <Col
@@ -1849,8 +1943,13 @@ const EditResolution = ({
                                       <Col lg={2} md={2} sm={2}>
                                         <Button
                                           text={t("Add")}
+                                          disableBtn={
+                                            taskAssignedTo !== 0 ? false : true
+                                          }
                                           className={
-                                            styles["ADD_Button_Createresolution"]
+                                            styles[
+                                            "ADD_Button_Createresolution"
+                                            ]
                                           }
                                           onClick={addNonVoter}
                                         />
@@ -1892,7 +1991,9 @@ const EditResolution = ({
                                                             }
                                                             Icon={
                                                               <img
-                                                                src={CrossIcon}
+                                                                src={
+                                                                  CrossIcon
+                                                                }
                                                                 width="18px"
                                                                 height="18px"
                                                                 onClick={() =>
@@ -1921,17 +2022,33 @@ const EditResolution = ({
                                 <Row>
                                   <Col lg={12} md={12} sm={12} className="mt-3">
                                     <span
-                                      className={styles["Attachments_resolution"]}
+                                      className={
+                                        styles["Attachments_resolution"]
+                                      }
                                     >
                                       {t("Attachments")}
                                     </span>
                                   </Col>
                                 </Row>
-                                <Row className={styles["edit_resolution_attachments"]}>
+                                <Row
+                                  className={
+                                    styles["edit_resolution_attachments"]
+                                  }
+                                >
                                   {tasksAttachments.length > 0 && (
-                                    <Col className={styles["attachments_height"]} sm={12} md={12} lg={12}>
+                                    <Col
+                                      className={styles["attachments_height"]}
+                                      sm={12}
+                                      md={12}
+                                      lg={12}
+                                    >
                                       <Row>
-                                        <Col lg={1} md={1} sm={1} className="mt-4">
+                                        <Col
+                                          lg={1}
+                                          md={1}
+                                          sm={1}
+                                          className="mt-4"
+                                        >
                                           {tasksAttachments.length > 6 ? (
                                             <>
                                               <Button
@@ -1943,7 +2060,9 @@ const EditResolution = ({
                                                   />
                                                 }
                                                 onClick={SlideLeft}
-                                                className={styles["Leftpolygon"]}
+                                                className={
+                                                  styles["Leftpolygon"]
+                                                }
                                               />
                                             </>
                                           ) : null}
@@ -1997,7 +2116,9 @@ const EditResolution = ({
                                                         ) : ext === "xls" ? (
                                                           <FileIcon
                                                             extension={"xls"}
-                                                            type={"spreadsheet"}
+                                                            type={
+                                                              "spreadsheet"
+                                                            }
                                                             size={78}
                                                             labelColor={
                                                               "rgba(16, 121, 63)"
@@ -2006,7 +2127,9 @@ const EditResolution = ({
                                                         ) : ext === "xlsx" ? (
                                                           <FileIcon
                                                             extension={"xls"}
-                                                            type={"spreadsheet"}
+                                                            type={
+                                                              "spreadsheet"
+                                                            }
                                                             size={78}
                                                             labelColor={
                                                               "rgba(16, 121, 63)"
@@ -2060,11 +2183,13 @@ const EditResolution = ({
                                                             size={78}
                                                             {...defaultStyles.gif}
                                                           />
-                                                        ) : <FileIcon
-                                                          extension={ext}
-                                                          size={78}
-                                                          {...defaultStyles.ext}
-                                                        />}
+                                                        ) : (
+                                                          <FileIcon
+                                                            extension={ext}
+                                                            size={78}
+                                                            {...defaultStyles.ext}
+                                                          />
+                                                        )}
                                                         <span className="deleteBtn">
                                                           <img
                                                             src={
@@ -2091,7 +2216,12 @@ const EditResolution = ({
                                             </Col>
                                           </Row>
                                         </Col>
-                                        <Col lg={1} md={1} sm={1} className="mt-4">
+                                        <Col
+                                          lg={1}
+                                          md={1}
+                                          sm={1}
+                                          className="mt-4"
+                                        >
                                           {tasksAttachments.length > 6 ? (
                                             <>
                                               <Button
@@ -2103,7 +2233,9 @@ const EditResolution = ({
                                                   />
                                                 }
                                                 onClick={Slideright}
-                                                className={styles["Leftpolygon"]}
+                                                className={
+                                                  styles["Leftpolygon"]
+                                                }
                                               />
                                             </>
                                           ) : null}
@@ -2113,7 +2245,12 @@ const EditResolution = ({
                                   )}
 
                                   <Col lg={12} md={12} sm={12}>
-                                    <Dragger {...props} className={styles["EditResolution_dragger"]}>
+                                    <Dragger
+                                      {...props}
+                                      className={
+                                        styles["EditResolution_dragger"]
+                                      }
+                                    >
                                       <p className="ant-upload-drag-icon">
                                         <span>
                                           <img
@@ -2124,7 +2261,7 @@ const EditResolution = ({
                                         </span>
                                       </p>
                                       <p className="ant-upload-text FontArabicRegular">
-                                        {t("Drag-&-drop-or")} {" "}
+                                        {t("Drag-&-drop-or")}{" "}
                                         <span className="FontArabicRegular">
                                           {t("Choose-file")}
                                         </span>{" "}
@@ -2143,20 +2280,34 @@ const EditResolution = ({
                                     lg={12}
                                     md={12}
                                     sm={12}
-                                    className="d-flex justify-content-end gap-3"
+                                    className="d-flex justify-content-end gap-2 flex-wrap "
                                   >
-                                    <Button text={<ArrowLeft size={30} />} onClick={() => { setEditResoutionPage(false) }} className={styles["Go_Back_EditResolution"]} />
                                     <Button
-                                      text={t("Cancel")}
+                                      text={<ArrowLeft size={30} />}
+                                      onClick={() => {
+                                        setEditResoutionPage(false);
+                                      }}
                                       className={
-                                        styles["Save_button_Createresolution"]
+                                        styles["Go_Back_EditResolution"]
                                       }
-                                      onClick={() => resolutioncancell(editResolutionData.pK_ResolutionID)}
+                                    />
+                                    <Button
+                                      text={t("Cancel-resolution")}
+                                      className={
+                                        styles["Cancel_button_Createresolution"]
+                                      }
+                                      onClick={() =>
+                                        resolutioncancell(
+                                          editResolutionData.pK_ResolutionID
+                                        )
+                                      }
                                     />
                                     <Button
                                       text={t("Discard")}
                                       className={
-                                        styles["Discard_button_Createresolution"]
+                                        styles[
+                                        "Discard_button_Createresolution"
+                                        ]
                                       }
                                       onClick={resolutiondiscard}
                                     />
@@ -2234,8 +2385,12 @@ const EditResolution = ({
           handleDiscardBtn={handleDiscardBtnFunc}
         />
       ) : null}
-      {resolutionUpdateSuccessfully &&
-        <ModalResolutionUpdated resolutionupdated={resolutionUpdateSuccessfully} setResolutionupdated={setResolutionUpdateSuccessfully} />}
+      {resolutionUpdateSuccessfully && (
+        <ModalResolutionUpdated
+          resolutionupdated={resolutionUpdateSuccessfully}
+          setResolutionupdated={setResolutionUpdateSuccessfully}
+        />
+      )}
       <Notification message={open.message} setOpen={setOpen} open={open.flag} />
     </>
   );

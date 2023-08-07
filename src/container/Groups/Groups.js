@@ -49,10 +49,10 @@ const Groups = () => {
     GroupID: 0,
   });
   const [uniqCardID, setUniqCardID] = useState(0);
-  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"))
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
 
   const handlechange = (value) => {
-    localStorage.setItem("groupsCurrent", value)
+    localStorage.setItem("groupsCurrent", value);
     dispatch(getGroups(navigate, t, 0, value));
   };
 
@@ -131,8 +131,8 @@ const Groups = () => {
   }, []);
 
   useEffect(() => {
-    localStorage.removeItem("groupsArCurrent")
-    localStorage.setItem("groupsCurrent", 1)
+    localStorage.removeItem("groupsArCurrent");
+    localStorage.setItem("groupsCurrent", 1);
     dispatch(getGroups(navigate, t, 0, 1));
   }, []);
 
@@ -146,9 +146,9 @@ const Groups = () => {
         );
         if (findGroupIndex !== -1) {
           let newArr = [...groupsData];
-          newArr.splice(findGroupIndex, 1)
+          newArr.splice(findGroupIndex, 1);
           setgroupsData(newArr);
-          dispatch(realtimeGroupStatusResponse(null))
+          dispatch(realtimeGroupStatusResponse(null));
         }
       } else {
         let findGroupIndex = groupsData.findIndex(
@@ -176,19 +176,19 @@ const Groups = () => {
     if (GroupsReducer.realtimeGroupCreateResponse !== null) {
       let groupData = GroupsReducer.realtimeGroupCreateResponse;
       console.log(groupData, "groupDatagroupDatagroupDatagroupData");
-      setgroupsData((prev) => [groupsData, ...prev])
+      setgroupsData((prev) => [groupData, ...prev]);
     }
   }, [GroupsReducer.realtimeGroupCreateResponse]);
 
   useEffect(() => {
-    console.log(GroupsReducer, "GroupsReducerGroupsReducerGroupsReducer")
+    console.log(GroupsReducer, "GroupsReducerGroupsReducerGroupsReducer");
     try {
       if (
         GroupsReducer.getAllGroupsResponse !== null &&
         GroupsReducer.getAllGroupsResponse !== undefined
       ) {
         if (GroupsReducer.getAllGroupsResponse?.groups?.length > 0) {
-          setTotalLength(GroupsReducer.getAllGroupsResponse.totalRecords)
+          setTotalLength(GroupsReducer.getAllGroupsResponse.totalRecords);
           let newArr = [];
           let arr = GroupsReducer.getAllGroupsResponse.groups;
           console.log("arrarr", arr);
@@ -201,16 +201,13 @@ const Groups = () => {
               groupStatusID: data.groupStatusID,
               groupTitle: data.groupTitle,
               userCount: data.userCount,
+              listOfCommittees: data.listOfCommittees
             });
           });
           setgroupsData(newArr);
         }
-
       }
-    } catch (error) {
-
-    }
-
+    } catch (error) { }
   }, [GroupsReducer.getAllGroupsResponse]);
 
   useEffect(() => {
@@ -281,6 +278,7 @@ const Groups = () => {
                     <img
                       src={archivedbtn}
                       className={styles["archivedbtnIcon"]}
+                      alt=""
                     />
                   }
                 />
@@ -289,7 +287,10 @@ const Groups = () => {
 
             <Row>
               <Col lg={12} sm={12} md={12}>
-                <Row className={`${"d-flex text-center MontserratSemiBold-600 color-5a5a5a m-0 p-0"} ${styles["groups_box"]}`}>
+                <Row
+                  className={`${"d-flex text-center MontserratSemiBold-600 color-5a5a5a m-0 p-0"} ${styles["groups_box"]
+                    }`}
+                >
                   <Col sm={12} md={12} lg={12} className="m-0 p-0">
                     <Row>
                       {groupsData.length > 0 ? (
@@ -302,11 +303,13 @@ const Groups = () => {
                                 key={index}
                                 CardID={data.groupID}
                                 StatusID={data.groupStatusID}
+                                associatedTags={data.listOfCommittees}
                                 flag={false}
                                 Icon={
                                   <img
                                     src={GroupIcon}
                                     height="29.23px"
+                                    alt=""
                                     width="32.39px"
                                   />
                                 }
@@ -314,6 +317,7 @@ const Groups = () => {
                                 onClickFunction={() =>
                                   viewmodal(data.groupID, data.groupStatusID)
                                 }
+                                groupState={true}
                                 BtnText={
                                   data.groupStatusID === 1
                                     ? t("View-group")

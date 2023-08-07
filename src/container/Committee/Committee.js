@@ -294,12 +294,10 @@ const Committee = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                // className={styles["Committee-Main_Scrollbar"]}
               >
                 <Row
-                  className={`${"d-flex text-center committees_box  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1"} ${
-                    styles["committess_box"]
-                  }`}
+                  className={`${"d-flex text-center committees_box  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1"} ${styles["committess_box"]
+                    }`}
                 >
                   <Col sm={12} md={12} lg={12} className="m-0 p-0 mt-2 ">
                     <Row>
@@ -307,7 +305,7 @@ const Committee = () => {
                         getcommitteedata.map((data, index) => {
                           console.log(data, "datadatadata");
                           return (
-                            <Col lg={3} md={3} sm={12} className="mb-3">
+                            <Col key={index} lg={3} md={3} sm={12} className="mb-3">
                               <Card
                                 setUniqCardID={setUniqCardID}
                                 uniqCardID={uniqCardID}
@@ -323,6 +321,7 @@ const Committee = () => {
                                 }
                                 associatedTags={data.listofGroups}
                                 flag={true}
+                                groupState={false}
                                 assignGroupBtn={() =>
                                   showMarketingModal(data.committeeID)
                                 }
@@ -339,10 +338,10 @@ const Committee = () => {
                                   data.committeeStatusID === 1
                                     ? t("View-committee")
                                     : data.committeeStatusID === 2
-                                    ? ""
-                                    : data.committeeStatusID === 3
-                                    ? t("Update-committee")
-                                    : ""
+                                      ? ""
+                                      : data.committeeStatusID === 3
+                                        ? t("Update-committee")
+                                        : ""
                                 }
                               />
                             </Col>
@@ -404,26 +403,27 @@ const Committee = () => {
                 <Col
                   lg={4}
                   md={4}
-                  sm={4}
+                  sm={12}
                   className="d-flex justify-content-center "
-                >
-                  <Container className={styles["PaginationStyle-Committee"]}>
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={"pagination-groups-table"}
-                      >
-                        <Pagination
-                          current={currentPage}
-                          total={totalRecords}
-                          pageSize={8}
-                          onChange={handlechange}
-                        />
-                      </Col>
-                    </Row>
-                  </Container>
+                > {getcommitteedata.length > 0 && <Container className={styles["PaginationStyle-Committee"]}>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={"pagination-groups-table"}
+                    >
+                      <Pagination
+                        current={currentPage}
+                        total={totalRecords}
+                        pageSize={8}
+                        onChange={handlechange}
+                      />
+                    </Col>
+                  </Row>
+
+                </Container>}
+
                 </Col>
                 <Col lg={4} md={4} sm={4}></Col>
               </Row>

@@ -127,6 +127,7 @@ const LanguageSelector = () => {
             <span
               className="cursor-pointer"
               onClick={() => handleChangeLocale(data.code)}
+              key={index}
             >
               {data.name}
             </span>
