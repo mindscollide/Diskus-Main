@@ -1,0 +1,11 @@
+input.datePickerTodoCreate2 {
+    width: 100% !important;
+    margin-left: 15px !important;
+    height: 39px !important;
+    border: 1px solid #e1e1e1 !important;
+    border-radius: 4px !important;
+    font-size: 12px !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}

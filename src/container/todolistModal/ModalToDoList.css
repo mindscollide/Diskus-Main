@@ -60,10 +60,12 @@
 }
 
 .bodytodoCreateModal {
-  height: 470px !important;
+  /* max-height: 470px !important; */
+  max-height: 100%;
   overflow-y: auto;
   overflow-x: hidden !important;
   margin: 0 15px;
+  min-height: 100%;
 }
 
 .todoModalCreateModal {
@@ -155,9 +157,10 @@ body[dir="rtl"] .footertodoCreateModal {
   font-family: "MontserratSemiBold-600";
 }
 
-/* .todomodalcreatemodal {
-  width: 700px !important;
-} */
+.todomodalcreatemodal {
+  width: 900px !important;
+}
+
 /* .modal-content {
   width: 700px !important;
 }  */
@@ -185,4 +188,8 @@ body[dir="rtl"] .ArabicFontSemiBold {
   font-size: 14px !important;
   font-family: "MontserratSemiBold-600";
   border: 1px solid #e1e1e1 !important;
+}
+
+.CreateMeetingDate label {
+  font-size: 1px !important;
 }
