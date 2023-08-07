@@ -21,4 +21,24 @@ const showNotifyOrganizors = (response) => {
   };
 };
 
-export { showAddUserModal, showCrossConfirmationModal, showNotifyOrganizors };
+const showAddAgendaContributor = (response) => {
+  return {
+    type: actions.ADD_AGENDA_CONTRIBUTORS,
+    response: response,
+  };
+};
+
+const showAgendaContributorsModals = (response) => {
+  return {
+    type: actions.NOTIFY_AGENDA_CONTRIBUTORS,
+    response: response,
+  };
+};
+
+export {
+  showAddUserModal,
+  showCrossConfirmationModal,
+  showNotifyOrganizors,
+  showAddAgendaContributor,
+  showAgendaContributorsModals,
+};

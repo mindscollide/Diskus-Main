@@ -5,6 +5,8 @@ const initialState = {
   adduserModal: false,
   crossConfirmation: false,
   notifyOrganizors: false,
+  agendaContributors: false,
+  notifyAgendaContributors: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -26,6 +28,20 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         notifyOrganizors: action.response,
+      };
+    }
+
+    case actions.ADD_AGENDA_CONTRIBUTORS: {
+      return {
+        ...state,
+        agendaContributors: action.response,
+      };
+    }
+
+    case actions.NOTIFY_AGENDA_CONTRIBUTORS: {
+      return {
+        ...state,
+        notifyAgendaContributors: action.response,
       };
     }
 

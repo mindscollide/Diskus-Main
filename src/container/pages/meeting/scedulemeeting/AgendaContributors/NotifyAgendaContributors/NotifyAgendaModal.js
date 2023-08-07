@@ -6,24 +6,23 @@ import {
   Checkbox,
 } from "../../../../../../components/elements";
 import { useTranslation } from "react-i18next";
-import styles from "./NotifyOrganizors.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import { useNavigate } from "react-router-dom";
 import profile from "../../../../../../assets/images/newprofile.png";
-import { showNotifyOrganizors } from "../../../../../../store/actions/NewMeetingActions";
-import UpperArrow from "../../../../../../assets/images/UpperArrow.svg";
+import {
+  showAgendaContributorsModals,
+  showNotifyOrganizors,
+} from "../../../../../../store/actions/NewMeetingActions";
+import UpperArrow from "../../../../../../assets/images/blueUp.svg";
 import { Col, Row } from "react-bootstrap";
-import { style } from "@mui/system";
+import styles from "./NotifyAgendaModal.module.css";
 
-const NotifyOrganizers = () => {
+const NotifyAgendaModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  const handleCrossIcon = () => {
-    dispatch(showNotifyOrganizors(false));
-  };
   const [members, setMembers] = useState([
     {
       name: "saif",
@@ -47,24 +46,29 @@ const NotifyOrganizers = () => {
       name: "saroush",
     },
   ]);
+
+  const handleCrossIcon = () => {
+    dispatch(showAgendaContributorsModals(false));
+  };
+
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.notifyOrganizors}
-        setShow={dispatch(showNotifyOrganizors)}
+        show={NewMeetingreducer.notifyAgendaContributors}
+        setShow={dispatch(showAgendaContributorsModals)}
         modalFooterClassName={"d-block"}
         onHide={() => {
-          dispatch(showNotifyOrganizors(false));
+          dispatch(showAgendaContributorsModals(false));
         }}
         ModalBody={
           <>
             <Row>
-              <Col lg={5} md={5} sm={12}>
+              <Col lg={7} md={7} sm={12}>
                 <span className={styles["Notify_organisors"]}>
-                  {t("Notify-organizers")}
+                  {t("Notify-agenda-contributor")}
                 </span>
               </Col>
-              <Col lg={7} md={7} sm={12} className="d-flex justify-content-end">
+              <Col lg={5} md={5} sm={12} className="d-flex justify-content-end">
                 <img
                   src={BlackCrossIcon}
                   className={styles["Cross_Icon_Styling"]}
@@ -87,33 +91,23 @@ const NotifyOrganizers = () => {
                 />
               </Col>
             </Row>
-            <Row className="mt-2">
+            <Row className="mt-4">
               <Col
-                lg={6}
-                md={6}
+                lg={12}
+                md={12}
                 sm={12}
-                className="d-flex align-items-center gap-2"
+                className="d-flex justify-content-end align-items-center gap-2"
               >
-                <Checkbox />
-                <p className={styles["Check_box_title"]}>
-                  {t("All-organizer-except-me")}
-                </p>
-              </Col>
-              <Col
-                lg={6}
-                md={6}
-                sm={12}
-                className="d-flex justify-content-end align-items-center cursor-pointer"
-              >
+                <span className={styles["Hide_names"]}>{t("Hide-names")}</span>
                 <img
                   src={UpperArrow}
                   width="18.4px"
                   height="9.2px"
-                  className={styles["UparrowClasss"]}
+                  className="cursor-pointer"
                 />
               </Col>
             </Row>
-            <Row>
+            <Row className="mt-3">
               <Col
                 lg={12}
                 md={12}
@@ -144,7 +138,9 @@ const NotifyOrganizers = () => {
                                   height="33px"
                                   className={styles["ProfilePic"]}
                                 />
-                                <span>{data.name}</span>
+                                <span className={styles["Participants_Name"]}>
+                                  {data.name}
+                                </span>
                               </Col>
                               <Col lg={2} md={2} sm={12}>
                                 <Checkbox />
@@ -183,4 +179,4 @@ const NotifyOrganizers = () => {
   );
 };
 
-export default NotifyOrganizers;
+export default NotifyAgendaModal;

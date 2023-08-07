@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./ModalOrganizor.module.css";
+import styles from "./AgendaContritbutorsModal.module.css";
 import {
   Modal,
   Table,
@@ -8,7 +8,10 @@ import {
   Loader,
   Notification,
 } from "../../../../../../components/elements";
-import { showAddUserModal } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  showAddAgendaContributor,
+  showAddUserModal,
+} from "../../../../../../store/actions/NewMeetingActions";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import committeicon from "../../../../../../assets/images/Group 2584.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +20,7 @@ import profile from "../../../../../../assets/images/newprofile.png";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-const ModalOrganizor = () => {
+const AgendaContributorsModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -111,27 +114,27 @@ const ModalOrganizor = () => {
   ];
 
   const handleCrossIcon = () => {
-    dispatch(showAddUserModal(false));
+    dispatch(showAddAgendaContributor(false));
   };
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.adduserModal}
-        setShow={dispatch(showAddUserModal)}
+        show={NewMeetingreducer.agendaContributors}
+        setShow={dispatch(showAddAgendaContributor)}
         modalFooterClassName={"d-block"}
         onHide={() => {
-          dispatch(showAddUserModal(false));
+          dispatch(showAddAgendaContributor(false));
         }}
         size={"md"}
         ModalBody={
           <>
             <Row>
-              <Col lg={5} md={5} sm={12}>
+              <Col lg={7} md={7} sm={12}>
                 <span className={styles["Add_organization"]}>
-                  {t("Add-organizers")}
+                  {t("Add-agenda-contributors")}
                 </span>
               </Col>
-              <Col lg={7} md={7} sm={12} className="d-flex justify-content-end">
+              <Col lg={5} md={5} sm={12} className="d-flex justify-content-end">
                 <img
                   src={BlackCrossIcon}
                   className={"cursor-pointer"}
@@ -181,4 +184,4 @@ const ModalOrganizor = () => {
   );
 };
 
-export default ModalOrganizor;
+export default AgendaContributorsModal;

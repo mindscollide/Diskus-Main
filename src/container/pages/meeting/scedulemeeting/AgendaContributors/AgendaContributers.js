@@ -1,41 +1,39 @@
 import React, { useState } from "react";
-import styles from "./Organizers.module.css";
+import styles from "./AgendaContributors.module.css";
+import EditIcon from "../../../../../assets/images/Edit-Icon.png";
+import addmore from "../../../../../assets/images/addmore.png";
+import emptyContributorState from "../../../../../assets/images/emptyStateContributor.svg";
+import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
+import Select from "react-select";
+import { Col, Row } from "react-bootstrap";
 import {
   Button,
   Table,
   TextField,
-  Switch,
   Loader,
   Notification,
 } from "../../../../../components/elements";
-import EditIcon from "../../../../../assets/images/Edit-Icon.png";
-import addmore from "../../../../../assets/images/addmore.png";
-import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
-import mail from "../../../../../assets/images/mail.svg";
 import { useTranslation } from "react-i18next";
-import { Col, Row } from "react-bootstrap";
-import { Tooltip } from "antd";
+import AgendaContributorsModal from "./AgdendaContributorsModal/AgendaContributorsModal";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
-  showAddUserModal,
+  showAddAgendaContributor,
+  showAgendaContributorsModals,
   showCrossConfirmationModal,
-  showNotifyOrganizors,
 } from "../../../../../store/actions/NewMeetingActions";
-import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
-import ModalCrossIcon from "./ModalCrossIconClick/ModalCrossIcon";
-import NotifyOrganizers from "./NotifyOrganizers/NotifyOrganizers";
-const Organizers = ({ setAgendaContributors, setorganizers }) => {
+import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
+import NotifyAgendaModal from "./NotifyAgendaContributors/NotifyAgendaModal";
+const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  let currentLanguage = localStorage.getItem("i18nextLng");
   const { NewMeetingreducer } = useSelector((state) => state);
   const openCrossIconModal = () => {
     dispatch(showCrossConfirmationModal(true));
   };
-  const openNotifyOrganizorModal = () => {
-    dispatch(showNotifyOrganizors(true));
+  const shownotifyAgendaContrubutors = () => {
+    dispatch(showAgendaContributorsModals(true));
   };
   const data = [
     {
@@ -43,7 +41,7 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
       Name: (
         <label
           className={styles["Title_desc"]}
-          onClick={openNotifyOrganizorModal}
+          onClick={shownotifyAgendaContrubutors}
         >
           Muahmmad Saif
         </label>
@@ -52,47 +50,27 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
         <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
       ),
       OrganizerTitle: <label className="column-boldness">Organizer</label>,
-      Primary: <label className="column-boldness">Primary</label>,
-    },
-    {
-      key: "1",
-      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
-      Email: (
-        <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
-      ),
-      OrganizerTitle: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <TextField
-                disable={true}
-                placeholder={t("Content-title")}
-                labelClass={"d-none"}
-                applyClass={"Organizer_table"}
-              />
-            </Col>
-          </Row>
-        </>
-      ),
       Primary: (
-        <>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex gap-3 align-items-center"
-            >
-              <Switch />
-              <label className="column-boldness">Primary</label>
-            </Col>
-          </Row>
-        </>
+        <label className="column-boldness">
+          <>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <TextField
+                  disable={true}
+                  width={"283px"}
+                  placeholder={t("Content-title")}
+                  labelClass={"d-none"}
+                  applyClass={"Organizer_table"}
+                />
+              </Col>
+            </Row>
+          </>
+        </label>
       ),
       Close: (
         <>
           <Row>
-            <Col lg={12} md={12} sm={12}>
+            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
               <img
                 src={redcrossIcon}
                 width="21.79px"
@@ -105,41 +83,34 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
       ),
     },
   ];
-
   const [rowsData, setRowsData] = useState(data);
-  const MeetingColoumns = [
+  const handleNextButton = () => {
+    setAgendaContributors(false);
+    setParticipants(true);
+  };
+  const openAddAgendaModal = () => {
+    dispatch(showAddAgendaContributor(true));
+  };
+
+  const AgendaColoumns = [
     {
-      title: (
-        <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <span>{t("Name")}</span>
-            </Col>
-          </Row>
-        </>
-      ),
+      title: t("Name"),
       dataIndex: "Name",
       key: "Name",
       width: "300px",
     },
-
     {
       title: t("Email"),
       dataIndex: "Email",
       key: "Email",
-      width: "400px",
-    },
-    {
-      title: t("Organizer-title"),
-      dataIndex: "OrganizerTitle",
-      key: "OrganizerTitle",
       width: "300px",
     },
 
     {
+      title: t("contributor-title"),
       dataIndex: "Primary",
       key: "Primary",
-      width: "200px",
+      width: "400px",
       //   render: (text, record) => {
       //     return (
       //       <>
@@ -164,38 +135,55 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
       //     );
       //   },
     },
-
     {
       dataIndex: "Close",
       key: "Close",
       width: "200px",
     },
   ];
-
-  const openAddUserModal = () => {
-    dispatch(showAddUserModal(true));
-  };
-
-  const handleNextButton = () => {
-    setorganizers(false);
-    setAgendaContributors(true);
-  };
-
+  const options = [
+    {
+      value: "chocolate",
+      label: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span className={styles["Options_classs_contributors"]}>
+                {t("Grant-access-to-all-agenda-items-and-files")}
+              </span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "strawberry",
+      label: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span className={styles["Options_classs_contributors"]}>
+                {t("Grant-access-to-their-own-agenda-items-and-files-only")}
+              </span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+  ];
   return (
     <>
       <section>
-        <Row className="mt-4 m-0 p-0">
+        <Row className="mt-5">
+          <Col lg={4} md={4} sm={12}>
+            <Select options={options} />
+          </Col>
           <Col
-            lg={12}
-            md={12}
+            lg={8}
+            md={8}
             sm={12}
             className="d-flex justify-content-end gap-2"
           >
-            <Button
-              text={t("Notification1")}
-              className={styles["Notification_button"]}
-              icon={<img src={mail} width="17.18px" height="12.08px" />}
-            />
             <Button
               text={t("Edit")}
               className={styles["Edit_Button_Organizers"]}
@@ -205,22 +193,43 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
               text={t("Add-more")}
               icon={<img src={addmore} />}
               className={styles["AddMoreBtn"]}
-              onClick={openAddUserModal}
+              onClick={openAddAgendaModal}
             />
           </Col>
         </Row>
         <Row>
           <Col lg={12} md={12} sm={12}>
             <Table
-              column={MeetingColoumns}
+              column={AgendaColoumns}
               scroll={{ y: "62vh" }}
               pagination={false}
               className="Polling_table"
-              rows={rowsData}
+              rows={
+                rowsData.length === 0 ? (
+                  <>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex justifys-content-center"
+                      >
+                        <img
+                          src={emptyContributorState}
+                          width="274.05px"
+                          height="230.96px"
+                        />
+                      </Col>
+                    </Row>
+                  </>
+                ) : (
+                  rowsData
+                )
+              }
             />
           </Col>
         </Row>
-        <Row className="mt-4">
+        <Row className="mt-5">
           <Col
             lg={12}
             md={12}
@@ -236,6 +245,11 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
               className={styles["Cancel_Organization"]}
             />
             <Button
+              text={t("Save")}
+              className={styles["Next_Organization"]}
+              onClick={handleNextButton}
+            />
+            <Button
               text={t("Next")}
               className={styles["Next_Organization"]}
               onClick={handleNextButton}
@@ -243,11 +257,11 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
           </Col>
         </Row>
       </section>
-      {NewMeetingreducer.adduserModal && <ModalOrganizor />}
+      {NewMeetingreducer.agendaContributors && <AgendaContributorsModal />}
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
-      {NewMeetingreducer.notifyOrganizors && <NotifyOrganizers />}
+      {NewMeetingreducer.notifyAgendaContributors && <NotifyAgendaModal />}
     </>
   );
 };
 
-export default Organizers;
+export default AgendaContributers;

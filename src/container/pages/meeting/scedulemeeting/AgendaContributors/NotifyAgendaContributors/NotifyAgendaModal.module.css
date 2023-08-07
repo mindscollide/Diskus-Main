@@ -81,6 +81,17 @@
   color: #fff !important;
 }
 
-.UparrowClasss {
-  cursor: pointer !important;
+.Hide_names {
+  font-size: 12px !important;
+  color: #5f78d6;
+  font-family: "MontserratMedium-500";
+}
+
+.Participants_Name {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold-600";
+}
+.Cross_Icon_Styling {
+  cursor: pointer;
 }

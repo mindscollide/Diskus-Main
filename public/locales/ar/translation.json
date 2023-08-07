@@ -1094,5 +1094,12 @@
   "Notify-organizers": "Notify organizers",
   "Message": "Message",
   "All-organizer-except-me": "All organizer except me",
-  "Notification1": "Notification"
+  "Notification1": "Notification",
+  "contributor-title": "Contributor title",
+  "Grant-access-to-all-agenda-items-and-files": "Grant access to all agenda items and files",
+  "Grant-access-to-their-own-agenda-items-and-files-only": "Grant access to their own agenda items and files only",
+  "Add-agenda-contributors": "Add Agenda Contributors",
+  "Notify-agenda-contributor": "Notify Agenda Contributor",
+  "Hide-names": "Hide Names",
+  "Propose-meeting-dates": "Propose Meeting Dates"
 }
