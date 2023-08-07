@@ -5,6 +5,7 @@ import {
   Button,
   Checkbox,
   CustomRadio2,
+  TextField,
 } from "../../../../components/elements";
 import AlarmClock from "../../../../assets/images/AlarmOptions.svg";
 import styles from "./ViewPollProgress.module.css";
@@ -15,19 +16,16 @@ import { useTranslation } from "react-i18next";
 import {
   setviewpollProgressModal,
   viewVotesApi,
-  viewVotesDetailsModal,
 } from "../../../../store/actions/Polls_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
-import CustomRadio from "../../../../components/elements/radio/Radio";
 
 const ViewPollProgress = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { PollsReducer } = useSelector((state) => state);
-  console.log(PollsReducer, "PollsReducerPollsReducerPollsReducerPollsReducer");
   const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
     PollID: 0,
     PollTitle: "",
@@ -106,7 +104,7 @@ const ViewPollProgress = () => {
       });
     }
   }, [PollsReducer.Allpolls]);
-  console.log("CustomRadio2", pollsOption);
+  
   const changeDateStartHandler2 = (date) => {
     let newDate = moment(date).format("DD MMMM YYYY");
 
@@ -191,25 +189,20 @@ const ViewPollProgress = () => {
                     </span>
                   </Col>
                 </Row>
-                <Row>
+                <Row className="mt-2">
                   <Col
                     lg={12}
-                    md={12}
                     sm={12}
-                    className={styles["Box_For_Title_toShow"]}
+                    md={12}
+                    className="mt-2 m-0 p-0"
                   >
-                    <Row className="mt-2">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex align-items-center"
-                      >
-                        <span className={styles["ViewTitleTOShowOnProgress"]}>
-                          {viewProgressPollsDetails.PollTitle}
-                        </span>
-                      </Col>
-                    </Row>
+                    <TextField
+                      applyClass={"PollingCViewText"}
+                      labelClass="d-none"
+                      maxLength={500}
+                      value={viewProgressPollsDetails.PollTitle}
+                      disable={true}
+                    />
                   </Col>
                 </Row>
                 {pollsOption.length > 2 ? (
@@ -224,7 +217,7 @@ const ViewPollProgress = () => {
                         ? pollsOption.map((data, index) => {
                             return (
                               <>
-                                <Row>
+                                <Row key={index}>
                                   <Col lg={1} md={1} sm={12}></Col>
                                   <Col
                                     lg={11}
@@ -237,7 +230,7 @@ const ViewPollProgress = () => {
                                         <span
                                           className={styles["Yes_ViewProgress"]}
                                         >
-                                          {data.answer}
+                                          {data.answer}{" "}
                                           <span>
                                             {"(" + data.totalVotes + ")"}
                                           </span>
@@ -319,6 +312,7 @@ const ViewPollProgress = () => {
                                         <span
                                           className={styles["Yes_ViewProgress"]}
                                         >
+
                                           {data.answer}
                                           <span>
                                             {"(" + data.totalVotes + ")"}
@@ -380,7 +374,6 @@ const ViewPollProgress = () => {
                     </Col>
                   </Row>
                 )}
-
                 <Row>
                   <Col lg={1} md={1} sm={1}></Col>
                   <Col
@@ -415,7 +408,7 @@ const ViewPollProgress = () => {
                     <Row>
                       {viewpollMembers.map((data, index) => {
                         return (
-                          <Col lg={6} md={6} sm={12} className="mt-2">
+                          <Col key={index}lg={6} md={6} sm={12} className="mt-2">
                             <Row>
                               <Col lg={11} md={11} sm={12} className="m-0 p-0">
                                 <Row className={styles["Card_border2"]}>

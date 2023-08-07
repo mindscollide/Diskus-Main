@@ -53,6 +53,9 @@
 .ViewTitleTOShowOnProgress {
   width: 100%;
   font-size: 12px !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
   margin-top: 4px !important;
 }
 
@@ -196,6 +199,9 @@ body[dir="rtl"] .Card_border2 {
   font-size: 16px !important;
   font-family: "MontserratSemiBold" !important;
   color: #5a5a5a;
+  word-wrap: break-word!important;
+  white-space: pre-wrap!important;
+  width: 100% !important;
 }
 
 .Multiple_answer {

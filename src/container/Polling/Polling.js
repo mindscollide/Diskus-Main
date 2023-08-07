@@ -91,8 +91,9 @@ const Polling = () => {
     if (currentPage !== null && currentPageSize !== null) {
       let data = {
         UserID: parseInt(userID),
+        PollTitle: "",
         OrganizationID: parseInt(organizationID),
-        CreatorName: searchBoxState.searchByName,
+        CreatorName: "",
         PageNumber: JSON.parse(currentPage),
         Length: JSON.parse(currentPageSize),
       };
@@ -102,8 +103,9 @@ const Polling = () => {
       localStorage.setItem("pollingPageSize", 50);
       let data = {
         UserID: parseInt(userID),
+        PollTitle: "",
         OrganizationID: parseInt(organizationID),
-        CreatorName: searchBoxState.searchByName,
+        CreatorName: "",
         PageNumber: 1,
         Length: 50,
       };
@@ -125,6 +127,29 @@ const Polling = () => {
   }, []);
 
   useEffect(() => {
+    console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
+    try {
+      if (
+        PollsReducer.SearchPolls !== null &&
+        PollsReducer.SearchPolls !== undefined
+      ) {
+        console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
+        if (PollsReducer.SearchPolls.polls.length > 0) {
+          console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
+          setTotalRecords(PollsReducer.SearchPolls.totalRecords);
+          setRows(PollsReducer.SearchPolls.polls);
+        } else {
+          console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
+          setRows([]);
+        }
+      } else {
+        console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
+        setRows([]);
+      }
+    } catch (error) {}
+  }, [PollsReducer.SearchPolls]);
+
+  useEffect(() => {
     if (currentLanguage === "ar") {
       moment.locale(currentLanguage);
     } else if (currentLanguage === "fr") {
@@ -135,7 +160,10 @@ const Polling = () => {
   }, [currentLanguage]);
 
   useEffect(() => {
-    if (PollsReducer.pollingSocket !== null) {
+    if (
+      PollsReducer.pollingSocket !== null &&
+      Object.keys(PollsReducer.pollingSocket).length > 0
+    ) {
       let pollData = PollsReducer.pollingSocket;
       let rowCopy = [...rows];
       let findIndex = rowCopy.findIndex(
@@ -157,7 +185,6 @@ const Polling = () => {
   }, [PollsReducer.pollingSocket]);
 
   const handleEditpollModal = (record) => {
-    console.log("handleEditpollModal", record);
     let check = 0;
 
     if (record.wasPollPublished) {
@@ -178,7 +205,6 @@ const Polling = () => {
 
   const handleViewModal = (record) => {
     let check = 0;
-
     if (record.wasPollPublished) {
       if (record.pollStatus.pollStatusId === 3) {
         check = 4;
@@ -216,6 +242,7 @@ const Polling = () => {
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
+      PollTitle: searchBoxState.searchByTitle,
       CreatorName: searchBoxState.searchByName,
       Title: searchBoxState.searchByTitle,
       PageNumber: 1,
@@ -223,8 +250,7 @@ const Polling = () => {
     };
     dispatch(searchPollsApi(navigate, t, data));
   };
-  console.log("handleSearchEvent","UnPublished".toLowerCase().includes("Published".toLowerCase()))
-  console.log("handleSearchEvent","Published".toLowerCase().includes("UnPublished".toLowerCase()))
+
   const PollTableColumns = [
     {
       title: (
@@ -242,7 +268,7 @@ const Polling = () => {
       render: (text, record) => {
         return (
           <span
-            className="cursor-pointer"
+            className={styles["Ellipses_Class"]}
             onClick={() => {
               handleViewModal(record);
             }}
@@ -259,24 +285,21 @@ const Polling = () => {
       width: "78px",
       filters: [
         {
-          text: t('Published'),
-          value: 'Published', // Use the actual status value
+          text: t("Published"),
+          value: "Published", // Use the actual status value
         },
         {
-          text: t('UnPublished'),
-          value: 'UnPublished', // Use the actual status value
+          text: t("UnPublished"),
+          value: "UnPublished", // Use the actual status value
         },
       ],
-      defaultFilteredValue: ['Published', 'UnPublished'], // Use the actual status values here
+      defaultFilteredValue: ["Published", "UnPublished"], // Use the actual status values here
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
-      onFilter: (value, record) => {
-        // No need to change anything in this function
-        console.log("handleSearchEvent",record.pollStatus.status.toLowerCase().includes(value.toLowerCase()))
-        console.log("handleSearchEvent",value)
-        return record.pollStatus.status.toLowerCase().includes(value.toLowerCase());
-      },
+
+      onFilter: (value, record) =>
+        record.pollStatus.status.indexOf(value) === 0,
       render: (text, record) => {
         if (record.pollStatus?.pollStatusId === 2) {
           return <span className="text-success">{t("Published")}</span>;
@@ -317,44 +340,18 @@ const Polling = () => {
       width: "69px",
       render: (text, record) => {
         if (record.pollStatus.pollStatusId === 2) {
-          if (record.voteStatus === "Not Voted") {
-            return (
-              <Button
-                className={styles["voteBtn"]}
-                text={t("Vote")}
-                onClick={() => {
-                  handleVotePolls(record);
-                }}
-              />
-            );
-          } else if (record.voteStatus === "Voted") {
-            return (
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className={styles["Background-nonvoted-Button"]}
-              >
-                <span className={styles["Not-voted"]}>{t("Voted")}</span>
-              </Col>
-            );
-          }
-        } else if (record.pollStatus.pollStatusId === 1) {
-          return "";
-        } else if (record.pollStatus.pollStatusId === 3) {
-          if (record.wasPollPublished) {
+          if (record.isVoter) {
             if (record.voteStatus === "Not Voted") {
               return (
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className={styles["Background-nonvoted-Button"]}
-                >
-                  <span className={styles["Not-voted"]}>{t("Not-voted")}</span>
-                </Col>
+                <Button
+                  className={styles["voteBtn"]}
+                  text={t("Vote")}
+                  onClick={() => {
+                    handleVotePolls(record);
+                  }}
+                />
               );
-            } else {
+            } else if (record.voteStatus === "Voted") {
               return (
                 <Col
                   lg={12}
@@ -365,6 +362,42 @@ const Polling = () => {
                   <span className={styles["Not-voted"]}>{t("Voted")}</span>
                 </Col>
               );
+            }
+          } else {
+            return "";
+          }
+        } else if (record.pollStatus.pollStatusId === 1) {
+          return "";
+        } else if (record.pollStatus.pollStatusId === 3) {
+          if (record.isVoter) {
+            if (record.wasPollPublished) {
+              if (record.voteStatus === "Not Voted") {
+                return (
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Background-nonvoted-Button"]}
+                  >
+                    <span className={styles["Not-voted"]}>
+                      {t("Not-voted")}
+                    </span>
+                  </Col>
+                );
+              } else {
+                return (
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Background-nonvoted-Button"]}
+                  >
+                    <span className={styles["Not-voted"]}>{t("Voted")}</span>
+                  </Col>
+                );
+              }
+            } else {
+              return "";
             }
           } else {
             return "";
@@ -435,7 +468,7 @@ const Polling = () => {
   };
 
   const handleKeyDownSearch = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       setPollsState({
         ...pollsState,
         searchValue: "",
@@ -444,13 +477,14 @@ const Polling = () => {
         UserID: parseInt(userID),
         OrganizationID: parseInt(organizationID),
         CreatorName: "",
-        Title: pollsState.searchValue,
+        PollTitle: pollsState.searchValue,
         PageNumber: JSON.parse(currentPage),
         Length: JSON.parse(currentPageSize),
       };
       dispatch(searchPollsApi(navigate, t, data));
     }
   };
+
   const HandleSearchboxNameTitle = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -495,7 +529,7 @@ const Polling = () => {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
       CreatorName: "",
-      Title: "",
+      PollTitle: "",
       PageNumber: JSON.parse(currentPage),
       Length: JSON.parse(currentPageSize),
     };
@@ -511,32 +545,16 @@ const Polling = () => {
   };
 
   const handleChangePagination = (current, pageSize) => {
-    console.log(current, pageSize, "handleChangePagination");
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
       CreatorName: searchBoxState.searchByName,
+      PollTitle: searchBoxState.searchByTitle,
       PageNumber: current,
       Length: pageSize,
     };
     dispatch(searchPollsApi(navigate, t, data));
   };
-
-  useEffect(() => {
-    try {
-      if (
-        PollsReducer.SearchPolls !== null &&
-        PollsReducer.SearchPolls !== undefined
-      ) {
-        if (PollsReducer.SearchPolls.polls.length > 0) {
-          setTotalRecords(PollsReducer.SearchPolls.totalRecords);
-          setRows(PollsReducer.SearchPolls.polls);
-        } else {
-          setRows([]);
-        }
-      }
-    } catch (error) {}
-  }, [PollsReducer.SearchPolls]);
 
   useEffect(() => {
     if (

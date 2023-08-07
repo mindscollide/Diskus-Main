@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Checkbox } from "../../../components/elements";
+import {
+  Modal,
+  Button,
+  Checkbox,
+  TextField,
+} from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import styles from "./PollDetails.module.css";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
@@ -114,22 +119,17 @@ const PollDetails = () => {
                 <Row className="mt-2">
                   <Col
                     lg={12}
-                    md={12}
                     sm={12}
-                    className={styles["Box_For_Title_toShow"]}
+                    md={12}
+                    className="mt-2 m-0 p-0"
                   >
-                    <Row>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex align-items-center mt-2"
-                      >
-                        <span className={styles["ViewTitleTOShowOnProgress"]}>
-                          {pollTitle}
-                        </span>
-                      </Col>
-                    </Row>
+                    <TextField
+                      applyClass={"PollingCViewText"}
+                      labelClass="d-none"
+                      maxLength={500}
+                      value={pollTitle}
+                      disable={true}
+                    />
                   </Col>
                 </Row>
                 <Row className="mt-1">
@@ -142,15 +142,18 @@ const PollDetails = () => {
                     {votePollDetailsOptions.map((data, index) => {
                       return (
                         <>
-                          <Row className="mt-3">
+                          <Row className="mt-3" key={index}>
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="m-0 p-0 d-flex gap-5"
+                              className="m-0 p-0 d-flex gap-2"
                             >
-                              <span className={styles["no-Of-Yes"]}>
-                                {data.answer} - {data.votePercentage}%
+                              <span className={styles["No-of-Yes-Answers"]}>
+                                {data.answer} -{" "}
+                                <span className={styles["no-Of-Yes"]}>
+                                  {data.votePercentage}%
+                                </span>
                               </span>
                             </Col>
                           </Row>
@@ -186,7 +189,7 @@ const PollDetails = () => {
                     {pollAttendiesOpptionsVise.map((data, index) => {
                       return (
                         <>
-                          <Row className="mt-2">
+                          <Row className="mt-2" key={index}>
                             <Col lg={12} md={12} sm={12} className="m-0 p-0">
                               <span className={styles["Yes_voters"]}>
                                 {data.answer +
@@ -208,6 +211,7 @@ const PollDetails = () => {
                                           md={6}
                                           sm={12}
                                           className="mt-2"
+                                          key={index}
                                         >
                                           <Row>
                                             <Col

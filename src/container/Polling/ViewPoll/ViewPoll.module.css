@@ -46,6 +46,9 @@
   /* padding: 3px 3px !important; */
   align-items: center !important;
   font-size: 12px !important;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
 }
 
 .Multiple_viewModal {
@@ -138,4 +141,12 @@ body[dir="rtl"] .Card_border2 {
   border: 1px solid #e1e1e1;
   height: 39px;
   border-radius: 4px !important;
+}
+
+.View_ellipses{
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  display: inline-block !important;
+  width: 100% !important;
 }
