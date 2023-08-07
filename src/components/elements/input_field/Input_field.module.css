@@ -179,3 +179,11 @@
   margin-left: 15px !important;
   font-size: 12px;
 }
+
+.PollingCViewText {
+  margin: 0;
+  height: 39px !important;
+  width: 100% !important;
+  border: 1px solid #e1e1e1 !important;
+  position: relative;
+}

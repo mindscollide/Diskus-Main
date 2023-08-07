@@ -558,7 +558,7 @@ const CreatePolling = () => {
     );
   };
 
-  const addNewRow = () => {
+  const addNewRow = () => {HandleCancelFunction
     const allValuesNotEmpty = options.every((item) => item.value !== "");
     if (options.length > 1) {
       if (allValuesNotEmpty) {
@@ -615,7 +615,8 @@ const CreatePolling = () => {
           modalHeaderClassName={styles["ModalRequestHeader_polling"]}
           modalFooterClassName={"d-block"}
           onHide={() => {
-            dispatch(setCreatePollModal(false));
+            setDefineUnsaveModal(true);
+            // dispatch(setCreatePollModal(false));
           }}
           ModalTitle={
             <>
@@ -780,6 +781,7 @@ const CreatePolling = () => {
                                               labelClass="d-none"
                                               name={data.name}
                                               value={data.value}
+                                              maxLength={500}
                                               change={(e) =>
                                                 HandleOptionChange(e)
                                               }

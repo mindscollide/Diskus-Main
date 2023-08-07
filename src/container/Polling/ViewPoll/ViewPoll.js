@@ -67,6 +67,7 @@ const ViewPoll = () => {
         setShow={dispatch(setviewpollModal)}
         modalTitleClassName={styles["ModalHeader_View_poll"]}
         modalHeaderClassName={styles["ModalRequestHeader_polling_View_modal"]}
+        modalBodyClassName={"d-block"}
         modalFooterClassName={"d-block"}
         onHide={() => {
           dispatch(setviewpollModal(false));
@@ -130,45 +131,33 @@ const ViewPoll = () => {
                   </Col>
                 </Row>
                 <Row className="mt-2">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={styles["BOx_for_yes"]}
-                  >
-                    <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12}>
-                        <span className={styles["View_Title"]}>
-                          {viewPollsDetails.Title}
-                        </span>
-                      </Col>
-                    </Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <TextField
+                      applyClass={"PollingCViewText"}
+                      labelClass="d-none"
+                      maxLength={500}
+                      value={viewPollsDetails.Title}
+                      disable={true}
+                    />
                   </Col>
                 </Row>
 
                 {pollAnswersDetailsView.map((data, index) => {
-                  console.log(
-                    pollAnswersDetailsView,
-                    "pollAnswersDetailsViewpollAnswersDetailsViewpollAnswersDetailsView"
-                  );
                   return (
-                    <Row className="mt-2">
+                    <Row className="mt-2" key={index}>
                       <Col
                         lg={12}
-                        md={12}
                         sm={12}
-                        className={styles["BOx_for_yes"]}
+                        md={12}
+                        className="mt-2"
                       >
-                        <Row>
-                          <Col
-                            lg={12}
-                            sm={12}
-                            md={12}
-                            className="d-flex align-items-center mt-2"
-                          >
-                            {data.answer}
-                          </Col>
-                        </Row>
+                        <TextField
+                          applyClass={"PollingCViewText"}
+                          labelClass="d-none"
+                          maxLength={500}
+                          value={data.answer}
+                          disable={true}
+                        />
                       </Col>
                     </Row>
                   );
@@ -202,7 +191,6 @@ const ViewPoll = () => {
                   >
                     <Row>
                       {viewpollMembers.map((data, index) => {
-                        console.log(data, "saifdatasaifdatasaifdatasaifdata");
                         return (
                           <Col lg={6} md={6} sm={12} className="mt-2">
                             <Row>

@@ -6,6 +6,7 @@ import {
   Checkbox,
   Notification,
   CustomRadio2,
+  TextField,
 } from "../../../components/elements";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import { useSSR, useTranslation } from "react-i18next";
@@ -162,19 +163,14 @@ const Votepoll = () => {
                     </Col>
                   </Row>
                   <Row className="mt-2">
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className={styles["Border_box"]}
-                    >
-                      <Row className="mt-2">
-                        <Col lg={12} md={12} sm={12}>
-                          <span className={styles["ViewTitleTOShowOnProgress"]}>
-                            {viewProgressPollsDetails.PollTitle}
-                          </span>
-                        </Col>
-                      </Row>
+                    <Col lg={12} md={12} sm={12} className="m-0 p-0">
+                      <TextField
+                        applyClass={"PollingCViewText"}
+                        labelClass="d-none"
+                        maxLength={500}
+                        value={viewProgressPollsDetails.PollTitle}
+                        disable={true}
+                      />
                     </Col>
                   </Row>
                   {pollsOption.length > 3 ? (
@@ -188,7 +184,6 @@ const Votepoll = () => {
                         >
                           {pollsOption.length > 0 ? (
                             pollsOption.map((data, index) => {
-                              console.log(data, "datadatadatadatadatadatadata");
                               return (
                                 <>
                                   <Row key={index}>
@@ -200,7 +195,7 @@ const Votepoll = () => {
                                       className="m-0 p-0"
                                     >
                                       <span className={styles["Yes_Vote_poll"]}>
-                                        {data.answer}
+                                        {data.answer}{" "}
                                         <span>({data.totalVotes})</span>
                                       </span>
                                     </Col>
@@ -305,7 +300,7 @@ const Votepoll = () => {
                                           checked={handleForCheck(
                                             data.pollAnswerID
                                           )}
-                                          onChange={(e)=>handleCheckBoxYes(e)}
+                                          onChange={(e) => handleCheckBoxYes(e)}
                                           classNameCheckBoxP="d-none"
                                         />
                                       ) : (
