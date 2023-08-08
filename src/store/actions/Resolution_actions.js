@@ -284,6 +284,7 @@ const updateResolution_Fail = (message) => {
 const updateResolution = (navigate, resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated, setResolutionUpdateSuccessfully) => {
     console.log(resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated, "checkingforudpatestatemodal")
     console.log(no, circulated, "checkingforudpatestatemodal222")
+    let currentView = localStorage.getItem("ButtonTab");
     let Data2 = {
         IsCirculate: circulated === 2 ? true : false,
         FK_ResolutionID: JSON.parse(resolutionID),
@@ -318,7 +319,7 @@ const updateResolution = (navigate, resolutionID, voters, nonVoter, tasksAttachm
                             } else {
                                 setEditResoutionPage(false)
                             }
-                            dispatch(getResolutions(navigate, 1, t))
+                            dispatch(getResolutions(navigate, Number(currentView), t))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_02".toLowerCase()) {
                             dispatch(updateResolution_Fail(t("Failed-to-update-resolution-status")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_03".toLowerCase()) {
@@ -328,7 +329,7 @@ const updateResolution = (navigate, resolutionID, voters, nonVoter, tasksAttachm
                             } else {
                                 setEditResoutionPage(false)
                             }
-                            dispatch(getResolutions(navigate, 3, t))
+                            dispatch(getResolutions(navigate, Number(currentView), t))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_04".toLowerCase()) {
                             dispatch(updateResolution_Fail(t("Please-add-at-least-one-voter")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_05".toLowerCase()) {
@@ -568,7 +569,7 @@ const cancelResolution_Fail = (message) => {
         message: message
     }
 }
-const cancelResolutionApi = (navigate, id, t, setEditResoutionPage) => {
+const cancelResolutionApi = (navigate, id, t, setEditResoutionPage, setCancelResolutionModal) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
     let Data = {
@@ -597,6 +598,7 @@ const cancelResolutionApi = (navigate, id, t, setEditResoutionPage) => {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CancelResolution_01".toLowerCase()) {
                             dispatch(cancelResolution_Success(response.data.responseResult, t("Resolution-cancelled")))
                             await setEditResoutionPage(false)
+                            await setCancelResolutionModal(false)
                             dispatch(getResolutions(navigate, 1, t))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CancelResolution_02".toLowerCase()) {
                             dispatch(cancelResolution_Fail(t("Failed-to-cancel-resolution")))

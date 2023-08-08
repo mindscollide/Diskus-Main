@@ -176,7 +176,7 @@ const Groups = () => {
     if (GroupsReducer.realtimeGroupCreateResponse !== null) {
       let groupData = GroupsReducer.realtimeGroupCreateResponse;
       console.log(groupData, "groupDatagroupDatagroupDatagroupData");
-      setgroupsData((prev) => [groupsData, ...prev]);
+      setgroupsData((prev) => [groupData, ...prev]);
     }
   }, [GroupsReducer.realtimeGroupCreateResponse]);
 
@@ -201,6 +201,7 @@ const Groups = () => {
               groupStatusID: data.groupStatusID,
               groupTitle: data.groupTitle,
               userCount: data.userCount,
+              listOfCommittees: data.listOfCommittees,
             });
           });
           setgroupsData(newArr);
@@ -277,6 +278,7 @@ const Groups = () => {
                     <img
                       src={archivedbtn}
                       className={styles["archivedbtnIcon"]}
+                      alt=""
                     />
                   }
                 />
@@ -302,11 +304,13 @@ const Groups = () => {
                                 key={index}
                                 CardID={data.groupID}
                                 StatusID={data.groupStatusID}
+                                associatedTags={data.listOfCommittees}
                                 flag={false}
                                 Icon={
                                   <img
                                     src={GroupIcon}
                                     height="29.23px"
+                                    alt=""
                                     width="32.39px"
                                   />
                                 }
@@ -314,6 +318,7 @@ const Groups = () => {
                                 onClickFunction={() =>
                                   viewmodal(data.groupID, data.groupStatusID)
                                 }
+                                groupState={true}
                                 BtnText={
                                   data.groupStatusID === 1
                                     ? t("View-group")

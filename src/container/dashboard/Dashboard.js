@@ -23,7 +23,9 @@ import {
   mqttGroupUpdated,
   mqttInsertBroadcastMessage,
   mqttUnreadMessageCount,
+  mqttMessageStatusUpdate,
   InsertOTOMessages,
+  UpdateMessageAcknowledgement,
 } from '../../store/actions/Talk_action'
 import Paho from 'paho-mqtt'
 import Helper from '../../commen/functions/history_logout'
@@ -52,19 +54,22 @@ import {
 import { mqttConnection } from '../../commen/functions/mqttconnection'
 import { realtimeNotificationRecent } from '../../store/actions/RealtimeNotification_actions'
 import { useTranslation } from 'react-i18next'
-import numeral from 'numeral';
-import 'numeral/locales';
+import numeral from 'numeral'
+import 'numeral/locales'
+import { notifyPollingSocket } from '../../store/actions/Polls_actions'
 
 const Dashboard = () => {
   const location = useLocation()
   const [client, setClient] = useState(null)
   const [searchVisible, setSearchVisible] = useState(false)
 
-  const { videoCall } = useSelector((state) => state)
+  const { videoCall, talkStateData } = useSelector((state) => state)
   // const [socket, setSocket] = useState(Helper.socket);
   const navigate = useNavigate()
   const { Content } = Layout
   let createrID = localStorage.getItem('userID')
+  let currentOrganization = localStorage.getItem('organizationID')
+  let activeChat = localStorage.getItem('activeChatID')
 
   //Translation
   const { t } = useTranslation()
@@ -265,7 +270,7 @@ const Dashboard = () => {
         data.payload.message.toLowerCase(),
         'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(),
         data.payload.message.toLowerCase() ===
-        'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(),
+          'NEW_TODO_CREATION_RECENT_ACTIVITY'.toLowerCase(),
       )
       console.log('testing', data.payload.message)
       console.log(
@@ -415,6 +420,10 @@ const Dashboard = () => {
           }
           dispatch(setRecentActivityDataNotification(data2))
         }
+      } else if (
+        data.payload.message.toLowerCase() ===
+        'POLL_DELETED_RECENT_ACTIVITY'.toLowerCase()
+      ) {
       }
     }
     if (data.action.toLowerCase() === 'Committee'.toLowerCase()) {
@@ -490,6 +499,25 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         'NEW_ONE_TO_ONE_MESSAGE'.toLowerCase()
       ) {
+        let newMessageData = data.payload.data[0]
+        console.log('newMessageData', data.payload.data[0])
+        console.log('activeChatactiveChat', typeof activeChat, activeChat)
+        let apiAcknowledgementData = {
+          TalkRequest: {
+            ChannelID: newMessageData.channelID,
+            Chat: {
+              ChatID:
+                activeChat === 'null'
+                  ? newMessageData.senderID
+                  : parseInt(activeChat),
+              MyID: parseInt(createrID),
+              MessageStatus: activeChat === 'null' ? 'Delivered' : 'Seen',
+              SenderID: newMessageData.senderID,
+              MessageID: newMessageData.messageID,
+              ChatType: 'O',
+            },
+          },
+        }
         console.log('NEW_ONE_TO_ONE_MESSAGE', data.payload.data)
         if (data.payload.data[0].senderID !== parseInt(createrID)) {
           setNotification({
@@ -499,6 +527,9 @@ const Dashboard = () => {
           })
         }
         dispatch(mqttInsertOtoMessage(data.payload))
+        dispatch(
+          UpdateMessageAcknowledgement(apiAcknowledgementData, t, navigate),
+        )
         setNotificationID(id)
       } else if (
         data.payload.message.toLowerCase() === 'NEW_GROUP_MESSAGE'.toLowerCase()
@@ -604,6 +635,53 @@ const Dashboard = () => {
           message: `You have sent a message in broadcast list ${data.payload.data[0].broadcastName}`,
         })
         dispatch(mqttInsertBroadcastMessage(data.payload))
+        setNotificationID(id)
+      } else if (
+        data.payload.message.toLowerCase() === 'MESSAGE_DELIVERED'.toLowerCase()
+      ) {
+        console.log('MESSAGE_DELIVERED', data.payload.data)
+        dispatch(mqttMessageStatusUpdate(data.payload))
+        setNotificationID(id)
+      } else if (
+        data.payload.message.toLowerCase() === 'MESSAGE_SEEN'.toLowerCase()
+      ) {
+        console.log('MESSAGE_SEEN', data.payload.data)
+        dispatch(mqttMessageStatusUpdate(data.payload))
+        setNotificationID(id)
+      }
+    }
+    if (data.action.toLowerCase() === 'Polls'.toLowerCase()) {
+      if (
+        data.payload.message.toLowerCase() ===
+        'NEW_POLL_PUBLISHED'.toLowerCase()
+      ) {
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `A new Poll ${data.payload.pollTitle} is published for your review..`,
+        })
+        console.log(data.payload)
+        dispatch(notifyPollingSocket(data.payload.polls))
+        setNotificationID(id)
+      } else if (
+        data.payload.message.toLowerCase() === 'POLL_UPDATED'.toLowerCase()
+      ) {
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `The Poll ${data.payload.pollTitle} has been updated`,
+        })
+        dispatch(notifyPollingSocket(data.payload.polls))
+        setNotificationID(id)
+      } else if (
+        data.payload.message.toLowerCase() === 'POLL_EXPIRED'.toLowerCase()
+      ) {
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `Due date of Poll ${data.payload.pollTitle} has passed.`,
+        })
+        dispatch(notifyPollingSocket(data.payload.polls))
         setNotificationID(id)
       }
     }

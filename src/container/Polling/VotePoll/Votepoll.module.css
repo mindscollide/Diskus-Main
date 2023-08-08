@@ -14,6 +14,10 @@
   font-size: 16px !important;
   color: #5a5a5a;
   font-family: "MontserratSemiBold" !important;
+  word-wrap: break-word!important;
+  white-space: pre-wrap!important;
+  width: 100% !important;
+ 
 }
 
 .Vote_Poll_cross_ICon {
@@ -23,13 +27,15 @@
 }
 
 .ViewTitleTOShowOnProgress {
-  font-size: 12px !important;
+  font-size: 14px !important;
   margin-top: 10px !important;
+  word-wrap: break-word!important;
+  white-space: pre-wrap!important;
 }
 
 .Border_box {
   width: 100%;
-  height: 46px !important;
+  height: auto !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
 }
@@ -107,4 +113,32 @@
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
+}
+.BOx_for_yes {
+  width: 100%;
+  height: auto !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding-left: 10px;
+  margin: 0 0 10px 0;
+}
+.scrollable-title {
+  max-height: 100px;
+  min-height: 39px; /* Set the maximum height you desire for the title */
+  overflow: hidden;
+  overflow-y: auto; /* Enable vertical scrolling when text overflows */
+  
+}
+.scrollable-title::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+.scrollable-title::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+.scrollable-title2{
+  min-height: 39px!important;
 }

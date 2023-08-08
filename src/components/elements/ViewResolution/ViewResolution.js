@@ -12,6 +12,8 @@ import { useState } from "react";
 import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
 import { useSelector } from "react-redux";
 import { newTimeFormaterAsPerUTCFullDate } from "../../../commen/functions/date_formater";
+import { ArrowLeft } from "react-bootstrap-icons";
+
 const ViewResolution = ({ setViewresolution }) => {
   const { t } = useTranslation();
   const { ResolutionReducer } = useSelector((state) => state);
@@ -121,7 +123,7 @@ const ViewResolution = ({ setViewresolution }) => {
                     </p>
                   </Col>
                 </Row>
-                <Row className="mt-5">
+                <Row className="mt-2">
                   <Col lg={6} md={6} sm={6}>
                     <Row>
                       <Col lg={12} md={12} sm={12}>
@@ -491,10 +493,11 @@ const ViewResolution = ({ setViewresolution }) => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className="d-flex justify-content-end"
+                    className="d-flex  justify-content-end"
                   >
                     <Button
-                      text={t("Close")}
+                      // icon={<ArrowLeft />}
+                      text={<ArrowLeft size={30} color="#fff" />}
                       className={styles["CloseButton_ViewResolution"]}
                       onClick={() => setViewresolution(false)}
                     />
