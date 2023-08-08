@@ -284,7 +284,7 @@ const PaymentForm = () => {
                       }
                     >
                       ${BillDetails.TotalBill}/
-                      <span className="fs-6">{t("Annually")}</span>
+                      <span className="fs-6">{monthlyPackageShow ? t("Monthly") : t("Annually")}</span>
                     </span>
 
                     <br />

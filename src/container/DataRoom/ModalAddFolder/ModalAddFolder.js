@@ -34,7 +34,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder, setIsExistFolder }) => {
     } else {
       setFolderName({
         content: "",
-        errorMessage: "Folder name should not be empty",
+        errorMessage: t("Folder-name-should-not-be-empty"),
         errorStatus: true,
       });
     }

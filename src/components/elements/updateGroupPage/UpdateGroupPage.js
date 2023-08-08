@@ -150,6 +150,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       console.log("not found");
     }
   };
+
   const onSearch = (name, id) => {
     setOnclickFlag(true)
     setTaskAssignedToInput(name);
@@ -506,6 +507,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     if (GroupsReducer.getGroupByGroupIdResponse !== null) {
       let groupDetails = GroupsReducer.getGroupByGroupIdResponse;
       console.log(groupDetails, "groupDetailsgroupDetailsgroupDetails");
+      console.log(GroupsReducer.getGroupByGroupIdResponse.isTalk, "groupDetailsgroupDetailsgroupDetails");
       let newArr = [];
       let newData = [];
       if (groupDetails.groupMembers.length > 0) {
@@ -527,8 +529,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
           }
         });
       }
-      setMembersData([...newArr]);
-      setGroupMembers([...newData]);
+      setMembersData(newArr);
+      setGroupMembers(newData);
       setGroupTypeValue(groupDetails.groupType.type);
       setGroupDetails({
         CreatorID: groupDetails.creatorID,
@@ -657,6 +659,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                               <Checkbox
                                 className="SearchCheckbox MontserratSemiBold-600"
                                 name="IsChat"
+                                disabled={GroupsReducer?.getGroupByGroupIdResponse?.isTalk ? true : false}
                                 label2Class={styles["Label_Of_CheckBox"]}
                                 label2={t("Create-talk-group")}
                                 // checked={createMeeting.IsChat}
@@ -780,23 +783,28 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                             </Col>
                                           </Row>
                                         </Col>
-                                        <Col
-                                          lg={2}
-                                          md={2}
-                                          sm={12}
-                                          className="mt-0  d-flex justify-content-center"
-                                        >
-                                          <img
-                                            src={CrossIcon}
-                                            className="cursor-pointer"
-                                            width={18}
-                                            onClick={() =>
-                                              removeMemberHandler(
-                                                data.data.pK_UID
-                                              )
-                                            }
-                                          />
-                                        </Col>
+                                        {data.data.pK_UID !== GroupDetails.CreatorID && (
+                                          <>
+                                            <Col
+                                              lg={2}
+                                              md={2}
+                                              sm={12}
+                                              className="mt-0  d-flex justify-content-center"
+                                            >
+                                              <img
+                                                src={CrossIcon}
+                                                className="cursor-pointer"
+                                                width={18}
+                                                onClick={() =>
+                                                  removeMemberHandler(
+                                                    data.data.pK_UID
+                                                  )
+                                                }
+                                              />
+                                            </Col>
+                                          </>
+                                        )}
+
                                       </Row>
                                     </Col>
                                   );

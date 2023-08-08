@@ -24,6 +24,7 @@ import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_a
 import Card from "../../components/elements/Card/Card";
 import ModalArchivedCommittee from "../ModalArchivedCommittee/ModalArchivedCommittee";
 import { useNavigate } from "react-router-dom";
+import CommitteeStatusModal from "../../components/elements/committeeChangeStatusModal/CommitteeStatusModal";
 
 const Committee = () => {
   const { CommitteeReducer } = useSelector((state) => state);
@@ -35,6 +36,8 @@ const Committee = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
   const [editFlag, setEditFlag] = useState(false);
+  const [changeStatusModal, setChangeStatusModal] = useState(false)
+  const [statusUpdateData, setStatusUpdateData] = useState(null)
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const [ViewGroupPage, setViewGroupPage] = useState(false);
   const [creategrouppage, setCreategrouppage] = useState(false);
@@ -43,6 +46,7 @@ const Committee = () => {
   const [modalsure, setModalsure] = useState(false);
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
+  const creatorID = localStorage.getItem("userID")
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -73,8 +77,41 @@ const Committee = () => {
       console.log(findMapGroups, "findMapGroupsfindMapGroupsfindMapGroups");
     }
   };
+  const viewTitleModal = (data) => {
 
+    console.log("testtesttesttesttesttest", data)
+    let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+    let Data = {
+      CommitteeID: JSON.parse(data.committeeID),
+      OrganizationId: OrganizationID,
+    };
+    if (data.creatorID === Number(creatorID)) {
+      dispatch(
+        getCommitteesbyCommitteeId(
+          navigate,
+          Data,
+          t,
+          setViewGroupPage,
+          setUpdateComponentpage,
+          data.committeeStatusID
+        )
+      );
+    } else {
+      dispatch(
+        getCommitteesbyCommitteeId(
+          navigate,
+          Data,
+          t,
+          setViewGroupPage,
+          setUpdateComponentpage,
+          1
+        )
+      );
+    }
+
+  };
   const viewUpdateModal = (committeeID, CommitteeStatusID) => {
+    console.log("testtesttesttesttesttest")
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
       CommitteeID: JSON.parse(committeeID),
@@ -176,7 +213,9 @@ const Committee = () => {
       CommitteeStatusId: JSON.parse(e.value),
       OrganizationID: JSON.parse(OrganizationID),
     };
-    dispatch(committeeStatusUpdate(navigate, Data, t));
+    setStatusUpdateData(Data)
+    // dispatch(committeeStatusUpdate(navigate, Data, t));
+    setChangeStatusModal(true)
   };
 
   useEffect(() => {
@@ -200,6 +239,7 @@ const Committee = () => {
           committeeMembers: data.committeeMembers,
           committeeStatusID: data.committeeStatusID,
           listofGroups: data.listOfGroups,
+          creatorID: data.creatorID
         });
       });
       setGetCommitteeData(newArr);
@@ -313,10 +353,16 @@ const Committee = () => {
                                 CardID={data.committeeID}
                                 StatusID={data.committeeStatusID}
                                 CardHeading={data.committeesTitle}
+                                creatorId={data.creatorID}
                                 onClickFunction={() =>
                                   viewUpdateModal(
                                     data.committeeID,
                                     data.committeeStatusID
+                                  )
+                                }
+                                titleOnCLick={() =>
+                                  viewTitleModal(
+                                    data
                                   )
                                 }
                                 associatedTags={data.listofGroups}
@@ -335,6 +381,7 @@ const Committee = () => {
                                   />
                                 }
                                 BtnText={
+
                                   data.committeeStatusID === 1
                                     ? t("View-committee")
                                     : data.committeeStatusID === 2
@@ -458,6 +505,7 @@ const Committee = () => {
           mapgroupsData={mapgroupsData}
         />
       ) : null}
+      {changeStatusModal && <CommitteeStatusModal statusUpdateData={statusUpdateData} isActive={changeStatusModal} setIsActive={setChangeStatusModal} />}
       {/* {modalsure ? (
         <ModalAreyousureActive
           Activegroup={modalsure}

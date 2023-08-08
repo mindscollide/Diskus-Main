@@ -204,6 +204,12 @@ const ModalArchivedCommittee = ({
                                 data.committeeStatusID
                               )
                             }
+                            titleOnCLick={() =>
+                              viewCommitteeModal(
+                                data.committeeID,
+                                data.committeeStatusID
+                              )
+                            }
                             StatusID={data.committeeStatusID}
                             profile={data.committeeMembers}
                             Icon={<img src={CommitteeICon} width={30} />}

@@ -451,16 +451,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
       GroupMembers: createGroupMembers,
     });
   };
-  console.log("found2found2found2", createGroupDetails.GroupMembers);
-  console.log("found2found2found2", groupMembers);
-  console.log("found2found2found2", attendees);
+
 
   const checkGroupMembers = (GroupMembers) => {
-    console.log("checkGroupMembers", GroupMembers);
     if (Object.keys(GroupMembers).length > 0) {
       let flag1 = GroupMembers.find((data, index) => data.FK_GRMRID === 1);
       let flag2 = GroupMembers.find((data, index) => data.FK_GRMRID === 2);
-      console.log("checkGroupMembers", flag1, flag2);
 
       if (flag1 != undefined && flag2 != undefined) {
         return true;
@@ -471,6 +467,10 @@ const CreateGroup = ({ setCreategrouppage }) => {
       return false;
     }
   };
+  const checkGroupHead = (groupMembers) => {
+    let flag1 = groupMembers.findIndex((data, index) => data.FK_GRMRID === 2);
+    return flag1
+  }
 
   const handleSubmitCreateGroup = async () => {
     if (
@@ -485,26 +485,9 @@ const CreateGroup = ({ setCreategrouppage }) => {
           message: t("Please-add-atleast-one-group-head-and-one-group-member"),
         });
       } else {
-        if (!checkGroupMembers(createGroupDetails.GroupMembers)) {
-          console.log(
-            "checkGroupMembers",
-            checkGroupMembers(createGroupDetails.GroupMembers)
-          );
-          setOpen({
-            flag: true,
-            message: t(
-              "Please-add-atleast-one-group-head-and-one-group-member"
-            ),
-          });
-        } else {
-          console.log(
-            "checkGroupMembers",
-            checkGroupMembers(createGroupDetails.GroupMembers)
-          );
+        if (checkGroupHead(createGroupDetails.GroupMembers) !== -1) {
           setErrorBar(false);
-          let OrganizationID = JSON.parse(
-            localStorage.getItem("organizationID")
-          );
+          let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
           let Data = {
             GroupDetails: {
               CreatorID: createGroupDetails.CreatorID,
@@ -518,6 +501,11 @@ const CreateGroup = ({ setCreategrouppage }) => {
             GroupMembers: createGroupDetails.GroupMembers,
           };
           dispatch(createGroup(navigate, Data, t, setCreategrouppage));
+        } else {
+          setOpen({
+            flag: true,
+            message: t("Group-head-must-for-create-group"),
+          });
         }
       }
     } else {

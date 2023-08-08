@@ -74,10 +74,10 @@ const getGroups = (navigate, t, id, currentPage) => {
     Status: id
   };
   return (dispatch) => {
+    dispatch(getGroup_Init());
     // if (id === 1) {
     dispatch(getArchivedGroups_init())
     // } else {
-    dispatch(getGroup_Init());
     // }
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));

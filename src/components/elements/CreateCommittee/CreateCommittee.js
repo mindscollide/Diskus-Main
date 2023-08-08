@@ -563,11 +563,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                         >
                           <Form.Control
                             ref={CommitteeTitle}
-                            applyClass="form-control2"
                             type="text"
                             placeholder={t("Committee-title")}
                             required={true}
                             name="committeetitle"
+                            className={styles["create_committee_title"]}
                             maxLength={300}
                             value={createCommitteeDetails.CommitteesTitle}
                             onChange={onChangeFunc}
@@ -930,6 +930,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               className="create-committee-fields InputSearchForCreateCommittee"
                             >
                               <InputSearchFilter
+                                applyClass={"createCommittee_searchMember"}
                                 placeholder="Search member here"
                                 value={taskAssignedToInput}
                                 filteredDataHandler={searchFilterHandler(
@@ -950,6 +951,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             >
                               <SelectBox
                                 name="Participant"
+
                                 placeholder={t("Type")}
                                 option={committeeMemberRolesValues}
                                 value={participantRoleName}

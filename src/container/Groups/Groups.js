@@ -201,7 +201,8 @@ const Groups = () => {
               groupStatusID: data.groupStatusID,
               groupTitle: data.groupTitle,
               userCount: data.userCount,
-              listOfCommittees: data.listOfCommittees
+              listOfCommittees: data.listOfCommittees,
+              creatorID: data.creatorID
             });
           });
           setgroupsData(newArr);
@@ -304,6 +305,7 @@ const Groups = () => {
                                 CardID={data.groupID}
                                 StatusID={data.groupStatusID}
                                 associatedTags={data.listOfCommittees}
+                                creatorId={data.creatorID}
                                 flag={false}
                                 Icon={
                                   <img
@@ -410,7 +412,7 @@ const Groups = () => {
                       <Pagination
                         current={currentPage}
                         total={totalLength}
-                        pageSize={9}
+                        pageSize={8}
                         onChange={handlechange}
                       />
                     </Col>

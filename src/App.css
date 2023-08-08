@@ -119,6 +119,7 @@ body {
 
 .form-control2::placeholder {
   font-family: "MontserratSemiBold-600" !important;
+  color: #bbbbbb;
 }
 
 .border {
@@ -2206,7 +2207,7 @@ body[dir="rtl"] .CreateMeetingReminder .MuiInputBase-root.MuiOutlinedInput-root.
 
 .CreateMeetingInput input::placeholder {
   font-family: "MontserratSemiBold-600" !important;
-  color: #a2a2a2 !important;
+  color: #e1e1e1 !important;
   font-size: 12px;
 }
 
@@ -2398,6 +2399,11 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
   margin-top: 4px !important;
 }
 
+.UpdateCheckbox .checkboxParentClass span.ant-checkbox-inner:disabled {
+  cursor: default !important;
+  pointer-events: none !important;
+}
+
 .UpdateCheckbox span.ant-checkbox-inner {
   border: 1px solid #e1e1e1 !important;
 }
@@ -2468,6 +2474,14 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
   width: 40px !important;
   /* margin-top   : -7px !important; */
   border-radius: 4px !important;
+}
+
+.Update-committee-Checkbox span.ant-checkbox-disabled.ant-checkbox-checked {
+  cursor: default;
+}
+
+.UpdateCheckbox span.ant-checkbox-disabled.ant-checkbox-checked {
+  cursor: default;
 }
 
 .Update-committee-Checkbox.ant-checkbox-checked .ant-checkbox-inner {
@@ -2718,6 +2732,7 @@ input#Participant {
 
 input#Participant::placeholder {
   font-family: "MontserratSemiBold-600";
+  color: #e1e1e1 !important;
 }
 
 .MuiSnackbar-root.MuiSnackbar-anchorOriginTopRight {
@@ -3649,6 +3664,7 @@ input[placeholder] {
   font-size: 12px !important;
   font-family: "MontserratMedium";
   box-shadow: none !important;
+  color: #e1e1e1 !important;
 }
 
 body[dir="rtl"] input::placeholder {
@@ -4914,6 +4930,7 @@ body[dir="rtl"] .ql-editor.ql-blank::before {
 .Inputfield_for_data_room input.form-control,
 .Group_input_field input.form-control {
   height: 39px !important;
+  color: #5a5a5a !important;
   border-radius: 4px !important;
 }
 

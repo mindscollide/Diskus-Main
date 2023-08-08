@@ -178,6 +178,7 @@ body[dir="rtl"] .group-icon-Committee-Group {
   white-space: nowrap !important;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
 }
 
 body[dir="rtl"] .card-heading-Committee-Group {
@@ -194,6 +195,7 @@ body[dir="rtl"] .card-heading-Committee-Group {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  cursor: pointer;
 }
 
 body[dir="rtl"] .card-heading-Committee-Group_InActive {

@@ -1228,7 +1228,7 @@ const EditResolution = ({
       <section>
         <Row>
           <Col lg={12} md={12} sm={12}>
-            <Row className="mt-3">
+            <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["Resolution_create_heading"]}>
                   {t("Edit-resolution")}
@@ -2248,11 +2248,17 @@ const EditResolution = ({
                                     <Dragger
                                       {...props}
                                       className={
-                                        styles["EditResolution_dragger"]
+                                        styles[
+                                        "dragdrop_attachment_create_resolution"
+                                        ]
                                       }
                                     >
                                       <p className="ant-upload-drag-icon">
-                                        <span>
+                                        <span
+                                          className={
+                                            styles["create_resolution_dragger"]
+                                          }
+                                        >
                                           <img
                                             src={featherupload}
                                             width="18.87px"
@@ -2260,12 +2266,14 @@ const EditResolution = ({
                                           />
                                         </span>
                                       </p>
-                                      <p className="ant-upload-text FontArabicRegular">
-                                        {t("Drag-&-drop-or")}{" "}
-                                        <span className="FontArabicRegular">
+                                      <p className={styles["ant-upload-text"]}>
+                                        {t("Drag-&-drop-or")}
+                                        <span className={styles["Choose_file_style"]}>
                                           {t("Choose-file")}
-                                        </span>{" "}
-                                        {t("Here")}
+                                        </span>
+                                        <span className={styles["here_text"]}>
+                                          {t("Here")}
+                                        </span>
                                       </p>
                                     </Dragger>
                                   </Col>

@@ -134,7 +134,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                                     <span
                                       className={
                                         styles[
-                                          "Designation-ViewCommittee-group"
+                                        "Designation-ViewCommittee-group"
                                         ]
                                       }
                                     >
@@ -176,7 +176,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                   )
                   .map((data, index) => {
                     return (
-                      <Col lg={3} md={3} sm={12} className="mt-4">
+                      <Col lg={4} md={4} sm={12} className="mt-4">
                         <Row>
                           <Col lg={2} md={2} sm={12}>
                             <img src={Newprofile} width={50} />
@@ -205,7 +205,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                                     <span
                                       className={
                                         styles[
-                                          "Designation-ViewCommittee-group"
+                                        "Designation-ViewCommittee-group"
                                         ]
                                       }
                                     >

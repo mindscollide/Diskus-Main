@@ -23,7 +23,7 @@ body[dir="rtl"] .Details_New_resolution {
   height: auto !important;
   padding: 35px 58px !important;
   position: relative !important;
-  margin: 20px 0;
+  margin: 10px 0;
 }
 
 .Circulation_heading {
@@ -498,4 +498,41 @@ body[dir="rtl"] .errorMessage_hidden {
 .Go_Back_EditResolution {
   background: #6172d6 !important;
   border: none !important;
+}
+
+.dragdrop_attachment_create_resolution {
+  height: auto !important;
+  border: 1px dashed #49dbdb !important;
+}
+
+.ant-upload-text {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold";
+}
+
+body[dir="rtl"] .ant-upload-text {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Choose_file_style {
+  font-size: 12px !important;
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold";
+  margin-left: 3px !important;
+}
+
+body[dir="rtl"] .Choose_file_style {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.here_text {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold";
+  margin-left: 4px !important;
+}
+
+body[dir="rtl"] .here_text {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }

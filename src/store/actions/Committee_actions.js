@@ -631,7 +631,7 @@ const updateCommitteeStatus_Fail = (message) => {
     message: message,
   };
 };
-const committeeStatusUpdate = (navigate, Data, t) => {
+const committeeStatusUpdate = (navigate, Data, t, setIsActive) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
 
@@ -655,7 +655,7 @@ const committeeStatusUpdate = (navigate, Data, t) => {
         console.log(response, "response");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(committeeStatusUpdate(navigate, Data, t));
+          dispatch(committeeStatusUpdate(navigate, Data, t, setIsActive));
         } else if (response.data.responseCode === 200) {
           console.log(response, "response");
           if (response.data.responseResult.isExecuted === true) {
@@ -673,6 +673,7 @@ const committeeStatusUpdate = (navigate, Data, t) => {
                   t("Record-updated-successfully")
                 )
               );
+              setIsActive(false)
               dispatch(getAllCommitteesByUserIdActions(navigate, t, 0, currentPage));
             } else if (
               response.data.responseResult.responseMessage

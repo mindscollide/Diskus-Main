@@ -1080,5 +1080,11 @@
   "Options-must-be-more-than-2": "Options must be more than 2",
   "Please-select-due-date": "Please select due date",
   "Select-atleast-one-participants": "Select atleast one participant",
-  "No-task": "No Task"
+  "No-task": "No Task",
+  "Associated-with-this-group": "Associated with this group",
+  "Associated-with": "Associated with",
+  "Group": "Group",
+  "Committee": "Committee",
+  "Folder-name-should-not-be-empty": "Folder name should not be empty",
+  "Group-head-must-for-create-group": "Group head must for create group"
 }

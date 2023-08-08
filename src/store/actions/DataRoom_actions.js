@@ -368,7 +368,7 @@ const saveFolderApi = () => {
         } else {
         }
       })
-      .catch((error) => {})
+      .catch((error) => { })
   }
 }
 
@@ -522,7 +522,7 @@ const createFolderApi = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(createFolderApi(navigate, folder, t, setAddfolder))
+          dispatch(createFolderApi(navigate, folder, t, setAddfolder, type, setIsExistFolder))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -544,13 +544,7 @@ const createFolderApi = (
                 dispatch(getDocumentsAndFolderApi(navigate, 3, t))
               }
               setAddfolder(false)
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  'DataRoom_DataRoomServiceManager_CreateFolder_02'.toLowerCase(),
-                )
-            ) {
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes('DataRoom_DataRoomServiceManager_CreateFolder_02'.toLowerCase())) {
               dispatch(createFolder_fail(t('Failed-to-create-folder')))
             } else if (
               response.data.responseResult.responseMessage
@@ -1144,7 +1138,7 @@ const FolderisExist = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(FolderisExist(navigate, FolderName, t, setAddfolder))
+          dispatch(FolderisExist(navigate, FolderName, t, setAddfolder, setIsExistFolder))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (

@@ -771,7 +771,7 @@
   "Resolution-updated-successfully": "Resolution Updated Successfully",
   "Organization-role-is-required": "Organization role is required",
   "User-role-is-required": "User role is required",
-  "No-archived-record-founds": "No Archived Record Founds",
+  "No-archived-record-founds": "No Archived Record Found",
   "Group-title": "Group Title",
   "Survey-polls": "Survey Polls",
   "Assign-remove-group": "Assign/Remove Group",
@@ -782,8 +782,8 @@
   "Committee-title-is-required": "Committee title is required",
   "Committee-participants-is-required": "Committee participants is required",
   "Please-select-group-member-type-also": "Please select group member type also",
-  "No-group-heads-found": "No group heads found",
-  "No-group-memebers-found": "No group memebers found",
+  "No-group-heads-found": "No group head found",
+  "No-group-memebers-found": "No group member found",
   "Search-results": "Search Results",
   "Notes-for-voters": "Notes for Voters",
   "Close": "Close",
@@ -800,7 +800,7 @@
   "Group-description-is-required": "Group description is required",
   "Group-type-is-required": "Group type is required",
   "Meeting-with-agenda": "Meeting With Agenda",
-  "Please-select-group-head-type-also": "Pleases elect group head type also",
+  "Please-select-group-head-type-also": "Please select group head type also",
   "Profile-name-is-required": "Profile name is required",
   "File-size-should-not-be-greater-then-zero": "File size should not be greater then 100 MB",
   "File-size-should-not-be-zero": "File size should not be zero",
@@ -1114,5 +1114,7 @@
   "Associated-with-this-group": "Associated with this group",
   "Associated-with": "Associated with",
   "Group": "Group",
-  "Committee": "Committee"
+  "Committee": "Committee",
+  "Folder-name-should-not-be-empty": "Folder name should not be empty",
+  "Group-head-must-for-create-group": "Group head must for create group"
 }

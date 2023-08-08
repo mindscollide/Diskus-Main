@@ -29,6 +29,8 @@ const Card = ({
   Icon,
   groupState,
   associatedTags,
+  creatorId,
+  titleOnCLick
 }) => {
   const { t } = useTranslation();
   const [editItems, setEditItems] = useState([
@@ -38,6 +40,7 @@ const Card = ({
   ]);
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const [editdropdown, setEditdropdown] = useState(false);
+  const creatorID = localStorage.getItem("userID")
   const findLengthofGroups = associatedTags && associatedTags.length;
   console.log(findLengthofGroups, "findLengthofGroupsfindLengthofGroups");
 
@@ -82,6 +85,7 @@ const Card = ({
   }, []);
   console.log(associatedTags, "associatedTagsassociatedTags");
   console.log(StatusID, "StatusIDStatusIDStatusIDStatusID")
+  console.log(creatorId, "StatusIDStatusIDStatusIDStatusID")
   useEffect(() => {
     console.log("click", editdropdown, dropdownthreedots);
   }, [editdropdown, dropdownthreedots]);
@@ -161,19 +165,22 @@ const Card = ({
               sm={12}
               className="d-flex justify-content-end gap-2 mt-4 pe-3"
             >
-              <img
-                src={editicon}
-                width="21px"
-                height="21px"
-                alt=""
-                // className={StatusID === 1 ? "cursor-pointer" : ""}
-                className={
-                  StatusID === 1 || StatusID === 3
-                    ? styles["Edit_icon_styles"]
-                    : styles["Edit_icon_styles_InActive"]
-                }
-                onClick={() => setUniqCardID(CardID)}
-              />
+              {creatorId === Number(creatorID) && (
+                <img
+                  src={editicon}
+                  width="21px"
+                  height="21px"
+                  alt=""
+                  // className={StatusID === 1 ? "cursor-pointer" : ""}
+                  className={
+                    (StatusID === 1 || StatusID === 3) && creatorId === Number(creatorID)
+                      ? styles["Edit_icon_styles"]
+                      : styles["Edit_icon_styles_InActive"]
+                  }
+                  onClick={() => setUniqCardID(CardID)}
+                />
+              )}
+
               <img
                 src={doticon}
                 width="21px"
@@ -386,6 +393,7 @@ const Card = ({
                   ? styles["card-heading-Committee-Group_InActive"]
                   : styles["card-heading-Committee-Group"]
               }
+              onClick={titleOnCLick}
             >
               {CardHeading}
             </p>
@@ -400,7 +408,7 @@ const Card = ({
             <>
               <span className={styles["associated_tagLine_single"]}>
                 {t("Associated-with")} {" "}
-                <span className={styles["associated_tagLine_groupTitle_single"]}>
+                <span className={styles["associated_tagLine_groupTitle_single"]} >
                   {`${associatedTags[0].committeeTitle} ${t("Committee")}`}
                 </span>
               </span>
@@ -413,7 +421,7 @@ const Card = ({
               <span className={styles["associated_tagLine"]}>
                 {`${t("Associated-with")} ${" "}`}
                 <span className={styles["associated_tagLine_groupTitle"]}>
-                  {`${associatedTags.length}  ${t("Committees")} `}
+                  {`${associatedTags.length} ${t("Committees")} `}
                 </span>
               </span>
 
@@ -502,7 +510,6 @@ const Card = ({
           </Row>
         </Col>
       </Row>
-
       <Row className="m-0 p-0 ">
         <Col
           lg={12}

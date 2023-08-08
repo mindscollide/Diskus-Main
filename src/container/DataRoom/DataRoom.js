@@ -119,6 +119,7 @@ const DataRoom = () => {
   ]);
   const { t } = useTranslation();
   const { uploadReducer, DataRoomReducer } = useSelector((state) => state);
+  console.log(DataRoomReducer, "DataRoomReducerDataRoomReducerDataRoomReducer")
   const searchBarRef = useRef();
   const threedotFile = useRef();
   const threedotFolder = useRef();
