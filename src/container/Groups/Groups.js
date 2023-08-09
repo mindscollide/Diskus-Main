@@ -201,13 +201,13 @@ const Groups = () => {
               groupStatusID: data.groupStatusID,
               groupTitle: data.groupTitle,
               userCount: data.userCount,
-              listOfCommittees: data.listOfCommittees
+              listOfCommittees: data.listOfCommittees,
             });
           });
           setgroupsData(newArr);
         }
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [GroupsReducer.getAllGroupsResponse]);
 
   useEffect(() => {
@@ -288,8 +288,9 @@ const Groups = () => {
             <Row>
               <Col lg={12} sm={12} md={12}>
                 <Row
-                  className={`${"d-flex text-center MontserratSemiBold-600 color-5a5a5a m-0 p-0"} ${styles["groups_box"]
-                    }`}
+                  className={`${"d-flex text-center MontserratSemiBold-600 color-5a5a5a m-0 p-0"} ${
+                    styles["groups_box"]
+                  }`}
                 >
                   <Col sm={12} md={12} lg={12} className="m-0 p-0">
                     <Row>
@@ -322,10 +323,10 @@ const Groups = () => {
                                   data.groupStatusID === 1
                                     ? t("View-group")
                                     : data.groupStatusID === 2
-                                      ? t("View-group")
-                                      : data.groupStatusID === 3
-                                        ? t("Update-group")
-                                        : ""
+                                    ? t("View-group")
+                                    : data.groupStatusID === 3
+                                    ? t("Update-group")
+                                    : ""
                                 }
                                 CardHeading={data?.groupTitle}
                                 changeHandleStatus={changeHandleStatus}
@@ -405,7 +406,7 @@ const Groups = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className={"pagination-groups-table "}
+                      className={"pagination-groups-table"}
                     >
                       <Pagination
                         current={currentPage}

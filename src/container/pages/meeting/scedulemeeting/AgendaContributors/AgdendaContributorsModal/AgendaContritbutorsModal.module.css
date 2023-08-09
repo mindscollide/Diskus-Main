@@ -1,0 +1,82 @@
+.Add_organization {
+  font-size: 20px !important;
+  color: #5f78d6 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Cross_Icon_Styling {
+  cursor: pointer !important;
+}
+
+.Profile {
+  border-radius: 50% !important;
+}
+
+.ADD_Organizers {
+  padding: 12px 30px !important;
+  border: none;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #5f78d6;
+  color: #fff !important;
+}
+
+.ADD_Organizers:hover,
+.ADD_Organizers:active,
+.ADD_Organizers:focus,
+.ADD_Organizers:focus-visible {
+  padding: 12px 30px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+}
+
+.remove_Organizers {
+  padding: 12px 30px !important;
+  border: 1px solid #f16b6b;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #fff;
+  color: #f16b6b !important;
+}
+
+.remove_Organizers:hover,
+.remove_Organizers:active,
+.remove_Organizers:focus,
+.remove_Organizers:focus-visible {
+  padding: 12px 30px !important;
+  border: 1px solid #f16b6b !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #fff !important;
+  color: #f16b6b !important;
+}
+
+.Done_btn_organizor_modal {
+  padding: 12px 30px !important;
+  border: none;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #5f78d6;
+  color: #fff !important;
+}
+
+.Done_btn_organizor_modal:active,
+.Done_btn_organizor_modal:hover,
+.Done_btn_organizor_modal:focus,
+.Done_btn_organizor_modal:focus-visible {
+  padding: 12px 30px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+}

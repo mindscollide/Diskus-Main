@@ -137,6 +137,17 @@
   height: 39px !important;
 }
 
+.meetingSearch {
+  width: 502px;
+  position: relative !important;
+  height: 39px !important;
+}
+
+.meetinInnerSearch {
+  position: relative !important;
+  height: 39px !important;
+}
+
 .Search_Modal_Fields {
   height: 39px !important;
 }
@@ -168,9 +179,27 @@
   resize: none;
 }
 
+.text-area-create-meeting {
+  height: 222.8px !important;
+  resize: none;
+}
+
 .text-area-sharefolder {
   height: 110px !important;
   resize: none;
+}
+
+.Organizer_table {
+  height: 39px !important;
+}
+
+.text-area-create-Notify-organizors {
+  height: 136px !important;
+  resize: none !important;
+}
+
+.addOraganizer {
+  height: 39px !important;
 }
 
 .datePickerTodoCreate {
@@ -186,4 +215,8 @@
   width: 100% !important;
   border: 1px solid #e1e1e1 !important;
   position: relative;
+}
+
+.AgendaTextField {
+  height: 39px !important;
 }

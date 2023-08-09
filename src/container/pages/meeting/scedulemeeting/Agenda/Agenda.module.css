@@ -1,0 +1,155 @@
+.BackGround_Agenda {
+  width: 100% !important;
+  height: auto !important;
+  border: 1px solid #bbbbbb !important;
+  border-radius: 4px !important;
+  padding: 10px 15px !important;
+}
+
+.SubajendaBox {
+  width: 90% !important;
+  height: auto !important;
+  border: 1px solid #bbbbbb !important;
+  border-radius: 4px !important;
+  padding: 10px 15px !important;
+  margin-left: 10px !important;
+}
+
+.Agenda_Heading {
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5f78d6;
+}
+
+.Radio_Button_options {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a;
+}
+
+.ant-upload-text-Meetings {
+  color: #bbbbbb !important;
+  font-size: 22px !important;
+  margin: 0;
+  padding: 0;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Choose_file_style-Meeting {
+  color: #bbbbbb !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Agenda_Buttons {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Agenda_Buttons:hover,
+.Agenda_Buttons:active,
+.Agenda_Buttons:focus,
+.Agenda_Buttons:focus-visible {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Save_Agenda_btn {
+  padding: 12px 30px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Save_Agenda_btn:hover,
+.Save_Agenda_btn:active,
+.Save_Agenda_btn:focus,
+.Save_Agenda_btn:focus-visible {
+  padding: 12px 30px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Image_class_Agenda {
+  border-radius: 50% !important;
+}
+
+.Name_Class {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.ClassImage {
+  margin-left: 13px !important;
+}
+
+.AddMoreBtnAgenda {
+  border: 1px dotted #ccc !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  height: 39px !important;
+  width: 100%;
+}
+
+.AddMoreBtnAgenda:hover,
+.AddMoreBtnAgenda:active,
+.AddMoreBtnAgenda:focus,
+.AddMoreBtnAgenda:focus-visible {
+  border: 1px dotted #ccc !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  height: 39px !important;
+  width: 100% !important;
+}
+
+.Add_Agen_Heading {
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Scroller_Agenda {
+  height: 40vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_Agenda::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_Agenda::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.RedCross_Icon_class {
+  margin-right: -5.6% !important;
+  margin-top: -18.9% !important;
+}
+
+.Documentdiv {
+  width: 20%;
+  border: 1px solid #d4d4d4;
+  border-radius: 4px !important;
+  background: #fff;
+  height: 42px !important;
+}
