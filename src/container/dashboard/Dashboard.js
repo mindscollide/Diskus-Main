@@ -420,11 +420,7 @@ const Dashboard = () => {
           }
           dispatch(setRecentActivityDataNotification(data2))
         }
-      } else if (
-        data.payload.message.toLowerCase() ===
-        'POLL_DELETED_RECENT_ACTIVITY'.toLowerCase()
-      ) {
-      }
+      } 
     }
     if (data.action.toLowerCase() === 'Committee'.toLowerCase()) {
       if (
@@ -681,6 +677,18 @@ const Dashboard = () => {
           notificationShow: true,
           message: `Due date of Poll ${data.payload.pollTitle} has passed.`,
         })
+        dispatch(notifyPollingSocket(data.payload.polls))
+        setNotificationID(id)
+      }else if (
+        data.payload.message.toLowerCase() ===
+        'PUBLISHED_POLL_DELETED'.toLowerCase()
+      ) {
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `The Poll ${data.payload.pollTitle} has been deleted`,
+        })
+        console.log(data.payload)
         dispatch(notifyPollingSocket(data.payload.polls))
         setNotificationID(id)
       }

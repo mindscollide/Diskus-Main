@@ -287,13 +287,10 @@ const ViewPollProgress = () => {
                     </Col>
                   </Row>
                 ) : (
-                  // </Row>
-                  <Row className="mt-2">
-                    <Col lg={12} md={12} sm={12}>
+                  <Row className={styles["Scroller_View_Poll_Published"]}>
+                    <Col lg={12} ms={12} sm={12}>
                       {pollsOption.length > 0
                         ? pollsOption.map((data, index) => {
-                            console.log("CustomRadio2", data);
-
                             return (
                               <>
                                 <Row>

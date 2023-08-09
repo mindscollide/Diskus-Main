@@ -427,7 +427,7 @@ const Groups = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className={"pagination-groups-table "}
+                      className={"pagination-groups-table"}
                     >
                       <Pagination
                         current={currentPage}

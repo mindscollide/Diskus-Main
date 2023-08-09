@@ -511,6 +511,34 @@ const castVoteApi = (navigate, data, t) => {
               .includes("Polls_PollsServiceManager_CastVote_05".toLowerCase())
           ) {
             dispatch(castVoteFailed(t("Exception-Some-thing-went-wrong")));
+          }else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_CastVote_06".toLowerCase())
+          ) {
+            dispatch(castVoteFailed(t("The-poll-is-not-published")));
+            dispatch(setEditpollModal(false));
+            dispatch(setCreatePollModal(false));
+            dispatch(setviewpollProgressModal(false));
+            dispatch(globalFlag(false));
+            dispatch(viewVotesDetailsModal(false));
+            dispatch(setviewpollModal(false));
+            dispatch(setVotePollModal(false));
+          }else if (
+            response.data.responseResult.responseMessage
+              .toLowerCase()
+              .includes("Polls_PollsServiceManager_CastVote_07".toLowerCase())
+          ) {
+            dispatch(castVoteFailed(t("The-poll-due-date-has-been-passed")));
+            dispatch(setEditpollModal(false));
+            dispatch(setCreatePollModal(false));
+            dispatch(setviewpollProgressModal(false));
+            dispatch(globalFlag(false));
+            dispatch(viewVotesDetailsModal(false));
+            dispatch(setviewpollModal(false));
+            dispatch(setVotePollModal(false));
+          }else {
+            dispatch(castVoteFailed(t("Something-went-wrong")));
           }
         } else {
           dispatch(castVoteFailed(t("Something-went-wrong")));
