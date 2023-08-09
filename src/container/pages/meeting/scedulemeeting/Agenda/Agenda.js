@@ -848,9 +848,13 @@ const Agenda = () => {
                                   <>
                                     <Row>
                                       <Col lg={12} md={12} sm={12}>
-                                        <div
-                                          className={styles["Documentdiv"]}
-                                        ></div>
+                                        <div className={styles["Documentdiv"]}>
+                                          <Row>
+                                            <Col lg={12} md={12} sm={12}>
+                                              {/* <img src={}/> */}
+                                            </Col>
+                                          </Row>
+                                        </div>
                                       </Col>
                                     </Row>
                                   </>
