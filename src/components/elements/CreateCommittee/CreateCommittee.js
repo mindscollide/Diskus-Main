@@ -50,7 +50,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false)
   const CommitteeTitle = useRef(null);
   // for   select participant Role Name
-  const [participantRoleName, setParticipantRoleName] = useState("");
+  const [participantRoleName, setParticipantRoleName] = useState("Regular");
   const { t } = useTranslation();
   const dispatch = useDispatch();
   let creatorID = JSON.parse(localStorage.getItem("userID"));
@@ -71,15 +71,14 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     CreatorID: 0,
     CommitteeMembers: [],
   });
-  console.log("createGroupDetails", createCommitteeDetails);
 
   useEffect(() => {
+    dispatch(allAssignessList(navigate, t));
     CommitteeTitle.current.focus();
     let organizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
       OrganizationID: organizationID,
     };
-    dispatch(allAssignessList(navigate, t));
     dispatch(getCommitteeTypes(navigate, Data, t));
     dispatch(getCommitteeMembersRole(navigate, Data, t));
   }, []);
@@ -96,10 +95,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         });
         committeeMembersRoleValues.push(data.role);
       });
-      console.log(
-        "CommitteeReducer.getCommitteeMembersRoles",
-        CommitteeReducer.getCommitteeMembersRoles
-      );
+
       setCommitteeMemberRolesOptions(committeeMembersRoleOptions);
       setCommitteeMemberRolesValues(committeeMembersRoleValues);
     }
@@ -122,40 +118,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     }
   }, [CommitteeReducer.getCommitteeTypes]);
 
-  //Drop Down Values
-  // const searchFilterHandler = (value) => {
-  //   if (
-  //     meetingAttendeesList != undefined &&
-  //     meetingAttendeesList != null &&
-  //     meetingAttendeesList != NaN &&
-  //     meetingAttendeesList != []
-  //   ) {
-  //     return meetingAttendeesList
-  //       .filter((item) => {
-  //         const searchTerm = value.toLowerCase();
-  //         const assigneesName = item.name.toLowerCase();
-  //         return (
-  //           searchTerm &&
-  //           assigneesName.startsWith(searchTerm) &&
-  //           assigneesName !== searchTerm
-  //         );
-  //       })
-  //       .slice(0, 3)
-  //       .map((item) => (
-  //         <div
-  //           onClick={() => onSearch(item.name, item.pK_UID)}
-  //           className="dropdown-row-assignee d-flex flex-row align-items-center"
-  //           key={item.pK_UID}
-  //         >
-  //           <img src={userImage} />
-  //           <p className="p-0 m-0">{item.name}</p>
-  //         </div>
-  //       ));
-  //   } else {
-  //   }
-  // };
   const searchFilterHandler = (value) => {
-    console.log("Input Value", meetingAttendeesList);
     if (
       meetingAttendeesList != undefined &&
       meetingAttendeesList != null &&
@@ -166,9 +129,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
-          console.log("Input Value in searchTerm", searchTerm);
-          console.log("Input Value in assigneesName", assigneesName);
-
           return (
             searchTerm && assigneesName.startsWith(searchTerm)
             // assigneesName !== searchTerm.toLowerCase()
@@ -181,23 +141,19 @@ const CreateCommittee = ({ setCreategrouppage }) => {
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
-            {console.log("itemitem", item)}
             <img src={userImage} />
             <p className="p-0 m-0">{item.name}</p>
           </div>
         ));
     } else {
-      console.log("not found");
     }
   };
   // Group type Change Handler
   const CommitteeTypeChangeHandler = (e, value) => {
     setCommitteeTypeValue(value);
-    console.log(e.target.name, value, "setCommitteeTypeValue");
     let findID = committeeTypesOptions.find(
       (data, index) => data.label === value
     );
-    console.log(findID, "findIDfindIDfindIDfindID");
     setCreateCommitteeDetails({
       ...createCommitteeDetails,
       CommitteeType: findID.id,
@@ -206,13 +162,11 @@ const CreateCommittee = ({ setCreategrouppage }) => {
 
   // on Search filter for add members
   const onSearch = (name, id) => {
-    console.log("name id", name, id);
     setOnclickFlag(true)
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
   };
-  console.log("name id", taskAssignedTo);
 
   // onChange Function for set input values in state
   const onChangeFunc = (e) => {
@@ -234,28 +188,21 @@ const CreateCommittee = ({ setCreategrouppage }) => {
 
   // remove member handler
   const removeMemberHandler = (id) => {
-    let createCommitteeMembers = createCommitteeDetails.CommitteeMembers;
-    let getGroupMemberIndex = groupMembers.findIndex(
-      (groupmemberdata, index) => groupmemberdata.data.pK_UID === id
-    );
-    let getIndexCreateGroupDetails = createCommitteeMembers.findIndex(
-      (data, index) => data.FK_UID === id
-    );
-    groupMembers.splice(getGroupMemberIndex, 1);
-    createCommitteeMembers.splice(getIndexCreateGroupDetails, 1);
-    meetingAttendees.splice(getIndexCreateGroupDetails, 1);
-    setGroupMembers([...groupMembers]);
-    setCreateCommitteeDetails({
+    const updatedCreateCommitteeDetails = {
       ...createCommitteeDetails,
-      CommitteeMembers: meetingAttendees,
-    });
+      CommitteeMembers: createCommitteeDetails.CommitteeMembers.filter(item => item.FK_UID !== id),
+    };
+    setCreateCommitteeDetails(updatedCreateCommitteeDetails);
+    const meetingAttendeesMembers = meetingAttendees.filter(item => item.FK_UID !== id)
+    setMeetingAttendees(meetingAttendeesMembers)
+    const updatedCommitteeMembers = groupMembers.filter(item => item.data.pK_UID !== id);
+    setGroupMembers(updatedCommitteeMembers);
   };
 
   // change handler changeHandlerCommitteeMemberRole
   const changeHandlerCommitteeMemberRole = (e, value) => {
     setParticipantRoleName(value);
   };
-  console.log(participantRoleName, "changeHandlerCommitteeMemberRolechangeHandlerCommitteeMemberRole")
   // Add Attendees Hanlder
   const handleAddAttendees = () => {
     if (taskAssignedTo != 0 && attendees.length > 0) {
@@ -271,7 +218,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       var foundIndex = meetingAttendees.findIndex(
         (x) => x.FK_UID === taskAssignedTo
       );
-      console.log("taskAssignedTo", foundIndex);
       if (participantRoleName != "") {
         if (foundIndex === -1) {
           let roleID;
@@ -330,7 +276,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         );
       attendees.map((data, index) => {
         meetingAttendees.map((data2, index) => {
-          console.log("found2found2found2", data, data2, data === data2.FK_UID);
           if (data === data2.FK_UID) {
             check = true;
           }
@@ -416,7 +361,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   const checkAttendeeBox = (data, id, index) => {
     if (attendees.includes(id)) {
       let attendIndex = attendees.findIndex((data, index) => data === id);
-      console.log("attendIndexattendIndexattendIndex", attendIndex);
       if (attendIndex !== -1) {
         attendees.splice(attendIndex, 1);
         setAttendees([...attendees]);
@@ -437,11 +381,9 @@ const CreateCommittee = ({ setCreategrouppage }) => {
   }, [assignees.user]);
 
   const checkGroupMembers = (GroupMembers) => {
-    console.log("checkGroupMembers", GroupMembers);
     if (Object.keys(GroupMembers).length > 0) {
       let flag1 = GroupMembers.find((data, index) => data.FK_CMMRID === 1);
       let flag2 = GroupMembers.find((data, index) => data.FK_CMMRID === 2);
-      console.log("checkGroupMembers", flag1, flag2);
 
       if (flag1 != undefined && flag2 != undefined) {
         return true;
@@ -467,10 +409,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         });
       } else {
         if (!checkGroupMembers(createCommitteeDetails.CommitteeMembers)) {
-          console.log(
-            "checkGroupMembers",
-            checkGroupMembers(createCommitteeDetails.CommitteeMembers)
-          );
           setOpen({
             flag: true,
             message: t(
@@ -809,7 +747,6 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                           <Row className="mt-2">
                             {groupMembers.length > 0 ? (
                               groupMembers.map((data, index) => {
-                                console.log("datadatadatadata", data);
                                 if (data.role === 1) {
                                   return (
                                     <Col lg={4} md={4} sm={4} className="mt-2">

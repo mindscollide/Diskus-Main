@@ -113,9 +113,6 @@ const getAllCommitteesByUserIdActions = (navigate, t, id, currentPage) => {
                   )
                 );
               }
-
-
-              console.log("checking");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

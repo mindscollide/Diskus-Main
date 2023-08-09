@@ -438,6 +438,11 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     }
   };
 
+  const checkGroupHead = (groupMembers) => {
+    let flag1 = groupMembers.findIndex((data, index) => data.FK_GRMRID === 2);
+    return flag1
+  }
+
   const handleUpdateGroup = () => {
     if (
       GroupDetails.Title !== "" &&
@@ -783,27 +788,27 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                             </Col>
                                           </Row>
                                         </Col>
-                                        {data.data.pK_UID !== GroupDetails.CreatorID && (
-                                          <>
-                                            <Col
-                                              lg={2}
-                                              md={2}
-                                              sm={12}
-                                              className="mt-0  d-flex justify-content-center"
-                                            >
-                                              <img
-                                                src={CrossIcon}
-                                                className="cursor-pointer"
-                                                width={18}
-                                                onClick={() =>
-                                                  removeMemberHandler(
-                                                    data.data.pK_UID
-                                                  )
-                                                }
-                                              />
-                                            </Col>
-                                          </>
-                                        )}
+                                        {/* {data.data.pK_UID !== GroupDetails.CreatorID && ( */}
+                                        <>
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={12}
+                                            className="mt-0  d-flex justify-content-center"
+                                          >
+                                            <img
+                                              src={CrossIcon}
+                                              className="cursor-pointer"
+                                              width={18}
+                                              onClick={() =>
+                                                removeMemberHandler(
+                                                  data.data.pK_UID
+                                                )
+                                              }
+                                            />
+                                          </Col>
+                                        </>
+                                        {/* )} */}
 
                                       </Row>
                                     </Col>

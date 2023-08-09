@@ -2397,12 +2397,14 @@ const DataRoom = () => {
                         <img
                           src={chevronUp}
                           width={9}
+                          className="cursor-pointer"
                           onClick={() => setCollapes(false)}
                         />
                       ) : (
                         <img
                           src={chevdown}
                           width={9}
+                          className="cursor-pointer"
                           onClick={() => setCollapes(true)}
                         />
                       )}
@@ -2410,6 +2412,7 @@ const DataRoom = () => {
                       <img
                         src={Cancellicon}
                         width={9}
+                        className="cursor-pointer"
                         onClick={closeSearchBar}
                       />
                     </Col>

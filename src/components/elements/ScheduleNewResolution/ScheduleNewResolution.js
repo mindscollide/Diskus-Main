@@ -1212,11 +1212,7 @@ const ScheduleNewResolution = ({
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           <TextFieldDateTime
-                            min={
-                              circulationDateTime.date !== ""
-                                ? dateformatYYYYMMDD(circulationDateTime.date)
-                                : minDate
-                            }
+                            min={minDate}
                             name={"voting"}
                             applyClass={"search_voterInput"}
                             labelClass="d-none"
@@ -1316,11 +1312,7 @@ const ScheduleNewResolution = ({
                         >
                           <TextFieldDateTime
                             applyClass={"search_voterInput"}
-                            min={
-                              votingDateTime.date !== ""
-                                ? dateformatYYYYMMDD(votingDateTime.date)
-                                : minDate
-                            }
+                            min={minDate}
                             labelClass="d-none"
                             name={"decision"}
                             change={(e) => {

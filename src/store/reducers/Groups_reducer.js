@@ -13,15 +13,24 @@ const initialState = {
     realtimeGroupCreateResponse: null,
     realtimeGroupStatus: null,
     getAllGroups: null,
-    ArcheivedGroups: null
+    ArcheivedGroups: null,
+    getAllLoading: false
 }
 
 const GroupsReducer = (state = initialState, action) => {
     switch (action.type) {
         case actions.GET_GROUPS_BYUSERID_INIT: {
+            console.log(action.response, "GET_GROUPS_BYUSERID_INITGET_GROUPS_BYUSERID_INIT")
             return {
                 ...state,
                 Loading: true
+            }
+        }
+        case actions.GROUP_LOADER_STATE: {
+            console.log(action.response, "GET_GROUPS_BYUSERID_INITGET_GROUPS_BYUSERID_INIT")
+            return {
+                ...state,
+                getAllLoading: action.response
             }
         }
         case actions.GET_GROUPS_BYUSERID_SUCCESS: {

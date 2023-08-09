@@ -78,36 +78,22 @@ const Committee = () => {
     }
   };
   const viewTitleModal = (data) => {
-
-    console.log("testtesttesttesttesttest", data)
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
       CommitteeID: JSON.parse(data.committeeID),
       OrganizationId: OrganizationID,
     };
-    if (data.creatorID === Number(creatorID)) {
-      dispatch(
-        getCommitteesbyCommitteeId(
-          navigate,
-          Data,
-          t,
-          setViewGroupPage,
-          setUpdateComponentpage,
-          data.committeeStatusID
-        )
-      );
-    } else {
-      dispatch(
-        getCommitteesbyCommitteeId(
-          navigate,
-          Data,
-          t,
-          setViewGroupPage,
-          setUpdateComponentpage,
-          1
-        )
-      );
-    }
+    dispatch(
+      getCommitteesbyCommitteeId(
+        navigate,
+        Data,
+        t,
+        setViewGroupPage,
+        setUpdateComponentpage,
+        1
+      )
+    );
+
 
   };
   const viewUpdateModal = (committeeID, CommitteeStatusID) => {

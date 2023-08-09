@@ -21,7 +21,7 @@ const clearMessagesGroup = () => {
 };
 const getGroup_Init = () => {
   return {
-    type: actions.GET_GROUPS_BYUSERID_INIT,
+    type: actions.GET_GROUPS_BYUSERID_INIT
   };
 };
 
@@ -36,10 +36,17 @@ const getGroup_Success = (response, message) => {
 const getGroup_Fail = (message) => {
   return {
     type: actions.GET_GROUPS_BYUSERID_FAIL,
-    message: message,
+    message: message
   };
 };
 
+const groupLoader = (action) => {
+  console.log(action, "groupLoadergroupLoadergroupLoader")
+  return {
+    type: actions.GROUP_LOADER_STATE,
+    response: action
+  }
+}
 const getArchivedGroups_init = () => {
   return {
     type: actions.ARCHEIVED_GROUPS_INIT
@@ -73,12 +80,10 @@ const getGroups = (navigate, t, id, currentPage) => {
     Length: 8,
     Status: id
   };
+
   return (dispatch) => {
-    dispatch(getGroup_Init());
-    // if (id === 1) {
+    dispatch(groupLoader(true))
     dispatch(getArchivedGroups_init())
-    // } else {
-    // }
     let form = new FormData();
     form.append("RequestData", JSON.stringify(Data));
     form.append("RequestMethod", getGroupsByUserIdRequestMethod.RequestMethod);
@@ -106,7 +111,7 @@ const getGroups = (navigate, t, id, currentPage) => {
                   "Groups_GroupServiceManager_SearchGroups_01".toLowerCase()
                 )
             ) {
-
+              dispatch(groupLoader(false))
               if (id === 1) {
                 dispatch(getArchivedGroups_success(
                   response.data.responseResult,
@@ -128,6 +133,7 @@ const getGroups = (navigate, t, id, currentPage) => {
                 )
             ) {
               dispatch(getGroup_Fail(t("No-data-available")));
+              dispatch(groupLoader(false))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -136,6 +142,7 @@ const getGroups = (navigate, t, id, currentPage) => {
                 )
             ) {
               dispatch(getGroup_Fail(t("No-data-available")));
+              dispatch(groupLoader(false))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -152,6 +159,7 @@ const getGroups = (navigate, t, id, currentPage) => {
                 )
             ) {
               dispatch(getGroup_Fail(t("No-data-available")));
+              dispatch(groupLoader(false))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -160,20 +168,24 @@ const getGroups = (navigate, t, id, currentPage) => {
                 )
             ) {
               dispatch(getGroup_Fail(t("Something-went-wrong")));
+              dispatch(groupLoader(false))
               console.log(response, "response");
             }
           } else {
             console.log(response, "response");
             dispatch(getGroup_Fail(t("Something-went-wrong")));
+            dispatch(groupLoader(false))
           }
         } else {
           console.log(response, "response");
           dispatch(getGroup_Fail(t("Something-went-wrong")));
+          dispatch(groupLoader(false))
         }
       })
       .catch((response) => {
         console.log(response, "response");
         dispatch(getGroup_Fail(t("Something-went-wrong")));
+        dispatch(groupLoader(false))
       });
   };
 };
@@ -927,4 +939,5 @@ export {
   getOrganizationGroupTypes,
   updateGroup,
   updateGroupStatus,
+  groupLoader
 };

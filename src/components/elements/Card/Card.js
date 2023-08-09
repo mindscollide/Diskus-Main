@@ -83,6 +83,20 @@ const Card = ({
       console.log("error");
     }
   }, []);
+  let sortedArraay = profile.length > 0 && profile.sort((a, b) => {
+    const userNameA = a.userName.toLowerCase();
+    const userNameB = b.userName.toLowerCase();
+
+    if (userNameA < userNameB) {
+      return -1;
+    }
+    if (userNameA > userNameB) {
+      return 1;
+    }
+    return 0;
+
+  });
+
   console.log(associatedTags, "associatedTagsassociatedTags");
   console.log(StatusID, "StatusIDStatusIDStatusIDStatusID")
   console.log(creatorId, "StatusIDStatusIDStatusIDStatusID")
@@ -407,7 +421,7 @@ const Card = ({
             associatedTags.length === 1 ? (
             <>
               <span className={styles["associated_tagLine_single"]}>
-                {t("Associated-with")} {" "}
+                {t("Associated-with")}
                 <span className={styles["associated_tagLine_groupTitle_single"]} >
                   {`${associatedTags[0].committeeTitle} ${t("Committee")}`}
                 </span>
@@ -436,7 +450,7 @@ const Card = ({
             associatedTags.length === 1 ? (
             <>
               <span className={styles["associated_tagLine_single"]}>
-                {`${t("Associated-with")} ${" "}`}
+                {`${t("Associated-with")}`}
                 <span className={styles["associated_tagLine_groupTitle_single"]}>
                   {`${associatedTags[0].groupTitle} ${t("Group")}` + " "}
                 </span>
@@ -468,7 +482,8 @@ const Card = ({
         <Col lg={10} md={10} sm={10} className={styles["profile_cards"]}>
           <Row className="justify-content-center">
             {profile != undefined && profile != null
-              ? profile.map((data, index) => {
+              ? sortedArraay.map((data, index) => {
+                console.log(sortedArraay, "ShowNotificationShowNotificationShowNotification")
                 if (index <= 3) {
                   return (
                     <Col
@@ -519,7 +534,8 @@ const Card = ({
         >
           <Button
             className={styles["update-Committee-btn"]}
-            text={BtnText}
+            text={flag ? t("Update-committee") : t("Update-group")}
+            disableBtn={Number(StatusID) === 3 && Number(creatorId) === Number(creatorID) ? false : true}
             onClick={onClickFunction}
           />
         </Col>

@@ -30,7 +30,7 @@ const ModalAddFolder = ({ addfolder, setAddfolder, setIsExistFolder }) => {
   };
   const handleAddFolder = () => {
     if (FolderName.content !== "") {
-      dispatch(FolderisExist(navigate, FolderName.content, t, setAddfolder, setIsExistFolder));
+      dispatch(FolderisExist(navigate, FolderName.content, t, setAddfolder, 0, setIsExistFolder));
     } else {
       setFolderName({
         content: "",

@@ -778,32 +778,31 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                             </Col>
                                           </Row>
                                         </Col>
-                                        {data.data.pK_UID !=
-                                          committeeData.CreatorID ? (
-                                          <Col
-                                            lg={2}
-                                            md={2}
-                                            sm={12}
-                                            className="mt-0  d-flex justify-content-center"
-                                          >
-                                            {console.log(
-                                              "datadatadatadatadata",
-                                              data,
-                                              data.data.pK_UID,
-                                              committeeData.CreatorID
-                                            )}
-                                            <img
-                                              src={CrossIcon}
-                                              className="cursor-pointer"
-                                              width={18}
-                                              onClick={() =>
-                                                removeMemberHandler(
-                                                  data.data.pK_UID
-                                                )
-                                              }
-                                            />
-                                          </Col>
-                                        ) : null}
+
+                                        <Col
+                                          lg={2}
+                                          md={2}
+                                          sm={12}
+                                          className="mt-0  d-flex justify-content-center"
+                                        >
+                                          {console.log(
+                                            "datadatadatadatadata",
+                                            data,
+                                            data.data.pK_UID,
+                                            committeeData.CreatorID
+                                          )}
+                                          <img
+                                            src={CrossIcon}
+                                            className="cursor-pointer"
+                                            width={18}
+                                            onClick={() =>
+                                              removeMemberHandler(
+                                                data.data.pK_UID
+                                              )
+                                            }
+                                          />
+                                        </Col>
+
                                       </Row>
                                     </Col>
                                   );

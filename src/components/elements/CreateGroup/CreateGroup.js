@@ -58,7 +58,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const GroupeTitle = useRef(null);
   const [groupMembers, setGroupMembers] = useState([]);
   // for   select participant Role Name
-  const [participantRoleName, setParticipantRoleName] = useState("");
+  const [participantRoleName, setParticipantRoleName] = useState(t("Regular"));
   const participantOptions = [t("Head"), t("Regular")];
   const [groupTypeOptions, setGroupTypeOptions] = useState([]);
   const [participantRoles, setParticipantRoles] = useState([]);
@@ -435,23 +435,15 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
   // remove member handler
   const removeMemberHandler = (id) => {
-    console.log("id", id);
-    let createGroupMembers = createGroupDetails.GroupMembers;
-    let getGroupMemberIndex = groupMembers.findIndex(
-      (groupmemberdata, index) => groupmemberdata.data.pK_UID === id
-    );
-    let getIndexCreateGroupDetails = createGroupMembers.findIndex(
-      (data, index) => data.FK_UID === id
-    );
-    groupMembers.splice(getGroupMemberIndex, 1);
-    createGroupMembers.splice(getIndexCreateGroupDetails, 1);
-    setGroupMembers([...groupMembers]);
-    setCreateGroupDetails({
+    const updatedCreateGroupDetails = {
       ...createGroupDetails,
-      GroupMembers: createGroupMembers,
-    });
-  };
+      GroupMembers: createGroupDetails.GroupMembers.filter(item => item.FK_UID !== id),
+    };
+    setCreateGroupDetails(updatedCreateGroupDetails);
 
+    const updatedGroupMembers = groupMembers.filter(item => item.data.pK_UID !== id);
+    setGroupMembers(updatedGroupMembers);
+  };
 
   const checkGroupMembers = (GroupMembers) => {
     if (Object.keys(GroupMembers).length > 0) {
@@ -467,10 +459,6 @@ const CreateGroup = ({ setCreategrouppage }) => {
       return false;
     }
   };
-  const checkGroupHead = (groupMembers) => {
-    let flag1 = groupMembers.findIndex((data, index) => data.FK_GRMRID === 2);
-    return flag1
-  }
 
   const handleSubmitCreateGroup = async () => {
     if (
@@ -485,7 +473,15 @@ const CreateGroup = ({ setCreategrouppage }) => {
           message: t("Please-add-atleast-one-group-head-and-one-group-member"),
         });
       } else {
-        if (checkGroupHead(createGroupDetails.GroupMembers) !== -1) {
+        if (!checkGroupMembers(createGroupDetails.GroupMembers)) {
+          setOpen({
+            flag: true,
+            message: t(
+              "Please-add-atleast-one-group-head-and-one-group-member"
+            ),
+          });
+
+        } else {
           setErrorBar(false);
           let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
           let Data = {
@@ -500,12 +496,8 @@ const CreateGroup = ({ setCreategrouppage }) => {
             },
             GroupMembers: createGroupDetails.GroupMembers,
           };
+          console.log("createGroupecheck", Data)
           dispatch(createGroup(navigate, Data, t, setCreategrouppage));
-        } else {
-          setOpen({
-            flag: true,
-            message: t("Group-head-must-for-create-group"),
-          });
         }
       }
     } else {

@@ -250,6 +250,14 @@ const createResolution = (navigate, Data, voters, nonVoter, tasksAttachments, se
                             dispatch(updateResolution(navigate, response.data.responseResult.resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated, setResolutionUpdateSuccessfully))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_06".toLowerCase()) {
                             dispatch(createResolution_Fail(t("Something-went-wrong")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_07".toLowerCase()) {
+                            dispatch(createResolution_Fail(t("Circulationdatetime-cannot-be-less-than-current-date")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_08".toLowerCase()) {
+                            dispatch(createResolution_Fail(t("Deadlinedatetime-cannot-be-less-than-current-date")))
+                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_ScheduleResolution_09".toLowerCase()) {
+                            dispatch(createResolution_Fail(t("Decisionannouncementdatetime-cannot-be-less-than-current-date")))
+                        } else {
+                            dispatch(createResolution_Fail(t("Something-went-wrong")))
                         }
                     } else {
                         dispatch(createResolution_Fail(t("Something-went-wrong")))

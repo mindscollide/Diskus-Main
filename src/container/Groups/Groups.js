@@ -19,6 +19,7 @@ import {
   clearMessagesGroup,
   getbyGroupID,
   getGroups,
+  groupLoader,
   realtimeGroupStatusResponse,
   updateGroupStatus,
 } from "../../store/actions/Groups_actions";
@@ -50,6 +51,7 @@ const Groups = () => {
   });
   const [uniqCardID, setUniqCardID] = useState(0);
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  const creatorID = localStorage.getItem("userID")
 
   const handlechange = (value) => {
     localStorage.setItem("groupsCurrent", value);
@@ -66,7 +68,19 @@ const Groups = () => {
   // const updateModal = (id) => {
   //   dispatch(getbyGroupID(id, t, setViewGroupPage, setUpdateComponentpage, 2));
   // };
+  const viewTitleModal = (data) => {
+    dispatch(
+      getbyGroupID(
+        navigate,
+        data.groupID,
+        t,
+        setViewGroupPage,
+        setUpdateComponentpage,
+        1
+      )
+    );
 
+  };
   const viewmodal = (groupID, statusID) => {
     if (statusID === 1) {
       dispatch(
@@ -133,6 +147,7 @@ const Groups = () => {
   useEffect(() => {
     localStorage.removeItem("groupsArCurrent");
     localStorage.setItem("groupsCurrent", 1);
+    // dispatch(groupLoader(true))
     dispatch(getGroups(navigate, t, 0, 1));
   }, []);
 
@@ -314,6 +329,11 @@ const Groups = () => {
                                     alt=""
                                     width="32.39px"
                                   />
+                                }
+                                titleOnCLick={() =>
+                                  viewTitleModal(
+                                    data
+                                  )
                                 }
                                 profile={data.groupMembers}
                                 onClickFunction={() =>
@@ -515,7 +535,7 @@ const Groups = () => {
         />
       ) : null}
 
-      {GroupsReducer.Loading ? <Loader /> : null}
+      {GroupsReducer.getAllLoading ? <Loader /> : null}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );

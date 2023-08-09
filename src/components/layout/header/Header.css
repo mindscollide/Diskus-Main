@@ -118,7 +118,7 @@
 }
 
 .dropdown-item {
-  white-space: normal !important;
+  white-space: nowrap !important;
   font-size: 0.8rem;
   /* margin  : 0 0 0 0; */
 }
@@ -137,7 +137,7 @@
   overflow: auto;
 }
 
-.notification-dropdown > [data-bs-toggle="dropdown"].show:before {
+.notification-dropdown>[data-bs-toggle="dropdown"].show:before {
   width: 0;
   height: 0;
   border-left: 7px solid transparent;
@@ -215,9 +215,11 @@
 .notification-dropdowntoggle::after {
   border: none;
 }
+
 .profilebtn-dropdown {
   max-width: 240px;
 }
+
 .user-name {
   margin: 0;
   padding: 0;

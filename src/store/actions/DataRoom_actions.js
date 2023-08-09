@@ -538,12 +538,15 @@ const createFolderApi = (
                   t('Folder-created-successfully'),
                 ),
               )
-              if (folderID !== null) {
+              setAddfolder(false)
+              setIsExistFolder(false)
+
+              if (folderID !== null && folderID !== undefined) {
                 dispatch(getFolderDocumentsApi(navigate, folderID, t))
               } else {
                 dispatch(getDocumentsAndFolderApi(navigate, 3, t))
               }
-              setAddfolder(false)
+
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes('DataRoom_DataRoomServiceManager_CreateFolder_02'.toLowerCase())) {
               dispatch(createFolder_fail(t('Failed-to-create-folder')))
             } else if (
@@ -556,7 +559,6 @@ const createFolderApi = (
               dispatch(createFolder_fail(t('Something-went-wrong')))
             }
             setAddfolder(false)
-            setIsExistFolder(false)
           }
         } else {
           dispatch(createFolder_fail(t('Something-went-wrong')))
@@ -1112,6 +1114,7 @@ const FolderisExist = (
   FolderName,
   t,
   setAddfolder,
+  Type,
   setIsExistFolder,
 ) => {
   let token = JSON.parse(localStorage.getItem('token'))
@@ -1138,7 +1141,7 @@ const FolderisExist = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(FolderisExist(navigate, FolderName, t, setAddfolder, setIsExistFolder))
+          dispatch(FolderisExist(navigate, FolderName, t, setAddfolder, Type, setIsExistFolder))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1167,10 +1170,10 @@ const FolderisExist = (
                   'DataRoom_DataRoomServiceManager_FolderExist_03'.toLowerCase(),
                 )
             ) {
-              await dispatch(
-                FolderisExist_fail(t('No-folder-exist-against-this-name')),
-              )
-              dispatch(createFolderApi(navigate, FolderName, t, setAddfolder))
+              // await dispatch(
+              //   FolderisExist_fail(t('No-folder-exist-against-this-name')),
+              // )
+              dispatch(createFolderApi(navigate, FolderName, t, setAddfolder, Type, setIsExistFolder))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

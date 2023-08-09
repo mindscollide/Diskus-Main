@@ -3660,7 +3660,13 @@ p.Disabled-Close {
   margin-right: -5px !important;
 }
 
-input[placeholder] {
+input[type="text"] {
+  font-size: 12px !important;
+  font-family: "MontserratMedium";
+  box-shadow: none !important;
+}
+
+input::placeholder {
   font-size: 12px !important;
   font-family: "MontserratMedium";
   box-shadow: none !important;

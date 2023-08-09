@@ -101,7 +101,7 @@ const ModalArchivedCommittee = ({
         t,
         setViewGroupPage,
         setUpdateComponentpage,
-        statusID,
+        1,
         setArchivedGroups
       )
     );
@@ -191,6 +191,12 @@ const ModalArchivedCommittee = ({
                               CardHeading={data.groupTitle}
                               IconOnClick={updateModal}
                               onClickFunction={() =>
+                                ViewGroupmodal(
+                                  data.groupID,
+                                  data.groupStatusID
+                                )
+                              }
+                              titleOnCLick={() =>
                                 ViewGroupmodal(
                                   data.groupID,
                                   data.groupStatusID
