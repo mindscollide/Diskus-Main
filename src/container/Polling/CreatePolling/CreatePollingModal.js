@@ -69,13 +69,16 @@ const CreatePolling = () => {
     message: "",
   });
   const [selectedsearch, setSelectedsearch] = useState([]);
+
   const [error, setError] = useState(false);
+
   const [createPollData, setcreatePollData] = useState({
     TypingTitle: "",
     InputSearch: "",
     date: "",
     AllowMultipleAnswers: true,
   });
+
   const [options, setOptions] = useState([
     {
       name: 1,
@@ -90,6 +93,15 @@ const CreatePolling = () => {
       value: "",
     },
   ]);
+
+  const allValuesNotEmpty = options.every((item) => item.value !== "");
+
+  const allValuesNotEmptyAcceptLastOne = options.every((item, index) => {
+    if (index === options.length - 1) {
+      return true; // Allow the last object's value to be empty
+    }
+    return item.value !== "";
+  });
 
   useEffect(() => {
     if (currentLanguage === "ar") {
@@ -309,7 +321,6 @@ const CreatePolling = () => {
   };
 
   const changeDateStartHandler = (date) => {
-    console.log("changeDateStartHandler", date);
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let DateDate = new Date(date);
     setMeetingDate(meetingDateValueFormat);
@@ -323,6 +334,7 @@ const CreatePolling = () => {
     let newDate = moment(date).format("DD MMMM YYYY");
     return newDate;
   };
+
   const checkOptions = (data) => {
     if (data[0].value === "" || data[1].value === "") {
       return false;
@@ -330,14 +342,13 @@ const CreatePolling = () => {
       return true;
     }
   };
+
   // for create polls
   const SavePollsButtonFunc = async (value) => {
     const organizationid = localStorage.getItem("organizationID");
     const createrid = localStorage.getItem("userID");
     let users = [];
     let optionsListData = [];
-    const allValuesNotEmpty = options.every((item) => item.value !== "");
-    console.log("SavePollsButtonFunc", allValuesNotEmpty);
     if (
       createPollData.date != "" &&
       createPollData.TypingTitle != "" &&
@@ -394,7 +405,7 @@ const CreatePolling = () => {
           flag: true,
           message: t("Required-atleast-two-options"),
         });
-      } else if (checkOptions(options)) {
+      } else if (allValuesNotEmpty) {
         setOpen({
           ...open,
           flag: true,
@@ -439,7 +450,6 @@ const CreatePolling = () => {
       })
     );
   };
-  const allValuesNotEmpty = options.every((item) => item.value !== "");
 
   const addNewRow = () => {
     if (options.length > 1) {
@@ -532,6 +542,8 @@ const CreatePolling = () => {
                           </span>
                           <MultiDatePickers
                             value={meetingDate}
+                            highlightToday={false}
+                            onOpenPickNewDate={false}
                             name="MeetingDate"
                             check={true}
                             calendar={calendarValue}

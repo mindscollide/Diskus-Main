@@ -1158,5 +1158,7 @@
   "Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png": ".docx , .ppt , .pptx , .xls , .xlsx , .jpeg , .jpg , and .png.",
   "Import-previous-agenda": "Import Previous Agenda",
   "Save-and-Next": "Save and Next",
-  "Add-sub-agenda": "Add Sub Agenda"
+  "Add-sub-agenda": "Add Sub Agenda",
+  "The-poll-due-date-has-been-passed": "The Poll Due Date Has Been Passed",
+  "The-poll-is-not-published": "The Poll is Not Published"
 }
