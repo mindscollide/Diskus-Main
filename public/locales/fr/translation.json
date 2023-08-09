@@ -734,5 +734,7 @@
   "Options-must-be-more-than-2": "Options must be more than 2",
   "Please-select-due-date": "Please select due date",
   "Select-atleast-one-participants": "Select atleast one participant",
-  "No-task": "No Task"
+  "No-task": "No Task",
+  "The-poll-due-date-has-been-passed":"The Poll Due Date Has Been Passed",
+  "The-poll-is-not-published":"The Poll is Not Published"
 }

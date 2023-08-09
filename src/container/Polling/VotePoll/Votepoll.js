@@ -163,58 +163,37 @@ const Votepoll = () => {
                     </Col>
                   </Row>
                   <Row className="mt-2">
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className={`${styles["BOx_for_yes"]} d-flex`}
-                  >
-                    <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12}>
-                        {viewProgressPollsDetails.PollTitle.length > 100 ? (
-                          // Add d-flex class and justify-content-center to center the text
-                          <div
-                            className={`${styles["scrollable-title"]} d-flex justify-content-center`}
-                          >
-                            {viewProgressPollsDetails.PollTitle}
-                          </div>
-                        ) : (
-                          // Add d-flex class and align-items-center to center the text
-                          <div
-                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}
-                          >
-                            {viewProgressPollsDetails.PollTitle}
-                          </div>
-                        )}
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-                  {/* <Row className="mt-2">
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles["Border_box"]}
+                      className={`${styles["BOx_for_yes"]} d-flex`}
                     >
                       <Row className="mt-2">
                         <Col lg={12} md={12} sm={12}>
-                          <span className={styles["ViewTitleTOShowOnProgress"]}>
-                            {viewProgressPollsDetails.PollTitle}
-                          </span>
+                          {viewProgressPollsDetails.PollTitle.length > 100 ? (
+                            // Add d-flex class and justify-content-center to center the text
+                            <div
+                              className={`${styles["scrollable-title"]} d-flex justify-content-center`}
+                            >
+                              {viewProgressPollsDetails.PollTitle}
+                            </div>
+                          ) : (
+                            // Add d-flex class and align-items-center to center the text
+                            <div
+                              className={`${styles["scrollable-title2"]} d-flex align-items-center`}
+                            >
+                              {viewProgressPollsDetails.PollTitle}
+                            </div>
+                          )}
                         </Col>
                       </Row>
                     </Col>
-                  </Row> */}
-                  {pollsOption.length > 3 ? (
+                  </Row>
+                  {pollsOption.length > 2 ? (
                     <>
-                      <Row className="mt-2">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["Scroller-Vote-Poll"]}
-                        >
+                      <Row className={styles["Scroller_View_Poll_Published"]}>
+                        <Col lg={12} ms={12} sm={12}>
                           {pollsOption.length > 0 ? (
                             pollsOption.map((data, index) => {
                               return (
@@ -292,13 +271,8 @@ const Votepoll = () => {
                     </>
                   ) : (
                     <>
-                      <Row>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          // className={styles["Scroller-Vote-Poll"]}
-                        >
+                      <Row className={styles["Scroller_View_Poll_Published"]}>
+                        <Col lg={12} ms={12} sm={12}>
                           {pollsOption.length > 0 ? (
                             pollsOption.map((data, index) => {
                               return (

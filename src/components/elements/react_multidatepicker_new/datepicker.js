@@ -1,8 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import DatePicker from "react-multi-date-picker";
 import moment from "moment";
-import { PencilSquare } from "react-bootstrap-icons";
-// import Icon from "react-multi-date-picker/components/icon";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import styles from "./datepicker.module.css";
 
@@ -10,12 +8,11 @@ const MultiDatePickers = ({
   onChange,
   name,
   value,
-  newValue,
   disabled,
-  change,
   calendar,
   locale,
-  check,
+  highlightToday,
+  onOpenPickNewDate
 }) => {
   let dateFormat = "DD/MM/YYYY";
   const datePickerRef = useRef(null);
@@ -42,6 +39,8 @@ const MultiDatePickers = ({
     <>
       <label className="f-0">
         <DatePicker
+         highlightToday={highlightToday}
+         onOpenPickNewDate={onOpenPickNewDate}
           ref={datePickerRef}
           render={<CustomIcon />}
           onChange={onChange}

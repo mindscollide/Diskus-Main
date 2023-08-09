@@ -59,6 +59,7 @@ const UpdatePolls = () => {
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
+  const [checkForPollStatus, setCheckForPollStatus] = useState(false);
   const [options, setOptions] = useState([
     {
       name: 1,
@@ -205,7 +206,11 @@ const UpdatePolls = () => {
           pollsDetails.poll.pollDetails.dueDate
         );
         let DateDate = new Date(newDateGmt);
-
+        if (pollsDetails.poll.pollDetails.pollStatus.pollStatusId === 2) {
+          setCheckForPollStatus(true);
+        } else {
+          setCheckForPollStatus(false);
+        }
         setUpdatePolls({
           ...UpdatePolls,
           TypingTitle: pollsDetails.poll.pollDetails.pollTitle,
@@ -236,7 +241,15 @@ const UpdatePolls = () => {
       }
     }
   }, [PollsReducer.Allpolls]);
-  console.log("HandleOptionChange", options);
+
+  const allValuesNotEmpty = options.every((item) => item.value !== "");
+
+  const allValuesNotEmptyAcceptLastOne = options.every((item, index) => {
+    if (index === options.length - 1) {
+      return true; // Allow the last object's value to be empty
+    }
+    return item.value !== "";
+  });
 
   // for add user for assignes
   const handleAddUsers = () => {
@@ -326,7 +339,7 @@ const UpdatePolls = () => {
   };
 
   useEffect(() => {}, [UpdatePolls.date]);
-  const allValuesNotEmpty = options.every((item) => item.value !== "");
+
   const addNewRow = () => {
     if (options.length > 1) {
       if (allValuesNotEmpty) {
@@ -422,13 +435,6 @@ const UpdatePolls = () => {
     });
   };
 
-  const checkOptions = (data) => {
-    if (data[0].value === "" || data[1].value === "") {
-      return false;
-    } else {
-      return true;
-    }
-  };
   const handleUpdateClick = (value) => {
     const organizationid = localStorage.getItem("organizationID");
     const createrid = localStorage.getItem("userID");
@@ -439,7 +445,7 @@ const UpdatePolls = () => {
       UpdatePolls.datepoll != "" &&
       Object.keys(pollmembers).length > 0 &&
       Object.keys(options).length >= 2 &&
-      checkOptions(options)
+      allValuesNotEmpty
     ) {
       if (Object.keys(pollmembers).length > 0) {
         pollmembers.map((data, index) => {
@@ -466,11 +472,11 @@ const UpdatePolls = () => {
         ParticipantIDs: users,
         PollAnswers: optionsListData,
       };
-      console.log("handleUpdateClick");
+
       dispatch(updatePollsApi(navigate, data, t));
     } else {
       setError(true);
-      console.log("handleUpdateClick");
+
       if (UpdatePolls.TypingTitle === "") {
         setOpen({
           ...open,
@@ -495,7 +501,7 @@ const UpdatePolls = () => {
           flag: true,
           message: t("Required-atleast-two-options"),
         });
-      } else if (checkOptions(options)) {
+      } else if (allValuesNotEmpty) {
         setOpen({
           ...open,
           flag: true,
@@ -510,7 +516,6 @@ const UpdatePolls = () => {
       }
     }
   };
-  console.log("handleUpdateClick", open);
 
   return (
     <>
@@ -558,6 +563,8 @@ const UpdatePolls = () => {
                           <MultiDatePickers
                             value={UpdatePolls.date}
                             name="MeetingDate"
+                            highlightToday={false}
+                            onOpenPickNewDate={false}
                             multiple={false}
                             calendar={calendarValue}
                             locale={localValue}
@@ -632,12 +639,7 @@ const UpdatePolls = () => {
                     </Col>
                   </Row>
                   <Row className={styles["Overall_padding"]}>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      
-                    >
+                    <Col lg={12} md={12} sm={12}>
                       <Row className="d-flex">
                         <Col lg={12} md={12} sm={12}>
                           <span className={styles["Update_Poll_Heading"]}>
@@ -647,33 +649,32 @@ const UpdatePolls = () => {
                       </Row>
                       {PollsReducer.editPollModalFlag ? (
                         <Row className="mt-2">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={`${styles["BOx_for_yes"]} d-flex`}
-                        >
-                          <Row className="mt-2">
-                            <Col lg={12} md={12} sm={12}>
-                              {UpdatePolls.TypingTitle.length > 100 ? (
-                                // Add d-flex class and justify-content-center to center the text
-                                <div
-                                  className={`${styles["scrollable-title"]} d-flex justify-content-center`}
-                                >
-                                  {UpdatePolls.TypingTitle}
-                                </div>
-                              ) : (
-                                // Add d-flex class and align-items-center to center the text
-                                <div
-                                  className={`${styles["scrollable-title2"]} d-flex align-items-center`}
-                                >
-                                  {UpdatePolls.TypingTitle}
-                                </div>
-                              )}
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className={`${styles["BOx_for_yes"]} d-flex`}
+                          >
+                            <Row className="mt-2">
+                              <Col lg={12} md={12} sm={12}>
+                                {UpdatePolls.TypingTitle.length > 100 ? (
+                                  // Add d-flex class and justify-content-center to center the text
+                                  <div
+                                    className={`${styles["scrollable-title"]} d-flex justify-content-center`}
+                                  >
+                                    <p>{UpdatePolls.TypingTitle}</p>
+                                  </div>
+                                ) : (
+                                  <div
+                                    className={`${styles["scrollable-title2"]} d-flex align-items-center`}
+                                  >
+                                    <p>{UpdatePolls.TypingTitle}</p>
+                                  </div>
+                                )}
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
                       ) : (
                         <Row className="mt-2">
                           <Col lg={12} md={12} sm={12}>
@@ -715,7 +716,8 @@ const UpdatePolls = () => {
                               options.map((list, index) => {
                                 return (
                                   <>
-                                    <span key={index}
+                                    <span
+                                      key={index}
                                       className={`${styles["BOx_for_yes"]} d-flex`}
                                     >
                                       {list.value.length > 100 ? (
@@ -1056,7 +1058,27 @@ const UpdatePolls = () => {
                             className={styles["Cancell_btn_class_Update_polls"]}
                             onClick={HandlecancellButton}
                           />
-                          <Button
+                          {checkForPollStatus ? (
+                            <Button
+                              text={t("Update")}
+                              className={styles["Update_btn_class"]}
+                              onClick={() => handleUpdateClick(2)}
+                            />
+                          ) : (
+                            <>
+                              <Button
+                                text={t("Update")}
+                                className={styles["Update_btn_class"]}
+                                onClick={() => handleUpdateClick(1)}
+                              />
+                              <Button
+                                text={t("Update-and-publish")}
+                                className={styles["Update_Publish_btn_class"]}
+                                onClick={() => handleUpdateClick(2)}
+                              />
+                            </>
+                          )}
+                          {/* <Button
                             text={t("Update")}
                             className={styles["Update_btn_class"]}
                             onClick={() => handleUpdateClick(1)}
@@ -1065,7 +1087,7 @@ const UpdatePolls = () => {
                             text={t("Update-and-publish")}
                             className={styles["Update_Publish_btn_class"]}
                             onClick={() => handleUpdateClick(2)}
-                          />
+                          /> */}
                         </Col>
                       </Row>
                     </Col>
