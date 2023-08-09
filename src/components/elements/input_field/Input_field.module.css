@@ -216,3 +216,7 @@
   border: 1px solid #e1e1e1 !important;
   position: relative;
 }
+
+.AgendaTextField {
+  height: 39px !important;
+}

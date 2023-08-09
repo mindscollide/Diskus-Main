@@ -772,5 +772,13 @@
   "Options-must-be-more-than-2": "Options must be more than 2",
   "Please-select-due-date": "Please select due date",
   "Select-atleast-one-participants": "Select atleast one participant",
-  "No-task": "No Task"
+  "No-task": "No Task",
+  "Agenda-title": "Agenda-title",
+  "Attachments": "Attachments",
+  "Drag-file-here": "Drag File Here",
+  "The-following-file-formats-are": "The Following File Formats are supported: .pdf,.doc,",
+  "Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png": ".docx , .ppt , .pptx , .xls , .xlsx , .jpeg , .jpg , and .png.",
+  "Import-previous-agenda": "Import Previous Agenda",
+  "Save-and-Next": "Save and Next",
+  "Add-sub-agenda": "Add Sub Agenda"
 }

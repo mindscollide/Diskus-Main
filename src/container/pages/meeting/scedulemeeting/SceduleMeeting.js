@@ -13,34 +13,48 @@ import MeetingDetails from "./meetingDetails/MeetingDetails";
 import Organizers from "./Organizers/Organizers";
 import AgendaContributers from "./AgendaContributors/AgendaContributers";
 import Participants from "./Participants/Participants";
+import Agenda from "./Agenda/Agenda";
 const SceduleMeeting = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const [meetingDetails, setmeetingDetails] = useState(false);
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
   const [participants, setParticipants] = useState(false);
+  const [agenda, setAgenda] = useState(false);
 
   const showMeetingDeitals = () => {
     setmeetingDetails(true);
     setorganizers(false);
     setAgendaContributors(false);
     setParticipants(false);
+    setAgenda(false);
   };
   const showOrganizers = () => {
     setorganizers(true);
     setmeetingDetails(false);
     setAgendaContributors(false);
     setParticipants(false);
+    setAgenda(false);
   };
   const showAgendaContributers = () => {
     setAgendaContributors(true);
     setmeetingDetails(false);
     setorganizers(false);
     setParticipants(false);
+    setAgenda(false);
   };
 
   const showParticipants = () => {
     setParticipants(true);
+    setAgendaContributors(false);
+    setorganizers(false);
+    setmeetingDetails(false);
+    setAgenda(false);
+  };
+
+  const showAgenda = () => {
+    setAgenda(true);
+    setParticipants(false);
     setAgendaContributors(false);
     setorganizers(false);
     setmeetingDetails(false);
@@ -82,6 +96,7 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                 <Button
                   text={t("Agenda")}
                   className={styles["Schedule_meetings_options"]}
+                  onClick={showAgenda}
                 />
                 <Button
                   text={t("Meeting-material")}
@@ -119,7 +134,13 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
                 setAgendaContributors={setAgendaContributors}
               />
             )}
-            {participants && <Participants />}
+            {participants && (
+              <Participants
+                setParticipants={setParticipants}
+                setAgenda={setAgenda}
+              />
+            )}
+            {agenda && <Agenda />}
           </Paper>
         </Col>
       </Row>

@@ -5,6 +5,7 @@
 }
 
 .Scedule_meeting_paper {
+  width: 100% !important;
   height: auto !important;
   padding: 40px 40px !important;
 }

@@ -21,7 +21,7 @@ import {
   showCrossConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
-const Participants = () => {
+const Participants = ({ setParticipants, setAgenda }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -33,6 +33,11 @@ const Participants = () => {
 
   const openAddPartcipantModal = () => {
     dispatch(showAddParticipantsModal(true));
+  };
+
+  const handleNextButton = () => {
+    setParticipants(false);
+    setAgenda(true);
   };
   const data = [
     {
@@ -182,7 +187,7 @@ const Participants = () => {
             <Button
               text={t("Next")}
               className={styles["Next_Organization"]}
-              //   onClick={handleNextButton}
+              onClick={handleNextButton}
             />
           </Col>
         </Row>
