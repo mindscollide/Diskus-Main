@@ -42,6 +42,20 @@ const showAddParticipantsModal = (response) => {
   };
 };
 
+const showAgenItemsRemovedModal = (response) => {
+  return {
+    type: actions.AGENDA_ITEM_REMOVED,
+    response: response,
+  };
+};
+
+const showMainAgendaItemRemovedModal = (response) => {
+  return {
+    type: actions.MAIN_AGENDA_ITEM_REMOVED,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -49,4 +63,6 @@ export {
   showAddAgendaContributor,
   showAgendaContributorsModals,
   showAddParticipantsModal,
+  showAgenItemsRemovedModal,
+  showMainAgendaItemRemovedModal,
 };

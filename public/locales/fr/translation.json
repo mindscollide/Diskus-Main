@@ -782,5 +782,12 @@
   "Save-and-Next": "Save and Next",
   "Add-sub-agenda": "Add Sub Agenda",
   "The-poll-due-date-has-been-passed": "The Poll Due Date Has Been Passed",
-  "The-poll-is-not-published": "The Poll is Not Published"
+  "The-poll-is-not-published": "The Poll is Not Published",
+  "Enter-url": "Enter URL",
+  "Enter-email-address-here": "Enter email address here",
+  "Enter-notes": "Enter Notes",
+  "The-agenda-item-will-be": "The agenda item will be",
+  "removed-Continue": " removed. Continue?",
+  "The-agenda-item-along-with-all-its-sub-agenda": "The agenda item along with all its sub agenda",
+  "Items-if-any-will-be-removed-continue": "items, if any, will be removed. Continue?"
 }

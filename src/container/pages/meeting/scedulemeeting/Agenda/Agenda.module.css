@@ -141,15 +141,42 @@
   margin-left: -15px;
 }
 
+.Scroller_document {
+  height: 14vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_document::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_document::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
 .RedCross_Icon_class {
   margin-right: -5.6% !important;
   margin-top: -18.9% !important;
 }
 
 .Documentdiv {
-  width: 20%;
   border: 1px solid #d4d4d4;
   border-radius: 4px !important;
   background: #fff;
+  margin-top: 10px !important;
+  width: 20% !important;
   height: 42px !important;
+}
+
+.TitleFile {
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  font-family: "Montserrat" !important;
 }

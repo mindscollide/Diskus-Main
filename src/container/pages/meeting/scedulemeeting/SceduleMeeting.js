@@ -16,7 +16,7 @@ import Participants from "./Participants/Participants";
 import Agenda from "./Agenda/Agenda";
 const SceduleMeeting = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
-  const [meetingDetails, setmeetingDetails] = useState(false);
+  const [meetingDetails, setmeetingDetails] = useState(true);
   const [organizers, setorganizers] = useState(false);
   const [agendaContributors, setAgendaContributors] = useState(false);
   const [participants, setParticipants] = useState(false);
@@ -75,27 +75,47 @@ const SceduleMeeting = ({ setSceduleMeeting }) => {
               <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                 <Button
                   text={t("Meeting-details")}
-                  className={styles["Schedule_meetings_options"]}
+                  className={
+                    meetingDetails === true
+                      ? styles["Schedule_meetings_options_active"]
+                      : styles["Schedule_meetings_options"]
+                  }
                   onClick={showMeetingDeitals}
                 />
                 <Button
                   text={t("Organizers")}
-                  className={styles["Schedule_meetings_options"]}
+                  className={
+                    organizers === true
+                      ? styles["Schedule_meetings_options_active"]
+                      : styles["Schedule_meetings_options"]
+                  }
                   onClick={showOrganizers}
                 />
                 <Button
                   text={t("Agenda-contributors")}
-                  className={styles["Schedule_meetings_options"]}
+                  className={
+                    agendaContributors === true
+                      ? styles["Schedule_meetings_options_active"]
+                      : styles["Schedule_meetings_options"]
+                  }
                   onClick={showAgendaContributers}
                 />
                 <Button
                   text={t("Participants")}
-                  className={styles["Schedule_meetings_options"]}
+                  className={
+                    participants === true
+                      ? styles["Schedule_meetings_options_active"]
+                      : styles["Schedule_meetings_options"]
+                  }
                   onClick={showParticipants}
                 />
                 <Button
                   text={t("Agenda")}
-                  className={styles["Schedule_meetings_options"]}
+                  className={
+                    agenda === true
+                      ? styles["Schedule_meetings_options_active"]
+                      : styles["Schedule_meetings_options"]
+                  }
                   onClick={showAgenda}
                 />
                 <Button
