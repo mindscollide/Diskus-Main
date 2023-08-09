@@ -165,25 +165,41 @@ const Polling = () => {
       Object.keys(PollsReducer.pollingSocket).length > 0
     ) {
       let pollData = PollsReducer.pollingSocket;
+      console.log("Mqtt", pollData);
       let rowCopy = [...rows];
       let findIndex = rowCopy.findIndex(
         (rowData, index) => rowData?.pollID === pollData?.pollID
       );
       if (findIndex !== -1) {
+        console.log("Mqtt");
         const newState = rowCopy.map((obj, index) => {
           // 👇️ if id equals 2 replace object
-          if (findIndex === index) {
-            return pollData;
+          if (
+            findIndex === index &&
+            Number(pollData.pollStatus.pollStatusId) === 4
+          ) {
+            console.log("Mqtt");
+            rowCopy.splice(findIndex, 1);
+            // return rowCopy;
+          } else if (
+            findIndex === index &&
+            Number(pollData.pollStatus.pollStatusId) === 3
+          ) {
+            console.log("Mqtt");
+            rowCopy[index] = pollData;
+            // return rowCopy;
+          } else {
+            console.log("Mqtt");
+            // return obj;
           }
-          return obj;
         });
-        setRows(newState);
+        setRows(rowCopy);
       } else {
         setRows([pollData, ...rowCopy]);
       }
     }
   }, [PollsReducer.pollingSocket]);
-
+  console.log("rowsrowsrowsrows",rows)
   const handleEditpollModal = (record) => {
     let check = 0;
 
@@ -339,6 +355,8 @@ const Polling = () => {
       key: "vote",
       width: "69px",
       render: (text, record) => {
+        console.log("votevotevotevote", record);
+        console.log("votevotevotevote", record.isVoter);
         if (record.pollStatus.pollStatusId === 2) {
           if (record.isVoter) {
             if (record.voteStatus === "Not Voted") {
@@ -414,34 +432,38 @@ const Polling = () => {
       render: (text, record) => {
         return (
           <>
-            <Row>
-              <Col sm={12} md={5} lg={5}>
-                <Tooltip placement="topRight" title={t("Edit")}>
-                  <img
-                    src={EditIcon}
-                    className="cursor-pointer"
-                    width="21.59px"
-                    height="21.59px"
-                    onClick={() => {
-                      handleEditpollModal(record);
-                    }}
-                  />
-                </Tooltip>
-              </Col>
-              <Col sm={12} md={5} lg={5}>
-                <Tooltip placement="topLeft" title={t("Delete")}>
-                  <img
-                    src={BinIcon}
-                    className="cursor-pointer"
-                    width="21.59px"
-                    height="21.59px"
-                    onClick={() => {
-                      deletePollingModal(record);
-                    }}
-                  />
-                </Tooltip>
-              </Col>
-            </Row>
+            {Number(record.pollCreatorID) === Number(userID) ? (
+              <>
+                <Row>
+                  <Col sm={12} md={5} lg={5}>
+                    <Tooltip placement="topRight" title={t("Edit")}>
+                      <img
+                        src={EditIcon}
+                        className="cursor-pointer"
+                        width="21.59px"
+                        height="21.59px"
+                        onClick={() => {
+                          handleEditpollModal(record);
+                        }}
+                      />
+                    </Tooltip>
+                  </Col>
+                  <Col sm={12} md={5} lg={5}>
+                    <Tooltip placement="topLeft" title={t("Delete")}>
+                      <img
+                        src={BinIcon}
+                        className="cursor-pointer"
+                        width="21.59px"
+                        height="21.59px"
+                        onClick={() => {
+                          deletePollingModal(record);
+                        }}
+                      />
+                    </Tooltip>
+                  </Col>
+                </Row>
+              </>
+            ) : null}
           </>
         );
       },

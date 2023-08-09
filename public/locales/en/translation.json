@@ -1114,5 +1114,7 @@
   "Associated-with-this-group": "Associated with this group",
   "Associated-with": "Associated with",
   "Group": "Group",
-  "Committee": "Committee"
+  "Committee": "Committee",
+  "The-poll-due-date-has-been-passed":"The Poll Due Date Has Been Passed",
+  "The-poll-is-not-published":"The Poll is Not Published"
 }
