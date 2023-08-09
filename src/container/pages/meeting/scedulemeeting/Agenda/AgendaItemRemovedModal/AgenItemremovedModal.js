@@ -1,11 +1,6 @@
 import React from "react";
 import styles from "./AgendaItemRemovedModal.module.css";
-import {
-  Modal,
-  Button,
-  TextField,
-  Checkbox,
-} from "../../../../../../components/elements";
+import { Modal, Button } from "../../../../../../components/elements";
 import { showAgenItemsRemovedModal } from "../../../../../../store/actions/NewMeetingActions";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";

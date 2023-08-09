@@ -56,6 +56,13 @@ const showMainAgendaItemRemovedModal = (response) => {
   };
 };
 
+const showAdvancePermissionModal = (response) => {
+  return {
+    type: actions.ADVANCED_PERSMISSION_MODAL,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -65,4 +72,5 @@ export {
   showAddParticipantsModal,
   showAgenItemsRemovedModal,
   showMainAgendaItemRemovedModal,
+  showAdvancePermissionModal,
 };
