@@ -108,7 +108,8 @@ const UserSettings = () => {
     setSignUpCodeToken("");
     setUserOptionsSettings({
       ...userOptionsSettings,
-      AllowCalenderSync: userOptionsSettings.AllowCalenderSync,
+      AllowMicrosoftCalenderSync:
+        userOptionsSettings.AllowMicrosoftCalenderSync,
     });
   };
 
@@ -130,18 +131,6 @@ const UserSettings = () => {
       settingReducer.UserProfileData !== undefined
     ) {
       if (Object.keys(settingReducer.UserProfileData).length > 0) {
-        localStorage.setItem(
-          "officeEventColor",
-          settingReducer.UserProfileData.officeEventColor
-        );
-        localStorage.setItem(
-          "googleEventColor",
-          settingReducer.UserProfileData.googleEventColor
-        );
-        localStorage.setItem(
-          "diskusEventColor",
-          settingReducer.UserProfileData.diskusEventColor
-        );
         setUserOptionsSettings({
           Is2FAEnabled: settingReducer.UserProfileData.iS2FAEnabled,
           EmailOnNewMeeting: settingReducer.UserProfileData.emailOnNewMeeting,
@@ -313,329 +302,320 @@ const UserSettings = () => {
     setSecuritystate(false);
   };
   const onChangeIsTwoFaceEnabled = (e) => {
-    let value = e.target.checked;
-    console.log("onChangeIsTwoFaceEnabled", value);
     setUserOptionsSettings({
       ...userOptionsSettings,
-      Is2FAEnabled: value,
+      Is2FAEnabled: !userOptionsSettings.Is2FAEnabled,
     });
   };
 
-  const onChangeEmailOnNewMeeting = (e) => {
-    let value = e.target.checked;
+  const onChangeEmailOnNewMeeting = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailOnNewMeeting: value,
+      EmailOnNewMeeting: !userOptionsSettings.EmailOnNewMeeting,
     });
   };
 
-  const onChangeEmailOnEditMeeting = (e) => {
-    let value = e.target.checked;
+  const onChangeEmailOnEditMeeting = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailEditMeeting: value,
+      EmailEditMeeting: !userOptionsSettings.EmailEditMeeting,
     });
   };
 
-  const onChangeEmailOnCancelledOrDeletedMeeting = (e) => {
-    let value = e.target.checked;
+  const onChangeEmailOnCancelledOrDeletedMeeting = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailCancelOrDeleteMeeting: value,
+      EmailCancelOrDeleteMeeting:
+        !userOptionsSettings.EmailCancelOrDeleteMeeting,
     });
   };
 
-  const onChangePushNotificationonNewMeeting = (e) => {
-    let value = e.target.checked;
+  const onChangePushNotificationonNewMeeting = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationonNewMeeting: value,
+      PushNotificationonNewMeeting:
+        !userOptionsSettings.PushNotificationonNewMeeting,
     });
   };
 
-  const onChangePushNotificationOnEditMeeting = (e) => {
-    let value = e.target.checked;
+  const onChangePushNotificationOnEditMeeting = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationEditMeeting: value,
+      PushNotificationEditMeeting:
+        !userOptionsSettings.PushNotificationEditMeeting,
     });
   };
 
-  const onChangePushNotificationOnCancelledOrDeleteMeeting = (e) => {
-    let value = e.target.checked;
+  const onChangePushNotificationOnCancelledOrDeleteMeeting = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationCancelledOrDeleteMeeting: value,
+      PushNotificationCancelledOrDeleteMeeting:
+        !userOptionsSettings.PushNotificationCancelledOrDeleteMeeting,
     });
   };
 
-  const onChangeShowNotificationonJoiningParticiapnts = (e) => {
-    let value = e.target.checked;
+  const onChangeShowNotificationonJoiningParticiapnts = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      ShowNotificationOnParticipantJoining: value,
+      ShowNotificationOnParticipantJoining:
+        !userOptionsSettings.ShowNotificationOnParticipantJoining,
     });
   };
 
-  const onChangeAllowCalenderSync = (e) => {
-    let value = e.target.checked;
-    if (value) {
+  const onChangeAllowCalenderSync = (checked) => {
+    if (checked) {
       signIn();
     } else {
       setUserOptionsSettings({
         ...userOptionsSettings,
-        AllowCalenderSync: false,
+        AllowCalenderSync: !userOptionsSettings.AllowCalenderSync,
       });
     }
   };
 
-  const onChangeAllowMicrosoftCalenderSync = (e) => {
-    let value = e.target.checked;
+  const onChangeAllowMicrosoftCalenderSync = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      AllowMicrosoftCalenderSync: value,
+      AllowMicrosoftCalenderSync:
+        !userOptionsSettings.AllowMicrosoftCalenderSync,
     });
   };
 
-  const onChangeEmailWhenAddedToCommittee = (e) => {
-    let value = e.target.checked;
+  const onChangeEmailWhenAddedToCommittee = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailWhenAddedToCommittee: value,
+      EmailWhenAddedToCommittee: !userOptionsSettings.EmailWhenAddedToCommittee,
     });
   };
 
-  const onChangeEmailWhenRemovedFromCommittee = (e) => {
-    let value = e.target.checked;
+  const onChangeEmailWhenRemovedFromCommittee = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailWhenRemovedFromCommittee: value,
+      EmailWhenRemovedFromCommittee:
+        !userOptionsSettings.EmailWhenRemovedFromCommittee,
     });
   };
 
-  const onChangeWhenCommitteeIsDissolvedOrArchived = (e) => {
-    let value = e.target.checked;
+  const onChangeWhenCommitteeIsDissolvedOrArchived = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailWhenCommitteeIsDissolvedOrArchived: value,
+      EmailWhenCommitteeIsDissolvedOrArchived:
+        !userOptionsSettings.EmailWhenCommitteeIsDissolvedOrArchived,
     });
   };
 
-  const onChangeEmailWhenCommitteeIsInActive = (e) => {
-    let value = e.target.checked;
+  const onChangeEmailWhenCommitteeIsInActive = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailWhenCommitteeIsSetInactive: value,
+      EmailWhenCommitteeIsSetInactive:
+        !userOptionsSettings.EmailWhenCommitteeIsSetInactive,
     });
   };
 
-  const onChangePushNotificationWhenAddedToCommittee = (e) => {
-    let value = e.target.checked;
+  const onChangePushNotificationWhenAddedToCommittee = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationWhenAddedToCommittee: value,
+      PushNotificationWhenAddedToCommittee:
+        !userOptionsSettings.PushNotificationWhenAddedToCommittee,
     });
   };
 
-  const onChangePushNotificationWhenRemovedFromCommittee = (e) => {
-    let value = e.target.checked;
+  const onChangePushNotificationWhenRemovedFromCommittee = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationWhenRemovedFromCommittee: value,
+      PushNotificationWhenRemovedFromCommittee:
+        !userOptionsSettings.PushNotificationWhenRemovedFromCommittee,
     });
   };
 
-  const onChangepushNotificationWhenCommitteeIsDissolvedOrArchived = (e) => {
-    let value = e.target.checked;
+  const onChangepushNotificationWhenCommitteeIsDissolvedOrArchived = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationWhenCommitteeIsDissolvedOrArchived: value,
+      PushNotificationWhenCommitteeIsDissolvedOrArchived:
+        !userOptionsSettings.PushNotificationWhenCommitteeIsDissolvedOrArchived,
     });
   };
 
-  const onChangepushNotificationWhenCommitteeIsInActive = (e) => {
-    let value = e.target.checked;
+  const onChangepushNotificationWhenCommitteeIsInActive = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationWhenCommitteeIsInActive: value,
+      PushNotificationWhenCommitteeIsInActive:
+        !userOptionsSettings.PushNotificationWhenCommitteeIsInActive,
     });
   };
 
-  const onChangeEmailWhenAddedToGroup = (e) => {
-    let value = e.target.checked;
+  const onChangeEmailWhenAddedToGroup = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailWhenAddedToGroup: value,
+      EmailWhenAddedToGroup: !userOptionsSettings.EmailWhenAddedToGroup,
     });
   };
 
-  const onChangeEmailWhenRemovedFromGroup = (e) => {
-    let value = e.target.checked;
+  const onChangeEmailWhenRemovedFromGroup = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailWhenRemovedFromGroup: value,
+      EmailWhenRemovedFromGroup: !userOptionsSettings.EmailWhenRemovedFromGroup,
     });
   };
 
-  const onChangeEmailWhenGroupIsDissolvedOrArchived = (e) => {
-    let value = e.target.checked;
+  const onChangeEmailWhenGroupIsDissolvedOrArchived = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailWhenGroupIsDissolvedOrArchived: value,
+      EmailWhenGroupIsDissolvedOrArchived:
+        !userOptionsSettings.EmailWhenGroupIsDissolvedOrArchived,
     });
   };
 
-  const onChangeWhenGroupIsSetInactive = (e) => {
-    let value = e.target.checked;
+  const onChangeWhenGroupIsSetInactive = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailWhenGroupisSetInactive: value,
+      EmailWhenGroupisSetInactive:
+        !userOptionsSettings.EmailWhenGroupisSetInactive,
     });
   };
 
-  const onChangePushNotificationWhenAddedToGroup = (e) => {
-    let value = e.target.checked;
+  const onChangePushNotificationWhenAddedToGroup = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationWhenAddedToGroup: value,
+      PushNotificationWhenAddedToGroup:
+        !userOptionsSettings.PushNotificationWhenAddedToGroup,
     });
   };
 
-  const onChangePushNotificationWhenRemovedFromGroup = (e) => {
-    let value = e.target.checked;
+  const onChangePushNotificationWhenRemovedFromGroup = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationWhenRemovedFromGroup: value,
+      PushNotificationWhenRemovedFromGroup:
+        !userOptionsSettings.PushNotificationWhenRemovedFromGroup,
     });
   };
 
-  const onChangePushNotificationWhenGroupIsDissolvedOrArchived = (e) => {
-    let value = e.target.checked;
+  const onChangePushNotificationWhenGroupIsDissolvedOrArchived = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationWhenGroupIsDissolvedOrArchived: value,
+      PushNotificationWhenGroupIsDissolvedOrArchived:
+        !userOptionsSettings.PushNotificationWhenGroupIsDissolvedOrArchived,
     });
   };
 
-  const onChangePushNotificationWhenGroupIsSetInActive = (e) => {
-    let value = e.target.checked;
+  const onChangePushNotificationWhenGroupIsSetInActive = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationWhenGroupIsInActive: value,
+      PushNotificationWhenGroupIsInActive:
+        !userOptionsSettings.PushNotificationWhenGroupIsInActive,
     });
   };
 
-  const onChangeWhenResolutionIsCirculated = (e) => {
-    let value = e.target.checked;
+  const onChangeWhenResolutionIsCirculated = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailWhenResolutionIsCirculated: value,
+      EmailWhenResolutionIsCirculated:
+        !userOptionsSettings.EmailWhenResolutionIsCirculated,
     });
   };
 
-  const onChangeWhenNewPollIsPublished = (e) => {
-    let value = e.target.checked;
+  const onChangeWhenNewPollIsPublished = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailWhenNewPollIsPublished: value,
+      EmailWhenNewPollIsPublished:
+        !userOptionsSettings.EmailWhenNewPollIsPublished,
     });
   };
 
-  const onChangeWhenPollsDueDateIsPassed = (e) => {
-    let value = e.target.checked;
+  const onChangeWhenPollsDueDateIsPassed = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailWhenPollDueDateIsPassed: value,
+      EmailWhenPollDueDateIsPassed:
+        !userOptionsSettings.EmailWhenPollDueDateIsPassed,
     });
   };
 
-  const onChangeWhenPublishedPollIsDeleted = (e) => {
-    let value = e.target.checked;
+  const onChangeWhenPublishedPollIsDeleted = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailWhenPublishedPollIsDeleted: value,
+      EmailWhenPublishedPollIsDeleted:
+        !userOptionsSettings.EmailWhenPublishedPollIsDeleted,
     });
   };
 
-  const onChangeWhenPublishedPollIsUpdated = (e) => {
-    let value = e.target.checked;
+  const onChangeWhenPublishedPollIsUpdated = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailWhenPublishedPollIsUpdated: value,
+      EmailWhenPublishedPollIsUpdated:
+        !userOptionsSettings.EmailWhenPublishedPollIsUpdated,
     });
   };
 
-  const onChangePushNotificationWhenNewPollIsPublished = (e) => {
-    let value = e.target.checked;
+  const onChangePushNotificationWhenNewPollIsPublished = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationWhenNewPollIsPublished: value,
+      PushNotificationWhenNewPollIsPublished:
+        !userOptionsSettings.PushNotificationWhenNewPollIsPublished,
     });
   };
 
-  const onChangePushNotificationWhenPollsDueDateIsPassed = (e) => {
-    let value = e.target.checked;
+  const onChangePushNotificationWhenPollsDueDateIsPassed = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationWhenPollDueDateIsPassed: value,
+      PushNotificationWhenPollDueDateIsPassed:
+        !userOptionsSettings.PushNotificationWhenPollDueDateIsPassed,
     });
   };
 
-  const onChangePushNotificationWhenPublishedPollIsDeleted = (e) => {
-    let value = e.target.checked;
+  const onChangePushNotificationWhenPublishedPollIsDeleted = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationWhenPublishedPollIsDeleted: value,
+      PushNotificationWhenPublishedPollIsDeleted:
+        !userOptionsSettings.PushNotificationWhenPublishedPollIsDeleted,
     });
   };
 
-  const onChangePushNotificationWhenPublishedPollisUpdated = (e) => {
-    let value = e.target.checked;
+  const onChangePushNotificationWhenPublishedPollisUpdated = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationWhenPublishedPollIsUpdated: value,
+      PushNotificationWhenPublishedPollIsUpdated:
+        !userOptionsSettings.PushNotificationWhenPublishedPollIsUpdated,
     });
   };
 
-  const onChangeEmailWhenResolutionIsCancelledAfterCirculation = (e) => {
-    let value = e.target.checked;
+  const onChangeEmailWhenResolutionIsCancelledAfterCirculation = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailWhenNewResolutionIsCancelledAfterCirculation: value,
+      EmailWhenNewResolutionIsCancelledAfterCirculation:
+        !userOptionsSettings.EmailWhenNewResolutionIsCancelledAfterCirculation,
     });
   };
 
-  const onChangeEmailWhenResolutionisClosed = (e) => {
-    let value = e.target.checked;
+  const onChangeEmailWhenResolutionisClosed = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      EmailWhenResolutionIsClosed: value,
+      EmailWhenResolutionIsClosed:
+        !userOptionsSettings.EmailWhenResolutionIsClosed,
     });
   };
 
-  const onChangePushNotificationWhenResolutionIsCirculated = (e) => {
-    let value = e.target.checked;
+  const onChangePushNotificationWhenResolutionIsCirculated = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationWhenNewResolutionIsCirculated: value,
+      PushNotificationWhenNewResolutionIsCirculated:
+        !userOptionsSettings.PushNotificationWhenNewResolutionIsCirculated,
     });
   };
 
-  const onChangePushNoficationWhenNewResolutionIsCanelledAfterCirculated = (
-    e
-  ) => {
-    let value = e.target.checked;
-    setUserOptionsSettings({
-      ...userOptionsSettings,
-      PushNotificationWhenNewResolutionIsCancelledAfterCirculated: value,
-    });
-  };
+  const onChangePushNoficationWhenNewResolutionIsCanelledAfterCirculated =
+    () => {
+      setUserOptionsSettings({
+        ...userOptionsSettings,
+        PushNotificationWhenNewResolutionIsCancelledAfterCirculated:
+          !userOptionsSettings.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
+      });
+    };
 
-  const onChangePushNotificationWhenResolutionIsClosed = (e) => {
-    let value = e.target.checked;
+  const onChangePushNotificationWhenResolutionIsClosed = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      PushNotificationWhenResolutionISClosed: value,
+      PushNotificationWhenResolutionISClosed:
+        !userOptionsSettings.PushNotificationWhenResolutionISClosed,
     });
   };
 
@@ -661,7 +641,6 @@ const UserSettings = () => {
   };
 
   const updateOrganizationLevelSettings = async () => {
-    console.log("updateOrganizationLevelSettings", userOptionsSettings);
     if (signUpCodeToken != "") {
       await dispatch(
         getGoogleValidToken(navigate, signUpCodeToken, userOptionsSettings, t)
@@ -1009,40 +988,32 @@ const UserSettings = () => {
                 ) : null}
                 {calender ? (
                   <>
-                    {userOptionsSettings.AllowCalenderSync !== null &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
-                      <Row className="mt-3">
-                        <Col lg={12} md={12} sm={12}>
-                          <Checkbox
-                            onChange={onChangeAllowCalenderSync}
-                            checked={userOptionsSettings.AllowCalenderSync}
-                          >
-                            <span className={styles["Class_CheckBox"]}>
-                              {t("Allow-calender-sync")}
-                            </span>
-                          </Checkbox>
-                        </Col>
-                      </Row>
-                    ) : null}
-                    {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
-                      <Row className="mt-3">
-                        <Col lg={12} md={12} sm={12}>
-                          <Checkbox
-                            onChange={onChangeAllowMicrosoftCalenderSync}
-                            checked={
-                              userOptionsSettings.AllowMicrosoftCalenderSync
-                            }
-                          >
-                            <span className={styles["Class_CheckBox"]}>
-                              {t("Allow-microsoft-calender-sync")}
-                            </span>
-                          </Checkbox>
-                        </Col>
-                      </Row>
-                    ) : null}
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeAllowCalenderSync}
+                          checked={userOptionsSettings.AllowCalenderSync}
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Allow-calender-sync")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeAllowMicrosoftCalenderSync}
+                          checked={
+                            userOptionsSettings.AllowMicrosoftCalenderSync
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Allow-microsoft-calender-sync")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
                   </>
                 ) : null}
                 {committee ? (
@@ -1601,79 +1572,69 @@ const UserSettings = () => {
                         </Row>
                       </Col>
                     </Row>
-                    {userOptionsSettings.AllowCalenderSync !== null &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
-                      <Row className="mt-4">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["BackGround_Calender_color_box"]}
-                        >
-                          <Row className="mt-4">
-                            <Col
-                              lg={8}
-                              md={8}
-                              sm={12}
-                              className="d-flex align-items-center justify-content-center"
-                            >
-                              <span className={styles["Diskus_calender"]}>
-                                {t("Google-calender")}
-                              </span>
-                            </Col>
-                            <Col
-                              lg={4}
-                              md={4}
-                              sm={12}
-                              className="d-flex  justify-content-start"
-                            >
-                              <input
-                                type="color"
-                                className="m-0 p-0 circle-color-picker"
-                                value={userOptionsSettings.GoogleCalenderColor}
-                                onChange={onChangeGoogleCalenderColor}
-                              />
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    ) : null}
-                    {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
-                      <Row className="mt-4">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["BackGround_Calender_color_box"]}
-                        >
-                          <Row className="mt-4">
-                            <Col
-                              lg={9}
-                              md={9}
-                              sm={9}
-                              className="d-flex align-items-center justify-content-center"
-                            >
-                              <span className={styles["Diskus_calender"]}>
-                                {t("Microsoft-calender")}
-                              </span>
-                            </Col>
-                            <Col lg={3} md={3} sm={3} className="">
-                              <input
-                                type="color"
-                                className="circle-color-picker"
-                                value={
-                                  userOptionsSettings.MicrosoftCalenderColor
-                                }
-                                onChange={onChangeMicrosoftColorChange}
-                              />
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    ) : null}
+                    <Row className="mt-4">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["BackGround_Calender_color_box"]}
+                      >
+                        <Row className="mt-4">
+                          <Col
+                            lg={8}
+                            md={8}
+                            sm={12}
+                            className="d-flex align-items-center justify-content-center"
+                          >
+                            <span className={styles["Diskus_calender"]}>
+                              {t("Google-calender")}
+                            </span>
+                          </Col>
+                          <Col
+                            lg={4}
+                            md={4}
+                            sm={12}
+                            className="d-flex  justify-content-start"
+                          >
+                            <input
+                              type="color"
+                              className="m-0 p-0 circle-color-picker"
+                              value={userOptionsSettings.GoogleCalenderColor}
+                              onChange={onChangeGoogleCalenderColor}
+                            />
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["BackGround_Calender_color_box"]}
+                      >
+                        <Row className="mt-4">
+                          <Col
+                            lg={9}
+                            md={9}
+                            sm={9}
+                            className="d-flex align-items-center justify-content-center"
+                          >
+                            <span className={styles["Diskus_calender"]}>
+                              {t("Microsoft-calender")}
+                            </span>
+                          </Col>
+                          <Col lg={3} md={3} sm={3} className="">
+                            <input
+                              type="color"
+                              className="circle-color-picker"
+                              value={userOptionsSettings.MicrosoftCalenderColor}
+                              onChange={onChangeMicrosoftColorChange}
+                            />
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
                   </>
                 ) : null}
               </Col>
