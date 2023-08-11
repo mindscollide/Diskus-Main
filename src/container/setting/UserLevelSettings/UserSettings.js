@@ -17,6 +17,15 @@ import ResolutionIcon from "../../../assets/images/ResolutionSetting.svg";
 import line from "../../../assets/images/Line 27.svg";
 import { getUserSetting } from "../../../store/actions/GetUserSetting";
 import { useEffect } from "react";
+import {
+  GoogleOAuthProvider,
+  useGoogleLogin,
+  useGoogleLogout,
+} from "@react-oauth/google";
+import {
+  getGoogleValidToken,
+  revokeToken,
+} from "../../../store/actions/UpdateUserGeneralSetting";
 const UserSettings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -29,6 +38,12 @@ const UserSettings = () => {
   const [group, setGroup] = useState(false);
   const [resolution, setResolution] = useState(false);
   const [polls, setpolls] = useState(false);
+  const roleID = localStorage.getItem("roleID");
+  const { loaded, clientId } = useGoogleLogin({
+    clientId:
+      "509020224191-pst82a2kqjq33phenb35b0bg1i0q762o.apps.googleusercontent.com",
+  });
+  const [signUpCodeToken, setSignUpCodeToken] = useState("");
   const [userOptionsSettings, setUserOptionsSettings] = useState({
     Is2FAEnabled: false,
     EmailOnNewMeeting: false,
@@ -78,6 +93,36 @@ const UserSettings = () => {
   useEffect(() => {
     dispatch(getUserSetting(navigate, t));
   }, []);
+
+  const handleGoogleLoginSuccess = (response) => {
+    console.log(response.code);
+    setSignUpCodeToken(response.code);
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      AllowCalenderSync: true,
+    });
+  };
+  const handleGoogleLoginFailure = (response) => {
+    console.log(response);
+    setSignUpCodeToken("");
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      AllowMicrosoftCalenderSync:
+        userOptionsSettings.AllowMicrosoftCalenderSync,
+    });
+  };
+
+  const signIn = useGoogleLogin({
+    onSuccess: handleGoogleLoginSuccess,
+    onError: handleGoogleLoginFailure,
+    flow: "auth-code",
+    cookiePolicy: "single_host_origin",
+    scope:
+      "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/calendar.events", //openid email profile
+    access_type: "offline",
+    responseType: "code",
+    prompt: "consent",
+  });
 
   useEffect(() => {
     if (
@@ -316,11 +361,15 @@ const UserSettings = () => {
     });
   };
 
-  const onChangeAllowCalenderSync = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
-      AllowCalenderSync: !userOptionsSettings.AllowCalenderSync,
-    });
+  const onChangeAllowCalenderSync = (checked) => {
+    if (checked) {
+      signIn();
+    } else {
+      setUserOptionsSettings({
+        ...userOptionsSettings,
+        AllowCalenderSync: !userOptionsSettings.AllowCalenderSync,
+      });
+    }
   };
 
   const onChangeAllowMicrosoftCalenderSync = () => {
@@ -589,6 +638,18 @@ const UserSettings = () => {
       MicrosoftCalenderColor: e.target.value,
     });
   };
+
+  const updateOrganizationLevelSettings = async () => {
+    if (signUpCodeToken != "") {
+      await dispatch(
+        getGoogleValidToken(navigate, signUpCodeToken, userOptionsSettings, t)
+      );
+      setSignUpCodeToken("");
+    } else {
+      await dispatch(revokeToken(navigate, userOptionsSettings, t));
+    }
+  };
+
   return (
     <>
       <section className={styles["UserConfigsContainer"]}>
@@ -1584,6 +1645,7 @@ const UserSettings = () => {
             <Button
               text={t("Update")}
               className={styles["New_settings_Update_Button"]}
+              onClick={updateOrganizationLevelSettings}
             />
           </Col>
         </Row>
