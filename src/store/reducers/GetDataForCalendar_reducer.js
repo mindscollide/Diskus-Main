@@ -1,4 +1,3 @@
-import inputBaseClasses from "@mui/base/InputUnstyled/inputUnstyledClasses";
 import * as actions from "../action_types";
 
 const initialState = {

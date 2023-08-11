@@ -1,103 +1,103 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 import {
   Checkbox,
   Modal,
   MultiDatePickers,
   Notification,
-} from '../../../components/elements'
-import styles from './UpdatePolls.module.css'
-import BlackCrossIcon from '../../../assets/images/BlackCrossIconModals.svg'
-import WhiteCrossIcon from '../../../assets/images/PollCrossIcon.svg'
-import { Container, Row, Col } from 'react-bootstrap'
-import { useTranslation } from 'react-i18next'
-import AlarmClock from '../../../assets/images/AlarmOptions.svg'
-import { Button, TextField } from '../../../components/elements'
-import gregorian from 'react-date-object/calendars/gregorian'
-import gregorian_en from 'react-date-object/locales/gregorian_en'
-import plusFaddes from '../../../assets/images/PlusFadded.svg'
-import CrossIcon from '../../../assets/images/CrossIcon.svg'
-import profile from '../../../assets/images/profile_polls.svg'
-import GroupIcon from '../../../assets/images/groupdropdown.svg'
-import committeeicon from '../../../assets/images/committeedropdown.svg'
-import profilepic from '../../../assets/images/profiledropdown.svg'
-import { useState } from 'react'
-import Select from 'react-select'
-import makeAnimated from 'react-select/animated'
-import moment from 'moment'
-import { useDispatch, useSelector } from 'react-redux'
-import gregorian_ar from 'react-date-object/locales/gregorian_ar'
+} from "../../../components/elements";
+import styles from "./UpdatePolls.module.css";
+import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
+import WhiteCrossIcon from "../../../assets/images/PollCrossIcon.svg";
+import { Container, Row, Col } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import AlarmClock from "../../../assets/images/AlarmOptions.svg";
+import { Button, TextField } from "../../../components/elements";
+import gregorian from "react-date-object/calendars/gregorian";
+import gregorian_en from "react-date-object/locales/gregorian_en";
+import plusFaddes from "../../../assets/images/PlusFadded.svg";
+import CrossIcon from "../../../assets/images/CrossIcon.svg";
+import profile from "../../../assets/images/profile_polls.svg";
+import GroupIcon from "../../../assets/images/groupdropdown.svg";
+import committeeicon from "../../../assets/images/committeedropdown.svg";
+import profilepic from "../../../assets/images/profiledropdown.svg";
+import { useState } from "react";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import {
   setEditpollModal,
   updatePollsApi,
-} from '../../../store/actions/Polls_actions'
-import { useNavigate } from 'react-router-dom'
+} from "../../../store/actions/Polls_actions";
+import { useNavigate } from "react-router-dom";
 import {
   convertintoGMTCalender,
   multiDatePickerDateChangIntoUTC,
   newDateFormaterAsPerUTC,
-} from '../../../commen/functions/date_formater'
-import { regexOnlyForNumberNCharacters } from '../../../commen/functions/regex'
+} from "../../../commen/functions/date_formater";
+import { regexOnlyForNumberNCharacters } from "../../../commen/functions/regex";
 
 const UpdatePolls = () => {
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const [error, setError] = useState(false)
-  const { t } = useTranslation()
-  const animatedComponents = makeAnimated()
-  let currentLanguage = localStorage.getItem('i18nextLng')
-  const { PollsReducer } = useSelector((state) => state)
-  const [polloptions, setPolloptions] = useState([])
-  const [selectedsearch, setSelectedsearch] = useState([])
-  const [dropdowndata, setDropdowndata] = useState([])
-  const [pollmembers, setPollmembers] = useState([])
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [error, setError] = useState(false);
+  const { t } = useTranslation();
+  const animatedComponents = makeAnimated();
+  let currentLanguage = localStorage.getItem("i18nextLng");
+  const { PollsReducer } = useSelector((state) => state);
+  const [polloptions, setPolloptions] = useState([]);
+  const [selectedsearch, setSelectedsearch] = useState([]);
+  const [dropdowndata, setDropdowndata] = useState([]);
+  const [pollmembers, setPollmembers] = useState([]);
   const [open, setOpen] = useState({
     flag: false,
-    message: '',
-  })
+    message: "",
+  });
 
   //For Custom language datepicker
-  const [calendarValue, setCalendarValue] = useState(gregorian)
-  const [localValue, setLocalValue] = useState(gregorian_en)
-  const [defineUnsaveModal, setDefineUnsaveModal] = useState(false)
-  const [checkForPollStatus, setCheckForPollStatus] = useState(false)
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
+  const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
+  const [checkForPollStatus, setCheckForPollStatus] = useState(false);
   const [options, setOptions] = useState([
     {
       name: 1,
-      value: '',
+      value: "",
     },
     {
       name: 2,
-      value: '',
+      value: "",
     },
     {
       name: 3,
-      value: '',
+      value: "",
     },
-  ])
+  ]);
 
   const [UpdatePolls, setUpdatePolls] = useState({
-    TypingTitle: '',
+    TypingTitle: "",
     AllowMultipleUser: false,
-    date: '',
+    date: "",
     pollID: 0,
-  })
+  });
 
   useEffect(() => {
     if (currentLanguage != undefined) {
-      if (currentLanguage === 'en') {
-        setCalendarValue(gregorian)
-        setLocalValue(gregorian_en)
-      } else if (currentLanguage === 'ar') {
-        setCalendarValue(gregorian)
-        setLocalValue(gregorian_ar)
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
       }
     }
-  }, [currentLanguage])
+  }, [currentLanguage]);
 
   useEffect(() => {
-    let pollsData = PollsReducer.gellAllCommittesandGroups
+    let pollsData = PollsReducer.gellAllCommittesandGroups;
     if (pollsData !== null && pollsData !== undefined) {
-      let temp = []
+      let temp = [];
       if (Object.keys(pollsData).length > 0) {
         if (Object.keys(pollsData.groups).length > 0) {
           pollsData.groups.map((a, index) => {
@@ -113,7 +113,7 @@ const UpdatePolls = () => {
                       className="d-flex gap-2 align-items-center"
                     >
                       <img src={GroupIcon} height="16.45px" width="18.32px" />
-                      <span className={styles['NameDropDown']}>
+                      <span className={styles["NameDropDown"]}>
                         {a.groupName}
                       </span>
                     </Col>
@@ -121,9 +121,9 @@ const UpdatePolls = () => {
                 </>
               ),
               type: 1,
-            }
-            temp.push(newData)
-          })
+            };
+            temp.push(newData);
+          });
         }
         if (Object.keys(pollsData.committees).length > 0) {
           pollsData.committees.map((a, index) => {
@@ -143,7 +143,7 @@ const UpdatePolls = () => {
                         width="21.71px"
                         height="18.61px"
                       />
-                      <span className={styles['NameDropDown']}>
+                      <span className={styles["NameDropDown"]}>
                         {a.committeeName}
                       </span>
                     </Col>
@@ -151,9 +151,9 @@ const UpdatePolls = () => {
                 </>
               ),
               type: 2,
-            }
-            temp.push(newData)
-          })
+            };
+            temp.push(newData);
+          });
         }
         if (Object.keys(pollsData.organizationUsers).length > 0) {
           pollsData.organizationUsers.map((a, index) => {
@@ -170,11 +170,11 @@ const UpdatePolls = () => {
                     >
                       <img
                         src={profilepic}
-                        className={styles['UserProfilepic']}
+                        className={styles["UserProfilepic"]}
                         width="18px"
                         height="18px"
                       />
-                      <span className={styles['NameDropDown']}>
+                      <span className={styles["NameDropDown"]}>
                         {a.userName}
                       </span>
                     </Col>
@@ -182,34 +182,34 @@ const UpdatePolls = () => {
                 </>
               ),
               type: 3,
-            }
-            temp.push(newData)
-          })
+            };
+            temp.push(newData);
+          });
         }
-        setDropdowndata(temp)
+        setDropdowndata(temp);
       } else {
-        setDropdowndata([])
+        setDropdowndata([]);
       }
     }
-  }, [PollsReducer.gellAllCommittesandGroups])
+  }, [PollsReducer.gellAllCommittesandGroups]);
 
   useEffect(() => {
     if (PollsReducer.Allpolls != null && PollsReducer.Allpolls != undefined) {
-      let pollsDetails = PollsReducer.Allpolls
+      let pollsDetails = PollsReducer.Allpolls;
       if (Object.keys(PollsReducer.Allpolls).length > 0) {
-        let members = []
+        let members = [];
         PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
-          members.push(data)
-        })
-        setPollmembers(members)
+          members.push(data);
+        });
+        setPollmembers(members);
         let newDateGmt = convertintoGMTCalender(
-          pollsDetails.poll.pollDetails.dueDate,
-        )
-        let DateDate = new Date(newDateGmt)
+          pollsDetails.poll.pollDetails.dueDate
+        );
+        let DateDate = new Date(newDateGmt);
         if (pollsDetails.poll.pollDetails.pollStatus.pollStatusId === 2) {
-          setCheckForPollStatus(true)
+          setCheckForPollStatus(true);
         } else {
-          setCheckForPollStatus(false)
+          setCheckForPollStatus(false);
         }
         setUpdatePolls({
           ...UpdatePolls,
@@ -217,247 +217,247 @@ const UpdatePolls = () => {
           AllowMultipleUser: pollsDetails.poll.pollDetails.allowMultipleAnswers,
           date: DateDate,
           pollID: pollsDetails.poll.pollDetails.pollID,
-        })
+        });
         try {
           if (Object.keys(PollsReducer.Allpolls.poll.pollOptions).length > 2) {
-            let Option = []
+            let Option = [];
             PollsReducer.Allpolls.poll.pollOptions.map((data, index) => {
-              let dataAdd = { name: index + 1, value: data.answer }
-              Option.push(dataAdd)
-            })
-            setOptions(Option)
+              let dataAdd = { name: index + 1, value: data.answer };
+              Option.push(dataAdd);
+            });
+            setOptions(Option);
           } else if (
             Object.keys(PollsReducer.Allpolls.poll.pollOptions).length <= 2
           ) {
             const updatedOptions = options.map((option) => {
               const apiData = PollsReducer.Allpolls.poll.pollOptions.find(
-                (apiOption, index) => index + 1 === option.name,
-              )
-              return apiData ? { ...option, value: apiData.answer } : option
-            })
-            setOptions(updatedOptions)
+                (apiOption, index) => index + 1 === option.name
+              );
+              return apiData ? { ...option, value: apiData.answer } : option;
+            });
+            setOptions(updatedOptions);
           }
         } catch {}
       }
     }
-  }, [PollsReducer.Allpolls])
+  }, [PollsReducer.Allpolls]);
 
-  const allValuesNotEmpty = options.every((item) => item.value !== '')
+  const allValuesNotEmpty = options.every((item) => item.value !== "");
 
   const allValuesNotEmptyAcceptLastOne = options.every((item, index) => {
     if (index === options.length - 1) {
-      return true // Allow the last object's value to be empty
+      return true; // Allow the last object's value to be empty
     }
-    return item.value !== ''
-  })
+    return item.value !== "";
+  });
 
   // for add user for assignes
   const handleAddUsers = () => {
-    let pollsData = PollsReducer.gellAllCommittesandGroups
-    let tem = [...pollmembers]
+    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    let tem = [...pollmembers];
     if (Object.keys(selectedsearch).length > 0) {
       try {
         selectedsearch.map((seledtedData, index) => {
           if (seledtedData.type === 1) {
             let check1 = pollsData.groups.find(
-              (data, index) => data.groupID === seledtedData.value,
-            )
+              (data, index) => data.groupID === seledtedData.value
+            );
             if (check1 != undefined) {
-              let groupUsers = check1.groupUsers
+              let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
                 groupUsers.map((gUser, index) => {
                   let check2 = pollmembers.find(
-                    (data, index) => data.UserID === gUser.userID,
-                  )
+                    (data, index) => data.UserID === gUser.userID
+                  );
                   if (check2 != undefined) {
                   } else {
                     let newUser = {
                       userName: gUser.userName,
                       userID: gUser.userID,
-                    }
-                    tem.push(newUser)
+                    };
+                    tem.push(newUser);
                   }
-                })
+                });
               }
             }
           } else if (seledtedData.type === 2) {
-            console.log('members check')
+            console.log("members check");
             let check1 = pollsData.committees.find(
-              (data, index) => data.committeeID === seledtedData.value,
-            )
+              (data, index) => data.committeeID === seledtedData.value
+            );
             if (check1 != undefined) {
-              let committeesUsers = check1.committeeUsers
+              let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
                 committeesUsers.map((cUser, index) => {
                   let check2 = pollmembers.find(
-                    (data, index) => data.UserID === cUser.userID,
-                  )
+                    (data, index) => data.UserID === cUser.userID
+                  );
                   if (check2 != undefined) {
                   } else {
                     let newUser = {
                       userName: cUser.userName,
                       userID: cUser.userID,
-                    }
-                    tem.push(newUser)
+                    };
+                    tem.push(newUser);
                   }
-                })
+                });
               }
             }
           } else if (seledtedData.type === 3) {
             let check1 = pollmembers.find(
-              (data, index) => data.UserID === seledtedData.value,
-            )
+              (data, index) => data.UserID === seledtedData.value
+            );
             if (check1 != undefined) {
             } else {
               let check2 = pollsData.organizationUsers.find(
-                (data, index) => data.userID === seledtedData.value,
-              )
+                (data, index) => data.userID === seledtedData.value
+              );
               if (check2 != undefined) {
                 let newUser = {
                   userName: check2.userName,
                   userID: check2.userID,
-                }
-                tem.push(newUser)
+                };
+                tem.push(newUser);
               }
             }
           } else {
           }
-        })
+        });
       } catch {
-        console.log('error in add')
+        console.log("error in add");
       }
-      console.log('members check', tem)
-      const uniqueData = new Set(tem.map(JSON.stringify))
+      console.log("members check", tem);
+      const uniqueData = new Set(tem.map(JSON.stringify));
 
       // Convert the Set back to an array of objects
-      const result = Array.from(uniqueData).map(JSON.parse)
-      setPollmembers(result)
-      setSelectedsearch([])
+      const result = Array.from(uniqueData).map(JSON.parse);
+      setPollmembers(result);
+      setSelectedsearch([]);
     } else {
       // setopen notionation work here
     }
-  }
+  };
 
-  useEffect(() => {}, [UpdatePolls.date])
+  useEffect(() => {}, [UpdatePolls.date]);
 
   const addNewRow = () => {
     if (options.length > 1) {
       if (allValuesNotEmpty) {
-        let lastIndex = options.length - 1
-        if (options[lastIndex].value != '') {
-          const randomNumber = Math.floor(Math.random() * 100) + 1
-          let newOptions = { name: randomNumber, value: '' }
-          setOptions([...options, newOptions])
+        let lastIndex = options.length - 1;
+        if (options[lastIndex].value != "") {
+          const randomNumber = Math.floor(Math.random() * 100) + 1;
+          let newOptions = { name: randomNumber, value: "" };
+          setOptions([...options, newOptions]);
         }
       } else {
         setOpen({
           flag: true,
-          message: t('Please-fill-options'),
-        })
+          message: t("Please-fill-options"),
+        });
       }
     } else {
       setOpen({
         flag: true,
-        message: t('Please-fill-options'),
-      })
+        message: t("Please-fill-options"),
+      });
     }
-  }
+  };
 
   const cancellAnyUser = (index) => {
-    let removeData = [...pollmembers]
-    removeData.splice(index, 1)
-    setPollmembers(removeData)
-  }
+    let removeData = [...pollmembers];
+    removeData.splice(index, 1);
+    setPollmembers(removeData);
+  };
 
   const HandleOptionChange = (e) => {
-    let name = parseInt(e.target.name)
-    let newValue = e.target.value
-    let valueCheck = regexOnlyForNumberNCharacters(newValue)
+    let name = parseInt(e.target.name);
+    let newValue = e.target.value;
+    let valueCheck = regexOnlyForNumberNCharacters(newValue);
     setOptions((prevState) =>
       prevState.map((item) => {
-        return item.name === name ? { ...item, value: valueCheck } : item
-      }),
-    )
-  }
+        return item.name === name ? { ...item, value: valueCheck } : item;
+      })
+    );
+  };
 
   const handleSelectValue = (value) => {
-    setSelectedsearch(value)
-  }
+    setSelectedsearch(value);
+  };
 
   const changeDateStartHandler = (date) => {
-    let newDate = moment(date).format('YYYYMMDD')
-    let DateDate = new Date(date)
-    console.log('changeDateStartHandler', newDate)
+    let newDate = moment(date).format("YYYYMMDD");
+    let DateDate = new Date(date);
+    console.log("changeDateStartHandler", newDate);
     setUpdatePolls({
       ...UpdatePolls,
       date: DateDate,
-    })
-  }
+    });
+  };
 
   const HandleCancelFunction = (index) => {
-    let optionscross = [...options]
-    optionscross.splice(index, 1)
-    setOptions(optionscross)
-  }
+    let optionscross = [...options];
+    optionscross.splice(index, 1);
+    setOptions(optionscross);
+  };
 
   const changeDateStartHandler2 = (date) => {
-    let newDate = moment(date).format('DD MMMM YYYY')
-    return newDate
-  }
+    let newDate = moment(date).format("DD MMMM YYYY");
+    return newDate;
+  };
 
   const HandlecancellButton = () => {
-    setDefineUnsaveModal(true)
-  }
+    setDefineUnsaveModal(true);
+  };
 
   const HandleChangeUpdatePolls = (e) => {
-    let name = e.target.name
-    let value = e.target.value
-    if (name === 'TypingTitle') {
-      let valueCheck = regexOnlyForNumberNCharacters(value)
-      if (valueCheck !== '') {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "TypingTitle") {
+      let valueCheck = regexOnlyForNumberNCharacters(value);
+      if (valueCheck !== "") {
         setUpdatePolls({
           ...UpdatePolls,
           TypingTitle: valueCheck,
-        })
+        });
       } else {
         setUpdatePolls({
           ...UpdatePolls,
-          TypingTitle: '',
-        })
+          TypingTitle: "",
+        });
       }
     }
-  }
+  };
 
   const HandleCheckBox = () => {
     setUpdatePolls({
       ...UpdatePolls,
       AllowMultipleUser: !UpdatePolls.AllowMultipleUser, // Corrected property name
-    })
-  }
+    });
+  };
 
   const handleUpdateClick = (value) => {
-    const organizationid = localStorage.getItem('organizationID')
-    const createrid = localStorage.getItem('userID')
-    let users = []
-    let optionsListData = []
+    const organizationid = localStorage.getItem("organizationID");
+    const createrid = localStorage.getItem("userID");
+    let users = [];
+    let optionsListData = [];
     if (
-      UpdatePolls.TypingTitle != '' &&
-      UpdatePolls.datepoll != '' &&
+      UpdatePolls.TypingTitle != "" &&
+      UpdatePolls.datepoll != "" &&
       Object.keys(pollmembers).length > 0 &&
       Object.keys(options).length >= 2 &&
       allValuesNotEmpty
     ) {
       if (Object.keys(pollmembers).length > 0) {
         pollmembers.map((data, index) => {
-          users.push(data.userID)
-        })
+          users.push(data.userID);
+        });
       }
       if (Object.keys(options).length > 0) {
         options.map((optionData, index) => {
-          if (optionData.value !== '') {
-            optionsListData.push(optionData.value)
+          if (optionData.value !== "") {
+            optionsListData.push(optionData.value);
           }
-        })
+        });
       }
       let data = {
         PollDetails: {
@@ -471,51 +471,51 @@ const UpdatePolls = () => {
         },
         ParticipantIDs: users,
         PollAnswers: optionsListData,
-      }
+      };
 
-      dispatch(updatePollsApi(navigate, data, t))
+      dispatch(updatePollsApi(navigate, data, t));
     } else {
-      setError(true)
+      setError(true);
 
-      if (UpdatePolls.TypingTitle === '') {
+      if (UpdatePolls.TypingTitle === "") {
         setOpen({
           ...open,
           flag: true,
-          message: t('Title-is-required'),
-        })
-      } else if (UpdatePolls.datepoll === '') {
+          message: t("Title-is-required"),
+        });
+      } else if (UpdatePolls.datepoll === "") {
         setOpen({
           ...open,
           flag: true,
-          message: t('Select-date'),
-        })
+          message: t("Select-date"),
+        });
       } else if (Object.keys(pollmembers).length > 0) {
         setOpen({
           ...open,
           flag: true,
-          message: t('Atleat-one-member-required'),
-        })
+          message: t("Atleat-one-member-required"),
+        });
       } else if (Object.keys(options).length >= 2) {
         setOpen({
           ...open,
           flag: true,
-          message: t('Required-atleast-two-options'),
-        })
+          message: t("Required-atleast-two-options"),
+        });
       } else if (allValuesNotEmpty) {
         setOpen({
           ...open,
           flag: true,
-          message: t('Please-fill-all-reqired-fields'),
-        })
+          message: t("Please-fill-all-reqired-fields"),
+        });
       } else {
         setOpen({
           ...open,
           flag: true,
-          message: t('Please-fill-all-reqired-fields'),
-        })
+          message: t("Please-fill-all-reqired-fields"),
+        });
       }
     }
-  }
+  };
 
   return (
     <>
@@ -523,13 +523,13 @@ const UpdatePolls = () => {
         <Modal
           show={PollsReducer.editpollmodal}
           setShow={dispatch(setEditpollModal)}
-          modalTitleClassName={styles['ModalHeader_Update_poll']}
+          modalTitleClassName={styles["ModalHeader_Update_poll"]}
           modalHeaderClassName={
-            styles['ModalRequestHeader_polling_update_modal']
+            styles["ModalRequestHeader_polling_update_modal"]
           }
-          modalFooterClassName={'d-block'}
+          modalFooterClassName={"d-block"}
           onHide={() => {
-            setDefineUnsaveModal(true)
+            setDefineUnsaveModal(true);
           }}
           ModalTitle={
             <>
@@ -540,7 +540,7 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles['Back_Ground_strip_Create_Poll_modal']}
+                      className={styles["Back_Ground_strip_Create_Poll_modal"]}
                     >
                       <Row className="mt-2">
                         <Col
@@ -554,9 +554,9 @@ const UpdatePolls = () => {
                             width="14.97px"
                             height="14.66px"
                           />
-                          <span className={styles['Due_Date_heading']}>
-                            {t('Due-date-on')}{' '}
-                            <span className={styles['Date_update_poll']}>
+                          <span className={styles["Due_Date_heading"]}>
+                            {t("Due-date-on")}{" "}
+                            <span className={styles["Date_update_poll"]}>
                               {changeDateStartHandler2(UpdatePolls.date)}
                             </span>
                           </span>
@@ -570,7 +570,7 @@ const UpdatePolls = () => {
                             locale={localValue}
                             onChange={(value) =>
                               changeDateStartHandler(
-                                value?.toDate?.().toString(),
+                                value?.toDate?.().toString()
                               )
                             }
                           />
@@ -582,12 +582,12 @@ const UpdatePolls = () => {
                     <Col>
                       <p
                         className={
-                          error && UpdatePolls.date === ''
-                            ? ` ${styles['errorMessage-inLogin_1']} `
-                            : `${styles['errorMessage-inLogin_1_hidden']}`
+                          error && UpdatePolls.date === ""
+                            ? ` ${styles["errorMessage-inLogin_1"]} `
+                            : `${styles["errorMessage-inLogin_1_hidden"]}`
                         }
                       >
-                        {t('Please-select-due-date')}
+                        {t("Please-select-due-date")}
                       </p>
                     </Col>
                   </Row>
@@ -606,11 +606,11 @@ const UpdatePolls = () => {
                       sm={12}
                       className="d-flex justify-content-center"
                     >
-                      <span className={styles['Unsaved_heading']}>
-                        {t('Any-unsaved-changes-will-be')}
+                      <span className={styles["Unsaved_heading"]}>
+                        {t("Any-unsaved-changes-will-be")}
                         <br />
-                        <span className={styles['LostClass']}>
-                          {t('Lost-continue')}
+                        <span className={styles["LostClass"]}>
+                          {t("Lost-continue")}
                         </span>
                       </span>
                     </Col>
@@ -628,22 +628,22 @@ const UpdatePolls = () => {
                       <img
                         src={BlackCrossIcon}
                         className={
-                          styles['Cross_Icon_Styling_Update_Poll_Modal']
+                          styles["Cross_Icon_Styling_Update_Poll_Modal"]
                         }
                         width="16px"
                         height="16px"
                         onClick={() => {
-                          setDefineUnsaveModal(true)
+                          setDefineUnsaveModal(true);
                         }}
                       />
                     </Col>
                   </Row>
-                  <Row className={styles['Overall_padding']}>
+                  <Row className={styles["Overall_padding"]}>
                     <Col lg={12} md={12} sm={12}>
                       <Row className="d-flex">
                         <Col lg={12} md={12} sm={12}>
-                          <span className={styles['Update_Poll_Heading']}>
-                            {t('Update-poll')}
+                          <span className={styles["Update_Poll_Heading"]}>
+                            {t("Update-poll")}
                           </span>
                         </Col>
                       </Row>
@@ -653,20 +653,20 @@ const UpdatePolls = () => {
                             lg={12}
                             md={12}
                             sm={12}
-                            className={`${styles['BOx_for_yes']} d-flex`}
+                            className={`${styles["BOx_for_yes"]} d-flex`}
                           >
                             <Row className="mt-2">
                               <Col lg={12} md={12} sm={12}>
                                 {UpdatePolls.TypingTitle.length > 100 ? (
                                   // Add d-flex class and justify-content-center to center the text
                                   <div
-                                    className={`${styles['scrollable-title']} d-flex justify-content-center`}
+                                    className={`${styles["scrollable-title"]} d-flex justify-content-center`}
                                   >
                                     <p>{UpdatePolls.TypingTitle}</p>
                                   </div>
                                 ) : (
                                   <div
-                                    className={`${styles['scrollable-title2']} d-flex align-items-center`}
+                                    className={`${styles["scrollable-title2"]} d-flex align-items-center`}
                                   >
                                     <p>{UpdatePolls.TypingTitle}</p>
                                   </div>
@@ -679,10 +679,10 @@ const UpdatePolls = () => {
                         <Row className="mt-2">
                           <Col lg={12} md={12} sm={12}>
                             <TextField
-                              placeholder={t('Tile')}
-                              applyClass={'PollingCreateModal'}
+                              placeholder={t("Tile")}
+                              applyClass={"PollingCreateModal"}
                               labelClass="d-none"
-                              name={'TypingTitle'}
+                              name={"TypingTitle"}
                               value={UpdatePolls.TypingTitle}
                               change={HandleChangeUpdatePolls}
                             />
@@ -694,12 +694,12 @@ const UpdatePolls = () => {
                         <Col>
                           <p
                             className={
-                              error && UpdatePolls.TypingTitle === ''
-                                ? ` ${styles['errorMessage-inLogin']} `
-                                : `${styles['errorMessage-inLogin_hidden']}`
+                              error && UpdatePolls.TypingTitle === ""
+                                ? ` ${styles["errorMessage-inLogin"]} `
+                                : `${styles["errorMessage-inLogin_hidden"]}`
                             }
                           >
-                            {t('Please-enter-title')}
+                            {t("Please-enter-title")}
                           </p>
                         </Col>
                       </Row>
@@ -707,7 +707,7 @@ const UpdatePolls = () => {
                       {PollsReducer.editPollModalFlag ? (
                         <Row className="mt-2">
                           <Col
-                            className={styles['scroll-height']}
+                            className={styles["scroll-height"]}
                             sm={12}
                             md={12}
                             lg={12}
@@ -718,24 +718,24 @@ const UpdatePolls = () => {
                                   <>
                                     <span
                                       key={index}
-                                      className={`${styles['BOx_for_yes']} d-flex`}
+                                      className={`${styles["BOx_for_yes"]} d-flex`}
                                     >
                                       {list.value.length > 100 ? (
                                         <div
-                                          className={`${styles['scrollable-title']} d-flex justify-content-center `}
+                                          className={`${styles["scrollable-title"]} d-flex justify-content-center `}
                                         >
                                           {list.value}
                                         </div>
                                       ) : (
                                         <div
-                                          className={`${styles['scrollable-title2']} d-flex align-items-center`}
+                                          className={`${styles["scrollable-title2"]} d-flex align-items-center`}
                                         >
                                           {list.value}
                                         </div>
                                       )}
                                     </span>
                                   </>
-                                )
+                                );
                               })}
                           </Col>
                         </Row>
@@ -745,7 +745,7 @@ const UpdatePolls = () => {
                             lg={12}
                             md={12}
                             sm={12}
-                            className={styles['Scroller_For_UpdatePollModal']}
+                            className={styles["Scroller_For_UpdatePollModal"]}
                           >
                             {options.length > 0
                               ? options.map((data, index) => {
@@ -758,12 +758,12 @@ const UpdatePolls = () => {
                                               <span className="position-relative">
                                                 <TextField
                                                   placeholder={
-                                                    'Option' +
-                                                    ' ' +
+                                                    "Option" +
+                                                    " " +
                                                     parseInt(index + 1)
                                                   }
                                                   applyClass={
-                                                    'PollingCreateModal'
+                                                    "PollingCreateModal"
                                                   }
                                                   labelClass="d-none"
                                                   name={data.name}
@@ -783,12 +783,12 @@ const UpdatePolls = () => {
                                               <span className="position-relative">
                                                 <TextField
                                                   placeholder={
-                                                    'Option' +
-                                                    ' ' +
+                                                    "Option" +
+                                                    " " +
                                                     parseInt(index + 1)
                                                   }
                                                   applyClass={
-                                                    'PollingCreateModal'
+                                                    "PollingCreateModal"
                                                   }
                                                   labelClass="d-none"
                                                   name={data.name}
@@ -806,14 +806,14 @@ const UpdatePolls = () => {
                                                       }
                                                       className={
                                                         styles[
-                                                          'Cross-icon-Create_poll'
+                                                          "Cross-icon-Create_poll"
                                                         ]
                                                       }
                                                     />
                                                   }
                                                   iconClassName={
                                                     styles[
-                                                      'polling_Options_backGround'
+                                                      "polling_Options_backGround"
                                                     ]
                                                   }
                                                 />
@@ -823,7 +823,7 @@ const UpdatePolls = () => {
                                         </>
                                       )}
                                     </>
-                                  )
+                                  );
                                 })
                               : null}
                             {PollsReducer.editPollModalFlag === false ? (
@@ -837,7 +837,7 @@ const UpdatePolls = () => {
                                             lg={12}
                                             md={12}
                                             sm={12}
-                                            className={styles['ClassAddButton']}
+                                            className={styles["ClassAddButton"]}
                                           >
                                             <img
                                               src={plusFaddes}
@@ -845,14 +845,14 @@ const UpdatePolls = () => {
                                               height="15.87px"
                                             />
                                             <span>
-                                              {t('Add-another-field')}
+                                              {t("Add-another-field")}
                                             </span>
                                           </Col>
                                         </Row>
                                       </>
                                     }
                                     onClick={addNewRow}
-                                    className={styles['Add_another_options']}
+                                    className={styles["Add_another_options"]}
                                   />
                                 </Col>
                               </Row>
@@ -864,11 +864,11 @@ const UpdatePolls = () => {
                                 <p
                                   className={
                                     error && allValuesNotEmpty === false
-                                      ? ` ${styles['errorMessage-inLogin']} `
-                                      : `${styles['errorMessage-inLogin_hidden']}`
+                                      ? ` ${styles["errorMessage-inLogin"]} `
+                                      : `${styles["errorMessage-inLogin_hidden"]}`
                                   }
                                 >
-                                  {t('Options-must-be-more-than-2')}
+                                  {t("Options-must-be-more-than-2")}
                                 </p>
                               </Col>
                             </Row>
@@ -889,8 +889,8 @@ const UpdatePolls = () => {
                               PollsReducer.editPollModalFlag ? true : false
                             }
                           />
-                          <p className={styles['CheckBoxTitle']}>
-                            {t('Allow-multiple-answers')}
+                          <p className={styles["CheckBoxTitle"]}>
+                            {t("Allow-multiple-answers")}
                           </p>
                         </Col>
                       </Row>
@@ -898,7 +898,7 @@ const UpdatePolls = () => {
                       {PollsReducer.editPollModalFlag === false ? (
                         <>
                           <Row>
-                            {' '}
+                            {" "}
                             <Col
                               lg={12}
                               md={12}
@@ -908,15 +908,15 @@ const UpdatePolls = () => {
                               <Select
                                 onChange={handleSelectValue}
                                 value={selectedsearch}
-                                classNamePrefix={'selectMember'}
+                                classNamePrefix={"selectMember"}
                                 closeMenuOnSelect={false}
                                 components={animatedComponents}
                                 isMulti
                                 options={dropdowndata}
                               />
                               <Button
-                                text={t('ADD')}
-                                className={styles['ADD_Btn_CreatePool_Modal']}
+                                text={t("ADD")}
+                                className={styles["ADD_Btn_CreatePool_Modal"]}
                                 onClick={handleAddUsers}
                               />
                             </Col>
@@ -926,11 +926,11 @@ const UpdatePolls = () => {
                               <p
                                 className={
                                   error && pollmembers.length === 0
-                                    ? ` ${styles['errorMessage-inLogin']} `
-                                    : `${styles['errorMessage-inLogin_hidden']}`
+                                    ? ` ${styles["errorMessage-inLogin"]} `
+                                    : `${styles["errorMessage-inLogin_hidden"]}`
                                 }
                               >
-                                {t('Select-atleast-one-participants')}
+                                {t("Select-atleast-one-participants")}
                               </p>
                             </Col>
                           </Row>
@@ -942,9 +942,9 @@ const UpdatePolls = () => {
                         sm={12}
                         md={12}
                         lg={12}
-                        className={styles['Participant_heading']}
+                        className={styles["Participant_heading"]}
                       >
-                        {t('Participants')}
+                        {t("Participants")}
                       </Col>
                       <Row>
                         <Col
@@ -952,7 +952,7 @@ const UpdatePolls = () => {
                           md={12}
                           sm={12}
                           className={
-                            styles['Scroller_For_CreatePollModal2_Update_poll']
+                            styles["Scroller_For_CreatePollModal2_Update_poll"]
                           }
                         >
                           <Row>
@@ -967,7 +967,7 @@ const UpdatePolls = () => {
                                 >
                                   <Row>
                                     <Col lg={11} md={11} sm={12}>
-                                      <Row className={styles['Card_border2']}>
+                                      <Row className={styles["Card_border2"]}>
                                         <Col sm={12} md={10} lg={10}>
                                           <img
                                             src={profile}
@@ -975,7 +975,7 @@ const UpdatePolls = () => {
                                             height="33px"
                                           />
                                           <span
-                                            className={styles['Name_cards']}
+                                            className={styles["Name_cards"]}
                                           >
                                             {data.userName}
                                           </span>
@@ -997,7 +997,7 @@ const UpdatePolls = () => {
                                     </Col>
                                   </Row>
                                 </Col>
-                              )
+                              );
                             })}
                           </Row>
                         </Col>
@@ -1020,18 +1020,18 @@ const UpdatePolls = () => {
                       className="d-flex justify-content-center gap-3"
                     >
                       <Button
-                        text={t('No')}
-                        className={styles['No_Btn_polls_delModal']}
+                        text={t("No")}
+                        className={styles["No_Btn_polls_delModal"]}
                         onClick={() => {
-                          setDefineUnsaveModal(false)
+                          setDefineUnsaveModal(false);
                         }}
                       />
                       <Button
-                        text={t('Yes')}
-                        className={styles['Yes_Btn_polls_delModal']}
+                        text={t("Yes")}
+                        className={styles["Yes_Btn_polls_delModal"]}
                         onClick={() => {
-                          setDefineUnsaveModal(false)
-                          dispatch(setEditpollModal(false))
+                          setDefineUnsaveModal(false);
+                          dispatch(setEditpollModal(false));
                         }}
                       />
                     </Col>
@@ -1044,7 +1044,7 @@ const UpdatePolls = () => {
                       lg={12}
                       md={12}
                       sm={12}
-                      className={styles['Overall_padding']}
+                      className={styles["Overall_padding"]}
                     >
                       <Row className="mt-5">
                         <Col
@@ -1054,26 +1054,26 @@ const UpdatePolls = () => {
                           className="d-flex justify-content-end gap-2 m-0 p-0"
                         >
                           <Button
-                            text={t('Cancel')}
-                            className={styles['Cancell_btn_class_Update_polls']}
+                            text={t("Cancel")}
+                            className={styles["Cancell_btn_class_Update_polls"]}
                             onClick={HandlecancellButton}
                           />
                           {checkForPollStatus ? (
                             <Button
-                              text={t('Update')}
-                              className={styles['Update_btn_class']}
+                              text={t("Update")}
+                              className={styles["Update_btn_class"]}
                               onClick={() => handleUpdateClick(2)}
                             />
                           ) : (
                             <>
                               <Button
-                                text={t('Update')}
-                                className={styles['Update_btn_class']}
+                                text={t("Update")}
+                                className={styles["Update_btn_class"]}
                                 onClick={() => handleUpdateClick(1)}
                               />
                               <Button
-                                text={t('Update-and-publish')}
-                                className={styles['Update_Publish_btn_class']}
+                                text={t("Update-and-publish")}
+                                className={styles["Update_Publish_btn_class"]}
                                 onClick={() => handleUpdateClick(2)}
                               />
                             </>
@@ -1096,12 +1096,12 @@ const UpdatePolls = () => {
               )}
             </>
           }
-          size={defineUnsaveModal ? null : 'md'}
+          size={defineUnsaveModal ? null : "md"}
         />
       </Container>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
-  )
-}
+  );
+};
 
-export default UpdatePolls
+export default UpdatePolls;
