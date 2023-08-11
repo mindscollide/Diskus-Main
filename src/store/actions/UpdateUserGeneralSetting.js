@@ -31,89 +31,188 @@ const updateUserSettingFail = (message) => {
   };
 };
 
-const updateUserSettingFunc = (navigate, userGeneralSettingData, t) => {
+const updateUserSettingFunc = (navigate, userOptionsSettings, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentUserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
-  let Data = {
+  console.log(userOptionsSettings, "userOptionsSettingsuserOptionsSettings");
+  // let Data = {
+  //   UserSettings: {
+  //     FK_TZID: 0,
+  //     MaximumMeetingDuration: userOptionsSettings.MaximumMeetingDuration,
+  //     SynchronizeDocuments: userOptionsSettings.SynchronizeDocuments,
+  //     DisableMeetingScheduling: userOptionsSettings.DisableMeetingScheduling,
+  //     EmailOnNewMeeting: userOptionsSettings.EmailOnNewMeeting,
+  //     EmailOnEditMeeting: userOptionsSettings.EmailEditMeeting,
+  //     PushNotificationOnNewMeeting:
+  //       userOptionsSettings.PushNotificationonNewMeeting,
+  //     PushNotificationOnEditMeeting:
+  //       userOptionsSettings.PushNotificationEditMeeting,
+  //     ShowNotificationOnParticipantJoining:
+  //       userOptionsSettings.ShowNotificationOnParticipantJoining,
+  //     PushNotificationonCancelledORDeleteMeeting:
+  //       userOptionsSettings.PushNotificationCancelledOrDeleteMeeting,
+  //     FK_OrganizationID: JSON.parse(OrganizationID),
+  //     FK_CCID: 0,
+  //     EmailOnCancelledORDeleteMeeting:
+  //       userOptionsSettings.EmailCancelOrDeleteMeeting,
+  //     FK_UID: JSON.parse(currentUserID),
+  //     Is2FAEnabled: userOptionsSettings.Is2FAEnabled,
+  //     DiskusEventColor: userOptionsSettings.DiskusCalenderColor,
+  //     EmailWhenAddedToCommittee: userOptionsSettings.EmailWhenAddedToCommittee,
+  //     EmailWhenAddedToGroup: userOptionsSettings.EmailWhenAddedToGroup,
+  //     EmailWhenCommitteeIsDissolvedorArchived:
+  //       userOptionsSettings.EmailWhenCommitteeIsDissolvedOrArchived,
+  //     EmailWhenCommitteeIsInActive:
+  //       userOptionsSettings.EmailWhenCommitteeIsSetInactive,
+  //     EmailWhenGroupIsClosedorArchived:
+  //       userOptionsSettings.EmailWhenGroupIsDissolvedOrArchived,
+  //     EmailWhenGroupIsInActive: userOptionsSettings.EmailWhenGroupisSetInactive,
+  //     EmailWhenNewResolutionIsCirculated:
+  //       userOptionsSettings.EmailWhenResolutionIsCirculated,
+  //     EmailWhenRemovedFromCommittee:
+  //       userOptionsSettings.EmailWhenRemovedFromCommittee,
+  //     EmailWhenRemovedFromGroup: userOptionsSettings.EmailWhenRemovedFromGroup,
+  //     EmailWhenResolutionIsCancelledAfterCirculation:
+  //       userOptionsSettings.EmailWhenNewResolutionIsCancelledAfterCirculation,
+  //     EmailWhenResolutionIsClosed:
+  //       userOptionsSettings.EmailWhenResolutionIsClosed,
+  //     PushNotificationWhenAddedToCommittee:
+  //       userOptionsSettings.PushNotificationWhenAddedToCommittee,
+  //     PushNotificationWhenAddedToGroup:
+  //       userOptionsSettings.PushNotificationWhenAddedToGroup,
+  //     PushNotificationWhenCommitteeIsDissolvedorArchived:
+  //       userOptionsSettings.PushNotificationWhenCommitteeIsDissolvedOrArchived,
+  //     PushNotificationWhenCommitteeIsInActive:
+  //       userOptionsSettings.PushNotificationWhenCommitteeIsInActive,
+  //     PushNotificationWhenGroupIsClosedORArchived:
+  //       userOptionsSettings.PushNotificationWhenGroupIsDissolvedOrArchived,
+  //     PushNotificationWhenGroupisSetInactive:
+  //       userOptionsSettings.PushNotificationWhenGroupIsInActive,
+  //     PushNotificationWhenNewResolutionIsCirculated:
+  //       userOptionsSettings.PushNotificationWhenNewResolutionIsCirculated,
+  //     PushNotificationWhenRemoveFromGroup:
+  //       userOptionsSettings.PushNotificationWhenRemovedFromGroup,
+  //     PushNotificationWhenRemovedFromCommittee:
+  //       userOptionsSettings.PushNotificationWhenRemovedFromCommittee,
+  //     PushNotificationWhenResolutionIsClosed:
+  //       userOptionsSettings.PushNotificationWhenResolutionISClosed,
+  //     PushNotificationWhenWhenResolutionIsCancelledAfterCirculation:
+  //       userOptionsSettings.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
+  //     UserAllowGoogleCalendarSynch: true,
+  //     UserAllowMicrosoftCalendarSynch:
+  //       userOptionsSettings.AllowMicrosoftCalenderSync,
+  //     GoogleEventColor: userOptionsSettings.GoogleCalenderColor,
+  //     OfficeEventColor: userOptionsSettings.MicrosoftCalenderColor,
+  //     EmailWhenNewPollIsPublished:
+  //       userOptionsSettings.EmailWhenNewPollIsPublished,
+  //     EmailWhenPollDueDateIsPassed:
+  //       userOptionsSettings.EmailWhenPollDueDateIsPassed,
+  //     EmailWhenPublishedPollIsDeleted:
+  //       userOptionsSettings.EmailWhenPublishedPollIsDeleted,
+  //     EmailWhenPublishedPollIsUpdated:
+  //       userOptionsSettings.EmailWhenPublishedPollIsUpdated,
+  //     PushNotificationWhenNewPollIsPublished:
+  //       userOptionsSettings.PushNotificationWhenNewPollIsPublished,
+  //     PushNotificationWhenPollDueDateIsPassed:
+  //       userOptionsSettings.PushNotificationWhenPollDueDateIsPassed,
+  //     PushNotificationWhenPublishedPollIsDeleted:
+  //       userOptionsSettings.PushNotificationWhenPublishedPollIsDeleted,
+  //     PushNotificationWhenPublishedPollIsUpdated:
+  //       userOptionsSettings.PushNotificationWhenPublishedPollIsUpdated,
+  //   },
+  // };
+  let Data2 = {
     UserSettings: {
       FK_TZID: 0,
-      MaximumMeetingDuration: userGeneralSettingData.MaximumMeetingDuration,
-      SynchronizeDocuments: userGeneralSettingData.SynchronizeDocuments,
-      DisableMeetingScheduling: userGeneralSettingData.DisableMeetingScheduling,
-      EmailOnNewMeeting: userGeneralSettingData.EmailOnNewMeeting,
-      EmailOnEditMeeting: userGeneralSettingData.EmailOnEditMeeting,
+      EmailOnNewMeeting: userOptionsSettings.EmailOnNewMeeting,
+      EmailOnEditMeeting: userOptionsSettings.EmailOnEditMeeting,
       PushNotificationOnNewMeeting:
-        userGeneralSettingData.PushNotificationOnNewMeeting,
+        userOptionsSettings.PushNotificationOnNewMeeting,
       PushNotificationOnEditMeeting:
-        userGeneralSettingData.PushNotificationOnEditMeeting,
-      ShowNotificationOnParticipantJoining:
-        userGeneralSettingData.ShowNotificationonparticipantJoining,
+        userOptionsSettings.PushNotificationOnEditMeeting,
       PushNotificationonCancelledORDeleteMeeting:
-        userGeneralSettingData.PushNotificationonCancelledORDeleteMeeting,
+        userOptionsSettings.PushNotificationonCancelledORDeleteMeeting,
+      Is2FAEnabled: userOptionsSettings.Is2FAEnabled,
       FK_OrganizationID: JSON.parse(OrganizationID),
       FK_CCID: 0,
-      EmailOnCancelledORDeleteMeeting:
-        userGeneralSettingData.EmailOnCancelledorDeleteMeeting,
       FK_UID: JSON.parse(currentUserID),
-      Is2FAEnabled: userGeneralSettingData.Is2FAEnabled,
-
-      DiskusEventColor: userGeneralSettingData.DiskusEventColor,
-      EmailWhenAddedToCommittee:
-        userGeneralSettingData.EmailWhenAddedToCommittee,
-      EmailWhenAddedToGroup: userGeneralSettingData.EmailWhenAddedToGroup,
+      DiskusEventColor: userOptionsSettings.DiskusEventColor,
+      EmailWhenAddedToCommittee: userOptionsSettings.EmailWhenAddedToCommittee,
+      EmailWhenAddedToGroup: userOptionsSettings.EmailWhenAddedToGroup,
       EmailWhenCommitteeIsDissolvedorArchived:
-        userGeneralSettingData.EmailWhenCommitteeIsDissolvedorArchived,
+        userOptionsSettings.EmailWhenCommitteeIsDissolvedorArchived,
       EmailWhenCommitteeIsInActive:
-        userGeneralSettingData.EmailWhenCommitteeIsInActive,
+        userOptionsSettings.EmailWhenCommitteeIsInActive,
       EmailWhenGroupIsClosedorArchived:
-        userGeneralSettingData.EmailWhenGroupIsClosedorArchived,
-      EmailWhenGroupIsInActive: userGeneralSettingData.EmailWhenGroupIsInActive,
+        userOptionsSettings.EmailWhenGroupIsClosedorArchived,
+      EmailWhenGroupIsInActive: userOptionsSettings.EmailWhenGroupIsInActive,
+      EmailOnCancelledORDeleteMeeting:
+        userOptionsSettings.EmailOnCancelledORDeleteMeeting,
       EmailWhenNewResolutionIsCirculated:
-        userGeneralSettingData.EmailWhenNewResolutionIsCirculated,
+        userOptionsSettings.EmailWhenNewResolutionIsCirculated,
       EmailWhenRemovedFromCommittee:
-        userGeneralSettingData.EmailWhenRemovedFromCommittee,
-      EmailWhenRemovedFromGroup:
-        userGeneralSettingData.EmailWhenRemovedFromGroup,
+        userOptionsSettings.EmailWhenRemovedFromCommittee,
+      EmailWhenRemovedFromGroup: userOptionsSettings.EmailWhenRemovedFromGroup,
       EmailWhenResolutionIsCancelledAfterCirculation:
-        userGeneralSettingData.EmailWhenResolutionIsCancelledAfterCirculation,
+        userOptionsSettings.EmailWhenResolutionIsCancelledAfterCirculation,
       EmailWhenResolutionIsClosed:
-        userGeneralSettingData.EmailWhenResolutionIsClosed,
+        userOptionsSettings.EmailWhenResolutionIsClosed,
       PushNotificationWhenAddedToCommittee:
-        userGeneralSettingData.PushNotificationWhenAddedToCommittee,
+        userOptionsSettings.PushNotificationWhenAddedToCommittee,
       PushNotificationWhenAddedToGroup:
-        userGeneralSettingData.PushNotificationWhenAddedToGroup,
+        userOptionsSettings.PushNotificationWhenAddedToGroup,
       PushNotificationWhenCommitteeIsDissolvedorArchived:
-        userGeneralSettingData.PushNotificationWhenCommitteeIsDissolvedorArchived,
+        userOptionsSettings.PushNotificationWhenCommitteeIsDissolvedorArchived,
       PushNotificationWhenCommitteeIsInActive:
-        userGeneralSettingData.PushNotificationWhenCommitteeIsInActive,
+        userOptionsSettings.PushNotificationWhenCommitteeIsInActive,
       PushNotificationWhenGroupIsClosedORArchived:
-        userGeneralSettingData.PushNotificationWhenGroupIsClosedORArchived,
+        userOptionsSettings.PushNotificationWhenGroupIsClosedORArchived,
       PushNotificationWhenGroupisSetInactive:
-        userGeneralSettingData.PushNotificationWhenGroupisSetInactive,
+        userOptionsSettings.PushNotificationWhenGroupisSetInactive,
       PushNotificationWhenNewResolutionIsCirculated:
-        userGeneralSettingData.PushNotificationWhenNewResolutionIsCirculated,
+        userOptionsSettings.PushNotificationWhenNewResolutionIsCirculated,
       PushNotificationWhenRemoveFromGroup:
-        userGeneralSettingData.PushNotificationWhenRemoveFromGroup,
+        userOptionsSettings.PushNotificationWhenRemoveFromGroup,
       PushNotificationWhenRemovedFromCommittee:
-        userGeneralSettingData.PushNotificationWhenRemovedFromCommittee,
+        userOptionsSettings.PushNotificationWhenRemovedFromCommittee,
       PushNotificationWhenResolutionIsClosed:
-        userGeneralSettingData.PushNotificationWhenResolutionIsClosed,
+        userOptionsSettings.PushNotificationWhenResolutionIsClosed,
       PushNotificationWhenWhenResolutionIsCancelledAfterCirculation:
-        userGeneralSettingData.PushNotificationWhenWhenResolutionIsCancelledAfterCirculation,
+        userOptionsSettings.PushNotificationWhenWhenResolutionIsCancelledAfterCirculation,
       UserAllowGoogleCalendarSynch:
-        userGeneralSettingData.UserAllowGoogleCalendarSynch,
+        userOptionsSettings.UserAllowGoogleCalendarSynch,
       UserAllowMicrosoftCalendarSynch:
-        userGeneralSettingData.UserAllowMicrosoftCalendarSynch,
-      GoogleEventColor: userGeneralSettingData.GoogleEventColor,
-      OfficeEventColor: userGeneralSettingData.OfficeEventColor,
+        userOptionsSettings.UserAllowMicrosoftCalendarSynch,
+      GoogleEventColor: userOptionsSettings.GoogleEventColor,
+      OfficeEventColor: userOptionsSettings.OfficeEventColor,
+      EmailWhenNewPollIsPublished:
+        userOptionsSettings.EmailWhenNewPollIsPublished,
+      PushNotificationWhenNewPollIsPublished:
+        userOptionsSettings.PushNotificationWhenNewPollIsPublished,
+      EmailWhenPublishedPollIsUpdated:
+        userOptionsSettings.EmailWhenPublishedPollIsUpdated,
+      PushNotificationWhenPublishedPollIsUpdated:
+        userOptionsSettings.PushNotificationWhenPublishedPollIsUpdated,
+      EmailWhenPollDueDateIsPassed:
+        userOptionsSettings.EmailWhenPollDueDateIsPassed,
+      PushNotificationWhenPollDueDateIsPassed:
+        userOptionsSettings.PushNotificationWhenPollDueDateIsPassed,
+      EmailWhenPublishedPollIsDeleted:
+        userOptionsSettings.EmailWhenPublishedPollIsDeleted,
+      PushNotificationWhenPublishedPollIsDeleted:
+        userOptionsSettings.PushNotificationWhenPublishedPollIsDeleted,
+      PushNotificationwhenCommitteeissetActive: true,
+      EmailWhenCommitteeIsActive: true,
+      PushNotificationwhenGroupissetActive: true,
+      EmailWhenGroupIsActive: true,
     },
   };
   return (dispatch) => {
     dispatch(updateUserSettinginit());
     let form = new FormData();
     form.append("RequestMethod", updateOrganizationUserSetting.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
+    form.append("RequestData", JSON.stringify(Data2));
     axios({
       method: "post",
       url: settingApi,
@@ -125,7 +224,7 @@ const updateUserSettingFunc = (navigate, userGeneralSettingData, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(updateUserSettingFunc(navigate, userGeneralSettingData, t));
+          dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -195,7 +294,7 @@ const googleValidTokenFail = (message) => {
   };
 };
 
-const getGoogleValidToken = (navigate, data, userGeneralSettingData, t) => {
+const getGoogleValidToken = (navigate, data, userOptionsSettings, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentUserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -206,72 +305,104 @@ const getGoogleValidToken = (navigate, data, userGeneralSettingData, t) => {
   };
   let Data2 = {
     FK_TZID: 0,
-    MaximumMeetingDuration: userGeneralSettingData.MaximumMeetingDuration,
-    SynchronizeDocuments: userGeneralSettingData.SynchronizeDocuments,
-    DisableMeetingScheduling: userGeneralSettingData.DisableMeetingScheduling,
-    EmailOnNewMeeting: userGeneralSettingData.EmailOnNewMeeting,
-    EmailOnEditMeeting: userGeneralSettingData.EmailOnEditMeeting,
+    MaximumMeetingDuration: userOptionsSettings.MaximumMeetingDuration,
+    SynchronizeDocuments: userOptionsSettings.SynchronizeDocuments,
+    DisableMeetingScheduling: userOptionsSettings.DisableMeetingScheduling,
+    EmailOnNewMeeting: userOptionsSettings.EmailOnNewMeeting,
+    EmailOnEditMeeting: userOptionsSettings.EmailEditMeeting,
     PushNotificationOnNewMeeting:
-      userGeneralSettingData.PushNotificationOnNewMeeting,
+      userOptionsSettings.PushNotificationonNewMeeting,
     PushNotificationOnEditMeeting:
-      userGeneralSettingData.PushNotificationOnEditMeeting,
+      userOptionsSettings.PushNotificationEditMeeting,
+
     ShowNotificationOnParticipantJoining:
-      userGeneralSettingData.ShowNotificationonparticipantJoining,
+      userOptionsSettings.ShowNotificationOnParticipantJoining,
+
     PushNotificationonCancelledORDeleteMeeting:
-      userGeneralSettingData.PushNotificationonCancelledORDeleteMeeting,
+      userOptionsSettings.PushNotificationCancelledOrDeleteMeeting,
+
     FK_OrganizationID: JSON.parse(OrganizationID),
     FK_CCID: 0,
     EmailOnCancelledORDeleteMeeting:
-      userGeneralSettingData.EmailOnCancelledorDeleteMeeting,
+      userOptionsSettings.EmailCancelOrDeleteMeeting,
     FK_UID: JSON.parse(currentUserID),
-    Is2FAEnabled: userGeneralSettingData.Is2FAVerification,
-
-    DiskusEventColor: userGeneralSettingData.DiskusEventColor,
-    EmailWhenAddedToCommittee: userGeneralSettingData.EmailWhenAddedToCommittee,
-    EmailWhenAddedToGroup: userGeneralSettingData.EmailWhenAddedToGroup,
+    Is2FAEnabled: userOptionsSettings.Is2FAEnabled,
+    DiskusEventColor: userOptionsSettings.DiskusCalenderColor,
+    EmailWhenAddedToCommittee: userOptionsSettings.EmailWhenAddedToCommittee,
+    EmailWhenAddedToGroup: userOptionsSettings.EmailWhenAddedToGroup,
     EmailWhenCommitteeIsDissolvedorArchived:
-      userGeneralSettingData.EmailWhenCommitteeIsDissolvedorArchived,
+      userOptionsSettings.EmailWhenCommitteeIsDissolvedOrArchived,
     EmailWhenCommitteeIsInActive:
-      userGeneralSettingData.EmailWhenCommitteeIsInActive,
+      userOptionsSettings.EmailWhenCommitteeIsSetInactive,
     EmailWhenGroupIsClosedorArchived:
-      userGeneralSettingData.EmailWhenGroupIsClosedorArchived,
-    EmailWhenGroupIsInActive: userGeneralSettingData.EmailWhenGroupIsInActive,
+      userOptionsSettings.EmailWhenGroupIsDissolvedOrArchived,
+    EmailWhenGroupIsInActive: userOptionsSettings.EmailWhenGroupisSetInactive,
+
     EmailWhenNewResolutionIsCirculated:
-      userGeneralSettingData.EmailWhenNewResolutionIsCirculated,
+      userOptionsSettings.EmailWhenResolutionIsCirculated,
+
     EmailWhenRemovedFromCommittee:
-      userGeneralSettingData.EmailWhenRemovedFromCommittee,
-    EmailWhenRemovedFromGroup: userGeneralSettingData.EmailWhenRemovedFromGroup,
+      userOptionsSettings.EmailWhenRemovedFromCommittee,
+
+    EmailWhenRemovedFromGroup: userOptionsSettings.EmailWhenRemovedFromGroup,
+
     EmailWhenResolutionIsCancelledAfterCirculation:
-      userGeneralSettingData.EmailWhenResolutionIsCancelledAfterCirculation,
+      userOptionsSettings.EmailWhenNewResolutionIsCancelledAfterCirculation,
+
     EmailWhenResolutionIsClosed:
-      userGeneralSettingData.EmailWhenResolutionIsClosed,
+      userOptionsSettings.EmailWhenResolutionIsClosed,
+
     PushNotificationWhenAddedToCommittee:
-      userGeneralSettingData.PushNotificationWhenAddedToCommittee,
+      userOptionsSettings.PushNotificationWhenAddedToCommittee,
+
     PushNotificationWhenAddedToGroup:
-      userGeneralSettingData.PushNotificationWhenAddedToGroup,
+      userOptionsSettings.PushNotificationWhenAddedToGroup,
+
     PushNotificationWhenCommitteeIsDissolvedorArchived:
-      userGeneralSettingData.PushNotificationWhenCommitteeIsDissolvedorArchived,
+      userOptionsSettings.PushNotificationWhenCommitteeIsDissolvedOrArchived,
     PushNotificationWhenCommitteeIsInActive:
-      userGeneralSettingData.PushNotificationWhenCommitteeIsInActive,
+      userOptionsSettings.PushNotificationWhenCommitteeIsInActive,
+
     PushNotificationWhenGroupIsClosedORArchived:
-      userGeneralSettingData.PushNotificationWhenGroupIsClosedORArchived,
+      userOptionsSettings.PushNotificationWhenGroupIsDissolvedOrArchived,
+
     PushNotificationWhenGroupisSetInactive:
-      userGeneralSettingData.PushNotificationWhenGroupisSetInactive,
+      userOptionsSettings.PushNotificationWhenGroupIsInActive,
+
     PushNotificationWhenNewResolutionIsCirculated:
-      userGeneralSettingData.PushNotificationWhenNewResolutionIsCirculated,
+      userOptionsSettings.PushNotificationWhenNewResolutionIsCirculated,
     PushNotificationWhenRemoveFromGroup:
-      userGeneralSettingData.PushNotificationWhenRemoveFromGroup,
+      userOptionsSettings.PushNotificationWhenRemovedFromGroup,
+
     PushNotificationWhenRemovedFromCommittee:
-      userGeneralSettingData.PushNotificationWhenRemovedFromCommittee,
+      userOptionsSettings.PushNotificationWhenRemovedFromCommittee,
+
     PushNotificationWhenResolutionIsClosed:
-      userGeneralSettingData.PushNotificationWhenResolutionIsClosed,
+      userOptionsSettings.PushNotificationWhenResolutionISClosed,
+
     PushNotificationWhenWhenResolutionIsCancelledAfterCirculation:
-      userGeneralSettingData.PushNotificationWhenWhenResolutionIsCancelledAfterCirculation,
-    UserAllowGoogleCalendarSynch: false,
+      userOptionsSettings.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
+    UserAllowGoogleCalendarSynch: true,
     UserAllowMicrosoftCalendarSynch:
-      userGeneralSettingData.UserAllowMicrosoftCalendarSynch,
-    GoogleEventColor: userGeneralSettingData.GoogleEventColor,
-    OfficeEventColor: userGeneralSettingData.OfficeEventColor,
+      userOptionsSettings.AllowMicrosoftCalenderSync,
+    GoogleEventColor: userOptionsSettings.GoogleCalenderColor,
+    OfficeEventColor: userOptionsSettings.MicrosoftCalenderColor,
+    EmailWhenNewPollIsPublished:
+      userOptionsSettings.EmailWhenNewPollIsPublished,
+    EmailWhenPollDueDateIsPassed:
+      userOptionsSettings.EmailWhenPollDueDateIsPassed,
+    EmailWhenPublishedPollIsDeleted:
+      userOptionsSettings.EmailWhenPublishedPollIsDeleted,
+    EmailWhenPublishedPollIsUpdated:
+      userOptionsSettings.EmailWhenPublishedPollIsUpdated,
+    PushNotificationWhenNewPollIsPublished:
+      userOptionsSettings.PushNotificationWhenNewPollIsPublished,
+    PushNotificationWhenPollDueDateIsPassed:
+      userOptionsSettings.PushNotificationWhenPollDueDateIsPassed,
+    PushNotificationWhenPublishedPollIsDeleted:
+      userOptionsSettings.PushNotificationWhenPublishedPollIsDeleted,
+    PushNotificationWhenPublishedPollIsUpdated:
+      userOptionsSettings.PushNotificationWhenPublishedPollIsUpdated,
   };
   return async (dispatch) => {
     dispatch(googleValidTokeninit());
@@ -289,9 +420,7 @@ const getGoogleValidToken = (navigate, data, userGeneralSettingData, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            getGoogleValidToken(navigate, data, userGeneralSettingData, t)
-          );
+          dispatch(getGoogleValidToken(navigate, data, userOptionsSettings, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -306,9 +435,7 @@ const getGoogleValidToken = (navigate, data, userGeneralSettingData, t) => {
                   t("Token-updated-and-calender-list-saved-successful")
                 )
               );
-              dispatch(
-                updateUserSettingFunc(navigate, userGeneralSettingData, t)
-              );
+              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -321,9 +448,7 @@ const getGoogleValidToken = (navigate, data, userGeneralSettingData, t) => {
                   t("Token-updated-but-failed-to-save-calender")
                 )
               );
-              dispatch(
-                updateUserSettingFunc(navigate, userGeneralSettingData, t)
-              );
+              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -336,9 +461,7 @@ const getGoogleValidToken = (navigate, data, userGeneralSettingData, t) => {
                   t("Token-updated-but-failed-to-save-calender")
                 )
               );
-              dispatch(
-                updateUserSettingFunc(navigate, userGeneralSettingData, t)
-              );
+              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -413,7 +536,7 @@ const revokeTokenFail = (message) => {
   };
 };
 
-const revokeToken = (navigate, userGeneralSettingData, t) => {
+const revokeToken = (navigate, userOptionsSettings, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let currentUserID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -421,75 +544,93 @@ const revokeToken = (navigate, userGeneralSettingData, t) => {
     UserID: parseInt(currentUserID),
     OrganizationID: parseInt(OrganizationID),
   };
+  console.log("updateOrganizationLevelSettings", userOptionsSettings);
+
   let Data2 = {
     FK_TZID: 0,
-    MaximumMeetingDuration: userGeneralSettingData.MaximumMeetingDuration,
-    SynchronizeDocuments: userGeneralSettingData.SynchronizeDocuments,
-    DisableMeetingScheduling: userGeneralSettingData.DisableMeetingScheduling,
-    EmailOnNewMeeting: userGeneralSettingData.EmailOnNewMeeting,
-    EmailOnEditMeeting: userGeneralSettingData.EmailOnEditMeeting,
+    MaximumMeetingDuration: userOptionsSettings.MaximumMeetingDuration,
+    SynchronizeDocuments: userOptionsSettings.SynchronizeDocuments,
+    DisableMeetingScheduling: userOptionsSettings.DisableMeetingScheduling,
+    EmailOnNewMeeting: userOptionsSettings.EmailOnNewMeeting,
+    EmailOnEditMeeting: userOptionsSettings.EmailEditMeeting,
     PushNotificationOnNewMeeting:
-      userGeneralSettingData.PushNotificationOnNewMeeting,
+      userOptionsSettings.PushNotificationonNewMeeting,
     PushNotificationOnEditMeeting:
-      userGeneralSettingData.PushNotificationOnEditMeeting,
+      userOptionsSettings.PushNotificationEditMeeting,
     ShowNotificationOnParticipantJoining:
-      userGeneralSettingData.ShowNotificationonparticipantJoining,
+      userOptionsSettings.ShowNotificationOnParticipantJoining,
     PushNotificationonCancelledORDeleteMeeting:
-      userGeneralSettingData.PushNotificationonCancelledORDeleteMeeting,
+      userOptionsSettings.PushNotificationCancelledOrDeleteMeeting,
     FK_OrganizationID: JSON.parse(OrganizationID),
     FK_CCID: 0,
     EmailOnCancelledORDeleteMeeting:
-      userGeneralSettingData.EmailOnCancelledorDeleteMeeting,
+      userOptionsSettings.EmailCancelOrDeleteMeeting,
     FK_UID: JSON.parse(currentUserID),
-    Is2FAEnabled: userGeneralSettingData.Is2FAVerification,
-
-    DiskusEventColor: userGeneralSettingData.DiskusEventColor,
-    EmailWhenAddedToCommittee: userGeneralSettingData.EmailWhenAddedToCommittee,
-    EmailWhenAddedToGroup: userGeneralSettingData.EmailWhenAddedToGroup,
+    Is2FAEnabled: userOptionsSettings.Is2FAEnabled,
+    DiskusEventColor: userOptionsSettings.DiskusCalenderColor,
+    EmailWhenAddedToCommittee: userOptionsSettings.EmailWhenAddedToCommittee,
+    EmailWhenAddedToGroup: userOptionsSettings.EmailWhenAddedToGroup,
     EmailWhenCommitteeIsDissolvedorArchived:
-      userGeneralSettingData.EmailWhenCommitteeIsDissolvedorArchived,
+      userOptionsSettings.EmailWhenCommitteeIsDissolvedOrArchived,
     EmailWhenCommitteeIsInActive:
-      userGeneralSettingData.EmailWhenCommitteeIsInActive,
+      userOptionsSettings.EmailWhenCommitteeIsSetInactive,
     EmailWhenGroupIsClosedorArchived:
-      userGeneralSettingData.EmailWhenGroupIsClosedorArchived,
-    EmailWhenGroupIsInActive: userGeneralSettingData.EmailWhenGroupIsInActive,
+      userOptionsSettings.EmailWhenGroupIsDissolvedOrArchived,
+    EmailWhenGroupIsInActive: userOptionsSettings.EmailWhenGroupisSetInactive,
     EmailWhenNewResolutionIsCirculated:
-      userGeneralSettingData.EmailWhenNewResolutionIsCirculated,
+      userOptionsSettings.EmailWhenResolutionIsCirculated,
     EmailWhenRemovedFromCommittee:
-      userGeneralSettingData.EmailWhenRemovedFromCommittee,
-    EmailWhenRemovedFromGroup: userGeneralSettingData.EmailWhenRemovedFromGroup,
+      userOptionsSettings.EmailWhenRemovedFromCommittee,
+    EmailWhenRemovedFromGroup: userOptionsSettings.EmailWhenRemovedFromGroup,
     EmailWhenResolutionIsCancelledAfterCirculation:
-      userGeneralSettingData.EmailWhenResolutionIsCancelledAfterCirculation,
+      userOptionsSettings.EmailWhenNewResolutionIsCancelledAfterCirculation,
     EmailWhenResolutionIsClosed:
-      userGeneralSettingData.EmailWhenResolutionIsClosed,
+      userOptionsSettings.EmailWhenResolutionIsClosed,
     PushNotificationWhenAddedToCommittee:
-      userGeneralSettingData.PushNotificationWhenAddedToCommittee,
+      userOptionsSettings.PushNotificationWhenAddedToCommittee,
     PushNotificationWhenAddedToGroup:
-      userGeneralSettingData.PushNotificationWhenAddedToGroup,
+      userOptionsSettings.PushNotificationWhenAddedToGroup,
     PushNotificationWhenCommitteeIsDissolvedorArchived:
-      userGeneralSettingData.PushNotificationWhenCommitteeIsDissolvedorArchived,
+      userOptionsSettings.PushNotificationWhenCommitteeIsDissolvedOrArchived,
     PushNotificationWhenCommitteeIsInActive:
-      userGeneralSettingData.PushNotificationWhenCommitteeIsInActive,
+      userOptionsSettings.PushNotificationWhenCommitteeIsInActive,
     PushNotificationWhenGroupIsClosedORArchived:
-      userGeneralSettingData.PushNotificationWhenGroupIsClosedORArchived,
+      userOptionsSettings.PushNotificationWhenGroupIsDissolvedOrArchived,
     PushNotificationWhenGroupisSetInactive:
-      userGeneralSettingData.PushNotificationWhenGroupisSetInactive,
+      userOptionsSettings.PushNotificationWhenGroupIsInActive,
     PushNotificationWhenNewResolutionIsCirculated:
-      userGeneralSettingData.PushNotificationWhenNewResolutionIsCirculated,
+      userOptionsSettings.PushNotificationWhenNewResolutionIsCirculated,
     PushNotificationWhenRemoveFromGroup:
-      userGeneralSettingData.PushNotificationWhenRemoveFromGroup,
+      userOptionsSettings.PushNotificationWhenRemovedFromGroup,
     PushNotificationWhenRemovedFromCommittee:
-      userGeneralSettingData.PushNotificationWhenRemovedFromCommittee,
+      userOptionsSettings.PushNotificationWhenRemovedFromCommittee,
     PushNotificationWhenResolutionIsClosed:
-      userGeneralSettingData.PushNotificationWhenResolutionIsClosed,
+      userOptionsSettings.PushNotificationWhenResolutionISClosed,
     PushNotificationWhenWhenResolutionIsCancelledAfterCirculation:
-      userGeneralSettingData.PushNotificationWhenWhenResolutionIsCancelledAfterCirculation,
+      userOptionsSettings.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
     UserAllowGoogleCalendarSynch: true,
     UserAllowMicrosoftCalendarSynch:
-      userGeneralSettingData.UserAllowMicrosoftCalendarSynch,
-    GoogleEventColor: userGeneralSettingData.GoogleEventColor,
-    OfficeEventColor: userGeneralSettingData.OfficeEventColor,
+      userOptionsSettings.AllowMicrosoftCalenderSync,
+    GoogleEventColor: userOptionsSettings.GoogleCalenderColor,
+    OfficeEventColor: userOptionsSettings.MicrosoftCalenderColor,
+    EmailWhenNewPollIsPublished:
+      userOptionsSettings.EmailWhenNewPollIsPublished,
+    EmailWhenPollDueDateIsPassed:
+      userOptionsSettings.EmailWhenPollDueDateIsPassed,
+    EmailWhenPublishedPollIsDeleted:
+      userOptionsSettings.EmailWhenPublishedPollIsDeleted,
+    EmailWhenPublishedPollIsUpdated:
+      userOptionsSettings.EmailWhenPublishedPollIsUpdated,
+    PushNotificationWhenNewPollIsPublished:
+      userOptionsSettings.PushNotificationWhenNewPollIsPublished,
+    PushNotificationWhenPollDueDateIsPassed:
+      userOptionsSettings.PushNotificationWhenPollDueDateIsPassed,
+    PushNotificationWhenPublishedPollIsDeleted:
+      userOptionsSettings.PushNotificationWhenPublishedPollIsDeleted,
+    PushNotificationWhenPublishedPollIsUpdated:
+      userOptionsSettings.PushNotificationWhenPublishedPollIsUpdated,
   };
+  console.log(Data2, "userOptionsSettingsuserOptionsSettings");
   return async (dispatch) => {
     dispatch(revokeTokeninit());
     let form = new FormData();
@@ -506,7 +647,7 @@ const revokeToken = (navigate, userGeneralSettingData, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(revokeToken(navigate, userGeneralSettingData, t));
+          dispatch(revokeToken(navigate, userOptionsSettings, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -516,14 +657,12 @@ const revokeToken = (navigate, userGeneralSettingData, t) => {
                   "Calender_CalenderServiceManager_RevokeToken_01".toLowerCase()
                 )
             ) {
-              console.log("organizationStatesorganizationStates1212", userGeneralSettingData)
-
               dispatch(revokeTokenSuccess(t("Successful")));
-              console.log("organizationStatesorganizationStates1212", userGeneralSettingData)
-              dispatch(
-
-                updateUserSettingFunc(navigate, userGeneralSettingData, t)
+              console.log(
+                "organizationStatesorganizationStates1212",
+                userOptionsSettings
               );
+              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -540,6 +679,7 @@ const revokeToken = (navigate, userGeneralSettingData, t) => {
                   "Calender_CalenderServiceManager_RevokeToken_03".toLowerCase()
                 )
             ) {
+              console.log("updateOrganizationLevelSettings", Data2);
               dispatch(revokeTokenFail(t("Something-went-wrong")));
               dispatch(updateUserSettingFunc(navigate, Data2, t));
             } else {
@@ -547,6 +687,7 @@ const revokeToken = (navigate, userGeneralSettingData, t) => {
               dispatch(updateUserSettingFunc(navigate, Data2, t));
             }
           } else {
+            console.log("updateOrganizationLevelSettings", Data2);
             dispatch(revokeTokenFail(t("Something-went-wrong")));
             dispatch(updateUserSettingFunc(navigate, Data2, t));
           }

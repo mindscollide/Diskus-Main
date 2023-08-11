@@ -8,6 +8,9 @@ const initialState = {
   agendaContributors: false,
   notifyAgendaContributors: false,
   participantModal: false,
+  agendaItemRemoved: false,
+  mainAgendaItemRemoved: false,
+  advancePermissionModal: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -50,6 +53,27 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         participantModal: action.response,
+      };
+    }
+
+    case actions.AGENDA_ITEM_REMOVED: {
+      return {
+        ...state,
+        agendaItemRemoved: action.response,
+      };
+    }
+
+    case actions.MAIN_AGENDA_ITEM_REMOVED: {
+      return {
+        ...state,
+        mainAgendaItemRemoved: action.response,
+      };
+    }
+
+    case actions.ADVANCED_PERSMISSION_MODAL: {
+      return {
+        ...state,
+        advancePermissionModal: action.response,
       };
     }
 

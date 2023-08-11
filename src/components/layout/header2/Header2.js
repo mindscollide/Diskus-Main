@@ -23,13 +23,13 @@ import {
   getUserSetting,
 } from "../../../store/actions/GetUserSetting";
 import currentUserImage from "../../../assets/images/avatar.png";
-import LanguageIcon from '../../../assets/images/Language.svg'
+import LanguageIcon from "../../../assets/images/Language.svg";
 import { useLocation } from "react-router-dom";
 import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
 import { Button, Loader, Modal } from "../../../components/elements";
 import UserProfile from "../../../container/authentication/User_Profile/UserProfile";
 import { Select } from "antd";
-import { ChevronDown, ChevronUp } from 'react-bootstrap-icons'
+import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
 import { useRef } from "react";
 import LanguageSelector from "../../elements/languageSelector/Language-selector";
 
@@ -46,6 +46,7 @@ const Header2 = () => {
   //for dropdown
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activateBlur, setActivateBlur] = useState(false);
+  let roleID = localStorage.getItem("roleID");
 
   // for userProfile
   const [userProfileModal, setUserProfileModal] = useState(false);
@@ -95,7 +96,6 @@ const Header2 = () => {
   useEffect(() => {
     let currentUserID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
-    let roleID = localStorage.getItem("roleID");
     dispatch(getUserSetting(navigate, t));
   }, []);
 
@@ -142,7 +142,9 @@ const Header2 = () => {
     // setUserProfileModal(true);
     let userID = localStorage.getItem("userID");
     let OrganizationID = localStorage.getItem("organizationID");
-    dispatch(getUserDetails(navigate, userID, t, OrganizationID, setUserProfileModal));
+    dispatch(
+      getUserDetails(navigate, userID, t, OrganizationID, setUserProfileModal)
+    );
   };
 
   // for modal create  handler
@@ -179,14 +181,10 @@ const Header2 = () => {
       {activateBlur ? (
         <Navbar className="header2-container " sticky="top">
           <Container fluid>
-            <Navbar.Brand
-              as={Link}
-            >
+            <Navbar.Brand as={Link}>
               <img src={DiskusLogoHeader} width={120} />
             </Navbar.Brand>
             <Nav className="ml-auto">
-
-
               {/* <section className="position-relative" ref={languageref}>
                 <span className="text-white d-flex gap-2 align-items-center position-relative" onClick={() => setLanguageDropdown(!languageDropdown)}>
                   <img src={LanguageIcon} />
@@ -308,15 +306,22 @@ const Header2 = () => {
               <Nav.Link disabled={true} as={Link} to="faq's" className="mx-3">
                 <img src={DiskusHeaderInfo} width={25} />
               </Nav.Link>
-              <Nav.Link disabled={true} className="me-2" as={Link} to="setting">
-                <img src={DiskusHeaderSetting} width={25} />
-              </Nav.Link>
+              {roleID != 2 && roleID != 1 ? (
+                <Nav.Link
+                  disabled={true}
+                  className="me-2"
+                  as={Link}
+                  to="setting"
+                >
+                  <img src={DiskusHeaderSetting} width={25} />
+                </Nav.Link>
+              ) : null}
             </Nav>
           </Container>
         </Navbar>
       ) : (
         <Navbar className="header2-container " sticky="top">
-          <Container >
+          <Container>
             <Navbar.Brand
               as={Link}
               to={
@@ -480,9 +485,11 @@ const Header2 = () => {
               >
                 <img src={DiskusHeaderInfo} width={28} />
               </Nav.Link>
-              <Nav.Link className="me-2" as={Link} to="setting">
-                <img src={DiskusHeaderSetting} width={28} />
-              </Nav.Link>
+              {roleID != 2 && roleID != 1 ? (
+                <Nav.Link className="me-2" as={Link} to="setting">
+                  <img src={DiskusHeaderSetting} width={28} />
+                </Nav.Link>
+              ) : null}
             </Nav>
           </Container>
         </Navbar>

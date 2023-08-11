@@ -5453,6 +5453,7 @@ body[dir="rtl"] .ant-result-subtitle {
   padding: 0;
   outline: none;
   cursor: pointer;
+  margin-left: -21px !important;
 }
 
 .selectMember__control {

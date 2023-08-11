@@ -42,6 +42,27 @@ const showAddParticipantsModal = (response) => {
   };
 };
 
+const showAgenItemsRemovedModal = (response) => {
+  return {
+    type: actions.AGENDA_ITEM_REMOVED,
+    response: response,
+  };
+};
+
+const showMainAgendaItemRemovedModal = (response) => {
+  return {
+    type: actions.MAIN_AGENDA_ITEM_REMOVED,
+    response: response,
+  };
+};
+
+const showAdvancePermissionModal = (response) => {
+  return {
+    type: actions.ADVANCED_PERSMISSION_MODAL,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -49,4 +70,7 @@ export {
   showAddAgendaContributor,
   showAgendaContributorsModals,
   showAddParticipantsModal,
+  showAgenItemsRemovedModal,
+  showMainAgendaItemRemovedModal,
+  showAdvancePermissionModal,
 };
