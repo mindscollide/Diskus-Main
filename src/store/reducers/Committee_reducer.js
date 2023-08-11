@@ -17,20 +17,21 @@ const initialState = {
 
 const ComitteeGroupsReducer = (state = initialState, action) => {
   switch (action.type) {
-
     case actions.GET_ALL_COMMITTEES_BY_USERID_INIT: {
       return {
         ...state,
         Loading: true,
+        GetAllCommitteesByUserIDResponse: null,
       };
     }
 
     case actions.GET_ALL_COMMITTEES_BY_USERID_SUCCESS: {
+
       return {
         ...state,
         Loading: false,
         GetAllCommitteesByUserIDResponse: action.response,
-        ResponseMessage: action.message,
+        ResponseMessage: action.message
       };
     }
 
@@ -38,13 +39,15 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        ResponseMessage: action.message,
+        GetAllCommitteesByUserIDResponse: null,
+        ResponseMessage: action.message
       };
     }
     case actions.GET_COMMITTEE_BYCOMMITTEEID_INIT: {
       return {
         ...state,
-        Loading: true
+        Loading: true,
+        ResponseMessage: action.message
       }
     }
     case actions.GET_COMMITTEE_BYCOMMITTEEID_SUCCESS: {
@@ -89,6 +92,7 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        CreateCommitteeResponse: null,
         ResponseMessage: action.message,
       };
     }
@@ -215,7 +219,8 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
     case actions.ARCHEIVED_COMMITTES_INIT: {
       return {
         ...state,
-        Loading: true
+        Loading: true,
+        ArcheivedCommittees: null
       }
     }
     case actions.ARCHEIVED_COMMITTES_SUCCESS: {
@@ -235,7 +240,14 @@ const ComitteeGroupsReducer = (state = initialState, action) => {
     //   }
 
     // }
-    case actions.ARCHEIVED_COMMITTES_FAIL: { }
+    case actions.ARCHEIVED_COMMITTES_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        ArcheivedCommittees: null,
+        ResponseMessage: action.message
+      }
+    }
     default:
       return { ...state };
   }

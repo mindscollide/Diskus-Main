@@ -30,11 +30,11 @@ const ModalAddFolder = ({ addfolder, setAddfolder, setIsExistFolder }) => {
   };
   const handleAddFolder = () => {
     if (FolderName.content !== "") {
-      dispatch(FolderisExist(navigate, FolderName.content, t, setAddfolder, setIsExistFolder));
+      dispatch(FolderisExist(navigate, FolderName.content, t, setAddfolder, 0, setIsExistFolder));
     } else {
       setFolderName({
         content: "",
-        errorMessage: "Folder name should not be empty",
+        errorMessage: t("Folder-name-should-not-be-empty"),
         errorStatus: true,
       });
     }

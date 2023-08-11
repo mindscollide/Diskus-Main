@@ -1,0 +1,63 @@
+.Confirm-activegroup-modal {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6;
+  color: #fff;
+  font-family: "MontserratSemiBold";
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+body[dir="rtl"] .Confirm-activegroup-modal {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Confirm-activegroup-modal:hover,
+.Confirm-activegroup-modal:active,
+.Confirm-activegroup-modal:focus-visible,
+.Confirm-activegroup-modal:focus {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  border: none !important;
+}
+
+.Confirm-activegroup-modal-cancel-button {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1;
+}
+
+body[dir="rtl"] .Confirm-activegroup-modal-cancel-button {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Confirm-activegroup-modal-cancel-button:hover,
+.Confirm-activegroup-modal-cancel-button:focus,
+.Confirm-activegroup-modal-cancel-button:active,
+.Confirm-activegroup-modal-cancel-button:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+}
+
+.Heading_For_Active_Sure {
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold";
+  color: #5a5a5a !important;
+}
+
+body[dir="rtl"] .Heading_For_Active_Sure {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}

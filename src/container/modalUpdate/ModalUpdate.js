@@ -995,7 +995,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
 
       setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
       setAddedParticipantNameList(List);
-      dispatch(allAssignessList(navigate, t));;
+      dispatch(allAssignessList(navigate, t));
       dispatch(GetAllReminders(navigate, t));
     } else {
       setEditFlag(false);

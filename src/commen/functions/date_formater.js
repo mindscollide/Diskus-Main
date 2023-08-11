@@ -70,6 +70,7 @@ export const CardNumberFormatter = (num) => {
 };
 
 export const newDateFormaterAsPerUTC = (date) => {
+  console.log("getCalendarDataResponse", date);
   let dateConvert = moment(date, "YYYYMMDD").format();
   console.log("getCalendarDataResponse", dateConvert);
   const englishFormat = moment(dateConvert).format(
@@ -551,6 +552,7 @@ export const convertGMTDateintoUTC = (GMTdate) => {
   console.log(result, "convertGMTDateintoUTC");
   return result;
 };
+
 
 // this work is create by huzeifa please dont write any thing below thi line 
 

@@ -56,7 +56,7 @@ const updateUserSettingFunc = (navigate, userGeneralSettingData, t) => {
       EmailOnCancelledORDeleteMeeting:
         userGeneralSettingData.EmailOnCancelledorDeleteMeeting,
       FK_UID: JSON.parse(currentUserID),
-      Is2FAEnabled: userGeneralSettingData.Is2FAVerification,
+      Is2FAEnabled: userGeneralSettingData.Is2FAEnabled,
 
       DiskusEventColor: userGeneralSettingData.DiskusEventColor,
       EmailWhenAddedToCommittee:
@@ -516,12 +516,12 @@ const revokeToken = (navigate, userGeneralSettingData, t) => {
                   "Calender_CalenderServiceManager_RevokeToken_01".toLowerCase()
                 )
             ) {
-              console.log("organizationStatesorganizationStates1212",userGeneralSettingData)
+              console.log("organizationStatesorganizationStates1212", userGeneralSettingData)
 
               dispatch(revokeTokenSuccess(t("Successful")));
-      console.log("organizationStatesorganizationStates1212",userGeneralSettingData)
-      dispatch(
-                
+              console.log("organizationStatesorganizationStates1212", userGeneralSettingData)
+              dispatch(
+
                 updateUserSettingFunc(navigate, userGeneralSettingData, t)
               );
             } else if (

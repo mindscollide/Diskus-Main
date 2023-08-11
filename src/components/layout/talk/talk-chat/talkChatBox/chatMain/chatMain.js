@@ -1576,33 +1576,27 @@ const ChatMainBody = () => {
     <span style={{ background: 'red', color: '#fff' }}>{txt}</span>
   )
 
-  // Saving All OTO Messages in single state
-  // useEffect(() => {
-  //   let allotomessages = talkStateData.UserOTOMessages.UserOTOMessagesData
-  //   if (allotomessages !== undefined) {
-  //     oneToOneMessages(setAllMessages, allotomessages.oneToOneMessages)
-  //     setAllMessages([])
-  //     setAllMessages([])
-  //   }
-  // }, [talkStateData.UserOTOMessages.UserOTOMessagesData])
-
   //All Messages State
   useEffect(() => {
     let allChatMessages = talkStateData.AllMessagesData
     if (
       allChatMessages !== undefined &&
+      allChatMessages !== null &&
+      allChatMessages.length !== 0 &&
       talkStateData.ActiveChatData.messageType === 'O'
     ) {
       oneToOneMessages(setAllMessages, allChatMessages.oneToOneMessages)
-      // setAllMessages([])
-      // setAllMessages([])
     } else if (
       allChatMessages !== undefined &&
+      allChatMessages !== null &&
+      allChatMessages.length !== 0 &&
       talkStateData.ActiveChatData.messageType === 'G'
     ) {
       groupMessages(allChatMessages.groupMessages, setAllMessages)
     } else if (
       allChatMessages !== undefined &&
+      allChatMessages !== null &&
+      allChatMessages.length !== 0 &&
       talkStateData.ActiveChatData.messageType === 'B'
     ) {
       let allBroadcastMessagesArr = []
@@ -1630,64 +1624,10 @@ const ChatMainBody = () => {
         })
       })
       setAllMessages([...allBroadcastMessagesArr])
-      // setAllMessages([...allBroadcastMessagesArr])
-      // setAllMessages([])
-      // setAllMessages([])
     }
   }, [talkStateData.AllMessagesData])
 
   console.log('All Messages State', allMessages)
-
-  //chat messages
-  // useEffect(() => {
-  //   chatMessages.current?.scrollIntoView({ behavior: 'auto' })
-  // }, [allMessages, allMessages, allMessages])
-
-  // Saving All Group Messages in single state
-  // useEffect(() => {
-  //   let allGroupMessagesReducer =
-  //     talkStateData.GroupMessages.GroupMessagesData.groupMessages
-  //   if (allGroupMessagesReducer !== undefined) {
-  //     groupMessages(allGroupMessagesReducer, setAllMessages)
-  //     setAllMessages([])
-  //     setAllMessages([])
-  //   }
-  // }, [talkStateData.GroupMessages.GroupMessagesData])
-
-  // Saving All Broadcast Messages in single state
-  // useEffect(() => {
-  //   let allMessagesBroadcast =
-  //     talkStateData.BroadcastMessages.BroadcastMessagesData.broadcastMessages
-  //   if (allMessagesBroadcast != undefined) {
-  //     let allBroadcastMessagesArr = []
-  //     allMessagesBroadcast.map((messagesData) => {
-  //       if (messagesData.frMessages !== 'Direct Message') {
-  //         messagesData.frMessages = messagesData.frMessages.split('|')
-  //       }
-  //       allBroadcastMessagesArr.push({
-  //         messageID: messagesData.messageID,
-  //         senderID: messagesData.senderID,
-  //         receiverID: messagesData.receiverID,
-  //         messageBody: messagesData.messageBody,
-  //         senderName: messagesData.senderName,
-  //         isFlag: messagesData.isFlag,
-  //         sentDate: messagesData.sentDate,
-  //         currDate: messagesData.currDate,
-  //         fileGeneratedName: messagesData.fileGeneratedName,
-  //         fileName: messagesData.fileName,
-  //         frMessages: messagesData.frMessages,
-  //         broadcastName: messagesData.broadcastName,
-  //         messageCount: messagesData.messageCount,
-  //         attachmentLocation: messagesData.attachmentLocation,
-  //         sourceMessageBody: messagesData.sourceMessageBody,
-  //         sourceMessageId: messagesData.sourceMessageId,
-  //       })
-  //     })
-  //     setAllMessages([...allBroadcastMessagesArr])
-  //     setAllMessages([])
-  //     setAllMessages([])
-  //   }
-  // }, [talkStateData.BroadcastMessages.BroadcastMessagesData])
 
   //Message send oto api response data
   useEffect(() => {
@@ -4505,8 +4445,9 @@ const ChatMainBody = () => {
                                             className="dropdown-icon"
                                             src={DropDownChatIcon}
                                           />
-                                          {Number(chatFeatureActive) ===
-                                          Number(messageData.messageID) ? (
+                                          {chatFeatureActive != 0 &&
+                                          Number(chatFeatureActive) ===
+                                            Number(messageData.messageID) ? (
                                             <div className="dropdown-menus-chatmessage">
                                               <span
                                                 onClick={() =>
@@ -4737,8 +4678,9 @@ const ChatMainBody = () => {
                                             className="dropdown-icon"
                                             src={DropDownIcon}
                                           />
-                                          {Number(chatFeatureActive) ===
-                                          Number(messageData.messageID) ? (
+                                          {chatFeatureActive != 0 &&
+                                          Number(chatFeatureActive) ===
+                                            Number(messageData.messageID) ? (
                                             <div className="dropdown-menus-chatmessage">
                                               <span
                                                 onClick={() =>
@@ -5012,8 +4954,9 @@ const ChatMainBody = () => {
                                             className="dropdown-icon"
                                             src={DropDownChatIcon}
                                           />
-                                          {Number(chatFeatureActive) ===
-                                          Number(messageData.messageID) ? (
+                                          {chatFeatureActive != 0 &&
+                                          Number(chatFeatureActive) ===
+                                            Number(messageData.messageID) ? (
                                             <div className="dropdown-menus-chatmessage">
                                               <span
                                                 onClick={() =>
@@ -5189,8 +5132,9 @@ const ChatMainBody = () => {
                                               className="dropdown-icon"
                                               src={DropDownIcon}
                                             />
-                                            {Number(chatFeatureActive) ===
-                                            Number(messageData.messageID) ? (
+                                            {chatFeatureActive != 0 &&
+                                            Number(chatFeatureActive) ===
+                                              Number(messageData.messageID) ? (
                                               <div className="dropdown-menus-chatmessage">
                                                 <span
                                                   onClick={() =>

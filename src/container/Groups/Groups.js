@@ -1,24 +1,24 @@
-import { Container, Row, Col } from 'react-bootstrap'
-import styles from './Groups.module.css'
-import { Button, Loader, Modal, Notification } from '../../components/elements'
-import NoGroupsData from '../../assets/images/No-Group.svg'
-import React, { useEffect, useState } from 'react'
-import ModalArchivedGroups from '../ModalArchivedGroups/ModalArchivedGroups'
-import { Pagination } from 'antd'
-import { useTranslation } from 'react-i18next'
-import CreateGroup from '../../components/elements/CreateGroup/CreateGroup'
-import UpdateGroupPage from '../../components/elements/updateGroupPage/UpdateGroupPage'
-import ViewGrouppage from '../../components/elements/ViewGrouppage/ViewGrouppage'
-import archivedbtn from '../../assets/images/archivedbtn.png'
-import ModalActivegroup from '../ModalActiveGroup/ModalActivegroup'
-import Card from '../../components/elements/Card/Card'
-import { useDispatch, useSelector } from 'react-redux'
-import GroupIcon from '../../assets/images/Path 636.png'
-
+import { Container, Row, Col } from "react-bootstrap";
+import styles from "./Groups.module.css";
+import { Button, Loader, Modal, Notification } from "../../components/elements";
+import NoGroupsData from "../../assets/images/No-Group.svg";
+import React, { useEffect, useState } from "react";
+import ModalArchivedGroups from "../ModalArchivedGroups/ModalArchivedGroups";
+import { Pagination } from "antd";
+import { useTranslation } from "react-i18next";
+import CreateGroup from "../../components/elements/CreateGroup/CreateGroup";
+import UpdateGroupPage from "../../components/elements/updateGroupPage/UpdateGroupPage";
+import ViewGrouppage from "../../components/elements/ViewGrouppage/ViewGrouppage";
+import archivedbtn from "../../assets/images/archivedbtn.png";
+import ModalActivegroup from "../ModalActiveGroup/ModalActivegroup";
+import Card from "../../components/elements/Card/Card";
+import { useDispatch, useSelector } from "react-redux";
+import GroupIcon from "../../assets/images/Path 636.png";
 import {
   clearMessagesGroup,
   getbyGroupID,
   getGroups,
+  groupLoader,
   realtimeGroupStatusResponse,
   updateGroupStatus,
 } from '../../store/actions/Groups_actions'
@@ -42,19 +42,19 @@ const Groups = () => {
     open: false,
     message: '',
   })
-  //Pagination states
   const [totalLength, setTotalLength] = useState(0)
   const [groupStatusUpdateData, setGroupStatusUpdateData] = useState({
     StatusID: 0,
     GroupID: 0,
-  })
-  const [uniqCardID, setUniqCardID] = useState(0)
-  let currentPage = JSON.parse(localStorage.getItem('groupsCurrent'))
+  });
+  const [uniqCardID, setUniqCardID] = useState(0);
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  const creatorID = localStorage.getItem("userID")
 
   const handlechange = (value) => {
-    localStorage.setItem('groupsCurrent', value)
-    dispatch(getGroups(navigate, t, 0, value))
-  }
+    localStorage.setItem("groupsCurrent", value);
+    dispatch(getGroups(navigate, t, value));
+  };
 
   const archivedmodaluser = (e) => {
     setShowModal(true)
@@ -66,7 +66,19 @@ const Groups = () => {
   // const updateModal = (id) => {
   //   dispatch(getbyGroupID(id, t, setViewGroupPage, setUpdateComponentpage, 2));
   // };
+  const viewTitleModal = (data) => {
+    dispatch(
+      getbyGroupID(
+        navigate,
+        data.groupID,
+        t,
+        setViewGroupPage,
+        setUpdateComponentpage,
+        1
+      )
+    );
 
+  };
   const viewmodal = (groupID, statusID) => {
     if (statusID === 1) {
       dispatch(
@@ -131,10 +143,10 @@ const Groups = () => {
   }, [])
 
   useEffect(() => {
-    localStorage.removeItem('groupsArCurrent')
-    localStorage.setItem('groupsCurrent', 1)
-    dispatch(getGroups(navigate, t, 0, 1))
-  }, [])
+    localStorage.removeItem("groupsArCurrent");
+    localStorage.setItem("groupsCurrent", 1);
+    dispatch(getGroups(navigate, t, 1));
+  }, []);
 
   useEffect(() => {
     if (GroupsReducer.realtimeGroupStatus !== null) {
@@ -191,24 +203,15 @@ const Groups = () => {
           setTotalLength(GroupsReducer.getAllGroupsResponse.totalRecords)
           let newArr = []
           let arr = GroupsReducer.getAllGroupsResponse.groups
-          console.log('arrarr', arr)
           arr.map((data, index) => {
-            console.log('datavvvvvvvv', data)
-            newArr.push({
-              groupDescription: data.groupDescription,
-              groupID: data.groupID,
-              groupMembers: data.groupMembers,
-              groupStatusID: data.groupStatusID,
-              groupTitle: data.groupTitle,
-              userCount: data.userCount,
-              listOfCommittees: data.listOfCommittees,
-            })
-          })
-          setgroupsData(newArr)
+            newArr.push(data);
+          });
+          setgroupsData(newArr);
         }
       }
-    } catch (error) {}
-  }, [GroupsReducer.getAllGroupsResponse])
+    } catch (error) { }
+  }, [GroupsReducer.getAllGroupsResponse]);
+
 
   useEffect(() => {
     if (
@@ -287,9 +290,8 @@ const Groups = () => {
             <Row>
               <Col lg={12} sm={12} md={12}>
                 <Row
-                  className={`${'d-flex text-center MontserratSemiBold-600 color-5a5a5a m-0 p-0'} ${
-                    styles['groups_box']
-                  }`}
+                  className={`${"d-flex text-center MontserratSemiBold-600 color-5a5a5a m-0 p-0"} ${styles["groups_box"]
+                    }`}
                 >
                   <Col sm={12} md={12} lg={12} className="m-0 p-0">
                     <Row>
@@ -303,6 +305,8 @@ const Groups = () => {
                                 key={index}
                                 CardID={data.groupID}
                                 StatusID={data.groupStatusID}
+                                associatedTags={data.listOfCommittees}
+                                creatorId={data.creatorID}
                                 flag={false}
                                 Icon={
                                   <img
@@ -310,6 +314,11 @@ const Groups = () => {
                                     height="29.23px"
                                     width="32.39px"
                                   />
+                                }
+                                titleOnCLick={() =>
+                                  viewTitleModal(
+                                    data
+                                  )
                                 }
                                 profile={data.groupMembers}
                                 onClickFunction={() =>
@@ -319,10 +328,10 @@ const Groups = () => {
                                   data.groupStatusID === 1
                                     ? t('View-group')
                                     : data.groupStatusID === 2
-                                    ? t('View-group')
-                                    : data.groupStatusID === 3
-                                    ? t('Update-group')
-                                    : ''
+                                      ? t("View-group")
+                                      : data.groupStatusID === 3
+                                        ? t("Update-group")
+                                        : ""
                                 }
                                 CardHeading={data?.groupTitle}
                                 changeHandleStatus={changeHandleStatus}
@@ -407,7 +416,7 @@ const Groups = () => {
                       <Pagination
                         current={currentPage}
                         total={totalLength}
-                        pageSize={9}
+                        pageSize={8}
                         onChange={handlechange}
                       />
                     </Col>
@@ -446,9 +455,7 @@ const Groups = () => {
                     md={12}
                     className="d-flex justify-content-center"
                   >
-                    <span
-                      className={styles['heading-modal-active-contfirmation']}
-                    >
+                    <span className={styles['heading-modal-active-contfirmation']} >
                       {t('Are-you-sure-you-want-to')}
                     </span>
                   </Col>
@@ -460,9 +467,7 @@ const Groups = () => {
                     md={12}
                     className="d-flex justify-content-center"
                   >
-                    <span
-                      className={styles['heading-modal-active-contfirmation']}
-                    >
+                    <span className={styles['heading-modal-active-contfirmation']}>
                       {statusValue || ''} {t('this-group?')}
                     </span>
                   </Col>
@@ -510,7 +515,7 @@ const Groups = () => {
         />
       ) : null}
 
-      {GroupsReducer.Loading ? <Loader /> : null}
+      {GroupsReducer.getAllLoading || GroupsReducer.Loading ? <Loader /> : null}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   )
