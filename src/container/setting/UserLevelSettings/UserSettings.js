@@ -226,233 +226,238 @@ const UserSettings = () => {
   const onChangeIsTwoFaceEnabled = (e) => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      is2FAEnabled: !userOptionsSettings.is2FAEnabled,
+      Is2FAEnabled: !userOptionsSettings.Is2FAEnabled,
     });
   };
 
   const onChangeEmailOnNewMeeting = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      emailOnNewMeeting: !userOptionsSettings.emailOnNewMeeting,
+      EmailOnNewMeeting: !userOptionsSettings.EmailOnNewMeeting,
     });
   };
 
   const onChangeEmailOnEditMeeting = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      emailEditMeeting: !userOptionsSettings.emailEditMeeting,
+      EmailEditMeeting: !userOptionsSettings.EmailEditMeeting,
     });
   };
 
   const onChangeEmailOnCancelledOrDeletedMeeting = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      emailCancelOrDeleteMeeting:
-        !userOptionsSettings.emailCancelOrDeleteMeeting,
+      EmailCancelOrDeleteMeeting:
+        !userOptionsSettings.EmailCancelOrDeleteMeeting,
     });
   };
+
+  console.log(
+    userOptionsSettings.EmailCancelOrDeleteMeeting,
+    "EmailCancelOrDeleteMeetingEmailCancelOrDeleteMeeting"
+  );
 
   const onChangePushNotificationonNewMeeting = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      pushNotificationonNewMeeting:
-        !userOptionsSettings.pushNotificationonNewMeeting,
+      PushNotificationonNewMeeting:
+        !userOptionsSettings.PushNotificationonNewMeeting,
     });
   };
 
   const onChangePushNotificationOnEditMeeting = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      pushNotificationEditMeeting:
-        !userOptionsSettings.pushNotificationEditMeeting,
+      PushNotificationEditMeeting:
+        !userOptionsSettings.PushNotificationEditMeeting,
     });
   };
 
   const onChangePushNotificationOnCancelledOrDeleteMeeting = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      pushNotificationCancelledOrDeleteMeeting:
-        !userOptionsSettings.pushNotificationCancelledOrDeleteMeeting,
+      PushNotificationCancelledOrDeleteMeeting:
+        !userOptionsSettings.PushNotificationCancelledOrDeleteMeeting,
     });
   };
 
   const onChangeShowNotificationonJoiningParticiapnts = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      showNotificationOnParticipantJoining:
-        !userOptionsSettings.showNotificationOnParticipantJoining,
+      ShowNotificationOnParticipantJoining:
+        !userOptionsSettings.ShowNotificationOnParticipantJoining,
     });
   };
 
   const onChangeAllowCalenderSync = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      allowCalenderSync: !userOptionsSettings.allowCalenderSync,
+      AllowCalenderSync: !userOptionsSettings.AllowCalenderSync,
     });
   };
 
   const onChangeAllowMicrosoftCalenderSync = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      allowMicrosoftCalenderSync:
-        !userOptionsSettings.allowMicrosoftCalenderSync,
+      AllowMicrosoftCalenderSync:
+        !userOptionsSettings.AllowMicrosoftCalenderSync,
     });
   };
 
   const onChangeEmailWhenAddedToCommittee = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      emailWhenAddedToCommittee: !userOptionsSettings.emailWhenAddedToCommittee,
+      EmailWhenAddedToCommittee: !userOptionsSettings.EmailWhenAddedToCommittee,
     });
   };
 
   const onChangeEmailWhenRemovedFromCommittee = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      emailWhenRemovedFromCommittee:
-        !userOptionsSettings.emailWhenRemovedFromCommittee,
+      EmailWhenRemovedFromCommittee:
+        !userOptionsSettings.EmailWhenRemovedFromCommittee,
     });
   };
 
   const onChangeWhenCommitteeIsDissolvedOrArchived = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      emailWhenCommitteeIsDissolvedOrArchived:
-        !userOptionsSettings.emailWhenCommitteeIsDissolvedOrArchived,
+      EmailWhenCommitteeIsDissolvedOrArchived:
+        !userOptionsSettings.EmailWhenCommitteeIsDissolvedOrArchived,
     });
   };
 
   const onChangeEmailWhenCommitteeIsInActive = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      emailWhenCommitteeIsSetInactive:
-        !userOptionsSettings.emailWhenCommitteeIsSetInactive,
+      EmailWhenCommitteeIsSetInactive:
+        !userOptionsSettings.EmailWhenCommitteeIsSetInactive,
     });
   };
 
   const onChangePushNotificationWhenAddedToCommittee = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      pushNotificationWhenAddedToCommittee:
-        !userOptionsSettings.pushNotificationWhenAddedToCommittee,
+      PushNotificationWhenAddedToCommittee:
+        !userOptionsSettings.PushNotificationWhenAddedToCommittee,
     });
   };
 
   const onChangePushNotificationWhenRemovedFromCommittee = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      pushNotificationWhenRemovedFromCommittee:
-        !userOptionsSettings.pushNotificationWhenRemovedFromCommittee,
+      PushNotificationWhenRemovedFromCommittee:
+        !userOptionsSettings.PushNotificationWhenRemovedFromCommittee,
     });
   };
 
   const onChangepushNotificationWhenCommitteeIsDissolvedOrArchived = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      pushNotificationWhenCommitteeIsDissolvedOrArchived:
-        !userOptionsSettings.pushNotificationWhenCommitteeIsDissolvedOrArchived,
+      PushNotificationWhenCommitteeIsDissolvedOrArchived:
+        !userOptionsSettings.PushNotificationWhenCommitteeIsDissolvedOrArchived,
     });
   };
 
   const onChangepushNotificationWhenCommitteeIsInActive = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      pushNotificationWhenCommitteeIsInActive:
-        !userOptionsSettings.pushNotificationWhenCommitteeIsInActive,
+      PushNotificationWhenCommitteeIsInActive:
+        !userOptionsSettings.PushNotificationWhenCommitteeIsInActive,
     });
   };
 
   const onChangeEmailWhenAddedToGroup = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      emailWhenAddedToGroup: !userOptionsSettings.emailWhenAddedToGroup,
+      EmailWhenAddedToGroup: !userOptionsSettings.EmailWhenAddedToGroup,
     });
   };
 
   const onChangeEmailWhenRemovedFromGroup = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      emailWhenRemovedFromGroup: !userOptionsSettings.emailWhenRemovedFromGroup,
+      EmailWhenRemovedFromGroup: !userOptionsSettings.EmailWhenRemovedFromGroup,
     });
   };
 
   const onChangeEmailWhenGroupIsDissolvedOrArchived = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      emailWhenGroupIsDissolvedOrArchived:
-        !userOptionsSettings.emailWhenGroupIsDissolvedOrArchived,
+      EmailWhenGroupIsDissolvedOrArchived:
+        !userOptionsSettings.EmailWhenGroupIsDissolvedOrArchived,
     });
   };
 
   const onChangeWhenGroupIsSetInactive = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      emailWhenGroupisSetInactive:
-        !userOptionsSettings.emailWhenGroupisSetInactive,
+      EmailWhenGroupisSetInactive:
+        !userOptionsSettings.EmailWhenGroupisSetInactive,
     });
   };
 
   const onChangePushNotificationWhenAddedToGroup = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      pushNotificationWhenAddedToGroup:
-        !userOptionsSettings.pushNotificationWhenAddedToGroup,
+      PushNotificationWhenAddedToGroup:
+        !userOptionsSettings.PushNotificationWhenAddedToGroup,
     });
   };
 
   const onChangePushNotificationWhenRemovedFromGroup = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      pushNotificationWhenRemovedFromGroup:
-        !userOptionsSettings.pushNotificationWhenRemovedFromGroup,
+      PushNotificationWhenRemovedFromGroup:
+        !userOptionsSettings.PushNotificationWhenRemovedFromGroup,
     });
   };
 
   const onChangePushNotificationWhenGroupIsDissolvedOrArchived = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      pushNotificationWhenGroupIsDissolvedOrArchived:
-        !userOptionsSettings.pushNotificationWhenGroupIsDissolvedOrArchived,
+      PushNotificationWhenGroupIsDissolvedOrArchived:
+        !userOptionsSettings.PushNotificationWhenGroupIsDissolvedOrArchived,
     });
   };
 
   const onChangePushNotificationWhenGroupIsSetInActive = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      pushNotificationWhenGroupIsInActive:
-        !userOptionsSettings.pushNotificationWhenGroupIsInActive,
+      PushNotificationWhenGroupIsInActive:
+        !userOptionsSettings.PushNotificationWhenGroupIsInActive,
     });
   };
 
   const onChangeWhenResolutionIsCirculated = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      emailWhenResolutionIsCirculated:
-        !userOptionsSettings.emailWhenResolutionIsCirculated,
+      EmailWhenResolutionIsCirculated:
+        !userOptionsSettings.EmailWhenResolutionIsCirculated,
     });
   };
 
   const onChangeEmailWhenResolutionIsCancelledAfterCirculation = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      emailWhenNewResolutionIsCancelledAfterCirculation:
-        !userOptionsSettings.emailWhenNewResolutionIsCancelledAfterCirculation,
+      EmailWhenNewResolutionIsCancelledAfterCirculation:
+        !userOptionsSettings.EmailWhenNewResolutionIsCancelledAfterCirculation,
     });
   };
 
   const onChangeEmailWhenResolutionisClosed = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      emailWhenResolutionIsClosed:
-        !userOptionsSettings.emailWhenResolutionIsClosed,
+      EmailWhenResolutionIsClosed:
+        !userOptionsSettings.EmailWhenResolutionIsClosed,
     });
   };
 
   const onChangePushNotificationWhenResolutionIsCirculated = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      pushNotificationWhenNewResolutionIsCirculated:
-        !userOptionsSettings.pushNotificationWhenNewResolutionIsCirculated,
+      PushNotificationWhenNewResolutionIsCirculated:
+        !userOptionsSettings.PushNotificationWhenNewResolutionIsCirculated,
     });
   };
 
@@ -460,16 +465,16 @@ const UserSettings = () => {
     () => {
       setUserOptionsSettings({
         ...userOptionsSettings,
-        pushNotificationWhenNewResolutionIsCancelledAfterCirculated:
-          !userOptionsSettings.pushNotificationWhenNewResolutionIsCancelledAfterCirculated,
+        PushNotificationWhenNewResolutionIsCancelledAfterCirculated:
+          !userOptionsSettings.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
       });
     };
 
   const onChangePushNotificationWhenResolutionIsClosed = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
-      pushNotificationWhenResolutionISClosed:
-        !userOptionsSettings.pushNotificationWhenResolutionISClosed,
+      PushNotificationWhenResolutionISClosed:
+        !userOptionsSettings.PushNotificationWhenResolutionISClosed,
     });
   };
 
