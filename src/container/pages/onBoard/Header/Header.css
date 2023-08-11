@@ -118,7 +118,7 @@
 }
 
 .dropdown-item {
-  white-space: normal !important;
+  white-space: nowrap !important;
   font-size: 0.8rem;
   /* margin  : 0 0 0 0; */
 }
@@ -138,7 +138,7 @@
   overflow: auto;
 }
 
-.notification-dropdown > [data-bs-toggle="dropdown"].show:before {
+.notification-dropdown>[data-bs-toggle="dropdown"].show:before {
   width: 0;
   height: 0;
   border-left: 7px solid transparent;
@@ -320,13 +320,13 @@
 }
 
 
-.header-schedule-meeting-btn{
+.header-schedule-meeting-btn {
   display: none !important;
   margin: 0 !important;
   padding: 0 !important;
 }
 
-.header-schedule-meeting-btn-show{
+.header-schedule-meeting-btn-show {
   display: flex !important;
   margin: 0px !important;
   align-items: center !important;

@@ -24,6 +24,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const { ResolutionReducer } = useSelector((state) => state);
+  let ButtonTab = JSON.parse(localStorage.getItem("ButtonTab"))
   const [resolutionTitle, setResolutionTitle] = useState("");
   const [approved, setApproved] = useState(0);
   const [resolutionID, setResolutionID] = useState(0);
@@ -341,14 +342,15 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                       className={styles["Close_Btn_Resultresolution"]}
                       onClick={() => setResultresolution(false)}
                     />
-                    <Button
+                    {ButtonTab !== 2 && <Button
                       text={t("Close-resolution")}
                       className={
                         styles["Close_resolution_Btn_Resultresolution"]
                       }
                       disableBtn={decisionDateExpiry ? true : false}
                       onClick={closeResolutionHandleClick}
-                    />
+                    />}
+
                   </Col>
                 </Row>
               </Col>

@@ -6,7 +6,6 @@ import './ar.css'
 import { logoutAllTabs } from './store/actions/Auth_Sign_Out'
 import moment from 'moment'
 import './assets/font-icons/font-icons.css'
-
 const App = () => {
 
   useEffect(() => {

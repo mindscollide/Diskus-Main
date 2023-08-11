@@ -119,6 +119,7 @@ const DataRoom = () => {
   ]);
   const { t } = useTranslation();
   const { uploadReducer, DataRoomReducer } = useSelector((state) => state);
+  console.log(DataRoomReducer, "DataRoomReducerDataRoomReducerDataRoomReducer")
   const searchBarRef = useRef();
   const threedotFile = useRef();
   const threedotFolder = useRef();
@@ -2396,12 +2397,14 @@ const DataRoom = () => {
                         <img
                           src={chevronUp}
                           width={9}
+                          className="cursor-pointer"
                           onClick={() => setCollapes(false)}
                         />
                       ) : (
                         <img
                           src={chevdown}
                           width={9}
+                          className="cursor-pointer"
                           onClick={() => setCollapes(true)}
                         />
                       )}
@@ -2409,6 +2412,7 @@ const DataRoom = () => {
                       <img
                         src={Cancellicon}
                         width={9}
+                        className="cursor-pointer"
                         onClick={closeSearchBar}
                       />
                     </Col>

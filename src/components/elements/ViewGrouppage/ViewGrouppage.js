@@ -53,7 +53,10 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
   }, [GroupsReducer]);
   useEffect(() => {
     let UserID = JSON.parse(localStorage.getItem("userID"));
-    dispatch(allAssignessList(navigate, t));
+    try {
+      dispatch(allAssignessList(navigate, t));
+
+    } catch { }
   }, []);
   return (
     <section className="MontserratSemiBold-600 color-5a5a5a">
@@ -149,7 +152,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
             <Row className="mt-3">
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["members-create-group-page"]}>
-                  {t("Memebers")}
+                  {t("Members")}
                 </span>
               </Col>
             </Row>
@@ -157,7 +160,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
               {viewGroupDetails.GroupMembers !== null
                 ? viewGroupDetails.GroupMembers.map((data, index) => {
                   return (
-                    <Col lg={3} md={3} sm={3} className="mt-3">
+                    <Col lg={4} md={4} sm={12} className="mt-3">
                       <Row>
                         <Col lg={2} md={2} sm={12}>
                           <img src={Newprofile} width={50} />

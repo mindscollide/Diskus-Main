@@ -10,7 +10,7 @@ import GroupIcon from "../../assets/images/Path 636.png";
 import right from "../../assets/images/rightchev.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Carousel from "react-bootstrap/Carousel";
-import { getbyGroupID, getGroups } from "../../store/actions/Groups_actions";
+import { getArcheivedGroups, getbyGroupID, getGroups } from "../../store/actions/Groups_actions";
 import { useNavigate } from "react-router-dom";
 
 const ModalArchivedCommittee = ({
@@ -32,10 +32,10 @@ const ModalArchivedCommittee = ({
 
   useEffect(() => {
     if (currentGroupPage !== null && currentGroupPage !== undefined) {
-      dispatch(getGroups(navigate, t, 1, currentGroupPage));
+      dispatch(getArcheivedGroups(navigate, t, currentGroupPage));
     } else {
       localStorage.setItem("groupsArCurrent", 1)
-      dispatch(getGroups(navigate, t, 1, 1));
+      dispatch(getArcheivedGroups(navigate, t, 1));
     }
 
   }, [currentGroupPage]);
@@ -101,7 +101,7 @@ const ModalArchivedCommittee = ({
         t,
         setViewGroupPage,
         setUpdateComponentpage,
-        statusID,
+        1,
         setArchivedGroups
       )
     );
@@ -110,14 +110,14 @@ const ModalArchivedCommittee = ({
 
   const handlechange = (value) => {
     localStorage.setItem("groupsArCurrent", value)
-    dispatch(getGroups(navigate, t, 1, value));
+    dispatch(getArcheivedGroups(navigate, t, value));
   };
 
   const handleArrow = () => {
     if (GroupsReducer.ArcheivedGroups.pageNumbers >= currentGroupPage + 1) {
       let currentPage = currentGroupPage + 1;
       localStorage.setItem("groupsArCurrent", currentPage)
-      dispatch(getGroups(navigate, t, 1, currentPage));
+      dispatch(getArcheivedGroups(navigate, t, currentPage));
     }
   };
 
@@ -191,6 +191,12 @@ const ModalArchivedCommittee = ({
                               CardHeading={data.groupTitle}
                               IconOnClick={updateModal}
                               onClickFunction={() =>
+                                ViewGroupmodal(
+                                  data.groupID,
+                                  data.groupStatusID
+                                )
+                              }
+                              titleOnCLick={() =>
                                 ViewGroupmodal(
                                   data.groupID,
                                   data.groupStatusID

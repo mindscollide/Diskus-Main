@@ -1,33 +1,30 @@
 import React, { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import styles from "./ModalUpdateresolution.module.css";
+import styles from "./ModalResolutionCirculated.module.css";
 import { useTranslation } from "react-i18next";
 
 import { Button, InputSearchFilter, Modal } from "../../components/elements";
 import { style } from "@mui/system";
-const ModalUpdateresolution = ({
-  ModalTitle,
-  updateresolution,
-  setUpdateresolution,
-  handleUpdateResolution
+const ModalResolutionCirculated = ({
+  circulateresolution,
+  setcirculateresolution,
+  handleCirculateResolution,
 }) => {
   const { t } = useTranslation();
   const closebtn = async () => {
-    setUpdateresolution(false);
+    setcirculateresolution(false);
   };
   return (
     <>
       <Container>
         <Modal
-          show={updateresolution}
+          show={circulateresolution}
           onHide={() => {
-            setUpdateresolution(false);
+            setcirculateresolution(false);
           }}
-          setShow={setUpdateresolution}
-          ButtonTitle={ModalTitle}
+          setShow={setcirculateresolution}
           modalFooterClassName="d-block"
           centered
-          size={updateresolution === true ? "md" : "md"}
           ModalBody={
             <>
               <Container>
@@ -38,22 +35,8 @@ const ModalUpdateresolution = ({
                     sm={12}
                     className="d-flex justify-content-center"
                   >
-                    <span
-                      className={styles["Heading_For_Update_resolution_Ask"]}
-                    >
-                      {t("Are-you-sure-you-want-to-update")}
-                    </span>
-                  </Col>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
-                    className="d-flex justify-content-center"
-                  >
-                    <span
-                      className={styles["Heading_For_Update_resolution_Ask"]}
-                    >
-                      {t("the-resolution")}
+                    <span className={styles["Heading_For_Active_Sure"]}>
+                      {t("Are-you-sure-you-want-to-circulate-this-resolution")}
                     </span>
                   </Col>
                 </Row>
@@ -71,14 +54,16 @@ const ModalUpdateresolution = ({
                 >
                   <Button
                     text={t("Discard")}
-                    className={styles["Discard_button_updateResolution_modal"]}
+                    className={
+                      styles["Confirm-activegroup-modal-cancel-button"]
+                    }
                     onClick={closebtn}
                   />
 
                   <Button
                     text={t("Confirm")}
-                    className={styles["Confirm-updateResolution-modal"]}
-                    onClick={handleUpdateResolution}
+                    className={styles["Confirm-activegroup-modal"]}
+                    onClick={handleCirculateResolution}
                   />
                 </Col>
               </Row>
@@ -90,4 +75,4 @@ const ModalUpdateresolution = ({
   );
 };
 
-export default ModalUpdateresolution;
+export default ModalResolutionCirculated;

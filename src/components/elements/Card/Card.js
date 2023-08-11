@@ -27,7 +27,10 @@ const Card = ({
   setUniqCardID,
   uniqCardID,
   Icon,
-  associatedTags
+  groupState,
+  associatedTags,
+  creatorId,
+  titleOnCLick
 }) => {
   const { t } = useTranslation();
   const [editItems, setEditItems] = useState([
@@ -37,6 +40,7 @@ const Card = ({
   ]);
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const [editdropdown, setEditdropdown] = useState(false);
+  const creatorID = localStorage.getItem("userID")
   const findLengthofGroups = associatedTags && associatedTags.length;
   console.log(findLengthofGroups, "findLengthofGroupsfindLengthofGroups")
 
@@ -45,7 +49,8 @@ const Card = ({
     try {
       window.addEventListener("click", function (e) {
         console.log("eeeeeeeee", e.target.className);
-        var clsname = e.target.className;
+        console.log("eeeeeeeee", typeof e.target.className);
+        let clsname = typeof e.target.className === string && e.target.className
         let arr = clsname.split("_");
         console.log("click", arr[1]);
         if (arr != undefined) {
@@ -79,6 +84,22 @@ const Card = ({
       console.log("error");
     }
   }, []);
+  let sortedArraay = profile !== null && profile !== undefined && profile.length > 0 && profile.sort((a, b) => {
+    const userNameA = a.userName.toLowerCase();
+    const userNameB = b.userName.toLowerCase();
+
+    if (userNameA < userNameB) {
+      return -1;
+    }
+    if (userNameA > userNameB) {
+      return 1;
+    }
+    return 0;
+
+  })
+  console.log(associatedTags, "associatedTagsassociatedTags");
+  console.log(StatusID, "StatusIDStatusIDStatusIDStatusID")
+  console.log(creatorId, "StatusIDStatusIDStatusIDStatusID")
   console.log(associatedTags, "associatedTagsassociatedTags")
   useEffect(() => {
     console.log("click", editdropdown, dropdownthreedots);
@@ -157,16 +178,22 @@ const Card = ({
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-end gap-2 mt-4 pe-3"
-            >
-              <img
-                src={editicon}
-                width="21px"
-                height="21px"
-                // className={StatusID === 1 ? "cursor-pointer" : ""}
-                className={styles["Edit_icon_styles"]}
-                onClick={() => setUniqCardID(CardID)}
-              />
+              className="d-flex justify-content-end gap-2 mt-4 pe-3" >
+              {creatorId === Number(creatorID) && (
+                <img
+                  src={editicon}
+                  width="21px"
+                  height="21px"
+                  alt=""
+                  // className={StatusID === 1 ? "cursor-pointer" : ""}
+                  className={
+                    (StatusID === 1 || StatusID === 3) && creatorId === Number(creatorID)
+                      ? styles["Edit_icon_styles"]
+                      : styles["Edit_icon_styles_InActive"]
+                  }
+                  onClick={() => setUniqCardID(CardID)}
+                />
+              )}
               <img
                 src={doticon}
                 width="21px"
@@ -374,30 +401,83 @@ const Card = ({
                   ? styles["card-heading-Committee-Group_InActive"]
                   : styles["card-heading-Committee-Group"]
               }
+              onClick={titleOnCLick}
             >
               {CardHeading}
             </p>
           </div>
         </Col>
       </Row>
-      <Row><Col sm={12} md={12} lg={12}>
-        {associatedTags !== null && associatedTags !== undefined && associatedTags.length === 1 ?
-          <>
-            <span className={styles["associated_tagLine_groupTitle"]}>{associatedTags[0].groupTitle + " "}</span>
-            <span className={styles["associated_tagLine"]}>{t("associated-with-this-committee")}</span>
-          </> : null}
-        {associatedTags && associatedTags.length > 1 ? <>
-          <span className={styles["associated_tagLine_groupTitle"]}>{associatedTags[0].groupTitle}{`& + ${associatedTags.length}` + " "} </span>
-          <span className={styles["associated_tagLine"]}>{t("associated-with-this-committee")}</span>
-        </> : ""}
-      </Col>
+      <Row className="m-0 p-0">
+        {groupState === true ? <Col sm={12} md={12} lg={12}>
+          {associatedTags !== null &&
+            associatedTags !== undefined &&
+            associatedTags.length === 1 ? (
+            <>
+              <span className={styles["associated_tagLine_single"]}>
+                {t("Associated-with")}
+                <span className={styles["associated_tagLine_groupTitle_single"]} >
+                  {`${associatedTags[0].committeeTitle} ${t("Committee")}`}
+                </span>
+              </span>
+
+
+            </>
+          ) : null}
+          {associatedTags && associatedTags.length > 1 ? (
+            <>
+              <span className={styles["associated_tagLine"]}>
+                {`${t("Associated-with")} ${" "}`}
+                <span className={styles["associated_tagLine_groupTitle"]}>
+                  {`${associatedTags.length} ${t("Committees")} `}
+                </span>
+              </span>
+
+
+            </>
+          ) : (
+            ""
+          )}
+        </Col> : <Col sm={12} md={12} lg={12}>
+          {associatedTags !== null &&
+            associatedTags !== undefined &&
+            associatedTags.length === 1 ? (
+            <>
+              <span className={styles["associated_tagLine_single"]}>
+                {`${t("Associated-with")}`}
+                <span className={styles["associated_tagLine_groupTitle_single"]}>
+                  {`${associatedTags[0].groupTitle} ${t("Group")}` + " "}
+                </span>
+              </span>
+
+
+            </>
+          ) : null}
+          {associatedTags && associatedTags.length > 1 ? (
+            <>
+              <span className={styles["associated_tagLine"]}>
+                {t("Associated-with")} {" "}
+                <span className={styles["associated_tagLine_groupTitle"]}>
+                  {/* {associatedTags[0].groupTitle} */}
+                  {`${associatedTags.length} ${t("Groups")}`}
+                </span>
+              </span>
+
+
+            </>
+          ) : (
+            ""
+          )}
+        </Col>}
+
       </Row>
 
       <Row className="m-0 p-0 ">
         <Col lg={10} md={10} sm={10} className={styles["profile_cards"]}>
           <Row className="justify-content-center">
             {profile != undefined && profile != null
-              ? profile.map((data, index) => {
+              ? sortedArraay.map((data, index) => {
+                console.log(sortedArraay, "ShowNotificationShowNotificationShowNotification")
                 if (index <= 3) {
                   return (
                     <Col
@@ -439,8 +519,6 @@ const Card = ({
           </Row>
         </Col>
       </Row>
-
-
       <Row className="m-0 p-0 ">
         <Col
           lg={12}
@@ -450,7 +528,8 @@ const Card = ({
         >
           <Button
             className={styles["update-Committee-btn"]}
-            text={BtnText}
+            text={flag ? t("Update-committee") : t("Update-group")}
+            disableBtn={Number(StatusID) === 3 && Number(creatorId) === Number(creatorID) ? false : true}
             onClick={onClickFunction}
           />
         </Col>

@@ -58,7 +58,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const GroupeTitle = useRef(null);
   const [groupMembers, setGroupMembers] = useState([]);
   // for   select participant Role Name
-  const [participantRoleName, setParticipantRoleName] = useState("");
+  const [participantRoleName, setParticipantRoleName] = useState(t("Regular"));
   const participantOptions = [t("Head"), t("Regular")];
   const [groupTypeOptions, setGroupTypeOptions] = useState([]);
   const [participantRoles, setParticipantRoles] = useState([]);
@@ -435,32 +435,20 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
   // remove member handler
   const removeMemberHandler = (id) => {
-    console.log("id", id);
-    let createGroupMembers = createGroupDetails.GroupMembers;
-    let getGroupMemberIndex = groupMembers.findIndex(
-      (groupmemberdata, index) => groupmemberdata.data.pK_UID === id
-    );
-    let getIndexCreateGroupDetails = createGroupMembers.findIndex(
-      (data, index) => data.FK_UID === id
-    );
-    groupMembers.splice(getGroupMemberIndex, 1);
-    createGroupMembers.splice(getIndexCreateGroupDetails, 1);
-    setGroupMembers([...groupMembers]);
-    setCreateGroupDetails({
+    const updatedCreateGroupDetails = {
       ...createGroupDetails,
-      GroupMembers: createGroupMembers,
-    });
+      GroupMembers: createGroupDetails.GroupMembers.filter(item => item.FK_UID !== id),
+    };
+    setCreateGroupDetails(updatedCreateGroupDetails);
+
+    const updatedGroupMembers = groupMembers.filter(item => item.data.pK_UID !== id);
+    setGroupMembers(updatedGroupMembers);
   };
-  console.log("found2found2found2", createGroupDetails.GroupMembers);
-  console.log("found2found2found2", groupMembers);
-  console.log("found2found2found2", attendees);
 
   const checkGroupMembers = (GroupMembers) => {
-    console.log("checkGroupMembers", GroupMembers);
     if (Object.keys(GroupMembers).length > 0) {
       let flag1 = GroupMembers.find((data, index) => data.FK_GRMRID === 1);
       let flag2 = GroupMembers.find((data, index) => data.FK_GRMRID === 2);
-      console.log("checkGroupMembers", flag1, flag2);
 
       if (flag1 != undefined && flag2 != undefined) {
         return true;
@@ -486,25 +474,16 @@ const CreateGroup = ({ setCreategrouppage }) => {
         });
       } else {
         if (!checkGroupMembers(createGroupDetails.GroupMembers)) {
-          console.log(
-            "checkGroupMembers",
-            checkGroupMembers(createGroupDetails.GroupMembers)
-          );
           setOpen({
             flag: true,
             message: t(
               "Please-add-atleast-one-group-head-and-one-group-member"
             ),
           });
+
         } else {
-          console.log(
-            "checkGroupMembers",
-            checkGroupMembers(createGroupDetails.GroupMembers)
-          );
           setErrorBar(false);
-          let OrganizationID = JSON.parse(
-            localStorage.getItem("organizationID")
-          );
+          let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
           let Data = {
             GroupDetails: {
               CreatorID: createGroupDetails.CreatorID,
@@ -517,6 +496,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
             },
             GroupMembers: createGroupDetails.GroupMembers,
           };
+          console.log("createGroupecheck", Data)
           dispatch(createGroup(navigate, Data, t, setCreategrouppage));
         }
       }
