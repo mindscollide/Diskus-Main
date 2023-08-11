@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./UserSettings.module.css";
 import { Col, Container, Row } from "react-bootstrap";
-import { Notification, Loader } from "../../../components/elements";
+import { Notification, Loader, Button } from "../../../components/elements";
 import backbutton from "../../../assets/images/backbutton.svg";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -1595,6 +1595,14 @@ const UserSettings = () => {
                 ) : null}
               </Col>
             </Row>
+          </Col>
+        </Row>
+        <Row>
+          <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+            <Button
+              text={t("Update")}
+              className={styles["New_settings_Update_Button"]}
+            />
           </Col>
         </Row>
       </section>

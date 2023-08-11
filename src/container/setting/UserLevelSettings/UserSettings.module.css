@@ -18,7 +18,7 @@
 .Options_headings_active {
   font-size: 20px !important;
   color: #5a5a5a;
-  font-family: "MontserratBold-700" !important;
+  font-family: "MontserratExtraBold-800" !important;
 }
 .Padding_around_class {
   padding: 0px 45px !important;
@@ -54,5 +54,28 @@
   /* margin-left: -48px !important; */
 }
 .user-setting-row {
-  height: calc(90vh - 65px);
+  height: calc(80vh - 65px);
+}
+
+.New_settings_Update_Button {
+  width: 160px;
+  background-color: #6172d6;
+  border-radius: 4px;
+  color: #fff;
+  border: none;
+  font-family: "MontserratMedium";
+  font-size: 14px;
+}
+
+.New_settings_Update_Button:hover,
+.New_settings_Update_Button:active,
+.New_settings_Update_Button:focus,
+.New_settings_Update_Button:focus-visible {
+  width: 160px !important;
+  background-color: #6172d6 !important;
+  border-radius: 4px !important;
+  color: #fff !important;
+  border: none !important;
+  font-family: "MontserratMedium" !important;
+  font-size: 14px !important;
 }
