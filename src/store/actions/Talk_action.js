@@ -39,6 +39,7 @@ import {
   insertBulkMessages,
   downloadChat,
   updateMessageAcknowledgement,
+  getAllStarredMessages,
 } from '../../commen/apis/Api_config'
 import axios from 'axios'
 import { talkApi } from '../../commen/apis/Api_ends_points'
@@ -123,6 +124,13 @@ const activeChatID = (response) => {
 const activeMessageID = (response) => {
   return {
     type: actions.GET_ACTIVEMESSAGEID,
+    response: response,
+  }
+}
+
+const activeChat = (response) => {
+  return {
+    type: actions.GET_ACTIVE_CHAT,
     response: response,
   }
 }
@@ -217,13 +225,13 @@ const mqttUnreadMessageCount = (response) => {
   }
 }
 
-//Unread Message Count
-// const mqttMessageDeleted = (response) => {
-//   return {
-//     type: actions.MQTT_UNREAD_MESSAGE_COUNT,
-//     response: response,
-//   }
-// }
+//MQTT Message Deleted
+const mqttMessageDeleted = (response) => {
+  return {
+    type: actions.MQTT_MESSAGE_DELETED,
+    response: response,
+  }
+}
 
 //Message Status Update
 const mqttMessageStatusUpdate = (response) => {
@@ -265,8 +273,8 @@ const GetAllUserChats = (navigate, currentUserId, currentOrganizationId, t) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = {
     TalkRequest: {
-      UserID: currentUserId,
-      ChannelID: currentOrganizationId,
+      UserID: parseInt(currentUserId),
+      ChannelID: parseInt(currentOrganizationId),
     },
   }
   return (dispatch) => {
@@ -344,6 +352,31 @@ const getOTOUserMessagesSuccess = (response, message) => {
   }
 }
 
+//Get All Messages
+const getAllMessagesInit = () => {
+  return {
+    type: actions.GET_ALL_MESSAGES_SUCCESS,
+  }
+}
+
+//Get All Messages
+const getAllMessagesGlobalSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_MESSAGES_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+//Get All Messages
+const getAllMessagesGlobalFail = (response, message) => {
+  return {
+    type: actions.GET_ALL_MESSAGES_FAIL,
+    response: response,
+    message: message,
+  }
+}
+
 //get OTO user chats fail
 const getOTOUserMessagesFail = (response, message) => {
   return {
@@ -355,6 +388,8 @@ const getOTOUserMessagesFail = (response, message) => {
 
 //Get OTO all user chats
 const GetOTOUserMessages = (navigate, chatOTOData, t) => {
+  console.log('check cehckc ekchkehc')
+
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = {
     TalkRequest: {
@@ -367,6 +402,7 @@ const GetOTOUserMessages = (navigate, chatOTOData, t) => {
   }
   return (dispatch) => {
     dispatch(getOTOUserMessagesInit())
+    dispatch(getAllMessagesInit())
     let form = new FormData()
     form.append('RequestMethod', getUserOTOMessages.RequestMethod)
     form.append('RequestData', JSON.stringify(Data))
@@ -390,8 +426,14 @@ const GetOTOUserMessages = (navigate, chatOTOData, t) => {
             'Talk_TalkServiceManager_GetUserOTOMessages_01'
           ) {
             let newError = t('One-to-one-messages-found')
-            await dispatch(
+            dispatch(
               getOTOUserMessagesSuccess(
+                response.data.responseResult.talkResponse,
+                newError,
+              ),
+            )
+            dispatch(
+              getAllMessagesGlobalSuccess(
                 response.data.responseResult.talkResponse,
                 newError,
               ),
@@ -402,21 +444,25 @@ const GetOTOUserMessages = (navigate, chatOTOData, t) => {
           ) {
             let newError = t('No-one-to-one-messages-found')
             dispatch(getOTOUserMessagesFail(false, newError))
+            dispatch(getAllMessagesGlobalFail([], newError))
           } else if (
             response.data.responseResult.responseMessage ===
             'Talk_TalkServiceManager_GetUserOTOMessages_03'
           ) {
             let newError = t('Something-went-wrong')
             dispatch(getOTOUserMessagesFail(true, newError))
+            dispatch(getAllMessagesGlobalFail([], newError))
           }
         } else {
           let newError = t('Something-went-wrong')
           dispatch(getOTOUserMessagesFail(false, newError))
+          dispatch(getAllMessagesGlobalFail([], newError))
         }
       })
       .catch((response) => {
         let newError = t('Something-went-wrong')
         dispatch(getOTOUserMessagesFail(false, newError))
+        dispatch(getAllMessagesGlobalFail([], newError))
       })
   }
 }
@@ -556,6 +602,8 @@ const GetGroupMessages = (navigate, chatGroupData, t) => {
   }
   return (dispatch) => {
     dispatch(getGroupMessagesInit())
+    dispatch(getAllMessagesInit())
+
     let form = new FormData()
     form.append('RequestMethod', getGroupMessages.RequestMethod)
     form.append('RequestData', JSON.stringify(Data))
@@ -579,8 +627,14 @@ const GetGroupMessages = (navigate, chatGroupData, t) => {
             'Talk_TalkServiceManager_GetGroupMessages_01'
           ) {
             let newError = t('Group-messages-found')
-            await dispatch(
+            dispatch(
               getGroupMessagesSuccess(
+                response.data.responseResult.talkResponse,
+                newError,
+              ),
+            )
+            dispatch(
+              getAllMessagesGlobalSuccess(
                 response.data.responseResult.talkResponse,
                 newError,
               ),
@@ -591,21 +645,25 @@ const GetGroupMessages = (navigate, chatGroupData, t) => {
           ) {
             let newError = t('Group-messages-not-found')
             dispatch(getGroupMessagesFail(false, newError))
+            dispatch(getAllMessagesGlobalFail([], newError))
           } else if (
             response.data.responseResult.responseMessage ===
             'Talk_TalkServiceManager_GetGroupMessages_03'
           ) {
             let newError = t('Something-went-wrong')
             dispatch(getGroupMessagesFail(true, newError))
+            dispatch(getAllMessagesGlobalFail([], newError))
           }
         } else {
           let newError = t('Something-went-wrong')
           dispatch(getGroupMessagesFail(false, newError))
+          dispatch(getAllMessagesGlobalFail([], newError))
         }
       })
       .catch((response) => {
         let newError = t('Something-went-wrong')
         dispatch(getGroupMessagesFail(false, newError))
+        dispatch(getAllMessagesGlobalFail([], newError))
       })
   }
 }
@@ -649,6 +707,7 @@ const GetBroadcastMessages = (navigate, broadcastMessagesData, t) => {
   }
   return (dispatch) => {
     dispatch(getBroacastMessagesInit())
+    dispatch(getAllMessagesInit())
     let form = new FormData()
     form.append('RequestMethod', getBroadCastMessages.RequestMethod)
     form.append('RequestData', JSON.stringify(Data))
@@ -672,8 +731,14 @@ const GetBroadcastMessages = (navigate, broadcastMessagesData, t) => {
             'Talk_TalkServiceManager_GetBroadcastMessages_01'
           ) {
             let newError = t('Broadcast-messages-found')
-            await dispatch(
+            dispatch(
               getBroacastMessagesSuccess(
+                response.data.responseResult.talkResponse,
+                newError,
+              ),
+            )
+            dispatch(
+              getAllMessagesGlobalSuccess(
                 response.data.responseResult.talkResponse,
                 newError,
               ),
@@ -684,21 +749,25 @@ const GetBroadcastMessages = (navigate, broadcastMessagesData, t) => {
           ) {
             let newError = t('Broadcast-messages-not-found')
             dispatch(getBroacastMessagesFail(false, newError))
+            dispatch(getAllMessagesGlobalFail([], newError))
           } else if (
             response.data.responseResult.responseMessage ===
             'Talk_TalkServiceManager_GetBroadcastMessages_03'
           ) {
             let newError = t('Something-went-wrong')
             dispatch(getBroacastMessagesFail(true, newError))
+            dispatch(getAllMessagesGlobalFail([], newError))
           }
         } else {
           let newError = t('Something-went-wrong')
           dispatch(getBroacastMessagesFail(false, newError))
+          dispatch(getAllMessagesGlobalFail([], newError))
         }
       })
       .catch((response) => {
         let newError = t('Something-went-wrong')
         dispatch(getBroacastMessagesFail(false, newError))
+        dispatch(getAllMessagesGlobalFail([], newError))
       })
   }
 }
@@ -1712,10 +1781,9 @@ const GetBlockedUsersCount = (t) => {
 }
 
 //getBlockedUsersInit
-const getBlockedUsersInit = (response) => {
+const getBlockedUsersInit = () => {
   return {
-    type: actions.GET_BLOCKEDUSERSCOUNT_INIT,
-    response: response,
+    type: actions.GET_BLOCKEDUSERS_INIT,
   }
 }
 
@@ -2321,6 +2389,10 @@ const InsertOTOMessages = (navigate, object, fileUploadData, t, flag) => {
                   'Talk_TalkServiceManager_InsertOTOMessages_01'.toLowerCase(),
                 )
             ) {
+              console.log(
+                'messageSendDataLSmessageSendDataLS',
+                messageSendDataLS,
+              )
               await dispatch(
                 OTOMessageSendSuccess(
                   t('OTO-message-inserted'),
@@ -3755,11 +3827,12 @@ const DownloadChat = (object, t, navigate) => {
           dispatch(DownloadChat(object, t, navigate))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
+            console.log('Download Chat', response)
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Talk_TalkServiceManager_DownloadChat_01'.toLowerCase(),
+                  'Talk_TalkServiceManager_DownloadFile_01'.toLowerCase(),
                 )
             ) {
               await dispatch(
@@ -3768,11 +3841,12 @@ const DownloadChat = (object, t, navigate) => {
                   t('Chat-downloaded-successfully'),
                 ),
               )
+              console.log('DownloadChat', response)
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Talk_TalkServiceManager_DownloadChat_02'.toLowerCase(),
+                  'Talk_TalkServiceManager_DownloadFile_02'.toLowerCase(),
                 )
             ) {
               await dispatch(
@@ -3785,7 +3859,7 @@ const DownloadChat = (object, t, navigate) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Talk_TalkServiceManager_DownloadChat_03'.toLowerCase(),
+                  'Talk_TalkServiceManager_DownloadFile_03'.toLowerCase(),
                 )
             ) {
               await dispatch(downloadChatFail(t('Exception')))
@@ -3793,7 +3867,7 @@ const DownloadChat = (object, t, navigate) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Talk_TalkServiceManager_DownloadChat_04'.toLowerCase(),
+                  'Talk_TalkServiceManager_DownloadFile_04'.toLowerCase(),
                 )
             ) {
               await dispatch(
@@ -3901,6 +3975,132 @@ const UpdateMessageAcknowledgement = (object, t, navigate) => {
   }
 }
 
+const pushMessageData = (response) => {
+  return {
+    type: actions.PUSH_MESSAGE_DATA,
+    response: response,
+  }
+}
+
+const pushChatData = (response) => {
+  return {
+    type: actions.PUSH_CHAT_DATA,
+    response: response,
+  }
+}
+
+const fileUploadData = (response) => {
+  return {
+    type: actions.FILE_UPLOAD_DATA,
+    response: response,
+  }
+}
+
+const activeMessage = (response) => {
+  return {
+    type: actions.ACTIVE_MESSAGE_DATA,
+    response: response,
+  }
+}
+
+const getAllStarredMessagesInit = () => {
+  return {
+    type: actions.GET_ALL_STARRED_MESSAGES_INIT,
+  }
+}
+
+const getAllStarredMessagesSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_STARRED_MESSAGES_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+const getAllStarredMessagesFail = (message) => {
+  return {
+    type: actions.GET_ALL_STARRED_MESSAGES_FAIL,
+    message: message,
+  }
+}
+
+//Get All Starred Messages
+const GetAllStarredMessages = (object, t, navigate) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(getAllStarredMessagesInit())
+    let form = new FormData()
+    form.append('RequestMethod', getAllStarredMessages.RequestMethod)
+    form.append('RequestData', JSON.stringify(object))
+    axios({
+      method: 'post',
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(GetAllStarredMessages(object, t, navigate))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_GetAllFlaggedMessages_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getAllStarredMessagesSuccess(
+                  response.data.responseResult.talkResponse,
+                  t('Flag-messages-found'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_GetAllFlaggedMessages_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getAllStarredMessagesSuccess(
+                  response.data.responseResult.talkResponse,
+                  t('Flag-messages-not-found'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Talk_TalkServiceManager_GetAllFlaggedMessages_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(getAllStarredMessagesFail(t('Exception')))
+            }
+          } else {
+            await dispatch(getAllStarredMessagesFail(t('Exception')))
+          }
+        } else {
+          await dispatch(getAllStarredMessagesFail(t('Exception')))
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllStarredMessagesFail(t('Exception')))
+      })
+  }
+}
+
+const downloadChatEmptyObject = (response) => {
+  return {
+    type: actions.DOWNLOAD_CHAT_EMPTY,
+    response: response,
+  }
+}
+
 export {
   activeChatID,
   activeMessageID,
@@ -3957,4 +4157,12 @@ export {
   DownloadChat,
   UpdateMessageAcknowledgement,
   mqttMessageStatusUpdate,
+  activeChat,
+  pushMessageData,
+  pushChatData,
+  fileUploadData,
+  activeMessage,
+  GetAllStarredMessages,
+  mqttMessageDeleted,
+  downloadChatEmptyObject,
 }

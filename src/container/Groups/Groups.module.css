@@ -336,7 +336,6 @@ body[dir="rtl"] .Cancel-activegroup-modal {
   max-height: 65vh !important;
   min-height: 71vh !important;
   overflow: hidden auto;
-  padding-right: 10px !important;
 }
 
 .groups_box::-webkit-scrollbar {

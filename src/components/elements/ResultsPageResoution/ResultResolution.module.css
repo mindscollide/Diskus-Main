@@ -134,7 +134,7 @@ body[dir="rtl"] .voters_heading_result {
 }
 
 .Close_resolution_Btn_Resultresolution {
-  padding: 12px 60px !important;
+  padding: 12px 80px !important;
   font-size: 12px !important;
   background: #6172d6;
   color: #fff;
@@ -151,7 +151,7 @@ body[dir="rtl"] .Close_resolution_Btn_Resultresolution {
 .Close_resolution_Btn_Resultresolution:focus,
 .Close_resolution_Btn_Resultresolution:active,
 .Close_resolution_Btn_Resultresolution:focus-visible {
-  padding: 12px 60px !important;
+  padding: 12px 80px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
@@ -161,7 +161,7 @@ body[dir="rtl"] .Close_resolution_Btn_Resultresolution {
 }
 
 .Close_resolution_Btn_Resultresolution:disabled {
-  padding: 12px 60px !important;
+  padding: 12px 80px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff !important;
@@ -174,14 +174,16 @@ body[dir="rtl"] .Close_resolution_Btn_Resultresolution {
 .Close_Btn_Resultresolution {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: #6172d6;
+  background: #fff;
   color: #5a5a5a;
   font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
 
-
+body[dir="rtl"] .Close_Btn_Resultresolution {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
 
 .Close_Btn_Resultresolution:hover,
 .Close_Btn_Resultresolution:focus,
@@ -189,7 +191,7 @@ body[dir="rtl"] .Close_resolution_Btn_Resultresolution {
 .Close_Btn_Resultresolution:focus-visible {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: #6172d6 !important;
+  background: #fff !important;
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold";
   border-radius: 4px !important;

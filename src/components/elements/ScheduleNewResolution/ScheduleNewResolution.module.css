@@ -317,10 +317,9 @@ body[dir="rtl"] .circulate_button_Createresolution {
   height: 25px !important;
   background: #6172d6;
   position: absolute !important;
-  top: 62px !important;
+  top: 63px !important;
   z-index: 1;
-  /* left: 8%; */
-  margin-left: 13px;
+  left: 8%;
   border-bottom-right-radius: 4px !important;
   border-bottom-left-radius: 4px !important;
 }
@@ -460,8 +459,4 @@ body[dir="rtl"] .here_text {
 
 .react_datePicker {
   width: 100% !important;
-}
-
-.timePicker {
-  width: 100%;
 }

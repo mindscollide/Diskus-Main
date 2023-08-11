@@ -170,7 +170,7 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
   //Get All Assignees API hit
   useEffect(() => {
     if (updateFlagToDo) {
-      // dispatch(GetAllAssigneesToDoList(navigate, 1, t))
+      dispatch(GetAllAssigneesToDoList(navigate, 1, t))
     } else {
       setUpdateFlagToDo(false)
       // setTask({
@@ -419,97 +419,97 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
                     <Row>
                       {tasksAttachments.TasksAttachments.length > 0
                         ? tasksAttachments.TasksAttachments.map(
-                          (data, index) => {
-                            var ext = data.DisplayAttachmentName.split(
-                              '.',
-                            ).pop()
-                            const first = data.DisplayAttachmentName.split(
-                              ' ',
-                            )[0]
-                            return (
-                              <Col
-                                sm={12}
-                                lg={3}
-                                md={3}
-                                className="modalupdatetodolist-attachment-icon"
-                                onClick={(e) => downloadClick(e, data)}
-                              >
-                                {ext === 'doc' ? (
-                                  <FileIcon
-                                    extension={'docx'}
-                                    size={78}
-                                    type={'document'}
-                                    labelColor={'rgba(44, 88, 152)'}
-                                  />
-                                ) : ext === 'docx' ? (
-                                  <FileIcon
-                                    extension={'docx'}
-                                    size={78}
-                                    type={'font'}
-                                    labelColor={'rgba(44, 88, 152)'}
-                                  />
-                                ) : ext === 'xls' ? (
-                                  <FileIcon
-                                    extension={'xls'}
-                                    type={'spreadsheet'}
-                                    size={78}
-                                    labelColor={'rgba(16, 121, 63)'}
-                                  />
-                                ) : ext === 'xlsx' ? (
-                                  <FileIcon
-                                    extension={'xls'}
-                                    type={'spreadsheet'}
-                                    size={78}
-                                    labelColor={'rgba(16, 121, 63)'}
-                                  />
-                                ) : ext === 'pdf' ? (
-                                  <FileIcon
-                                    extension={'pdf'}
-                                    size={78}
-                                    {...defaultStyles.pdf}
-                                  />
-                                ) : ext === 'png' ? (
-                                  <FileIcon
-                                    extension={'png'}
-                                    size={78}
-                                    type={'image'}
-                                    labelColor={'rgba(102, 102, 224)'}
-                                  />
-                                ) : ext === 'txt' ? (
-                                  <FileIcon
-                                    extension={'txt'}
-                                    size={78}
-                                    type={'document'}
-                                    labelColor={'rgba(52, 120, 199)'}
-                                  />
-                                ) : ext === 'jpg' ? (
-                                  <FileIcon
-                                    extension={'jpg'}
-                                    size={78}
-                                    type={'image'}
-                                    labelColor={'rgba(102, 102, 224)'}
-                                  />
-                                ) : ext === 'jpeg' ? (
-                                  <FileIcon
-                                    extension={'jpeg'}
-                                    size={78}
-                                    type={'image'}
-                                    labelColor={'rgba(102, 102, 224)'}
-                                  />
-                                ) : ext === 'gif' ? (
-                                  <FileIcon
-                                    extension={'gif'}
-                                    size={78}
-                                    {...defaultStyles.gif}
-                                  />
-                                ) : null}
-                                <p className="modalupdatetodolist-attachment-text">
-                                  {first}
-                                </p>
-                              </Col>
-                            )
-                          },
-                        )
+                            (data, index) => {
+                              var ext = data.DisplayAttachmentName.split(
+                                '.',
+                              ).pop()
+                              const first = data.DisplayAttachmentName.split(
+                                ' ',
+                              )[0]
+                              return (
+                                <Col
+                                  sm={12}
+                                  lg={3}
+                                  md={3}
+                                  className="modalupdatetodolist-attachment-icon"
+                                  onClick={(e) => downloadClick(e, data)}
+                                >
+                                  {ext === 'doc' ? (
+                                    <FileIcon
+                                      extension={'docx'}
+                                      size={78}
+                                      type={'document'}
+                                      labelColor={'rgba(44, 88, 152)'}
+                                    />
+                                  ) : ext === 'docx' ? (
+                                    <FileIcon
+                                      extension={'docx'}
+                                      size={78}
+                                      type={'font'}
+                                      labelColor={'rgba(44, 88, 152)'}
+                                    />
+                                  ) : ext === 'xls' ? (
+                                    <FileIcon
+                                      extension={'xls'}
+                                      type={'spreadsheet'}
+                                      size={78}
+                                      labelColor={'rgba(16, 121, 63)'}
+                                    />
+                                  ) : ext === 'xlsx' ? (
+                                    <FileIcon
+                                      extension={'xls'}
+                                      type={'spreadsheet'}
+                                      size={78}
+                                      labelColor={'rgba(16, 121, 63)'}
+                                    />
+                                  ) : ext === 'pdf' ? (
+                                    <FileIcon
+                                      extension={'pdf'}
+                                      size={78}
+                                      {...defaultStyles.pdf}
+                                    />
+                                  ) : ext === 'png' ? (
+                                    <FileIcon
+                                      extension={'png'}
+                                      size={78}
+                                      type={'image'}
+                                      labelColor={'rgba(102, 102, 224)'}
+                                    />
+                                  ) : ext === 'txt' ? (
+                                    <FileIcon
+                                      extension={'txt'}
+                                      size={78}
+                                      type={'document'}
+                                      labelColor={'rgba(52, 120, 199)'}
+                                    />
+                                  ) : ext === 'jpg' ? (
+                                    <FileIcon
+                                      extension={'jpg'}
+                                      size={78}
+                                      type={'image'}
+                                      labelColor={'rgba(102, 102, 224)'}
+                                    />
+                                  ) : ext === 'jpeg' ? (
+                                    <FileIcon
+                                      extension={'jpeg'}
+                                      size={78}
+                                      type={'image'}
+                                      labelColor={'rgba(102, 102, 224)'}
+                                    />
+                                  ) : ext === 'gif' ? (
+                                    <FileIcon
+                                      extension={'gif'}
+                                      size={78}
+                                      {...defaultStyles.gif}
+                                    />
+                                  ) : null}
+                                  <p className="modalupdatetodolist-attachment-text">
+                                    {first}
+                                  </p>
+                                </Col>
+                              )
+                            },
+                          )
                         : null}
                     </Row>
                   </span>

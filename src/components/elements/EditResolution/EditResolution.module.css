@@ -244,7 +244,7 @@ body[dir="rtl"] .Attachments_resolution {
 }
 
 .Save_button_Createresolution {
-  padding: 12px 25px !important;
+  padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff;
   color: #5a5a5a;
@@ -252,35 +252,6 @@ body[dir="rtl"] .Attachments_resolution {
   font-family: "MontserratSemiBold";
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
-}
-
-.Cancel_button_Createresolution {
-  padding: 12px 15px !important;
-  white-space: nowrap;
-  font-size: 12px !important;
-  background: #fff;
-  color: #5a5a5a;
-  font-family: "MontserratSemiBold";
-  font-family: "MontserratSemiBold";
-  border-radius: 4px !important;
-  border: 1px solid #d4d4d4 !important;
-}
-
-.Cancel_button_Createresolution:is(:active, :focus-visible, :focus, :visited, :hover) {
-  padding: 12px 15px !important;
-  white-space: nowrap !important;
-  font-size: 12px !important;
-  background: #fff !important;
-  color: #5a5a5a !important;
-  font-family: "MontserratSemiBold";
-  font-family: "MontserratSemiBold";
-  border-radius: 4px !important;
-  border: 1px solid #d4d4d4 !important;
-}
-
-
-body[dir="rtl"] .Cancel_button_Createresolution {
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 body[dir="rtl"] .Save_button_Createresolution {
@@ -288,7 +259,7 @@ body[dir="rtl"] .Save_button_Createresolution {
 }
 
 .Discard_button_Createresolution {
-  padding: 12px 25px !important;
+  padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fb9494;
   font-family: "MontserratSemiBold";
@@ -305,7 +276,7 @@ body[dir="rtl"] .Discard_button_Createresolution {
 .Discard_button_Createresolution:active,
 .Discard_button_Createresolution:focus,
 .Discard_button_Createresolution:focus-visible {
-  padding: 12px 25px !important;
+  padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fb9494 !important;
   color: #fff !important;
@@ -315,7 +286,7 @@ body[dir="rtl"] .Discard_button_Createresolution {
 }
 
 .Update_button_Createresolution {
-  padding: 12px 25px !important;
+  padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6;
   font-family: "MontserratSemiBold";
@@ -333,7 +304,7 @@ body[dir="rtl"] .Update_button_Createresolution {
 .Update_button_Createresolution:active,
 .Update_button_Createresolution:focus,
 .Update_button_Createresolution:focus-visible {
-  padding: 12px 25px !important;
+  padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
   font-family: "MontserratSemiBold" !important;
@@ -346,7 +317,7 @@ body[dir="rtl"] .Update_button_Createresolution {
 .Save_button_Createresolution:active,
 .Save_button_Createresolution:focus,
 .Save_button_Createresolution:focus-visible {
-  padding: 12px 25px !important;
+  padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
@@ -357,7 +328,7 @@ body[dir="rtl"] .Update_button_Createresolution {
 }
 
 .circulate_button_Createresolution {
-  padding: 12px 25px !important;
+  padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
   color: #fff;
@@ -374,7 +345,7 @@ body[dir="rtl"] .circulate_button_Createresolution {
 .circulate_button_Createresolution:active,
 .circulate_button_Createresolution:focus,
 .circulate_button_Createresolution:focus-visible {
-  padding: 12px 25px !important;
+  padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6172d6 !important;
   font-family: "MontserratSemiBold";
@@ -496,7 +467,7 @@ body[dir="rtl"] .errorMessage_hidden {
 }
 
 .Go_Back_EditResolution {
-  background: #6172d6 !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border: none !important;
 }
 

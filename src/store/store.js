@@ -1,6 +1,6 @@
-import { applyMiddleware, combineReducers } from "redux";
-import thunk from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
+import { applyMiddleware, combineReducers } from 'redux'
+import thunk from 'redux-thunk'
+import { composeWithDevTools } from 'redux-devtools-extension'
 import {
   authReducer,
   toDoListReducer,
@@ -17,6 +17,7 @@ import {
   NotesReducer,
   videoCallReducer,
   talkReducer,
+  talkFeatureReducer,
   CommitteeReducer,
   GroupsReducer,
   ResolutionReducer,
@@ -25,18 +26,18 @@ import {
   DataRoomReducer,
   PollsReducer,
   NewMeetingReducer,
-} from "./reducers";
-import * as actions from "./action_types";
-import { configureStore } from "@reduxjs/toolkit";
-import uploadReducer from "./reducers/Upload_reducer";
-import fAQsReducer from "./reducers/Get_Faqs_reducer";
-import meetingIdReducer from "./reducers/GetMeetingId_reducer";
-import { assigneesReducer } from "./reducers";
-import { calendarReducer } from "./reducers";
-import { OnBoardModalStates } from "./reducers";
-import { RoleListReducer } from "./reducers";
+} from './reducers'
+import * as actions from './action_types'
+import { configureStore } from '@reduxjs/toolkit'
+import uploadReducer from './reducers/Upload_reducer'
+import fAQsReducer from './reducers/Get_Faqs_reducer'
+import meetingIdReducer from './reducers/GetMeetingId_reducer'
+import { assigneesReducer } from './reducers'
+import { calendarReducer } from './reducers'
+import { OnBoardModalStates } from './reducers'
+import { RoleListReducer } from './reducers'
 
-import downloadReducer from "./reducers/Download_reducer";
+import downloadReducer from './reducers/Download_reducer'
 
 const AppReducer = combineReducers({
   auth: authReducer,
@@ -64,6 +65,7 @@ const AppReducer = combineReducers({
   NotesReducer: NotesReducer,
   videoCall: videoCallReducer,
   talkStateData: talkReducer,
+  talkFeatureStates: talkFeatureReducer,
   CommitteeReducer: CommitteeReducer,
   GroupsReducer: GroupsReducer,
   ResolutionReducer: ResolutionReducer,
@@ -72,16 +74,17 @@ const AppReducer = combineReducers({
   DataRoomReducer: DataRoomReducer,
   PollsReducer: PollsReducer,
   NewMeetingreducer: NewMeetingReducer,
-});
+})
+
 const rootReducer = (state, action) => {
   // when a logout action is dispatched it will reset redux state
   if (action.type === actions.SIGN_OUT) {
-    state = undefined;
+    state = undefined
   }
-  return AppReducer(state, action);
-};
+  return AppReducer(state, action)
+}
 const store = configureStore(
   { reducer: rootReducer },
-  composeWithDevTools(applyMiddleware(thunk))
-);
-export default store;
+  composeWithDevTools(applyMiddleware(thunk)),
+)
+export default store

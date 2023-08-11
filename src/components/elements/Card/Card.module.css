@@ -230,14 +230,14 @@ body[dir="rtl"] .namesCards-Committee-Group {
   position: absolute;
   top: 35px;
   right: 0;
-  /* cursor: pointer; */
+  cursor: pointer;
 }
 
 .Two-Icons-style-Committee-Group_InActive {
   position: absolute;
   top: 35px;
   right: 0;
-  /* pointer-events: none; */
+  pointer-events: none;
 }
 
 body[dir="rtl"] .Two-Icons-style-Committee-Group {
@@ -355,16 +355,8 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
   cursor: pointer !important;
 }
 
-.Edit_icon_styles_InActive {
-  pointer-events: none !important;
-}
-
 .dot_icon_styles {
   cursor: pointer !important;
-}
-
-.dot_icon_styles_InActive {
-  pointer-events: none !important;
 }
 
 body[dir="rtl"] .dot_icon_styles {
@@ -381,14 +373,6 @@ body[dir="rtl"] .Edit_icon_styles {
 
 .associated_tagLine {
   font-size: 8px !important;
-}
-
-.associated_tagLine_single {
-  font-size: 8px !important;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 4px;
 }
 
 .associated_tagLine_groupTitle {

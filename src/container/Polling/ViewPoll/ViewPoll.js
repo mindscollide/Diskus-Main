@@ -26,6 +26,7 @@ const ViewPoll = () => {
     allowmultipleanswers: false,
   });
   const { t } = useTranslation();
+
   const changeDateStartHandler2 = (date) => {
     let newDate = moment(date).format("DD MMMM YYYY");
 
@@ -66,7 +67,6 @@ const ViewPoll = () => {
         setShow={dispatch(setviewpollModal)}
         modalTitleClassName={styles["ModalHeader_View_poll"]}
         modalHeaderClassName={styles["ModalRequestHeader_polling_View_modal"]}
-        modalBodyClassName={"d-block"}
         modalFooterClassName={"d-block"}
         onHide={() => {
           dispatch(setviewpollModal(false));
@@ -134,56 +134,46 @@ const ViewPoll = () => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={`${styles["BOx_for_yes"]} d-flex`}
+                    className={styles["BOx_for_yes"]}
                   >
                     <Row className="mt-2">
                       <Col lg={12} md={12} sm={12}>
-                        {viewPollsDetails.Title.length > 100 ? (
-                          // Add d-flex class and justify-content-center to center the text
-                          <div
-                            className={`${styles["scrollable-title"]} d-flex justify-content-center`}
-                          >
-                            {viewPollsDetails.Title}
-                          </div>
-                        ) : (
-                          // Add d-flex class and align-items-center to center the text
-                          <div
-                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}
-                          >
-                            {viewPollsDetails.Title}
-                          </div>
-                        )}
+                        <span className={styles["View_Title"]}>
+                          {viewPollsDetails.Title}
+                        </span>
                       </Col>
                     </Row>
                   </Col>
                 </Row>
-                <Row>
-                  <Col className={styles["scroll-height"]} sm={12} md={12} lg={12}>
-                    {pollAnswersDetailsView.length > 0 &&
-                      pollAnswersDetailsView.map((list, index) => {
-                        return (
-                          <>
-                          <span   className={`${styles["BOx_for_yes"]} d-flex`}>
-                          {list.answer.length > 100 ? (
-                              <div
-                                className={`${styles["scrollable-title"]} d-flex justify-content-center `}
-                              >
-                                {list.answer}
-                              </div>
-                            ) : (
-                              <div
-                                className={`${styles["scrollable-title2"]} d-flex align-items-center`}
-                              >
-                                {list.answer}
-                              </div>
-                            )}
-                          </span>
-                        
-                          </>
-                        );
-                      })}
-                  </Col>
-                </Row>
+
+                {pollAnswersDetailsView.map((data, index) => {
+                  console.log(
+                    pollAnswersDetailsView,
+                    "pollAnswersDetailsViewpollAnswersDetailsViewpollAnswersDetailsView"
+                  );
+                  return (
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["BOx_for_yes"]}
+                      >
+                        <Row>
+                          <Col
+                            lg={12}
+                            sm={12}
+                            md={12}
+                            className="d-flex align-items-center mt-2"
+                          >
+                            {data.answer}
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  );
+                })}
+
                 <Row className="mt-3">
                   <Col lg={12} md={12} sm={12} className="m-0 p-0">
                     <span className={styles["Multiple_viewModal"]}>
@@ -212,6 +202,7 @@ const ViewPoll = () => {
                   >
                     <Row>
                       {viewpollMembers.map((data, index) => {
+                        console.log(data, "saifdatasaifdatasaifdatasaifdata");
                         return (
                           <Col lg={6} md={6} sm={12} className="mt-2">
                             <Row>

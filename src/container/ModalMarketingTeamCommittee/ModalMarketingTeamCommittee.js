@@ -164,11 +164,14 @@ const ModalMarketingTeamCommittee = ({
     }
   }, [committeeData])
   const handleUpdate = () => {
-    let Data = {
-      committeeGroupMapping: data
+    if (data.length > 0) {
+      let Data = {
+        committeeGroupMapping: data
+      }
+      dispatch(assignGroups(navigate, Data, t, setMarketingTeam))
+      console.log("DataData", Data)
+    } else {
     }
-    dispatch(assignGroups(navigate, Data, t, setMarketingTeam))
-
   };
   useEffect(() => {
     try {

@@ -46,7 +46,6 @@ import {
   newDateFormaterAsPerUTC,
   forSetstartDateTimeMeetingCalendar,
   forHomeCalendar,
-  convertintoGMTCalender,
 } from "../../../commen/functions/date_formater";
 import TimeAgo from "timeago-react";
 import {
@@ -123,7 +122,6 @@ const Home = () => {
   const [recentActivityData, setRecentActivityData] = useState([]);
   // get new date
   let date = new Date();
-  let currentDay = date.getDate();
   let getCurrentDate = moment(date).format("DD");
   console.log(getCurrentDate, "getCurrentDategetCurrentDategetCurrentDate");
 
@@ -171,9 +169,9 @@ const Home = () => {
     new Date(
       currentDate.getFullYear(),
       currentDate.getMonth() -
-      parseInt(
-        parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)
-      ),
+        parseInt(
+          parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)
+        ),
       1
     );
 
@@ -184,9 +182,9 @@ const Home = () => {
     new Date(
       currentDate.getFullYear(),
       currentDate.getMonth() +
-      parseInt(
-        parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)
-      ),
+        parseInt(
+          parseInt(CalenderMonthsSpan) === 0 ? 1 : parseInt(CalenderMonthsSpan)
+        ),
       0
     );
   useEffect(() => {
@@ -249,11 +247,11 @@ const Home = () => {
       let startDates = new Date(
         currentDate.getFullYear(),
         currentDate.getMonth() -
-        parseInt(
-          parseInt(CalenderMonthsSpans) === 0
-            ? 1
-            : parseInt(CalenderMonthsSpans)
-        ),
+          parseInt(
+            parseInt(CalenderMonthsSpans) === 0
+              ? 1
+              : parseInt(CalenderMonthsSpans)
+          ),
         1
       );
       // Subtract CalenderMonthsSpan months and set the day to the 1st
@@ -267,18 +265,18 @@ const Home = () => {
       let endDates = new Date(
         date.getFullYear(),
         date.getMonth() +
-        parseInt(
-          parseInt(CalenderMonthsSpans) === 0
-            ? 1
-            : parseInt(CalenderMonthsSpans)
-        ),
+          parseInt(
+            parseInt(CalenderMonthsSpans) === 0
+              ? 1
+              : parseInt(CalenderMonthsSpans)
+          ),
         0
       );
       let calendarData = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(OrganizationID),
-        StartDate: startDates !== null && newDateFormaterAsPerUTC(startDates) + "000000",
-        EndDate: endDates !== null && newDateFormaterAsPerUTC(endDates) + "000000",
+        StartDate: startDates !== null && newDateFormaterAsPerUTC(startDates)+ "000000",
+        EndDate: endDates !== null && newDateFormaterAsPerUTC(endDates)+ "000000",
       };
       console.log("newListnewListnewList12", startDates);
       console.log("newListnewListnewList12", endDates);
@@ -673,34 +671,39 @@ const Home = () => {
     let flag = false;
     let indexforUndeline = null;
     meetingIdReducer.UpcomingEventsData.map((upcomingEventsData, index) => {
-      let newDateGmt = convertintoGMTCalender(
-        upcomingEventsData.meetingEvent.meetingDate
+      console.log(
+        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8),
+        getCurrentDate,
+        "upcomingEventsDataupcomingEventsDataupcomingEventsData"
       );
-      let DateDate = new Date(newDateGmt)
-      let day = DateDate.getDate();
       if (
-        day ===
-        currentDay
+        upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
+        getCurrentDate
       ) {
         if (indexforUndeline === null && flag === false) {
+          // if (index - 1 >= 0) {
           flag = true;
           indexforUndeline = index;
-
+          console.log(
+            "upcomingEventsDataupcomingEventsDataupcomingEventsData",
+            index
+          );
+          // }
         }
       }
     });
 
     return meetingIdReducer.UpcomingEventsData.map(
       (upcomingEventsData, index) => {
-        let newDateGmt = convertintoGMTCalender(
-          upcomingEventsData.meetingEvent.meetingDate
+        console.log(
+          "upcomingEvents index",
+          upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
+          getCurrentDate
         );
-        let DateDate = new Date(newDateGmt)
-        let day = DateDate.getDate();
         return (
           <>
-            {day ===
-              currentDay ? (
+            {upcomingEventsData.meetingEvent.meetingDate.slice(6, 8) ===
+              getCurrentDate ? (
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <div
@@ -809,11 +812,11 @@ const Home = () => {
       let updateStartDate = new Date(
         date.getFullYear(),
         date.getMonth() -
-        parseInt(
-          parseInt(CalenderMonthsSpan) === 0
-            ? 1
-            : parseInt(CalenderMonthsSpan)
-        ),
+          parseInt(
+            parseInt(CalenderMonthsSpan) === 0
+              ? 1
+              : parseInt(CalenderMonthsSpan)
+          ),
         1
       );
 
@@ -827,8 +830,8 @@ const Home = () => {
       let calendarData = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(OrganizationID),
-        StartDate: newDateFormaterAsPerUTC(updateStartDate) + "000000",
-        EndDate: newDateFormaterAsPerUTC(newStartDataUpdate) + "000000",
+        StartDate: newDateFormaterAsPerUTC(updateStartDate)+ "000000",
+        EndDate: newDateFormaterAsPerUTC(newStartDataUpdate)+ "000000",
       };
       setStartDataUpdate(newDateFormaterAsPerUTC(updateStartDate));
       dispatch(getCalendarDataResponse(navigate, calendarData, false, t));
@@ -836,11 +839,11 @@ const Home = () => {
       let updateEndDate = new Date(
         date.getFullYear(),
         date.getMonth() +
-        parseInt(
-          parseInt(CalenderMonthsSpan) === 0
-            ? 1
-            : parseInt(CalenderMonthsSpan)
-        ),
+          parseInt(
+            parseInt(CalenderMonthsSpan) === 0
+              ? 1
+              : parseInt(CalenderMonthsSpan)
+          ),
         0
       );
       console.log(
@@ -850,8 +853,8 @@ const Home = () => {
       let calendarData = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(OrganizationID),
-        StartDate: newDateFormaterAsPerUTC(endDataUpdateNew) + "000000",
-        EndDate: newDateFormaterAsPerUTC(updateEndDate) + "000000",
+        StartDate: newDateFormaterAsPerUTC(endDataUpdateNew)+ "000000",
+        EndDate: newDateFormaterAsPerUTC(updateEndDate)+ "000000",
       };
       setEndDataUpdate(newDateFormaterAsPerUTC(updateEndDate));
       dispatch(getCalendarDataResponse(navigate, calendarData, false, t));

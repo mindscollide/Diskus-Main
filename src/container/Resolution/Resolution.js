@@ -25,7 +25,6 @@ import ModalResolutionUpdated from "../ModalResolutionUpdated/ModalResolutionUpd
 import ViewAttachments from "../../components/elements/ViewAttachments/ViewAttachments";
 import Cross from "../../assets/images/Cross-Chat-Icon.png";
 import EditResolution from "../../components/elements/EditResolution/EditResolution";
-
 import {
   clearResponseMessage,
   currentResolutionView,
@@ -56,14 +55,12 @@ import { useNavigate } from "react-router-dom";
 import { XSquare } from 'react-bootstrap-icons'
 import SearchInputSuggestion from "../../components/elements/searchInputResolution/searchInputsuggestion";
 import numeral from "numeral";
-import ModalCancellResolution from "../ModalCancellResolution/ModalCancellResolution";
 
 const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { ResolutionReducer } = useSelector((state) => state);
-  const [resolutionID, setResolutionID] = useState(0)
   const [currentPageSize, setCurrentPageSize] = useState(10);
   const [totalResolution, setTotalResolution] = useState(0)
   const [currentPageVoter, setCurrentPageVoter] = useState(1)
@@ -84,12 +81,11 @@ const Resolution = () => {
   const [editresolutionPage, setEditResoutionPage] = useState(false);
   const [searchResultsArea, setSearchResultsArea] = useState(false);
   const [currentTab, setCurrentTab] = useState(0);
-  const [cancelResolutionModal, setCancelResolutionModal] = useState(false)
   const [allSearchInput, setAllSearchInput] = useState("");
   let resolutionView = JSON.parse(localStorage.getItem("resolutionView"));
   let moderatorPage = localStorage.getItem("moderatorPage");
   let moderatorRows = localStorage.getItem("moderatorRows");
-  let voterPage = JSON.parse(localStorage.getItem("voterPage"));
+  let voterPage = localStorage.getItem("voterPage");
   let voterRows = localStorage.getItem("voterRows");
   let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"))
 
@@ -426,18 +422,6 @@ const Resolution = () => {
     setResolutionAttachments(data);
   };
 
-  const handleClickCancelModal = (id) => {
-    setResolutionID(id)
-    setCancelResolutionModal(true)
-
-  }
-
-  const handleClickCancelResolution = () => {
-    if (resolutionID !== 0) {
-      dispatch(cancelResolutionApi(navigate, resolutionID, t, setEditResoutionPage, setCancelResolutionModal))
-    }
-  }
-
   // moderator all and current columns
   const columnsModerator = [
     {
@@ -560,20 +544,24 @@ const Resolution = () => {
       render: (table, data) => {
         let newDate = new Date();
         let votingDeadline = resolutionResultTable(data.votingDeadline);
-        if (data.resolutionStatus === "Circulated") {
-          if (votingDeadline < newDate) {
-            return (
-              <img
-                src={ResultResolutionIcon}
-                onClick={() => getResultHandle(data.resolutionID)}
-                className={styles["Result_icon"]}
-              />
-            );
-          } else {
-            return "";
-          }
+        console.log(
+          "ResultResolution",
+          votingDeadline,
+          newDate,
+          data,
+          newDate > votingDeadline
+        );
+        if (votingDeadline < newDate) {
+          return (
+            <img
+              src={ResultResolutionIcon}
+              onClick={() => getResultHandle(data.resolutionID)}
+              className={styles["Result_icon"]}
+            />
+          );
+        } else {
+          return "";
         }
-
       },
     },
     {
@@ -585,11 +573,7 @@ const Resolution = () => {
       render: (table, data) => {
         if (data.resolutionStatus === "Closed") {
         } else if (data.resolutionStatus === "Circulated") {
-          return <span className={styles["Edit_Icon_moderator"]}><XSquare className="cursor-pointer" width={22} height={22} onClick={() => {
-            handleClickCancelModal(data.resolutionID)
-            // dispatch(cancelResolutionApi(navigate, data.resolutionID, t, setEditResoutionPage))
-          }
-          } /></span>
+          return <span className={styles["Edit_Icon_moderator"]}><XSquare className="cursor-pointer" width={22} height={22} onClick={() => dispatch(cancelResolutionApi(navigate, data.resolutionID, t, setEditResoutionPage))} /></span>
         } else {
           return (
             <img
@@ -1162,7 +1146,6 @@ const Resolution = () => {
               setEditResoutionPage={setEditResoutionPage}
               setNewresolution={setNewresolution}
               editresolutionPage={editresolutionPage}
-              setCancelResolutionModal={setCancelResolutionModal}
             />
           </>
         ) : (
@@ -1513,7 +1496,7 @@ const Resolution = () => {
                       <Row>
                         <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
                           <Pagination
-                            defaultCurrent={moderatorPage !== null ? moderatorPage : 1}
+                            defaultCurrent={moderatorPage}
                             // totalBoundaryShowSizeChanger={}
                             total={totalResolution}
                             showSizeChanger
@@ -1524,7 +1507,7 @@ const Resolution = () => {
                             pageSizeOptions={["30", "50", "100", "200"]}
                             className={styles["PaginationStyle-Resolution"]}
                             onChange={handleChangeResolutionPagination}
-                            defaultPageSize={moderatorRows !== null ? moderatorRows : 50}
+                            defaultPageSize={moderatorRows}
                           />
                         </Col>
                       </Row>
@@ -1580,10 +1563,6 @@ const Resolution = () => {
                             defaultCurrent={voterPage}
                             total={totalVoterResolution}
                             defaultPageSize={voterRows}
-                            locale={{
-                              items_per_page: t('items_per_page'),
-                              page: t('page')
-                            }}
                             showSizeChanger
                             pageSizeOptions={["30", "50", "100", "200"]}
                             className={styles["PaginationStyle-Resolution"]}
@@ -1623,8 +1602,6 @@ const Resolution = () => {
           setResolutionupdated={setRresolutionmodalupdated}
         />
       ) : null}
-      {cancelResolutionModal && <ModalCancellResolution handleCancelResolution={handleClickCancelResolution} text={true} cancelresolution={cancelResolutionModal} setCancelresolution={setCancelResolutionModal} />}
-
       {ResolutionReducer.Loading ? <Loader /> : null}
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>

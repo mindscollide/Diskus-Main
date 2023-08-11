@@ -776,6 +776,10 @@ const updateMessageAcknowledgement = {
   RequestMethod: 'ServiceManager.UpdateMessageAcknowledgement',
 }
 
+const getAllStarredMessages = {
+  RequestMethod: 'ServiceManager.GetAllFlaggedMessages',
+}
+
 export {
   subscriptionPackageUpgradeAmount,
   paymentCompleteMethod,
@@ -985,4 +989,5 @@ export {
   viewvotes,
   deltePolls,
   updateMessageAcknowledgement,
+  getAllStarredMessages,
 }

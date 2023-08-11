@@ -331,12 +331,9 @@ const updateResolution = (navigate, resolutionID, voters, nonVoter, tasksAttachm
                             }
                             if (Number(resolutionView) === 1) {
                                 dispatch(getResolutions(navigate, Number(currentView), t))
-                            } else {
                                 dispatch(getVoterResolution(navigate, Number(currentView), t))
                             }
-                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_02".toLowerCase()) {
-                            dispatch(updateResolution_Fail(t("Failed-to-update-resolution-status")))
-                        } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_03".toLowerCase()) {
+
                             dispatch(updateResolution_Success(t("Resolution-details-updated-successfully")))
                             if (no === 1) {
                                 setNewresolution(false)
@@ -587,7 +584,7 @@ const cancelResolution_Fail = (message) => {
         message: message
     }
 }
-const cancelResolutionApi = (navigate, id, t, setEditResoutionPage, setCancelResolutionModal) => {
+const cancelResolutionApi = (navigate, id, t, setEditResoutionPage) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
     let resolutionView = localStorage.getItem("resolutionView")

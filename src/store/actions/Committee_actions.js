@@ -949,7 +949,6 @@ const assignGroup_Failt = (message) => {
 
 const assignGroups = (navigate, Data, t, setMarketingTeam) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
   return (dispatch) => {
     dispatch(assignGroup_Init());
     let form = new FormData();

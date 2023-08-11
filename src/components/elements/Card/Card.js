@@ -42,7 +42,7 @@ const Card = ({
   const [editdropdown, setEditdropdown] = useState(false);
   const creatorID = localStorage.getItem("userID")
   const findLengthofGroups = associatedTags && associatedTags.length;
-  console.log(findLengthofGroups, "findLengthofGroupsfindLengthofGroups");
+  console.log(findLengthofGroups, "findLengthofGroupsfindLengthofGroups")
 
   useEffect(() => {
     console.log("click");
@@ -96,11 +96,11 @@ const Card = ({
     }
     return 0;
 
-  });
-
+  })
   console.log(associatedTags, "associatedTagsassociatedTags");
   console.log(StatusID, "StatusIDStatusIDStatusIDStatusID")
   console.log(creatorId, "StatusIDStatusIDStatusIDStatusID")
+  console.log(associatedTags, "associatedTagsassociatedTags")
   useEffect(() => {
     console.log("click", editdropdown, dropdownthreedots);
   }, [editdropdown, dropdownthreedots]);
@@ -168,7 +168,7 @@ const Card = ({
           md={2}
           sm={2}
           className={
-            StatusID === 2
+            StatusID === 1 || StatusID === 2
               ? styles["Two-Icons-style-Committee-Group_InActive"]
               : styles["Two-Icons-style-Committee-Group"]
           }
@@ -178,8 +178,7 @@ const Card = ({
               lg={12}
               md={12}
               sm={12}
-              className="d-flex justify-content-end gap-2 mt-4 pe-3"
-            >
+              className="d-flex justify-content-end gap-2 mt-4 pe-3" >
               {creatorId === Number(creatorID) && (
                 <img
                   src={editicon}
@@ -195,18 +194,12 @@ const Card = ({
                   onClick={() => setUniqCardID(CardID)}
                 />
               )}
-
               <img
                 src={doticon}
                 width="21px"
                 height="21px"
-                alt=""
                 // className={StatusID === 1 ? "cursor-pointer" : ""}
-                className={
-                  StatusID === 1 || StatusID === 2
-                    ? styles["dot_icon_styles_InActive"]
-                    : styles["dot_icon_styles"]
-                }
+                className={styles["dot_icon_styles"]}
                 onClick={() => setUniqCardID(CardID)}
               />
             </Col>
@@ -541,7 +534,7 @@ const Card = ({
           />
         </Col>
       </Row>
-    </Row>
+    </Row >
   );
 };
 
