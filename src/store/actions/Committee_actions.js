@@ -45,7 +45,7 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
     Title: "",
     PageNumber: currentPage,
     Length: 8,
-    Status: 0
+    Status: 0,
   };
   return async (dispatch) => {
     dispatch(getallcommitteesbyuserid_init());
@@ -61,7 +61,7 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "committees")
+        console.log(response, "committees");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
@@ -88,7 +88,6 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
                 )
             ) {
               dispatch(getallcommitteebyuserid_fail(t("No-data-available")));
-
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -137,24 +136,24 @@ const getAllCommitteesByUserIdActions = (navigate, t, currentPage) => {
 
 const getArcheivedCommittees_init = () => {
   return {
-    type: actions.ARCHEIVED_COMMITTES_INIT
-  }
-}
+    type: actions.ARCHEIVED_COMMITTES_INIT,
+  };
+};
 
 const getArcheivedCommittees_success = (response, message) => {
   return {
     type: actions.ARCHEIVED_COMMITTES_SUCCESS,
     response: response,
-    message: message
-  }
-}
+    message: message,
+  };
+};
 
 const getArcheivedCommittees_fail = (message) => {
   return {
     type: actions.ARCHEIVED_COMMITTES_FAIL,
-    message: message
-  }
-}
+    message: message,
+  };
+};
 
 const getAllArcheivedCommittees = (navigate, t, currentPage) => {
   let token = JSON.parse(localStorage.getItem("token"));
@@ -166,7 +165,7 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
     Title: "",
     PageNumber: currentPage,
     Length: 8,
-    Status: 1
+    Status: 1,
   };
   return async (dispatch) => {
     dispatch(getArcheivedCommittees_init());
@@ -182,7 +181,7 @@ const getAllArcheivedCommittees = (navigate, t, currentPage) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "committees")
+        console.log(response, "committees");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(getAllArcheivedCommittees(navigate, t, currentPage));
@@ -463,7 +462,9 @@ const createcommittee = (navigate, Data, t, setCreategrouppage) => {
                 )
               );
               await setCreategrouppage(false);
-              await dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
+              await dispatch(
+                getAllCommitteesByUserIdActions(navigate, t, currentPage)
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -769,8 +770,10 @@ const committeeStatusUpdate = (navigate, Data, t, setIsActive) => {
                   t("Record-updated-successfully")
                 )
               );
-              setIsActive(false)
-              dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
+              setIsActive(false);
+              dispatch(
+                getAllCommitteesByUserIdActions(navigate, t, currentPage)
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -792,7 +795,7 @@ const committeeStatusUpdate = (navigate, Data, t, setIsActive) => {
       .catch((response) => {
         console.log(response, "response");
         dispatch(updateCommitteeStatus_Fail(t("Something-went-wrong")));
-      })
+      });
   };
 };
 
@@ -856,7 +859,9 @@ const updateCommittee = (navigate, Data, t, setUpdateComponentpage) => {
                 )
               );
               await setUpdateComponentpage(false);
-              await dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
+              await dispatch(
+                getAllCommitteesByUserIdActions(navigate, t, currentPage)
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -949,6 +954,8 @@ const assignGroup_Failt = (message) => {
 
 const assignGroups = (navigate, Data, t, setMarketingTeam) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
+
   return (dispatch) => {
     dispatch(assignGroup_Init());
     let form = new FormData();
@@ -979,8 +986,10 @@ const assignGroups = (navigate, Data, t, setMarketingTeam) => {
               "Committees_CommitteeServiceManager_CommitteeAndGroupMapping_01".toLowerCase()
             ) {
               await dispatch(assignGroup_Success(t("Record-save")));
-              dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage))
-              setMarketingTeam(false)
+              dispatch(
+                getAllCommitteesByUserIdActions(navigate, t, currentPage)
+              );
+              setMarketingTeam(false);
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Committees_CommitteeServiceManager_CommitteeAndGroupMapping_02".toLowerCase()
@@ -1020,5 +1029,5 @@ export {
   realtimeCommitteeResponse,
   realtimeCommitteeStatusResponse,
   assignGroups,
-  getAllArcheivedCommittees
+  getAllArcheivedCommittees,
 };
