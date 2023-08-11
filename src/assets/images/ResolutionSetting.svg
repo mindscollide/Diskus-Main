@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="27.396" height="31.179" viewBox="0 0 27.396 31.179">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#4adede"/>
+      <stop offset="1" stop-color="#6172d6"/>
+    </linearGradient>
+  </defs>
+  <g id="Group_2803" data-name="Group 2803" transform="translate(2.473 6)">
+    <g id="Group_2530" data-name="Group 2530" transform="translate(-1.923 -6)">
+      <path id="Line_58" data-name="Line 58" d="M5.36,5.768l-6-5L.64-.768l6,5Z" transform="translate(9.687 5.957)" fill="url(#linear-gradient)"/>
+      <g id="Group_2528" data-name="Group 2528" transform="translate(-0.243 4.061)">
+        <circle id="Ellipse_132" data-name="Ellipse 132" cx="2.077" cy="2.077" r="2.077" transform="translate(0 7.617)" fill="url(#linear-gradient)"/>
+        <path id="Line_57" data-name="Line 57" d="M.707,6.939-.707,5.525,5.525-.707,6.939.707Z" transform="translate(3.116 2.424)" fill="url(#linear-gradient)"/>
+        <path id="Ellipse_132_-_Outline" data-name="Ellipse 132 - Outline" d="M2.077,1A1.077,1.077,0,1,0,3.155,2.077,1.079,1.079,0,0,0,2.077,1m0-1A2.077,2.077,0,1,1,0,2.077,2.077,2.077,0,0,1,2.077,0Z" transform="translate(0 7.617)" fill="url(#linear-gradient)"/>
+        <circle id="Ellipse_133" data-name="Ellipse 133" cx="2.077" cy="2.077" r="2.077" transform="translate(8.31)" fill="url(#linear-gradient)"/>
+        <path id="Ellipse_133_-_Outline" data-name="Ellipse 133 - Outline" d="M2.077,1A1.077,1.077,0,1,0,3.155,2.077,1.079,1.079,0,0,0,2.077,1m0-1A2.077,2.077,0,1,1,0,2.077,2.077,2.077,0,0,1,2.077,0Z" transform="translate(8.31)" fill="url(#linear-gradient)"/>
+      </g>
+      <g id="Group_2529" data-name="Group 2529" transform="matrix(0.996, -0.087, 0.087, 0.996, 13.283, 1.092)">
+        <circle id="Ellipse_132-2" data-name="Ellipse 132" cx="2.077" cy="2.077" r="2.077" transform="translate(0 8.307)" fill="url(#linear-gradient)"/>
+        <path id="Line_57-2" data-name="Line 57" d="M.707,6.939-.707,5.525,5.525-.707,6.939.707Z" transform="translate(3.116 3.113)" fill="url(#linear-gradient)"/>
+        <path id="Ellipse_132_-_Outline-2" data-name="Ellipse 132 - Outline" d="M2.077,1A1.077,1.077,0,1,0,3.155,2.077,1.079,1.079,0,0,0,2.077,1m0-1A2.077,2.077,0,1,1,0,2.077,2.077,2.077,0,0,1,2.077,0Z" transform="translate(0 8.307)" fill="url(#linear-gradient)"/>
+        <circle id="Ellipse_133-2" data-name="Ellipse 133" cx="2.077" cy="2.077" r="2.077" transform="translate(8.37 0)" fill="url(#linear-gradient)"/>
+        <path id="Ellipse_133_-_Outline-2" data-name="Ellipse 133 - Outline" d="M2.077,1A1.077,1.077,0,1,0,3.155,2.077,1.079,1.079,0,0,0,2.077,1m0-1A2.077,2.077,0,1,1,0,2.077,2.077,2.077,0,0,1,2.077,0Z" transform="translate(8.37 0)" fill="url(#linear-gradient)"/>
+      </g>
+    </g>
+    <g id="Group_2531" data-name="Group 2531" transform="translate(-2.473 5.789)">
+      <rect id="Rectangle_946" data-name="Rectangle 946" width="4.847" height="8.31" transform="translate(0 11.079)" fill="url(#linear-gradient)"/>
+      <path id="Rectangle_946_-_Outline" data-name="Rectangle 946 - Outline" d="M1,1V7.31H3.847V1H1M0,0H4.847V8.31H0Z" transform="translate(0 11.079)" fill="url(#linear-gradient)"/>
+      <rect id="Rectangle_947" data-name="Rectangle 947" width="4.847" height="14.542" transform="translate(7.295 4.847)" fill="url(#linear-gradient)"/>
+      <path id="Rectangle_947_-_Outline" data-name="Rectangle 947 - Outline" d="M1,1V13.542H3.847V1H1M0,0H4.847V14.542H0Z" transform="translate(7.295 4.847)" fill="url(#linear-gradient)"/>
+      <rect id="Rectangle_948" data-name="Rectangle 948" width="4.847" height="10.387" transform="translate(15.254 9.002)" fill="url(#linear-gradient)"/>
+      <path id="Rectangle_948_-_Outline" data-name="Rectangle 948 - Outline" d="M1,1V9.387H3.847V1H1M0,0H4.847V10.387H0Z" transform="translate(15.254 9.002)" fill="url(#linear-gradient)"/>
+      <rect id="Rectangle_949" data-name="Rectangle 949" width="4.847" height="19.389" transform="translate(22.549)" fill="url(#linear-gradient)"/>
+      <path id="Rectangle_949_-_Outline" data-name="Rectangle 949 - Outline" d="M1,1V18.389H3.847V1H1M0,0H4.847V19.389H0Z" transform="translate(22.549)" fill="url(#linear-gradient)"/>
+    </g>
+  </g>
+</svg>

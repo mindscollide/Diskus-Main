@@ -70,6 +70,7 @@ import DataRoom from "../container/DataRoom/DataRoom";
 import Polling from "../container/Polling/Polling";
 import PaymentForm2 from "../container/Admin/Subscriptions/PaymentForm2/PaymentForm2";
 import NewMeeting from "../container/pages/meeting/MeetingTwo";
+import UserSettings from "../container/setting/UserLevelSettings/UserSettings";
 
 export const router = createHashRouter(
   createRoutesFromElements(
@@ -116,6 +117,7 @@ export const router = createHashRouter(
           <Route path="Meeting2" element={<NewMeeting />} />
           <Route path="videochat" element={<VideoChat />} />
           <Route path="setting" element={<CustomSetting />} />
+          <Route path="UserNewSettings" element={<UserSettings />} />
           <Route path="faq's" element={<CustomMiscellaneous />} />
           <Route path="groups" element={<Groups />} />
           <Route path="changePassword" element={<ChangePassword />} />
