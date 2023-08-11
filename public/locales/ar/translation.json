@@ -1138,5 +1138,11 @@
   "Save-and-Next": "Save and Next",
   "Add-sub-agenda": "Add Sub Agenda",
   "The-poll-due-date-has-been-passed": "The Poll Due Date Has Been Passed",
-  "The-poll-is-not-published": "The Poll is Not Published"
+  "The-poll-is-not-published": "The Poll is Not Published",
+  "Last-modifed": "Last modifed",
+  "Chair-person-members": "Chair Person Members",
+  "Vice-chair-person-members": "Vice Chair Person Members",
+  "Secretary": "Secretary",
+  "Please-add-atleast-one-executive-member": "Please add atleast one executive member",
+  "Are-you-sure-you-want-to-circulate-this-resolution": "Are you sure you want to circulate this resolution"
 }

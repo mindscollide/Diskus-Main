@@ -293,6 +293,7 @@ const updateResolution = (navigate, resolutionID, voters, nonVoter, tasksAttachm
     console.log(resolutionID, voters, nonVoter, tasksAttachments, setNewresolution, setEditResoutionPage, t, no, circulated, "checkingforudpatestatemodal")
     console.log(no, circulated, "checkingforudpatestatemodal222")
     let currentView = localStorage.getItem("ButtonTab");
+    let resolutionView = localStorage.getItem("resolutionView")
     let Data2 = {
         IsCirculate: circulated === 2 ? true : false,
         FK_ResolutionID: JSON.parse(resolutionID),
@@ -322,12 +323,17 @@ const updateResolution = (navigate, resolutionID, voters, nonVoter, tasksAttachm
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_01".toLowerCase()) {
                             dispatch(updateResolution_Success(response.data.responseResult.resolutionID))
+
                             if (no === 1) {
                                 setNewresolution(false)
                             } else {
                                 setEditResoutionPage(false)
                             }
-                            dispatch(getResolutions(navigate, Number(currentView), t))
+                            if (Number(resolutionView) === 1) {
+                                dispatch(getResolutions(navigate, Number(currentView), t))
+                            } else {
+                                dispatch(getVoterResolution(navigate, Number(currentView), t))
+                            }
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_02".toLowerCase()) {
                             dispatch(updateResolution_Fail(t("Failed-to-update-resolution-status")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_03".toLowerCase()) {
@@ -337,7 +343,11 @@ const updateResolution = (navigate, resolutionID, voters, nonVoter, tasksAttachm
                             } else {
                                 setEditResoutionPage(false)
                             }
-                            dispatch(getResolutions(navigate, Number(currentView), t))
+                            if (Number(resolutionView) === 1) {
+                                dispatch(getResolutions(navigate, Number(currentView), t))
+                            } else {
+                                dispatch(getVoterResolution(navigate, Number(currentView), t))
+                            }
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_04".toLowerCase()) {
                             dispatch(updateResolution_Fail(t("Please-add-at-least-one-voter")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_05".toLowerCase()) {
@@ -580,6 +590,8 @@ const cancelResolution_Fail = (message) => {
 const cancelResolutionApi = (navigate, id, t, setEditResoutionPage, setCancelResolutionModal) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
+    let resolutionView = localStorage.getItem("resolutionView")
+    let currentView = localStorage.getItem("ButtonTab");
     let Data = {
         ResolutionID: JSON.parse(id),
         UserID: userID
@@ -607,7 +619,11 @@ const cancelResolutionApi = (navigate, id, t, setEditResoutionPage, setCancelRes
                             dispatch(cancelResolution_Success(response.data.responseResult, t("Resolution-cancelled")))
                             await setEditResoutionPage(false)
                             await setCancelResolutionModal(false)
-                            dispatch(getResolutions(navigate, 1, t))
+                            if (Number(resolutionView) === 1) {
+                                dispatch(getResolutions(navigate, Number(currentView), t))
+                            } else {
+                                dispatch(getVoterResolution(navigate, Number(currentView), t))
+                            }
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CancelResolution_02".toLowerCase()) {
                             dispatch(cancelResolution_Fail(t("Failed-to-cancel-resolution")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CancelResolution_03".toLowerCase()) {
@@ -647,6 +663,8 @@ const closeResolution_Fail = (message) => {
 const closeResolutionApi = (navigate, ResolutionID, ResolutionDecisionID, notes, t, setResultresolution) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
+    let resolutionView = localStorage.getItem("resolutionView")
+    let currentView = localStorage.getItem("ButtonTab");
     let Data = {
         ResolutionID: JSON.parse(ResolutionID),
         ResolutionDecision: JSON.parse(ResolutionDecisionID),
@@ -673,7 +691,11 @@ const closeResolutionApi = (navigate, ResolutionID, ResolutionDecisionID, notes,
                     if (response.data.responseResult.isExecuted === true) {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CloseResolution_01".toLowerCase()) {
                             dispatch(closeResolution_Success(response.data.responseResult, t("Resolution-closed-successfully")))
-                            dispatch(getResolutions(navigate, 3, t))
+                            if (Number(resolutionView) === 1) {
+                                dispatch(getResolutions(navigate, Number(currentView), t))
+                            } else {
+                                dispatch(getVoterResolution(navigate, Number(currentView), t))
+                            }
                             setResultresolution(false)
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CloseResolution_02".toLowerCase()) {
                             dispatch(closeResolution_Fail(t("Failed-to-close-resolution")))
@@ -713,6 +735,8 @@ const updateVote_Fail = (message) => {
 const updateVoteApi = (navigate, Data, t, setVoteresolution) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"));
+    let resolutionView = localStorage.getItem("resolutionView")
+    let currentView = localStorage.getItem("ButtonTab");
     return (dispatch) => {
         dispatch(updateVote_Init());
         let form = new FormData();
@@ -736,7 +760,12 @@ const updateVoteApi = (navigate, Data, t, setVoteresolution) => {
                             dispatch(updateVote_Success(response.data.responseResult, t("Record-updated-successfully")))
                             setVoteresolution(false)
                             localStorage.removeItem("voterID")
-                            dispatch(getVoterResolution(navigate, 3, t))
+                            if (Number(resolutionView) === 1) {
+                                dispatch(getResolutions(navigate, Number(currentView), t))
+
+                            } else {
+                                dispatch(getVoterResolution(navigate, Number(currentView), t))
+                            }
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_02".toLowerCase()) {
                             dispatch(updateVote_Fail(t("No-record-updated")))
                         } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_UpdateVote_03".toLowerCase()) {

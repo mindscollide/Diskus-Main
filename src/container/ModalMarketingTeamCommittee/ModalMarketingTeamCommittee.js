@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styles from "./ModalMarketingTeamCommittee.module.css";
 import userImage from "../../assets/images/user.png";
-import { Button, InputSearchFilter, Modal } from "../../components/elements";
+import { Button, InputSearchFilter, Modal, Notification } from "../../components/elements";
 import { style } from "@mui/system";
 import Crossicon from "../../assets/images/CrossIcon.svg";
 import { useTranslation } from "react-i18next";
@@ -29,6 +29,10 @@ const ModalMarketingTeamCommittee = ({
   const [data, setData] = useState([])
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const [open, setOpen] = useState({
+    flag: false,
+    message: ""
+  })
   const { t } = useTranslation()
   console.log(groupData, data, "dasdasdasdasdasd")
   const closebtn = async () => {
@@ -81,31 +85,62 @@ const ModalMarketingTeamCommittee = ({
   };
 
   const handleAdd = () => {
-    console.log("groupIDgroupID", groupID, committeeID);
-
+    let findIndexGroupID = data.findIndex((data, index) => data.GroupID === groupID);
     if (groupID !== 0 && committeeID !== 0) {
-      data.push({
-        GroupID: groupID,
-        CommitteeId: committeeID,
-      });
-      groupData.push({
-        GroupID: groupID,
-        GroupName: groupName,
-      });
-      setData([...data]);
-      setGroupData([...groupData]);
-      setGroupName("");
-      setGroupID(0);
+      if (findIndexGroupID !== -1) {
+        setOpen({
+          flag: true,
+          message: "This group already Exist is lit"
+        })
+        setGroupName("");
+        setGroupID(0);
+      } else {
+        data.push({
+          GroupID: groupID,
+          CommitteeId: committeeID,
+          CommitteeMappingID: 0
+        });
+        groupData.push({
+          GroupID: groupID,
+          GroupName: groupName,
+          CommitteeMappingID: 0
+        });
+        setData([...data]);
+        setGroupData([...groupData]);
+        setGroupName("");
+        setGroupID(0);
+      }
+
+
     }
   };
 
   const removeHandler = (id) => {
-    let newData = data.filter((data, index) => data.GroupID !== id);
+    let newDatafindDex = committeeData[0].listofGroups.find((data, index) => data.groupID === id);
+    console.log(newDatafindDex, "newDatafindDexnewDatafindDex")
     let newGroupData = groupData.filter((data, index) => data.GroupID !== id);
-    setData([...newData]);
-    setGroupData([...newGroupData]);
+    if (newDatafindDex !== undefined) {
+      let newData2 = data.map((items, index) => {
+        if (newDatafindDex.committeeMappingID === items.CommitteeMappingID) {
+          const newData = {
+            ...items,
+            GroupID: 0,
+            CommitteeId: 0,
+            CommitteeMappingID: items.CommitteeMappingID,
+          };
+          return newData
+        }
+        return items
+      })
+      setData(newData2)
+    } else {
+      let newGroupData = data.filter((data, index) => data.GroupID !== id);
+      setData(newGroupData)
+    }
+    setGroupData(newGroupData)
   };
-
+  console.log(data, "newGroupDatanewGroupData")
+  console.log(groupData, "newGroupDatanewGroupData")
   useEffect(() => {
     if (committeeData !== null && committeeData !== undefined) {
       if (committeeData[0].listofGroups.length > 0) {
@@ -115,10 +150,12 @@ const ModalMarketingTeamCommittee = ({
           newDataforSend.push({
             GroupID: listgroupsData.groupID,
             CommitteeId: listgroupsData.committeeID,
+            CommitteeMappingID: listgroupsData.committeeMappingID
           })
           newDataforView.push({
             GroupID: listgroupsData.groupID,
             GroupName: listgroupsData.groupTitle,
+            CommitteeMappingID: listgroupsData.committeeMappingID
           })
         })
         setGroupData(newDataforView)
@@ -134,7 +171,12 @@ const ModalMarketingTeamCommittee = ({
 
   };
   useEffect(() => {
-    dispatch(getAllGroups(navigate, t))
+    try {
+      dispatch(getAllGroups(navigate, t))
+    } catch (error) {
+
+    }
+
   }, [])
   useEffect(() => {
     if (GroupsReducer.getAllGroups !== null) {
@@ -266,6 +308,7 @@ const ModalMarketingTeamCommittee = ({
           }
         />
       </Container>
+      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
   );
 };

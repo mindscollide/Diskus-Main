@@ -94,6 +94,40 @@ const Resolution = () => {
   let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"))
 
 
+  // call resolution
+  useEffect(() => {
+    try {
+      if (resolutionView === 1 && buttonTab !== null) {
+        dispatch(getResolutions(navigate, buttonTab, t));
+        localStorage.setItem("resolutionView", resolutionView);
+        localStorage.setItem("ButtonTab", buttonTab);
+      } else if (resolutionView === 2 && buttonTab !== null) {
+        localStorage.setItem("resolutionView", resolutionView);
+        localStorage.setItem("ButtonTab", buttonTab);
+        dispatch(getVoterResolution(navigate, buttonTab, t))
+      } else {
+        localStorage.setItem("moderatorPage", 1)
+        localStorage.setItem("moderatorRows", 50)
+        localStorage.setItem("voterPage", 1)
+        localStorage.setItem("voterRows", 50)
+        localStorage.setItem("resolutionView", 1);
+        localStorage.setItem("ButtonTab", 1);
+        dispatch(getResolutions(navigate, 1, t));
+      }
+    } catch { }
+
+    return () => {
+      localStorage.removeItem("moderatorPage")
+      localStorage.removeItem("moderatorRows")
+      localStorage.removeItem("voterPage")
+      localStorage.removeItem("voterRows")
+      localStorage.removeItem("resolutionView")
+      localStorage.removeItem("ButtonTab")
+      localStorage.removeItem("ResolutionID")
+    }
+  }, []);
+
+
   const [searchModalDates, setSearchModalDates] = useState({
     circulationDate: "",
     votingDate: "",
@@ -476,12 +510,15 @@ const Resolution = () => {
       align: "center",
       width: "76px",
       render: (text, data) => {
+        console.log(text, "texttexttexttexttext")
         if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else if (text === "Not Approved") {
           return <span className={styles["decision_non_Approved"]}>{text}</span>;
+        } else if (text === "Pending") {
+          return <span className={styles["decision_text_Pending"]}>{text}</span>;
         } else {
-          <span className={styles["decision_text_Pending"]}>{text}</span>;
+          return <span className={styles["decision_text_Pending"]}>{text}</span>;
         }
       },
     },
@@ -1051,36 +1088,7 @@ const Resolution = () => {
     }
   }, [ResolutionReducer.ResponseMessage]);
 
-  // call resolution
-  useEffect(() => {
-    if (resolutionView === 1 && buttonTab !== null) {
-      dispatch(getResolutions(navigate, buttonTab, t));
-      localStorage.setItem("resolutionView", resolutionView);
-      localStorage.setItem("ButtonTab", buttonTab);
-    } else if (resolutionView === 2 && buttonTab !== null) {
-      localStorage.setItem("resolutionView", resolutionView);
-      localStorage.setItem("ButtonTab", buttonTab);
-      dispatch(getVoterResolution(navigate, buttonTab, t))
-    } else {
-      localStorage.setItem("moderatorPage", 1)
-      localStorage.setItem("moderatorRows", 50)
-      localStorage.setItem("voterPage", 1)
-      localStorage.setItem("voterRows", 50)
-      localStorage.setItem("resolutionView", 1);
-      localStorage.setItem("ButtonTab", 1);
-      dispatch(getResolutions(navigate, 1, t));
-    }
 
-    return () => {
-      localStorage.removeItem("moderatorPage")
-      localStorage.removeItem("moderatorRows")
-      localStorage.removeItem("voterPage")
-      localStorage.removeItem("voterRows")
-      localStorage.removeItem("resolutionView")
-      localStorage.removeItem("ButtonTab")
-      localStorage.removeItem("ResolutionID")
-    }
-  }, []);
 
   // voter resolution state manage
   useEffect(() => {

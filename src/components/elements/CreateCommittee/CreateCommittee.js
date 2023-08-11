@@ -25,6 +25,7 @@ import {
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
+import { Spin } from "antd";
 const CreateCommittee = ({ setCreategrouppage }) => {
   const navigate = useNavigate();
   const [viewCreateCommittee, setViewCreateCommittee] = useState(true);
@@ -72,8 +73,17 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     CommitteeMembers: [],
   });
 
+
   useEffect(() => {
-    dispatch(allAssignessList(navigate, t));
+    try {
+      dispatch(allAssignessList(navigate, t));
+    } catch {
+
+    }
+    // dispatch(allAssignessList(navigate, t));
+  }, [])
+  useEffect(() => {
+
     CommitteeTitle.current.focus();
     let organizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
@@ -218,7 +228,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       var foundIndex = meetingAttendees.findIndex(
         (x) => x.FK_UID === taskAssignedTo
       );
-      if (participantRoleName != "") {
+      if (participantRoleName !== "") {
         if (foundIndex === -1) {
           let roleID;
           committeeMemberRolesOptions.map((data, index) => {
@@ -256,6 +266,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
             flag: true,
             message: t("User-already-exist"),
           });
+
           setAttendees([]);
           setTaskAssignedTo(0);
           setParticipantRoleName("");
@@ -333,6 +344,9 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       setTaskAssignedToInput("");
     }
   };
+  console.log(groupMembers, "MemberData")
+  console.log(meetingAttendees, "MemberData")
+  console.log(createCommitteeDetails, "MemberData")
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
@@ -382,10 +396,8 @@ const CreateCommittee = ({ setCreategrouppage }) => {
 
   const checkGroupMembers = (GroupMembers) => {
     if (Object.keys(GroupMembers).length > 0) {
-      let flag1 = GroupMembers.find((data, index) => data.FK_CMMRID === 1);
       let flag2 = GroupMembers.find((data, index) => data.FK_CMMRID === 2);
-
-      if (flag1 != undefined && flag2 != undefined) {
+      if (flag2 != undefined) {
         return true;
       } else {
         return false;
@@ -402,40 +414,33 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       createCommitteeDetails.CommitteeType !== 0 &&
       createCommitteeDetails.CreatorID !== 0
     ) {
-      if (Object.keys(createCommitteeDetails.CommitteeMembers).length === 0) {
+      if (!checkGroupMembers(createCommitteeDetails.CommitteeMembers)) {
         setOpen({
           flag: true,
-          message: t("Please-add-atleast-one-group-head-and-one-group-member"),
+          message: t(
+            "Please-add-atleast-one-executive-member"
+          ),
         });
       } else {
-        if (!checkGroupMembers(createCommitteeDetails.CommitteeMembers)) {
-          setOpen({
-            flag: true,
-            message: t(
-              "Please-add-atleast-one-group-head-and-one-group-member"
-            ),
-          });
-        } else {
-          setErrorBar(false);
-          let OrganizationID = JSON.parse(
-            localStorage.getItem("organizationID")
-          );
-          let Data = {
-            CommitteeDetails: {
-              CreatorID: createCommitteeDetails.CreatorID,
-              CommitteesTitle: createCommitteeDetails.CommitteesTitle,
-              CommitteesDescription:
-                createCommitteeDetails.CommitteesDescription,
-              PK_CMID: 0,
-              FK_CMSID: 3,
-              FK_CMTID: createCommitteeDetails.CommitteeType,
-              ISTalkChatGroup: createCommitteeDetails.ISTalkChatGroup,
-              OrganizationID: OrganizationID,
-            },
-            CommitteeMembers: createCommitteeDetails.CommitteeMembers,
-          };
-          dispatch(createcommittee(navigate, Data, t, setCreategrouppage));
-        }
+        setErrorBar(false);
+        let OrganizationID = JSON.parse(
+          localStorage.getItem("organizationID")
+        );
+        let Data = {
+          CommitteeDetails: {
+            CreatorID: createCommitteeDetails.CreatorID,
+            CommitteesTitle: createCommitteeDetails.CommitteesTitle,
+            CommitteesDescription:
+              createCommitteeDetails.CommitteesDescription,
+            PK_CMID: 0,
+            FK_CMSID: 3,
+            FK_CMTID: createCommitteeDetails.CommitteeType,
+            ISTalkChatGroup: createCommitteeDetails.ISTalkChatGroup,
+            OrganizationID: OrganizationID,
+          },
+          CommitteeMembers: createCommitteeDetails.CommitteeMembers,
+        };
+        dispatch(createcommittee(navigate, Data, t, setCreategrouppage));
       }
     } else {
       setErrorBar(true);
@@ -446,18 +451,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     }
   };
 
-  // set Meeting Attendees By default creator
+  // // set Meeting Attendees By default creator
   useEffect(() => {
-    if (
-      meetingAttendeesList !== null &&
-      meetingAttendeesList !== undefined &&
-      meetingAttendeesList.length > 0
-    ) {
-      setCreateCommitteeDetails({
-        ...createCommitteeDetails,
-        CreatorID: creatorID,
-      });
-    }
+    setCreateCommitteeDetails({
+      ...createCommitteeDetails,
+      CreatorID: creatorID,
+    });
   }, [meetingAttendeesList]);
 
   return (
@@ -840,8 +839,333 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                               </>
                             )}
                           </Row>
+                          {/* Chair Person Member */}
+                          <Row className="mt-3">
+                            <Col lg={12} md={12} sm={12}>
+                              <span
+                                className={
+                                  styles["members-create-Committee-page"]
+                                }
+                              >
+                                {t("Chair-person-members")}
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row className="mt-2">
+                            {groupMembers.length > 0 ? (
+                              groupMembers.map((data, index) => {
+                                if (data.role === 3) {
+                                  return (
+                                    <Col lg={4} md={4} sm={4} className="my-2">
+                                      <Row>
+                                        <Col lg={3} md={3} sm={12}>
+                                          <img src={Newprofile} width={50} />
+                                        </Col>
+                                        <Col
+                                          lg={7}
+                                          md={7}
+                                          sm={7}
+                                          className={
+                                            styles[
+                                            "group-head-info-Create-Committee"
+                                            ]
+                                          }
+                                        >
+                                          <Row className="mt-1">
+                                            <Col lg={12} md={12} sm={12}>
+                                              <span
+                                                className={
+                                                  styles[
+                                                  "name-create-Committee"
+                                                  ]
+                                                }
+                                              >
+                                                {data.data.name}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                          <Row>
+                                            <Col lg={12} md={12} sm={12}>
+                                              <span
+                                                className={
+                                                  styles[
+                                                  "Designation-create-Committee"
+                                                  ]
+                                                }
+                                              >
+                                                {data.data.designation}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                          <Row>
+                                            <Col lg={12} md={12} sm={12}>
+                                              <span
+                                                className={
+                                                  styles[
+                                                  "email-create-Committee"
+                                                  ]
+                                                }
+                                              >
+                                                <a>{data.data.emailAddress}</a>
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </Col>
+                                        <Col
+                                          lg={2}
+                                          md={2}
+                                          sm={12}
+                                          className="mt-0  d-flex justify-content-center"
+                                        >
+                                          <img
+                                            src={CrossIcon}
+                                            width={18}
+                                            className="cursor-pointer"
+                                            onClick={() =>
+                                              removeMemberHandler(
+                                                data.data.pK_UID
+                                              )
+                                            }
+                                          />
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  );
+                                } else {
+                                }
+                              })
+                            ) : (
+                              <>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className={styles["No-member"]}
+                                >
+                                  {t("No-member-selected")}
+                                </Col>
+                              </>
+                            )}
+                          </Row>
+                          {/* Vice Chair Person Member */}
+                          <Row className="mt-3">
+                            <Col lg={12} md={12} sm={12}>
+                              <span
+                                className={
+                                  styles["members-create-Committee-page"]
+                                }
+                              >
+                                {t("Vice-chair-person-members")}
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row className="mt-2">
+                            {groupMembers.length > 0 ? (
+                              groupMembers.map((data, index) => {
+                                if (data.role === 4) {
+                                  return (
+                                    <Col lg={4} md={4} sm={4} className="my-2">
+                                      <Row>
+                                        <Col lg={3} md={3} sm={12}>
+                                          <img src={Newprofile} width={50} />
+                                        </Col>
+                                        <Col
+                                          lg={7}
+                                          md={7}
+                                          sm={7}
+                                          className={
+                                            styles[
+                                            "group-head-info-Create-Committee"
+                                            ]
+                                          }
+                                        >
+                                          <Row className="mt-1">
+                                            <Col lg={12} md={12} sm={12}>
+                                              <span
+                                                className={
+                                                  styles[
+                                                  "name-create-Committee"
+                                                  ]
+                                                }
+                                              >
+                                                {data.data.name}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                          <Row>
+                                            <Col lg={12} md={12} sm={12}>
+                                              <span
+                                                className={
+                                                  styles[
+                                                  "Designation-create-Committee"
+                                                  ]
+                                                }
+                                              >
+                                                {data.data.designation}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                          <Row>
+                                            <Col lg={12} md={12} sm={12}>
+                                              <span
+                                                className={
+                                                  styles[
+                                                  "email-create-Committee"
+                                                  ]
+                                                }
+                                              >
+                                                <a>{data.data.emailAddress}</a>
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </Col>
+                                        <Col
+                                          lg={2}
+                                          md={2}
+                                          sm={12}
+                                          className="mt-0  d-flex justify-content-center"
+                                        >
+                                          <img
+                                            src={CrossIcon}
+                                            width={18}
+                                            className="cursor-pointer"
+                                            onClick={() =>
+                                              removeMemberHandler(
+                                                data.data.pK_UID
+                                              )
+                                            }
+                                          />
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  );
+                                } else {
+                                }
+                              })
+                            ) : (
+                              <>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className={styles["No-member"]}
+                                >
+                                  {t("No-member-selected")}
+                                </Col>
+                              </>
+                            )}
+                          </Row>
+                          {/* Secretary */}
+                          <Row className="mt-3">
+                            <Col lg={12} md={12} sm={12}>
+                              <span
+                                className={
+                                  styles["members-create-Committee-page"]
+                                }
+                              >
+                                {t("Secretary")}
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row className="mt-2">
+                            {groupMembers.length > 0 ? (
+                              groupMembers.map((data, index) => {
+                                if (data.role === 5) {
+                                  return (
+                                    <Col lg={4} md={4} sm={4} className="my-2">
+                                      <Row>
+                                        <Col lg={3} md={3} sm={12}>
+                                          <img src={Newprofile} width={50} />
+                                        </Col>
+                                        <Col
+                                          lg={7}
+                                          md={7}
+                                          sm={7}
+                                          className={
+                                            styles[
+                                            "group-head-info-Create-Committee"
+                                            ]
+                                          }
+                                        >
+                                          <Row className="mt-1">
+                                            <Col lg={12} md={12} sm={12}>
+                                              <span
+                                                className={
+                                                  styles[
+                                                  "name-create-Committee"
+                                                  ]
+                                                }
+                                              >
+                                                {data.data.name}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                          <Row>
+                                            <Col lg={12} md={12} sm={12}>
+                                              <span
+                                                className={
+                                                  styles[
+                                                  "Designation-create-Committee"
+                                                  ]
+                                                }
+                                              >
+                                                {data.data.designation}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                          <Row>
+                                            <Col lg={12} md={12} sm={12}>
+                                              <span
+                                                className={
+                                                  styles[
+                                                  "email-create-Committee"
+                                                  ]
+                                                }
+                                              >
+                                                <a>{data.data.emailAddress}</a>
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </Col>
+                                        <Col
+                                          lg={2}
+                                          md={2}
+                                          sm={12}
+                                          className="mt-0  d-flex justify-content-center"
+                                        >
+                                          <img
+                                            src={CrossIcon}
+                                            width={18}
+                                            className="cursor-pointer"
+                                            onClick={() =>
+                                              removeMemberHandler(
+                                                data.data.pK_UID
+                                              )
+                                            }
+                                          />
+                                        </Col>
+                                      </Row>
+                                    </Col>
+                                  );
+                                } else {
+                                }
+                              })
+                            ) : (
+                              <>
+                                <Col
+                                  sm={12}
+                                  md={12}
+                                  lg={12}
+                                  className={styles["No-member"]}
+                                >
+                                  {t("No-member-selected")}
+                                </Col>
+                              </>
+                            )}
+                          </Row>
                         </Col>
                       </Row>
+
                       {/* till this point the scroll will be applied  */}
                     </Col>
                     <Col lg={1} md={1} sm={1}></Col>
@@ -868,7 +1192,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                             >
                               <InputSearchFilter
                                 applyClass={"createCommittee_searchMember"}
-                                placeholder="Search member here"
+                                placeholder={t("Search-member-here")}
                                 value={taskAssignedToInput}
                                 filteredDataHandler={searchFilterHandler(
                                   taskAssignedToInput
@@ -1024,7 +1348,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                     );
                                   }
                                 )
-                                : null}
+                                : <Spin />}
                             </Col>
                           </Row>
                           {/* at this point it is ending  */}

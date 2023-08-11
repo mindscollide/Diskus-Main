@@ -6,6 +6,7 @@ import {
 import Card from "../../components/elements/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  getAllArcheivedCommittees,
   getCommitteesbyCommitteeId,
 } from "../../store/actions/Committee_actions";
 import { getAllCommitteesByUserIdActions } from "../../store/actions/Committee_actions";
@@ -35,14 +36,12 @@ const ModalArchivedCommittee = ({
 
   useEffect(() => {
     if (currentArPage != undefined && currentArPage != null) {
-      dispatch(getAllCommitteesByUserIdActions(navigate, t, 1, currentArPage));
+      dispatch(getAllArcheivedCommittees(navigate, t, currentArPage));
     } else {
       localStorage.setItem("CoArcurrentPage", 1)
-
-      dispatch(getAllCommitteesByUserIdActions(navigate, t, 1, 1));
-
+      dispatch(getAllArcheivedCommittees(navigate, t, 1));
     }
-  }, [currentArPage]);
+  }, []);
 
   useEffect(() => {
     if (CommitteeReducer.realtimeCommitteeStatus !== null) {
@@ -83,13 +82,7 @@ const ModalArchivedCommittee = ({
       let newArr = [];
       setTotalLength(CommitteeReducer.ArcheivedCommittees.totalRecords)
       CommitteeReducer.ArcheivedCommittees.committees.map((data, index) => {
-        newArr.push({
-          committeesTitle: data.committeesTitle,
-          committeeID: data.committeeID,
-          userCount: data.userCount,
-          committeeMembers: data.committeeMembers,
-          committeeStatusID: data.committeeStatusID,
-        });
+        newArr.push(data);
       });
       setGetCommitteeData(newArr);
     }
@@ -101,7 +94,7 @@ const ModalArchivedCommittee = ({
     console.log("valuevalue", value);
     localStorage.setItem("CoArcurrentPage", value)
 
-    dispatch(getAllCommitteesByUserIdActions(navigate, t, 1, value));
+    dispatch(getAllArcheivedCommittees(navigate, t, value));
   };
 
   const handleArrow = () => {
@@ -111,7 +104,7 @@ const ModalArchivedCommittee = ({
     if (CommitteeReducer.ArcheivedCommittees.pageNumbers >= currentArPage + 1) {
       let currentPage = currentArPage + 1;
       localStorage.setItem("CoArcurrentPage", currentPage)
-      dispatch(getAllCommitteesByUserIdActions(navigate, t, 1, currentPage));
+      dispatch(getAllArcheivedCommittees(navigate, t, currentPage));
     }
 
   };

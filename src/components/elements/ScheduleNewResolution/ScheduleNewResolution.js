@@ -196,7 +196,7 @@ const ScheduleNewResolution = ({
     CirculationDateTime: "",
     DeadlineDateTime: "",
     FK_ResolutionReminderFrequency_ID: 0,
-    FK_ResolutionDecision_ID: 3,
+    FK_ResolutionDecision_ID: decision.value,
     DecisionAnnouncementDateTime: "",
     IsResolutionPublic: false,
   });
@@ -543,7 +543,7 @@ const ScheduleNewResolution = ({
             ),
             FK_ResolutionReminderFrequency_ID:
               createResolutionData.FK_ResolutionReminderFrequency_ID,
-            FK_ResolutionDecision_ID: 3,
+            FK_ResolutionDecision_ID: decision.value,
             DecisionAnnouncementDateTime: createConvert(
               removeDashesFromDate(decisionDateTime.date) +
               RemoveTimeDashes(decisionDateTime.time)
@@ -605,7 +605,7 @@ const ScheduleNewResolution = ({
             ),
             FK_ResolutionReminderFrequency_ID:
               createResolutionData.FK_ResolutionReminderFrequency_ID,
-            FK_ResolutionDecision_ID: 3,
+            FK_ResolutionDecision_ID: decision.value,
             DecisionAnnouncementDateTime: createConvert(
               removeDashesFromDate(decisionDateTime.date) +
               RemoveTimeDashes(decisionDateTime.time)
@@ -1212,7 +1212,11 @@ const ScheduleNewResolution = ({
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
                           <TextFieldDateTime
-                            min={minDate}
+                            min={
+                              circulationDateTime.date !== ""
+                                ? dateformatYYYYMMDD(circulationDateTime.date)
+                                : minDate
+                            }
                             name={"voting"}
                             applyClass={"search_voterInput"}
                             labelClass="d-none"
@@ -1312,7 +1316,11 @@ const ScheduleNewResolution = ({
                         >
                           <TextFieldDateTime
                             applyClass={"search_voterInput"}
-                            min={minDate}
+                            min={
+                              votingDateTime.date !== ""
+                                ? dateformatYYYYMMDD(votingDateTime.date)
+                                : minDate
+                            }
                             labelClass="d-none"
                             name={"decision"}
                             change={(e) => {

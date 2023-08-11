@@ -90,6 +90,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
               sm={12}
               className={styles["scroll-bar-ViewGroup"]}
             >
+              {/* Executive Members */}
               <Row className="mt-2">
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["View-Committee-Head-Heading"]}>
@@ -161,7 +162,8 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                     );
                   })}
               </Row>
-              <Row className="mt-4">
+              {/* Regular Members */}
+              <Row className="mt-2">
                 <Col lg={12} md={12} sm={12}>
                   <span className={styles["members-ViewCommittee-group-page"]}>
                     {t("Regular-members")}
@@ -176,7 +178,225 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                   )
                   .map((data, index) => {
                     return (
-                      <Col lg={4} md={4} sm={12} className="mt-4">
+                      <Col lg={4} md={4} sm={12} className="mt-2">
+                        <Row>
+                          <Col lg={2} md={2} sm={12}>
+                            <img src={Newprofile} width={50} />
+                          </Col>
+                          <Col
+                            lg={9}
+                            md={9}
+                            sm={12}
+                            className={styles["ViewCommittee-head-info"]}
+                          >
+                            <Row>
+                              <Col lg={12} md={12} sm={12} className="mt-1">
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles["name-ViewCommittee-group"]
+                                      }
+                                    >
+                                      {data?.userName}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles[
+                                        "Designation-ViewCommittee-group"
+                                        ]
+                                      }
+                                    >
+                                      {data?.designation}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles["email-ViewCommittee-group"]
+                                      }
+                                    >
+                                      <a>{data?.emailAddress}</a>
+                                    </span>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </Col>
+                    );
+                  })}
+              </Row>
+              {/* Chair Person Members */}
+              <Row className="mt-2">
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["members-ViewCommittee-group-page"]}>
+                    {t("Chair-person-members")}
+                  </span>
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                {committeeData?.committeeMembers
+                  .filter(
+                    (filterData, index) =>
+                      filterData.committeeRole.committeeRoleID === 3
+                  )
+                  .map((data, index) => {
+                    console.log(data, "ChairPersonChairPersonChairPersonChairPerson")
+                    return (
+                      <Col lg={4} md={4} sm={12} className="mt-2">
+                        <Row>
+                          <Col lg={2} md={2} sm={12}>
+                            <img src={Newprofile} width={50} />
+                          </Col>
+                          <Col
+                            lg={9}
+                            md={9}
+                            sm={12}
+                            className={styles["ViewCommittee-head-info"]}
+                          >
+                            <Row>
+                              <Col lg={12} md={12} sm={12} className="mt-1">
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles["name-ViewCommittee-group"]
+                                      }
+                                    >
+                                      {data?.userName}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles[
+                                        "Designation-ViewCommittee-group"
+                                        ]
+                                      }
+                                    >
+                                      {data?.designation}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles["email-ViewCommittee-group"]
+                                      }
+                                    >
+                                      <a>{data?.emailAddress}</a>
+                                    </span>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </Col>
+                    );
+                  })}
+              </Row>
+              {/* Vice Chair Person Members */}
+              <Row className="mt-2">
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["members-ViewCommittee-group-page"]}>
+                    {t("Vice-chair-person-members")}
+                  </span>
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                {committeeData?.committeeMembers
+                  .filter(
+                    (filterData, index) =>
+                      filterData.committeeRole.committeeRoleID === 4
+                  )
+                  .map((data, index) => {
+                    console.log(data, "ChairPersonChairPersonChairPersonChairPerson")
+                    return (
+                      <Col lg={4} md={4} sm={12} className="mt-2">
+                        <Row>
+                          <Col lg={2} md={2} sm={12}>
+                            <img src={Newprofile} width={50} />
+                          </Col>
+                          <Col
+                            lg={9}
+                            md={9}
+                            sm={12}
+                            className={styles["ViewCommittee-head-info"]}
+                          >
+                            <Row>
+                              <Col lg={12} md={12} sm={12} className="mt-1">
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles["name-ViewCommittee-group"]
+                                      }
+                                    >
+                                      {data?.userName}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles[
+                                        "Designation-ViewCommittee-group"
+                                        ]
+                                      }
+                                    >
+                                      {data?.designation}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles["email-ViewCommittee-group"]
+                                      }
+                                    >
+                                      <a>{data?.emailAddress}</a>
+                                    </span>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </Col>
+                    );
+                  })}
+              </Row>
+              {/* Secretary Members */}
+              <Row className="mt-2">
+                <Col lg={12} md={12} sm={12}>
+                  <span className={styles["members-ViewCommittee-group-page"]}>
+                    {t("Secretary")}
+                  </span>
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                {committeeData?.committeeMembers
+                  .filter(
+                    (filterData, index) =>
+                      filterData.committeeRole.committeeRoleID === 5
+                  )
+                  .map((data, index) => {
+                    return (
+                      <Col lg={4} md={4} sm={12} className="mt-2">
                         <Row>
                           <Col lg={2} md={2} sm={12}>
                             <img src={Newprofile} width={50} />

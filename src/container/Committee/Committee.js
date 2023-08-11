@@ -52,11 +52,24 @@ const Committee = () => {
     message: "",
   });
   const [mapgroupsData, setMapGroupData] = useState(null);
+
+
   useEffect(() => {
-    localStorage.removeItem("CoArcurrentPage");
-    localStorage.setItem("CocurrentPage", 1);
-    dispatch(getAllCommitteesByUserIdActions(navigate, t, 0, 1));
+    try {
+      if (currentPage !== null && currentPage !== undefined) {
+        console.log("check 1")
+        dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
+      } else {
+        console.log("check 2")
+        localStorage.removeItem("CoArcurrentPage");
+        localStorage.setItem("CocurrentPage", 1);
+        dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
+      }
+    } catch { }
+
+
   }, []);
+
 
   const archivedmodaluser = async (e) => {
     setShowModal(true);
@@ -77,6 +90,8 @@ const Committee = () => {
       console.log(findMapGroups, "findMapGroupsfindMapGroupsfindMapGroups");
     }
   };
+
+
   const viewTitleModal = (data) => {
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
@@ -96,6 +111,8 @@ const Committee = () => {
 
 
   };
+
+
   const viewUpdateModal = (committeeID, CommitteeStatusID) => {
     console.log("testtesttesttesttesttest")
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -118,8 +135,10 @@ const Committee = () => {
   const handlechange = (value) => {
     console.log("valuevalue", value);
     localStorage.setItem("CocurrentPage", value);
-    dispatch(getAllCommitteesByUserIdActions(navigate, t, 0, value));
+    dispatch(getAllCommitteesByUserIdActions(navigate, t, value));
   };
+
+
 
   useEffect(() => {
     if (CommitteeReducer.realtimeCommitteeStatus !== null) {
@@ -180,15 +199,16 @@ const Committee = () => {
         "committeeStatusID"
       );
       let committeeData = CommitteeReducer.realtimeCommitteeCreateResponse;
-      getcommitteedata.unshift({
+      let newCommitteeData = {
         committeesTitle: committeeData.committeesTitle,
         committeeID: committeeData.committeeID,
         userCount: committeeData.userCount,
         committeeMembers: committeeData.committeeMembers,
         committeeStatusID: committeeData.committeeStatusID,
         listofGroups: committeeData.listOfGroups,
-      });
-      setGetCommitteeData([...getcommitteedata]);
+      }
+
+      setGetCommitteeData([newCommitteeData, ...getcommitteedata]);
     }
   }, [CommitteeReducer.realtimeCommitteeCreateResponse]);
 
@@ -205,31 +225,28 @@ const Committee = () => {
   };
 
   useEffect(() => {
-    if (
-      CommitteeReducer.GetAllCommitteesByUserIDResponse !== null &&
-      CommitteeReducer.GetAllCommitteesByUserIDResponse !== undefined &&
-      CommitteeReducer.GetAllCommitteesByUserIDResponse.committees.length > 0
-    ) {
-      setTotalRecords(
-        CommitteeReducer.GetAllCommitteesByUserIDResponse.totalRecords
-      );
-      let newArr = [];
-      let filteritems =
-        CommitteeReducer.GetAllCommitteesByUserIDResponse.committees;
-      filteritems.map((data, index) => {
-        console.log(CommitteeReducer, "datadatadatadata212");
-        newArr.push({
-          committeesTitle: data.committeesTitle,
-          committeeID: data.committeeID,
-          userCount: data.userCount,
-          committeeMembers: data.committeeMembers,
-          committeeStatusID: data.committeeStatusID,
-          listofGroups: data.listOfGroups,
-          creatorID: data.creatorID
-        });
-      });
-      setGetCommitteeData(newArr);
+    try {
+      if (
+        CommitteeReducer.GetAllCommitteesByUserIDResponse !== null &&
+        CommitteeReducer.GetAllCommitteesByUserIDResponse !== undefined
+      ) {
+        setTotalRecords(CommitteeReducer.GetAllCommitteesByUserIDResponse.totalRecords);
+
+        if (CommitteeReducer.GetAllCommitteesByUserIDResponse.committees.length > 0) {
+          let newArr = [];
+          let copyData = [...CommitteeReducer.GetAllCommitteesByUserIDResponse?.committees]
+          copyData.map((data, index) => {
+            newArr.push(data);
+          });
+          setGetCommitteeData(newArr);
+        }
+
+
+      }
+    } catch {
+
     }
+
   }, [CommitteeReducer.GetAllCommitteesByUserIDResponse]);
 
   useEffect(() => {
@@ -256,6 +273,9 @@ const Committee = () => {
       dispatch(getallcommitteebyuserid_clear());
     }
   }, [CommitteeReducer.ResponseMessage]);
+
+
+
 
   return (
     <>

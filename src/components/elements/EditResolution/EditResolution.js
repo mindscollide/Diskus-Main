@@ -30,6 +30,7 @@ import { useState } from "react";
 import ModalresolutionRemove from "../../../container/ModalresolutionRemove/ModalresolutionRemove";
 import ModalCancellResolution from "../../../container/ModalCancellResolution/ModalCancellResolution";
 import ModalUpdateresolution from "../../../container/ModalUpdateResolution/ModalUpdateresolution";
+import MOdalResolutionCirculated from '../../../container/ModalResolutionCirculated/ModalResolutionCirculated'
 import ModalDiscardResolution from "../../../container/ModalDiscardResolution/ModalDiscardResolution";
 import ModalResolutionUpdated from "../../../container/ModalResolutionUpdated/ModalResolutionUpdated";
 import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
@@ -69,14 +70,8 @@ const EditResolution = ({
   );
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [resolutionID, setResolutionID] = useState(0);
-  console.log(
-    ResolutionReducer,
-    uploadReducer.uploadDocumentsList,
-    meetingAttendeesList,
-    "ResolutionReducerResolutionReducerResolutionReducer"
-  );
+
   const [minDate, setMinDate] = useState("");
-  console.log(minDate, "minDateminDateminDate");
   useEffect(() => {
     const min_date = new Date();
     setMinDate(moment(min_date).format("YYYY-MM-DD"));
@@ -88,7 +83,7 @@ const EditResolution = ({
   });
   const [votingMethods, setVotingMethods] = useState([]);
   const [decision, setDecision] = useState({
-    label: "Pending",
+    label: t("Decision-pending"),
     value: 1,
   });
   const [voters, setVoters] = useState([]);
@@ -134,10 +129,7 @@ const EditResolution = ({
   const dateformatYYYYMMDD = (date) => {
     console.log(date, "dateformatYYYYMMDDdateformatYYYYMMDD");
     if (!!date && typeof date === "string") {
-      console.log(
-        "dateformatYYYYMMDDdateformatYYYYMMDD",
-        typeof moment(date).format("YYYY-MM-DD")
-      );
+
       return moment(date).add(1, "days").format("YYYY-MM-DD");
     }
   };
@@ -172,6 +164,7 @@ const EditResolution = ({
   const [cancelResolutionID, setCancelResolutionID] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
   const [resolutionupdate, setResolutionupdate] = useState(false);
+  const [resolutionCirculate, setResolutionCirculate] = useState(false)
   const [resolutionUpdateSuccessfully, setResolutionUpdateSuccessfully] =
     useState(false);
   const [discardresolution, setDsicardresolution] = useState(false);
@@ -185,20 +178,14 @@ const EditResolution = ({
     CirculationDateTime: "",
     DeadlineDateTime: "",
     FK_ResolutionReminderFrequency_ID: 0,
-    FK_ResolutionDecision_ID: 3,
+    FK_ResolutionDecision_ID: 0,
     DecisionAnnouncementDateTime: "",
     IsResolutionPublic: false,
     pK_ResolutionID: 0,
     ResolutionStatus: "",
   });
   const [onclickFlag, setOnclickFlag] = useState(false);
-  console.log(
-    editResolutionData,
-    circulationDateTime,
-    votingDateTime,
-    decisionDateTime,
-    "editResolutionDataeditResolutionDataeditResolutionData"
-  );
+
 
   const ShowVoter = () => {
     setVoter(true);
@@ -436,12 +423,6 @@ const EditResolution = ({
     let findisAlreadyExist = nonVoter.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo
     );
-    console.log(
-      "findVoterfindVoterfindVoterfindVoter",
-      findVoter,
-      voters,
-      taskAssignedTo
-    );
     if (findisAlreadyExist === -1) {
       if (findVoter === -1) {
         if (taskAssignedToInput !== 0) {
@@ -647,6 +628,215 @@ const EditResolution = ({
     customRequest() { },
   };
 
+  const handleCirculateResolution = () => {
+    if (fileForSend.length > 0) {
+      let counter = fileForSend.length;
+      console.log(counter, "countercountercounter");
+      fileForSend.map(async (newData, index) => {
+        await dispatch(FileUploadToDo(navigate, newData, t));
+        counter = counter - 1;
+      });
+      let Data = {
+        ResolutionModel: {
+          FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
+          FK_ResolutionVotingMethodID:
+            editResolutionData.FK_ResolutionVotingMethodID,
+          Title: editResolutionData.Title,
+          NotesToVoter: editResolutionData.NotesToVoter,
+          CirculationDateTime: createConvert(
+            removeDashesFromDate(circulationDateTime.date) +
+            RemoveTimeDashes(circulationDateTime.time)
+          ),
+          DeadlineDateTime: createConvert(
+            removeDashesFromDate(votingDateTime.date) +
+            RemoveTimeDashes(votingDateTime.time)
+          ),
+          FK_ResolutionReminderFrequency_ID:
+            editResolutionData.FK_ResolutionReminderFrequency_ID,
+          FK_ResolutionDecision_ID:
+            editResolutionData.FK_ResolutionDecision_ID,
+          PK_ResolutionID: editResolutionData.pK_ResolutionID,
+          DecisionAnnouncementDateTime: createConvert(
+            removeDashesFromDate(decisionDateTime.date) +
+            RemoveTimeDashes(decisionDateTime.time)
+          ),
+          IsResolutionPublic: editResolutionData.IsResolutionPublic,
+          FK_OrganizationID: JSON.parse(
+            localStorage.getItem("organizationID")
+          ),
+          FK_UID: JSON.parse(localStorage.getItem("userID")),
+        },
+      };
+      dispatch(
+        createResolution(
+          navigate,
+          Data,
+          voters,
+          nonVoter,
+          tasksAttachments,
+          setNewresolution,
+          setEditResoutionPage,
+          t,
+          2,
+          2,
+          setResolutionUpdateSuccessfully
+        )
+      );
+    } else {
+      let Data = {
+        ResolutionModel: {
+          FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
+          FK_ResolutionVotingMethodID:
+            editResolutionData.FK_ResolutionVotingMethodID,
+          Title: editResolutionData.Title,
+          NotesToVoter: editResolutionData.NotesToVoter,
+          CirculationDateTime: createConvert(
+            removeDashesFromDate(circulationDateTime.date) +
+            RemoveTimeDashes(circulationDateTime.time)
+          ),
+          DeadlineDateTime: createConvert(
+            removeDashesFromDate(votingDateTime.date) +
+            RemoveTimeDashes(votingDateTime.time)
+          ),
+          FK_ResolutionReminderFrequency_ID:
+            editResolutionData.FK_ResolutionReminderFrequency_ID,
+          FK_ResolutionDecision_ID:
+            editResolutionData.FK_ResolutionDecision_ID,
+          PK_ResolutionID: editResolutionData.pK_ResolutionID,
+          DecisionAnnouncementDateTime: createConvert(
+            removeDashesFromDate(decisionDateTime.date) +
+            RemoveTimeDashes(decisionDateTime.time)
+          ),
+          IsResolutionPublic: editResolutionData.IsResolutionPublic,
+          FK_OrganizationID: JSON.parse(
+            localStorage.getItem("organizationID")
+          ),
+          FK_UID: JSON.parse(localStorage.getItem("userID")),
+        },
+      };
+      dispatch(
+        createResolution(
+          navigate,
+          Data,
+          voters,
+          nonVoter,
+          tasksAttachments,
+          setNewresolution,
+          setEditResoutionPage,
+          t,
+          2,
+          2,
+          setResolutionUpdateSuccessfully
+        )
+      );
+    }
+  }
+
+  const handleUpdateResolution = () => {
+    if (fileForSend.length > 0) {
+      let counter = fileForSend.length;
+      console.log(counter, "countercountercounter");
+      fileForSend.map(async (newData, index) => {
+        await dispatch(FileUploadToDo(navigate, newData, t));
+        counter = counter - 1;
+      });
+      let Data = {
+        ResolutionModel: {
+          FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
+          FK_ResolutionVotingMethodID:
+            editResolutionData.FK_ResolutionVotingMethodID,
+          Title: editResolutionData.Title,
+          NotesToVoter: editResolutionData.NotesToVoter,
+          CirculationDateTime: createConvert(
+            removeDashesFromDate(circulationDateTime.date) +
+            RemoveTimeDashes(circulationDateTime.time)
+          ),
+          DeadlineDateTime: createConvert(
+            removeDashesFromDate(votingDateTime.date) +
+            RemoveTimeDashes(votingDateTime.time)
+          ),
+          FK_ResolutionReminderFrequency_ID:
+            editResolutionData.FK_ResolutionReminderFrequency_ID,
+          FK_ResolutionDecision_ID:
+            editResolutionData.FK_ResolutionDecision_ID,
+          PK_ResolutionID: editResolutionData.pK_ResolutionID,
+          DecisionAnnouncementDateTime: createConvert(
+            removeDashesFromDate(decisionDateTime.date) +
+            RemoveTimeDashes(decisionDateTime.time)
+          ),
+          IsResolutionPublic: editResolutionData.IsResolutionPublic,
+          FK_OrganizationID: JSON.parse(
+            localStorage.getItem("organizationID")
+          ),
+          FK_UID: JSON.parse(localStorage.getItem("userID")),
+        },
+      };
+      dispatch(
+        createResolution(
+          navigate,
+          Data,
+          voters,
+          nonVoter,
+          tasksAttachments,
+          setNewresolution,
+          setEditResoutionPage,
+          t,
+          2,
+          1,
+          setResolutionUpdateSuccessfully
+        )
+      );
+      // }
+    } else {
+      let Data = {
+        ResolutionModel: {
+          FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
+          FK_ResolutionVotingMethodID:
+            editResolutionData.FK_ResolutionVotingMethodID,
+          Title: editResolutionData.Title,
+          NotesToVoter: editResolutionData.NotesToVoter,
+          CirculationDateTime: createConvert(
+            removeDashesFromDate(circulationDateTime.date) +
+            RemoveTimeDashes(circulationDateTime.time)
+          ),
+          DeadlineDateTime: createConvert(
+            removeDashesFromDate(votingDateTime.date) +
+            RemoveTimeDashes(votingDateTime.time)
+          ),
+          FK_ResolutionReminderFrequency_ID:
+            editResolutionData.FK_ResolutionReminderFrequency_ID,
+          FK_ResolutionDecision_ID:
+            editResolutionData.FK_ResolutionDecision_ID,
+          PK_ResolutionID: editResolutionData.pK_ResolutionID,
+          DecisionAnnouncementDateTime: createConvert(
+            removeDashesFromDate(decisionDateTime.date) +
+            RemoveTimeDashes(decisionDateTime.time)
+          ),
+          IsResolutionPublic: editResolutionData.IsResolutionPublic,
+          FK_OrganizationID: JSON.parse(
+            localStorage.getItem("organizationID")
+          ),
+          FK_UID: JSON.parse(localStorage.getItem("userID")),
+        },
+      };
+      dispatch(
+        createResolution(
+          navigate,
+          Data,
+          voters,
+          nonVoter,
+          tasksAttachments,
+          setNewresolution,
+          setEditResoutionPage,
+          t,
+          2,
+          1,
+          setResolutionUpdateSuccessfully
+        )
+      );
+    }
+  }
+
   const createResolutionHandleClick = async (id) => {
     if (
       editResolutionData.Title !== "" &&
@@ -659,149 +849,15 @@ const EditResolution = ({
       editResolutionData.FK_ResolutionVotingMethodID !== 0 &&
       editResolutionData.FK_ResolutionReminderFrequency_ID !== 0
     ) {
-      if (fileForSend.length > 0) {
-        let counter = fileForSend.length;
-        console.log(counter, "countercountercounter");
-        fileForSend.map(async (newData, index) => {
-          await dispatch(FileUploadToDo(navigate, newData, t));
-          counter = counter - 1;
-        });
-        let Data = {
-          ResolutionModel: {
-            FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
-            FK_ResolutionVotingMethodID:
-              editResolutionData.FK_ResolutionVotingMethodID,
-            Title: editResolutionData.Title,
-            NotesToVoter: editResolutionData.NotesToVoter,
-            CirculationDateTime: createConvert(
-              removeDashesFromDate(circulationDateTime.date) +
-              RemoveTimeDashes(circulationDateTime.time)
-            ),
-            DeadlineDateTime: createConvert(
-              removeDashesFromDate(votingDateTime.date) +
-              RemoveTimeDashes(votingDateTime.time)
-            ),
-            FK_ResolutionReminderFrequency_ID:
-              editResolutionData.FK_ResolutionReminderFrequency_ID,
-            FK_ResolutionDecision_ID:
-              editResolutionData.FK_ResolutionDecision_ID,
-            PK_ResolutionID: editResolutionData.pK_ResolutionID,
-            DecisionAnnouncementDateTime: createConvert(
-              removeDashesFromDate(decisionDateTime.date) +
-              RemoveTimeDashes(decisionDateTime.time)
-            ),
-            IsResolutionPublic: editResolutionData.IsResolutionPublic,
-            FK_OrganizationID: JSON.parse(
-              localStorage.getItem("organizationID")
-            ),
-            FK_UID: JSON.parse(localStorage.getItem("userID")),
-          },
-        };
-        console.log(
-          typeof voters,
-          voters.length,
-          voters,
-          "DataDataDataDataDataDataData"
-        );
-        if (id === 2 && Object.keys(voters).length <= 0) {
-          console.log(
-            typeof voters,
-            voters.length,
-            voters,
-            "DataDataDataDataDataDataData"
-          );
-
-          setError(true);
-        } else {
-          console.log(
-            typeof voters,
-            voters.length,
-            voters,
-            "DataDataDataDataDataDataData"
-          );
-
-          dispatch(
-            createResolution(
-              navigate,
-              Data,
-              voters,
-              nonVoter,
-              tasksAttachments,
-              setNewresolution,
-              setEditResoutionPage,
-              t,
-              2,
-              id,
-              setResolutionUpdateSuccessfully
-            )
-          );
-        }
+      if (id === 1) {
+        setResolutionupdate(true)
+        setResolutionCirculate(false)
       } else {
-        let Data = {
-          ResolutionModel: {
-            FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
-            FK_ResolutionVotingMethodID:
-              editResolutionData.FK_ResolutionVotingMethodID,
-            Title: editResolutionData.Title,
-            NotesToVoter: editResolutionData.NotesToVoter,
-            CirculationDateTime: createConvert(
-              removeDashesFromDate(circulationDateTime.date) +
-              RemoveTimeDashes(circulationDateTime.time)
-            ),
-            DeadlineDateTime: createConvert(
-              removeDashesFromDate(votingDateTime.date) +
-              RemoveTimeDashes(votingDateTime.time)
-            ),
-            FK_ResolutionReminderFrequency_ID:
-              editResolutionData.FK_ResolutionReminderFrequency_ID,
-            FK_ResolutionDecision_ID:
-              editResolutionData.FK_ResolutionDecision_ID,
-            PK_ResolutionID: editResolutionData.pK_ResolutionID,
-            DecisionAnnouncementDateTime: createConvert(
-              removeDashesFromDate(decisionDateTime.date) +
-              RemoveTimeDashes(decisionDateTime.time)
-            ),
-            IsResolutionPublic: editResolutionData.IsResolutionPublic,
-            FK_OrganizationID: JSON.parse(
-              localStorage.getItem("organizationID")
-            ),
-            FK_UID: JSON.parse(localStorage.getItem("userID")),
-          },
-        };
-        console.log(Data, "DataDataDataDataDataDataData");
-        console.log(typeof voters, voters, "DataDataDataDataDataDataData");
         if (id === 2 && Object.keys(voters).length <= 0) {
-          console.log(
-            typeof voters,
-            voters.length,
-            voters,
-            "DataDataDataDataDataDataData"
-          );
-
           setError(true);
         } else {
-          console.log(
-            typeof voters,
-            voters.length,
-            voters,
-            "DataDataDataDataDataDataData"
-          );
-
-          dispatch(
-            createResolution(
-              navigate,
-              Data,
-              voters,
-              nonVoter,
-              tasksAttachments,
-              setNewresolution,
-              setEditResoutionPage,
-              t,
-              2,
-              id,
-              setResolutionUpdateSuccessfully
-            )
-          );
+          setResolutionupdate(false)
+          setResolutionCirculate(true)
         }
       }
     } else {
@@ -2384,6 +2440,14 @@ const EditResolution = ({
         <ModalUpdateresolution
           updateresolution={resolutionupdate}
           setUpdateresolution={setResolutionupdate}
+          handleUpdateResolution={handleUpdateResolution}
+        />
+      ) : null}
+      {resolutionCirculate ? (
+        <MOdalResolutionCirculated
+          circulateresolution={resolutionCirculate}
+          setcirculateresolution={setResolutionCirculate}
+          handleCirculateResolution={handleCirculateResolution}
         />
       ) : null}
       {discardresolution ? (

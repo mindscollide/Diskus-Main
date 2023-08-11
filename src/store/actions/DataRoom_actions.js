@@ -788,8 +788,9 @@ const shareFolders_fail = (message) => {
 }
 
 // Share Folders Api
-const shareFoldersApi = (navigate, FolderData, t) => {
+const shareFoldersApi = (navigate, FolderData, t, setShowrequestsend) => {
   let token = JSON.parse(localStorage.getItem('token'))
+  let folderID = JSON.parse(localStorage.getItem('folderID'))
   return (dispatch) => {
     dispatch(shareFolders_init())
     let form = new FormData()
@@ -806,7 +807,7 @@ const shareFoldersApi = (navigate, FolderData, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(shareFoldersApi(navigate, FolderData, t))
+          dispatch(shareFoldersApi(navigate, FolderData, t, setShowrequestsend))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -822,6 +823,12 @@ const shareFoldersApi = (navigate, FolderData, t) => {
                   t('Folder-share-successfully'),
                 ),
               )
+              setShowrequestsend(false)
+              if (folderID !== null && folderID !== undefined) {
+                dispatch(getFolderDocumentsApi(navigate, folderID, t))
+              } else {
+                dispatch(getDocumentsAndFolderApi(navigate, 3, t))
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

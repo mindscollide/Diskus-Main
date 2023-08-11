@@ -49,7 +49,8 @@ const Card = ({
     try {
       window.addEventListener("click", function (e) {
         console.log("eeeeeeeee", e.target.className);
-        var clsname = e.target.className;
+        console.log("eeeeeeeee", typeof e.target.className);
+        let clsname = typeof e.target.className === string && e.target.className
         let arr = clsname.split("_");
         console.log("click", arr[1]);
         if (arr != undefined) {
@@ -83,7 +84,7 @@ const Card = ({
       console.log("error");
     }
   }, []);
-  let sortedArraay = profile.length > 0 && profile.sort((a, b) => {
+  let sortedArraay = profile !== null && profile !== undefined && profile.length > 0 && profile.sort((a, b) => {
     const userNameA = a.userName.toLowerCase();
     const userNameB = b.userName.toLowerCase();
 

@@ -1,5 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Groups.module.css";
+
 import { Button, Loader, Modal, Notification } from "../../components/elements";
 import NoGroupsData from "../../assets/images/No-Group.svg";
 import React, { useEffect, useState } from "react";
@@ -55,7 +56,7 @@ const Groups = () => {
 
   const handlechange = (value) => {
     localStorage.setItem("groupsCurrent", value);
-    dispatch(getGroups(navigate, t, 0, value));
+    dispatch(getGroups(navigate, t, value));
   };
 
   const archivedmodaluser = (e) => {
@@ -148,9 +149,9 @@ const Groups = () => {
     localStorage.removeItem("groupsArCurrent");
     localStorage.setItem("groupsCurrent", 1);
     // dispatch(groupLoader(true))
-    dispatch(getGroups(navigate, t, 0, 1));
+    dispatch(getGroups(navigate, t, 1));
   }, []);
-
+  // console.log(process.env.PUBLIC_URL, "groupsArCurrentgroupsArCurrentgroupsArCurrent")
   useEffect(() => {
     if (GroupsReducer.realtimeGroupStatus !== null) {
       let status = GroupsReducer.realtimeGroupStatus.groupStatusID;
@@ -209,16 +210,7 @@ const Groups = () => {
           console.log("arrarr", arr);
           arr.map((data, index) => {
             console.log("datavvvvvvvv", data);
-            newArr.push({
-              groupDescription: data.groupDescription,
-              groupID: data.groupID,
-              groupMembers: data.groupMembers,
-              groupStatusID: data.groupStatusID,
-              groupTitle: data.groupTitle,
-              userCount: data.userCount,
-              listOfCommittees: data.listOfCommittees,
-              creatorID: data.creatorID
-            });
+            newArr.push(data);
           });
           setgroupsData(newArr);
         }
@@ -535,7 +527,7 @@ const Groups = () => {
         />
       ) : null}
 
-      {GroupsReducer.getAllLoading ? <Loader /> : null}
+      {GroupsReducer.getAllLoading || GroupsReducer.Loading ? <Loader /> : null}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
