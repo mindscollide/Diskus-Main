@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./UserSettings.module.css";
 import { Col, Container, Row } from "react-bootstrap";
-import { Notification, Loader, Button } from "../../../components/elements";
+import { Loader, Button } from "../../../components/elements";
 import backbutton from "../../../assets/images/backbutton.svg";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +22,6 @@ const UserSettings = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { settingReducer } = useSelector((state) => state);
-  console.log(settingReducer, "settingReducersettingReducersettingReducer");
   const [securitystate, setSecuritystate] = useState(false);
   const [meetingsState, setmeetingsState] = useState(false);
   const [calender, setCalender] = useState(false);
@@ -79,20 +78,13 @@ const UserSettings = () => {
   useEffect(() => {
     dispatch(getUserSetting(navigate, t));
   }, []);
-  console.log(
-    userOptionsSettings.MicrosoftCalenderColor,
-    "DiskusCalenderColorDiskusCalenderColorDiskusCalenderColor"
-  );
+
   useEffect(() => {
     if (
       settingReducer.UserProfileData !== null &&
       settingReducer.UserProfileData !== undefined
     ) {
       if (Object.keys(settingReducer.UserProfileData).length > 0) {
-        console.log(
-          settingReducer.UserProfileData,
-          "UserProfileDataUserProfileData"
-        );
         setUserOptionsSettings({
           Is2FAEnabled: settingReducer.UserProfileData.iS2FAEnabled,
           EmailOnNewMeeting: settingReducer.UserProfileData.emailOnNewMeeting,
@@ -195,11 +187,6 @@ const UserSettings = () => {
     }
   }, [settingReducer.UserProfileData]);
 
-  const [open, setOpen] = useState({
-    flag: false,
-    message: "",
-  });
-
   const openSecurityTab = () => {
     setSecuritystate(true);
     setmeetingsState(false);
@@ -296,11 +283,6 @@ const UserSettings = () => {
         !userOptionsSettings.EmailCancelOrDeleteMeeting,
     });
   };
-
-  console.log(
-    userOptionsSettings.EmailCancelOrDeleteMeeting,
-    "EmailCancelOrDeleteMeetingEmailCancelOrDeleteMeeting"
-  );
 
   const onChangePushNotificationonNewMeeting = () => {
     setUserOptionsSettings({
