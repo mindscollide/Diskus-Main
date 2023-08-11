@@ -844,7 +844,6 @@ const assignGroup_Failt = (message) => {
 };
 const assignGroups = (navigate, Data, t, setMarketingTeam) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
   return (dispatch) => {
     dispatch(assignGroup_Init());
     let form = new FormData();
@@ -875,7 +874,6 @@ const assignGroups = (navigate, Data, t, setMarketingTeam) => {
               "Committees_CommitteeServiceManager_CommitteeAndGroupMapping_01".toLowerCase()
             ) {
               await dispatch(assignGroup_Success(t("Record-save")));
-              dispatch(getAllCommitteesByUserIdActions(navigate, t, 0, currentPage))
               setMarketingTeam(false)
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===

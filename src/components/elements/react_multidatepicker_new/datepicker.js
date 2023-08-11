@@ -4,7 +4,6 @@ import moment from "moment";
 import { PencilSquare } from "react-bootstrap-icons";
 // import Icon from "react-multi-date-picker/components/icon";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
-import styles from "./datepicker.module.css";
 
 const MultiDatePickers = ({
   onChange,
@@ -33,7 +32,7 @@ const MultiDatePickers = ({
         alt="Edit Icon"
         height="11.11px"
         width="11.54px"
-        className={styles["custom-icon"]}
+        className="custom-icon"
       />
     </div>
   );

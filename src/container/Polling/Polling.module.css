@@ -168,9 +168,7 @@ body[dir="rtl"] .polling_searchinput {
   color: #fff !important;
   border-radius: 4px !important;
   font-size: 12px !important;
-  width: 80px !important;
-  height: 42px !important;
-  /* padding: 12px 30px; */
+  padding: 12px 30px;
   font-family: "MontserratSemiBold" !important;
 }
 
@@ -208,14 +206,4 @@ body[dir="rtl"] .polling_searchinput {
 body[dir="rtl"] .PaginationStyle-polling {
   width: auto !important;
   padding: 12px 10px !important;
-}
-
-.Ellipses_Class{
-  overflow: hidden !important;
-  white-space: nowrap;
-  text-overflow: ellipsis !important;
-  cursor: pointer !important;
-  width: 100%;
-  display: inline-block;
-
 }

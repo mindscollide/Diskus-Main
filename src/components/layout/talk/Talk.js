@@ -2,14 +2,28 @@ import React, { useState, useEffect } from 'react'
 import './Talk.css'
 import { Triangle } from 'react-bootstrap-icons'
 import { GetAllUserChats } from '../../../store/actions/Talk_action'
+import {
+  recentChatFlag,
+  headerShowHideStatus,
+  footerShowHideStatus,
+  createShoutAllScreen,
+  addNewChatScreen,
+  footerActionStatus,
+  createGroupScreen,
+  chatBoxActiveFlag,
+} from '../../../store/actions/Talk_Feature_actions'
 import { useDispatch, useSelector } from 'react-redux'
 import TalkChat from './talk-chat/Talk-Chat'
+import TalkNew from './talk-chat/Talk-New'
 import TalkVideo from './talk-Video/TalkVideo'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
+
 const Talk = () => {
   const { t } = useTranslation()
-  let createrID = localStorage.getItem('userID')
   const dispatch = useDispatch()
+
+  const navigate = useNavigate()
 
   //Getting api result from the reducer
   const { talkStateData } = useSelector((state) => state)
@@ -48,14 +62,18 @@ const Talk = () => {
 
   const iconClick = () => {
     if (activeChatBox === false) {
-      setActiveChatBox(true)
       dispatch(
-        GetAllUserChats(
-          parseInt(currentUserId),
-          parseInt(currentOrganizationId),
-          t,
-        ),
+        GetAllUserChats(navigate, currentUserId, currentOrganizationId, t),
       )
+      dispatch(createShoutAllScreen(false))
+      dispatch(addNewChatScreen(false))
+      dispatch(footerActionStatus(false))
+      dispatch(createGroupScreen(false))
+      dispatch(chatBoxActiveFlag(false))
+      dispatch(recentChatFlag(true))
+      dispatch(headerShowHideStatus(true))
+      dispatch(footerShowHideStatus(true))
+      setActiveChatBox(true)
     } else {
       setActiveChatBox(false)
     }
@@ -63,15 +81,15 @@ const Talk = () => {
 
   const [unreadMessageCount, setUnreadMessageCount] = useState(0)
 
-  useEffect(() => {
-    dispatch(
-      GetAllUserChats(
-        parseInt(currentUserId),
-        parseInt(currentOrganizationId),
-        t,
-      ),
-    )
-  }, [])
+  // useEffect(() => {
+  //   dispatch(
+  //     GetAllUserChats(
+  //       parseInt(currentUserId),
+  //       parseInt(currentOrganizationId),
+  //       t,
+  //     ),
+  //   )
+  // }, [])
 
   //Setting state data of global response all chat to chatdata
   useEffect(() => {
@@ -114,13 +132,13 @@ const Talk = () => {
   return (
     <div className={'talk_nav' + ' ' + currentLang}>
       {activeChatBox === true ? (
-        <TalkChat />
+        <TalkNew />
       ) : activeVideoIcon === true ? (
         <TalkVideo />
       ) : null}
       <div className={subIcons ? 'talk-nav-icons' : 'border-0'}>
         <div className={subIcons ? 'talk_subIcon' : 'talk_subIcon_hidden'}>
-          <span className="talk-count">1</span>
+          {/* <span className="talk-count"></span> */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="30"
@@ -158,7 +176,7 @@ const Talk = () => {
           className={subIcons ? 'talk_subIcon' : 'talk_subIcon_hidden'}
           onClick={videoIconClick}
         >
-          <span className="talk-count">1</span>
+          {/* <span className="talk-count"></span> */}
           <svg
             id="Icon_feather-video"
             data-name="Icon feather-video"
@@ -223,7 +241,9 @@ const Talk = () => {
         </div>
       </div>
       <div className="talk_Icon" onClick={showsubTalkIcons}>
-        <span className="talk-count total">4</span>
+        <span className={unreadMessageCount === 0 ? '' : 'talk-count total'}>
+          {unreadMessageCount === 0 ? '' : unreadMessageCount}
+        </span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="34"

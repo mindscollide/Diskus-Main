@@ -74,14 +74,6 @@ const viewVotesDetailsModal = (response) => {
   };
 };
 
-const notifyPollingSocket = (response) => {
-  console.log(response, "ALL_POLLINGS_SOCKET");
-  return {
-    type: actions.ALL_POLLINGS_SOCKET,
-    response: response,
-  };
-};
-
 const setVotePollModal = (response) => {
   return {
     type: actions.VOTE_POLL_MODAL,
@@ -239,22 +231,21 @@ const UpdatePollStatusByPollIdApi = (navigate, t, data) => {
                   "Polls_PollsServiceManager_UpdatePollStatusByPollId_01".toLowerCase()
                 )
             ) {
-              let Data = {
-                UserID: parseInt(createrID),
-                OrganizationID: parseInt(OrganizationID),
-                CreatorName: "",
-                PollTitle: "",
-                PageNumber: 1,
-                Length: 50,
-              };
-              dispatch(searchPollsApi(navigate, t, Data));
-              dispatch(setDeltePollModal(false));
               dispatch(
                 deltePollsSuccess(
                   response.data.responseResult,
                   t("Poll Status Updated Successfully")
                 )
               );
+              let Data = {
+                UserID: parseInt(createrID),
+                OrganizationID: parseInt(OrganizationID),
+                CreatorName: "",
+                PageNumber: 1,
+                Length: 50,
+              };
+              dispatch(setDeltePollModal(false));
+              dispatch(searchPollsApi(navigate, t, Data));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -354,7 +345,6 @@ const SavePollsApi = (navigate, Data, t) => {
                 UserID: parseInt(userID),
                 OrganizationID: parseInt(organizationID),
                 CreatorName: "",
-                PollTitle: "",
                 PageNumber: 1,
                 Length: 50,
               };
@@ -473,7 +463,6 @@ const castVoteApi = (navigate, data, t) => {
               UserID: parseInt(userID),
               OrganizationID: parseInt(organizationID),
               CreatorName: "",
-              PollTitle: "",
               PageNumber: 1,
               Length: 50,
             };
@@ -667,9 +656,7 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
               await dispatch(globalFlag(false));
               await dispatch(viewVotesDetailsModal(false));
               await dispatch(setVotePollModal(false));
-              await dispatch(getAllCommitteesandGroups(navigate, t));
               await dispatch(setEditpollModal(true));
-
               console.log("handleEditpollModal", check);
             } else if (parseInt(check) === 3) {
               await dispatch(setEditpollModal(false));
@@ -987,7 +974,6 @@ const updatePollsApi = (navigate, Data, t) => {
                 UserID: parseInt(userID),
                 OrganizationID: parseInt(organizationID),
                 CreatorName: "",
-                PollTitle: "",
                 PageNumber: 1,
                 Length: 50,
               };
@@ -1020,7 +1006,6 @@ const updatePollsApi = (navigate, Data, t) => {
                 UserID: parseInt(userID),
                 OrganizationID: parseInt(organizationID),
                 CreatorName: "",
-                PollTitle: "",
                 PageNumber: 1,
                 Length: 50,
               };
@@ -1090,5 +1075,4 @@ export {
   viewVotesApi,
   setDeltePollModal,
   UpdatePollStatusByPollIdApi,
-  notifyPollingSocket,
 };

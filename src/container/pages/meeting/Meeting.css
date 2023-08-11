@@ -448,17 +448,6 @@ button.react-datepicker__navigation.react-datepicker__navigation--next {
   right: 8px;
 }
 
-button.react-datepicker__navigation.react-datepicker__navigation--prev {
-  border-top: 8px solid transparent !important;
-  border-left: 12px solid #6172d6 !important;
-  border-bottom: 8px solid transparent !important;
-  height: 10px !important;
-  width: 10px !important;
-  top: 10px;
-  left: auto;
-  right: 8px;
-}
-
 span.react-datepicker__navigation-icon.react-datepicker__navigation-icon--next {
   display: none;
 }

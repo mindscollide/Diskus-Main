@@ -5,7 +5,6 @@ import {
   Button,
   Checkbox,
   CustomRadio2,
-  TextField,
 } from "../../../../components/elements";
 import AlarmClock from "../../../../assets/images/AlarmOptions.svg";
 import styles from "./ViewPollProgress.module.css";
@@ -16,16 +15,19 @@ import { useTranslation } from "react-i18next";
 import {
   setviewpollProgressModal,
   viewVotesApi,
+  viewVotesDetailsModal,
 } from "../../../../store/actions/Polls_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import CustomRadio from "../../../../components/elements/radio/Radio";
 
 const ViewPollProgress = () => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { PollsReducer } = useSelector((state) => state);
+  console.log(PollsReducer, "PollsReducerPollsReducerPollsReducerPollsReducer");
   const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
     PollID: 0,
     PollTitle: "",
@@ -104,7 +106,7 @@ const ViewPollProgress = () => {
       });
     }
   }, [PollsReducer.Allpolls]);
-
+  console.log("CustomRadio2", pollsOption);
   const changeDateStartHandler2 = (date) => {
     let newDate = moment(date).format("DD MMMM YYYY");
 
@@ -189,57 +191,66 @@ const ViewPollProgress = () => {
                     </span>
                   </Col>
                 </Row>
-                <Row className="mt-2">
+                <Row>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className={`${styles["BOx_for_yes"]} d-flex`}
+                    className={styles["Box_For_Title_toShow"]}
                   >
                     <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12}>
-                        {viewProgressPollsDetails.PollTitle.length > 100 ? (
-                          // Add d-flex class and justify-content-center to center the text
-                          <div
-                            className={`${styles["scrollable-title"]} d-flex justify-content-center`}
-                          >
-                            {viewProgressPollsDetails.PollTitle}
-                          </div>
-                        ) : (
-                          // Add d-flex class and align-items-center to center the text
-                          <div
-                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}
-                          >
-                            {viewProgressPollsDetails.PollTitle}
-                          </div>
-                        )}
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex align-items-center"
+                      >
+                        <span className={styles["ViewTitleTOShowOnProgress"]}>
+                          {viewProgressPollsDetails.PollTitle}
+                        </span>
                       </Col>
                     </Row>
                   </Col>
                 </Row>
-                {pollsOption.length > 2 ? (
-                  // <Row className="mt-2">
-                  <Row className={styles["Scroller_View_Poll_Published"]}>
-                    <Col lg={12} ms={12} sm={12}>
+                {pollsOption.length > 4 ? (
+                  <Row className="mt-2">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className={styles["Scroller_View_Poll_Published"]}
+                    >
                       {pollsOption.length > 0
                         ? pollsOption.map((data, index) => {
                             return (
                               <>
-                                <Row key={index}>
-                                  <Col lg={12} md={12} sm={12}>
-                                    <span
-                                      className={styles["Yes_ViewProgress"]}
-                                    >
-                                      {data.answer}{" "}
-                                      <span>{"(" + data.totalVotes + ")"}</span>
-                                    </span>
+                                <Row>
+                                  <Col lg={1} md={1} sm={12}></Col>
+                                  <Col
+                                    lg={11}
+                                    md={11}
+                                    sm={12}
+                                    className="m-0 p-0 "
+                                  >
+                                    <Row className="mt-2">
+                                      <Col lg={12} md={12} sm={12}>
+                                        <span
+                                          className={styles["Yes_ViewProgress"]}
+                                        >
+                                          {data.answer}
+                                          <span>
+                                            {"(" + data.totalVotes + ")"}
+                                          </span>
+                                        </span>
+                                      </Col>
+                                    </Row>
                                   </Col>
                                 </Row>
                                 <Row>
                                   <Col
                                     lg={1}
                                     ms={1}
-                                    sm={1}
+                                    sm={12}
                                     className={
                                       styles["CheckBox_ViewProgressPolls"]
                                     }
@@ -268,7 +279,7 @@ const ViewPollProgress = () => {
                                   <Col
                                     lg={11}
                                     md={11}
-                                    sm={11}
+                                    sm={12}
                                     className={
                                       styles["Progress_bar_view_polls"]
                                     }
@@ -287,7 +298,6 @@ const ViewPollProgress = () => {
                     </Col>
                   </Row>
                 ) : (
-                  // </Row>
                   <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
                       {pollsOption.length > 0
@@ -322,7 +332,7 @@ const ViewPollProgress = () => {
                                   <Col
                                     lg={1}
                                     ms={1}
-                                    sm={1}
+                                    sm={12}
                                     className={
                                       styles["CheckBox_ViewProgressPolls"]
                                     }
@@ -349,9 +359,9 @@ const ViewPollProgress = () => {
                                     )}
                                   </Col>
                                   <Col
-                                    lg={10}
-                                    md={10}
-                                    sm={10}
+                                    lg={11}
+                                    md={11}
+                                    sm={12}
                                     className={
                                       styles["Progress_bar_view_polls"]
                                     }
@@ -370,6 +380,7 @@ const ViewPollProgress = () => {
                     </Col>
                   </Row>
                 )}
+
                 <Row>
                   <Col lg={1} md={1} sm={1}></Col>
                   <Col
@@ -404,13 +415,7 @@ const ViewPollProgress = () => {
                     <Row>
                       {viewpollMembers.map((data, index) => {
                         return (
-                          <Col
-                            key={index}
-                            lg={6}
-                            md={6}
-                            sm={12}
-                            className="mt-2"
-                          >
+                          <Col lg={6} md={6} sm={12} className="mt-2">
                             <Row>
                               <Col lg={11} md={11} sm={12} className="m-0 p-0">
                                 <Row className={styles["Card_border2"]}>

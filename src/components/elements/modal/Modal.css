@@ -1,21 +1,7 @@
 .modal-backdrop {
   background-color: transparent;
 }
-.d-block.modal-body {
-  max-height: 80vh;
-  overflow: auto;
-  display: block!important;
-}
-.d-block.modal-body::-webkit-scrollbar {
-  width: 0.5rem;
-  border-radius: 20px;
-  background-color: #f2f2f2;
-}
-.d-block.modal-body::-webkit-scrollbar-thumb {
-  border-radius: 20px;
-  background: #ccc;
-  margin-left: -15px;
-}
+
 /* .label {
   display: inline-block;
   margin-top: -19px;

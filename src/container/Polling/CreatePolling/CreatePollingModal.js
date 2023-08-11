@@ -10,8 +10,6 @@ import { DateObject } from "react-multi-date-picker";
 
 import styles from "./CreatePolling.module.css";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
-import WhiteCrossIcon from "../../../assets/images/PollCrossIcon.svg";
-
 import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import AlarmClock from "../../../assets/images/AlarmOptions.svg";
@@ -41,12 +39,8 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { registerLocale } from "react-datepicker";
 import moment from "moment";
-import {
-  multiDatePickerDateChangIntoUTC,
-  newDateFormaterAsPerUTC,
-} from "../../../commen/functions/date_formater";
+import { newDateFormaterAsPerUTC } from "../../../commen/functions/date_formater";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
-import { regexOnlyForNumberNCharacters } from "../../../commen/functions/regex";
 
 const CreatePolling = () => {
   const animatedComponents = makeAnimated();
@@ -55,8 +49,10 @@ const CreatePolling = () => {
   registerLocale("en", enGB);
   //For Custom language datepicker
   const { PollsReducer } = useSelector((state) => state);
+  console.log(PollsReducer, "PollsReducerPollsReducer");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const { t } = useTranslation();
@@ -69,13 +65,13 @@ const CreatePolling = () => {
     message: "",
   });
   const [selectedsearch, setSelectedsearch] = useState([]);
-  const [error, setError] = useState(false);
   const [createPollData, setcreatePollData] = useState({
     TypingTitle: "",
     InputSearch: "",
     date: "",
     AllowMultipleAnswers: true,
   });
+  const [assignees, setAssignees] = useState("");
   const [options, setOptions] = useState([
     {
       name: 1,
@@ -308,14 +304,13 @@ const CreatePolling = () => {
     }
   };
 
-  const changeDateStartHandler = (date) => {
-    console.log("changeDateStartHandler",date)
+  const changeDateStartHandler = (date, format = "YYYYMMDD") => {
     let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let DateDate = new Date(date);
+    let meetingDateSaveFormat = new DateObject(date).format("YYYYMMDD");
     setMeetingDate(meetingDateValueFormat);
     setcreatePollData({
       ...createPollData,
-      date: DateDate,
+      date: meetingDateSaveFormat,
     });
   };
 
@@ -323,99 +318,70 @@ const CreatePolling = () => {
     let newDate = moment(date).format("DD MMMM YYYY");
     return newDate;
   };
-  const checkOptions = (data) => {
-    if (data[0].value === "" || data[1].value === "") {
-      return false;
-    } else {
-      return true;
-    }
-  };
+
   // for create polls
   const SavePollsButtonFunc = async (value) => {
     const organizationid = localStorage.getItem("organizationID");
     const createrid = localStorage.getItem("userID");
     let users = [];
     let optionsListData = [];
-    const allValuesNotEmpty = options.every((item) => item.value !== "");
-    console.log("SavePollsButtonFunc",allValuesNotEmpty)
-    if (
-      createPollData.date != "" &&
-      createPollData.TypingTitle != "" &&
-      Object.keys(members).length > 0 &&
-      Object.keys(options).length >= 2 &&
-      allValuesNotEmpty
-    ) {
-      members.map((userdata, index) => {
-        users.push(userdata.userID);
-      });
-      options.map((optionData, index) => {
-        if (optionData.value != "") {
-          optionsListData.push(optionData.value);
+    if (Object.keys(options).length >= 2) {
+      if (Object.keys(members).length > 0) {
+        members.map((userdata, index) => {
+          users.push(userdata.userID);
+        });
+        options.map((optionData, index) => {
+          if (optionData.value != "") {
+            optionsListData.push(optionData.value);
+          } else if (index === 1) {
+            return setOpen({
+              flag: true,
+              message: t("Required-atleast-two-options"),
+            });
+          }
+        });
+        if (createPollData.date != "") {
+          let data = {
+            PollDetails: {
+              PollTitle: createPollData.TypingTitle,
+              DueDate: newDateFormaterAsPerUTC(createPollData.date),
+              AllowMultipleAnswers: createPollData.AllowMultipleAnswers,
+              CreatorID: parseInt(createrid),
+              PollStatusID: parseInt(value),
+              OrganizationID: parseInt(organizationid),
+            },
+            ParticipantIDs: users,
+            PollAnswers: optionsListData,
+          };
+
+          await dispatch(SavePollsApi(navigate, data, t));
+        } else {
+          // setopen notfication for date
+          setOpen({
+            flag: true,
+            message: t("Select-date"),
+          });
         }
-      });
-      let data = {
-        PollDetails: {
-          PollTitle: createPollData.TypingTitle,
-          DueDate: multiDatePickerDateChangIntoUTC(createPollData.date),
-          AllowMultipleAnswers: createPollData.AllowMultipleAnswers,
-          CreatorID: parseInt(createrid),
-          PollStatusID: parseInt(value),
-          OrganizationID: parseInt(organizationid),
-        },
-        ParticipantIDs: users,
-        PollAnswers: optionsListData,
-      };
-
-      await dispatch(SavePollsApi(navigate, data, t));
-    } else {
-      setError(true);
-
-      if (createPollData.TypingTitle === "") {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Title-is-required"),
-        });
-      } else if (createPollData.date === "") {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Select-date"),
-        });
-      } else if (Object.keys(members).length > 0) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Atleat-one-member-required"),
-        });
-      } else if (Object.keys(options).length >= 2) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Required-atleast-two-options"),
-        });
-      } else if (checkOptions(options)) {
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Please-fill-all-reqired-fields"),
-        });
       } else {
+        // setopen notfication for error no assigni assiened
         setOpen({
-          ...open,
           flag: true,
-          message: t("Please-fill-all-reqired-fields"),
+          message: t("No-assignee-assigned"),
         });
       }
+    } else {
+      // console.log("Hellothereiamcoming");
+      // setopen notfication for polls add atlese 2 option
     }
   };
 
   const HandleChange = (e, index) => {
     let name = e.target.name;
     let value = e.target.value;
+    console.log(name, value, index, "checkvalue");
     if (name === "TypingTitle") {
-      let valueCheck = regexOnlyForNumberNCharacters(value);
-      if (valueCheck !== "") {
+      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      if (value !== "") {
         setcreatePollData({
           ...createPollData,
           TypingTitle: valueCheck,
@@ -432,35 +398,21 @@ const CreatePolling = () => {
   const HandleOptionChange = (e) => {
     let name = parseInt(e.target.name);
     let newValue = e.target.value;
-    let valueCheck = regexOnlyForNumberNCharacters(newValue);
     setOptions((prevState) =>
       prevState.map((item) => {
-        return item.name === name ? { ...item, value: valueCheck } : item;
+        return item.name === name ? { ...item, value: newValue } : item;
       })
     );
   };
-  const allValuesNotEmpty = options.every((item) => item.value !== "");
 
   const addNewRow = () => {
     if (options.length > 1) {
-      if (allValuesNotEmpty) {
-        let lastIndex = options.length - 1;
-        if (options[lastIndex].value != "") {
-          const randomNumber = Math.floor(Math.random() * 100) + 1;
-          let newOptions = { name: randomNumber, value: "" };
-          setOptions([...options, newOptions]);
-        }
-      } else {
-        setOpen({
-          flag: true,
-          message: t("Please-fill-options"),
-        });
+      let lastIndex = options.length - 1;
+      if (options[lastIndex].value != "") {
+        const randomNumber = Math.floor(Math.random() * 100) + 1;
+        let newOptions = { name: randomNumber, value: "" };
+        setOptions([...options, newOptions]);
       }
-    } else {
-      setOpen({
-        flag: true,
-        message: t("Please-fill-options"),
-      });
     }
   };
 
@@ -471,6 +423,7 @@ const CreatePolling = () => {
   };
 
   const cancellAnyUser = (index) => {
+    console.log("indexindexindex", index);
     let removeData = [...members];
     removeData.splice(index, 1);
     setMembers(removeData);
@@ -497,8 +450,7 @@ const CreatePolling = () => {
           modalHeaderClassName={styles["ModalRequestHeader_polling"]}
           modalFooterClassName={"d-block"}
           onHide={() => {
-            setDefineUnsaveModal(true);
-            // dispatch(setCreatePollModal(false));
+            dispatch(setCreatePollModal(false));
           }}
           ModalTitle={
             <>
@@ -537,23 +489,14 @@ const CreatePolling = () => {
                             calendar={calendarValue}
                             locale={localValue}
                             onChange={(value) => changeDateStartHandler(value)}
+                            // onChange={(value) =>
+                            //   changeDateStartHandler(
+                            //     value?.toDate?.().toString()
+                            //   )
+                            // }
                           />
-                        
                         </Col>
                       </Row>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <p
-                        className={
-                          error && meetingDate === ""
-                            ? ` ${styles["errorMessage-inLogin_1"]} `
-                            : `${styles["errorMessage-inLogin_1_hidden"]}`
-                        }
-                      >
-                        {t("Please-select-due-date")}
-                      </p>
                     </Col>
                   </Row>
                 </>
@@ -583,7 +526,6 @@ const CreatePolling = () => {
                 </>
               ) : (
                 <>
-                 
                   <Row>
                     <Col
                       lg={12}
@@ -599,7 +541,7 @@ const CreatePolling = () => {
                         width="16px"
                         height="16px"
                         onClick={() => {
-                          setDefineUnsaveModal(true);
+                          dispatch(setCreatePollModal(false));
                         }}
                       />
                     </Col>
@@ -618,32 +560,6 @@ const CreatePolling = () => {
                           </span>
                         </Col>
                       </Row>
-                        <Row className="mt-2">
-                          <Col lg={12} md={12} sm={12}>
-                            <TextField
-                              placeholder={t("Tile")}
-                              applyClass={"PollingCreateModal"}
-                              labelClass="d-none"
-                              maxLength={500}
-                              name={"TypingTitle"}
-                              value={createPollData.TypingTitle}
-                              change={HandleChange}
-                            />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col>
-                            <p
-                              className={
-                                error && createPollData.TypingTitle === ""
-                                  ? ` ${styles["errorMessage-inLogin"]} `
-                                  : `${styles["errorMessage-inLogin_hidden"]}`
-                              }
-                            >
-                              {t("Please-enter-title")}
-                            </p>
-                          </Col>
-                      </Row>
                       <Row>
                         <Col
                           lg={12}
@@ -651,12 +567,25 @@ const CreatePolling = () => {
                           sm={12}
                           className={styles["Scroller_For_CreatePollModal"]}
                         >
+                          <Row className="mt-2">
+                            <Col lg={12} md={12} sm={12}>
+                              <TextField
+                                placeholder={t("Typing-tile")}
+                                applyClass={"PollingCreateModal"}
+                                labelClass="d-none"
+                                maxLength={500}
+                                name={"TypingTitle"}
+                                value={createPollData.TypingTitle}
+                                change={HandleChange}
+                              />
+                            </Col>
+                          </Row>
                           {options.length > 0
                             ? options.map((data, index) => {
                                 return (
                                   <>
                                     {index <= 1 ? (
-                                      <Row key={index} className="mt-2">
+                                      <Row className="mt-2">
                                         <Col lg={12} md={12} sm={12}>
                                           <span className="position-relative">
                                             <TextField
@@ -678,7 +607,7 @@ const CreatePolling = () => {
                                         </Col>
                                       </Row>
                                     ) : (
-                                      <Row key={index} className="mt-2">
+                                      <Row className="mt-2">
                                         <Col lg={12} md={12} sm={12}>
                                           <span className="position-relative">
                                             <TextField
@@ -691,13 +620,12 @@ const CreatePolling = () => {
                                               labelClass="d-none"
                                               name={data.name}
                                               value={data.value}
-                                              maxLength={500}
                                               change={(e) =>
                                                 HandleOptionChange(e)
                                               }
                                               inputicon={
                                                 <img
-                                                  src={WhiteCrossIcon}
+                                                  src={BlackCrossIcon}
                                                   width="31.76px"
                                                   height="31.76px"
                                                   onClick={() =>
@@ -752,19 +680,6 @@ const CreatePolling = () => {
                               />
                             </Col>
                           </Row>
-                          <Row>
-                          <Col>
-                            <p
-                              className={
-                                error && allValuesNotEmpty === false
-                                  ? ` ${styles["errorMessage-inLogin"]} `
-                                  : `${styles["errorMessage-inLogin_hidden"]}`
-                              }
-                            >
-                              {t("Options-must-be-more-than-2")}
-                            </p>
-                          </Col>
-                        </Row>
                         </Col>
                       </Row>
 
@@ -811,22 +726,8 @@ const CreatePolling = () => {
                             onClick={handleAddUsers}
                           />
                         </Col>
-                        <Row>
-                          <Col>
-                            <p
-                              className={
-                                error && members.length === 0
-                                  ? ` ${styles["errorMessage-inLogin"]} `
-                                  : `${styles["errorMessage-inLogin_hidden"]}`
-                              }
-                            >
-                              {t("Select-atleast-one-participants")}
-                            </p>
-                          </Col>
-                        </Row>
-                        <Col sm={12} md={12} lg={12} className={styles["Participant_heading"]}>{t("Participants")}</Col>
                       </Row>
-                      <Row className="mt-1">
+                      <Row className="mt-3">
                         <Col
                           lg={12}
                           md={12}
@@ -896,10 +797,6 @@ const CreatePolling = () => {
                       <Button
                         text={t("Yes")}
                         className={styles["Yes_Btn_polls_delModal"]}
-                        onClick={() => {
-                          dispatch(setCreatePollModal(false));
-                          setDefineUnsaveModal(false);
-                        }}
                       />
                     </Col>
                   </Row>

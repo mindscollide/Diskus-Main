@@ -20,8 +20,6 @@ const initialState = {
   Statuspolls: [],
   Allpolls: null,
   updatedPolls: null,
-  realtimePollsUpdate: null,
-  pollingSocket: null,
 };
 
 const PollsReducer = (state = initialState, action) => {
@@ -298,14 +296,6 @@ const PollsReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         ResponseMessage: action.message,
-      };
-    }
-
-    case actions.ALL_POLLINGS_SOCKET: {
-      console.log(action, "ALL_POLLINGS_SOCKET");
-      return {
-        ...state,
-        pollingSocket: action.response,
       };
     }
 
