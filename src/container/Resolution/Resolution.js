@@ -55,6 +55,7 @@ import { useNavigate } from "react-router-dom";
 import { XSquare } from 'react-bootstrap-icons'
 import SearchInputSuggestion from "../../components/elements/searchInputResolution/searchInputsuggestion";
 import numeral from "numeral";
+import ModalCancellResolution2 from "../ModalCancellResolution2/ModalCancellResolution";
 
 const Resolution = () => {
   const { t } = useTranslation();
@@ -66,6 +67,8 @@ const Resolution = () => {
   const [currentPageVoter, setCurrentPageVoter] = useState(1)
   const [totalVoterResolution, setTotalVoterResolution] = useState(0)
   const [newresolution, setNewresolution] = useState(false);
+  const [cancelResolutionModal, setCancelResolutionModal] = useState(false)
+  const [resolutionIDForCancel, setResolutionIDForCancel] = useState(0)
   let currentLanguage = localStorage.getItem("i18nextLng");
   moment.locale(currentLanguage)
   const [viewresolution, setViewresolution] = useState(false);
@@ -402,6 +405,11 @@ const Resolution = () => {
     );
   };
 
+  const OpenCancelModal = (id) => {
+    setResolutionIDForCancel(id)
+    setCancelResolutionModal(true)
+  }
+
   const changeSearchDateHandler = (e) => {
     let name = e.target.name;
     let value = e.target.value;
@@ -573,7 +581,7 @@ const Resolution = () => {
       render: (table, data) => {
         if (data.resolutionStatus === "Closed") {
         } else if (data.resolutionStatus === "Circulated") {
-          return <span className={styles["Edit_Icon_moderator"]}><XSquare className="cursor-pointer" width={22} height={22} onClick={() => dispatch(cancelResolutionApi(navigate, data.resolutionID, t, setEditResoutionPage))} /></span>
+          return <span className={styles["Edit_Icon_moderator"]}><XSquare className="cursor-pointer" width={22} height={22} onClick={() => OpenCancelModal(data.resolutionID)} /></span>
         } else {
           return (
             <img
@@ -1602,6 +1610,7 @@ const Resolution = () => {
           setResolutionupdated={setRresolutionmodalupdated}
         />
       ) : null}
+      <ModalCancellResolution2 cancelresolution={cancelResolutionModal} setCancelresolution={setCancelResolutionModal} setEditResoutionPage={setEditResoutionPage} Id={resolutionIDForCancel} />
       {ResolutionReducer.Loading ? <Loader /> : null}
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
