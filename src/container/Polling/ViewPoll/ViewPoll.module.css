@@ -40,12 +40,10 @@
 }
 
 .View_Title {
-  font-family: "MontserratMedium-500" !important;
-  /* width: 100%; */
-  display: flex;
-  /* padding: 3px 3px !important; */
-  align-items: center !important;
-  font-size: 12px !important;
+  font-size: 14px !important;
+  margin-top: 10px !important;
+  word-wrap: break-word !important;
+  white-space: pre-wrap !important;
 }
 
 .Multiple_viewModal {
@@ -135,7 +133,77 @@ body[dir="rtl"] .Card_border2 {
 }
 
 .BOx_for_yes {
-  border: 1px solid #e1e1e1;
-  height: 39px;
+  width: 100%;
+  height: auto !important;
+  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
+  padding-left: 10px;
+  margin: 0 0 10px 0;
+}
+
+.View_ellipses {
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  display: inline-block !important;
+  width: 100% !important;
+}
+.scrollable-title {
+  max-height: 100px;
+  min-height: 39px; /* Set the maximum height you desire for the title */
+  overflow: hidden;
+  overflow-y: auto; /* Enable vertical scrolling when text overflows */
+  
+}
+.scrollable-title::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+.scrollable-title::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+.OptionBodyMaxHeight{
+  margin-top: 14px;
+  max-height: 17vh; /* Set the maximum height you desire for the title */
+  overflow: hidden;
+  overflow-y: auto; /* Enable vertical scrolling when text overflows */
+  margin-right: 0 !important;
+}
+.OptionBodyMaxHeight::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+.OptionBodyMaxHeight::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.innerRowOFviewunpubmodalOptions{
+margin-top: 4px !important;
+width: 100% !important;
+}
+.scrollable-title2{
+  min-height: 39px!important;
+}
+.scroll-height {
+  height: 17vh !important;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  /* padding-right: 10px !important; */
+}
+.scroll-height::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+.scroll-height::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
 }
