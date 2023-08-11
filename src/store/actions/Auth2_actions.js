@@ -519,7 +519,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 'isFirstLogin',
                 response.data.responseResult.authToken.isFirstLogIn,
               )
-              localStorage.setItem('activeChatID', null)
+              localStorage.setItem('activeOtoChatID', 0)
             }
 
             if (

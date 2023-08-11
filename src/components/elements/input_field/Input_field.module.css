@@ -6,6 +6,10 @@
   height: 30px !important;
 }
 
+.form-control2::placeholder {
+  color: #E1E1E1 !important;
+}
+
 .updateNotes_titleInput {
   border-radius: 4px !important;
   /* border-color: #ccc !important; */
@@ -215,6 +219,14 @@
   width: 100% !important;
   border: 1px solid #e1e1e1 !important;
   position: relative;
+}
+
+.text-area-create-group::placeholder {
+  color: #E1E1E1 !important;
+}
+
+.createCommittee_searchMember::placeholder {
+  color: #E1E1E1 !important;
 }
 
 .AgendaTextField {

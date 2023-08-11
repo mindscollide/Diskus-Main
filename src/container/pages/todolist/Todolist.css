@@ -260,7 +260,6 @@ body[dir="rtl"] .todolist-heading-size {
 
 .react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle {
   left: 5px !important;
-  display: none !important;
 }
 
 button.btn.btn-primary.meeting.search.me-3.btn.btn-Primary svg {

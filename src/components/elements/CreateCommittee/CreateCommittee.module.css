@@ -274,3 +274,7 @@ body[dir="rtl"] .CheckAlignment {
 body[dir="rtl"] .Committee_error_coloumn {
   margin-left: 19.5% !important;
 }
+
+.create_committee_title::placeholder {
+  color: #E1E1E1 !important;
+}

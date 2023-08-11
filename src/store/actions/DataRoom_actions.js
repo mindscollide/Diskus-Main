@@ -368,7 +368,7 @@ const saveFolderApi = () => {
         } else {
         }
       })
-      .catch((error) => {})
+      .catch((error) => { })
   }
 }
 
@@ -522,7 +522,7 @@ const createFolderApi = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(createFolderApi(navigate, folder, t, setAddfolder))
+          dispatch(createFolderApi(navigate, folder, t, setAddfolder, type, setIsExistFolder))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -538,19 +538,16 @@ const createFolderApi = (
                   t('Folder-created-successfully'),
                 ),
               )
-              if (folderID !== null) {
+              setAddfolder(false)
+              setIsExistFolder(false)
+
+              if (folderID !== null && folderID !== undefined) {
                 dispatch(getFolderDocumentsApi(navigate, folderID, t))
               } else {
                 dispatch(getDocumentsAndFolderApi(navigate, 3, t))
               }
-              setAddfolder(false)
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  'DataRoom_DataRoomServiceManager_CreateFolder_02'.toLowerCase(),
-                )
-            ) {
+
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes('DataRoom_DataRoomServiceManager_CreateFolder_02'.toLowerCase())) {
               dispatch(createFolder_fail(t('Failed-to-create-folder')))
             } else if (
               response.data.responseResult.responseMessage
@@ -562,7 +559,6 @@ const createFolderApi = (
               dispatch(createFolder_fail(t('Something-went-wrong')))
             }
             setAddfolder(false)
-            setIsExistFolder(false)
           }
         } else {
           dispatch(createFolder_fail(t('Something-went-wrong')))
@@ -792,8 +788,9 @@ const shareFolders_fail = (message) => {
 }
 
 // Share Folders Api
-const shareFoldersApi = (navigate, FolderData, t) => {
+const shareFoldersApi = (navigate, FolderData, t, setShowrequestsend) => {
   let token = JSON.parse(localStorage.getItem('token'))
+  let folderID = JSON.parse(localStorage.getItem('folderID'))
   return (dispatch) => {
     dispatch(shareFolders_init())
     let form = new FormData()
@@ -810,7 +807,7 @@ const shareFoldersApi = (navigate, FolderData, t) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(shareFoldersApi(navigate, FolderData, t))
+          dispatch(shareFoldersApi(navigate, FolderData, t, setShowrequestsend))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -826,6 +823,12 @@ const shareFoldersApi = (navigate, FolderData, t) => {
                   t('Folder-share-successfully'),
                 ),
               )
+              setShowrequestsend(false)
+              if (folderID !== null && folderID !== undefined) {
+                dispatch(getFolderDocumentsApi(navigate, folderID, t))
+              } else {
+                dispatch(getDocumentsAndFolderApi(navigate, 3, t))
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1118,6 +1121,7 @@ const FolderisExist = (
   FolderName,
   t,
   setAddfolder,
+  Type,
   setIsExistFolder,
 ) => {
   let token = JSON.parse(localStorage.getItem('token'))
@@ -1144,7 +1148,7 @@ const FolderisExist = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(FolderisExist(navigate, FolderName, t, setAddfolder))
+          dispatch(FolderisExist(navigate, FolderName, t, setAddfolder, Type, setIsExistFolder))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -1173,10 +1177,10 @@ const FolderisExist = (
                   'DataRoom_DataRoomServiceManager_FolderExist_03'.toLowerCase(),
                 )
             ) {
-              await dispatch(
-                FolderisExist_fail(t('No-folder-exist-against-this-name')),
-              )
-              dispatch(createFolderApi(navigate, FolderName, t, setAddfolder))
+              // await dispatch(
+              //   FolderisExist_fail(t('No-folder-exist-against-this-name')),
+              // )
+              dispatch(createFolderApi(navigate, FolderName, t, setAddfolder, Type, setIsExistFolder))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

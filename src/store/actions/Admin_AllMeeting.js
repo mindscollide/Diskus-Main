@@ -223,7 +223,7 @@ const updateOrganizationMeeting = (navigate, MeetingID, MeetingStatusID, t) => {
               )
           ) {
             dispatch(
-              updateOrganizationMeetingFail(t("Failed-to-update-meeting"))
+              updateOrganizationMeetingFail(t("Failed-to-update-meetingr"))
             );
           } else if (
             response.data.responseResult.responseMessage

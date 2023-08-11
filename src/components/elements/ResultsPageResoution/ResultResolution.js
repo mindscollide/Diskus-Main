@@ -18,13 +18,13 @@ import { closeResolutionApi } from "../../../store/actions/Resolution_actions";
 import { resolutionResultTable } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
 import SeceretBallotingIcon from '../../../assets/images/resolutions/Secret_Balloting_icon.svg'
-import { ArrowLeft } from "react-bootstrap-icons";
 
 const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const { ResolutionReducer } = useSelector((state) => state);
+  let ButtonTab = JSON.parse(localStorage.getItem("ButtonTab"))
   const [resolutionTitle, setResolutionTitle] = useState("");
   const [approved, setApproved] = useState(0);
   const [resolutionID, setResolutionID] = useState(0);
@@ -36,7 +36,6 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const [notes, setNotes] = useState("");
   const [totalVoters, setTotalVoters] = useState(0);
   const [decisionDateExpiry, setDesicionDateExpiry] = useState(false);
-  console.log(decisionDateExpiry, "decisionDateExpirydecisionDateExpiry")
   const [voter, setVoter] = useState([]);
   const [decision, setDecision] = useState("");
   const options = {
@@ -121,7 +120,6 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
         let DecisionDateExpiry = resolutionResultTable(
           resolutionresult.decisionAnnouncementDateTime
         );
-        console.log(DecisionDateExpiry, newDate, "newDatenewDatenewDatenewDatenewDate")
         if (DecisionDateExpiry < newDate) {
           setDesicionDateExpiry(true);
         } else {
@@ -340,18 +338,19 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                     className="d-flex justify-content-end gap-2 mt-4"
                   >
                     <Button
-                      text={<ArrowLeft color="#fff" size={30} />}
+                      text={t("Close")}
                       className={styles["Close_Btn_Resultresolution"]}
                       onClick={() => setResultresolution(false)}
                     />
-                    <Button
+                    {ButtonTab !== 2 && <Button
                       text={t("Close-resolution")}
                       className={
                         styles["Close_resolution_Btn_Resultresolution"]
                       }
-                      disableBtn={!decisionDateExpiry ? true : false}
+                      disableBtn={decisionDateExpiry ? true : false}
                       onClick={closeResolutionHandleClick}
-                    />
+                    />}
+
                   </Col>
                 </Row>
               </Col>

@@ -377,11 +377,9 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
   const checkGroupMembers = (GroupMembers) => {
     console.log("checkGroupMembers", GroupMembers);
     if (Object.keys(GroupMembers).length > 0) {
-      let flag1 = GroupMembers.find((data, index) => data.FK_CMMRID === 1);
       let flag2 = GroupMembers.find((data, index) => data.FK_CMMRID === 2);
-      console.log("checkGroupMembers", flag1, flag2);
 
-      if (flag1 != undefined && flag2 != undefined) {
+      if (flag2 != undefined) {
         return true;
       } else {
         return false;
@@ -398,40 +396,33 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
       committeeData.committeeType !== 0 &&
       committeeData.CreatorID !== 0
     ) {
-      if (Object.keys(membersData).length === 0) {
+      if (!checkGroupMembers(membersData)) {
+        console.log("checkGroupMembers", checkGroupMembers(membersData));
         setOpen({
           flag: true,
-          message: t("Please-add-atleast-one-group-head-and-one-group-member"),
+          message: t(
+            "Please-add-atleast-one-executive-member"
+          ),
         });
       } else {
-        if (!checkGroupMembers(membersData)) {
-          console.log("checkGroupMembers", checkGroupMembers(membersData));
-          setOpen({
-            flag: true,
-            message: t(
-              "Please-add-atleast-one-group-head-and-one-group-member"
-            ),
-          });
-        } else {
-          setErrorBar(false);
-          let OrganizationID = JSON.parse(
-            localStorage.getItem("organizationID")
-          );
-          let Data = {
-            CommitteeDetails: {
-              CreatorID: committeeData.CreatorID,
-              PK_CMID: committeeData.committeeID,
-              CommitteesTitle: committeeData.committeeTitle,
-              FK_CMSID: committeeData.committeeStatus,
-              FK_CMTID: committeeData.committeeType,
-              CommitteesDescription: committeeData.committeeDescription,
-              ISTalkChatGroup: committeeData.isTalkGroup,
-              OrganizationID: OrganizationID,
-            },
-            CommitteeMembers: membersData,
-          };
-          dispatch(updateCommittee(navigate, Data, t, setUpdateComponentpage));
-        }
+        setErrorBar(false);
+        let OrganizationID = JSON.parse(
+          localStorage.getItem("organizationID")
+        );
+        let Data = {
+          CommitteeDetails: {
+            CreatorID: committeeData.CreatorID,
+            PK_CMID: committeeData.committeeID,
+            CommitteesTitle: committeeData.committeeTitle,
+            FK_CMSID: committeeData.committeeStatus,
+            FK_CMTID: committeeData.committeeType,
+            CommitteesDescription: committeeData.committeeDescription,
+            ISTalkChatGroup: committeeData.isTalkGroup,
+            OrganizationID: OrganizationID,
+          },
+          CommitteeMembers: membersData,
+        };
+        dispatch(updateCommittee(navigate, Data, t, setUpdateComponentpage));
       }
     } else {
       setErrorBar(true);
@@ -467,26 +458,15 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
         CommitteeReducer.getCommitteeByCommitteeID !== undefined
       ) {
         let committeedetails = CommitteeReducer.getCommitteeByCommitteeID;
-        console.log("taskAssignedTo23", committeedetails);
-
         let newArr = [];
         let newData = [];
         let committeeID = 0;
         if (committeedetails.committeMembers.length > 0) {
           committeedetails.committeMembers.map((memberData, index) => {
             committeeID = memberData.committeeID;
-            console.log("taskAssignedTo23", meetingAttendeesList);
             if (meetingAttendeesList.length > 0) {
-              console.log("taskAssignedTo23", meetingAttendeesList);
-
               meetingAttendeesList.map((data, index) => {
-                console.log("taskAssignedTo23", data);
-
                 if (data.pK_UID === memberData.pK_UID) {
-                  console.log(
-                    "taskAssignedTo233",
-                    data.pK_UID === memberData.pK_UID
-                  );
                   newArr.push({
                     FK_UID: memberData.pK_UID,
                     FK_CMMRID: memberData.committeeRole.committeeRoleID,
@@ -496,19 +476,13 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                     data,
                     role: memberData.committeeRole.committeeRoleID,
                   });
-                  console.log("taskAssignedTo233", newData);
                 }
               });
             }
           });
         }
-
         setMembersData(newArr);
-        console.log("taskAssignedTo233", newData);
-
         setGroupMembers(newData);
-        console.log("committeedetailscommitteedetails", committeedetails);
-
         setCommitteeData({
           ...committeeData,
           CreatorID: committeedetails.creatorID,
@@ -610,7 +584,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             required={true}
                             change={InputFielsChangeHandler}
                             value={committeeData.committeeDescription}
-                            // className={styles["Height-of-textarea"]
+                          // className={styles["Height-of-textarea"]
                           />
                         </Col>
                       </Row>
@@ -619,7 +593,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           <p
                             className={
                               erorbar &&
-                              committeeData.committeeDescription === ""
+                                committeeData.committeeDescription === ""
                                 ? styles["errorMessage"]
                                 : styles["errorMessage_hidden"]
                             }
@@ -646,6 +620,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               <Checkbox
                                 className="SearchCheckbox MontserratSemiBold-600"
                                 name="IsChat"
+                                disabled={CommitteeReducer?.getCommitteeByCommitteeID?.isTalkChatGroup ? true : false}
                                 label2={t("Create-talk-group")}
                                 label2Class={styles["Label_Of_CheckBox"]}
                                 checked={committeeData.isTalkGroup}
@@ -675,7 +650,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             <p
                               className={
                                 erorbar &&
-                                committeeData.committeeTypeValue === ""
+                                  committeeData.committeeTypeValue === ""
                                   ? styles["errorMessage"]
                                   : styles["errorMessage_hidden"]
                               }
@@ -693,6 +668,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                           sm={12}
                           className={styles["scroll-bar-Update-Committee"]}
                         >
+                          {/* Group Heads */}
                           <Row className="mt-1">
                             <Col lg={12} md={12} sm={12}>
                               <span
@@ -705,7 +681,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             </Col>
                           </Row>
 
-                          {/* Group Heads */}
+
                           <Row className="mt-2">
                             {groupMembers.length > 0 ? (
                               groupMembers.map((data, index) => {
@@ -736,7 +712,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "name-Update-Committee"
+                                                      "name-Update-Committee"
                                                       ]
                                                     }
                                                   >
@@ -749,7 +725,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "Designation-Update-Committee"
+                                                      "Designation-Update-Committee"
                                                       ]
                                                     }
                                                   >
@@ -762,7 +738,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "email-Update-Committee"
+                                                      "email-Update-Committee"
                                                       ]
                                                     }
                                                   >
@@ -775,32 +751,31 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                             </Col>
                                           </Row>
                                         </Col>
-                                        {data.data.pK_UID !=
-                                        committeeData.CreatorID ? (
-                                          <Col
-                                            lg={2}
-                                            md={2}
-                                            sm={12}
-                                            className="mt-0  d-flex justify-content-center"
-                                          >
-                                            {console.log(
-                                              "datadatadatadatadata",
-                                              data,
-                                              data.data.pK_UID,
-                                              committeeData.CreatorID
-                                            )}
-                                            <img
-                                              src={CrossIcon}
-                                              className="cursor-pointer"
-                                              width={18}
-                                              onClick={() =>
-                                                removeMemberHandler(
-                                                  data.data.pK_UID
-                                                )
-                                              }
-                                            />
-                                          </Col>
-                                        ) : null}
+
+                                        <Col
+                                          lg={2}
+                                          md={2}
+                                          sm={12}
+                                          className="mt-0  d-flex justify-content-center"
+                                        >
+                                          {console.log(
+                                            "datadatadatadatadata",
+                                            data,
+                                            data.data.pK_UID,
+                                            committeeData.CreatorID
+                                          )}
+                                          <img
+                                            src={CrossIcon}
+                                            className="cursor-pointer"
+                                            width={18}
+                                            onClick={() =>
+                                              removeMemberHandler(
+                                                data.data.pK_UID
+                                              )
+                                            }
+                                          />
+                                        </Col>
+
                                       </Row>
                                     </Col>
                                   );
@@ -818,6 +793,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                               </Col>
                             )}
                           </Row>
+
                           <Row className="mt-3">
                             <Col lg={12} md={12} sm={12}>
                               <span
@@ -859,7 +835,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "name-Update-Committee"
+                                                      "name-Update-Committee"
                                                       ]
                                                     }
                                                   >
@@ -872,7 +848,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "Designation-Update-Committee"
+                                                      "Designation-Update-Committee"
                                                       ]
                                                     }
                                                   >
@@ -885,7 +861,7 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                                   <span
                                                     className={
                                                       styles[
-                                                        "email-Update-Committee"
+                                                      "email-Update-Committee"
                                                       ]
                                                     }
                                                   >
@@ -919,6 +895,376 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                                     </Col>
                                   );
                                 } else {
+                                }
+                              })
+                            ) : (
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={styles["no-member"]}
+                              >
+                                {t("No-member-selected")}
+                              </Col>
+                            )}
+                          </Row>
+                          {/* Chair person members */}
+                          <Row className="mt-3">
+                            <Col lg={12} md={12} sm={12}>
+                              <span
+                                className={
+                                  styles["Update-Committee-Head-Heading"]
+                                }
+                              >
+                                {t("Chair-person-members")}
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row className="mt-2">
+                            {groupMembers.length > 0 ? (
+                              groupMembers.map((data, index) => {
+                                if (data.role === 3) {
+                                  return (
+                                    <Col lg={4} md={4} sm={12}>
+                                      <Row>
+                                        <Col lg={3} md={3} sm={12}>
+                                          <img src={Newprofile} width={50} />
+                                        </Col>
+                                        <Col
+                                          lg={7}
+                                          md={7}
+                                          sm={12}
+                                          className={
+                                            styles["Executive-Member-info"]
+                                          }
+                                        >
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="mt-1"
+                                            >
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles[
+                                                      "name-Update-Committee"
+                                                      ]
+                                                    }
+                                                  >
+                                                    {data.data.name}
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles[
+                                                      "Designation-Update-Committee"
+                                                      ]
+                                                    }
+                                                  >
+                                                    {data.data.designation}
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles[
+                                                      "email-Update-Committee"
+                                                      ]
+                                                    }
+                                                  >
+                                                    <a>
+                                                      {data.data.emailAddress}
+                                                    </a>
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                            </Col>
+                                          </Row>
+                                        </Col>
+
+                                        <Col
+                                          lg={2}
+                                          md={2}
+                                          sm={12}
+                                          className="mt-0  d-flex justify-content-center"
+                                        >
+                                          {console.log(
+                                            "datadatadatadatadata",
+                                            data,
+                                            data.data.pK_UID,
+                                            committeeData.CreatorID
+                                          )}
+                                          <img
+                                            src={CrossIcon}
+                                            className="cursor-pointer"
+                                            width={18}
+                                            onClick={() =>
+                                              removeMemberHandler(
+                                                data.data.pK_UID
+                                              )
+                                            }
+                                          />
+                                        </Col>
+
+                                      </Row>
+                                    </Col>
+                                  );
+                                } else {
+                                }
+                              })
+                            ) : (
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={styles["no-member"]}
+                              >
+                                {t("No-member-selected")}
+                              </Col>
+                            )}
+                          </Row>
+                          {/* Vice Chair Person members */}
+                          <Row className="mt-3">
+                            <Col lg={12} md={12} sm={12}>
+                              <span
+                                className={
+                                  styles["Update-Committee-Head-Heading"]
+                                }
+                              >
+                                {t("Vice-chair-person-members")}
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row className="mt-2">
+                            {groupMembers.length > 0 ? (
+                              groupMembers.map((data, index) => {
+                                if (data.role === 4) {
+                                  return (
+                                    <Col lg={4} md={4} sm={12}>
+                                      <Row>
+                                        <Col lg={3} md={3} sm={12}>
+                                          <img src={Newprofile} width={50} />
+                                        </Col>
+                                        <Col
+                                          lg={7}
+                                          md={7}
+                                          sm={12}
+                                          className={
+                                            styles["Executive-Member-info"]
+                                          }
+                                        >
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="mt-1"
+                                            >
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles[
+                                                      "name-Update-Committee"
+                                                      ]
+                                                    }
+                                                  >
+                                                    {data.data.name}
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles[
+                                                      "Designation-Update-Committee"
+                                                      ]
+                                                    }
+                                                  >
+                                                    {data.data.designation}
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles[
+                                                      "email-Update-Committee"
+                                                      ]
+                                                    }
+                                                  >
+                                                    <a>
+                                                      {data.data.emailAddress}
+                                                    </a>
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                            </Col>
+                                          </Row>
+                                        </Col>
+
+                                        <Col
+                                          lg={2}
+                                          md={2}
+                                          sm={12}
+                                          className="mt-0  d-flex justify-content-center"
+                                        >
+                                          {console.log(
+                                            "datadatadatadatadata",
+                                            data,
+                                            data.data.pK_UID,
+                                            committeeData.CreatorID
+                                          )}
+                                          <img
+                                            src={CrossIcon}
+                                            className="cursor-pointer"
+                                            width={18}
+                                            onClick={() =>
+                                              removeMemberHandler(
+                                                data.data.pK_UID
+                                              )
+                                            }
+                                          />
+                                        </Col>
+
+                                      </Row>
+                                    </Col>
+                                  );
+                                } else {
+                                }
+                              })
+                            ) : (
+                              <Col
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                className={styles["no-member"]}
+                              >
+                                {t("No-member-selected")}
+                              </Col>
+                            )}
+                          </Row>
+                          {/* Secretary */}
+                          <Row className="mt-3">
+                            <Col lg={12} md={12} sm={12}>
+                              <span
+                                className={
+                                  styles["Update-Committee-Head-Heading"]
+                                }
+                              >
+                                {t("Secretary")}
+                              </span>
+                            </Col>
+                          </Row>
+                          <Row className="mt-2">
+                            {groupMembers.length > 0 ? (
+                              groupMembers.map((data, index) => {
+                                if (data.role === 5) {
+                                  return (
+                                    <Col lg={4} md={4} sm={12}>
+                                      <Row>
+                                        <Col lg={3} md={3} sm={12}>
+                                          <img src={Newprofile} width={50} />
+                                        </Col>
+                                        <Col
+                                          lg={7}
+                                          md={7}
+                                          sm={12}
+                                          className={
+                                            styles["Executive-Member-info"]
+                                          }
+                                        >
+                                          <Row>
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="mt-1"
+                                            >
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles[
+                                                      "name-Update-Committee"
+                                                      ]
+                                                    }
+                                                  >
+                                                    {data.data.name}
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles[
+                                                      "Designation-Update-Committee"
+                                                      ]
+                                                    }
+                                                  >
+                                                    {data.data.designation}
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles[
+                                                      "email-Update-Committee"
+                                                      ]
+                                                    }
+                                                  >
+                                                    <a>
+                                                      {data.data.emailAddress}
+                                                    </a>
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                            </Col>
+                                          </Row>
+                                        </Col>
+
+                                        <Col
+                                          lg={2}
+                                          md={2}
+                                          sm={12}
+                                          className="mt-0  d-flex justify-content-center"
+                                        >
+                                          {console.log(
+                                            "datadatadatadatadata",
+                                            data,
+                                            data.data.pK_UID,
+                                            committeeData.CreatorID
+                                          )}
+                                          <img
+                                            src={CrossIcon}
+                                            className="cursor-pointer"
+                                            width={18}
+                                            onClick={() =>
+                                              removeMemberHandler(
+                                                data.data.pK_UID
+                                              )
+                                            }
+                                          />
+                                        </Col>
+
+                                      </Row>
+                                    </Col>
+                                  );
+                                } else {
+
                                 }
                               })
                             ) : (
@@ -1009,103 +1355,103 @@ const UpdateCommittee = ({ setUpdateComponentpage }) => {
                             >
                               {meetingAttendeesList.length > 0
                                 ? meetingAttendeesList.map((data, index) => {
-                                    console.log(
-                                      "meetingAttendeesListmeetingAttendeesList",
-                                      data
-                                    );
-                                    return (
-                                      <Row className="mt-4">
-                                        <Col lg={12} md={12} sm={12}>
-                                          <Row className="d-flex gap-2">
-                                            <Col lg={2} md={2} sm={12}>
-                                              <img
-                                                src={Newprofile}
-                                                width={50}
-                                              />
-                                            </Col>
+                                  console.log(
+                                    "meetingAttendeesListmeetingAttendeesList",
+                                    data
+                                  );
+                                  return (
+                                    <Row className="mt-4">
+                                      <Col lg={12} md={12} sm={12}>
+                                        <Row className="d-flex gap-2">
+                                          <Col lg={2} md={2} sm={12}>
+                                            <img
+                                              src={Newprofile}
+                                              width={50}
+                                            />
+                                          </Col>
 
-                                            <Col
-                                              lg={7}
-                                              md={7}
-                                              sm={12}
-                                              className={
-                                                styles[
-                                                  "Update-Committee-head-info-Add-Members"
-                                                ]
+                                          <Col
+                                            lg={7}
+                                            md={7}
+                                            sm={12}
+                                            className={
+                                              styles[
+                                              "Update-Committee-head-info-Add-Members"
+                                              ]
+                                            }
+                                          >
+                                            <Row className="mt-1">
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                    "name-Update-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  {data?.name}
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                            <Row>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                    "Designation-Update-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  {data?.designation}
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                            <Row>
+                                              <Col lg={12} md={12} sm={12}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                    "email-Update-Committee"
+                                                    ]
+                                                  }
+                                                >
+                                                  <a>{data.emailAddress}</a>
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                          </Col>
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={12}
+                                            className="mt-2 "
+                                          >
+                                            <Checkbox
+                                              checked={
+                                                attendees.includes(
+                                                  data.pK_UID
+                                                )
+                                                  ? true
+                                                  : false
                                               }
-                                            >
-                                              <Row className="mt-1">
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "name-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data?.name}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "Designation-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    {data?.designation}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row>
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles[
-                                                        "email-Update-Committee"
-                                                      ]
-                                                    }
-                                                  >
-                                                    <a>{data.emailAddress}</a>
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </Col>
-                                            <Col
-                                              lg={2}
-                                              md={2}
-                                              sm={12}
-                                              className="mt-2 "
-                                            >
-                                              <Checkbox
-                                                checked={
-                                                  attendees.includes(
-                                                    data.pK_UID
-                                                  )
-                                                    ? true
-                                                    : false
-                                                }
-                                                classNameDiv=""
-                                                onChange={() =>
-                                                  checkAttendeeBox(
-                                                    data,
-                                                    data.pK_UID,
-                                                    index
-                                                  )
-                                                }
-                                                className={
-                                                  styles["RememberEmail"]
-                                                }
-                                              />
-                                            </Col>
-                                          </Row>
-                                        </Col>
-                                      </Row>
-                                    );
-                                  })
+                                              classNameDiv=""
+                                              onChange={() =>
+                                                checkAttendeeBox(
+                                                  data,
+                                                  data.pK_UID,
+                                                  index
+                                                )
+                                              }
+                                              className={
+                                                styles["RememberEmail"]
+                                              }
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </Col>
+                                    </Row>
+                                  );
+                                })
                                 : null}
                             </Col>
                           </Row>

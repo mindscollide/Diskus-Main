@@ -160,46 +160,53 @@ const Polling = () => {
   }, [currentLanguage]);
 
   useEffect(() => {
-    if (
-      PollsReducer.pollingSocket !== null &&
-      Object.keys(PollsReducer.pollingSocket).length > 0
-    ) {
-      let pollData = PollsReducer.pollingSocket;
-      console.log("Mqtt", pollData);
-      let rowCopy = [...rows];
-      let findIndex = rowCopy.findIndex(
-        (rowData, index) => rowData?.pollID === pollData?.pollID
-      );
-      if (findIndex !== -1) {
-        console.log("Mqtt");
-        const newState = rowCopy.map((obj, index) => {
-          // 👇️ if id equals 2 replace object
-          if (
-            findIndex === index &&
-            Number(pollData.pollStatus.pollStatusId) === 4
-          ) {
+    try{
+      if (
+        PollsReducer.pollingSocket !== null &&
+        PollsReducer.pollingSocket !== undefined
+      ) {
+        if (Object.keys(PollsReducer.pollingSocket).length > 0) {
+          let pollData = PollsReducer.pollingSocket;
+          console.log("Mqtt", pollData);
+          let rowCopy = [...rows];
+          let findIndex = rowCopy.findIndex(
+            (rowData, index) => rowData?.pollID === pollData?.pollID
+          );
+          if (findIndex !== -1) {
             console.log("Mqtt");
-            rowCopy.splice(findIndex, 1);
-            // return rowCopy;
-          } else if (
-            findIndex === index &&
-            Number(pollData.pollStatus.pollStatusId) === 3
-          ) {
-            console.log("Mqtt");
-            rowCopy[index] = pollData;
-            // return rowCopy;
+            const newState = rowCopy.map((obj, index) => {
+              // 👇️ if id equals 2 replace object
+              if (
+                findIndex === index &&
+                Number(pollData.pollStatus.pollStatusId) === 4
+              ) {
+                console.log("Mqtt");
+                rowCopy.splice(findIndex, 1);
+                // return rowCopy;
+              } else if (
+                findIndex === index &&
+                Number(pollData.pollStatus.pollStatusId) === 3
+              ) {
+                console.log("Mqtt");
+                rowCopy[index] = pollData;
+                // return rowCopy;
+              } else {
+                console.log("Mqtt");
+                // return obj;
+              }
+            });
+            setRows(rowCopy);
           } else {
-            console.log("Mqtt");
-            // return obj;
+            setRows([pollData, ...rowCopy]);
           }
-        });
-        setRows(rowCopy);
-      } else {
-        setRows([pollData, ...rowCopy]);
+        }
       }
+    }catch(error){
+      console.log(error)
     }
+    
   }, [PollsReducer.pollingSocket]);
-  console.log("rowsrowsrowsrows",rows)
+  console.log("rowsrowsrowsrows", rows);
   const handleEditpollModal = (record) => {
     let check = 0;
 

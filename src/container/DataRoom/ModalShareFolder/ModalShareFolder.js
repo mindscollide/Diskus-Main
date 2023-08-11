@@ -224,7 +224,7 @@ const ModalShareFolder = ({
     console.log("hnbhaiclicktuhorahahy");
     if (folderData.Folders.length > 0) {
       setShowrequestsend(true);
-      dispatch(shareFoldersApi(navigate, folderData, t));
+      dispatch(shareFoldersApi(navigate, folderData, t, setShowrequestsend));
     }
   };
   const openAccessRequestModalClick = () => {

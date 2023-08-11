@@ -9,7 +9,6 @@
   height: auto !important;
   padding: 50px 50px !important;
   position: relative !important;
-  margin-bottom: 20px;
 }
 
 .Details_ViewResolution {
@@ -28,7 +27,7 @@ body[dir="rtl"] .Details_ViewResolution {
   color: #6172d6 !important;
   word-break: break-word;
   max-height: 95px;
-  /* height: 95px; */
+  height: 95px;
   display: block;
   overflow-y: auto;
 }
@@ -56,23 +55,6 @@ body[dir="rtl"] .Heading_Authorize_Viewresolution {
 .Paragraph {
   font-size: 12px !important;
   color: #5a5a5a;
-  word-wrap: break-word;
-  max-height: 120px;
-  overflow-y: auto;
-  font-size: 12px !important;
-  font-family: "MontserratSemiBold";
-}
-
-.Paragraph::-webkit-scrollbar {
-  width: 0.5rem;
-  border-radius: 20px;
-  background-color: #f2f2f2;
-}
-
-.Paragraph::-webkit-scrollbar-thumb {
-  border-radius: 20px;
-  background: #ccc;
-  margin-left: -15px;
 }
 
 body[dir="rtl"] .Paragraph {
@@ -274,14 +256,16 @@ body[dir="rtl"] .Backward_button_viewresolution {
 .CloseButton_ViewResolution {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: #6172d6 !important;
+  background: #fff !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
   margin-top: 20px !important;
 }
 
-
+body[dir="rtl"] .CloseButton_ViewResolution {
+  font-family: "IBMPlexSansArabic-Regular" !important;
+}
 
 .CloseButton_ViewResolution:hover,
 .CloseButton_ViewResolution:active,
@@ -289,11 +273,10 @@ body[dir="rtl"] .Backward_button_viewresolution {
 .CloseButton_ViewResolution:focus-visible {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: #6172d6 !important;
+  background: #fff !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
-  margin-top: 20px !important;
 }
 
 .View_resolution_tag_box {

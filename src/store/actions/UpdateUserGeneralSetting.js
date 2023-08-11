@@ -657,11 +657,6 @@ const revokeToken = (navigate, userOptionsSettings, t) => {
                   "Calender_CalenderServiceManager_RevokeToken_01".toLowerCase()
                 )
             ) {
-              console.log(
-                "organizationStatesorganizationStates1212",
-                userOptionsSettings
-              );
-
               dispatch(revokeTokenSuccess(t("Successful")));
               console.log(
                 "organizationStatesorganizationStates1212",

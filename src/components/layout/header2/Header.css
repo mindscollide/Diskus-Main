@@ -3,7 +3,7 @@
   z-index: 2;
   display: flex;
   align-items: center;
-  height: 65px !important;
+  height: 70px;
   /* padding-left: 55px; */
   /* padding-right: 25px; */
 }
@@ -178,7 +178,7 @@ button.dropdown-toggle.dropdown-toggle.btn.btn-primary:has(p.user-name) {
 }
 
 .dropdown-item {
-  white-space: normal !important;
+  white-space: nowrap !important;
   font-size: 0.8rem;
   /* margin  : 0 0 0 0; */
 }

@@ -3,6 +3,7 @@ import gregorian from "react-date-object/calendars/gregorian";
 import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
+import moment from "moment";
 import { DateObject } from "react-multi-date-picker";
 import "./ModalToDoList.css";
 import FileIcon, { defaultStyles } from "react-file-icon";
@@ -12,19 +13,29 @@ import {
   Button,
   Modal,
   TimePickers,
+  CustomDatePicker,
   Notification,
   InputSearchFilter,
+  Loader,
   MultiDatePicker,
 } from "./../../components/elements";
 import userImage from "../../assets/images/user.png";
-import { createConvert } from "./../../commen/functions/date_formater";
+import {
+  RemoveTimeDashes,
+  TimeSendingFormat,
+  DateSendingFormat,
+  createConvert,
+} from "./../../commen/functions/date_formater";
 import CustomUpload from "./../../components/elements/upload/Upload";
 import { Row, Col, Container } from "react-bootstrap";
 import {
   GetAllAssigneesToDoList,
   CreateToDoList,
+  GetTodoListByUser,
+  HideNotificationTodo,
 } from "./../../store/actions/ToDoList_action";
 import { useDispatch, useSelector } from "react-redux";
+import TodoList from "../pages/todolist/Todolist";
 import { FileUploadToDo } from "../../store/actions/Upload_action";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
@@ -32,10 +43,9 @@ import { useNavigate } from "react-router-dom";
 const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization
   const { t } = useTranslation();
-  const datePickerRef = useRef(null);
   const [fileSize, setFileSize] = useState(0);
-  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
-  const [isCreateTodo, setIsCreateTodo] = useState(true);
+  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false)
+  const [isCreateTodo, setIsCreateTodo] = useState(true)
   const [fileForSend, setFileForSend] = useState([]);
   const [createTodoTime, setCreateTodoTime] = useState("");
   const [createTodoDate, setCreateTodoDate] = useState("");
@@ -57,24 +67,14 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     message: "",
   });
 
-  const [toDoDate, setToDoDate] = useState(null);
-  console.log(isCreateTodo, "closeConfirmationBoxcloseConfirmationBox create");
-  console.log(
-    closeConfirmationBox,
-    "closeConfirmationBoxcloseConfirmationBox close"
-  );
-
-  const handleCancelModal = () => {
-    setCloseConfirmationBox(true);
-    setIsCreateTodo(false);
-  };
+  const [toDoDate, setToDoDate] = useState("");
 
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
 
   //Get Current User ID
-  let createrID = JSON.parse(localStorage.getItem("userID"));
+  let createrID = localStorage.getItem("userID");
 
   let currentLanguage = localStorage.getItem("i18nextLng");
 
@@ -102,7 +102,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   });
 
   //To Set task Creater ID
-  const [TaskCreatorID, setTaskCreatorID] = useState(createrID);
+  const [TaskCreatorID, setTaskCreatorID] = useState(0);
 
   //task Asignees
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
@@ -135,9 +135,14 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     searchIndex.splice(index, 1);
     setTasksAttachments({
       ...tasksAttachments,
-      TasksAttachment: searchIndex,
+      ["TasksAttachments"]: searchIndex,
     });
   };
+
+  //To Set task Creater ID
+  useEffect(() => {
+    setTaskCreatorID(parseInt(createrID));
+  }, []);
 
   //task Handler aka Input fields
   const taskHandler = (e) => {
@@ -291,10 +296,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
               FK_TID: 0,
               fileSize: uploadedFile.size,
             });
-            setTasksAttachments({
-              ...tasksAttachments,
-              TasksAttachments: file,
-            });
+            setTasksAttachments({ ["TasksAttachments"]: file });
           }
         } else {
           if (uploadedFile.size > 10485760) {
@@ -331,21 +333,16 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
               FK_TID: 0,
               fileSize: uploadedFile.size,
             });
-            setTasksAttachments({
-              ...tasksAttachments,
-              TasksAttachments: file,
-            });
+            setTasksAttachments({ ["TasksAttachments"]: file });
           }
         }
       }
     }
   };
-  console.log(
-    tasksAttachments,
-    "tasksAttachmentstasksAttachmentstasksAttachmentstasksAttachments"
-  );
+
   //Get All Assignees API hit
   useEffect(() => {
+    // dispatch(GetAllAssigneesToDoList(parseInt(createrID)));
     if (show) {
       dispatch(GetAllAssigneesToDoList(navigate, parseInt(createrID), t));
     } else {
@@ -362,10 +359,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       });
       setToDoDate("");
       setTaskAssignedTo([]);
-      setTasksAttachments({
-        ...tasksAttachments,
-        TasksAttachments: [],
-      });
+      setTasksAttachments({ ["TasksAttachments"]: [] });
       setTaskAssignedName([]);
     }
   }, [show]);
@@ -378,7 +372,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     if (taskAssignedName.length === 1) {
       setOpen({
         flag: true,
-        message: t("Only-one-assignee-allow"),
+        message: "Only one assignee allow",
       });
       setTaskAssignedToInput("");
     } else {
@@ -400,25 +394,26 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     console.log("Input Value OnChange", e.target.value);
   };
 
-  // useEffect(() => {
-  //   if (taskAssignedName.length > 1) {
-  //     setOpen({
-  //       flag: true,
-  //       message: t("Only-one-assignee-allow"),
-  //     });
-  //   } else {
-  //     setTaskAssigneeLength(false);
-  //   }
-  // }, [taskAssignedName, t]);
+  useEffect(() => {
+    if (taskAssignedName.length > 1) {
+      setOpen({
+        flag: true,
+        message: "Only one assignee allow",
+      });
+    } else {
+      setTaskAssigneeLength(false);
+    }
+  }, [taskAssignedName.length]);
 
   //Drop Down Values
   const searchFilterHandler = (value) => {
     let allAssignees = toDoListReducer.AllAssigneesData;
     console.log("Input Value", allAssignees);
     if (
-      allAssignees !== undefined &&
-      allAssignees !== null &&
-      allAssignees !== []
+      allAssignees != undefined &&
+      allAssignees != null &&
+      allAssignees != NaN &&
+      allAssignees != []
     ) {
       return allAssignees
         .filter((item) => {
@@ -440,7 +435,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             key={item.pK_UID}
           >
             {console.log("itemitem", item)}
-            <img src={userImage} alt="" />
+            <img src={userImage} />
             <p className="p-0 m-0">{item.name}</p>
           </div>
         ));
@@ -450,16 +445,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   };
 
   const toDoDateHandler = (date, format = "YYYYMMDD") => {
-    console.log(
-      date,
-      "toDoDateHandlertoDoDateHandlertoDoDateHandlertoDoDateHandler"
-    );
-    console.log(
-      datePickerRef,
-      "toDoDateHandlertoDoDateHandlertoDoDateHandlertoDoDateHandler"
-    );
-
-    // datePickerRef.current.closePicker();
+    console.log(date, "toDoDateHandlertoDoDateHandlertoDoDateHandlertoDoDateHandler")
     let toDoDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let toDoDateSaveFormat = new DateObject(date).format("YYYYMMDD");
     setCreateTodoDate(toDoDateSaveFormat);
@@ -476,11 +462,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     console.log("TasksAttachments", TasksAttachments);
     let newDate;
     let newTime;
-    console.log(
-      createTodoDate,
-      task.DeadLineTime,
-      "TaskTaskTaskTaskTaskTaskTaskTaskTaskTaskTaskTask"
-    );
+    console.log(createTodoDate, task.DeadLineTime, "TaskTaskTaskTaskTaskTaskTaskTaskTaskTaskTaskTask")
     if (createTodoDate !== "" && task.DeadLineTime !== "") {
       let finalDateTime = createConvert(createTodoDate + task.DeadLineTime);
       newDate = finalDateTime.slice(0, 8);
@@ -501,7 +483,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       DeadLineTime: newTime,
       CreationDateTime: "",
     };
-    console.log(Task, "TaskTaskTaskTaskTaskTaskTaskTaskTaskTaskTaskTask");
+    console.log(Task, "TaskTaskTaskTaskTaskTaskTaskTaskTaskTaskTaskTask")
     if (Task.DeadLineTime === undefined) {
       setOpen({
         ...open,
@@ -533,6 +515,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         message: t("Enter-date-must"),
       });
     } else {
+      let counter = Object.keys(fileForSend).length - 1;
       if (Object.keys(fileForSend).length > 0) {
         const uploadFiles = (fileForSend) => {
           const uploadPromises = fileForSend.map((newData) => {
@@ -564,10 +547,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             setCreateTodoDate("");
             setCreateTodoTime("");
             setTaskAssignedTo([]);
-            setTasksAttachments({
-              ...tasksAttachments,
-              TasksAttachments: [],
-            });
+            setTasksAttachments({ ["TasksAttachments"]: [] });
             setTaskAssignedName([]);
             setToDoDate("");
             setFileForSend([]);
@@ -599,10 +579,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setCreateTodoDate("");
         setCreateTodoTime("");
         setTaskAssignedTo([]);
-        setTasksAttachments({
-          ...tasksAttachments,
-          TasksAttachments: [],
-        });
+        setTasksAttachments({ ["TasksAttachments"]: [] });
         setTaskAssignedName([]);
         setToDoDate("");
         setFileForSend([]);
@@ -624,25 +601,19 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         <Modal
           onHide={() => {
             setCloseConfirmationBox(true);
-            setIsCreateTodo(false);
+            setIsCreateTodo(false)
           }}
           show={show}
           setShow={setShow}
           className="modaldialogTodoCreate"
-          modalBodyClassName={
-            closeConfirmationBox === true
-              ? null
-              : isCreateTodo
-                ? "bodytodoCreateModal"
-                : "bodytodoCreateModal"
-          }
+          modalBodyClassName={closeConfirmationBox ? null : "bodytodoCreateModal"}
           modalFooterClassName="footertodoCreateModal"
           modalHeaderClassName="headertodoCreateModal"
           ButtonTitle={ModalTitle}
-          size={closeConfirmationBox === true ? "md" : "md"}
+          size={closeConfirmationBox ? null : "md"}
           // ModalTitle={"Modal Header"}
           ModalBody={
-            isCreateTodo ? (
+            isCreateTodo ?
               <>
                 <div>
                   <Row>
@@ -670,12 +641,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       <MultiDatePicker
                         onChange={toDoDateHandler}
                         name="DeadLineDate"
-                        spanClass={"todoCreate"}
                         value={toDoDate}
                         calendar={calendarValue}
                         locale={localValue}
-                        ref={datePickerRef}
-
                       // newValue={createMeeting.MeetingDate}
                       />
                     </Col>
@@ -702,13 +670,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                             <span>
                               <div className="dropdown-row-assignee dg-flex align-items-center flex-row">
                                 <div className="d-flex align-items-center position-relative">
-                                  <img src={userImage} alt="" />
+                                  <img src={userImage} />
                                   <p className="p-0 m-0">{taskAssignedName}</p>
                                 </div>
                                 <span className="todolist-remove-assignee-icon">
                                   <img
                                     width={20}
-                                    alt=""
                                     className="remove"
                                     height={20}
                                     src={deleteButtonCreateMeeting}
@@ -789,9 +756,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                               ? tasksAttachments.TasksAttachments.map(
                                 (data, index) => {
                                   var ext =
-                                    data.DisplayAttachmentName.split(
-                                      "."
-                                    ).pop();
+                                    data.DisplayAttachmentName.split(".").pop();
 
                                   const first =
                                     data.DisplayAttachmentName.split(" ")[0];
@@ -870,19 +835,16 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                                           size={78}
                                           {...defaultStyles.gif}
                                         />
-                                      ) : (
-                                        <FileIcon
-                                          extension={ext}
-                                          size={78}
-                                          {...defaultStyles.ext}
-                                        />
-                                      )}
+                                      ) : <FileIcon
+                                        extension={ext}
+                                        size={78}
+                                        {...defaultStyles.ext}
+                                      />}
                                       <span className="deleteBtn">
                                         <img
                                           src={deleteButtonCreateMeeting}
                                           width={15}
                                           height={15}
-                                          alt=""
                                           onClick={() =>
                                             deleteFilefromAttachments(
                                               data,
@@ -906,25 +868,15 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                   </Row>
                 </div>
               </>
-            ) : closeConfirmationBox ? (
-              <>
+              : closeConfirmationBox ? <>
                 <Row>
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    className={"Confirmationmodal_body_text"}
-                  >
-                    {t(
-                      "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close"
-                    )}
+                  <Col sm={12} md={12} lg={12} className={"Confirmationmodal_body_text"}>
+                    Are you sure? If you click on close button the data will reset and modal will close.
                   </Col>
-                </Row>
-              </>
-            ) : null
+                </Row></> : null
           }
           ModalFooter={
-            isCreateTodo ? (
+            isCreateTodo ?
               <>
                 <Row>
                   <Col
@@ -933,45 +885,27 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     xs={12}
                     className="d-flex justify-content-end gap-3 p-0"
                   >
-                    <Button
-                      onClick={handleCancelModal}
-                      className={"cancelButton_createTodo"}
-                      text={t("Cancel")}
-                    />
+                    <Button onClick={() => setCloseConfirmationBox(true)} className={"cancelButton_createTodo"} text={"Cancel"} />
                     <Button
                       onClick={createToDoList}
-                      className={"btn todocreate-createbtn ArabicFontSemiBold"}
+                      className={
+                        "btn todocreate-createbtn ArabicFontSemiBold"
+                      }
+                      variant={"Primary"}
                       text={t("Create")}
                     />
                   </Col>
                 </Row>
-              </>
-            ) : closeConfirmationBox ? (
-              <>
-                <Row>
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    className="d-flex justify-content-center gap-3"
-                  >
-                    <Button
-                      onClick={() => setIsCreateTodo(true)}
-                      className={"cancelButton_createTodo"}
-                      text={t("Cancel")}
-                    />
-                    <Button
-                      onClick={() => {
-                        setShow(false);
-                        setIsCreateTodo(true);
-                      }}
-                      className={"todocreate-createbtn"}
-                      text={t("Close")}
-                    />
-                  </Col>
-                </Row>
-              </>
-            ) : null
+              </> : closeConfirmationBox ? <><Row>
+                <Col sm={12} md={12} lg={12} className="d-flex justify-content-center gap-3">
+                  <Button onClick={() => setIsCreateTodo(true)} className={"cancelButton_createTodo"} text={"Cancel"} />
+                  <Button onClick={() => {
+                    setShow(false)
+                    setIsCreateTodo(true)
+                  }
+                  } className={"todocreate-createbtn"} text={"Close"} />
+                </Col>
+              </Row></> : null
           }
         />
       </Container>

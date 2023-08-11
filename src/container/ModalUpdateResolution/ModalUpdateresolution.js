@@ -9,6 +9,7 @@ const ModalUpdateresolution = ({
   ModalTitle,
   updateresolution,
   setUpdateresolution,
+  handleUpdateResolution
 }) => {
   const { t } = useTranslation();
   const closebtn = async () => {
@@ -71,12 +72,13 @@ const ModalUpdateresolution = ({
                   <Button
                     text={t("Discard")}
                     className={styles["Discard_button_updateResolution_modal"]}
+                    onClick={closebtn}
                   />
 
                   <Button
                     text={t("Confirm")}
                     className={styles["Confirm-updateResolution-modal"]}
-                    onClick={closebtn}
+                    onClick={handleUpdateResolution}
                   />
                 </Col>
               </Row>

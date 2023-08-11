@@ -14,7 +14,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft } from "react-bootstrap-icons";
 const ViewGrouppage = ({ setViewGroupPage }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -54,7 +53,10 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
   }, [GroupsReducer]);
   useEffect(() => {
     let UserID = JSON.parse(localStorage.getItem("userID"));
-    dispatch(allAssignessList(navigate, t));
+    try {
+      dispatch(allAssignessList(navigate, t));
+
+    } catch { }
   }, []);
   return (
     <section className="MontserratSemiBold-600 color-5a5a5a">
@@ -129,7 +131,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
                               <span
                                 className={styles["Designation-create-group"]}
                               >
-                                {data?.designation}
+                                {data?.designation }
                               </span>
                             </Col>
                           </Row>
@@ -150,7 +152,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
             <Row className="mt-3">
               <Col lg={12} md={12} sm={12}>
                 <span className={styles["members-create-group-page"]}>
-                  {t("Memebers")}
+                  {t("Members")}
                 </span>
               </Col>
             </Row>
@@ -158,7 +160,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
               {viewGroupDetails.GroupMembers !== null
                 ? viewGroupDetails.GroupMembers.map((data, index) => {
                   return (
-                    <Col lg={3} md={3} sm={3} className="mt-3">
+                    <Col lg={4} md={4} sm={12} className="mt-3">
                       <Row>
                         <Col lg={2} md={2} sm={12}>
                           <img src={Newprofile} width={50} />
@@ -181,7 +183,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
                               <span
                                 className={styles["Designation-create-group"]}
                               >
-                                {data?.designation}
+                                {data?.designation }
                               </span>
                             </Col>
                           </Row>
@@ -205,7 +207,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
           <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
             <Button
               className={styles["Close-ViewGroup-btn"]}
-              text={<ArrowLeft size={30} color="#fff" />}
+              text={t("Close")}
               onClick={() => setViewGroupPage(false)}
             />
           </Col>

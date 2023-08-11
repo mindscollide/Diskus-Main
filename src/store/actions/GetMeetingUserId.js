@@ -490,7 +490,7 @@ const searchUserMeeting = (navigate, searchData, t) => {
             if (response.data.responseResult.responseMessage.toLowerCase().includes("Meeting_MeetingServiceManager_SearchMeetings_01".toLowerCase())) {
               dispatch(SearchMeeting_Success(response.data.responseResult, t("Record-found")))
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Meeting_MeetingServiceManager_SearchMeetings_02".toLowerCase())) {
-              dispatch(SearchMeeting_Fail(t("No-records-found")))
+              dispatch(SearchMeeting_Fail(t("No-record-found")))
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Meeting_MeetingServiceManager_SearchMeetings_03".toLowerCase())) {
               dispatch(SearchMeeting_Fail(t("Something-went-wrong")))
             } else {

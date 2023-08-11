@@ -1,0 +1,218 @@
+import React, { useState, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { Row, Col, Container } from 'react-bootstrap'
+import SecurityEncryption from './securityEncryption'
+import { Select } from 'antd'
+import SearchIcon from '../../../../../assets/images/Search-Icon.png'
+import SecurityIcon from '../../../../../assets/images/Security-Icon.png'
+import FullScreenIcon from '../../../../../assets/images/Fullscreen-Icon.png'
+import {
+  recentChatFlag,
+  privateChatFlag,
+  privateGroupChatFlag,
+  starredMessageFlag,
+  blockedUsersFlag,
+  shoutallChatFlag,
+  footerShowHideStatus,
+  securityEncryptionStatus,
+  globalChatsSearchFlag,
+} from '../../../../../store/actions/Talk_Feature_actions'
+import { GetAllUserChats } from '../../../../../store/actions/Talk_action'
+
+const TalkHeader = () => {
+  const { talkFeatureStates } = useSelector((state) => state)
+
+  const dispatch = useDispatch()
+
+  const navigate = useNavigate()
+
+  //Translation
+  const { t } = useTranslation()
+
+  let currentUserId = localStorage.getItem('userID')
+  let currentOrganizationId = localStorage.getItem('organizationID')
+
+  // Chat Filter Options
+  const chatFilterOptions = [
+    { className: 'talk-chat-filter', label: 'Recent Chats', value: 1 },
+    { className: 'talk-chat-filter', label: 'Private Message', value: 2 },
+    { className: 'talk-chat-filter', label: 'Private Group', value: 3 },
+    { className: 'talk-chat-filter', label: 'Starred Message', value: 4 },
+    { className: 'talk-chat-filter', label: 'Shout All', value: 5 },
+    { className: 'talk-chat-filter', label: 'Blocked User', value: 6 },
+  ]
+
+  //Chat Filter State
+  const [chatFilter, setChatFilter] = useState({
+    value: 1,
+    label: 'Recent Chats',
+  })
+
+  // for   select Chat Filter Name
+  const [chatFilterName, setChatFilterName] = useState('Recent Chats')
+
+  useEffect(() => {
+    if (talkFeatureStates.RecentChatsFlag) {
+      setChatFilterName('Recent Chats')
+    } else if (talkFeatureStates.PrivateChatsFlag) {
+      setChatFilterName('Private Message')
+    } else if (talkFeatureStates.PrivateGroupChatsFlag) {
+      setChatFilterName('Private Group')
+    } else if (talkFeatureStates.StarredMessageFlag) {
+      setChatFilterName('Starred Message')
+    } else if (talkFeatureStates.BlockedUsersFlag) {
+      setChatFilterName('Blocked User')
+    } else if (talkFeatureStates.ShoutAllMessageFlag) {
+      setChatFilterName('Shout All')
+    }
+  }, [])
+
+  // Onchange Select Filter
+  const chatFilterHandler = (e, value) => {
+    if (value.label != undefined) {
+      console.log('Error on Chat Filter Object.Keys')
+      // try {
+      console.log('Error on Chat Filter Object.Keys')
+      if (value.label != chatFilter.label) {
+        console.log('Error on Chat Filter Object.Keys')
+        if (Object.keys(chatFilterOptions).length > 0) {
+          chatFilterOptions.filter((data, index) => {
+            if (data.label === value.label) {
+              setChatFilter({
+                label: data.label,
+                value: data.value,
+              })
+            }
+          })
+        }
+        setChatFilterName(value.label)
+      } else {
+      }
+      // } catch {
+      //   console.log('Error on Chat Filter Object.Keys')
+      // }
+      try {
+        if (value.label !== chatFilter.label) {
+          if (value.label === 'Recent Chats') {
+            dispatch(privateChatFlag(false))
+            dispatch(privateGroupChatFlag(false))
+            dispatch(starredMessageFlag(false))
+            dispatch(blockedUsersFlag(false))
+            dispatch(shoutallChatFlag(false))
+            dispatch(footerShowHideStatus(true))
+            dispatch(recentChatFlag(true))
+            dispatch(
+              GetAllUserChats(
+                navigate,
+                currentUserId,
+                currentOrganizationId,
+                t,
+              ),
+            )
+          } else if (value.label === 'Private Message') {
+            dispatch(recentChatFlag(false))
+            dispatch(privateGroupChatFlag(false))
+            dispatch(starredMessageFlag(false))
+            dispatch(blockedUsersFlag(false))
+            dispatch(shoutallChatFlag(false))
+            dispatch(footerShowHideStatus(false))
+            dispatch(privateChatFlag(true))
+          } else if (value.label === 'Private Group') {
+            dispatch(recentChatFlag(false))
+            dispatch(privateChatFlag(false))
+            dispatch(starredMessageFlag(false))
+            dispatch(blockedUsersFlag(false))
+            dispatch(shoutallChatFlag(false))
+            dispatch(privateGroupChatFlag(true))
+            dispatch(footerShowHideStatus(true))
+          } else if (value.label === 'Starred Message') {
+            dispatch(recentChatFlag(false))
+            dispatch(privateChatFlag(false))
+            dispatch(privateGroupChatFlag(false))
+            dispatch(blockedUsersFlag(false))
+            dispatch(shoutallChatFlag(false))
+            dispatch(footerShowHideStatus(false))
+            dispatch(starredMessageFlag(true))
+          } else if (value.label === 'Shout All') {
+            dispatch(recentChatFlag(false))
+            dispatch(privateChatFlag(false))
+            dispatch(privateGroupChatFlag(false))
+            dispatch(starredMessageFlag(false))
+            dispatch(blockedUsersFlag(false))
+            dispatch(shoutallChatFlag(true))
+            dispatch(footerShowHideStatus(true))
+          } else if (value.label === 'Blocked User') {
+            dispatch(recentChatFlag(false))
+            dispatch(privateChatFlag(false))
+            dispatch(privateGroupChatFlag(false))
+            dispatch(starredMessageFlag(false))
+            dispatch(shoutallChatFlag(false))
+            dispatch(footerShowHideStatus(false))
+            dispatch(blockedUsersFlag(true))
+          } else {
+            console.log('No Label Found For Header Chat')
+          }
+        } else {
+        }
+      } catch {
+        console.log('Error on Chat Filter Handler')
+      }
+    }
+  }
+
+  const securityDialogue = () => {
+    dispatch(securityEncryptionStatus(!talkFeatureStates.SecurityEncryption))
+  }
+
+  const activateGlobalSearch = () => {
+    if (talkFeatureStates.GlobalChatsSearchFlag === false) {
+      dispatch(globalChatsSearchFlag(true))
+    } else {
+      dispatch(globalChatsSearchFlag(false))
+    }
+  }
+
+  return (
+    <>
+      {/* <Row className={deleteChat === false ? '' : 'applyBlur'}> */}
+      <Container className="p-0">
+        <Row>
+          <Col lg={3} md={3} sm={12}>
+            <Select
+              options={chatFilterOptions}
+              onChange={chatFilterHandler}
+              className="chatFilter"
+              popupClassName="talk-chat-filter"
+              value={chatFilterName}
+            />
+          </Col>
+          <Col lg={6} md={6} sm={12}></Col>
+          <Col lg={1} md={1} sm={12} className="p-0">
+            <div className="chat-icons">
+              <span style={{ cursor: 'pointer' }} onClick={securityDialogue}>
+                <img src={SecurityIcon} className="img-cover" />
+              </span>
+            </div>
+          </Col>
+          <Col lg={1} md={1} sm={12} className="p-0">
+            <div className="chat-icons" onClick={activateGlobalSearch}>
+              <img src={SearchIcon} className="img-cover" />
+            </div>
+          </Col>
+          <Col lg={1} md={1} sm={12} className="p-0">
+            <div className="chat-icons">
+              <img src={FullScreenIcon} className="img-cover" />
+            </div>
+          </Col>
+        </Row>
+        {talkFeatureStates.SecurityEncryption === true ? (
+          <SecurityEncryption />
+        ) : null}
+      </Container>
+    </>
+  )
+}
+
+export default TalkHeader
