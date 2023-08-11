@@ -584,7 +584,7 @@ const cancelResolution_Fail = (message) => {
         message: message
     }
 }
-const cancelResolutionApi = (navigate, id, t, setEditResoutionPage) => {
+const cancelResolutionApi = (navigate, id, t, setEditResoutionPage, setCancelresolution) => {
     let token = JSON.parse(localStorage.getItem("token"));
     let userID = JSON.parse(localStorage.getItem("userID"))
     let resolutionView = localStorage.getItem("resolutionView")
@@ -615,7 +615,7 @@ const cancelResolutionApi = (navigate, id, t, setEditResoutionPage) => {
                         if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_CancelResolution_01".toLowerCase()) {
                             dispatch(cancelResolution_Success(response.data.responseResult, t("Resolution-cancelled")))
                             await setEditResoutionPage(false)
-                            await setCancelResolutionModal(false)
+                            await setCancelresolution(false)
                             if (Number(resolutionView) === 1) {
                                 dispatch(getResolutions(navigate, Number(currentView), t))
                             } else {
