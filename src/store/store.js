@@ -25,6 +25,7 @@ import {
   OrganizationBillingReducer,
   DataRoomReducer,
   PollsReducer,
+  NewMeetingReducer,
 } from './reducers'
 import * as actions from './action_types'
 import { configureStore } from '@reduxjs/toolkit'
@@ -72,7 +73,9 @@ const AppReducer = combineReducers({
   OrganizationBillingReducer: OrganizationBillingReducer,
   DataRoomReducer: DataRoomReducer,
   PollsReducer: PollsReducer,
+  NewMeetingreducer: NewMeetingReducer,
 })
+
 const rootReducer = (state, action) => {
   // when a logout action is dispatched it will reset redux state
   if (action.type === actions.SIGN_OUT) {

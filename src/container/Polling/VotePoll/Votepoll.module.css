@@ -103,7 +103,62 @@
   border-radius: 20px;
   background-color: #f2f2f2;
 }
+
 .Scroller-Vote-Poll::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.BOx_for_yes {
+  width: 100%;
+  height: auto !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  padding-left: 10px;
+  margin: 0 0 10px 0;
+}
+
+.scrollable-title {
+  max-height: 100px;
+  min-height: 39px;
+  /* Set the maximum height you desire for the title */
+  overflow: hidden;
+  overflow-y: auto;
+  /* Enable vertical scrolling when text overflows */
+
+}
+
+.scrollable-title::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.scrollable-title::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.scrollable-title2 {
+  min-height: 39px !important;
+}
+
+.Scroller_View_Poll_Published {
+  height: 28vh !important;
+  overflow-x: hidden !important;
+  margin-top: 6px !important;
+  /* width: 100%; */
+}
+
+.Scroller_View_Poll_Published::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_View_Poll_Published::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;

@@ -1,0 +1,125 @@
+.Edit_Button_Organizers {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  font-family: "MontserratMedium-500";
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1;
+  background: #fff;
+  color: #707070;
+  display: flex;
+  gap: 5px;
+}
+
+.Edit_Button_Organizers:hover,
+.Edit_Button_Organizers:active,
+.Edit_Button_Organizers:focus,
+.Edit_Button_Organizers:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  display: flex;
+  gap: 5px;
+  border: 1px solid #e1e1e1 !important;
+  background: #fff !important;
+  font-family: "MontserratMedium-500" !important;
+  color: #707070 !important;
+}
+
+.AddMoreBtn {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border-radius: 4px !important;
+  font-family: "MontserratMedium-500";
+  display: flex;
+  gap: 5px;
+  border: none;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+}
+
+.AddMoreBtn:hover,
+.AddMoreBtn:active,
+.AddMoreBtn:focus,
+.AddMoreBtn:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  display: flex;
+  gap: 5px;
+  border-radius: 4px !important;
+  font-family: "MontserratMedium-500" !important;
+  border: none !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+}
+
+.Cancel_Organization {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  background: #fff;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Cancel_Organization:hover,
+.Cancel_Organization:active,
+.Cancel_Organization:focus,
+.Cancel_Organization:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  background: #fff;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Next_Organization {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  background: #5f78d6;
+  color: #fff;
+  font-family: "MontserratSemiBold" !important;
+}
+.Next_Organization:hover,
+.Next_Organization:active,
+.Next_Organization:focus,
+.Next_Organization:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  background: #5f78d6;
+  color: #fff;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Notification_button {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  display: flex;
+  gap: 5px;
+  background: #fff;
+  color: #707070;
+  font-family: "MontserratMedium-500";
+}
+
+.Notification_button:hover,
+.Notification_button:active,
+.Notification_button:focus,
+.Notification_button:focus-visible {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+  display: flex;
+  gap: 5px;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #707070 !important;
+  font-family: "MontserratMedium-500";
+}

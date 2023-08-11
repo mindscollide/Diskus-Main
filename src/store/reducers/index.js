@@ -12,6 +12,7 @@ export { default as VideoChatReducer } from './VideoChat_Reducer'
 export { default as minuteofMeetingReducer } from './MinutesOfMeeting_reducer'
 export { default as countryNamesReducer } from './GetCountryNames_reducer'
 export { default as GetSubscriptionPackages } from './GetSubscriptionPackages_reducer'
+
 // Auth 2 Reducer
 export { default as AuthReducer } from './Auth2_reducer'
 export { default as RoleListReducer } from './Role_List_reducers'
@@ -35,3 +36,5 @@ export { default as DataRoomReducer } from './DataRoom_reducer'
 export { default as PollsReducer } from './Polls_Reducer'
 
 export { default as talkFeatureReducer } from './Talk_Features_Reducer'
+
+export { default as NewMeetingReducer } from './NewMeetingreducer'

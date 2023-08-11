@@ -700,6 +700,18 @@ const Dashboard = () => {
           message: `Message Deleted`,
         })
         setNotificationID(id)
+      }else if (
+        data.payload.message.toLowerCase() ===
+        'PUBLISHED_POLL_DELETED'.toLowerCase()
+      ) {
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `The Poll ${data.payload.pollTitle} has been deleted`,
+        })
+        console.log(data.payload)
+        dispatch(notifyPollingSocket(data.payload.polls))
+        setNotificationID(id)
       }
     }
   }
