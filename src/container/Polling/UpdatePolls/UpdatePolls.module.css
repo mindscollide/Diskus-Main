@@ -82,10 +82,8 @@ body[dir="rtl"] .Due_Date_heading {
 }
 
 .Scroller_For_UpdatePollModal {
-  height: 22vh !important;
+  height: 26vh !important;
   overflow-x: hidden !important;
-  overflow-y: auto;
-  margin-top: 5px;
 }
 
 .Scroller_For_UpdatePollModal::-webkit-scrollbar {
@@ -147,11 +145,6 @@ body[dir="rtl"] .polling_Options_backGround {
 body[dir="rtl"] .Cross-icon-Create_poll {
   padding: 5px 5px !important;
   margin-top: 4px !important;
-  cursor: pointer !important;
-}
-
-body[dir="ltr"] .Cross-icon-Create_poll {
-  cursor: pointer !important;
 }
 
 .PlusFaddedClass {
@@ -459,12 +452,14 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
 
 .scrollable-title {
   max-height: 100px;
-  min-height: 39px !important; /* Set the maximum height you desire for the title */
-  overflow: hidden!important;
-  overflow-y: auto!important;
-  white-space: normal!important;
-  word-wrap: break-word!important; /* Enable vertical scrolling when text overflows */
-  
+  min-height: 39px !important;
+  /* Set the maximum height you desire for the title */
+  overflow: hidden !important;
+  overflow-y: auto !important;
+  white-space: normal !important;
+  word-wrap: break-word !important;
+  /* Enable vertical scrolling when text overflows */
+
 }
 
 .scrollable-title::-webkit-scrollbar {
@@ -479,14 +474,16 @@ body[dir="rtl"] .errorMessage-inLogin_1 {
   margin-left: -15px;
 }
 
-.OptionBodyMaxHeight{
+.OptionBodyMaxHeight {
   margin-top: 14px;
-  max-height: 17vh; /* Set the maximum height you desire for the title */
+  max-height: 17vh;
+  /* Set the maximum height you desire for the title */
   overflow: hidden;
-  overflow-y: auto; /* Enable vertical scrolling when text overflows */
+  overflow-y: auto;
+  /* Enable vertical scrolling when text overflows */
   margin-right: 0 !important;
 }
 
-.scrollable-title2{
-  min-height: 39px!important;
+.scrollable-title2 {
+  min-height: 39px !important;
 }

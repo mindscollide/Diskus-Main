@@ -9,6 +9,9 @@ const initialState = {
   SessionExpireResponseMessage: '',
   OtoMessageFlag: false,
 
+  AllMessagesData: [],
+  Loading: false,
+
   activeChatIdData: {
     id: 0,
     messageType: '',
@@ -60,11 +63,13 @@ const initialState = {
   GroupMessages: {
     ResponseMessage: '',
     GroupMessagesData: [],
+    Loading: false,
   },
 
   BroadcastMessages: {
     ResponseMessage: '',
     BroadcastMessagesData: [],
+    Loading: false,
   },
 
   ArchivedDataByUserID: {
@@ -268,6 +273,24 @@ const initialState = {
   MessageStatusUpdateData: {
     MessageStatusUpdateResponse: [],
   },
+
+  MqttMessageDeleteData: [],
+
+  ActiveChatData: [],
+
+  PushMessageData: [],
+
+  PushChatData: [],
+
+  FileUploadData: '',
+
+  ActiveMessageData: [],
+
+  AllStarMessagesData: {
+    AllStarMessagesResponse: [],
+    AllStarMessagesResponseMessage: '',
+    Loading: false,
+  },
 }
 
 const talkReducer = (state = initialState, action) => {
@@ -384,8 +407,8 @@ const talkReducer = (state = initialState, action) => {
         return {
           ...state,
           UserOTOMessages: {
-            ResponseMessage: '',
-            UserOTOMessagesData: [],
+            ResponseMessage: action.message,
+            UserOTOMessagesData: action.response,
             Loading: true,
           },
         }
@@ -450,7 +473,11 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_GROUPMESSAGES_INIT: {
       return {
         ...state,
-        // Loading: false,
+        GroupMessages: {
+          ResponseMessage: '',
+          GroupMessagesData: [],
+          Loading: true,
+        },
       }
     }
 
@@ -460,6 +487,7 @@ const talkReducer = (state = initialState, action) => {
         GroupMessages: {
           ResponseMessage: action.message,
           GroupMessagesData: action.response,
+          Loading: false,
         },
       }
     }
@@ -470,6 +498,7 @@ const talkReducer = (state = initialState, action) => {
         GroupMessages: {
           ResponseMessage: action.message,
           GroupMessagesData: [],
+          Loading: false,
         },
       }
     }
@@ -477,7 +506,11 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_BROADCASTMESSAGES_INIT: {
       return {
         ...state,
-        // Loading: false,
+        BroadcastMessages: {
+          ResponseMessage: '',
+          BroadcastMessagesData: [],
+          Loading: true,
+        },
       }
     }
 
@@ -487,6 +520,7 @@ const talkReducer = (state = initialState, action) => {
         BroadcastMessages: {
           ResponseMessage: action.message,
           BroadcastMessagesData: action.response,
+          Loading: false,
         },
       }
     }
@@ -497,6 +531,7 @@ const talkReducer = (state = initialState, action) => {
         BroadcastMessages: {
           ResponseMessage: action.message,
           BroadcastMessagesData: [],
+          Loading: false,
         },
       }
     }
@@ -801,7 +836,11 @@ const talkReducer = (state = initialState, action) => {
     case actions.GET_BLOCKEDUSERS_INIT: {
       return {
         ...state,
-        // Loading: false,
+        BlockedUsers: {
+          ResponseMessage: '',
+          BlockedUsersData: [],
+          Loading: true,
+        },
       }
     }
 
@@ -812,6 +851,7 @@ const talkReducer = (state = initialState, action) => {
         BlockedUsers: {
           ResponseMessage: action.message,
           BlockedUsersData: action.response,
+          Loading: false,
         },
       }
     }
@@ -823,6 +863,7 @@ const talkReducer = (state = initialState, action) => {
         BlockedUsers: {
           ResponseMessage: action.message,
           BlockedUsersData: [],
+          Loading: false,
         },
       }
     }
@@ -1509,42 +1550,126 @@ const talkReducer = (state = initialState, action) => {
       }
     }
 
-    case actions.DOWNLOAD_CHAT_INIT: {
-      return {
-        ...state,
-        UpdateMessageAcknowledgementData: {
-          UpdateMessageAcknowledgementResponse: [],
-          UpdateMessageAcknowledgementResponseMessage: '',
-        },
-      }
-    }
-
-    case actions.DOWNLOAD_CHAT_SUCCESS: {
-      return {
-        ...state,
-        UpdateMessageAcknowledgementData: {
-          UpdateMessageAcknowledgementResponse: action.response,
-          UpdateMessageAcknowledgementResponseMessage: action.message,
-        },
-      }
-    }
-
-    case actions.DOWNLOAD_CHAT_FAIL: {
-      return {
-        ...state,
-        UpdateMessageAcknowledgementData: {
-          UpdateMessageAcknowledgementResponse: [],
-          UpdateMessageAcknowledgementResponseMessage: action.message,
-        },
-      }
-    }
-
     case actions.MQTT_MESSAGE_STATUS_UPDATE: {
       return {
         ...state,
         MessageStatusUpdateData: {
           MessageStatusUpdateResponse: action.response,
         },
+      }
+    }
+
+    case actions.GET_ACTIVE_CHAT: {
+      return {
+        ...state,
+        ActiveChatData: action.response,
+      }
+    }
+
+    case actions.PUSH_MESSAGE_DATA: {
+      return {
+        ...state,
+        PushMessageData: action.response,
+      }
+    }
+
+    case actions.PUSH_CHAT_DATA: {
+      return {
+        ...state,
+        PushChatData: action.response,
+      }
+    }
+
+    case actions.FILE_UPLOAD_DATA: {
+      return {
+        ...state,
+        FileUploadData: action.response,
+      }
+    }
+
+    case actions.ACTIVE_MESSAGE_DATA: {
+      return {
+        ...state,
+        ActiveMessageData: action.response,
+      }
+    }
+
+    case actions.GET_ALL_STARRED_MESSAGES_INIT: {
+      {
+        return {
+          ...state,
+          AllStarMessagesData: {
+            AllStarMessagesResponse: [],
+            AllStarMessagesResponseMessage: '',
+            Loading: true,
+          },
+        }
+      }
+    }
+    case actions.GET_ALL_STARRED_MESSAGES_SUCCESS: {
+      {
+        return {
+          ...state,
+          AllStarMessagesData: {
+            AllStarMessagesResponse: action.response,
+            AllStarMessagesResponseMessage: action.message,
+            Loading: false,
+          },
+        }
+      }
+    }
+    case actions.GET_ALL_STARRED_MESSAGES_FAIL: {
+      {
+        return {
+          ...state,
+          AllStarMessagesData: {
+            AllStarMessagesResponse: [],
+            AllStarMessagesResponseMessage: action.message,
+            Loading: false,
+          },
+        }
+      }
+    }
+
+    case actions.MQTT_MESSAGE_DELETED: {
+      {
+        return {
+          ...state,
+          MqttMessageDeleteData: action.response,
+        }
+      }
+    }
+
+    case actions.DOWNLOAD_CHAT_EMPTY: {
+      return {
+        ...state,
+        DownloadChatData: {
+          DownloadChatResponse: action.response,
+          DownloadChatResponseMessage: '',
+        },
+      }
+    }
+
+    case actions.GET_ALL_MESSAGES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      }
+    }
+
+    case actions.GET_ALL_MESSAGES_SUCCESS: {
+      return {
+        ...state,
+        AllMessagesData: action.response,
+        Loading: false,
+      }
+    }
+
+    case actions.GET_ALL_MESSAGES_FAIL: {
+      return {
+        ...state,
+        AllMessagesData: action.response,
+        Loading: false,
       }
     }
 

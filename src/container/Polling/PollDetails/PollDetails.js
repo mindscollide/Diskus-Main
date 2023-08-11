@@ -1,10 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Modal,
-  Button,
-  Checkbox,
-  TextField,
-} from "../../../components/elements";
+import { Modal, Button, Checkbox } from "../../../components/elements";
 import { useTranslation } from "react-i18next";
 import styles from "./PollDetails.module.css";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
@@ -121,45 +116,22 @@ const PollDetails = () => {
                     lg={12}
                     md={12}
                     sm={12}
-                    className={`${styles["BOx_for_yes"]} d-flex`}
-                  >
-                    <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12}>
-                        {pollTitle.length > 100 ? (
-                          // Add d-flex class and justify-content-center to center the text
-                          <div
-                            className={`${styles["scrollable-title"]} d-flex justify-content-center`}
-                          >
-                            {pollTitle}
-                          </div>
-                        ) : (
-                          // Add d-flex class and align-items-center to center the text
-                          <div
-                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}
-                          >
-                            {pollTitle}
-                          </div>
-                        )}
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-                {/* <Row>
-                  <Col
-                    lg={12}
-                    md={12}
-                    sm={12}
                     className={styles["Box_For_Title_toShow"]}
                   >
                     <Row>
-                      <Col lg={12} sm={12} md={12}>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex align-items-center mt-2"
+                      >
                         <span className={styles["ViewTitleTOShowOnProgress"]}>
                           {pollTitle}
                         </span>
                       </Col>
                     </Row>
                   </Col>
-                </Row> */}
+                </Row>
                 <Row className="mt-1">
                   <Col
                     lg={12}
@@ -170,18 +142,15 @@ const PollDetails = () => {
                     {votePollDetailsOptions.map((data, index) => {
                       return (
                         <>
-                          <Row className="mt-3" key={index}>
+                          <Row className="mt-3">
                             <Col
                               lg={12}
                               md={12}
                               sm={12}
-                              className="m-0 p-0 d-flex gap-2"
+                              className="m-0 p-0 d-flex gap-5"
                             >
-                              <span className={styles["No-of-Yes-Answers"]}>
-                                {data.answer} -{" "}
-                                <span className={styles["no-Of-Yes"]}>
-                                  {data.votePercentage}%
-                                </span>
+                              <span className={styles["no-Of-Yes"]}>
+                                {data.answer} - {data.votePercentage}%
                               </span>
                             </Col>
                           </Row>
@@ -217,7 +186,7 @@ const PollDetails = () => {
                     {pollAttendiesOpptionsVise.map((data, index) => {
                       return (
                         <>
-                          <Row className="mt-2" key={index}>
+                          <Row className="mt-2">
                             <Col lg={12} md={12} sm={12} className="m-0 p-0">
                               <span className={styles["Yes_voters"]}>
                                 {data.answer +
@@ -239,7 +208,6 @@ const PollDetails = () => {
                                           md={6}
                                           sm={12}
                                           className="mt-2"
-                                          key={index}
                                         >
                                           <Row>
                                             <Col

@@ -340,14 +340,13 @@ body[dir="rtl"] .CommitteeNotFoundText {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
-  min-height: 63vh !important;
+  min-height: 65vh !important;
 }
 
 .committess_box {
   max-height: 65vh !important;
   min-height: 65vh !important;
   overflow: hidden auto;
-  padding-right: 10px !important;
 }
 
 .committess_box::-webkit-scrollbar {

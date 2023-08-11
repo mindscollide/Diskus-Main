@@ -27,8 +27,7 @@ const Card = ({
   setUniqCardID,
   uniqCardID,
   Icon,
-  groupState,
-  associatedTags,
+  associatedTags
 }) => {
   const { t } = useTranslation();
   const [editItems, setEditItems] = useState([
@@ -39,7 +38,7 @@ const Card = ({
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const [editdropdown, setEditdropdown] = useState(false);
   const findLengthofGroups = associatedTags && associatedTags.length;
-  console.log(findLengthofGroups, "findLengthofGroupsfindLengthofGroups");
+  console.log(findLengthofGroups, "findLengthofGroupsfindLengthofGroups")
 
   useEffect(() => {
     console.log("click");
@@ -80,8 +79,7 @@ const Card = ({
       console.log("error");
     }
   }, []);
-  console.log(associatedTags, "associatedTagsassociatedTags");
-  console.log(StatusID, "StatusIDStatusIDStatusIDStatusID")
+  console.log(associatedTags, "associatedTagsassociatedTags")
   useEffect(() => {
     console.log("click", editdropdown, dropdownthreedots);
   }, [editdropdown, dropdownthreedots]);
@@ -149,7 +147,7 @@ const Card = ({
           md={2}
           sm={2}
           className={
-            StatusID === 2
+            StatusID === 1 || StatusID === 2
               ? styles["Two-Icons-style-Committee-Group_InActive"]
               : styles["Two-Icons-style-Committee-Group"]
           }
@@ -165,26 +163,16 @@ const Card = ({
                 src={editicon}
                 width="21px"
                 height="21px"
-                alt=""
                 // className={StatusID === 1 ? "cursor-pointer" : ""}
-                className={
-                  StatusID === 1 || StatusID === 3
-                    ? styles["Edit_icon_styles"]
-                    : styles["Edit_icon_styles_InActive"]
-                }
+                className={styles["Edit_icon_styles"]}
                 onClick={() => setUniqCardID(CardID)}
               />
               <img
                 src={doticon}
                 width="21px"
                 height="21px"
-                alt=""
                 // className={StatusID === 1 ? "cursor-pointer" : ""}
-                className={
-                  StatusID === 1 || StatusID === 2
-                    ? styles["dot_icon_styles_InActive"]
-                    : styles["dot_icon_styles"]
-                }
+                className={styles["dot_icon_styles"]}
                 onClick={() => setUniqCardID(CardID)}
               />
             </Col>
@@ -392,68 +380,17 @@ const Card = ({
           </div>
         </Col>
       </Row>
-      <Row className="m-0 p-0">
-        {groupState === true ? <Col sm={12} md={12} lg={12}>
-          {associatedTags !== null &&
-            associatedTags !== undefined &&
-            associatedTags.length === 1 ? (
-            <>
-              <span className={styles["associated_tagLine_single"]}>
-                {t("Associated-with")} {" "}
-                <span className={styles["associated_tagLine_groupTitle_single"]}>
-                  {`${associatedTags[0].committeeTitle} ${t("Committee")}`}
-                </span>
-              </span>
-
-
-            </>
-          ) : null}
-          {associatedTags && associatedTags.length > 1 ? (
-            <>
-              <span className={styles["associated_tagLine"]}>
-                {`${t("Associated-with")} ${" "}`}
-                <span className={styles["associated_tagLine_groupTitle"]}>
-                  {`${associatedTags.length}  ${t("Committees")} `}
-                </span>
-              </span>
-
-
-            </>
-          ) : (
-            ""
-          )}
-        </Col> : <Col sm={12} md={12} lg={12}>
-          {associatedTags !== null &&
-            associatedTags !== undefined &&
-            associatedTags.length === 1 ? (
-            <>
-              <span className={styles["associated_tagLine_single"]}>
-                {`${t("Associated-with")} ${" "}`}
-                <span className={styles["associated_tagLine_groupTitle_single"]}>
-                  {`${associatedTags[0].groupTitle} ${t("Group")}` + " "}
-                </span>
-              </span>
-
-
-            </>
-          ) : null}
-          {associatedTags && associatedTags.length > 1 ? (
-            <>
-              <span className={styles["associated_tagLine"]}>
-                {t("Associated-with")} {" "}
-                <span className={styles["associated_tagLine_groupTitle"]}>
-                  {/* {associatedTags[0].groupTitle} */}
-                  {`${associatedTags.length} ${t("Groups")}`}
-                </span>
-              </span>
-
-
-            </>
-          ) : (
-            ""
-          )}
-        </Col>}
-
+      <Row><Col sm={12} md={12} lg={12}>
+        {associatedTags !== null && associatedTags !== undefined && associatedTags.length === 1 ?
+          <>
+            <span className={styles["associated_tagLine_groupTitle"]}>{associatedTags[0].groupTitle + " "}</span>
+            <span className={styles["associated_tagLine"]}>{t("associated-with-this-committee")}</span>
+          </> : null}
+        {associatedTags && associatedTags.length > 1 ? <>
+          <span className={styles["associated_tagLine_groupTitle"]}>{associatedTags[0].groupTitle}{`& + ${associatedTags.length}` + " "} </span>
+          <span className={styles["associated_tagLine"]}>{t("associated-with-this-committee")}</span>
+        </> : ""}
+      </Col>
       </Row>
 
       <Row className="m-0 p-0 ">
@@ -503,6 +440,7 @@ const Card = ({
         </Col>
       </Row>
 
+
       <Row className="m-0 p-0 ">
         <Col
           lg={12}
@@ -517,7 +455,7 @@ const Card = ({
           />
         </Col>
       </Row>
-    </Row>
+    </Row >
   );
 };
 

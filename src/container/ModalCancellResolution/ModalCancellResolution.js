@@ -9,8 +9,7 @@ const ModalCancellResolution = ({
   cancelresolution,
   setCancelresolution,
   setEditResoutionPage,
-  handleCancelResolution,
-  text
+  handleCancelResolution
 }) => {
   const { t } = useTranslation();
   const closebtn = async () => {
@@ -32,32 +31,26 @@ const ModalCancellResolution = ({
             <>
               <Container>
                 <Row>
-                  {text !== null && text !== undefined && text ? <>
-                    <Col lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-center text-center">
-                      <span className={styles["Heading_For_Active_Sure"]}>
-                        {t("The-resolution-is-currently-circulated-are-you-sure-you-want-to-cancel-the-resolution-before-voting-and-decision-date")}
-                      </span>
-
-                    </Col>
-                  </> : (
-                    <>
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className="d-flex justify-content-center"
-                      >
-                        <span className={styles["Heading_For_Active_Sure"]}>
-                          {t("Are-you-sure-you-want-to-cancel-this-resolution")}
-                        </span>
-                      </Col>
-
-                    </>
-                  )}
-
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center"
+                  >
+                    <span className={styles["Heading_For_Active_Sure"]}>
+                      {t("Are-you-sure-you-want-to")}
+                    </span>
+                  </Col>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center"
+                  >
+                    <span className={styles["Heading_For_Active_Sure"]}>
+                      {t("Cancel-this-resolution")}
+                    </span>
+                  </Col>
                 </Row>
               </Container>
             </>

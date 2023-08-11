@@ -26,6 +26,8 @@ import {
   mqttMessageStatusUpdate,
   InsertOTOMessages,
   UpdateMessageAcknowledgement,
+  mqttMessageDeleted,
+  GetAllUserChats,
 } from '../../store/actions/Talk_action'
 import Paho from 'paho-mqtt'
 import Helper from '../../commen/functions/history_logout'
@@ -56,7 +58,6 @@ import { realtimeNotificationRecent } from '../../store/actions/RealtimeNotifica
 import { useTranslation } from 'react-i18next'
 import numeral from 'numeral'
 import 'numeral/locales'
-import { notifyPollingSocket } from '../../store/actions/Polls_actions'
 
 const Dashboard = () => {
   const location = useLocation()
@@ -69,7 +70,6 @@ const Dashboard = () => {
   const { Content } = Layout
   let createrID = localStorage.getItem('userID')
   let currentOrganization = localStorage.getItem('organizationID')
-  let activeChat = localStorage.getItem('activeChatID')
 
   //Translation
   const { t } = useTranslation()
@@ -106,6 +106,20 @@ const Dashboard = () => {
   const [notificationID, setNotificationID] = useState(0)
 
   let Blur = localStorage.getItem('blur')
+
+  const [currentActiveChat, setCurrentActiveChat] = useState([])
+
+  useEffect(() => {
+    if (
+      talkStateData.ActiveChatData !== undefined &&
+      talkStateData.ActiveChatData !== null &&
+      talkStateData.ActiveChatData.length !== 0
+    ) {
+      setCurrentActiveChat(talkStateData.ActiveChatData)
+    } else {
+      setCurrentActiveChat([])
+    }
+  }, [talkStateData.ActiveChatData])
 
   let newClient = Helper.socket
   // for close the realtime Notification bar
@@ -420,7 +434,7 @@ const Dashboard = () => {
           }
           dispatch(setRecentActivityDataNotification(data2))
         }
-      } 
+      }
     }
     if (data.action.toLowerCase() === 'Committee'.toLowerCase()) {
       if (
@@ -496,25 +510,9 @@ const Dashboard = () => {
         'NEW_ONE_TO_ONE_MESSAGE'.toLowerCase()
       ) {
         let newMessageData = data.payload.data[0]
-        console.log('newMessageData', data.payload.data[0])
-        console.log('activeChatactiveChat', typeof activeChat, activeChat)
-        let apiAcknowledgementData = {
-          TalkRequest: {
-            ChannelID: newMessageData.channelID,
-            Chat: {
-              ChatID:
-                activeChat === 'null'
-                  ? newMessageData.senderID
-                  : parseInt(activeChat),
-              MyID: parseInt(createrID),
-              MessageStatus: activeChat === 'null' ? 'Delivered' : 'Seen',
-              SenderID: newMessageData.senderID,
-              MessageID: newMessageData.messageID,
-              ChatType: 'O',
-            },
-          },
-        }
-        console.log('NEW_ONE_TO_ONE_MESSAGE', data.payload.data)
+        let activeOtoChatID = localStorage.getItem('activeOtoChatID')
+        console.log('New Message MQTT Response', data.payload.data[0])
+        console.log('Active Chat Data', talkStateData.ActiveChatData)
         if (data.payload.data[0].senderID !== parseInt(createrID)) {
           setNotification({
             ...notification,
@@ -523,10 +521,57 @@ const Dashboard = () => {
           })
         }
         dispatch(mqttInsertOtoMessage(data.payload))
-        dispatch(
-          UpdateMessageAcknowledgement(apiAcknowledgementData, t, navigate),
-        )
         setNotificationID(id)
+        console.log(
+          'MQTT ACKNOWLEDGEMENT DATA',
+          data.payload.data[0].senderID,
+          parseInt(createrID),
+          parseInt(activeOtoChatID),
+        )
+
+        if (
+          data.payload.data[0].senderID !== parseInt(createrID) &&
+          (parseInt(activeOtoChatID) !== data.payload.data[0].senderID ||
+            parseInt(activeOtoChatID) === 0)
+        ) {
+          let apiAcknowledgementData = {
+            TalkRequest: {
+              ChannelID: newMessageData.channelID,
+              Chat: {
+                ChatID: newMessageData.senderID,
+                MyID: parseInt(createrID),
+                MessageStatus: 'Delivered',
+                SenderID: newMessageData.senderID,
+                MessageID: newMessageData.messageID,
+                ChatType: 'O',
+              },
+            },
+          }
+          dispatch(
+            UpdateMessageAcknowledgement(apiAcknowledgementData, t, navigate),
+          )
+        } else if (
+          data.payload.data[0].senderID !== parseInt(createrID) &&
+          (parseInt(activeOtoChatID) === data.payload.data[0].senderID ||
+            parseInt(activeOtoChatID) !== 0)
+        ) {
+          let apiAcknowledgementData = {
+            TalkRequest: {
+              ChannelID: newMessageData.channelID,
+              Chat: {
+                ChatID: newMessageData.senderID,
+                MyID: parseInt(createrID),
+                MessageStatus: 'Seen',
+                SenderID: newMessageData.senderID,
+                MessageID: newMessageData.messageID,
+                ChatType: 'O',
+              },
+            },
+          }
+          dispatch(
+            UpdateMessageAcknowledgement(apiAcknowledgementData, t, navigate),
+          )
+        }
       } else if (
         data.payload.message.toLowerCase() === 'NEW_GROUP_MESSAGE'.toLowerCase()
       ) {
@@ -644,40 +689,16 @@ const Dashboard = () => {
         console.log('MESSAGE_SEEN', data.payload.data)
         dispatch(mqttMessageStatusUpdate(data.payload))
         setNotificationID(id)
-      }
-    }
-    if (data.action.toLowerCase() === 'Polls'.toLowerCase()) {
-      if (
-        data.payload.message.toLowerCase() ===
-        'NEW_POLL_PUBLISHED'.toLowerCase()
-      ) {
-        setNotification({
-          ...notification,
-          notificationShow: true,
-          message: `A new Poll ${data.payload.pollTitle} is published for your review..`,
-        })
-        console.log(data.payload)
-        dispatch(notifyPollingSocket(data.payload.polls))
-        setNotificationID(id)
       } else if (
-        data.payload.message.toLowerCase() === 'POLL_UPDATED'.toLowerCase()
+        data.payload.message.toLowerCase() === 'MESSAGE_DELETED'.toLowerCase()
       ) {
+        console.log('MESSAGE_DELETED', data.payload.data)
+        dispatch(mqttMessageDeleted(data.payload))
         setNotification({
           ...notification,
           notificationShow: true,
-          message: `The Poll ${data.payload.pollTitle} has been updated`,
+          message: `Message Deleted`,
         })
-        dispatch(notifyPollingSocket(data.payload.polls))
-        setNotificationID(id)
-      } else if (
-        data.payload.message.toLowerCase() === 'POLL_EXPIRED'.toLowerCase()
-      ) {
-        setNotification({
-          ...notification,
-          notificationShow: true,
-          message: `Due date of Poll ${data.payload.pollTitle} has passed.`,
-        })
-        dispatch(notifyPollingSocket(data.payload.polls))
         setNotificationID(id)
       }else if (
         data.payload.message.toLowerCase() ===
@@ -695,56 +716,10 @@ const Dashboard = () => {
     }
   }
 
-  // const [retryCount, setRetryCount] = useState(0)
-
   const onConnectionLost = () => {
     console.log('Connected to MQTT broker onConnectionLost')
     setTimeout(mqttConnection, 3000)
   }
-
-  // console.log('mqttConnectionmqttConnectionmqttConnection', mqttConnection)
-
-  // let messageSendingJson = localStorage.getItem('messageArray')
-
-  //   let interval
-  //   const maxRetries = 5
-
-  //   const fetchData = async () => {
-  //     const response = await dispatch(
-  //       InsertOTOMessages(navigate, messageSendingJson, null, t),
-  //     )
-
-  //     // Check if response is successful
-  //     if (response.success) {
-  //       clearInterval(interval)
-  //       return
-  //     }
-
-  //     // Check if maximum retries reached
-  //     if (retryCount >= maxRetries) {
-  //       clearInterval(interval)
-  //       console.log('Maximum retries reached. Stopping API calls.')
-  //       return
-  //     }
-
-  //     // Increment retry count
-  //     setRetryCount(retryCount + 1)
-  //   }
-
-  //   // Initial API call
-  //   fetchData()
-
-  //   interval = setInterval(fetchData, 4000)
-
-  //   // Stop hitting the API after 20 seconds
-  //   setTimeout(() => {
-  //     clearInterval(interval)
-  //   }, 20000)
-
-  //   // Clean up the interval on component unmount
-  //   return () => {
-  //     clearInterval(interval)
-  //   }
 
   useEffect(() => {
     console.log('Connected to MQTT broker onConnectionLost useEffect')
@@ -805,6 +780,11 @@ const Dashboard = () => {
   }, [])
 
   localStorage.setItem('MqttConnectionState', isOnline)
+
+  useEffect(() => {
+    dispatch(GetAllUserChats(navigate, createrID, currentOrganization, t))
+    localStorage.setItem('activeOtoChatID', 0)
+  }, [])
 
   return (
     <>

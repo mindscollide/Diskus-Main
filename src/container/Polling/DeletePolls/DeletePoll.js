@@ -15,6 +15,7 @@ const DeletePoll = ({ id }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { PollsReducer } = useSelector((state) => state);
+  console.log(PollsReducer, "PollsReducerPollsReducerPollsReducer");
 
   const handleNofunction = () => {
     dispatch(setDeltePollModal(false));

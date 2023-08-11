@@ -36,7 +36,6 @@
   "EnterVerificationCode": "Entrez votre code de vérification",
   "Didn'tReceiveCode": "Je n'ai pas reçu le code",
   "ResendCode": "Renvoyer le code",
-
   "welcome-To-Title": "Bienvenue à",
   "One-Stop-Solution": "Votre solution unique pour la gestion des réunions",
   "Skip-Demo-Link-Button": "PASSER LA DÉMO",
@@ -61,7 +60,6 @@
   "And": "et ",
   "7-Tasks": "7 tâches ",
   "To-Complete-HaveAGoodDay": "compléter. Passe une bonne journée!",
-
   "Recent-Activity": "Activité récente",
   "Todo-List": "faire liste",
   "Task": "Tâche",
@@ -75,10 +73,8 @@
   "Up-Coming-Event": "évènements à venir",
   "No-Recent-Activity-Title": "Aucune activité récente",
   "No-Upcoming-Events": "Aucun événement à venir",
-
   "Change-Password": "Changer le mot de passe",
   "Sign-Out": "Se déconnecter",
-
   "Meetings-Heading": "Réunions",
   "Schedule-Meeting": "Planifier une réunion",
   "Search-Title-Name-Placeholder": "Nom du titre",
@@ -132,11 +128,9 @@
   "Status-Cancelled": "Annulé",
   "Reset-Status-Title": "Réinitialiser",
   "Ok-Title": "D'accord",
-
   "No-Record-Found": "Aucun Enregistrement Trouvé",
   "No-New-Meetings": "Aucune nouvelle réunion",
   "Anything-Important-Discussion": "Tout ce qui est important nécessite une discussion",
-
   "Create-Todo-List-Button": "Créer faire liste",
   "Search-Assigned-To-Name-Placeholder": "Assigné à",
   "Assigned-By-Title": "Assigné par",
@@ -148,16 +142,13 @@
   "Pending-Title": "Titre en attente",
   "Reopen-Title": "Rouvrir",
   "Attachment": "Attachement",
-
   "Create-Todolist-Modal-Button": "Créer",
   "Type-In-Field-Placeholder": "Tapez",
-
   "Calendar-Title": "Calendri",
   "Create-An-Event-Button": "Créer un événement",
   "Today-Title": "Aujourd'hui",
   "Schedule-a-Meeting-Title": "Planifier une réunion",
   "Create-a-To-Do-List-Title": "Créer une liste de tâches",
-
   "General-Settings-Title": "réglages généraux",
   "Time-Zone-Title": "Fuseau horaire",
   "Country-Code-Title": "Code postal",
@@ -178,7 +169,6 @@
   "Push-Notification-Title": "Poussée de notification",
   "Show-Notification-On-Participant-Joining": "Afficher la notification lors de l'adhésion du participant",
   "Terms-and-Conditions-Title": "Termes et conditions",
-
   "Title-Limit-is-200": "La limite de titre est de 200",
   "Description-Limit-is-300": "La limite de description est de 300",
   "Only-one-assignee-allow": "Un seul cessionnaire autorisé",
@@ -210,7 +200,6 @@
   "Please-Select": "Veuillez sélectionner",
   "Search": "Chercher",
   "Enter-Phone-Number": "Entrez le numéro de téléphone",
-
   "Summary": "Résumé",
   "Section-of-Account-Summary": "Section du résumé du compte",
   "Balance-Due": "Solde dû:",
@@ -226,7 +215,6 @@
   "Invoice-Amount": "Montant de la facture",
   "Late-Charges": "Frais de retard",
   "Invoice-#": "Facture #",
-
   "Customer-Information": "Informations client",
   "Company": "Compagnie",
   "Country": "De campagne",
@@ -242,7 +230,6 @@
   "Update": "Mise à jour",
   "Edit": "Éditer",
   "Please-Select-One-Option": "Veuillez sélectionner une option",
-
   "Mobile": "Portable",
   "Organization-Role": "Rôle de l'organisation",
   "User-Role": "Rôle d'utilisateur",
@@ -255,15 +242,12 @@
   "Disabled-Users": "Utilisateurs handicapés",
   "Locked-Users": "Utilisateurs verrouillés",
   "Dorment-Users": "Utilisateurs dormants",
-
   "Edit-User": "Éditer utilisatrice",
   "Changes-Successfully-Updated": "Modifications mises à jour avec succès !",
-
   "Agenda": "Ordre du jour",
   "Host": "Hôte",
   "Date": "Date",
   "Delete": "Effacer",
-
   "Organization-Level-Configurations": "Configurations au niveau de l'organisation",
   "Organization-Time-Zone": "Fuseau horaire de l'organisation",
   "Maximum-Meeting-Duration": "Durée maximale de la réunion",
@@ -278,7 +262,6 @@
   "Push-Notification-on-Cancelled-Meeting": "Notification push sur réunion annulée",
   "Show-Notification-on-participant-Joining": "Afficher la notification lors de l'adhésion d'un participant",
   "Dormant-Inactive-Users-for-Days": "Utilisateurs inactifs dormants pendant des jours",
-
   "PackageDetails": "Détails du paquet",
   "Subscription-Date": "Date de souscription",
   "Annually-subscription": "Abonnement annuel",
@@ -292,7 +275,6 @@
   "Marketing-tools": "Outils marketing",
   "Analytics": "Analytique",
   "Upgrade": "Mise à niveau",
-
   "Cancel-subscription": "Annuler l'abonnement",
   "Completion-Of-contract": "Achèvement du contrat",
   "Cancel-now": "Annuler maintenant",
@@ -300,7 +282,6 @@
   "View-invoice-detail": "Afficher les détails de la facture",
   "Download-invoice": "Télécharger la facture",
   "Pay-invoice-now": "Payer la facture maintenant",
-
   "Upgrade-Your-Package": "Améliorez votre forfait",
   "GET-5-more-users": "obtenir 5 utilisateurs supplémentaires",
   "2-Board-Members": "2 membres du conseil",
@@ -312,7 +293,6 @@
   "Gold": "Or",
   "PayOnly": "payer seulement",
   "forFirstYear": "pour la première année",
-
   "Premium": "Prime",
   "ProceedtoPayment": "Processus de paiement",
   "Included-Features": "Fonctionnalités incluses",
@@ -336,7 +316,6 @@
   "Do-you-want-update": "Voulez-vous procéder à la mise à jour?",
   "Please-fill-fields": "Veuillez remplir tous les champs",
   "Email-should-be-in-email-format": "L'e-mail doit être au format e-mail",
-
   "All-User": "Tous les utilisateurs",
   "All-Meeting": "Toutes les réunions",
   "Configurations": "Configurations",
@@ -347,7 +326,6 @@
   "Pay-Outstanding": "Payer l'encours",
   "Invoice-Payment-History": "Historique des factures et des paiements",
   "Subscriptions": "abonnements",
-
   "Company-Name": "Nom de l'entreprise",
   "Select-Roles": "Sélectionnez les rôles",
   "Attendee": "Participante",
@@ -400,7 +378,6 @@
   "Archived": "Archived",
   "Active": "Active",
   "Committee-title": "Committee Title",
-
   "No-member-selected": "No member selected!",
   "Committee-description-is-required": "Committee description is required",
   "Please-select-group-member-type-also": "Pleases elect group member type also",
@@ -452,7 +429,7 @@
   "You-can-not-upload-more-then-10-files": "You can not upload more then 10 files",
   "Last-modified-on": "Last modified on",
   "You-can-add-data-only-from-one-form-option-at-a-time": "You can add data from only one form option at a time",
-  "Please-select-atleast-one-members": "Please select atleast one member",
+  "Please-select-atleast-one-members": "Please select atleast one members",
   "Please-select-committee-member-type-also": "Please select committee member type also",
   "Create-new-note": " Create New Note",
   "User-email-already-exists": "User email already exists",
@@ -506,7 +483,7 @@
   "Rename": "Rename",
   "Cancel-download": "Cancel Download",
   "Continue-download": "Continue download",
-  "File-already-exisit": "File already exists",
+  "File-already-exisit": "File already exisit",
   "Show-search-options": "Show Search Options",
   "Photos-and-images": " Photos and Images",
   "Custome-range": "Custome Range",

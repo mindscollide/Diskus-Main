@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import DatePicker from "react-multi-date-picker";
 import moment from "moment";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
-import styles from "./datepicker.module.css";
 
 const MultiDatePickers = ({
   onChange,
@@ -30,7 +29,7 @@ const MultiDatePickers = ({
         alt="Edit Icon"
         height="11.11px"
         width="11.54px"
-        className={styles["custom-icon"]}
+        className="custom-icon"
       />
     </div>
   );
