@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./UserSettings.module.css";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { Loader, Button } from "../../../components/elements";
 import backbutton from "../../../assets/images/backbutton.svg";
 import { useTranslation } from "react-i18next";
