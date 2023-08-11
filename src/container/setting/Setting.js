@@ -107,6 +107,7 @@ const Organization = () => {
       UserAllowGoogleCalendarSynch: true,
     });
   };
+
   const handleGoogleLoginFailure = (response) => {
     console.log(response);
     setSignUpCodeToken("");
@@ -116,6 +117,7 @@ const Organization = () => {
         organizationStates.UserAllowGoogleCalendarSynch,
     });
   };
+
   const signIn = useGoogleLogin({
     onSuccess: handleGoogleLoginSuccess,
     onError: handleGoogleLoginFailure,
@@ -1341,6 +1343,7 @@ const Organization = () => {
                 />
               </Col>
             </Row>
+            {/* only for user */}
             {organizationStates.UserAllowGoogleCalendarSynch !== null &&
             roleID != 1 &&
             roleID != 2 ? (
@@ -1491,6 +1494,7 @@ const Organization = () => {
             ) : (
               <></>
             )}
+            {/* upper for user */}
             {/* New Data Ends */}
             <span className={styles["bottom-line"]}></span>
 

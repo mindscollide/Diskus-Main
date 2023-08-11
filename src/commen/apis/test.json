@@ -1,49 +1,30 @@
 {
-  "pollDetails": {
-    "pollID": 35,
-    "pollTitle": "SAIF POLL PUBLISHED",
-    "dueDate": "20230725",
-    "voteStatus": null,
-    "pollCreator": "Ali Raza",
-    "allowMultipleAnswers": true,
-    "wasPollPublished": true,
-    "pollStatus": {
-      "pollStatusId": 2,
-      "status": "Published"
-    }
-  },
-  "pollOptions": [
-    {
-      "pollAnswerID": 81,
-      "answer": "asdasdasd",
-      "votePercentage": 0,
-      "totalVotes": 0
-    },
-    {
-      "pollAnswerID": 82,
-      "answer": "asdfadasdasd",
-      "votePercentage": 0,
-      "totalVotes": 0
-    }
-  ],
-  "pollParticipants": [
-    {
-      "userID": 779,
-      "userName": "Ali Raza",
-      "emailAddress": "raza6803@gmail.com",
-      "profilePicture": {
-        "userID": 779,
-        "orignalProfilePictureName": "logo.png"
-      }
-    },
-    {
-      "userID": 780,
-      "userName": "Ali Mamdani",
-      "emailAddress": "Ali.mamdani@Hotmail.com",
-      "profilePicture": {
-        "userID": 780,
-        "orignalProfilePictureName": "logo.png"
-      }
-    }
-  ]
+  "UserSettings": {
+    "FK_TZID": 0,
+    "EmailOnNewMeeting": false,
+    "ShowNotificationOnParticipantJoining": true,
+    "FK_OrganizationID": 417,
+    "FK_CCID": 0,
+    "FK_UID": 982,
+    "Is2FAEnabled": false,
+    "EmailWhenAddedToCommittee": true,
+    "EmailWhenAddedToGroup": true,
+    "EmailWhenRemovedFromCommittee": true,
+    "EmailWhenRemovedFromGroup": true,
+    "EmailWhenResolutionIsClosed": true,
+    "PushNotificationWhenAddedToCommittee": true,
+    "PushNotificationWhenAddedToGroup": true,
+    "PushNotificationWhenCommitteeIsInActive": true,
+    "PushNotificationWhenNewResolutionIsCirculated": true,
+    "PushNotificationWhenRemovedFromCommittee": true,
+    "UserAllowGoogleCalendarSynch": true,
+    "EmailWhenNewPollIsPublished": true,
+    "EmailWhenPollDueDateIsPassed": true,
+    "EmailWhenPublishedPollIsDeleted": true,
+    "EmailWhenPublishedPollIsUpdated": true,
+    "PushNotificationWhenNewPollIsPublished": true,
+    "PushNotificationWhenPollDueDateIsPassed": true,
+    "PushNotificationWhenPublishedPollIsDeleted": true,
+    "PushNotificationWhenPublishedPollIsUpdated": true
+  }
 }

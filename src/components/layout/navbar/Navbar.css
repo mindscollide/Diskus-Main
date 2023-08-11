@@ -47,7 +47,8 @@ nav.adminNavbar.navbar.navbar-expand-lg.navbar-light {
   padding: 0;
   top: 20px;
   left: -10px;
-  width: 200px;
+  width: auto;
+  /* padding: 0 10px; */
 }
 
 .DiskusAdminNavBar > .dropdown-menu .dropdown-item.active {
@@ -118,8 +119,10 @@ body[dir="rtl"] .DiskusAdminNavBar a:nth-child(1) {
 
 .DiskusAdminNavBar > .dropdown-menu .dropdown-item {
   text-align: center;
-  padding: 10px 0px;
+  padding: 10px 10px;
   font-size: 13px !important;
   font-family: "MontserratMedium";
   border-bottom: 1px solid #dadada !important;
+  white-space: nowrap !important;
+  width: 100%;
 }

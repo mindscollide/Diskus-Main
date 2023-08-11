@@ -31,7 +31,7 @@ const UserSettings = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { settingReducer } = useSelector((state) => state);
-  const [securitystate, setSecuritystate] = useState(false);
+  const [securitystate, setSecuritystate] = useState(true);
   const [meetingsState, setmeetingsState] = useState(false);
   const [calender, setCalender] = useState(false);
   const [committee, setCommittee] = useState(false);

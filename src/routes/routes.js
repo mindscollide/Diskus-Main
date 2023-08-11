@@ -116,8 +116,9 @@ export const router = createHashRouter(
           <Route path="meeting" element={<Meeting />} />
           <Route path="Meeting2" element={<NewMeeting />} />
           <Route path="videochat" element={<VideoChat />} />
-          <Route path="setting" element={<CustomSetting />} />
-          <Route path="UserNewSettings" element={<UserSettings />} />
+          {/* <Route path="setting" element={<CustomSetting />} /> */}
+          <Route path="setting" element={<UserSettings />} />
+          {/* <Route path="UserNewSettings" element={<UserSettings />} /> */}
           <Route path="faq's" element={<CustomMiscellaneous />} />
           <Route path="groups" element={<Groups />} />
           <Route path="changePassword" element={<ChangePassword />} />
@@ -160,7 +161,8 @@ export const router = createHashRouter(
             element={<PackageUpgradeSelect />}
           />
           <Route path="CustomerInformation" element={<CustomerInformation />} />
-          <Route path="setting" element={<CustomSetting />} />
+          {/* <Route path="setting" element={<CustomSetting />} /> */}
+          <Route path="setting" element={<UserSettings />} />
         </Route>
       </Route>
       <Route element={<PrivateAdminRouteNonActive />}>
