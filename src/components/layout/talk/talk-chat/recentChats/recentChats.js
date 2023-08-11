@@ -17,6 +17,7 @@ import {
   BlockUnblockUser,
   DeleteShout,
   LeaveGroup,
+  GetAllUserChats,
 } from '../../../../../store/actions/Talk_action'
 import { Spin } from 'antd'
 import { TextField } from '../../../../elements'
@@ -64,14 +65,16 @@ const RecentChats = () => {
   const [chatHeadMenuActive, setChatHeadMenuActive] = useState(false)
 
   useEffect(() => {
+    dispatch(GetAllUserChats(navigate, currentUserId, currentOrganizationId, t))
+  }, [])
+
+  useEffect(() => {
     if (
       talkStateData.AllUserChats.AllUserChatsData !== undefined &&
       talkStateData.AllUserChats.AllUserChatsData !== null &&
       talkStateData.AllUserChats.AllUserChatsData.length !== 0
     ) {
-      setAllChatData(talkStateData?.AllUserChats?.AllUserChatsData?.allMessages)
-    } else {
-      setAllChatData([])
+      setAllChatData(talkStateData.AllUserChats.AllUserChatsData.allMessages)
     }
   }, [talkStateData.AllUserChats.AllUserChatsData])
 
@@ -193,44 +196,68 @@ const RecentChats = () => {
 
   useEffect(() => {
     // Find the index of the object in the second state with matching ID
-    const matchingIndex = allChatData.findIndex(
-      (obj) => obj.id === talkStateData.PushChatData.id,
-    )
+    if (allChatData.length !== 0) {
+      const matchingIndex = allChatData.findIndex(
+        (obj) => obj.id === talkStateData.PushChatData.id,
+      )
 
-    // If a match is found, replace the object at the matching index with the one from the first state
-    if (matchingIndex !== -1) {
-      const updatedAllChatData = [...allChatData] // Create a copy to avoid mutating state directly
-      updatedAllChatData[matchingIndex] = talkStateData.PushChatData
-      // Sort the updatedAllChatData based on messageDate and messageTime
-      updatedAllChatData.sort((a, b) => {
-        const aTimestamp = new Date(
-          `${a.messageDate.substr(0, 4)}-${a.messageDate.substr(
-            4,
-            2,
-          )}-${a.messageDate.substr(6, 2)} ${a.messageDate.substr(
-            8,
-            2,
-          )}:${a.messageDate.substr(10, 2)}:${a.messageDate.substr(12, 2)}`,
-        ).getTime()
+      // If a match is found, replace the object at the matching index with the one from the first state
+      if (matchingIndex !== -1) {
+        const updatedAllChatData = [...allChatData] // Create a copy to avoid mutating state directly
+        updatedAllChatData[matchingIndex] = talkStateData.PushChatData
+        // Sort the updatedAllChatData based on messageDate and messageTime
+        updatedAllChatData.sort((a, b) => {
+          const aTimestamp = new Date(
+            `${a.messageDate.substr(0, 4)}-${a.messageDate.substr(
+              4,
+              2,
+            )}-${a.messageDate.substr(6, 2)} ${a.messageDate.substr(
+              8,
+              2,
+            )}:${a.messageDate.substr(10, 2)}:${a.messageDate.substr(12, 2)}`,
+          ).getTime()
 
-        const bTimestamp = new Date(
-          `${b.messageDate.substr(0, 4)}-${b.messageDate.substr(
-            4,
-            2,
-          )}-${b.messageDate.substr(6, 2)} ${b.messageDate.substr(
-            8,
-            2,
-          )}:${b.messageDate.substr(10, 2)}:${b.messageDate.substr(12, 2)}`,
-        ).getTime()
+          const bTimestamp = new Date(
+            `${b.messageDate.substr(0, 4)}-${b.messageDate.substr(
+              4,
+              2,
+            )}-${b.messageDate.substr(6, 2)} ${b.messageDate.substr(
+              8,
+              2,
+            )}:${b.messageDate.substr(10, 2)}:${b.messageDate.substr(12, 2)}`,
+          ).getTime()
 
-        return bTimestamp - aTimestamp
-      })
+          return bTimestamp - aTimestamp
+        })
 
-      setAllChatData(updatedAllChatData)
+        setAllChatData(updatedAllChatData)
+      }
+    }
+    // Check if PushChatData is not empty
+    if (talkStateData.PushChatData.length !== 0) {
+      // Check if PushChatData.id is not equal to any existing object's id in allChatData
+      const isIdUnique = allChatData.every(
+        (obj) => obj.id !== talkStateData.PushChatData.id,
+      )
+
+      if (isIdUnique) {
+        setAllChatData((prevChatData) => [
+          talkStateData.PushChatData,
+          ...prevChatData,
+        ])
+      }
+    } else if (
+      allChatData.length === 0 &&
+      talkStateData.PushChatData.length !== 0
+    ) {
+      setAllChatData((prevChatData) => [
+        ...prevChatData,
+        talkStateData.PushChatData,
+      ])
     }
   }, [talkStateData.PushChatData])
 
-  console.log('All Chat Data', allChatData)
+  console.log('All Chat Data', allChatData, allChatData.length)
 
   //Making Data from MQTT Response
   useEffect(() => {
