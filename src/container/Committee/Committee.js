@@ -28,6 +28,7 @@ import CommitteeStatusModal from "../../components/elements/committeeChangeStatu
 
 const Committee = () => {
   const { CommitteeReducer } = useSelector((state) => state);
+  console.log(CommitteeReducer, "CommitteeReducerCommitteeReducerCommitteeReducer")
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -252,6 +253,7 @@ const Committee = () => {
   useEffect(() => {
     if (
       CommitteeReducer.ResponseMessage !== "" &&
+      CommitteeReducer.ResponseMessage !== undefined &&
       CommitteeReducer.ResponseMessage !== t("Data-available") &&
       CommitteeReducer.ResponseMessage !== t("No-data-available")
     ) {
@@ -340,12 +342,11 @@ const Committee = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                // className={styles["Committee-Main_Scrollbar"]}
+              // className={styles["Committee-Main_Scrollbar"]}
               >
                 <Row
-                  className={`${"d-flex text-center committees_box  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1"} ${
-                    styles["committess_box"]
-                  }`}
+                  className={`${"d-flex text-center committees_box  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1"} ${styles["committess_box"]
+                    }`}
                 >
                   <Col sm={12} md={12} lg={12} className="m-0 p-0 mt-2 ">
                     <Row>
@@ -392,10 +393,10 @@ const Committee = () => {
                                   data.committeeStatusID === 1
                                     ? t("View-committee")
                                     : data.committeeStatusID === 2
-                                    ? ""
-                                    : data.committeeStatusID === 3
-                                    ? t("Update-committee")
-                                    : ""
+                                      ? ""
+                                      : data.committeeStatusID === 3
+                                        ? t("Update-committee")
+                                        : ""
                                 }
                               />
                             </Col>
