@@ -10,6 +10,7 @@ import { Checkbox } from "antd";
 import SecurityIcon from "../../../assets/images/SecuritySetting.svg";
 import MeetingIcon from "../../../assets/images/MeetingSetting.svg";
 import Calender from "../../../assets/images/CalenderSetting.svg";
+import pollsIcon from "../../../assets/images/pollsIcon.svg";
 import Committee from "../../../assets/images/CommitteSetting.svg";
 import GroupIcon from "../../../assets/images/GroupSetting.svg";
 import ResolutionIcon from "../../../assets/images/ResolutionSetting.svg";
@@ -28,6 +29,7 @@ const UserSettings = () => {
   const [committee, setCommittee] = useState(false);
   const [group, setGroup] = useState(false);
   const [resolution, setResolution] = useState(false);
+  const [polls, setpolls] = useState(false);
   const [userOptionsSettings, setUserOptionsSettings] = useState({
     Is2FAEnabled: false,
     EmailOnNewMeeting: false,
@@ -64,6 +66,14 @@ const UserSettings = () => {
     DiskusCalenderColor: "",
     GoogleCalenderColor: "",
     MicrosoftCalenderColor: "",
+    EmailWhenNewPollIsPublished: false,
+    EmailWhenPollDueDateIsPassed: false,
+    EmailWhenPublishedPollIsDeleted: false,
+    EmailWhenPublishedPollIsUpdated: false,
+    PushNotificationWhenNewPollIsPublished: false,
+    PushNotificationWhenPollDueDateIsPassed: false,
+    PushNotificationWhenPublishedPollIsDeleted: false,
+    PushNotificationWhenPublishedPollIsUpdated: false,
   });
 
   useEffect(() => {
@@ -160,6 +170,26 @@ const UserSettings = () => {
           GoogleCalenderColor: settingReducer.UserProfileData.googleEventColor,
           MicrosoftCalenderColor:
             settingReducer.UserProfileData.officeEventColor,
+          EmailWhenNewPollIsPublished:
+            settingReducer.UserProfileData.emailWhenNewPollIsPublished,
+          EmailWhenPollDueDateIsPassed:
+            settingReducer.UserProfileData.emailWhenPollDueDateIsPassed,
+          EmailWhenPublishedPollIsDeleted:
+            settingReducer.UserProfileData.emailWhenPublishedPollIsDeleted,
+          EmailWhenPublishedPollIsUpdated:
+            settingReducer.UserProfileData.emailWhenPublishedPollIsUpdated,
+          PushNotificationWhenNewPollIsPublished:
+            settingReducer.UserProfileData
+              .pushNotificationWhenNewPollIsPublished,
+          PushNotificationWhenPollDueDateIsPassed:
+            settingReducer.UserProfileData
+              .pushNotificationWhenPollDueDateIsPassed,
+          PushNotificationWhenPublishedPollIsDeleted:
+            settingReducer.UserProfileData
+              .pushNotificationWhenPublishedPollIsDeleted,
+          PushNotificationWhenPublishedPollIsUpdated:
+            settingReducer.UserProfileData
+              .pushNotificationWhenPublishedPollIsUpdated,
         });
       }
     }
@@ -177,6 +207,7 @@ const UserSettings = () => {
     setCommittee(false);
     setGroup(false);
     setResolution(false);
+    setpolls(false);
   };
 
   const openMeetingTab = () => {
@@ -186,6 +217,7 @@ const UserSettings = () => {
     setCommittee(false);
     setGroup(false);
     setResolution(false);
+    setpolls(false);
   };
 
   const openCalenderTab = () => {
@@ -195,6 +227,7 @@ const UserSettings = () => {
     setCommittee(false);
     setGroup(false);
     setResolution(false);
+    setpolls(false);
   };
 
   const openCommitteTab = () => {
@@ -204,6 +237,7 @@ const UserSettings = () => {
     setSecuritystate(false);
     setGroup(false);
     setResolution(false);
+    setpolls(false);
   };
 
   const openGroupTab = () => {
@@ -213,10 +247,21 @@ const UserSettings = () => {
     setmeetingsState(false);
     setSecuritystate(false);
     setResolution(false);
+    setpolls(false);
   };
 
   const openResolutionTab = () => {
     setResolution(true);
+    setGroup(false);
+    setCommittee(false);
+    setCalender(false);
+    setmeetingsState(false);
+    setSecuritystate(false);
+    setpolls(false);
+  };
+  const openPollsTab = () => {
+    setpolls(true);
+    setResolution(false);
     setGroup(false);
     setCommittee(false);
     setCalender(false);
@@ -434,6 +479,70 @@ const UserSettings = () => {
       ...userOptionsSettings,
       EmailWhenResolutionIsCirculated:
         !userOptionsSettings.EmailWhenResolutionIsCirculated,
+    });
+  };
+
+  const onChangeWhenNewPollIsPublished = () => {
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      EmailWhenNewPollIsPublished:
+        !userOptionsSettings.EmailWhenNewPollIsPublished,
+    });
+  };
+
+  const onChangeWhenPollsDueDateIsPassed = () => {
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      EmailWhenPollDueDateIsPassed:
+        !userOptionsSettings.EmailWhenPollDueDateIsPassed,
+    });
+  };
+
+  const onChangeWhenPublishedPollIsDeleted = () => {
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      EmailWhenPublishedPollIsDeleted:
+        !userOptionsSettings.EmailWhenPublishedPollIsDeleted,
+    });
+  };
+
+  const onChangeWhenPublishedPollIsUpdated = () => {
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      EmailWhenPublishedPollIsUpdated:
+        !userOptionsSettings.EmailWhenPublishedPollIsUpdated,
+    });
+  };
+
+  const onChangePushNotificationWhenNewPollIsPublished = () => {
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      PushNotificationWhenNewPollIsPublished:
+        !userOptionsSettings.PushNotificationWhenNewPollIsPublished,
+    });
+  };
+
+  const onChangePushNotificationWhenPollsDueDateIsPassed = () => {
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      PushNotificationWhenPollDueDateIsPassed:
+        !userOptionsSettings.PushNotificationWhenPollDueDateIsPassed,
+    });
+  };
+
+  const onChangePushNotificationWhenPublishedPollIsDeleted = () => {
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      PushNotificationWhenPublishedPollIsDeleted:
+        !userOptionsSettings.PushNotificationWhenPublishedPollIsDeleted,
+    });
+  };
+
+  const onChangePushNotificationWhenPublishedPollisUpdated = () => {
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      PushNotificationWhenPublishedPollIsUpdated:
+        !userOptionsSettings.PushNotificationWhenPublishedPollIsUpdated,
     });
   };
 
@@ -670,6 +779,30 @@ const UserSettings = () => {
                         }
                       >
                         {t("Resolution")}
+                      </span>
+                    </Col>
+                  </Row>
+                </div>
+                <hr />
+                <div onClick={openPollsTab} className="cursor-pointer">
+                  <Row className="mt-3">
+                    <Col
+                      lg={2}
+                      md={2}
+                      sm={12}
+                      className="d-flex align-items-center"
+                    >
+                      <img src={pollsIcon} width="33.52px" height="34.59px" />
+                    </Col>
+                    <Col lg={10} md={10} ms={12}>
+                      <span
+                        className={
+                          polls
+                            ? styles["Options_headings_active"]
+                            : styles["Options_headings"]
+                        }
+                      >
+                        {t("Polls")}
                       </span>
                     </Col>
                   </Row>
@@ -1215,6 +1348,134 @@ const UserSettings = () => {
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t("Push-notification-when-resolution-is-closed")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                  </>
+                ) : null}
+                {polls ? (
+                  <>
+                    <Row className="mt-4">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeWhenNewPollIsPublished}
+                          checked={
+                            userOptionsSettings.EmailWhenNewPollIsPublished
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-new-poll-is-published")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeWhenPollsDueDateIsPassed}
+                          checked={
+                            userOptionsSettings.EmailWhenPollDueDateIsPassed
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-poll-duedate-is-passed")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeWhenPublishedPollIsDeleted}
+                          checked={
+                            userOptionsSettings.EmailWhenPublishedPollIsDeleted
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-published-poll-is-deleted")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeWhenPublishedPollIsUpdated}
+                          checked={
+                            userOptionsSettings.EmailWhenPublishedPollIsUpdated
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-published-poll-is-updated")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={
+                            onChangePushNotificationWhenNewPollIsPublished
+                          }
+                          checked={
+                            userOptionsSettings.PushNotificationWhenNewPollIsPublished
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-new-poll-is-published")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={
+                            onChangePushNotificationWhenPollsDueDateIsPassed
+                          }
+                          checked={
+                            userOptionsSettings.PushNotificationWhenPollDueDateIsPassed
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-poll-duedate-is-passed")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={
+                            onChangePushNotificationWhenPublishedPollIsDeleted
+                          }
+                          checked={
+                            userOptionsSettings.PushNotificationWhenPublishedPollIsDeleted
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t(
+                              "Push-notification-when-published-poll-is-deleted"
+                            )}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={
+                            onChangePushNotificationWhenPublishedPollisUpdated
+                          }
+                          checked={
+                            userOptionsSettings.PushNotificationWhenPublishedPollIsUpdated
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t(
+                              "Push-notification-when-published-poll-is--updated"
+                            )}
                           </span>
                         </Checkbox>
                       </Col>
