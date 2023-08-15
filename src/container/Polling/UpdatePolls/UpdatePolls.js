@@ -281,7 +281,6 @@ const UpdatePolls = () => {
               }
             }
           } else if (seledtedData.type === 2) {
-            console.log("members check");
             let check1 = pollsData.committees.find(
               (data, index) => data.committeeID === seledtedData.value
             );
@@ -326,7 +325,6 @@ const UpdatePolls = () => {
       } catch {
         console.log("error in add");
       }
-      console.log("members check", tem);
       const uniqueData = new Set(tem.map(JSON.stringify));
 
       // Convert the Set back to an array of objects
@@ -387,7 +385,6 @@ const UpdatePolls = () => {
   const changeDateStartHandler = (date) => {
     let newDate = moment(date).format("YYYYMMDD");
     let DateDate = new Date(date);
-    console.log("changeDateStartHandler", newDate);
     setUpdatePolls({
       ...UpdatePolls,
       date: DateDate,
@@ -489,23 +486,23 @@ const UpdatePolls = () => {
           flag: true,
           message: t("Select-date"),
         });
-      } else if (Object.keys(pollmembers).length > 0) {
+      } else if (Object.keys(pollmembers).length === 0) {
         setOpen({
           ...open,
           flag: true,
           message: t("Atleat-one-member-required"),
         });
-      } else if (Object.keys(options).length >= 2) {
+      } else if (Object.keys(options).length <= 2) {
         setOpen({
           ...open,
           flag: true,
           message: t("Required-atleast-two-options"),
         });
-      } else if (allValuesNotEmpty) {
+      } else if (!allValuesNotEmpty) {
         setOpen({
           ...open,
           flag: true,
-          message: t("Please-fill-all-reqired-fields"),
+          message: t("Please-fill-all-open-option-fields"),
         });
       } else {
         setOpen({
@@ -801,8 +798,10 @@ const UpdatePolls = () => {
                                                       src={WhiteCrossIcon}
                                                       width="31.76px"
                                                       height="31.76px"
-                                                      onClick={
-                                                        HandleCancelFunction
+                                                      onClick={() =>
+                                                        HandleCancelFunction(
+                                                          index
+                                                        )
                                                       }
                                                       className={
                                                         styles[
@@ -1078,16 +1077,6 @@ const UpdatePolls = () => {
                               />
                             </>
                           )}
-                          {/* <Button
-                            text={t("Update")}
-                            className={styles["Update_btn_class"]}
-                            onClick={() => handleUpdateClick(1)}
-                          />
-                          <Button
-                            text={t("Update-and-publish")}
-                            className={styles["Update_Publish_btn_class"]}
-                            onClick={() => handleUpdateClick(2)}
-                          /> */}
                         </Col>
                       </Row>
                     </Col>
