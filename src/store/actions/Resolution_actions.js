@@ -518,45 +518,34 @@ const updateResolution = (
               setEditResoutionPage,
               t,
               no,
-              circulated
+              circulated,
+              setResolutionUpdateSuccessfully
             )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage.toLowerCase() ===
-              "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_01".toLowerCase()
-            ) {
-              dispatch(
-                updateResolution_Success(
-                  response.data.responseResult.resolutionID
-                )
-              );
-
-              if (no === 1) {
-                setNewresolution(false);
-              } else {
-                setEditResoutionPage(false);
-              }
+            if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_01".toLowerCase()) {
+              dispatch(updateResolution_Success(t("Resolution-circulated-successfully")))
               if (Number(resolutionView) === 1) {
-                dispatch(getResolutions(navigate, Number(currentView), t));
-                dispatch(getVoterResolution(navigate, Number(currentView), t));
-              }
-
-              dispatch(
-                updateResolution_Success(
-                  t("Resolution-details-updated-successfully")
-                )
-              );
-              if (no === 1) {
-                setNewresolution(false);
+                dispatch(getResolutions(navigate, Number(currentView), t))
               } else {
-                setEditResoutionPage(false);
+                dispatch(getVoterResolution(navigate, Number(currentView), t))
               }
+              setNewresolution(false)
+            } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_02".toLowerCase()) {
+              dispatch(updateResolution_Fail(t("Failed-to-update-resolution-status")))
+            } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_03".toLowerCase()) {
+              dispatch(updateResolution_Success(t("Resolution-details-updated-successfully")))
               if (Number(resolutionView) === 1) {
-                dispatch(getResolutions(navigate, Number(currentView), t));
+                dispatch(getResolutions(navigate, Number(currentView), t))
               } else {
-                dispatch(getVoterResolution(navigate, Number(currentView), t));
+                dispatch(getVoterResolution(navigate, Number(currentView), t))
+              }
+              if (circulated === 1) {
+                setEditResoutionPage(false)
+                setResolutionUpdateSuccessfully(false)
+              } else {
+                setNewresolution(false)
               }
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
