@@ -10,12 +10,15 @@ import { router } from "./routes/routes";
 import { GoogleOAuthProvider } from '@react-oauth/google'
 import { ConfigProvider } from 'antd';
 import ar_EG from 'antd/es/locale/ar_EG';
+import en_US from 'antd/es/locale/en_US'
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
+let currentLanguage = localStorage.getItem("i18nextLng")
 root.render(
   <GoogleOAuthProvider clientId="509020224191-pst82a2kqjq33phenb35b0bg1i0q762o.apps.googleusercontent.com" >
     <Provider store={store}>
       <Suspense fallback={<Loader />}>
-        <ConfigProvider locale={ar_EG}>
+        <ConfigProvider locale={currentLanguage === "en" ? en_US : ar_EG} >
           <RouterProvider router={router} />
         </ConfigProvider>
       </Suspense>
