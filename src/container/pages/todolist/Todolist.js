@@ -238,30 +238,19 @@ const TodoList = () => {
 
   // for search Date handler
   const tableTodoChange = (pagination, filters, sorter) => {
-    console.log('Various parameters', filters)
     let newArrData = []
     let todoStatus = filters.status
-    console.log('Various parameters', filters.status)
     if (
       todoStatus !== null &&
       todoStatus !== undefined &&
       todoStatus.length > 0
     ) {
-      console.log(todoStatus, 'tableTodoChangetableTodoChange')
       todoStatus.map((statusValue, index) => {
-        console.log(statusValue, 'tableTodoChangetableTodoChange')
         let newArr = toDoListReducer.SearchTodolist.toDoLists.filter(
           (data, index) => {
-            console.log(data, 'tableTodoChangetableTodoChange')
-            // console.log(data.status.status === statusValue, "tableTodoChangetableTodoChange")
             return data.status.status === statusValue
           },
         )
-        console.log(
-          toDoListReducer.SearchTodolist.toDoLists,
-          'tableTodoChangetableTodoChange',
-        )
-        console.log(newArr, 'newArrnewArrnewArr')
         if (newArr.length > 0) {
           setRowToDo(newArr)
         } else {
@@ -272,42 +261,12 @@ const TodoList = () => {
       setRowToDo(toDoListReducer.SearchTodolist.toDoLists)
     }
 
-    // if (filters.status.length > 0) {
-    //   filters.status.map((data, index) => {
-    //     console.log(data, index)
-    //     let newArry = toDoListReducer.AllTodolistData.filter((filterData, index) => {
-    //       return filterData.status.status.toLowerCase() === data.toLowerCase();
-    //     })
-    //     if (newArry.length > 0) {
-    //       setRowToDo(newArry);
-    //     } else {
-    //       setRowToDo(toDoListReducer.AllTodolistData);
-    //     }
-    //   })
-    // }
-    // if (newArray.length > 0) {
-    //   setRowToDo(newArray);
-    // } else {
-    //   setRowToDo(toDoListReducer.AllTodolistData);
-    // }
-    // console.log("Various parameters", rowsToDo);
-    // let newArray = toDoListReducer.AllTodolistData.filter((data, index) => {
-    //   // console.log("newArraynewArraynewArray", data.status, filters)
-    //   return data.status.status === filters;
-    // });
-    // console.log("newArraynewArraynewArray", newArray);
-    // if (newArray.length > 0) {
-    //   setRowToDo(newArray);
-    // } else {
-    //   setRowToDo(toDoListReducer.AllTodolistData);
-    // }
   }
 
   const deleteTodolist = (record) => {
     console.log('deleteTodolist', record)
     dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t)).then(
       (response) => {
-        console.log(response, 'updateTodoStatusFuncupdateTodoStatusFunc')
       },
     )
     if (todoListPageSize !== null && todoListCurrentPage !== null) {
@@ -325,8 +284,6 @@ const TodoList = () => {
       localStorage.setItem('todoListRow', 50)
       dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t))
     }
-    // let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
-    // dispatch(GetTodoListByUser(navigate, data, t));
   }
 
   const columnsToDo = [
