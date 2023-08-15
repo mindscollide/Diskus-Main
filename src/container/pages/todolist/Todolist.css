@@ -8,10 +8,12 @@
   overflow: hidden;
   font-size: 14px;
   font-family: "MontserratSemiBold-600";
+  color: #2197d7 !important;
 }
 
 body[dir="rtl"] .todolist-title-col {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+  color: #2197d7 !important;
 }
 
 .blue {

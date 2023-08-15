@@ -6,7 +6,7 @@
 
 .meeting-title {
   cursor: pointer;
-  color: #505050;
+  color: #2197d7 !important;
   font-weight: normal;
   font-style: normal;
   font-size: calc(17px - 20%);
