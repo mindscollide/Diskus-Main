@@ -9,7 +9,7 @@ import {
   SelectBox,
 } from "../../components/elements";
 import { Col, Row } from "react-bootstrap";
-import { Pagination } from 'antd'
+import { Pagination } from "antd";
 import searchicon from "../../assets/images/searchicon.svg";
 import plusbutton from "../../assets/images/Group 119.svg";
 import thumbsup from "../../assets/images/thumbsup.svg";
@@ -27,14 +27,12 @@ import Cross from "../../assets/images/Cross-Chat-Icon.png";
 import EditResolution from "../../components/elements/EditResolution/EditResolution";
 import {
   clearResponseMessage,
-  currentResolutionView,
   getResolutionbyResolutionID,
   getResolutionResult,
   getResolutions,
   getVotesDetails,
   getVoterResolution,
-  currentClosedView,
-  cancelResolutionApi,
+  createResolutionModal,
 } from "../../store/actions/Resolution_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { Spin } from "antd";
@@ -52,25 +50,25 @@ import AttachmentIcon from "../../assets/images/resolutions/Attachment_Resolutio
 import EmptyResolution from "../../assets/images/resolutions/Empty_Resolution.svg";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
-import { XSquare } from 'react-bootstrap-icons'
+import { XSquare } from "react-bootstrap-icons";
 import SearchInputSuggestion from "../../components/elements/searchInputResolution/searchInputsuggestion";
 import numeral from "numeral";
 import ModalCancellResolution2 from "../ModalCancellResolution2/ModalCancellResolution";
-
+import CrossResolution from "../../assets/images/resolutions/cross_icon_resolution.svg";
 const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { ResolutionReducer } = useSelector((state) => state);
   const [currentPageSize, setCurrentPageSize] = useState(10);
-  const [totalResolution, setTotalResolution] = useState(0)
-  const [currentPageVoter, setCurrentPageVoter] = useState(1)
-  const [totalVoterResolution, setTotalVoterResolution] = useState(0)
+  const [totalResolution, setTotalResolution] = useState(0);
+  const [currentPageVoter, setCurrentPageVoter] = useState(1);
+  const [totalVoterResolution, setTotalVoterResolution] = useState(0);
   const [newresolution, setNewresolution] = useState(false);
-  const [cancelResolutionModal, setCancelResolutionModal] = useState(false)
-  const [resolutionIDForCancel, setResolutionIDForCancel] = useState(0)
+  const [cancelResolutionModal, setCancelResolutionModal] = useState(false);
+  const [resolutionIDForCancel, setResolutionIDForCancel] = useState(0);
   let currentLanguage = localStorage.getItem("i18nextLng");
-  moment.locale(currentLanguage)
+  moment.locale(currentLanguage);
   const [viewresolution, setViewresolution] = useState(false);
   const [resultresolution, setResultresolution] = useState(false);
   const [voteresolution, setVoteresolution] = useState(false);
@@ -90,8 +88,7 @@ const Resolution = () => {
   let moderatorRows = localStorage.getItem("moderatorRows");
   let voterPage = localStorage.getItem("voterPage");
   let voterRows = localStorage.getItem("voterRows");
-  let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"))
-
+  let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"));
 
   // call resolution
   useEffect(() => {
@@ -103,27 +100,26 @@ const Resolution = () => {
       } else if (resolutionView === 2 && buttonTab !== null) {
         localStorage.setItem("resolutionView", resolutionView);
         localStorage.setItem("ButtonTab", buttonTab);
-        dispatch(getVoterResolution(navigate, buttonTab, t))
+        dispatch(getVoterResolution(navigate, buttonTab, t));
       } else {
-        localStorage.setItem("moderatorPage", 1)
-        localStorage.setItem("moderatorRows", 50)
-        localStorage.setItem("voterPage", 1)
-        localStorage.setItem("voterRows", 50)
+        localStorage.setItem("moderatorPage", 1);
+        localStorage.setItem("moderatorRows", 50);
+        localStorage.setItem("voterPage", 1);
+        localStorage.setItem("voterRows", 50);
         localStorage.setItem("resolutionView", 1);
         localStorage.setItem("ButtonTab", 1);
         dispatch(getResolutions(navigate, 1, t));
       }
-    } catch { }
+    } catch {}
 
     return () => {
-      localStorage.removeItem("moderatorPage")
-      localStorage.removeItem("moderatorRows")
-      localStorage.removeItem("voterPage")
-      localStorage.removeItem("voterRows")
-      localStorage.removeItem("ResolutionID")
-    }
+      localStorage.removeItem("moderatorPage");
+      localStorage.removeItem("moderatorRows");
+      localStorage.removeItem("voterPage");
+      localStorage.removeItem("voterRows");
+      localStorage.removeItem("ResolutionID");
+    };
   }, []);
-
 
   const [searchModalDates, setSearchModalDates] = useState({
     circulationDate: "",
@@ -139,91 +135,67 @@ const Resolution = () => {
     if (ResolutionReducer.currentResolutionView === 1) {
       let moderatordata = [...ResolutionReducer.GetResolutions];
       let data = moderatordata.filter((a) => {
-        console.log(
-          removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-          removeDashesFromDate(
-            editResolutionDate(searchModalDates.circulationDate)
-          ),
-          "datadatadatadata"
-        );
-        // console.log(a, "datadatadatadata")
-        // console.log(removeDashesFromDate(
-        //   editResolutionDate(a.circulationDate)), "datadatadatadata")
         return (
           (searchModalDates.circulationDate != "" &&
-            searchModalDates.votingDate != ""
+          searchModalDates.votingDate != ""
             ? removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.circulationDate)
-            ) &&
-            removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.votingDate)
-            )
+                removeDashesFromDate(
+                  editResolutionDate(searchModalDates.circulationDate)
+                ) &&
+              removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
+                removeDashesFromDate(
+                  editResolutionDate(searchModalDates.votingDate)
+                )
             : a) &&
           (searchModalDates.circulationDate != "" &&
-            searchModalDates.votingDate === ""
+          searchModalDates.votingDate === ""
             ? removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.circulationDate)
-            )
+              removeDashesFromDate(
+                editResolutionDate(searchModalDates.circulationDate)
+              )
             : removeDashesFromDate(editResolutionDate(a.circulationDate))) &&
           (searchModalDates.votingDate != "" &&
-            searchModalDates.circulationDate === ""
+          searchModalDates.circulationDate === ""
             ? removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.votingDate)
-            )
+              removeDashesFromDate(
+                editResolutionDate(searchModalDates.votingDate)
+              )
             : removeDashesFromDate(editResolutionDate(a.votingDeadline)))
         );
       });
-      console.log(data, "datadatadatadata");
       setRows(data);
       setSearchIcon(false);
     } else if (ResolutionReducer.currentResolutionView === 2) {
       let voterData = [...ResolutionReducer.searchVoterResolution];
       let data = voterData.filter((a) => {
-        console.log(
-          removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-          removeDashesFromDate(
-            editResolutionDate(searchModalDates.circulationDate)
-          ),
-          "datadatadatadata"
-        );
-        console.log(a, "datadatadatadata");
-        console.log(
-          removeDashesFromDate(editResolutionDate(a.decisionDate)),
-          "datadatadatadata"
-        );
         return (
           (searchModalDates.circulationDate != "" &&
-            searchModalDates.votingDate != ""
+          searchModalDates.votingDate != ""
             ? removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.circulationDate)
-            ) &&
-            removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.votingDate)
-            )
+                removeDashesFromDate(
+                  editResolutionDate(searchModalDates.circulationDate)
+                ) &&
+              removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
+                removeDashesFromDate(
+                  editResolutionDate(searchModalDates.votingDate)
+                )
             : a) &&
           (searchModalDates.circulationDate != "" &&
-            searchModalDates.votingDate === ""
+          searchModalDates.votingDate === ""
             ? removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.circulationDate)
-            )
+              removeDashesFromDate(
+                editResolutionDate(searchModalDates.circulationDate)
+              )
             : removeDashesFromDate(editResolutionDate(a.decisionDate))) &&
           (searchModalDates.votingDate != "" &&
-            searchModalDates.circulationDate === ""
+          searchModalDates.circulationDate === ""
             ? removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-            removeDashesFromDate(
-              editResolutionDate(searchModalDates.votingDate)
-            )
+              removeDashesFromDate(
+                editResolutionDate(searchModalDates.votingDate)
+              )
             : removeDashesFromDate(editResolutionDate(a.votingDeadline)))
         );
       });
-      console.log(data, "datadatadatadata");
       setSearchIcon(false);
       setSearchVoter(data);
     }
@@ -299,6 +271,7 @@ const Resolution = () => {
   };
 
   const createresolution = () => {
+    dispatch(createResolutionModal(true));
     setAllSearchInput("");
     setSearchModalDates({
       circulationDate: "",
@@ -307,32 +280,16 @@ const Resolution = () => {
     setSearchIcon(false);
     setNewresolution(true);
   };
-
+  console.log(
+    ResolutionReducer,
+    "ResolutionReducerResolutionReducerResolutionReducer"
+  );
   const handleUpdateResolutionAction = (id) => {
-    console.log(id, "Asdasdasd");
-    dispatch(
-      getResolutionbyResolutionID(
-        navigate,
-        id,
-        t,
-        setEditResoutionPage,
-        setViewresolution,
-        1
-      )
-    );
+    dispatch(getResolutionbyResolutionID(navigate, id, t, 1));
   };
 
   const viewResolution = (id) => {
-    dispatch(
-      getResolutionbyResolutionID(
-        navigate,
-        id,
-        t,
-        setEditResoutionPage,
-        setViewresolution,
-        2
-      )
-    );
+    dispatch(getResolutionbyResolutionID(navigate, id, t, 2));
   };
 
   const getResultHandle = (id) => {
@@ -341,22 +298,16 @@ const Resolution = () => {
 
   const getVoteDetailHandler = (id, data) => {
     dispatch(getVotesDetails(navigate, id, t, setVoteresolution));
-    setVoterID(data.voterID)
+    setVoterID(data.voterID);
   };
 
   const filterResolution = (e) => {
     let value = e.target.value;
     setAllSearchInput(value);
-    console.log(
-      ResolutionReducer.currentResolutionView,
-      value,
-      "moderatorDatamoderatorDatamoderatorDatavalue"
-    );
     if (resolutionView !== null && resolutionView === 2) {
       let y = [...ResolutionReducer.searchVoterResolution];
       if (value != "") {
         let x = y.filter((a) => {
-          console.log(a, "moderatorDatamoderatorDatamoderatorDatavalue");
           return (
             (value != ""
               ? a.resolutionTitle.toLowerCase().includes(value.toLowerCase())
@@ -376,13 +327,8 @@ const Resolution = () => {
     } else if (resolutionView !== null && resolutionView === 1) {
       // isSearchVoter
       let moderatordata = [...ResolutionReducer.GetResolutions];
-      console.log(
-        moderatordata,
-        "moderatorDatamoderatorDatamoderatorDatavalue"
-      );
       if (value != "") {
         let x = moderatordata.filter((a) => {
-          console.log(a, "moderatorDatamoderatorDatamoderatorDatavalue");
           return (
             (value != ""
               ? a.resolutionTitle.toLowerCase().includes(value.toLowerCase())
@@ -397,16 +343,12 @@ const Resolution = () => {
         setRows(ResolutionReducer.GetResolutions);
       }
     }
-    console.log(
-      e.target.value,
-      "filterResolutionfilterResolutionfilterResolutionfilterResolution"
-    );
   };
 
   const OpenCancelModal = (id) => {
-    setResolutionIDForCancel(id)
-    setCancelResolutionModal(true)
-  }
+    setResolutionIDForCancel(id);
+    setCancelResolutionModal(true);
+  };
 
   const changeSearchDateHandler = (e) => {
     let name = e.target.name;
@@ -415,12 +357,6 @@ const Resolution = () => {
       ...searchModalDates,
       [name]: value,
     });
-    console.log(
-      searchModalDates,
-      name,
-      value,
-      "searchModalDatessearchModalDates"
-    );
   };
 
   const viewAttachmentHandle = (data) => {
@@ -500,37 +436,23 @@ const Resolution = () => {
       align: "center",
       width: "76px",
       render: (text, data) => {
-        console.log(text, "texttexttexttexttext")
         if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else if (text === "Not Approved") {
-          return <span className={styles["decision_non_Approved"]}>{text}</span>;
+          return (
+            <span className={styles["decision_non_Approved"]}>{text}</span>
+          );
         } else if (text === "Pending") {
-          return <span className={styles["decision_text_Pending"]}>{text}</span>;
+          return (
+            <span className={styles["decision_text_Pending"]}>{text}</span>
+          );
         } else {
-          return <span className={styles["decision_text_Pending"]}>{text}</span>;
+          return (
+            <span className={styles["decision_text_Pending"]}>{text}</span>
+          );
         }
       },
     },
-    // {
-    //   title: t("Vote"),
-    //   dataIndex: "isVoter",
-    //   align: "Vote",
-    //   key: "isVoter",
-    //   width: "55px",
-    //   render: (table, data) => {
-    //     console.log(table, data, "VoteResolution");
-    //     if (table) {
-    //       return (
-    //         <Button
-    //           text="Vote"
-    //           className={styles["Resolution-vote-btn"]}
-    //           onClick={() => getVoteDetailHandler(data.resolutionID)}
-    //         />
-    //       );
-    //     } else return;
-    //   },
-    // },
     {
       title: t("Vote-count"),
       dataIndex: "voteCount",
@@ -579,7 +501,16 @@ const Resolution = () => {
       render: (table, data) => {
         if (data.resolutionStatus === "Closed") {
         } else if (data.resolutionStatus === "Circulated") {
-          return <span className={styles["Edit_Icon_moderator"]}><XSquare className="cursor-pointer" width={22} height={22} onClick={() => OpenCancelModal(data.resolutionID)} /></span>
+          return (
+            <span className={styles["Edit_Icon_moderator"]}>
+              <img
+                src={CrossResolution}
+                width={22}
+                height={22}
+                onClick={() => OpenCancelModal(data.resolutionID)}
+              />
+            </span>
+          );
         } else {
           return (
             <img
@@ -668,7 +599,9 @@ const Resolution = () => {
         if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else if (text === "Not Approved") {
-          return <span className={styles["decision_non_Approved"]}>{text}</span>;
+          return (
+            <span className={styles["decision_non_Approved"]}>{text}</span>
+          );
         } else {
           <span className={styles["decision_text_Pending"]}>{text}</span>;
         }
@@ -706,7 +639,7 @@ const Resolution = () => {
             />
           );
         } else {
-          return ""
+          return "";
         }
       },
     },
@@ -855,7 +788,9 @@ const Resolution = () => {
         if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else if (text === "Not Approved") {
-          return <span className={styles["decision_non_Approved"]}>{text}</span>;
+          return (
+            <span className={styles["decision_non_Approved"]}>{text}</span>
+          );
         } else {
           <span className={styles["decision_text_Pending"]}>{text}</span>;
         }
@@ -932,9 +867,13 @@ const Resolution = () => {
       render: (text, data) => {
         console.log(data, "datadatadatadatadatadata");
         if (data.isAttachmentAvailable) {
-          return <img className="text-center cursor-pointer"
-            src={AttachmentIcon}
-            onClick={() => viewAttachmentHandle(data.attachments)} />;
+          return (
+            <img
+              className="text-center cursor-pointer"
+              src={AttachmentIcon}
+              onClick={() => viewAttachmentHandle(data.attachments)}
+            />
+          );
         } else {
         }
       },
@@ -980,7 +919,6 @@ const Resolution = () => {
             return <p className="text-center"></p>;
           }
         }
-
       },
     },
     {
@@ -1002,7 +940,6 @@ const Resolution = () => {
 
   // resolution view
   const resolutionTable = (viewID) => {
-    // dispatch(currentResolutionView(viewID));
     setAllSearchInput("");
     setSearchModalDates({
       circulationDate: "",
@@ -1010,60 +947,61 @@ const Resolution = () => {
     });
     setSearchIcon(false);
     if (viewID === 1) {
-      localStorage.setItem("resolutionView", 1)
+      localStorage.setItem("resolutionView", 1);
       if (buttonTab !== null && buttonTab === 3) {
-        dispatch(getResolutions(navigate, 3, t))
+        dispatch(getResolutions(navigate, 3, t));
       } else if (buttonTab !== null && buttonTab === 1) {
-        dispatch(getResolutions(navigate, 1, t))
+        dispatch(getResolutions(navigate, 1, t));
       } else if (buttonTab !== null && buttonTab === 2) {
-        dispatch(getResolutions(navigate, 2, t))
+        dispatch(getResolutions(navigate, 2, t));
       }
-      // dispatch(getResolutions(navigate, 1, t));
-      // dispatch(currentClosedView(1));
     } else {
-      localStorage.setItem("resolutionView", 2)
+      localStorage.setItem("resolutionView", 2);
       if (buttonTab !== null && buttonTab === 3) {
-        dispatch(getVoterResolution(navigate, 3, t))
+        dispatch(getVoterResolution(navigate, 3, t));
       } else if (buttonTab !== null && buttonTab === 1) {
-        dispatch(getVoterResolution(navigate, 1, t))
+        dispatch(getVoterResolution(navigate, 1, t));
       } else if (buttonTab !== null && buttonTab === 2) {
-        dispatch(getVoterResolution(navigate, 2, t))
+        dispatch(getVoterResolution(navigate, 2, t));
       }
-      // dispatch(currentClosedView(1));
     }
   };
 
   // change resoltion moderator pagination
   const handleChangeResolutionPagination = async (current, pageSize) => {
-    console.log(current, pageSize, "handleChangeResolutionPagination")
-    await localStorage.setItem("moderatorPage", current)
-    await localStorage.setItem("moderatorRows", pageSize)
+    console.log(current, pageSize, "handleChangeResolutionPagination");
+    await localStorage.setItem("moderatorPage", current);
+    await localStorage.setItem("moderatorRows", pageSize);
     if (buttonTab !== null && buttonTab === 3) {
-      dispatch(getResolutions(navigate, 3, t))
+      dispatch(getResolutions(navigate, 3, t));
     } else if (buttonTab !== null && buttonTab === 1) {
-      dispatch(getResolutions(navigate, 1, t))
+      dispatch(getResolutions(navigate, 1, t));
     } else if (buttonTab !== null && buttonTab === 2) {
-      dispatch(getResolutions(navigate, 2, t))
+      dispatch(getResolutions(navigate, 2, t));
     }
-  }
+  };
 
   // change resolution voter pagination
   const handleChangeVoterResolutionPagination = async (current, pageSize) => {
-    await localStorage.setItem("voterPage", current)
-    await localStorage.setItem("voterRows", pageSize)
+    await localStorage.setItem("voterPage", current);
+    await localStorage.setItem("voterRows", pageSize);
     if (buttonTab !== null && buttonTab === 3) {
-      dispatch(getVoterResolution(navigate, 3, t))
+      dispatch(getVoterResolution(navigate, 3, t));
     } else if (buttonTab !== null && buttonTab === 1) {
-      dispatch(getVoterResolution(navigate, 1, t))
+      dispatch(getVoterResolution(navigate, 1, t));
     } else if (buttonTab !== null && buttonTab === 2) {
-      dispatch(getVoterResolution(navigate, 2, t))
+      dispatch(getVoterResolution(navigate, 2, t));
     }
-  }
+  };
 
   // Resolution reducer ResponseMessage
   useEffect(() => {
-    console.log(ResolutionReducer, "ResolutionReducerResolutionReducerResolutionReducerResolutionReducer")
-    if (ResolutionReducer.ResponseMessage !== "" && ResolutionReducer.ResponseMessage !== t("Data-available") && ResolutionReducer.ResponseMessage !== t("No-data-available") && ResolutionReducer.ResponseMessage !== undefined) {
+    if (
+      ResolutionReducer.ResponseMessage !== "" &&
+      ResolutionReducer.ResponseMessage !== t("Data-available") &&
+      ResolutionReducer.ResponseMessage !== t("No-data-available") &&
+      ResolutionReducer.ResponseMessage !== undefined
+    ) {
       setOpen({
         flag: true,
         message: ResolutionReducer.ResponseMessage,
@@ -1078,14 +1016,14 @@ const Resolution = () => {
     }
   }, [ResolutionReducer.ResponseMessage]);
 
-
-
   // voter resolution state manage
   useEffect(() => {
     if (ResolutionReducer.searchVoterResolution !== null) {
       setSearchVoter(ResolutionReducer.searchVoterResolution.resolutionTable);
-      setTotalVoterResolution(ResolutionReducer.searchVoterResolution.totalRecords)
-      setCurrentPageVoter(ResolutionReducer.searchVoterResolution.pageNumbers)
+      setTotalVoterResolution(
+        ResolutionReducer.searchVoterResolution.totalRecords
+      );
+      setCurrentPageVoter(ResolutionReducer.searchVoterResolution.pageNumbers);
     } else {
       setSearchVoter([]);
     }
@@ -1095,7 +1033,7 @@ const Resolution = () => {
   useEffect(() => {
     if (ResolutionReducer.GetResolutions !== null) {
       // setCurrentPage(ResolutionReducer.GetResolutions.pageNumbers)
-      setTotalResolution(ResolutionReducer.GetResolutions.totalRecords)
+      setTotalResolution(ResolutionReducer.GetResolutions.totalRecords);
       setRows(ResolutionReducer.GetResolutions.resolutionTable);
     } else {
       setRows([]);
@@ -1104,24 +1042,17 @@ const Resolution = () => {
 
   const formatNumber = (value) => {
     return numeral(value).format();
-  }
+  };
   return (
     <>
       <section className={styles["resolution_container"]}>
-        {newresolution ? (
+        {ResolutionReducer.createResolutionModal ? (
           <>
-            <ScheduleNewResolution
-              setEditResoutionPage={setEditResoutionPage}
-              newresolution={newresolution}
-              setNewresolution={setNewresolution}
-            />
+            <ScheduleNewResolution />
           </>
-        ) : viewresolution ? (
+        ) : ResolutionReducer.viewResolutionModal ? (
           <>
-            <ViewResolution
-              viewresolution={viewresolution}
-              setViewresolution={setViewresolution}
-            />
+            <ViewResolution />
           </>
         ) : resultresolution ? (
           <>
@@ -1146,14 +1077,9 @@ const Resolution = () => {
               resolutionAttachments={resolutionAttachments}
             />
           </>
-        ) : editresolutionPage ? (
+        ) : ResolutionReducer.updateResolutionModal ? (
           <>
-            <EditResolution
-              setEditResoutionPage={setEditResoutionPage}
-              setNewresolution={setNewresolution}
-              editresolutionPage={editresolutionPage}
-              setCancelModal={setCancelResolutionModal}
-            />
+            <EditResolution setCancelresolution={setCancelResolutionModal} />
           </>
         ) : (
           <>
@@ -1411,7 +1337,6 @@ const Resolution = () => {
                     </>
                   ) : null} */}
                 </Row>
-
               </Col>
             </Row>
             {searchResultsArea ? (
@@ -1501,20 +1426,29 @@ const Resolution = () => {
                         rows={rows}
                       />
                       <Row>
-                        <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className="d-flex justify-content-center my-3 pagination-groups-table"
+                        >
                           <Pagination
-                            defaultCurrent={moderatorPage !== null ? moderatorPage : 1}
+                            defaultCurrent={
+                              moderatorPage !== null ? moderatorPage : 1
+                            }
                             // totalBoundaryShowSizeChanger={}
                             total={totalResolution}
                             showSizeChanger
                             locale={{
-                              items_per_page: t('items_per_page'),
-                              page: t('page')
+                              items_per_page: t("items_per_page"),
+                              page: t("page"),
                             }}
                             pageSizeOptions={["30", "50", "100", "200"]}
                             className={styles["PaginationStyle-Resolution"]}
                             onChange={handleChangeResolutionPagination}
-                            defaultPageSize={moderatorRows !== null ? moderatorRows : 50}
+                            defaultPageSize={
+                              moderatorRows !== null ? moderatorRows : 50
+                            }
                           />
                         </Col>
                       </Row>
@@ -1542,7 +1476,9 @@ const Resolution = () => {
             ) : resolutionView !== null && resolutionView === 2 ? (
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
-                  {isSearchVoter !== null && isSearchVoter !== undefined && isSearchVoter.length > 0 ? (
+                  {isSearchVoter !== null &&
+                  isSearchVoter !== undefined &&
+                  isSearchVoter.length > 0 ? (
                     <>
                       <TableToDo
                         sortDirections={["descend", "ascend"]}
@@ -1565,11 +1501,18 @@ const Resolution = () => {
                         rows={isSearchVoter}
                       />
                       <Row>
-                        <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
+                        <Col
+                          sm={12}
+                          md={12}
+                          lg={12}
+                          className="d-flex justify-content-center my-3 pagination-groups-table"
+                        >
                           <Pagination
                             defaultCurrent={voterPage !== null ? voterPage : 1}
                             total={totalVoterResolution}
-                            defaultPageSize={voterRows !== null ? voterRows : 50}
+                            defaultPageSize={
+                              voterRows !== null ? voterRows : 50
+                            }
                             showSizeChanger
                             pageSizeOptions={["30", "50", "100", "200"]}
                             className={styles["PaginationStyle-Resolution"]}
@@ -1609,7 +1552,11 @@ const Resolution = () => {
           setResolutionupdated={setRresolutionmodalupdated}
         />
       ) : null}
-      <ModalCancellResolution2 cancelresolution={cancelResolutionModal} setCancelresolution={setCancelResolutionModal} setEditResoutionPage={setEditResoutionPage} Id={resolutionIDForCancel} />
+      <ModalCancellResolution2
+        cancelresolution={cancelResolutionModal}
+        setCancelresolution={setCancelResolutionModal}
+        Id={resolutionIDForCancel}
+      />
       {ResolutionReducer.Loading ? <Loader /> : null}
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
