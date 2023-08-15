@@ -275,26 +275,10 @@ const createResolution = (
   voters,
   nonVoter,
   tasksAttachments,
-  setNewresolution,
-  setEditResoutionPage,
   t,
   no,
-  circulated,
-  setResolutionUpdateSuccessfully
+  circulated
 ) => {
-  console.log(
-    Data,
-    voters,
-    nonVoter,
-    tasksAttachments,
-    setNewresolution,
-    setEditResoutionPage,
-    no,
-    circulated,
-    "checkingforcreatetatemodal"
-  );
-  console.log(no, circulated, "checkingforcreatetatemodal22");
-
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(createResolution_Init());
@@ -319,8 +303,6 @@ const createResolution = (
               voters,
               nonVoter,
               tasksAttachments,
-              setNewresolution,
-              setEditResoutionPage,
               t,
               no,
               circulated
@@ -344,12 +326,9 @@ const createResolution = (
                   voters,
                   nonVoter,
                   tasksAttachments,
-                  setNewresolution,
-                  setEditResoutionPage,
                   t,
                   no,
-                  circulated,
-                  setResolutionUpdateSuccessfully
+                  circulated
                 )
               );
             } else if (
@@ -378,12 +357,9 @@ const createResolution = (
                   voters,
                   nonVoter,
                   tasksAttachments,
-                  setNewresolution,
-                  setEditResoutionPage,
                   t,
                   no,
-                  circulated,
-                  setResolutionUpdateSuccessfully
+                  circulated
                 )
               );
             } else if (
@@ -458,26 +434,10 @@ const updateResolution = (
   voters,
   nonVoter,
   tasksAttachments,
-  setNewresolution,
-  setEditResoutionPage,
   t,
   no,
-  circulated,
-  setResolutionUpdateSuccessfully
+  circulated
 ) => {
-  console.log(
-    resolutionID,
-    voters,
-    nonVoter,
-    tasksAttachments,
-    setNewresolution,
-    setEditResoutionPage,
-    t,
-    no,
-    circulated,
-    "checkingforudpatestatemodal"
-  );
-  console.log(no, circulated, "checkingforudpatestatemodal222");
   let currentView = localStorage.getItem("ButtonTab");
   let resolutionView = localStorage.getItem("resolutionView");
   let Data2 = {
@@ -514,38 +474,52 @@ const updateResolution = (
               voters,
               nonVoter,
               tasksAttachments,
-              setNewresolution,
-              setEditResoutionPage,
               t,
               no,
-              circulated,
-              setResolutionUpdateSuccessfully
+              circulated
             )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_01".toLowerCase()) {
-              dispatch(updateResolution_Success(t("Resolution-circulated-successfully")))
+            if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_01".toLowerCase()
+            ) {
+              dispatch(
+                updateResolution_Success(
+                  t("Resolution-circulated-successfully")
+                )
+              );
+              await dispatch(createResolutionModal(false));
+              await dispatch(updateResolutionModal(false));
               if (Number(resolutionView) === 1) {
-                dispatch(getResolutions(navigate, Number(currentView), t))
+                dispatch(getResolutions(navigate, Number(currentView), t));
               } else {
-                dispatch(getVoterResolution(navigate, Number(currentView), t))
+                dispatch(getVoterResolution(navigate, Number(currentView), t));
               }
-              setNewresolution(false)
-            } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_02".toLowerCase()) {
-              dispatch(updateResolution_Fail(t("Failed-to-update-resolution-status")))
-            } else if (response.data.responseResult.responseMessage.toLowerCase() === "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_03".toLowerCase()) {
-              dispatch(updateResolution_Success(t("Resolution-details-updated-successfully")))
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_02".toLowerCase()
+            ) {
+              dispatch(
+                updateResolution_Fail(t("Failed-to-update-resolution-status"))
+              );
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "Resolution_ResolutionServiceManager_AddUpdateResolutionDetails_03".toLowerCase()
+            ) {
+              console.log("check");
+              dispatch(
+                updateResolution_Success(
+                  t("Resolution-details-updated-successfully")
+                )
+              );
+              dispatch(createResolutionModal(false));
+              dispatch(updateResolutionModal(false));
               if (Number(resolutionView) === 1) {
-                dispatch(getResolutions(navigate, Number(currentView), t))
+                dispatch(getResolutions(navigate, Number(currentView), t));
               } else {
-                dispatch(getVoterResolution(navigate, Number(currentView), t))
-              }
-              if (circulated === 1) {
-                setEditResoutionPage(false)
-                setResolutionUpdateSuccessfully(false)
-              } else {
-                setNewresolution(false)
+                dispatch(getVoterResolution(navigate, Number(currentView), t));
               }
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
@@ -590,14 +564,7 @@ const getResolutionById_Fail = (message) => {
     message: message,
   };
 };
-const getResolutionbyResolutionID = (
-  navigate,
-  id,
-  t,
-  setEditResoutionPage,
-  setViewresolution,
-  no
-) => {
+const getResolutionbyResolutionID = (navigate, id, t, no) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let Data = {
     ResolutionID: JSON.parse(id),
@@ -619,16 +586,7 @@ const getResolutionbyResolutionID = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            getResolutionbyResolutionID(
-              navigate,
-              id,
-              t,
-              setEditResoutionPage,
-              setViewresolution,
-              no
-            )
-          );
+          dispatch(getResolutionbyResolutionID(navigate, id, t, no));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -642,9 +600,11 @@ const getResolutionbyResolutionID = (
                 )
               );
               if (no === 1) {
-                setEditResoutionPage(true);
+                dispatch(updateResolutionModal(true));
+                dispatch(viewResolutionModal(false));
               } else {
-                setViewresolution(true);
+                dispatch(viewResolutionModal(true));
+                dispatch(updateResolutionModal(false));
               }
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
@@ -725,11 +685,6 @@ const getResolutionResult = (navigate, id, t, setResultresolution) => {
               );
               setResultresolution(true);
               localStorage.setItem("ResolutionID", id);
-              // if (no === 1) {
-              //     setEditResoutionPage(true)
-              // } else {
-              //     setViewresolution(true)
-              // }
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "Resolution_ResolutionServiceManager_GetResultDetails_02".toLowerCase()
@@ -853,8 +808,8 @@ const cancelResolutionApi = (
   navigate,
   id,
   t,
-  setEditResoutionPage,
-  setCancelresolution
+  setCancelresolution,
+  setCancelModal
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
@@ -880,7 +835,7 @@ const cancelResolutionApi = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(cancelResolutionApi(navigate, id, t, setEditResoutionPage));
+          dispatch(cancelResolutionApi(navigate, id, t, setCancelresolution));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -893,8 +848,9 @@ const cancelResolutionApi = (
                   t("Resolution-cancelled")
                 )
               );
-              await setEditResoutionPage(false);
               await setCancelresolution(false);
+              setCancelModal(false);
+              dispatch(updateResolutionModal(false));
               if (Number(resolutionView) === 1) {
                 dispatch(getResolutions(navigate, Number(currentView), t));
               } else {
@@ -1207,7 +1163,29 @@ const clearResponseMessage = () => {
     type: actions.CLEAR_RESPONSEMESSAGE_RESOLUTION,
   };
 };
+
+const createResolutionModal = (value) => {
+  return {
+    type: actions.CREATE_RESOLUTION_MODAL,
+    payload: value,
+  };
+};
+const updateResolutionModal = (value) => {
+  return {
+    type: actions.UPDATE_RESOLUTION_MODAL,
+    payload: value,
+  };
+};
+const viewResolutionModal = (value) => {
+  return {
+    type: actions.VIEW_RESOLUTION_MODAL,
+    payload: value,
+  };
+};
 export {
+  viewResolutionModal,
+  updateResolutionModal,
+  createResolutionModal,
   getAllVotingMethods,
   currentResolutionView,
   currentClosedView,
