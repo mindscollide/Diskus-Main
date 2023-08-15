@@ -120,8 +120,6 @@ const Resolution = () => {
       localStorage.removeItem("moderatorRows")
       localStorage.removeItem("voterPage")
       localStorage.removeItem("voterRows")
-      localStorage.removeItem("resolutionView")
-      localStorage.removeItem("ButtonTab")
       localStorage.removeItem("ResolutionID")
     }
   }, []);
@@ -1154,6 +1152,7 @@ const Resolution = () => {
               setEditResoutionPage={setEditResoutionPage}
               setNewresolution={setNewresolution}
               editresolutionPage={editresolutionPage}
+              setCancelModal={setCancelResolutionModal}
             />
           </>
         ) : (
@@ -1504,7 +1503,7 @@ const Resolution = () => {
                       <Row>
                         <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
                           <Pagination
-                            defaultCurrent={moderatorPage}
+                            defaultCurrent={moderatorPage !== null ? moderatorPage : 1}
                             // totalBoundaryShowSizeChanger={}
                             total={totalResolution}
                             showSizeChanger
@@ -1515,7 +1514,7 @@ const Resolution = () => {
                             pageSizeOptions={["30", "50", "100", "200"]}
                             className={styles["PaginationStyle-Resolution"]}
                             onChange={handleChangeResolutionPagination}
-                            defaultPageSize={moderatorRows}
+                            defaultPageSize={moderatorRows !== null ? moderatorRows : 50}
                           />
                         </Col>
                       </Row>
@@ -1568,9 +1567,9 @@ const Resolution = () => {
                       <Row>
                         <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
                           <Pagination
-                            defaultCurrent={voterPage}
+                            defaultCurrent={voterPage !== null ? voterPage : 1}
                             total={totalVoterResolution}
-                            defaultPageSize={voterRows}
+                            defaultPageSize={voterRows !== null ? voterRows : 50}
                             showSizeChanger
                             pageSizeOptions={["30", "50", "100", "200"]}
                             className={styles["PaginationStyle-Resolution"]}

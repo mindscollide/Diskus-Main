@@ -58,6 +58,7 @@ import { ArrowLeft } from "react-bootstrap-icons";
 const EditResolution = ({
   setEditResoutionPage,
   editresolutionPage,
+  setCancelModal,
   setNewresolution,
 }) => {
   const { Dragger } = Upload;
@@ -908,7 +909,7 @@ const EditResolution = ({
 
   const handleClickCancelResolution = () => {
     if (cancelResolutionID !== 0) {
-      dispatch(cancelResolutionApi(navigate, cancelResolutionID, t, setEditResoutionPage))
+      dispatch(cancelResolutionApi(navigate, cancelResolutionID, t, setEditResoutionPage, setCancelModal))
     }
   }
 
@@ -2334,6 +2335,7 @@ const EditResolution = ({
           setCancelresolution={setResolutioncancel}
           setEditResoutionPage={setEditResoutionPage}
           handleCancelResolution={handleClickCancelResolution}
+
         />
       ) : null}
       {resolutionupdate ? (
