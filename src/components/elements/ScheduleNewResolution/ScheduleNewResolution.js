@@ -645,7 +645,6 @@ const ScheduleNewResolution = ({
       createResolutionData.NotesToVoter !== "" &&
       createResolutionData.FK_ResolutionVotingMethodID !== 0 &&
       createResolutionData.FK_ResolutionReminderFrequency_ID !== 0
-      // voters.length > 0
     ) {
       if (fileForSend.length > 0) {
         let counter = fileForSend.length;
@@ -679,6 +678,7 @@ const ScheduleNewResolution = ({
             FK_UID: JSON.parse(localStorage.getItem("userID")),
           },
         };
+
         dispatch(
           createResolution(
             navigate,
@@ -737,7 +737,6 @@ const ScheduleNewResolution = ({
             1
           )
         );
-
         setTasksAttachments([]);
       }
     } else {
@@ -748,6 +747,7 @@ const ScheduleNewResolution = ({
       });
     }
   }
+
   const resolutionCirculateHandler = () => {
     if (
       createResolutionData.Title !== "" &&
@@ -793,7 +793,7 @@ const ScheduleNewResolution = ({
             FK_UID: JSON.parse(localStorage.getItem("userID")),
           },
         };
-        if (id === 2 && Object.keys(voters).length <= 0) {
+        if (Object.keys(voters).length <= 0) {
           setError(true);
         } else {
           dispatch(
@@ -807,7 +807,7 @@ const ScheduleNewResolution = ({
               setEditResoutionPage,
               t,
               1,
-              id
+              2
             )
           );
         }
@@ -841,7 +841,7 @@ const ScheduleNewResolution = ({
             FK_UID: JSON.parse(localStorage.getItem("userID")),
           },
         };
-        if (id === 2 && Object.keys(voters).length <= 0) {
+        if (Object.keys(voters).length <= 0) {
           setError(true);
         } else {
           dispatch(
@@ -855,17 +855,10 @@ const ScheduleNewResolution = ({
               setEditResoutionPage,
               t,
               1,
-              id
+              2
             )
           );
         }
-        console.log(
-          Data,
-          voters,
-          nonVoter,
-          tasksAttachments,
-          "CreateResolutionCreateResolutionCreateResolution"
-        );
         setTasksAttachments([]);
       }
     } else {
@@ -1057,6 +1050,7 @@ const ScheduleNewResolution = ({
       ResolutionReducer.ResponseMessage !== undefined &&
       ResolutionReducer.ResponseMessage !== t("No-data-available")
     ) {
+      console.log("check why ", ResolutionReducer.ResponseMessage)
       setOpen({
         flag: true,
         message: ResolutionReducer.ResponseMessage,
@@ -2202,14 +2196,14 @@ const ScheduleNewResolution = ({
                                 className={
                                   styles["Save_button_Createresolution"]
                                 }
-                                onClick={() => createResolutionHandleClick(1)}
+                                onClick={() => resolutionSaveHandler()}
                               />
                               <Button
                                 text={t("Circulate")}
                                 className={
                                   styles["circulate_button_Createresolution"]
                                 }
-                                onClick={() => createResolutionHandleClick(2)}
+                                onClick={() => resolutionCirculateHandler()}
                               />
                             </Col>
                           </Row>
