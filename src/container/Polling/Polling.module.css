@@ -215,6 +215,7 @@ body[dir="rtl"] .PaginationStyle-polling {
   white-space: nowrap;
   text-overflow: ellipsis !important;
   cursor: pointer !important;
+  color: #2197d7 !important;
   width: 100%;
   display: inline-block;
 

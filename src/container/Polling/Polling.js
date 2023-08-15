@@ -576,6 +576,8 @@ const Polling = () => {
   };
 
   const handleChangePagination = (current, pageSize) => {
+    console.log("handleChangePagination",current)
+    console.log("handleChangePagination",pageSize)
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
