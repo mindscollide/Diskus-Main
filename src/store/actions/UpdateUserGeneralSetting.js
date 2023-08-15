@@ -445,91 +445,91 @@ const revokeToken = (navigate, userOptionsSettings, t) => {
   };
   console.log("updateOrganizationLevelSettings", userOptionsSettings);
 
-  let Data2 = {
-    FK_TZID: 0,
-    MaximumMeetingDuration: userOptionsSettings.MaximumMeetingDuration,
-    SynchronizeDocuments: userOptionsSettings.SynchronizeDocuments,
-    DisableMeetingScheduling: userOptionsSettings.DisableMeetingScheduling,
-    EmailOnNewMeeting: userOptionsSettings.EmailOnNewMeeting,
-    EmailOnEditMeeting: userOptionsSettings.EmailEditMeeting,
-    PushNotificationOnNewMeeting:
-      userOptionsSettings.PushNotificationonNewMeeting,
-    PushNotificationOnEditMeeting:
-      userOptionsSettings.PushNotificationEditMeeting,
-    ShowNotificationOnParticipantJoining:
-      userOptionsSettings.ShowNotificationOnParticipantJoining,
-    PushNotificationonCancelledORDeleteMeeting:
-      userOptionsSettings.PushNotificationCancelledOrDeleteMeeting,
-    FK_OrganizationID: JSON.parse(OrganizationID),
-    FK_CCID: 0,
-    EmailOnCancelledORDeleteMeeting:
-      userOptionsSettings.EmailCancelOrDeleteMeeting,
-    FK_UID: JSON.parse(currentUserID),
-    Is2FAEnabled: userOptionsSettings.Is2FAEnabled,
-    DiskusEventColor: userOptionsSettings.DiskusCalenderColor,
-    EmailWhenAddedToCommittee: userOptionsSettings.EmailWhenAddedToCommittee,
-    EmailWhenAddedToGroup: userOptionsSettings.EmailWhenAddedToGroup,
-    EmailWhenCommitteeIsDissolvedorArchived:
-      userOptionsSettings.EmailWhenCommitteeIsDissolvedOrArchived,
-    EmailWhenCommitteeIsInActive:
-      userOptionsSettings.EmailWhenCommitteeIsSetInactive,
-    EmailWhenGroupIsClosedorArchived:
-      userOptionsSettings.EmailWhenGroupIsDissolvedOrArchived,
-    EmailWhenGroupIsInActive: userOptionsSettings.EmailWhenGroupisSetInactive,
-    EmailWhenNewResolutionIsCirculated:
-      userOptionsSettings.EmailWhenResolutionIsCirculated,
-    EmailWhenRemovedFromCommittee:
-      userOptionsSettings.EmailWhenRemovedFromCommittee,
-    EmailWhenRemovedFromGroup: userOptionsSettings.EmailWhenRemovedFromGroup,
-    EmailWhenResolutionIsCancelledAfterCirculation:
-      userOptionsSettings.EmailWhenNewResolutionIsCancelledAfterCirculation,
-    EmailWhenResolutionIsClosed:
-      userOptionsSettings.EmailWhenResolutionIsClosed,
-    PushNotificationWhenAddedToCommittee:
-      userOptionsSettings.PushNotificationWhenAddedToCommittee,
-    PushNotificationWhenAddedToGroup:
-      userOptionsSettings.PushNotificationWhenAddedToGroup,
-    PushNotificationWhenCommitteeIsDissolvedorArchived:
-      userOptionsSettings.PushNotificationWhenCommitteeIsDissolvedOrArchived,
-    PushNotificationWhenCommitteeIsInActive:
-      userOptionsSettings.PushNotificationWhenCommitteeIsInActive,
-    PushNotificationWhenGroupIsClosedORArchived:
-      userOptionsSettings.PushNotificationWhenGroupIsDissolvedOrArchived,
-    PushNotificationWhenGroupisSetInactive:
-      userOptionsSettings.PushNotificationWhenGroupIsInActive,
-    PushNotificationWhenNewResolutionIsCirculated:
-      userOptionsSettings.PushNotificationWhenNewResolutionIsCirculated,
-    PushNotificationWhenRemoveFromGroup:
-      userOptionsSettings.PushNotificationWhenRemovedFromGroup,
-    PushNotificationWhenRemovedFromCommittee:
-      userOptionsSettings.PushNotificationWhenRemovedFromCommittee,
-    PushNotificationWhenResolutionIsClosed:
-      userOptionsSettings.PushNotificationWhenResolutionISClosed,
-    PushNotificationWhenWhenResolutionIsCancelledAfterCirculation:
-      userOptionsSettings.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
-    UserAllowGoogleCalendarSynch: true,
-    UserAllowMicrosoftCalendarSynch:
-      userOptionsSettings.AllowMicrosoftCalenderSync,
-    GoogleEventColor: userOptionsSettings.GoogleCalenderColor,
-    OfficeEventColor: userOptionsSettings.MicrosoftCalenderColor,
-    EmailWhenNewPollIsPublished:
-      userOptionsSettings.EmailWhenNewPollIsPublished,
-    EmailWhenPollDueDateIsPassed:
-      userOptionsSettings.EmailWhenPollDueDateIsPassed,
-    EmailWhenPublishedPollIsDeleted:
-      userOptionsSettings.EmailWhenPublishedPollIsDeleted,
-    EmailWhenPublishedPollIsUpdated:
-      userOptionsSettings.EmailWhenPublishedPollIsUpdated,
-    PushNotificationWhenNewPollIsPublished:
-      userOptionsSettings.PushNotificationWhenNewPollIsPublished,
-    PushNotificationWhenPollDueDateIsPassed:
-      userOptionsSettings.PushNotificationWhenPollDueDateIsPassed,
-    PushNotificationWhenPublishedPollIsDeleted:
-      userOptionsSettings.PushNotificationWhenPublishedPollIsDeleted,
-    PushNotificationWhenPublishedPollIsUpdated:
-      userOptionsSettings.PushNotificationWhenPublishedPollIsUpdated,
-  };
-  console.log(Data2, "userOptionsSettingsuserOptionsSettings");
+  // let Data2 = {
+  //   FK_TZID: 0,
+  //   MaximumMeetingDuration: userOptionsSettings.MaximumMeetingDuration,
+  //   SynchronizeDocuments: userOptionsSettings.SynchronizeDocuments,
+  //   DisableMeetingScheduling: userOptionsSettings.DisableMeetingScheduling,
+  //   EmailOnNewMeeting: userOptionsSettings.EmailOnNewMeeting,
+  //   EmailOnEditMeeting: userOptionsSettings.EmailEditMeeting,
+  //   PushNotificationOnNewMeeting:
+  //     userOptionsSettings.PushNotificationonNewMeeting,
+  //   PushNotificationOnEditMeeting:
+  //     userOptionsSettings.PushNotificationEditMeeting,
+  //   ShowNotificationOnParticipantJoining:
+  //     userOptionsSettings.ShowNotificationOnParticipantJoining,
+  //   PushNotificationonCancelledORDeleteMeeting:
+  //     userOptionsSettings.PushNotificationCancelledOrDeleteMeeting,
+  //   FK_OrganizationID: JSON.parse(OrganizationID),
+  //   FK_CCID: 0,
+  //   EmailOnCancelledORDeleteMeeting:
+  //     userOptionsSettings.EmailCancelOrDeleteMeeting,
+  //   FK_UID: JSON.parse(currentUserID),
+  //   Is2FAEnabled: userOptionsSettings.Is2FAEnabled,
+  //   DiskusEventColor: userOptionsSettings.DiskusCalenderColor,
+  //   EmailWhenAddedToCommittee: userOptionsSettings.EmailWhenAddedToCommittee,
+  //   EmailWhenAddedToGroup: userOptionsSettings.EmailWhenAddedToGroup,
+  //   EmailWhenCommitteeIsDissolvedorArchived:
+  //     userOptionsSettings.EmailWhenCommitteeIsDissolvedOrArchived,
+  //   EmailWhenCommitteeIsInActive:
+  //     userOptionsSettings.EmailWhenCommitteeIsSetInactive,
+  //   EmailWhenGroupIsClosedorArchived:
+  //     userOptionsSettings.EmailWhenGroupIsDissolvedOrArchived,
+  //   EmailWhenGroupIsInActive: userOptionsSettings.EmailWhenGroupisSetInactive,
+  //   EmailWhenNewResolutionIsCirculated:
+  //     userOptionsSettings.EmailWhenResolutionIsCirculated,
+  //   EmailWhenRemovedFromCommittee:
+  //     userOptionsSettings.EmailWhenRemovedFromCommittee,
+  //   EmailWhenRemovedFromGroup: userOptionsSettings.EmailWhenRemovedFromGroup,
+  //   EmailWhenResolutionIsCancelledAfterCirculation:
+  //     userOptionsSettings.EmailWhenNewResolutionIsCancelledAfterCirculation,
+  //   EmailWhenResolutionIsClosed:
+  //     userOptionsSettings.EmailWhenResolutionIsClosed,
+  //   PushNotificationWhenAddedToCommittee:
+  //     userOptionsSettings.PushNotificationWhenAddedToCommittee,
+  //   PushNotificationWhenAddedToGroup:
+  //     userOptionsSettings.PushNotificationWhenAddedToGroup,
+  //   PushNotificationWhenCommitteeIsDissolvedorArchived:
+  //     userOptionsSettings.PushNotificationWhenCommitteeIsDissolvedOrArchived,
+  //   PushNotificationWhenCommitteeIsInActive:
+  //     userOptionsSettings.PushNotificationWhenCommitteeIsInActive,
+  //   PushNotificationWhenGroupIsClosedORArchived:
+  //     userOptionsSettings.PushNotificationWhenGroupIsDissolvedOrArchived,
+  //   PushNotificationWhenGroupisSetInactive:
+  //     userOptionsSettings.PushNotificationWhenGroupIsInActive,
+  //   PushNotificationWhenNewResolutionIsCirculated:
+  //     userOptionsSettings.PushNotificationWhenNewResolutionIsCirculated,
+  //   PushNotificationWhenRemoveFromGroup:
+  //     userOptionsSettings.PushNotificationWhenRemovedFromGroup,
+  //   PushNotificationWhenRemovedFromCommittee:
+  //     userOptionsSettings.PushNotificationWhenRemovedFromCommittee,
+  //   PushNotificationWhenResolutionIsClosed:
+  //     userOptionsSettings.PushNotificationWhenResolutionISClosed,
+  //   PushNotificationWhenWhenResolutionIsCancelledAfterCirculation:
+  //     userOptionsSettings.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
+  //   UserAllowGoogleCalendarSynch: true,
+  //   UserAllowMicrosoftCalendarSynch:
+  //     userOptionsSettings.AllowMicrosoftCalenderSync,
+  //   GoogleEventColor: userOptionsSettings.GoogleCalenderColor,
+  //   OfficeEventColor: userOptionsSettings.MicrosoftCalenderColor,
+  //   EmailWhenNewPollIsPublished:
+  //     userOptionsSettings.EmailWhenNewPollIsPublished,
+  //   EmailWhenPollDueDateIsPassed:
+  //     userOptionsSettings.EmailWhenPollDueDateIsPassed,
+  //   EmailWhenPublishedPollIsDeleted:
+  //     userOptionsSettings.EmailWhenPublishedPollIsDeleted,
+  //   EmailWhenPublishedPollIsUpdated:
+  //     userOptionsSettings.EmailWhenPublishedPollIsUpdated,
+  //   PushNotificationWhenNewPollIsPublished:
+  //     userOptionsSettings.PushNotificationWhenNewPollIsPublished,
+  //   PushNotificationWhenPollDueDateIsPassed:
+  //     userOptionsSettings.PushNotificationWhenPollDueDateIsPassed,
+  //   PushNotificationWhenPublishedPollIsDeleted:
+  //     userOptionsSettings.PushNotificationWhenPublishedPollIsDeleted,
+  //   PushNotificationWhenPublishedPollIsUpdated:
+  //     userOptionsSettings.PushNotificationWhenPublishedPollIsUpdated,
+  // };
+  // console.log(Data2, "userOptionsSettingsuserOptionsSettings");
   return async (dispatch) => {
     dispatch(revokeTokeninit());
     let form = new FormData();
@@ -570,7 +570,7 @@ const revokeToken = (navigate, userOptionsSettings, t) => {
                 )
             ) {
               dispatch(revokeTokenFail(t("UnSuccessful")));
-              dispatch(updateUserSettingFunc(navigate, Data2, t));
+              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -578,26 +578,29 @@ const revokeToken = (navigate, userOptionsSettings, t) => {
                   "Calender_CalenderServiceManager_RevokeToken_03".toLowerCase()
                 )
             ) {
-              console.log("updateOrganizationLevelSettings", Data2);
+              console.log(
+                "updateOrganizationLevelSettings",
+                userOptionsSettings
+              );
               dispatch(revokeTokenFail(t("Something-went-wrong")));
-              dispatch(updateUserSettingFunc(navigate, Data2, t));
+              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
             } else {
               dispatch(revokeTokenFail(t("Something-went-wrong")));
-              dispatch(updateUserSettingFunc(navigate, Data2, t));
+              dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
             }
           } else {
-            console.log("updateOrganizationLevelSettings", Data2);
+            console.log("updateOrganizationLevelSettings", userOptionsSettings);
             dispatch(revokeTokenFail(t("Something-went-wrong")));
-            dispatch(updateUserSettingFunc(navigate, Data2, t));
+            dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
           }
         } else {
           dispatch(revokeTokenFail(t("Something-went-wrong")));
-          dispatch(updateUserSettingFunc(navigate, Data2, t));
+          dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
         }
       })
       .catch((response) => {
         dispatch(revokeTokenFail(t("Something-went-wrong")));
-        dispatch(updateUserSettingFunc(navigate, Data2, t));
+        dispatch(updateUserSettingFunc(navigate, userOptionsSettings, t));
       });
   };
 };
