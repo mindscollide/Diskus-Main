@@ -29,11 +29,11 @@ const ExpandedMenu = () => {
                 className={
                   location.pathname === "/DisKus/dataroom" ||
                   location.pathname === "/Diskus/dataroom"
-                    ? "m-0  icon-active-sidebar"
-                    : "m-0   icon"
+                    ? "m-0 p-0  icon-active-sidebar"
+                    : "m-0 p-0  icon"
                 }
               >
-                <Tooltip text="DataRoom">
+                <div>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="33.52"
@@ -228,8 +228,7 @@ const ExpandedMenu = () => {
                     </g>
                   </svg>
                   <span className="Meeting_Side_bar_Tag">{t("DataRoom")}</span>
-                </Tooltip>
-
+                </div>
                 {/* <i className="icon-help" /> */}
               </Nav.Link>
             </Col>
@@ -248,11 +247,11 @@ const ExpandedMenu = () => {
                 className={
                   location.pathname === "/DisKus/groups" ||
                   location.pathname === "/Diskus/groups"
-                    ? "m-0  icon-active-sidebar"
-                    : "m-0  icon"
+                    ? "m-0 p-0 icon-active-sidebar"
+                    : "m-0 p-0 icon"
                 }
               >
-                <Tooltip text="Groups">
+                <div>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="33.52"
@@ -269,8 +268,7 @@ const ExpandedMenu = () => {
                     />
                   </svg>
                   <span className="Meeting_Side_bar_Tag">{t("Groups")}</span>
-                </Tooltip>
-
+                </div>
                 {/* <i className="icon-help" /> */}
               </Nav.Link>
             </Col>
@@ -286,11 +284,11 @@ const ExpandedMenu = () => {
                 className={
                   location.pathname === "/DisKus/committee" ||
                   location.pathname === "/Diskus/committee"
-                    ? "m-0 p-0 icon-active-sidebar"
+                    ? "m-0 p-0  icon-active-sidebar"
                     : "m-0 p-0 icon"
                 }
               >
-                <Tooltip text="Committee">
+                <div>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="44.01"
@@ -319,9 +317,8 @@ const ExpandedMenu = () => {
                     />
                   </svg>
                   <span className="Meeting_Side_bar_Tag">{t("Committee")}</span>
-                </Tooltip>
-
-                {/* <i className="icon-help" /> */}
+                </div>
+                s{/* <i className="icon-help" /> */}
               </Nav.Link>
             </Col>
             <Col lg={6} md={6} sm={12} className="d-flex justify-content-start">
@@ -338,7 +335,7 @@ const ExpandedMenu = () => {
                     : "m-0 p-0 icon"
                 }
               >
-                <Tooltip text={"Resolution"}>
+                <div>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="33.519"
@@ -369,7 +366,7 @@ const ExpandedMenu = () => {
                   <span className="Meeting_Side_bar_Tag">
                     {t("Resolution")}
                   </span>
-                </Tooltip>
+                </div>
               </Nav.Link>
             </Col>
           </Row>
@@ -384,11 +381,11 @@ const ExpandedMenu = () => {
                 className={
                   location.pathname === "/DisKus/polling" ||
                   location.pathname === "/Diskus/polling"
-                    ? "m-0 icon-active-sidebar"
-                    : "m-0  icon"
+                    ? "m-0 p-0  icon-active-sidebar"
+                    : "m-0 p-0 icon"
                 }
               >
-                <Tooltip text={"Polls"}>
+                <div>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="33.52"
@@ -417,7 +414,7 @@ const ExpandedMenu = () => {
                     />
                   </svg>
                   <span className="Meeting_Side_bar_Tag">{t("Polls")}</span>
-                </Tooltip>
+                </div>
               </Nav.Link>
             </Col>
           </Row>

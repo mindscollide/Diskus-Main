@@ -17,4 +17,5 @@
   font-size: 8px !important;
   color: #5a5a5a !important;
   font-family: "IBMPlexSansArabic-SemiBold" !important;
+  white-space: nowrap;
 }
