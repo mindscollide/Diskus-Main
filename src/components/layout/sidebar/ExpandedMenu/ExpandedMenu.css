@@ -6,11 +6,12 @@
   background: #fff !important;
   border-radius: 4px !important;
   position: fixed !important;
+
   bottom: 10%;
   border: 1px solid #e1e1e1 !important;
   left: 3.8% !important;
-  z-index: 1 !important;
-  overflow: hidden;
+  z-index: 20 !important;
+  /* overflow: hidden; */
 }
 
 .Meeting_Side_bar_Tag {

@@ -4,7 +4,7 @@
   background-color: #fff !important;
   position: fixed;
   height: 100vw;
-  width: 70px !important;
+  width: 65px !important;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -113,10 +113,10 @@ a.icon {
 
 a.icon:hover {
   /* background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important; */
-  /* width: 100%; */
-  /* margin: 0 !important; */
-  /* padding: 0 !important; */
-  /* transition: all 0.5s ease-in-out; */
+  width: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+  transition: all 0.5s ease-in-out;
 }
 
 /* body[dir="rtl"] a.icon:hover {
@@ -197,10 +197,4 @@ a.m-0.p-0.icon-active-sidebar.nav-link.active rect#Rectangle_831 {
   padding: 4px !important;
   border-radius: 4px !important;
   color: white !important;
-}
-
-.Meeting_Side_bar_Tag {
-  font-size: 8px !important;
-  color: #5a5a5a !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
