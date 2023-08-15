@@ -29,7 +29,7 @@ const MultiDatePickers = ({
         alt="Edit Icon"
         height="11.11px"
         width="11.54px"
-        className="custom-icon"
+        className="custom-icon cursor-pointer"
       />
     </div>
   );
@@ -38,8 +38,8 @@ const MultiDatePickers = ({
     <>
       <label className="f-0">
         <DatePicker
-         highlightToday={highlightToday}
-         onOpenPickNewDate={onOpenPickNewDate}
+          highlightToday={highlightToday}
+          onOpenPickNewDate={onOpenPickNewDate}
           ref={datePickerRef}
           render={<CustomIcon />}
           onChange={onChange}
