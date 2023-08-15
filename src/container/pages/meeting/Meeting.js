@@ -148,8 +148,6 @@ const Meeting = () => {
         setRow(newState);
       } else {
         setRow([allMeetingsSocketData, ...rows])
-        // tableRowsData.unshift(allMeetingsSocketData);
-        // setRow(tableRowsData);
       }
     }
   }, [allMeetingsSocketData]);
@@ -157,10 +155,6 @@ const Meeting = () => {
   // for Socket Update meeting status update
   useEffect(() => {
     if (Object.keys(MeetingStatusSocket).length > 0) {
-      console.log(
-        MeetingStatusSocket,
-        "MeetingStatusSocketMeetingStatusSocket"
-      );
       let tableRowsData = [...rows];
       var foundIndex = tableRowsData.findIndex(
         (x) => x.pK_MDID === MeetingStatusSocket.meetingID
@@ -176,7 +170,6 @@ const Meeting = () => {
           }
           return rowObj;
         });
-        console.log("newArrnewArrnewArr", newArr);
         setRow(newArr);
       }
     }
@@ -185,16 +178,12 @@ const Meeting = () => {
   useEffect(() => { }, [rows]);
 
   useEffect(() => {
-    console.log(assignees, "SearchMeetingDataSearchMeetingDataSearchMeetingData")
     if (assignees.SearchMeetingData !== null && assignees.SearchMeetingData !== undefined) {
       setTotalRecords(assignees.SearchMeetingData.totalRecords)
       if (assignees.SearchMeetingData.meetings !== null && assignees.SearchMeetingData.meetings !== undefined && assignees.SearchMeetingData.meetings.length > 0) {
         setRow(assignees.SearchMeetingData.meetings);
       }
     }
-    // if (Object.keys(SearchMeetingData).length > 0) {
-    //   setRow(SearchMeetingData);
-    // }
   }, [assignees.SearchMeetingData]);
 
   // for modal create  handler
