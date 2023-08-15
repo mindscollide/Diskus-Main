@@ -682,7 +682,7 @@ const UserSettings = () => {
             sm={12}
             className="d-flex gap-3 align-items-center"
           >
-            <img src={backbutton} width="34.88px" height="34.88px" />
+            <img src={backbutton} onClick={() => navigate(-1)} width="34.88px" height="34.88px" />
             <span className={styles["UserLevelConfig_Heading"]}>
               {t("User-level-configurations")}
             </span>
@@ -1010,8 +1010,8 @@ const UserSettings = () => {
                 {calender ? (
                   <>
                     {userOptionsSettings.AllowCalenderSync !== null &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
+                      roleID != 1 &&
+                      roleID != 2 ? (
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
@@ -1026,8 +1026,8 @@ const UserSettings = () => {
                       </Row>
                     ) : null}
                     {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
+                      roleID != 1 &&
+                      roleID != 2 ? (
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
@@ -1602,8 +1602,8 @@ const UserSettings = () => {
                       </Col>
                     </Row>
                     {userOptionsSettings.AllowCalenderSync !== null &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
+                      roleID != 1 &&
+                      roleID != 2 ? (
                       <Row className="mt-4">
                         <Col
                           lg={12}
@@ -1640,8 +1640,8 @@ const UserSettings = () => {
                       </Row>
                     ) : null}
                     {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
+                      roleID != 1 &&
+                      roleID != 2 ? (
                       <Row className="mt-4">
                         <Col
                           lg={12}
