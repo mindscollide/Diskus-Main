@@ -133,7 +133,7 @@ const Organization = () => {
     UserAllowMicrosoftCalendarSynch: false,
     CalenderMonthsSpan: 0,
   });
-  console.log(organizationStates, "organizationStates")
+  console.log(organizationStates, "organizationStates");
   const [timeZoneValue, setTimeZoneValue] = useState({
     label: "",
     value: "",
@@ -241,16 +241,16 @@ const Organization = () => {
       let timeZoneCode = {
         label: userProfileData.timeZones
           ? userProfileData.timeZones.countryName +
-          " " +
-          "(" +
-          userProfileData.timeZones.timeZone +
-          ")" +
-          " " +
-          userProfileData.timeZones.gmtOffset
+            " " +
+            "(" +
+            userProfileData.timeZones.timeZone +
+            ")" +
+            " " +
+            userProfileData.timeZones.gmtOffset
           : null,
         value: userProfileData.timeZones?.pK_TZID,
       };
-      console.log(timeZoneCode, "timeZoneCodetimeZoneCodetimeZoneCode")
+      console.log(timeZoneCode, "timeZoneCodetimeZoneCodetimeZoneCode");
       setTimeZoneValue(timeZoneCode);
     }
   };
@@ -308,7 +308,9 @@ const Organization = () => {
     let organizationID = JSON.parse(localStorage.getItem("organizationID"));
     let organizationSettings = {
       FK_TZID: timeZoneValue.value,
-      MaximumMeetingDuration: parseInt(organizationStates.MaximumMeetingDuration),
+      MaximumMeetingDuration: parseInt(
+        organizationStates.MaximumMeetingDuration
+      ),
       CalenderMonthsSpan: organizationStates.CalenderMonthsSpan,
       EmailOnNewMeeting: organizationStates.EmailOnNewMeeting,
       EmailOnEditMeeting: organizationStates.EmailOnEditMeeting,
@@ -573,11 +575,16 @@ const Organization = () => {
   //   });
   // };
   const handleChangeMaximumMeeting = (e) => {
-    setOrganizationStates({
-      ...organizationStates,
-      MaximumMeetingDuration: e.target.value,
-    });
-  }
+    const value = e.target.value;
+    if (value < 5 || value > 900) {
+      console.log("Error is occured");
+    } else {
+      setOrganizationStates({
+        ...organizationStates,
+        MaximumMeetingDuration: value,
+      });
+    }
+  };
 
   console.log("changeFlage", organizationStates);
 
@@ -590,12 +597,12 @@ const Organization = () => {
         newData.push({
           label: data.gmtOffset
             ? data.countryName +
-            " " +
-            "(" +
-            data.timeZone +
-            ")" +
-            " " +
-            data.gmtOffset
+              " " +
+              "(" +
+              data.timeZone +
+              ")" +
+              " " +
+              data.gmtOffset
             : null,
           value: data.pK_TZID,
         });
@@ -690,12 +697,12 @@ const Organization = () => {
       let timeZoneCode = {
         label: userProfileData.timeZones
           ? userProfileData.timeZones.countryName +
-          " " +
-          "(" +
-          userProfileData.timeZones.timeZone +
-          ")" +
-          " " +
-          userProfileData.timeZones.gmtOffset
+            " " +
+            "(" +
+            userProfileData.timeZones.timeZone +
+            ")" +
+            " " +
+            userProfileData.timeZones.gmtOffset
           : null,
         value: userProfileData.timeZones?.pK_TZID,
       };
@@ -800,7 +807,10 @@ const Organization = () => {
                       change={(e) => {
                         setOrganizationStates({
                           ...organizationStates,
-                          CalenderMonthsSpan: parseInt(e.target.value) < 0 ? 0 : parseInt(e.target.value),
+                          CalenderMonthsSpan:
+                            parseInt(e.target.value) < 0
+                              ? 0
+                              : parseInt(e.target.value),
                         });
                       }}
                       maxLength={360}
@@ -813,8 +823,8 @@ const Organization = () => {
                 <span className={styles["bottom-line"]}></span>
                 <Row className="mt-3 d-flex align-items-center">
                   <Col
-                    lg={6}
-                    md={6}
+                    lg={10}
+                    md={10}
                     sm={12}
                     xs={12}
                     className="d-flex justify-content-start align-items-center"
@@ -824,15 +834,22 @@ const Organization = () => {
                     </label>
                   </Col>
                   <Col
-                    lg={6}
-                    md={6}
+                    lg={2}
+                    md={2}
                     sm={12}
                     xs={12}
                     className={
                       "d-flex justify-content-end organization-timezone-col2"
                     }
                   >
-                    <TextField type={"number"} change={handleChangeMaximumMeeting} value={organizationStates.MaximumMeetingDuration} name={"maximumduration"} labelClass={"d-none"} />
+                    <TextField
+                      type={"number"}
+                      change={handleChangeMaximumMeeting}
+                      value={organizationStates.MaximumMeetingDuration}
+                      name={"maximumduration"}
+                      labelClass={"d-none"}
+                      width="80px"
+                    />
                     {/* <Select
                       options={timedurationValues}
                       placeholder={t("Select")}
