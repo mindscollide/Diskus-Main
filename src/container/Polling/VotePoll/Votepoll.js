@@ -96,6 +96,7 @@ const Votepoll = () => {
   };
 
   const handleForCheck = (value) => {
+    console.log("handleForCheck",value)
     let findID = viewProgressPollsDetails.answer.find(
       (data, index) => data === value
     );

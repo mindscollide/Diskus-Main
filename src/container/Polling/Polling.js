@@ -59,7 +59,6 @@ const Polling = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { PollsReducer } = useSelector((state) => state);
-  console.log(PollsReducer, "pollingSocketpollingSocketpollingSocket");
   const [updatePublished, setUpdatePublished] = useState(false);
   const [open, setOpen] = useState({
     flag: false,
@@ -69,7 +68,6 @@ const Polling = () => {
     searchValue: "",
   });
   const [rows, setRows] = useState([]);
-  console.log(rows, "rowsrowsrowsrows");
   let currentLanguage = localStorage.getItem("i18nextLng");
   registerLocale("ar", ar);
   registerLocale("en", enGB);
@@ -148,6 +146,7 @@ const Polling = () => {
       }
     } catch (error) {}
   }, [PollsReducer.SearchPolls]);
+  console.log("PollsReducerPollsReducer", rows);
 
   useEffect(() => {
     if (currentLanguage === "ar") {
@@ -160,7 +159,7 @@ const Polling = () => {
   }, [currentLanguage]);
 
   useEffect(() => {
-    try{
+    try {
       if (
         PollsReducer.pollingSocket !== null &&
         PollsReducer.pollingSocket !== undefined
@@ -201,12 +200,11 @@ const Polling = () => {
           }
         }
       }
-    }catch(error){
-      console.log(error)
+    } catch (error) {
+      console.log(error);
     }
-    
   }, [PollsReducer.pollingSocket]);
-  console.log("rowsrowsrowsrows", rows);
+
   const handleEditpollModal = (record) => {
     let check = 0;
 
@@ -315,8 +313,12 @@ const Polling = () => {
           text: t("UnPublished"),
           value: "UnPublished", // Use the actual status value
         },
+        {
+          text: t("Expired"),
+          value: "Expired", // Use the actual status value
+        },
       ],
-      defaultFilteredValue: ["Published", "UnPublished"], // Use the actual status values here
+      defaultFilteredValue: ["Published", "UnPublished", "Expired"], // Use the actual status values here
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
