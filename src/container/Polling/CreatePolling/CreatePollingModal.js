@@ -393,23 +393,23 @@ const CreatePolling = () => {
           flag: true,
           message: t("Select-date"),
         });
-      } else if (Object.keys(members).length > 0) {
+      } else if (Object.keys(members).length ===0) {
         setOpen({
           ...open,
           flag: true,
           message: t("Atleat-one-member-required"),
         });
-      } else if (Object.keys(options).length >= 2) {
+      } else if (Object.keys(options).length <= 1) {
         setOpen({
           ...open,
           flag: true,
           message: t("Required-atleast-two-options"),
         });
-      } else if (allValuesNotEmpty) {
+      } else if (!allValuesNotEmpty) {
         setOpen({
           ...open,
           flag: true,
-          message: t("Please-fill-all-reqired-fields"),
+          message: t("Please-fill-all-open-option-fields"),
         });
       } else {
         setOpen({
