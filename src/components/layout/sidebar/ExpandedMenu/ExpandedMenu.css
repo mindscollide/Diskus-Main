@@ -6,18 +6,20 @@
   background: #fff !important;
   border-radius: 4px !important;
   position: fixed !important;
-
   bottom: 10%;
   border: 1px solid #e1e1e1 !important;
   left: 3.8% !important;
   z-index: 20 !important;
-  /* overflow: hidden; */
 }
 
 .Meeting_Side_bar_Tag {
   font-size: 8px !important;
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold" !important;
+}
+
+.Meeting_Side_bar_Tag:hover {
+  color: #fff !important;
 }
 
 .Meeting_Side_bar_Tag_active {
@@ -30,4 +32,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+a.icon_expand.nav-link {
+  height: 60px;
+}
+
+a.icon-active-sidebar_expand.nav-link.active {
+  height: 60px;
 }
