@@ -17,6 +17,18 @@
 .Meeting_Side_bar_Tag {
   font-size: 8px !important;
   color: #5a5a5a !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
+  font-family: "MontserratSemiBold" !important;
   white-space: nowrap;
+}
+
+.Meeting_Side_bar_Tag_active {
+  font-size: 7px !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+}
+.icon-width {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
