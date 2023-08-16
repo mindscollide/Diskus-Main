@@ -494,7 +494,7 @@ const Sidebar = () => {
             className={
               location.pathname.includes("/DisKus/Admin/") ||
               location.pathname.includes("/Diskus/Admin/")
-                ? "justify-content-start align-items-start admin-width "
+                ? "justify-content-start align-items-start admin-width"
                 : "diskus-sidebar m-0 p-0"
             }
           >

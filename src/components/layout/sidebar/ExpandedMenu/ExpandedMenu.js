@@ -13,8 +13,8 @@ const ExpandedMenu = () => {
   const navigate = useNavigate();
   return (
     <section>
-      <Row className="mt-2">
-        <Col lg={6} md={6} sm={12} className="d-flex justify-content-end">
+      <Row className="mt-3">
+        <Col lg={6} md={6} sm={6} className="d-flex justify-content-end">
           {/* DataRoom */}
           <Nav.Link
             as={Link}
@@ -27,8 +27,8 @@ const ExpandedMenu = () => {
             className={
               location.pathname === "/DisKus/dataroom" ||
               location.pathname === "/Diskus/dataroom"
-                ? " m-0 icon-active-sidebar"
-                : " m-0 icon"
+                ? " m-0 p-0 icon-active-sidebar"
+                : " m-0 p-0 icon"
             }
           >
             <div>
@@ -304,7 +304,7 @@ const ExpandedMenu = () => {
             </div>
           </Nav.Link>
         </Col>
-        <Col lg={6} md={6} sm={12} className="d-flex justify-content-start">
+        <Col lg={6} md={6} sm={6} className="d-flex justify-content-end">
           {/* Groups */}
           <Nav.Link
             as={Link}
@@ -315,7 +315,7 @@ const ExpandedMenu = () => {
               location.pathname === "/DisKus/groups" ||
               location.pathname === "/Diskus/groups"
                 ? "m-0  icon-active-sidebar"
-                : "m-0 icon"
+                : "m-0  icon"
             }
           >
             <div>
@@ -350,7 +350,7 @@ const ExpandedMenu = () => {
       </Row>
 
       <Row className="mt-2">
-        <Col lg={6} md={6} sm={12} className="d-flex justify-content-end">
+        <Col lg={6} md={6} sm={6} className="d-flex justify-content-end">
           {/* Committee */}
           <Nav.Link
             as={Link}
@@ -405,7 +405,7 @@ const ExpandedMenu = () => {
             </div>
           </Nav.Link>
         </Col>
-        <Col lg={6} md={6} sm={12} className="d-flex justify-content-start">
+        <Col lg={6} md={6} sm={6} className="d-flex justify-content-start">
           {/* Resolution */}
           <Nav.Link
             as={Link}
@@ -463,7 +463,7 @@ const ExpandedMenu = () => {
       </Row>
 
       <Row className="mt-2">
-        <Col lg={6} md={6} sm={12} s className="d-flex justify-content-start">
+        <Col lg={6} md={6} sm={6} className="d-flex justify-content-start">
           {/* Polls */}
           <Nav.Link
             as={Link}
