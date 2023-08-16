@@ -68,7 +68,6 @@ const ExpandedMenu = () => {
                     y1="-0.543"
                     x2="-1.346"
                     y2="3.009"
-                    xlink="#linear-gradient-2"
                   />
                   <linearGradient
                     id="linear-gradient-4"
@@ -76,7 +75,6 @@ const ExpandedMenu = () => {
                     y1="-0.37"
                     x2="-0.866"
                     y2="2.113"
-                    xlink="#linear-gradient-2"
                   />
                   <linearGradient
                     id="linear-gradient-5"
@@ -84,7 +82,6 @@ const ExpandedMenu = () => {
                     y1="-0.175"
                     x2="-0.115"
                     y2="3.846"
-                    xlink="#linear-gradient-2"
                   />
                   <linearGradient
                     id="linear-gradient-6"
@@ -92,7 +89,6 @@ const ExpandedMenu = () => {
                     y1="-0.281"
                     x2="-0.76"
                     y2="1.995"
-                    xlink="#linear-gradient-2"
                   />
                   <linearGradient
                     id="linear-gradient-7"
@@ -112,7 +108,6 @@ const ExpandedMenu = () => {
                     y1="-1.193"
                     x2="0"
                     y2="1.569"
-                    xlink="#linear-gradient-2"
                   />
                   <linearGradient
                     id="linear-gradient-9"
@@ -120,7 +115,6 @@ const ExpandedMenu = () => {
                     y1="1"
                     x2="0.5"
                     y2="0"
-                    xlink="#linear-gradient-2"
                   />
                   <linearGradient
                     id="linear-gradient-10"
@@ -128,7 +122,6 @@ const ExpandedMenu = () => {
                     y1="-4.505"
                     x2="-1.348"
                     y2="1.198"
-                    xlink="#linear-gradient-2"
                   />
                   <linearGradient
                     id="linear-gradient-11"
@@ -136,7 +129,6 @@ const ExpandedMenu = () => {
                     y1="-5.035"
                     x2="-0.221"
                     y2="1.172"
-                    xlink="#linear-gradient-2"
                   />
                   <linearGradient
                     id="linear-gradient-12"
@@ -144,7 +136,6 @@ const ExpandedMenu = () => {
                     y1="0.12"
                     x2="-0.153"
                     y2="1"
-                    xlink="#linear-gradient-2"
                   />
                 </defs>
                 <path
@@ -405,7 +396,7 @@ const ExpandedMenu = () => {
             </div>
           </Nav.Link>
         </Col>
-        <Col lg={6} md={6} sm={6} className="d-flex justify-content-start">
+        <Col lg={6} md={6} sm={6} className="d-flex justify-content-end">
           {/* Resolution */}
           <Nav.Link
             as={Link}
@@ -463,7 +454,7 @@ const ExpandedMenu = () => {
       </Row>
 
       <Row className="mt-2">
-        <Col lg={6} md={6} sm={6} className="d-flex justify-content-start">
+        <Col lg={6} md={6} sm={6} className="d-flex justify-content-end">
           {/* Polls */}
           <Nav.Link
             as={Link}
@@ -474,7 +465,7 @@ const ExpandedMenu = () => {
               location.pathname === "/DisKus/polling" ||
               location.pathname === "/Diskus/polling"
                 ? "m-0   icon-active-sidebar Meeting_Side_bar_Tag_active"
-                : "m-0   icon"
+                : "m-0  icon"
             }
           >
             <div>

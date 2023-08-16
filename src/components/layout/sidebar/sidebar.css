@@ -214,11 +214,12 @@ a.m-0.p-0.icon-active-sidebar.nav-link.active rect#Rectangle_831 {
   position: absolute !important;
   width: 163px !important;
   height: 216.35px !important;
-  left: 45px !important;
+  left: 41px !important;
   background-color: #fff !important;
   z-index: 5 !important;
   display: flex;
   flex-wrap: wrap;
+  padding: 10px !important;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
 }
