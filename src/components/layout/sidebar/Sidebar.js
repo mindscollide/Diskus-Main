@@ -566,7 +566,7 @@ const Sidebar = () => {
                   }
                 >
                   {/* <Tooltip text={"Todo"}> */}
-                  <div className="d-flex flex-column">
+                  <div className="flex-column">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="30.63"
