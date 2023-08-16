@@ -812,6 +812,8 @@
   "Please-add-atleast-one-executive-member": "Please add atleast one executive member",
   "Are-you-sure-you-want-to-circulate-this-resolution": "Are you sure you want to circulate this resolution",
   "To-do-list": "To Do List",
-  "Please-fill-all-open-option-fields": "Please fill all open option fields"
-
+  "Please-fill-all-open-option-fields": "Please fill all open option fields",
+  "Dormant-inactive-users-for": "Dormant inactive users for",
+  "Calendar-months-span": "Calendar Months Span",
+  "Auto-close-resolution": "Auto Close Resolution"
 }

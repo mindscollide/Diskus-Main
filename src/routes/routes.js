@@ -71,6 +71,7 @@ import Polling from "../container/Polling/Polling";
 import PaymentForm2 from "../container/Admin/Subscriptions/PaymentForm2/PaymentForm2";
 import NewMeeting from "../container/pages/meeting/MeetingTwo";
 import UserSettings from "../container/setting/UserLevelSettings/UserSettings";
+import OrganizationLevelSetting from "../container/setting/OrganizationLevelSetting/OrganizationLevelSetting";
 
 export const router = createHashRouter(
   createRoutesFromElements(
@@ -143,6 +144,8 @@ export const router = createHashRouter(
           <Route path="PayOutstanding" element={<PayOutstanding />} />
           <Route path="PaymentHistory" element={<PaymentHistory />} />
           <Route path="Summary" element={<Summary />} />
+          {/* OrganizationLevelSetting */}
+          <Route path="OrganizationLevelSetting" element={<OrganizationLevelSetting />} />
           <Route path="Organization" element={<Organization />} />
           <Route path="AllMeeting" element={<AllMeetings />} />
           <Route path="CancelSub" element={<CancelSubs />} />

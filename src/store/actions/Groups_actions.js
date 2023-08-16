@@ -124,6 +124,7 @@ const getGroups = (navigate, t, currentPage) => {
                 )
             ) {
               dispatch(getGroup_Fail(t("No-data-available")));
+              dispatch(groupLoader(false))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import styles from "./UserSettings.module.css";
+import styles from "./OrganizationLevelSetting.module.css";
 import { Col, Row } from "react-bootstrap";
-import { Loader, Button } from "../../../components/elements";
+import { Loader, Button, TextField } from "../../../components/elements";
 import backbutton from "../../../assets/images/backbutton.svg";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "antd";
 import SecurityIcon from "../../../assets/images/SecuritySetting.svg";
+import Select from 'react-select'
 import MeetingIcon from "../../../assets/images/MeetingSetting.svg";
 import Calender from "../../../assets/images/CalenderSetting.svg";
 import pollsIcon from "../../../assets/images/pollsIcon.svg";
@@ -26,7 +28,9 @@ import {
   getGoogleValidToken,
   revokeToken,
 } from "../../../store/actions/UpdateUserGeneralSetting";
-const UserSettings = () => {
+import { MonthOptions, MonthValues, options } from "./values";
+const OrganizationLevelSetting = () => {
+  console.log(options, "optionsoptionsoptions")
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -663,7 +667,7 @@ const UserSettings = () => {
           >
             <img src={backbutton} width="34.88px" height="34.88px" />
             <span className={styles["UserLevelConfig_Heading"]}>
-              {t("User-level-configurations")}
+              {t("Organization-level-configurations")}
             </span>
           </Col>
         </Row>
@@ -879,6 +883,7 @@ const UserSettings = () => {
                           </span>
                         </Checkbox>
                       </Col>
+
                     </Row>
                   </>
                 ) : null}
@@ -1535,104 +1540,62 @@ const UserSettings = () => {
               >
                 <img src={line} className={styles["user-setting-row"]} />
               </Col>
-              <Col lg={3} md={3} sm={3}>
+              <Col lg={3} md={3} sm={3} className="m-0 p-0">
                 {calender ? (
                   <>
-                    <Row className="mt-4">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["BackGround_Calender_color_box"]}
-                      >
-                        <Row className="mt-4">
-                          <Col
-                            lg={8}
-                            md={8}
-                            sm={12}
-                            className="d-flex align-items-center justify-content-center"
-                          >
-                            <span className={styles["Diskus_calender"]}>
-                              {t("Diskus-calender")}
-                            </span>
-                          </Col>
-                          <Col
-                            lg={4}
-                            md={4}
-                            sm={12}
-                            className="d-flex  justify-content-start"
-                          >
-                            <input
-                              type="color"
-                              className=" m-0 p-0 circle-color-picker"
-                              value={userOptionsSettings.DiskusCalenderColor}
-                              onChange={onChangeDiskusCalenderColor}
-                            />
-                          </Col>
-                        </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12} className="d-flex gap-4 w-100 justify-content-center align-items-center">
+                        <span className={styles["Class_CheckBox2"]}>
+                          {t("Calendar-months-span")}
+                        </span>
+                        <Select options={MonthOptions} className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} />
                       </Col>
                     </Row>
-                    <Row className="mt-4">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["BackGround_Calender_color_box"]}
-                      >
-                        <Row className="mt-4">
-                          <Col
-                            lg={8}
-                            md={8}
-                            sm={12}
-                            className="d-flex align-items-center justify-content-center"
-                          >
-                            <span className={styles["Diskus_calender"]}>
-                              {t("Google-calender")}
-                            </span>
-                          </Col>
-                          <Col
-                            lg={4}
-                            md={4}
-                            sm={12}
-                            className="d-flex  justify-content-start"
-                          >
-                            <input
-                              type="color"
-                              className="m-0 p-0 circle-color-picker"
-                              value={userOptionsSettings.GoogleCalenderColor}
-                              onChange={onChangeGoogleCalenderColor}
-                            />
-                          </Col>
-                        </Row>
+                  </>
+                ) : null}
+                {securitystate ? (
+                  <>
+                    <Row className="mt-3">
+
+                      <Col lg={12} md={12} sm={12} className="d-flex gap-4 w-100 justify-content-center align-items-center">
+                        <span className={styles["Class_CheckBox2"]}>
+                          {t("Dormant-inactive-users-for")}
+                        </span>
+                        <Select options={options} className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} />
                       </Col>
                     </Row>
-                    <Row className="mt-4">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["BackGround_Calender_color_box"]}
-                      >
-                        <Row className="mt-4">
-                          <Col
-                            lg={9}
-                            md={9}
-                            sm={9}
-                            className="d-flex align-items-center justify-content-center"
-                          >
-                            <span className={styles["Diskus_calender"]}>
-                              {t("Microsoft-calender")}
-                            </span>
-                          </Col>
-                          <Col lg={3} md={3} sm={3} className="">
-                            <input
-                              type="color"
-                              className="circle-color-picker"
-                              value={userOptionsSettings.MicrosoftCalenderColor}
-                              onChange={onChangeMicrosoftColorChange}
-                            />
-                          </Col>
-                        </Row>
+                  </>
+                ) : null}
+                {resolution ? (
+                  <>
+                    <Row className="mt-3">
+
+                      <Col lg={12} md={12} sm={12} className="d-flex gap-4 w-100 justify-content-center align-items-center">
+                        <span className={styles["Class_CheckBox2"]}>
+                          {t("Auto-close-resolution")}
+                        </span>
+                        <Select options={MonthValues} className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} />
+                      </Col>
+                    </Row>
+                  </>
+                ) : null}
+                {meetingsState ? (
+                  <>
+                    <Row className="mt-3">
+
+                      <Col lg={12} md={12} sm={12} className="d-flex gap-4 w-100 justify-content-center align-items-center">
+                        <span className={styles["Class_CheckBox3"]}>
+                          {t("Maximum-meeting-duration-in-minutes")}
+                        </span>
+                        <TextField
+                          type={"number"}
+                          // change={handleChangeMaximumMeeting}
+                          // value={organizationStates.MaximumMeetingDuration}
+                          name={"maximumduration"}
+                          labelClass={"d-none"}
+                          width="80px"
+                        />
+                        {/* <Select options={MonthValues} className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} /> */}
                       </Col>
                     </Row>
                   </>
@@ -1656,4 +1619,4 @@ const UserSettings = () => {
   );
 };
 
-export default UserSettings;
+export default OrganizationLevelSetting;

@@ -143,26 +143,31 @@ const ModalMarketingTeamCommittee = ({
   console.log(groupData, "newGroupDatanewGroupData")
   useEffect(() => {
     if (committeeData !== null && committeeData !== undefined) {
-      if (committeeData[0].listofGroups.length > 0) {
-        let newDataforSend = [];
-        let newDataforView = []
-        committeeData[0].listofGroups.map((listgroupsData, index) => {
-          newDataforSend.push({
-            GroupID: listgroupsData.groupID,
-            CommitteeId: listgroupsData.committeeID,
-            CommitteeMappingID: listgroupsData.committeeMappingID
+      try {
+        if (committeeData[0].listofGroups.length > 0) {
+          let newDataforSend = [];
+          let newDataforView = []
+          committeeData[0].listofGroups.map((listgroupsData, index) => {
+            newDataforSend.push({
+              GroupID: listgroupsData.groupID,
+              CommitteeId: listgroupsData.committeeID,
+              CommitteeMappingID: listgroupsData.committeeMappingID
+            })
+            newDataforView.push({
+              GroupID: listgroupsData.groupID,
+              GroupName: listgroupsData.groupTitle,
+              CommitteeMappingID: listgroupsData.committeeMappingID
+            })
           })
-          newDataforView.push({
-            GroupID: listgroupsData.groupID,
-            GroupName: listgroupsData.groupTitle,
-            CommitteeMappingID: listgroupsData.committeeMappingID
-          })
-        })
-        setGroupData(newDataforView)
-        setData(newDataforSend)
+          setGroupData(newDataforView)
+          setData(newDataforSend)
+        }
+      } catch (error) {
+        console.log(error)
       }
+
     }
-  }, [committeeData])
+  }, [mapgroupsData])
   const handleUpdate = () => {
     if (data.length > 0) {
       let Data = {

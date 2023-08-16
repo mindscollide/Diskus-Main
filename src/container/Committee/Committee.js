@@ -363,6 +363,7 @@ const Committee = () => {
                                 StatusID={data.committeeStatusID}
                                 CardHeading={data.committeesTitle}
                                 creatorId={data.creatorID}
+                                groupState={false}
                                 onClickFunction={() =>
                                   viewUpdateModal(
                                     data.committeeID,
