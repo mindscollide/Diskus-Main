@@ -598,8 +598,8 @@ const Sidebar = () => {
                       className={
                         location.pathname === "/DisKus/todolist" ||
                         location.pathname === "/Diskus/todolist"
-                          ? "Meeting_Side_bar_Tag_active mt-1"
-                          : "Meeting_Side_bar_Tag mt-1"
+                          ? "Meeting_Side_bar_Tag_active_active_todo mt-1"
+                          : "Meeting_Side_bar_Tag_todo mt-1"
                       }
                     >
                       {t("To-do-list")}

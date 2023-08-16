@@ -205,11 +205,26 @@ a.m-0.p-0.icon-active-sidebar.nav-link.active rect#Rectangle_831 {
   font-family: "MontserratSemiBold" !important;
 }
 
+.Meeting_Side_bar_Tag_todo {
+  font-size: 8px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+  white-space: nowrap !important;
+}
+
 .Meeting_Side_bar_Tag_active {
   font-size: 7px !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
 }
+
+.Meeting_Side_bar_Tag_active_active_todo {
+  font-size: 7px !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  white-space: nowrap !important;
+}
+
 .expanded_menu {
   position: absolute !important;
   width: 163px !important;
