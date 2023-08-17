@@ -22,8 +22,7 @@ const ModalMarketingTeamCommittee = ({
   console.log("GroupsReducerGroupsReducer", GroupsReducer);
   const [Groups, setGroups] = useState([]);
   const [groupName, setGroupName] = useState("");
-  const [committeeData, setCommitteeData] = useState(mapgroupsData)
-  console.log("mapgroupsData", committeeData)
+  const [committeeData, setCommitteeData] = useState(null)
   const [groupID, setGroupID] = useState(0)
   const [groupData, setGroupData] = useState([])
   const [data, setData] = useState([])
@@ -35,6 +34,13 @@ const ModalMarketingTeamCommittee = ({
   })
   const { t } = useTranslation()
   console.log(groupData, data, "dasdasdasdasdasd")
+
+
+  useEffect(() => {
+    if (mapgroupsData !== null && mapgroupsData !== undefined) {
+      setCommitteeData(mapgroupsData)
+    }
+  }, [mapgroupsData])
   const closebtn = async () => {
     setMarketingTeam(false);
   };
@@ -115,8 +121,10 @@ const ModalMarketingTeamCommittee = ({
     }
   };
 
+
+
   const removeHandler = (id) => {
-    let newDatafindDex = committeeData[0].listofGroups.find((data, index) => data.groupID === id);
+    let newDatafindDex = committeeData[0].listOfGroups.find((data, index) => data.groupID === id);
     console.log(newDatafindDex, "newDatafindDexnewDatafindDex")
     let newGroupData = groupData.filter((data, index) => data.GroupID !== id);
     if (newDatafindDex !== undefined) {
@@ -142,32 +150,32 @@ const ModalMarketingTeamCommittee = ({
   console.log(data, "newGroupDatanewGroupData")
   console.log(groupData, "newGroupDatanewGroupData")
   useEffect(() => {
+    console.log(committeeData,
+      "committeeDatacommitteeData")
     if (committeeData !== null && committeeData !== undefined) {
-      try {
-        if (committeeData[0].listofGroups.length > 0) {
-          let newDataforSend = [];
-          let newDataforView = []
-          committeeData[0].listofGroups.map((listgroupsData, index) => {
-            newDataforSend.push({
-              GroupID: listgroupsData.groupID,
-              CommitteeId: listgroupsData.committeeID,
-              CommitteeMappingID: listgroupsData.committeeMappingID
-            })
-            newDataforView.push({
-              GroupID: listgroupsData.groupID,
-              GroupName: listgroupsData.groupTitle,
-              CommitteeMappingID: listgroupsData.committeeMappingID
-            })
+      if (committeeData[0].listOfGroups.length > 0) {
+        console.log("Test")
+        let newDataforSend = [];
+        let newDataforView = []
+        committeeData[0].listOfGroups.map((listgroupsData, index) => {
+          newDataforSend.push({
+            GroupID: listgroupsData.groupID,
+            CommitteeId: listgroupsData.committeeID,
+            CommitteeMappingID: listgroupsData.committeeMappingID
           })
-          setGroupData(newDataforView)
-          setData(newDataforSend)
-        }
-      } catch (error) {
-        console.log(error)
+          console.log("Test")
+          newDataforView.push({
+            GroupID: listgroupsData.groupID,
+            GroupName: listgroupsData.groupTitle,
+            CommitteeMappingID: listgroupsData.committeeMappingID
+          })
+        })
+        console.log("Test")
+        setGroupData(newDataforView)
+        setData(newDataforSend)
       }
-
     }
-  }, [mapgroupsData])
+  }, [committeeData])
   const handleUpdate = () => {
     if (data.length > 0) {
       let Data = {

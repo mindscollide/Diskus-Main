@@ -13,7 +13,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
     console.log(diskusEventColor, "diskusEventColor")
     console.log(googleEventColor, "diskusEventColor")
     console.log(officeEventColor, "diskusEventColor")
-    let defaultColor = "#000"
+    let defaultColor = "#00000"
     return (
         <Modal show={eventModal} setShow={setEventsModal}
             closeButton={true}
@@ -28,7 +28,7 @@ const EventsModal = ({ eventModal, setEventsModal, events }) => {
                             {events.length > 0 && (
                                 events.map((eventData, index) => {
                                     return (
-                                        <section key={index} style={{ border: eventData.calenderEventSource === "Diskus" ? `1px solid ${diskusEventColor}` : eventData.calenderEventSource === "Google" ? `1px solid ${googleEventColor}` : eventData.calenderEventSource === "Office" ? `1px solid ${officeEventColor}` : `1px solid ${defaultColor}` }} className={styles["eventBox"]}>
+                                        <section key={index} style={{ border: eventData.calenderEventSource === "Diskus" ? `1px solid ${diskusEventColor}` : eventData.calenderEventSource === "Google" ? `1px solid ${googleEventColor}` : eventData.calenderEventSource === "Office" ? `1px solid ${officeEventColor}` : `1px solid #000` }} className={styles["eventBox"]}>
                                             <Row>
                                                 <Col sm={12} md={10} lg={10} className='d-flex flex-column '>
                                                     <span className={styles["event__title"]}>{eventData.title}</span><span className={styles["event_time"]}>{newTimeFormaterAsPerUTC(eventData.eventDate + eventData.startTime)}</span></Col>

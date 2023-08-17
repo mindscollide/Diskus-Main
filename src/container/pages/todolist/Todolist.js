@@ -308,7 +308,7 @@ const TodoList = () => {
       title: t('Assigned-by'),
       dataIndex: 'taskCreator',
       key: 'taskCreator',
-      // width: "220px",
+      width: "220px",
       sortDirections: ['descend', 'ascend'],
       // align: "left",
       render: (record, index) => {
@@ -331,7 +331,7 @@ const TodoList = () => {
     },
     {
       title: t('Assigned-to'),
-      // width: "220px",
+      width: "220px",
       dataIndex: 'taskAssignedTo',
       key: 'taskAssignedTo',
       sortDirections: ['descend', 'ascend'],
@@ -953,7 +953,7 @@ const TodoList = () => {
                     column={columnsToDo}
                     className={'ToDo'}
                     rows={rowsToDo}
-                    scroll={{ y: 400 }}
+                    scroll={{ y: 400, x: "auto" }}
                     // onChange={tableTodoChange}
                     pagination={false}
                   />
@@ -974,14 +974,14 @@ const TodoList = () => {
                     <Pagination
                       onChange={paginationChangeHandlerTodo}
                       className="PaginationStyle-Meeting"
-                      current={todoListCurrentPage}
+                      current={todoListCurrentPage !== null && todoListCurrentPage !== undefined ? todoListCurrentPage : 1}
                       total={totalRecords}
                       locale={{
                         items_per_page: t('items_per_page'),
                         page: t('page'),
                       }}
                       pageSizeOptions={['30', '50', '100', '200']}
-                      pageSize={todoListPageSize}
+                      pageSize={todoListPageSize !== null && todoListPageSize !== undefined ? todoListPageSize : 50}
                     />
                   </section>
                 )}

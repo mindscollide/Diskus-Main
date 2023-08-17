@@ -29,6 +29,7 @@ import {
   revokeToken,
 } from "../../../store/actions/UpdateUserGeneralSetting";
 import { MonthOptions, MonthValues, options } from "./values";
+import { getOrganizationLevelSetting } from "../../../store/actions/OrganizationSettings";
 const OrganizationLevelSetting = () => {
   console.log(options, "optionsoptionsoptions")
   const { t } = useTranslation();
@@ -48,7 +49,7 @@ const OrganizationLevelSetting = () => {
       "509020224191-pst82a2kqjq33phenb35b0bg1i0q762o.apps.googleusercontent.com",
   });
   const [signUpCodeToken, setSignUpCodeToken] = useState("");
-  const [userOptionsSettings, setUserOptionsSettings] = useState({
+  const [userOrganizationSetting, setOrganizationSetting] = useState({
     Is2FAEnabled: false,
     EmailOnNewMeeting: false,
     EmailEditMeeting: false,
@@ -92,17 +93,21 @@ const OrganizationLevelSetting = () => {
     PushNotificationWhenPollDueDateIsPassed: false,
     PushNotificationWhenPublishedPollIsDeleted: false,
     PushNotificationWhenPublishedPollIsUpdated: false,
+    DormatInactiveUsersforDays: 0,
+    MaximumMeetingDuration: 0,
+    CalenderMonthsSpan: 0,
+    AutoCloseResolution: 0
   });
 
   useEffect(() => {
-    dispatch(getUserSetting(navigate, t));
+    dispatch(getOrganizationLevelSetting(navigate, t));
   }, []);
 
   const handleGoogleLoginSuccess = (response) => {
     console.log(response.code);
     setSignUpCodeToken(response.code);
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       AllowCalenderSync: true,
     });
   };
@@ -110,10 +115,10 @@ const OrganizationLevelSetting = () => {
   const handleGoogleLoginFailure = (response) => {
     console.log(response);
     setSignUpCodeToken("");
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       AllowMicrosoftCalenderSync:
-        userOptionsSettings.AllowMicrosoftCalenderSync,
+        userOrganizationSetting.AllowMicrosoftCalenderSync,
     });
   };
 
@@ -131,111 +136,59 @@ const OrganizationLevelSetting = () => {
 
   useEffect(() => {
     if (
-      settingReducer.UserProfileData !== null &&
-      settingReducer.UserProfileData !== undefined
+      settingReducer.GetOrganizationLevelSettingResponse !== null &&
+      settingReducer.GetOrganizationLevelSettingResponse !== undefined
     ) {
-      if (Object.keys(settingReducer.UserProfileData).length > 0) {
-        setUserOptionsSettings({
-          Is2FAEnabled: settingReducer.UserProfileData.iS2FAEnabled,
-          EmailOnNewMeeting: settingReducer.UserProfileData.emailOnNewMeeting,
-          EmailEditMeeting: settingReducer.UserProfileData.emailOnEditMeeting,
-          EmailCancelOrDeleteMeeting:
-            settingReducer.UserProfileData.emailOnCancelledORDeleteMeeting,
-          PushNotificationonNewMeeting:
-            settingReducer.UserProfileData.pushNotificationOnNewMeeting,
-          PushNotificationEditMeeting:
-            settingReducer.UserProfileData.pushNotificationOnEditMeeting,
-          PushNotificationCancelledOrDeleteMeeting:
-            settingReducer.UserProfileData
-              .pushNotificationonCancelledORDeleteMeeting,
-          ShowNotificationOnParticipantJoining:
-            settingReducer.UserProfileData.showNotificationOnParticipantJoining,
-          AllowCalenderSync:
-            settingReducer.UserProfileData.userAllowGoogleCalendarSynch,
-          AllowMicrosoftCalenderSync:
-            settingReducer.UserProfileData.userAllowMicrosoftCalendarSynch,
-          EmailWhenAddedToCommittee:
-            settingReducer.UserProfileData.emailWhenAddedToCommittee,
-          EmailWhenRemovedFromCommittee:
-            settingReducer.UserProfileData.emailWhenRemovedFromCommittee,
-          EmailWhenCommitteeIsDissolvedOrArchived:
-            settingReducer.UserProfileData
-              .emailWhenCommitteeIsDissolvedorArchived,
-          EmailWhenCommitteeIsSetInactive:
-            settingReducer.UserProfileData.emailWhenCommitteeIsInActive,
-          PushNotificationWhenAddedToCommittee:
-            settingReducer.UserProfileData.pushNotificationWhenAddedToCommittee,
-          PushNotificationWhenRemovedFromCommittee:
-            settingReducer.UserProfileData
-              .pushNotificationWhenRemovedFromCommittee,
-          PushNotificationWhenCommitteeIsDissolvedOrArchived:
-            settingReducer.UserProfileData
-              .pushNotificationWhenCommitteeIsDissolvedorArchived,
-          PushNotificationWhenCommitteeIsInActive:
-            settingReducer.UserProfileData
-              .pushNotificationWhenCommitteeIsInActive,
-          EmailWhenAddedToGroup:
-            settingReducer.UserProfileData.emailWhenAddedToGroup,
-          EmailWhenRemovedFromGroup:
-            settingReducer.UserProfileData.emailWhenRemovedFromGroup,
-          EmailWhenGroupIsDissolvedOrArchived:
-            settingReducer.UserProfileData.emailWhenGroupIsClosedorArchived,
-          EmailWhenGroupisSetInactive:
-            settingReducer.UserProfileData.emailWhenGroupIsInActive,
-          PushNotificationWhenAddedToGroup:
-            settingReducer.UserProfileData.pushNotificationWhenAddedToGroup,
-          PushNotificationWhenRemovedFromGroup:
-            settingReducer.UserProfileData.pushNotificationWhenRemoveFromGroup,
-          PushNotificationWhenGroupIsDissolvedOrArchived:
-            settingReducer.UserProfileData
-              .pushNotificationWhenGroupIsClosedORArchived,
-          PushNotificationWhenGroupIsInActive:
-            settingReducer.UserProfileData
-              .pushNotificationWhenGroupisSetInactive,
-          EmailWhenResolutionIsCirculated:
-            settingReducer.UserProfileData.emailWhenNewResolutionIsCirculated,
-          EmailWhenNewResolutionIsCancelledAfterCirculation:
-            settingReducer.UserProfileData
-              .emailWhenResolutionIsCancelledAfterCirculation,
-          EmailWhenResolutionIsClosed:
-            settingReducer.UserProfileData.emailWhenResolutionIsClosed,
-          PushNotificationWhenNewResolutionIsCirculated:
-            settingReducer.UserProfileData
-              .pushNotificationWhenNewResolutionIsCirculated,
-          PushNotificationWhenNewResolutionIsCancelledAfterCirculated:
-            settingReducer.UserProfileData
-              .pushNotificationWhenWhenResolutionIsCancelledAfterCirculation,
-          PushNotificationWhenResolutionISClosed:
-            settingReducer.UserProfileData
-              .pushNotificationWhenResolutionIsClosed,
-          DiskusCalenderColor: settingReducer.UserProfileData.diskusEventColor,
-          GoogleCalenderColor: settingReducer.UserProfileData.googleEventColor,
-          MicrosoftCalenderColor:
-            settingReducer.UserProfileData.officeEventColor,
-          EmailWhenNewPollIsPublished:
-            settingReducer.UserProfileData.emailWhenNewPollIsPublished,
-          EmailWhenPollDueDateIsPassed:
-            settingReducer.UserProfileData.emailWhenPollDueDateIsPassed,
-          EmailWhenPublishedPollIsDeleted:
-            settingReducer.UserProfileData.emailWhenPublishedPollIsDeleted,
-          EmailWhenPublishedPollIsUpdated:
-            settingReducer.UserProfileData.emailWhenPublishedPollIsUpdated,
-          PushNotificationWhenNewPollIsPublished:
-            settingReducer.UserProfileData
-              .pushNotificationWhenNewPollIsPublished,
-          PushNotificationWhenPollDueDateIsPassed:
-            settingReducer.UserProfileData
-              .pushNotificationWhenPollDueDateIsPassed,
-          PushNotificationWhenPublishedPollIsDeleted:
-            settingReducer.UserProfileData
-              .pushNotificationWhenPublishedPollIsDeleted,
-          PushNotificationWhenPublishedPollIsUpdated:
-            settingReducer.UserProfileData
-              .pushNotificationWhenPublishedPollIsUpdated,
+      if (Object.keys(settingReducer.GetOrganizationLevelSettingResponse).length > 0) {
+        let organizationSettings = settingReducer.GetOrganizationLevelSettingResponse;
+        setOrganizationSetting({
+          Is2FAEnabled: organizationSettings.is2FAEnabled,
+          EmailOnNewMeeting: organizationSettings.emailOnNewMeeting,
+          EmailEditMeeting: organizationSettings.emailOnEditMeeting,
+          EmailCancelOrDeleteMeeting: organizationSettings.emailOnCancelledDeletedMeeting,
+          PushNotificationonNewMeeting: organizationSettings.pushNotificationOnNewMeeting,
+          PushNotificationEditMeeting: organizationSettings.pushNotificationOnEditMeeting,
+          PushNotificationonCancelledDeletedMeeting: organizationSettings.pushNotificationonCancelledDeletedMeeting,
+          ShowNotificationOnParticipantJoining: organizationSettings.showNotificationOnParticipantJoining,
+          AllowCalenderSync: organizationSettings.userAllowGoogleCalendarSynch,
+          AllowMicrosoftCalenderSync: organizationSettings.userAllowMicrosoftCalendarSynch,
+          EmailWhenAddedToCommittee: organizationSettings.emailWhenAddedToCommittee,
+          EmailWhenRemovedFromCommittee: organizationSettings.emailWhenRemovedFromCommittee,
+          EmailWhenCommitteeIsDissolvedOrArchived: organizationSettings.emailWhenCommitteeIsDissolvedArchived,
+          EmailWhenCommitteeIsSetInactive: organizationSettings.emailWhenCommitteeIsInActive,
+          PushNotificationWhenAddedToCommittee: organizationSettings.pushNotificationwhenAddedtoCommittee,
+          PushNotificationWhenRemovedFromCommittee: organizationSettings.pushNotificationwhenRemovedfromCommittee,
+          PushNotificationWhenCommitteeIsDissolvedOrArchived: organizationSettings.pushNotificationwhenCommitteeisDissolvedArchived,
+          PushNotificationWhenCommitteeIsInActive: organizationSettings.pushNotificationwhenCommitteeissetInActive,
+          EmailWhenAddedToGroup: organizationSettings.emailWhenAddedToGroup,
+          EmailWhenRemovedFromGroup: organizationSettings.emailWhenRemovedFromGroup,
+          EmailWhenGroupIsDissolvedOrArchived: organizationSettings.emailWhenGroupIsClosedorArchived,
+          EmailWhenGroupisSetInactive: organizationSettings.emailWhenGroupIsInActive,
+          PushNotificationWhenAddedToGroup: organizationSettings.pushNotificationwhenAddedtoGroup,
+          PushNotificationWhenRemovedFromGroup: organizationSettings.pushNotificationwhenRemovedfromGroup,
+          PushNotificationWhenGroupIsDissolvedOrArchived: organizationSettings.pushNotificationWhenGroupIsClosedORArchived,
+          PushNotificationWhenGroupIsInActive: organizationSettings.pushNotificationwhenGroupissetInActive,
+          EmailWhenResolutionIsCirculated: organizationSettings.emailwhenaResolutionisClosed,
+          EmailWhenNewResolutionIsCancelledAfterCirculation: organizationSettings.emailwhenResolutionisCancelledafterCirculation,
+          EmailWhenResolutionIsClosed: organizationSettings.emailwhenaResolutionisClosed,
+          PushNotificationWhenNewResolutionIsCirculated: organizationSettings.pushNotificationwhenNewResolutionisCirculated,
+          PushNotificationWhenNewResolutionIsCancelledAfterCirculated: organizationSettings.pushNotificationwhenResolutionisCancelledafterCirculation,
+          PushNotificationWhenResolutionISClosed: organizationSettings.pushNotificationWhenResolutionIsClosed,
+          EmailWhenNewPollIsPublished: organizationSettings.emailWhenNewPollIsPublished,
+          EmailWhenPollDueDateIsPassed: organizationSettings.emailWhenPollDueDateIsPassed,
+          EmailWhenPublishedPollIsDeleted: organizationSettings.emailWhenPublishedPollIsDeleted,
+          EmailWhenPublishedPollIsUpdated: organizationSettings.emailWhenPublishedPollIsUpdated,
+          PushNotificationWhenNewPollIsPublished: organizationSettings.pushNotificationWhenNewPollIsPublished,
+          PushNotificationWhenPollDueDateIsPassed: organizationSettings.pushNotificationWhenPollDueDateIsPassed,
+          PushNotificationWhenPublishedPollIsDeleted: organizationSettings.pushNotificationWhenPublishedPollIsDeleted,
+          PushNotificationWhenPublishedPollIsUpdated: organizationSettings.pushNotificationWhenPublishedPollIsUpdated,
+          DormatInactiveUsersforDays: organizationSettings.dormantInactiveUsersForDays,
+          MaximumMeetingDuration: organizationSettings.maximumMeetingDuration,
+          CalenderMonthsSpan: organizationSettings.calenderMonthsSpan
         });
       }
     }
-  }, [settingReducer.UserProfileData]);
+  }, [settingReducer.GetOrganizationLevelSettingResponse]);
 
   const openSecurityTab = () => {
     setSecuritystate(true);
@@ -306,63 +259,63 @@ const OrganizationLevelSetting = () => {
     setSecuritystate(false);
   };
   const onChangeIsTwoFaceEnabled = (e) => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
-      Is2FAEnabled: !userOptionsSettings.Is2FAEnabled,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      Is2FAEnabled: !userOrganizationSetting.Is2FAEnabled,
     });
   };
 
   const onChangeEmailOnNewMeeting = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
-      EmailOnNewMeeting: !userOptionsSettings.EmailOnNewMeeting,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      EmailOnNewMeeting: !userOrganizationSetting.EmailOnNewMeeting,
     });
   };
 
   const onChangeEmailOnEditMeeting = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
-      EmailEditMeeting: !userOptionsSettings.EmailEditMeeting,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      EmailEditMeeting: !userOrganizationSetting.EmailEditMeeting,
     });
   };
 
   const onChangeEmailOnCancelledOrDeletedMeeting = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       EmailCancelOrDeleteMeeting:
-        !userOptionsSettings.EmailCancelOrDeleteMeeting,
+        !userOrganizationSetting.EmailCancelOrDeleteMeeting,
     });
   };
 
   const onChangePushNotificationonNewMeeting = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationonNewMeeting:
-        !userOptionsSettings.PushNotificationonNewMeeting,
+        !userOrganizationSetting.PushNotificationonNewMeeting,
     });
   };
 
   const onChangePushNotificationOnEditMeeting = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationEditMeeting:
-        !userOptionsSettings.PushNotificationEditMeeting,
+        !userOrganizationSetting.PushNotificationEditMeeting,
     });
   };
 
   const onChangePushNotificationOnCancelledOrDeleteMeeting = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationCancelledOrDeleteMeeting:
-        !userOptionsSettings.PushNotificationCancelledOrDeleteMeeting,
+        !userOrganizationSetting.PushNotificationCancelledOrDeleteMeeting,
     });
   };
 
   const onChangeShowNotificationonJoiningParticiapnts = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       ShowNotificationOnParticipantJoining:
-        !userOptionsSettings.ShowNotificationOnParticipantJoining,
+        !userOrganizationSetting.ShowNotificationOnParticipantJoining,
     });
   };
 
@@ -370,288 +323,269 @@ const OrganizationLevelSetting = () => {
     if (checked) {
       signIn();
     } else {
-      setUserOptionsSettings({
-        ...userOptionsSettings,
-        AllowCalenderSync: !userOptionsSettings.AllowCalenderSync,
+      setOrganizationSetting({
+        ...userOrganizationSetting,
+        AllowCalenderSync: !userOrganizationSetting.AllowCalenderSync,
       });
     }
   };
 
   const onChangeAllowMicrosoftCalenderSync = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       AllowMicrosoftCalenderSync:
-        !userOptionsSettings.AllowMicrosoftCalenderSync,
+        !userOrganizationSetting.AllowMicrosoftCalenderSync,
     });
   };
 
   const onChangeEmailWhenAddedToCommittee = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
-      EmailWhenAddedToCommittee: !userOptionsSettings.EmailWhenAddedToCommittee,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      EmailWhenAddedToCommittee: !userOrganizationSetting.EmailWhenAddedToCommittee,
     });
   };
 
   const onChangeEmailWhenRemovedFromCommittee = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       EmailWhenRemovedFromCommittee:
-        !userOptionsSettings.EmailWhenRemovedFromCommittee,
+        !userOrganizationSetting.EmailWhenRemovedFromCommittee,
     });
   };
 
   const onChangeWhenCommitteeIsDissolvedOrArchived = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       EmailWhenCommitteeIsDissolvedOrArchived:
-        !userOptionsSettings.EmailWhenCommitteeIsDissolvedOrArchived,
+        !userOrganizationSetting.EmailWhenCommitteeIsDissolvedOrArchived,
     });
   };
 
   const onChangeEmailWhenCommitteeIsInActive = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       EmailWhenCommitteeIsSetInactive:
-        !userOptionsSettings.EmailWhenCommitteeIsSetInactive,
+        !userOrganizationSetting.EmailWhenCommitteeIsSetInactive,
     });
   };
 
   const onChangePushNotificationWhenAddedToCommittee = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationWhenAddedToCommittee:
-        !userOptionsSettings.PushNotificationWhenAddedToCommittee,
+        !userOrganizationSetting.PushNotificationWhenAddedToCommittee,
     });
   };
 
   const onChangePushNotificationWhenRemovedFromCommittee = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationWhenRemovedFromCommittee:
-        !userOptionsSettings.PushNotificationWhenRemovedFromCommittee,
+        !userOrganizationSetting.PushNotificationWhenRemovedFromCommittee,
     });
   };
 
   const onChangepushNotificationWhenCommitteeIsDissolvedOrArchived = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationWhenCommitteeIsDissolvedOrArchived:
-        !userOptionsSettings.PushNotificationWhenCommitteeIsDissolvedOrArchived,
+        !userOrganizationSetting.PushNotificationWhenCommitteeIsDissolvedOrArchived,
     });
   };
 
   const onChangepushNotificationWhenCommitteeIsInActive = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationWhenCommitteeIsInActive:
-        !userOptionsSettings.PushNotificationWhenCommitteeIsInActive,
+        !userOrganizationSetting.PushNotificationWhenCommitteeIsInActive,
     });
   };
 
   const onChangeEmailWhenAddedToGroup = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
-      EmailWhenAddedToGroup: !userOptionsSettings.EmailWhenAddedToGroup,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      EmailWhenAddedToGroup: !userOrganizationSetting.EmailWhenAddedToGroup,
     });
   };
 
   const onChangeEmailWhenRemovedFromGroup = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
-      EmailWhenRemovedFromGroup: !userOptionsSettings.EmailWhenRemovedFromGroup,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      EmailWhenRemovedFromGroup: !userOrganizationSetting.EmailWhenRemovedFromGroup,
     });
   };
 
   const onChangeEmailWhenGroupIsDissolvedOrArchived = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       EmailWhenGroupIsDissolvedOrArchived:
-        !userOptionsSettings.EmailWhenGroupIsDissolvedOrArchived,
+        !userOrganizationSetting.EmailWhenGroupIsDissolvedOrArchived,
     });
   };
 
   const onChangeWhenGroupIsSetInactive = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       EmailWhenGroupisSetInactive:
-        !userOptionsSettings.EmailWhenGroupisSetInactive,
+        !userOrganizationSetting.EmailWhenGroupisSetInactive,
     });
   };
 
   const onChangePushNotificationWhenAddedToGroup = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationWhenAddedToGroup:
-        !userOptionsSettings.PushNotificationWhenAddedToGroup,
+        !userOrganizationSetting.PushNotificationWhenAddedToGroup,
     });
   };
 
   const onChangePushNotificationWhenRemovedFromGroup = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationWhenRemovedFromGroup:
-        !userOptionsSettings.PushNotificationWhenRemovedFromGroup,
+        !userOrganizationSetting.PushNotificationWhenRemovedFromGroup,
     });
   };
 
   const onChangePushNotificationWhenGroupIsDissolvedOrArchived = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationWhenGroupIsDissolvedOrArchived:
-        !userOptionsSettings.PushNotificationWhenGroupIsDissolvedOrArchived,
+        !userOrganizationSetting.PushNotificationWhenGroupIsDissolvedOrArchived,
     });
   };
 
   const onChangePushNotificationWhenGroupIsSetInActive = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationWhenGroupIsInActive:
-        !userOptionsSettings.PushNotificationWhenGroupIsInActive,
+        !userOrganizationSetting.PushNotificationWhenGroupIsInActive,
     });
   };
 
   const onChangeWhenResolutionIsCirculated = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       EmailWhenResolutionIsCirculated:
-        !userOptionsSettings.EmailWhenResolutionIsCirculated,
+        !userOrganizationSetting.EmailWhenResolutionIsCirculated,
     });
   };
 
   const onChangeWhenNewPollIsPublished = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       EmailWhenNewPollIsPublished:
-        !userOptionsSettings.EmailWhenNewPollIsPublished,
+        !userOrganizationSetting.EmailWhenNewPollIsPublished,
     });
   };
 
   const onChangeWhenPollsDueDateIsPassed = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       EmailWhenPollDueDateIsPassed:
-        !userOptionsSettings.EmailWhenPollDueDateIsPassed,
+        !userOrganizationSetting.EmailWhenPollDueDateIsPassed,
     });
   };
 
   const onChangeWhenPublishedPollIsDeleted = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       EmailWhenPublishedPollIsDeleted:
-        !userOptionsSettings.EmailWhenPublishedPollIsDeleted,
+        !userOrganizationSetting.EmailWhenPublishedPollIsDeleted,
     });
   };
 
   const onChangeWhenPublishedPollIsUpdated = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       EmailWhenPublishedPollIsUpdated:
-        !userOptionsSettings.EmailWhenPublishedPollIsUpdated,
+        !userOrganizationSetting.EmailWhenPublishedPollIsUpdated,
     });
   };
 
   const onChangePushNotificationWhenNewPollIsPublished = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationWhenNewPollIsPublished:
-        !userOptionsSettings.PushNotificationWhenNewPollIsPublished,
+        !userOrganizationSetting.PushNotificationWhenNewPollIsPublished,
     });
   };
 
   const onChangePushNotificationWhenPollsDueDateIsPassed = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationWhenPollDueDateIsPassed:
-        !userOptionsSettings.PushNotificationWhenPollDueDateIsPassed,
+        !userOrganizationSetting.PushNotificationWhenPollDueDateIsPassed,
     });
   };
 
   const onChangePushNotificationWhenPublishedPollIsDeleted = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationWhenPublishedPollIsDeleted:
-        !userOptionsSettings.PushNotificationWhenPublishedPollIsDeleted,
+        !userOrganizationSetting.PushNotificationWhenPublishedPollIsDeleted,
     });
   };
 
   const onChangePushNotificationWhenPublishedPollisUpdated = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationWhenPublishedPollIsUpdated:
-        !userOptionsSettings.PushNotificationWhenPublishedPollIsUpdated,
+        !userOrganizationSetting.PushNotificationWhenPublishedPollIsUpdated,
     });
   };
 
   const onChangeEmailWhenResolutionIsCancelledAfterCirculation = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       EmailWhenNewResolutionIsCancelledAfterCirculation:
-        !userOptionsSettings.EmailWhenNewResolutionIsCancelledAfterCirculation,
+        !userOrganizationSetting.EmailWhenNewResolutionIsCancelledAfterCirculation,
     });
   };
 
   const onChangeEmailWhenResolutionisClosed = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       EmailWhenResolutionIsClosed:
-        !userOptionsSettings.EmailWhenResolutionIsClosed,
+        !userOrganizationSetting.EmailWhenResolutionIsClosed,
     });
   };
 
   const onChangePushNotificationWhenResolutionIsCirculated = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationWhenNewResolutionIsCirculated:
-        !userOptionsSettings.PushNotificationWhenNewResolutionIsCirculated,
+        !userOrganizationSetting.PushNotificationWhenNewResolutionIsCirculated,
     });
   };
 
   const onChangePushNoficationWhenNewResolutionIsCanelledAfterCirculated =
     () => {
-      setUserOptionsSettings({
-        ...userOptionsSettings,
+      setOrganizationSetting({
+        ...userOrganizationSetting,
         PushNotificationWhenNewResolutionIsCancelledAfterCirculated:
-          !userOptionsSettings.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
+          !userOrganizationSetting.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
       });
     };
 
   const onChangePushNotificationWhenResolutionIsClosed = () => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
+    setOrganizationSetting({
+      ...userOrganizationSetting,
       PushNotificationWhenResolutionISClosed:
-        !userOptionsSettings.PushNotificationWhenResolutionISClosed,
+        !userOrganizationSetting.PushNotificationWhenResolutionISClosed,
     });
   };
 
-  const onChangeDiskusCalenderColor = (e) => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
-      DiskusCalenderColor: e.target.value,
-    });
-  };
 
-  const onChangeGoogleCalenderColor = (e) => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
-      GoogleCalenderColor: e.target.value,
-    });
-  };
-
-  const onChangeMicrosoftColorChange = (e) => {
-    setUserOptionsSettings({
-      ...userOptionsSettings,
-      MicrosoftCalenderColor: e.target.value,
-    });
-  };
 
   const updateOrganizationLevelSettings = async () => {
     if (signUpCodeToken != "") {
       await dispatch(
-        getGoogleValidToken(navigate, signUpCodeToken, userOptionsSettings, t)
+        getGoogleValidToken(navigate, signUpCodeToken, userOrganizationSetting, t)
       );
       setSignUpCodeToken("");
     } else {
-      await dispatch(revokeToken(navigate, userOptionsSettings, t));
+      await dispatch(revokeToken(navigate, userOrganizationSetting, t));
     }
   };
 
@@ -876,7 +810,7 @@ const OrganizationLevelSetting = () => {
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeIsTwoFaceEnabled}
-                          checked={userOptionsSettings.Is2FAEnabled}
+                          checked={userOrganizationSetting.Is2FAEnabled}
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t("2FA-is-enabled")}
@@ -893,7 +827,7 @@ const OrganizationLevelSetting = () => {
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeEmailOnNewMeeting}
-                          checked={userOptionsSettings.EmailOnNewMeeting}
+                          checked={userOrganizationSetting.EmailOnNewMeeting}
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-on-new-meeting")}
@@ -905,7 +839,7 @@ const OrganizationLevelSetting = () => {
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeEmailOnEditMeeting}
-                          checked={userOptionsSettings.EmailEditMeeting}
+                          checked={userOrganizationSetting.EmailEditMeeting}
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-on-edit-meeting")}
@@ -918,7 +852,7 @@ const OrganizationLevelSetting = () => {
                         <Checkbox
                           onChange={onChangeEmailOnCancelledOrDeletedMeeting}
                           checked={
-                            userOptionsSettings.EmailCancelOrDeleteMeeting
+                            userOrganizationSetting.EmailCancelOrDeleteMeeting
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -932,7 +866,7 @@ const OrganizationLevelSetting = () => {
                         <Checkbox
                           onChange={onChangePushNotificationonNewMeeting}
                           checked={
-                            userOptionsSettings.PushNotificationonNewMeeting
+                            userOrganizationSetting.PushNotificationonNewMeeting
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -946,7 +880,7 @@ const OrganizationLevelSetting = () => {
                         <Checkbox
                           onChange={onChangePushNotificationOnEditMeeting}
                           checked={
-                            userOptionsSettings.PushNotificationEditMeeting
+                            userOrganizationSetting.PushNotificationEditMeeting
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -962,7 +896,7 @@ const OrganizationLevelSetting = () => {
                             onChangePushNotificationOnCancelledOrDeleteMeeting
                           }
                           checked={
-                            userOptionsSettings.PushNotificationCancelledOrDeleteMeeting
+                            userOrganizationSetting.PushNotificationCancelledOrDeleteMeeting
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -980,7 +914,7 @@ const OrganizationLevelSetting = () => {
                             onChangeShowNotificationonJoiningParticiapnts
                           }
                           checked={
-                            userOptionsSettings.ShowNotificationOnParticipantJoining
+                            userOrganizationSetting.ShowNotificationOnParticipantJoining
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -997,7 +931,7 @@ const OrganizationLevelSetting = () => {
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={onChangeAllowCalenderSync}
-                          checked={userOptionsSettings.AllowCalenderSync}
+                          checked={userOrganizationSetting.AllowCalenderSync}
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t("Allow-calender-sync")}
@@ -1010,7 +944,7 @@ const OrganizationLevelSetting = () => {
                         <Checkbox
                           onChange={onChangeAllowMicrosoftCalenderSync}
                           checked={
-                            userOptionsSettings.AllowMicrosoftCalenderSync
+                            userOrganizationSetting.AllowMicrosoftCalenderSync
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -1035,7 +969,7 @@ const OrganizationLevelSetting = () => {
                             <Checkbox
                               onChange={onChangeEmailWhenAddedToCommittee}
                               checked={
-                                userOptionsSettings.EmailWhenAddedToCommittee
+                                userOrganizationSetting.EmailWhenAddedToCommittee
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1049,7 +983,7 @@ const OrganizationLevelSetting = () => {
                             <Checkbox
                               onChange={onChangeEmailWhenRemovedFromCommittee}
                               checked={
-                                userOptionsSettings.EmailWhenRemovedFromCommittee
+                                userOrganizationSetting.EmailWhenRemovedFromCommittee
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1065,7 +999,7 @@ const OrganizationLevelSetting = () => {
                                 onChangeWhenCommitteeIsDissolvedOrArchived
                               }
                               checked={
-                                userOptionsSettings.EmailWhenCommitteeIsDissolvedOrArchived
+                                userOrganizationSetting.EmailWhenCommitteeIsDissolvedOrArchived
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1081,7 +1015,7 @@ const OrganizationLevelSetting = () => {
                             <Checkbox
                               onChange={onChangeEmailWhenCommitteeIsInActive}
                               checked={
-                                userOptionsSettings.EmailWhenCommitteeIsSetInactive
+                                userOrganizationSetting.EmailWhenCommitteeIsSetInactive
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1097,7 +1031,7 @@ const OrganizationLevelSetting = () => {
                                 onChangePushNotificationWhenAddedToCommittee
                               }
                               checked={
-                                userOptionsSettings.PushNotificationWhenAddedToCommittee
+                                userOrganizationSetting.PushNotificationWhenAddedToCommittee
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1113,7 +1047,7 @@ const OrganizationLevelSetting = () => {
                                 onChangePushNotificationWhenRemovedFromCommittee
                               }
                               checked={
-                                userOptionsSettings.PushNotificationWhenRemovedFromCommittee
+                                userOrganizationSetting.PushNotificationWhenRemovedFromCommittee
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1131,7 +1065,7 @@ const OrganizationLevelSetting = () => {
                                 onChangepushNotificationWhenCommitteeIsDissolvedOrArchived
                               }
                               checked={
-                                userOptionsSettings.PushNotificationWhenCommitteeIsDissolvedOrArchived
+                                userOrganizationSetting.PushNotificationWhenCommitteeIsDissolvedOrArchived
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1149,7 +1083,7 @@ const OrganizationLevelSetting = () => {
                                 onChangepushNotificationWhenCommitteeIsInActive
                               }
                               checked={
-                                userOptionsSettings.PushNotificationWhenCommitteeIsInActive
+                                userOrganizationSetting.PushNotificationWhenCommitteeIsInActive
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1178,7 +1112,7 @@ const OrganizationLevelSetting = () => {
                             <Checkbox
                               onChange={onChangeEmailWhenAddedToGroup}
                               checked={
-                                userOptionsSettings.EmailWhenAddedToGroup
+                                userOrganizationSetting.EmailWhenAddedToGroup
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1192,7 +1126,7 @@ const OrganizationLevelSetting = () => {
                             <Checkbox
                               onChange={onChangeEmailWhenRemovedFromGroup}
                               checked={
-                                userOptionsSettings.EmailWhenRemovedFromGroup
+                                userOrganizationSetting.EmailWhenRemovedFromGroup
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1208,7 +1142,7 @@ const OrganizationLevelSetting = () => {
                                 onChangeEmailWhenGroupIsDissolvedOrArchived
                               }
                               checked={
-                                userOptionsSettings.EmailWhenGroupIsDissolvedOrArchived
+                                userOrganizationSetting.EmailWhenGroupIsDissolvedOrArchived
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1222,7 +1156,7 @@ const OrganizationLevelSetting = () => {
                             <Checkbox
                               onChange={onChangeWhenGroupIsSetInactive}
                               checked={
-                                userOptionsSettings.EmailWhenGroupisSetInactive
+                                userOrganizationSetting.EmailWhenGroupisSetInactive
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1238,7 +1172,7 @@ const OrganizationLevelSetting = () => {
                                 onChangePushNotificationWhenAddedToGroup
                               }
                               checked={
-                                userOptionsSettings.PushNotificationWhenAddedToGroup
+                                userOrganizationSetting.PushNotificationWhenAddedToGroup
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1254,7 +1188,7 @@ const OrganizationLevelSetting = () => {
                                 onChangePushNotificationWhenRemovedFromGroup
                               }
                               checked={
-                                userOptionsSettings.PushNotificationWhenRemovedFromGroup
+                                userOrganizationSetting.PushNotificationWhenRemovedFromGroup
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1270,7 +1204,7 @@ const OrganizationLevelSetting = () => {
                                 onChangePushNotificationWhenGroupIsDissolvedOrArchived
                               }
                               checked={
-                                userOptionsSettings.PushNotificationWhenGroupIsDissolvedOrArchived
+                                userOrganizationSetting.PushNotificationWhenGroupIsDissolvedOrArchived
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1288,7 +1222,7 @@ const OrganizationLevelSetting = () => {
                                 onChangePushNotificationWhenGroupIsSetInActive
                               }
                               checked={
-                                userOptionsSettings.PushNotificationWhenGroupIsInActive
+                                userOrganizationSetting.PushNotificationWhenGroupIsInActive
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1308,7 +1242,7 @@ const OrganizationLevelSetting = () => {
                         <Checkbox
                           onChange={onChangeWhenResolutionIsCirculated}
                           checked={
-                            userOptionsSettings.EmailWhenResolutionIsCirculated
+                            userOrganizationSetting.EmailWhenResolutionIsCirculated
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -1324,7 +1258,7 @@ const OrganizationLevelSetting = () => {
                             onChangeEmailWhenResolutionIsCancelledAfterCirculation
                           }
                           checked={
-                            userOptionsSettings.EmailWhenNewResolutionIsCancelledAfterCirculation
+                            userOrganizationSetting.EmailWhenNewResolutionIsCancelledAfterCirculation
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -1340,7 +1274,7 @@ const OrganizationLevelSetting = () => {
                         <Checkbox
                           onChange={onChangeEmailWhenResolutionisClosed}
                           checked={
-                            userOptionsSettings.EmailWhenResolutionIsClosed
+                            userOrganizationSetting.EmailWhenResolutionIsClosed
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -1356,7 +1290,7 @@ const OrganizationLevelSetting = () => {
                             onChangePushNotificationWhenResolutionIsCirculated
                           }
                           checked={
-                            userOptionsSettings.PushNotificationWhenNewResolutionIsCirculated
+                            userOrganizationSetting.PushNotificationWhenNewResolutionIsCirculated
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -1374,7 +1308,7 @@ const OrganizationLevelSetting = () => {
                             onChangePushNoficationWhenNewResolutionIsCanelledAfterCirculated
                           }
                           checked={
-                            userOptionsSettings.PushNotificationWhenNewResolutionIsCancelledAfterCirculated
+                            userOrganizationSetting.PushNotificationWhenNewResolutionIsCancelledAfterCirculated
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -1392,7 +1326,7 @@ const OrganizationLevelSetting = () => {
                             onChangePushNotificationWhenResolutionIsClosed
                           }
                           checked={
-                            userOptionsSettings.PushNotificationWhenResolutionISClosed
+                            userOrganizationSetting.PushNotificationWhenResolutionISClosed
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -1410,7 +1344,7 @@ const OrganizationLevelSetting = () => {
                         <Checkbox
                           onChange={onChangeWhenNewPollIsPublished}
                           checked={
-                            userOptionsSettings.EmailWhenNewPollIsPublished
+                            userOrganizationSetting.EmailWhenNewPollIsPublished
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -1424,7 +1358,7 @@ const OrganizationLevelSetting = () => {
                         <Checkbox
                           onChange={onChangeWhenPollsDueDateIsPassed}
                           checked={
-                            userOptionsSettings.EmailWhenPollDueDateIsPassed
+                            userOrganizationSetting.EmailWhenPollDueDateIsPassed
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -1438,7 +1372,7 @@ const OrganizationLevelSetting = () => {
                         <Checkbox
                           onChange={onChangeWhenPublishedPollIsDeleted}
                           checked={
-                            userOptionsSettings.EmailWhenPublishedPollIsDeleted
+                            userOrganizationSetting.EmailWhenPublishedPollIsDeleted
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -1452,7 +1386,7 @@ const OrganizationLevelSetting = () => {
                         <Checkbox
                           onChange={onChangeWhenPublishedPollIsUpdated}
                           checked={
-                            userOptionsSettings.EmailWhenPublishedPollIsUpdated
+                            userOrganizationSetting.EmailWhenPublishedPollIsUpdated
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -1468,7 +1402,7 @@ const OrganizationLevelSetting = () => {
                             onChangePushNotificationWhenNewPollIsPublished
                           }
                           checked={
-                            userOptionsSettings.PushNotificationWhenNewPollIsPublished
+                            userOrganizationSetting.PushNotificationWhenNewPollIsPublished
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -1484,7 +1418,7 @@ const OrganizationLevelSetting = () => {
                             onChangePushNotificationWhenPollsDueDateIsPassed
                           }
                           checked={
-                            userOptionsSettings.PushNotificationWhenPollDueDateIsPassed
+                            userOrganizationSetting.PushNotificationWhenPollDueDateIsPassed
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -1500,7 +1434,7 @@ const OrganizationLevelSetting = () => {
                             onChangePushNotificationWhenPublishedPollIsDeleted
                           }
                           checked={
-                            userOptionsSettings.PushNotificationWhenPublishedPollIsDeleted
+                            userOrganizationSetting.PushNotificationWhenPublishedPollIsDeleted
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -1518,7 +1452,7 @@ const OrganizationLevelSetting = () => {
                             onChangePushNotificationWhenPublishedPollisUpdated
                           }
                           checked={
-                            userOptionsSettings.PushNotificationWhenPublishedPollIsUpdated
+                            userOrganizationSetting.PushNotificationWhenPublishedPollIsUpdated
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
@@ -1548,7 +1482,9 @@ const OrganizationLevelSetting = () => {
                         <span className={styles["Class_CheckBox2"]}>
                           {t("Calendar-months-span")}
                         </span>
-                        <Select options={MonthOptions} className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} />
+                        <Select options={MonthOptions} value={{
+                          value: userOrganizationSetting.CalenderMonthsSpan, label: `${userOrganizationSetting.CalenderMonthsSpan} Months`
+                        }} className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} />
                       </Col>
                     </Row>
                   </>
@@ -1561,7 +1497,9 @@ const OrganizationLevelSetting = () => {
                         <span className={styles["Class_CheckBox2"]}>
                           {t("Dormant-inactive-users-for")}
                         </span>
-                        <Select options={options} className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} />
+                        <Select options={options} value={{
+                          value: userOrganizationSetting.DormatInactiveUsersforDays, label: `${userOrganizationSetting.DormatInactiveUsersforDays} Days`
+                        }} className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} />
                       </Col>
                     </Row>
                   </>
@@ -1590,7 +1528,7 @@ const OrganizationLevelSetting = () => {
                         <TextField
                           type={"number"}
                           // change={handleChangeMaximumMeeting}
-                          // value={organizationStates.MaximumMeetingDuration}
+                          value={userOrganizationSetting.MaximumMeetingDuration}
                           name={"maximumduration"}
                           labelClass={"d-none"}
                           width="80px"

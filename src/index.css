@@ -1,16 +1,28 @@
 @font-face {
   font-family: 'MontserratRegular';
-  src        : url('./assets/fonts-new/montserrat-regular-webfont.woff'), url('./assets/fonts-new/montserrat-regular-webfont.woff2');
+  src: url('./assets/fonts-new/montserrat-regular-webfont.woff'), url('./assets/fonts-new/montserrat-regular-webfont.woff2');
 }
 
 body {
-  margin                 : 0;
-  font-family            : 'MontserratRegular' !important;
-  -webkit-font-smoothing : antialiased;
+  margin: 0;
+  font-family: 'MontserratRegular' !important;
+  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
 }
