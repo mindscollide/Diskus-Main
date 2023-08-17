@@ -3887,6 +3887,101 @@ const DownloadChat = (object, t, navigate) => {
   }
 }
 
+const emailChatInit = () => {
+  return {
+    type: actions.EMAIL_CHAT_INIT,
+  }
+}
+
+const emailChatSuccess = (response, message) => {
+  return {
+    type: actions.EMAIL_CHAT_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+const emailChatFail = (message) => {
+  return {
+    type: actions.EMAIL_CHAT_FAIL,
+    message: message,
+  }
+}
+
+//Email Chat
+const EmailChat = (object, t, navigate) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(emailChatInit())
+    let form = new FormData()
+    form.append('RequestMethod', downloadChat.RequestMethod)
+    form.append('RequestData', JSON.stringify(object))
+    axios({
+      method: 'post',
+      url: talkApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(EmailChat(object, t, navigate))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            console.log('Email Chat', response)
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes('Talk_TalkServiceManager_EmailChat_01'.toLowerCase())
+            ) {
+              await dispatch(
+                emailChatSuccess(
+                  response.data.responseResult.talkResponse,
+                  t('Chat-emailed-successfully'),
+                ),
+              )
+              console.log('EmailChat', response)
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes('Talk_TalkServiceManager_EmailChat_02'.toLowerCase())
+            ) {
+              await dispatch(
+                emailChatSuccess(
+                  response.data.responseResult.talkResponse,
+                  t('No-data-found'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes('Talk_TalkServiceManager_EmailChat_03'.toLowerCase())
+            ) {
+              await dispatch(emailChatFail(t('Exception')))
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes('Talk_TalkServiceManager_EmailChat_04'.toLowerCase())
+            ) {
+              await dispatch(
+                emailChatFail(t('Exception-while-writing-to-stream')),
+              )
+            }
+          } else {
+            await dispatch(emailChatFail(t('Something-went-wrong')))
+          }
+        } else {
+          await dispatch(emailChatFail(t('Something-went-wrong')))
+        }
+      })
+      .catch((response) => {
+        dispatch(emailChatFail(t('Something-went-wrong')))
+      })
+  }
+}
+
 const updateMessageAcknowledgementInit = () => {
   return {
     type: actions.UPDATE_MESSAGE_ACKNOWLEDGEMENT_INIT,
@@ -4155,6 +4250,7 @@ export {
   OtoMessageRetryFlag,
   InsertBulkMessages,
   DownloadChat,
+  EmailChat,
   UpdateMessageAcknowledgement,
   mqttMessageStatusUpdate,
   activeChat,

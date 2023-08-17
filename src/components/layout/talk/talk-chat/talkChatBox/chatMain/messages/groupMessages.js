@@ -112,7 +112,7 @@ const GroupMessages = () => {
                       name="Name"
                       change={(e) => setSearchChatWord(e.target.value)}
                       value={searchChatWord}
-                      placeholder="Search Chat"
+                      placeholder={t('Search-Chat')}
                       labelClass={'d-none'}
                     />
                   </Col>
@@ -134,14 +134,14 @@ const GroupMessages = () => {
                 {chatFeatureActive === messageData.messageID ? (
                   <div className="dropdown-menus-chatmessage">
                     <span onClick={() => replyFeatureHandler(messageData)}>
-                      Reply
+                      {t('Reply')}
                     </span>
                     <span onClick={forwardFeatureHandler}>Forward</span>
                     <span onClick={() => deleteFeatureHandler(messageData)}>
-                      Delete
+                      {t('Delete')}
                     </span>
                     <span onClick={() => messageInfoHandler(messageData)}>
-                      Message Info
+                      {t('Message-Info')}
                     </span>
                     <span
                       onClick={() => markUnmarkStarMessageHandler(messageData)}
@@ -150,9 +150,9 @@ const GroupMessages = () => {
                       }}
                     >
                       {messageData.isFlag === 0 ? (
-                        <>Star Message</>
+                        <>{t('Star-Message')}</>
                       ) : (
-                        <>Unstar Message</>
+                        <>{t('Unstar-Message')}</>
                       )}
                     </span>
                   </div>
@@ -234,27 +234,14 @@ const GroupMessages = () => {
                   <span className="direct-chat-sent-time chat-datetime">
                     {messageData.sentDate.slice(0, 8) === currentUtcDate ? (
                       <>
-                        {/* {moment(
-                                              messageData.sentDate.slice(
-                                                8,
-                                                15,
-                                              ),
-                                              'hhmmss',
-                                            ).format('hh:mm a')} */}
                         {newTimeFormaterAsPerUTCTalkTime(messageData.sentDate)}
                       </>
                     ) : messageData.sentDate.slice(0, 8) ===
                       yesterdayDateUtc ? (
                       <>
-                        {/* {moment(
-                                              messageData.sentDate.slice(
-                                                0,
-                                                8,
-                                              ),
-                                            ).format('DD-MMM-YYYY')}{' '} */}
                         {newTimeFormaterAsPerUTCTalkDate(messageData.sentDate) +
                           ' '}
-                        | Yesterday
+                        | {t('Yesterday')}
                       </>
                     ) : (
                       <>
@@ -300,7 +287,7 @@ const GroupMessages = () => {
                       name="Name"
                       change={(e) => setSearchChatWord(e.target.value)}
                       value={searchChatWord}
-                      placeholder="Search Chat"
+                      placeholder={t('Search Chat')}
                       labelClass={'d-none'}
                     />
                   </Col>
@@ -329,14 +316,14 @@ const GroupMessages = () => {
                 {chatFeatureActive === messageData.messageID ? (
                   <div className="dropdown-menus-chatmessage">
                     <span onClick={() => replyFeatureHandler(messageData)}>
-                      Reply
+                      {t('Reply')}
                     </span>
                     <span onClick={forwardFeatureHandler}>Forward</span>
                     <span onClick={() => deleteFeatureHandler(messageData)}>
-                      Delete
+                      {t('Delete')}
                     </span>
                     <span onClick={() => messageInfoHandler(messageData)}>
-                      Message Info
+                      {t('Message-Info')}
                     </span>
                     <span
                       onClick={() => markUnmarkStarMessageHandler(messageData)}
@@ -345,9 +332,9 @@ const GroupMessages = () => {
                       }}
                     >
                       {messageData.isFlag === 0 ? (
-                        <>Star Message</>
+                        <>{t('Star-Message')}</>
                       ) : (
-                        <>Unstar Message</>
+                        <>{t('Unstar-Message')}</>
                       )}
                     </span>
                   </div>
@@ -391,27 +378,14 @@ const GroupMessages = () => {
                   <span className="direct-chat-sent-time chat-datetime">
                     {messageData.sentDate.slice(0, 8) === currentUtcDate ? (
                       <>
-                        {/* {moment(
-                                              messageData.sentDate.slice(
-                                                8,
-                                                15,
-                                              ),
-                                              'hhmmss',
-                                            ).format('hh:mm a')} */}
                         {newTimeFormaterAsPerUTCTalkTime(messageData.sentDate)}
                       </>
                     ) : messageData.sentDate.slice(0, 8) ===
                       yesterdayDateUtc ? (
                       <>
-                        {/* {moment(
-                                              messageData.sentDate.slice(
-                                                0,
-                                                8,
-                                              ),
-                                            ).format('DD-MMM-YYYY')}{' '} */}
                         {newTimeFormaterAsPerUTCTalkDate(messageData.sentDate) +
                           ' '}
-                        | Yesterday
+                        | {t('Yesterday')}
                       </>
                     ) : (
                       <>

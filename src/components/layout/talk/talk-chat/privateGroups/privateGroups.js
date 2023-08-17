@@ -7,24 +7,16 @@ import {
   newTimeFormaterAsPerUTCTalkTime,
   newTimeFormaterAsPerUTCTalkDate,
 } from '../../../../../commen/functions/date_formater'
-import {
-  chatBoxActiveFlag,
-  privateGroupChatFlag,
-  recentChatFlag,
-} from '../../../../../store/actions/Talk_Feature_actions'
+import { chatBoxActiveFlag } from '../../../../../store/actions/Talk_Feature_actions'
 import {
   GetGroupMessages,
-  GetAllUsers,
   activeChat,
 } from '../../../../../store/actions/Talk_action'
-import { Spin } from 'antd'
-import SingleIcon from '../../../../../assets/images/Single-Icon.png'
 import GroupIcon from '../../../../../assets/images/Group-Icon.png'
 import DoubleTickIcon from '../../../../../assets/images/DoubleTick-Icon.png'
 import DoubleTickDeliveredIcon from '../../../../../assets/images/DoubleTickDelivered-Icon.png'
 import SingleTickIcon from '../../../../../assets/images/SingleTick-Icon.png'
 import TimerIcon from '../../../../../assets/images/Timer-Icon.png'
-import DropDownIcon from '../../../../../assets/images/dropdown-icon.png'
 import { useTranslation } from 'react-i18next'
 
 const PrivateGroups = () => {
@@ -39,7 +31,6 @@ const PrivateGroups = () => {
   let currentUserId = localStorage.getItem('userID')
   let currentOrganizationId = localStorage.getItem('organizationID')
 
-  const date = new Date()
   //CURRENT DATE TIME UTC
   let currentDateTime = new Date()
   let changeDateFormatCurrent = moment(currentDateTime).utc()
@@ -159,7 +150,7 @@ const PrivateGroups = () => {
                           {newTimeFormaterAsPerUTCTalkDate(
                             dataItem.messageDate,
                           ) + ' '}
-                          | Yesterday
+                          | {t('Yesterday')}
                         </>
                       ) : (
                         <>

@@ -52,50 +52,7 @@ const TalkFooter = () => {
       <Container>
         <Row>
           <Col>
-            <div
-              className="add-chat"
-              //   className={
-              //     chatOpen === true &&
-              //     deleteChat === true &&
-              //     activeCreateGroup === false &&
-              //     activeCreateShoutAll === false
-              //       ? "add-chat height applyBlur"
-              //       : chatOpen === true &&
-              //         deleteChat === false &&
-              //         activeCreateGroup === false &&
-              //         activeCreateShoutAll === false
-              //       ? "add-chat height"
-              //       : chatOpen === false &&
-              //         deleteChat === true &&
-              //         activeCreateGroup === false &&
-              //         activeCreateShoutAll === false
-              //       ? "add-chat applyBlur"
-              //       : chatOpen === false &&
-              //         deleteChat === true &&
-              //         (activeCreateGroup === true ||
-              //           addNewChat === true ||
-              //           activeCreateShoutAll === true)
-              //       ? "d-none"
-              //       : chatOpen === true &&
-              //         deleteChat === true &&
-              //         (activeCreateGroup === true ||
-              //           addNewChat === true ||
-              //           activeCreateShoutAll === true)
-              //       ? "d-none"
-              //       : chatOpen === true &&
-              //         deleteChat === false &&
-              //         (activeCreateGroup === true ||
-              //           addNewChat === true ||
-              //           activeCreateShoutAll === true)
-              //       ? "d-none"
-              //       : activeCreateGroup === true ||
-              //         addNewChat === true ||
-              //         activeCreateShoutAll === true
-              //       ? "d-none"
-              //       : "add-chat"
-              //   }
-              onClick={createBehaviorAction}
-            >
+            <div className="add-chat" onClick={createBehaviorAction}>
               <img src={AddChatIcon} alt="" />
             </div>
           </Col>

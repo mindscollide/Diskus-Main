@@ -514,7 +514,7 @@ const RecentChats = () => {
                 searchChat(e.target.value)
               }}
               value={searchChatValue}
-              placeholder="Search Chat"
+              placeholder={t('Search-Chat')}
               labelClass={'d-none'}
             />
           </Col>
@@ -623,7 +623,7 @@ const RecentChats = () => {
                       <>
                         {newTimeFormaterAsPerUTCTalkDate(dataItem.messageDate) +
                           ' '}
-                        | Yesterday
+                        | {t('Yesterday')}
                       </>
                     ) : (
                       <>
@@ -657,7 +657,7 @@ const RecentChats = () => {
                             onClick={() => unblockblockContactHandler(dataItem)}
                             style={{ borderBottom: 'none' }}
                           >
-                            Block
+                            {t('Block')}
                           </span>
                         ) : dataItem.messageType === 'O' &&
                           dataItem.isBlock === 1 ? (
@@ -665,7 +665,7 @@ const RecentChats = () => {
                             onClick={() => unblockblockContactHandler(dataItem)}
                             style={{ borderBottom: 'none' }}
                           >
-                            Unblock
+                            {t('Unblock')}
                           </span>
                         ) : dataItem.messageType === 'G' &&
                           dataItem.isBlock === 0 ? (
@@ -673,14 +673,14 @@ const RecentChats = () => {
                             onClick={() => leaveGroupHandler(dataItem)}
                             style={{ borderBottom: 'none' }}
                           >
-                            Leave Group
+                            {t('Leave-Group')}
                           </span>
                         ) : dataItem.messageType === 'B' ? (
                           <span
                             onClick={() => deleteShoutFunction(dataItem)}
                             style={{ borderBottom: 'none' }}
                           >
-                            Delete Shout
+                            {t('Delete-Shout')}
                           </span>
                         ) : null}
                       </div>
@@ -693,7 +693,7 @@ const RecentChats = () => {
         })
       ) : talkStateData.AllUserChats.Loading === false &&
         allChatData.length === 0 ? (
-        <p>No Chats Available</p>
+        <p>{t('No-Chats-Available')}</p>
       ) : null}
     </>
   )

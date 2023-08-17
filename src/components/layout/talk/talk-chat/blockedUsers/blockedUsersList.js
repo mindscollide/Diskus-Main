@@ -93,7 +93,7 @@ const BlockedUsersList = () => {
         })
       ) : talkStateData.BlockedUsers.Loading === false &&
         blockedUsersData.length === 0 ? (
-        <p>No Blocked Users</p>
+        <p>{t('No-Blocked-Users')}</p>
       ) : null}
     </>
   )
