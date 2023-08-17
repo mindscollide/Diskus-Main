@@ -510,8 +510,6 @@ const Sidebar = () => {
                   as={Link}
                   to="meeting"
                   eventKey="link-2"
-                  // data-tut="meeting-iconSidebar"
-                  // className="m-0 p-0 iconSidebar"
                   className={
                     location.pathname === "/DisKus/meeting" ||
                     location.pathname === "/Diskus/meeting"
@@ -519,8 +517,6 @@ const Sidebar = () => {
                       : "m-0 p-0 iconSidebar"
                   }
                 >
-                  {/* <Tooltip text={"Meeting"}> */}
-                  {/* <Tooltip placement="top" title="Meeting" className="in"> */}
                   <div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -547,10 +543,6 @@ const Sidebar = () => {
                       {t("Meeting")}
                     </span>
                   </div>
-                  {/* </Tooltip> */}
-                  {/* </Tooltip> */}
-
-                  {/* <i className="iconSidebar-meeting" /> */}
                 </Nav.Link>
 
                 {/* Todo Menu */}
@@ -617,7 +609,6 @@ const Sidebar = () => {
                       : "m-0 p-0 iconSidebar"
                   }
                 >
-                  {/* <Tooltip text={"Calendar"}> */}
                   <div>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -647,18 +638,16 @@ const Sidebar = () => {
                       />
                     </svg>
                     <span
-                    // className={
-                    //   location.pathname === "/DisKus/calendar" ||
-                    //   location.pathname === "/Diskus/calendar"
-                    //     ? "Meeting_Side_bar_Tag_active"
-                    //     : "Meeting_Side_bar_Tag"
-                    // }
+                      className={
+                        location.pathname === "/DisKus/calendar" ||
+                        location.pathname === "/Diskus/calendar"
+                          ? "Meeting_Side_bar_Tag_active"
+                          : "Meeting_Side_bar_Tag"
+                      }
                     >
                       {t("Calender")}
                     </span>
                   </div>
-                  {/* </Tooltip> */}
-                  {/* <i className="iconSidebar-calendar" /> */}
                 </Nav.Link>
                 {/* FAQ Menu */}
 
@@ -675,7 +664,6 @@ const Sidebar = () => {
                       : "m-0 p-0 iconSidebar"
                   }
                 >
-                  {/* <Tooltip text={"Notes"}> */}
                   <div className="d-flex flex-column">
                     <svg
                       id="Group_2034"
@@ -761,9 +749,6 @@ const Sidebar = () => {
                       {t("Notes")}
                     </span>
                   </div>
-                  {/* </Tooltip> */}
-
-                  {/* <i className="iconSidebar-help" /> */}
                 </Nav.Link>
 
                 {/* Add more btn */}
