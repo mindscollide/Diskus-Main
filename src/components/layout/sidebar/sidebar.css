@@ -344,7 +344,7 @@ a.iconSidebar-active-sidebar.nav-link:active svg path {
 }
 
 a.iconSidebar-active-sidebar.nav-link svg {
-  margin-top: 10px !important;
+  margin-top: 5px !important;
   width: 100% !important;
   height: 26px !important;
 }
