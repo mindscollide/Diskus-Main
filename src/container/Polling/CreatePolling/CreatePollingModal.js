@@ -46,7 +46,7 @@ import {
   newDateFormaterAsPerUTC,
 } from "../../../commen/functions/date_formater";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
-import { regexOnlyForNumberNCharacters } from "../../../commen/functions/regex";
+import { regexOnlyForNumberNCharacters, validateInput } from "../../../commen/functions/regex";
 
 const CreatePolling = () => {
   const animatedComponents = makeAnimated();
@@ -425,7 +425,7 @@ const CreatePolling = () => {
     let name = e.target.name;
     let value = e.target.value;
     if (name === "TypingTitle") {
-      let valueCheck = regexOnlyForNumberNCharacters(value);
+      let valueCheck = validateInput(value);
       if (valueCheck !== "") {
         setcreatePollData({
           ...createPollData,
