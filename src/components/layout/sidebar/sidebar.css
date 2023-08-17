@@ -364,6 +364,7 @@ a.m-0.p-0.icon_expand.nav-link:hover {
   border-radius: 4px;
   fill: #fff !important;
   height: 55px !important;
+  width: 98% !important;
 }
 
 a.m-0.p-0.icon_expand.nav-link:hover svg path {

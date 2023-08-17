@@ -602,7 +602,7 @@ const Sidebar = () => {
                 <Nav.Link
                   as={Link}
                   to="calendar"
-                  eventKey="link-4"
+                  eventKey="link-5"
                   className={
                     location.pathname === "/DisKus/calendar" ||
                     location.pathname === "/Diskus/calendar"
@@ -656,7 +656,7 @@ const Sidebar = () => {
                   as={Link}
                   disabled={false}
                   to="Notes"
-                  eventKey="link-5"
+                  eventKey="link-4"
                   className={
                     location.pathname === "/DisKus/notes" ||
                     location.pathname === "/Diskus/notes"
