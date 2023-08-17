@@ -5,5 +5,13 @@ export const regexOnlyForNumberNCharacters = (data) => {
 
 // its allow only character  space and also didnt allow space as a first character
 export const regexOnlyCharacters = (data) => {
-    return data.replace(/^\s/, "").replace(/[^a-zA-Z\s]/g, '');
-  };
+  return data.replace(/^\s/, "").replace(/[^a-zA-Z\s]/g, "");
+};
+
+// not  allow first charector as an space
+export const validateInput = (data) => {
+  if (data.charAt(0) === ' ') {
+    return data.slice(1);
+  }
+  return data;
+};
