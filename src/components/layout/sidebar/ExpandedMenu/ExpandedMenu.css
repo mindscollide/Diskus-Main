@@ -1,17 +1,3 @@
-.BackGround_For_More {
-  height: 216.35px;
-  margin: 0px;
-  width: 163px;
-  padding: 0;
-  background: #fff !important;
-  border-radius: 4px !important;
-  position: fixed !important;
-  bottom: 10%;
-  border: 1px solid #e1e1e1 !important;
-  left: 3.8% !important;
-  z-index: 20 !important;
-}
-
 .Meeting_Side_bar_Tag {
   font-size: 8px !important;
   color: #5a5a5a !important;

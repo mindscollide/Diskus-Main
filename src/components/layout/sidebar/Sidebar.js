@@ -597,6 +597,7 @@ const Sidebar = () => {
                     </span>
                   </div>
                 </Nav.Link>
+
                 {/* Calendar Menu */}
                 <Nav.Link
                   as={Link}
@@ -649,9 +650,8 @@ const Sidebar = () => {
                     </span>
                   </div>
                 </Nav.Link>
-                {/* FAQ Menu */}
 
-                {/* test for notes iconSidebar */}
+                {/* Note*/}
                 <Nav.Link
                   as={Link}
                   disabled={false}
@@ -756,8 +756,7 @@ const Sidebar = () => {
                   disabled={false}
                   eventKey="link-6"
                   className={
-                    location.pathname === "/DisKus/notes" ||
-                    location.pathname === "/Diskus/notes"
+                    showMore
                       ? "m-0 p-0 iconSidebar-active-sidebar position-relative"
                       : "m-0 p-0 iconSidebar  position-relative"
                   }

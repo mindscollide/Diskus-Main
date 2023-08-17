@@ -261,7 +261,7 @@ body[dir="rtl"] .Meeting_Side_bar_Tag_todo {
   flex-wrap: wrap;
   border-radius: 4px !important;
   border: 1px solid #e1e1e1 !important;
-  bottom: 9px !important;
+  bottom: 4px !important;
 }
 
 body[dir="rtl"] .expanded_menu {
@@ -331,16 +331,12 @@ a.iconSidebar:active a.icon_expand.nav-link svg path {
   fill: #6172d6 !important;
 }
 
-a.iconSidebar:hover a.icon_expand.nav-link:hover {
-  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
-}
-
 /* important for outer icons outer icons   */
 
 a.icon_expand.nav-link svg {
   margin-top: 10px !important;
   width: 100% !important;
-  height: 30px;
+  height: 26px;
 }
 a.iconSidebar-active-sidebar.nav-link:active svg path {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
@@ -355,11 +351,31 @@ a.iconSidebar-active-sidebar.nav-link svg {
 a.icon-active-sidebar_expand.nav-link svg {
   margin-top: 10px !important;
   width: 100% !important;
-  height: 30px !important;
+  height: 26px !important;
 }
 a.icon-active-sidebar_expand.nav-link {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
-  height: 60px !important;
+  height: 55px !important;
+  border-radius: 4px;
+}
+
+a.m-0.p-0.icon_expand.nav-link:hover {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 4px;
+  fill: #fff !important;
+  height: 55px !important;
+}
+
+a.m-0.p-0.icon_expand.nav-link:hover svg path {
+  fill: #fff !important;
+}
+
+a.m-0.p-0.icon_expand.nav-link:hover span {
+  color: #fff !important;
+}
+
+a.m-0.p-0.icon_expand.nav-link svg path {
+  fill: #6172d6 !important;
 }
 
 a.icon-active-sidebar_expand.nav-link svg path {
