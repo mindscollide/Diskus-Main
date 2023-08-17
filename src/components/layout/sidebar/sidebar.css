@@ -147,7 +147,11 @@ a.iconSidebar {
 }
 
 a.iconSidebar svg {
-  height: 25px !important;
+  height: 26px !important;
+}
+
+a.iconSidebar div {
+  margin-top: 5px !important;
 }
 
 .iconSidebar svg path {
