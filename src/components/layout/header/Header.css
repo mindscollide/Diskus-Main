@@ -137,7 +137,7 @@
   overflow: auto;
 }
 
-.notification-dropdown>[data-bs-toggle="dropdown"].show:before {
+.notification-dropdown > [data-bs-toggle="dropdown"].show:before {
   width: 0;
   height: 0;
   border-left: 7px solid transparent;
@@ -344,9 +344,11 @@
 }
 
 .title-className {
-  padding: 8px 8px;
-  font-size: 11px !important;
-  text-align: center !important;
+  padding: 6px 20px;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  /* text-align: center !important; */
+  color: #505050 !important;
   border-bottom: 1px solid #e1e1e1 !important;
 }
 
