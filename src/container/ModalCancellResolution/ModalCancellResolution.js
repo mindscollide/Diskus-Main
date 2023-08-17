@@ -8,7 +8,6 @@ import { style } from "@mui/system";
 const ModalCancellResolution = ({
   cancelresolution,
   setCancelresolution,
-  setEditResoutionPage,
   handleCancelResolution
 }) => {
   const { t } = useTranslation();

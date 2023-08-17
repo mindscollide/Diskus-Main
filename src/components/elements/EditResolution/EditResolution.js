@@ -30,9 +30,9 @@ import { useState } from "react";
 import ModalresolutionRemove from "../../../container/ModalresolutionRemove/ModalresolutionRemove";
 import ModalCancellResolution from "../../../container/ModalCancellResolution/ModalCancellResolution";
 import ModalUpdateresolution from "../../../container/ModalUpdateResolution/ModalUpdateresolution";
-import MOdalResolutionCirculated from '../../../container/ModalResolutionCirculated/ModalResolutionCirculated'
+import MOdalResolutionCirculated from "../../../container/ModalResolutionCirculated/ModalResolutionCirculated";
 import ModalDiscardResolution from "../../../container/ModalDiscardResolution/ModalDiscardResolution";
-import ModalResolutionUpdated from '../../../container/ModalResolutionUpdated/ModalResolutionUpdated'
+import ModalResolutionUpdated from "../../../container/ModalResolutionUpdated/ModalResolutionUpdated";
 import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
 import {
   createResolution,
@@ -41,6 +41,7 @@ import {
   cancelResolutionApi,
   closeResolutionApi,
   clearResponseMessage,
+  updateResolutionModal,
 } from "../../../store/actions/Resolution_actions";
 import moment from "moment";
 import {
@@ -56,23 +57,23 @@ import { useNavigate } from "react-router-dom";
 import TextFieldDateTime from "../input_field_date/Input_field";
 import { ArrowLeft } from "react-bootstrap-icons";
 const EditResolution = ({
-  setEditResoutionPage,
-  editresolutionPage,
-  setNewresolution,
+  setCancelresolution
 }) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { ResolutionReducer, assignees, uploadReducer } = useSelector((state) => state);
+  const { ResolutionReducer, assignees, uploadReducer } = useSelector(
+    (state) => state
+  );
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [resolutionID, setResolutionID] = useState(0);
   const [minDate, setMinDate] = useState("");
 
   useEffect(() => {
     const min_date = new Date();
-    setMinDate(moment(min_date).format('YYYY-MM-DD'));
-  }, [])
+    setMinDate(moment(min_date).format("YYYY-MM-DD"));
+  }, []);
   const [isVoter, setVoter] = useState(true);
   const [open, setOpen] = useState({
     flag: false,
@@ -126,7 +127,6 @@ const EditResolution = ({
   const dateformatYYYYMMDD = (date) => {
     console.log(date, "dateformatYYYYMMDDdateformatYYYYMMDD");
     if (!!date && typeof date === "string") {
-
       return moment(date).add(1, "days").format("YYYY-MM-DD");
     }
   };
@@ -158,10 +158,10 @@ const EditResolution = ({
   const [resolutioncancel, setResolutioncancel] = useState(false);
   const [showmodal, setShowmodal] = useState(false);
   const [fileSize, setFileSize] = useState(0);
-  const [cancelResolutionID, setCancelResolutionID] = useState(0)
+  const [cancelResolutionID, setCancelResolutionID] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
   const [resolutionupdate, setResolutionupdate] = useState(false);
-  const [resolutionCirculate, setResolutionCirculate] = useState(false)
+  const [resolutionCirculate, setResolutionCirculate] = useState(false);
   const [resolutionUpdateSuccessfully, setResolutionUpdateSuccessfully] =
     useState(false);
   const [discardresolution, setDsicardresolution] = useState(false);
@@ -212,7 +212,7 @@ const EditResolution = ({
   };
 
   const resolutioncancell = (id) => {
-    setCancelResolutionID(id)
+    setCancelResolutionID(id);
     setResolutioncancel(true);
   };
 
@@ -276,7 +276,7 @@ const EditResolution = ({
 
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
-    setOnclickFlag(true)
+    setOnclickFlag(true);
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
@@ -295,7 +295,7 @@ const EditResolution = ({
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setOnclickFlag(false)
+    setOnclickFlag(false);
     console.log(e.target.value, "eeeeeeee");
     setTaskAssignedToInput(e.target.value.trimStart());
     // setEmailValue
@@ -383,12 +383,21 @@ const EditResolution = ({
     }
   };
   const deleteFilefromAttachments = (data, index) => {
-    console.log(data, data.fileSize, data.DisplayAttachmentName, fileForSend, fileSize, "checkingelemnaiteFile")
+    console.log(
+      data,
+      data.fileSize,
+      data.DisplayAttachmentName,
+      fileForSend,
+      fileSize,
+      "checkingelemnaiteFile"
+    );
     let fileSizefound = fileSize - data.fileSize;
-    let fileForSendingIndex = fileForSend.findIndex((newData, index) => newData.name === data.DisplayAttachmentName)
-    fileForSend.splice(fileForSendingIndex, 1)
-    setFileForSend(fileForSend)
-    setFileSize(fileSizefound)
+    let fileForSendingIndex = fileForSend.findIndex(
+      (newData, index) => newData.name === data.DisplayAttachmentName
+    );
+    fileForSend.splice(fileForSendingIndex, 1);
+    setFileForSend(fileForSend);
+    setFileSize(fileSizefound);
     let searchIndex = tasksAttachments;
     searchIndex.splice(index, 1);
     setTasksAttachments([...tasksAttachments]);
@@ -424,7 +433,7 @@ const EditResolution = ({
       } else {
         setOpen({
           flag: true,
-          message: t("This-voter-already-exist")
+          message: t("This-voter-already-exist"),
         });
       }
     } else {
@@ -475,7 +484,7 @@ const EditResolution = ({
       } else {
         setOpen({
           flag: true,
-          message: t("This-voter-already-exist")
+          message: t("This-voter-already-exist"),
         });
       }
     } else {
@@ -490,8 +499,6 @@ const EditResolution = ({
     setTaskAssignedName("");
     setEmailValue("");
   };
-
-
 
   const props = {
     name: "file",
@@ -556,9 +563,9 @@ const EditResolution = ({
           let file = {
             DisplayAttachmentName: data.file.name,
             OriginalAttachmentName: data.file.name,
-            fileSize: data.file.originFileObj.size
-          }
-          setTasksAttachments([...tasksAttachments, file])
+            fileSize: data.file.originFileObj.size,
+          };
+          setTasksAttachments([...tasksAttachments, file]);
           fileSizeArr = data.file.originFileObj.size + fileSize;
           setFileForSend([...fileForSend, data.file.originFileObj]);
           setFileSize(fileSizeArr);
@@ -592,9 +599,9 @@ const EditResolution = ({
           let file = {
             DisplayAttachmentName: data.file.name,
             OriginalAttachmentName: data.file.name,
-            fileSize: data.file.originFileObj.size
-          }
-          setTasksAttachments([...tasksAttachments, file])
+            fileSize: data.file.originFileObj.size,
+          };
+          setTasksAttachments([...tasksAttachments, file]);
           fileSizeArr = data.file.originFileObj.size + fileSize;
           setFileForSend([...fileForSend, data.file.originFileObj]);
           setFileSize(fileSizeArr);
@@ -605,7 +612,7 @@ const EditResolution = ({
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
     },
-    customRequest() { },
+    customRequest() {},
   };
 
   const handleCirculateResolution = () => {
@@ -625,25 +632,22 @@ const EditResolution = ({
           NotesToVoter: editResolutionData.NotesToVoter,
           CirculationDateTime: createConvert(
             removeDashesFromDate(circulationDateTime.date) +
-            RemoveTimeDashes(circulationDateTime.time)
+              RemoveTimeDashes(circulationDateTime.time)
           ),
           DeadlineDateTime: createConvert(
             removeDashesFromDate(votingDateTime.date) +
-            RemoveTimeDashes(votingDateTime.time)
+              RemoveTimeDashes(votingDateTime.time)
           ),
           FK_ResolutionReminderFrequency_ID:
             editResolutionData.FK_ResolutionReminderFrequency_ID,
-          FK_ResolutionDecision_ID:
-            editResolutionData.FK_ResolutionDecision_ID,
+          FK_ResolutionDecision_ID: editResolutionData.FK_ResolutionDecision_ID,
           PK_ResolutionID: editResolutionData.pK_ResolutionID,
           DecisionAnnouncementDateTime: createConvert(
             removeDashesFromDate(decisionDateTime.date) +
-            RemoveTimeDashes(decisionDateTime.time)
+              RemoveTimeDashes(decisionDateTime.time)
           ),
           IsResolutionPublic: editResolutionData.IsResolutionPublic,
-          FK_OrganizationID: JSON.parse(
-            localStorage.getItem("organizationID")
-          ),
+          FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
@@ -654,12 +658,9 @@ const EditResolution = ({
           voters,
           nonVoter,
           tasksAttachments,
-          setNewresolution,
-          setEditResoutionPage,
           t,
           2,
           2,
-          setResolutionUpdateSuccessfully
         )
       );
     } else {
@@ -672,25 +673,22 @@ const EditResolution = ({
           NotesToVoter: editResolutionData.NotesToVoter,
           CirculationDateTime: createConvert(
             removeDashesFromDate(circulationDateTime.date) +
-            RemoveTimeDashes(circulationDateTime.time)
+              RemoveTimeDashes(circulationDateTime.time)
           ),
           DeadlineDateTime: createConvert(
             removeDashesFromDate(votingDateTime.date) +
-            RemoveTimeDashes(votingDateTime.time)
+              RemoveTimeDashes(votingDateTime.time)
           ),
           FK_ResolutionReminderFrequency_ID:
             editResolutionData.FK_ResolutionReminderFrequency_ID,
-          FK_ResolutionDecision_ID:
-            editResolutionData.FK_ResolutionDecision_ID,
+          FK_ResolutionDecision_ID: editResolutionData.FK_ResolutionDecision_ID,
           PK_ResolutionID: editResolutionData.pK_ResolutionID,
           DecisionAnnouncementDateTime: createConvert(
             removeDashesFromDate(decisionDateTime.date) +
-            RemoveTimeDashes(decisionDateTime.time)
+              RemoveTimeDashes(decisionDateTime.time)
           ),
           IsResolutionPublic: editResolutionData.IsResolutionPublic,
-          FK_OrganizationID: JSON.parse(
-            localStorage.getItem("organizationID")
-          ),
+          FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
@@ -701,16 +699,13 @@ const EditResolution = ({
           voters,
           nonVoter,
           tasksAttachments,
-          setNewresolution,
-          setEditResoutionPage,
           t,
           2,
           2,
-          setResolutionUpdateSuccessfully
         )
       );
     }
-  }
+  };
 
   const handleUpdateResolution = () => {
     if (fileForSend.length > 0) {
@@ -729,25 +724,22 @@ const EditResolution = ({
           NotesToVoter: editResolutionData.NotesToVoter,
           CirculationDateTime: createConvert(
             removeDashesFromDate(circulationDateTime.date) +
-            RemoveTimeDashes(circulationDateTime.time)
+              RemoveTimeDashes(circulationDateTime.time)
           ),
           DeadlineDateTime: createConvert(
             removeDashesFromDate(votingDateTime.date) +
-            RemoveTimeDashes(votingDateTime.time)
+              RemoveTimeDashes(votingDateTime.time)
           ),
           FK_ResolutionReminderFrequency_ID:
             editResolutionData.FK_ResolutionReminderFrequency_ID,
-          FK_ResolutionDecision_ID:
-            editResolutionData.FK_ResolutionDecision_ID,
+          FK_ResolutionDecision_ID: editResolutionData.FK_ResolutionDecision_ID,
           PK_ResolutionID: editResolutionData.pK_ResolutionID,
           DecisionAnnouncementDateTime: createConvert(
             removeDashesFromDate(decisionDateTime.date) +
-            RemoveTimeDashes(decisionDateTime.time)
+              RemoveTimeDashes(decisionDateTime.time)
           ),
           IsResolutionPublic: editResolutionData.IsResolutionPublic,
-          FK_OrganizationID: JSON.parse(
-            localStorage.getItem("organizationID")
-          ),
+          FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
@@ -758,12 +750,9 @@ const EditResolution = ({
           voters,
           nonVoter,
           tasksAttachments,
-          setNewresolution,
-          setEditResoutionPage,
           t,
           2,
           1,
-          setResolutionUpdateSuccessfully
         )
       );
       // }
@@ -777,25 +766,22 @@ const EditResolution = ({
           NotesToVoter: editResolutionData.NotesToVoter,
           CirculationDateTime: createConvert(
             removeDashesFromDate(circulationDateTime.date) +
-            RemoveTimeDashes(circulationDateTime.time)
+              RemoveTimeDashes(circulationDateTime.time)
           ),
           DeadlineDateTime: createConvert(
             removeDashesFromDate(votingDateTime.date) +
-            RemoveTimeDashes(votingDateTime.time)
+              RemoveTimeDashes(votingDateTime.time)
           ),
           FK_ResolutionReminderFrequency_ID:
             editResolutionData.FK_ResolutionReminderFrequency_ID,
-          FK_ResolutionDecision_ID:
-            editResolutionData.FK_ResolutionDecision_ID,
+          FK_ResolutionDecision_ID: editResolutionData.FK_ResolutionDecision_ID,
           PK_ResolutionID: editResolutionData.pK_ResolutionID,
           DecisionAnnouncementDateTime: createConvert(
             removeDashesFromDate(decisionDateTime.date) +
-            RemoveTimeDashes(decisionDateTime.time)
+              RemoveTimeDashes(decisionDateTime.time)
           ),
           IsResolutionPublic: editResolutionData.IsResolutionPublic,
-          FK_OrganizationID: JSON.parse(
-            localStorage.getItem("organizationID")
-          ),
+          FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
       };
@@ -806,16 +792,13 @@ const EditResolution = ({
           voters,
           nonVoter,
           tasksAttachments,
-          setNewresolution,
-          setEditResoutionPage,
           t,
           2,
-          1,
-          setResolutionUpdateSuccessfully
+          1
         )
       );
     }
-  }
+  };
 
   const createResolutionHandleClick = async (id) => {
     if (
@@ -830,17 +813,16 @@ const EditResolution = ({
       editResolutionData.FK_ResolutionReminderFrequency_ID !== 0
     ) {
       if (id === 1) {
-        setResolutionupdate(true)
-        setResolutionCirculate(false)
+        setResolutionupdate(true);
+        setResolutionCirculate(false);
       } else {
         if (id === 2 && Object.keys(voters).length <= 0) {
           setError(true);
         } else {
-          setResolutionupdate(false)
-          setResolutionCirculate(true)
+          setResolutionupdate(false);
+          setResolutionCirculate(true);
         }
       }
-
     } else {
       setError(true);
       setOpen({
@@ -849,6 +831,7 @@ const EditResolution = ({
       });
     }
   };
+
   const handleChangeChecker = (e, checked) => {
     console.log(e.target.checked, checked, "testing1212");
     setEditResolutionData({
@@ -908,18 +891,25 @@ const EditResolution = ({
 
   const handleClickCancelResolution = () => {
     if (cancelResolutionID !== 0) {
-      dispatch(cancelResolutionApi(navigate, cancelResolutionID, t, setEditResoutionPage))
+      dispatch(
+        cancelResolutionApi(
+          navigate,
+          cancelResolutionID,
+          t,
+          setResolutioncancel,
+          setCancelresolution
+        )
+      );
     }
-  }
+  };
 
   const handleDiscardBtnFunc = () => {
-    setDsicardresolution(false)
+    setDsicardresolution(false);
     let resolutionData = ResolutionReducer.getResolutionbyID.resolution;
     let votersResolutionMembers = ResolutionReducer.getResolutionbyID.voters;
     let nonVotersResolutionMembers =
       ResolutionReducer.getResolutionbyID.nonVoters;
-    let attachmentsResolution =
-      ResolutionReducer.getResolutionbyID.attachments;
+    let attachmentsResolution = ResolutionReducer.getResolutionbyID.attachments;
     setEditResolutionData({
       FK_ResolutionStatusID: resolutionData.fK_ResolutionDecision_ID,
       FK_ResolutionVotingMethodID: resolutionData.fK_ResolutionVotingMethodID,
@@ -990,8 +980,7 @@ const EditResolution = ({
       votersResolutionMembers.map((voterMember, index) => {
         meetingAttendeesList
           .filter(
-            (assigneeData, index) =>
-              assigneeData.pK_UID === voterMember.fK_UID
+            (assigneeData, index) => assigneeData.pK_UID === voterMember.fK_UID
           )
           .map((data, index) => {
             sendVoter.push({
@@ -1012,8 +1001,7 @@ const EditResolution = ({
       nonVotersResolutionMembers.map((voterMember, index) => {
         meetingAttendeesList
           .filter(
-            (assigneeData, index) =>
-              assigneeData.pK_UID === voterMember.fK_UID
+            (assigneeData, index) => assigneeData.pK_UID === voterMember.fK_UID
           )
           .map((data, index) => {
             sendVoter.push({
@@ -1036,7 +1024,7 @@ const EditResolution = ({
       if (Object.keys(assignees.user).length > 0) {
         setMeetingAttendeesList(assignees.user);
       }
-    } catch (error) { }
+    } catch (error) {}
   }, [assignees.user]);
 
   // Get Voting Methods
@@ -1054,7 +1042,10 @@ const EditResolution = ({
   }, [ResolutionReducer.GetAllVotingMethods]);
 
   useEffect(() => {
-    if (ResolutionReducer.ResponseMessage !== "" && ResolutionReducer.ResponseMessage !== t("Data-available")) {
+    if (
+      ResolutionReducer.ResponseMessage !== "" &&
+      ResolutionReducer.ResponseMessage !== t("Data-available")
+    ) {
       setOpen({
         flag: true,
         message: ResolutionReducer.ResponseMessage,
@@ -1088,7 +1079,7 @@ const EditResolution = ({
       let attachmentsResolution =
         ResolutionReducer.getResolutionbyID.attachments;
       setEditResolutionData({
-        FK_ResolutionStatusID: resolutionData.fK_ResolutionDecision_ID,
+        FK_ResolutionStatusID: resolutionData.fK_ResolutionStatusID,
         FK_ResolutionVotingMethodID: resolutionData.fK_ResolutionVotingMethodID,
         Title: resolutionData.title,
         NotesToVoter: resolutionData.notesToVoter,
@@ -1212,8 +1203,8 @@ const EditResolution = ({
   const handleChangeDateSelection = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log("handleChangeCiculationDate", name)
-    console.log("handleChangeCiculationDate", value)
+    console.log("handleChangeCiculationDate", name);
+    console.log("handleChangeCiculationDate", value);
     if (name === "circulation") {
       setCirculationDateTime({
         ...circulationDateTime,
@@ -1251,7 +1242,7 @@ const EditResolution = ({
         time: value,
       });
     }
-  }
+  };
   return (
     <>
       <section>
@@ -1266,7 +1257,7 @@ const EditResolution = ({
             </Row>
 
             <Paper className={styles["Create_new_resolution_paper"]}>
-              <Row >
+              <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
                     <Col
@@ -1406,7 +1397,7 @@ const EditResolution = ({
                                   <p
                                     className={
                                       editResolutionData.NotesToVoter === "" &&
-                                        error
+                                      error
                                         ? ` ${styles["errorMessage"]}`
                                         : `${styles["errorMessage_hidden"]}`
                                     }
@@ -1440,7 +1431,7 @@ const EditResolution = ({
                                 applyClass={"search_voterInput"}
                                 value={circulationDateTime.date}
                                 change={(e) => {
-                                  handleChangeDateSelection(e)
+                                  handleChangeDateSelection(e);
                                   // setCirculationDateTime({
                                   //   ...circulationDateTime,
                                   //   date: e.target.value,
@@ -1476,7 +1467,7 @@ const EditResolution = ({
                                 applyClass={"search_voterInput"}
                                 value={circulationDateTime.time}
                                 change={(e) => {
-                                  handleChangeTimeSelection(e)
+                                  handleChangeTimeSelection(e);
                                   // setCirculationDateTime({
                                   //   ...circulationDateTime,
                                   //   time: e.target.value,
@@ -1524,7 +1515,7 @@ const EditResolution = ({
                                 applyClass={"search_voterInput"}
                                 value={votingDateTime.date}
                                 change={(e) => {
-                                  handleChangeDateSelection(e)
+                                  handleChangeDateSelection(e);
                                   // setVotingDateTime({
                                   //   ...votingDateTime,
                                   //   date: e.target.value,
@@ -1560,7 +1551,7 @@ const EditResolution = ({
                                 applyClass={"search_voterInput"}
                                 value={votingDateTime.time}
                                 change={(e) => {
-                                  handleChangeTimeSelection(e)
+                                  handleChangeTimeSelection(e);
                                   // setVotingDateTime({
                                   //   ...votingDateTime,
                                   //   time: e.target.value,
@@ -1587,7 +1578,7 @@ const EditResolution = ({
                               <span
                                 className={
                                   styles[
-                                  "decision_annoucement_Createresoulution"
+                                    "decision_annoucement_Createresoulution"
                                   ]
                                 }
                               >
@@ -1610,7 +1601,7 @@ const EditResolution = ({
                                 labelClass="d-none"
                                 value={decisionDateTime.date}
                                 change={(e) => {
-                                  handleChangeDateSelection(e)
+                                  handleChangeDateSelection(e);
                                   // setDecisionDateTime({
                                   //   ...decisionDateTime,
                                   //   date: e.target.value,
@@ -1626,7 +1617,9 @@ const EditResolution = ({
                                         : `${styles["errorMessage_hidden"]}`
                                     }
                                   >
-                                    {t("Decision-announcement-date-is-required")}
+                                    {t(
+                                      "Decision-announcement-date-is-required"
+                                    )}
                                   </p>
                                 </Col>
                               </Row>
@@ -1645,7 +1638,7 @@ const EditResolution = ({
                                 applyClass={"search_voterInput"}
                                 value={decisionDateTime.time}
                                 change={(e) => {
-                                  handleChangeTimeSelection(e)
+                                  handleChangeTimeSelection(e);
                                   // setDecisionDateTime({
                                   //   ...decisionDateTime,
                                   //   time: e.target.value,
@@ -1661,7 +1654,9 @@ const EditResolution = ({
                                         : `${styles["errorMessage_hidden"]}`
                                     }
                                   >
-                                    {t("Decision-announcement-time-is-required")}
+                                    {t(
+                                      "Decision-announcement-time-is-required"
+                                    )}
                                   </p>
                                 </Col>
                               </Row>
@@ -1746,7 +1741,9 @@ const EditResolution = ({
                           sm={false}
                           className="d-flex justify-content-center"
                         >
-                          <span className={styles["line_Editresolution"]}></span>
+                          <span
+                            className={styles["line_Editresolution"]}
+                          ></span>
                         </Col>
                         <Col lg={6} md={6} sm={12}>
                           <Row>
@@ -1833,7 +1830,9 @@ const EditResolution = ({
                                         <Button
                                           text={t("Add")}
                                           className={
-                                            styles["ADD_Button_Createresolution"]
+                                            styles[
+                                              "ADD_Button_Createresolution"
+                                            ]
                                           }
                                           onClick={addVoters}
                                         />
@@ -1851,48 +1850,52 @@ const EditResolution = ({
                                       >
                                         <Row>
                                           {votersForView.length > 0
-                                            ? votersForView.map((data, index) => {
-                                              return (
-                                                <>
-                                                  <Col
-                                                    lg={6}
-                                                    md={6}
-                                                    sm={6}
-                                                    className="mt-2"
-                                                  >
-                                                    <Row>
+                                            ? votersForView.map(
+                                                (data, index) => {
+                                                  return (
+                                                    <>
                                                       <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
+                                                        lg={6}
+                                                        md={6}
+                                                        sm={6}
+                                                        className="mt-2"
                                                       >
-                                                        <EmployeeinfoCard
-                                                          Employeename={
-                                                            data?.name
-                                                          }
-                                                          Employeeemail={
-                                                            data?.emailAddress
-                                                          }
-                                                          Icon={
-                                                            <img
-                                                              src={CrossIcon}
-                                                              width="18px"
-                                                              height="18px"
-                                                              onClick={() =>
-                                                                removeUserForVoter(
-                                                                  data.pK_UID,
-                                                                  data.name
-                                                                )
+                                                        <Row>
+                                                          <Col
+                                                            lg={12}
+                                                            md={12}
+                                                            sm={12}
+                                                          >
+                                                            <EmployeeinfoCard
+                                                              Employeename={
+                                                                data?.name
+                                                              }
+                                                              Employeeemail={
+                                                                data?.emailAddress
+                                                              }
+                                                              Icon={
+                                                                <img
+                                                                  src={
+                                                                    CrossIcon
+                                                                  }
+                                                                  width="18px"
+                                                                  height="18px"
+                                                                  onClick={() =>
+                                                                    removeUserForVoter(
+                                                                      data.pK_UID,
+                                                                      data.name
+                                                                    )
+                                                                  }
+                                                                />
                                                               }
                                                             />
-                                                          }
-                                                        />
+                                                          </Col>
+                                                        </Row>
                                                       </Col>
-                                                    </Row>
-                                                  </Col>
-                                                </>
-                                              );
-                                            })
+                                                    </>
+                                                  );
+                                                }
+                                              )
                                             : null}
                                         </Row>
                                       </Col>
@@ -1952,7 +1955,9 @@ const EditResolution = ({
                                         <Button
                                           text={t("Add")}
                                           className={
-                                            styles["ADD_Button_Createresolution"]
+                                            styles[
+                                              "ADD_Button_Createresolution"
+                                            ]
                                           }
                                           onClick={addNonVoter}
                                         />
@@ -1970,49 +1975,51 @@ const EditResolution = ({
                                         <Row>
                                           {nonVoterForView.length > 0
                                             ? nonVoterForView.map(
-                                              (data, index) => {
-                                                return (
-                                                  <>
-                                                    <Col
-                                                      lg={6}
-                                                      md={6}
-                                                      sm={6}
-                                                      className="mt-2"
-                                                    >
-                                                      <Row>
-                                                        <Col
-                                                          lg={12}
-                                                          md={12}
-                                                          sm={12}
-                                                        >
-                                                          <EmployeeinfoCard
-                                                            Employeename={
-                                                              data?.name
-                                                            }
-                                                            Employeeemail={
-                                                              data?.emailAddress
-                                                            }
-                                                            Icon={
-                                                              <img
-                                                                src={CrossIcon}
-                                                                width="18px"
-                                                                height="18px"
-                                                                onClick={() =>
-                                                                  removeUserForNonVoter(
-                                                                    data.pK_UID,
-                                                                    data.name
-                                                                  )
-                                                                }
-                                                              />
-                                                            }
-                                                          />
-                                                        </Col>
-                                                      </Row>
-                                                    </Col>
-                                                  </>
-                                                );
-                                              }
-                                            )
+                                                (data, index) => {
+                                                  return (
+                                                    <>
+                                                      <Col
+                                                        lg={6}
+                                                        md={6}
+                                                        sm={6}
+                                                        className="mt-2"
+                                                      >
+                                                        <Row>
+                                                          <Col
+                                                            lg={12}
+                                                            md={12}
+                                                            sm={12}
+                                                          >
+                                                            <EmployeeinfoCard
+                                                              Employeename={
+                                                                data?.name
+                                                              }
+                                                              Employeeemail={
+                                                                data?.emailAddress
+                                                              }
+                                                              Icon={
+                                                                <img
+                                                                  src={
+                                                                    CrossIcon
+                                                                  }
+                                                                  width="18px"
+                                                                  height="18px"
+                                                                  onClick={() =>
+                                                                    removeUserForNonVoter(
+                                                                      data.pK_UID,
+                                                                      data.name
+                                                                    )
+                                                                  }
+                                                                />
+                                                              }
+                                                            />
+                                                          </Col>
+                                                        </Row>
+                                                      </Col>
+                                                    </>
+                                                  );
+                                                }
+                                              )
                                             : null}
                                         </Row>
                                       </Col>
@@ -2023,17 +2030,33 @@ const EditResolution = ({
                                 <Row>
                                   <Col lg={12} md={12} sm={12} className="mt-3">
                                     <span
-                                      className={styles["Attachments_resolution"]}
+                                      className={
+                                        styles["Attachments_resolution"]
+                                      }
                                     >
                                       {t("Attachments")}
                                     </span>
                                   </Col>
                                 </Row>
-                                <Row className={styles["edit_resolution_attachments"]}>
+                                <Row
+                                  className={
+                                    styles["edit_resolution_attachments"]
+                                  }
+                                >
                                   {tasksAttachments.length > 0 && (
-                                    <Col className={styles["attachments_height"]} sm={12} md={12} lg={12}>
+                                    <Col
+                                      className={styles["attachments_height"]}
+                                      sm={12}
+                                      md={12}
+                                      lg={12}
+                                    >
                                       <Row>
-                                        <Col lg={1} md={1} sm={1} className="mt-4">
+                                        <Col
+                                          lg={1}
+                                          md={1}
+                                          sm={1}
+                                          className="mt-4"
+                                        >
                                           {tasksAttachments.length > 6 ? (
                                             <>
                                               <Button
@@ -2045,7 +2068,9 @@ const EditResolution = ({
                                                   />
                                                 }
                                                 onClick={SlideLeft}
-                                                className={styles["Leftpolygon"]}
+                                                className={
+                                                  styles["Leftpolygon"]
+                                                }
                                               />
                                             </>
                                           ) : null}
@@ -2062,138 +2087,149 @@ const EditResolution = ({
                                             >
                                               {tasksAttachments.length > 0
                                                 ? tasksAttachments.map(
-                                                  (data, index) => {
-                                                    var ext =
-                                                      data?.DisplayAttachmentName?.split(
-                                                        "."
-                                                      ).pop();
-                                                    const first =
-                                                      data?.DisplayAttachmentName?.split(
-                                                        " "
-                                                      )[0];
-                                                    return (
-                                                      <Col
-                                                        sm={12}
-                                                        lg={2}
-                                                        md={2}
-                                                        className="modaltodolist-attachment-icon"
-                                                      >
-                                                        {ext === "doc" ? (
-                                                          <FileIcon
-                                                            extension={"docx"}
-                                                            size={78}
-                                                            type={"document"}
-                                                            labelColor={
-                                                              "rgba(44, 88, 152)"
-                                                            }
-                                                          />
-                                                        ) : ext === "docx" ? (
-                                                          <FileIcon
-                                                            extension={"docx"}
-                                                            size={78}
-                                                            type={"font"}
-                                                            labelColor={
-                                                              "rgba(44, 88, 152)"
-                                                            }
-                                                          />
-                                                        ) : ext === "xls" ? (
-                                                          <FileIcon
-                                                            extension={"xls"}
-                                                            type={"spreadsheet"}
-                                                            size={78}
-                                                            labelColor={
-                                                              "rgba(16, 121, 63)"
-                                                            }
-                                                          />
-                                                        ) : ext === "xlsx" ? (
-                                                          <FileIcon
-                                                            extension={"xls"}
-                                                            type={"spreadsheet"}
-                                                            size={78}
-                                                            labelColor={
-                                                              "rgba(16, 121, 63)"
-                                                            }
-                                                          />
-                                                        ) : ext === "pdf" ? (
-                                                          <FileIcon
-                                                            extension={"pdf"}
-                                                            size={78}
-                                                            {...defaultStyles.pdf}
-                                                          />
-                                                        ) : ext === "png" ? (
-                                                          <FileIcon
-                                                            extension={"png"}
-                                                            size={78}
-                                                            type={"image"}
-                                                            labelColor={
-                                                              "rgba(102, 102, 224)"
-                                                            }
-                                                          />
-                                                        ) : ext === "txt" ? (
-                                                          <FileIcon
-                                                            extension={"txt"}
-                                                            size={78}
-                                                            type={"document"}
-                                                            labelColor={
-                                                              "rgba(52, 120, 199)"
-                                                            }
-                                                          />
-                                                        ) : ext === "jpg" ? (
-                                                          <FileIcon
-                                                            extension={"jpg"}
-                                                            size={78}
-                                                            type={"image"}
-                                                            labelColor={
-                                                              "rgba(102, 102, 224)"
-                                                            }
-                                                          />
-                                                        ) : ext === "jpeg" ? (
-                                                          <FileIcon
-                                                            extension={"jpeg"}
-                                                            size={78}
-                                                            type={"image"}
-                                                            labelColor={
-                                                              "rgba(102, 102, 224)"
-                                                            }
-                                                          />
-                                                        ) : ext === "gif" ? (
-                                                          <FileIcon
-                                                            extension={"gif"}
-                                                            size={78}
-                                                            {...defaultStyles.gif}
-                                                          />
-                                                        ) : <FileIcon
-                                                          extension={ext}
-                                                          size={78}
-                                                          {...defaultStyles.ext}
-                                                        />}
-                                                        <span className="deleteBtn">
-                                                          <img
-                                                            src={
-                                                              deleteButtonCreateMeeting
-                                                            }
-                                                            width={15}
-                                                            height={15}
-                                                            onClick={() =>
-                                                              deleteFilefromAttachments(
-                                                                data,
-                                                                index
-                                                              )
-                                                            }
-                                                          />
-                                                        </span>
-                                                        <p className="modaltodolist-attachment-text  FontArabicRegular">
-                                                          {first}
-                                                        </p>
-                                                      </Col>
-                                                    );
-                                                  }
-                                                )
+                                                    (data, index) => {
+                                                      var ext =
+                                                        data?.DisplayAttachmentName?.split(
+                                                          "."
+                                                        ).pop();
+                                                      const first =
+                                                        data?.DisplayAttachmentName?.split(
+                                                          " "
+                                                        )[0];
+                                                      return (
+                                                        <Col
+                                                          sm={12}
+                                                          lg={2}
+                                                          md={2}
+                                                          className="modaltodolist-attachment-icon"
+                                                        >
+                                                          {ext === "doc" ? (
+                                                            <FileIcon
+                                                              extension={"docx"}
+                                                              size={78}
+                                                              type={"document"}
+                                                              labelColor={
+                                                                "rgba(44, 88, 152)"
+                                                              }
+                                                            />
+                                                          ) : ext === "docx" ? (
+                                                            <FileIcon
+                                                              extension={"docx"}
+                                                              size={78}
+                                                              type={"font"}
+                                                              labelColor={
+                                                                "rgba(44, 88, 152)"
+                                                              }
+                                                            />
+                                                          ) : ext === "xls" ? (
+                                                            <FileIcon
+                                                              extension={"xls"}
+                                                              type={
+                                                                "spreadsheet"
+                                                              }
+                                                              size={78}
+                                                              labelColor={
+                                                                "rgba(16, 121, 63)"
+                                                              }
+                                                            />
+                                                          ) : ext === "xlsx" ? (
+                                                            <FileIcon
+                                                              extension={"xls"}
+                                                              type={
+                                                                "spreadsheet"
+                                                              }
+                                                              size={78}
+                                                              labelColor={
+                                                                "rgba(16, 121, 63)"
+                                                              }
+                                                            />
+                                                          ) : ext === "pdf" ? (
+                                                            <FileIcon
+                                                              extension={"pdf"}
+                                                              size={78}
+                                                              {...defaultStyles.pdf}
+                                                            />
+                                                          ) : ext === "png" ? (
+                                                            <FileIcon
+                                                              extension={"png"}
+                                                              size={78}
+                                                              type={"image"}
+                                                              labelColor={
+                                                                "rgba(102, 102, 224)"
+                                                              }
+                                                            />
+                                                          ) : ext === "txt" ? (
+                                                            <FileIcon
+                                                              extension={"txt"}
+                                                              size={78}
+                                                              type={"document"}
+                                                              labelColor={
+                                                                "rgba(52, 120, 199)"
+                                                              }
+                                                            />
+                                                          ) : ext === "jpg" ? (
+                                                            <FileIcon
+                                                              extension={"jpg"}
+                                                              size={78}
+                                                              type={"image"}
+                                                              labelColor={
+                                                                "rgba(102, 102, 224)"
+                                                              }
+                                                            />
+                                                          ) : ext === "jpeg" ? (
+                                                            <FileIcon
+                                                              extension={"jpeg"}
+                                                              size={78}
+                                                              type={"image"}
+                                                              labelColor={
+                                                                "rgba(102, 102, 224)"
+                                                              }
+                                                            />
+                                                          ) : ext === "gif" ? (
+                                                            <FileIcon
+                                                              extension={"gif"}
+                                                              size={78}
+                                                              {...defaultStyles.gif}
+                                                            />
+                                                          ) : (
+                                                            <FileIcon
+                                                              extension={ext}
+                                                              size={78}
+                                                              {...defaultStyles.ext}
+                                                            />
+                                                          )}
+                                                          <span className="deleteBtn">
+                                                            <img
+                                                              src={
+                                                                deleteButtonCreateMeeting
+                                                              }
+                                                              width={15}
+                                                              height={15}
+                                                              onClick={() =>
+                                                                deleteFilefromAttachments(
+                                                                  data,
+                                                                  index
+                                                                )
+                                                              }
+                                                            />
+                                                          </span>
+                                                          <p className="modaltodolist-attachment-text  FontArabicRegular">
+                                                            {first}
+                                                          </p>
+                                                        </Col>
+                                                      );
+                                                    }
+                                                  )
                                                 : null}
                                             </Col>
                                           </Row>
                                         </Col>
-                                        <Col lg={1} md={1} sm={1} className="mt-4">
+                                        <Col
+                                          lg={1}
+                                          md={1}
+                                          sm={1}
+                                          className="mt-4"
+                                        >
                                           {tasksAttachments.length > 6 ? (
                                             <>
                                               <Button
@@ -2205,7 +2241,9 @@ const EditResolution = ({
                                                   />
                                                 }
                                                 onClick={Slideright}
-                                                className={styles["Leftpolygon"]}
+                                                className={
+                                                  styles["Leftpolygon"]
+                                                }
                                               />
                                             </>
                                           ) : null}
@@ -2219,7 +2257,7 @@ const EditResolution = ({
                                       {...props}
                                       className={
                                         styles[
-                                        "dragdrop_attachment_create_resolution"
+                                          "dragdrop_attachment_create_resolution"
                                         ]
                                       }
                                     >
@@ -2238,7 +2276,11 @@ const EditResolution = ({
                                       </p>
                                       <p className={styles["ant-upload-text"]}>
                                         {t("Drag-&-drop-or")}
-                                        <span className={styles["Choose_file_style"]}>
+                                        <span
+                                          className={
+                                            styles["Choose_file_style"]
+                                          }
+                                        >
                                           {t("Choose-file")}
                                         </span>
                                         <span className={styles["here_text"]}>
@@ -2260,18 +2302,32 @@ const EditResolution = ({
                                     sm={12}
                                     className="d-flex justify-content-end gap-3"
                                   >
-                                    <Button text={<ArrowLeft size={30} />} onClick={() => { setEditResoutionPage(false) }} className={styles["Go_Back_EditResolution"]} />
+                                    <Button
+                                      text={<ArrowLeft size={30} />}
+                                      onClick={() => {
+                                        dispatch(updateResolutionModal(false));
+                                      }}
+                                      className={
+                                        styles["Go_Back_EditResolution"]
+                                      }
+                                    />
                                     <Button
                                       text={t("Cancel")}
                                       className={
                                         styles["Save_button_Createresolution"]
                                       }
-                                      onClick={() => resolutioncancell(editResolutionData.pK_ResolutionID)}
+                                      onClick={() =>
+                                        resolutioncancell(
+                                          editResolutionData.pK_ResolutionID
+                                        )
+                                      }
                                     />
                                     <Button
                                       text={t("Discard")}
                                       className={
-                                        styles["Discard_button_Createresolution"]
+                                        styles[
+                                          "Discard_button_Createresolution"
+                                        ]
                                       }
                                       onClick={resolutiondiscard}
                                     />
@@ -2290,7 +2346,7 @@ const EditResolution = ({
                                       text={t("Circulate")}
                                       className={
                                         styles[
-                                        "circulate_button_Createresolution"
+                                          "circulate_button_Createresolution"
                                         ]
                                       }
                                       onClick={() =>
@@ -2332,7 +2388,6 @@ const EditResolution = ({
         <ModalCancellResolution
           cancelresolution={resolutioncancel}
           setCancelresolution={setResolutioncancel}
-          setEditResoutionPage={setEditResoutionPage}
           handleCancelResolution={handleClickCancelResolution}
         />
       ) : null}
@@ -2357,8 +2412,12 @@ const EditResolution = ({
           handleDiscardBtn={handleDiscardBtnFunc}
         />
       ) : null}
-      {resolutionUpdateSuccessfully &&
-        <ModalResolutionUpdated resolutionupdated={resolutionUpdateSuccessfully} setResolutionupdated={setResolutionUpdateSuccessfully} />}
+      {resolutionUpdateSuccessfully && (
+        <ModalResolutionUpdated
+          resolutionupdated={resolutionUpdateSuccessfully}
+          setResolutionupdated={setResolutionUpdateSuccessfully}
+        />
+      )}
       <Notification message={open.message} setOpen={setOpen} open={open.flag} />
     </>
   );

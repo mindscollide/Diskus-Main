@@ -49,6 +49,7 @@ import {
   getAllResolutionStatus,
   createResolution,
   clearResponseMessage,
+  createResolutionModal,
 } from '../../../store/actions/Resolution_actions'
 import { stringValidation } from '../../../commen/functions/validations'
 import {
@@ -67,11 +68,7 @@ import 'react-datepicker/dist/react-datepicker.css'
 import TextFieldTime from '../input_field_time/Input_field'
 // import TimePickerResolution from "../timePickerNew/timePickerNew";
 
-const ScheduleNewResolution = ({
-  newresolution,
-  setNewresolution,
-  setEditResoutionPage,
-}) => {
+const ScheduleNewResolution = () => {
   const { Dragger } = Upload
   const { t } = useTranslation()
   const dispatch = useDispatch()
@@ -80,34 +77,7 @@ const ScheduleNewResolution = ({
   const [circulationDate, setCirculationDate] = useState('')
   const [votingDeadLine, setVotingDeadLine] = useState('')
   const [decisionDate, setDecisionDate] = useState('')
-  console.log(minDate, 'minDateminDateminDate')
   const [selectedDate, setSelectedDate] = useState(null)
-  useEffect(() => {
-    const min_date = new Date()
-    setMinDate(moment(min_date).format('YYYY-MM-DD'))
-  }, [])
-
-  const dateformatYYYYMMDD = (date) => {
-    console.log(date, 'dateformatYYYYMMDDdateformatYYYYMMDD')
-    if (!!date && typeof date === 'string') {
-      console.log(
-        'dateformatYYYYMMDDdateformatYYYYMMDD',
-        typeof moment(date).format('YYYY-MM-DD'),
-      )
-      return moment(date).add(1, 'days').format('YYYY-MM-DD')
-    }
-  }
-
-  useEffect(() => {}, [])
-  const SlideLeft = () => {
-    var Slider = document.getElementById('Slider')
-    Slider.scrollLeft = Slider.scrollLeft - 300
-  }
-
-  const Slideright = () => {
-    var Slider = document.getElementById('Slider')
-    Slider.scrollLeft = Slider.scrollLeft + 300
-  }
   const { ResolutionReducer, assignees, uploadReducer } = useSelector(
     (state) => state,
   )
@@ -162,10 +132,7 @@ const ScheduleNewResolution = ({
     date: '',
     time: '',
   })
-  console.log(
-    circulationDateTime,
-    'circulationDateTimecirculationDateTimecirculationDateTime',
-  )
+
   const [votingDateTime, setVotingDateTime] = useState({
     date: '',
     time: '',
@@ -201,13 +168,44 @@ const ScheduleNewResolution = ({
     IsResolutionPublic: false,
   })
 
+  useEffect(() => {
+    const min_date = new Date()
+    setMinDate(moment(min_date).format('YYYY-MM-DD'))
+    dispatch(getAllVotingMethods(navigate, t))
+    dispatch(getAllResolutionStatus(navigate, t))
+    dispatch(allAssignessList(navigate, t))
+  }, [])
+
+  const dateformatYYYYMMDD = (date) => {
+    if (!!date && typeof date === 'string') {
+      return moment(date).add(1, 'days').format('YYYY-MM-DD')
+    }
+  }
+
+  const SlideLeft = () => {
+    var Slider = document.getElementById('Slider')
+    Slider.scrollLeft = Slider.scrollLeft - 300
+  }
+
+  const Slideright = () => {
+    var Slider = document.getElementById('Slider')
+    Slider.scrollLeft = Slider.scrollLeft + 300
+  }
   const ShowVoter = () => {
     setVoter(true)
     setNonVoter(false)
+    setTaskAssignedToInput('')
+    setTaskAssignedTo(0)
+    setTaskAssignedName('')
+    setEmailValue('')
   }
   const ShowNonVoters = () => {
     setVoter(false)
     setNonVoter(true)
+    setTaskAssignedToInput('')
+    setTaskAssignedTo(0)
+    setTaskAssignedName('')
+    setEmailValue('')
   }
 
   const resolutiondiscard = () => {
@@ -227,6 +225,7 @@ const ScheduleNewResolution = ({
     setVoterID(id)
     setVoterName(name)
   }
+
   const removeUserForNonVoter = (id, name) => {
     setNonVoterModalRemove(true)
     setVoterID(id)
@@ -249,12 +248,8 @@ const ScheduleNewResolution = ({
     setVoterID(0)
     setVoterName('')
     setVoterModalRemove(false)
-    console.log(
-      'votingMethodsvotingMethods',
-      findIndexVoter,
-      findIndexFromSendData,
-    )
   }
+
   const removeNonVoterInfo = () => {
     let findIndexVoter = nonVoterForView.findIndex(
       (data, index) => data.pK_UID === VoterID,
@@ -271,39 +266,24 @@ const ScheduleNewResolution = ({
     setNonVoterModalRemove(false)
     setVoterID(0)
     setVoterName('')
-    console.log(
-      'votingMethodsvotingMethods',
-      findIndexVoter,
-      findIndexFromSendData,
-    )
   }
 
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
-    console.log(name, id, 'onSearchonSearchonSearchonSearch')
     setOnclickFlag(true)
     setTaskAssignedToInput(name)
     setTaskAssignedTo(id)
     setTaskAssignedName(name)
-    console.log('idididid', id)
     if (meetingAttendeesList.length > 0) {
       let findAttendeeEmail = meetingAttendeesList.find(
         (data, index) => data.pK_UID === id,
       )
       setEmailValue(findAttendeeEmail.emailAddress)
-      console.log(
-        'findAttendeeEmailfindAttendeeEmail',
-        findAttendeeEmail.emailAddress,
-      )
     }
-    console.log(taskAssignedToInput, 'onSearchonSearchonSearchonSearch')
-    console.log(taskAssignedTo, 'onSearchonSearchonSearchonSearch')
-    console.log(taskAssignedName, 'onSearchonSearchonSearchonSearch')
   }
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    console.log(e.target.value, 'eeeeeeee')
     if (e.target.value === '') {
       setEmailValue('')
       setTaskAssignedToInput('')
@@ -324,43 +304,8 @@ const ScheduleNewResolution = ({
     })
   }
 
-  //Drop Down Values for voters
-  // const searchFilterHandler = (value) => {
-  //   let allAssignees = assignees.user;
-  //   console.log(allAssignees, "allAssigneesallAssigneesallAssignees");
-  //   if (
-  //     allAssignees != undefined &&
-  //     allAssignees != null &&
-  //     allAssignees != NaN &&
-  //     allAssignees != []
-  //   ) {
-  //     return allAssignees
-  //       .filter((item) => {
-  //         const searchTerm = value.toLowerCase();
-  //         const assigneesName = item.name.toLowerCase();
-  //         return (
-  //           searchTerm &&
-  //           assigneesName.includes(searchTerm) &&
-  //           assigneesName !== searchTerm
-  //         );
-  //       })
-  //       .slice(0, 3)
-  //       .map((item) => (
-  //         <div
-  //           onClick={() => onSearch(item.name, item.pK_UID)}
-  //           className="dropdown-row-assignee d-flex flex-row align-items-center"
-  //           key={item.pK_UID}
-  //         >
-  //           <img src={userImage} />
-  //           <p className="p-0 m-0">{item.name}</p>
-  //         </div>
-  //       ));
-  //   } else {
-  //   }
-  // };
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user
-    console.log('Input Value', allAssignees)
     if (
       allAssignees != undefined &&
       allAssignees != null &&
@@ -371,9 +316,6 @@ const ScheduleNewResolution = ({
         .filter((item) => {
           const searchTerm = value.toLowerCase()
           const assigneesName = item.name.toLowerCase()
-          console.log('Input Value in searchTerm', searchTerm)
-          console.log('Input Value in assigneesName', assigneesName)
-
           return (
             searchTerm && assigneesName.startsWith(searchTerm)
             // assigneesName !== searchTerm.toLowerCase()
@@ -386,14 +328,12 @@ const ScheduleNewResolution = ({
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
-            {console.log('itemitem', item)}
             <img src={userImage} />
             <p className="p-0 m-0">{item.name}</p>
           </div>
         ))
     } else {
       setEmailValue('')
-      console.log('not found')
     }
   }
 
@@ -417,7 +357,6 @@ const ScheduleNewResolution = ({
     let findisAlreadyExist = nonVoter.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo,
     )
-    console.log('findVoterfindVoter', findVoter, taskAssignedTo, voters)
     if (findisAlreadyExist === -1) {
       if (findVoter === -1) {
         if (taskAssignedToInput !== 0) {
@@ -506,7 +445,120 @@ const ScheduleNewResolution = ({
     setEmailValue('')
   }
 
-  const createResolutionHandleClick = async (id) => {
+  const resolutionSaveHandler = () => {
+    if (
+      createResolutionData.Title !== '' &&
+      circulationDateTime.date !== '' &&
+      decisionDateTime.date !== '' &&
+      decisionDateTime.date !== '' &&
+      circulationDateTime.time !== '' &&
+      decisionDateTime.time !== '' &&
+      createResolutionData.NotesToVoter !== '' &&
+      createResolutionData.FK_ResolutionVotingMethodID !== 0 &&
+      createResolutionData.FK_ResolutionReminderFrequency_ID !== 0
+    ) {
+      if (fileForSend.length > 0) {
+        let counter = fileForSend.length
+        fileForSend.map(async (newData, index) => {
+          await dispatch(FileUploadToDo(navigate, newData, t))
+          counter = counter - 1
+        })
+        let Data = {
+          ResolutionModel: {
+            FK_ResolutionStatusID: 1,
+            FK_ResolutionVotingMethodID:
+              createResolutionData.FK_ResolutionVotingMethodID,
+            Title: createResolutionData.Title,
+            NotesToVoter: createResolutionData.NotesToVoter,
+            CirculationDateTime: createConvert(
+              removeDashesFromDate(circulationDateTime.date) +
+                RemoveTimeDashes(circulationDateTime.time),
+            ),
+            DeadlineDateTime: createConvert(
+              removeDashesFromDate(votingDateTime.date) +
+                RemoveTimeDashes(votingDateTime.time),
+            ),
+            FK_ResolutionReminderFrequency_ID:
+              createResolutionData.FK_ResolutionReminderFrequency_ID,
+            FK_ResolutionDecision_ID: decision.value,
+            DecisionAnnouncementDateTime: createConvert(
+              removeDashesFromDate(decisionDateTime.date) +
+                RemoveTimeDashes(decisionDateTime.time),
+            ),
+            IsResolutionPublic: createResolutionData.IsResolutionPublic,
+            FK_OrganizationID: JSON.parse(
+              localStorage.getItem('organizationID'),
+            ),
+            FK_UID: JSON.parse(localStorage.getItem('userID')),
+          },
+        }
+
+        dispatch(
+          createResolution(
+            navigate,
+            Data,
+            voters,
+            nonVoter,
+            tasksAttachments,
+            t,
+            1,
+            1,
+          ),
+        )
+      } else {
+        let Data = {
+          ResolutionModel: {
+            FK_ResolutionStatusID: 1,
+            FK_ResolutionVotingMethodID:
+              createResolutionData.FK_ResolutionVotingMethodID,
+            Title: createResolutionData.Title,
+            NotesToVoter: createResolutionData.NotesToVoter,
+            CirculationDateTime: createConvert(
+              removeDashesFromDate(circulationDateTime.date) +
+                RemoveTimeDashes(circulationDateTime.time),
+            ),
+            DeadlineDateTime: createConvert(
+              removeDashesFromDate(votingDateTime.date) +
+                RemoveTimeDashes(votingDateTime.time),
+            ),
+            FK_ResolutionReminderFrequency_ID:
+              createResolutionData.FK_ResolutionReminderFrequency_ID,
+            FK_ResolutionDecision_ID: decision.value,
+            DecisionAnnouncementDateTime: createConvert(
+              removeDashesFromDate(decisionDateTime.date) +
+                RemoveTimeDashes(decisionDateTime.time),
+            ),
+            IsResolutionPublic: createResolutionData.IsResolutionPublic,
+            FK_OrganizationID: JSON.parse(
+              localStorage.getItem('organizationID'),
+            ),
+            FK_UID: JSON.parse(localStorage.getItem('userID')),
+          },
+        }
+        dispatch(
+          createResolution(
+            navigate,
+            Data,
+            voters,
+            nonVoter,
+            tasksAttachments,
+            t,
+            1,
+            1,
+          ),
+        )
+        setTasksAttachments([])
+      }
+    } else {
+      setError(true)
+      setOpen({
+        flag: true,
+        message: t('Please-fill-all-the-fields'),
+      })
+    }
+  }
+
+  const resolutionCirculateHandler = () => {
     if (
       createResolutionData.Title !== '' &&
       circulationDateTime.date !== '' &&
@@ -521,14 +573,13 @@ const ScheduleNewResolution = ({
     ) {
       if (fileForSend.length > 0) {
         let counter = fileForSend.length
-        console.log(counter, 'countercountercounter')
         fileForSend.map(async (newData, index) => {
           await dispatch(FileUploadToDo(navigate, newData, t))
           counter = counter - 1
         })
         let Data = {
           ResolutionModel: {
-            FK_ResolutionStatusID: createResolutionData.FK_ResolutionStatusID,
+            FK_ResolutionStatusID: 2,
             FK_ResolutionVotingMethodID:
               createResolutionData.FK_ResolutionVotingMethodID,
             Title: createResolutionData.Title,
@@ -555,14 +606,7 @@ const ScheduleNewResolution = ({
             FK_UID: JSON.parse(localStorage.getItem('userID')),
           },
         }
-        if (id === 2 && Object.keys(voters).length <= 0) {
-          console.log(
-            typeof voters,
-            voters.length,
-            voters,
-            'DataDataDataDataDataDataData',
-          )
-
+        if (Object.keys(voters).length <= 0) {
           setError(true)
         } else {
           dispatch(
@@ -572,25 +616,16 @@ const ScheduleNewResolution = ({
               voters,
               nonVoter,
               tasksAttachments,
-              setNewresolution,
-              setEditResoutionPage,
               t,
               1,
-              id,
+              2,
             ),
-          )
-          console.log(
-            Data,
-            voters,
-            nonVoter,
-            tasksAttachments,
-            'CreateResolutionCreateResolutionCreateResolution',
           )
         }
       } else {
         let Data = {
           ResolutionModel: {
-            FK_ResolutionStatusID: createResolutionData.FK_ResolutionStatusID,
+            FK_ResolutionStatusID: 2,
             FK_ResolutionVotingMethodID:
               createResolutionData.FK_ResolutionVotingMethodID,
             Title: createResolutionData.Title,
@@ -617,13 +652,7 @@ const ScheduleNewResolution = ({
             FK_UID: JSON.parse(localStorage.getItem('userID')),
           },
         }
-        if (id === 2 && Object.keys(voters).length <= 0) {
-          console.log(
-            typeof voters,
-            voters.length,
-            voters,
-            'DataDataDataDataDataDataData',
-          )
+        if (Object.keys(voters).length <= 0) {
           setError(true)
         } else {
           dispatch(
@@ -633,21 +662,12 @@ const ScheduleNewResolution = ({
               voters,
               nonVoter,
               tasksAttachments,
-              setNewresolution,
-              setEditResoutionPage,
               t,
               1,
-              id,
+              2,
             ),
           )
         }
-        console.log(
-          Data,
-          voters,
-          nonVoter,
-          tasksAttachments,
-          'CreateResolutionCreateResolutionCreateResolution',
-        )
         setTasksAttachments([])
       }
     } else {
@@ -760,15 +780,12 @@ const ScheduleNewResolution = ({
         }
       }
     },
-    onDrop(e) {
-      console.log('Dropped files', e.dataTransfer.files)
-    },
+    onDrop(e) {},
     customRequest() {},
   }
 
   // Check is Resolution Checker Handler
   const handleChangeChecker = (e, checked) => {
-    console.log(e.target.checked, checked, 'testing1212')
     setCreateResolutionData({
       ...createResolutionData,
       IsResolutionPublic: e.target.checked,
@@ -777,7 +794,6 @@ const ScheduleNewResolution = ({
 
   // Resolution Voting Method ID
   const detailDropDownhandler = (e) => {
-    console.log(' handleChangehandleChangehandleChangehandleChange', e)
     setCreateResolutionData({
       ...createResolutionData,
       FK_ResolutionVotingMethodID: e.value,
@@ -820,17 +836,13 @@ const ScheduleNewResolution = ({
 
   // for api reponce of list of all assignees
   useEffect(() => {
-    console.log('assignees.userassignees.user', assignees.user)
     try {
       if (Object.keys(assignees.user).length > 0) {
         setMeetingAttendeesList(assignees.user)
       }
     } catch (error) {}
   }, [assignees.user])
-  console.log(
-    ResolutionReducer,
-    'ResolutionReducerResolutionReducerResolutionReducer',
-  )
+
   useEffect(() => {
     if (
       ResolutionReducer.ResponseMessage !== '' &&
@@ -838,6 +850,7 @@ const ScheduleNewResolution = ({
       ResolutionReducer.ResponseMessage !== undefined &&
       ResolutionReducer.ResponseMessage !== t('No-data-available')
     ) {
+      console.log('check why ', ResolutionReducer.ResponseMessage)
       setOpen({
         flag: true,
         message: ResolutionReducer.ResponseMessage,
@@ -851,10 +864,7 @@ const ScheduleNewResolution = ({
       dispatch(clearResponseMessage())
     }
   }, [ResolutionReducer.ResponseMessage])
-  console.log(
-    open,
-    'ResolutionReducerResolutionReducerResolutionReducerResolutionReducerResolutionReducerResolutionReducer',
-  )
+
   // Get Voting Methods
   useEffect(() => {
     if (ResolutionReducer.GetAllVotingMethods !== null) {
@@ -869,32 +879,9 @@ const ScheduleNewResolution = ({
     }
   }, [ResolutionReducer.GetAllVotingMethods])
 
-  // useEffect(() => {
-  //   setTasksAttachments([]);
-  // }, []);
-
-  // useEffect(() => {
-  //   if (uploadReducer.uploadDocumentsList !== null) {
-  //     tasksAttachments.push({
-  //       DisplayAttachmentName:
-  //         uploadReducer.uploadDocumentsList.displayFileName,
-  //       OriginalAttachmentName:
-  //         uploadReducer.uploadDocumentsList.originalFileName,
-  //     });
-  //     setTasksAttachments([...tasksAttachments]);
-  //   }
-  // }, [uploadReducer.uploadDocumentsList]);
-
-  useEffect(() => {
-    dispatch(getAllVotingMethods(navigate, t))
-    dispatch(getAllResolutionStatus(navigate, t))
-    dispatch(allAssignessList(navigate, t))
-  }, [])
   const handleChangeDateSelection = (e) => {
     let name = e.target.name
     let value = e.target.value
-    console.log('handleChangeCiculationDate', name)
-    console.log('handleChangeCiculationDate', value)
     if (name === 'circulation') {
       setCirculationDateTime({
         ...circulationDateTime,
@@ -912,6 +899,7 @@ const ScheduleNewResolution = ({
       })
     }
   }
+
   const handleChangeTimeSelection = (e) => {
     let name = e.target.name
     let value = e.target.value
@@ -932,28 +920,7 @@ const ScheduleNewResolution = ({
       })
     }
   }
-  // const handleChangeCirculationTimeSelection = (e) => {
-  //   let setTime = moment(e.$d).format("HH:mm")
-  //   setCirculationDateTime({
-  //     ...circulationDateTime,
-  //     time: setTime,
-  //   });
-  // }
 
-  // const handleChangeVotingTimeSelection = (e) => {
-  //   let setTime = moment(e.$d).format("HH:mm")
-  //   setVotingDateTime({
-  //     ...votingDateTime,
-  //     time: setTime,
-  //   });
-  // }
-  // const handleChangeDecisionTimeSelection = (e) => {
-  //   let setTime = moment(e.$d).format("HH:mm")
-  //   setDecisionDateTime({
-  //     ...decisionDateTime,
-  //     time: setTime,
-  //   });
-  // }
   return (
     <>
       <section>
@@ -1167,14 +1134,8 @@ const ScheduleNewResolution = ({
                             applyClass={'search_voterInput'}
                             change={(e) => {
                               handleChangeTimeSelection(e)
-                              // e.preventDefault()
-                              // setCirculationDateTime({
-                              //   ...circulationDateTime,
-                              //   time: e.target.value,
-                              // });
                             }}
                           />
-                          {/* <TimePickerResolution onChange={handleChangeCirculationTimeSelection} /> */}
                           <Row>
                             <Col>
                               <p
@@ -1245,24 +1206,6 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
-                          {/* Voting Time */}
-                          {/* <TimePicker
-                            hourPlaceholder="HH"
-                            minutePlaceholder="MM"
-                            clockIcon={false}
-                            className={"w-100"}
-                            clearIcon={false}
-                            closeClock={false}
-                            disableClock={false}
-                            secondPlaceholder="ss"
-                            value={votingDateTime.time}
-                            onChange={(e) =>
-                              setVotingDateTime({
-                                ...votingDateTime,
-                                time: e,
-                              })
-                            }
-                          /> */}
                           <TextFieldTime
                             type="time"
                             applyClass={'search_voterInput'}
@@ -1273,11 +1216,6 @@ const ScheduleNewResolution = ({
                               handleChangeTimeSelection(e)
                             }}
                           />
-                          {/* <TimePickerResolution
-
-                            disabled={circulationDateTime.date === "" && circulationDateTime.time === "" ? true : false}
-                            onChange={handleChangeVotingTimeSelection}
-                            minTime={dayjs(`${circulationDateTime.date}T${circulationDateTime.time}`)} /> */}
                           <Row>
                             <Col>
                               <p
@@ -1348,12 +1286,6 @@ const ScheduleNewResolution = ({
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
-                          {/* Decision Time */}
-                          {/* <TimePickerResolution
-                            onChange={handleChangeDecisionTimeSelection}
-                            disabled={votingDateTime.date === "" && votingDateTime.time === "" ? true : false}
-                            minTime={dayjs(`${votingDateTime.date}T${votingDateTime.time}`)}
-                          /> */}
                           <TextFieldTime
                             applyClass={'search_voterInput'}
                             type="time"
@@ -1362,11 +1294,6 @@ const ScheduleNewResolution = ({
                             labelClass="d-none"
                             change={(e) => {
                               handleChangeTimeSelection(e)
-                              // e.preventDefault()
-                              // setDecisionDateTime({
-                              //   ...decisionDateTime,
-                              //   time: e.target.value,
-                              // });
                             }}
                           />
                           <Row>
@@ -1952,11 +1879,6 @@ const ScheduleNewResolution = ({
                               </Dragger>
                             </Col>
                           </Row>
-                          {/* <Row className="mt-3">
-                           
-                          </Row> */}
-                          {/* {isVoter ?
-                            <> */}
                           <Row className="mt-4">
                             <Col
                               lg={12}
@@ -1969,21 +1891,23 @@ const ScheduleNewResolution = ({
                                 className={
                                   styles['Save_button_Createresolution']
                                 }
-                                onClick={() => setNewresolution(false)}
+                                onClick={() =>
+                                  dispatch(createResolutionModal(false))
+                                }
                               />
                               <Button
                                 text={t('Save')}
                                 className={
                                   styles['Save_button_Createresolution']
                                 }
-                                onClick={() => createResolutionHandleClick(1)}
+                                onClick={() => resolutionSaveHandler()}
                               />
                               <Button
                                 text={t('Circulate')}
                                 className={
                                   styles['circulate_button_Createresolution']
                                 }
-                                onClick={() => createResolutionHandleClick(2)}
+                                onClick={() => resolutionCirculateHandler()}
                               />
                             </Col>
                           </Row>

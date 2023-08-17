@@ -1248,5 +1248,7 @@
   "Custom": "Custom",
   "Okay": "Okay",
   "Email-Messages": "Email Messages",
-  "No-Chat-Messages": "No Chat Messages"
+  "No-Chat-Messages": "No Chat Messages",
+  "To-do-list": "To Do List",
+  "Please-fill-all-open-option-fields": "Please fill all open option fields"
 }
