@@ -7,10 +7,7 @@ import {
   newTimeFormaterAsPerUTCTalkTime,
   newTimeFormaterAsPerUTCTalkDate,
 } from '../../../../../commen/functions/date_formater'
-import {
-  chatBoxActiveFlag,
-  privateChatFlag,
-} from '../../../../../store/actions/Talk_Feature_actions'
+import { chatBoxActiveFlag } from '../../../../../store/actions/Talk_Feature_actions'
 import {
   GetOTOUserMessages,
   activeChat,
@@ -21,7 +18,6 @@ import DoubleTickIcon from '../../../../../assets/images/DoubleTick-Icon.png'
 import DoubleTickDeliveredIcon from '../../../../../assets/images/DoubleTickDelivered-Icon.png'
 import SingleTickIcon from '../../../../../assets/images/SingleTick-Icon.png'
 import TimerIcon from '../../../../../assets/images/Timer-Icon.png'
-import DropDownIcon from '../../../../../assets/images/dropdown-icon.png'
 import { useTranslation } from 'react-i18next'
 
 const PrivateChats = () => {

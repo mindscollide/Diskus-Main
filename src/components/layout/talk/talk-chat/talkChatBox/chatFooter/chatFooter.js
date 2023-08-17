@@ -742,7 +742,7 @@ const ChatFooter = ({ allOtoMessages, setAllOtoMessages }) => {
                 value={messageSendData.Body}
                 className="chat-message-input"
                 name="ChatMessage"
-                placeholder={'Type a Message'}
+                placeholder={t('Type-a-Message')}
                 maxLength={200}
                 onChange={chatMessageHandler}
                 autoComplete="off"
