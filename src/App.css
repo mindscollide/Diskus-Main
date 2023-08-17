@@ -2472,11 +2472,13 @@ body[dir="rtl"] button.cameraButton.Enable.btn.btn-primary:focus {
 }
 
 .Update-committee-Checkbox span.ant-checkbox-disabled.ant-checkbox-checked {
-  cursor: default;
+  filter: grayscale(0.5) !important;
+  background-color: #6172d6 !important;
 }
 
 .UpdateCheckbox span.ant-checkbox-disabled.ant-checkbox-checked {
-  cursor: default;
+  filter: grayscale(0.5) !important;
+  background-color: #6172d6 !important;
 }
 
 .Update-committee-Checkbox.ant-checkbox-checked .ant-checkbox-inner {
@@ -5745,4 +5747,9 @@ input::-webkit-calendar-picker-indicator {
 .ant-checkbox-disabled.ant-checkbox-checked .ant-checkbox-inner::after {
   border-color: rgb(255, 255, 255) !important;
   animation-name: none;
+}
+
+.select_dormant-days__control {
+  width: 120px !important;
+  max-width: 100% !important;
 }

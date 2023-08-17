@@ -871,7 +871,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
               : closeConfirmationBox ? <>
                 <Row>
                   <Col sm={12} md={12} lg={12} className={"Confirmationmodal_body_text"}>
-                    Are you sure? If you click on close button the data will reset and modal will close.
+                    {t("Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close")}
                   </Col>
                 </Row></> : null
           }
@@ -885,7 +885,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     xs={12}
                     className="d-flex justify-content-end gap-3 p-0"
                   >
-                    <Button onClick={() => setCloseConfirmationBox(true)} className={"cancelButton_createTodo"} text={"Cancel"} />
+                    <Button onClick={() => {
+                      setCloseConfirmationBox(true)
+                      setIsCreateTodo(false)
+                    }} className={"cancelButton_createTodo"} text={"Cancel"} />
                     <Button
                       onClick={createToDoList}
                       className={

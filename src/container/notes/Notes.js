@@ -173,8 +173,8 @@ const Notes = () => {
         UserID: parseInt(createrID),
         OrganizationID: JSON.parse(OrganizationID),
         Title: "",
-        PageNumber: notesPage,
-        Length: notesPagesize
+        PageNumber: JSON.parse(notesPage),
+        Length: JSON.parse(notesPagesize)
       };
       dispatch(GetNotes(navigate, Data, t));
     } else {

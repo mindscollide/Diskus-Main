@@ -303,6 +303,7 @@ const Groups = () => {
                                 setUniqCardID={setUniqCardID}
                                 uniqCardID={uniqCardID}
                                 key={index}
+                                groupState={true}
                                 CardID={data.groupID}
                                 StatusID={data.groupStatusID}
                                 associatedTags={data.listOfCommittees}

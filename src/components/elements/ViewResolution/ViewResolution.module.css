@@ -55,6 +55,9 @@ body[dir="rtl"] .Heading_Authorize_Viewresolution {
 .Paragraph {
   font-size: 12px !important;
   color: #5a5a5a;
+  word-wrap: break-word;
+  overflow-y: auto;
+  max-height: 85px !important;
 }
 
 body[dir="rtl"] .Paragraph {

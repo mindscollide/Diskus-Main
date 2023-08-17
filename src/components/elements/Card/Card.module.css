@@ -392,3 +392,19 @@ body[dir="rtl"] .Edit_icon_styles {
   margin: 0;
   padding: 0;
 }
+
+.Edit_icon_styles_InActive {
+  background: #f4f9ff !important;
+  width: 20px !important;
+}
+
+.dot_icon_styles_InActive {
+  pointer-events: none;
+}
+
+.associated_tagLine_single {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}

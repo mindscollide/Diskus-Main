@@ -43,6 +43,7 @@ import {
   removeDashesFromDate,
   resolutionResultTable,
   _justShowDateformat,
+  createConvert,
 } from "../../commen/functions/date_formater";
 import EditResolutionIcon from "../../assets/images/Edit_Resolution_Icon.svg";
 import ResultResolutionIcon from "../../assets/images/Result_Resolution_Icon.svg";
@@ -110,7 +111,7 @@ const Resolution = () => {
         localStorage.setItem("ButtonTab", 1);
         dispatch(getResolutions(navigate, 1, t));
       }
-    } catch {}
+    } catch { }
 
     return () => {
       localStorage.removeItem("moderatorPage");
@@ -132,76 +133,46 @@ const Resolution = () => {
   });
 
   const showSearchOptions = () => {
-    if (ResolutionReducer.currentResolutionView === 1) {
-      let moderatordata = [...ResolutionReducer.GetResolutions];
-      let data = moderatordata.filter((a) => {
-        return (
-          (searchModalDates.circulationDate != "" &&
-          searchModalDates.votingDate != ""
-            ? removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-                removeDashesFromDate(
-                  editResolutionDate(searchModalDates.circulationDate)
-                ) &&
-              removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-                removeDashesFromDate(
-                  editResolutionDate(searchModalDates.votingDate)
-                )
-            : a) &&
-          (searchModalDates.circulationDate != "" &&
-          searchModalDates.votingDate === ""
-            ? removeDashesFromDate(editResolutionDate(a.circulationDate)) ===
-              removeDashesFromDate(
-                editResolutionDate(searchModalDates.circulationDate)
-              )
-            : removeDashesFromDate(editResolutionDate(a.circulationDate))) &&
-          (searchModalDates.votingDate != "" &&
-          searchModalDates.circulationDate === ""
-            ? removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-              removeDashesFromDate(
-                editResolutionDate(searchModalDates.votingDate)
-              )
-            : removeDashesFromDate(editResolutionDate(a.votingDeadline)))
-        );
-      });
-      setRows(data);
+    console.log(searchModalDates, "searchModalDatessearchModalDates")
+    let getUserID = JSON.parse(localStorage.getItem("userID"))
+    let resolutionView = JSON.parse(localStorage.getItem("resolutionView"));
+    let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"));
+
+    if (resolutionView === 1) {
+      let Data = {
+        FK_UID: getUserID,
+        ResolutionStatus: buttonTab,
+        Title: "",
+        PageNumber: moderatorPage !== null ? moderatorPage : 1,
+        Length: moderatorRows !== null ? moderatorRows : 50,
+        CirculationDate: `${createConvert(searchModalDates.circulationDate)}`,
+        VotingDeadlineDate: `${createConvert(searchModalDates.votingDate)}`,
+      }
+      dispatch(getResolutions(navigate, buttonTab, t, Data.Title, Data.CirculationDate, Data.VotingDeadlineDate))
+      setSearchResultsArea(false);
       setSearchIcon(false);
-    } else if (ResolutionReducer.currentResolutionView === 2) {
-      let voterData = [...ResolutionReducer.searchVoterResolution];
-      let data = voterData.filter((a) => {
-        return (
-          (searchModalDates.circulationDate != "" &&
-          searchModalDates.votingDate != ""
-            ? removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-                removeDashesFromDate(
-                  editResolutionDate(searchModalDates.circulationDate)
-                ) &&
-              removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-                removeDashesFromDate(
-                  editResolutionDate(searchModalDates.votingDate)
-                )
-            : a) &&
-          (searchModalDates.circulationDate != "" &&
-          searchModalDates.votingDate === ""
-            ? removeDashesFromDate(editResolutionDate(a.decisionDate)) ===
-              removeDashesFromDate(
-                editResolutionDate(searchModalDates.circulationDate)
-              )
-            : removeDashesFromDate(editResolutionDate(a.decisionDate))) &&
-          (searchModalDates.votingDate != "" &&
-          searchModalDates.circulationDate === ""
-            ? removeDashesFromDate(editResolutionDate(a.votingDeadline)) ===
-              removeDashesFromDate(
-                editResolutionDate(searchModalDates.votingDate)
-              )
-            : removeDashesFromDate(editResolutionDate(a.votingDeadline)))
-        );
-      });
+    } else {
+      let Data = {
+        FK_UID: getUserID,
+        ResolutionStatus: buttonTab,
+        Title: "",
+        PageNumber: moderatorPage !== null ? moderatorPage : 1,
+        Length: moderatorRows !== null ? moderatorRows : 50,
+        CirculationDate: `${createConvert(searchModalDates.circulationDate)}`,
+        VotingDeadlineDate: `${createConvert(searchModalDates.votingDate)}`,
+      }
+      setSearchResultsArea(false);
       setSearchIcon(false);
-      setSearchVoter(data);
+      dispatch(getVoterResolution(navigate, buttonTab, t, Data.Title, Data.CirculationDate, Data.VotingDeadlineDate));
     }
   };
 
   const hideSearchOptions = () => {
+    if (resolutionView === 1) {
+      dispatch(getResolutions(navigate, buttonTab, t))
+    } else {
+      dispatch(getVoterResolution(navigate, buttonTab, t));
+    }
     setSearchModalDates({
       circulationDate: "",
       votingDate: "",
@@ -209,10 +180,6 @@ const Resolution = () => {
     setAllSearchInput("");
     setSearchResultsArea(false);
     setSearchIcon(false);
-    let moderatordata = [...ResolutionReducer.GetResolutions];
-    setRows(moderatordata);
-    let voterData = [...ResolutionReducer.searchVoterResolution];
-    setSearchVoter(voterData);
   };
 
   const closeSeachBar = () => {
@@ -226,25 +193,24 @@ const Resolution = () => {
       votingDate: "",
     });
     setSearchIcon(true);
-
-    let moderatordata = [...ResolutionReducer.GetResolutions];
-    setRows(moderatordata);
-    let voterData = [...ResolutionReducer.searchVoterResolution];
-    setSearchVoter(voterData);
   };
 
   const currentbuttontable = () => {
     localStorage.setItem("ButtonTab", 1);
     setAllSearchInput("");
+    setSearchModalDates({
+      circulationDate: "",
+      votingDate: "",
+    });
     setSearchIcon(false);
     if (resolutionView !== null && resolutionView === 1) {
-      if (moderatorPage !== null && moderatorRows !== null) {
-        dispatch(getResolutions(navigate, 1, t));
-      }
+      // if (moderatorPage !== null && moderatorRows !== null) {
+      dispatch(getResolutions(navigate, 1, t));
+      // }
     } else if (resolutionView !== null && resolutionView === 2) {
-      if (voterPage !== null && voterRows !== null) {
-        dispatch(getVoterResolution(navigate, 1, t));
-      }
+      // if (voterPage !== null && voterRows !== null) {
+      dispatch(getVoterResolution(navigate, 1, t));
+      // }
     }
   };
 
@@ -252,6 +218,10 @@ const Resolution = () => {
     localStorage.setItem("ButtonTab", 3);
     setAllSearchInput("");
     setSearchIcon(false);
+    setSearchModalDates({
+      circulationDate: "",
+      votingDate: "",
+    });
     if (resolutionView !== null && resolutionView === 1) {
       dispatch(getResolutions(navigate, 3, t));
     } else if (resolutionView !== null && resolutionView === 2) {
@@ -262,6 +232,10 @@ const Resolution = () => {
   const buttonclosed = () => {
     localStorage.setItem("ButtonTab", 2);
     setAllSearchInput("");
+    setSearchModalDates({
+      circulationDate: "",
+      votingDate: "",
+    });
     setSearchIcon(false);
     if (resolutionView !== null && resolutionView === 1) {
       dispatch(getResolutions(navigate, 2, t));
@@ -303,47 +277,56 @@ const Resolution = () => {
 
   const filterResolution = (e) => {
     let value = e.target.value;
-    setAllSearchInput(value);
-    if (resolutionView !== null && resolutionView === 2) {
-      let y = [...ResolutionReducer.searchVoterResolution];
-      if (value != "") {
-        let x = y.filter((a) => {
-          return (
-            (value != ""
-              ? a.resolutionTitle.toLowerCase().includes(value.toLowerCase())
-              : a.resolutionTitle) ||
-            (value != ""
-              ? a.votingMethod.toLowerCase().includes(value.toLowerCase())
-              : a.votingMethod) ||
-            (value != ""
-              ? a.decision.toLowerCase().includes(value.toLowerCase())
-              : a.decision)
-          );
-        });
-        setSearchVoter(x);
+    console.log(value, "filterResolutionfilterResolution")
+    setAllSearchInput(value)
+
+    // setAllSearchInput(...allSearchInput, value);
+
+  };
+  const handleClickSearch = (event) => {
+    console.log(event.key, "handleClickSearchhandleClickSearchhandleClickSearch")
+    if (event.key === "Enter") {
+      console.log(event.key, "handleClickSearchhandleClickSearchhandleClickSearch")
+      let getUserID = JSON.parse(localStorage.getItem("userID"))
+      let resolutionView = JSON.parse(localStorage.getItem("resolutionView"));
+      let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"));
+      if (resolutionView === 1) {
+        if (allSearchInput !== "") {
+          let Data = {
+            FK_UID: getUserID,
+            ResolutionStatus: buttonTab,
+            Title: allSearchInput,
+            PageNumber: moderatorPage !== null ? moderatorPage : 1,
+            Length: moderatorRows !== null ? moderatorRows : 50,
+            CirculationDate: "",
+            VotingDeadlineDate: "",
+          }
+          dispatch(getResolutions(navigate, buttonTab, t, Data.Title))
+          setAllSearchInput("")
+        } else {
+          dispatch(getResolutions(navigate, buttonTab, t))
+
+        }
       } else {
-        setSearchVoter(ResolutionReducer.searchVoterResolution);
-      }
-    } else if (resolutionView !== null && resolutionView === 1) {
-      // isSearchVoter
-      let moderatordata = [...ResolutionReducer.GetResolutions];
-      if (value != "") {
-        let x = moderatordata.filter((a) => {
-          return (
-            (value != ""
-              ? a.resolutionTitle.toLowerCase().includes(value.toLowerCase())
-              : a.resolutionTitle) ||
-            (value != ""
-              ? a.decision.toLowerCase().includes(value.toLowerCase())
-              : a.decision)
-          );
-        });
-        setRows(x);
-      } else {
-        setRows(ResolutionReducer.GetResolutions);
+        if (allSearchInput !== "") {
+          let Data = {
+            FK_UID: getUserID,
+            ResolutionStatus: buttonTab,
+            Title: allSearchInput,
+            PageNumber: moderatorPage !== null ? moderatorPage : 1,
+            Length: moderatorRows !== null ? moderatorRows : 50,
+            CirculationDate: "",
+            VotingDeadlineDate: "",
+          }
+          dispatch(getVoterResolution(navigate, buttonTab, t, Data.Title));
+          setAllSearchInput("")
+        } else {
+          dispatch(getVoterResolution(navigate, buttonTab, t));
+        }
       }
     }
-  };
+  }
+
 
   const OpenCancelModal = (id) => {
     setResolutionIDForCancel(id);
@@ -439,17 +422,11 @@ const Resolution = () => {
         if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else if (text === "Not Approved") {
-          return (
-            <span className={styles["decision_non_Approved"]}>{text}</span>
-          );
-        } else if (text === "Pending") {
-          return (
-            <span className={styles["decision_text_Pending"]}>{text}</span>
-          );
+          return <span className={styles["decision_non_Approved"]}>{text}</span>
+        } else if (text === "Tie") {
+          return <span className={styles["decision_text_Pending"]}>{text}</span>;
         } else {
-          return (
-            <span className={styles["decision_text_Pending"]}>{text}</span>
-          );
+          return <span className={styles["decision_text_Pending"]}>{text}</span>;
         }
       },
     },
@@ -599,11 +576,11 @@ const Resolution = () => {
         if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else if (text === "Not Approved") {
-          return (
-            <span className={styles["decision_non_Approved"]}>{text}</span>
-          );
+          return <span className={styles["decision_non_Approved"]}>{text}</span>
+        } else if (text === "Tie") {
+          return <span className={styles["decision_text_Pending"]}>{text}</span>;
         } else {
-          <span className={styles["decision_text_Pending"]}>{text}</span>;
+          return <span className={styles["decision_text_Pending"]}>{text}</span>;
         }
       },
     },
@@ -1148,110 +1125,25 @@ const Resolution = () => {
                     className=" d-flex justify-content-end  align-items-center  Search-filed-resolution"
                   >
                     <span className={styles["search_input"]}>
-                      {/* <TextField
+                      <TextField
                         width="455px"
                         name="Title"
                         placeholder={t("Search")}
                         labelClass="textFieldSearch d-none"
-                        change={filterResolution}
-                        applyClass={"resolution-search-input"}
                         value={allSearchInput}
+                        change={(e) => filterResolution(e)}
+                        // onClick={handleClickSearch}
+                        onKeyDown={handleClickSearch}
+                        applyClass={"resolution-search-input"}
                         iconClassName={styles["Search_Icon"]}
                         inputicon={<img src={searchicon} />}
                         clickIcon={openSearchBox}
-                      /> */}
-                      <SearchInputSuggestion />
-
-                      {/* {searchIcon ? (
-                        <>
-                          <Row>
-                            <Col
-                              lg={12}
-                              md={12}
-                              sm={12}
-                              className={styles["Search_Box_Main_Resolution_page"]}
-                            >
-                              <Row>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-end"
-                                >
-                                  <span className="position-relative">
-                                    <img
-                                      src={Cross}
-                                      height="16px"
-                                      className={styles["searchBox_CrossIcon"]}
-                                      width="16px"
-                                      onClick={closeSeachBar}
-                                    />
-                                  </span>
-                                </Col>
-                              </Row>
-                              <Row className="mt-3 d-flex justify-content-start align-items-start ">
-                                <Col
-                                  lg={6}
-                                  md={6}
-                                  sm={6}
-                                  className="CreateMeetingReminder searchBox-dropdowns-resolution FontArabicRegular "
-                                >
-                                  <TextField
-                                    label={
-                                      ResolutionReducer.currentResolutionView === 2
-                                        ? t("Decision-date")
-                                        : t("Circulation-date")
-                                    }
-                                    type="date"
-                                    name="circulationDate"
-                                    change={changeSearchDateHandler}
-                                  />
-                                </Col>
-                                <Col
-                                  lg={6}
-                                  md={6}
-                                  sm={6}
-                                  className="CreateMeetingReminder  searchBox-dropdowns-resolution FontArabicRegular"
-                                >
-                                  <TextField
-                                    label={t("Voting-deadline")}
-                                    type="date"
-                                    name="votingDate"
-                                    change={changeSearchDateHandler}
-                                  />
-                                </Col>
-                              </Row>
-                              <Row className="mt-3">
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-end gap-3"
-                                >
-                                  <Button
-                                    text={t("Reset")}
-                                    className={
-                                      styles["ResetButton_SearchBar_Resolution"]
-                                    }
-                                    onClick={hideSearchOptions}
-                                  />
-                                  <Button
-                                    text={t("Search")}
-                                    className={
-                                      styles["SearchButton_SearchBar_Resolution"]
-                                    }
-                                    onClick={showSearchOptions}
-                                  />
-                                </Col>
-                              </Row>
-                            </Col>
-                          </Row>
-                        </>
-                      ) : null} */}
+                      />
+                      {/* <SearchInputSuggestion /> */}
                     </span>
                   </Col>
 
-                  {/* {searchIcon ? (
+                  {searchIcon ? (
                     <>
                       <Row>
                         <Col
@@ -1286,7 +1178,7 @@ const Resolution = () => {
                             >
                               <TextField
                                 label={
-                                  ResolutionReducer.currentResolutionView === 2
+                                  resolutionView === 2
                                     ? t("Decision-date")
                                     : t("Circulation-date")
                                 }
@@ -1335,7 +1227,7 @@ const Resolution = () => {
                         </Col>
                       </Row>
                     </>
-                  ) : null} */}
+                  ) : null}
                 </Row>
               </Col>
             </Row>
@@ -1477,8 +1369,8 @@ const Resolution = () => {
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   {isSearchVoter !== null &&
-                  isSearchVoter !== undefined &&
-                  isSearchVoter.length > 0 ? (
+                    isSearchVoter !== undefined &&
+                    isSearchVoter.length > 0 ? (
                     <>
                       <TableToDo
                         sortDirections={["descend", "ascend"]}
