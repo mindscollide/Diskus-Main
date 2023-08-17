@@ -265,6 +265,11 @@ const initialState = {
     DownloadChatResponseMessage: '',
   },
 
+  EmailChatData: {
+    EmailChatResponse: [],
+    EmailChatResponseMessage: '',
+  },
+
   UpdateMessageAcknowledgementData: {
     UpdateMessageAcknowledgementResponse: [],
     UpdateMessageAcknowledgementResponseMessage: '',
@@ -1546,6 +1551,36 @@ const talkReducer = (state = initialState, action) => {
         DownloadChatData: {
           DownloadChatResponse: [],
           DownloadChatResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.EMAIL_CHAT_INIT: {
+      return {
+        ...state,
+        EmailChatData: {
+          EmailChatResponse: [],
+          EmailChatResponseMessage: '',
+        },
+      }
+    }
+
+    case actions.EMAIL_CHAT_SUCCESS: {
+      return {
+        ...state,
+        EmailChatData: {
+          EmailChatResponse: action.response,
+          EmailChatResponseMessage: action.message,
+        },
+      }
+    }
+
+    case actions.EMAIL_CHAT_FAIL: {
+      return {
+        ...state,
+        EmailChatData: {
+          EmailChatResponse: [],
+          EmailChatResponseMessage: action.message,
         },
       }
     }

@@ -182,7 +182,7 @@ const CreateNewShoutAll = () => {
               maxLength={200}
               applyClass="form-control2"
               name="Name"
-              placeholder={'Search Users'}
+              placeholder={t('Search-User')}
               change={(e) => {
                 searchShoutAllUserUser(e.target.value)
               }}
@@ -259,12 +259,12 @@ const CreateNewShoutAll = () => {
           <Col className="text-center">
             {noParticipant === true ? (
               <p className="participant-warning m-0">
-                At least add one participant
+                {t('At-least-add-one-participant')}
               </p>
             ) : null}
             <Button
               className="MontserratSemiBold Ok-btn forward-user"
-              text="Create Shout"
+              text={t('Create-Shout')}
               onClick={createShoutAllList}
             />
           </Col>

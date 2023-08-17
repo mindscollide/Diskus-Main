@@ -36,36 +36,36 @@ const TalkHeader = () => {
 
   // Chat Filter Options
   const chatFilterOptions = [
-    { className: 'talk-chat-filter', label: 'Recent Chats', value: 1 },
-    { className: 'talk-chat-filter', label: 'Private Message', value: 2 },
-    { className: 'talk-chat-filter', label: 'Private Group', value: 3 },
-    { className: 'talk-chat-filter', label: 'Starred Message', value: 4 },
-    { className: 'talk-chat-filter', label: 'Shout All', value: 5 },
-    { className: 'talk-chat-filter', label: 'Blocked User', value: 6 },
+    { className: 'talk-chat-filter', label: t('Recent-Chats'), value: 1 },
+    { className: 'talk-chat-filter', label: t('Private-Message'), value: 2 },
+    { className: 'talk-chat-filter', label: t('Private-Group'), value: 3 },
+    { className: 'talk-chat-filter', label: t('Starred-Message'), value: 4 },
+    { className: 'talk-chat-filter', label: t('Shout-All'), value: 5 },
+    { className: 'talk-chat-filter', label: t('Blocked-User'), value: 6 },
   ]
 
   //Chat Filter State
   const [chatFilter, setChatFilter] = useState({
     value: 1,
-    label: 'Recent Chats',
+    label: t('Recent-Chats'),
   })
 
   // for   select Chat Filter Name
-  const [chatFilterName, setChatFilterName] = useState('Recent Chats')
+  const [chatFilterName, setChatFilterName] = useState(t('Recent-Chats'))
 
   useEffect(() => {
     if (talkFeatureStates.RecentChatsFlag) {
-      setChatFilterName('Recent Chats')
+      setChatFilterName(t('Recent-Chats'))
     } else if (talkFeatureStates.PrivateChatsFlag) {
-      setChatFilterName('Private Message')
+      setChatFilterName(t('Private-Message'))
     } else if (talkFeatureStates.PrivateGroupChatsFlag) {
-      setChatFilterName('Private Group')
+      setChatFilterName(t('Private-Group'))
     } else if (talkFeatureStates.StarredMessageFlag) {
-      setChatFilterName('Starred Message')
+      setChatFilterName(t('Starred-Message'))
     } else if (talkFeatureStates.BlockedUsersFlag) {
-      setChatFilterName('Blocked User')
+      setChatFilterName(t('Shout-All'))
     } else if (talkFeatureStates.ShoutAllMessageFlag) {
-      setChatFilterName('Shout All')
+      setChatFilterName(t('Blocked-User'))
     }
   }, [])
 
@@ -95,7 +95,7 @@ const TalkHeader = () => {
       // }
       try {
         if (value.label !== chatFilter.label) {
-          if (value.label === 'Recent Chats') {
+          if (value.label === t('Recent-Chats')) {
             dispatch(privateChatFlag(false))
             dispatch(privateGroupChatFlag(false))
             dispatch(starredMessageFlag(false))
@@ -111,7 +111,7 @@ const TalkHeader = () => {
                 t,
               ),
             )
-          } else if (value.label === 'Private Message') {
+          } else if (value.label === t('Private-Message')) {
             dispatch(recentChatFlag(false))
             dispatch(privateGroupChatFlag(false))
             dispatch(starredMessageFlag(false))
@@ -119,7 +119,7 @@ const TalkHeader = () => {
             dispatch(shoutallChatFlag(false))
             dispatch(footerShowHideStatus(false))
             dispatch(privateChatFlag(true))
-          } else if (value.label === 'Private Group') {
+          } else if (value.label === t('Private-Group')) {
             dispatch(recentChatFlag(false))
             dispatch(privateChatFlag(false))
             dispatch(starredMessageFlag(false))
@@ -127,7 +127,7 @@ const TalkHeader = () => {
             dispatch(shoutallChatFlag(false))
             dispatch(privateGroupChatFlag(true))
             dispatch(footerShowHideStatus(true))
-          } else if (value.label === 'Starred Message') {
+          } else if (value.label === t('Starred-Message')) {
             dispatch(recentChatFlag(false))
             dispatch(privateChatFlag(false))
             dispatch(privateGroupChatFlag(false))
@@ -135,7 +135,7 @@ const TalkHeader = () => {
             dispatch(shoutallChatFlag(false))
             dispatch(footerShowHideStatus(false))
             dispatch(starredMessageFlag(true))
-          } else if (value.label === 'Shout All') {
+          } else if (value.label === t('Shout-All')) {
             dispatch(recentChatFlag(false))
             dispatch(privateChatFlag(false))
             dispatch(privateGroupChatFlag(false))
@@ -143,7 +143,7 @@ const TalkHeader = () => {
             dispatch(blockedUsersFlag(false))
             dispatch(shoutallChatFlag(true))
             dispatch(footerShowHideStatus(true))
-          } else if (value.label === 'Blocked User') {
+          } else if (value.label === t('Blocked-User')) {
             dispatch(recentChatFlag(false))
             dispatch(privateChatFlag(false))
             dispatch(privateGroupChatFlag(false))

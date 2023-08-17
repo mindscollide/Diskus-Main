@@ -156,7 +156,7 @@ const ShoutAll = () => {
                           {newTimeFormaterAsPerUTCTalkDate(
                             dataItem.messageDate,
                           ) + ' '}
-                          | Yesterday
+                          | {t('Yesterday')}
                         </>
                       ) : (
                         <>

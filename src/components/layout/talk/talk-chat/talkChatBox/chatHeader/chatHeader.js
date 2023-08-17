@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Row, Col } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import {
   chatBoxActiveFlag,
   chatMessageSearchFlag,
@@ -20,6 +21,8 @@ import ShoutIcon from '../../../../../../assets/images/Shout-Icon.png'
 
 const ChatHeader = () => {
   const dispatch = useDispatch()
+
+  const { t } = useTranslation()
 
   const { talkStateData, talkFeatureStates } = useSelector((state) => state)
 
@@ -221,14 +224,14 @@ const ChatHeader = () => {
                               modalHandlerSave(talkStateData.ActiveChatData)
                             }
                           >
-                            Save
+                            {t('Save')}
                           </span>
                           <span
                             onClick={() =>
                               modalHandlerPrint(talkStateData.ActiveChatData)
                             }
                           >
-                            Print
+                            {t('Print')}
                           </span>
                           <span
                             style={{ borderBottom: 'none' }}
@@ -236,7 +239,7 @@ const ChatHeader = () => {
                               modalHandlerEmail(talkStateData.ActiveChatData)
                             }
                           >
-                            Email
+                            {t('Email')}
                           </span>
                         </>
                       )}
@@ -247,26 +250,26 @@ const ChatHeader = () => {
                               modalHandlerSave(talkStateData.ActiveChatData)
                             }
                           >
-                            Save
+                            {t('Save')}
                           </span>
                           <span
                             onClick={() =>
                               modalHandlerPrint(talkStateData.ActiveChatData)
                             }
                           >
-                            Print
+                            {t('Print')}
                           </span>
                           <span
                             onClick={() =>
                               modalHandlerEmail(talkStateData.ActiveChatData)
                             }
                           >
-                            Email
+                            {t('Email')}
                           </span>
                           <span onClick={modalHandlerGroupInfo}>
-                            Group Info
+                            {t('Group-Info')}
                           </span>
-                          <span>Delete Group</span>
+                          <span>{t('Delete-Group')}</span>
                           <span
                             onClick={() =>
                               leaveGroupHandlerChat(
@@ -274,13 +277,13 @@ const ChatHeader = () => {
                               )
                             }
                           >
-                            Leave Group
+                            {t('Leave-Group')}
                           </span>
                           <span
                             style={{ borderBottom: 'none' }}
                             onClick={modalHandlerGroupEdit}
                           >
-                            Edit Info
+                            {t('Edit-Info')}
                           </span>
                         </>
                       )}
@@ -291,26 +294,28 @@ const ChatHeader = () => {
                               modalHandlerSave(talkStateData.ActiveChatData)
                             }
                           >
-                            Save
+                            {t('Save')}
                           </span>
                           <span
                             onClick={() =>
                               modalHandlerPrint(talkStateData.ActiveChatData)
                             }
                           >
-                            Print
+                            {t('Print')}
                           </span>
                           <span
                             onClick={() =>
                               modalHandlerEmail(talkStateData.ActiveChatData)
                             }
                           >
-                            Email
+                            {t('Email')}
                           </span>
                           <span onClick={deleteShoutFunction}>
-                            Delete Shout
+                            {'Delete-Shout'}
                           </span>
-                          <span onClick={editShoutFunction}>Edit Shout</span>
+                          <span onClick={editShoutFunction}>
+                            {'Edit-Shout'}
+                          </span>
                         </>
                       )}
                     </div>
@@ -342,10 +347,10 @@ const ChatHeader = () => {
           <div className="encryption-level-chat">
             <Row>
               <Col lg={7} md={7} sm={12}>
-                <p className="level-heading">Crypto Level:</p>
+                <p className="level-heading">{t('Crypto-Level')}</p>
               </Col>
               <Col lg={5} md={5} sm={12} className="positionRelative">
-                <p className="level">NIAP + PQC</p>
+                <p className="level">{t('NIAP-+-PQC')}</p>
 
                 <span className="securityicon-box">
                   <img

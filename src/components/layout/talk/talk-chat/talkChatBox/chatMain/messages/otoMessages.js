@@ -708,7 +708,7 @@ const OtoMessages = () => {
                           <Col lg={12} md={12} sm={12}>
                             {' '}
                             <div className="chat-modal-Heading">
-                              <h1>Save Messages</h1>
+                              <h1>{t('Save-Messages')}</h1>
                             </div>
                           </Col>
                         </Row>
@@ -719,19 +719,19 @@ const OtoMessages = () => {
                                 checked={todayCheckState}
                                 onChange={onChangeToday}
                               >
-                                Today
+                                {t('Today')}
                               </Checkbox>
                               <Checkbox
                                 checked={allCheckState}
                                 onChange={onChangeAll}
                               >
-                                All
+                                {t('All')}
                               </Checkbox>
                               <Checkbox
                                 checked={customCheckState}
                                 onChange={onChangeCustom}
                               >
-                                Custom
+                                {t('Custom')}
                               </Checkbox>
                             </div>
                             {customCheckState === true ? (
@@ -778,7 +778,7 @@ const OtoMessages = () => {
                                         : null
                                     }
                                     DateRange
-                                    placeholder={'Select Date'}
+                                    placeholder={t('Select Date')}
                                     change={onChangeDate}
                                     disable={endDatedisable}
                                     locale={enUS}
@@ -793,7 +793,7 @@ const OtoMessages = () => {
                           <Col lg={12} md={12} sm={12} className="text-center">
                             <Button
                               className="MontserratSemiBold Ok-btn"
-                              text="Okay"
+                              text={t('Okay')}
                               onClick={downloadChat}
                             />
                           </Col>
@@ -807,7 +807,7 @@ const OtoMessages = () => {
                           <Col lg={12} md={12} sm={12}>
                             {' '}
                             <div className="chat-modal-Heading">
-                              <h1>Print Messages</h1>
+                              <h1>{t('Print-Messages')}</h1>
                             </div>
                           </Col>
                         </Row>
@@ -819,19 +819,19 @@ const OtoMessages = () => {
                                 checked={todayCheckState}
                                 onChange={onChangeToday}
                               >
-                                Today
+                                {t('Today')}
                               </Checkbox>
                               <Checkbox
                                 checked={allCheckState}
                                 onChange={onChangeAll}
                               >
-                                All
+                                {t('All')}
                               </Checkbox>
                               <Checkbox
                                 checked={customCheckState}
                                 onChange={onChangeCustom}
                               >
-                                Custom
+                                {t('Custom')}
                               </Checkbox>
                             </div>
                             {customCheckState === true ? (
@@ -839,7 +839,7 @@ const OtoMessages = () => {
                                 <Col lg={6} md={6} sm={12}>
                                   <label style={{ marginLeft: '5px' }}>
                                     <b style={{ fontSize: '0.7rem' }}>
-                                      Date From
+                                      {t('Date From')}
                                     </b>
                                   </label>{' '}
                                   <InputDatePicker
@@ -854,14 +854,14 @@ const OtoMessages = () => {
                                         : null
                                     }
                                     DateRange
-                                    placeholder={'Select Date'}
+                                    placeholder={t('Select-Date')}
                                     change={onChangeDate}
                                   />
                                 </Col>
                                 <Col lg={6} md={6} sm={12}>
                                   <label style={{ marginLeft: '5px' }}>
                                     <b style={{ fontSize: '0.7rem' }}>
-                                      Date To
+                                      {t('Date To')}
                                     </b>
                                   </label>
                                   <InputDatePicker
@@ -876,7 +876,7 @@ const OtoMessages = () => {
                                         : null
                                     }
                                     DateRange
-                                    placeholder={'Select Date'}
+                                    placeholder={t('Select Date')}
                                     change={onChangeDate}
                                     disable={endDatedisable}
                                   />
@@ -889,7 +889,7 @@ const OtoMessages = () => {
                           <Col lg={12} md={12} sm={12} className="text-center">
                             <Button
                               className="MontserratSemiBold Ok-btn"
-                              text="Okay"
+                              text={t('Okay')}
                               onClick={printChat}
                             />
                           </Col>
@@ -903,7 +903,7 @@ const OtoMessages = () => {
                           <Col lg={12} md={12} sm={12}>
                             {' '}
                             <div className="chat-modal-Heading">
-                              <h1>Email Messages</h1>
+                              <h1>{t('Email Messages')}</h1>
                             </div>
                           </Col>
                         </Row>
@@ -915,19 +915,19 @@ const OtoMessages = () => {
                                 checked={todayCheckState}
                                 onChange={onChangeToday}
                               >
-                                Today
+                                {t('Today')}
                               </Checkbox>
                               <Checkbox
                                 checked={allCheckState}
                                 onChange={onChangeAll}
                               >
-                                All
+                                {t('All')}
                               </Checkbox>
                               <Checkbox
                                 checked={customCheckState}
                                 onChange={onChangeCustom}
                               >
-                                Custom
+                                {t('Custom')}
                               </Checkbox>
                             </div>
                             {customCheckState === true ? (
@@ -935,7 +935,7 @@ const OtoMessages = () => {
                                 <Col lg={6} md={6} sm={12}>
                                   <label style={{ marginLeft: '5px' }}>
                                     <b style={{ fontSize: '0.7rem' }}>
-                                      Date From
+                                      {t('Date From')}
                                     </b>
                                   </label>{' '}
                                   <InputDatePicker
@@ -950,14 +950,14 @@ const OtoMessages = () => {
                                         : null
                                     }
                                     DateRange
-                                    placeholder={'Select Date'}
+                                    placeholder={t('Select Date')}
                                     change={onChangeDate}
                                   />
                                 </Col>
                                 <Col lg={6} md={6} sm={12}>
                                   <label style={{ marginLeft: '5px' }}>
                                     <b style={{ fontSize: '0.7rem' }}>
-                                      Date To
+                                      {t('Date To')}
                                     </b>
                                   </label>
                                   <InputDatePicker
@@ -972,7 +972,7 @@ const OtoMessages = () => {
                                         : null
                                     }
                                     DateRange
-                                    placeholder={'Select Date'}
+                                    placeholder={t('Select Date')}
                                     change={onChangeDate}
                                     disable={endDatedisable}
                                   />
@@ -985,7 +985,7 @@ const OtoMessages = () => {
                           <Col lg={12} md={12} sm={12} className="text-center">
                             <Button
                               className="MontserratSemiBold Ok-btn"
-                              text="Okay"
+                              text={t('Okay')}
                               onClick={handleCancel}
                             />
                           </Col>
@@ -1035,7 +1035,7 @@ const OtoMessages = () => {
                               name="Name"
                               change={(e) => setSearchChatWord(e.target.value)}
                               value={searchChatWord}
-                              placeholder="Search Chat"
+                              placeholder={t('Search Chat')}
                               labelClass={'d-none'}
                             />
                           </Col>
@@ -1063,22 +1063,24 @@ const OtoMessages = () => {
                             //   replyFeatureHandler(messageData)
                             // }
                             >
-                              Reply
+                              {t('Reply')}
                             </span>
-                            <span onClick={forwardFeatureHandler}>Forward</span>
+                            <span onClick={forwardFeatureHandler}>
+                              {t('Forward')}
+                            </span>
                             <span
                             // onClick={() =>
                             //   deleteFeatureHandler(messageData)
                             // }
                             >
-                              Delete
+                              {t('Delete')}
                             </span>
                             <span
                             // onClick={() =>
                             //   messageInfoHandler(messageData)
                             // }
                             >
-                              Message Info
+                              {t('Message-Info')}
                             </span>
                             <span
                               // onClick={() =>
@@ -1091,9 +1093,9 @@ const OtoMessages = () => {
                               }}
                             >
                               {messageData.isFlag === 0 ? (
-                                <>Star Message</>
+                                <>{t('Star-Message')}</>
                               ) : (
-                                <>Unstar Message</>
+                                <>{t('Unstar-Message')}</>
                               )}
                             </span>
                           </div>
@@ -1265,7 +1267,7 @@ const OtoMessages = () => {
                                 {newTimeFormaterAsPerUTCTalkDate(
                                   messageData.sentDate,
                                 ) + ' '}
-                                | Yesterday
+                                | {t('Yesterday')}
                               </>
                             ) : messageData.sentDate === '' ? null : (
                               <>
@@ -1362,7 +1364,7 @@ const OtoMessages = () => {
                             //   replyFeatureHandler(messageData)
                             // }
                             >
-                              Reply
+                              {t('Reply')}
                             </span>
                             <span onClick={forwardFeatureHandler}>Forward</span>
                             <span
@@ -1370,14 +1372,14 @@ const OtoMessages = () => {
                             //   deleteFeatureHandler(messageData)
                             // }
                             >
-                              Delete
+                              {t('Delete')}
                             </span>
                             <span
                             // onClick={() =>
                             //   messageInfoHandler(messageData)
                             // }
                             >
-                              Message Info
+                              {t('Message-Info')}
                             </span>
                             <span
                               // onClick={() =>
@@ -1388,9 +1390,9 @@ const OtoMessages = () => {
                               }}
                             >
                               {messageData.isFlag === 0 ? (
-                                <>Star Message</>
+                                <>{t('Star-Message')}</>
                               ) : (
-                                <>Unstar Message</>
+                                <>{t('Unstar-Message')}</>
                               )}
                             </span>
                           </div>
@@ -1492,7 +1494,7 @@ const OtoMessages = () => {
                                 {newTimeFormaterAsPerUTCTalkDate(
                                   messageData.sentDate,
                                 ) + ' '}
-                                | Yesterday
+                                | {t('Yesterday')}
                               </>
                             ) : (
                               <>

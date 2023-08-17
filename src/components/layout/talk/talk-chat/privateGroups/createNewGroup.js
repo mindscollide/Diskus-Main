@@ -148,7 +148,7 @@ const CreateNewGroup = () => {
         <Row className="margin-top-10">
           <Col lg={6} md={6} sm={12}>
             <div className="new-chat">
-              <p className="fw-bold m-0">Create a Group</p>
+              <p className="fw-bold m-0">{t('Create-A-Group')}</p>
             </div>
           </Col>
           <Col lg={5} md={5} sm={12}></Col>
@@ -165,7 +165,7 @@ const CreateNewGroup = () => {
               maxLength={200}
               applyClass="form-control2"
               name="Name"
-              placeholder={'Group Name'}
+              placeholder={t('Group-Name')}
               change={(e) => {
                 setGroupNameValue(e.target.value)
               }}
@@ -180,7 +180,7 @@ const CreateNewGroup = () => {
               maxLength={200}
               applyClass="form-control2"
               name="Name"
-              placeholder={'Search User'}
+              placeholder={t('Search-User')}
               change={(e) => {
                 searchGroupUser(e.target.value)
               }}
@@ -251,12 +251,12 @@ const CreateNewGroup = () => {
           <Col className="text-center">
             {noParticipant === true ? (
               <p className="participant-warning m-0">
-                At least add one participant
+                {t('At-least-add-one-participant')}
               </p>
             ) : null}
             <Button
               className="MontserratSemiBold Ok-btn forward-user"
-              text="Create Group"
+              text={t('Create-Group')}
               onClick={createPrivateGroup}
             />
           </Col>
