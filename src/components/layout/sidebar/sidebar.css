@@ -229,10 +229,6 @@ body[dir="rtl"] .Meeting_Side_bar_Tag_todo {
   display: flex !important;
 }
 
-body[dir="rtl"] .Meeting_Side_bar_Tag_active {
-  display: flex !important;
-}
-
 .Meeting_Side_bar_Tag_active {
   font-size: 7px !important;
   color: #fff !important;
