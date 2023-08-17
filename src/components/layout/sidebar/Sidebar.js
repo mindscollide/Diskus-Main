@@ -656,7 +656,7 @@ const Sidebar = () => {
                   as={Link}
                   disabled={false}
                   to="Notes"
-                  eventKey="link-4"
+                  eventKey="link-5"
                   className={
                     location.pathname === "/DisKus/notes" ||
                     location.pathname === "/Diskus/notes"
@@ -754,6 +754,7 @@ const Sidebar = () => {
                 {/* Add more btn */}
                 <Nav.Link
                   disabled={false}
+                  eventKey="link-6"
                   className={
                     location.pathname === "/DisKus/notes" ||
                     location.pathname === "/Diskus/notes"
