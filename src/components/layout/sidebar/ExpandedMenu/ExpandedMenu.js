@@ -13,7 +13,7 @@ const ExpandedMenu = () => {
   const navigate = useNavigate();
   return (
     <section>
-      <Row className="m-0">
+      <Row className="m-3">
         <Col lg={6} md={6} sm={6} className="p-0">
           {/* DataRoom */}
           <Nav.Link
@@ -338,7 +338,7 @@ const ExpandedMenu = () => {
         </Col>
       </Row>
 
-      <Row className="m-0">
+      <Row className="m-2">
         <Col lg={6} md={6} sm={6} className="p-0">
           {/* Committee */}
           <Nav.Link
@@ -451,7 +451,7 @@ const ExpandedMenu = () => {
         </Col>
       </Row>
 
-      <Row className="m-0">
+      <Row className="m-1">
         <Col lg={6} md={6} sm={6} className="p-0">
           {/* Polls */}
           <Nav.Link
