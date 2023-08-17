@@ -4462,7 +4462,7 @@ input.form-control {
 .SignupOrganization input.form-control {
   height: 39px !important;
   border-radius: 4px !important;
-  font-size: 13px!important;
+  font-size: 13px !important;
   border-color: #e1e1e1 !important;
 }
 
@@ -5311,7 +5311,7 @@ span.package-icon-style {
 }
 
 body[dir="rtl"] .SignupOrganization input.form-control {
-  font-size: 13px!important;
+  font-size: 13px !important;
   font-family: "IBMPlexSansArabic-Medium" !important;
 }
 
@@ -5751,12 +5751,16 @@ input::-webkit-calendar-picker-indicator {
   animation-name: none;
 }
 
+.resolution-search-input input.form-control {
+  font-size: 12px !important;
+}
+
 .select_dormant-days__control {
   width: 120px !important;
   max-width: 100% !important;
 }
 
 .ReactFlagsSelect-module_label {
-  font-family:"MontserratMedium" !important;
+  font-family: "MontserratMedium" !important;
   font-size: 13px !important;
 }

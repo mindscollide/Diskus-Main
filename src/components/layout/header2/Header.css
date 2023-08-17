@@ -197,7 +197,7 @@ button.dropdown-toggle.dropdown-toggle.btn.btn-primary:has(p.user-name) {
   overflow: auto;
 }
 
-.notification-dropdown>[data-bs-toggle="dropdown"].show:before {
+.notification-dropdown > [data-bs-toggle="dropdown"].show:before {
   width: 0;
   height: 0;
   border-left: 7px solid transparent;
@@ -404,6 +404,33 @@ body[dir="rtl"] .user-name {
   padding: 0;
 }
 
+.dropdown-menu.show {
+  width: 231px !;
+  width: 231px;
+  position: absolute;
+  left: -181px;
+  top: 22px;
+  border-radius: 4px;
+}
+
+body[dir="rtl"] .dropdown-menu.show {
+  left: auto;
+  right: -180px;
+}
+
+.Profile_dropdown_menu.dropdown-menu.show {
+  margin-top: -16px;
+  width: 200px;
+  top: 43px !important;
+  position: absolute;
+  left: 0px;
+}
+
+body[dir="rtl"] .Profile_dropdown_menu.dropdown-menu.show {
+  left: auto;
+  right: 0px !important;
+}
+
 @media screen and (max-width: 1100px) {
   .desc-notification-user {
     width: 35px !important;
@@ -506,6 +533,8 @@ a.text-black.nav-link {
   text-align: center;
   border-bottom: 1px solid #d8d8d8;
   color: #5a5a5a;
+  padding: 5px 0 !important;
+  margin: 0 !important;
 }
 
 body[dir="rtl"] a.text-black.nav-link {
@@ -537,7 +566,8 @@ body[dir="rtl"] .profilebtn-dropdown button::after {
   left: 10px;
 }
 
-body[dir="rtl"] button.dropdown-toggle.dropdown-toggle.btn.btn-primary:has(p.user-name) {
+body[dir="rtl"]
+  button.dropdown-toggle.dropdown-toggle.btn.btn-primary:has(p.user-name) {
   justify-content: right;
   border: none !important;
 }
@@ -548,7 +578,7 @@ body[dir="rtl"] .header2-container {
 }
 
 .dropdown_menu.dropdown-menu.show {
-  margin-top: -3px;
+  margin-top: 0px;
 }
 
 .modal-header-logout {
@@ -577,4 +607,10 @@ body[dir="rtl"] .header2-container {
 
 .language-options span:not(:last-child) {
   border-bottom: 2px solid #e1e1e1;
+}
+
+.FontClass {
+  color: #505050 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
 }

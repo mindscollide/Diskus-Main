@@ -23,7 +23,7 @@
   min-height: 0vh !important;
 }
 
-/* .icon {
+/* .iconSidebar {
   margin: 30px;
 } */
 
@@ -32,42 +32,42 @@
   -bs-gutter-x: 0 !important;
 }
 
-.icon-meeting {
+.iconSidebar-meeting {
   color: #fff !important;
   margin: 20px 0 0 0;
   font-size: 30px !important;
 }
 
-.icon-check-list {
+.iconSidebar-check-list {
   color: #fff !important;
   margin: 110px 0 0 0;
   font-size: 30px !important;
 }
 
-.icon-note2 {
+.iconSidebar-note2 {
   color: #fff !important;
   font-size: 30px !important;
   margin: 20px 0 0 0;
 }
 
-.icon-chat {
+.iconSidebar-chat {
   /* color: #fff !important; */
   font-size: 18px !important;
   /* margin: 30px 0 0 0; */
 }
 
-.icon-calendar {
+.iconSidebar-calendar {
   font-size: 30px !important;
   color: #fff;
   margin: 30px 0 0 0;
 }
 
-/* .icon-calender {
+/* .iconSidebar-calender {
   font-size: 30px !important;
   color: #fff;
   margin: 50px 0 0 0;
 } */
-.icon-user {
+.iconSidebar-user {
   font-size: 30px !important;
   color: #fff;
   margin: 30px 0 0 0;
@@ -77,19 +77,19 @@
 /* margin-top: 220px !important; */
 /* } */
 
-.icon-help {
+.iconSidebar-help {
   font-size: 30px !important;
   color: #fff;
   margin: 0 !important;
 }
 
-.icon-setting {
+.iconSidebar-setting {
   font-size: 30px !important;
   color: #fff;
   margin: 20px 0 0 0;
 }
 
-.icon-attachment {
+.iconSidebar-attachment {
   font-size: 30px !important;
   color: #fff;
   margin: 30px 0 0 0;
@@ -99,83 +99,104 @@
   background-color: #fff;
 }
 
-a.icon:hover svg path {
+a.iconSidebar:hover svg path {
   background: linear-gradient(to top, #49dbdb 0%, #6172d6 100%) !important;
 }
 
-body[dir="rtl"] a.icon:hover svg path {
+body[dir="rtl"] a.iconSidebar:hover svg path {
   background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
 }
 
-a.icon {
+.div_hover:hover {
+  color: #fff !important;
+}
+
+.Hover_class:hover {
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 4px;
+}
+
+a.iconSidebar {
   height: 45px;
 }
 
-a.icon:hover {
+a.iconSidebar:hover {
   /* background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important; */
-  width: 100%;
-  margin: 0 !important;
-  padding: 0 !important;
-  transition: all 0.5s ease-in-out;
+  /* width: 100%; */
+  /* margin: 0 !important; */
+  /* padding: 0 !important; */
+  /* transition: all 0.5s ease-in-out; */
 }
 
-/* body[dir="rtl"] a.icon:hover {
+/* body[dir="rtl"] a.iconSidebar:hover {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 } */
 
-/* a.icon:hover svg path {
+/* a.iconSidebar:hover svg path {
   fill: #fff !important;
 } */
 
-a.icon {
-  height: 50px;
+a.iconSidebar {
+  /* background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important; */
+  width: 100%;
+  height: 59px;
+  border-radius: 4px !important;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.icon svg path {
+a.iconSidebar svg {
+  height: 26px !important;
+}
+
+a.iconSidebar div {
+  margin-top: 5px !important;
+}
+
+.iconSidebar svg path {
   fill: #6172d6;
 }
 
-.icon-active-sidebar {
+.iconSidebar-active-sidebar {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   width: 100%;
-  height: 50px;
+  height: 55px;
   display: flex;
   justify-content: center;
+  border-radius: 4px !important;
   align-items: center;
 }
 
-body[dir="rtl"] .icon-active-sidebar {
+body[dir="rtl"] .iconSidebar-active-sidebar {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
-.icon-active-sidebar svg path {
+.iconSidebar-active-sidebar svg path {
   fill: #fff !important;
 }
 
-.icon-active-sidebar svg rect#Rectangle_830 {
+.iconSidebar-active-sidebar svg rect#Rectangle_830 {
   fill: #fff !important;
 }
 
-.icon-active-sidebar svg rect#Rectangle_832 {
+.iconSidebar-active-sidebar svg rect#Rectangle_832 {
   fill: #fff !important;
 }
 
-.icon-active-sidebar svg rect#Rectangle_831 {
+.iconSidebar-active-sidebar svg rect#Rectangle_831 {
   fill: #fff !important;
 }
 
-.icon-active-sidebar svg rect#Rectangle_831 {
+.iconSidebar-active-sidebar svg rect#Rectangle_831 {
   fill: #fff !important;
 }
 
-a.m-0.p-0.icon-active-sidebar.nav-link.active rect#Rectangle_830 {
+a.m-0.p-0.iconSidebar-active-sidebar.nav-link.active rect#Rectangle_830 {
   fill: #fff !important;
 }
 
-a.m-0.p-0.icon-active-sidebar.nav-link.active rect#Rectangle_831 {
+a.m-0.p-0.iconSidebar-active-sidebar.nav-link.active rect#Rectangle_831 {
   fill: #fff !important;
 }
 
@@ -197,4 +218,167 @@ a.m-0.p-0.icon-active-sidebar.nav-link.active rect#Rectangle_831 {
   padding: 4px !important;
   border-radius: 4px !important;
   color: white !important;
+}
+
+.Meeting_Side_bar_Tag {
+  font-size: 8px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Meeting_Side_bar_Tag_todo {
+  font-size: 8px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+  white-space: nowrap !important;
+}
+
+body[dir="rtl"] .Meeting_Side_bar_Tag_todo {
+  display: flex !important;
+}
+
+.Meeting_Side_bar_Tag_active {
+  font-size: 7px !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Meeting_Side_bar_Tag_active_active_todo {
+  font-size: 7px !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+  white-space: nowrap !important;
+}
+
+.expanded_menu {
+  position: absolute !important;
+  width: 163px !important;
+  height: 216.35px !important;
+  left: 61px !important;
+  background-color: #fff !important;
+  z-index: 5 !important;
+  display: flex;
+  flex-wrap: wrap;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  bottom: 4px !important;
+}
+
+body[dir="rtl"] .expanded_menu {
+  left: auto !important;
+  right: 61px !important;
+}
+
+/* css */
+
+body[dir="rtl"] a.iconSidebar:hover svg path {
+  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+}
+
+a.iconSidebar:hover {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  width: 100%;
+  height: 59px;
+  color: #fff;
+  border-radius: 4px !important;
+}
+
+body[dir="rtl"] a.iconSidebar:hover {
+  height: 59px;
+}
+
+body[dir="rtl"] a.iconSidebar:hover span {
+  color: #fff !important;
+}
+
+a.iconSidebar:hover span {
+  color: #fff !important;
+}
+
+a.iconSidebar span {
+  color: #505050 !important;
+  font-size: 8px !important;
+  white-space: nowrap;
+  font-family: "MontserratSemiBold" !important;
+}
+
+body[dir="rtl"] a.iconSidebar span {
+  color: #505050 !important;
+  font-size: 8px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+body[dir="rtl"] a.iconSidebar:hover {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+}
+
+a.iconSidebar:hover svg path {
+  fill: #fff !important;
+}
+
+/* css for inner screen */
+a.iconSidebar:hover a.icon_expand.nav-link svg path {
+  fill: #6172d6 !important;
+}
+
+a.iconSidebar:hover a.icon_expand.nav-link:hover svg path {
+  fill: #fff !important;
+}
+
+a.iconSidebar:active a.icon_expand.nav-link svg path {
+  fill: #6172d6 !important;
+}
+
+/* important for outer icons outer icons   */
+
+a.icon_expand.nav-link svg {
+  margin-top: 10px !important;
+  width: 100% !important;
+  height: 26px;
+}
+a.iconSidebar-active-sidebar.nav-link:active svg path {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  fill: #6172d6 !important;
+}
+
+a.iconSidebar-active-sidebar.nav-link svg {
+  margin-top: 5px !important;
+  width: 100% !important;
+  height: 26px !important;
+}
+a.icon-active-sidebar_expand.nav-link svg {
+  margin-top: 10px !important;
+  width: 100% !important;
+  height: 26px !important;
+}
+a.icon-active-sidebar_expand.nav-link {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  height: 55px !important;
+  border-radius: 4px;
+}
+
+a.m-0.p-0.icon_expand.nav-link:hover {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  border-radius: 4px;
+  fill: #fff !important;
+  height: 55px !important;
+  width: 98% !important;
+}
+
+a.m-0.p-0.icon_expand.nav-link:hover svg path {
+  fill: #fff !important;
+}
+
+a.m-0.p-0.icon_expand.nav-link:hover span {
+  color: #fff !important;
+}
+
+a.m-0.p-0.icon_expand.nav-link svg path {
+  fill: #6172d6 !important;
+}
+
+a.icon-active-sidebar_expand.nav-link svg path {
+  fill: #fff !important;
 }

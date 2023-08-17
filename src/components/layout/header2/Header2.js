@@ -198,14 +198,23 @@ const Header2 = () => {
                   )}</div>
               </section> */}
               <Nav.Link disabled={true} className="me-2">
-                <div className="dropdown-btn">
+                <div className="dropdown-btn_dotted">
                   <DropdownButton
-                    id="dropdown-basic-button"
-                    className="dropdown-btn m-0 p-0"
+                    id="dropdown-btn_dotted"
+                    className="dropdown-btn_dotted m-0 p-0"
                     title={<img src={DiskusNotificationIcon} width={33} />}
                     onClick={dropDownMenuFunction}
                   >
-                    <Dropdown.Item className="title-className">
+                    <Dropdown.Item className="d-flex title-className">
+                      {t("Quick-meeting")}
+                    </Dropdown.Item>
+                    <Dropdown.Item className="d-flex title-className">
+                      {t("Upload-document")}
+                    </Dropdown.Item>
+                    <Dropdown.Item className="d-flex title-className">
+                      {t("Recently-added-files")}
+                    </Dropdown.Item>
+                    {/* <Dropdown.Item className="title-className">
                       {t("Upload-documents")}
                     </Dropdown.Item>
                     <Dropdown.Item className="title-className">
@@ -219,7 +228,7 @@ const Header2 = () => {
                     </Dropdown.Item>
                     <Dropdown.Item className="title-language-className">
                       {t("Language")}: English
-                    </Dropdown.Item>
+                    </Dropdown.Item> */}
                   </DropdownButton>
                 </div>
               </Nav.Link>
@@ -363,14 +372,23 @@ const Header2 = () => {
                 ))}
               </select> */}
               <Nav.Link className="me-2">
-                <div className="dropdown-btn">
+                <div className="dropdown-btn_dotted">
                   <DropdownButton
-                    id="dropdown-basic-button"
-                    className="dropdown-btn"
+                    id="dropdown-btn_dotted"
+                    className="dropdown-btn_dotted"
                     title={<img src={DiskusNotificationIcon} width={28} />}
                     onClick={dropDownMenuFunction}
                   >
-                    <Dropdown.Item className="title-className">
+                    <Dropdown.Item className="d-flex title-className">
+                      {t("Quick-meeting")}
+                    </Dropdown.Item>
+                    <Dropdown.Item className="d-flex title-className">
+                      {t("Upload-document")}
+                    </Dropdown.Item>
+                    <Dropdown.Item className="d-flex title-className">
+                      {t("Recently-added-files")}
+                    </Dropdown.Item>
+                    {/* <Dropdown.Item className="title-className">
                       {t("Upload-documents")}
                     </Dropdown.Item>
                     <Dropdown.Item className="title-className">
@@ -384,7 +402,7 @@ const Header2 = () => {
                     </Dropdown.Item>
                     <Dropdown.Item className="title-language-className">
                       {t("Language")}
-                    </Dropdown.Item>
+                    </Dropdown.Item> */}
                   </DropdownButton>
                 </div>
               </Nav.Link>
@@ -439,8 +457,42 @@ const Header2 = () => {
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 ) : (
-                  <Dropdown.Menu className="dropdown_menu">
+                  <Dropdown.Menu className="Profile_dropdown_menu">
                     <Dropdown.Item
+                      className={currentLanguage}
+                      onClick={modalUserProfileHandler}
+                    >
+                      <Nav.Link className="d-flex text-black border-none FontClass">
+                        {t("My-profile")}
+                      </Nav.Link>
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      className={" text-black" + " " + currentLanguage}
+                      onClick={() => forgotPasswordCheck()}
+                    >
+                      <Nav.Link
+                        as={Link}
+                        to="setting"
+                        className="d-flex text-black FontClass"
+                      >
+                        {/* Change Password */}
+                        {t("Setting")}
+                      </Nav.Link>
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      className={" text-black" + " " + currentLanguage}
+                      onClick={() => forgotPasswordCheck()}
+                    >
+                      <Nav.Link
+                        as={Link}
+                        to="faq's"
+                        className="d-flex text-black FontClass"
+                      >
+                        {/* Change Password */}
+                        {t("Help")}
+                      </Nav.Link>
+                    </Dropdown.Item>
+                    {/* <Dropdown.Item
                       className={" text-black" + " " + currentLanguage}
                       onClick={() => forgotPasswordCheck()}
                     >
@@ -449,25 +501,16 @@ const Header2 = () => {
                         to="changePassword"
                         className="text-black"
                       >
-                        {/* Change Password */}
                         {t("Change-password")}
                       </Nav.Link>
-                    </Dropdown.Item>
+                    </Dropdown.Item> */}
 
-                    <Dropdown.Item
-                      className={currentLanguage}
-                      onClick={modalUserProfileHandler}
-                    >
-                      <Nav.Link className="text-black border-none">
-                        {t("My-profile")}
-                      </Nav.Link>
-                    </Dropdown.Item>
                     <Dropdown.Item
                       className={currentLanguage}
                       onClick={modalLogoutHandler}
                     >
                       {/* Sign Out */}
-                      <Nav.Link className="SignOutOptionMenu text-black border-none">
+                      <Nav.Link className="SignOutOptionMenu d-flex text-black border-none FontClass">
                         {t("Sign-out")}
                       </Nav.Link>
                     </Dropdown.Item>
