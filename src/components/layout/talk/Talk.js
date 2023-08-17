@@ -12,6 +12,12 @@ import {
   createGroupScreen,
   chatBoxActiveFlag,
 } from '../../../store/actions/Talk_Feature_actions'
+import {
+  videoChatPanel,
+  recentVideoFlag,
+  contactVideoFlag,
+  videoChatSearchFlag,
+} from '../../../store/actions/VideoFeature_actions'
 import { useDispatch, useSelector } from 'react-redux'
 import TalkChat from './talk-chat/Talk-Chat'
 import TalkNew from './talk-chat/Talk-New'
@@ -26,7 +32,7 @@ const Talk = () => {
   const navigate = useNavigate()
 
   //Getting api result from the reducer
-  const { talkStateData } = useSelector((state) => state)
+  const { talkStateData, videoFeatureReducer } = useSelector((state) => state)
 
   //Current User ID
   let currentUserId = localStorage.getItem('userID')
@@ -44,13 +50,28 @@ const Talk = () => {
 
   // for video Icon Click
   const videoIconClick = () => {
-    setActiveVideoIcon(true)
-    if (activeVideoIcon === false) {
+    if (videoFeatureReducer.videoChatPanel === false) {
+      dispatch(videoChatPanel(true))
+      dispatch(contactVideoFlag(true))
+      dispatch(recentVideoFlag(false))
+      setActiveVideoIcon(true)
       setActiveChatBox(false)
+      dispatch(videoChatSearchFlag(false))
     } else {
+      dispatch(videoChatPanel(false))
       setActiveVideoIcon(false)
       setActiveChatBox(false)
+      dispatch(contactVideoFlag(false))
+      dispatch(recentVideoFlag(false))
+      dispatch(videoChatSearchFlag(false))
     }
+    // setActiveVideoIcon(true)
+    // if (activeVideoIcon === false) {
+    //   setActiveChatBox(false)
+    // } else {
+    //   setActiveVideoIcon(false)
+    //   setActiveChatBox(false)
+    // }
   }
 
   const showsubTalkIcons = () => {
@@ -74,8 +95,15 @@ const Talk = () => {
       dispatch(headerShowHideStatus(true))
       dispatch(footerShowHideStatus(true))
       setActiveChatBox(true)
+    } else if (activeVideoIcon === false) {
+      dispatch(recentVideoFlag(false))
+      dispatch(contactVideoFlag(true))
+      dispatch(videoChatPanel(true))
+      setActiveVideoIcon(true)
+      dispatch(videoChatSearchFlag(false))
     } else {
       setActiveChatBox(false)
+      setActiveVideoIcon(false)
     }
   }
 
@@ -128,6 +156,8 @@ const Talk = () => {
     talkStateData.talkSocketUnreadMessageCount.unreadMessageData,
     talkStateData?.AllUserChats?.AllUserChatsData?.unreadMessageCount,
   ])
+
+  console.log('Video Feature Reducer', videoFeatureReducer)
 
   return (
     <div className={'talk_nav' + ' ' + currentLang}>

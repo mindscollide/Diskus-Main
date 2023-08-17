@@ -1,0 +1,50 @@
+.video-profile-icon {
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+    padding: 10px;
+    margin-top: 8px;
+    border-radius: 50%;
+    width: 50px !important;
+    height: 50px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative !important;
+    margin-bottom: 10px;
+}
+
+p.Video-chat-username {
+    margin-top: 15px !important;
+    font-size: 14px;
+    margin-left: 10px !important;
+    margin-bottom: 0 !important;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-weight: 600;
+}
+
+p.Video-chat-username.missed {
+    color: #F16B6B !important
+}
+
+body[dir="rtl"] p.Video-chat-username.m-0 {
+    margin-top: 15px !important;
+    font-size: 14px;
+    font-weight: 600;
+    margin-right: 20px !important;
+}
+
+p.video-chat-date {
+    text-align: left !important;
+    font-size: 10px;
+    margin-left: 10px !important;
+}
+
+body[dir="rtl"] p.video-chat-date {
+    text-align: left !important;
+    font-size: 10px;
+}
+
+span.call-status-icon {
+    margin-left: 8px;
+}
