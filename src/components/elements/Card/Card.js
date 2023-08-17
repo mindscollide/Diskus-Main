@@ -1,6 +1,6 @@
 import { Container, Row, Col } from "react-bootstrap";
 import styles from "./Card.module.css";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import picprofile from "../../../assets/images/picprofile.png";
 import img1 from "../../../assets/images/DropdownONE.svg";
 import { useTranslation } from "react-i18next";
@@ -38,40 +38,31 @@ const Card = ({
     { key: t("Archived"), value: 2 },
     { key: t("Active"), value: 3 },
   ]);
+  const cardRef = useRef();
+
+
   const [dropdownthreedots, setdropdownthreedots] = useState(false);
   const [editdropdown, setEditdropdown] = useState(false);
   const creatorID = localStorage.getItem("userID");
   const findLengthofGroups = associatedTags && associatedTags.length;
-  console.log(findLengthofGroups, "findLengthofGroupsfindLengthofGroups");
 
   useEffect(() => {
-    console.log("click");
     try {
       window.addEventListener("click", function (e) {
-        console.log("eeeeeeeee", e.target.className);
-        console.log("eeeeeeeee", typeof e.target.className);
         let clsname = e.target.className;
-        let arr = typeof clsname === "string" ? clsname.split("_") : "";
-        console.log("click", arr[1]);
+        let arr = clsname.split("_");
         if (arr != undefined) {
           if (arr[1] === "dot" && dropdownthreedots === true) {
-            console.log("click", clsname);
-
             setdropdownthreedots(false);
           } else if (arr[1] === "dot" && dropdownthreedots === false) {
-            console.log("click", clsname);
             setEditdropdown(false);
             setdropdownthreedots(true);
           } else if (arr[1] === "Edit" && editdropdown === true) {
-            console.log("click", clsname);
-
             setEditdropdown(false);
           } else if (arr[1] === "Edit" && editdropdown === false) {
-            console.log("click", clsname);
             setdropdownthreedots(false);
             setEditdropdown(true);
           } else {
-            console.log("click", clsname);
             setEditdropdown(false);
             setdropdownthreedots(false);
           }
@@ -100,12 +91,8 @@ const Card = ({
       }
       return 0;
     });
-  console.log(associatedTags, "associatedTagsassociatedTags");
-  console.log(StatusID, "StatusIDStatusIDStatusIDStatusID");
-  console.log(creatorId, "StatusIDStatusIDStatusIDStatusID");
-  console.log(associatedTags, "associatedTagsassociatedTags");
+
   useEffect(() => {
-    console.log("click", editdropdown, dropdownthreedots);
   }, [editdropdown, dropdownthreedots]);
   return (
     <Row
@@ -171,7 +158,7 @@ const Card = ({
           md={2}
           sm={2}
           className={
-            StatusID === 1 || StatusID === 2
+            StatusID === 2
               ? styles["Two-Icons-style-Committee-Group_InActive"]
               : styles["Two-Icons-style-Committee-Group"]
           }
@@ -190,11 +177,7 @@ const Card = ({
                   height="21px"
                   alt=""
                   // className={StatusID === 1 ? "cursor-pointer" : ""}
-                  className={
-                    (StatusID === 1 || StatusID === 3) &&
-                      creatorId === Number(creatorID)
-                      ? styles["Edit_icon_styles"]
-                      : styles["Edit_icon_styles_InActive"]
+                  className={(StatusID === 1 || StatusID === 3) && creatorId === Number(creatorID) ? styles["Edit_icon_styles"] : styles["Edit_icon_styles_InActive"]
                   }
                   onClick={() => setUniqCardID(CardID)}
                 />
@@ -204,7 +187,7 @@ const Card = ({
                 width="21px"
                 height="21px"
                 // className={StatusID === 1 ? "cursor-pointer" : ""}
-                className={styles["dot_icon_styles"]}
+                className={StatusID !== 1 ? styles["dot_icon_styles"] : styles["dot_icon_styles_InActive"]}
                 onClick={() => setUniqCardID(CardID)}
               />
             </Col>
@@ -284,28 +267,10 @@ const Card = ({
                           className="d-flex justify-content-start gap-2  ms-1 "
                         >
                           <span>
-                            <img src={img2} width={17} />
-                          </span>
-                          <span className={styles["dropdown-text"]}>
-                            {t("File-sharing")}
-                          </span>
-                        </Col>
-                      </Col>
-                    </Row>
-                    <hr className={styles["HR-line-Committee-group"]} />
-                    <Row className="mt-2">
-                      <Col lg={12} md={12} sm={12}>
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="d-flex justify-content-start gap-2  ms-1 "
-                        >
-                          <span>
                             <img src={img3} width={15} />
                           </span>
                           <span className={styles["dropdown-text"]}>
-                            {t("Discussion")}
+                            {t("Discussions")}
                           </span>
                         </Col>
                       </Col>
@@ -323,7 +288,7 @@ const Card = ({
                             <img src={img4} width={17} />
                           </span>
                           <span className={styles["dropdown-text"]}>
-                            {t("Meeting-with-agenda")}
+                            {t("Meetings")}
                           </span>
                         </Col>
                       </Col>
@@ -341,7 +306,7 @@ const Card = ({
                             <img src={img5} width={17} />
                           </span>
                           <span className={styles["dropdown-text"]}>
-                            {t("Survey-polls")}
+                            {t("Polls")}
                           </span>
                         </Col>
                       </Col>
@@ -358,11 +323,11 @@ const Card = ({
                           <img src={img6} width={17} />
                         </span>
                         <span className={styles["dropdown-text"]}>
-                          {t("Task")}
+                          {t("Tasks")}
                         </span>
                       </Col>
                     </Row>
-                    {flag ? (
+                    {flag && creatorId === Number(creatorID) ? (
                       <>
                         {" "}
                         <hr className={styles["HR-line-Committee-group"]} />
@@ -481,10 +446,6 @@ const Card = ({
           <Row className="justify-content-center">
             {profile != undefined && profile != null
               ? sortedArraay.map((data, index) => {
-                console.log(
-                  sortedArraay,
-                  "ShowNotificationShowNotificationShowNotification"
-                );
                 if (index <= 3) {
                   return (
                     <Col

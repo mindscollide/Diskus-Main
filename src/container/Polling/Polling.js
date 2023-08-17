@@ -286,6 +286,7 @@ const Polling = () => {
       dataIndex: "pollTitle",
       key: "pollTitle",
       width: "365px",
+      sorter: (a, b) => a.pollTitle.localeCompare(b.pollTitle),
       render: (text, record) => {
         return (
           <span
@@ -340,6 +341,18 @@ const Polling = () => {
       dataIndex: "dueDate",
       key: "dueDate",
       width: "89px",
+      sorter: (a, b) =>
+        new Date(
+          a.dueDate.slice(0, 4),
+          a.dueDate.slice(4, 6) - 1,
+          a.dueDate.slice(6, 8)
+        ) -
+        new Date(
+          b.dueDate.slice(0, 4),
+          b.dueDate.slice(4, 6) - 1,
+          b.dueDate.slice(6, 8)
+        ),
+      sortDirections: ["ascend", "descend"],
       render: (text, record) => {
         return _justShowDateformatBilling(text + "000000");
       },
@@ -349,6 +362,7 @@ const Polling = () => {
       dataIndex: "pollCreator",
       key: "pollCreator",
       width: "97px",
+      sorter: (a, b) => a.pollCreator.localeCompare(b.pollCreator),
     },
     {
       title: (
@@ -761,23 +775,23 @@ const Polling = () => {
               className="Polling_table"
               rows={rows}
             />
-            <Row>
-              <Col className="pagination-groups-table">
-                <Pagination
-                  pageSize={currentPageSize !== null ? currentPageSize : 50}
-                  showSizeChanger
-                  onChange={handleChangePagination}
-                  pageSizeOptions={["30", "50", "100", "200"]}
-                  current={currentPage !== null ? currentPage : 1}
-                  locale={{
-                    items_per_page: t("items_per_page"),
-                    page: t("page"),
-                  }}
-                  total={isTotalRecords}
-                  className={styles["PaginationStyle-polling"]}
-                />
-              </Col>
-            </Row>
+          </Col>
+        </Row>
+        <Row className="mt-3">
+          <Col className="pagination-groups-table d-flex justify-content-center">
+            <Pagination
+              className={styles["PaginationStyle-Meeting"]}
+              pageSize={currentPageSize !== null ? currentPageSize : 50}
+              showSizeChanger
+              onChange={handleChangePagination}
+              pageSizeOptions={["30", "50", "100", "200"]}
+              current={currentPage !== null ? currentPage : 1}
+              locale={{
+                items_per_page: t("items_per_page"),
+                page: t("page"),
+              }}
+              total={isTotalRecords}
+            />
           </Col>
         </Row>
       </section>

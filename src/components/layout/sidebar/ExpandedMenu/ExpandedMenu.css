@@ -1,22 +1,39 @@
-.BackGround_For_More {
-  height: 216.35px;
-  margin: 0px;
-  width: 163px;
-  padding: 0;
-  background: #fff !important;
-  border-radius: 4px !important;
-  position: fixed !important;
-
-  bottom: 10%;
-  border: 1px solid #e1e1e1 !important;
-  left: 3.8% !important;
-  z-index: 20 !important;
-  /* overflow: hidden; */
-}
-
 .Meeting_Side_bar_Tag {
   font-size: 8px !important;
   color: #5a5a5a !important;
-  font-family: "IBMPlexSansArabic-SemiBold" !important;
-  white-space: nowrap;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Meeting_Side_bar_Tag:hover {
+  color: #fff !important;
+}
+
+.Meeting_Side_bar_Tag_active {
+  font-size: 7px !important;
+  color: #fff !important;
+  font-family: "MontserratSemiBold" !important;
+}
+.icon-width {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+a.icon_expand.nav-link {
+  height: 55px !important;
+  border-radius: 4px !important;
+}
+
+a.icon-active-sidebar_expand.nav-link.active {
+  height: 55px !important;
+  border-radius: 4px !important;
+}
+
+a.m-0.p-0.icon-active-sidebar_expand.nav-link span {
+  color: #fff !important;
+}
+
+a.icon-active-sidebar_expand.nav-link:hover span {
+  color: #505050 !important;
 }

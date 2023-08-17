@@ -1,3 +1,4 @@
+import React, { useRef } from "react";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -39,9 +40,14 @@ const TextField = ({
   onDoubleClick,
   onClick,
   height,
-  onKeyDown
+  onKeyDown,
 }) => {
-  console.log("applyClassapplyClass", applyClass);
+  const iconRef = useRef(null);
+
+  const preventDrag = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <>
       <FormGroup className={styles[formParentClass]}>
@@ -80,7 +86,13 @@ const TextField = ({
           onKeyDown={onKeyDown}
         />
         <FormControl.Feedback className={iconClassName} onClick={clickIcon}>
-          {inputicon}
+          <span
+                     ref={iconRef}
+                     onDragStart={preventDrag} // Prevent drag start
+                     draggable="true" // Enable dragging for other items
+          >
+            {inputicon}
+          </span>
         </FormControl.Feedback>
       </FormGroup>
     </>

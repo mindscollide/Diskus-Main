@@ -313,7 +313,7 @@ body[dir="rtl"] .Resolution-Current-btn_Active {
   cursor: pointer !important;
   z-index: 1 !important;
   display: block;
-  top: 25px !important;
+  top: 6px !important;
   position: absolute;
   left: 93%;
   width: 20px;
@@ -759,5 +759,5 @@ body[dir="rtl"] .PaginationStyle-Resolution {
 }
 
 .search_input {
-  width: 100%;
+  position: relative !important;
 }

@@ -4,7 +4,7 @@ const initialState = {
   Loading: false,
   ResponseMessage: "",
   SaveNotesResponse: null,
-  GetAllNotesResponse: [],
+  GetAllNotesResponse: null,
   UpdateNotesResponse: null,
   GetAllAttachments: null,
   GetNotesByNotesId: null,
