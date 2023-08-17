@@ -530,7 +530,7 @@ const Header2 = () => {
               </Nav.Link>
               {roleID != 2 && roleID != 1 ? (
                 <Nav.Link className="me-2" as={Link} to="setting">
-                  <img src={DiskusHeaderSetting} width={28} />
+                  {/* <img src={DiskusHeaderSetting} width={28} /> */}
                 </Nav.Link>
               ) : null}
             </Nav>

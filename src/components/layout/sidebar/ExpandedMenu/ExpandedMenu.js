@@ -13,7 +13,7 @@ const ExpandedMenu = () => {
   const navigate = useNavigate();
   return (
     <section>
-      <Row className="m-3">
+      <Row className="m-2">
         <Col lg={6} md={6} sm={6} className="p-0">
           {/* DataRoom */}
           <Nav.Link
@@ -451,7 +451,7 @@ const ExpandedMenu = () => {
         </Col>
       </Row>
 
-      <Row className="m-1">
+      <Row className="m-2">
         <Col lg={6} md={6} sm={6} className="p-0">
           {/* Polls */}
           <Nav.Link
@@ -493,16 +493,20 @@ const ExpandedMenu = () => {
                 fill="url(#linear-gradient)"
               />
             </svg>
-            <span
-              className={
-                location.pathname === "/DisKus/polling" ||
-                location.pathname === "/Diskus/polling"
-                  ? "Meeting_Side_bar_Tag_active"
-                  : "Meeting_Side_bar_Tag"
-              }
-            >
-              {t("Polls")}
-            </span>
+            <Row className="mt-1">
+              <Col lg={12} md={12} sm={12}>
+                <span
+                  className={
+                    location.pathname === "/DisKus/polling" ||
+                    location.pathname === "/Diskus/polling"
+                      ? "Meeting_Side_bar_Tag_active "
+                      : "Meeting_Side_bar_Tag mt-1"
+                  }
+                >
+                  {t("Polls")}
+                </span>
+              </Col>
+            </Row>
           </Nav.Link>
         </Col>
       </Row>
