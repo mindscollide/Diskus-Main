@@ -44,16 +44,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization
   const { t } = useTranslation();
   const [fileSize, setFileSize] = useState(0);
-  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false)
-  const [isCreateTodo, setIsCreateTodo] = useState(true)
+  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
+  const [isCreateTodo, setIsCreateTodo] = useState(true);
   const [fileForSend, setFileForSend] = useState([]);
   const [createTodoTime, setCreateTodoTime] = useState("");
   const [createTodoDate, setCreateTodoDate] = useState("");
-  console.log(
-    createTodoTime,
-    createTodoDate,
-    "createTodoDatecreateTodoDatecreateTodoDate"
-  );
   const state = useSelector((state) => state);
   const { toDoListReducer } = state;
   //To Display Modal
@@ -116,14 +111,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   });
 
   const deleteFilefromAttachments = (data, index) => {
-    console.log(
-      data,
-      data.fileSize,
-      data.DisplayAttachmentName,
-      fileForSend,
-      fileSize,
-      "checkingelemnaiteFile"
-    );
     let fileSizefound = fileSize - data.fileSize;
     let fileForSendingIndex = fileForSend.findIndex(
       (newData, index) => newData.name === data.DisplayAttachmentName
@@ -149,9 +136,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     let name = e.target.name;
     let value = e.target.value;
     var valueCheck = value.replace(/^\s/g, "");
-    console.log("taskHandler", name, value);
     if (name === "Title") {
-      console.log("Title", name, value);
       if (valueCheck.length > 199) {
         setOpen({
           flag: true,
@@ -168,7 +153,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         });
       }
     } else if (name === "DeadLineTime") {
-      console.log("DeadLineDate12", name, value);
       setTask({
         ...task,
         [name]: value,
@@ -189,22 +173,13 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           [name]: valueCheck.trimStart(),
         });
       }
-      console.log("Description", name, value);
     }
-    // if (name === "ToDoTime") {
-    //   console.log("ToDoTime", name, value);
-    //   setToDoTime(RemoveTimeDashes(value));
-    // }
   };
-
-  console.log("Object task", task);
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
     let fileSizeArr;
     if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
-      console.log("uploadedFile");
-
       setTimeout(
         setOpen({
           flag: true,
@@ -224,10 +199,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       const uploadFilePath = data.target.value;
       const uploadedFile = data.target.files[0];
       var ext = uploadedFile.name.split(".").pop();
-      console.log("uploadedFile", uploadedFile.name, ext);
       let file = tasksAttachments.TasksAttachments;
-      console.log("daatadaad", file);
-      console.log(uploadedFile, "daatadaad");
       if (
         ext === "doc" ||
         ext === "docx" ||
@@ -245,12 +217,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         let size;
         if (file.length > 0) {
           file.map((filename, index) => {
-            console.log("uploadedFile", filename);
             if (filename.DisplayAttachmentName === uploadedFile.name) {
-              console.log(
-                "uploadedFile",
-                filename.DisplayAttachmentName === uploadedFile.name
-              );
               data = false;
             }
           });
@@ -364,11 +331,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     }
   }, [show]);
 
-  console.log("test");
-
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
-    console.log("onSearch", taskAssignedName);
     if (taskAssignedName.length === 1) {
       setOpen({
         flag: true,
@@ -390,8 +354,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
     setTaskAssignedToInput(e.target.value.trimStart());
-
-    console.log("Input Value OnChange", e.target.value);
   };
 
   useEffect(() => {
@@ -408,7 +370,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //Drop Down Values
   const searchFilterHandler = (value) => {
     let allAssignees = toDoListReducer.AllAssigneesData;
-    console.log("Input Value", allAssignees);
     if (
       allAssignees != undefined &&
       allAssignees != null &&
@@ -419,9 +380,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
-          console.log("Input Value in searchTerm", searchTerm);
-          console.log("Input Value in assigneesName", assigneesName);
-
           return (
             searchTerm && assigneesName.startsWith(searchTerm)
             // assigneesName !== searchTerm.toLowerCase()
@@ -434,7 +392,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
-            {console.log("itemitem", item)}
             <img src={userImage} />
             <p className="p-0 m-0">{item.name}</p>
           </div>
@@ -445,7 +402,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   };
 
   const toDoDateHandler = (date, format = "YYYYMMDD") => {
-    console.log(date, "toDoDateHandlertoDoDateHandlertoDoDateHandlertoDoDateHandler")
     let toDoDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let toDoDateSaveFormat = new DateObject(date).format("YYYYMMDD");
     setCreateTodoDate(toDoDateSaveFormat);
@@ -459,21 +415,18 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //Save To-Do List Function
   const createToDoList = async () => {
     let TasksAttachments = tasksAttachments.TasksAttachments;
-    console.log("TasksAttachments", TasksAttachments);
-    let newDate;
-    let newTime;
-    console.log(createTodoDate, task.DeadLineTime, "TaskTaskTaskTaskTaskTaskTaskTaskTaskTaskTaskTask")
+    let newDate = createTodoDate;
+    let newTime = task.DeadLineTime;
+    let finalDateTime;
     if (createTodoDate !== "" && task.DeadLineTime !== "") {
-      let finalDateTime = createConvert(createTodoDate + task.DeadLineTime);
+      console.log("todo check", createTodoDate);
+      console.log("todo check", task.DeadLineTime);
+      finalDateTime = createConvert(createTodoDate + task.DeadLineTime);
+      console.log("todo check", finalDateTime);
       newDate = finalDateTime.slice(0, 8);
       newTime = finalDateTime.slice(8, 14);
     }
 
-    // console.log(finalDateTime, "DateTimeTodo");
-    console.log(newDate, "DateTimeTodo");
-    console.log(newTime, "DateTimeTodo");
-    // console.log(createTodoDate, "DateTimeTodo");
-    // console.log(createTodoTime, "DateTimeTodo");
     let Task = {
       PK_TID: task.PK_TID,
       Title: task.Title,
@@ -483,12 +436,31 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       DeadLineTime: newTime,
       CreationDateTime: "",
     };
-    console.log(Task, "TaskTaskTaskTaskTaskTaskTaskTaskTaskTaskTaskTask")
-    if (Task.DeadLineTime === undefined) {
+    if (finalDateTime === undefined) {
+      if (Task.DeadLineTime === "") {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Time-missing"),
+        });
+      } else if (Task.DeadLineDate === "") {
+        setOpen({
+          ...open,
+          flag: true,
+          message: t("Enter-date-must"),
+        });
+      }
+    } else if (Task.DeadLineTime === undefined || Task.DeadLineTime === "") {
       setOpen({
         ...open,
         flag: true,
         message: t("Time-missing"),
+      });
+    } else if (Task.DeadLineDate === undefined || Task.DeadLineDate === "") {
+      setOpen({
+        ...open,
+        flag: true,
+        message: t("Enter-date-must"),
       });
     } else if (Task.Title === "") {
       setOpen({
@@ -507,12 +479,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         ...open,
         flag: true,
         message: t("Please-add-assignees"),
-      });
-    } else if (Task.DeadLineDate === undefined) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: t("Enter-date-must"),
       });
     } else {
       let counter = Object.keys(fileForSend).length - 1;
@@ -533,7 +499,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             };
             dispatch(CreateToDoList(navigate, Data, t));
             setShow(false);
-            console.log("createToDoList", Data);
             setTask({
               ...task,
               PK_TID: 1,
@@ -565,7 +530,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         };
         dispatch(CreateToDoList(navigate, Data, t));
         setShow(false);
-        console.log("createToDoList", Data);
         setTask({
           ...task,
           PK_TID: 1,
@@ -587,6 +551,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       }
     }
   };
+
   const handleDeleteAttendee = (data, index) => {
     TaskAssignedTo.splice(index, 1);
     taskAssignedName.splice(index, 1);
@@ -594,26 +559,28 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setTaskAssignedTo([...TaskAssignedTo]);
   };
 
-  useEffect(() => { }, [TaskAssignedTo, taskAssignedName]);
+  useEffect(() => {}, [TaskAssignedTo, taskAssignedName]);
   return (
     <>
       <Container>
         <Modal
           onHide={() => {
             setCloseConfirmationBox(true);
-            setIsCreateTodo(false)
+            setIsCreateTodo(false);
           }}
           show={show}
           setShow={setShow}
           className="modaldialogTodoCreate"
-          modalBodyClassName={closeConfirmationBox ? null : "bodytodoCreateModal"}
+          modalBodyClassName={
+            closeConfirmationBox ? null : "bodytodoCreateModal"
+          }
           modalFooterClassName="footertodoCreateModal"
           modalHeaderClassName="headertodoCreateModal"
           ButtonTitle={ModalTitle}
           size={closeConfirmationBox ? null : "md"}
           // ModalTitle={"Modal Header"}
           ModalBody={
-            isCreateTodo ?
+            isCreateTodo ? (
               <>
                 <div>
                   <Row>
@@ -644,7 +611,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         value={toDoDate}
                         calendar={calendarValue}
                         locale={localValue}
-                      // newValue={createMeeting.MeetingDate}
+                        // newValue={createMeeting.MeetingDate}
                       />
                     </Col>
                     <Col
@@ -754,112 +721,116 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                           >
                             {tasksAttachments.TasksAttachments.length > 0
                               ? tasksAttachments.TasksAttachments.map(
-                                (data, index) => {
-                                  var ext =
-                                    data.DisplayAttachmentName.split(".").pop();
+                                  (data, index) => {
+                                    var ext =
+                                      data.DisplayAttachmentName.split(
+                                        "."
+                                      ).pop();
 
-                                  const first =
-                                    data.DisplayAttachmentName.split(" ")[0];
-                                  return (
-                                    <Col
-                                      sm={12}
-                                      lg={2}
-                                      md={2}
-                                      className="modaltodolist-attachment-icon"
-                                    >
-                                      {ext === "doc" ? (
-                                        <FileIcon
-                                          extension={"docx"}
-                                          size={78}
-                                          type={"document"}
-                                          labelColor={"rgba(44, 88, 152)"}
-                                        />
-                                      ) : ext === "docx" ? (
-                                        <FileIcon
-                                          extension={"docx"}
-                                          size={78}
-                                          type={"font"}
-                                          labelColor={"rgba(44, 88, 152)"}
-                                        />
-                                      ) : ext === "xls" ? (
-                                        <FileIcon
-                                          extension={"xls"}
-                                          type={"spreadsheet"}
-                                          size={78}
-                                          labelColor={"rgba(16, 121, 63)"}
-                                        />
-                                      ) : ext === "xlsx" ? (
-                                        <FileIcon
-                                          extension={"xls"}
-                                          type={"spreadsheet"}
-                                          size={78}
-                                          labelColor={"rgba(16, 121, 63)"}
-                                        />
-                                      ) : ext === "pdf" ? (
-                                        <FileIcon
-                                          extension={"pdf"}
-                                          size={78}
-                                          {...defaultStyles.pdf}
-                                        />
-                                      ) : ext === "png" ? (
-                                        <FileIcon
-                                          extension={"png"}
-                                          size={78}
-                                          type={"image"}
-                                          labelColor={"rgba(102, 102, 224)"}
-                                        />
-                                      ) : ext === "txt" ? (
-                                        <FileIcon
-                                          extension={"txt"}
-                                          size={78}
-                                          type={"document"}
-                                          labelColor={"rgba(52, 120, 199)"}
-                                        />
-                                      ) : ext === "jpg" ? (
-                                        <FileIcon
-                                          extension={"jpg"}
-                                          size={78}
-                                          type={"image"}
-                                          labelColor={"rgba(102, 102, 224)"}
-                                        />
-                                      ) : ext === "jpeg" ? (
-                                        <FileIcon
-                                          extension={"jpeg"}
-                                          size={78}
-                                          type={"image"}
-                                          labelColor={"rgba(102, 102, 224)"}
-                                        />
-                                      ) : ext === "gif" ? (
-                                        <FileIcon
-                                          extension={"gif"}
-                                          size={78}
-                                          {...defaultStyles.gif}
-                                        />
-                                      ) : <FileIcon
-                                        extension={ext}
-                                        size={78}
-                                        {...defaultStyles.ext}
-                                      />}
-                                      <span className="deleteBtn">
-                                        <img
-                                          src={deleteButtonCreateMeeting}
-                                          width={15}
-                                          height={15}
-                                          onClick={() =>
-                                            deleteFilefromAttachments(
-                                              data,
-                                              index
-                                            )
-                                          }
-                                        />
-                                      </span>
-                                      <p className="modaltodolist-attachment-text">
-                                        {first}
-                                      </p>
-                                    </Col>
-                                  );
-                                }
-                              )
+                                    const first =
+                                      data.DisplayAttachmentName.split(" ")[0];
+                                    return (
+                                      <Col
+                                        sm={12}
+                                        lg={2}
+                                        md={2}
+                                        className="modaltodolist-attachment-icon"
+                                      >
+                                        {ext === "doc" ? (
+                                          <FileIcon
+                                            extension={"docx"}
+                                            size={78}
+                                            type={"document"}
+                                            labelColor={"rgba(44, 88, 152)"}
+                                          />
+                                        ) : ext === "docx" ? (
+                                          <FileIcon
+                                            extension={"docx"}
+                                            size={78}
+                                            type={"font"}
+                                            labelColor={"rgba(44, 88, 152)"}
+                                          />
+                                        ) : ext === "xls" ? (
+                                          <FileIcon
+                                            extension={"xls"}
+                                            type={"spreadsheet"}
+                                            size={78}
+                                            labelColor={"rgba(16, 121, 63)"}
+                                          />
+                                        ) : ext === "xlsx" ? (
+                                          <FileIcon
+                                            extension={"xls"}
+                                            type={"spreadsheet"}
+                                            size={78}
+                                            labelColor={"rgba(16, 121, 63)"}
+                                          />
+                                        ) : ext === "pdf" ? (
+                                          <FileIcon
+                                            extension={"pdf"}
+                                            size={78}
+                                            {...defaultStyles.pdf}
+                                          />
+                                        ) : ext === "png" ? (
+                                          <FileIcon
+                                            extension={"png"}
+                                            size={78}
+                                            type={"image"}
+                                            labelColor={"rgba(102, 102, 224)"}
+                                          />
+                                        ) : ext === "txt" ? (
+                                          <FileIcon
+                                            extension={"txt"}
+                                            size={78}
+                                            type={"document"}
+                                            labelColor={"rgba(52, 120, 199)"}
+                                          />
+                                        ) : ext === "jpg" ? (
+                                          <FileIcon
+                                            extension={"jpg"}
+                                            size={78}
+                                            type={"image"}
+                                            labelColor={"rgba(102, 102, 224)"}
+                                          />
+                                        ) : ext === "jpeg" ? (
+                                          <FileIcon
+                                            extension={"jpeg"}
+                                            size={78}
+                                            type={"image"}
+                                            labelColor={"rgba(102, 102, 224)"}
+                                          />
+                                        ) : ext === "gif" ? (
+                                          <FileIcon
+                                            extension={"gif"}
+                                            size={78}
+                                            {...defaultStyles.gif}
+                                          />
+                                        ) : (
+                                          <FileIcon
+                                            extension={ext}
+                                            size={78}
+                                            {...defaultStyles.ext}
+                                          />
+                                        )}
+                                        <span className="deleteBtn">
+                                          <img
+                                            src={deleteButtonCreateMeeting}
+                                            width={15}
+                                            height={15}
+                                            onClick={() =>
+                                              deleteFilefromAttachments(
+                                                data,
+                                                index
+                                              )
+                                            }
+                                          />
+                                        </span>
+                                        <p className="modaltodolist-attachment-text">
+                                          {first}
+                                        </p>
+                                      </Col>
+                                    );
+                                  }
+                                )
                               : null}
                           </Col>
                         </Row>
@@ -868,15 +839,25 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                   </Row>
                 </div>
               </>
-              : closeConfirmationBox ? <>
+            ) : closeConfirmationBox ? (
+              <>
                 <Row>
-                  <Col sm={12} md={12} lg={12} className={"Confirmationmodal_body_text"}>
-                    {t("Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close")}
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className={"Confirmationmodal_body_text"}
+                  >
+                    {t(
+                      "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close"
+                    )}
                   </Col>
-                </Row></> : null
+                </Row>
+              </>
+            ) : null
           }
           ModalFooter={
-            isCreateTodo ?
+            isCreateTodo ? (
               <>
                 <Row>
                   <Col
@@ -885,30 +866,49 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     xs={12}
                     className="d-flex justify-content-end gap-3 p-0"
                   >
-                    <Button onClick={() => {
-                      setCloseConfirmationBox(true)
-                      setIsCreateTodo(false)
-                    }} className={"cancelButton_createTodo"} text={"Cancel"} />
+                    <Button
+                      onClick={() => {
+                        setCloseConfirmationBox(true);
+                        setIsCreateTodo(false);
+                      }}
+                      className={"cancelButton_createTodo"}
+                      text={"Cancel"}
+                    />
                     <Button
                       onClick={createToDoList}
-                      className={
-                        "btn todocreate-createbtn ArabicFontSemiBold"
-                      }
+                      className={"btn todocreate-createbtn ArabicFontSemiBold"}
                       variant={"Primary"}
                       text={t("Create")}
                     />
                   </Col>
                 </Row>
-              </> : closeConfirmationBox ? <><Row>
-                <Col sm={12} md={12} lg={12} className="d-flex justify-content-center gap-3">
-                  <Button onClick={() => setIsCreateTodo(true)} className={"cancelButton_createTodo"} text={"Cancel"} />
-                  <Button onClick={() => {
-                    setShow(false)
-                    setIsCreateTodo(true)
-                  }
-                  } className={"todocreate-createbtn"} text={"Close"} />
-                </Col>
-              </Row></> : null
+              </>
+            ) : closeConfirmationBox ? (
+              <>
+                <Row>
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className="d-flex justify-content-center gap-3"
+                  >
+                    <Button
+                      onClick={() => setIsCreateTodo(true)}
+                      className={"cancelButton_createTodo"}
+                      text={"Cancel"}
+                    />
+                    <Button
+                      onClick={() => {
+                        setShow(false);
+                        setIsCreateTodo(true);
+                      }}
+                      className={"todocreate-createbtn"}
+                      text={"Close"}
+                    />
+                  </Col>
+                </Row>
+              </>
+            ) : null
           }
         />
       </Container>

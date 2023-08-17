@@ -1256,5 +1256,6 @@
   "Please-fill-all-open-option-fields": "Please fill all open option fields",
   "Dormant-inactive-users-for": "Dormant inactive Users For",
   "Calendar-months-span": "Calendar Months Span",
-  "Auto-close-resolution": "Auto Close Resolution"
+  "Auto-close-resolution": "Auto Close Resolution",
+  "Enter-date-must":"Please select date"
 }

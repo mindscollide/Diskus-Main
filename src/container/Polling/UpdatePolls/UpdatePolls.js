@@ -36,7 +36,10 @@ import {
   multiDatePickerDateChangIntoUTC,
   newDateFormaterAsPerUTC,
 } from "../../../commen/functions/date_formater";
-import { regexOnlyForNumberNCharacters, validateInput } from "../../../commen/functions/regex";
+import {
+  regexOnlyForNumberNCharacters,
+  validateInput,
+} from "../../../commen/functions/regex";
 
 const UpdatePolls = () => {
   const dispatch = useDispatch();
@@ -336,8 +339,6 @@ const UpdatePolls = () => {
     }
   };
 
-  useEffect(() => {}, [UpdatePolls.date]);
-
   const addNewRow = () => {
     if (options.length > 1) {
       if (allValuesNotEmpty) {
@@ -383,7 +384,6 @@ const UpdatePolls = () => {
   };
 
   const changeDateStartHandler = (date) => {
-    let newDate = moment(date).format("YYYYMMDD");
     let DateDate = new Date(date);
     setUpdatePolls({
       ...UpdatePolls,
@@ -442,7 +442,7 @@ const UpdatePolls = () => {
       UpdatePolls.datepoll != "" &&
       Object.keys(pollmembers).length > 0 &&
       Object.keys(options).length >= 2 &&
-      (checkForPollStatus||allValuesNotEmpty)
+      (checkForPollStatus || allValuesNotEmpty)
     ) {
       if (Object.keys(pollmembers).length > 0) {
         pollmembers.map((data, index) => {
@@ -713,24 +713,26 @@ const UpdatePolls = () => {
                               options.map((list, index) => {
                                 return (
                                   <>
-                                    <span
-                                      key={index}
-                                      className={`${styles["BOx_for_yes"]} d-flex`}
-                                    >
-                                      {list.value.length > 100 ? (
-                                        <div
-                                          className={`${styles["scrollable-title"]} d-flex justify-content-center `}
-                                        >
-                                          {list.value}
-                                        </div>
-                                      ) : (
-                                        <div
-                                          className={`${styles["scrollable-title2"]} d-flex align-items-center`}
-                                        >
-                                          {list.value}
-                                        </div>
-                                      )}
-                                    </span>
+                                    {list.value != "" ? (
+                                      <span
+                                        key={index}
+                                        className={`${styles["BOx_for_yes"]} d-flex`}
+                                      >
+                                        {list.value.length > 100 ? (
+                                          <div
+                                            className={`${styles["scrollable-title"]} d-flex justify-content-center `}
+                                          >
+                                            {list.value}
+                                          </div>
+                                        ) : (
+                                          <div
+                                            className={`${styles["scrollable-title2"]} d-flex align-items-center`}
+                                          >
+                                            {list.value}
+                                          </div>
+                                        )}
+                                      </span>
+                                    ) : null}
                                   </>
                                 );
                               })}
