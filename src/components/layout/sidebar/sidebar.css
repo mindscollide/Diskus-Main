@@ -280,6 +280,14 @@ a.iconSidebar:hover {
   border-radius: 4px !important;
 }
 
+body[dir="rtl"] a.iconSidebar:hover {
+  height: 55px;
+}
+
+body[dir="rtl"] a.iconSidebar:hover span {
+  color: #fff !important;
+}
+
 a.iconSidebar:hover span {
   color: #fff !important;
 }
