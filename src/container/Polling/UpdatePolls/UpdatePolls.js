@@ -442,7 +442,7 @@ const UpdatePolls = () => {
       UpdatePolls.datepoll != "" &&
       Object.keys(pollmembers).length > 0 &&
       Object.keys(options).length >= 2 &&
-      allValuesNotEmpty
+      (checkForPollStatus||allValuesNotEmpty)
     ) {
       if (Object.keys(pollmembers).length > 0) {
         pollmembers.map((data, index) => {

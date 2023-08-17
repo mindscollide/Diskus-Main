@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Modal,
-} from "../../components/elements";
+import { Button, Modal } from "../../components/elements";
 import Card from "../../components/elements/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -24,7 +21,7 @@ const ModalArchivedCommittee = ({
   archivedCommittee,
   setArchivedCommittee,
   setViewGroupPage,
-  setUpdateComponentpage
+  setUpdateComponentpage,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -38,32 +35,33 @@ const ModalArchivedCommittee = ({
     if (currentArPage != undefined && currentArPage != null) {
       dispatch(getAllArcheivedCommittees(navigate, t, currentArPage));
     } else {
-      localStorage.setItem("CoArcurrentPage", 1)
+      localStorage.setItem("CoArcurrentPage", 1);
       dispatch(getAllArcheivedCommittees(navigate, t, 1));
     }
   }, []);
 
   useEffect(() => {
     if (CommitteeReducer.realtimeCommitteeStatus !== null) {
-      console.log(
-        "findINdexCommitteeStatusfindINdexCommitteeStatus",
-        CommitteeReducer.realtimeCommitteeStatus
-      );
-      let status = CommitteeReducer.realtimeCommitteeStatus.committeeStatusID
+      let status = CommitteeReducer.realtimeCommitteeStatus.committeeStatusID;
       if (status === 2) {
-        let findINdexCommitteeStatus = CommitteeReducer.GetAllCommitteesByUserIDResponse.committees.findIndex(
-          (data, index) =>
-            data.committeeID ===
-            CommitteeReducer.realtimeCommitteeStatus.commmitteeID
-        );
+        let findINdexCommitteeStatus =
+          CommitteeReducer.GetAllCommitteesByUserIDResponse.committees.findIndex(
+            (data, index) =>
+              data.committeeID ===
+              CommitteeReducer.realtimeCommitteeStatus.commmitteeID
+          );
         if (findINdexCommitteeStatus != -1) {
-          let forAddArchiveData = CommitteeReducer.GetAllCommitteesByUserIDResponse.committees
-          let newArchiveData = [...getcommitteedata]
+          let forAddArchiveData =
+            CommitteeReducer.GetAllCommitteesByUserIDResponse.committees;
+          let newArchiveData = [...getcommitteedata];
           newArchiveData.unshift({
-            committeesTitle: forAddArchiveData[findINdexCommitteeStatus].committeesTitle,
-            committeeID: forAddArchiveData[findINdexCommitteeStatus].committeeID,
+            committeesTitle:
+              forAddArchiveData[findINdexCommitteeStatus].committeesTitle,
+            committeeID:
+              forAddArchiveData[findINdexCommitteeStatus].committeeID,
             userCount: forAddArchiveData[findINdexCommitteeStatus].userCount,
-            committeeMembers: forAddArchiveData[findINdexCommitteeStatus].committeeMembers,
+            committeeMembers:
+              forAddArchiveData[findINdexCommitteeStatus].committeeMembers,
             committeeStatusID: status,
           });
           setGetCommitteeData(newArchiveData);
@@ -72,15 +70,14 @@ const ModalArchivedCommittee = ({
     }
   }, [CommitteeReducer.realtimeCommitteeStatus]);
 
-  console.log("findINdexCommitteeStatusfindINdexCommitteeStatus", getcommitteedata)
-
   useEffect(() => {
     if (
       CommitteeReducer.ArcheivedCommittees !== null &&
       CommitteeReducer.ArcheivedCommittees !== undefined &&
-      CommitteeReducer.ArcheivedCommittees.committees.length > 0) {
+      CommitteeReducer.ArcheivedCommittees.committees.length > 0
+    ) {
       let newArr = [];
-      setTotalLength(CommitteeReducer.ArcheivedCommittees.totalRecords)
+      setTotalLength(CommitteeReducer.ArcheivedCommittees.totalRecords);
       CommitteeReducer.ArcheivedCommittees.committees.map((data, index) => {
         newArr.push(data);
       });
@@ -88,33 +85,20 @@ const ModalArchivedCommittee = ({
     }
   }, [CommitteeReducer.ArcheivedCommittees]);
 
-
-
   const handlechange = (value) => {
-    console.log("valuevalue", value);
-    localStorage.setItem("CoArcurrentPage", value)
-
+    localStorage.setItem("CoArcurrentPage", value);
     dispatch(getAllArcheivedCommittees(navigate, t, value));
   };
 
   const handleArrow = () => {
-    console.log("handleArrow", CommitteeReducer.ArcheivedCommittees.pageNumbers)
-    console.log("handleArrow", currentArPage + 1)
-    console.log("handleArrow", CommitteeReducer.ArcheivedCommittees.pageNumbers >= currentArPage + 1)
     if (CommitteeReducer.ArcheivedCommittees.pageNumbers >= currentArPage + 1) {
       let currentPage = currentArPage + 1;
-      localStorage.setItem("CoArcurrentPage", currentPage)
+      localStorage.setItem("CoArcurrentPage", currentPage);
       dispatch(getAllArcheivedCommittees(navigate, t, currentPage));
     }
-
   };
 
   const viewCommitteeModal = (committeeID, CommitteeStatusID) => {
-    console.log(
-      committeeID,
-      CommitteeStatusID,
-      "viewUpdateModalviewUpdateModal"
-    );
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
       CommitteeID: JSON.parse(committeeID),
@@ -128,11 +112,10 @@ const ModalArchivedCommittee = ({
         setViewGroupPage,
         setUpdateComponentpage,
         CommitteeStatusID,
-        setArchivedCommittee,
+        setArchivedCommittee
       )
     );
   };
-
 
   return (
     <>
@@ -141,7 +124,7 @@ const ModalArchivedCommittee = ({
           show={archivedCommittee}
           onHide={() => {
             setArchivedCommittee(false);
-            localStorage.removeItem("CoArcurrentPage")
+            localStorage.removeItem("CoArcurrentPage");
           }}
           setShow={setArchivedCommittee}
           // ButtonTitle={ModalTitle}
@@ -158,8 +141,10 @@ const ModalArchivedCommittee = ({
                     {t("Archived-committees")}
                   </p>
                 </Col>
-                {CommitteeReducer.ArcheivedCommittees != null && CommitteeReducer.ArcheivedCommittees != undefined ?
-                  CommitteeReducer.ArcheivedCommittees.pageNumbers >= currentArPage + 1 ?
+                {CommitteeReducer.ArcheivedCommittees != null &&
+                CommitteeReducer.ArcheivedCommittees != undefined ? (
+                  CommitteeReducer.ArcheivedCommittees.pageNumbers >=
+                  currentArPage + 1 ? (
                     <Col lg={1} md={1} sm={1} className="justify-content-end">
                       <Button
                         icon={
@@ -167,15 +152,17 @@ const ModalArchivedCommittee = ({
                             src={right}
                             width="16.5px"
                             height="33px"
-                            className={styles["ArrowIcon_modal_archived_comiitee"]}
+                            className={
+                              styles["ArrowIcon_modal_archived_comiitee"]
+                            }
                           />
                         }
                         onClick={handleArrow}
                         className={styles["ArrowBtn"]}
                       />
-                    </Col> : null
-                  : null}
-
+                    </Col>
+                  ) : null
+                ) : null}
               </Row>
             </>
           }
@@ -185,7 +172,7 @@ const ModalArchivedCommittee = ({
               <Container className={styles["Archived_modal_scrollbar"]}>
                 <Row className="text-center mt-4">
                   {getcommitteedata.length > 0 &&
-                    Object.values(getcommitteedata).length > 0 ? (
+                  Object.values(getcommitteedata).length > 0 ? (
                     getcommitteedata.map((data, index) => {
                       return (
                         <Col lg={4} md={4} sm={12} className="mb-3">
@@ -226,7 +213,7 @@ const ModalArchivedCommittee = ({
           ModalFooter={
             <>
               {getcommitteedata.length > 0 &&
-                Object.values(getcommitteedata).length > 0 ? (
+              Object.values(getcommitteedata).length > 0 ? (
                 <>
                   <Row className="d-flex">
                     <Col lg={4} md={4} sm={4}></Col>
@@ -255,7 +242,6 @@ const ModalArchivedCommittee = ({
                                 pageSize={8}
                                 onChange={handlechange}
                               />
-
                             </Col>
                           </Row>
                         </Container>
