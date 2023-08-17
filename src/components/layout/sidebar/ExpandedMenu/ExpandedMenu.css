@@ -41,3 +41,7 @@ a.icon_expand.nav-link {
 a.icon-active-sidebar_expand.nav-link.active {
   height: 60px;
 }
+
+a.m-0.p-0.icon-active-sidebar_expand.nav-link span {
+  color: #fff !important;
+}
