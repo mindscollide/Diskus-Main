@@ -232,3 +232,7 @@
 .AgendaTextField {
   height: 39px !important;
 }
+
+.resolution-search-input {
+  position: relative !important;
+}

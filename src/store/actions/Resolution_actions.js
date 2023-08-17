@@ -181,7 +181,7 @@ const getResolutions_Fail = (message) => {
     message: message,
   };
 };
-const getResolutions = (navigate, id, t) => {
+const getResolutions = (navigate, id, t, title, circulationDate, votingDateLine) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
   let moderatorPage = JSON.parse(localStorage.getItem("moderatorPage"));
@@ -190,9 +190,11 @@ const getResolutions = (navigate, id, t) => {
   let Data = {
     FK_UID: userID,
     ResolutionStatus: JSON.parse(id),
-    Title: "",
+    Title: title !== null && title !== undefined ? title : "",
     PageNumber: moderatorPage !== null ? moderatorPage : 1,
     Length: moderatorRows !== null ? moderatorRows : 50,
+    CirculationDate: circulationDate !== null && circulationDate !== undefined ? circulationDate : "",
+    VotingDeadlineDate: votingDateLine !== null && votingDateLine !== undefined ? votingDateLine : "",
   };
   return (dispatch) => {
     dispatch(getResolutions_Init());

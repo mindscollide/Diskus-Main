@@ -65,6 +65,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
   const [groupTypeValue, setGroupTypeValue] = useState("");
   const [organizationGroupType, setOrganizationGroupType] = useState([]);
   const [meetingAttendees, setMeetingAttendees] = useState([]);
+  console.log(meetingAttendees, "attendeesattendeesattendees")
   const [onclickFlag, setOnclickFlag] = useState(false);
   // for Participant id's
   const participantOptionsWithIDs = [
@@ -250,7 +251,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
         message: t("Please-select-group-member-type-also"),
       });
     } else if (taskAssignedTo != 0) {
-      var foundIndex = meetingAttendees.findIndex(
+      let foundIndex = meetingAttendees.findIndex(
         (x) => x.FK_UID === taskAssignedTo
       );
       console.log("taskAssignedTo", foundIndex);
@@ -435,15 +436,23 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
   // remove member handler
   const removeMemberHandler = (id) => {
+
     const updatedCreateGroupDetails = {
       ...createGroupDetails,
       GroupMembers: createGroupDetails.GroupMembers.filter(item => item.FK_UID !== id),
     };
+    const meeetingAttendeesdata = meetingAttendees.filter(item => item.FK_UID !== id);
+    setMeetingAttendees(meeetingAttendeesdata)
+    console.log(id, "updatedCreateGroupDetailsupdatedCreateGroupDetails")
+    console.log(updatedCreateGroupDetails, "updatedCreateGroupDetailsupdatedCreateGroupDetails")
+    console.log(updatedCreateGroupDetails.GroupMembers, "updatedCreateGroupDetailsupdatedCreateGroupDetails")
     setCreateGroupDetails(updatedCreateGroupDetails);
-
     const updatedGroupMembers = groupMembers.filter(item => item.data.pK_UID !== id);
     setGroupMembers(updatedGroupMembers);
   };
+  console.log(groupMembers, "attendeesattendeesattendees 3")
+  console.log(meetingAttendees, "attendeesattendeesattendees 1")
+  console.log(createGroupDetails.GroupMembers, "attendeesattendeesattendees 5")
 
   const checkGroupMembers = (GroupMembers) => {
     if (Object.keys(GroupMembers).length > 0) {
@@ -494,7 +503,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
               IsTalk: createGroupDetails.isGroupChat,
               OrganizationID: OrganizationID,
             },
-            GroupMembers: createGroupDetails.GroupMembers,
+            GroupMembers: meetingAttendees,
           };
           console.log("createGroupecheck", Data)
           dispatch(createGroup(navigate, Data, t, setCreategrouppage));

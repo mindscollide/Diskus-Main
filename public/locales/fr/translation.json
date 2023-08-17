@@ -816,5 +816,8 @@
   "Quick-meeting": "Quick meeting",
   "Upload-document": "Upload document",
   "Recently-added-files": "Recently added files",
-  "Please-fill-all-open-option-fields": "Please fill all open option fields"
+  "Please-fill-all-open-option-fields": "Please fill all open option fields",
+  "Dormant-inactive-users-for": "Dormant inactive users for",
+  "Calendar-months-span": "Calendar Months Span",
+  "Auto-close-resolution": "Auto Close Resolution"
 }
