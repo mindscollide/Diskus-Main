@@ -108,8 +108,7 @@ const Signup = () => {
     FK_CCID: 230,
     PhoneNumberCountryID: 212,
   });
-  console.log(signUpDetails, "signUpDetailssignUpDetails")
-  console.log(signUpDetails, "signUpDetailssignUpDetailssignUpDetails");
+
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -129,7 +128,6 @@ const Signup = () => {
   const [againCall, setAgainCall] = useState(false);
 
   const [selected, setSelected] = useState("US");
-  console.log(selected, signUpDetails, "findUSCountryCodefindUSCountryCode");
   const [selectedCountry, setSelectedCountry] = useState({});
 
   // onselect for reactflagselect country dropdown
@@ -167,7 +165,6 @@ const Signup = () => {
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
       return obj.primary == country;
     });
-    console.log("Selected-Values", a);
     setSignUpDetails({
       ...signUpDetails,
       FK_CCID: a.id,
@@ -227,7 +224,6 @@ const Signup = () => {
   };
 
   const signupValuesChangeHandler = (e) => {
-    console.log(e.target, "phone number");
     let name = e.target.name;
     let value = e.target.value;
     if (name === "CompanyName" && value !== "") {
@@ -404,7 +400,6 @@ const Signup = () => {
     }
     if (name === "PhoneNumber" && value !== "") {
       let valueCheck = value.replace(/[^\d]/g, "");
-      console.log(value, "phone number");
       if (valueCheck !== "") {
         setSignUpDetails({
           ...signUpDetails,
@@ -473,7 +468,6 @@ const Signup = () => {
               // FK_CCID: signUpDetails.FK_CCID,
             },
           };
-          console.log(data, "datadatadatadata");
           dispatch(createOrganization(data, navigate, t));
         } else {
           await dispatch(setLoader(true));
@@ -630,11 +624,6 @@ const Signup = () => {
   }, []);
 
   useEffect(() => {
-    console.log(
-      companyNameValidate,
-      companyNameValidateError,
-      " isCompanyNameUnique"
-    );
     if (companyNameValidateError !== "") {
       setSignUpDetails({
         ...signUpDetails,
@@ -648,12 +637,6 @@ const Signup = () => {
   }, [companyNameValidate, companyNameValidateError]);
 
   useEffect(() => {
-    console.log(
-      companyEmailValidateError,
-      companyEmailValidate,
-      companyEmailValidateError,
-      " isCompanyNameUnique"
-    );
     if (companyEmailValidateError !== " ") {
       setSignUpDetails({
         ...signUpDetails,
@@ -698,7 +681,6 @@ const Signup = () => {
       dispatch(createOrganization(data, navigate, t));
       setAgainCall(false);
     } else {
-      console.log("setEmailUnique");
       setAgainCall(false);
     }
   }, [againCall, adminReducer.OrganisationCheck, adminReducer.EmailCheck]);
@@ -708,7 +690,6 @@ const Signup = () => {
       countryNamesReducer.CountryNamesData !== null &&
       countryNamesReducer.CountryNamesData !== undefined
     ) {
-      console.log("CountryNamesData", countryNamesReducer.CountryNamesData);
       setCountryNames(countryNamesReducer.CountryNamesData);
     }
   }, [countryNamesReducer.CountryNamesData]);
@@ -742,18 +723,15 @@ const Signup = () => {
       },
     }),
   };
-  console.log("isCompanyNameUnique", isEmailUnique);
-  console.log("isCompanyNameUnique", signUpDetails.Email);
 
   return (
     <>
-
       <Container
         fluid
         className={`${"SignupOrganization"} ${styles["signUp_Container"]}`}
       >
         <Row className="position-relative">
-          <Col className={styles["languageSelector"]} >
+          <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
         </Row>
@@ -797,12 +775,12 @@ const Signup = () => {
                         }}
                         autofill
                         labelClass="d-none"
-                        className={"sign-up-textfield-input"}
+                        applyClass={"sign-up-textfield-input MontserratMedium"}
                         placeholder={t("Company-name")}
                         change={signupValuesChangeHandler}
                         value={signUpDetails.CompanyName.value || ""}
                         name="CompanyName"
-                        applyClass=""
+                        // applyClass=""
                         maxLength={150}
                       />
                       <Row>
@@ -812,7 +790,7 @@ const Signup = () => {
                               className={
                                 (signUpDetails.CompanyName.errorStatus &&
                                   signUpDetails.CompanyName.value === "") ||
-                                  signUpDetails.CompanyName.errorMessage !== ""
+                                signUpDetails.CompanyName.errorMessage !== ""
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
@@ -855,14 +833,14 @@ const Signup = () => {
                         change={signupValuesChangeHandler}
                         value={signUpDetails.Address1.value || ""}
                         name="Address1"
-                      // applyClass="form-control2"
+                        applyClass="form-control2 MontserratMedium"
                       />
                       <Row>
                         <Col>
                           <p
                             className={
                               signUpDetails.Address1.errorStatus &&
-                                signUpDetails.Address1.value === ""
+                              signUpDetails.Address1.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -882,14 +860,14 @@ const Signup = () => {
                         change={signupValuesChangeHandler}
                         name="Address2"
                         value={signUpDetails.Address2.value || ""}
-                        applyClass="form-control2"
+                        applyClass="form-control2 MontserratMedium"
                       />
                       <Row>
                         <Col>
                           <p
                             className={
                               signUpDetails.Address2.errorStatus &&
-                                signUpDetails.Address2.value === ""
+                              signUpDetails.Address2.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -909,14 +887,14 @@ const Signup = () => {
                         change={signupValuesChangeHandler}
                         name="State"
                         value={signUpDetails.State.value || ""}
-                        applyClass="form-control2"
+                        applyClass="form-control2 MontserratMedium"
                       />
                       <Row>
                         <Col>
                           <p
                             className={
                               signUpDetails.State.errorStatus &&
-                                signUpDetails.State.value === ""
+                              signUpDetails.State.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -934,14 +912,14 @@ const Signup = () => {
                         maxLength={70}
                         change={signupValuesChangeHandler}
                         value={signUpDetails.City.value || ""}
-                        applyClass="form-control2"
+                        applyClass="form-control2 MontserratMedium"
                       />
                       <Row>
                         <Col>
                           <p
                             className={
                               signUpDetails.City.errorStatus &&
-                                signUpDetails.City.value === ""
+                              signUpDetails.City.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -959,14 +937,14 @@ const Signup = () => {
                         change={signupValuesChangeHandler}
                         value={signUpDetails.PostalCode.value || ""}
                         name="PostalCode"
-                        applyClass="form-control2"
+                        applyClass="form-control2 MontserratMedium"
                       />
                       <Row>
                         <Col>
                           <p
                             className={
                               signUpDetails.PostalCode.errorStatus &&
-                                signUpDetails.PostalCode.value === ""
+                              signUpDetails.PostalCode.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -990,7 +968,9 @@ const Signup = () => {
                         change={signupValuesChangeHandler}
                         value={signUpDetails.FullName.value || ""}
                         // applyClass="form-control2"
-                        applyClass={styles["SignUp_inputField"]}
+                        applyClass={
+                          styles["SignUp_inputField MontserratMedium"]
+                        }
                         maxLength={200}
                       />
                       <Row>
@@ -998,7 +978,7 @@ const Signup = () => {
                           <p
                             className={
                               signUpDetails.FullName.errorStatus &&
-                                signUpDetails.FullName.value === ""
+                              signUpDetails.FullName.value === ""
                                 ? ` ${styles["errorMessage"]} `
                                 : `${styles["errorMessage_hidden"]}`
                             }
@@ -1022,7 +1002,7 @@ const Signup = () => {
                         maxLength={160}
                         change={signupValuesChangeHandler}
                         value={signUpDetails.Email.value || ""}
-                        applyClass="form-control2"
+                        applyClass="form-control2 MontserratMedium"
                       />
                       <Row>
                         <Col>
@@ -1031,11 +1011,11 @@ const Signup = () => {
                               className={
                                 (signUpDetails.Email.errorStatus &&
                                   signUpDetails.Email.value === "") ||
-                                  signUpDetails.Email.errorMessage !== ""
+                                signUpDetails.Email.errorMessage !== ""
                                   ? // &&
-                                  //   signUpDetails.Email.errorMessage !==
-                                  //     t("User-email-doesnt-exists"))
-                                  ` ${styles["errorMessage"]} `
+                                    //   signUpDetails.Email.errorMessage !==
+                                    //     t("User-email-doesnt-exists"))
+                                    ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
                             >
@@ -1099,7 +1079,7 @@ const Signup = () => {
                             <p
                               className={
                                 signUpDetails.PhoneNumber.errorStatus &&
-                                  signUpDetails.PhoneNumber.value === ""
+                                signUpDetails.PhoneNumber.value === ""
                                   ? ` ${styles["errorMessage"]} `
                                   : `${styles["errorMessage_hidden"]}`
                               }
@@ -1158,7 +1138,6 @@ const Signup = () => {
       </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {Authreducer.Loading && <Loader />}
-      {console.log("loader", Authreducer.Loading)}
     </>
   );
 };

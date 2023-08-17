@@ -45,38 +45,24 @@ const Card = ({
   const [editdropdown, setEditdropdown] = useState(false);
   const creatorID = localStorage.getItem("userID");
   const findLengthofGroups = associatedTags && associatedTags.length;
-  // console.log(findLengthofGroups, "findLengthofGroupsfindLengthofGroups");
-  console.log(creatorID, StatusID, creatorId, CardHeading, editdropdown, CardID, uniqCardID, "findLengthofGroupsfindLengthofGroups");
-
 
   useEffect(() => {
-    console.log("click");
     try {
       window.addEventListener("click", function (e) {
-        console.log("eeeeeeeee", e.target.className);
-        console.log("eeeeeeeee", typeof e.target.className);
         let clsname = e.target.className;
         let arr = clsname.split("_");
-        console.log("click", arr[1]);
         if (arr != undefined) {
           if (arr[1] === "dot" && dropdownthreedots === true) {
-            console.log("click", clsname);
-
             setdropdownthreedots(false);
           } else if (arr[1] === "dot" && dropdownthreedots === false) {
-            console.log("click", clsname);
             setEditdropdown(false);
             setdropdownthreedots(true);
           } else if (arr[1] === "Edit" && editdropdown === true) {
-            console.log("click", clsname);
-
             setEditdropdown(false);
           } else if (arr[1] === "Edit" && editdropdown === false) {
-            console.log("click", clsname);
             setdropdownthreedots(false);
             setEditdropdown(true);
           } else {
-            console.log("click", clsname);
             setEditdropdown(false);
             setdropdownthreedots(false);
           }
@@ -105,12 +91,8 @@ const Card = ({
       }
       return 0;
     });
-  console.log(associatedTags, "associatedTagsassociatedTags");
-  console.log(StatusID, "StatusIDStatusIDStatusIDStatusID");
-  console.log(creatorId, "StatusIDStatusIDStatusIDStatusI1D");
-  console.log(associatedTags, "associatedTagsassociatedTags");
+
   useEffect(() => {
-    console.log("click", editdropdown, dropdownthreedots);
   }, [editdropdown, dropdownthreedots]);
   return (
     <Row
@@ -464,10 +446,6 @@ const Card = ({
           <Row className="justify-content-center">
             {profile != undefined && profile != null
               ? sortedArraay.map((data, index) => {
-                console.log(
-                  sortedArraay,
-                  "ShowNotificationShowNotificationShowNotification"
-                );
                 if (index <= 3) {
                   return (
                     <Col

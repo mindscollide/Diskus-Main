@@ -28,7 +28,6 @@ import CommitteeStatusModal from "../../components/elements/committeeChangeStatu
 
 const Committee = () => {
   const { CommitteeReducer } = useSelector((state) => state);
-  console.log(CommitteeReducer, "CommitteeReducerCommitteeReducerCommitteeReducer")
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -37,8 +36,8 @@ const Committee = () => {
   const [totalRecords, setTotalRecords] = useState(0);
   let currentPage = JSON.parse(localStorage.getItem("CocurrentPage"));
   const [editFlag, setEditFlag] = useState(false);
-  const [changeStatusModal, setChangeStatusModal] = useState(false)
-  const [statusUpdateData, setStatusUpdateData] = useState(null)
+  const [changeStatusModal, setChangeStatusModal] = useState(false);
+  const [statusUpdateData, setStatusUpdateData] = useState(null);
   const [updateComponentpage, setUpdateComponentpage] = useState(false);
   const [ViewGroupPage, setViewGroupPage] = useState(false);
   const [creategrouppage, setCreategrouppage] = useState(false);
@@ -47,30 +46,24 @@ const Committee = () => {
   const [modalsure, setModalsure] = useState(false);
   const [getcommitteedata, setGetCommitteeData] = useState([]);
   const [uniqCardID, setUniqCardID] = useState(0);
-  const creatorID = localStorage.getItem("userID")
+  const creatorID = localStorage.getItem("userID");
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
   const [mapgroupsData, setMapGroupData] = useState(null);
 
-
   useEffect(() => {
     try {
       if (currentPage !== null && currentPage !== undefined) {
-        console.log("check 1")
         dispatch(getAllCommitteesByUserIdActions(navigate, t, currentPage));
       } else {
-        console.log("check 2")
         localStorage.removeItem("CoArcurrentPage");
         localStorage.setItem("CocurrentPage", 1);
         dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
       }
-    } catch { }
-
-
+    } catch {}
   }, []);
-
 
   const archivedmodaluser = async (e) => {
     setShowModal(true);
@@ -88,10 +81,8 @@ const Committee = () => {
         (data, index) => data.committeeID === id
       );
       setMapGroupData(findMapGroups);
-      console.log(findMapGroups, "findMapGroupsfindMapGroupsfindMapGroups");
     }
   };
-
 
   const viewTitleModal = (data) => {
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
@@ -109,13 +100,9 @@ const Committee = () => {
         1
       )
     );
-
-
   };
 
-
   const viewUpdateModal = (committeeID, CommitteeStatusID) => {
-    console.log("testtesttesttesttesttest")
     let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
       CommitteeID: JSON.parse(committeeID),
@@ -134,29 +121,18 @@ const Committee = () => {
   };
 
   const handlechange = (value) => {
-    console.log("valuevalue", value);
     localStorage.setItem("CocurrentPage", value);
     dispatch(getAllCommitteesByUserIdActions(navigate, t, value));
   };
 
-
-
   useEffect(() => {
     if (CommitteeReducer.realtimeCommitteeStatus !== null) {
-      console.log(
-        "findINdexCommitteeStatusfindINdexCommitteeStatus",
-        CommitteeReducer.realtimeCommitteeStatus
-      );
       let status = CommitteeReducer.realtimeCommitteeStatus.committeeStatusID;
       if (status === 2) {
         let findINdexCommitteeStatus = getcommitteedata.findIndex(
           (data, index) =>
             data.committeeID ===
             CommitteeReducer.realtimeCommitteeStatus.commmitteeID
-        );
-        console.log(
-          "findINdexCommitteeStatusfindINdexCommitteeStatus",
-          findINdexCommitteeStatus
         );
         if (findINdexCommitteeStatus !== -1) {
           let newData = [...getcommitteedata];
@@ -169,10 +145,6 @@ const Committee = () => {
           (data, index) =>
             data.committeeID ===
             CommitteeReducer.realtimeCommitteeStatus.commmitteeID
-        );
-        console.log(
-          "findINdexCommitteeStatusfindINdexCommitteeStatus",
-          findINdexCommitteeStatus
         );
         if (findINdexCommitteeStatus !== -1) {
           let newArr = getcommitteedata.map((committeeCard, index) => {
@@ -195,10 +167,6 @@ const Committee = () => {
 
   useEffect(() => {
     if (CommitteeReducer.realtimeCommitteeCreateResponse !== null) {
-      console.log(
-        CommitteeReducer.realtimeCommitteeCreateResponse.committeeStatusID,
-        "committeeStatusID"
-      );
       let committeeData = CommitteeReducer.realtimeCommitteeCreateResponse;
       let newCommitteeData = {
         committeesTitle: committeeData.committeesTitle,
@@ -207,7 +175,7 @@ const Committee = () => {
         committeeMembers: committeeData.committeeMembers,
         committeeStatusID: committeeData.committeeStatusID,
         listofGroups: committeeData.listOfGroups,
-      }
+      };
 
       setGetCommitteeData([newCommitteeData, ...getcommitteedata]);
     }
@@ -220,9 +188,9 @@ const Committee = () => {
       CommitteeStatusId: JSON.parse(e.value),
       OrganizationID: JSON.parse(OrganizationID),
     };
-    setStatusUpdateData(Data)
+    setStatusUpdateData(Data);
     // dispatch(committeeStatusUpdate(navigate, Data, t));
-    setChangeStatusModal(true)
+    setChangeStatusModal(true);
   };
 
   useEffect(() => {
@@ -231,23 +199,25 @@ const Committee = () => {
         CommitteeReducer.GetAllCommitteesByUserIDResponse !== null &&
         CommitteeReducer.GetAllCommitteesByUserIDResponse !== undefined
       ) {
-        setTotalRecords(CommitteeReducer.GetAllCommitteesByUserIDResponse.totalRecords);
+        setTotalRecords(
+          CommitteeReducer.GetAllCommitteesByUserIDResponse.totalRecords
+        );
 
-        if (CommitteeReducer.GetAllCommitteesByUserIDResponse.committees.length > 0) {
+        if (
+          CommitteeReducer.GetAllCommitteesByUserIDResponse.committees.length >
+          0
+        ) {
           let newArr = [];
-          let copyData = [...CommitteeReducer.GetAllCommitteesByUserIDResponse?.committees]
+          let copyData = [
+            ...CommitteeReducer.GetAllCommitteesByUserIDResponse?.committees,
+          ];
           copyData.map((data, index) => {
             newArr.push(data);
           });
           setGetCommitteeData(newArr);
         }
-
-
       }
-    } catch {
-
-    }
-
+    } catch {}
   }, [CommitteeReducer.GetAllCommitteesByUserIDResponse]);
 
   useEffect(() => {
@@ -275,9 +245,6 @@ const Committee = () => {
       dispatch(getallcommitteebyuserid_clear());
     }
   }, [CommitteeReducer.ResponseMessage]);
-
-
-
 
   return (
     <>
@@ -342,17 +309,17 @@ const Committee = () => {
                 lg={12}
                 md={12}
                 sm={12}
-              // className={styles["Committee-Main_Scrollbar"]}
+                // className={styles["Committee-Main_Scrollbar"]}
               >
                 <Row
-                  className={`${"d-flex text-center committees_box  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1"} ${styles["committess_box"]
-                    }`}
+                  className={`${"d-flex text-center committees_box  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1"} ${
+                    styles["committess_box"]
+                  }`}
                 >
                   <Col sm={12} md={12} lg={12} className="m-0 p-0 mt-2 ">
                     <Row>
                       {getcommitteedata.length > 0 ? (
                         getcommitteedata.map((data, index) => {
-                          console.log(data, "datadatadata");
                           return (
                             <Col lg={3} md={3} sm={12} className="mb-3">
                               <Card
@@ -370,11 +337,7 @@ const Committee = () => {
                                     data.committeeStatusID
                                   )
                                 }
-                                titleOnCLick={() =>
-                                  viewTitleModal(
-                                    data
-                                  )
-                                }
+                                titleOnCLick={() => viewTitleModal(data)}
                                 associatedTags={data.listofGroups}
                                 flag={true}
                                 assignGroupBtn={() =>
@@ -390,14 +353,13 @@ const Committee = () => {
                                   />
                                 }
                                 BtnText={
-
                                   data.committeeStatusID === 1
                                     ? t("View-committee")
                                     : data.committeeStatusID === 2
-                                      ? ""
-                                      : data.committeeStatusID === 3
-                                        ? t("Update-committee")
-                                        : ""
+                                    ? ""
+                                    : data.committeeStatusID === 3
+                                    ? t("Update-committee")
+                                    : ""
                                 }
                               />
                             </Col>
@@ -513,7 +475,13 @@ const Committee = () => {
           mapgroupsData={mapgroupsData}
         />
       ) : null}
-      {changeStatusModal && <CommitteeStatusModal statusUpdateData={statusUpdateData} isActive={changeStatusModal} setIsActive={setChangeStatusModal} />}
+      {changeStatusModal && (
+        <CommitteeStatusModal
+          statusUpdateData={statusUpdateData}
+          isActive={changeStatusModal}
+          setIsActive={setChangeStatusModal}
+        />
+      )}
       {/* {modalsure ? (
         <ModalAreyousureActive
           Activegroup={modalsure}

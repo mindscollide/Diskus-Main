@@ -369,13 +369,13 @@
   "Maximum-password-length-is-25-characters": "Maximum password length is 25 characters",
   "Task-title": "Task Title",
   "Note-details": "Note Details",
-  "No-archived-record-founds": "No Archived Record Found",
+  "No-archived-record-founds": "No Archive Record Found",
   "No-todo-items-found": "No ToDo Items found",
   "Group-title": "Group Title",
   "Meeting-with-agenda": "Meeting With Agenda",
   "Survey-polls": "Survey Polls",
   "Assign-remove-group": "Assign/Remove Group",
-  "Archived": "Archived",
+  "Archived": "Archive",
   "Active": "Active",
   "Committee-title": "Committee Title",
   "No-member-selected": "No member selected!",
@@ -819,5 +819,6 @@
   "Please-fill-all-open-option-fields": "Please fill all open option fields",
   "Dormant-inactive-users-for": "Dormant inactive users for",
   "Calendar-months-span": "Calendar Months Span",
-  "Auto-close-resolution": "Auto Close Resolution"
+  "Auto-close-resolution": "Auto Close Resolution",
+  "Enter-date-must": "Please select date"
 }
