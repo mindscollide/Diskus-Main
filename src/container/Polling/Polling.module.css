@@ -210,7 +210,7 @@ body[dir="rtl"] .PaginationStyle-polling {
   padding: 12px 10px !important;
 }
 
-.Ellipses_Class{
+.Ellipses_Class {
   overflow: hidden !important;
   white-space: nowrap;
   text-overflow: ellipsis !important;
@@ -218,9 +218,7 @@ body[dir="rtl"] .PaginationStyle-polling {
   color: #2197d7 !important;
   width: 100%;
   display: inline-block;
-
 }
-
 
 .PaginationStyle-Meeting {
   background-color: #fff !important;
@@ -241,4 +239,21 @@ body[dir="rtl"] .PaginationStyle-polling {
 body[dir="rtl"] .PaginationStyle-Meeting {
   width: auto !important;
   padding: 12px 10px !important;
+}
+
+.PaginationStyle-Committee {
+  width: auto !important;
+  display: flex !important;
+  justify-content: center !important;
+  padding: 12px 40px !important;
+  height: 54px !important;
+  border-radius: 4px !important;
+  margin-top: 60px !important;
+  position: fixed !important;
+  bottom: 20px !important;
+}
+
+body[dir="rtl"] .PaginationStyle-Committee {
+  width: 100% !important;
+  padding: 8px 10px !important;
 }
