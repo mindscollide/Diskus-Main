@@ -821,5 +821,7 @@
   "Calendar-months-span": "Calendar Months Span",
   "Auto-close-resolution": "Auto Close Resolution",
   "More": "More",
-  "Enter-date-must": "Please select date"
+  "Enter-date-must": "Please select date",
+  "Advanced-permission-settings": "Advanced Permission Settings",
+  "Show": "Show"
 }

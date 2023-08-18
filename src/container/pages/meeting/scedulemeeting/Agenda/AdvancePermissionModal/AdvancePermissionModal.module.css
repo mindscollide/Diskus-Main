@@ -1,0 +1,19 @@
+.Advance_setting_heading {
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5f78d6 !important;
+}
+
+.Show_Heading_Advance_persmission {
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+}
+
+.Bottom_line {
+  width: 100% !important;
+  height: 1px !important;
+  display: block;
+  margin-top: 10px;
+  background-color: #ccc;
+}
