@@ -490,8 +490,8 @@ const ExpandedMenu = () => {
                 fill="url(#linear-gradient)"
               />
             </svg>
-            <Row className="mt-1">
-              <Col lg={12} md={12} sm={12}>
+            <Row>
+              <Col lg={12} md={12} sm={12} className="pollsHeading">
                 <span
                   className={
                     location.pathname === "/DisKus/polling" ||
