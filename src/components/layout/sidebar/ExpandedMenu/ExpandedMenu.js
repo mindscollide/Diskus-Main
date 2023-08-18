@@ -14,7 +14,12 @@ const ExpandedMenu = () => {
   return (
     <section>
       <Row className="m-2">
-        <Col lg={4} md={4} sm={4} className="p-0">
+        <Col
+          lg={4}
+          md={4}
+          sm={4}
+          className="p-0  d-flex  justify-content-between"
+        >
           {/* DataRoom */}
           <Nav.Link
             as={Link}
