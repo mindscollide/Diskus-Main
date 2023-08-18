@@ -170,6 +170,7 @@ a.iconSidebar div {
 
 body[dir="rtl"] .iconSidebar-active-sidebar {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  height: 55px;
 }
 
 .iconSidebar-active-sidebar svg path {
@@ -285,7 +286,7 @@ a.iconSidebar:hover {
 }
 
 body[dir="rtl"] a.iconSidebar:hover {
-  height: 59px;
+  height: 55px !important;
 }
 
 body[dir="rtl"] a.iconSidebar:hover span {
@@ -344,6 +345,12 @@ a.iconSidebar-active-sidebar.nav-link:active svg path {
 }
 
 a.iconSidebar-active-sidebar.nav-link svg {
+  margin-top: 5px !important;
+  width: 100% !important;
+  height: 26px !important;
+}
+
+body[dir="rtl"] a.iconSidebar-active-sidebar.nav-link svg {
   margin-top: 5px !important;
   width: 100% !important;
   height: 26px !important;
