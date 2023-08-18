@@ -14,7 +14,7 @@ const ExpandedMenu = () => {
   return (
     <section>
       <Row className="m-2">
-        <Col lg={6} md={6} sm={6} className="p-0">
+        <Col lg={4} md={4} sm={4} className="p-0">
           {/* DataRoom */}
           <Nav.Link
             as={Link}
@@ -295,7 +295,7 @@ const ExpandedMenu = () => {
             </div>
           </Nav.Link>
         </Col>
-        <Col lg={6} md={6} sm={6} className="p-0">
+        <Col lg={4} md={4} sm={4} className="p-0">
           {/* Groups */}
           <Nav.Link
             as={Link}
@@ -336,10 +336,7 @@ const ExpandedMenu = () => {
             </span>
           </Nav.Link>
         </Col>
-      </Row>
-
-      <Row className="m-2">
-        <Col lg={6} md={6} sm={6} className="p-0">
+        <Col lg={4} md={4} sm={4} className="p-0">
           {/* Committee */}
           <Nav.Link
             as={Link}
@@ -394,7 +391,10 @@ const ExpandedMenu = () => {
             </div>
           </Nav.Link>
         </Col>
-        <Col lg={6} md={6} sm={6} className="p-0">
+      </Row>
+
+      <Row className="m-2">
+        <Col lg={4} md={4} sm={4} className="p-0">
           {/* Resolution */}
           <Nav.Link
             as={Link}
@@ -449,10 +449,7 @@ const ExpandedMenu = () => {
             </div>
           </Nav.Link>
         </Col>
-      </Row>
-
-      <Row className="m-2">
-        <Col lg={6} md={6} sm={6} className="p-0">
+        <Col lg={4} md={4} sm={4} className="p-0">
           {/* Polls */}
           <Nav.Link
             as={Link}
