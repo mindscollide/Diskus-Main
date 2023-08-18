@@ -30,13 +30,14 @@ import {
 } from "../../../store/actions/UpdateUserGeneralSetting";
 import { MonthOptions, MonthValues, options } from "./values";
 import { getOrganizationLevelSetting } from "../../../store/actions/OrganizationSettings";
+import getTimeZone from "../../../store/actions/GetTimeZone";
 const OrganizationLevelSetting = () => {
   console.log(options, "optionsoptionsoptions")
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { settingReducer } = useSelector((state) => state);
-  const [securitystate, setSecuritystate] = useState(false);
+  const [securitystate, setSecuritystate] = useState(true);
   const [meetingsState, setmeetingsState] = useState(false);
   const [calender, setCalender] = useState(false);
   const [committee, setCommittee] = useState(false);
@@ -44,6 +45,13 @@ const OrganizationLevelSetting = () => {
   const [resolution, setResolution] = useState(false);
   const [polls, setpolls] = useState(false);
   const roleID = localStorage.getItem("roleID");
+  const [worldCountryID, setWorldCountryID] = useState(0);
+  const [timezone, setTimeZone] = useState([]);
+  console.log(timezone, "timezonetimezone")
+  const [timeZoneValue, setTimeZoneValue] = useState({
+    label: "",
+    value: "",
+  });
   const { loaded, clientId } = useGoogleLogin({
     clientId:
       "509020224191-pst82a2kqjq33phenb35b0bg1i0q762o.apps.googleusercontent.com",
@@ -96,11 +104,14 @@ const OrganizationLevelSetting = () => {
     DormatInactiveUsersforDays: 0,
     MaximumMeetingDuration: 0,
     CalenderMonthsSpan: 0,
-    AutoCloseResolution: 0
+    AutoCloseResolution: 0,
+    TimeZoneId: 0,
+    worldCountryID: 0
   });
 
   useEffect(() => {
     dispatch(getOrganizationLevelSetting(navigate, t));
+    dispatch(getTimeZone(navigate, t));
   }, []);
 
   const handleGoogleLoginSuccess = (response) => {
@@ -134,6 +145,29 @@ const OrganizationLevelSetting = () => {
     prompt: "consent",
   });
 
+  // Time Zones set in values
+  useEffect(() => {
+    let TimeZone = settingReducer.TimeZone;
+    if (TimeZone !== undefined && TimeZone !== null) {
+      let newData = [];
+      TimeZone.map((data, index) => {
+        newData.push({
+          label: data.gmtOffset
+            ? data.countryName +
+            " " +
+            "(" +
+            data.timeZone +
+            ")" +
+            " " +
+            data.gmtOffset
+            : null,
+          value: data.pK_TZID,
+        });
+      });
+      setTimeZone(newData);
+    }
+  }, [settingReducer.TimeZone]);
+
   useEffect(() => {
     if (
       settingReducer.GetOrganizationLevelSettingResponse !== null &&
@@ -148,7 +182,7 @@ const OrganizationLevelSetting = () => {
           EmailCancelOrDeleteMeeting: organizationSettings.emailOnCancelledDeletedMeeting,
           PushNotificationonNewMeeting: organizationSettings.pushNotificationOnNewMeeting,
           PushNotificationEditMeeting: organizationSettings.pushNotificationOnEditMeeting,
-          PushNotificationonCancelledDeletedMeeting: organizationSettings.pushNotificationonCancelledDeletedMeeting,
+          PushNotificationCancelledOrDeleteMeeting: organizationSettings.pushNotificationonCancelledDeletedMeeting,
           ShowNotificationOnParticipantJoining: organizationSettings.showNotificationOnParticipantJoining,
           AllowCalenderSync: organizationSettings.userAllowGoogleCalendarSynch,
           AllowMicrosoftCalenderSync: organizationSettings.userAllowMicrosoftCalendarSynch,
@@ -162,11 +196,11 @@ const OrganizationLevelSetting = () => {
           PushNotificationWhenCommitteeIsInActive: organizationSettings.pushNotificationwhenCommitteeissetInActive,
           EmailWhenAddedToGroup: organizationSettings.emailWhenAddedToGroup,
           EmailWhenRemovedFromGroup: organizationSettings.emailWhenRemovedFromGroup,
-          EmailWhenGroupIsDissolvedOrArchived: organizationSettings.emailWhenGroupIsClosedorArchived,
+          EmailWhenGroupIsDissolvedOrArchived: organizationSettings.emailWhenGroupIsClosedArchived,
           EmailWhenGroupisSetInactive: organizationSettings.emailWhenGroupIsInActive,
           PushNotificationWhenAddedToGroup: organizationSettings.pushNotificationwhenAddedtoGroup,
           PushNotificationWhenRemovedFromGroup: organizationSettings.pushNotificationwhenRemovedfromGroup,
-          PushNotificationWhenGroupIsDissolvedOrArchived: organizationSettings.pushNotificationWhenGroupIsClosedORArchived,
+          PushNotificationWhenGroupIsDissolvedOrArchived: organizationSettings.pushNotificationwhenGroupisClosedArchived,
           PushNotificationWhenGroupIsInActive: organizationSettings.pushNotificationwhenGroupissetInActive,
           EmailWhenResolutionIsCirculated: organizationSettings.emailwhenaResolutionisClosed,
           EmailWhenNewResolutionIsCancelledAfterCirculation: organizationSettings.emailwhenResolutionisCancelledafterCirculation,
@@ -184,8 +218,23 @@ const OrganizationLevelSetting = () => {
           PushNotificationWhenPublishedPollIsUpdated: organizationSettings.pushNotificationWhenPublishedPollIsUpdated,
           DormatInactiveUsersforDays: organizationSettings.dormantInactiveUsersForDays,
           MaximumMeetingDuration: organizationSettings.maximumMeetingDuration,
-          CalenderMonthsSpan: organizationSettings.calenderMonthsSpan
+          CalenderMonthsSpan: organizationSettings.calenderMonthsSpan,
+          TimeZoneId: organizationSettings.timeZones?.pK_TZID,
+          worldCountryID: organizationSettings.worldCountry.fK_WorldCountryID
         });
+        let timeZoneCode = {
+          label: organizationSettings.timeZones
+            ? organizationSettings.timeZones.countryName +
+            " " +
+            "(" +
+            organizationSettings.timeZones.timeZone +
+            ")" +
+            " " +
+            organizationSettings.timeZones.gmtOffset
+            : null,
+          value: organizationSettings.timeZones?.pK_TZID,
+        };
+        setTimeZoneValue(timeZoneCode);
       }
     }
   }, [settingReducer.GetOrganizationLevelSettingResponse]);
@@ -576,17 +625,106 @@ const OrganizationLevelSetting = () => {
     });
   };
 
+  const handleChangeDormant = (data) => {
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      DormatInactiveUsersforDays: data.value,
+    });
+  }
+  const changeMeetingDuration = (event) => {
+    let value = event.target.value;
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      MaximumMeetingDuration: Number(value),
+    });
+  }
 
-
+  const CalendarSpanChangeHandler = (data) => {
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      CalenderMonthsSpan: data.value,
+    });
+  }
+  // Time Zone Change Handler
+  const timezoneChangeHandler = (event) => {
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      TimeZoneId: event.value,
+    });
+    setTimeZoneValue({
+      label: event.label,
+      value: event.value,
+    });
+  };
+  console.log(userOrganizationSetting.TimeZoneId, timeZoneValue, "userOrganizationSettinguserOrganizationSetting")
   const updateOrganizationLevelSettings = async () => {
-    if (signUpCodeToken != "") {
-      await dispatch(
-        getGoogleValidToken(navigate, signUpCodeToken, userOrganizationSetting, t)
-      );
-      setSignUpCodeToken("");
-    } else {
-      await dispatch(revokeToken(navigate, userOrganizationSetting, t));
+    let OrganizationID = localStorage.getItem("organizationID")
+    let Data = {
+      organizationSettings:
+      {
+        CalenderMonthsSpan: userOrganizationSetting.CalenderMonthsSpan,
+        DormantInactiveUsersForDays: userOrganizationSetting.DormatInactiveUsersforDays,
+        EmailOnCancelledDeletedMeeting: userOrganizationSetting.EmailCancelOrDeleteMeeting,
+        EmailOnEditMeeting: userOrganizationSetting.EmailEditMeeting,
+        EmailOnNewMeeting: userOrganizationSetting.EmailOnNewMeeting,
+        EmailWhenAddedToCommittee: userOrganizationSetting.EmailWhenAddedToCommittee,
+        EmailWhenAddedToGroup: userOrganizationSetting.EmailWhenAddedToGroup,
+        EmailWhenCommitteeIsActive: false,
+        EmailWhenCommitteeIsDissolvedArchived: userOrganizationSetting.EmailWhenCommitteeIsDissolvedOrArchived,
+        EmailWhenCommitteeIsInActive: false,
+        EmailWhenGroupIsActive: true,
+        EmailWhenGroupIsClosedArchived: userOrganizationSetting.EmailWhenGroupIsDissolvedOrArchived,
+        EmailWhenGroupIsInActive: true,
+        EmailWhenNewPollIsPublished: userOrganizationSetting.EmailWhenNewPollIsPublished,
+        EmailWhenPollDueDateIsPassed: userOrganizationSetting.EmailWhenPollDueDateIsPassed,
+        EmailWhenPublishedPollIsDeleted: userOrganizationSetting.EmailWhenPublishedPollIsDeleted,
+        EmailWhenPublishedPollIsUpdated: userOrganizationSetting.EmailWhenPublishedPollIsUpdated,
+        EmailWhenRemovedFromCommittee: userOrganizationSetting.EmailWhenRemovedFromCommittee,
+        EmailWhenRemovedFromGroup: userOrganizationSetting.EmailWhenRemovedFromGroup,
+        EmailwhenNewResolutionisCirculated: userOrganizationSetting.EmailWhenResolutionIsCirculated,
+        EmailwhenResolutionisCancelledafterCirculation: userOrganizationSetting.EmailWhenNewResolutionIsCancelledAfterCirculation,
+        EmailwhenaResolutionisClosed: userOrganizationSetting.EmailWhenResolutionIsClosed,
+        FK_OrganizationID: JSON.parse(OrganizationID),
+        FK_TZID: userOrganizationSetting.TimeZoneId,
+        FK_WorldCountryID: userOrganizationSetting.worldCountryID,
+        Is2FAEnabled: userOrganizationSetting.Is2FAEnabled,
+        MaximumMeetingDuration: userOrganizationSetting.MaximumMeetingDuration,
+        PushNotificationOnEditMeeting: userOrganizationSetting.PushNotificationEditMeeting,
+        PushNotificationOnNewMeeting: userOrganizationSetting.PushNotificationonNewMeeting,
+        PushNotificationWhenNewPollIsPublished: userOrganizationSetting.PushNotificationWhenNewPollIsPublished,
+        PushNotificationWhenPollDueDateIsPassed: userOrganizationSetting.PushNotificationWhenPollDueDateIsPassed,
+        PushNotificationWhenPublishedPollIsDeleted: userOrganizationSetting.PushNotificationWhenPublishedPollIsDeleted,
+        PushNotificationWhenPublishedPollIsUpdated: userOrganizationSetting.PushNotificationWhenPublishedPollIsUpdated,
+        PushNotificationWhenResolutionIsClosed: userOrganizationSetting.PushNotificationWhenResolutionISClosed,
+        PushNotificationonCancelledDeletedMeeting: userOrganizationSetting.PushNotificationCancelledOrDeleteMeeting,
+        PushNotificationwhenAddedtoCommittee: userOrganizationSetting.PushNotificationWhenAddedToCommittee,
+        PushNotificationwhenAddedtoGroup: userOrganizationSetting.PushNotificationWhenAddedToGroup,
+        PushNotificationwhenCommitteeisDissolvedArchived: userOrganizationSetting.PushNotificationWhenCommitteeIsDissolvedOrArchived,
+        PushNotificationwhenCommitteeissetActive: true,
+        PushNotificationwhenCommitteeissetInActive: true,
+        PushNotificationwhenGroupisClosedArchived: userOrganizationSetting.PushNotificationWhenGroupIsDissolvedOrArchived,
+        PushNotificationwhenGroupissetActive: true,
+        PushNotificationwhenGroupissetInActive: true,
+        PushNotificationwhenNewResolutionisCirculated: userOrganizationSetting.PushNotificationWhenNewResolutionIsCirculated,
+        PushNotificationwhenRemovedfromCommittee: userOrganizationSetting.PushNotificationWhenRemovedFromCommittee,
+        PushNotificationwhenRemovedfromGroup: userOrganizationSetting.PushNotificationWhenRemovedFromGroup,
+        PushNotificationwhenResolutionisCancelledafterCirculation: userOrganizationSetting.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
+        ShowNotificationOnParticipantJoining: userOrganizationSetting.ShowNotificationOnParticipantJoining,
+        UserAllowGoogleCalendarSynch: userOrganizationSetting.AllowCalenderSync,
+        UserAllowMicrosoftCalendarSynch: userOrganizationSetting.AllowMicrosoftCalenderSync,
+
+      }
     }
+
+    console.log(userOrganizationSetting, "updateOrganizationLevelSettingsupdateOrganizationLevelSettingsupdateOrganizationLevelSettings")
+    // if (signUpCodeToken != "") {
+    //   await dispatch(
+    //     getGoogleValidToken(navigate, signUpCodeToken, userOrganizationSetting, t)
+    //   );
+    //   setSignUpCodeToken("");
+    // } else {
+    //   await dispatch(revokeToken(navigate, userOrganizationSetting, t));
+    // }
   };
 
   return (
@@ -599,7 +737,6 @@ const OrganizationLevelSetting = () => {
             sm={12}
             className="d-flex gap-3 align-items-center"
           >
-            <img src={backbutton} width="34.88px" height="34.88px" />
             <span className={styles["UserLevelConfig_Heading"]}>
               {t("Organization-level-configurations")}
             </span>
@@ -1482,9 +1619,12 @@ const OrganizationLevelSetting = () => {
                         <span className={styles["Class_CheckBox2"]}>
                           {t("Calendar-months-span")}
                         </span>
-                        <Select options={MonthOptions} value={{
-                          value: userOrganizationSetting.CalenderMonthsSpan, label: `${userOrganizationSetting.CalenderMonthsSpan} Months`
-                        }} className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} />
+                        <Select options={MonthOptions}
+                          defaultValue={{
+                            value: userOrganizationSetting.CalenderMonthsSpan, label: `${userOrganizationSetting.CalenderMonthsSpan}  ${userOrganizationSetting.CalenderMonthsSpan === 1 ? "Month" : "Months"}`
+                          }}
+                          onChange={CalendarSpanChangeHandler}
+                          className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} />
                       </Col>
                     </Row>
                   </>
@@ -1497,9 +1637,36 @@ const OrganizationLevelSetting = () => {
                         <span className={styles["Class_CheckBox2"]}>
                           {t("Dormant-inactive-users-for")}
                         </span>
-                        <Select options={options} value={{
-                          value: userOrganizationSetting.DormatInactiveUsersforDays, label: `${userOrganizationSetting.DormatInactiveUsersforDays} Days`
-                        }} className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} />
+                        <Select menuShouldScrollIntoView={false} isSearchable={false} options={options} value={{
+                          value: userOrganizationSetting.DormatInactiveUsersforDays, label: `${userOrganizationSetting.DormatInactiveUsersforDays} ${userOrganizationSetting.DormatInactiveUsersforDays === 1 ? "Day" : "Days"}`
+                        }} onChange={handleChangeDormant} className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} />
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+
+                      <Col lg={4} md={4} sm={12} className="d-flex gap-4 w-100 justify-content-start align-items-center">
+                        <span className={styles["Class_CheckBox2"]}>
+                          {t("Organization-time-zone")}
+                        </span>
+                      </Col>
+                      <Col lg={8} md={8} sm={8}
+                        className="d-flex gap-4 w-100 justify-content-start align-items-center">
+                        <Select
+                          placeholder={t("Please-select")}
+                          value={{
+                            label: timeZoneValue.label,
+                            value: timeZoneValue.value,
+                          }}
+                          defaultValue={{
+                            label: timeZoneValue.label,
+                            value: timeZoneValue.value,
+                          }}
+                          classNamePrefix={"Select_timezone"}
+                          isSearchable={false}
+                          menuShouldScrollIntoView={false}
+                          options={timezone}
+                          onChange={timezoneChangeHandler}
+                          className={styles["select_TimeZone"]} />
                       </Col>
                     </Row>
                   </>
@@ -1520,14 +1687,13 @@ const OrganizationLevelSetting = () => {
                 {meetingsState ? (
                   <>
                     <Row className="mt-3">
-
                       <Col lg={12} md={12} sm={12} className="d-flex gap-4 w-100 justify-content-center align-items-center">
                         <span className={styles["Class_CheckBox3"]}>
                           {t("Maximum-meeting-duration-in-minutes")}
                         </span>
                         <TextField
                           type={"number"}
-                          // change={handleChangeMaximumMeeting}
+                          change={changeMeetingDuration}
                           value={userOrganizationSetting.MaximumMeetingDuration}
                           name={"maximumduration"}
                           labelClass={"d-none"}

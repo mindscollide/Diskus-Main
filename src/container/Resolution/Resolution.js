@@ -56,6 +56,8 @@ import SearchInputSuggestion from "../../components/elements/searchInputResoluti
 import numeral from "numeral";
 import ModalCancellResolution2 from "../ModalCancellResolution2/ModalCancellResolution";
 import CrossResolution from "../../assets/images/resolutions/cross_icon_resolution.svg";
+import { updateResolutionModal } from "../../store/actions/Resolution_actions";
+import { viewResolutionModal } from "../../store/actions/Resolution_actions";
 const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -119,6 +121,9 @@ const Resolution = () => {
       localStorage.removeItem("voterPage");
       localStorage.removeItem("voterRows");
       localStorage.removeItem("ResolutionID");
+      dispatch(createResolutionModal(false))
+      dispatch(updateResolutionModal(false))
+      dispatch(viewResolutionModal(false))
     };
   }, []);
 
@@ -133,7 +138,6 @@ const Resolution = () => {
   });
 
   const showSearchOptions = () => {
-    console.log(searchModalDates, "searchModalDatessearchModalDates")
     let getUserID = JSON.parse(localStorage.getItem("userID"))
     let resolutionView = JSON.parse(localStorage.getItem("resolutionView"));
     let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"));
@@ -254,10 +258,6 @@ const Resolution = () => {
     setSearchIcon(false);
     setNewresolution(true);
   };
-  console.log(
-    ResolutionReducer,
-    "ResolutionReducerResolutionReducerResolutionReducer"
-  );
   const handleUpdateResolutionAction = (id) => {
     dispatch(getResolutionbyResolutionID(navigate, id, t, 1));
   };
@@ -277,16 +277,10 @@ const Resolution = () => {
 
   const filterResolution = (e) => {
     let value = e.target.value;
-    console.log(value, "filterResolutionfilterResolution")
     setAllSearchInput(value)
-
-    // setAllSearchInput(...allSearchInput, value);
-
   };
   const handleClickSearch = (event) => {
-    console.log(event.key, "handleClickSearchhandleClickSearchhandleClickSearch")
     if (event.key === "Enter") {
-      console.log(event.key, "handleClickSearchhandleClickSearchhandleClickSearch")
       let getUserID = JSON.parse(localStorage.getItem("userID"))
       let resolutionView = JSON.parse(localStorage.getItem("resolutionView"));
       let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"));
@@ -356,7 +350,6 @@ const Resolution = () => {
       align: "left",
       width: "365px",
       render: (table, data) => {
-        console.log(table, data, "checking");
         return (
           <span
             className={styles["resolution_title"]}
@@ -374,7 +367,6 @@ const Resolution = () => {
       align: "center",
       width: "128px",
       render: (table, data) => {
-        console.log(table, data, "checking");
         return (
           <span className={styles["resolution_date"]}>
             {_justShowDateformat(table)}
@@ -389,7 +381,6 @@ const Resolution = () => {
       align: "center",
       width: "134px",
       render: (table, data) => {
-        console.log(table, data, "checking");
         return (
           <span className={styles["resolution_date"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
@@ -404,7 +395,6 @@ const Resolution = () => {
       align: "center",
       width: "134px",
       render: (table, data) => {
-        console.log(table, data, "checking");
         return (
           <span className={styles["resolution_date"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
@@ -449,24 +439,22 @@ const Resolution = () => {
       render: (table, data) => {
         let newDate = new Date();
         let votingDeadline = resolutionResultTable(data.votingDeadline);
-        console.log(
-          "ResultResolution",
-          votingDeadline,
-          newDate,
-          data,
-          newDate > votingDeadline
-        );
-        if (votingDeadline < newDate) {
-          return (
-            <img
-              src={ResultResolutionIcon}
-              onClick={() => getResultHandle(data.resolutionID)}
-              className={styles["Result_icon"]}
-            />
-          );
+        if (data.resolutionStatus === "Circulated") {
+          if (votingDeadline < newDate) {
+            return (
+              <img
+                src={ResultResolutionIcon}
+                onClick={() => getResultHandle(data.resolutionID)}
+                className={styles["Result_icon"]}
+              />
+            );
+          } else {
+            return "";
+          }
         } else {
           return "";
         }
+
       },
     },
     {
@@ -510,7 +498,6 @@ const Resolution = () => {
       align: "left",
       width: "365px",
       render: (table, data) => {
-        console.log(table, data, "checking");
         return (
           <span
             className={styles["resolution_title"]}
@@ -528,7 +515,6 @@ const Resolution = () => {
       align: "center",
       width: "140px",
       render: (table, data) => {
-        console.log(table, data, "checking");
         return (
           <span className={styles["resolution_date"]}>
             {_justShowDateformat(table)}
@@ -543,7 +529,6 @@ const Resolution = () => {
       align: "center",
       width: "140px",
       render: (table, data) => {
-        console.log(table, data, "checking");
         return (
           <span className={styles["resolution_date"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
@@ -558,7 +543,6 @@ const Resolution = () => {
       align: "center",
       width: "140px",
       render: (table, data) => {
-        console.log(table, data, "checking");
         return (
           <span className={styles["resolution_date"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
@@ -631,7 +615,6 @@ const Resolution = () => {
       width: "365px",
       sortDirections: ["descend", "ascend"],
       render: (table, data) => {
-        console.log(table, data, "checking");
         return (
           <span
             className={styles["resolution_title"]}
@@ -649,7 +632,6 @@ const Resolution = () => {
       align: "left",
       width: "153px",
       render: (table, data) => {
-        console.log(table, data, "checking");
         return (
           <span className={styles["resolution_date"]}>
             {newTimeFormaterForResolutionAsPerUTCFullDate(table)}
@@ -664,7 +646,6 @@ const Resolution = () => {
       align: "left",
       width: "153px",
       render: (table, data) => {
-        console.log(table, data, "checking");
         return (
           <span className={styles["resolution_date_Decision_date"]}>
             {_justShowDateformat(table)}
@@ -711,28 +692,21 @@ const Resolution = () => {
       width: "120px",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
-        console.log(data, text, "checkvotevote");
-        console.log(data, "checkvotevote2");
         if (data.resolutionStatusID === 2) {
           if (data.isVoter === 1) {
             if (data.fK_VotingStatus_ID === 1) {
-              console.log(data.fK_VotingStatus_ID, "checkvote");
-
               return (
                 <span className="d-flex justify-content-center">
                   <img src={thumbsup} />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 2) {
-              console.log(data.fK_VotingStatus_ID, "checkvote");
               return (
                 <span className="d-flex justify-content-center">
                   <img src={thumbsdown} />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 3) {
-              console.log(data.fK_VotingStatus_ID, "checkvote");
-
               return (
                 <Button
                   text={t("Vote")}
@@ -741,8 +715,6 @@ const Resolution = () => {
                 />
               );
             } else if (data.fK_VotingStatus_ID === 4) {
-              console.log(data.fK_VotingStatus_ID, "checkvote");
-
               return (
                 <span className="d-flex justify-content-center">
                   <img src={AbstainvoterIcon} />
@@ -784,7 +756,6 @@ const Resolution = () => {
       width: "350px",
       sortDirections: ["descend", "ascend"],
       render: (table, data) => {
-        console.log(table, data, "checking");
         return (
           <span
             className={styles["resolution_title"]}
@@ -842,7 +813,6 @@ const Resolution = () => {
       align: "center",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
-        console.log(data, "datadatadatadatadatadata");
         if (data.isAttachmentAvailable) {
           return (
             <img
@@ -862,30 +832,23 @@ const Resolution = () => {
       width: "120px",
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
-        console.log(data, text, "checkvote");
         if (data.resolutionStatusID === 3) {
           if (data.isVoter === 1) {
             if (data.fK_VotingStatus_ID === 1) {
-              console.log(data.fK_VotingStatus_ID, "checkvote");
-
               return (
                 <span className="d-flex justify-content-center">
                   <img src={thumbsup} />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 2) {
-              console.log(data.fK_VotingStatus_ID, "checkvote");
               return (
                 <span className="d-flex justify-content-center">
                   <img src={thumbsdown} />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 3) {
-              console.log(data.fK_VotingStatus_ID, "checkvote");
               return <p className="text-center"></p>;
             } else if (data.fK_VotingStatus_ID === 4) {
-              console.log(data.fK_VotingStatus_ID, "checkvote");
-
               return (
                 <span className="d-flex justify-content-center">
                   <img src={AbstainvoterIcon} />
@@ -910,7 +873,6 @@ const Resolution = () => {
         } else {
           <span className={styles["decision_text"]}>{text}</span>;
         }
-        //  return <span>{text}</span>
       },
     },
   ];
@@ -946,7 +908,6 @@ const Resolution = () => {
 
   // change resoltion moderator pagination
   const handleChangeResolutionPagination = async (current, pageSize) => {
-    console.log(current, pageSize, "handleChangeResolutionPagination");
     await localStorage.setItem("moderatorPage", current);
     await localStorage.setItem("moderatorRows", pageSize);
     if (buttonTab !== null && buttonTab === 3) {
@@ -1009,7 +970,6 @@ const Resolution = () => {
   // moderator resolution state manage
   useEffect(() => {
     if (ResolutionReducer.GetResolutions !== null) {
-      // setCurrentPage(ResolutionReducer.GetResolutions.pageNumbers)
       setTotalResolution(ResolutionReducer.GetResolutions.totalRecords);
       setRows(ResolutionReducer.GetResolutions.resolutionTable);
     } else {
@@ -1382,6 +1342,7 @@ const Resolution = () => {
                         className="Resolution_table"
                         scroll={{ y: "53vh" }}
                         pagination={false}
+
                         loading={{
                           indicator: (
                             <div className={styles["resolution_spinner"]}>
@@ -1405,6 +1366,10 @@ const Resolution = () => {
                             defaultPageSize={
                               voterRows !== null ? voterRows : 50
                             }
+                            locale={{
+                              items_per_page: t("items_per_page"),
+                              page: t("page"),
+                            }}
                             showSizeChanger
                             pageSizeOptions={["30", "50", "100", "200"]}
                             className={styles["PaginationStyle-Resolution"]}

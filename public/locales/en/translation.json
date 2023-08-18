@@ -780,7 +780,7 @@
   "Committee-description-is-required": "Committee description is required",
   "Committee-title-is-required": "Committee title is required",
   "Committee-participants-is-required": "Committee participants is required",
-  "Please-select-group-member-type-also": "Please select group member type also",
+  "Please-select-group-member-type-also": "Please select group member type",
   "No-group-heads-found": "No group head found",
   "No-group-memebers-found": "No group member found",
   "Search-results": "Search Results",
@@ -873,7 +873,7 @@
   "Rename": "Rename",
   "Cancel-download": "Cancel Download",
   "Continue-download": "Continue download",
-  "File-already-exisit": "File already exisit",
+  "File-already-exists": "File already exists",
   "Show-search-options": "Show Search Options",
   "Photos": " Photos",
   "Custome-range": "Custome Range",
@@ -1258,5 +1258,6 @@
   "Calendar-months-span": "Calendar Months Span",
   "Auto-close-resolution": "Auto Close Resolution",
   "More": "More",
-  "Enter-date-must": "Please select date"
+  "Enter-date-must": "Please select date",
+  "Please-add-atleast-one-group-head": "Please add atleast one group head"
 }

@@ -259,15 +259,11 @@ body[dir="rtl"] .Backward_button_viewresolution {
 .CloseButton_ViewResolution {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: #fff !important;
+  background: #6172d6 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
   margin-top: 20px !important;
-}
-
-body[dir="rtl"] .CloseButton_ViewResolution {
-  font-family: "IBMPlexSansArabic-Regular" !important;
 }
 
 .CloseButton_ViewResolution:hover,
@@ -276,10 +272,11 @@ body[dir="rtl"] .CloseButton_ViewResolution {
 .CloseButton_ViewResolution:focus-visible {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  background: #fff !important;
+  background: #6172d6 !important;
   color: #5a5a5a !important;
   border-radius: 4px !important;
   border: 1px solid #d4d4d4 !important;
+  margin-top: 20px !important;
 }
 
 .View_resolution_tag_box {
