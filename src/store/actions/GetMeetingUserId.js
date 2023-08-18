@@ -6,7 +6,7 @@ import {
   searchMeetingId,
   getWeekMeetings,
   upcomingEvents,
-  searchUserMeetings
+  searchUserMeetings,
 } from "../../commen/apis/Api_config";
 import axios from "axios";
 
@@ -87,17 +87,17 @@ const getMeetingStatusfromSocket = (response) => {
 const meetingCount = (response) => {
   return {
     type: actions.RECENT_MEETINGCOUNTER,
-    response: response
-  }
-}
+    response: response,
+  };
+};
 const setMQTTRequestUpcomingEvents = (response) => {
-  console.log("NEW_UPCOMING123", response)
+  console.log("NEW_UPCOMING123", response);
 
   return {
     type: actions.UPCOMINGEVENTS_MQTT,
-    response: response
-  }
-}
+    response: response,
+  };
+};
 const getMeetingUserId = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
@@ -140,7 +140,7 @@ const getMeetingUserId = (navigate, data, t) => {
                   "Meeting_MeetingServiceManager_GetMeetingsByUserID_02".toLowerCase()
                 )
             ) {
-              dispatch(getMeetingIdFail(t("No-records-found")));
+              dispatch(getMeetingIdFail(t("No-record-found")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -212,7 +212,7 @@ const searchMeetingUserId = (navigate, data, t) => {
                   "Meeting_MeetingServiceManager_SearchMeetings_02".toLowerCase()
                 )
             ) {
-              await dispatch(getMeetingIdFail(t("No-records-found")));
+              await dispatch(getMeetingIdFail(t("No-record-found")));
               dispatch(updateSearchResponse());
               dispatch(SetLoaderFalse());
             } else if (
@@ -430,45 +430,52 @@ const GetUpcomingEvents = (navigate, data, t) => {
   };
 };
 
-
 // Search Meeting Init
 const SearchMeeting_Init = () => {
   return {
-    type: actions.SEARCH_USER_MEETINGS_INIT
-  }
-}
+    type: actions.SEARCH_USER_MEETINGS_INIT,
+  };
+};
 // Search Meeting Init
 const SearchMeeting_Success = (response, message) => {
   return {
     type: actions.SEARCH_USER_MEETINGS_SUCCESS,
     response: response,
-    message: message
-  }
-}
+    message: message,
+  };
+};
 // Search Meeting Init
 const SearchMeeting_Fail = (message) => {
   return {
     type: actions.SEARCH_USER_MEETINGS_FAIL,
-    message: message
-  }
-}
+    message: message,
+  };
+};
 
 const searchUserMeeting = (navigate, searchData, t) => {
-  console.log(searchData, "searchData")
+  console.log(searchData, "searchData");
   let token = JSON.parse(localStorage.getItem("token"));
-  let userID = JSON.parse(localStorage.getItem("userID"))
-  let meetingpageRow = JSON.parse(localStorage.getItem("MeetingPageRows"))
-  let meetingPageCurrent = JSON.parse(localStorage.getItem("MeetingPageCurrent"))
+  let userID = JSON.parse(localStorage.getItem("userID"));
+  let meetingpageRow = JSON.parse(localStorage.getItem("MeetingPageRows"));
+  let meetingPageCurrent = JSON.parse(
+    localStorage.getItem("MeetingPageCurrent")
+  );
   let Data = {
     Date: searchData?.Date !== "" ? searchData?.Date : "",
     Title: searchData?.Title !== "" ? searchData?.Title : "",
     HostName: searchData?.HostName !== "" ? searchData?.HostName : "",
     UserID: userID,
-    PageNumber: meetingPageCurrent !== null && meetingPageCurrent !== undefined ? meetingPageCurrent : 1,
-    Length: meetingpageRow !== null && meetingpageRow !== undefined ? meetingpageRow : 50
-  }
+    PageNumber:
+      meetingPageCurrent !== null && meetingPageCurrent !== undefined
+        ? meetingPageCurrent
+        : 1,
+    Length:
+      meetingpageRow !== null && meetingpageRow !== undefined
+        ? meetingpageRow
+        : 50,
+  };
   return (dispatch) => {
-    dispatch(SearchMeeting_Init())
+    dispatch(SearchMeeting_Init());
     let form = new FormData();
     form.append("RequestMethod", searchUserMeetings.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -481,33 +488,56 @@ const searchUserMeeting = (navigate, searchData, t) => {
       },
     })
       .then(async (response) => {
-        console.log(response, "responseresponseresponse")
+        console.log(response, "responseresponseresponse");
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(searchUserMeeting(navigate, searchData, t))
+          dispatch(searchUserMeeting(navigate, searchData, t));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            if (response.data.responseResult.responseMessage.toLowerCase().includes("Meeting_MeetingServiceManager_SearchMeetings_01".toLowerCase())) {
-              dispatch(SearchMeeting_Success(response.data.responseResult, t("Record-found")))
-            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Meeting_MeetingServiceManager_SearchMeetings_02".toLowerCase())) {
-              dispatch(SearchMeeting_Fail(t("No-record-found")))
-            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Meeting_MeetingServiceManager_SearchMeetings_03".toLowerCase())) {
-              dispatch(SearchMeeting_Fail(t("Something-went-wrong")))
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SearchMeetings_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                SearchMeeting_Success(
+                  response.data.responseResult,
+                  t("Record-found")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SearchMeetings_02".toLowerCase()
+                )
+            ) {
+              dispatch(SearchMeeting_Fail(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Meeting_MeetingServiceManager_SearchMeetings_03".toLowerCase()
+                )
+            ) {
+              dispatch(SearchMeeting_Fail(t("Something-went-wrong")));
             } else {
-              dispatch(SearchMeeting_Fail(t("Something-went-wrong")))
+              dispatch(SearchMeeting_Fail(t("Something-went-wrong")));
             }
           } else {
-            dispatch(SearchMeeting_Fail(t("Something-went-wrong")))
+            dispatch(SearchMeeting_Fail(t("Something-went-wrong")));
           }
         } else {
-          dispatch(SearchMeeting_Fail(t("Something-went-wrong")))
+          dispatch(SearchMeeting_Fail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        dispatch(SearchMeeting_Fail(t("Something-went-wrong")))
+        dispatch(SearchMeeting_Fail(t("Something-went-wrong")));
       });
   };
-}
+};
 const HideNotificationMeetings = () => {
   return {
     type: actions.HIDE,
