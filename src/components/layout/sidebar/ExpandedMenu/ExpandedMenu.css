@@ -1,5 +1,5 @@
 .Meeting_Side_bar_Tag {
-  font-size: 8px !important;
+  font-size: 10px !important;
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold" !important;
 }
@@ -9,7 +9,7 @@
 }
 
 .Meeting_Side_bar_Tag_active {
-  font-size: 7px !important;
+  font-size: 9px !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
 }
@@ -36,4 +36,8 @@ a.m-0.p-0.icon-active-sidebar_expand.nav-link span {
 
 a.icon-active-sidebar_expand.nav-link:hover span {
   color: #505050 !important;
+}
+
+.pollsHeading {
+  margin-top: 1px !important;
 }

@@ -1228,5 +1228,7 @@
   "Email-Messages": "Email Messages",
   "Please-fill-all-open-option-fields": "Please fill all open option fields",
   "More": "More",
-  "Enter-date-must": "Please select date"
+  "Enter-date-must": "Please select date",
+  "Advanced-permission-settings": "Advanced Permission Settings",
+  "Show": "Show"
 }

@@ -1259,5 +1259,7 @@
   "Auto-close-resolution": "Auto Close Resolution",
   "More": "More",
   "Enter-date-must": "Please select date",
-  "Please-add-atleast-one-group-head": "Please add atleast one group head"
+  "Please-add-atleast-one-group-head": "Please add atleast one group head",
+  "Advanced-permission-settings": "Advanced Permission Settings",
+  "Show": "Show"
 }

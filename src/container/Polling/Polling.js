@@ -777,22 +777,32 @@ const Polling = () => {
             />
           </Col>
         </Row>
-        <Row className="mt-3">
-          <Col className="pagination-groups-table d-flex justify-content-center">
-            <Pagination
-              className={styles["PaginationStyle-Meeting"]}
-              pageSize={currentPageSize !== null ? currentPageSize : 50}
-              showSizeChanger
-              onChange={handleChangePagination}
-              pageSizeOptions={["30", "50", "100", "200"]}
-              current={currentPage !== null ? currentPage : 1}
-              locale={{
-                items_per_page: t("items_per_page"),
-                page: t("page"),
-              }}
-              total={isTotalRecords}
-            />
+        <Row className="">
+          <Col lg={4} md={4} sm={4}></Col>
+          <Col lg={4} md={4} sm={4} className="d-flex justify-content-center">
+            <Row className={styles["PaginationStyle-Committee"]}>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className={"pagination-groups-table"}
+              >
+                <Pagination
+                  pageSize={currentPageSize !== null ? currentPageSize : 50}
+                  showSizeChanger
+                  onChange={handleChangePagination}
+                  pageSizeOptions={["30", "50", "100", "200"]}
+                  current={currentPage !== null ? currentPage : 1}
+                  locale={{
+                    items_per_page: t("items_per_page"),
+                    page: t("page"),
+                  }}
+                  total={isTotalRecords}
+                />
+              </Col>
+            </Row>
           </Col>
+          <Col lg={4} md={4} sm={4}></Col>
         </Row>
       </section>
       {PollsReducer.createPollmodal && <CreatePolling />}

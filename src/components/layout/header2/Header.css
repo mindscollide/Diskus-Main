@@ -405,12 +405,16 @@ body[dir="rtl"] .user-name {
 }
 
 .dropdown-menu.show {
-  width: 231px !;
   width: 231px;
   position: absolute;
   left: -181px;
   top: 22px;
   border-radius: 4px;
+}
+.profilebtn-dropdown .dropdown-toggle .dropdown_menu.dropdown-menu.show {
+  left: 0 !important;
+  top: 0 !important;
+  position: absolute;
 }
 
 body[dir="rtl"] .dropdown-menu.show {
@@ -613,4 +617,9 @@ body[dir="rtl"] .header2-container {
   color: #505050 !important;
   font-size: 12px !important;
   font-family: "MontserratSemiBold" !important;
+}
+.dropdown_menu_admin {
+  left: 0 !important;
+  width: 100% !important;
+  top: 23px !important;
 }
