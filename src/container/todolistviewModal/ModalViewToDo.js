@@ -612,7 +612,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                 </Col>
               </Row>
               <Row>
-                <Col className="d-flex justify-content-end" sm={12} md={12} lg={12}><Button className={"cancelButton_createTodo"} text="Close" /></Col>
+                <Col className="d-flex justify-content-end" sm={12} md={12} lg={12}><Button className={"cancelButton_createTodo"} onClick={() => setViewFlagToDo(false)} text="Close" /></Col>
               </Row>
             </>
           }

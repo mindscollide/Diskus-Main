@@ -5868,7 +5868,7 @@ input::-webkit-calendar-picker-indicator {
 }
 
 .select_dormant-days__control {
-  width: 120px !important;
+  width: 100% !important;
   max-width: 100% !important;
 }
 

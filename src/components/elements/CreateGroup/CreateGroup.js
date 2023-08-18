@@ -456,10 +456,10 @@ const CreateGroup = ({ setCreategrouppage }) => {
 
   const checkGroupMembers = (GroupMembers) => {
     if (Object.keys(GroupMembers).length > 0) {
-      let flag1 = GroupMembers.find((data, index) => data.FK_GRMRID === 1);
+      // let flag1 = GroupMembers.find((data, index) => data.FK_GRMRID === 1);
       let flag2 = GroupMembers.find((data, index) => data.FK_GRMRID === 2);
 
-      if (flag1 != undefined && flag2 != undefined) {
+      if (flag2 != undefined) {
         return true;
       } else {
         return false;
@@ -476,38 +476,31 @@ const CreateGroup = ({ setCreategrouppage }) => {
       createGroupDetails.GroupTypeID !== 0 &&
       createGroupDetails.CreatorID !== 0
     ) {
-      if (Object.keys(createGroupDetails.GroupMembers).length === 0) {
+      if (!checkGroupMembers(createGroupDetails.GroupMembers)) {
         setOpen({
           flag: true,
-          message: t("Please-add-atleast-one-group-head-and-one-group-member"),
+          message: t(
+            "Please-add-atleast-one-group-head"
+          ),
         });
-      } else {
-        if (!checkGroupMembers(createGroupDetails.GroupMembers)) {
-          setOpen({
-            flag: true,
-            message: t(
-              "Please-add-atleast-one-group-head-and-one-group-member"
-            ),
-          });
 
-        } else {
-          setErrorBar(false);
-          let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
-          let Data = {
-            GroupDetails: {
-              CreatorID: createGroupDetails.CreatorID,
-              title: createGroupDetails.Title,
-              Description: createGroupDetails.Description,
-              FK_GRTID: createGroupDetails.GroupTypeID,
-              FK_GRSID: 1,
-              IsTalk: createGroupDetails.isGroupChat,
-              OrganizationID: OrganizationID,
-            },
-            GroupMembers: meetingAttendees,
-          };
-          console.log("createGroupecheck", Data)
-          dispatch(createGroup(navigate, Data, t, setCreategrouppage));
-        }
+      } else {
+        setErrorBar(false);
+        let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
+        let Data = {
+          GroupDetails: {
+            CreatorID: createGroupDetails.CreatorID,
+            title: createGroupDetails.Title,
+            Description: createGroupDetails.Description,
+            FK_GRTID: createGroupDetails.GroupTypeID,
+            FK_GRSID: 1,
+            IsTalk: createGroupDetails.isGroupChat,
+            OrganizationID: OrganizationID,
+          },
+          GroupMembers: meetingAttendees,
+        };
+        console.log("createGroupecheck", Data)
+        dispatch(createGroup(navigate, Data, t, setCreategrouppage));
       }
     } else {
       setErrorBar(true);
