@@ -929,30 +929,48 @@ const TodoList = () => {
                   </Paper>
                 )}
                 {rowsToDo.length > 0 && (
-                  <section className="pagination-groups-table d-flex justify-content-center my-3">
-                    <Pagination
-                      onChange={paginationChangeHandlerTodo}
-                      className="PaginationStyle-Meeting"
-                      current={
-                        todoListCurrentPage !== null &&
-                        todoListCurrentPage !== undefined
-                          ? todoListCurrentPage
-                          : 1
-                      }
-                      total={totalRecords}
-                      locale={{
-                        items_per_page: t("items_per_page"),
-                        page: t("page"),
-                      }}
-                      pageSizeOptions={["30", "50", "100", "200"]}
-                      pageSize={
-                        todoListPageSize !== null &&
-                        todoListPageSize !== undefined
-                          ? todoListPageSize
-                          : 50
-                      }
-                    />
-                  </section>
+                  <Row className="">
+                    <Col lg={4} md={4} sm={4}></Col>
+                    <Col
+                      lg={4}
+                      md={4}
+                      sm={4}
+                      className="d-flex justify-content-center"
+                    >
+                      <Row className="PaginationStyle-Committee">
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={"pagination-groups-table"}
+                        >
+                          <Pagination
+                            onChange={paginationChangeHandlerTodo}
+                            className="PaginationStyle-Meeting"
+                            current={
+                              todoListCurrentPage !== null &&
+                              todoListCurrentPage !== undefined
+                                ? todoListCurrentPage
+                                : 1
+                            }
+                            total={totalRecords}
+                            locale={{
+                              items_per_page: t("items_per_page"),
+                              page: t("page"),
+                            }}
+                            pageSizeOptions={["30", "50", "100", "200"]}
+                            pageSize={
+                              todoListPageSize !== null &&
+                              todoListPageSize !== undefined
+                                ? todoListPageSize
+                                : 50
+                            }
+                          />
+                        </Col>
+                      </Row>
+                    </Col>
+                    <Col lg={4} md={4} sm={4}></Col>
+                  </Row>
                 )}
               </Col>
             </Row>
