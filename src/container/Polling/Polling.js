@@ -788,7 +788,6 @@ const Polling = () => {
                 className={"pagination-groups-table"}
               >
                 <Pagination
-                  className={styles["PaginationStyle-Meeting"]}
                   pageSize={currentPageSize !== null ? currentPageSize : 50}
                   showSizeChanger
                   onChange={handleChangePagination}
