@@ -819,6 +819,7 @@ const EditResolution = ({
         if (id === 2 && Object.keys(voters).length <= 0) {
           setError(true);
           setVoter(true)
+          setNonVoter(false)
         } else {
           setResolutionupdate(false);
           setResolutionCirculate(true);

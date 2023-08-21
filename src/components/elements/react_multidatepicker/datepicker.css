@@ -1,0 +1,33 @@
+/* .datePicker_createTodo {
+                                             width: 100% !important;
+                                             margin-left: 15px !important;
+                                             height: 39px !important;
+                                             border: 1px solid #e1e1e1 !important;
+                                             border-radius: 4px !important;
+                                             font-size: 12px !important;
+                                             display: flex !important;
+                                             justify-content: center !important;
+                                             align-items: center !important;
+                                             padding: 0 10px !important;
+} */
+.datePicker_createTodo {
+                                             max-width: 100% !important;
+                                             width: 100% !important;
+                                             height: 39px !important;
+                                             border: 1px solid #e1e1e1 !important;
+                                             display: flex !important;
+                                             justify-content: center !important;
+                                             align-items: center !important;
+                                             border-radius: 4px !important;
+                                             background: #fff !important;
+                                             color: #000 !important;
+                                             margin-left: 15px !important;
+}
+
+.datePicker_Value {
+                                             color: #000 !important;
+}
+
+.datePicker_createTodo svg {
+                                             right: auto !important
+}

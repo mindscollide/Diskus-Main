@@ -432,6 +432,7 @@ body[dir="rtl"] .CheckBoxalign {
   height: 7px;
   color: #f16b6b;
   visibility: visible !important;
+  white-space: nowrap;
 }
 
 body[dir="rtl"] .errorMessage {

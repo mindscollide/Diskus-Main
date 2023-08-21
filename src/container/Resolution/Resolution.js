@@ -451,8 +451,18 @@ const Resolution = () => {
           } else {
             return "";
           }
-        } else {
-          return "";
+        } else if (data.resolutionStatus === "Closed") {
+          if (votingDeadline < newDate) {
+            return (
+              <img
+                src={ResultResolutionIcon}
+                onClick={() => getResultHandle(data.resolutionID)}
+                className={styles["Result_icon"]}
+              />
+            );
+          }
+
+
         }
 
       },

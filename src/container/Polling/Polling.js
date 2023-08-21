@@ -144,7 +144,7 @@ const Polling = () => {
         console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
         setRows([]);
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [PollsReducer.SearchPolls]);
   console.log("PollsReducerPollsReducer", rows);
 
@@ -605,7 +605,7 @@ const Polling = () => {
     if (
       PollsReducer.ResponseMessage !== "" &&
       PollsReducer.ResponseMessage !== t("Record-found") &&
-      PollsReducer.ResponseMessage !== t("No-record-found") &&
+      PollsReducer.ResponseMessage !== t("No-records-found") &&
       PollsReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({
