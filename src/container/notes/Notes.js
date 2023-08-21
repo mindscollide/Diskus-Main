@@ -63,7 +63,7 @@ const Notes = () => {
   const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
-  let notesPage = parseInt(localStorage.getItem("notesPage"))
+  let notesPage = JSON.parse(localStorage.getItem("notesPage"))
   let notesPagesize = localStorage.getItem("notesPageSize")
   const [totalRecords, setTotalRecords] = useState(0)
   // for modal Add notes
@@ -546,10 +546,11 @@ const Notes = () => {
                 items_per_page: t('items_per_page'),
                 page: t('page')
               }} /> */}
-            <Pagination current={notesPage !== null ? notesPage : 1} locale={{
+            {notes !== null && notes !== undefined && notes.length > 0 ? <Pagination current={notesPage !== null && notesPage !== undefined ? notesPage : 1} locale={{
               items_per_page: t('items_per_page'),
               page: t('page')
-            }} onChange={handelChangeNotesPagination} showSizeChanger total={totalRecords} pageSizeOptions={["30", "50", "100", "200"]} pageSize={notesPagesize !== null ? notesPagesize : 50} className={styles["PaginationStyle-Notes"]} />
+            }} onChange={handelChangeNotesPagination} showSizeChanger total={totalRecords} pageSizeOptions={["30", "50", "100", "200"]} pageSize={notesPagesize !== null ? notesPagesize : 50} className={styles["PaginationStyle-Notes"]} /> : null}
+
           </Col>
         </Row>
         {/* Test Accordian Ends  */}
