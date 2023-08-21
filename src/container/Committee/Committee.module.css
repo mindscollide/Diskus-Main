@@ -187,7 +187,7 @@ body[dir="rtl"] .Two-Icons-style-Committee-Group {
 }
 
 body[dir="rtl"] .PaginationStyle-Committee {
-  width: 100% !important;
+  width: auto !important;
   padding: 12px 10px !important;
 }
 

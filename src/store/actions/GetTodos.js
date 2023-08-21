@@ -162,14 +162,12 @@ const updateTodoStatusFunc = (navigate, value, data, t, flag) => {
                   )
                 );
               }
-              if (flag === false) {
-                let data2 = {
-                  Date: "",
-                  Title: "",
-                  AssignedToName: "",
-                };
-                dispatch(SearchTodoListApi(navigate, data2, meetingPage, meetingRow, t));
-              }
+              let data2 = {
+                Date: "",
+                Title: "",
+                AssignedToName: "",
+              };
+              dispatch(SearchTodoListApi(navigate, data2, meetingPage, meetingRow, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

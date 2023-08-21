@@ -7,6 +7,7 @@ import {
   TextField,
   Loader,
   Notification,
+  Paper,
 } from "../../components/elements";
 import { Pagination, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
@@ -27,6 +28,7 @@ import Votepoll from "./VotePoll/Votepoll";
 import UpdateSecond from "./UpdateSecond/UpdateSecond";
 import { enGB, ar } from "date-fns/locale";
 import { useDispatch, useSelector } from "react-redux";
+import PollsEmpty from '../../assets/images/Poll_emptyState.svg'
 import {
   LoaderState,
   castVoteApi,
@@ -768,19 +770,26 @@ const Polling = () => {
         </Row>
         <Row>
           <Col sm={12} md={12} lg={12}>
-            <Table
+            {rows.length > 0 ? <Table
               column={PollTableColumns}
-              scroll={{ y: "62vh" }}
+              scroll={{ y: "65vh" }}
               pagination={false}
               className="Polling_table"
               rows={rows}
-            />
+            /> : <Paper className={styles["Poll_emptyState"]}><Row>
+              <Col sm={12} md={12} lg={12} className="d-flex justify-content-center align-items-center flex-column">
+
+                <img src={PollsEmpty} alt="poll_icon" />
+                <span className={styles["No_Poll_Heading"]}>{t("No-polls")}</span>
+                <span className={styles["No_Poll_Text"]}>{t("Be-the-first-to-create-a-poll-and-spark-the-conversation")}</span>
+              </Col></Row></Paper>}
+
           </Col>
         </Row>
         <Row className="">
           <Col lg={4} md={4} sm={4}></Col>
           <Col lg={4} md={4} sm={4} className="d-flex justify-content-center">
-            <Row className={styles["PaginationStyle-Committee"]}>
+            {rows.length > 0 && <Row className={styles["PaginationStyle-Committee"]}>
               <Col
                 lg={12}
                 md={12}
@@ -800,7 +809,8 @@ const Polling = () => {
                   total={isTotalRecords}
                 />
               </Col>
-            </Row>
+            </Row>}
+
           </Col>
           <Col lg={4} md={4} sm={4}></Col>
         </Row>

@@ -242,6 +242,7 @@ body[dir="rtl"] .PaginationStyle-Meeting {
 }
 
 .PaginationStyle-Committee {
+  margin-top: 5px !important;
   background-color: #fff !important;
   width: auto !important;
   display: flex !important;
@@ -250,11 +251,34 @@ body[dir="rtl"] .PaginationStyle-Meeting {
   height: 54px !important;
   box-shadow: 0px 0px 5px #ccc !important;
   border-radius: 4px !important;
-  position: fixed !important;
+  /* position: fixed !important; */
   bottom: 20px !important;
 }
 
 body[dir="rtl"] .PaginationStyle-Committee {
   width: auto !important;
   padding: 8px 10px !important;
+}
+
+.Poll_emptyState {
+  min-height: 75vh !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column !important;
+  border: 1px solid #e1e1e1 !important;
+  margin-bottom: 10px;
+}
+
+.No_Poll_Heading {
+  margin-top: 50px !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 30px !important;
+  color: #5a5a5a !important;
+}
+
+.No_Poll_Text {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
 }
