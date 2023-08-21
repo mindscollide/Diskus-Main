@@ -140,7 +140,7 @@ const getMeetingUserId = (navigate, data, t) => {
                   "Meeting_MeetingServiceManager_GetMeetingsByUserID_02".toLowerCase()
                 )
             ) {
-              dispatch(getMeetingIdFail(t("No-record-found")));
+              dispatch(getMeetingIdFail(t("No-records-found")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -212,7 +212,7 @@ const searchMeetingUserId = (navigate, data, t) => {
                   "Meeting_MeetingServiceManager_SearchMeetings_02".toLowerCase()
                 )
             ) {
-              await dispatch(getMeetingIdFail(t("No-record-found")));
+              await dispatch(getMeetingIdFail(t("No-records-found")));
               dispatch(updateSearchResponse());
               dispatch(SetLoaderFalse());
             } else if (
@@ -514,7 +514,7 @@ const searchUserMeeting = (navigate, searchData, t) => {
                   "Meeting_MeetingServiceManager_SearchMeetings_02".toLowerCase()
                 )
             ) {
-              dispatch(SearchMeeting_Fail(t("No-record-found")));
+              dispatch(SearchMeeting_Fail(t("No-records-found")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

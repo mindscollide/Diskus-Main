@@ -1083,7 +1083,7 @@ const getVoterResolution_fail = (message) => {
     message: message,
   };
 };
-const getVoterResolution = (navigate, id, t) => {
+const getVoterResolution = (navigate, id, t, title, circulationDate, votingDateLine) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
   let voterPage = JSON.parse(localStorage.getItem("voterPage"));
@@ -1091,7 +1091,9 @@ const getVoterResolution = (navigate, id, t) => {
   let Data = {
     FK_UID: userID,
     ResolutionStatus: JSON.parse(id),
-    Title: "",
+    Title: title !== null && title !== undefined ? title : "",
+    CirculationDate: circulationDate !== null && circulationDate !== undefined ? circulationDate : "",
+    VotingDeadlineDate: votingDateLine !== null && votingDateLine !== undefined ? votingDateLine : "",
     PageNumber: voterPage !== null ? voterPage : 1,
     Length: voterRows !== null ? voterRows : 50,
   };

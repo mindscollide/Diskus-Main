@@ -179,7 +179,7 @@ const Meeting = () => {
     }
   }, [MeetingStatusSocket]);
 
-  useEffect(() => {}, [rows]);
+  useEffect(() => { }, [rows]);
 
   useEffect(() => {
     if (
@@ -274,7 +274,7 @@ const Meeting = () => {
           return false;
         }
       });
-    } catch (e) {}
+    } catch (e) { }
   };
 
   const columns = [
@@ -553,7 +553,7 @@ const Meeting = () => {
     if (
       meetingIdReducer.ResponseMessage !== "" &&
       meetingIdReducer.ResponseMessage !== t("Record-found") &&
-      meetingIdReducer.ResponseMessage !== t("No-record-found")
+      meetingIdReducer.ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -572,7 +572,7 @@ const Meeting = () => {
     } else if (
       assignees.ResponseMessage !== "" &&
       assignees.ResponseMessage !== t("Record-found") &&
-      assignees.ResponseMessage !== t("No-record-found")
+      assignees.ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -599,9 +599,9 @@ const Meeting = () => {
     if (
       minuteofMeetingReducer.AddMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.AddMeetingofMinutesMessage !=
-        t("The-record-has-been-saved-successfully") &&
+      t("The-record-has-been-saved-successfully") &&
       minuteofMeetingReducer.AddMeetingofMinutesMessage !==
-        t("No-records-found")
+      t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -620,9 +620,9 @@ const Meeting = () => {
     } else if (
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage !=
-        t("The-record-has-been-saved-successfully") &&
+      t("The-record-has-been-saved-successfully") &&
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage !==
-        t("No-records-found")
+      t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -641,7 +641,7 @@ const Meeting = () => {
     } else if (
       minuteofMeetingReducer.ResponseMessage != "" &&
       assignees.ResponseMessage !=
-        t("The-record-has-been-saved-successfully") &&
+      t("The-record-has-been-saved-successfully") &&
       minuteofMeetingReducer.ResponseMessage !== t("No-records-found") &&
       assignees.ResponseMessage !== t("No-records-found")
     ) {
@@ -1080,7 +1080,7 @@ const Meeting = () => {
                 }}
                 pageSizeOptions={["30", "50", "100", "200"]}
                 total={totalRecords}
-                // onShowSizeChange={handlePageSizeChange}
+              // onShowSizeChange={handlePageSizeChange}
               />
             </Col>
           </Row>
@@ -1098,9 +1098,9 @@ const Meeting = () => {
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
 
       {meetingIdReducer.Loading ||
-      assignees.Loading ||
-      uploadReducer.Loading ||
-      minuteofMeetingReducer.Loading ? (
+        assignees.Loading ||
+        uploadReducer.Loading ||
+        minuteofMeetingReducer.Loading ? (
         <Loader />
       ) : null}
     </>

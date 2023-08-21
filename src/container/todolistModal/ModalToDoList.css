@@ -60,14 +60,15 @@
 }
 
 .bodytodoCreateModal {
-  height: 470px !important;
+  max-height: 470px !important;
+  height: auto;
   overflow-y: auto;
   overflow-x: hidden !important;
   margin: 0 15px;
 }
 
 .todoModalCreateModal {
-  width: 500px !important;
+  max-width: 500px !important;
   display: flex;
   overflow-x: auto;
   overflow-y: hidden;
@@ -163,6 +164,12 @@ body[dir="rtl"] .footertodoCreateModal {
 }  */
 .modaldialogTodoCreate {
   --bs-modal-margin: 0px !important;
+
+}
+
+.modaldialogTodoCreate .modal-dialog {
+  max-width: 600px !important;
+  width: auto !important;
 }
 
 body[dir="rtl"] .ArabicFontSemiBold {

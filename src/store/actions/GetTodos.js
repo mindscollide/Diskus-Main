@@ -84,7 +84,7 @@ const getTodoStatus = (navigate, t) => {
                   "ToDoList_ToDoListServiceManager_GetAllTodoStatus_02".toLowerCase()
                 )
             ) {
-              await dispatch(getTodoStatusFail(t("No-record-found")));
+              await dispatch(getTodoStatusFail(t("No-records-found")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

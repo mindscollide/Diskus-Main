@@ -179,6 +179,7 @@ const TwoFactor = () => {
                         <Form.Check
                           type="radio"
                           name="TwoFactor"
+                          className="cursor-pointer"
                           onChange={onChangeHandlerTwoFactor}
                         />
                       </Col>
@@ -216,6 +217,7 @@ const TwoFactor = () => {
                         <Form.Check
                           type="radio"
                           name="TwoFactor"
+                          className="cursor-pointer"
                           onChange={onChangeHandlerSendEmail}
                         />
                       </Col>
