@@ -18,6 +18,15 @@
   background-color: #ccc;
 }
 
+.Bottom_line_names {
+  width: 100% !important;
+  height: 1px !important;
+  display: block;
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #ccc;
+}
+
 /* sidebar styling  */
 .sidebar-row {
   margin: 0% !important;
@@ -158,4 +167,74 @@ aside.ant-layout-sider.ant-layout-sider-dark {
   color: #5f78d6 !important;
   font-size: 20px !important;
   font-family: "MontserratSemiBold" !important;
+  margin-right: 20% !important;
+}
+
+.All_Heading_Advance_permission {
+  color: #5f78d6 !important;
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Names_advance_permission {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.ant-layout {
+  background: none !important;
+}
+
+.OverAll_padding {
+  padding: 0px 26px !important;
+}
+
+.Cancel_Button {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+.Cancel_Button:hover,
+.Cancel_Button:active,
+.Cancel_Button:focus,
+.Cancel_Button:focus-visible {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+.Save_Button {
+  padding: 12px 30px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+}
+
+.Save_Button:hover,
+.Save_Button:active,
+.Save_Button:focus,
+.Save_Button:focus-visible {
+  padding: 12px 30px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+}
+
+.AdvancePermission_switches {
+  margin-left: 20px !important;
+}
+.AdvancePermission_switches_View {
+  margin-left: 11px !important;
 }

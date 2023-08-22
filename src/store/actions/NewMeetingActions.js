@@ -63,6 +63,20 @@ const showAdvancePermissionModal = (response) => {
   };
 };
 
+const showAdvancePermissionConfirmation = (response) => {
+  return {
+    type: actions.ADVANCE_PERMISSION_CONFIRMATION,
+    response: response,
+  };
+};
+
+const showVoteAgendaModal = (response) => {
+  return {
+    type: actions.VOTE_AGENDA_MODAL,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -73,4 +87,6 @@ export {
   showAgenItemsRemovedModal,
   showMainAgendaItemRemovedModal,
   showAdvancePermissionModal,
+  showAdvancePermissionConfirmation,
+  showVoteAgendaModal,
 };

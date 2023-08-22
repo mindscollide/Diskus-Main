@@ -1267,5 +1267,15 @@
   "Email-when-committee-is-active": "Email When Committee is Active",
   "Push-notification-when-committee-is-active": "Push Notification When Committee is Active",
   "Be-the-first-to-create-a-poll-and-spark-the-conversation": "Be the first to create a poll and spark the conversation!",
-  "No-polls": "No Polls"
+  "No-polls": "No Polls",
+  "View": "View",
+  "Modify": "Modify",
+  "Any-unsaved-changes-will": "Any unsaved changes will",
+  "Be-lost-continue": "be lost. Continue?",
+  "Add-vote-item": "Add Vote Item",
+  "Voting": "Voting",
+  "Vote-question": "Vote Question",
+  "Vote-answer": "Vote Answer",
+  "Allow-the-following-individual-to-open/close-voting": "Allow the following individual to open/close voting",
+  "Results-viewing-option-in-member-portal": "Results Viewing option in member portal"
 }

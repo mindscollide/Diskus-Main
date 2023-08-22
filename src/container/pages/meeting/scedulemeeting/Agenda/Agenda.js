@@ -33,9 +33,13 @@ import {
   showAdvancePermissionModal,
   showAgenItemsRemovedModal,
   showMainAgendaItemRemovedModal,
+  showVoteAgendaModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved";
 import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmissionModal";
+import PermissionConfirmation from "./AdvancePermissionModal/PermissionConfirmModal/PermissionConfirmation";
+import VoteModal from "./VoteModal/VoteModal";
+
 const Agenda = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -195,6 +199,10 @@ const Agenda = () => {
     dispatch(showAdvancePermissionModal(true));
   };
 
+  const openVoteMOdal = () => {
+    dispatch(showVoteAgendaModal(true));
+  };
+
   console.log(rows, "rowsrowsrowsrowsrowsrows");
   return (
     <>
@@ -339,6 +347,7 @@ const Agenda = () => {
                                         src={Cast}
                                         width="25.85px"
                                         height="25.89px"
+                                        onClick={openVoteMOdal}
                                       />
                                       <img
                                         src={Lock}
@@ -726,6 +735,7 @@ const Agenda = () => {
                                                       src={Cast}
                                                       width="25.85px"
                                                       height="25.89px"
+                                                      onClick={openVoteMOdal}
                                                     />
                                                     <img
                                                       src={Lock}
@@ -1192,6 +1202,7 @@ const Agenda = () => {
                                         src={Cast}
                                         width="25.85px"
                                         height="25.89px"
+                                        onClick={openVoteMOdal}
                                       />
                                       <img
                                         src={Lock}
@@ -1569,6 +1580,7 @@ const Agenda = () => {
                                                       src={Cast}
                                                       width="25.85px"
                                                       height="25.89px"
+                                                      onClick={openVoteMOdal}
                                                     />
                                                     <img
                                                       src={Lock}
@@ -1960,6 +1972,10 @@ const Agenda = () => {
         />
       )}
       {NewMeetingreducer.advancePermissionModal && <AdvancePersmissionModal />}
+      {NewMeetingreducer.advancePermissionConfirmation && (
+        <PermissionConfirmation />
+      )}
+      {NewMeetingreducer.voteAgendaModal && <VoteModal />}
     </>
   );
 };
