@@ -444,7 +444,7 @@ const Card = ({
       <Row className="m-0 p-0 ">
         <Col lg={10} md={10} sm={10} className={styles["profile_cards"]}>
           <Row className="justify-content-center">
-            {profile != undefined && profile != null
+            {profile != undefined && profile != null && sortedArraay !== null && sortedArraay !== undefined
               ? sortedArraay.map((data, index) => {
                 if (index <= 3) {
                   return (

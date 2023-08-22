@@ -1261,5 +1261,11 @@
   "Enter-date-must": "Please select date",
   "Please-add-atleast-one-group-head": "Please add atleast one group head",
   "Advanced-permission-settings": "Advanced Permission Settings",
-  "Show": "Show"
+  "Show": "Show",
+  "Push-notification-when-group-is-active": "Push Notification When Group is Active",
+  "Email-when-group-is-active": "Email When Group is Active",
+  "Email-when-committee-is-active": "Email When Committee is Active",
+  "Push-notification-when-committee-is-active": "Push Notification When Committee is Active",
+  "Be-the-first-to-create-a-poll-and-spark-the-conversation": "Be the first to create a poll and spark the conversation!",
+  "No-polls": "No Polls"
 }

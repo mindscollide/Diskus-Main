@@ -155,7 +155,7 @@ const searchPollsApi = (navigate, t, data) => {
                   "Polls_PollsServiceManager_SearchPolls_02".toLowerCase()
                 )
             ) {
-              dispatch(searchPolls_fail(t("No-record-found")));
+              dispatch(searchPolls_fail(t("No-records-found")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -511,7 +511,7 @@ const castVoteApi = (navigate, data, t) => {
               .includes("Polls_PollsServiceManager_CastVote_05".toLowerCase())
           ) {
             dispatch(castVoteFailed(t("Exception-Some-thing-went-wrong")));
-          }else if (
+          } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes("Polls_PollsServiceManager_CastVote_06".toLowerCase())
@@ -524,7 +524,7 @@ const castVoteApi = (navigate, data, t) => {
             dispatch(viewVotesDetailsModal(false));
             dispatch(setviewpollModal(false));
             dispatch(setVotePollModal(false));
-          }else if (
+          } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes("Polls_PollsServiceManager_CastVote_07".toLowerCase())
@@ -537,7 +537,7 @@ const castVoteApi = (navigate, data, t) => {
             dispatch(viewVotesDetailsModal(false));
             dispatch(setviewpollModal(false));
             dispatch(setVotePollModal(false));
-          }else {
+          } else {
             dispatch(castVoteFailed(t("Something-went-wrong")));
           }
         } else {
@@ -611,7 +611,7 @@ const getAllPollsStatusApi = (navigate, data, t) => {
                 "Polls_PollsServiceManager_GetAllPollStatus_02".toLowerCase()
               )
           ) {
-            dispatch(getAllPollsStatusFailed(t("No-record-found")));
+            dispatch(getAllPollsStatusFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -739,7 +739,7 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
                 "Polls_PollsServiceManager_GetPollByPollID_02".toLowerCase()
               )
           ) {
-            dispatch(getAllPollsByPollsIDFailed(t("No-record-found")));
+            dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -747,7 +747,7 @@ const getPollsByPollIdApi = (navigate, data, check, t) => {
                 "Polls_PollsServiceManager_GetPollByPollID_03".toLowerCase()
               )
           ) {
-            dispatch(getAllPollsByPollsIDFailed(t("No-record-found")));
+            dispatch(getAllPollsByPollsIDFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -835,13 +835,13 @@ const viewVotesApi = (navigate, data, t) => {
               .toLowerCase()
               .includes("Polls_PollsServiceManager_ViewVotes_02".toLowerCase())
           ) {
-            dispatch(viewVoteFailed(t("No-record-found")));
+            dispatch(viewVoteFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
               .includes("Polls_PollsServiceManager_ViewVotes_03".toLowerCase())
           ) {
-            dispatch(viewVoteFailed(t("No-record-found")));
+            dispatch(viewVoteFailed(t("No-records-found")));
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -925,7 +925,7 @@ const getAllCommitteesandGroups = (navigate, t) => {
                   "Polls_PollsServiceManager_GetAllGroupsAndCommitteesByOrganizaitonID_02".toLowerCase()
                 )
             ) {
-              dispatch(getAllcommittesandGroups_fail(t("No-record-found")));
+              dispatch(getAllcommittesandGroups_fail(t("No-records-found")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

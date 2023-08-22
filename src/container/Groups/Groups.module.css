@@ -242,7 +242,7 @@ body[dir="rtl"] .Archived-Group-btn {
 }
 
 body[dir="rtl"] .PaginationStyle-Committee {
-  width: 100% !important;
+  width: auto !important;
   padding: 8px 10px !important;
 }
 

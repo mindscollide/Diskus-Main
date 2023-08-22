@@ -854,7 +854,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
           </Col>
 
         </Row>
-        <Row>
+        {rows.length > 0 && <Row>
           <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-2 pagination-groups-table">
             <Pagination total={totalRecords}
               locale={{
@@ -867,7 +867,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
               pageSize={currentPageSize !== null ? currentPageSize : 50}
               className={styles["PaginationStyle-AllMeeting"]} />
           </Col>
-        </Row>
+        </Row>}
+
         <Modal
           show={meetingModal || filterBarMeetingModal || meetingDeleteModal}
           setShow={() => {

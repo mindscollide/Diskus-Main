@@ -84,7 +84,7 @@ const getTodoStatus = (navigate, t) => {
                   "ToDoList_ToDoListServiceManager_GetAllTodoStatus_02".toLowerCase()
                 )
             ) {
-              await dispatch(getTodoStatusFail(t("No-record-found")));
+              await dispatch(getTodoStatusFail(t("No-records-found")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -162,14 +162,12 @@ const updateTodoStatusFunc = (navigate, value, data, t, flag) => {
                   )
                 );
               }
-              if (flag === false) {
-                let data2 = {
-                  Date: "",
-                  Title: "",
-                  AssignedToName: "",
-                };
-                dispatch(SearchTodoListApi(navigate, data2, meetingPage, meetingRow, t));
-              }
+              let data2 = {
+                Date: "",
+                Title: "",
+                AssignedToName: "",
+              };
+              dispatch(SearchTodoListApi(navigate, data2, meetingPage, meetingRow, t));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
