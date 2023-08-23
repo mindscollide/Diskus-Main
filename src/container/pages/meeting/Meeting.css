@@ -39,8 +39,11 @@
 }
 
 .meeting-schedulenewmeeting-btn button {
+  font-size: calc(14px - 20%)!important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
   border-radius: 4px !important;
+  font-family: "MontserratSemiBold"!important;
   border: none !important;
   margin-top: 4px;
 }
@@ -50,8 +53,11 @@ body[dir="rtl"] .meeting-schedulenewmeeting-btn button {
 }
 
 .meeting-schedulenewmeeting-btn button:hover {
+  font-size: calc(14px - 20%)!important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
   border-radius: 4px !important;
+  font-family: "MontserratSemiBold"!important;
   border: none !important;
 }
 
@@ -285,9 +291,11 @@ body[dir="rtl"] .ScheduleAMeeting:active {
   }
 
   .meeting-schedulenewmeeting-btn button {
-    font-size: 13px !important;
+    font-size: calc(14px - 20%)!important;
     background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-    border-radius: 2px !important;
+    color: #fff !important;
+    border-radius: 4px !important;
+    font-family: "MontserratSemiBold"!important;
     border: none !important;
   }
 
