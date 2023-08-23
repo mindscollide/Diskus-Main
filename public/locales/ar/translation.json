@@ -1249,5 +1249,8 @@
   "Results-viewing-option-in-member-portal": "Results Viewing option in member portal",
   "Show-count": "Show Count",
   "Show-percentage": "Show Percentage",
-  "Vote-by-members": "Vote by Members"
+  "Vote-by-members": "Vote by Members",
+  "Please-enter-vote-question": "Please enter vote Question*",
+  "Please-select-organizers": "Please select organizers*",
+  "Please-select-any-one-option": "Please select any one option*"
 }

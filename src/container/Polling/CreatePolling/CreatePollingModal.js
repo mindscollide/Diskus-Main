@@ -46,7 +46,10 @@ import {
   newDateFormaterAsPerUTC,
 } from "../../../commen/functions/date_formater";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
-import { regexOnlyForNumberNCharacters, validateInput } from "../../../commen/functions/regex";
+import {
+  regexOnlyForNumberNCharacters,
+  validateInput,
+} from "../../../commen/functions/regex";
 
 const CreatePolling = () => {
   const animatedComponents = makeAnimated();
@@ -393,7 +396,7 @@ const CreatePolling = () => {
           flag: true,
           message: t("Select-date"),
         });
-      } else if (Object.keys(members).length ===0) {
+      } else if (Object.keys(members).length === 0) {
         setOpen({
           ...open,
           flag: true,

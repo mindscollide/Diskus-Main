@@ -30,6 +30,12 @@ const VoteModal = () => {
   const { NewMeetingreducer } = useSelector((state) => state);
   const [addOptions, setAddOptions] = useState(false);
   const [saveOptions, setSaveOptions] = useState([{ Options: null }]);
+  const [error, setError] = useState(false);
+  const [voteModalAttrbutes, setVoteModalAttrbutes] = useState({
+    VoteQuestion: "",
+    SelectOrganizers: 0,
+    SelectOptions: 0,
+  });
   const plusButtonFunc = () => {
     setAddOptions(true);
   };
@@ -336,6 +342,24 @@ const VoteModal = () => {
     setSaveOptions(optionscross);
   };
 
+  const handleVoteSaveModal = () => {
+    setError(true);
+  };
+
+  const dropDownSelectOrganizers = (e) => {
+    setVoteModalAttrbutes({
+      ...voteModalAttrbutes,
+      SelectOrganizers: e.value,
+    });
+  };
+
+  const dropDownSelectOptions = (e) => {
+    setVoteModalAttrbutes({
+      ...voteModalAttrbutes,
+      SelectOptions: e.value,
+    });
+  };
+
   return (
     <section>
       <Modal
@@ -404,16 +428,34 @@ const VoteModal = () => {
                 <Row className="mt-2">
                   <Col lg={12} md={12} sm={12}>
                     <TextField
-                      applyClass="text-area-close-New_meeting"
+                      applyClass={
+                        error
+                          ? "text-area-close-New_meeting_error"
+                          : "text-area-close-New_meeting"
+                      }
                       labelClass={"d-none"}
                       type="text"
                       as={"textarea"}
+                      value={voteModalAttrbutes.VoteQuestion}
                       maxLength={500}
                       rows="2"
                       placeholder={t("Description")}
                       required={true}
                     />
                   </Col>
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          error && voteModalAttrbutes.VoteQuestion === ""
+                            ? ` ${styles["errorMessage-inLogin"]} `
+                            : `${styles["errorMessage-inLogin_hidden"]}`
+                        }
+                      >
+                        {t("Please-enter-vote-question")}
+                      </p>
+                    </Col>
+                  </Row>
                 </Row>
                 <Row className="mt-2">
                   <Col lg={12} md={12} sm={12}>
@@ -584,8 +626,29 @@ const VoteModal = () => {
                     </Row>
                     <Row className="mt-2">
                       <Col lg={12} md={12} sm={12}>
-                        <Select options={optionsIndividualOpenCloseVoting} />
+                        <Select
+                          options={optionsIndividualOpenCloseVoting}
+                          onChange={dropDownSelectOrganizers}
+                          classNamePrefix={
+                            voteModalAttrbutes.SelectOrganizers
+                              ? "SelectOrganizersSelect"
+                              : "SelectOrganizersSelect_active"
+                          }
+                        />
                       </Col>
+                      <Row>
+                        <Col>
+                          <p
+                            className={
+                              error && voteModalAttrbutes.SelectOrganizers === 0
+                                ? ` ${styles["errorMessage-inLogin"]} `
+                                : `${styles["errorMessage-inLogin_hidden"]}`
+                            }
+                          >
+                            {t("Please-select-organizers")}
+                          </p>
+                        </Col>
+                      </Row>
                     </Row>
                   </Col>
                   <Col lg={6} md={6} sm={6}>
@@ -599,8 +662,29 @@ const VoteModal = () => {
                     </Row>
                     <Row className="mt-2">
                       <Col lg={12} md={12} sm={12}>
-                        <Select options={options} />
+                        <Select
+                          options={options}
+                          classNamePrefix={
+                            voteModalAttrbutes.SelectOptions
+                              ? "SelectOptions_drop"
+                              : "SelectOptions_drop_active"
+                          }
+                          onChange={dropDownSelectOptions}
+                        />
                       </Col>
+                      <Row>
+                        <Col>
+                          <p
+                            className={
+                              error && voteModalAttrbutes.SelectOptions === 0
+                                ? ` ${styles["errorMessage-inLogin"]} `
+                                : `${styles["errorMessage-inLogin_hidden"]}`
+                            }
+                          >
+                            {t("Please-select-any-one-option")}
+                          </p>
+                        </Col>
+                      </Row>
                     </Row>
                   </Col>
                 </Row>
@@ -643,6 +727,7 @@ const VoteModal = () => {
                 <Button
                   text={t("Save")}
                   className={styles["Save_Vote_Modal"]}
+                  onClick={handleVoteSaveModal}
                 />
               </Col>
             </Row>

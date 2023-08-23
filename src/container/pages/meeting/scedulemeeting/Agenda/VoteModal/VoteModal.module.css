@@ -221,3 +221,22 @@
   background: #5f78d6 !important;
   border-radius: 4px !important;
 }
+
+.errorMessage-inLogin {
+  margin: 2px;
+  height: 13px;
+  color: #f16b6b;
+  visibility: visible;
+  font-family: "MontserratMedium-500";
+}
+
+body[dir="rtl"] .errorMessage-inLogin {
+  font-family: "IBMPlexSansArabic-Medium" !important;
+}
+
+.errorMessage-inLogin_hidden {
+  visibility: hidden;
+  margin: 0;
+  height: 0px;
+  color: #f16b6b;
+}

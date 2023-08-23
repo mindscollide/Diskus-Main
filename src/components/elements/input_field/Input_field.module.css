@@ -139,6 +139,12 @@
   height: 69px !important;
 }
 
+.text-area-close-New_meeting_error {
+  resize: none !important;
+  height: 69px !important;
+  border: 1px solid #f16b6b !important;
+}
+
 .sharefoldersearchInput {
   height: 38px !important;
 }
