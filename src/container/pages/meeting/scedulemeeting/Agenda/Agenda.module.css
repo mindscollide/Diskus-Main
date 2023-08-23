@@ -5,6 +5,14 @@
   border-radius: 4px !important;
   padding: 10px 15px !important;
 }
+.BackGround_Agenda_InActive {
+  width: 100% !important;
+  height: auto !important;
+  border: 1px solid #bbbbbb !important;
+  border-radius: 4px !important;
+  padding: 10px 15px !important;
+  filter: opacity(0.5);
+}
 
 .SubajendaBox {
   width: 90% !important;
@@ -13,6 +21,16 @@
   border-radius: 4px !important;
   padding: 10px 15px !important;
   margin-left: 10px !important;
+}
+
+.SubajendaBox_Inactive {
+  width: 90% !important;
+  height: auto !important;
+  border: 1px solid #bbbbbb !important;
+  border-radius: 4px !important;
+  padding: 10px 15px !important;
+  margin-left: 10px !important;
+  filter: opacity(0.5);
 }
 
 .Agenda_Heading {

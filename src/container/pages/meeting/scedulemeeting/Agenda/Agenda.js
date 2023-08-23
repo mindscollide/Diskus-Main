@@ -28,6 +28,7 @@ import profile from "../../../../../assets/images/newprofile.png";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import line from "../../../../../assets/images/LineAgenda.svg";
 import PdfIcon from "../../../../../assets/images/pdf_icon.svg";
+import closedLocked from "../../../../../assets/images/CloseLocked.svg";
 import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal";
 import {
   showAdvancePermissionModal,
@@ -226,7 +227,11 @@ const Agenda = () => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className={styles["BackGround_Agenda"]}
+                              className={
+                                disbaleFields
+                                  ? styles["BackGround_Agenda_InActive"]
+                                  : styles["BackGround_Agenda"]
+                              }
                               key={index}
                             >
                               <Row className="mt-2 mb-2">
@@ -361,7 +366,9 @@ const Agenda = () => {
                                         onClick={openVoteMOdal}
                                       />
                                       <img
-                                        src={Lock}
+                                        src={
+                                          disbaleFields ? closedLocked : Lock
+                                        }
                                         width="18.87px"
                                         height="26.72px"
                                         onClick={lockFunctionActive}
@@ -585,7 +592,13 @@ const Agenda = () => {
                                             lg={11}
                                             md={11}
                                             sm={11}
-                                            className={styles["SubajendaBox"]}
+                                            className={
+                                              disbaleFields
+                                                ? styles[
+                                                    "SubajendaBox_Inactive"
+                                                  ]
+                                                : styles["SubajendaBox"]
+                                            }
                                           >
                                             <Row className="mt-2 mb-2">
                                               <Col lg={5} md={5} sm={12}>
@@ -767,7 +780,11 @@ const Agenda = () => {
                                                       onClick={openVoteMOdal}
                                                     />
                                                     <img
-                                                      src={Lock}
+                                                      src={
+                                                        disbaleFields
+                                                          ? closedLocked
+                                                          : Lock
+                                                      }
                                                       width="18.87px"
                                                       height="26.72px"
                                                       onClick={
@@ -1119,7 +1136,11 @@ const Agenda = () => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className={styles["BackGround_Agenda"]}
+                              className={
+                                disbaleFields
+                                  ? styles["BackGround_Agenda_InActive"]
+                                  : styles["BackGround_Agenda"]
+                              }
                             >
                               <Row className="mt-2 mb-2">
                                 <Col lg={5} md={5} sm={12}>
@@ -1237,7 +1258,9 @@ const Agenda = () => {
                                         onClick={openVoteMOdal}
                                       />
                                       <img
-                                        src={Lock}
+                                        src={
+                                          disbaleFields ? closedLocked : Lock
+                                        }
                                         width="18.87px"
                                         height="26.72px"
                                         onClick={lockFunctionActive}
@@ -1464,7 +1487,13 @@ const Agenda = () => {
                                             lg={11}
                                             md={11}
                                             sm={11}
-                                            className={styles["SubajendaBox"]}
+                                            className={
+                                              disbaleFields
+                                                ? styles[
+                                                    "SubajendaBox_Inactive"
+                                                  ]
+                                                : styles["SubajendaBox"]
+                                            }
                                           >
                                             <Row className="mt-2 mb-2">
                                               <Col lg={5} md={5} sm={12}>
@@ -1616,7 +1645,11 @@ const Agenda = () => {
                                                       onClick={openVoteMOdal}
                                                     />
                                                     <img
-                                                      src={Lock}
+                                                      src={
+                                                        disbaleFields
+                                                          ? closedLocked
+                                                          : Lock
+                                                      }
                                                       width="18.87px"
                                                       height="26.72px"
                                                       onClick={
