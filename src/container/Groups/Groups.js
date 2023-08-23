@@ -51,6 +51,81 @@ const Groups = () => {
   let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
   const creatorID = localStorage.getItem("userID");
 
+  useEffect(() => {
+    setShowModal(false);
+    setUpdateComponentpage(false);
+    setViewGroupPage(false);
+    localStorage.removeItem("groupsArCurrent");
+    localStorage.setItem("groupsCurrent", 1);
+    dispatch(getGroups(navigate, t, 1));
+  }, []);
+
+  useEffect(() => {
+    if (GroupsReducer.realtimeGroupStatus !== null) {
+      let status = GroupsReducer.realtimeGroupStatus.groupStatusID;
+      if (status === 2) {
+        let findGroupIndex = groupsData.findIndex(
+          (data, index) =>
+            data.groupID === GroupsReducer.realtimeGroupStatus.groupID
+        );
+        if (findGroupIndex !== -1) {
+          let newArr = [...groupsData];
+          newArr.splice(findGroupIndex, 1);
+          setgroupsData(newArr);
+          dispatch(realtimeGroupStatusResponse(null));
+        }
+      } else {
+        let findGroupIndex = groupsData.findIndex(
+          (data, index) =>
+            data.groupID === GroupsReducer.realtimeGroupStatus.groupID
+        );
+        if (findGroupIndex !== -1) {
+          let newArr = groupsData.map((data, index) => {
+            if (findGroupIndex === index) {
+              let newData = {
+                ...data,
+                groupStatusID: GroupsReducer.realtimeGroupStatus.groupStatusID,
+              };
+              return newData;
+            }
+            return data;
+          });
+          setgroupsData(newArr);
+        }
+      }
+    }
+  }, [GroupsReducer.realtimeGroupStatus]);
+
+  useEffect(() => {
+    if (GroupsReducer.realtimeGroupCreateResponse !== null) {
+      let groupData = GroupsReducer.realtimeGroupCreateResponse;
+      setgroupsData((prev) => [groupsData, ...prev]);
+    }
+  }, [GroupsReducer.realtimeGroupCreateResponse]);
+
+  useEffect(() => {
+    try {
+      if (
+        GroupsReducer.getAllGroupsResponse !== null &&
+        GroupsReducer.getAllGroupsResponse !== undefined
+      ) {
+        if (GroupsReducer.getAllGroupsResponse?.groups?.length > 0) {
+          setTotalLength(GroupsReducer.getAllGroupsResponse.totalRecords);
+          let newArr = [];
+          let arr = GroupsReducer.getAllGroupsResponse.groups;
+          arr.map((data, index) => {
+            newArr.push(data);
+          });
+          setgroupsData(newArr);
+        } else {
+          setgroupsData([]);
+        }
+      } else {
+        setgroupsData([]);
+      }
+    } catch (error) {}
+  }, [GroupsReducer.getAllGroupsResponse]);
+
   const handlechange = (value) => {
     localStorage.setItem("groupsCurrent", value);
     dispatch(getGroups(navigate, t, value));
@@ -63,9 +138,7 @@ const Groups = () => {
   const groupModal = async (e) => {
     setCreategrouppage(true);
   };
-  // const updateModal = (id) => {
-  //   dispatch(getbyGroupID(id, t, setViewGroupPage, setUpdateComponentpage, 2));
-  // };
+
   const viewTitleModal = (data) => {
     dispatch(
       getbyGroupID(
@@ -133,80 +206,6 @@ const Groups = () => {
     });
     setStatusValue("");
   };
-
-  useEffect(() => {
-    setShowModal(false);
-    setUpdateComponentpage(false);
-    setViewGroupPage(false);
-  }, []);
-
-  useEffect(() => {
-    localStorage.removeItem("groupsArCurrent");
-    localStorage.setItem("groupsCurrent", 1);
-    dispatch(getGroups(navigate, t, 1));
-  }, []);
-
-  useEffect(() => {
-    if (GroupsReducer.realtimeGroupStatus !== null) {
-      let status = GroupsReducer.realtimeGroupStatus.groupStatusID;
-      if (status === 2) {
-        let findGroupIndex = groupsData.findIndex(
-          (data, index) =>
-            data.groupID === GroupsReducer.realtimeGroupStatus.groupID
-        );
-        if (findGroupIndex !== -1) {
-          let newArr = [...groupsData];
-          newArr.splice(findGroupIndex, 1);
-          setgroupsData(newArr);
-          dispatch(realtimeGroupStatusResponse(null));
-        }
-      } else {
-        let findGroupIndex = groupsData.findIndex(
-          (data, index) =>
-            data.groupID === GroupsReducer.realtimeGroupStatus.groupID
-        );
-        if (findGroupIndex !== -1) {
-          let newArr = groupsData.map((data, index) => {
-            if (findGroupIndex === index) {
-              let newData = {
-                ...data,
-                groupStatusID: GroupsReducer.realtimeGroupStatus.groupStatusID,
-              };
-              return newData;
-            }
-            return data;
-          });
-          setgroupsData(newArr);
-        }
-      }
-    }
-  }, [GroupsReducer.realtimeGroupStatus]);
-
-  useEffect(() => {
-    if (GroupsReducer.realtimeGroupCreateResponse !== null) {
-      let groupData = GroupsReducer.realtimeGroupCreateResponse;
-      setgroupsData((prev) => [groupsData, ...prev]);
-    }
-  }, [GroupsReducer.realtimeGroupCreateResponse]);
-
-  useEffect(() => {
-    try {
-      if (
-        GroupsReducer.getAllGroupsResponse !== null &&
-        GroupsReducer.getAllGroupsResponse !== undefined
-      ) {
-        if (GroupsReducer.getAllGroupsResponse?.groups?.length > 0) {
-          setTotalLength(GroupsReducer.getAllGroupsResponse.totalRecords);
-          let newArr = [];
-          let arr = GroupsReducer.getAllGroupsResponse.groups;
-          arr.map((data, index) => {
-            newArr.push(data);
-          });
-          setgroupsData(newArr);
-        }
-      }
-    } catch (error) {}
-  }, [GroupsReducer.getAllGroupsResponse]);
 
   useEffect(() => {
     if (
