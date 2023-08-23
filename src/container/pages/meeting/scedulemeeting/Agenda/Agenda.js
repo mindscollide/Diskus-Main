@@ -56,6 +56,7 @@ const Agenda = () => {
   const [subexpandIndex, setsubexpandIndex] = useState(0);
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
+  const [disbaleFields, setDisbaleFields] = useState(false);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -204,6 +205,10 @@ const Agenda = () => {
     dispatch(showVoteAgendaModal(true));
   };
 
+  const lockFunctionActive = () => {
+    setDisbaleFields(!disbaleFields);
+  };
+
   console.log(rows, "rowsrowsrowsrowsrowsrows");
   return (
     <>
@@ -231,12 +236,14 @@ const Agenda = () => {
                                     labelClass={"d-none"}
                                     placeholder={t("Agenda-title")}
                                     value={rows.title}
+                                    disable={disbaleFields ? true : false}
                                   />
                                 </Col>
                                 <Col lg={3} md={3} sm={12}>
                                   <Select
                                     options={options}
                                     value={rows.selectedOption}
+                                    isDisabled={disbaleFields ? true : false}
                                   />
                                 </Col>
                                 <Col
@@ -254,6 +261,7 @@ const Agenda = () => {
                                     format="HH:mm A"
                                     selected={rows.startDate}
                                     plugins={[<TimePicker hideSeconds />]}
+                                    disabled={disbaleFields ? true : false}
                                   />
                                   <img src={desh} width="19.02px" />
                                   <DatePicker
@@ -265,6 +273,7 @@ const Agenda = () => {
                                     format="HH:mm A"
                                     selected={rows.endDate}
                                     plugins={[<TimePicker hideSeconds />]}
+                                    disabled={disbaleFields ? true : false}
                                   />
                                   <img
                                     src={dropmdownblack}
@@ -302,6 +311,7 @@ const Agenda = () => {
                                       <Radio.Group
                                         onChange={onChange}
                                         value={value}
+                                        disabled={disbaleFields ? true : false}
                                       >
                                         <Radio value={1}>
                                           <span
@@ -354,6 +364,7 @@ const Agenda = () => {
                                         src={Lock}
                                         width="18.87px"
                                         height="26.72px"
+                                        onClick={lockFunctionActive}
                                       />
                                     </Col>
                                   </Row>
@@ -581,6 +592,9 @@ const Agenda = () => {
                                                 <TextField
                                                   applyClass={"AgendaTextField"}
                                                   labelClass={"d-none"}
+                                                  disable={
+                                                    disbaleFields ? true : false
+                                                  }
                                                   placeholder={t(
                                                     "Sub-Agenda-title"
                                                   )}
@@ -593,6 +607,9 @@ const Agenda = () => {
                                                 <Select
                                                   value={
                                                     subAjendaRows.subajendaOptions
+                                                  }
+                                                  isDisabled={
+                                                    disbaleFields ? true : false
                                                   }
                                                 />
                                               </Col>
@@ -608,6 +625,9 @@ const Agenda = () => {
                                                   className="timePicker"
                                                   disableDayPicker
                                                   inputClass="inputTImeMeeting"
+                                                  disabled={
+                                                    disbaleFields ? true : false
+                                                  }
                                                   format="HH:mm A"
                                                   selected={
                                                     subAjendaRows.subAjendaStartDate
@@ -626,6 +646,9 @@ const Agenda = () => {
                                                   className="timePicker"
                                                   disableDayPicker
                                                   inputClass="inputTImeMeeting"
+                                                  disabled={
+                                                    disbaleFields ? true : false
+                                                  }
                                                   format="HH:mm A"
                                                   selected={
                                                     subAjendaRows.subAjendaEndDate
@@ -680,6 +703,11 @@ const Agenda = () => {
                                                         subAjendaonChange
                                                       }
                                                       value={subValue}
+                                                      disabled={
+                                                        disbaleFields
+                                                          ? true
+                                                          : false
+                                                      }
                                                     >
                                                       <Radio value={1}>
                                                         <span
@@ -742,6 +770,9 @@ const Agenda = () => {
                                                       src={Lock}
                                                       width="18.87px"
                                                       height="26.72px"
+                                                      onClick={
+                                                        lockFunctionActive
+                                                      }
                                                     />
                                                   </Col>
                                                 </Row>
@@ -1209,6 +1240,7 @@ const Agenda = () => {
                                         src={Lock}
                                         width="18.87px"
                                         height="26.72px"
+                                        onClick={lockFunctionActive}
                                       />
                                     </Col>
                                   </Row>
@@ -1587,6 +1619,9 @@ const Agenda = () => {
                                                       src={Lock}
                                                       width="18.87px"
                                                       height="26.72px"
+                                                      onClick={
+                                                        lockFunctionActive
+                                                      }
                                                     />
                                                   </Col>
                                                 </Row>
