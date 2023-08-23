@@ -1,14 +1,21 @@
 import React, { useState } from 'react'
 
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Container, Row, Col } from 'react-bootstrap'
 import { TextField } from '../../../../../elements'
 import './videoPanelBody.css'
 import VideoCallIcon from '../../../../../../assets/images/VideoCall-Icon.png'
 import { Checkbox } from 'antd'
+import {
+  videoCallOTOFlag,
+  videoCallNormalScreenFlag,
+  videoCallNormalHeaderFlag,
+} from '../../../../../../store/actions/VideoFeature_actions'
 
 const VideoPanelBodyContact = () => {
   const { videoFeatureReducer } = useSelector((state) => state)
+
+  const dispatch = useDispatch()
 
   const [searchChatValue, setSearchChatValue] = useState('')
 
@@ -42,10 +49,16 @@ const VideoPanelBodyContact = () => {
     } catch {}
   }
 
+  const otoVideoCall = () => {
+    dispatch(videoCallOTOFlag(true))
+    dispatch(videoCallNormalHeaderFlag(true))
+    dispatch(videoCallNormalScreenFlag(true))
+  }
+
   return (
     <>
       <Container>
-        {videoFeatureReducer.videoChatSearchFlag === true ? (
+        {videoFeatureReducer.VideoChatSearchFlag === true ? (
           <Row>
             <Col lg={12} md={12} sm={12}>
               <TextField
@@ -91,20 +104,14 @@ const VideoPanelBodyContact = () => {
             </div>
           </Col>
           <Col lg={7} md={7} sm={7} className="bottom-border">
-            <div
-              className={'video-block'}
-              //   onClick={() => chatClick(dataItem)}
-            >
+            <div className={'video-block'}>
               <p className="Video-chat-username m-0">Test Name</p>
 
               <p className="video-chat-date m-0">Axis</p>
             </div>
           </Col>
           <Col lg={2} md={2} sm={2} className="mt-4">
-            <img
-              src={VideoCallIcon}
-              //   onClick={() => anotherVideoPanelHandler(true)}
-            />
+            <img src={VideoCallIcon} onClick={otoVideoCall} />
           </Col>
         </Row>
         <Row className="single-chat">

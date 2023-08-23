@@ -31,9 +31,9 @@ const VideoPanelHeader = () => {
   const [chatFilterName, setChatFilterName] = useState('Contact')
 
   useEffect(() => {
-    if (videoFeatureReducer.contactVideoFlag) {
+    if (videoFeatureReducer.ContactVideoFlag) {
       setChatFilterName('Contact')
-    } else if (videoFeatureReducer.recentVideoFlag) {
+    } else if (videoFeatureReducer.RecentVideoFlag) {
       setChatFilterName('Recent')
     }
   }, [])
@@ -81,7 +81,7 @@ const VideoPanelHeader = () => {
   }
 
   const videoSearchFilterChat = () => {
-    if (videoFeatureReducer.videoChatSearchFlag) {
+    if (videoFeatureReducer.VideoChatSearchFlag) {
       dispatch(videoChatSearchFlag(false))
     } else {
       dispatch(videoChatSearchFlag(true))

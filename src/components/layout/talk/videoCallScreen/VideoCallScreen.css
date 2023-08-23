@@ -2,6 +2,7 @@
   position: absolute;
   left: 65px;
   width: 95%;
+  padding: 15px;
   height: 55vh;
   background-color: #fff !important;
   bottom: 0;
@@ -14,26 +15,6 @@
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
   animation: slideUp 0.5s ease-in-out;
 }
-
-/* @keyframes slideUp {
-  0% {
-    transform: translateY(300px);
-  }
-  100% {
-    transform: translateY(0);
-  }
-}
-.close-icon-active {
-  animation: slideDown 0.5s ease-in-out;
-}
-@keyframes slideDown {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-300px);
-  }
-} */
 
 .title-heading {
   display: flex;
@@ -184,42 +165,20 @@ body[dir="rtl"] .videoCallScreen-minmizeVideoCall {
   border-radius: 4px;
 }
 
-p.level-videoCalling-heading {
-  font-size: 12px;
-}
 
-p.level-NIAP {
-  text-align: left;
-  margin-left: 10px;
-  font-size: 12px;
-}
 
-.encryption-videoCalling-video-chat p.level-videoCalling-heading {
-  font-size: 12px;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  margin-left: 15px;
-}
 
-body[dir="rtl"]
-  .encryption-videoCalling-video-chat
-  p.level-videoCalling-heading {
+
+body[dir="rtl"] .encryption-videoCalling-video-chat p.level-videoCalling-heading {
   font-size: 12px;
   margin-top: 5px;
   margin-bottom: 5px;
   margin-right: 15px;
 }
 
-span.securityicon-Video-box {
-  position: absolute;
-  right: 15px;
-}
 
-.encryption-videoCalling-video-chat span.securityicon-Video-box {
-  position: absolute;
-  right: 25px;
-  bottom: 10px;
-}
+
+
 
 .chat-input-video-field {
   vertical-align: middle;
@@ -245,30 +204,9 @@ input.chat-video-input.form-control:focus {
   right: 0px;
 }
 
-.video-chat-It-Heading {
-  font-size: 10px !important;
-  font-weight: 600;
-}
 
-.video-chat-group-icon {
-  position: absolute;
-  top: 5px;
-}
 
-.video-crypto-row {
-  background-color: #f16b6b !important;
-  margin-top: 10px;
-  color: #fff !important;
-}
 
-.bottom-video-chat-input-div {
-  position: absolute;
-  bottom: 0px;
-  left: 13px;
-  border: 1px solid #e1e1e1;
-  padding: 5px 5px !important;
-  width: 99%;
-}
 
 body[dir="rtl"] .bottom-video-chat-input-div {
   position: absolute;
@@ -279,21 +217,10 @@ body[dir="rtl"] .bottom-video-chat-input-div {
   width: 100%;
 }
 
-.chat-inside-video-plus-img {
-  position: absolute;
-  left: 15%;
-}
 
-.chat-video-field input {
-  position: absolute;
-  width: 57%;
-  left: 23%;
-}
 
-.chat-inside-video-sendIcon-img {
-  position: relative;
-  right: 10px;
-}
+
+
 
 .isAgenda-div-changes {
   height: 82vh;
@@ -306,12 +233,7 @@ body[dir="rtl"] .bottom-video-chat-input-div {
   border-radius: 4px;
 }
 
-.Agenda-title-heading {
-  font-size: 16px;
-  font-weight: 600;
-  margin-left: 20px;
-  margin-top: 10px;
-}
+
 
 body[dir="rtl"] .Agenda-title-heading {
   font-size: 16px;
@@ -320,19 +242,7 @@ body[dir="rtl"] .Agenda-title-heading {
   margin-top: 10px;
 }
 
-.agenda-count {
-  position: relative;
-  bottom: 10px;
-  font-size: 12px;
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff;
-  border-radius: 50%;
-  height: 20px;
-  width: 20px;
-  display: inline-block;
-  text-align: center;
-  margin-left: 15px;
-}
+
 
 body[dir="rtl"] .agenda-count {
   position: relative;
@@ -348,27 +258,11 @@ body[dir="rtl"] .agenda-count {
   margin-right: 15px;
 }
 
-.agenda-pargraph {
-  font-size: 12px;
-  font-weight: 600;
-  color: #000;
-  position: relative;
-  bottom: 10px;
-}
 
-.agenda-plus-icon {
-  position: relative;
-  bottom: 12px;
-  left: 10px;
-}
 
-.agenda-Close-icon {
-  position: absolute;
-  top: 10px;
-  font-size: 18px;
-  right: 10px;
-  cursor: pointer;
-}
+
+
+
 
 .isMinutes-div-changes {
   height: 82vh;
@@ -402,7 +296,7 @@ body[dir="rtl"] .agenda-count {
   right: 8px;
 }
 
-.image-videoSingle-calling-click{
+.image-videoSingle-calling-click {
   background-color: #707070 !important;
   width: 100% !important;
   height: 64vh;
@@ -535,6 +429,7 @@ body[dir="rtl"] .micModal-size .modal-content {
 .mic_image_active {
   opacity: 1 !important;
 }
+
 .mic_image {
   opacity: 0.4 !important;
 }
@@ -860,14 +755,6 @@ body[dir="rtl"] .top-right-icons {
   right: 20px;
 }
 
-.minimize-screen-on-bottom {
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  vertical-align: top;
-  gap: 25px;
-}
-
 body[dir="rtl"] .video-side-icons {
   position: absolute;
   display: flex;
@@ -974,16 +861,7 @@ body[dir="rtl"] .multiple-screens {
   border: 1px solid #4adede !important;
 }
 
-.chatmedium-messenger-IsOpen {
-  height: 47vh;
-  position: absolute;
-  bottom: 10px;
-  right: 6.8%;
-  width: 30%;
-  background: #fff;
-  border: 1px solid #6172d6;
-  border-radius: 4px;
-}
+
 
 body[dir="rtl"] .chatmedium-messenger-IsOpen {
   height: 47vh;
@@ -996,16 +874,7 @@ body[dir="rtl"] .chatmedium-messenger-IsOpen {
   border-radius: 4px;
 }
 
-.isAgendamedium-div-changes {
-  height: 47vh;
-  position: absolute;
-  bottom: 10px;
-  right: 6.8%;
-  width: 30%;
-  background: #fff;
-  border: 1px solid #6172d6;
-  border-radius: 4px;
-}
+
 
 body[dir="rtl"] .isAgendamedium-div-changes {
   height: 47vh;
@@ -1081,7 +950,7 @@ body[dir="rtl"] .minutesmedium-video-sendIcon {
   gap: 60px;
 }
 
-.modaltop-three-buttons{
+.modaltop-three-buttons {
   display: flex;
   justify-content: flex-start;
   /* align-items: center; */
@@ -1156,54 +1025,6 @@ body[dir="rtl"] .videoCallGroupScreen-maximizeVideoCall {
   /* animation: slideUps 0.5s ease-in-out !important; */
 }
 
-.videoCallGroupScreen-minmizeVideoCall {
-  position: absolute;
-  left: 90px;
-  width: 56.3%;
-  height: 6.5vh;
-  /* background-color: #fff !important; */
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  /* top: 50px !important; */
-  bottom: -3px;
-  border: 1px solid #b4b4b4;
-  border-radius: 4px !important;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden !important;
-  /* z-index: 9999999999999999999999999999 !important; */
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
-  animation: slideUp 0.5s ease-in-out;
-}
-
-body[dir="rtl"] .videoCallGroupScreen-minmizeVideoCall {
-  position: absolute;
-  right: 90px;
-  width: 56.3%;
-  height: 6.5vh;
-  /* background-color: #fff !important; */
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  /* top: 50px !important; */
-  bottom: -3px;
-  border: 1px solid #b4b4b4;
-  border-radius: 4px !important;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden !important;
-  /* z-index: 9999999999999999999999999999 !important; */
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
-  animation: slideUp 0.5s ease-in-out;
-}
-
-.videoCallGroupScreen-minmizeVideoCall .title-heading {
-  font-size: 13px !important;
-  font-weight: 600;
-  color: #fff !important;
-  display: flex;
-  align-items: baseline;
-  justify-content: start;
-  margin: auto;
-}
-
 .handraise-border {
   width: 65px;
   height: 65px;
@@ -1212,22 +1033,6 @@ body[dir="rtl"] .videoCallGroupScreen-minmizeVideoCall {
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-}
-
-.minimizeGroup-expand-icon {
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  margin-left: 40px;
-  gap: 20px;
-}
-
-body[dir="rtl"] .minimizeGroup-expand-icon {
-  display: flex;
-  align-items: center;
-  justify-content: start;
-  margin-right: 20px !important;
-  gap: 20px;
 }
 
 .image-videoGroup-calling-click {

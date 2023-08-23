@@ -50,7 +50,7 @@ const Talk = () => {
 
   // for video Icon Click
   const videoIconClick = () => {
-    if (videoFeatureReducer.videoChatPanel === false) {
+    if (videoFeatureReducer.VideoChatPanel === false) {
       dispatch(videoChatPanel(true))
       dispatch(contactVideoFlag(true))
       dispatch(recentVideoFlag(false))

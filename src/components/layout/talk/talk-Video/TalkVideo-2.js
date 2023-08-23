@@ -7,7 +7,7 @@ import { allAssignessList } from '../../../../store/actions/Get_List_Of_Assignee
 import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col, Container, Form } from 'react-bootstrap'
 import { Select, Checkbox } from 'antd'
-import VideoCallScreen from '../videoCallScreen/VideoCallScreen'
+import VideoCallScreen from '../videoCallScreen/VideoCallScreen-2'
 import {
   DateDisplayFormat,
   DateSendingFormat,
@@ -310,7 +310,7 @@ const TalkVideo = () => {
                 <Col lg={2} md={2} sm={2} className="mt-4">
                   <img
                     src={VideoCallIcon}
-                    onClick={() => anotherVideoPanelHandler(true)}
+                    onClick={() => videoHandlerforInisiateCall(true)}
                   />
                 </Col>
               </Row>

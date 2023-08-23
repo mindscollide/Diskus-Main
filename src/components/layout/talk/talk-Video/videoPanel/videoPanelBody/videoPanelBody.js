@@ -8,10 +8,10 @@ const VideoPanelBody = () => {
 
   return (
     <>
-      {videoFeatureReducer.contactVideoFlag === true ? (
+      {videoFeatureReducer.ContactVideoFlag === true ? (
         <VideoPanelBodyContact />
       ) : null}
-      {videoFeatureReducer.recentVideoFlag === true ? (
+      {videoFeatureReducer.RecentVideoFlag === true ? (
         <VideoPanelBodyRecent />
       ) : null}
     </>

@@ -1,0 +1,187 @@
+.chat-messenger-max-div {
+  height: 82vh;
+  position: absolute;
+  bottom: 10px;
+  right: 6.8%;
+  width: 25%;
+  background: #fff;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+}
+
+.fullScreen-video-icons {
+  display: flex;
+  position: absolute;
+  bottom: 10px !important;
+  flex-direction: column !important;
+  gap: 10px;
+  justify-content: end !important;
+  right: 20px !important;
+}
+
+.videoLargeBody {
+  padding: 0px 50px !important;
+}
+
+.isAgenda-max-div {
+  height: 82vh;
+  position: absolute;
+  bottom: 10px;
+  right: 6.8%;
+  width: 25%;
+  background: #fff;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+}
+
+.isMinutes-max-div {
+  height: 82vh;
+  position: absolute;
+  bottom: 10px;
+  right: 6.8%;
+  width: 25%;
+  background: #fff;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+}
+
+.video-chat-group {
+  position: absolute;
+  top: 5px;
+}
+
+.video-chat-Heading {
+  font-size: 10px !important;
+  font-weight: 600;
+}
+
+.video-chat-icons-insides {
+  cursor: pointer;
+  /* position: absolute; */
+  font-size: 20px !important;
+  right: 0px;
+}
+
+.video-max-crypto-rows {
+  background-color: #f16b6b !important;
+  margin-top: 10px;
+  color: #fff !important;
+}
+
+.encryption-videoCalling-video-max p.level-videoCalling-max {
+  font-size: 12px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  margin-left: 15px;
+}
+
+p.level-NIAP-max {
+  text-align: left;
+  margin-left: 10px;
+  font-size: 12px;
+}
+
+span.securityicon-Video-box-max {
+  position: absolute;
+  right: 15px;
+}
+.encryption-videoCalling-video-max span.securityicon-Video-box-max {
+  position: absolute;
+  right: 25px;
+  bottom: 10px;
+}
+
+.bottom-video-max-div {
+  position: absolute;
+  bottom: 0px;
+  left: 13px;
+  border: 1px solid #e1e1e1;
+  padding: 5px 5px !important;
+  width: 99%;
+}
+
+.chat-inside-video-plus-max {
+  position: absolute;
+  left: 15%;
+}
+
+.chat-video-max input {
+  position: absolute;
+  width: 57%;
+  left: 23%;
+}
+
+.chat-video-field input {
+  position: absolute;
+  width: 57%;
+  left: 23%;
+}
+
+.chat-max-video-sendIcon-img {
+  position: relative;
+  right: 10px;
+}
+
+.Agenda-title-max {
+  font-size: 16px;
+  font-weight: 600;
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.agenda-Close-icon-max {
+  position: absolute;
+  top: 10px;
+  font-size: 18px;
+  right: 10px;
+  cursor: pointer;
+}
+
+.agenda-count-max {
+  position: relative;
+  bottom: 10px;
+  font-size: 12px;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  text-align: center;
+  margin-left: 15px;
+}
+
+.agenda-pargraph-max {
+  font-size: 12px;
+  font-weight: 600;
+  color: #000;
+  position: relative;
+  bottom: 10px;
+}
+
+.agenda-plus-max {
+  position: relative;
+  bottom: 12px;
+  left: 10px;
+}
+
+.isMinutes-paragraph-max {
+  font-size: 10px;
+  font-weight: 600;
+  color: #000;
+  position: relative;
+  bottom: 10px;
+}
+
+.minutes-video-max-field input {
+  position: relative;
+  width: 100%;
+  top: 105px;
+  left: 16px;
+}
+
+.minutes-video-max {
+  position: relative;
+  top: 105px;
+  right: 8px;
+}

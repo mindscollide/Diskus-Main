@@ -1,0 +1,53 @@
+.isAgendamedium-div-changes {
+    height: 47vh;
+    position: absolute;
+    bottom: 10px;
+    right: 6.8%;
+    width: 30%;
+    background: #fff;
+    border: 1px solid #6172d6;
+    border-radius: 4px;
+}
+
+.Agenda-title-heading {
+    font-size: 16px;
+    font-weight: 600;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.agenda-Close-icon {
+    position: absolute;
+    top: 10px;
+    font-size: 18px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.agenda-count {
+    position: relative;
+    bottom: 10px;
+    font-size: 12px;
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    color: #fff;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    text-align: center;
+    margin-left: 15px;
+}
+
+.agenda-pargraph {
+    font-size: 12px;
+    font-weight: 600;
+    color: #000;
+    position: relative;
+    bottom: 10px;
+}
+
+.agenda-plus-icon {
+    position: relative;
+    bottom: 12px;
+    left: 10px;
+}

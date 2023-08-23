@@ -1,0 +1,46 @@
+.title-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: start;
+    font-size: 20px !important;
+    font-weight: 600;
+    color: #000 !important;
+    margin: auto;
+}
+
+.minimize-screen-on-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    vertical-align: top;
+    gap: 25px;
+}
+
+.minimizeGroup-expand-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 5px;
+}
+
+.normal-screen-top-icons {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: start !important;
+    gap: 25px !important;
+}
+
+.top-right-icons {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-left: -25px;
+    gap: 20px;
+}
+
+.minimize_icon-class {
+    height: 2px;
+    margin-top: 7px !important;
+    cursor: pointer;
+}

@@ -1,0 +1,26 @@
+.full-screen-bottom-video-images {
+  display: flex !important;
+  justify-content: center !important;
+  gap: 30px !important;
+  margin-top: 20px;
+}
+
+.videoNonActive-BottomImg-border {
+  border-radius: 50px !important;
+  border: 1px solid #4adede !important;
+}
+
+.handraise-border-bottom-img {
+  width: 65px;
+  height: 65px;
+  outline: 1px solid #4adede;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+}
+
+.videoNonActive-border-footer {
+  border-radius: 50px !important;
+  border: 1px solid #4adede !important;
+}
