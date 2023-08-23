@@ -413,7 +413,7 @@ body[dir="rtl"] .Calendar_CreateBtn button {
   border: none !important;
   height: 31px !important;
   border-radius: 4px !important;
-  border: 1px solid #e1e1e1 !important;
+  /* border: 1px solid #e1e1e1 !important; */
 }
 
 .Calendar_CreateBtn .dropdown-menu.show {

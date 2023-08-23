@@ -253,7 +253,7 @@ body[dir="rtl"] .ScheduleAMeeting {
   border-radius: 4px;
   font-size: calc(14px - 20%);
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
-  color: #fff;
+  color: #fff!important;
   border: none !important;
   font-weight: 600;
   padding: 12px 30px;
