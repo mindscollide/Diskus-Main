@@ -5567,6 +5567,7 @@ body[dir="rtl"] .ant-result-subtitle {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   padding: 12px !important;
+  width: auto !important;
 }
 
 .dataroom_options .dropdown-menu.show .dropdown-item {

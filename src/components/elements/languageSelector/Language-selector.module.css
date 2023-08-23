@@ -14,6 +14,7 @@
     opacity: 0;
 }
 
+
 .language_options_active {
     visibility: visible;
     position: absolute;
@@ -33,4 +34,23 @@
 
 .language_options_active span:not(:last-child) {
     border-bottom: 2px solid #e1e1e1;
+}
+
+
+body[dir="rtl"] .language_options_active {
+    visibility: visible;
+    position: absolute;
+    top: 22px !important;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    width: 150px;
+    right: auto;
+    left: 0;
+    padding: 10px 15px 5px;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+    gap: 10px;
+    opacity: 1;
+    z-index: 1;
 }
