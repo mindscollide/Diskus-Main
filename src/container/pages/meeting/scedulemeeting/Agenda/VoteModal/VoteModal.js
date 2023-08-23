@@ -23,6 +23,7 @@ import Leftploygon from "../../../../../../assets/images/leftdirection.svg";
 import Rightploygon from "../../../../../../assets/images/rightdirection.svg";
 import Plus from "../../../../../../assets/images/Meeting plus.png";
 import profile from "../../../../../../assets/images/newprofile.png";
+import { validateInput } from "../../../../../../commen/functions/regex";
 const VoteModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -33,6 +34,8 @@ const VoteModal = () => {
   const [error, setError] = useState(false);
   const [voteModalAttrbutes, setVoteModalAttrbutes] = useState({
     VoteQuestion: "",
+    Answer: "",
+    OptionsAdded: "",
     SelectOrganizers: 0,
     SelectOptions: 0,
   });
@@ -360,6 +363,58 @@ const VoteModal = () => {
     });
   };
 
+  const HandleChange = (e, index) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "description") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          VoteQuestion: valueCheck,
+        });
+      } else {
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          VoteQuestion: "",
+        });
+      }
+    }
+    if (name === "Answer") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          Answer: valueCheck,
+        });
+      } else {
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          Answer: "",
+        });
+      }
+    }
+  };
+
+  const HandleChangeOptions = (e, index) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "OptionsAdded") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setSaveOptions({
+          ...saveOptions,
+          Options: valueCheck,
+        });
+      } else {
+        setSaveOptions({
+          ...saveOptions,
+          Options: "",
+        });
+      }
+    }
+  };
+
   return (
     <section>
       <Modal
@@ -438,9 +493,11 @@ const VoteModal = () => {
                       as={"textarea"}
                       value={voteModalAttrbutes.VoteQuestion}
                       maxLength={500}
+                      name={"description"}
                       rows="2"
                       placeholder={t("Description")}
                       required={true}
+                      change={HandleChange}
                     />
                   </Col>
                   <Row>
@@ -471,6 +528,9 @@ const VoteModal = () => {
                         <TextField
                           labelClass={"d-none"}
                           applyClass={"NewMeetingFileds"}
+                          name={"Answer"}
+                          value={voteModalAttrbutes.Answer}
+                          change={HandleChange}
                         />
                       </Col>
                       <Col lg={2} md={2} sm={2}>
@@ -573,6 +633,8 @@ const VoteModal = () => {
                                               }
                                               width={"145px"}
                                               value={saveOptions.Options}
+                                              name={"OptionsAdded"}
+                                              change={HandleChangeOptions}
                                               iconClassName={
                                                 styles["ResCrossIcon"]
                                               }

@@ -357,19 +357,26 @@ const Agenda = () => {
                                         src={Key}
                                         width="24.07px"
                                         height="24.09px"
-                                        onClick={openAdvancePermissionModal}
+                                        onClick={
+                                          disbaleFields
+                                            ? ""
+                                            : openAdvancePermissionModal
+                                        }
                                       />
                                       <img
                                         src={Cast}
                                         width="25.85px"
                                         height="25.89px"
-                                        onClick={openVoteMOdal}
+                                        onClick={
+                                          disbaleFields ? "" : openVoteMOdal
+                                        }
                                       />
                                       <img
                                         src={
                                           disbaleFields ? closedLocked : Lock
                                         }
                                         width="18.87px"
+                                        className={styles["lockBtn"]}
                                         height="26.72px"
                                         onClick={lockFunctionActive}
                                       />
@@ -770,14 +777,20 @@ const Agenda = () => {
                                                       width="24.07px"
                                                       height="24.09px"
                                                       onClick={
-                                                        openAdvancePermissionModal
+                                                        disbaleFields
+                                                          ? ""
+                                                          : openAdvancePermissionModal
                                                       }
                                                     />
                                                     <img
                                                       src={Cast}
                                                       width="25.85px"
                                                       height="25.89px"
-                                                      onClick={openVoteMOdal}
+                                                      onClick={
+                                                        disbaleFields
+                                                          ? ""
+                                                          : openVoteMOdal
+                                                      }
                                                     />
                                                     <img
                                                       src={
@@ -787,6 +800,9 @@ const Agenda = () => {
                                                       }
                                                       width="18.87px"
                                                       height="26.72px"
+                                                      className={
+                                                        styles["lockBtn"]
+                                                      }
                                                       onClick={
                                                         lockFunctionActive
                                                       }
@@ -1249,19 +1265,26 @@ const Agenda = () => {
                                         src={Key}
                                         width="24.07px"
                                         height="24.09px"
-                                        onClick={openAdvancePermissionModal}
+                                        onClick={
+                                          disbaleFields
+                                            ? ""
+                                            : openAdvancePermissionModal
+                                        }
                                       />
                                       <img
                                         src={Cast}
                                         width="25.85px"
                                         height="25.89px"
-                                        onClick={openVoteMOdal}
+                                        onClick={
+                                          disbaleFields ? "" : openVoteMOdal
+                                        }
                                       />
                                       <img
                                         src={
                                           disbaleFields ? closedLocked : Lock
                                         }
                                         width="18.87px"
+                                        className={styles["lockBtn"]}
                                         height="26.72px"
                                         onClick={lockFunctionActive}
                                       />
@@ -1635,14 +1658,20 @@ const Agenda = () => {
                                                       width="24.07px"
                                                       height="24.09px"
                                                       onClick={
-                                                        openAdvancePermissionModal
+                                                        disbaleFields
+                                                          ? ""
+                                                          : openAdvancePermissionModal
                                                       }
                                                     />
                                                     <img
                                                       src={Cast}
                                                       width="25.85px"
                                                       height="25.89px"
-                                                      onClick={openVoteMOdal}
+                                                      onClick={
+                                                        disbaleFields
+                                                          ? ""
+                                                          : openVoteMOdal
+                                                      }
                                                     />
                                                     <img
                                                       src={
@@ -1652,6 +1681,9 @@ const Agenda = () => {
                                                       }
                                                       width="18.87px"
                                                       height="26.72px"
+                                                      className={
+                                                        styles["lockBtn"]
+                                                      }
                                                       onClick={
                                                         lockFunctionActive
                                                       }
