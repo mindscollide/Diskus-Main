@@ -3,6 +3,9 @@
   justify-content: center !important;
   gap: 30px !important;
   margin-top: 20px;
+  position: fixed;
+  bottom: 20px;
+  width: 85%;
 }
 
 .videoNonActive-BottomImg-border {

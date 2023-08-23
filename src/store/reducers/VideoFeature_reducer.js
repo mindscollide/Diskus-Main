@@ -17,6 +17,7 @@ const initialState = {
   VideoIncomingCallFlag: false,
   VideoChatNormalFlag: false,
   VideoAgendaNormalFlag: false,
+  VideoMinutesMeetingNormalFlag: false,
   VideoOutgoingCallFlag: false,
   VideoMultipleCallFlag: false,
   VideoChatOpenFlag: false,
@@ -158,6 +159,13 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         VideoAgendaNormalFlag: action.response,
+      }
+    }
+
+    case actions.MINUTES_MEETING_ENABLE_NORMAL_FLAG: {
+      return {
+        ...state,
+        VideoMinutesMeetingNormalFlag: action.response,
       }
     }
 

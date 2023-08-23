@@ -880,20 +880,11 @@ const Dashboard = () => {
             id={notificationID}
           />
           <Outlet />
-          {videoFeatureReducer.VideoCallOTOFlag === true &&
-          videoFeatureReducer.VideoCallNormalScreenFlag === true &&
-          videoFeatureReducer.VideoCallNormalHeaderFlag === true ? (
-            <VideoCallScreen
-            // openVideoScreen={videoCall.openVideoCall}
-            // closeButtonVideoCallFunc={() => videoHandlerforInisiateCall(false)}
-            />
+          {videoFeatureReducer.NormalizeVideoFlag === true ||
+          videoFeatureReducer.MinimizeVideoFlag === true ||
+          videoFeatureReducer.MaximizeVideoFlag === true ? (
+            <VideoCallScreen />
           ) : null}
-
-          {/* {videoCall.openGroupVideopanel === true || isVideoPanel ? (
-            <VideoCallScreen
-            />
-          ) : null} */}
-
           {activateBlur === false ? <Talk /> : null}
         </Layout>
         {/* </Content> */}

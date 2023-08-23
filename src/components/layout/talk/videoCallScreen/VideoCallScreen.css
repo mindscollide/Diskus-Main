@@ -275,13 +275,7 @@ body[dir="rtl"] .agenda-count {
   border-radius: 4px;
 }
 
-.isMinutes-paragraph {
-  font-size: 10px;
-  font-weight: 600;
-  color: #000;
-  position: relative;
-  bottom: 10px;
-}
+
 
 .minutes-video-field input {
   position: relative;
@@ -887,16 +881,7 @@ body[dir="rtl"] .isAgendamedium-div-changes {
   border-radius: 4px;
 }
 
-.isMinutesmedium-div-changes {
-  height: 47vh;
-  position: absolute;
-  bottom: 10px;
-  right: 6.8%;
-  width: 30%;
-  background: #fff;
-  border: 1px solid #6172d6;
-  border-radius: 4px;
-}
+
 
 body[dir="rtl"] .isMinutesmedium-div-changes {
   height: 47vh;
@@ -909,12 +894,7 @@ body[dir="rtl"] .isMinutesmedium-div-changes {
   border-radius: 4px;
 }
 
-.minutesmedium-video-field input {
-  position: relative;
-  width: 100%;
-  top: 30px;
-  left: 20px;
-}
+
 
 body[dir="rtl"] .minutesmedium-video-field input {
   position: relative;
@@ -923,11 +903,7 @@ body[dir="rtl"] .minutesmedium-video-field input {
   left: -15px;
 }
 
-.minutesmedium-video-sendIcon {
-  top: 25px;
-  position: relative;
-  right: 0px;
-}
+
 
 body[dir="rtl"] .minutesmedium-video-sendIcon {
   top: 25px;

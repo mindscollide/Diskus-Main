@@ -5,9 +5,11 @@ import './videoCallNormalPanel.css'
 import VideoCallNormalHeader from '../videoCallHeader/videoCallNormalHeader'
 import VideoPanelNormalChat from './videoCallNormalChat'
 import VideoPanelNormalAgenda from './videoCallNormalAgenda'
+import VideoPanelNormalMinutesMeeting from './videoCallNormalMinutesMeeting'
 import {
   agendaEnableNormalFlag,
   chatEnableNormalFlag,
+  minutesMeetingEnableNormalFlag,
 } from '../../../../../store/actions/VideoFeature_actions'
 import ChatNonActive from '../../../../../assets/images/newElements/ChatIconNonActive.svg'
 import NoteNonActive from '../../../../../assets/images/newElements/NoteIconNonActive.svg'
@@ -32,11 +34,15 @@ const VideoPanelNormal = () => {
       setIsActiveIcon(true)
       dispatch(agendaEnableNormalFlag(false))
       setIsNoteActive(false)
+      dispatch(minutesMeetingEnableNormalFlag(false))
+      setIsNote2Active(false)
     } else {
       dispatch(chatEnableNormalFlag(false))
       setIsActiveIcon(false)
       dispatch(agendaEnableNormalFlag(false))
       setIsNoteActive(false)
+      dispatch(minutesMeetingEnableNormalFlag(false))
+      setIsNote2Active(false)
     }
   }
 
@@ -46,11 +52,33 @@ const VideoPanelNormal = () => {
       setIsNoteActive(true)
       dispatch(chatEnableNormalFlag(false))
       setIsActiveIcon(false)
+      dispatch(minutesMeetingEnableNormalFlag(false))
+      setIsNote2Active(false)
     } else {
       dispatch(agendaEnableNormalFlag(false))
       setIsNoteActive(false)
       dispatch(chatEnableNormalFlag(false))
       setIsActiveIcon(false)
+      dispatch(minutesMeetingEnableNormalFlag(false))
+      setIsNote2Active(false)
+    }
+  }
+
+  const onClickMinutesHandler = () => {
+    if (isNote2Active === false) {
+      dispatch(agendaEnableNormalFlag(false))
+      setIsNoteActive(false)
+      dispatch(chatEnableNormalFlag(false))
+      setIsActiveIcon(false)
+      dispatch(minutesMeetingEnableNormalFlag(true))
+      setIsNote2Active(true)
+    } else {
+      dispatch(agendaEnableNormalFlag(false))
+      setIsNoteActive(false)
+      dispatch(chatEnableNormalFlag(false))
+      setIsActiveIcon(false)
+      dispatch(minutesMeetingEnableNormalFlag(false))
+      setIsNote2Active(false)
     }
   }
 
@@ -116,12 +144,11 @@ const VideoPanelNormal = () => {
 
                   <div onClick={() => setIsNote2Active(!isNote2Active)}>
                     {isNote2Active ? (
-                      // <img src={ActiveNote2} onClick={onClickMinutesHandler} />
-                      <img src={ActiveNote2} />
+                      <img src={ActiveNote2} onClick={onClickMinutesHandler} />
                     ) : (
                       <img
                         src={Note_2NonActive}
-                        // onClick={onClickMinutesHandler}
+                        onClick={onClickMinutesHandler}
                       />
                     )}
                   </div>
@@ -137,6 +164,10 @@ const VideoPanelNormal = () => {
 
                 {videoFeatureReducer.VideoAgendaNormalFlag === true ? (
                   <VideoPanelNormalAgenda />
+                ) : null}
+
+                {videoFeatureReducer.VideoMinutesMeetingNormalFlag === true ? (
+                  <VideoPanelNormalMinutesMeeting />
                 ) : null}
               </Col>
             </Row>

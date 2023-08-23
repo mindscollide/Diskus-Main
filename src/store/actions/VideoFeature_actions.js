@@ -112,6 +112,13 @@ const agendaEnableNormalFlag = (response) => {
   }
 }
 
+const minutesMeetingEnableNormalFlag = (response) => {
+  return {
+    type: actions.MINUTES_MEETING_ENABLE_NORMAL_FLAG,
+    response: response,
+  }
+}
+
 const videoOutgoingCallFlag = (response) => {
   return {
     type: actions.VIDEO_OUTGOING_CALL_MAX,
@@ -201,6 +208,7 @@ export {
   videoIncomingCallFlag,
   chatEnableNormalFlag,
   agendaEnableNormalFlag,
+  minutesMeetingEnableNormalFlag,
   videoOutgoingCallFlag,
   videoMultipleCallFlag,
   videoChatOpenFlag,

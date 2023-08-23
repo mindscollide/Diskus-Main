@@ -6,6 +6,7 @@ import {
   videoOutgoingCallFlag,
   videoMultipleCallFlag,
 } from '../../../../../../store/actions/VideoFeature_actions'
+import VideoMaxModal from '../../../videoCallScreen/videoCallBody/VideoMaxModal'
 import ActiveVideo from '../../../../../../assets/images/newElements/ActiveVideoIcon.svg'
 import ActiveMic from '../../../../../../assets/images/newElements/ActiveMicIcon.svg'
 import ActiveScreenShare from '../../../../../../assets/images/newElements/ActiveScreenShareIcon.svg'
@@ -24,6 +25,9 @@ import './VideoLargePanelFooter.css'
 
 const VideoLargePanelFooter = () => {
   const dispatch = useDispatch()
+
+  // for open Chrome modal in maximum screen
+  const [maxModalScreen, setMaxModalScreen] = useState(false)
 
   //for full screens bottom icons active or non active
   const [isVideoIconActive, setIsVideoIconActive] = useState(false)
@@ -59,6 +63,11 @@ const VideoLargePanelFooter = () => {
     } else {
       dispatch(videoMultipleCallFlag(true))
     }
+  }
+
+  // For Open video modal screen
+  const openMaxVideoModal = () => {
+    setMaxModalScreen(true)
   }
 
   return (
@@ -138,13 +147,13 @@ const VideoLargePanelFooter = () => {
               <img
                 src={ActiveBoard}
                 alt="Active Board"
-                // onClick={openChromeModal}
+                onClick={openMaxVideoModal}
               />
             ) : (
               <img
                 src={NonActiveBoard}
                 alt="NonActive Board"
-                // onClick={openChromeModal}
+                onClick={openMaxVideoModal}
               />
             )}
           </div>
@@ -160,6 +169,15 @@ const VideoLargePanelFooter = () => {
           <img src={NonActiveCall} alt="Non ActiveCall" />
         </Col>
       </Row>
+
+      {maxModalScreen ? (
+        <>
+          <VideoMaxModal
+            videoModal={maxModalScreen}
+            setVideoModal={setMaxModalScreen}
+          />
+        </>
+      ) : null}
     </>
   )
 }
