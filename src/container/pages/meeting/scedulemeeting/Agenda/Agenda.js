@@ -41,6 +41,7 @@ import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmission
 import PermissionConfirmation from "./AdvancePermissionModal/PermissionConfirmModal/PermissionConfirmation";
 import VoteModal from "./VoteModal/VoteModal";
 import VoteModalConfirm from "./VoteModal/VoteModalConfirmation/VoteModalConfirm";
+import { validateInput } from "../../../../../commen/functions/regex";
 
 const Agenda = () => {
   const { t } = useTranslation();
@@ -210,6 +211,29 @@ const Agenda = () => {
     setDisbaleFields(!disbaleFields);
   };
 
+  const HandleChange = (e, index) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "AgendaTitle") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setRows([
+          {
+            ...rows,
+            title: valueCheck,
+          },
+        ]);
+      } else {
+        setRows([
+          {
+            ...rows,
+            title: "",
+          },
+        ]);
+      }
+    }
+  };
+
   console.log(rows, "rowsrowsrowsrowsrowsrows");
   return (
     <>
@@ -241,6 +265,8 @@ const Agenda = () => {
                                     labelClass={"d-none"}
                                     placeholder={t("Agenda-title")}
                                     value={rows.title}
+                                    name={"AgendaTitle"}
+                                    change={HandleChange}
                                     disable={disbaleFields ? true : false}
                                   />
                                 </Col>
