@@ -39,6 +39,7 @@ import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved
 import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmissionModal";
 import PermissionConfirmation from "./AdvancePermissionModal/PermissionConfirmModal/PermissionConfirmation";
 import VoteModal from "./VoteModal/VoteModal";
+import VoteModalConfirm from "./VoteModal/VoteModalConfirmation/VoteModalConfirm";
 
 const Agenda = () => {
   const { t } = useTranslation();
@@ -1976,6 +1977,7 @@ const Agenda = () => {
         <PermissionConfirmation />
       )}
       {NewMeetingreducer.voteAgendaModal && <VoteModal />}
+      {NewMeetingreducer.voteConfirmationModal && <VoteModalConfirm />}
     </>
   );
 };

@@ -1277,5 +1277,8 @@
   "Vote-question": "Vote Question",
   "Vote-answer": "Vote Answer",
   "Allow-the-following-individual-to-open/close-voting": "Allow the following individual to open/close voting",
-  "Results-viewing-option-in-member-portal": "Results Viewing option in member portal"
+  "Results-viewing-option-in-member-portal": "Results Viewing option in member portal",
+  "Show-count": "Show Count",
+  "Show-percentage": "Show Percentage",
+  "Vote-by-members": "Vote by Members"
 }

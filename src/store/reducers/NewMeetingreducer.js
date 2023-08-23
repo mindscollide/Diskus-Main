@@ -13,6 +13,7 @@ const initialState = {
   advancePermissionModal: false,
   advancePermissionConfirmation: false,
   voteAgendaModal: false,
+  voteConfirmationModal: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -90,6 +91,13 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         voteAgendaModal: action.response,
+      };
+    }
+
+    case actions.VOTE_MODAL_CONFIRMATION: {
+      return {
+        ...state,
+        voteConfirmationModal: action.response,
       };
     }
 

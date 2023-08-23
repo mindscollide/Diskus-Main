@@ -169,3 +169,55 @@
   font-size: 8px !important;
   border: none !important;
 }
+
+.Participant_names {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Image_profile {
+  border-radius: 50% !important;
+}
+
+.Cancel_Vote_Modal {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+}
+
+.Cancel_Vote_Modal:hover,
+.Cancel_Vote_Modal:active,
+.Cancel_Vote_Modal:focus,
+.Cancel_Vote_Modal:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+}
+
+.Save_Vote_Modal {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #fff !important;
+  background: #5f78d6 !important;
+  border-radius: 4px !important;
+}
+
+.Save_Vote_Modal:hover,
+.Save_Vote_Modal:active,
+.Save_Vote_Modal:focus,
+.Save_Vote_Modal:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #e1e1e1 !important;
+  color: #fff !important;
+  background: #5f78d6 !important;
+  border-radius: 4px !important;
+}

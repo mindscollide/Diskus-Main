@@ -6,6 +6,7 @@ import {
   TextField,
   Table,
 } from "../../../../../../components/elements";
+import { Checkbox } from "antd";
 import styles from "./VoteModal.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +19,7 @@ import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
 import Leftploygon from "../../../../../../assets/images/leftdirection.svg";
 import Rightploygon from "../../../../../../assets/images/rightdirection.svg";
 import Plus from "../../../../../../assets/images/Meeting plus.png";
+import profile from "../../../../../../assets/images/newprofile.png";
 const VoteModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -37,7 +39,15 @@ const VoteModal = () => {
       Name: <label className={styles["Title_desc"]}>Muhammad Saif</label>,
       Role: <label className="column-boldness">Content Writer</label>,
       Email: <label className="column-boldness">muhammadsaif@gmail.com</label>,
-      Button: <></>,
+      Button: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+              <img src={redcrossIcon} height="21.79px" width="21.79px" />
+            </Col>
+          </Row>
+        </>
+      ),
     },
   ];
   const [rowsData, setRowsData] = useState(data);
@@ -82,7 +92,7 @@ const VoteModal = () => {
       ),
       dataIndex: "Email",
       key: "Email",
-      width: "130px",
+      width: "150px",
     },
     {
       title: (
@@ -96,7 +106,7 @@ const VoteModal = () => {
       ),
       dataIndex: "Button",
       key: "Button",
-      width: "70px",
+      width: "100px",
     },
   ];
 
@@ -114,6 +124,203 @@ const VoteModal = () => {
     setAddOptions(false);
     setSaveOptions([...saveOptions, { Options: saveOptions.value }]);
   };
+
+  const optionsIndividualOpenCloseVoting = [
+    {
+      value: "memebers",
+      label: (
+        <>
+          <Row>
+            <Col lg={1} md={1} sm={1} className="">
+              <Checkbox></Checkbox>
+            </Col>
+            <Col lg={11} md={11} sm={11} className="d-flex gap-2">
+              <img
+                src={profile}
+                width="17px"
+                height="17px"
+                className={styles["Image_profile"]}
+              />
+              <span className={styles["Participant_names"]}>Oliver Davis</span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "memebers",
+      label: (
+        <>
+          <Row>
+            <Col lg={1} md={1} sm={1} className="">
+              <Checkbox></Checkbox>
+            </Col>
+            <Col lg={11} md={11} sm={11} className="d-flex gap-2">
+              <img
+                src={profile}
+                width="17px"
+                height="17px"
+                className={styles["Image_profile"]}
+              />
+              <span className={styles["Participant_names"]}>Oliver Davis</span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "memebers",
+      label: (
+        <>
+          <Row>
+            <Col lg={1} md={1} sm={1} className="">
+              <Checkbox></Checkbox>
+            </Col>
+            <Col lg={11} md={11} sm={11} className="d-flex gap-2">
+              <img
+                src={profile}
+                width="17px"
+                height="17px"
+                className={styles["Image_profile"]}
+              />
+              <span className={styles["Participant_names"]}>Oliver Davis</span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "memebers",
+      label: (
+        <>
+          <Row>
+            <Col lg={1} md={1} sm={1} className="">
+              <Checkbox></Checkbox>
+            </Col>
+            <Col lg={11} md={11} sm={11} className="d-flex gap-2">
+              <img
+                src={profile}
+                width="17px"
+                height="17px"
+                className={styles["Image_profile"]}
+              />
+              <span className={styles["Participant_names"]}>Oliver Davis</span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "memebers",
+      label: (
+        <>
+          <Row>
+            <Col lg={1} md={1} sm={1} className="">
+              <Checkbox></Checkbox>
+            </Col>
+            <Col lg={11} md={11} sm={11} className="d-flex gap-2">
+              <img
+                src={profile}
+                width="17px"
+                height="17px"
+                className={styles["Image_profile"]}
+              />
+              <span className={styles["Participant_names"]}>Oliver Davis</span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "memebers",
+      label: (
+        <>
+          <Row>
+            <Col lg={1} md={1} sm={1} className="">
+              <Checkbox></Checkbox>
+            </Col>
+            <Col lg={11} md={11} sm={11} className="d-flex gap-2">
+              <img
+                src={profile}
+                width="17px"
+                height="17px"
+                className={styles["Image_profile"]}
+              />
+              <span className={styles["Participant_names"]}>Oliver Davis</span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "memebers",
+      label: (
+        <>
+          <Row>
+            <Col lg={1} md={1} sm={1} className="">
+              <Checkbox></Checkbox>
+            </Col>
+            <Col lg={11} md={11} sm={11} className="d-flex gap-2">
+              <img
+                src={profile}
+                width="17px"
+                height="17px"
+                className={styles["Image_profile"]}
+              />
+              <span className={styles["Participant_names"]}>Oliver Davis</span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+    {
+      value: "memebers",
+      label: (
+        <>
+          <Row>
+            <Col lg={1} md={1} sm={1} className="">
+              <Checkbox></Checkbox>
+            </Col>
+            <Col lg={11} md={11} sm={11} className="d-flex gap-2">
+              <img
+                src={profile}
+                width="17px"
+                height="17px"
+                className={styles["Image_profile"]}
+              />
+              <span className={styles["Participant_names"]}>Oliver Davis</span>
+            </Col>
+          </Row>
+        </>
+      ),
+    },
+  ];
+  const options = [
+    {
+      value: "ShowCount",
+      label: (
+        <>
+          <span>{t("Show-count")}</span>
+        </>
+      ),
+    },
+    {
+      value: "ShowPercentage",
+      label: (
+        <>
+          <span>{t("Show-percentage")}</span>
+        </>
+      ),
+    },
+    {
+      value: "VoteBymembers",
+      label: (
+        <>
+          <span>{t("Vote-by-members")}</span>
+        </>
+      ),
+    },
+  ];
 
   return (
     <section>
@@ -362,7 +569,7 @@ const VoteModal = () => {
                     </Row>
                     <Row className="mt-2">
                       <Col lg={12} md={12} sm={12}>
-                        <Select />
+                        <Select options={optionsIndividualOpenCloseVoting} />
                       </Col>
                     </Row>
                   </Col>
@@ -377,7 +584,7 @@ const VoteModal = () => {
                     </Row>
                     <Row className="mt-2">
                       <Col lg={12} md={12} sm={12}>
-                        <Select />
+                        <Select options={options} />
                       </Col>
                     </Row>
                   </Col>
@@ -395,11 +602,32 @@ const VoteModal = () => {
                       column={MeetingColoumns}
                       scroll={{ y: "62vh" }}
                       pagination={false}
-                      className="Polling_table"
+                      className="NewMeeting_table"
                       rows={rowsData}
                     />
                   </Col>
                 </Row>
+              </Col>
+            </Row>
+          </>
+        }
+        ModalFooter={
+          <>
+            <Row className="mt-4">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end gap-2"
+              >
+                <Button
+                  text={t("Cancel")}
+                  className={styles["Cancel_Vote_Modal"]}
+                />
+                <Button
+                  text={t("Save")}
+                  className={styles["Save_Vote_Modal"]}
+                />
               </Col>
             </Row>
           </>

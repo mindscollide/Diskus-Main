@@ -77,6 +77,13 @@ const showVoteAgendaModal = (response) => {
   };
 };
 
+const showVoteConfirmationModal = (response) => {
+  return {
+    type: actions.VOTE_MODAL_CONFIRMATION,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -89,4 +96,5 @@ export {
   showAdvancePermissionModal,
   showAdvancePermissionConfirmation,
   showVoteAgendaModal,
+  showVoteConfirmationModal,
 };

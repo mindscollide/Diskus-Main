@@ -5926,3 +5926,7 @@ input::-webkit-calendar-picker-indicator {
   font-size: 12px;
   margin-top: -3px;
 }
+
+/* .NewMeeting_table .ant-table-thead > tr * {
+  color: #fff !important;
+} */
