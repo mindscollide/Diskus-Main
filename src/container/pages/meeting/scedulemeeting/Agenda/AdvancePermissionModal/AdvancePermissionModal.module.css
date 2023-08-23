@@ -17,3 +17,224 @@
   margin-top: 10px;
   background-color: #ccc;
 }
+
+.Bottom_line_names {
+  width: 100% !important;
+  height: 1px !important;
+  display: block;
+  margin: 0 !important;
+  padding: 0 !important;
+  background-color: #ccc;
+}
+
+/* sidebar styling  */
+.sidebar-row {
+  margin: 0% !important;
+  padding: 0% !important;
+}
+
+.sidebar-text {
+  cursor: pointer !important;
+  color: #004990 !important;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.btm-icons {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar-icons-color {
+  color: #004990 !important;
+  padding: 0px 6px;
+  font-size: 18px !important;
+}
+
+.menu-background {
+  background-color: #e6e8ff;
+  text-align: left !important;
+}
+
+.Menu-sidebar-class {
+  margin-left: -10px !important;
+  font-weight: 600;
+  font-size: 15px;
+  color: #004990 !important;
+  width: 100% !important;
+  height: 100%;
+}
+
+.menu-icons {
+  font-size: 18px !important;
+}
+
+.submenu-sidebar-icons {
+  font-family: "Montserrat", sans-serif !important;
+  margin-left: -10px;
+  width: 100% !important;
+  padding: 6px 0px !important;
+  border-radius: 0px !important;
+  border-bottom: 1px solid #e2e6e9 !important;
+}
+
+.submenu-sidebar-icons:active,
+.submenu-sidebar-icons::selection {
+  color: #004990 !important;
+}
+
+.menu-items-sidebar {
+  font-size: 14px !important;
+  font-family: "Montserrat", sans-serif !important;
+  font-weight: 500 !important;
+  color: #45494d;
+  border-radius: 0px !important;
+}
+
+.menu-items-sidebar:hover,
+.menu-items-sidebar:active,
+.menu-items-sidebar:focus,
+.menu-items-sidebar:focus-visible,
+.menu-items-sidebar:focus-within {
+  background-color: #e6e8ff !important;
+  color: #004990 !important;
+  border-radius: 0px !important;
+}
+
+:where(.css-dev-only-do-not-override-1e3x2xa).ant-menu-light
+  .ant-menu-item-selected,
+:where(.css-dev-only-do-not-override-1e3x2xa).ant-menu-light
+  > .ant-menu
+  .ant-menu-item-selected {
+  background-color: #e6e8ff;
+}
+
+:where(.css-dev-only-do-not-override-1e3x2xa).ant-layout .ant-layout-sider {
+  background: #ffffff !important;
+}
+
+.SecurityMenu > ant-menu-submenu-arrow,
+.ant-menu-submenu-arrow {
+  /* right: 10px !important; */
+  transform: rotate(270deg) translateX(2.5px) !important;
+}
+
+:where(.css-dev-only-do-not-override-1e3x2xa).ant-menu
+  .ant-menu-submenu-open.ant-menu-submenu-inline
+  > .ant-menu-submenu-title
+  > .ant-menu-submenu-arrow::after {
+  transform: rotate(135deg) translateX(-2.5px) translateY(0px);
+}
+
+section.ant-layout.ant-layout-has-sider.css-dev-only-do-not-override-1e3x2xa {
+  height: 83.5vh !important;
+  border-top-right-radius: 10px;
+  overflow: hidden !important;
+  border-top-right-radius: 20px !important;
+}
+
+aside.ant-layout-sider.ant-layout-sider-dark {
+  border-top-right-radius: 10px !important;
+}
+
+/* :where(.css-dev-only-do-not-override-1e3x2xa).ant-layout
+  .ant-layout-sider-children {
+  width: 250px !important;
+} */
+
+:where(
+    .css-dev-only-do-not-override-1e3x2xa
+  ).ant-menu-light.ant-menu-root.ant-menu-inline,
+:where(.css-dev-only-do-not-override-1e3x2xa).ant-menu-light
+  > .ant-menu.ant-menu-root.ant-menu-inline,
+:where(
+    .css-dev-only-do-not-override-1e3x2xa
+  ).ant-menu-light.ant-menu-root.ant-menu-vertical,
+:where(.css-dev-only-do-not-override-1e3x2xa).ant-menu-light
+  > .ant-menu.ant-menu-root.ant-menu-vertical {
+  border-inline-end: none !important;
+}
+
+:where(.css-dev-only-do-not-override-1e3x2xa).ant-menu-inline .ant-menu-submenu,
+:where(.css-dev-only-do-not-override-1e3x2xa).ant-menu-vertical
+  .ant-menu-submenu {
+  margin: 0 !important;
+}
+
+.Agenda_heading_Advance {
+  color: #5f78d6 !important;
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold" !important;
+  margin-right: 20% !important;
+}
+
+.All_Heading_Advance_permission {
+  color: #5f78d6 !important;
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Names_advance_permission {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.ant-layout {
+  background: none !important;
+}
+
+.OverAll_padding {
+  padding: 0px 26px !important;
+}
+
+.Cancel_Button {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+.Cancel_Button:hover,
+.Cancel_Button:active,
+.Cancel_Button:focus,
+.Cancel_Button:focus-visible {
+  padding: 12px 30px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+}
+
+.Save_Button {
+  padding: 12px 30px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+}
+
+.Save_Button:hover,
+.Save_Button:active,
+.Save_Button:focus,
+.Save_Button:focus-visible {
+  padding: 12px 30px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+}
+
+.AdvancePermission_switches {
+  margin-left: 20px !important;
+}
+.AdvancePermission_switches_View {
+  margin-left: 11px !important;
+}

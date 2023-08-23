@@ -7,7 +7,7 @@
 }
 
 .form-control2::placeholder {
-  color: #E1E1E1 !important;
+  color: #e1e1e1 !important;
 }
 
 .updateNotes_titleInput {
@@ -126,6 +126,25 @@
   height: 130.99px !important;
 }
 
+.NewMeetingFileds {
+  height: 39px !important;
+}
+
+.NewMeetingFileds_withIcon {
+  height: 39px !important;
+  position: relative !important;
+}
+.text-area-close-New_meeting {
+  resize: none !important;
+  height: 69px !important;
+}
+
+.text-area-close-New_meeting_error {
+  resize: none !important;
+  height: 69px !important;
+  border: 1px solid #f16b6b !important;
+}
+
 .sharefoldersearchInput {
   height: 38px !important;
 }
@@ -222,11 +241,11 @@
 }
 
 .text-area-create-group::placeholder {
-  color: #E1E1E1 !important;
+  color: #e1e1e1 !important;
 }
 
 .createCommittee_searchMember::placeholder {
-  color: #E1E1E1 !important;
+  color: #e1e1e1 !important;
 }
 
 .AgendaTextField {
