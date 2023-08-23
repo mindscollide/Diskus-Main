@@ -17,6 +17,7 @@ import {
 import UpperArrow from "../../../../../../assets/images/blueUp.svg";
 import { Col, Row } from "react-bootstrap";
 import styles from "./NotifyAgendaModal.module.css";
+import { validateInput } from "../../../../../../commen/functions/regex";
 
 const NotifyAgendaModal = () => {
   const { t } = useTranslation();
@@ -47,8 +48,31 @@ const NotifyAgendaModal = () => {
     },
   ]);
 
+  const [agendaMessege, setAgendaMessege] = useState({
+    Messege: "",
+  });
+
   const handleCrossIcon = () => {
     dispatch(showAgendaContributorsModals(false));
+  };
+
+  const HandleChange = (e, index) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "AgendaMessege") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setAgendaMessege({
+          ...agendaMessege,
+          Messege: valueCheck,
+        });
+      } else {
+        setAgendaMessege({
+          ...agendaMessege,
+          Messege: "",
+        });
+      }
+    }
   };
 
   return (
@@ -85,7 +109,9 @@ const NotifyAgendaModal = () => {
                   type="text"
                   as={"textarea"}
                   rows="4"
-                  placeholder={t("Message")}
+                  placeholder={t("AgendaMessege")}
+                  value={agendaMessege.Messege}
+                  change={HandleChange}
                   required={true}
                   maxLength={500}
                 />

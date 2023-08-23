@@ -15,6 +15,7 @@ import { showNotifyOrganizors } from "../../../../../../store/actions/NewMeeting
 import UpperArrow from "../../../../../../assets/images/UpperArrow.svg";
 import { Col, Row } from "react-bootstrap";
 import { style } from "@mui/system";
+import { validateInput } from "../../../../../../commen/functions/regex";
 
 const NotifyOrganizers = () => {
   const { t } = useTranslation();
@@ -44,9 +45,32 @@ const NotifyOrganizers = () => {
       name: "saroush",
     },
   ]);
+  const [organizerMessege, setOrganizerMessege] = useState({
+    Messege: "",
+  });
   const handleCrossIcon = () => {
     dispatch(showNotifyOrganizors(false));
   };
+
+  const HandleChange = (e, index) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "Message") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setOrganizerMessege({
+          ...organizerMessege,
+          Messege: valueCheck,
+        });
+      } else {
+        setOrganizerMessege({
+          ...organizerMessege,
+          Messege: "",
+        });
+      }
+    }
+  };
+
   return (
     <section>
       <Modal
@@ -82,6 +106,8 @@ const NotifyOrganizers = () => {
                   as={"textarea"}
                   rows="4"
                   placeholder={t("Message")}
+                  change={HandleChange}
+                  value={organizerMessege.Messege}
                   required={true}
                   maxLength={500}
                 />
