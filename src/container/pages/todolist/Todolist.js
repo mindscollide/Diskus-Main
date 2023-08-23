@@ -191,6 +191,9 @@ const TodoList = () => {
       } else {
         setRowToDo([]);
       }
+
+    } else {
+      setRowToDo([]);
     }
   }, [toDoListReducer.SearchTodolist]);
 
