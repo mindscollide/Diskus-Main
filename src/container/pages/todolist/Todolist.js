@@ -63,8 +63,6 @@ const TodoList = () => {
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  // registerLocale("ar", ar);
-  // registerLocale("en", enGB);
   const state = useSelector((state) => state);
   const {
     toDoListReducer,
@@ -99,69 +97,10 @@ const TodoList = () => {
   const [tableFilterOptions, setTableFilterOptions] = useState([]);
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
-  // for modal create  handler
-  const modalHandler = (e) => {
-    setShow(true);
-  };
 
-  // for Socket Update meeting status update
+  // GET TODOS STATUS
   useEffect(() => {
-    if (Object.keys(toDoListReducer.socketTodoStatusData).length > 0) {
-      let tableRowsData = [...rowsToDo];
-      var foundIndex = tableRowsData.findIndex(
-        (x) => x.pK_TID === toDoListReducer.socketTodoStatusData.todoid
-      );
-      if (foundIndex !== -1) {
-        let newArr = tableRowsData.map((rowObj, index) => {
-          if (index === foundIndex) {
-            let statusID = toDoListReducer.socketTodoStatusData.todoStatusID;
-            const newData = {
-              ...rowObj,
-              status: {
-                pK_TSID: statusID,
-                status:
-                  statusID === 1
-                    ? "In Progress"
-                    : statusID === 2
-                      ? "Pending"
-                      : statusID === 3
-                        ? "Upcoming"
-                        : statusID === 4
-                          ? "Cancelled"
-                          : statusID === 5
-                            ? "Completed"
-                            : statusID === 6
-                              ? "Deleted"
-                              : null,
-              },
-            };
-            return newData;
-          }
-          return rowObj;
-        });
-        setRowToDo(newArr);
-      }
-    }
-  }, [toDoListReducer.socketTodoStatusData]);
-
-  const ShowHide = () => {
-    setExpand(!isExpand);
-    setSearchData({
-      Date: "",
-      Title: "",
-      AssignedToName: "",
-      UserID: parseInt(0),
-    });
-  };
-  // for view modal  handler
-  const viewModalHandler = (id) => {
-    // setViewFlagToDo(true);
-    let Data = { ToDoListID: id };
-    dispatch(ViewToDoList(navigate, Data, t));
-  };
-
-  //dispatch gettodolist api
-  useEffect(() => {
+    dispatch(getTodoStatus(navigate, t));
     if (todoListPageSize !== null && todoListCurrentPage !== null) {
       dispatch(
         SearchTodoListApi(
@@ -191,7 +130,6 @@ const TodoList = () => {
       } else {
         setRowToDo([]);
       }
-
     } else {
       setRowToDo([]);
     }
@@ -199,17 +137,12 @@ const TodoList = () => {
 
   useEffect(() => {
     if (Object.keys(toDoListReducer.SocketTodoActivityData).length > 0) {
-      // rowsToDo.unshift(toDoListReducer.SocketTodoActivityData);
       setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo]);
-      // setRowToDo([...rowsToDo]);
     } else {
       setRowToDo(toDoListReducer.AllTodolistData);
     }
   }, [toDoListReducer.SocketTodoActivityData]);
-  // GET TODOS STATUS
-  useEffect(() => {
-    dispatch(getTodoStatus(navigate, t));
-  }, []);
+
   // SET STATUS VALUES
   useEffect(() => {
     let optionsArr = [];
@@ -229,6 +162,68 @@ const TodoList = () => {
     setStatusOptions(optionsArr);
     setTableFilterOptions(newOptionsFilter);
   }, [todoStatus]);
+
+  // for modal create  handler
+  const modalHandler = (e) => {
+    setShow(true);
+  };
+
+  // for Socket Update meeting status update
+  useEffect(() => {
+    if (Object.keys(toDoListReducer.socketTodoStatusData).length > 0) {
+      let tableRowsData = [...rowsToDo];
+      var foundIndex = tableRowsData.findIndex(
+        (x) => x.pK_TID === toDoListReducer.socketTodoStatusData.todoid
+      );
+      if (foundIndex !== -1) {
+        let newArr = tableRowsData.map((rowObj, index) => {
+          if (index === foundIndex) {
+            let statusID = toDoListReducer.socketTodoStatusData.todoStatusID;
+            const newData = {
+              ...rowObj,
+              status: {
+                pK_TSID: statusID,
+                status:
+                  statusID === 1
+                    ? "In Progress"
+                    : statusID === 2
+                    ? "Pending"
+                    : statusID === 3
+                    ? "Upcoming"
+                    : statusID === 4
+                    ? "Cancelled"
+                    : statusID === 5
+                    ? "Completed"
+                    : statusID === 6
+                    ? "Deleted"
+                    : null,
+              },
+            };
+            return newData;
+          }
+          return rowObj;
+        });
+        setRowToDo(newArr);
+      }
+    }
+  }, [toDoListReducer.socketTodoStatusData]);
+
+  const ShowHide = () => {
+    setExpand(!isExpand);
+    setSearchData({
+      Date: "",
+      Title: "",
+      AssignedToName: "",
+      UserID: parseInt(0),
+    });
+  };
+
+  // for view modal  handler
+  const viewModalHandler = (id) => {
+    // setViewFlagToDo(true);
+    let Data = { ToDoListID: id };
+    dispatch(ViewToDoList(navigate, Data, t));
+  };
 
   // for search Date handler
   const tableTodoChange = (pagination, filters, sorter) => {
@@ -257,7 +252,7 @@ const TodoList = () => {
   };
 
   const deleteTodolist = async (record) => {
-    await dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false))
+    await dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false));
     if (todoListPageSize !== null && todoListCurrentPage !== null) {
       dispatch(
         SearchTodoListApi(
@@ -301,8 +296,6 @@ const TodoList = () => {
       sortDirections: ["descend", "ascend"],
       // align: "left",
       render: (record, index) => {
-        console.log("recording", index);
-        console.log("records", record);
         return (
           <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular">
             {" "}
@@ -312,7 +305,6 @@ const TodoList = () => {
         );
       },
       sorter: (a, b) => {
-        console.log("sorter", "a", a, "b", b);
         return a.taskCreator.name
           .toLowerCase()
           .localeCompare(b.taskCreator.name.toLowerCase());
@@ -329,8 +321,6 @@ const TodoList = () => {
           .toLowerCase()
           .localeCompare(b.taskAssignedTo[0].name.toLowerCase()),
       render: (text, record) => {
-        console.log("Text111", text);
-        console.log("records assigned", record);
         if (text !== undefined && text !== null && text.length > 0) {
           return (
             <>
@@ -358,14 +348,6 @@ const TodoList = () => {
         }
       },
     },
-    // {
-    //   title: "",
-    //   dataIndex: "attach",
-    //   key: "attach",
-    //   render: (text, attach) => {
-    //     return <Paperclip className="paper-icon" />;
-    //   },
-    // },
     {
       title: t("Deadline"),
       dataIndex: "deadlineDateTime",
@@ -375,11 +357,6 @@ const TodoList = () => {
       align: "center",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) => {
-        console.log(
-          _justShowDateformat(a.deadlineDateTime),
-          _justShowDateformat(b.deadlineDateTime),
-          "deadlineDateTimedeadlineDateTimedeadlineDateTime"
-        );
         return (
           _justShowDateformat(a.deadlineDateTime) <
           _justShowDateformat(b.deadlineDateTime)
@@ -388,7 +365,6 @@ const TodoList = () => {
 
       // width: "220px",
       render: (text, record) => {
-        console.log("text1212", record);
         return newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime);
       },
     },
@@ -433,16 +409,11 @@ const TodoList = () => {
       ),
 
       onFilter: (value, record) => {
-        return (
-          console.log(value, "filter222"),
-          console.log(record, "filter222"),
-          record.status.status.toLowerCase().includes(value.toLowerCase())
-        );
+        return record.status.status.toLowerCase().includes(value.toLowerCase());
       },
       render: (text, record) => {
         return record.taskAssignedTo.map((newdata, index) => {
           if (newdata.pK_UID === parseInt(createrID)) {
-            console.log("text.pK_TSID", text.pK_TSID);
             return (
               <Select
                 defaultValue={text.status}
@@ -452,19 +423,18 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "InProgress MontserratSemiBold  margin-left-55"
                     : text.pK_TSID === 2
-                      ? "Pending MontserratSemiBold margin-left-55"
-                      : text.pK_TSID === 3
-                        ? "Upcoming MontserratSemiBold margin-left-55"
-                        : text.pK_TSID === 4
-                          ? "Cancelled MontserratSemiBold margin-left-55"
-                          : text.pK_TSID === 5
-                            ? "Completed MontserratSemiBold margin-left-55"
-                            : null
+                    ? "Pending MontserratSemiBold margin-left-55"
+                    : text.pK_TSID === 3
+                    ? "Upcoming MontserratSemiBold margin-left-55"
+                    : text.pK_TSID === 4
+                    ? "Cancelled MontserratSemiBold margin-left-55"
+                    : text.pK_TSID === 5
+                    ? "Completed MontserratSemiBold margin-left-55"
+                    : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
                 {statusOptions.map((optValue, index) => {
-                  console.log("optValue", optValue);
                   return (
                     <option key={optValue.id} value={optValue.id}>
                       {optValue.status}
@@ -480,14 +450,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
                     : text.pK_TSID === 2
-                      ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
-                      : text.pK_TSID === 3
-                        ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
-                        : text.pK_TSID === 4
-                          ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
-                          : text.pK_TSID === 5
-                            ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
-                            : null
+                    ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 3
+                    ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                    : text.pK_TSID === 4
+                    ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 5
+                    ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                    : null
                 }
               >
                 {text.status}
@@ -504,21 +474,15 @@ const TodoList = () => {
       key: "taskCreator",
       width: "80px",
       render: (record, index) => {
-        console.log("recording", index);
-        console.log("recordsrecords", record);
         if (parseInt(record.pK_UID) === parseInt(createrID)) {
-          if (index.status.pK_TSID !== 3) {
-            return (
-              <i
-                className="meeting-editbutton"
-                onClick={(e) => deleteTodolist(index)}
-              >
-                <img src={del} alt="" />
-              </i>
-            );
-          } else {
-            <></>;
-          }
+          return (
+            <i
+              className="meeting-editbutton"
+              onClick={(e) => deleteTodolist(index)}
+            >
+              <img src={del} alt="" />
+            </i>
+          );
         } else {
           <></>;
         }
@@ -604,14 +568,6 @@ const TodoList = () => {
         }
       },
     },
-    // {
-    //   title: "",
-    //   dataIndex: "attach",
-    //   key: "attach",
-    //   render: (text, attach) => {
-    //     return <Paperclip className="paper-icon" />;
-    //   },
-    // },
     {
       title: t("Deadline"),
       dataIndex: "deadlineDateTime",
@@ -681,14 +637,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "InProgress MontserratSemiBold  margin-left-55"
                     : text.pK_TSID === 2
-                      ? "Pending MontserratSemiBold margin-left-55"
-                      : text.pK_TSID === 3
-                        ? "Upcoming MontserratSemiBold margin-left-55"
-                        : text.pK_TSID === 4
-                          ? "Cancelled MontserratSemiBold margin-left-55"
-                          : text.pK_TSID === 5
-                            ? "Completed MontserratSemiBold margin-left-55"
-                            : null
+                    ? "Pending MontserratSemiBold margin-left-55"
+                    : text.pK_TSID === 3
+                    ? "Upcoming MontserratSemiBold margin-left-55"
+                    : text.pK_TSID === 4
+                    ? "Cancelled MontserratSemiBold margin-left-55"
+                    : text.pK_TSID === 5
+                    ? "Completed MontserratSemiBold margin-left-55"
+                    : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
@@ -708,14 +664,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
                     : text.pK_TSID === 2
-                      ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
-                      : text.pK_TSID === 3
-                        ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
-                        : text.pK_TSID === 4
-                          ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
-                          : text.pK_TSID === 5
-                            ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
-                            : null
+                    ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 3
+                    ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                    : text.pK_TSID === 4
+                    ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 5
+                    ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                    : null
                 }
               >
                 {text.status}
@@ -733,18 +689,14 @@ const TodoList = () => {
       width: "120px",
       render: (record, index) => {
         if (parseInt(record.pK_UID) === parseInt(createrID)) {
-          if (index.status.pK_TSID !== 3) {
-            return (
-              <i
-                className="meeting-editbutton"
-                onClick={(e) => deleteTodolist(index)}
-              >
-                <img src={del} alt="" />
-              </i>
-            );
-          } else {
-            <></>;
-          }
+          return (
+            <i
+              className="meeting-editbutton"
+              onClick={(e) => deleteTodolist(index)}
+            >
+              <img src={del} alt="" />
+            </i>
+          );
         } else {
           <></>;
         }
@@ -1120,8 +1072,8 @@ const TodoList = () => {
             <Row className="row-scroll-todolist">
               <Col className="">
                 {rowsToDo.length > 0 &&
-                  rowsToDo !== undefined &&
-                  rowsToDo !== null ? (
+                rowsToDo !== undefined &&
+                rowsToDo !== null ? (
                   <TableToDo
                     sortDirections={["descend", "ascend"]}
                     column={
@@ -1162,7 +1114,7 @@ const TodoList = () => {
                             // className="PaginationStyle-Meeting"
                             current={
                               todoListCurrentPage !== null &&
-                                todoListCurrentPage !== undefined
+                              todoListCurrentPage !== undefined
                                 ? todoListCurrentPage
                                 : 1
                             }
@@ -1175,7 +1127,7 @@ const TodoList = () => {
                             pageSizeOptions={["30", "50", "100", "200"]}
                             pageSize={
                               todoListPageSize !== null &&
-                                todoListPageSize !== undefined
+                              todoListPageSize !== undefined
                                 ? todoListPageSize
                                 : 50
                             }
