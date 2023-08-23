@@ -92,9 +92,11 @@ import ShowRenameNotification from "./ShowRenameNotification/ShowRenameNotificat
 import ActionUndoNotification from "./ActionUndoNotification/ActionUndoNotification";
 import ModalShareDocument from "./ModalSharedocument/ModalShareDocument";
 import CustomDropdown from "../../components/elements/dropdown/CustomDropdown";
-import { FolderisExist2 } from "../../store/actions/FolderUploadDataroom";
+import { CheckFolderisExist, FolderisExist2, FolderisExist_success, createFolder, uploadFile } from "../../store/actions/FolderUploadDataroom";
 import ModalRenameFile from "./ModalRenameFile/ModalRenameFile";
 import useHover from "../../hooks/useHover";
+import ModalOptionsisExistFolder from "./ModalUploadFolderisExist/ModalUploadFolderisExist";
+
 const DataRoom = () => {
   // tooltip
   const [showbarupload, setShowbarupload] = useState(false);
@@ -157,6 +159,7 @@ const DataRoom = () => {
   const [uploadCounter, setUploadCounter] = useState(0);
   const [deletenotification, setDeletenotification] = useState(false);
   const [isExistFolder, setIsExistFolder] = useState(false)
+  const [isFolderExist, setIsFolderExist] = useState(false)
   const [isRenameFolderData, setRenameFolderData] = useState(null)
   const [isRenameFileData, setRenameFileData] = useState(null)
   const [remainingTime, setRemainingTime] = useState(null);
@@ -216,29 +219,39 @@ const DataRoom = () => {
     },
   });
 
+  // thi state contains current file name which is ude to creat new folder
+  const [directoryNames, setDirectoryNames] = useState("");
+  console.log(directoryNames, "directoryNamesdirectoryNames")
+  // this state contain file which is in the folder
+  const [fileLists, setFileLists] = useState([]);
   const [open, setOpen] = useState({
     open: false,
     message: "",
   });
+
   useEffect(() => {
     try {
       window.addEventListener("click", function (e) {
         let clsname = e.target.className;
-        let arr = clsname && clsname.split("_");
-        if (arr != undefined) {
-          if (searchbarshow === true) {
-            if (
-              arr[0] !== "DataRoom" &&
-              arr[1] !== "Drop" &&
-              arr[2] !== "Down" &&
-              arr[3] !== "searchBar"
-            ) {
-              setSearchbarshow(false);
+        console.log(typeof clsname, "clsnameclsnameclsnameclsname")
+        if (typeof clsname === "string") {
+          let arr = clsname && clsname.split("_");
+          if (arr != undefined) {
+            if (searchbarshow === true) {
+              if (
+                arr[0] !== "DataRoom" &&
+                arr[1] !== "Drop" &&
+                arr[2] !== "Down" &&
+                arr[3] !== "searchBar"
+              ) {
+                setSearchbarshow(false);
+              }
+            } else if (arr[2] === "dataRoomSearchInput") {
+              setSearchbarshow(true);
             }
-          } else if (arr[2] === "dataRoomSearchInput") {
-            setSearchbarshow(true);
           }
         }
+
       });
     } catch {
     }
@@ -1236,39 +1249,133 @@ const DataRoom = () => {
     );
   };
 
-  const [isLoading, setLoading] = useState(false)
-  let newArr = [];
-  const handleChangeFolderUpload = ({ file, fileList }) => {
+  // this fun triger when upload folder triiger
+  const handleChangeFolderUpload = ({ directoryName, fileList }) => {
+    console.log("handleChangeFolderUpload create folder", fileList);
 
-    // if (fileList.length > 0) {
-    //   fileList.map((data, index) => {
-    //     newArr.push(data.originFileObj)
-    //   })
-    // }
-    // setFilesSend(newArr)
-    // setLoading(true)
-  }
-
-  useEffect(() => {
-    if (isLoading) {
-      let findFolderName = filesSend[0].webkitRelativePath.split("/")[0]
-      dispatch(
-        FolderisExist2(
-          navigate,
-          findFolderName,
-          t,
-          filesSend,
-          setProgress,
-          setRemainingTime,
-          remainingTime,
-          setShowbarupload,
-          setTasksAttachments,
-        )
-      );
-      setLoading(false)
-      setFilesSend([])
+    try {
+      // this is used for prevent multi trigger
+      if (
+        directoryName != directoryNames &&
+        fileList.length != fileLists.length
+      ) {
+        // this is use to set data in sate of current upload
+        if (directoryName) {
+          setDirectoryNames(directoryName);
+        }
+        if (fileList) {
+          setFileLists(fileList);
+        }
+      }
+    } catch (error) {
+      console.log("handleChangeFolderUpload error");
+      // Handle errors
     }
-  }, [isLoading])
+  };
+
+  // when state update of upload new file this use effect call
+  useEffect(() => {
+    // its chekrer for the directory name given from upload
+    if (directoryNames != "") {
+      try {
+        // this is api call fo check folder exist or not
+        dispatch(CheckFolderisExist(navigate, directoryNames, t));
+      } catch (error) {
+        console.error("Error in checkFolderFun:", error);
+        // Handle any errors that occur during the API call
+      }
+    } else {
+      console.log("have to work on this ");
+    }
+  }, [directoryNames, fileLists]);
+
+  // this hooks update when check folder responce update and also its shoulde not be equal to nul
+  useEffect(() => {
+    // its check that reducer state is not null
+    if (DataRoomReducer.FolderisExistCheck === true) {
+      // its check that reducer state is true its open modal for this
+      console.log("handleChangeFolderUpload open modal");
+      setIsFolderExist(true);
+      // when modal opnen the its set reducer value null so else vlue cannot hit again if hook triiger by defult for any how
+      dispatch(FolderisExist_success(null));
+    } else {
+      // its check that reducer state is false the its again check directory not null for current folder creation
+      if (
+        directoryNames !== "" &&
+        DataRoomReducer.FolderisExistCheck === false
+      ) {
+        // iits call api for create folder
+        console.log("handleChangeFolderUpload create folder");
+        dispatch(createFolder(navigate, t, directoryNames, 0));
+      }
+    }
+  }, [DataRoomReducer.FolderisExistCheck]);
+
+  // this hokks triger when folder is created and its updaet its id of anew folder
+  useEffect(() => {
+    // this is checker of reducer if its not on its initial state
+    try {
+      if (DataRoomReducer.CreatedFolderID != 0) {
+        // this is checker if its hase no file in it so dont perform any action futer other wise hot this function for upload files
+        console.log(
+          "ataRoomReducer.CreatedFolderID",
+          DataRoomReducer.CreatedFolderID
+        );
+        if (fileLists.length > 0) {
+          try {
+            processArraySequentially();
+          } catch (error) {
+            console.error(error);
+          }
+        } else {
+          console.log("work on this later");
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [DataRoomReducer.CreatedFolderID]);
+
+  // this function call for current files which is in the folder
+  const processArraySequentially = async () => {
+    let newarray = [...fileLists];
+    if (newarray.length > 0) {
+      for (const file of newarray) {
+        try {
+          // Call your API for the current item
+          const result = await dispatch(
+            uploadFile(
+              navigate,
+              file,
+              DataRoomReducer.CreatedFolderID,
+              t,
+              setProgress,
+              setRemainingTime,
+              remainingTime,
+              setShowbarupload,
+              setTasksAttachments
+            )
+          );
+
+          // Perform other actions with the result
+          console.log("handleChangeFolderUpload API call result:", result);
+
+          // You can wait for some time before proceeding to the next item
+          await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
+        } catch (error) {
+          console.error("handleChangeFolderUpload API call error:", error);
+        }
+      }
+    }
+
+    setDirectoryNames("");
+    setFileLists([]);
+    dispatch(CreateFolder_success(0));
+
+    // All API calls are complete, you can perform other actions here
+    console.log("handleChangeFolderUpload All API calls are complete");
+  };
+
 
   const handleChangeLocationValue = (event) => {
     setSearchResultBoxFields({
@@ -2528,6 +2635,7 @@ const DataRoom = () => {
         <ModalShareDocument inviteModal={inviteModal} setInviteModal={setInviteModal} />
       )}
       {isExistFolder && <ModalOptionsFolder setAddfolder={setFolderModal} isExistFolder={isExistFolder} setIsExistFolder={setIsExistFolder} />}
+      {isFolderExist && <ModalOptionsisExistFolder directoryNames={directoryNames} setIsFolderExist={setIsFolderExist} isFolderExist={isFolderExist} />}
       {showrenameFile && <ModalRenameFile isRenameFileData={isRenameFileData} showrenameFile={showrenameFile} setShowRenameFile={setShowRenameFile} />}
       {DataRoomReducer.Loading ? <Loader /> : null}
       {/* <Loader /> */}
