@@ -96,7 +96,7 @@ import { CheckFolderisExist, FolderisExist2, FolderisExist_success, createFolder
 import ModalRenameFile from "./ModalRenameFile/ModalRenameFile";
 import useHover from "../../hooks/useHover";
 import ModalOptionsisExistFolder from "./ModalUploadFolderisExist/ModalUploadFolderisExist";
-
+import { DownOutlined } from "@ant-design/icons";
 const DataRoom = () => {
   // tooltip
   const [showbarupload, setShowbarupload] = useState(false);
@@ -179,6 +179,8 @@ const DataRoom = () => {
   const [showsubmenu, setShowsubmenu] = useState(false);
   const [searchDocumentTypeValue, setSearchDocumentTypeValue] = useState(0);
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
+  const [currentSort, setCurrentSort] = useState("ascend"); // Initial sort order
+  const [currentFilter, setCurrentFilter] = useState(t("Last-modified")); // Initial filter value
   const [searchResultBoxFields, setSearchResultBoxFields] = useState({
     documentType: {
       value: 0,
@@ -875,6 +877,32 @@ const DataRoom = () => {
 
   }
 
+  const handleFilterMenuClick = async (filterValue) => {
+    console.log("handleFilterMenuClick filterValue", filterValue);
+    setCurrentFilter(filterValue);
+    fetchDataWithFilter(filterValue);
+  };
+
+  const handleSortChange = (pagination, filters, sorter) => {
+    console.log("handleFilterMenuClick sorter", sorter.order);
+    setCurrentSort(sorter.order);
+    fetchDataWithSorting(sorter.order);
+  };
+
+  const fetchDataWithFilter = async (filterValue) => {
+    // Call your API with the selected filter value and current sort order
+    console.log("handleFilterMenuClick currentSort ", currentSort);
+    console.log("handleFilterMenuClick filterValue ", filterValue);
+    // Update the data state with the response data
+  };
+
+  const fetchDataWithSorting = async (sortOrder) => {
+    // Call your API with the selected sort order and current filter value
+    console.log("handleFilterMenuClick sortOrder ", sortOrder);
+    console.log("handleFilterMenuClick currentFilter ", currentFilter);
+    // Update the data state with the response data
+  };
+
   const MyDocumentsColumns = [
     {
       title: t("Name"),
@@ -958,10 +986,34 @@ const DataRoom = () => {
       sorter: (a, b) => a.owner.toLowerCase() < b.owner.toLowerCase()
     },
     {
-      title: t("Last_modified"),
+      title: currentFilter,
       dataIndex: "modifiedDate",
       key: "modifiedDate",
       width: "110px",
+      sorter: true,
+      sortOrder: currentSort,
+      filters: [
+        {
+          text: t("Last-modified"),
+          value: "Last modified",
+        },
+        {
+          text: t("Last-modified-by-me"),
+          value: "Last modified by me",
+        },
+        {
+          text: t("Last-open-by-me"),
+          value: "Last open by me",
+        },
+        // ... other filters ...
+      ],
+      filterIcon: (filtered) => (
+        <DownOutlined className="filter-chevron-icon-todolist" />
+      ),
+      onFilter: (value, record) => {
+        handleFilterMenuClick(value);
+        // Implement your custom filtering logic here
+      },
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
         return <span>{_justShowDateformat(text)}</span>;
