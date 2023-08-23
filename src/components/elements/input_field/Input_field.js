@@ -86,13 +86,13 @@ const TextField = ({
           onKeyDown={onKeyDown}
         />
         <FormControl.Feedback className={iconClassName} onClick={clickIcon}>
-          <span
+          {/* <span
                      ref={iconRef}
                      onDragStart={preventDrag} // Prevent drag start
                      draggable="true" // Enable dragging for other items
-          >
-            {inputicon}
-          </span>
+          > */}
+          {inputicon}
+          {/* </span> */}
         </FormControl.Feedback>
       </FormGroup>
     </>

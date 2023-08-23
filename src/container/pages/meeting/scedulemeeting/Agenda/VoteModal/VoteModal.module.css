@@ -82,8 +82,12 @@
 
 .ResCrossIcon {
   position: absolute !important;
-  left: 88%;
-  bottom: 58% !important;
+  /* left: 79%; */
+  bottom: 30px !important;
+  right: 0 !important;
+  left: 130px;
+  z-index: 6;
+  /* bottom: 58% !important; */
   display: block !important;
 }
 

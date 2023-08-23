@@ -5382,13 +5382,13 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
 }
 
 .Scroller-x-Meeting {
-  width: 100% !important;
+  /* width: 100% !important; */
   overflow: hidden !important;
   display: flex;
   scroll-behavior: smooth !important;
   align-items: center;
   padding: 0 !important;
-  /* height: 100px !important; */
+  height: 65px !important;
 }
 
 .file-icon-modalmeeting-p-View-resolution {

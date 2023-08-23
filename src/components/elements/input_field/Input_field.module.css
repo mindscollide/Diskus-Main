@@ -128,9 +128,12 @@
 
 .NewMeetingFileds {
   height: 39px !important;
-  position: relative !important;
 }
 
+.NewMeetingFileds_withIcon {
+  height: 39px !important;
+  position: relative !important;
+}
 .text-area-close-New_meeting {
   resize: none !important;
   height: 69px !important;

@@ -280,29 +280,35 @@ const VoteModal = () => {
                         </Col>
                         <Col lg={10} md={10} sm={10}>
                           <Row>
-                            <Col lg={3} md={3} sm={3}>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex gap-2 "
+                            >
                               <TextField
                                 labelClass={"d-none"}
                                 applyClass={"NewMeetingFileds"}
+                                width={"145px"}
                               />
-                            </Col>
-                            <Col lg={3} md={3} sm={3}>
                               <TextField
                                 labelClass={"d-none"}
                                 applyClass={"NewMeetingFileds"}
+                                width={"145px"}
                               />
-                            </Col>
 
-                            {saveOptions.length > 0
-                              ? saveOptions.map((data, index) => {
-                                  return (
-                                    <>
-                                      {index <= 1 ? (
+                              {saveOptions.length > 0
+                                ? saveOptions.map((data, index) => {
+                                    return (
+                                      <>
                                         <>
-                                          <Col lg={3} md={3} sm={3}>
+                                          <span className="position-relative">
                                             <TextField
                                               labelClass={"d-none"}
-                                              applyClass={"NewMeetingFileds"}
+                                              applyClass={
+                                                "NewMeetingFileds_withIcon"
+                                              }
+                                              width={"145px"}
                                               value={saveOptions.Options}
                                               iconClassName={
                                                 styles["ResCrossIcon"]
@@ -315,33 +321,13 @@ const VoteModal = () => {
                                                 />
                                               }
                                             />
-                                          </Col>
+                                          </span>
                                         </>
-                                      ) : (
-                                        <>
-                                          <Col lg={3} md={3} sm={3}>
-                                            <TextField
-                                              labelClass={"d-none"}
-                                              applyClass={"NewMeetingFileds"}
-                                              value={saveOptions.Options}
-                                              iconClassName={
-                                                styles["ResCrossIcon"]
-                                              }
-                                              inputicon={
-                                                <img
-                                                  src={redcrossIcon}
-                                                  height="21.79px"
-                                                  width="21.79px"
-                                                />
-                                              }
-                                            />
-                                          </Col>
-                                        </>
-                                      )}
-                                    </>
-                                  );
-                                })
-                              : null}
+                                      </>
+                                    );
+                                  })
+                                : null}
+                            </Col>
                           </Row>
                         </Col>
                       </Col>
