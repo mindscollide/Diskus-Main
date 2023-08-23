@@ -26,7 +26,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   const { t } = useTranslation();
   const [options, setOptions] = useState([]);
   const [rows, setRows] = useState([
-    { selectedOption: 0, startDate: null, endDate: null },
+    { selectedOption: "", startDate: "", endDate: "" },
   ]);
   const [error, seterror] = useState(false);
 
@@ -55,7 +55,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   };
 
   const addRow = () => {
-    setRows([...rows, { selectedOption: 0, startDate: null, endDate: null }]);
+    setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
   };
 
   const HandleCancelFunction = (index) => {
@@ -389,7 +389,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                     <Col>
                                       <p
                                         className={
-                                          error && rows.selectedOption === 0
+                                          error && data.selectedOption === ""
                                             ? ` ${styles["errorMessage-inLogin"]} `
                                             : `${styles["errorMessage-inLogin_hidden"]}`
                                         }

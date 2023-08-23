@@ -21,9 +21,6 @@ const NotifyOrganizers = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  const handleCrossIcon = () => {
-    dispatch(showNotifyOrganizors(false));
-  };
   const [members, setMembers] = useState([
     {
       name: "saif",
@@ -47,6 +44,9 @@ const NotifyOrganizers = () => {
       name: "saroush",
     },
   ]);
+  const handleCrossIcon = () => {
+    dispatch(showNotifyOrganizors(false));
+  };
   return (
     <section>
       <Modal
