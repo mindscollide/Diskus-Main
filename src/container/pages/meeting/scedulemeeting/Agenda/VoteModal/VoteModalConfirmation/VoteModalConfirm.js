@@ -5,7 +5,10 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-import { showVoteConfirmationModal } from "../../../../../../../store/actions/NewMeetingActions";
+import {
+  showVoteAgendaModal,
+  showVoteConfirmationModal,
+} from "../../../../../../../store/actions/NewMeetingActions";
 const VoteModalConfirm = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -13,7 +16,8 @@ const VoteModalConfirm = () => {
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const noBtnFunctionality = () => {
-    dispatch(showVoteConfirmationModal(true));
+    dispatch(showVoteAgendaModal(true));
+    dispatch(showVoteConfirmationModal(false));
   };
 
   const yesBtnFunctionality = () => {

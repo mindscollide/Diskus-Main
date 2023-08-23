@@ -13,7 +13,10 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import { useNavigate } from "react-router-dom";
 import Cast from "../../../../../../assets/images/CAST.svg";
-import { showVoteAgendaModal } from "../../../../../../store/actions/NewMeetingActions";
+import {
+  showVoteAgendaModal,
+  showVoteConfirmationModal,
+} from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
 import Leftploygon from "../../../../../../assets/images/leftdirection.svg";
@@ -322,6 +325,17 @@ const VoteModal = () => {
     },
   ];
 
+  const openConfirmationModal = () => {
+    dispatch(showVoteAgendaModal(false));
+    dispatch(showVoteConfirmationModal(true));
+  };
+
+  const handleCrossBtn = () => {
+    let optionscross = [...saveOptions];
+    optionscross.splice(optionscross, 1);
+    setSaveOptions(optionscross);
+  };
+
   return (
     <section>
       <Modal
@@ -525,6 +539,7 @@ const VoteModal = () => {
                                                   src={redcrossIcon}
                                                   height="21.79px"
                                                   width="21.79px"
+                                                  onClick={handleCrossBtn}
                                                 />
                                               }
                                             />
@@ -623,6 +638,7 @@ const VoteModal = () => {
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Vote_Modal"]}
+                  onClick={openConfirmationModal}
                 />
                 <Button
                   text={t("Save")}
