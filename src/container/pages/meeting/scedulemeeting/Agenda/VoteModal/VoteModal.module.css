@@ -82,8 +82,9 @@
 
 .ResCrossIcon {
   position: absolute !important;
-  right: 15%;
-  bottom: 62% !important;
+  left: 88%;
+  bottom: 58% !important;
+  display: block !important;
 }
 
 .Cancell_Btn {

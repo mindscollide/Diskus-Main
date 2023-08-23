@@ -15,6 +15,8 @@ import Cast from "../../../../../../assets/images/CAST.svg";
 import { showVoteAgendaModal } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
+import Leftploygon from "../../../../../../assets/images/leftdirection.svg";
+import Rightploygon from "../../../../../../assets/images/rightdirection.svg";
 import Plus from "../../../../../../assets/images/Meeting plus.png";
 const VoteModal = () => {
   const { t } = useTranslation();
@@ -22,6 +24,7 @@ const VoteModal = () => {
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [addOptions, setAddOptions] = useState(false);
+  const [saveOptions, setSaveOptions] = useState([{ Options: null }]);
   const plusButtonFunc = () => {
     setAddOptions(true);
   };
@@ -96,6 +99,22 @@ const VoteModal = () => {
       width: "70px",
     },
   ];
+
+  const SlideLeft = () => {
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft - 300;
+  };
+
+  const Slideright = () => {
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft + 300;
+  };
+
+  const AddOptions = () => {
+    setAddOptions(false);
+    setSaveOptions([...saveOptions, { Options: saveOptions.value }]);
+  };
+
   return (
     <section>
       <Modal
@@ -202,64 +221,142 @@ const VoteModal = () => {
                         <Button
                           text={t("Save")}
                           className={styles["Save_btn"]}
+                          onClick={AddOptions}
                         />
                       </Col>
                     </Row>
                   </>
                 ) : (
                   <>
-                    <Row className="mt-2 position-relative">
-                      <Col lg={2} md={2} sm={2}>
-                        <Button
-                          icon={
-                            <Row className="m-2">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center align-items-center p-0"
-                              >
-                                <img
-                                  src={Plus}
-                                  height="20.68px"
-                                  width="20.68px"
-                                  className={styles["IconClass"]}
-                                />
-                              </Col>
-                            </Row>
-                          }
-                          className={styles["plus_button"]}
-                          onClick={plusButtonFunc}
+                    <Row className="mt-2">
+                      <Col
+                        lg={1}
+                        md={1}
+                        sm={1}
+                        className="d-flex align-items-center"
+                      >
+                        <img
+                          src={Leftploygon}
+                          width="20px"
+                          height="15px"
+                          onClick={SlideLeft}
+                          className="cursor-pointer"
                         />
                       </Col>
-                      <Col lg={8} md={8} sm={8} className="m-0 p-0">
-                        <Row>
-                          <Col lg={4} md={4} sm={4}>
-                            <TextField
-                              labelClass={"d-none"}
-                              applyClass={"NewMeetingFileds"}
-                            />
-                          </Col>
-                          <Col lg={4} md={4} sm={4}>
-                            <TextField
-                              labelClass={"d-none"}
-                              applyClass={"NewMeetingFileds"}
-                            />
-                          </Col>
-                          <Col lg={4} md={4} sm={4}>
-                            <TextField
-                              labelClass={"d-none"}
-                              applyClass={"NewMeetingFileds"}
-                            />
-                          </Col>
-                        </Row>
+
+                      <Col
+                        lg={10}
+                        md={10}
+                        sm={10}
+                        className="Scroller-x-Meeting"
+                        id="Slider"
+                      >
+                        <Col lg={2} md={2} sm={2}>
+                          <Row>
+                            <Col lg={12} md={12} sm={12}>
+                              <Button
+                                icon={
+                                  <Row className="m-2">
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className="d-flex justify-content-center align-items-center p-0"
+                                    >
+                                      <img
+                                        src={Plus}
+                                        height="20.68px"
+                                        width="20.68px"
+                                        className={styles["IconClass"]}
+                                      />
+                                    </Col>
+                                  </Row>
+                                }
+                                className={styles["plus_button"]}
+                                onClick={plusButtonFunc}
+                              />
+                            </Col>
+                          </Row>
+                        </Col>
+                        <Col lg={10} md={10} sm={10}>
+                          <Row>
+                            <Col lg={3} md={3} sm={3}>
+                              <TextField
+                                labelClass={"d-none"}
+                                applyClass={"NewMeetingFileds"}
+                              />
+                            </Col>
+                            <Col lg={3} md={3} sm={3}>
+                              <TextField
+                                labelClass={"d-none"}
+                                applyClass={"NewMeetingFileds"}
+                              />
+                            </Col>
+
+                            {saveOptions.length > 0
+                              ? saveOptions.map((data, index) => {
+                                  return (
+                                    <>
+                                      {index <= 1 ? (
+                                        <>
+                                          <Col lg={3} md={3} sm={3}>
+                                            <TextField
+                                              labelClass={"d-none"}
+                                              applyClass={"NewMeetingFileds"}
+                                              value={saveOptions.Options}
+                                              iconClassName={
+                                                styles["ResCrossIcon"]
+                                              }
+                                              inputicon={
+                                                <img
+                                                  src={redcrossIcon}
+                                                  height="21.79px"
+                                                  width="21.79px"
+                                                />
+                                              }
+                                            />
+                                          </Col>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <Col lg={3} md={3} sm={3}>
+                                            <TextField
+                                              labelClass={"d-none"}
+                                              applyClass={"NewMeetingFileds"}
+                                              value={saveOptions.Options}
+                                              iconClassName={
+                                                styles["ResCrossIcon"]
+                                              }
+                                              inputicon={
+                                                <img
+                                                  src={redcrossIcon}
+                                                  height="21.79px"
+                                                  width="21.79px"
+                                                />
+                                              }
+                                            />
+                                          </Col>
+                                        </>
+                                      )}
+                                    </>
+                                  );
+                                })
+                              : null}
+                          </Row>
+                        </Col>
                       </Col>
-                      <Col lg={1} md={1} sm={1}>
+                      <Col
+                        lg={1}
+                        md={1}
+                        sm={1}
+                        className="d-flex align-items-center"
+                      >
                         <img
-                          src={redcrossIcon}
-                          height="21.79px"
-                          width="21.79px"
-                          className={styles["ResCrossIcon"]}
+                          src={Rightploygon}
+                          width="20px"
+                          height="15px"
+                          onClick={Slideright}
+                          className="cursor-pointer"
                         />
                       </Col>
                     </Row>

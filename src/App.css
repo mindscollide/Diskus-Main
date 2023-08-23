@@ -5381,6 +5381,16 @@ body[dir="rtl"] .DataRoom_DropDown .dropdown-menu.show {
   height: 120px !important;
 }
 
+.Scroller-x-Meeting {
+  width: 100% !important;
+  overflow: hidden !important;
+  display: flex;
+  scroll-behavior: smooth !important;
+  align-items: center;
+  padding: 0 !important;
+  /* height: 100px !important; */
+}
+
 .file-icon-modalmeeting-p-View-resolution {
   overflow: hidden;
   text-overflow: ellipsis;

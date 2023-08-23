@@ -128,6 +128,7 @@
 
 .NewMeetingFileds {
   height: 39px !important;
+  position: relative !important;
 }
 
 .text-area-close-New_meeting {
