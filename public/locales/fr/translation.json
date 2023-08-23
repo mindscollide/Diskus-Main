@@ -845,5 +845,12 @@
   "Vote-by-members": "Vote by Members",
   "Please-enter-vote-question": "Please enter vote Question*",
   "Please-select-organizers": "Please select organizers*",
-  "Please-select-any-one-option": "Please select any one option*"
+  "Please-select-any-one-option": "Please select any one option*",
+  "Please-enter-meeting-title": "Please enter meeting title*",
+  "Please-select-location": "Please select Location*",
+  "Please-select-meeting-type": "Please select meeting type*",
+  "Please-enter-meeting-description": "Please enter meeting description*",
+  "Please-enter-meeting-link": "Please enter meeting Link*",
+  "Please-select-data-and-time": "Please select data and time*",
+  "Please-select-reminder-frequency": "Please select Reminder Frequency*"
 }

@@ -41,7 +41,10 @@ import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmission
 import PermissionConfirmation from "./AdvancePermissionModal/PermissionConfirmModal/PermissionConfirmation";
 import VoteModal from "./VoteModal/VoteModal";
 import VoteModalConfirm from "./VoteModal/VoteModalConfirmation/VoteModalConfirm";
-import { validateInput } from "../../../../../commen/functions/regex";
+import {
+  regexOnlyForNumberNCharacters,
+  validateInput,
+} from "../../../../../commen/functions/regex";
 
 const Agenda = () => {
   const { t } = useTranslation();
@@ -64,7 +67,13 @@ const Agenda = () => {
     message: "",
   });
   const [rows, setRows] = useState([
-    { title: null, selectedOption: null, startDate: null, endDate: null },
+    {
+      title: null,
+      selectedOption: null,
+      startDate: null,
+      endDate: null,
+      Notes: "",
+    },
   ]);
   const [files, setfiles] = useState([
     {
@@ -161,7 +170,13 @@ const Agenda = () => {
   const addRow = () => {
     setRows([
       ...rows,
-      { title: null, selectedOption: null, startDate: null, endDate: null },
+      {
+        title: null,
+        selectedOption: null,
+        startDate: null,
+        endDate: null,
+        Notes: "",
+      },
     ]);
   };
 
@@ -212,26 +227,27 @@ const Agenda = () => {
   };
 
   const HandleChange = (e, index) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    if (name === "AgendaTitle") {
-      let valueCheck = validateInput(value);
-      if (valueCheck !== "") {
-        setRows([
-          {
-            ...rows,
-            title: valueCheck,
-          },
-        ]);
-      } else {
-        setRows([
-          {
-            ...rows,
-            title: "",
-          },
-        ]);
-      }
-    }
+    let name = parseInt(e.target.name);
+    let newValue = e.target.value;
+    console.log("handleNotes", newValue);
+    let valueCheck = regexOnlyForNumberNCharacters(newValue);
+    setRows((prevState) =>
+      prevState.map((item) => {
+        return item.name === name ? { ...item, value: valueCheck } : item;
+      })
+    );
+  };
+
+  const handleNotes = (e) => {
+    let name = parseInt(e.target.name);
+    let newValue = e.target.value;
+    console.log("handleNotes", newValue);
+    let valueCheck = regexOnlyForNumberNCharacters(newValue);
+    setRows((prevState) =>
+      prevState.map((item) => {
+        return item.name === name ? { ...item, value: valueCheck } : item;
+      })
+    );
   };
 
   console.log(rows, "rowsrowsrowsrowsrowsrows");
@@ -264,9 +280,9 @@ const Agenda = () => {
                                     applyClass={"AgendaTextField"}
                                     labelClass={"d-none"}
                                     placeholder={t("Agenda-title")}
-                                    value={rows.title}
-                                    name={"AgendaTitle"}
-                                    change={HandleChange}
+                                    value={data.value}
+                                    name={data.name}
+                                    change={(e) => HandleChange(e)}
                                     disable={disbaleFields ? true : false}
                                   />
                                 </Col>
@@ -507,6 +523,9 @@ const Agenda = () => {
                                             applyClass="text-area-create-resolution"
                                             type="text"
                                             as={"textarea"}
+                                            name={data.name}
+                                            change={(e) => handleNotes(e)}
+                                            value={data.value}
                                             rows="4"
                                             placeholder={t("Enter-notes")}
                                             required={true}
@@ -1190,6 +1209,9 @@ const Agenda = () => {
                                     applyClass={"AgendaTextField"}
                                     labelClass={"d-none"}
                                     placeholder={t("Agenda-title")}
+                                    value={data.value}
+                                    name={data.name}
+                                    change={(e) => HandleChange(e)}
                                   />
                                 </Col>
                                 <Col lg={3} md={3} sm={12}>
@@ -1418,6 +1440,9 @@ const Agenda = () => {
                                             applyClass="text-area-create-resolution"
                                             type="text"
                                             as={"textarea"}
+                                            name={data.name}
+                                            value={data.value}
+                                            change={handleNotes}
                                             rows="4"
                                             placeholder={t("Enter-notes")}
                                             required={true}
