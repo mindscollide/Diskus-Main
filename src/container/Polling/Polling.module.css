@@ -20,11 +20,14 @@
 }
 
 .new_Poll_Button {
-  padding: 12px 36px !important;
+  height: 31px;
+  padding: 7px 36px !important;
+  font-size: calc(14px - 20%);
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  font-size: 12px !important;
-  border: none;
+  color: #fff !important;
   border-radius: 4px !important;
+  font-family: "MontserratSemiBold";
+  border: none !important;
 }
 
 .polling_searchinput {
