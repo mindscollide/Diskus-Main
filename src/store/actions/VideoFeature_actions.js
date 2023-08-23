@@ -147,6 +147,27 @@ const videoMinutesOpenFlag = (response) => {
   }
 }
 
+const minimizeVideoPanelFlag = (response) => {
+  return {
+    type: actions.MINIMIZE_VIDEO_PANEL,
+    response: response,
+  }
+}
+
+const normalizeVideoPanelFlag = (response) => {
+  return {
+    type: actions.NORMALIZE_VIDEO_PANEL,
+    response: response,
+  }
+}
+
+const maximizeVideoPanelFlag = (response) => {
+  return {
+    type: actions.MAXIMIZE_VIDEO_PANEL,
+    response: response,
+  }
+}
+
 //Aun Work
 
 // const videoMaximizePanel = (response) => {
@@ -185,4 +206,7 @@ export {
   videoChatOpenFlag,
   videoAgendaOpenFlag,
   videoMinutesOpenFlag,
+  minimizeVideoPanelFlag,
+  normalizeVideoPanelFlag,
+  maximizeVideoPanelFlag,
 }

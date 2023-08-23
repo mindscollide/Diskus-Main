@@ -12,29 +12,19 @@ import Board from '../../../../../assets/images/newElements/WhiteBoard.svg'
 import ThreeDots from '../../../../../assets/images/newElements/ThreeDotsIcon.svg'
 import CallEndRedIcon from '../../../../../assets/images/newElements/CallRedIcon.svg'
 import {
-  videoCallOTOFlag,
-  videoCallMaximizeHeaderFlag,
-  videoCallMaximizeScreenFlag,
-  videoCallNormalScreenFlag,
-  videoCallNormalHeaderFlag,
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+  normalizeVideoPanelFlag,
 } from '../../../../../store/actions/VideoFeature_actions'
 const VideoCallNormalHeader = () => {
-  // const { videoFeatureReducer } = useSelector((state) => state);
+  const { videoFeatureReducer } = useSelector((state) => state)
 
   const dispatch = useDispatch()
 
   const otoMaximizeVideoPanel = () => {
-    console.log('Test')
-    dispatch(videoCallOTOFlag(true))
-    console.log('Test')
-    dispatch(videoCallMaximizeHeaderFlag(true))
-    console.log('Test')
-    dispatch(videoCallMaximizeScreenFlag(true))
-    console.log('Test')
-    dispatch(videoCallNormalScreenFlag(false))
-    console.log('Test')
-    dispatch(videoCallNormalHeaderFlag(false))
-    console.log('Test')
+    dispatch(maximizeVideoPanelFlag(true))
+    dispatch(minimizeVideoPanelFlag(false))
+    dispatch(normalizeVideoPanelFlag(false))
   }
 
   return (

@@ -22,8 +22,9 @@ const initialState = {
   VideoChatOpenFlag: false,
   VideoAgendaOpenFlag: false,
   VideoMinutesOpenFlag: false,
-  // MaximizeVideoPanel: false,
-  // MinimizeVideoPanel: false,
+  MaximizeVideoFlag: false,
+  MinimizeVideoFlag: false,
+  NormalizeVideoFlag: false,
 }
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -203,19 +204,26 @@ const videoFeatureReducer = (state = initialState, action) => {
       }
     }
 
-    // case actions.MAXIMIZE_VIDEO_PANEL: {
-    //   return {
-    //     ...state,
-    //     MaximizeVideoPanel: action.response,
-    //   };
-    // }
+    case actions.MINIMIZE_VIDEO_PANEL: {
+      return {
+        ...state,
+        MinimizeVideoFlag: action.response,
+      }
+    }
 
-    // case actions.MINIMIZE_VIDEO_PANEL: {
-    //   return {
-    //     ...state,
-    //     MinimizeVideoPanel: action.response,
-    //   };
-    // }
+    case actions.NORMALIZE_VIDEO_PANEL: {
+      return {
+        ...state,
+        NormalizeVideoFlag: action.response,
+      }
+    }
+
+    case actions.MAXIMIZE_VIDEO_PANEL: {
+      return {
+        ...state,
+        MaximizeVideoFlag: action.response,
+      }
+    }
 
     default:
       return { ...state }

@@ -10,6 +10,9 @@ import {
   videoCallOTOFlag,
   videoCallNormalScreenFlag,
   videoCallNormalHeaderFlag,
+  normalizeVideoPanelFlag,
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
 } from '../../../../../../store/actions/VideoFeature_actions'
 
 const VideoPanelBodyContact = () => {
@@ -50,9 +53,12 @@ const VideoPanelBodyContact = () => {
   }
 
   const otoVideoCall = () => {
-    dispatch(videoCallOTOFlag(true))
-    dispatch(videoCallNormalHeaderFlag(true))
-    dispatch(videoCallNormalScreenFlag(true))
+    dispatch(normalizeVideoPanelFlag(true))
+    dispatch(maximizeVideoPanelFlag(false))
+    dispatch(minimizeVideoPanelFlag(false))
+    // dispatch(videoCallOTOFlag(true))
+    // dispatch(videoCallNormalHeaderFlag(true))
+    // dispatch(videoCallNormalScreenFlag(true))
   }
 
   return (
