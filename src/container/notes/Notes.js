@@ -39,13 +39,11 @@ import {
   GetNotes,
   GetNotesByIdAPI,
 } from "../../store/actions/Notes_actions";
-import moment from "moment";
 import {
   _justShowDateformat,
   _justShowDay,
 } from "../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
-import PaginationElement from "../../components/elements/pagination/Pagination";
 
 const Notes = () => {
   const [editFlag, setEditFlag] = useState(false);
@@ -63,9 +61,9 @@ const Notes = () => {
   const { t } = useTranslation();
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
-  let notesPage = JSON.parse(localStorage.getItem("notesPage"))
-  let notesPagesize = localStorage.getItem("notesPageSize")
-  const [totalRecords, setTotalRecords] = useState(0)
+  let notesPage = JSON.parse(localStorage.getItem("notesPage"));
+  let notesPagesize = localStorage.getItem("notesPageSize");
+  const [totalRecords, setTotalRecords] = useState(0);
   // for modal Add notes
   const [addNotes, setAddNotes] = useState(false);
 
@@ -80,40 +78,45 @@ const Notes = () => {
   //for view modal notes
   const [viewModalShow, setViewModalShow] = useState(false);
 
-  //for open Add User Notes Modal
-  const modalAddUserModal = async (e) => {
-    setAddNotes(true);
-  };
-  // for open Update User Notes Modal
-  const editIconModal = async (id) => {
-    // setUpdateShow(true);
-    dispatch(
-      GetNotesByIdAPI(
-        navigate,
-        id,
-        t,
-        setViewModalShow,
-        setUpdateShow,
-        setUpdateNotesModal,
-        2
-      )
-    );
-  };
   useEffect(() => {
+    if (notesPagesize !== null && notesPage !== null) {
+      let Data = {
+        UserID: parseInt(createrID),
+        OrganizationID: JSON.parse(OrganizationID),
+        Title: "",
+        PageNumber: JSON.parse(notesPage),
+        Length: JSON.parse(notesPagesize),
+      };
+      dispatch(GetNotes(navigate, Data, t));
+    } else {
+      localStorage.setItem("notesPage", 1);
+      localStorage.setItem("notesPageSize", 50);
+      let Data = {
+        UserID: parseInt(createrID),
+        OrganizationID: JSON.parse(OrganizationID),
+        Title: "",
+        PageNumber: 1,
+        Length: 50,
+      };
+      dispatch(GetNotes(navigate, Data, t));
+    }
     setAddNotes(false);
     setViewModalShow(false);
     setUpdateShow(false);
+    return () => {
+      localStorage.removeItem("notesPage");
+      localStorage.removeItem("notesPageSize");
+    };
   }, []);
 
   // render Notes Data
   useEffect(() => {
-    console.log(NotesReducer, "NotesReducerNotesReducer")
     try {
       if (
         NotesReducer.GetAllNotesResponse !== null &&
         NotesReducer.GetAllNotesResponse !== undefined
       ) {
-        setTotalRecords(NotesReducer.GetAllNotesResponse.totalRecords)
+        setTotalRecords(NotesReducer.GetAllNotesResponse.totalRecords);
         if (NotesReducer.GetAllNotesResponse.getNotes.length > 0) {
           let notes = [];
           NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
@@ -140,21 +143,33 @@ const Notes = () => {
         } else {
           setNotes([]);
         }
-
       } else {
         setNotes([]);
       }
-    } catch (error) {
-
-    }
-
+    } catch (error) {}
   }, [NotesReducer.GetAllNotesResponse]);
+
+  //for open Add User Notes Modal
+  const modalAddUserModal = async (e) => {
+    setAddNotes(true);
+  };
+  // for open Update User Notes Modal
+  const editIconModal = async (id) => {
+    dispatch(
+      GetNotesByIdAPI(
+        navigate,
+        id,
+        t,
+        setViewModalShow,
+        setUpdateShow,
+        setUpdateNotesModal,
+        2
+      )
+    );
+  };
+
   //for open View User Notes Modal
   const viewNotesModal = async (id, event) => {
-    // setExpanded((prev) => !prev)
-
-    // event.stopPropagation()
-    console.log(id, "viewNotesModalviewNotesModalviewNotesModal");
     dispatch(
       GetNotesByIdAPI(
         navigate,
@@ -167,34 +182,6 @@ const Notes = () => {
       )
     );
   };
-  useEffect(() => {
-    if (notesPagesize !== null && notesPage !== null) {
-      let Data = {
-        UserID: parseInt(createrID),
-        OrganizationID: JSON.parse(OrganizationID),
-        Title: "",
-        PageNumber: JSON.parse(notesPage),
-        Length: JSON.parse(notesPagesize)
-      };
-      dispatch(GetNotes(navigate, Data, t));
-    } else {
-      localStorage.setItem("notesPage", 1)
-      localStorage.setItem("notesPageSize", 50)
-      let Data = {
-        UserID: parseInt(createrID),
-        OrganizationID: JSON.parse(OrganizationID),
-        Title: "",
-        PageNumber: 1,
-        Length: 50
-      };
-      dispatch(GetNotes(navigate, Data, t));
-    }
-    return () => {
-      localStorage.removeItem("notesPage")
-      localStorage.removeItem("notesPageSize")
-    }
-
-  }, []);
 
   const ColorStarIcon = (id, index) => {
     setStarIcon(!showStarIcon);
@@ -205,17 +192,17 @@ const Notes = () => {
   };
 
   const handelChangeNotesPagination = async (current, pageSize) => {
-    localStorage.setItem("notesPage", current)
-    localStorage.setItem("notesPageSize", pageSize)
+    localStorage.setItem("notesPage", current);
+    localStorage.setItem("notesPageSize", pageSize);
     let Data = {
       UserID: parseInt(createrID),
       OrganizationID: JSON.parse(OrganizationID),
       Title: "",
       PageNumber: current,
-      Length: pageSize
+      Length: pageSize,
     };
     dispatch(GetNotes(navigate, Data, t));
-  }
+  };
 
   useEffect(() => {
     if (
@@ -241,7 +228,6 @@ const Notes = () => {
       dispatch(ClearNotesResponseMessage());
     }
   }, [NotesReducer.ResponseMessage]);
-
 
   const toggleAcordion = (e) => {
     setExpanded(e);
@@ -272,7 +258,6 @@ const Notes = () => {
             {/* Test Accordian Body Starts  */}
             {notes.length > 0 && notes !== null && notes !== undefined ? (
               notes.map((data, index) => {
-                console.log(data, "inadasdasd");
                 return (
                   <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
@@ -384,8 +369,9 @@ const Notes = () => {
                               lg={3}
                               md={3}
                               sm={12}
-                              className={`${"d-flex justify-content-end align-items-center"} ${styles["editIconBox"]
-                                }`}
+                              className={`${"d-flex justify-content-end align-items-center"} ${
+                                styles["editIconBox"]
+                              }`}
                             >
                               <img
                                 src={EditIconNote}
@@ -409,106 +395,107 @@ const Notes = () => {
                             >
                               {data?.notesAttachments.length > 0
                                 ? data?.notesAttachments.map((file, index) => {
-                                  console.log("file ", file);
-                                  var ext = file.displayAttachmentName
-                                    .split(".")
-                                    .pop();
-                                  const first =
-                                    file.displayAttachmentName.split(" ")[0];
+                                    var ext = file.displayAttachmentName
+                                      .split(".")
+                                      .pop();
+                                    const first =
+                                      file.displayAttachmentName.split(" ")[0];
 
-                                  return (
-                                    <Col
-                                      sm={12}
-                                      lg={2}
-                                      md={2}
-                                      className={
-                                        styles["notes-attachment-icon"]
-                                      }
-                                    >
-                                      {ext === "doc" ? (
-                                        <FileIcon
-                                          extension={"docx"}
-                                          size={78}
-                                          type={"document"}
-                                          labelColor={"rgba(44, 88, 152)"}
-                                        />
-                                      ) : ext === "docx" ? (
-                                        <FileIcon
-                                          extension={"docx"}
-                                          size={78}
-                                          type={"font"}
-                                          labelColor={"rgba(44, 88, 152)"}
-                                        />
-                                      ) : ext === "xls" ? (
-                                        <FileIcon
-                                          extension={"xls"}
-                                          type={"spreadsheet"}
-                                          size={78}
-                                          labelColor={"rgba(16, 121, 63)"}
-                                        />
-                                      ) : ext === "xlsx" ? (
-                                        <FileIcon
-                                          extension={"xls"}
-                                          type={"spreadsheet"}
-                                          size={78}
-                                          labelColor={"rgba(16, 121, 63)"}
-                                        />
-                                      ) : ext === "pdf" ? (
-                                        <FileIcon
-                                          extension={"pdf"}
-                                          size={78}
-                                          {...defaultStyles.pdf}
-                                        />
-                                      ) : ext === "png" ? (
-                                        <FileIcon
-                                          extension={"png"}
-                                          size={78}
-                                          type={"image"}
-                                          labelColor={"rgba(102, 102, 224)"}
-                                        />
-                                      ) : ext === "txt" ? (
-                                        <FileIcon
-                                          extension={"txt"}
-                                          size={78}
-                                          type={"document"}
-                                          labelColor={"rgba(52, 120, 199)"}
-                                        />
-                                      ) : ext === "jpg" ? (
-                                        <FileIcon
-                                          extension={"jpg"}
-                                          size={78}
-                                          type={"image"}
-                                          labelColor={"rgba(102, 102, 224)"}
-                                        />
-                                      ) : ext === "jpeg" ? (
-                                        <FileIcon
-                                          extension={"jpeg"}
-                                          size={78}
-                                          type={"image"}
-                                          labelColor={"rgba(102, 102, 224)"}
-                                        />
-                                      ) : ext === "gif" ? (
-                                        <FileIcon
-                                          extension={"gif"}
-                                          size={78}
-                                          {...defaultStyles.gif}
-                                        />
-                                      ) : <FileIcon
-                                        extension={ext}
-                                        size={78}
-                                        {...defaultStyles.ext}
-                                      />}
-
-                                      <p
+                                    return (
+                                      <Col
+                                        sm={12}
+                                        lg={2}
+                                        md={2}
                                         className={
-                                          styles["notes-attachment-text"]
+                                          styles["notes-attachment-icon"]
                                         }
                                       >
-                                        {first}
-                                      </p>
-                                    </Col>
-                                  );
-                                })
+                                        {ext === "doc" ? (
+                                          <FileIcon
+                                            extension={"docx"}
+                                            size={78}
+                                            type={"document"}
+                                            labelColor={"rgba(44, 88, 152)"}
+                                          />
+                                        ) : ext === "docx" ? (
+                                          <FileIcon
+                                            extension={"docx"}
+                                            size={78}
+                                            type={"font"}
+                                            labelColor={"rgba(44, 88, 152)"}
+                                          />
+                                        ) : ext === "xls" ? (
+                                          <FileIcon
+                                            extension={"xls"}
+                                            type={"spreadsheet"}
+                                            size={78}
+                                            labelColor={"rgba(16, 121, 63)"}
+                                          />
+                                        ) : ext === "xlsx" ? (
+                                          <FileIcon
+                                            extension={"xls"}
+                                            type={"spreadsheet"}
+                                            size={78}
+                                            labelColor={"rgba(16, 121, 63)"}
+                                          />
+                                        ) : ext === "pdf" ? (
+                                          <FileIcon
+                                            extension={"pdf"}
+                                            size={78}
+                                            {...defaultStyles.pdf}
+                                          />
+                                        ) : ext === "png" ? (
+                                          <FileIcon
+                                            extension={"png"}
+                                            size={78}
+                                            type={"image"}
+                                            labelColor={"rgba(102, 102, 224)"}
+                                          />
+                                        ) : ext === "txt" ? (
+                                          <FileIcon
+                                            extension={"txt"}
+                                            size={78}
+                                            type={"document"}
+                                            labelColor={"rgba(52, 120, 199)"}
+                                          />
+                                        ) : ext === "jpg" ? (
+                                          <FileIcon
+                                            extension={"jpg"}
+                                            size={78}
+                                            type={"image"}
+                                            labelColor={"rgba(102, 102, 224)"}
+                                          />
+                                        ) : ext === "jpeg" ? (
+                                          <FileIcon
+                                            extension={"jpeg"}
+                                            size={78}
+                                            type={"image"}
+                                            labelColor={"rgba(102, 102, 224)"}
+                                          />
+                                        ) : ext === "gif" ? (
+                                          <FileIcon
+                                            extension={"gif"}
+                                            size={78}
+                                            {...defaultStyles.gif}
+                                          />
+                                        ) : (
+                                          <FileIcon
+                                            extension={ext}
+                                            size={78}
+                                            {...defaultStyles.ext}
+                                          />
+                                        )}
+
+                                        <p
+                                          className={
+                                            styles["notes-attachment-text"]
+                                          }
+                                        >
+                                          {first}
+                                        </p>
+                                      </Col>
+                                    );
+                                  })
                                 : null}
                             </Col>
                           </Row>
@@ -534,23 +521,29 @@ const Notes = () => {
               </Row>
             )}
           </Col>
-          <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-3 pagination-groups-table">
-            {/* <PaginationElement
-              current={notesPage !== null ? notesPage : 1}
-              showSizeChanger={true}
-              total={totalRecords}
-              pageSizeOptions={["30", "50", "100", "200"]}
-              pageSize={notesPagesize !== null ? notesPagesize : 50}
-              onChange={handelChangeNotesPagination}
-              locale={{
-                items_per_page: t('items_per_page'),
-                page: t('page')
-              }} /> */}
-            {notes !== null && notes !== undefined && notes.length > 0 ? <Pagination current={notesPage !== null && notesPage !== undefined ? notesPage : 1} locale={{
-              items_per_page: t('items_per_page'),
-              page: t('page')
-            }} onChange={handelChangeNotesPagination} showSizeChanger total={totalRecords} pageSizeOptions={["30", "50", "100", "200"]} pageSize={notesPagesize !== null ? notesPagesize : 50} className={styles["PaginationStyle-Notes"]} /> : null}
-
+          <Col
+            sm={12}
+            md={12}
+            lg={12}
+            className="d-flex justify-content-center my-3 pagination-groups-table"
+          >
+            {notes !== null && notes !== undefined && notes.length > 0 ? (
+              <Pagination
+                current={
+                  notesPage !== null && notesPage !== undefined ? notesPage : 1
+                }
+                locale={{
+                  items_per_page: t("items_per_page"),
+                  page: t("page"),
+                }}
+                onChange={handelChangeNotesPagination}
+                showSizeChanger
+                total={totalRecords}
+                pageSizeOptions={["30", "50", "100", "200"]}
+                pageSize={notesPagesize !== null ? notesPagesize : 50}
+                className={styles["PaginationStyle-Notes"]}
+              />
+            ) : null}
           </Col>
         </Row>
         {/* Test Accordian Ends  */}

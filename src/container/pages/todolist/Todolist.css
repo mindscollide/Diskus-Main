@@ -52,12 +52,11 @@ body[dir="rtl"] .todolist-create-btn {
 .todolist-create-btn button {
   width: 131px;
   height: 31px;
-  /* padding: 0px 10px; */
-  font-size: calc(14px - 20%);
-  background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
-  color: #fff;
-  font-weight: 600;
+  font-size: calc(14px - 20%)!important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
   border-radius: 4px !important;
+  font-family: "MontserratSemiBold"!important;
   border: none !important;
   position: relative;
 }
@@ -243,9 +242,11 @@ body[dir="rtl"] .todolist-heading-size {
   }
 
   .todolist-create-btn button {
-    font-size: 13px !important;
+    font-size: calc(14px - 20%)!important;
     background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-    border-radius: 2px !important;
+    color: #fff !important;
+    border-radius: 4px !important;
+    font-family: "MontserratSemiBold"!important;
     border: none !important;
   }
 }

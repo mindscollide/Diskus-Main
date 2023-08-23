@@ -11,16 +11,17 @@ body[dir="rtl"] .Committee-heading-size {
 .create-Committee-btn {
   width: 219px !important;
   height: 31px !important;
-  font-size: calc(14px - 20%);
-  margin-top: 8px !important;
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff;
-  font-family: "MontserratSemiBold" !important;
-  border-radius: 4px !important;
-  border: none !important;
   display: flex;
   justify-content: center;
+  margin-top: 8px !important;
   align-items: center;
+  font-size: calc(14px - 20%)!important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold"!important;
+  border: none !important;
+  
 }
 
 body[dir="rtl"] .create-Committee-btn {
@@ -34,11 +35,11 @@ body[dir="rtl"] .create-Committee-btn {
 .create-Committee-btn:hover {
   width: 219px !important;
   height: 31px !important;
-  font-size: calc(14px - 20%);
+  font-size: calc(14px - 20%)!important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
+  font-family: "MontserratSemiBold"!important;
   border: none !important;
   display: flex !important;
   justify-content: center !important;
@@ -64,11 +65,11 @@ body[dir="rtl"] .PLusICon {
 .Archived-Group-btn-Committee-section {
   width: 219px !important;
   height: 31px !important;
-  font-size: calc(14px - 20%);
+  font-size: calc(14px - 20%)!important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
-  color: #fff;
-  font-family: "MontserratSemiBold" !important;
+  color: #fff !important;
   border-radius: 4px !important;
+  font-family: "MontserratSemiBold"!important;
   border: none !important;
   display: flex;
   justify-content: center !important;
@@ -87,11 +88,11 @@ body[dir="rtl"] .Archived-Group-btn-Committee-section {
 .Archived-Group-btn-Committee-section:focus-visible {
   width: 219px !important;
   height: 31px !important;
-  font-size: calc(14px - 20%);
+  font-size: calc(14px - 20%)!important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
-  font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
+  font-family: "MontserratSemiBold"!important;
   border: none !important;
   display: flex !important;
   justify-content: center !important;
