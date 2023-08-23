@@ -40,6 +40,9 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     ReminderFrequencyTwo: 0,
     ReminderFrequencyThree: 0,
     Notes: "",
+    groupChat: false,
+    AllowRSPV: false,
+    NotifyMeetingOrganizer: false,
   });
 
   const handleSelectChange = (selectedOption) => {
@@ -167,6 +170,27 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
         });
       }
     }
+  };
+
+  const handleGroupChat = () => {
+    setMeetingDetails({
+      ...meetingDetails,
+      groupChat: !meetingDetails.groupChat,
+    });
+  };
+
+  const handleRSPV = () => {
+    setMeetingDetails({
+      ...meetingDetails,
+      AllowRSPV: !meetingDetails.AllowRSPV,
+    });
+  };
+
+  const handleNotifyOrganizers = () => {
+    setMeetingDetails({
+      ...meetingDetails,
+      NotifyMeetingOrganizer: !meetingDetails.NotifyMeetingOrganizer,
+    });
   };
 
   console.log(rows, "optionsoptionsoptions");
@@ -313,7 +337,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
             <Col lg={4} md={4} sm={12}>
               <Row className="mt-2">
                 <Col lg={12} md={12} sm={12} className="d-flex gap-3">
-                  <Switch />
+                  <Switch onChange={handleGroupChat} />
                   <span className={styles["Create_group_chat_heading"]}>
                     {t("Create-group-chat")}
                   </span>
@@ -636,7 +660,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
             <Col lg={3} md={3} sm={12}>
               <Row>
                 <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                  <Switch />
+                  <Switch onChange={handleRSPV} />
                   <span className={styles["Notify_heading"]}>
                     {t("Allow-rspv")}
                   </span>
@@ -646,7 +670,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
             <Col lg={9} md={9} sm={12}>
               <Row>
                 <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                  <Switch />
+                  <Switch onChange={handleNotifyOrganizers} />
                   <span className={styles["Notify_heading"]}>
                     {t("Notify-meeting-organizer-when-members-rspv")}
                   </span>

@@ -33,6 +33,7 @@ import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal"
 import {
   showAdvancePermissionModal,
   showAgenItemsRemovedModal,
+  showImportPreviousAgendaModal,
   showMainAgendaItemRemovedModal,
   showVoteAgendaModal,
 } from "../../../../../store/actions/NewMeetingActions";
@@ -45,6 +46,7 @@ import {
   regexOnlyForNumberNCharacters,
   validateInput,
 } from "../../../../../commen/functions/regex";
+import ImportPrevious from "./ImportPreviousAgenda/ImportPrevious";
 
 const Agenda = () => {
   const { t } = useTranslation();
@@ -248,6 +250,10 @@ const Agenda = () => {
         return item.name === name ? { ...item, value: valueCheck } : item;
       })
     );
+  };
+
+  const handlePreviousAgenda = () => {
+    dispatch(showImportPreviousAgendaModal(true));
   };
 
   console.log(rows, "rowsrowsrowsrowsrowsrows");
@@ -2099,6 +2105,7 @@ const Agenda = () => {
             <Button
               text={t("Import-previous-agenda")}
               className={styles["Agenda_Buttons"]}
+              onClick={handlePreviousAgenda}
             />
             <Button text={t("Cancel")} className={styles["Agenda_Buttons"]} />
             <Button
@@ -2129,6 +2136,7 @@ const Agenda = () => {
       )}
       {NewMeetingreducer.voteAgendaModal && <VoteModal />}
       {NewMeetingreducer.voteConfirmationModal && <VoteModalConfirm />}
+      {NewMeetingreducer.importPreviousAgendaModal && <ImportPrevious />}
     </>
   );
 };
