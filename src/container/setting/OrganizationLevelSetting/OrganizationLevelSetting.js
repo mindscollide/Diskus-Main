@@ -15,7 +15,7 @@ import Calender from "../../../assets/images/CalenderSetting.svg";
 import pollsIcon from "../../../assets/images/pollsIcon.svg";
 import Committee from "../../../assets/images/CommitteSetting.svg";
 import GroupIcon from "../../../assets/images/GroupSetting.svg";
-import ResolutionIcon from "../../../assets/images/ResolutionSetting.svg";
+import ResolutionIcon from "../../../assets/images/new_ResolutionIcon2.svg";
 import line from "../../../assets/images/Line 27.svg";
 import { getUserSetting } from "../../../store/actions/GetUserSetting";
 import { useEffect } from "react";
@@ -894,7 +894,7 @@ const OrganizationLevelSetting = () => {
                     >
                       <img
                         src={ResolutionIcon}
-                        width="27.4px"
+                        width="30px"
                         height="31.18px"
                       />
                     </Col>

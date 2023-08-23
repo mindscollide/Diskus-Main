@@ -13,7 +13,7 @@ import Calender from "../../../assets/images/CalenderSetting.svg";
 import pollsIcon from "../../../assets/images/pollsIcon.svg";
 import Committee from "../../../assets/images/CommitteSetting.svg";
 import GroupIcon from "../../../assets/images/GroupSetting.svg";
-import ResolutionIcon from "../../../assets/images/ResolutionSetting.svg";
+import ResolutionIcon from "../../../assets/images/new_ResolutionIcon2.svg";
 import line from "../../../assets/images/Line 27.svg";
 import { getUserSetting } from "../../../store/actions/GetUserSetting";
 import { useEffect } from "react";
@@ -95,7 +95,6 @@ const UserSettings = () => {
   }, []);
 
   const handleGoogleLoginSuccess = (response) => {
-    console.log(response.code);
     setSignUpCodeToken(response.code);
     setUserOptionsSettings({
       ...userOptionsSettings,
@@ -104,7 +103,6 @@ const UserSettings = () => {
   };
 
   const handleGoogleLoginFailure = (response) => {
-    console.log(response);
     setSignUpCodeToken("");
     setUserOptionsSettings({
       ...userOptionsSettings,
@@ -314,7 +312,6 @@ const UserSettings = () => {
   };
   const onChangeIsTwoFaceEnabled = (e) => {
     let value = e.target.checked;
-    console.log("onChangeIsTwoFaceEnabled", value);
     setUserOptionsSettings({
       ...userOptionsSettings,
       Is2FAEnabled: value,
@@ -661,7 +658,6 @@ const UserSettings = () => {
   };
 
   const updateOrganizationLevelSettings = async () => {
-    console.log("updateOrganizationLevelSettings", userOptionsSettings);
     if (signUpCodeToken != "") {
       await dispatch(
         getGoogleValidToken(navigate, signUpCodeToken, userOptionsSettings, t)
@@ -830,7 +826,7 @@ const UserSettings = () => {
                     >
                       <img
                         src={ResolutionIcon}
-                        width="27.4px"
+                        width={"30px"}
                         height="31.18px"
                       />
                     </Col>
@@ -1009,8 +1005,8 @@ const UserSettings = () => {
                 {calender ? (
                   <>
                     {userOptionsSettings.AllowCalenderSync !== null &&
-                      roleID != 1 &&
-                      roleID != 2 ? (
+                    roleID != 1 &&
+                    roleID != 2 ? (
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
@@ -1025,8 +1021,8 @@ const UserSettings = () => {
                       </Row>
                     ) : null}
                     {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
-                      roleID != 1 &&
-                      roleID != 2 ? (
+                    roleID != 1 &&
+                    roleID != 2 ? (
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
@@ -1601,8 +1597,8 @@ const UserSettings = () => {
                       </Col>
                     </Row>
                     {userOptionsSettings.AllowCalenderSync !== null &&
-                      roleID != 1 &&
-                      roleID != 2 ? (
+                    roleID != 1 &&
+                    roleID != 2 ? (
                       <Row className="mt-4">
                         <Col
                           lg={12}
@@ -1639,8 +1635,8 @@ const UserSettings = () => {
                       </Row>
                     ) : null}
                     {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
-                      roleID != 1 &&
-                      roleID != 2 ? (
+                    roleID != 1 &&
+                    roleID != 2 ? (
                       <Row className="mt-4">
                         <Col
                           lg={12}
