@@ -1141,11 +1141,10 @@ const TodoList = () => {
                 )}
                 {rowsToDo.length > 0 && (
                   <Row className="">
-                    <Col lg={4} md={4} sm={4}></Col>
                     <Col
-                      lg={4}
-                      md={4}
-                      sm={4}
+                      lg={12}
+                      md={12}
+                      sm={12}
                       className="d-flex justify-content-center"
                     >
                       <Row className="PaginationStyle-Committee">
@@ -1180,7 +1179,6 @@ const TodoList = () => {
                         </Col>
                       </Row>
                     </Col>
-                    <Col lg={4} md={4} sm={4}></Col>
                   </Row>
                 )}
               </Col>
