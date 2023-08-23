@@ -1168,6 +1168,7 @@ const TodoList = () => {
                               items_per_page: t("items_per_page"),
                               page: t("page"),
                             }}
+                            showSizeChanger
                             pageSizeOptions={["30", "50", "100", "200"]}
                             pageSize={
                               todoListPageSize !== null &&
