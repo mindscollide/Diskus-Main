@@ -1201,16 +1201,16 @@ const DataRoom = () => {
       sortDirections: ["descend", "ascend"],
     },
     {
-      title: t("Share-date"),
+      title: "Share-date",
       dataIndex: "modifiedDate",
       key: "modifiedDate",
       width: "90px",
-      sortDirections: ["descend", "ascend"],
+      sorter: true,
+      sortOrder: currentSort,
       filters: [
         {
           text: t("Share-date"),
           value: "Shared date",
-          className: currentLanguage,
         },
         {
           text: t("Last-modified"),
@@ -1224,13 +1224,18 @@ const DataRoom = () => {
           text: t("Last-open-by-me"),
           value: "Last open by me",
         },
+        // ... other filters ...
       ],
       filterIcon: (filtered) => (
-        <ChevronDown className="filter-chevron-icon-todolist" />
+        <DownOutlined className="filter-chevron-icon-todolist" />
       ),
+      onFilter: (value, record) => {
+        handleFilterMenuClick(value);
+        // Implement your custom filtering logic here
+      },
       render: (text, record) => {
         return <span>{_justShowDateformat(text)}</span>;
-      }
+      },
     },
     {
       title: t("File-size"),
