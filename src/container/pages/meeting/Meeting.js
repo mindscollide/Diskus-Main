@@ -1067,11 +1067,14 @@ const Meeting = () => {
               <Pagination
                 className="PaginationStyle-Meeting"
                 onChange={paginationChangeHandlerMeeting}
-                current={meetingPageCurrent}
+                current={meetingPageCurrent !== null &&
+                  meetingPageCurrent !== undefined
+                  ? meetingPageCurrent
+                  : 1}
                 pageSize={
                   meetingpageRow !== null && meetingpageRow !== undefined
                     ? meetingpageRow
-                    : 0
+                    : 50
                 }
                 showSizeChanger
                 locale={{
@@ -1080,7 +1083,6 @@ const Meeting = () => {
                 }}
                 pageSizeOptions={["30", "50", "100", "200"]}
                 total={totalRecords}
-              // onShowSizeChange={handlePageSizeChange}
               />
             </Col>
           </Row>

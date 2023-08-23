@@ -1141,11 +1141,10 @@ const TodoList = () => {
                 )}
                 {rowsToDo.length > 0 && (
                   <Row className="">
-                    <Col lg={4} md={4} sm={4}></Col>
                     <Col
-                      lg={4}
-                      md={4}
-                      sm={4}
+                      lg={12}
+                      md={12}
+                      sm={12}
                       className="d-flex justify-content-center"
                     >
                       <Row className="PaginationStyle-Committee">
@@ -1169,6 +1168,7 @@ const TodoList = () => {
                               items_per_page: t("items_per_page"),
                               page: t("page"),
                             }}
+                            showSizeChanger
                             pageSizeOptions={["30", "50", "100", "200"]}
                             pageSize={
                               todoListPageSize !== null &&
@@ -1180,7 +1180,6 @@ const TodoList = () => {
                         </Col>
                       </Row>
                     </Col>
-                    <Col lg={4} md={4} sm={4}></Col>
                   </Row>
                 )}
               </Col>
