@@ -28,14 +28,21 @@ import profile from "../../../../../assets/images/newprofile.png";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import line from "../../../../../assets/images/LineAgenda.svg";
 import PdfIcon from "../../../../../assets/images/pdf_icon.svg";
+import closedLocked from "../../../../../assets/images/CloseLocked.svg";
 import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal";
 import {
   showAdvancePermissionModal,
   showAgenItemsRemovedModal,
   showMainAgendaItemRemovedModal,
+  showVoteAgendaModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import MainAjendaItemRemoved from "./MainAgendaItemsRemove/MainAjendaItemRemoved";
 import AdvancePersmissionModal from "./AdvancePermissionModal/AdvancePersmissionModal";
+import PermissionConfirmation from "./AdvancePermissionModal/PermissionConfirmModal/PermissionConfirmation";
+import VoteModal from "./VoteModal/VoteModal";
+import VoteModalConfirm from "./VoteModal/VoteModalConfirmation/VoteModalConfirm";
+import { validateInput } from "../../../../../commen/functions/regex";
+
 const Agenda = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -51,6 +58,7 @@ const Agenda = () => {
   const [subexpandIndex, setsubexpandIndex] = useState(0);
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
+  const [disbaleFields, setDisbaleFields] = useState(false);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -195,6 +203,37 @@ const Agenda = () => {
     dispatch(showAdvancePermissionModal(true));
   };
 
+  const openVoteMOdal = () => {
+    dispatch(showVoteAgendaModal(true));
+  };
+
+  const lockFunctionActive = () => {
+    setDisbaleFields(!disbaleFields);
+  };
+
+  const HandleChange = (e, index) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "AgendaTitle") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setRows([
+          {
+            ...rows,
+            title: valueCheck,
+          },
+        ]);
+      } else {
+        setRows([
+          {
+            ...rows,
+            title: "",
+          },
+        ]);
+      }
+    }
+  };
+
   console.log(rows, "rowsrowsrowsrowsrowsrows");
   return (
     <>
@@ -212,7 +251,11 @@ const Agenda = () => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className={styles["BackGround_Agenda"]}
+                              className={
+                                disbaleFields
+                                  ? styles["BackGround_Agenda_InActive"]
+                                  : styles["BackGround_Agenda"]
+                              }
                               key={index}
                             >
                               <Row className="mt-2 mb-2">
@@ -222,12 +265,16 @@ const Agenda = () => {
                                     labelClass={"d-none"}
                                     placeholder={t("Agenda-title")}
                                     value={rows.title}
+                                    name={"AgendaTitle"}
+                                    change={HandleChange}
+                                    disable={disbaleFields ? true : false}
                                   />
                                 </Col>
                                 <Col lg={3} md={3} sm={12}>
                                   <Select
                                     options={options}
                                     value={rows.selectedOption}
+                                    isDisabled={disbaleFields ? true : false}
                                   />
                                 </Col>
                                 <Col
@@ -245,6 +292,7 @@ const Agenda = () => {
                                     format="HH:mm A"
                                     selected={rows.startDate}
                                     plugins={[<TimePicker hideSeconds />]}
+                                    disabled={disbaleFields ? true : false}
                                   />
                                   <img src={desh} width="19.02px" />
                                   <DatePicker
@@ -256,6 +304,7 @@ const Agenda = () => {
                                     format="HH:mm A"
                                     selected={rows.endDate}
                                     plugins={[<TimePicker hideSeconds />]}
+                                    disabled={disbaleFields ? true : false}
                                   />
                                   <img
                                     src={dropmdownblack}
@@ -293,6 +342,7 @@ const Agenda = () => {
                                       <Radio.Group
                                         onChange={onChange}
                                         value={value}
+                                        disabled={disbaleFields ? true : false}
                                       >
                                         <Radio value={1}>
                                           <span
@@ -333,17 +383,28 @@ const Agenda = () => {
                                         src={Key}
                                         width="24.07px"
                                         height="24.09px"
-                                        onClick={openAdvancePermissionModal}
+                                        onClick={
+                                          disbaleFields
+                                            ? ""
+                                            : openAdvancePermissionModal
+                                        }
                                       />
                                       <img
                                         src={Cast}
                                         width="25.85px"
                                         height="25.89px"
+                                        onClick={
+                                          disbaleFields ? "" : openVoteMOdal
+                                        }
                                       />
                                       <img
-                                        src={Lock}
+                                        src={
+                                          disbaleFields ? closedLocked : Lock
+                                        }
                                         width="18.87px"
+                                        className={styles["lockBtn"]}
                                         height="26.72px"
+                                        onClick={lockFunctionActive}
                                       />
                                     </Col>
                                   </Row>
@@ -564,13 +625,22 @@ const Agenda = () => {
                                             lg={11}
                                             md={11}
                                             sm={11}
-                                            className={styles["SubajendaBox"]}
+                                            className={
+                                              disbaleFields
+                                                ? styles[
+                                                    "SubajendaBox_Inactive"
+                                                  ]
+                                                : styles["SubajendaBox"]
+                                            }
                                           >
                                             <Row className="mt-2 mb-2">
                                               <Col lg={5} md={5} sm={12}>
                                                 <TextField
                                                   applyClass={"AgendaTextField"}
                                                   labelClass={"d-none"}
+                                                  disable={
+                                                    disbaleFields ? true : false
+                                                  }
                                                   placeholder={t(
                                                     "Sub-Agenda-title"
                                                   )}
@@ -583,6 +653,9 @@ const Agenda = () => {
                                                 <Select
                                                   value={
                                                     subAjendaRows.subajendaOptions
+                                                  }
+                                                  isDisabled={
+                                                    disbaleFields ? true : false
                                                   }
                                                 />
                                               </Col>
@@ -598,6 +671,9 @@ const Agenda = () => {
                                                   className="timePicker"
                                                   disableDayPicker
                                                   inputClass="inputTImeMeeting"
+                                                  disabled={
+                                                    disbaleFields ? true : false
+                                                  }
                                                   format="HH:mm A"
                                                   selected={
                                                     subAjendaRows.subAjendaStartDate
@@ -616,6 +692,9 @@ const Agenda = () => {
                                                   className="timePicker"
                                                   disableDayPicker
                                                   inputClass="inputTImeMeeting"
+                                                  disabled={
+                                                    disbaleFields ? true : false
+                                                  }
                                                   format="HH:mm A"
                                                   selected={
                                                     subAjendaRows.subAjendaEndDate
@@ -670,6 +749,11 @@ const Agenda = () => {
                                                         subAjendaonChange
                                                       }
                                                       value={subValue}
+                                                      disabled={
+                                                        disbaleFields
+                                                          ? true
+                                                          : false
+                                                      }
                                                     >
                                                       <Radio value={1}>
                                                         <span
@@ -719,18 +803,35 @@ const Agenda = () => {
                                                       width="24.07px"
                                                       height="24.09px"
                                                       onClick={
-                                                        openAdvancePermissionModal
+                                                        disbaleFields
+                                                          ? ""
+                                                          : openAdvancePermissionModal
                                                       }
                                                     />
                                                     <img
                                                       src={Cast}
                                                       width="25.85px"
                                                       height="25.89px"
+                                                      onClick={
+                                                        disbaleFields
+                                                          ? ""
+                                                          : openVoteMOdal
+                                                      }
                                                     />
                                                     <img
-                                                      src={Lock}
+                                                      src={
+                                                        disbaleFields
+                                                          ? closedLocked
+                                                          : Lock
+                                                      }
                                                       width="18.87px"
                                                       height="26.72px"
+                                                      className={
+                                                        styles["lockBtn"]
+                                                      }
+                                                      onClick={
+                                                        lockFunctionActive
+                                                      }
                                                     />
                                                   </Col>
                                                 </Row>
@@ -1077,7 +1178,11 @@ const Agenda = () => {
                               lg={12}
                               md={12}
                               sm={12}
-                              className={styles["BackGround_Agenda"]}
+                              className={
+                                disbaleFields
+                                  ? styles["BackGround_Agenda_InActive"]
+                                  : styles["BackGround_Agenda"]
+                              }
                             >
                               <Row className="mt-2 mb-2">
                                 <Col lg={5} md={5} sm={12}>
@@ -1186,17 +1291,28 @@ const Agenda = () => {
                                         src={Key}
                                         width="24.07px"
                                         height="24.09px"
-                                        onClick={openAdvancePermissionModal}
+                                        onClick={
+                                          disbaleFields
+                                            ? ""
+                                            : openAdvancePermissionModal
+                                        }
                                       />
                                       <img
                                         src={Cast}
                                         width="25.85px"
                                         height="25.89px"
+                                        onClick={
+                                          disbaleFields ? "" : openVoteMOdal
+                                        }
                                       />
                                       <img
-                                        src={Lock}
+                                        src={
+                                          disbaleFields ? closedLocked : Lock
+                                        }
                                         width="18.87px"
+                                        className={styles["lockBtn"]}
                                         height="26.72px"
+                                        onClick={lockFunctionActive}
                                       />
                                     </Col>
                                   </Row>
@@ -1420,7 +1536,13 @@ const Agenda = () => {
                                             lg={11}
                                             md={11}
                                             sm={11}
-                                            className={styles["SubajendaBox"]}
+                                            className={
+                                              disbaleFields
+                                                ? styles[
+                                                    "SubajendaBox_Inactive"
+                                                  ]
+                                                : styles["SubajendaBox"]
+                                            }
                                           >
                                             <Row className="mt-2 mb-2">
                                               <Col lg={5} md={5} sm={12}>
@@ -1562,18 +1684,35 @@ const Agenda = () => {
                                                       width="24.07px"
                                                       height="24.09px"
                                                       onClick={
-                                                        openAdvancePermissionModal
+                                                        disbaleFields
+                                                          ? ""
+                                                          : openAdvancePermissionModal
                                                       }
                                                     />
                                                     <img
                                                       src={Cast}
                                                       width="25.85px"
                                                       height="25.89px"
+                                                      onClick={
+                                                        disbaleFields
+                                                          ? ""
+                                                          : openVoteMOdal
+                                                      }
                                                     />
                                                     <img
-                                                      src={Lock}
+                                                      src={
+                                                        disbaleFields
+                                                          ? closedLocked
+                                                          : Lock
+                                                      }
                                                       width="18.87px"
                                                       height="26.72px"
+                                                      className={
+                                                        styles["lockBtn"]
+                                                      }
+                                                      onClick={
+                                                        lockFunctionActive
+                                                      }
                                                     />
                                                   </Col>
                                                 </Row>
@@ -1960,6 +2099,11 @@ const Agenda = () => {
         />
       )}
       {NewMeetingreducer.advancePermissionModal && <AdvancePersmissionModal />}
+      {NewMeetingreducer.advancePermissionConfirmation && (
+        <PermissionConfirmation />
+      )}
+      {NewMeetingreducer.voteAgendaModal && <VoteModal />}
+      {NewMeetingreducer.voteConfirmationModal && <VoteModalConfirm />}
     </>
   );
 };
