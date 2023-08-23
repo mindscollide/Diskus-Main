@@ -52,7 +52,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   const [meetingDeleteModal, setMeetingDeleteModal] = useState(false);
   const navigate = useNavigate();
   const { adminReducer } = useSelector((state) => state);
-  console.log("statestatemeeting", adminReducer);
   const [allMeetingData, setAllMeetingData] = useState([]);
   const [isMeetingId, setMeetingId] = useState(0);
   const [isMeetingStatusId, setMeetingStatusId] = useState(0);
@@ -105,8 +104,37 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     DateTime: "",
     Status: "",
   });
-  console.log(modalEditMeetingStates, "modalEditMeetingStatesmodalEditMeetingStatesmodalEditMeetingStates")
   const [rows, setRows] = useState([]);
+
+  useEffect(() => {
+    if (currentPage !== null && currentPageSize !== null) {
+      dispatch(OrganizationMeetings(navigate, currentPage, currentPageSize, t));
+    } else {
+      dispatch(OrganizationMeetings(navigate, 1, 50, t));
+      localStorage.setItem("MeetingPageSize", 50);
+      localStorage.setItem("MeetingCurrentPage", 1);
+    }
+    dispatch(GetMeetingStatus(navigate, t));
+  }, []);
+
+  useEffect(() => {
+    if (
+      adminReducer.AllOrganizationMeeting != null &&
+      adminReducer.AllOrganizationMeeting !== undefined
+    ) {
+      setTotalRecords(adminReducer.AllOrganizationMeeting.totalRecords);
+      if (adminReducer.AllOrganizationMeeting.organizationMeetings.length > 0) {
+        setRows(adminReducer.AllOrganizationMeeting.organizationMeetings);
+        setAllMeetingData(
+          adminReducer.AllOrganizationMeeting.organizationMeetings
+        );
+      } else {
+        setAllMeetingData([]);
+      }
+    } else {
+      setAllMeetingData([]);
+    }
+  }, [adminReducer.AllOrganizationMeeting]);
 
   // validations for fields
   const fieldValidate = (e) => {
@@ -335,7 +363,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       align: "left",
       width: "120px",
       render: (text, record) => {
-        console.log("textDelete123123", text, record);
         return (
           <>
             <div
@@ -372,7 +399,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
 
   //open filter modal on icon click
   const openFilterModal = async () => {
-    // setModalMeetingStates("");
     setFilterBarMeetingModal(true);
     setModalMeetingStates({
       Title: "",
@@ -389,14 +415,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     setMeetingSelectedStatusOption([]);
   };
 
-  // //Open modal on reset button it's created temperary to check modal
-  // const openOnResetBtn = async () => {
-  //   setMeetingModal(true);
-  //   setModalEditMeetingStates("");
-  // };
   const handleEditOrganizatioMeeting = (Data) => {
-    console.log(Data, "DataDatadasdasj");
-    // let Time = TimeDisplayFormat(Data.meetingStartTime);
     setMeetingId(Data.meetingID);
     setMeetingModal(true);
     setModalEditMeetingStates({
@@ -412,13 +431,13 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
 
   //open Delete modal on click
   const openDeleteModal = async (meetingID, StatusID) => {
-    console.log(meetingID, StatusID, "asdasdasd");
     setMeetingDeleteModal(true);
     setMeetingModal(false);
     setFilterBarMeetingModal(false);
     setMeetingId(meetingID);
     setMeetingStatusId(StatusID);
   };
+
   const handleMeetingAtendees = (a, modalMeetingStates) => {
     let newVAl = false;
     let arr = a.meetingAttendees.map((aA) => {
@@ -432,10 +451,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     });
     return newVAl;
   };
-  const handleMeetingAgenda = (a, modalMeetingStates) => {
-    console.log("setMeetingIdsetMeetingIdsetMeetingId", a, modalMeetingStates);
-    let newVAl = false;
 
+  const handleMeetingAgenda = (a, modalMeetingStates) => {
+    let newVAl = false;
     a.meetingAgenda.map((aA) => {
       if (
         aA.objMeetingAgenda.title
@@ -445,13 +463,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         newVAl = true;
       }
     });
-    // let hasTrue = arr.some(function (val) {
-    //   if (val === true) {
-    //     newVAl = true;
-    //   }
-    // });
     return newVAl;
   };
+
   const handleAllMeetingAtendees = (a, value) => {
     let newVAl = false;
     let arr = a.meetingAttendees.map((aA) => {
@@ -459,9 +473,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
         newVAl = true;
       }
     });
-    console.log("value", newVAl);
     return newVAl;
   };
+
   const handleAllMeetingAgenda = (a, value) => {
     let newVAl = false;
     let arr = a.meetingAgenda.map((aA) => {
@@ -473,36 +487,20 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     });
     return newVAl;
   };
+
   const searchFunc = () => {
     var y = [...allMeetingData];
     let x = y.filter((a) => {
-      console.log("filter a", a);
-      console.log("filter modalMeetingStates", modalMeetingStates);
-      console.log(
-        "filter fromDate",
-        removeDashesFromDate(editResolutionDate(fromDate))
-      );
-      console.log(
-        "filter toDate",
-        removeDashesFromDate(editResolutionDate(toDate))
-      );
-      console.log(
-        "filter a.dateOfMeeting + a.meetingStartTime",
-        removeDashesFromDate(
-          editResolutionDate(a?.dateOfMeeting + a?.meetingStartTime)
-        )
-      );
-
       return (
         (modalMeetingStates.Status != ""
           ? a.status
-            .toLowerCase()
-            .includes(modalMeetingStates.Status.toLowerCase())
+              .toLowerCase()
+              .includes(modalMeetingStates.Status.toLowerCase())
           : a.status) &&
         (modalMeetingStates.Title != ""
           ? a.title
-            .toLowerCase()
-            .includes(modalMeetingStates.Title.toLowerCase())
+              .toLowerCase()
+              .includes(modalMeetingStates.Title.toLowerCase())
           : a.title) &&
         (modalMeetingStates.Attendee != ""
           ? handleMeetingAtendees(a, modalMeetingStates)
@@ -515,33 +513,30 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
           : a.meetingAgenda) &&
         (fromDate != "" && toDate != ""
           ? removeDashesFromDate(
-            editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
-          ) >= removeDashesFromDate(editResolutionDate(fromDate)) &&
-          removeDashesFromDate(
-            editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
-          ) <= removeDashesFromDate(editResolutionDate(toDate))
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            ) >= removeDashesFromDate(editResolutionDate(fromDate)) &&
+            removeDashesFromDate(
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            ) <= removeDashesFromDate(editResolutionDate(toDate))
           : removeDashesFromDate(
-            editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
-          )) &&
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            )) &&
         (toDate != "" && fromDate === ""
           ? removeDashesFromDate(
-            editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
-          ) <= removeDashesFromDate(editResolutionDate(toDate))
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            ) <= removeDashesFromDate(editResolutionDate(toDate))
           : removeDashesFromDate(
-            editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
-          )) &&
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            )) &&
         (fromDate != "" && toDate === ""
           ? removeDashesFromDate(
-            editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
-          ) >= removeDashesFromDate(editResolutionDate(fromDate))
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            ) >= removeDashesFromDate(editResolutionDate(fromDate))
           : removeDashesFromDate(
-            editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
-          ))
+              editResolutionDate(a.dateOfMeeting + a.meetingStartTime)
+            ))
       );
     });
-
-    console.log("filteredData", x);
-    console.log("filteredData", modalMeetingStates);
 
     setRows([...x]);
     setFilterBarMeetingModal(false);
@@ -558,7 +553,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     setMeetingSelectedStatusOption([]);
     setToDate("");
     setFromDate("");
-    console.log("items", x);
   };
 
   const onAllSearch = (e) => {
@@ -584,8 +578,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
           : a.dateOfMeeting)
       );
     });
-
-    console.log("filteredData", x);
     setRows([...x]);
   };
 
@@ -606,21 +598,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   };
 
   useEffect(() => {
-    if (currentPage !== null && currentPageSize !== null) {
-      dispatch(OrganizationMeetings(navigate, currentPage, currentPageSize, t));
-    } else {
-      dispatch(OrganizationMeetings(navigate, 1, 50, t));
-      localStorage.setItem("MeetingPageSize", 50)
-      localStorage.setItem("MeetingCurrentPage", 1)
-    }
-    // dispatch(OrganizationMeetings(navigate, currentPage, t));
-    dispatch(GetMeetingStatus(navigate, t));
-  }, []);
-
-  useEffect(() => {
     let newOptionStatus = adminReducer.AllMeetingsStatus;
     if (Object.keys(newOptionStatus).length > 0) {
-      console.log(newOptionStatus, "newOptionStatusnewOptionStatus");
       let tem = [];
       newOptionStatus.map((data) => {
         let newData = { label: data.description, value: data.pK_MSID };
@@ -634,9 +613,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage != "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-      t("Record-found") &&
+        t("Record-found") &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-      t("Data-available")
+        t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -658,9 +637,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
     if (
       adminReducer.DeleteOrganizationMessageResponseMessage != "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-      t("Record-found") &&
+        t("Record-found") &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-      t("Data-available")
+        t("Data-available")
     ) {
       setOpen({
         ...open,
@@ -684,7 +663,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       adminReducer.AllOrganizationResponseMessage != "" &&
       adminReducer.AllOrganizationResponseMessage !== t("Record-found") &&
       adminReducer.AllOrganizationResponseMessage !== t("Data-available") &&
-      adminReducer.AllOrganizationResponseMessage !== t("No-data-available-against-this-organization")
+      adminReducer.AllOrganizationResponseMessage !==
+        t("No-data-available-against-this-organization")
     ) {
       setOpen({
         ...open,
@@ -708,7 +688,8 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       adminReducer.ResponseMessage !== "" &&
       adminReducer.ResponseMessage !== t("Record-found") &&
       adminReducer.ResponseMessage !== t("Data-available") &&
-      adminReducer.ResponseMessage !== t("No-data-available-against-this-organization")
+      adminReducer.ResponseMessage !==
+        t("No-data-available-against-this-organization")
     ) {
       setOpen({
         ...open,
@@ -726,19 +707,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
       dispatch(cleareMessage());
     }
   }, [adminReducer.ResponseMessage]);
-
-  useEffect(() => {
-    if (
-      adminReducer.AllOrganizationMeeting != null &&
-      adminReducer.AllOrganizationMeeting !== undefined
-    ) {
-      setTotalRecords(adminReducer.AllOrganizationMeeting.totalRecords)
-      if (adminReducer.AllOrganizationMeeting.organizationMeetings.length > 0) {
-        setRows(adminReducer.AllOrganizationMeeting.organizationMeetings);
-        setAllMeetingData(adminReducer.AllOrganizationMeeting.organizationMeetings);
-      }
-    }
-  }, [adminReducer.AllOrganizationMeeting]);
 
   const closeOnUpdateBtn = () => {
     dispatch(
@@ -758,7 +726,6 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
   };
 
   const changeStatusEditModal = (e) => {
-    console.log("eee", e);
     setModalEditMeetingStates({
       Status: e.value,
     });
@@ -786,9 +753,9 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
 
   const AdminMeetingPagination = async (current, pageSize) => {
     await dispatch(OrganizationMeetings(navigate, current, pageSize, t));
-    localStorage.setItem("MeetingPageSize", pageSize)
-    localStorage.setItem("MeetingCurrentPage", current)
-  }
+    localStorage.setItem("MeetingPageSize", pageSize);
+    localStorage.setItem("MeetingCurrentPage", current);
+  };
 
   return (
     <>
@@ -852,22 +819,31 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
               </>
             )}
           </Col>
-
         </Row>
-        {rows.length > 0 && <Row>
-          <Col sm={12} md={12} lg={12} className="d-flex justify-content-center my-2 pagination-groups-table">
-            <Pagination total={totalRecords}
-              locale={{
-                items_per_page: t('items_per_page'),
-                page: t('page')
-              }}
-              onChange={AdminMeetingPagination}
-              current={currentPage !== null ? currentPage : 1}
-              showSizeChanger pageSizeOptions={["30", "50", "100", "200"]}
-              pageSize={currentPageSize !== null ? currentPageSize : 50}
-              className={styles["PaginationStyle-AllMeeting"]} />
-          </Col>
-        </Row>}
+        {rows.length > 0 && (
+          <Row>
+            <Col
+              sm={12}
+              md={12}
+              lg={12}
+              className="d-flex justify-content-center my-2 pagination-groups-table"
+            >
+              <Pagination
+                total={totalRecords}
+                locale={{
+                  items_per_page: t("items_per_page"),
+                  page: t("page"),
+                }}
+                onChange={AdminMeetingPagination}
+                current={currentPage !== null ? currentPage : 1}
+                showSizeChanger
+                pageSizeOptions={["30", "50", "100", "200"]}
+                pageSize={currentPageSize !== null ? currentPageSize : 50}
+                className={styles["PaginationStyle-AllMeeting"]}
+              />
+            </Col>
+          </Row>
+        )}
 
         <Modal
           show={meetingModal || filterBarMeetingModal || meetingDeleteModal}
@@ -1020,18 +996,18 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                               1 === modalEditMeetingStates.Status
                                 ? "UpComing"
                                 : 2 === modalEditMeetingStates.Status
-                                  ? "Start"
-                                  : 3 === modalEditMeetingStates.Status
-                                    ? "Completed"
-                                    : 4 === modalEditMeetingStates.Status
-                                      ? "Cancel"
-                                      : 5 === modalEditMeetingStates.Status
-                                        ? "Reschudule"
-                                        : 6 === modalEditMeetingStates.Status
-                                          ? "Close"
-                                          : 7 === modalEditMeetingStates.Status
-                                            ? "Delete"
-                                            : null,
+                                ? "Start"
+                                : 3 === modalEditMeetingStates.Status
+                                ? "Completed"
+                                : 4 === modalEditMeetingStates.Status
+                                ? "Cancel"
+                                : 5 === modalEditMeetingStates.Status
+                                ? "Reschudule"
+                                : 6 === modalEditMeetingStates.Status
+                                ? "Close"
+                                : 7 === modalEditMeetingStates.Status
+                                ? "Delete"
+                                : null,
                             value: modalEditMeetingStates.Status,
                           }}
                         />
@@ -1089,7 +1065,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                           onKeyDown={(event) => enterKeyHandler(event, Host)}
                           className={
                             styles[
-                            "formcontrol-fieldselectfor-filtermodalmeeting"
+                              "formcontrol-fieldselectfor-filtermodalmeeting"
                             ]
                           }
                           options={meetingStatusOption}
@@ -1269,7 +1245,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
                       <Button
                         text={t("Discard")}
                         className={styles["icon-modalmeeting-ResetBtn"]}
-                      // onClick={closeOnUpdateBtn}
+                        // onClick={closeOnUpdateBtn}
                       />
                     </Col>
 
