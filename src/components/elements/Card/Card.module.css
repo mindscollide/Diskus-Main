@@ -272,13 +272,13 @@ body[dir="rtl"] .update-Committee-btn {
 
 body[dir="rtl"] .Dropdown-container-Committee {
   left: auto !important;
-  right: 110px !important;
+  right: 9px !important;
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
 body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
   left: auto !important;
-  right: 192px !important;
+  right: 39px !important;
 }
 
 .Dropdown-container-Committee:hover {
@@ -362,13 +362,13 @@ body[dir="rtl"] .Dropdown-container-editIcon-Committee-Group {
 body[dir="rtl"] .dot_icon_styles {
   cursor: pointer !important;
   position: absolute !important;
-  right: 303px !important;
+  right: 10px !important;
 }
 
 body[dir="rtl"] .Edit_icon_styles {
   cursor: pointer !important;
   position: absolute !important;
-  right: 275px !important;
+  right: 39px !important;
 }
 
 .associated_tagLine {
@@ -388,6 +388,7 @@ body[dir="rtl"] .Edit_icon_styles {
   word-wrap: break-word;
   white-space: nowrap;
   width: auto !important;
+  max-width: 100px;
   display: inline-block;
   margin: 0;
   padding: 0;
@@ -407,4 +408,6 @@ body[dir="rtl"] .Edit_icon_styles {
   justify-content: center;
   align-items: center;
   gap: 5px;
+  font-size: 9px;
+  white-space: nowrap;
 }

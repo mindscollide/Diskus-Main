@@ -52,6 +52,7 @@ import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assigne
 import { enGB, ar } from "date-fns/locale";
 import { registerLocale } from "react-datepicker";
 import {
+  _justShowDateformat,
   newDateFormaterAsPerUTC,
   newTimeFormaterAsPerUTC,
   newTimeFormaterAsPerUTCFullDate,
@@ -122,16 +123,16 @@ const TodoList = () => {
                   statusID === 1
                     ? "In Progress"
                     : statusID === 2
-                    ? "Pending"
-                    : statusID === 3
-                    ? "Upcoming"
-                    : statusID === 4
-                    ? "Cancelled"
-                    : statusID === 5
-                    ? "Completed"
-                    : statusID === 6
-                    ? "Deleted"
-                    : null,
+                      ? "Pending"
+                      : statusID === 3
+                        ? "Upcoming"
+                        : statusID === 4
+                          ? "Cancelled"
+                          : statusID === 5
+                            ? "Completed"
+                            : statusID === 6
+                              ? "Deleted"
+                              : null,
               },
             };
             return newData;
@@ -252,10 +253,8 @@ const TodoList = () => {
     }
   };
 
-  const deleteTodolist = (record) => {
-    dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t)).then(
-      (response) => {}
-    );
+  const deleteTodolist = async (record) => {
+    await dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false))
     if (todoListPageSize !== null && todoListCurrentPage !== null) {
       dispatch(
         SearchTodoListApi(
@@ -272,6 +271,257 @@ const TodoList = () => {
       dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
     }
   };
+
+  const columnsToDoAr = [
+    {
+      title: t("Task"),
+      dataIndex: "title",
+      key: "title",
+      width: "260px",
+      sortDirections: ["descend", "ascend"],
+      sorter: (a, b) =>
+        a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
+      render: (text, record) => (
+        <p
+          className="todolist-title-col"
+          onClick={(e) => viewModalHandler(record.pK_TID)}
+        >
+          {text}
+        </p>
+      ),
+    },
+    {
+      title: t("Assigned-by"),
+      dataIndex: "taskCreator",
+      key: "taskCreator",
+      width: "160px",
+      sortDirections: ["descend", "ascend"],
+      // align: "left",
+      render: (record, index) => {
+        console.log("recording", index);
+        console.log("records", record);
+        return (
+          <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular">
+            {" "}
+            <img className="data-img" src={UserImage} alt="userimage" />
+            {record.name}
+          </p>
+        );
+      },
+      sorter: (a, b) => {
+        console.log("sorter", "a", a, "b", b);
+        return a.taskCreator.name
+          .toLowerCase()
+          .localeCompare(b.taskCreator.name.toLowerCase());
+      },
+    },
+    {
+      title: t("Assigned-to"),
+      width: "160px",
+      dataIndex: "taskAssignedTo",
+      key: "taskAssignedTo",
+      sortDirections: ["descend", "ascend"],
+      sorter: (a, b) =>
+        a.taskAssignedTo[0].name
+          .toLowerCase()
+          .localeCompare(b.taskAssignedTo[0].name.toLowerCase()),
+      render: (text, record) => {
+        console.log("Text111", text);
+        console.log("records assigned", record);
+        if (text !== undefined && text !== null && text.length > 0) {
+          return (
+            <>
+              <p className="m-0 MontserratRegular color-505050 FontArabicRegular">
+                {" "}
+                {currentLanguage === "ar" ? (
+                  <>
+                    <img className="data-img" src={UserImage} alt="userimage" />
+
+                    {text[0].name}
+                  </>
+                ) : (
+                  <>
+                    <img
+                      className="data-img "
+                      src={UserImage}
+                      alt="userimage"
+                    />
+                    {text[0].name}
+                  </>
+                )}
+              </p>
+            </>
+          );
+        }
+      },
+    },
+    // {
+    //   title: "",
+    //   dataIndex: "attach",
+    //   key: "attach",
+    //   render: (text, attach) => {
+    //     return <Paperclip className="paper-icon" />;
+    //   },
+    // },
+    {
+      title: t("Deadline"),
+      dataIndex: "deadlineDateTime",
+      key: "deadlineDateTime",
+      className: "deadLineTodo",
+      width: "200px",
+      align: "center",
+      sortDirections: ["descend", "ascend"],
+      sorter: (a, b) => {
+        console.log(
+          _justShowDateformat(a.deadlineDateTime),
+          _justShowDateformat(b.deadlineDateTime),
+          "deadlineDateTimedeadlineDateTimedeadlineDateTime"
+        );
+        return (
+          _justShowDateformat(a.deadlineDateTime) <
+          _justShowDateformat(b.deadlineDateTime)
+        );
+      },
+
+      // width: "220px",
+      render: (text, record) => {
+        console.log("text1212", record);
+        return newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime);
+      },
+    },
+    {
+      title: t("Status"),
+      dataIndex: "status",
+      key: "status",
+      align: "center",
+      width: "220px",
+      filters: [
+        {
+          text: t("In-progress"),
+          value: t("In-progress"),
+          // className: currentLanguage,
+        },
+        {
+          text: t("Pending"),
+          value: t("Pending"),
+        },
+        {
+          text: t("Upcoming"),
+          value: t("Upcoming"),
+        },
+        {
+          text: t("Cancelled"),
+          value: t("Cancelled"),
+        },
+        {
+          text: t("Completed"),
+          value: t("Completed"),
+        },
+      ],
+      // defaultFilteredValue: [
+      //   t('In-progress'),
+      //   t('Pending'),
+      //   t('Upcoming'),
+      //   t('Cancelled'),
+      //   t('Completed'),
+      // ],
+      filterIcon: (filtered) => (
+        <ChevronDown className="filter-chevron-icon-todolist" />
+      ),
+
+      onFilter: (value, record) => {
+        return (
+          console.log(value, "filter222"),
+          console.log(record, "filter222"),
+          record.status.status.toLowerCase().includes(value.toLowerCase())
+        );
+      },
+      render: (text, record) => {
+        return record.taskAssignedTo.map((newdata, index) => {
+          if (newdata.pK_UID === parseInt(createrID)) {
+            console.log("text.pK_TSID", text.pK_TSID);
+            return (
+              <Select
+                defaultValue={text.status}
+                bordered={false}
+                dropdownClassName="Status-Todo"
+                className={
+                  text.pK_TSID === 1
+                    ? "InProgress MontserratSemiBold  margin-left-55"
+                    : text.pK_TSID === 2
+                      ? "Pending MontserratSemiBold margin-left-55"
+                      : text.pK_TSID === 3
+                        ? "Upcoming MontserratSemiBold margin-left-55"
+                        : text.pK_TSID === 4
+                          ? "Cancelled MontserratSemiBold margin-left-55"
+                          : text.pK_TSID === 5
+                            ? "Completed MontserratSemiBold margin-left-55"
+                            : null
+                }
+                onChange={(e) => statusChangeHandler(e, record.pK_TID)}
+              >
+                {statusOptions.map((optValue, index) => {
+                  console.log("optValue", optValue);
+                  return (
+                    <option key={optValue.id} value={optValue.id}>
+                      {optValue.status}
+                    </option>
+                  );
+                })}
+              </Select>
+            );
+          } else {
+            return (
+              <p
+                className={
+                  text.pK_TSID === 1
+                    ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
+                    : text.pK_TSID === 2
+                      ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                      : text.pK_TSID === 3
+                        ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                        : text.pK_TSID === 4
+                          ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                          : text.pK_TSID === 5
+                            ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                            : null
+                }
+              >
+                {text.status}
+              </p>
+            );
+          }
+        });
+      },
+      filterMultiple: true,
+    },
+    {
+      title: t("Delete"),
+      dataIndex: "taskCreator",
+      key: "taskCreator",
+      width: "80px",
+      render: (record, index) => {
+        console.log("recording", index);
+        console.log("recordsrecords", record);
+        if (parseInt(record.pK_UID) === parseInt(createrID)) {
+          if (index.status.pK_TSID !== 3) {
+            return (
+              <i
+                className="meeting-editbutton"
+                onClick={(e) => deleteTodolist(index)}
+              >
+                <img src={del} alt="" />
+              </i>
+            );
+          } else {
+            <></>;
+          }
+        } else {
+          <></>;
+        }
+      },
+    },
+  ];
 
   const columnsToDo = [
     {
@@ -364,7 +614,7 @@ const TodoList = () => {
       dataIndex: "deadlineDateTime",
       key: "deadlineDateTime",
       className: "deadLineTodo",
-      align: "left",
+      width: "180px",
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) =>
         newTimeFormaterAsPerUTCFullDate(a.deadlineDateTime) <
@@ -413,47 +663,6 @@ const TodoList = () => {
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
-      // filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
-      //   <div style={{ padding: 8, display: "flex", flexDirection: "column" }}>
-      //     <Select
-      //       prefixCls="filterValues"
-      //       style={{ width: 150 }}
-      //       mode="multiple"
-      //     >
-      //       {tableFilterOptions.length > 0 && tableFilterOptions.map((value, index) => {
-      //         return <Option value={value.key}>{value.label}</Option>
-      //       })}
-
-      //       {/* Add more options here as needed */}
-      //     </Select>
-      //     <Row>
-      //       <Col sm={12} md={6} lg={6}>
-      //         <Button type="primary" text="OK" />
-      //       </Col>
-      //       <Col sm={12} md={6} lg={6}>
-      //         <Button text={"Reset"} />
-      //       </Col>
-      //     </Row>
-
-      //   </div>
-      //   // <div style={{ padding: 8 }}>
-      //   //   <Input
-      //   //     // placeholder={`Search ${dataIndex}`}
-      //   //     value={selectedKeys[0]}
-      //   //     // onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-      //   //     // onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-      //   //     style={{ marginBottom: 8, display: 'block' }}
-      //   //   />
-      //   //   <Button
-      //   //     type="primary"
-      //   //     text={"Search"}
-      //   //     // onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-      //   //     size="small"
-      //   //     style={{ width: 90, marginRight: 8 }}
-      //   //   />
-      //   //   <Button size="small" text=" Reset" style={{ width: 90 }} />
-      //   // </div >
-      // ),
       onFilter: (value, record) => {
         return record.status.status.toLowerCase().includes(value.toLowerCase());
       },
@@ -469,14 +678,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "InProgress MontserratSemiBold  margin-left-55"
                     : text.pK_TSID === 2
-                    ? "Pending MontserratSemiBold margin-left-55"
-                    : text.pK_TSID === 3
-                    ? "Upcoming MontserratSemiBold margin-left-55"
-                    : text.pK_TSID === 4
-                    ? "Cancelled MontserratSemiBold margin-left-55"
-                    : text.pK_TSID === 5
-                    ? "Completed MontserratSemiBold margin-left-55"
-                    : null
+                      ? "Pending MontserratSemiBold margin-left-55"
+                      : text.pK_TSID === 3
+                        ? "Upcoming MontserratSemiBold margin-left-55"
+                        : text.pK_TSID === 4
+                          ? "Cancelled MontserratSemiBold margin-left-55"
+                          : text.pK_TSID === 5
+                            ? "Completed MontserratSemiBold margin-left-55"
+                            : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
@@ -496,14 +705,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
                     : text.pK_TSID === 2
-                    ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
-                    : text.pK_TSID === 3
-                    ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
-                    : text.pK_TSID === 4
-                    ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
-                    : text.pK_TSID === 5
-                    ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
-                    : null
+                      ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                      : text.pK_TSID === 3
+                        ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                        : text.pK_TSID === 4
+                          ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                          : text.pK_TSID === 5
+                            ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                            : null
                 }
               >
                 {text.status}
@@ -908,14 +1117,16 @@ const TodoList = () => {
             <Row className="row-scroll-todolist">
               <Col className="">
                 {rowsToDo.length > 0 &&
-                rowsToDo !== undefined &&
-                rowsToDo !== null ? (
+                  rowsToDo !== undefined &&
+                  rowsToDo !== null ? (
                   <TableToDo
                     sortDirections={["descend", "ascend"]}
-                    column={columnsToDo}
+                    column={
+                      currentLanguage === "ar" ? columnsToDoAr : columnsToDo
+                    }
                     className={"ToDo"}
                     rows={rowsToDo}
-                    scroll={{ y: 400, x: "auto" }}
+                    scroll={{ y: "65vh", x: "scroll" }}
                     // onChange={tableTodoChange}
                     pagination={false}
                   />
@@ -929,30 +1140,46 @@ const TodoList = () => {
                   </Paper>
                 )}
                 {rowsToDo.length > 0 && (
-                  <section className="pagination-groups-table d-flex justify-content-center my-3">
-                    <Pagination
-                      onChange={paginationChangeHandlerTodo}
-                      className="PaginationStyle-Meeting"
-                      current={
-                        todoListCurrentPage !== null &&
-                        todoListCurrentPage !== undefined
-                          ? todoListCurrentPage
-                          : 1
-                      }
-                      total={totalRecords}
-                      locale={{
-                        items_per_page: t("items_per_page"),
-                        page: t("page"),
-                      }}
-                      pageSizeOptions={["30", "50", "100", "200"]}
-                      pageSize={
-                        todoListPageSize !== null &&
-                        todoListPageSize !== undefined
-                          ? todoListPageSize
-                          : 50
-                      }
-                    />
-                  </section>
+                  <Row className="">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex justify-content-center"
+                    >
+                      <Row className="PaginationStyle-Committee">
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={"pagination-groups-table"}
+                        >
+                          <Pagination
+                            onChange={paginationChangeHandlerTodo}
+                            // className="PaginationStyle-Meeting"
+                            current={
+                              todoListCurrentPage !== null &&
+                                todoListCurrentPage !== undefined
+                                ? todoListCurrentPage
+                                : 1
+                            }
+                            total={totalRecords}
+                            locale={{
+                              items_per_page: t("items_per_page"),
+                              page: t("page"),
+                            }}
+                            pageSizeOptions={["30", "50", "100", "200"]}
+                            pageSize={
+                              todoListPageSize !== null &&
+                                todoListPageSize !== undefined
+                                ? todoListPageSize
+                                : 50
+                            }
+                          />
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
                 )}
               </Col>
             </Row>

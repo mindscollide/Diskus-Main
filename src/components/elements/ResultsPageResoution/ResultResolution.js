@@ -347,7 +347,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                       className={
                         styles["Close_resolution_Btn_Resultresolution"]
                       }
-                      disableBtn={decisionDateExpiry ? true : false}
+                      disableBtn={decisionDateExpiry ? false : true}
                       onClick={closeResolutionHandleClick}
                     />}
 

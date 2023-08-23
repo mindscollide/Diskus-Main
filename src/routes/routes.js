@@ -147,11 +147,8 @@ export const router = createHashRouter(
           <Route path="PaymentHistory" element={<PaymentHistory />} />
           <Route path="Summary" element={<Summary />} />
           {/* OrganizationLevelSetting */}
-          <Route
-            path="OrganizationLevelSetting"
-            element={<OrganizationLevelSetting />}
-          />
-          <Route path="Organization" element={<Organization />} />
+          {/* <Route path="OrganizationLevelSetting" element={<OrganizationLevelSetting />} /> */}
+          <Route path="Organization" element={<OrganizationLevelSetting />} />
           <Route path="AllMeeting" element={<AllMeetings />} />
           <Route path="CancelSub" element={<CancelSubs />} />
           <Route path="PackageDetail" element={<PackageDetails />} />

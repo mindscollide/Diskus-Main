@@ -54,7 +54,7 @@ const getTimeZone = (navigate, t) => {
                   t("Record-found")
                 ))
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Settings_SettingsServiceManager_GetAllTimeZones_02".toLowerCase())) {
-              dispatch(timeZoneFail(t("No-record-found")));
+              dispatch(timeZoneFail(t("No-records-found")));
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes("Settings_SettingsServiceManager_GetAllTimeZones_03".toLowerCase())) {
               dispatch(timeZoneFail(t("Something-went-wrong")));
             }

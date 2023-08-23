@@ -432,6 +432,7 @@ body[dir="rtl"] .CheckBoxalign {
   height: 7px;
   color: #f16b6b;
   visibility: visible !important;
+  white-space: nowrap;
 }
 
 body[dir="rtl"] .errorMessage {
@@ -505,5 +506,34 @@ body[dir="rtl"] .Choose_file_style {
 }
 
 body[dir="rtl"] .here_text {
+  font-family: "IBMPlexSansArabic-SemiBold" !important;
+}
+
+.Cancel_button_Createresolution {
+  padding: 12px 15px !important;
+  white-space: nowrap;
+  font-size: 12px !important;
+  background: #fff;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold";
+  font-family: "MontserratSemiBold";
+  border-radius: 4px !important;
+  border: 1px solid #d4d4d4 !important;
+}
+
+.Cancel_button_Createresolution:is(:active, :focus-visible, :focus, :visited, :hover) {
+  padding: 12px 15px !important;
+  white-space: nowrap !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold";
+  font-family: "MontserratSemiBold";
+  border-radius: 4px !important;
+  border: 1px solid #d4d4d4 !important;
+}
+
+
+body[dir="rtl"] .Cancel_button_Createresolution {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }

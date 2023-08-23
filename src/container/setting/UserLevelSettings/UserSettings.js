@@ -682,7 +682,6 @@ const UserSettings = () => {
             sm={12}
             className="d-flex gap-3 align-items-center"
           >
-            <img src={backbutton} onClick={() => navigate(-1)} width="34.88px" height="34.88px" />
             <span className={styles["UserLevelConfig_Heading"]}>
               {t("User-level-configurations")}
             </span>

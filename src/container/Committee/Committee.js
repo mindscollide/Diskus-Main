@@ -25,6 +25,7 @@ import Card from "../../components/elements/Card/Card";
 import ModalArchivedCommittee from "../ModalArchivedCommittee/ModalArchivedCommittee";
 import { useNavigate } from "react-router-dom";
 import CommitteeStatusModal from "../../components/elements/committeeChangeStatusModal/CommitteeStatusModal";
+import { Plus } from "react-bootstrap-icons";
 
 const Committee = () => {
   const { CommitteeReducer } = useSelector((state) => state);
@@ -62,7 +63,7 @@ const Committee = () => {
         localStorage.setItem("CocurrentPage", 1);
         dispatch(getAllCommitteesByUserIdActions(navigate, t, 1));
       }
-    } catch {}
+    } catch { }
   }, []);
 
   const archivedmodaluser = async (e) => {
@@ -217,7 +218,7 @@ const Committee = () => {
           setGetCommitteeData(newArr);
         }
       }
-    } catch {}
+    } catch { }
   }, [CommitteeReducer.GetAllCommitteesByUserIDResponse]);
 
   useEffect(() => {
@@ -309,12 +310,11 @@ const Committee = () => {
                 lg={12}
                 md={12}
                 sm={12}
-                // className={styles["Committee-Main_Scrollbar"]}
+              // className={styles["Committee-Main_Scrollbar"]}
               >
                 <Row
-                  className={`${"d-flex text-center committees_box  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1"} ${
-                    styles["committess_box"]
-                  }`}
+                  className={`${"d-flex text-center committees_box  MontserratSemiBold-600 color-5a5a5a m-0 p-0  mt-1"} ${styles["committess_box"]
+                    }`}
                 >
                   <Col sm={12} md={12} lg={12} className="m-0 p-0 mt-2 ">
                     <Row>
@@ -356,10 +356,10 @@ const Committee = () => {
                                   data.committeeStatusID === 1
                                     ? t("View-committee")
                                     : data.committeeStatusID === 2
-                                    ? ""
-                                    : data.committeeStatusID === 3
-                                    ? t("Update-committee")
-                                    : ""
+                                      ? ""
+                                      : data.committeeStatusID === 3
+                                        ? t("Update-committee")
+                                        : ""
                                 }
                               />
                             </Col>
@@ -402,6 +402,14 @@ const Committee = () => {
                                 className={styles["create-Committee-btn"]}
                                 text={t("Create-new-committee")}
                                 onClick={groupModal}
+                                icon={
+                                  <img
+                                    src={plusbutton}
+                                    height="7.6px"
+                                    width="7.6px"
+                                    className={styles["PLusICon"]}
+                                  />
+                                }
                               />
                             </Col>
                           </Row>

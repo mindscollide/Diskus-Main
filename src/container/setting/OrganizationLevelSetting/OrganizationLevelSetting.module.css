@@ -96,6 +96,13 @@
 
 .selectDormant {
     width: 120px !important;
+    margin-top: 5px;
+    max-width: 100% !important;
+}
+
+.select_TimeZone {
+    width: 100% !important;
+    margin-top: 5px;
     max-width: 100% !important;
 }
 

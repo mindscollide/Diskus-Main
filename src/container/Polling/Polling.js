@@ -7,6 +7,7 @@ import {
   TextField,
   Loader,
   Notification,
+  Paper,
 } from "../../components/elements";
 import { Pagination, Tooltip } from "antd";
 import { useTranslation } from "react-i18next";
@@ -27,6 +28,7 @@ import Votepoll from "./VotePoll/Votepoll";
 import UpdateSecond from "./UpdateSecond/UpdateSecond";
 import { enGB, ar } from "date-fns/locale";
 import { useDispatch, useSelector } from "react-redux";
+import PollsEmpty from '../../assets/images/Poll_emptyState.svg'
 import {
   LoaderState,
   castVoteApi,
@@ -144,7 +146,7 @@ const Polling = () => {
         console.log("PollsReducerPollsReducer", PollsReducer.SearchPolls);
         setRows([]);
       }
-    } catch (error) {}
+    } catch (error) { }
   }, [PollsReducer.SearchPolls]);
   console.log("PollsReducerPollsReducer", rows);
 
@@ -605,7 +607,7 @@ const Polling = () => {
     if (
       PollsReducer.ResponseMessage !== "" &&
       PollsReducer.ResponseMessage !== t("Record-found") &&
-      PollsReducer.ResponseMessage !== t("No-record-found") &&
+      PollsReducer.ResponseMessage !== t("No-records-found") &&
       PollsReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({
@@ -768,31 +770,49 @@ const Polling = () => {
         </Row>
         <Row>
           <Col sm={12} md={12} lg={12}>
-            <Table
+            {rows.length > 0 ? <Table
               column={PollTableColumns}
-              scroll={{ y: "62vh" }}
+              scroll={{ y: "65vh" }}
               pagination={false}
               className="Polling_table"
               rows={rows}
-            />
+            /> : <Paper className={styles["Poll_emptyState"]}><Row>
+              <Col sm={12} md={12} lg={12} className="d-flex justify-content-center align-items-center flex-column">
+
+                <img src={PollsEmpty} alt="poll_icon" />
+                <span className={styles["No_Poll_Heading"]}>{t("No-polls")}</span>
+                <span className={styles["No_Poll_Text"]}>{t("Be-the-first-to-create-a-poll-and-spark-the-conversation")}</span>
+              </Col></Row></Paper>}
+
           </Col>
         </Row>
-        <Row className="mt-3">
-          <Col className="pagination-groups-table d-flex justify-content-center">
-            <Pagination
-              className={styles["PaginationStyle-Meeting"]}
-              pageSize={currentPageSize !== null ? currentPageSize : 50}
-              showSizeChanger
-              onChange={handleChangePagination}
-              pageSizeOptions={["30", "50", "100", "200"]}
-              current={currentPage !== null ? currentPage : 1}
-              locale={{
-                items_per_page: t("items_per_page"),
-                page: t("page"),
-              }}
-              total={isTotalRecords}
-            />
+        <Row className="">
+          <Col lg={4} md={4} sm={4}></Col>
+          <Col lg={4} md={4} sm={4} className="d-flex justify-content-center">
+            {rows.length > 0 && <Row className={styles["PaginationStyle-Committee"]}>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className={"pagination-groups-table"}
+              >
+                <Pagination
+                  pageSize={currentPageSize !== null ? currentPageSize : 50}
+                  showSizeChanger
+                  onChange={handleChangePagination}
+                  pageSizeOptions={["30", "50", "100", "200"]}
+                  current={currentPage !== null ? currentPage : 1}
+                  locale={{
+                    items_per_page: t("items_per_page"),
+                    page: t("page"),
+                  }}
+                  total={isTotalRecords}
+                />
+              </Col>
+            </Row>}
+
           </Col>
+          <Col lg={4} md={4} sm={4}></Col>
         </Row>
       </section>
       {PollsReducer.createPollmodal && <CreatePolling />}

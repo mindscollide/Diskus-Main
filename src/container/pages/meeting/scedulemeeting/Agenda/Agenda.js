@@ -1020,7 +1020,6 @@ const Agenda = () => {
                                             ) : null}
                                           </Col>
                                         </Row>
-                                        ;
                                       </>
                                     ) : null}
                                   </>

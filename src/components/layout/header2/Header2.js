@@ -214,25 +214,10 @@ const Header2 = () => {
                     <Dropdown.Item className="d-flex title-className">
                       {t("Recently-added-files")}
                     </Dropdown.Item>
-                    {/* <Dropdown.Item className="title-className">
-                      {t("Upload-documents")}
-                    </Dropdown.Item>
-                    <Dropdown.Item className="title-className">
-                      {t("Create-a-meeting")}
-                    </Dropdown.Item>
-                    <Dropdown.Item className="title-className">
-                      {t("Data-room")}
-                    </Dropdown.Item>
-                    <Dropdown.Item className="title-className">
-                      {t("Pending-tasks")}
-                    </Dropdown.Item>
-                    <Dropdown.Item className="title-language-className">
-                      {t("Language")}: English
-                    </Dropdown.Item> */}
                   </DropdownButton>
                 </div>
               </Nav.Link>
-              <Dropdown className="profilebtn-dropdown">
+              <Dropdown className="DropDownAdmin">
                 <Dropdown.Toggle className="dropdown-toggle">
                   <img
                     src={currentUserImage}
@@ -245,9 +230,9 @@ const Header2 = () => {
                   </p>
                 </Dropdown.Toggle>
                 {location.pathname.includes("/Admin") ? (
-                  <Dropdown.Menu className="dropdown_menu">
+                  <Dropdown.Menu className="DropDownAdmin">
                     <Dropdown.Item
-                      className={" text-black" + " " + currentLanguage}
+                      className={"DropDownAdmin" + " " + currentLanguage}
                       onClick={() => forgotPasswordCheck()}
                     >
                       <Nav.Link
@@ -285,7 +270,7 @@ const Header2 = () => {
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 ) : (
-                  <Dropdown.Menu className="dropdown_menu">
+                  <Dropdown.Menu className="DropDownAdmin">
                     <Dropdown.Item
                       className={" text-black" + " " + currentLanguage}
                       onClick={() => forgotPasswordCheck()}
@@ -312,6 +297,7 @@ const Header2 = () => {
                   </Dropdown.Menu>
                 )}
               </Dropdown>
+
               <Nav.Link disabled={true} as={Link} to="faq's" className="mx-3">
                 <img src={DiskusHeaderInfo} width={25} />
               </Nav.Link>
@@ -419,7 +405,7 @@ const Header2 = () => {
                   </p>
                 </Dropdown.Toggle>
                 {location.pathname.includes("/Admin") ? (
-                  <Dropdown.Menu className="dropdown_menu">
+                  <Dropdown.Menu className="dropdown_menu_admin">
                     <Dropdown.Item
                       className={" text-black" + " " + currentLanguage}
                       onClick={() => forgotPasswordCheck()}
@@ -528,11 +514,11 @@ const Header2 = () => {
               >
                 <img src={DiskusHeaderInfo} width={28} />
               </Nav.Link>
-              {roleID != 2 && roleID != 1 ? (
+              {/* {roleID != 2 && roleID != 1 ? (
                 <Nav.Link className="me-2" as={Link} to="setting">
                   <img src={DiskusHeaderSetting} width={28} />
                 </Nav.Link>
-              ) : null}
+              ) : null} */}
             </Nav>
           </Container>
         </Navbar>

@@ -23,7 +23,7 @@ export const mqttConnection = (subscribeID) => {
   var id = min + Math.random() * (max - min)
 
   newClient = new Paho.Client(
-    '192.168.18.241',
+    '192.168.18.243',
     8228,
     parseInt(subscribeID) + '-' + id,
   )

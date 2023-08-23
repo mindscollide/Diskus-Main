@@ -32,9 +32,9 @@ const allMeetingFail = (message) => {
 const allMeetingMQTT = (response) => {
   return {
     type: actions.ALL_MEETINGS_MQTT,
-    response: response
-  }
-}
+    response: response,
+  };
+};
 const OrganizationMeetings = (navigate, currentPage, currentPageSize, t) => {
   let userID = localStorage.getItem("userID");
   let token = JSON.parse(localStorage.getItem("token"));
@@ -44,7 +44,7 @@ const OrganizationMeetings = (navigate, currentPage, currentPageSize, t) => {
     RequestingUserID: parseInt(userID),
     Title: "",
     PageNumber: JSON.parse(currentPage),
-    Length: JSON.parse(currentPageSize)
+    Length: JSON.parse(currentPageSize),
   };
 
   return (dispatch) => {
@@ -75,9 +75,7 @@ const OrganizationMeetings = (navigate, currentPage, currentPageSize, t) => {
                 )
             ) {
               await dispatch(
-                allMeetingFail(
-                  t("You-are-not-an-admin-Please-contact-support")
-                )
+                allMeetingFail(t("You-are-not-an-admin-Please-contact-support"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -100,9 +98,7 @@ const OrganizationMeetings = (navigate, currentPage, currentPageSize, t) => {
                 )
             ) {
               await dispatch(
-                allMeetingFail(
-                  t("No-data-available-against-this-organization")
-                )
+                allMeetingFail(t("No-data-available-against-this-organization"))
               );
             } else if (
               response.data.responseResult.responseMessage
@@ -112,9 +108,7 @@ const OrganizationMeetings = (navigate, currentPage, currentPageSize, t) => {
                 )
             ) {
               await dispatch(
-                allMeetingFail(
-                  t("No-data-available-against-this-organization")
-                )
+                allMeetingFail(t("No-data-available-against-this-organization"))
               );
             }
           } else {
@@ -187,7 +181,9 @@ const updateOrganizationMeeting = (navigate, MeetingID, MeetingStatusID, t) => {
         console.log(response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(updateOrganizationMeeting(navigate, MeetingID, MeetingStatusID, t))
+          dispatch(
+            updateOrganizationMeeting(navigate, MeetingID, MeetingStatusID, t)
+          );
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage
@@ -214,7 +210,9 @@ const updateOrganizationMeeting = (navigate, MeetingID, MeetingStatusID, t) => {
                 t("Meeting-updated")
               )
             );
-            dispatch(OrganizationMeetings(navigate, currentPage, currentPageSize, t));
+            dispatch(
+              OrganizationMeetings(navigate, currentPage, currentPageSize, t)
+            );
           } else if (
             response.data.responseResult.responseMessage
               .toLowerCase()
@@ -298,7 +296,9 @@ const deleteOrganiationMessage = (navigate, meetingID, MeetingStatusID, t) => {
         console.log(response);
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(deleteOrganiationMessage(navigate, meetingID, MeetingStatusID, t))
+          dispatch(
+            deleteOrganiationMessage(navigate, meetingID, MeetingStatusID, t)
+          );
         } else if (response.data.responseResult.isExecuted === true) {
           if (
             response.data.responseResult.responseMessage
@@ -440,5 +440,5 @@ export {
   OrganizationMeetings,
   updateOrganizationMeeting,
   GetMeetingStatus,
-  allMeetingMQTT
+  allMeetingMQTT,
 };

@@ -29,14 +29,15 @@ import {
   revokeToken,
 } from "../../../store/actions/UpdateUserGeneralSetting";
 import { MonthOptions, MonthValues, options } from "./values";
-import { getOrganizationLevelSetting } from "../../../store/actions/OrganizationSettings";
+import { getOrganizationLevelSetting, updateOrganizationLevelSetting } from "../../../store/actions/OrganizationSettings";
+import getTimeZone from "../../../store/actions/GetTimeZone";
 const OrganizationLevelSetting = () => {
   console.log(options, "optionsoptionsoptions")
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { settingReducer } = useSelector((state) => state);
-  const [securitystate, setSecuritystate] = useState(false);
+  const [securitystate, setSecuritystate] = useState(true);
   const [meetingsState, setmeetingsState] = useState(false);
   const [calender, setCalender] = useState(false);
   const [committee, setCommittee] = useState(false);
@@ -44,6 +45,13 @@ const OrganizationLevelSetting = () => {
   const [resolution, setResolution] = useState(false);
   const [polls, setpolls] = useState(false);
   const roleID = localStorage.getItem("roleID");
+  const [worldCountryID, setWorldCountryID] = useState(0);
+  const [timezone, setTimeZone] = useState([]);
+  console.log(timezone, "timezonetimezone")
+  const [timeZoneValue, setTimeZoneValue] = useState({
+    label: "",
+    value: "",
+  });
   const { loaded, clientId } = useGoogleLogin({
     clientId:
       "509020224191-pst82a2kqjq33phenb35b0bg1i0q762o.apps.googleusercontent.com",
@@ -63,28 +71,29 @@ const OrganizationLevelSetting = () => {
     EmailWhenAddedToCommittee: false,
     EmailWhenRemovedFromCommittee: false,
     EmailWhenCommitteeIsDissolvedOrArchived: false,
-    EmailWhenCommitteeIsSetInactive: false,
+    // EmailWhenCommitteeIsInactive: false,
+    // EmailWhenCommitteeIsactive: false,
     PushNotificationWhenAddedToCommittee: false,
     PushNotificationWhenRemovedFromCommittee: false,
     PushNotificationWhenCommitteeIsDissolvedOrArchived: false,
-    PushNotificationWhenCommitteeIsInActive: false,
+    // PushNotificationWhenCommitteeIsInActive: false,
+    // PushNotificationWhenCommitteeSetIsInActive: false,
     EmailWhenAddedToGroup: false,
     EmailWhenRemovedFromGroup: false,
     EmailWhenGroupIsDissolvedOrArchived: false,
-    EmailWhenGroupisSetInactive: false,
+    // EmailWhenGroupisInactive: false,
+    // EmailWhenGroupisactive: false,
     PushNotificationWhenAddedToGroup: false,
     PushNotificationWhenRemovedFromGroup: false,
     PushNotificationWhenGroupIsDissolvedOrArchived: false,
-    PushNotificationWhenGroupIsInActive: false,
+    // PushNotificationWhenGroupIsInActive: false,
+    // PushNotificationWhenGroupSetIsInActive: false,
     EmailWhenResolutionIsCirculated: false,
     EmailWhenNewResolutionIsCancelledAfterCirculation: false,
     EmailWhenResolutionIsClosed: false,
     PushNotificationWhenNewResolutionIsCirculated: false,
     PushNotificationWhenNewResolutionIsCancelledAfterCirculated: false,
     PushNotificationWhenResolutionISClosed: false,
-    DiskusCalenderColor: "",
-    GoogleCalenderColor: "",
-    MicrosoftCalenderColor: "",
     EmailWhenNewPollIsPublished: false,
     EmailWhenPollDueDateIsPassed: false,
     EmailWhenPublishedPollIsDeleted: false,
@@ -96,11 +105,22 @@ const OrganizationLevelSetting = () => {
     DormatInactiveUsersforDays: 0,
     MaximumMeetingDuration: 0,
     CalenderMonthsSpan: 0,
-    AutoCloseResolution: 0
+    AutoCloseResolution: 0,
+    TimeZoneId: 0,
+    worldCountryID: 0,
+    EmailWhenGroupisActive: false,
+    EmailWhenGroupIsSetInActive: false,
+    PushNotificationWhenGroupisActive: false,
+    PushNotificationWhenGroupisSetInActive: false,
+    EmailWhenCommitteeisActive: false,
+    EmailWhenCommitteeIsSetInActive: false,
+    PushNotificationWhenCommitteeisActive: false,
+    PushNotificationWhenCommitteeisSetInActive: false,
   });
 
   useEffect(() => {
     dispatch(getOrganizationLevelSetting(navigate, t));
+    dispatch(getTimeZone(navigate, t));
   }, []);
 
   const handleGoogleLoginSuccess = (response) => {
@@ -134,6 +154,29 @@ const OrganizationLevelSetting = () => {
     prompt: "consent",
   });
 
+  // Time Zones set in values
+  useEffect(() => {
+    let TimeZone = settingReducer.TimeZone;
+    if (TimeZone !== undefined && TimeZone !== null) {
+      let newData = [];
+      TimeZone.map((data, index) => {
+        newData.push({
+          label: data.gmtOffset
+            ? data.countryName +
+            " " +
+            "(" +
+            data.timeZone +
+            ")" +
+            " " +
+            data.gmtOffset
+            : null,
+          value: data.pK_TZID,
+        });
+      });
+      setTimeZone(newData);
+    }
+  }, [settingReducer.TimeZone]);
+
   useEffect(() => {
     if (
       settingReducer.GetOrganizationLevelSettingResponse !== null &&
@@ -148,26 +191,26 @@ const OrganizationLevelSetting = () => {
           EmailCancelOrDeleteMeeting: organizationSettings.emailOnCancelledDeletedMeeting,
           PushNotificationonNewMeeting: organizationSettings.pushNotificationOnNewMeeting,
           PushNotificationEditMeeting: organizationSettings.pushNotificationOnEditMeeting,
-          PushNotificationonCancelledDeletedMeeting: organizationSettings.pushNotificationonCancelledDeletedMeeting,
+          PushNotificationCancelledOrDeleteMeeting: organizationSettings.pushNotificationonCancelledDeletedMeeting,
           ShowNotificationOnParticipantJoining: organizationSettings.showNotificationOnParticipantJoining,
           AllowCalenderSync: organizationSettings.userAllowGoogleCalendarSynch,
           AllowMicrosoftCalenderSync: organizationSettings.userAllowMicrosoftCalendarSynch,
           EmailWhenAddedToCommittee: organizationSettings.emailWhenAddedToCommittee,
           EmailWhenRemovedFromCommittee: organizationSettings.emailWhenRemovedFromCommittee,
           EmailWhenCommitteeIsDissolvedOrArchived: organizationSettings.emailWhenCommitteeIsDissolvedArchived,
-          EmailWhenCommitteeIsSetInactive: organizationSettings.emailWhenCommitteeIsInActive,
+          // EmailWhenCommitteeIsSetInactive: organizationSettings.emailWhenCommitteeIsInActive,
           PushNotificationWhenAddedToCommittee: organizationSettings.pushNotificationwhenAddedtoCommittee,
           PushNotificationWhenRemovedFromCommittee: organizationSettings.pushNotificationwhenRemovedfromCommittee,
           PushNotificationWhenCommitteeIsDissolvedOrArchived: organizationSettings.pushNotificationwhenCommitteeisDissolvedArchived,
-          PushNotificationWhenCommitteeIsInActive: organizationSettings.pushNotificationwhenCommitteeissetInActive,
+          // PushNotificationWhenCommitteeIsInActive: organizationSettings.pushNotificationwhenCommitteeissetInActive,
           EmailWhenAddedToGroup: organizationSettings.emailWhenAddedToGroup,
           EmailWhenRemovedFromGroup: organizationSettings.emailWhenRemovedFromGroup,
-          EmailWhenGroupIsDissolvedOrArchived: organizationSettings.emailWhenGroupIsClosedorArchived,
-          EmailWhenGroupisSetInactive: organizationSettings.emailWhenGroupIsInActive,
+          EmailWhenGroupIsDissolvedOrArchived: organizationSettings.emailWhenGroupIsClosedArchived,
+          // EmailWhenGroupisSetInactive: organizationSettings.emailWhenGroupIsInActive,
           PushNotificationWhenAddedToGroup: organizationSettings.pushNotificationwhenAddedtoGroup,
           PushNotificationWhenRemovedFromGroup: organizationSettings.pushNotificationwhenRemovedfromGroup,
-          PushNotificationWhenGroupIsDissolvedOrArchived: organizationSettings.pushNotificationWhenGroupIsClosedORArchived,
-          PushNotificationWhenGroupIsInActive: organizationSettings.pushNotificationwhenGroupissetInActive,
+          PushNotificationWhenGroupIsDissolvedOrArchived: organizationSettings.pushNotificationwhenGroupisClosedArchived,
+          // PushNotificationWhenGroupIsInActive: organizationSettings.pushNotificationwhenGroupissetInActive,
           EmailWhenResolutionIsCirculated: organizationSettings.emailwhenaResolutionisClosed,
           EmailWhenNewResolutionIsCancelledAfterCirculation: organizationSettings.emailwhenResolutionisCancelledafterCirculation,
           EmailWhenResolutionIsClosed: organizationSettings.emailwhenaResolutionisClosed,
@@ -184,8 +227,31 @@ const OrganizationLevelSetting = () => {
           PushNotificationWhenPublishedPollIsUpdated: organizationSettings.pushNotificationWhenPublishedPollIsUpdated,
           DormatInactiveUsersforDays: organizationSettings.dormantInactiveUsersForDays,
           MaximumMeetingDuration: organizationSettings.maximumMeetingDuration,
-          CalenderMonthsSpan: organizationSettings.calenderMonthsSpan
+          CalenderMonthsSpan: organizationSettings.calenderMonthsSpan,
+          TimeZoneId: organizationSettings.timeZones?.pK_TZID,
+          worldCountryID: organizationSettings.worldCountry.fK_WorldCountryID,
+          EmailWhenGroupisActive: organizationSettings.emailWhenGroupIsActive,
+          EmailWhenGroupIsSetInActive: organizationSettings.emailWhenGroupIsInActive,
+          PushNotificationWhenGroupisActive: organizationSettings.pushNotificationwhenGroupissetActive,
+          PushNotificationWhenGroupisSetInActive: organizationSettings.pushNotificationwhenGroupissetInActive,
+          EmailWhenCommitteeisActive: organizationSettings.emailWhenCommitteeIsActive,
+          EmailWhenCommitteeIsSetInActive: organizationSettings.emailWhenCommitteeIsInActive,
+          PushNotificationWhenCommitteeisActive: organizationSettings.pushNotificationwhenCommitteeissetActive,
+          PushNotificationWhenCommitteeisSetInActive: organizationSettings.pushNotificationwhenCommitteeissetInActive,
         });
+        let timeZoneCode = {
+          label: organizationSettings.timeZones
+            ? organizationSettings.timeZones.countryName +
+            " " +
+            "(" +
+            organizationSettings.timeZones.timeZone +
+            ")" +
+            " " +
+            organizationSettings.timeZones.gmtOffset
+            : null,
+          value: organizationSettings.timeZones?.pK_TZID,
+        };
+        setTimeZoneValue(timeZoneCode);
       }
     }
   }, [settingReducer.GetOrganizationLevelSettingResponse]);
@@ -320,14 +386,10 @@ const OrganizationLevelSetting = () => {
   };
 
   const onChangeAllowCalenderSync = (checked) => {
-    if (checked) {
-      signIn();
-    } else {
-      setOrganizationSetting({
-        ...userOrganizationSetting,
-        AllowCalenderSync: !userOrganizationSetting.AllowCalenderSync,
-      });
-    }
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      AllowCalenderSync: !userOrganizationSetting.AllowCalenderSync,
+    });
   };
 
   const onChangeAllowMicrosoftCalenderSync = () => {
@@ -361,13 +423,13 @@ const OrganizationLevelSetting = () => {
     });
   };
 
-  const onChangeEmailWhenCommitteeIsInActive = () => {
-    setOrganizationSetting({
-      ...userOrganizationSetting,
-      EmailWhenCommitteeIsSetInactive:
-        !userOrganizationSetting.EmailWhenCommitteeIsSetInactive,
-    });
-  };
+  // const onChangeEmailWhenCommitteeIsInActive = () => {
+  //   setOrganizationSetting({
+  //     ...userOrganizationSetting,
+  //     EmailWhenCommitteeIsSetInactive:
+  //       !userOrganizationSetting.EmailWhenCommitteeIsSetInactive,
+  //   });
+  // };
 
   const onChangePushNotificationWhenAddedToCommittee = () => {
     setOrganizationSetting({
@@ -396,8 +458,15 @@ const OrganizationLevelSetting = () => {
   const onChangepushNotificationWhenCommitteeIsInActive = () => {
     setOrganizationSetting({
       ...userOrganizationSetting,
-      PushNotificationWhenCommitteeIsInActive:
-        !userOrganizationSetting.PushNotificationWhenCommitteeIsInActive,
+      PushNotificationWhenCommitteeisActive:
+        !userOrganizationSetting.PushNotificationWhenCommitteeisActive,
+    });
+  };
+  const onChangeEmailWhenCommitteeIsInActive = () => {
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      EmailWhenCommitteeIsSetInActive:
+        !userOrganizationSetting.EmailWhenCommitteeIsSetInActive,
     });
   };
 
@@ -426,8 +495,8 @@ const OrganizationLevelSetting = () => {
   const onChangeWhenGroupIsSetInactive = () => {
     setOrganizationSetting({
       ...userOrganizationSetting,
-      EmailWhenGroupisSetInactive:
-        !userOrganizationSetting.EmailWhenGroupisSetInactive,
+      EmailWhenGroupIsSetInActive:
+        !userOrganizationSetting.EmailWhenGroupIsSetInActive,
     });
   };
 
@@ -458,8 +527,8 @@ const OrganizationLevelSetting = () => {
   const onChangePushNotificationWhenGroupIsSetInActive = () => {
     setOrganizationSetting({
       ...userOrganizationSetting,
-      PushNotificationWhenGroupIsInActive:
-        !userOrganizationSetting.PushNotificationWhenGroupIsInActive,
+      PushNotificationWhenGroupisSetInActive:
+        !userOrganizationSetting.PushNotificationWhenGroupisSetInActive,
     });
   };
 
@@ -576,17 +645,95 @@ const OrganizationLevelSetting = () => {
     });
   };
 
+  const handleChangeDormant = (data) => {
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      DormatInactiveUsersforDays: data.value,
+    });
+  }
+  const changeMeetingDuration = (event) => {
+    let value = event.target.value;
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      MaximumMeetingDuration: Number(value),
+    });
+  }
 
-
+  const CalendarSpanChangeHandler = (data) => {
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      CalenderMonthsSpan: data.value,
+    });
+  }
+  // Time Zone Change Handler
+  const timezoneChangeHandler = (event) => {
+    setOrganizationSetting({
+      ...userOrganizationSetting,
+      TimeZoneId: event.value,
+    });
+    setTimeZoneValue({
+      label: event.label,
+      value: event.value,
+    });
+  };
+  console.log(userOrganizationSetting.TimeZoneId, timeZoneValue, "userOrganizationSettinguserOrganizationSetting")
   const updateOrganizationLevelSettings = async () => {
-    if (signUpCodeToken != "") {
-      await dispatch(
-        getGoogleValidToken(navigate, signUpCodeToken, userOrganizationSetting, t)
-      );
-      setSignUpCodeToken("");
-    } else {
-      await dispatch(revokeToken(navigate, userOrganizationSetting, t));
+    let OrganizationID = localStorage.getItem("organizationID")
+    let Data = {
+      CalenderMonthsSpan: userOrganizationSetting.CalenderMonthsSpan,
+      DormantInactiveUsersForDays: userOrganizationSetting.DormatInactiveUsersforDays,
+      EmailOnCancelledDeletedMeeting: userOrganizationSetting.EmailCancelOrDeleteMeeting,
+      EmailOnEditMeeting: userOrganizationSetting.EmailEditMeeting,
+      EmailOnNewMeeting: userOrganizationSetting.EmailOnNewMeeting,
+      EmailWhenAddedToCommittee: userOrganizationSetting.EmailWhenAddedToCommittee,
+      EmailWhenAddedToGroup: userOrganizationSetting.EmailWhenAddedToGroup,
+      EmailWhenCommitteeIsActive: userOrganizationSetting.EmailWhenCommitteeisActive,
+      EmailWhenCommitteeIsDissolvedArchived: userOrganizationSetting.EmailWhenCommitteeIsDissolvedOrArchived,
+      EmailWhenCommitteeIsInActive: userOrganizationSetting.EmailWhenCommitteeisActive,
+      EmailWhenGroupIsActive: userOrganizationSetting.EmailWhenGroupisActive,
+      EmailWhenGroupIsClosedArchived: userOrganizationSetting.EmailWhenGroupIsDissolvedOrArchived,
+      EmailWhenGroupIsInActive: userOrganizationSetting.EmailWhenGroupIsSetInActive,
+      EmailWhenNewPollIsPublished: userOrganizationSetting.EmailWhenNewPollIsPublished,
+      EmailWhenPollDueDateIsPassed: userOrganizationSetting.EmailWhenPollDueDateIsPassed,
+      EmailWhenPublishedPollIsDeleted: userOrganizationSetting.EmailWhenPublishedPollIsDeleted,
+      EmailWhenPublishedPollIsUpdated: userOrganizationSetting.EmailWhenPublishedPollIsUpdated,
+      EmailWhenRemovedFromCommittee: userOrganizationSetting.EmailWhenRemovedFromCommittee,
+      EmailWhenRemovedFromGroup: userOrganizationSetting.EmailWhenRemovedFromGroup,
+      EmailwhenNewResolutionisCirculated: userOrganizationSetting.EmailWhenResolutionIsCirculated,
+      EmailwhenResolutionisCancelledafterCirculation: userOrganizationSetting.EmailWhenNewResolutionIsCancelledAfterCirculation,
+      EmailwhenaResolutionisClosed: userOrganizationSetting.EmailWhenResolutionIsClosed,
+      FK_OrganizationID: JSON.parse(OrganizationID),
+      FK_TZID: userOrganizationSetting.TimeZoneId,
+      FK_WorldCountryID: userOrganizationSetting.worldCountryID,
+      Is2FAEnabled: userOrganizationSetting.Is2FAEnabled,
+      MaximumMeetingDuration: userOrganizationSetting.MaximumMeetingDuration,
+      PushNotificationOnEditMeeting: userOrganizationSetting.PushNotificationEditMeeting,
+      PushNotificationOnNewMeeting: userOrganizationSetting.PushNotificationonNewMeeting,
+      PushNotificationWhenNewPollIsPublished: userOrganizationSetting.PushNotificationWhenNewPollIsPublished,
+      PushNotificationWhenPollDueDateIsPassed: userOrganizationSetting.PushNotificationWhenPollDueDateIsPassed,
+      PushNotificationWhenPublishedPollIsDeleted: userOrganizationSetting.PushNotificationWhenPublishedPollIsDeleted,
+      PushNotificationWhenPublishedPollIsUpdated: userOrganizationSetting.PushNotificationWhenPublishedPollIsUpdated,
+      PushNotificationWhenResolutionIsClosed: userOrganizationSetting.PushNotificationWhenResolutionISClosed,
+      PushNotificationonCancelledDeletedMeeting: userOrganizationSetting.PushNotificationCancelledOrDeleteMeeting,
+      PushNotificationwhenAddedtoCommittee: userOrganizationSetting.PushNotificationWhenAddedToCommittee,
+      PushNotificationwhenAddedtoGroup: userOrganizationSetting.PushNotificationWhenAddedToGroup,
+      PushNotificationwhenCommitteeisDissolvedArchived: userOrganizationSetting.PushNotificationWhenCommitteeIsDissolvedOrArchived,
+      PushNotificationwhenCommitteeissetActive: userOrganizationSetting.PushNotificationWhenCommitteeisActive,
+      PushNotificationwhenCommitteeissetInActive: userOrganizationSetting.PushNotificationWhenCommitteeisSetInActive,
+      PushNotificationwhenGroupisClosedArchived: userOrganizationSetting.PushNotificationWhenGroupIsDissolvedOrArchived,
+      PushNotificationwhenGroupissetActive: userOrganizationSetting.PushNotificationWhenGroupisSetInActive,
+      PushNotificationwhenGroupissetInActive: userOrganizationSetting.PushNotificationWhenGroupisActive,
+      PushNotificationwhenNewResolutionisCirculated: userOrganizationSetting.PushNotificationWhenNewResolutionIsCirculated,
+      PushNotificationwhenRemovedfromCommittee: userOrganizationSetting.PushNotificationWhenRemovedFromCommittee,
+      PushNotificationwhenRemovedfromGroup: userOrganizationSetting.PushNotificationWhenRemovedFromGroup,
+      PushNotificationwhenResolutionisCancelledafterCirculation: userOrganizationSetting.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
+      ShowNotificationOnParticipantJoining: userOrganizationSetting.ShowNotificationOnParticipantJoining,
+      UserAllowGoogleCalendarSynch: userOrganizationSetting.AllowCalenderSync,
+      UserAllowMicrosoftCalendarSynch: userOrganizationSetting.AllowMicrosoftCalenderSync,
     }
+    dispatch(updateOrganizationLevelSetting(navigate, Data, t));
+    console.log(userOrganizationSetting, "updateOrganizationLevelSettingsupdateOrganizationLevelSettingsupdateOrganizationLevelSettings")
+
   };
 
   return (
@@ -599,7 +746,6 @@ const OrganizationLevelSetting = () => {
             sm={12}
             className="d-flex gap-3 align-items-center"
           >
-            <img src={backbutton} width="34.88px" height="34.88px" />
             <span className={styles["UserLevelConfig_Heading"]}>
               {t("Organization-level-configurations")}
             </span>
@@ -934,7 +1080,7 @@ const OrganizationLevelSetting = () => {
                           checked={userOrganizationSetting.AllowCalenderSync}
                         >
                           <span className={styles["Class_CheckBox"]}>
-                            {t("Allow-calender-sync")}
+                            {t("User-Allow-Google-Calendar-Synch")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -948,7 +1094,7 @@ const OrganizationLevelSetting = () => {
                           }
                         >
                           <span className={styles["Class_CheckBox"]}>
-                            {t("Allow-microsoft-calender-sync")}
+                            {t("User-Allow-Microsoft-Calendar-Synch")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1013,9 +1159,29 @@ const OrganizationLevelSetting = () => {
                         <Row className="mt-4">
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
+                              onChange={() => {
+                                setOrganizationSetting({
+                                  ...userOrganizationSetting,
+                                  EmailWhenCommitteeisActive: !userOrganizationSetting.EmailWhenCommitteeisActive,
+                                });
+                              }}
+
+                              checked={
+                                userOrganizationSetting.EmailWhenCommitteeisActive
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-committee-is-active")}
+                              </span>
+                            </Checkbox>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
                               onChange={onChangeEmailWhenCommitteeIsInActive}
                               checked={
-                                userOrganizationSetting.EmailWhenCommitteeIsSetInactive
+                                userOrganizationSetting.EmailWhenCommitteeIsSetInActive
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
@@ -1083,12 +1249,34 @@ const OrganizationLevelSetting = () => {
                                 onChangepushNotificationWhenCommitteeIsInActive
                               }
                               checked={
-                                userOrganizationSetting.PushNotificationWhenCommitteeIsInActive
+                                userOrganizationSetting.PushNotificationWhenCommitteeisActive
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  "Push-notification-when-committee-is-inActive"
+                                  "Push-notification-when-committee-is-active"
+                                )}
+                              </span>
+                            </Checkbox>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
+                              onChange={() => {
+                                setOrganizationSetting({
+                                  ...userOrganizationSetting,
+                                  PushNotificationWhenCommitteeisSetInActive: !userOrganizationSetting.PushNotificationWhenCommitteeisSetInActive
+                                })
+                              }
+                              }
+                              checked={
+                                userOrganizationSetting.PushNotificationWhenCommitteeisSetInActive
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t(
+                                  "Push-notification-when-committee-is-set-inActive"
                                 )}
                               </span>
                             </Checkbox>
@@ -1156,11 +1344,30 @@ const OrganizationLevelSetting = () => {
                             <Checkbox
                               onChange={onChangeWhenGroupIsSetInactive}
                               checked={
-                                userOrganizationSetting.EmailWhenGroupisSetInactive
+                                userOrganizationSetting.EmailWhenGroupIsSetInActive
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Email-when-group-is-set-inactive")}
+                              </span>
+                            </Checkbox>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
+                              onChange={() => {
+                                setOrganizationSetting({
+                                  ...userOrganizationSetting,
+                                  EmailWhenGroupisActive: !userOrganizationSetting.EmailWhenGroupisActive,
+                                });
+                              }}
+                              checked={
+                                userOrganizationSetting.EmailWhenGroupisActive
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-group-is-active")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1222,11 +1429,31 @@ const OrganizationLevelSetting = () => {
                                 onChangePushNotificationWhenGroupIsSetInActive
                               }
                               checked={
-                                userOrganizationSetting.PushNotificationWhenGroupIsInActive
+                                userOrganizationSetting.PushNotificationWhenGroupisSetInActive
                               }
                             >
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Push-notification-when-group-is-inActive")}
+                              </span>
+                            </Checkbox>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
+                              onChange={() => {
+                                setOrganizationSetting({
+                                  ...userOrganizationSetting,
+                                  PushNotificationWhenGroupisActive: !userOrganizationSetting.PushNotificationWhenGroupisActive,
+                                });
+                              }
+                              }
+                              checked={
+                                userOrganizationSetting.PushNotificationWhenGroupisActive
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Push-notification-when-group-is-active")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1482,9 +1709,12 @@ const OrganizationLevelSetting = () => {
                         <span className={styles["Class_CheckBox2"]}>
                           {t("Calendar-months-span")}
                         </span>
-                        <Select options={MonthOptions} value={{
-                          value: userOrganizationSetting.CalenderMonthsSpan, label: `${userOrganizationSetting.CalenderMonthsSpan} Months`
-                        }} className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} />
+                        <Select options={MonthOptions}
+                          defaultValue={{
+                            value: userOrganizationSetting.CalenderMonthsSpan, label: `${userOrganizationSetting.CalenderMonthsSpan}  ${userOrganizationSetting.CalenderMonthsSpan === 1 ? "Month" : "Months"}`
+                          }}
+                          onChange={CalendarSpanChangeHandler}
+                          className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} />
                       </Col>
                     </Row>
                   </>
@@ -1497,9 +1727,36 @@ const OrganizationLevelSetting = () => {
                         <span className={styles["Class_CheckBox2"]}>
                           {t("Dormant-inactive-users-for")}
                         </span>
-                        <Select options={options} value={{
-                          value: userOrganizationSetting.DormatInactiveUsersforDays, label: `${userOrganizationSetting.DormatInactiveUsersforDays} Days`
-                        }} className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} />
+                        <Select menuShouldScrollIntoView={false} isSearchable={false} options={options} value={{
+                          value: userOrganizationSetting.DormatInactiveUsersforDays, label: `${userOrganizationSetting.DormatInactiveUsersforDays} ${userOrganizationSetting.DormatInactiveUsersforDays === 1 ? "Day" : "Days"}`
+                        }} onChange={handleChangeDormant} className={styles["selectDormant"]} classNamePrefix={"select_dormant-days"} />
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+
+                      <Col lg={4} md={4} sm={12} className="d-flex gap-4 w-100 justify-content-start align-items-center">
+                        <span className={styles["Class_CheckBox2"]}>
+                          {t("Organization-time-zone")}
+                        </span>
+                      </Col>
+                      <Col lg={8} md={8} sm={8}
+                        className="d-flex gap-4 w-100 justify-content-start align-items-center">
+                        <Select
+                          placeholder={t("Please-select")}
+                          value={{
+                            label: timeZoneValue.label,
+                            value: timeZoneValue.value,
+                          }}
+                          defaultValue={{
+                            label: timeZoneValue.label,
+                            value: timeZoneValue.value,
+                          }}
+                          classNamePrefix={"Select_timezone"}
+                          isSearchable={false}
+                          menuShouldScrollIntoView={false}
+                          options={timezone}
+                          onChange={timezoneChangeHandler}
+                          className={styles["select_TimeZone"]} />
                       </Col>
                     </Row>
                   </>
@@ -1520,14 +1777,13 @@ const OrganizationLevelSetting = () => {
                 {meetingsState ? (
                   <>
                     <Row className="mt-3">
-
                       <Col lg={12} md={12} sm={12} className="d-flex gap-4 w-100 justify-content-center align-items-center">
                         <span className={styles["Class_CheckBox3"]}>
                           {t("Maximum-meeting-duration-in-minutes")}
                         </span>
                         <TextField
                           type={"number"}
-                          // change={handleChangeMaximumMeeting}
+                          change={changeMeetingDuration}
                           value={userOrganizationSetting.MaximumMeetingDuration}
                           name={"maximumduration"}
                           labelClass={"d-none"}

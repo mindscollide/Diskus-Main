@@ -139,7 +139,7 @@ a.iconSidebar:hover {
 a.iconSidebar {
   /* background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important; */
   width: 100%;
-  height: 59px;
+  height: 55px;
   border-radius: 4px !important;
   display: flex;
   justify-content: center;
@@ -170,6 +170,7 @@ a.iconSidebar div {
 
 body[dir="rtl"] .iconSidebar-active-sidebar {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
+  height: 55px;
 }
 
 .iconSidebar-active-sidebar svg path {
@@ -221,13 +222,13 @@ a.m-0.p-0.iconSidebar-active-sidebar.nav-link.active rect#Rectangle_831 {
 }
 
 .Meeting_Side_bar_Tag {
-  font-size: 8px !important;
+  font-size: 9 px !important;
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold" !important;
 }
 
 .Meeting_Side_bar_Tag_todo {
-  font-size: 8px !important;
+  font-size: 9px !important;
   color: #5a5a5a !important;
   font-family: "MontserratSemiBold" !important;
   white-space: nowrap !important;
@@ -238,13 +239,13 @@ body[dir="rtl"] .Meeting_Side_bar_Tag_todo {
 }
 
 .Meeting_Side_bar_Tag_active {
-  font-size: 7px !important;
+  font-size: 8px !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
 }
 
 .Meeting_Side_bar_Tag_active_active_todo {
-  font-size: 7px !important;
+  font-size: 8px !important;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
   white-space: nowrap !important;
@@ -252,8 +253,8 @@ body[dir="rtl"] .Meeting_Side_bar_Tag_todo {
 
 .expanded_menu {
   position: absolute !important;
-  width: 163px !important;
-  height: 216.35px !important;
+  width: 193px !important;
+  height: auto !important;
   left: 61px !important;
   background-color: #fff !important;
   z-index: 5 !important;
@@ -279,13 +280,13 @@ body[dir="rtl"] a.iconSidebar:hover svg path {
 a.iconSidebar:hover {
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   width: 100%;
-  height: 59px;
+  height: 55px;
   color: #fff;
   border-radius: 4px !important;
 }
 
 body[dir="rtl"] a.iconSidebar:hover {
-  height: 59px;
+  height: 55px !important;
 }
 
 body[dir="rtl"] a.iconSidebar:hover span {
@@ -298,7 +299,7 @@ a.iconSidebar:hover span {
 
 a.iconSidebar span {
   color: #505050 !important;
-  font-size: 8px !important;
+  font-size: 10px !important;
   white-space: nowrap;
   font-family: "MontserratSemiBold" !important;
 }
@@ -348,6 +349,12 @@ a.iconSidebar-active-sidebar.nav-link svg {
   width: 100% !important;
   height: 26px !important;
 }
+
+body[dir="rtl"] a.iconSidebar-active-sidebar.nav-link svg {
+  margin-top: 5px !important;
+  width: 100% !important;
+  height: 26px !important;
+}
 a.icon-active-sidebar_expand.nav-link svg {
   margin-top: 10px !important;
   width: 100% !important;
@@ -356,6 +363,7 @@ a.icon-active-sidebar_expand.nav-link svg {
 a.icon-active-sidebar_expand.nav-link {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
   height: 55px !important;
+  width: 96% !important;
   border-radius: 4px;
 }
 

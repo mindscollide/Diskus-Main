@@ -5756,11 +5756,23 @@ input::-webkit-calendar-picker-indicator {
 }
 
 .select_dormant-days__control {
-  width: 120px !important;
+  width: 100% !important;
   max-width: 100% !important;
 }
 
 .ReactFlagsSelect-module_label {
   font-family: "MontserratMedium" !important;
   font-size: 13px !important;
+}
+
+.AdvancePermission__placeholder {
+  font-size: 12px !important;
+}
+
+.AdvancePermission__menu {
+  font-size: 12px !important;
+}
+
+.form-check-input {
+  cursor: pointer !important;
 }

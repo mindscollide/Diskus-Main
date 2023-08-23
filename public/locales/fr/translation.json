@@ -820,5 +820,14 @@
   "Dormant-inactive-users-for": "Dormant inactive users for",
   "Calendar-months-span": "Calendar Months Span",
   "Auto-close-resolution": "Auto Close Resolution",
-  "Enter-date-must": "Please select date"
+  "More": "More",
+  "Enter-date-must": "Please select date",
+  "Advanced-permission-settings": "Advanced Permission Settings",
+  "Show": "Show",
+  "Push-notification-when-group-is-active": "Push Notification When Group is Active",
+  "Email-when-group-is-active": "Email When Group is Active",
+  "Email-when-committee-is-active": "Email When Committee is Active",
+  "Push-notification-when-committee-is-active": "Push Notification When Committee is Active",
+  "Be-the-first-to-create-a-poll-and-spark-the-conversation": "Be the first to create a poll and spark the conversation!",
+  "No-polls": "No Polls"
 }
