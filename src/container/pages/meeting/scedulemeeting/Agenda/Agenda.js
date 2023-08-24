@@ -3,7 +3,6 @@ import styles from "./Agenda.module.css";
 import { Col, Row } from "react-bootstrap";
 import {
   Button,
-  Table,
   TextField,
   Loader,
   Notification,
