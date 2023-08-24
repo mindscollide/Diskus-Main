@@ -27,6 +27,18 @@ const VideoCallNormalHeader = () => {
     dispatch(normalizeVideoPanelFlag(false))
   }
 
+  const minimizeVideoPanel = () => {
+    dispatch(maximizeVideoPanelFlag(false))
+    dispatch(minimizeVideoPanelFlag(true))
+    dispatch(normalizeVideoPanelFlag(false))
+  }
+
+  const closeVideoPanel = () => {
+    dispatch(normalizeVideoPanelFlag(false))
+    dispatch(maximizeVideoPanelFlag(false))
+    dispatch(minimizeVideoPanelFlag(false))
+  }
+
   return (
     <Row className="mb-4">
       <Col lg={3} md={3} sm={3} className="mt-1">
@@ -40,19 +52,12 @@ const VideoCallNormalHeader = () => {
           <img src={HandRaise} />
           <img src={Board} />
           <img src={ThreeDots} />
-          <img
-            src={CallEndRedIcon}
-            // onClick={() => closeVideoHandlerOfCall(false)}
-          />
+          <img src={CallEndRedIcon} onClick={closeVideoPanel} />
         </Col>
       </>
       <>
         <Col lg={2} md={2} sm={12} className="top-right-icons">
-          <img
-            width={20}
-            src={MinimizeIcon}
-            // onClick={() => minimizeScreen(true)}
-          />
+          <img width={20} src={MinimizeIcon} onClick={minimizeVideoPanel} />
           <img width={17} src={ExpandIcon} onClick={otoMaximizeVideoPanel} />
         </Col>
       </>

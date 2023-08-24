@@ -20,6 +20,12 @@ const VideoCallLargeHeader = () => {
     dispatch(minimizeVideoPanelFlag(false))
   }
 
+  const minimizeVideoPanel = () => {
+    dispatch(maximizeVideoPanelFlag(false))
+    dispatch(minimizeVideoPanelFlag(true))
+    dispatch(normalizeVideoPanelFlag(false))
+  }
+
   return (
     <Row className="mt-2 mb-0">
       <Col lg={11} md={11} sm={12} className="d-flex justify-content-end gap-3">
@@ -28,7 +34,7 @@ const VideoCallLargeHeader = () => {
           src={MinimizeIcon}
           alt="Minimize Icon"
           className="minimize_icon-class"
-          //   onClick={() => minimizeScreen(true)}
+          onClick={minimizeVideoPanel}
         />
         <img
           width={17}

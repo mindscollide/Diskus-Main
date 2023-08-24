@@ -5,6 +5,9 @@ import {
   videoIncomingCallFlag,
   videoOutgoingCallFlag,
   videoMultipleCallFlag,
+  normalizeVideoPanelFlag,
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
 } from '../../../../../../store/actions/VideoFeature_actions'
 import VideoMaxModal from '../../../videoCallScreen/videoCallBody/VideoMaxModal'
 import ActiveVideo from '../../../../../../assets/images/newElements/ActiveVideoIcon.svg'
@@ -68,6 +71,12 @@ const VideoLargePanelFooter = () => {
   // For Open video modal screen
   const openMaxVideoModal = () => {
     setMaxModalScreen(true)
+  }
+
+  const closeVideoPanel = () => {
+    dispatch(normalizeVideoPanelFlag(false))
+    dispatch(maximizeVideoPanelFlag(false))
+    dispatch(minimizeVideoPanelFlag(false))
   }
 
   return (
@@ -166,7 +175,11 @@ const VideoLargePanelFooter = () => {
             )}
           </div>
 
-          <img src={NonActiveCall} alt="Non ActiveCall" />
+          <img
+            src={NonActiveCall}
+            alt="Non ActiveCall"
+            onClick={closeVideoPanel}
+          />
         </Col>
       </Row>
 
