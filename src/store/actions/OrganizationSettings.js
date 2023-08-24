@@ -119,7 +119,6 @@ const updateOrganizationLevelSetting = (navigate, updateData, t) => {
     organizationSettings: updateData,
   };
 
-  console.log(data, "updateData");
   return (dispatch) => {
     dispatch(updateOrganizationLevelSettingInit());
     let form = new FormData();
@@ -151,7 +150,6 @@ const updateOrganizationLevelSetting = (navigate, updateData, t) => {
                   t("Organization-configurations-updated-successfully")
                 )
               );
-              dispatch(getOrganizationLevelSetting(navigate, t));
             } else if (
               response.data.responseResult.responseMessage ===
               "Settings_SettingsServiceManager_UpdateOrganizationSettings_02"
