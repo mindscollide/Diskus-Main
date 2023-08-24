@@ -39,6 +39,13 @@ const Participants = ({ setParticipants, setAgenda }) => {
     setParticipants(false);
     setAgenda(true);
   };
+
+  const options = [
+    { value: "Particpants", label: t("Particpants") },
+    { value: "Chairperson", label: t("Chairperson") },
+    { value: "Secretary", label: t("Secretary") },
+  ];
+
   const data = [
     {
       key: "1",
@@ -64,7 +71,7 @@ const Participants = ({ setParticipants, setAgenda }) => {
         <>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <Select />
+              <Select options={options} />
             </Col>
           </Row>
         </>
@@ -129,6 +136,7 @@ const Participants = ({ setParticipants, setAgenda }) => {
       width: "20px",
     },
   ];
+
   return (
     <>
       <section>

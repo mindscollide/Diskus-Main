@@ -853,5 +853,8 @@
   "Please-enter-meeting-link": "Please enter meeting Link*",
   "Please-select-data-and-time": "Please select data and time*",
   "Please-select-reminder-frequency": "Please select Reminder Frequency*",
-  "Import": "Import"
+  "Import": "Import",
+  "Show-names": "Show Names",
+  "Particpants": "Particpants",
+  "Chairperson": "Chairperson"
 }
