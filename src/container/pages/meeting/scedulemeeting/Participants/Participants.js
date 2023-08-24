@@ -3,6 +3,8 @@ import styles from "./Participants.module.css";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import addmore from "../../../../../assets/images/addmore.png";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
+import rspvGreenIcon from "../../../../../assets/images/rspvGreen.svg";
+import rspvAbstainIcon from "../../../../../assets/images/rspvAbstain.svg";
 import { Col, Row, Tab } from "react-bootstrap";
 import {
   Button,
@@ -26,6 +28,7 @@ const Participants = ({ setParticipants, setAgenda }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  const [rspvTable, setrspvTable] = useState(false);
 
   const openCrossIconModal = () => {
     dispatch(showCrossConfirmationModal(true));
@@ -137,6 +140,75 @@ const Participants = ({ setParticipants, setAgenda }) => {
     },
   ];
 
+  const rspvData = [
+    {
+      key: "1",
+      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
+      Email: (
+        <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
+      ),
+      Participanttitle: <label>Content Writer</label>,
+      Role: <label>Participants</label>,
+
+      rspv: (
+        <>
+          <img src={rspvGreenIcon} height="30px" width="30px " />
+          {/* <img src={rspvAbstainIcon} height="30px" width="30px " /> */}
+        </>
+      ),
+    },
+  ];
+
+  const [rspvRows, setrspvRows] = useState(rspvData);
+
+  const rspvColoumns = [
+    {
+      title: (
+        <>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <span>{t("Name")}</span>
+            </Col>
+          </Row>
+        </>
+      ),
+      dataIndex: "Name",
+      key: "Name",
+      width: "260px",
+    },
+
+    {
+      title: t("Email"),
+      dataIndex: "Email",
+      key: "Email",
+      width: "280px",
+    },
+    {
+      title: t("Participant-title"),
+      dataIndex: "Participanttitle",
+      key: "Participanttitle",
+      width: "300px",
+    },
+
+    {
+      title: t("Role"),
+      dataIndex: "Role",
+      key: "Role",
+      width: "349px",
+    },
+
+    {
+      title: t("RSPV"),
+      dataIndex: "rspv",
+      key: "rspv",
+      width: "249px",
+    },
+  ];
+
+  const enableRspvTable = () => {
+    setrspvTable(!rspvTable);
+  };
+
   return (
     <>
       <section>
@@ -151,6 +223,7 @@ const Participants = ({ setParticipants, setAgenda }) => {
               text={t("Edit")}
               className={styles["Edit_Button_Organizers"]}
               icon={<img src={EditIcon} width="11.75px" height="11.75px" />}
+              onClick={enableRspvTable}
             />
 
             <Button
@@ -163,13 +236,27 @@ const Participants = ({ setParticipants, setAgenda }) => {
         </Row>
         <Row>
           <Col lg={12} md={12} sm={12}>
-            <Table
-              column={ParticipantsColoumn}
-              scroll={{ y: "62vh" }}
-              pagination={false}
-              className="Polling_table"
-              rows={rowsData}
-            />
+            {rspvTable ? (
+              <>
+                <Table
+                  column={rspvColoumns}
+                  scroll={{ y: "62vh" }}
+                  pagination={false}
+                  className="Polling_table"
+                  rows={rspvRows}
+                />
+              </>
+            ) : (
+              <>
+                <Table
+                  column={ParticipantsColoumn}
+                  scroll={{ y: "62vh" }}
+                  pagination={false}
+                  className="Polling_table"
+                  rows={rowsData}
+                />
+              </>
+            )}
           </Col>
         </Row>
         <Row className="mt-5">
