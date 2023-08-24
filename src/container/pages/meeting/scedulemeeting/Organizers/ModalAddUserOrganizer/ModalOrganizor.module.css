@@ -37,7 +37,7 @@
 
 .remove_Organizers {
   width: 90px;
-  height: 25px !important;
+  height: 29px !important;
   border: 1px solid #f16b6b;
   border-radius: 4px !important;
   font-size: 12px !important;
@@ -51,7 +51,7 @@
 .remove_Organizers:focus,
 .remove_Organizers:focus-visible {
   width: 90px;
-  height: 25px !important;
+  height: 29px !important;
   border: 1px solid #f16b6b;
   border-radius: 4px !important;
   font-size: 12px !important;
