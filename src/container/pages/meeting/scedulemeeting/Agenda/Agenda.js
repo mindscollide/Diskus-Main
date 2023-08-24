@@ -65,6 +65,7 @@ const Agenda = () => {
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [disbaleFields, setDisbaleFields] = useState(false);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
+  const [mainLock, setmainLock] = useState(0);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -236,7 +237,8 @@ const Agenda = () => {
     dispatch(showVoteAgendaModal(true));
   };
 
-  const lockFunctionActive = () => {
+  const lockFunctionActive = (index) => {
+    setmainLock(index);
     setDisbaleFields(!disbaleFields);
   };
 
@@ -277,14 +279,13 @@ const Agenda = () => {
               ? rows.map((data, index) => {
                   return (
                     <>
-                      {/* Else Condition For Main Agenda */}
                       <Row className="mt-4 m-0 p-0">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
                           className={
-                            disbaleFields
+                            disbaleFields && mainLock === index
                               ? styles["BackGround_Agenda_InActive"]
                               : styles["BackGround_Agenda"]
                           }
@@ -297,14 +298,22 @@ const Agenda = () => {
                                 placeholder={t("Agenda-title")}
                                 value={data.title}
                                 change={(e) => HandleChange(e)}
-                                disable={disbaleFields ? true : false}
+                                disable={
+                                  disbaleFields && mainLock === index
+                                    ? true
+                                    : false
+                                }
                               />
                             </Col>
                             <Col lg={3} md={3} sm={12}>
                               <Select
                                 options={options}
                                 value={data.selectedOption}
-                                isDisabled={disbaleFields ? true : false}
+                                isDisabled={
+                                  disbaleFields && mainLock === index
+                                    ? true
+                                    : false
+                                }
                               />
                             </Col>
                             <Col
@@ -322,7 +331,11 @@ const Agenda = () => {
                                 format="HH:mm A"
                                 selected={data.startDate}
                                 plugins={[<TimePicker hideSeconds />]}
-                                disabled={disbaleFields ? true : false}
+                                disabled={
+                                  disbaleFields && mainLock === index
+                                    ? true
+                                    : false
+                                }
                               />
                               <img src={desh} width="19.02px" />
                               <DatePicker
@@ -334,7 +347,11 @@ const Agenda = () => {
                                 format="HH:mm A"
                                 selected={data.endDate}
                                 plugins={[<TimePicker hideSeconds />]}
-                                disabled={disbaleFields ? true : false}
+                                disabled={
+                                  disbaleFields && mainLock === index
+                                    ? true
+                                    : false
+                                }
                               />
                               <img
                                 src={dropmdownblack}
@@ -372,7 +389,11 @@ const Agenda = () => {
                                   <Radio.Group
                                     onChange={onChange}
                                     value={data.value}
-                                    disabled={disbaleFields ? true : false}
+                                    disabled={
+                                      disbaleFields && mainLock === index
+                                        ? true
+                                        : false
+                                    }
                                   >
                                     <Radio value={1}>
                                       <span
@@ -426,11 +447,15 @@ const Agenda = () => {
                                     onClick={disbaleFields ? "" : openVoteMOdal}
                                   />
                                   <img
-                                    src={disbaleFields ? closedLocked : Lock}
+                                    src={
+                                      disbaleFields && mainLock === index
+                                        ? closedLocked
+                                        : Lock
+                                    }
                                     width="18.87px"
                                     className={styles["lockBtn"]}
                                     height="26.72px"
-                                    onClick={lockFunctionActive}
+                                    onClick={() => lockFunctionActive(index)}
                                   />
                                 </Col>
                               </Row>
@@ -644,7 +669,7 @@ const Agenda = () => {
                                   md={11}
                                   sm={11}
                                   className={
-                                    disbaleFields
+                                    disbaleFields && mainLock === index
                                       ? styles["SubajendaBox_Inactive"]
                                       : styles["SubajendaBox"]
                                   }
@@ -654,7 +679,11 @@ const Agenda = () => {
                                       <TextField
                                         applyClass={"AgendaTextField"}
                                         labelClass={"d-none"}
-                                        disable={disbaleFields ? true : false}
+                                        disable={
+                                          disbaleFields && mainLock === index
+                                            ? true
+                                            : false
+                                        }
                                         placeholder={t("Sub-Agenda-title")}
                                         value={subAgendaData.subAjendaTitle}
                                       />
@@ -663,7 +692,9 @@ const Agenda = () => {
                                       <Select
                                         value={subAgendaData.subajendaOptions}
                                         isDisabled={
-                                          disbaleFields ? true : false
+                                          disbaleFields && mainLock === index
+                                            ? true
+                                            : false
                                         }
                                       />
                                     </Col>
@@ -679,7 +710,11 @@ const Agenda = () => {
                                         className="timePicker"
                                         disableDayPicker
                                         inputClass="inputTImeMeeting"
-                                        disabled={disbaleFields ? true : false}
+                                        disabled={
+                                          disbaleFields && mainLock === index
+                                            ? true
+                                            : false
+                                        }
                                         format="HH:mm A"
                                         selected={
                                           subAgendaData.subAjendaStartDate
@@ -693,7 +728,11 @@ const Agenda = () => {
                                         className="timePicker"
                                         disableDayPicker
                                         inputClass="inputTImeMeeting"
-                                        disabled={disbaleFields ? true : false}
+                                        disabled={
+                                          disbaleFields && mainLock === index
+                                            ? true
+                                            : false
+                                        }
                                         format="HH:mm A"
                                         selected={
                                           subAgendaData.subAjendaEndDate
@@ -742,7 +781,10 @@ const Agenda = () => {
                                             onChange={subAjendaonChange}
                                             value={subValue}
                                             disabled={
-                                              disbaleFields ? true : false
+                                              disbaleFields &&
+                                              mainLock === index
+                                                ? true
+                                                : false
                                             }
                                           >
                                             <Radio value={1}>
@@ -807,7 +849,7 @@ const Agenda = () => {
                                             width="18.87px"
                                             height="26.72px"
                                             className={styles["lockBtn"]}
-                                            onClick={lockFunctionActive}
+                                            // onClick={lockFunctionActive}
                                           />
                                         </Col>
                                       </Row>
