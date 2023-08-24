@@ -74,14 +74,7 @@ const Agenda = () => {
       startDate: null,
       endDate: null,
       Notes: "",
-      subAgenda: [
-        {
-          subAjendaTitle: null,
-          subajendaOptions: null,
-          subAjendaStartDate: null,
-          subAjendaEndDate: null,
-        },
-      ],
+      subAgenda: [],
       files: [
         {
           name: "MeetingAgendas",
@@ -193,18 +186,22 @@ const Agenda = () => {
     ]);
   };
 
-  const addSubAjendaRows = (index) => {
-    console.log(index, "addSubAjendaRowsaddSubAjendaRowsaddSubAjendaRows");
-    let newData = {
+  const addSubAjendaRows = (rowAgendaIndex) => {
+    const newItem = {
       subAjendaTitle: null,
       subajendaOptions: null,
       subAjendaStartDate: null,
       subAjendaEndDate: null,
     };
-    console.log(newData, "");
-    setRows([...rows, rows[index].subAgenda.push(newData)]);
+
+    setRows((prevRows) => {
+      const updatedRows = [...prevRows];
+      updatedRows[rowAgendaIndex].subAgenda.push(newItem);
+      return updatedRows;
+    });
   };
 
+  console.log(rows, "rowsrowsrowsrowsrows");
   const handleCrossIcon = (index) => {
     dispatch(showMainAgendaItemRemovedModal(true));
     setMainAgendaRemovalIndex(index);
@@ -266,7 +263,6 @@ const Agenda = () => {
     dispatch(showImportPreviousAgendaModal(true));
   };
 
-  console.log(rows, "rowsrowsrowsrowsrowsrows");
   return (
     <>
       <section>
@@ -276,7 +272,7 @@ const Agenda = () => {
               ? rows.map((data, index) => {
                   return (
                     <>
-                      {index >= 0 ? (
+                      {index < 1 ? (
                         <>
                           <Row className="mt-4 m-0 p-0">
                             <Col
@@ -296,16 +292,14 @@ const Agenda = () => {
                                     applyClass={"AgendaTextField"}
                                     labelClass={"d-none"}
                                     placeholder={t("Agenda-title")}
-                                    value={data.value}
-                                    name={data.name}
-                                    change={(e) => HandleChange(e)}
+                                    value={data.title}
                                     disable={disbaleFields ? true : false}
                                   />
                                 </Col>
                                 <Col lg={3} md={3} sm={12}>
                                   <Select
                                     options={options}
-                                    value={rows.selectedOption}
+                                    value={data.selectedOption}
                                     isDisabled={disbaleFields ? true : false}
                                   />
                                 </Col>
@@ -322,7 +316,7 @@ const Agenda = () => {
                                     disableDayPicker
                                     inputClass="inputTImeMeeting"
                                     format="HH:mm A"
-                                    selected={rows.startDate}
+                                    selected={data.startDate}
                                     plugins={[<TimePicker hideSeconds />]}
                                     disabled={disbaleFields ? true : false}
                                   />
@@ -334,7 +328,7 @@ const Agenda = () => {
                                     disableDayPicker
                                     inputClass="inputTImeMeeting"
                                     format="HH:mm A"
-                                    selected={rows.endDate}
+                                    selected={data.endDate}
                                     plugins={[<TimePicker hideSeconds />]}
                                     disabled={disbaleFields ? true : false}
                                   />
@@ -1150,7 +1144,6 @@ const Agenda = () => {
                                   ? styles["BackGround_Agenda_InActive"]
                                   : styles["BackGround_Agenda"]
                               }
-                              key={index}
                             >
                               <Row className="mt-2 mb-2">
                                 <Col lg={5} md={5} sm={12}>
@@ -1158,8 +1151,7 @@ const Agenda = () => {
                                     applyClass={"AgendaTextField"}
                                     labelClass={"d-none"}
                                     placeholder={t("Agenda-title")}
-                                    value={data.value}
-                                    name={data.name}
+                                    value={data.title}
                                     change={(e) => HandleChange(e)}
                                     disable={disbaleFields ? true : false}
                                   />
@@ -1167,7 +1159,7 @@ const Agenda = () => {
                                 <Col lg={3} md={3} sm={12}>
                                   <Select
                                     options={options}
-                                    value={rows.selectedOption}
+                                    value={data.selectedOption}
                                     isDisabled={disbaleFields ? true : false}
                                   />
                                 </Col>
@@ -1184,7 +1176,7 @@ const Agenda = () => {
                                     disableDayPicker
                                     inputClass="inputTImeMeeting"
                                     format="HH:mm A"
-                                    selected={rows.startDate}
+                                    selected={data.startDate}
                                     plugins={[<TimePicker hideSeconds />]}
                                     disabled={disbaleFields ? true : false}
                                   />
@@ -1196,7 +1188,7 @@ const Agenda = () => {
                                     disableDayPicker
                                     inputClass="inputTImeMeeting"
                                     format="HH:mm A"
-                                    selected={rows.endDate}
+                                    selected={data.endDate}
                                     plugins={[<TimePicker hideSeconds />]}
                                     disabled={disbaleFields ? true : false}
                                   />
@@ -1507,7 +1499,6 @@ const Agenda = () => {
                                       </Row>
                                     </>
                                   )}
-                                  another Row Should End here
                                 </>
                               ) : null}
                             </Col>
