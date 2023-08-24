@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Checkbox } from "antd";
 import SecurityIcon from "../../../assets/images/SecuritySetting.svg";
+import TodoIcon from "../../../assets/images/Todo_icon.svg";
 import MeetingIcon from "../../../assets/images/MeetingSetting.svg";
 import Calender from "../../../assets/images/CalenderSetting.svg";
 import pollsIcon from "../../../assets/images/pollsIcon.svg";
@@ -32,6 +33,7 @@ const UserSettings = () => {
   const navigate = useNavigate();
   const { settingReducer } = useSelector((state) => state);
   const [securitystate, setSecuritystate] = useState(true);
+  const [todo, setTodo] = useState(false);
   const [meetingsState, setmeetingsState] = useState(false);
   const [calender, setCalender] = useState(false);
   const [committee, setCommittee] = useState(false);
@@ -63,10 +65,13 @@ const UserSettings = () => {
     PushNotificationWhenRemovedFromCommittee: false,
     PushNotificationWhenCommitteeIsDissolvedOrArchived: false,
     PushNotificationWhenCommitteeIsInActive: false,
+    PushNotificationwhenCommitteeissetActive: false,
     EmailWhenAddedToGroup: false,
     EmailWhenRemovedFromGroup: false,
     EmailWhenGroupIsDissolvedOrArchived: false,
     EmailWhenGroupisSetInactive: false,
+    EmailWhenGroupIsActive: false,
+    PushNotificationwhenGroupissetActive: false,
     PushNotificationWhenAddedToGroup: false,
     PushNotificationWhenRemovedFromGroup: false,
     PushNotificationWhenGroupIsDissolvedOrArchived: false,
@@ -88,6 +93,17 @@ const UserSettings = () => {
     PushNotificationWhenPollDueDateIsPassed: false,
     PushNotificationWhenPublishedPollIsDeleted: false,
     PushNotificationWhenPublishedPollIsUpdated: false,
+    EmailWhenCommitteeIsActive: false,
+    PushNotificationWhenNewTODOAssigned: false,
+    PushNotificationWhenNewTODODeleted: false,
+    PushNotificationWhenNewTODOEdited: false,
+    PushNotificationWhenNewCommentAdded: false,
+    PushNotificationWhenCommentDeleted: false,
+    EmailWhenCommentDeleted: false,
+    EmailWhenNewCommentAdded: false,
+    EmailWhenNewTODOAssigned: false,
+    EmailWhenNewTODODeleted: false,
+    EmailWhenNewTODOEdited: false,
   });
 
   useEffect(() => {
@@ -168,6 +184,8 @@ const UserSettings = () => {
               .emailWhenCommitteeIsDissolvedorArchived,
           EmailWhenCommitteeIsSetInactive:
             settingReducer.UserProfileData.emailWhenCommitteeIsInActive,
+          EmailWhenCommitteeIsActive:
+            settingReducer.UserProfileData.emailWhenCommitteeIsActive,
           PushNotificationWhenAddedToCommittee:
             settingReducer.UserProfileData.pushNotificationWhenAddedToCommittee,
           PushNotificationWhenRemovedFromCommittee:
@@ -179,6 +197,10 @@ const UserSettings = () => {
           PushNotificationWhenCommitteeIsInActive:
             settingReducer.UserProfileData
               .pushNotificationWhenCommitteeIsInActive,
+
+          PushNotificationwhenCommitteeissetActive:
+            settingReducer.UserProfileData
+              .pushNotificationwhenCommitteeissetActive,
           EmailWhenAddedToGroup:
             settingReducer.UserProfileData.emailWhenAddedToGroup,
           EmailWhenRemovedFromGroup:
@@ -187,6 +209,11 @@ const UserSettings = () => {
             settingReducer.UserProfileData.emailWhenGroupIsClosedorArchived,
           EmailWhenGroupisSetInactive:
             settingReducer.UserProfileData.emailWhenGroupIsInActive,
+          PushNotificationwhenGroupissetActive:
+            settingReducer.UserProfileData.pushNotificationwhenGroupissetActive,
+          EmailWhenGroupIsActive:
+            settingReducer.UserProfileData.emailWhenGroupIsActive,
+
           PushNotificationWhenAddedToGroup:
             settingReducer.UserProfileData.pushNotificationWhenAddedToGroup,
           PushNotificationWhenRemovedFromGroup:
@@ -237,6 +264,26 @@ const UserSettings = () => {
           PushNotificationWhenPublishedPollIsUpdated:
             settingReducer.UserProfileData
               .pushNotificationWhenPublishedPollIsUpdated,
+          PushNotificationWhenNewTODOAssigned:
+            settingReducer.UserProfileData.pushNotificationWhenNewTODOAssigned,
+          PushNotificationWhenNewTODODeleted:
+            settingReducer.UserProfileData.pushNotificationWhenNewTODODeleted,
+          PushNotificationWhenNewTODOEdited:
+            settingReducer.UserProfileData.pushNotificationWhenNewTODOEdited,
+          PushNotificationWhenNewCommentAdded:
+            settingReducer.UserProfileData.pushNotificationWhenNewCommentAdded,
+          PushNotificationWhenCommentDeleted:
+            settingReducer.UserProfileData.pushNotificationWhenCommentDeleted,
+          EmailWhenCommentDeleted:
+            settingReducer.UserProfileData.emailWhenCommentDeleted,
+          EmailWhenNewCommentAdded:
+            settingReducer.UserProfileData.emailWhenNewCommentAdded,
+          EmailWhenNewTODOAssigned:
+            settingReducer.UserProfileData.emailWhenNewTODOAssigned,
+          EmailWhenNewTODODeleted:
+            settingReducer.UserProfileData.emailWhenNewTODODeleted,
+          EmailWhenNewTODOEdited:
+            settingReducer.UserProfileData.emailWhenNewTODOEdited,
         });
       }
     }
@@ -250,11 +297,24 @@ const UserSettings = () => {
     setGroup(false);
     setResolution(false);
     setpolls(false);
+    setTodo(false);
   };
 
   const openMeetingTab = () => {
     setmeetingsState(true);
     setSecuritystate(false);
+    setCalender(false);
+    setCommittee(false);
+    setGroup(false);
+    setResolution(false);
+    setpolls(false);
+    setTodo(false);
+  };
+
+  const opentodo = () => {
+    setTodo(true);
+    setSecuritystate(false);
+    setmeetingsState(false);
     setCalender(false);
     setCommittee(false);
     setGroup(false);
@@ -270,6 +330,7 @@ const UserSettings = () => {
     setGroup(false);
     setResolution(false);
     setpolls(false);
+    setTodo(false);
   };
 
   const openCommitteTab = () => {
@@ -280,6 +341,7 @@ const UserSettings = () => {
     setGroup(false);
     setResolution(false);
     setpolls(false);
+    setTodo(false);
   };
 
   const openGroupTab = () => {
@@ -290,6 +352,7 @@ const UserSettings = () => {
     setSecuritystate(false);
     setResolution(false);
     setpolls(false);
+    setTodo(false);
   };
 
   const openResolutionTab = () => {
@@ -300,7 +363,9 @@ const UserSettings = () => {
     setmeetingsState(false);
     setSecuritystate(false);
     setpolls(false);
+    setTodo(false);
   };
+
   const openPollsTab = () => {
     setpolls(true);
     setResolution(false);
@@ -309,7 +374,9 @@ const UserSettings = () => {
     setCalender(false);
     setmeetingsState(false);
     setSecuritystate(false);
+    setTodo(false);
   };
+
   const onChangeIsTwoFaceEnabled = (e) => {
     let value = e.target.checked;
     setUserOptionsSettings({
@@ -426,6 +493,14 @@ const UserSettings = () => {
     });
   };
 
+  const onChangeEmailWhenCommitteeIsActive = (e) => {
+    let value = e.target.checked;
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      EmailWhenCommitteeIsActive: value,
+    });
+  };
+
   const onChangePushNotificationWhenAddedToCommittee = (e) => {
     let value = e.target.checked;
     setUserOptionsSettings({
@@ -458,6 +533,14 @@ const UserSettings = () => {
     });
   };
 
+  const onChangePushNotificationwhenCommitteeissetActive = (e) => {
+    let value = e.target.checked;
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      PushNotificationwhenCommitteeissetActive: value,
+    });
+  };
+
   const onChangeEmailWhenAddedToGroup = (e) => {
     let value = e.target.checked;
     setUserOptionsSettings({
@@ -487,6 +570,22 @@ const UserSettings = () => {
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenGroupisSetInactive: value,
+    });
+  };
+
+  const onChangeWhenEmailWhenGroupIsActive = (e) => {
+    let value = e.target.checked;
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      EmailWhenGroupIsActive: value,
+    });
+  };
+
+  const onChangeWhenPushNotificationwhenGroupissetActive = (e) => {
+    let value = e.target.checked;
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      PushNotificationwhenGroupissetActive: value,
     });
   };
 
@@ -667,7 +766,77 @@ const UserSettings = () => {
       await dispatch(revokeToken(navigate, userOptionsSettings, t));
     }
   };
-
+  
+  const onChangeEmailWhenNewTODOEdited = (e) => {
+    let value = e.target.checked;
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      EmailWhenNewTODOEdited: value,
+    });
+  };
+  const onChangeEmailWhenNewTODODeleted = (e) => {
+    let value = e.target.checked;
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      EmailWhenNewTODODeleted: value,
+    });
+  };
+  const onChangeEmailWhenNewTODOAssigned = (e) => {
+    let value = e.target.checked;
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      EmailWhenNewTODOAssigned: value,
+    });
+  };
+  const onChangeEmailWhenNewCommentAdded = (e) => {
+    let value = e.target.checked;
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      EmailWhenNewCommentAdded: value,
+    });
+  };
+  const onChangeEmailWhenCommentDeleted = (e) => {
+    let value = e.target.checked;
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      EmailWhenCommentDeleted: value,
+    });
+  };
+  const onChangePushNotificationWhenCommentDeleted = (e) => {
+    let value = e.target.checked;
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      PushNotificationWhenCommentDeleted: value,
+    });
+  };
+  const onChangePushNotificationWhenNewCommentAdded = (e) => {
+    let value = e.target.checked;
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      PushNotificationWhenNewCommentAdded: value,
+    });
+  };
+  const onChangePushNotificationWhenNewTODOEdited = (e) => {
+    let value = e.target.checked;
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      PushNotificationWhenNewTODOEdited: value,
+    });
+  };
+  const onChangePushNotificationWhenNewTODODeleted = (e) => {
+    let value = e.target.checked;
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      PushNotificationWhenNewTODODeleted: value,
+    });
+  };
+  const onChangePushNotificationWhenNewTODOAssigned = (e) => {
+    let value = e.target.checked;
+    setUserOptionsSettings({
+      ...userOptionsSettings,
+      PushNotificationWhenNewTODOAssigned: value,
+    });
+  };
   return (
     <>
       <section className={styles["UserConfigsContainer"]}>
@@ -715,6 +884,30 @@ const UserSettings = () => {
                         }
                       >
                         {t("Security-settings")}
+                      </span>
+                    </Col>
+                  </Row>
+                </div>
+                <hr />
+                <div onClick={opentodo} className="cursor-pointer">
+                  <Row className="mt-3">
+                    <Col
+                      lg={2}
+                      md={2}
+                      sm={12}
+                      className="d-flex align-items-center"
+                    >
+                      <img src={TodoIcon} width="30px" height="30px" />
+                    </Col>
+                    <Col lg={10} md={10} sm={12}>
+                      <span
+                        className={
+                          todo
+                            ? styles["Options_headings_active"]
+                            : styles["Options_headings"]
+                        }
+                      >
+                        {t("Todo")}
                       </span>
                     </Col>
                   </Row>
@@ -891,7 +1084,141 @@ const UserSettings = () => {
                           checked={userOptionsSettings.Is2FAEnabled}
                         >
                           <span className={styles["Class_CheckBox"]}>
-                            {t("2FA-is-enabled")}
+                            {t("2FA-is-enabled-heading")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                  </>
+                ) : null}
+                {todo ? (
+                  <>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeEmailWhenCommentDeleted}
+                          checked={userOptionsSettings.EmailWhenCommentDeleted}
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-comment-deleted")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeEmailWhenNewCommentAdded}
+                          checked={userOptionsSettings.EmailWhenNewCommentAdded}
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-new-comment-added")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeEmailWhenNewTODODeleted}
+                          checked={userOptionsSettings.EmailWhenNewTODODeleted}
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-new-todo-deleted")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeEmailWhenNewTODOAssigned}
+                          checked={userOptionsSettings.EmailWhenNewTODOAssigned}
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-new-todo-assigned")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeEmailWhenNewTODOEdited}
+                          checked={userOptionsSettings.EmailWhenNewTODOEdited}
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-new-todo-edited")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangePushNotificationWhenNewCommentAdded}
+                          checked={
+                            userOptionsSettings.PushNotificationWhenNewCommentAdded
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-new-comment-added")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangePushNotificationWhenNewTODOAssigned}
+                          checked={
+                            userOptionsSettings.PushNotificationWhenNewTODOAssigned
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-new-todo-assigned")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangePushNotificationWhenNewTODOEdited}
+                          checked={
+                            userOptionsSettings.PushNotificationWhenNewTODOEdited
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-new-todo-edited")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangePushNotificationWhenCommentDeleted}
+                          checked={
+                            userOptionsSettings.PushNotificationWhenCommentDeleted
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-comment-deleted")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangePushNotificationWhenNewTODODeleted}
+                          checked={
+                            userOptionsSettings.PushNotificationWhenNewTODODeleted
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-new-todo-deleted")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1112,6 +1439,20 @@ const UserSettings = () => {
                         <Row className="mt-4">
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
+                              onChange={onChangeEmailWhenCommitteeIsActive}
+                              checked={
+                                userOptionsSettings.EmailWhenCommitteeIsActive
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-committee-is-set-active")}
+                              </span>
+                            </Checkbox>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
                               onChange={
                                 onChangePushNotificationWhenAddedToCommittee
                               }
@@ -1174,6 +1515,24 @@ const UserSettings = () => {
                               <span className={styles["Class_CheckBox"]}>
                                 {t(
                                   "Push-notification-when-committee-is-inActive"
+                                )}
+                              </span>
+                            </Checkbox>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
+                              onChange={
+                                onChangePushNotificationwhenCommitteeissetActive
+                              }
+                              checked={
+                                userOptionsSettings.PushNotificationwhenCommitteeissetActive
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t(
+                                  "Push-notification-when-committee-is-set-active"
                                 )}
                               </span>
                             </Checkbox>
@@ -1253,6 +1612,20 @@ const UserSettings = () => {
                         <Row className="mt-4">
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
+                              onChange={onChangeWhenEmailWhenGroupIsActive}
+                              checked={
+                                userOptionsSettings.EmailWhenGroupIsActive
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-group-is-set-active")}
+                              </span>
+                            </Checkbox>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
                               onChange={
                                 onChangePushNotificationWhenAddedToGroup
                               }
@@ -1312,6 +1685,24 @@ const UserSettings = () => {
                             >
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Push-notification-when-group-is-inActive")}
+                              </span>
+                            </Checkbox>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
+                              onChange={
+                                onChangeWhenPushNotificationwhenGroupissetActive
+                              }
+                              checked={
+                                userOptionsSettings.PushNotificationwhenGroupissetActive
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t(
+                                  "Push-notification-when-group-is-set-active"
+                                )}
                               </span>
                             </Checkbox>
                           </Col>

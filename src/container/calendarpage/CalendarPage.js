@@ -112,7 +112,6 @@ const CalendarPage = () => {
   };
   // calling Api for getting data for calendar
   useEffect(() => {
-    const userID = localStorage.getItem("userID");
     console.log("DateDate startDate", startDate);
     console.log("DateDate endDate", endDate);
     let calendarData = {

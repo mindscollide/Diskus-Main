@@ -59,3 +59,13 @@ body[dir="rtl"] .calendar-add-event-label {
   padding: 0px 10px !important;
   font-size: 10px !important;
 }
+
+.custom-footer {
+  text-align: center;
+}
+
+.cirle {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
