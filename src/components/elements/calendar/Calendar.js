@@ -1,21 +1,11 @@
-import format from "date-fns/format";
-import getDay from "date-fns/getDay";
-import parse from "date-fns/parse";
 import { DatePicker } from "antd";
 import { Container, Row, Col } from "react-bootstrap";
 import { ChevronRight, ChevronLeft } from "react-bootstrap-icons";
-import startOfWeek from "date-fns/startOfWeek";
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import {
-  Calendar,
-  dateFnsLocalizer,
-  momentLocalizer,
-  DateLocalizer,
-} from "react-big-calendar";
-import { useSelector, useDispatch } from "react-redux";
+import { Calendar, momentLocalizer } from "react-big-calendar";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./Calendar.module.css";
@@ -23,14 +13,13 @@ import moment from "moment";
 import "moment-timezone";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Button } from "./../../../components/elements";
-import Helper from "../../../commen/functions/history_logout";
 import { useTranslation } from "react-i18next";
-import { color } from "@mui/system";
 import {
   convertintoGMTCalender,
   newDateFormaterAsPerUTC,
 } from "../../../commen/functions/date_formater";
 import { getCalendarDataResponse } from "../../../store/actions/GetDataForCalendar";
+import CalendarFooter from "./calender_footer";
 require("moment/locale/ar");
 require("moment/locale/ar-sa");
 require("moment/locale/fr");
@@ -78,6 +67,7 @@ const lang = {
     showMore: (total) => `+${total} إضافي`,
   },
 };
+
 function CustomCalendar({
   events,
   startDataUpdate,
@@ -303,7 +293,7 @@ function CustomCalendar({
     }),
     [culture]
   );
-  const currentDate = new Date();
+
   const eventPropGetter = (event, start, end, isSelected) => {
     // const isPastEvent = event.start < currentDate;
     let style = {};
@@ -331,6 +321,7 @@ function CustomCalendar({
   //     className: className,
   //   };
   // };
+
   return (
     <Container className="bg-white border-radius-4 border ">
       <Row>
@@ -361,6 +352,7 @@ function CustomCalendar({
             messages={messages}
             rtl={rightToLeft}
           />
+           <CalendarFooter />
         </Col>
       </Row>
     </Container>
