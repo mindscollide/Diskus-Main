@@ -4,6 +4,7 @@ import {
   createFolderRequestMethod,
   getDocumentsAndFolderRequestMethod,
   saveFilesRequestMethod,
+  saveFilesandFolderRM,
   uploadDocumentsRequestMethod,
 } from "../../commen/apis/Api_config";
 
@@ -15,6 +16,7 @@ import {
   getDocumentsAndFolderApi,
   getFolderDocumentsApi,
 } from "./DataRoom_actions";
+import { replaceSlashWithBackslash } from "../../commen/functions/regex";
 
 // Folder Exist init
 const FolderisExist_init = () => {
@@ -28,96 +30,6 @@ const FolderisExist_fail = (message) => {
   return {
     type: actions.FOLDERISEXIST_FAIL,
     message: message,
-  };
-};
-
-// Folder Exist API
-const FolderisExist2 = (
-  navigate,
-  folderName,
-  t,
-  file,
-  setProgress,
-  setRemainingTime,
-  remainingTime,
-  setShowbarupload,
-  setTasksAttachments,
-  setAddfolder
-) => {
-  let token = JSON.parse(localStorage.getItem("token"));
-  let createrID = localStorage.getItem("userID");
-  let folderID = JSON.parse(localStorage.getItem("folderID"));
-  let Data = {
-    UserID: JSON.parse(createrID),
-    ParentFolderID: folderID !== null ? folderID : 0,
-    FolderName: folderName,
-  };
-  return (dispatch) => {
-    dispatch(FolderisExist_init());
-    let form = new FormData();
-    form.append("RequestMethod", FolderisExistRequestMethod.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(FolderisExist2(navigate, folderName, t, setAddfolder));
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_FolderExist_01".toLowerCase()
-                )
-            ) {
-              dispatch(FolderisExist_fail(t("Folder-already-exist")));
-              setAddfolder(true);
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_FolderExist_02".toLowerCase()
-                )
-            ) {
-              await dispatch(FolderisExist_fail(t("Folder-name-is-required")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_FolderExist_03".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                FolderisExist_fail(t("No-folder-exist-against-this-name"))
-              );
-              dispatch(createFolderApi(navigate, folderName, t));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_FolderExist_04".toLowerCase()
-                )
-            ) {
-              dispatch(FolderisExist_fail(t("Something-went-wrong")));
-            }
-          } else {
-            dispatch(FolderisExist_fail(t("Something-went-wrong")));
-          }
-        } else {
-          dispatch(FolderisExist_fail(t("Something-went-wrong")));
-        }
-      })
-      .catch(() => {
-        dispatch(FolderisExist_fail(t("Something-went-wrong")));
-      });
   };
 };
 
@@ -158,7 +70,7 @@ const createFolderApi = (navigate, folder, t, setAddfolder) => {
     ParentFolderID: folderID !== null ? folderID : 0,
   };
   return (dispatch) => {
-    dispatch(createFolder_init());
+    // dispatch(createFolder_init());
     let form = new FormData();
     form.append("RequestMethod", createFolderRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -667,6 +579,7 @@ const uploadFile = (
   setTasksAttachments
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
+  console.log("uploadFileFolder", file)
   let startTime = Date.now();
   return (dispatch) => {
     // dispatch(uploadDocument_init())
@@ -733,13 +646,14 @@ const uploadFile = (
                 )
               );
               await dispatch(
-                saveFile(
+                saveFilesandFoldersApi(
                   navigate,
                   folderID,
                   response.data.responseResult,
                   t,
                   setShowbarupload,
-                  setTasksAttachments
+                  setTasksAttachments,
+                  file.webkitRelativePath
                 )
               );
             } else if (
@@ -771,20 +685,33 @@ const uploadFile = (
       });
   };
 };
-// Save Files API
-const saveFile = (
-  navigate,
-  folderID,
-  data,
-  t,
-  setShowbarupload,
-  setTasksAttachments
-) => {
+
+const savefilesandfolders_init = () => {
+  return {
+    type: actions.SAVEFILESANDFOLDERS_INIT
+  }
+}
+const savefilesandfolders_success = (response, message) => {
+  return {
+    type: actions.SAVEFILESANDFOLDERS_SUCCESS,
+    response: response,
+    message: message
+  }
+}
+const savefilesandfolders_fail = (message) => {
+  return {
+    type: actions.SAVEFILESANDFOLDERS_FAIL,
+    message: message
+  }
+}
+
+const saveFilesandFoldersApi = (navigate, folderID, data, t, setShowbarupload, setTasksAttachments, filePath) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
-  // let folderID = JSON.parse(localStorage.getItem("folderID"));
-  console.log(folderID, "folderIDfolderIDfolderID");
+  let currentView = localStorage.getItem("setTableView")
+  let viewFolderID = localStorage.getItem("folderID")
+  // let changePathFormat = filePath.
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
     Files: [
@@ -794,13 +721,16 @@ const saveFile = (
         ShareAbleLink: data.shareAbleLink,
         FK_UserID: JSON.parse(createrID),
         FK_OrganizationID: JSON.parse(OrganizationID),
+        UriPath: replaceSlashWithBackslash(filePath)
       },
     ],
+    UserID: JSON.parse(createrID),
+    Type: 0
   };
   return (dispatch) => {
-    // dispatch(saveFiles_init())
+    // dispatch(savefilesandfolders_init())
     let form = new FormData();
-    form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
+    form.append("RequestMethod", saveFilesandFolderRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
     axios({
       method: "post",
@@ -813,79 +743,53 @@ const saveFile = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
-          dispatch(
-            saveFile(
-              navigate,
-              folderID,
-              data,
-              t,
-              setShowbarupload,
-              setTasksAttachments
-            )
-          );
+          dispatch(saveFilesandFoldersApi(navigate, folderID, data, t, setShowbarupload, setTasksAttachments, filePath))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
-                )
-            ) {
+            if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase())) {
               await dispatch(
-                saveFiles_success(
+                savefilesandfolders_success(
                   response.data.responseMessage,
                   t("Files-saved-successfully")
                 )
               );
+
+
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase())) {
+              dispatch(savefilesandfolders_fail(t("Failed-to-save-any-file")));
               setShowbarupload(false);
               setTasksAttachments([]);
-              if (folderID !== null) {
-                dispatch(getFolderDocumentsApi(navigate, folderID, t));
-              } else {
-                dispatch(getDocumentsAndFolderApi(navigate, 1, t));
-              }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
-                )
-            ) {
-              dispatch(saveFiles_fail(t("Failed-to-save-any-file")));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
-                )
-            ) {
-              dispatch(saveFiles_fail(t("Something-went-wrong")));
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase())) {
+              dispatch(savefilesandfolders_fail(t("Something-went-wrong")));
+              setShowbarupload(false);
+              setTasksAttachments([]);
+            } else {
+              dispatch(savefilesandfolders_fail(t("Something-went-wrong")));
+              setShowbarupload(false);
+              setTasksAttachments([]);
             }
           } else {
-            dispatch(saveFiles_fail(t("Something-went-wrong")));
+            dispatch(savefilesandfolders_fail(t("Something-went-wrong")));
+            setShowbarupload(false);
+            setTasksAttachments([]);
           }
         } else {
-          dispatch(saveFiles_fail(t("Something-went-wrong")));
+          dispatch(savefilesandfolders_fail(t("Something-went-wrong")));
         }
-        console.log(response);
       })
       .catch(() => {
-        dispatch(saveFiles_fail(t("Something-went-wrong")));
+        dispatch(savefilesandfolders_fail(t("Something-went-wrong")));
       });
   };
-};
-
+}
 export {
   saveFilesApi,
   createFolderApi,
   uploadDocumentsApi,
-  FolderisExist2,
   // huzeifa work
   CheckFolderisExist,
   createFolder,
   uploadFile,
-  saveFile,
   FolderisExist_success,
   CreateFolder_success
 };

@@ -832,17 +832,22 @@ body[dir="rtl"] .dataroom_searchinput {
 }
 
 .dataroom_table_heading {
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  display: block !important;
-  width: 300px;
+  font-family: "MontserratSemiBold-600" !important;
+  color: #5A5A5A !important;
+  font-size: 12px !important;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 300px !important;
 }
 
 .Dataroom__mydocument_location {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis !important;
+  font-family: "MontserratSemiBold-600" !important;
+  color: #5A5A5A !important;
+  font-size: 12px !important;
 }
 
 .NavLink__filter_Folder {
@@ -957,4 +962,14 @@ body[dir="rtl"] .dataroom_searchinput {
 .options_menu {
   border-radius: 4px;
   border: 1px solid #e1e1e1;
+}
+
+.ownerName {
+  font-family: "MontserratSemiBold-600" !important;
+  color: #5A5A5A !important;
+  font-size: 12px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 120px;
 }

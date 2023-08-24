@@ -13,12 +13,10 @@ import numeral from "numeral";
 const LanguageSelector = () => {
   const languageref = useRef();
   const location = useLocation();
-  console.log(location, "locationlocationlocationlocationlocation");
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [languageDropdown, setLanguageDropdown] = useState(false);
   const [languageforView, setLanguageforView] = useState("");
   const currentLocale = Cookies.get("i18next") || "en";
-  console.log(currentLocale, "currentLocalecurrentLocale");
   const [language, setLanguage] = useState(currentLocale);
   const { t, i18n } = useTranslation();
   // Languages
@@ -33,10 +31,7 @@ const LanguageSelector = () => {
       let currentLanguageForView = languages.filter(
         (data, index) => data.code === language
       );
-      console.log(
-        currentLanguageForView,
-        "currentLanguageForViewcurrentLanguageForViewcurrentLanguageForView"
-      );
+
       setLanguageforView(currentLanguageForView[0].name);
     }
   }, []);
@@ -47,10 +42,7 @@ const LanguageSelector = () => {
     let currentLanguageForView = languages.filter(
       (data, index) => data.code === lang
     );
-    console.log(
-      currentLanguageForView,
-      "currentLanguageForViewcurrentLanguageForViewcurrentLanguageForView"
-    );
+
     setLanguageforView(currentLanguageForView[0].name);
     numeral.locale(currentLanguageForView[0].code);
     localStorage.setItem("i18nextLng", lang);
@@ -127,6 +119,7 @@ const LanguageSelector = () => {
             <span
               className="cursor-pointer"
               onClick={() => handleChangeLocale(data.code)}
+              key={index}
             >
               {data.name}
             </span>
