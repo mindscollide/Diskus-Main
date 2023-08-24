@@ -63,6 +63,7 @@ const Agenda = () => {
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [disbaleFields, setDisbaleFields] = useState(false);
+  const [subajendaRemoval, setSubajendaRemoval] = useState(0);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -207,9 +208,10 @@ const Agenda = () => {
     setMainAgendaRemovalIndex(index);
   };
 
-  const handleCrossSubAjenda = (index) => {
+  const handleCrossSubAjenda = (index, subIndex) => {
     dispatch(showAgenItemsRemovedModal(true));
     setAgendaItemRemovedIndex(index);
+    setSubajendaRemoval(subIndex);
   };
 
   const handleSubMenuExpand = (index) => {
@@ -730,7 +732,10 @@ const Agenda = () => {
                                               styles["RedCross_Icon_class"]
                                             }
                                             onClick={() => {
-                                              handleCrossSubAjenda(index);
+                                              handleCrossSubAjenda(
+                                                index,
+                                                subIndex
+                                              );
                                             }}
                                           />
                                         </Col>
@@ -1599,7 +1604,10 @@ const Agenda = () => {
                                               styles["RedCross_Icon_class"]
                                             }
                                             onClick={() => {
-                                              handleCrossSubAjenda(index);
+                                              handleCrossSubAjenda(
+                                                index,
+                                                subIndex
+                                              );
                                             }}
                                           />
                                         </Col>
@@ -2055,8 +2063,8 @@ const Agenda = () => {
       </section>
       {NewMeetingreducer.agendaItemRemoved && (
         <AgenItemremovedModal
-          setSubAjendaRows={setSubAjendaRows}
-          subAjendaRows={subAjendaRows}
+          setRows={setRows}
+          setSubajendaRemoval={setSubajendaRemoval}
           agendaItemRemovedIndex={agendaItemRemovedIndex}
         />
       )}
