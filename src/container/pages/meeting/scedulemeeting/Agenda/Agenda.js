@@ -57,6 +57,7 @@ const Agenda = () => {
   const [subValue, setSubValue] = useState(1);
   const [expand, setExpand] = useState(true);
   const [subExpand, setSubExpand] = useState(true);
+  const [expandSubIndex, setExpandSubIndex] = useState(0);
   const [expandIndex, setExpandIndex] = useState(0);
   const [subAjendaRowIndex, setsubAjendaRowIndex] = useState(0);
   const [subexpandIndex, setsubexpandIndex] = useState(0);
@@ -203,6 +204,7 @@ const Agenda = () => {
   };
 
   console.log(rows, "rowsrowsrowsrowsrows");
+
   const handleCrossIcon = (index) => {
     dispatch(showMainAgendaItemRemovedModal(true));
     setMainAgendaRemovalIndex(index);
@@ -214,8 +216,9 @@ const Agenda = () => {
     setSubajendaRemoval(subIndex);
   };
 
-  const handleSubMenuExpand = (index) => {
+  const handleSubMenuExpand = (index, subIndex) => {
     setsubexpandIndex(index);
+    setExpandSubIndex(subIndex);
     setSubExpand(!subExpand);
   };
 
@@ -721,7 +724,10 @@ const Agenda = () => {
                                             height="9.2px"
                                             className="cursor-pointer"
                                             onClick={() => {
-                                              handleSubMenuExpand(index);
+                                              handleSubMenuExpand(
+                                                index,
+                                                subIndex
+                                              );
                                             }}
                                           />
                                           <img
@@ -742,6 +748,7 @@ const Agenda = () => {
                                       </Row>
                                       {/* Condition for Subajencda */}
                                       {subexpandIndex === index &&
+                                      expandSubIndex === subIndex &&
                                       subExpand === true ? (
                                         <>
                                           <Row className="mt-3">
@@ -1311,8 +1318,8 @@ const Agenda = () => {
                                           }
                                         >
                                           <div className="d-flex gap-1 flex-wrap mt-2">
-                                            {data.files.length > 0
-                                              ? data.files.map(
+                                            {data?.files?.length > 0
+                                              ? data?.files?.map(
                                                   (filesData, index) => {
                                                     return (
                                                       <>
@@ -1593,7 +1600,10 @@ const Agenda = () => {
                                             height="9.2px"
                                             className="cursor-pointer"
                                             onClick={() => {
-                                              handleSubMenuExpand(index);
+                                              handleSubMenuExpand(
+                                                index,
+                                                subIndex
+                                              );
                                             }}
                                           />
                                           <img
@@ -1614,6 +1624,7 @@ const Agenda = () => {
                                       </Row>
                                       {/* Condition for Subajencda */}
                                       {subexpandIndex === index &&
+                                      expandSubIndex === subIndex &&
                                       subExpand === true ? (
                                         <>
                                           <Row className="mt-3">
@@ -1724,8 +1735,8 @@ const Agenda = () => {
                                                   }
                                                 >
                                                   <Row>
-                                                    {data.files.length > 0 ? (
-                                                      data.files.map(
+                                                    {data?.files?.length > 0 ? (
+                                                      data?.files?.map(
                                                         (
                                                           subAjendaFiles,
                                                           index
