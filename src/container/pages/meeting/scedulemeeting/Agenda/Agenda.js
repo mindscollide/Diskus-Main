@@ -1003,22 +1003,25 @@ const Agenda = () => {
                                           />
                                           <img
                                             src={
-                                              apllyLockOnParentAgenda(index) ||
                                               apllyLockOnSubAgenda(
                                                 index,
                                                 subIndex
                                               )
-                                                ? closedLocked
-                                                : apllyLockOnSubAgenda(
+                                                ? DarkLock
+                                                : apllyLockOnParentAgenda(
+                                                    index
+                                                  ) ||
+                                                  apllyLockOnSubAgenda(
                                                     index,
                                                     subIndex
                                                   )
-                                                ? DarkLock
+                                                ? closedLocked
                                                 : Lock
                                             }
                                             width="18.87px"
                                             height="26.72px"
                                             className={
+                                              apllyLockOnParentAgenda(index) ||
                                               apllyLockOnSubAgenda(
                                                 index,
                                                 subIndex
