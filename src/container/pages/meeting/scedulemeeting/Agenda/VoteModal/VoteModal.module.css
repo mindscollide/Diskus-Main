@@ -146,8 +146,7 @@
 }
 
 .Add_more_Btn {
-  width: 80px !important;
-  height: 19.99px !important;
+  height: 29px !important;
   border-radius: 4px !important;
   background: #5f78d6 !important ;
   color: #fff !important;
@@ -160,14 +159,26 @@
 .Add_more_Btn:active,
 .Add_more_Btn:focus,
 .Add_more_Btn:focus-visible {
-  width: 80px !important;
-  height: 19.99px !important;
+  height: 29px !important;
   border-radius: 4px !important;
   background: #5f78d6 !important ;
   color: #fff !important;
   font-family: "MontserratSemiBold" !important;
   font-size: 8px !important;
   border: none !important;
+}
+
+.Add_more_Class {
+  color: #fff !important;
+  font-size: 8px !important;
+}
+
+.Add_more_Class:hover,
+.Add_more_Class:active,
+.Add_more_Class:focus,
+.Add_more_Class:focus-visible {
+  color: #fff !important;
+  font-size: 8px !important;
 }
 
 .Participant_names {
