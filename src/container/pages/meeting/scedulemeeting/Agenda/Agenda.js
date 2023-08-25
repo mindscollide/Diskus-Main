@@ -54,7 +54,7 @@ const Agenda = () => {
   const { NewMeetingreducer } = useSelector((state) => state);
   const { Dragger } = Upload;
   const [value, setValue] = useState(1);
-  const [subValue, setSubValue] = useState(1);
+  const [subValue, setSubValue] = useState(0);
   const [expand, setExpand] = useState(true);
   const [subExpand, setSubExpand] = useState(true);
   const [expandSubIndex, setExpandSubIndex] = useState(0);
@@ -80,7 +80,42 @@ const Agenda = () => {
       startDate: null,
       endDate: null,
       Notes: "",
-      subAgenda: [],
+      subAgenda: [
+        {
+          files: [
+            {
+              name: "MeetingAgendas",
+            },
+            {
+              name: "DiskusMeetings",
+            },
+            {
+              name: "AxisMeetings",
+            },
+            {
+              name: "Bahria Auditoriom Meetings to be published",
+            },
+            {
+              name: "MeetingAgendas",
+            },
+            {
+              name: "MeetingAgendas",
+            },
+            {
+              name: "MeetingAgendas",
+            },
+            {
+              name: "MeetingAgendas",
+            },
+            {
+              name: "MeetingAgendas",
+            },
+            {
+              name: "MeetingAgendas",
+            },
+          ],
+        },
+      ],
       files: [
         {
           name: "MeetingAgendas",
@@ -118,6 +153,7 @@ const Agenda = () => {
   console.log(rows, "rowsrowsrowsrowsrows");
   const [files, setfiles] = useState([]);
   const [subAjendaRows, setSubAjendaRows] = useState([]);
+
   const onChange = (e) => {
     console.log("radiochecked", e.target.value);
     setValue(e.target.value);
@@ -314,7 +350,8 @@ const Agenda = () => {
                                 applyClass={"AgendaTextField"}
                                 labelClass={"d-none"}
                                 placeholder={t("Agenda-title")}
-                                value={data.title}
+                                value={data.value}
+                                name={data.name}
                                 change={(e) => HandleChange(e)}
                                 disable={
                                   disbaleFields && mainLock === index
@@ -572,6 +609,8 @@ const Agenda = () => {
                                         applyClass="text-area-create-resolution"
                                         type="text"
                                         as={"textarea"}
+                                        name={data.name}
+                                        value={data.value}
                                         change={(e) => handleNotes(e)}
                                         rows="4"
                                         placeholder={t("Enter-notes")}
@@ -807,7 +846,7 @@ const Agenda = () => {
                                         <Col lg={6} md={6} sm={6}>
                                           <Radio.Group
                                             onChange={subAjendaonChange}
-                                            value={subValue}
+                                            value={subAgendaData.value}
                                             disabled={
                                               subMenudisbaleFields &&
                                               mainLock === index &&
@@ -893,7 +932,7 @@ const Agenda = () => {
                                           />
                                         </Col>
                                       </Row>
-                                      {subValue === 1 ? (
+                                      {value === 1 ? (
                                         <>
                                           <Row>
                                             <Col
@@ -907,7 +946,7 @@ const Agenda = () => {
                                               <Row>
                                                 {data?.files?.length > 0 ? (
                                                   data?.files?.map(
-                                                    (subAjendaFiles, index) => {
+                                                    (subAFiles, index) => {
                                                       return (
                                                         <>
                                                           <Col
@@ -938,7 +977,7 @@ const Agenda = () => {
                                                                   }
                                                                 >
                                                                   {
-                                                                    subAjendaFiles.name
+                                                                    subAFiles.name
                                                                   }
                                                                 </span>
                                                               </Col>
@@ -967,7 +1006,7 @@ const Agenda = () => {
                                                       );
                                                     }
                                                   )
-                                                ) : subValue === 2 ? (
+                                                ) : value === 2 ? (
                                                   <>
                                                     <Row className="mt-2">
                                                       <Col
@@ -975,16 +1014,19 @@ const Agenda = () => {
                                                         md={12}
                                                         sm={12}
                                                       >
-                                                        applyClass=
-                                                        {"AgendaTextField"}
-                                                        labelClass=
-                                                        {"d-none"}
-                                                        placeholder=
-                                                        {t("Enter-url")}
+                                                        <TextField
+                                                          applyClass={
+                                                            "AgendaTextField"
+                                                          }
+                                                          labelClass={"d-none"}
+                                                          placeholder={t(
+                                                            "Enter-url"
+                                                          )}
+                                                        />
                                                       </Col>
                                                     </Row>
                                                   </>
-                                                ) : subValue === 3 ? (
+                                                ) : value === 3 ? (
                                                   <>
                                                     <Row className="mt-2">
                                                       <Col
@@ -1175,7 +1217,7 @@ const Agenda = () => {
                       </Row>
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
-                          <img src={line} width="1249px" />
+                          <img src={line} className={styles["LineStyles"]} />
                         </Col>
                       </Row>
                     </>
