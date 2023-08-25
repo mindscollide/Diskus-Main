@@ -15,6 +15,7 @@ import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import desh from "../../../../../assets/images/desh.svg";
 import dropmdownblack from "../../../../../assets/images/dropdownblack.svg";
+import blackArrowUpper from "../../../../../assets/images/BlackIconUpper.svg";
 import { useNavigate } from "react-router-dom";
 import { message, Upload } from "antd";
 import Lock from "../../../../../assets/images/LOCK.svg";
@@ -464,7 +465,11 @@ const Agenda = () => {
                                 }
                               />
                               <img
-                                src={dropmdownblack}
+                                src={
+                                  expandIndex === index && expand === true
+                                    ? blackArrowUpper
+                                    : dropmdownblack
+                                }
                                 width="18.4px"
                                 height="9.2px"
                                 className="cursor-pointer"
@@ -867,7 +872,13 @@ const Agenda = () => {
                                         plugins={[<TimePicker hideSeconds />]}
                                       />
                                       <img
-                                        src={dropmdownblack}
+                                        src={
+                                          subexpandIndex === index &&
+                                          expandSubIndex === subIndex &&
+                                          subExpand === true
+                                            ? blackArrowUpper
+                                            : dropmdownblack
+                                        }
                                         width="18.4px"
                                         height="9.2px"
                                         className="cursor-pointer"
