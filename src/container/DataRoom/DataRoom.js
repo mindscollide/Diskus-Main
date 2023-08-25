@@ -191,8 +191,9 @@ const DataRoom = () => {
   const [showsubmenu, setShowsubmenu] = useState(false);
   const [searchDocumentTypeValue, setSearchDocumentTypeValue] = useState(0);
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
-  const [currentSort, setCurrentSort] = useState(["ascend", "descend"]); // Initial sort order
+  const [currentSort, setCurrentSort] = useState("descend"); // Initial sort order
   const [currentFilter, setCurrentFilter] = useState(t("Last-modified")); // Initial filter value
+  let viewFolderID = localStorage.getItem("folderID")
   const [searchResultBoxFields, setSearchResultBoxFields] = useState({
     documentType: {
       value: 0,
@@ -866,13 +867,44 @@ const DataRoom = () => {
   };
 
   const handleFilterMenuClick = async (filterValue) => {
+    console.log(filterValue, "filterValuefilterValuefilterValue")
     setCurrentFilter(filterValue);
     fetchDataWithFilter(filterValue);
   };
 
   const handleSortChange = (pagination, filters, sorter) => {
-    setCurrentSort(sorter.order);
-    fetchDataWithSorting(sorter.order);
+    if (sorter.field === "sharedDate") {
+      if (sorter.order === "ascend") {
+        if (viewFolderID !== null) {
+          dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1, false, 2));
+        } else {
+          dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, 2));
+        }
+      } else {
+        if (viewFolderID !== null) {
+          dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1, true, 2));
+        } else {
+          dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, true, 2));
+        }
+      }
+    }
+    if (sorter.field === "name") {
+      if (sorter.order === "descend") {
+        if (viewFolderID !== null) {
+          dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1, false, 1));
+        } else {
+          dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
+        }
+      } else {
+        if (viewFolderID !== null) {
+          dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1, false, 1));
+        } else {
+          dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
+        }
+      }
+    }
+    setCurrentSort(sorter?.order);
+    fetchDataWithSorting(sorter?.order);
   };
 
   const fetchDataWithFilter = async (filterValue) => {
@@ -1254,6 +1286,7 @@ const DataRoom = () => {
       key: "sharedDate",
       width: "90px",
       sorter: true,
+      sortDirections: ["descend", "ascend"],
       sortOrder: currentSort,
       filters: [
         {
@@ -1604,7 +1637,7 @@ const DataRoom = () => {
     dispatch(CreateFolder_success(0));
     let currentView = localStorage.getItem("setTableView")
     let viewFolderID = localStorage.getItem("folderID")
-    if (fileLists.length > 0) {
+    if (fileLists.length === 0) {
       if (viewFolderID !== null) {
         await dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1));
         setShowbarupload(false);
@@ -2561,8 +2594,9 @@ const DataRoom = () => {
                               <TableToDo
                                 sortDirections={["descend", "ascend"]}
                                 column={shareWithmeColoumns}
-                                className={"Resolution"}
+                                className={"DataRoom_Table"}
                                 size={"small"}
+                                onChange={handleSortChange}
                                 rows={getAllData}
                                 pagination={false}
                               />

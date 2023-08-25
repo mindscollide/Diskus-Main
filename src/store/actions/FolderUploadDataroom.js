@@ -581,7 +581,7 @@ const uploadFile = (
   let token = JSON.parse(localStorage.getItem("token"));
   console.log("uploadFileFolder", file)
   let startTime = Date.now();
-  return (dispatch) => {
+  return async (dispatch) => {
     // dispatch(uploadDocument_init())
     setProgress(0);
     setShowbarupload(true);
@@ -589,7 +589,7 @@ const uploadFile = (
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(file));
     form.append("File", file);
-    axios({
+    await axios({
       method: "post",
       url: dataRoomApi,
       data: form,

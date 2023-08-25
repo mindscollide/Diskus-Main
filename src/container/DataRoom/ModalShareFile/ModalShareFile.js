@@ -69,6 +69,7 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [organizationMembers, setOrganizationMembers] = useState([])
   const [isMembers, setMembers] = useState([])
+  let organizationName = localStorage.getItem("OrganizatioName")
   console.log(isMembers, "isMembersisMembersisMembersisMembers")
   const [flag, setFlag] = useState(1)
   const showcalender = () => {
@@ -114,9 +115,9 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
     { value: 3, label: "Add Expiration" },
   ];
   const optionsgeneralAccess = [
-    { value: "Restricted", label: "Restricted" },
-    { value: "My Organization", label: "My Organization" },
-    { value: "Any One With link", label: "Any One With link" },
+    { value: 1, label: "Restricted" },
+    { value: 2, label: organizationName },
+    { value: 3, label: "Any One With link" },
   ];
   const [onclickFlag, setOnclickFlag] = useState(false)
   const onSearch = (name, id) => {
@@ -236,38 +237,45 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
     console.log(taskAssignedName, "taskAssignedNametaskAssignedName")
     console.log(fileData.Files, "handleAddMemberhandleAddMemberhandleAddMemberhandleAddMember")
     let findIndexData = fileData.Files.findIndex((listData, index) => listData.FK_UserID === taskAssignedTo)
-
-    if (taskAssignedName !== "") {
-      if (findIndexData === -1) {
-        let Data = {
-          FK_FileID: folderId,
-          FK_PermissionID: JSON.parse(permissionID.value),
-          FK_UserID: taskAssignedTo
-        }
-        if (taskAssignedTo !== 0) {
-          if (assignees.user.length > 0) {
-            assignees.user.map((data, index) => {
-              if (data.pK_UID === taskAssignedTo) {
-                setMembers([...isMembers, data])
-              }
-            })
+    if (permissionID.value !== 0) {
+      if (taskAssignedName !== "") {
+        if (findIndexData === -1) {
+          let Data = {
+            FK_FileID: folderId,
+            FK_PermissionID: JSON.parse(permissionID.value),
+            FK_UserID: taskAssignedTo
           }
+          if (taskAssignedTo !== 0) {
+            if (assignees.user.length > 0) {
+              assignees.user.map((data, index) => {
+                if (data.pK_UID === taskAssignedTo) {
+                  setMembers([...isMembers, data])
+                }
+              })
+            }
+          }
+          setFileData((prev) => {
+            return { ...prev, Files: [...prev.Files, Data] }
+          })
+        } else {
+          setOpen({
+            flag: true,
+            message: t("User-is-already-exist")
+          })
         }
-        setFileData((prev) => {
-          return { ...prev, Files: [...prev.Files, Data] }
-        })
       } else {
         setOpen({
           flag: true,
-          message: t("User-is-already-exist")
+          message: t("Please-select-user")
         })
       }
     } else {
       setOpen({
         flag: true,
-        message: t("Please-select-user")
+        message: t("All-options-must-be-selected")
       })
     }
+
 
 
     setTaskAssignedToInput("");

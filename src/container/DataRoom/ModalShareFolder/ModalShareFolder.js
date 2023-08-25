@@ -218,37 +218,46 @@ const ModalShareFolder = ({
     let findIndexData = folderData.Folders.findIndex(
       (listData, index) => listData.FK_UserID === taskAssignedTo
     );
-    if (taskAssignedName !== "") {
-      if (findIndexData === -1) {
-        let Data = {
-          FK_FolderID: folderId,
-          FK_PermissionID: JSON.parse(permissionID.value),
-          FK_UserID: taskAssignedTo,
-        };
-        if (taskAssignedTo !== 0) {
-          if (assignees.user.length > 0) {
-            assignees.user.map((data, index) => {
-              if (data.pK_UID === taskAssignedTo) {
-                setMembers([...isMembers, data]);
-              }
-            });
+    if (permissionID.value !== 0) {
+      if (taskAssignedName !== "") {
+        if (findIndexData === -1) {
+
+          let Data = {
+            FK_FolderID: folderId,
+            FK_PermissionID: JSON.parse(permissionID.value),
+            FK_UserID: taskAssignedTo,
+          };
+          if (taskAssignedTo !== 0) {
+            if (assignees.user.length > 0) {
+              assignees.user.map((data, index) => {
+                if (data.pK_UID === taskAssignedTo) {
+                  setMembers([...isMembers, data]);
+                }
+              });
+            }
           }
+          setFolderData((prev) => {
+            return { ...prev, Folders: [...prev.Folders, Data] };
+          });
+        } else {
+          setOpen({
+            flag: true,
+            message: t("User-is-already-exist")
+          })
         }
-        setFolderData((prev) => {
-          return { ...prev, Folders: [...prev.Folders, Data] };
-        });
       } else {
         setOpen({
           flag: true,
-          message: t("User-is-already-exist")
+          message: t("Please-select-user")
         })
       }
     } else {
       setOpen({
         flag: true,
-        message: t("Please-select-user")
+        message: t("All-options-must-be-selected")
       })
     }
+
 
 
     setTaskAssignedToInput("");
