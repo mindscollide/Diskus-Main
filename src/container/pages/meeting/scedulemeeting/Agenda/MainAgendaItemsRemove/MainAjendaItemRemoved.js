@@ -18,9 +18,11 @@ const MainAjendaItemRemoved = ({ setRows, rows, mainAgendaRemovalIndex }) => {
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const handleProceesBtn = (mainAgendaRemovalIndex) => {
-    let optionscross = [...rows];
-    optionscross.splice(mainAgendaRemovalIndex, 1);
-    setRows(optionscross);
+    setRows((prevRows) => {
+      const updatedRows = [...prevRows];
+      updatedRows.splice(mainAgendaRemovalIndex, 1);
+      return updatedRows;
+    });
     dispatch(showMainAgendaItemRemovedModal(false));
   };
   return (

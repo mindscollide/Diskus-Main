@@ -84,6 +84,13 @@ const showVoteConfirmationModal = (response) => {
   };
 };
 
+const showImportPreviousAgendaModal = (response) => {
+  return {
+    type: actions.IMPORT_PREVIOUS_AGENDA,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -97,4 +104,5 @@ export {
   showAdvancePermissionConfirmation,
   showVoteAgendaModal,
   showVoteConfirmationModal,
+  showImportPreviousAgendaModal,
 };

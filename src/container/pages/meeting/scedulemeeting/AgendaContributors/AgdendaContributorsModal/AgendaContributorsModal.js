@@ -125,56 +125,82 @@ const AgendaContributorsModal = () => {
         onHide={() => {
           dispatch(showAddAgendaContributor(false));
         }}
-        size={"md"}
+        size={"lg"}
         ModalBody={
           <>
             <Row>
-              <Col lg={7} md={7} sm={12}>
-                <span className={styles["Add_organization"]}>
-                  {t("Add-agenda-contributors")}
-                </span>
-              </Col>
-              <Col lg={5} md={5} sm={12} className="d-flex justify-content-end">
-                <img
-                  src={BlackCrossIcon}
-                  className={"cursor-pointer"}
-                  width="16px"
-                  height="16px"
-                  onClick={handleCrossIcon}
-                />
-              </Col>
-            </Row>
-            <Row className="mt-5">
-              <Col lg={12} md={12} sm={12}>
-                <TextField labelClass={"d-none"} applyClass={"addOraganizer"} />
-              </Col>
-            </Row>
-            <Row className="mt-2">
-              <Col lg={12} md={12} sm={12}>
-                <Table
-                  column={ModalOrganizorsColoumns}
-                  scroll={{ y: "62vh" }}
-                  pagination={false}
-                  className="Polling_table"
-                  rows={rowsData}
-                />
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className={styles["OverAll_Padding"]}
+              >
+                <Row>
+                  <Col lg={7} md={7} sm={12}>
+                    <span className={styles["Add_organization"]}>
+                      {t("Add-agenda-contributors")}
+                    </span>
+                  </Col>
+                  <Col
+                    lg={5}
+                    md={5}
+                    sm={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <img
+                      src={BlackCrossIcon}
+                      className={"cursor-pointer"}
+                      width="16px"
+                      height="16px"
+                      onClick={handleCrossIcon}
+                    />
+                  </Col>
+                </Row>
+                <Row className="mt-5">
+                  <Col lg={12} md={12} sm={12}>
+                    <TextField
+                      labelClass={"d-none"}
+                      applyClass={"addOraganizer"}
+                    />
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Col lg={12} md={12} sm={12}>
+                    <Table
+                      column={ModalOrganizorsColoumns}
+                      scroll={{ y: "62vh" }}
+                      pagination={false}
+                      className="Polling_table"
+                      rows={rowsData}
+                    />
+                  </Col>
+                </Row>
               </Col>
             </Row>
           </>
         }
         ModalFooter={
           <>
-            <Row className="mt-2 m-0 p-0">
+            <Row>
               <Col
                 lg={12}
                 md={12}
                 sm={12}
-                className="d-flex justify-content-end"
+                className={styles["OverAll_Padding"]}
               >
-                <Button
-                  text={t("Done")}
-                  className={styles["Done_btn_organizor_modal"]}
-                />
+                <Row className="mt-2">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Button
+                      text={t("Done")}
+                      className={styles["Done_btn_organizor_modal"]}
+                    />
+                  </Col>
+                </Row>
               </Col>
             </Row>
           </>

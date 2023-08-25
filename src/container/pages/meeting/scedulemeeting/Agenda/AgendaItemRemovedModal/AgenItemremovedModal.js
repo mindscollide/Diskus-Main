@@ -7,19 +7,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 const AgenItemremovedModal = ({
-  setSubAjendaRows,
-  subAjendaRows,
+  setRows,
   agendaItemRemovedIndex,
+  setSubajendaRemoval,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
-  const handleYesButton = (agendaItemRemovedIndex) => {
-    let optionscross = [...subAjendaRows];
-    optionscross.splice(agendaItemRemovedIndex, 1);
-    setSubAjendaRows(optionscross);
+  const handleYesButton = (agendaItemRemovedIndex, setSubajendaRemoval) => {
+    setRows((prevRows) => {
+      const updatedRows = [...prevRows];
+      updatedRows[agendaItemRemovedIndex].subAgenda.splice(
+        setSubajendaRemoval,
+        1
+      );
+      return updatedRows;
+    });
     dispatch(showAgenItemsRemovedModal(false));
   };
   console.log(handleYesButton, "handleYesButtonhandleYesButton");

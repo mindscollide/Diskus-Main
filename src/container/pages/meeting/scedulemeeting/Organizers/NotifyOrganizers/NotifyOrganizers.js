@@ -15,15 +15,19 @@ import { showNotifyOrganizors } from "../../../../../../store/actions/NewMeeting
 import UpperArrow from "../../../../../../assets/images/UpperArrow.svg";
 import { Col, Row } from "react-bootstrap";
 import { style } from "@mui/system";
+import { validateInput } from "../../../../../../commen/functions/regex";
+import downdirect from "../../../../../../assets/images/downDirect.png";
 
 const NotifyOrganizers = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
-  const handleCrossIcon = () => {
-    dispatch(showNotifyOrganizors(false));
-  };
+  const [notifyOrganizerData, setNotifyOrganizerData] = useState({
+    Messege: "",
+    allOrganizersAccept: false,
+  });
+  const [membersHide, setMembersHide] = useState(false);
   const [members, setMembers] = useState([
     {
       name: "saif",
@@ -47,6 +51,41 @@ const NotifyOrganizers = () => {
       name: "saroush",
     },
   ]);
+
+  const handleCrossIcon = () => {
+    dispatch(showNotifyOrganizors(false));
+  };
+
+  const HandleChange = (e, index) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "Message") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setNotifyOrganizerData({
+          ...notifyOrganizerData,
+          Messege: valueCheck,
+        });
+      } else {
+        setNotifyOrganizerData({
+          ...notifyOrganizerData,
+          Messege: "",
+        });
+      }
+    }
+  };
+
+  const handleAllowOrganizerCheck = () => {
+    setNotifyOrganizerData({
+      ...notifyOrganizerData,
+      allOrganizersAccept: !notifyOrganizerData.allOrganizersAccept,
+    });
+  };
+
+  const handleHideItems = () => {
+    setMembersHide(!membersHide);
+  };
+
   return (
     <section>
       <Modal
@@ -82,6 +121,8 @@ const NotifyOrganizers = () => {
                   as={"textarea"}
                   rows="4"
                   placeholder={t("Message")}
+                  change={HandleChange}
+                  value={notifyOrganizerData.Messege}
                   required={true}
                   maxLength={500}
                 />
@@ -94,7 +135,10 @@ const NotifyOrganizers = () => {
                 sm={12}
                 className="d-flex align-items-center gap-2"
               >
-                <Checkbox />
+                <Checkbox
+                  checked={notifyOrganizerData.allOrganizersAccept}
+                  onChange={handleAllowOrganizerCheck}
+                />
                 <p className={styles["Check_box_title"]}>
                   {t("All-organizer-except-me")}
                 </p>
@@ -106,58 +150,63 @@ const NotifyOrganizers = () => {
                 className="d-flex justify-content-end align-items-center cursor-pointer"
               >
                 <img
-                  src={UpperArrow}
+                  src={membersHide ? downdirect : UpperArrow}
                   width="18.4px"
                   height="9.2px"
                   className={styles["UparrowClasss"]}
+                  onClick={handleHideItems}
                 />
               </Col>
             </Row>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className={styles["Scroller_notify"]}
-              >
+            {membersHide ? null : (
+              <>
                 <Row>
-                  {members.map((data, index) => {
-                    return (
-                      <Col lg={6} md={6} sm={12} className="mt-2">
-                        <Row className="m-0 p-0">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Box_for_Assignee"]}
-                          >
-                            <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Scroller_notify"]}
+                  >
+                    <Row>
+                      {members.map((data, index) => {
+                        return (
+                          <Col lg={6} md={6} sm={12} className="mt-2">
+                            <Row className="m-0 p-0">
                               <Col
-                                lg={10}
-                                md={10}
+                                lg={12}
+                                md={12}
                                 sm={12}
-                                className="d-flex gap-2 align-items-center"
+                                className={styles["Box_for_Assignee"]}
                               >
-                                <img
-                                  src={profile}
-                                  width="33px"
-                                  height="33px"
-                                  className={styles["ProfilePic"]}
-                                />
-                                <span>{data.name}</span>
-                              </Col>
-                              <Col lg={2} md={2} sm={12}>
-                                <Checkbox />
+                                <Row>
+                                  <Col
+                                    lg={10}
+                                    md={10}
+                                    sm={12}
+                                    className="d-flex gap-2 align-items-center"
+                                  >
+                                    <img
+                                      src={profile}
+                                      width="33px"
+                                      height="33px"
+                                      className={styles["ProfilePic"]}
+                                    />
+                                    <span>{data.name}</span>
+                                  </Col>
+                                  <Col lg={2} md={2} sm={12}>
+                                    <Checkbox />
+                                  </Col>
+                                </Row>
                               </Col>
                             </Row>
                           </Col>
-                        </Row>
-                      </Col>
-                    );
-                  })}
+                        );
+                      })}
+                    </Row>
+                  </Col>
                 </Row>
-              </Col>
-            </Row>
+              </>
+            )}
           </>
         }
         ModalFooter={
