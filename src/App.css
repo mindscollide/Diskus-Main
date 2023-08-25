@@ -5928,10 +5928,14 @@ input::-webkit-calendar-picker-indicator {
   margin-top: -3px;
 }
 
-.NewMeeting_table .ant-table-thead > tr th:nth-child(1) {
+.NewMeeting_table .ant-table-thead > tr:last-child {
   color: #fff !important;
 }
 
+.ant-table-wrapper.NewMeeting_table .ant-table-thead > tr > th:last-child {
+  display: none !important;
+  visibility: hidden !important;
+}
 .SelectOrganizersSelect__control.css-13cymwt-control {
   border: 1px solid #f16b6b !important;
 }

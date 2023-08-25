@@ -146,6 +146,7 @@
 }
 
 .Add_more_Btn {
+  width: 80px !important;
   height: 29px !important;
   border-radius: 4px !important;
   background: #5f78d6 !important ;
@@ -159,6 +160,7 @@
 .Add_more_Btn:active,
 .Add_more_Btn:focus,
 .Add_more_Btn:focus-visible {
+  width: 80px !important;
   height: 29px !important;
   border-radius: 4px !important;
   background: #5f78d6 !important ;
@@ -169,6 +171,10 @@
 }
 
 .Add_more_Class {
+  color: #fff !important;
+  font-size: 8px !important;
+}
+.Add_more_Class span {
   color: #fff !important;
   font-size: 8px !important;
 }
