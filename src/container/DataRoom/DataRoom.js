@@ -98,17 +98,17 @@ import ModalRenameFile from "./ModalRenameFile/ModalRenameFile";
 import useHover from "../../hooks/useHover";
 import ModalOptionsisExistFolder from "./ModalUploadFolderisExist/ModalUploadFolderisExist";
 import { DownOutlined } from "@ant-design/icons";
-import audio_Icon from '../../assets/images/AttachmentIcons/audio.svg'
-import docIcon from '../../assets/images/AttachmentIcons/doc.svg'
-import formsIcon from '../../assets/images/AttachmentIcons/forms.svg'
-import notesIcon from '../../assets/images/AttachmentIcons/notes.svg'
-import pdfIcon from '../../assets/images/AttachmentIcons/pdf.svg'
-import photosIcon from '../../assets/images/AttachmentIcons/photos.svg'
-import pptIcon from '../../assets/images/AttachmentIcons/ppt.svg'
-import shareIcon from '../../assets/images/AttachmentIcons/share.svg'
-import sites_Icon from '../../assets/images/AttachmentIcons/sites.svg'
-import videoIcon from '../../assets/images/AttachmentIcons/video.svg'
-import xlsFileIcon from '../../assets/images/AttachmentIcons/xls-file.svg'
+import audio_Icon from "../../assets/images/AttachmentIcons/audio.svg";
+import docIcon from "../../assets/images/AttachmentIcons/doc.svg";
+import formsIcon from "../../assets/images/AttachmentIcons/forms.svg";
+import notesIcon from "../../assets/images/AttachmentIcons/notes.svg";
+import pdfIcon from "../../assets/images/AttachmentIcons/pdf.svg";
+import photosIcon from "../../assets/images/AttachmentIcons/photos.svg";
+import pptIcon from "../../assets/images/AttachmentIcons/ppt.svg";
+import shareIcon from "../../assets/images/AttachmentIcons/share.svg";
+import sites_Icon from "../../assets/images/AttachmentIcons/sites.svg";
+import videoIcon from "../../assets/images/AttachmentIcons/video.svg";
+import xlsFileIcon from "../../assets/images/AttachmentIcons/xls-file.svg";
 const DataRoom = () => {
   // tooltip
   const [showbarupload, setShowbarupload] = useState(false);
@@ -239,7 +239,7 @@ const DataRoom = () => {
   const [directoryNames, setDirectoryNames] = useState("");
   // this state contain file which is in the folder
   const [fileLists, setFileLists] = useState([]);
-  console.log(fileLists, "fileListsfileListsfileLists")
+  console.log(fileLists, "fileListsfileListsfileLists");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -944,17 +944,31 @@ const DataRoom = () => {
             );
           } else {
             let FindExt = data.name.split(".")[1];
-            console.log(FindExt, "FindExtFindExtFindExtFindExt")
             return (
               <>
                 <section className="d-flex gap-2">
-                  <img src={
-                    FindExt === "png" || FindExt === "jpg" || FindExt === "jpeg" ? photosIcon
-                      : FindExt === "docx" || FindExt === "doc" || FindExt === "txt" ? docIcon
-                        : FindExt === "mp4" ? videoIcon
-                          : FindExt === "pdf" ? pdfIcon
-                            : FindExt === "xls" || FindExt === "xlsx" ? xlsFileIcon
-                              : FindExt === "ppt" || FindExt === "pptx" ? pptIcon : null} alt="" />
+                  <img
+                    src={
+                      FindExt === "png" ||
+                        FindExt === "jpg" ||
+                        FindExt === "jpeg"
+                        ? photosIcon
+                        : FindExt === "docx" ||
+                          FindExt === "doc" ||
+                          FindExt === "txt"
+                          ? docIcon
+                          : FindExt === "mp4"
+                            ? videoIcon
+                            : FindExt === "pdf"
+                              ? pdfIcon
+                              : FindExt === "xls" || FindExt === "xlsx"
+                                ? xlsFileIcon
+                                : FindExt === "ppt" || FindExt === "pptx"
+                                  ? pptIcon
+                                  : null
+                    }
+                    alt=""
+                  />
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
                       {text} <img src={sharedIcon} alt="" />
@@ -992,6 +1006,7 @@ const DataRoom = () => {
                         : FindExt === "xls" || FindExt === "xlsx" ? <img src={xlsFileIcon} />
                           : FindExt === "ppt" || FindExt === "pptx" ? <img src={pptIcon} />
                             : FindExt === undefined ? <img src={docIcon} /> : <img src={docIcon} />}
+
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
                       {text}
@@ -1013,10 +1028,8 @@ const DataRoom = () => {
       sortDirections: ["descend", "ascend"],
       sorter: (a, b) => a.owner.toLowerCase() < b.owner.toLowerCase(),
       render: (text, record) => {
-        return (
-          <span className={styles["ownerName"]}>{text}</span>
-        )
-      }
+        return <span className={styles["ownerName"]}>{text}</span>;
+      },
     },
     {
       title: currentFilter,
@@ -1049,7 +1062,11 @@ const DataRoom = () => {
       },
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
-        return <span className={styles["dataroom_table_heading"]}>{_justShowDateformat(text)}</span>;
+        return (
+          <span className={styles["dataroom_table_heading"]}>
+            {_justShowDateformat(text)}
+          </span>
+        );
       },
       sorter: (a, b) =>
         _justShowDateformat(a.modifiedDate) <
@@ -1062,10 +1079,8 @@ const DataRoom = () => {
       width: "90px",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
-        return (
-          <span className={styles["ownerName"]}>{text}</span>
-        )
-      }
+        return <span className={styles["ownerName"]}>{text}</span>;
+      },
     },
     {
       title: (
@@ -1198,7 +1213,12 @@ const DataRoom = () => {
                         } ${"dataroom_options"}`}
                     >
                       <Dropdown.Toggle id="dropdown-autoclose-true">
-                        <img src={dot} alt="" width="15.02px" height="10.71px" />
+                        <img
+                          src={dot}
+                          alt=""
+                          width="15.02px"
+                          height="10.71px"
+                        />
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                         {optionsforFolder.map((data, index) => {
@@ -1219,7 +1239,12 @@ const DataRoom = () => {
                         } ${"dataroom_options"}`}
                     >
                       <Dropdown.Toggle id="dropdown-autoclose-true">
-                        <img src={dot} alt="" width="15.02px" height="10.71px" />
+                        <img
+                          src={dot}
+                          alt=""
+                          width="15.02px"
+                          height="10.71px"
+                        />
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                         {optionsforFile.map((data, index) => {
@@ -1267,16 +1292,22 @@ const DataRoom = () => {
           );
         } else {
           let FindExt = record.name.split(".")[1];
-          console.log(FindExt, "FindExtFindExtFindExt")
+          console.log(FindExt, "FindExtFindExtFindExt");
           return (
             <div className={`${styles["dataFolderRow"]}`}>
-
-              {FindExt === "png" || FindExt === "jpg" || FindExt === "jpeg" ? <img src={photosIcon} />
-                : FindExt === "docx" || FindExt === "doc" || FindExt === "txt" ? <img src={docIcon} />
-                  : FindExt === "mp4" ? <img src={videoIcon} />
-                    : FindExt === "xls" || FindExt === "xlsx" ? <img src={xlsFileIcon} />
-                      : FindExt === "ppt" || FindExt === "pptx" ? <img src={pptIcon} />
-                        : null}
+              {FindExt === "png" || FindExt === "jpg" || FindExt === "jpeg" ? (
+                <img src={photosIcon} />
+              ) : FindExt === "docx" ||
+                FindExt === "doc" ||
+                FindExt === "txt" ? (
+                <img src={docIcon} />
+              ) : FindExt === "mp4" ? (
+                <img src={videoIcon} />
+              ) : FindExt === "xls" || FindExt === "xlsx" ? (
+                <img src={xlsFileIcon} />
+              ) : FindExt === "ppt" || FindExt === "pptx" ? (
+                <img src={pptIcon} />
+              ) : null}
               <span
                 className={styles["dataroom_table_heading"]}
               // onClick={() => getFolderDocuments(data.id)}
@@ -1295,10 +1326,8 @@ const DataRoom = () => {
       width: "90px",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
-        return (
-          <span className={styles["ownerName"]}>{text}</span>
-        )
-      }
+        return <span className={styles["ownerName"]}>{text}</span>;
+      },
     },
     {
       title: t("Share-date"),
@@ -1335,7 +1364,11 @@ const DataRoom = () => {
         // Implement your custom filtering logic here
       },
       render: (text, record) => {
-        return <span className={styles["dataroom_table_heading"]}>{_justShowDateformat(text)}</span>;
+        return (
+          <span className={styles["dataroom_table_heading"]}>
+            {_justShowDateformat(text)}
+          </span>
+        );
       },
     },
     {
@@ -1345,10 +1378,8 @@ const DataRoom = () => {
       width: "90px",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
-        return (
-          <span className={styles["ownerName"]}>{text}</span>
-        )
-      }
+        return <span className={styles["ownerName"]}>{text}</span>;
+      },
     },
     {
       dataIndex: "OtherStuff",
@@ -1521,7 +1552,7 @@ const DataRoom = () => {
   };
 
   const handleUploadFile = ({ file }) => {
-    console.log(file, "fileListsfileListsfileLists")
+    console.log(file, "fileListsfileListsfileLists");
     dispatch(
       FileisExist(
         navigate,
@@ -1645,7 +1676,6 @@ const DataRoom = () => {
               setTasksAttachments
             )
           );
-
           // Perform other actions with the result
           console.log("handleChangeFolderUpload API call result:", result);
 

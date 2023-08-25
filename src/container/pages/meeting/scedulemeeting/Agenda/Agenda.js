@@ -15,10 +15,12 @@ import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import desh from "../../../../../assets/images/desh.svg";
 import dropmdownblack from "../../../../../assets/images/dropdownblack.svg";
+import blackArrowUpper from "../../../../../assets/images/BlackIconUpper.svg";
 import { useNavigate } from "react-router-dom";
 import { message, Upload } from "antd";
 import Lock from "../../../../../assets/images/LOCK.svg";
 import featherupload from "../../../../../assets/images/featherupload.svg";
+import DarkLock from "../../../../../assets/images/BlackLock.svg";
 import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
 import Key from "../../../../../assets/images/KEY.svg";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
@@ -463,7 +465,11 @@ const Agenda = () => {
                                 }
                               />
                               <img
-                                src={dropmdownblack}
+                                src={
+                                  expandIndex === index && expand === true
+                                    ? blackArrowUpper
+                                    : dropmdownblack
+                                }
                                 width="18.4px"
                                 height="9.2px"
                                 className="cursor-pointer"
@@ -543,6 +549,7 @@ const Agenda = () => {
                                     src={Key}
                                     width="24.07px"
                                     height="24.09px"
+                                    className="cursor-pointer"
                                     onClick={
                                       apllyLockOnParentAgenda(index)
                                         ? ""
@@ -553,6 +560,7 @@ const Agenda = () => {
                                     src={Cast}
                                     width="25.85px"
                                     height="25.89px"
+                                    className="cursor-pointer"
                                     onClick={
                                       apllyLockOnParentAgenda(index)
                                         ? ""
@@ -562,11 +570,15 @@ const Agenda = () => {
                                   <img
                                     src={
                                       apllyLockOnParentAgenda(index)
-                                        ? closedLocked
+                                        ? DarkLock
                                         : Lock
                                     }
                                     width="18.87px"
-                                    className={styles["lockBtn"]}
+                                    className={
+                                      apllyLockOnParentAgenda(index)
+                                        ? styles["lockBtn_inActive"]
+                                        : styles["lockBtn"]
+                                    }
                                     height="26.72px"
                                     onClick={() => lockFunctionActive(index)}
                                   />
@@ -860,7 +872,13 @@ const Agenda = () => {
                                         plugins={[<TimePicker hideSeconds />]}
                                       />
                                       <img
-                                        src={dropmdownblack}
+                                        src={
+                                          subexpandIndex === index &&
+                                          expandSubIndex === subIndex &&
+                                          subExpand === true
+                                            ? blackArrowUpper
+                                            : dropmdownblack
+                                        }
                                         width="18.4px"
                                         height="9.2px"
                                         className="cursor-pointer"
@@ -956,6 +974,7 @@ const Agenda = () => {
                                           <img
                                             src={Key}
                                             width="24.07px"
+                                            className="cursor-pointer"
                                             height="24.09px"
                                             onClick={
                                               apllyLockOnParentAgenda(index) ||
@@ -971,6 +990,7 @@ const Agenda = () => {
                                             src={Cast}
                                             width="25.85px"
                                             height="25.89px"
+                                            className="cursor-pointer"
                                             onClick={
                                               apllyLockOnParentAgenda(index) ||
                                               apllyLockOnSubAgenda(
@@ -983,17 +1003,32 @@ const Agenda = () => {
                                           />
                                           <img
                                             src={
-                                              apllyLockOnParentAgenda(index) ||
                                               apllyLockOnSubAgenda(
                                                 index,
                                                 subIndex
                                               )
+                                                ? DarkLock
+                                                : apllyLockOnParentAgenda(
+                                                    index
+                                                  ) ||
+                                                  apllyLockOnSubAgenda(
+                                                    index,
+                                                    subIndex
+                                                  )
                                                 ? closedLocked
                                                 : Lock
                                             }
                                             width="18.87px"
                                             height="26.72px"
-                                            className={styles["lockBtn"]}
+                                            className={
+                                              apllyLockOnParentAgenda(index) ||
+                                              apllyLockOnSubAgenda(
+                                                index,
+                                                subIndex
+                                              )
+                                                ? styles["lockBtn_inActive"]
+                                                : styles["lockBtn"]
+                                            }
                                             onClick={() =>
                                               lockFunctionActiveSubMenus(
                                                 index,

@@ -54,7 +54,12 @@ const VoteModal = () => {
       Button: (
         <>
           <Row>
-            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-center"
+            >
               <img src={redcrossIcon} height="21.79px" width="21.79px" />
             </Col>
           </Row>
@@ -109,16 +114,28 @@ const VoteModal = () => {
     {
       title: (
         <>
-          <Row>
-            <Col lg={12} md={12} sm={12}>
-              <Button text={t("Add-more")} className={styles["Add_more_Btn"]} />
-            </Col>
-          </Row>
+          <Button
+            text={
+              <>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Add_more_Class"]}
+                  >
+                    <span>{t("Add-more")}</span>
+                  </Col>
+                </Row>
+              </>
+            }
+            className={styles["Add_more_Btn"]}
+          />
         </>
       ),
       dataIndex: "Button",
       key: "Button",
-      width: "100px",
+      width: "80px",
     },
   ];
 
