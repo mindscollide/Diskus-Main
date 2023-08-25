@@ -25,6 +25,7 @@ import {
   GetAllAssigneesToDoList,
   clearState,
   ViewToDoList,
+  deleteCommentApi
 } from "./../../store/actions/ToDoList_action";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -100,7 +101,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   const [taskAssignedName, setTaskAssignedName] = useState([]);
   const [taskAssigneeComments, setTaskAssigneeComments] = useState([]);
   const [assgineeComments, setAssgieeComments] = useState("");
-  console.log("TaskCreatorIDTaskCreatorIDTaskCreatorID", taskAssigneeComments);
+  console.log("TaskCreatorIDTaskCreatorIDTaskCreatorID", taskAssigneeComments, assgineeComments);
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
@@ -408,7 +409,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                               timeClass={"timeClass"}
                               formClassPosition="relative-position-form"
                             />
-                            <img src={CrossIcon} width={14} className="crossIconTodoComment" />
+                            <img src={CrossIcon} width={14} onClick={() => dispatch(deleteCommentApi(navigate, t, commentData.taskCommentID, commentData.TaskID))} className="crossIconTodoComment" />
                           </Col>
                         </>
                       );

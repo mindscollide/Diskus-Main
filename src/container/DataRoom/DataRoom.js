@@ -1138,7 +1138,7 @@ const DataRoom = () => {
                       />
                     </span>
                   </Tooltip>
-                  <Tooltip placement="topRight" title={t("Delete")}>
+                  {record.isShared === true && record.permissionID === 1 ? <Tooltip placement="topRight" title={t("Delete")}>
                     <span className={styles["delete__Icon"]}>
                       <img
                         src={del}
@@ -1157,7 +1157,27 @@ const DataRoom = () => {
                         }}
                       />
                     </span>
-                  </Tooltip>
+                  </Tooltip> : record.isShared === false ? <Tooltip placement="topRight" title={t("Delete")}>
+                    <span className={styles["delete__Icon"]}>
+                      <img
+                        src={del}
+                        height="10.71px"
+                        alt=""
+                        width="15.02px"
+                        className={styles["delete__Icon_img"]}
+                        onClick={() => {
+                          if (record.isFolder) {
+                            dispatch(deleteFolder(navigate, record.id, t));
+                          } else {
+                            dispatch(
+                              deleteFileDataroom(navigate, record.id, t)
+                            );
+                          }
+                        }}
+                      />
+                    </span>
+                  </Tooltip> : null}
+
                   <Tooltip placement="topRight" title={t("Start")}>
                     <span className={styles["start__Icon"]}>
                       <img
@@ -1521,13 +1541,12 @@ const DataRoom = () => {
 
   // this fun triger when upload folder triiger
   const handleChangeFolderUpload = ({ directoryName, fileList }) => {
+    console.log("handleChangeFolderUpload create folder", directoryName, fileList);
 
     try {
       // this is used for prevent multi trigger
       if (
-        directoryName !== directoryNames &&
-        fileList.length !== fileLists.length
-      ) {
+        directoryName !== directoryNames) {
         // this is use to set data in sate of current upload
         if (directoryName) {
           setDirectoryNames(directoryName);
@@ -1545,7 +1564,7 @@ const DataRoom = () => {
   // when state update of upload new file this use effect call
   useEffect(() => {
     // its chekrer for the directory name given from upload
-    if (directoryNames !== "") {
+    if (directoryNames != "") {
       try {
         // this is api call fo check folder exist or not
         dispatch(CheckFolderisExist(navigate, directoryNames, t));
@@ -1564,17 +1583,19 @@ const DataRoom = () => {
     if (DataRoomReducer.FolderisExistCheck === true) {
       // its check that reducer state is true its open modal for this
       console.log("handleChangeFolderUpload open modal");
-      setIsFolderExist(true);
+      setIsExistFolder(true);
       // when modal opnen the its set reducer value null so else vlue cannot hit again if hook triiger by defult for any how
       dispatch(FolderisExist_success(null));
-    } else if (DataRoomReducer.FolderisExistCheck === false) {
+    } else {
       // its check that reducer state is false the its again check directory not null for current folder creation
       if (
-        directoryNames !== "" &&
+        directoryNames != "" &&
         DataRoomReducer.FolderisExistCheck === false
       ) {
         // iits call api for create folder
+        console.log("handleChangeFolderUpload create folder");
         dispatch(createFolder(navigate, t, directoryNames, 0));
+
       }
     }
   }, [DataRoomReducer.FolderisExistCheck]);
@@ -1583,9 +1604,12 @@ const DataRoom = () => {
   useEffect(() => {
     // this is checker of reducer if its not on its initial state
     try {
-      if (DataRoomReducer.CreatedFolderID !== 0) {
+      if (DataRoomReducer.CreatedFolderID != 0) {
         // this is checker if its hase no file in it so dont perform any action futer other wise hot this function for upload files
-        ;
+        console.log(
+          "ataRoomReducer.CreatedFolderID",
+          DataRoomReducer.CreatedFolderID
+        );
         if (fileLists.length > 0) {
           try {
             processArraySequentially();
@@ -1621,8 +1645,9 @@ const DataRoom = () => {
               setTasksAttachments
             )
           );
-          console.log(result, "resultresultresultresult")
+
           // Perform other actions with the result
+          console.log("handleChangeFolderUpload API call result:", result);
 
           // You can wait for some time before proceeding to the next item
           await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
@@ -1635,20 +1660,6 @@ const DataRoom = () => {
     setDirectoryNames("");
     setFileLists([]);
     dispatch(CreateFolder_success(0));
-    let currentView = localStorage.getItem("setTableView")
-    let viewFolderID = localStorage.getItem("folderID")
-    if (fileLists.length === 0) {
-      if (viewFolderID !== null) {
-        await dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1));
-        setShowbarupload(false);
-        setTasksAttachments([]);
-      } else {
-        await dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2));
-        setShowbarupload(false);
-        setTasksAttachments([]);
-      }
-    }
-
 
     // All API calls are complete, you can perform other actions here
     console.log("handleChangeFolderUpload All API calls are complete");

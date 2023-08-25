@@ -607,6 +607,7 @@ const getDocumentsAndFolders_fail = (message) => {
 
 // Get Documents And Folder API
 const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
+  console.log(navigate, statusID, t, no, order, sort, "getDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApi")
   let token = JSON.parse(localStorage.getItem('token'))
   let createrID = localStorage.getItem('userID')
   let OrganizationID = localStorage.getItem('organizationID')
@@ -624,7 +625,9 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
   //     StatusID: parseInt(statusID)
   // }
   return (dispatch) => {
-    if (no !== 1) {
+    if (no === 2) {
+
+    } else {
       dispatch(getDocumentsAndFolders_init())
     }
     let form = new FormData()

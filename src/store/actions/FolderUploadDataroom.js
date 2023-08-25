@@ -496,7 +496,7 @@ const createFolder = (navigate, t, folder, type) => {
     FolderName: folder,
     UserID: parseInt(createrID),
     OrganizationID: parseInt(OrganizationID),
-    ParentFolderID: 0,
+    ParentFolderID: folderID !== null && folderID !== undefined ? folderID : 0,
     Type: type
   };
   return (dispatch) => {
@@ -529,6 +529,7 @@ const createFolder = (navigate, t, folder, type) => {
               console.log("ataRoomReducer.CreatedFolderID", id);
 
               await dispatch(CreateFolder_success(id));
+              dispatch(FolderisExist_success(null));
               // if (folderID !== null) {
               //     dispatch(getFolderDocumentsApi(navigate, folderID, t))
               // } else {
@@ -753,7 +754,15 @@ const saveFilesandFoldersApi = (navigate, folderID, data, t, setShowbarupload, s
                   t("Files-saved-successfully")
                 )
               );
-
+              setShowbarupload(false);
+              setTasksAttachments([]);
+              let currentView = localStorage.getItem("setTableView")
+              let viewFolderID = localStorage.getItem("folderID")
+              if (viewFolderID !== null) {
+                await dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1));
+              } else {
+                await dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2));
+              }
 
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase())) {
               dispatch(savefilesandfolders_fail(t("Failed-to-save-any-file")));
@@ -775,10 +784,14 @@ const saveFilesandFoldersApi = (navigate, folderID, data, t, setShowbarupload, s
           }
         } else {
           dispatch(savefilesandfolders_fail(t("Something-went-wrong")));
+          setShowbarupload(false);
+          setTasksAttachments([]);
         }
       })
       .catch(() => {
         dispatch(savefilesandfolders_fail(t("Something-went-wrong")));
+        setShowbarupload(false);
+        setTasksAttachments([]);
       });
   };
 }

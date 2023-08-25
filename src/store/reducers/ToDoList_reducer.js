@@ -15,7 +15,8 @@ const initialState = {
   TotalTodoCountThisWeek: 0,
   TotalNumberOfUpcommingTodoInWeek: 0,
   TableSpinner: false,
-  SearchTodolist: null
+  SearchTodolist: null,
+  deleteComment: null
 };
 
 const toDoListReducer = (state = initialState, action) => {
@@ -231,6 +232,28 @@ const toDoListReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         SearchTodolist: null,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.DELETE_TODO_COMMENT_INIT: {
+      return {
+        ...state,
+        Loading: true
+      }
+    }
+    case actions.DELETE_TODO_COMMENT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        deleteComment: action.response,
+        ResponseMessage: action.message
+      }
+    }
+    case actions.DELETE_TODO_COMMENT_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        deleteComment: null,
         ResponseMessage: action.message
       }
     }
