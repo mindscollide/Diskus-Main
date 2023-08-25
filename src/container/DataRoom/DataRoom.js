@@ -911,7 +911,7 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            let FindExt = record.name.split(".")[1];
+            let FindExt = data.name.split(".")[1];
             console.log(FindExt, "FindExtFindExtFindExtFindExt")
             return (
               <>
@@ -950,6 +950,7 @@ const DataRoom = () => {
             );
           } else {
             let FindExt = data.name.split(".")[1];
+            console.log(FindExt, "FindExtFindExtFindExtFindExt")
             return (
               <>
                 <section className="d-flex gap-2">
@@ -958,7 +959,7 @@ const DataRoom = () => {
                       : FindExt === "mp4" ? <img src={videoIcon} />
                         : FindExt === "xls" || FindExt === "xlsx" ? <img src={xlsFileIcon} />
                           : FindExt === "ppt" || FindExt === "pptx" ? <img src={pptIcon} />
-                            : null}
+                            : FindExt === undefined ? <img src={docIcon} /> : <img src={docIcon} />}
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
                       {text}
@@ -1248,9 +1249,9 @@ const DataRoom = () => {
       }
     },
     {
-      title: "Share-date",
-      dataIndex: "modifiedDate",
-      key: "modifiedDate",
+      title: t("Share-date"),
+      dataIndex: "sharedDate",
+      key: "sharedDate",
       width: "90px",
       sorter: true,
       sortOrder: currentSort,
@@ -1296,17 +1297,142 @@ const DataRoom = () => {
         )
       }
     },
-
     {
       dataIndex: "OtherStuff",
       key: "OtherStuff",
       width: "180px",
       sortDirections: ["descend", "ascend"],
-      render: () => {
+      render: (text, record) => {
         return (
-          <section className="d-flex justify-content-end">
-            <img src={dot} width="15.02px" height="10.71px" alt="" />
-          </section>
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end gap-2 position-relative otherstuff"
+              >
+                <div className="tablerowFeatures">
+                  <Tooltip placement="topRight" title={t("Share")}>
+                    <span className={styles["share__Icon"]}>
+                      <svg
+                        className={styles["share__Icon_img"]}
+                        onClick={() => {
+                          if (record.isFolder) {
+                            showShareFolderModal(record.id, record.name);
+                          } else {
+                            showShareFileModal(record.id, record.name);
+                          }
+                        }}
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16.022"
+                        height="11.71"
+                        viewBox="0 0 16.022 11.71"
+                      >
+                        <path
+                          id="Icon_material-group-add"
+                          data-name="Icon material-group-add"
+                          d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
+                          transform="translate(0.5 -7)"
+                          fill="none"
+                          stroke="#5a5a5a"
+                        />
+                      </svg>
+                    </span>
+                  </Tooltip>
+                  <Tooltip placement="topRight" title={t("Download")}>
+                    <span className={styles["download__Icon"]}>
+                      <img
+                        src={download}
+                        alt=""
+                        height="10.71px"
+                        width="15.02px"
+                        className={styles["download__Icon_img"]}
+                        onClick={showRequestingAccessModal}
+                      />
+                    </span>
+                  </Tooltip>
+                  <Tooltip placement="topRight" title={t("Delete")}>
+                    <span className={styles["delete__Icon"]}>
+                      <img
+                        src={del}
+                        height="10.71px"
+                        alt=""
+                        width="15.02px"
+                        className={styles["delete__Icon_img"]}
+                        onClick={() => {
+                          if (record.isFolder) {
+                            dispatch(deleteFolder(navigate, record.id, t));
+                          } else {
+                            dispatch(
+                              deleteFileDataroom(navigate, record.id, t)
+                            );
+                          }
+                        }}
+                      />
+                    </span>
+                  </Tooltip>
+                  <Tooltip placement="topRight" title={t("Start")}>
+                    <span className={styles["start__Icon"]}>
+                      <img
+                        src={start}
+                        alt=""
+                        className={styles["start__Icon_img"]}
+                        height="10.71px"
+                        width="15.02px"
+                      />
+                    </span>
+                  </Tooltip>
+                </div>
+
+                <span className={styles["threeDot__Icon"]}>
+                  {record.isFolder ? (
+                    <Dropdown
+                      className={`${styles["options_dropdown"]
+                        } ${"dataroom_options"}`}
+                    >
+                      <Dropdown.Toggle id="dropdown-autoclose-true">
+                        <img src={dot} alt="" width="15.02px" height="10.71px" />
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {optionsforFolder.map((data, index) => {
+                          return (
+                            <Dropdown.Item
+                              key={index}
+                              onClick={() => folderOptionsSelect(data, record)}
+                            >
+                              {data.label}
+                            </Dropdown.Item>
+                          );
+                        })}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  ) : (
+                    <Dropdown
+                      className={`${styles["options_dropdown"]
+                        } ${"dataroom_options"}`}
+                    >
+                      <Dropdown.Toggle id="dropdown-autoclose-true">
+                        <img src={dot} alt="" width="15.02px" height="10.71px" />
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {optionsforFile.map((data, index) => {
+                          return (
+                            <Dropdown.Item
+                              key={index}
+                              onClick={() => fileOptionsSelect(data, record)}
+                            >
+                              {data.label}
+                            </Dropdown.Item>
+                          );
+                        })}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  )}
+                </span>
+              </Col>
+            </Row>
+          </>
         );
       },
     },

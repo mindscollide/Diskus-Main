@@ -81,6 +81,7 @@ const ModalShareFolder = ({
   console.log(isMembers, "isMembersisMembersisMembersisMembers");
   const [flag, setFlag] = useState(1);
   const [onclickFlag, setOnclickFlag] = useState(false);
+  let organizationName = localStorage.getItem("OrganizatioName")
 
   const showcalender = () => {
     // setCalenderdate(!calenderdate);
@@ -126,42 +127,14 @@ const ModalShareFolder = ({
   ];
   const optionsgeneralAccess = [
     { value: 1, label: "Restricted" },
-    { value: 2, label: "My Organization" },
+    { value: 2, label: organizationName },
     { value: 3, label: "Any One With link" },
   ];
 
-  //Drop Down Values
-  // const searchFilterHandler = (value) => {
-  //   let allAssignees = assignees.user;
-  //   if (
-  //     allAssignees != undefined &&
-  //     allAssignees != null &&
-  //     allAssignees != NaN &&
-  //     allAssignees != []
-  //   ) {
-  //     return allAssignees
-  //       .filter((item) => {
-  //         const searchTerm = value.toLowerCase();
-  //         const assigneesName = item.name.toLowerCase();
-  //         return (
-  //           searchTerm &&
-  //           assigneesName.startsWith(searchTerm)
-  //         );
-  //       })
-  //       .slice(0, 3)
-  //       .map((item) => (
-  //         <div
-  //           onClick={() => onSearch(item.name, item.pK_UID)}
-  //           className="dropdown-row-assignee d-flex flex-row align-items-center"
-  //           key={item.pK_UID}
-  //         >
-  //           <img src={userImage} />
-  //           <p className="p-0 m-0">{item.name}</p>
-  //         </div>
-  //       ));
-  //   } else {
-  //   }
-  // };
+  useEffect(() => {
+    dispatch(allAssignessList(navigate, t));
+  }, []);
+
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
     console.log("Input Value", allAssignees);
@@ -199,6 +172,7 @@ const ModalShareFolder = ({
       console.log("not found");
     }
   };
+
   const onSearch = (name, id) => {
     setOnclickFlag(true)
     console.log("name id", name, id);
@@ -206,6 +180,7 @@ const ModalShareFolder = ({
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
   };
+
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
@@ -311,9 +286,7 @@ const ModalShareFolder = ({
     })
 
   }
-  useEffect(() => {
-    dispatch(allAssignessList(navigate, t));
-  }, []);
+
   return (
     <>
       <Container>
