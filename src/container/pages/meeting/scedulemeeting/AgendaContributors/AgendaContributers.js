@@ -156,7 +156,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
       Notification: (
         <>
           <Row>
-            <Col lg={12} md={12} sm={12}>
+            <Col lg={6} md={6} sm={6} className="d-flex justify-content-center">
               <img src={NotificationIcon} width="17.64px" height="12.4px" />
               {/* <img src={redMailIcon} width="17.64px" height="12.4px" /> */}
             </Col>
@@ -206,10 +206,10 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
       width: "400px",
     },
     {
-      title: t("Notification"),
+      title: t("Notification1"),
       dataIndex: "Notification",
       key: "Notification",
-      width: "400px",
+      width: "200px",
     },
   ];
 
