@@ -17,6 +17,7 @@ code {
 
 ::-webkit-scrollbar {
   width: 0.5rem;
+  height: 0.5rem;
   border-radius: 20px;
   background-color: #f2f2f2;
 }

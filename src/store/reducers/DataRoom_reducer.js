@@ -19,6 +19,7 @@ const initialState = {
     RenameFileResponse: null,
     FolderisExistCheck: null,
     CreatedFolderID: 0,
+    SavefilesandfoldersResponse: null
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -345,6 +346,28 @@ const DataRoomReducer = (state = initialState, action) => {
                 Loading: false,
                 CreatedFolderID: action.response,
             };
+        }
+        case actions.SAVEFILESANDFOLDERS_INIT: {
+            return {
+                ...state,
+                Loading: true
+            }
+        }
+        case actions.SAVEFILESANDFOLDERS_SUCCESS: {
+            return {
+                ...state,
+                Loading: false,
+                SaveFilesAndFoldersResponse: action.response,
+                ResponseMessage: action.message
+            }
+        }
+        case actions.SAVEFILESANDFOLDERS_FAIL: {
+            return {
+                ...state,
+                Loading: false,
+                SaveFilesAndFoldersResponse: null,
+                ResponseMessage: action.message
+            }
         }
         default:
             return { ...state };
