@@ -26,6 +26,7 @@ import {
   DataRoomReducer,
   PollsReducer,
   NewMeetingReducer,
+  videoFeatureReducer,
 } from './reducers'
 import * as actions from './action_types'
 import { configureStore } from '@reduxjs/toolkit'
@@ -53,6 +54,7 @@ const AppReducer = combineReducers({
   downloadReducer: downloadReducer,
   postAssigneeComments: postAssigneeComments,
   VideoChatReducer: VideoChatReducer,
+  videoFeatureReducer: videoFeatureReducer,
   minuteofMeetingReducer: minuteofMeetingReducer,
   countryNamesReducer: countryNamesReducer,
   GetSubscriptionPackage: GetSubscriptionPackages,

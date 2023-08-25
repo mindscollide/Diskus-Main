@@ -1,5 +1,5 @@
-import React from "react";
-import Button from "react-bootstrap/Button";
+import React from 'react'
+import Button from 'react-bootstrap/Button'
 
 const CustomButton = ({
   text,
@@ -20,6 +20,7 @@ const CustomButton = ({
   pdfIcon,
   pdfIconClass,
   iconClass,
+  iconClass2,
 }) => {
   return (
     <>
@@ -41,11 +42,11 @@ const CustomButton = ({
       >
         <span className={iconClass}>{icon}</span>
         {text}
-        {icon2}
+        <span className={iconClass2}>{icon2}</span>
         <img className={pdfIconClass} src={pdfIcon} />
       </Button>
     </>
-  );
-};
+  )
+}
 
-export default CustomButton;
+export default CustomButton

@@ -1,0 +1,78 @@
+.videoOutgoing-max {
+  position: relative;
+  display: content !important;
+  height: 67vh;
+  width: 100%;
+  background-color: #707070 !important;
+  top: 10px !important;
+  /* border: 2px solid #ccc; */
+  justify-content: center;
+  align-items: center;
+}
+
+.multiple-video-It-Title-max {
+  font-size: 20px;
+  letter-spacing: 2px;
+  font-weight: 600;
+  position: relative;
+  top: 20px;
+  color: #fff !important;
+}
+
+.multiple-video-waiting-title-max {
+  font-size: 12px;
+  position: relative;
+  top: 5px;
+  color: #fff !important;
+}
+.multiple-host-title-max {
+  font-size: 15px;
+  font-weight: 600;
+  position: relative;
+  top: 10px;
+  color: #fff !important;
+}
+
+.Participants-text-max {
+  font-size: 16px !important;
+  color: #fff !important;
+  font-weight: 600;
+}
+
+.Ringing-text-max {
+  font-size: 15px !important;
+  color: #fff !important;
+}
+
+.avatar-column-max {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 0px !important;
+}
+
+.outgoing-title-max {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 5px !important;
+}
+
+.calling-title-max {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  top: 20px !important;
+}
+
+.button-img-max {
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.bottom-images-width-max {
+  width: 100% !important;
+  display: flex;
+  justify-content: center !important;
+  align-items: center !important;
+}

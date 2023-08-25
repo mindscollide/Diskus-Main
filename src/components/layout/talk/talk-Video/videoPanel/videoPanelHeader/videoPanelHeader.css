@@ -1,0 +1,20 @@
+.talk-video-heading {
+    position: relative;
+    top: 15px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.videoFilter {
+    margin-top: 10px;
+    width: 130px;
+}
+
+.videoFilter .ant-select-selector {
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    border: none !important;
+    border-radius: 3px !important;
+    width: 110px !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+}
