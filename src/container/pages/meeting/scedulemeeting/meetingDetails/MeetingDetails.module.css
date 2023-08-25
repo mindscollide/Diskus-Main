@@ -186,3 +186,8 @@ body[dir="rtl"] .errorMessage-inLogin {
   margin-left: -3.5px !important;
   margin-top: 1px !important;
 }
+
+body[dir="rtl"] .White_Icon_class {
+  margin-right: -4.5px !important;
+  margin-top: 1px !important;
+}
