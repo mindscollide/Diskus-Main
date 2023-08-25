@@ -98,6 +98,17 @@ import ModalRenameFile from "./ModalRenameFile/ModalRenameFile";
 import useHover from "../../hooks/useHover";
 import ModalOptionsisExistFolder from "./ModalUploadFolderisExist/ModalUploadFolderisExist";
 import { DownOutlined } from "@ant-design/icons";
+import audio_Icon from '../../assets/images/AttachmentIcons/audio.svg'
+import docIcon from '../../assets/images/AttachmentIcons/doc.svg'
+import formsIcon from '../../assets/images/AttachmentIcons/forms.svg'
+import notesIcon from '../../assets/images/AttachmentIcons/notes.svg'
+import pdfIcon from '../../assets/images/AttachmentIcons/pdf.svg'
+import photosIcon from '../../assets/images/AttachmentIcons/photos.svg'
+import pptIcon from '../../assets/images/AttachmentIcons/ppt.svg'
+import shareIcon from '../../assets/images/AttachmentIcons/share.svg'
+import sites_Icon from '../../assets/images/AttachmentIcons/sites.svg'
+import videoIcon from '../../assets/images/AttachmentIcons/video.svg'
+import xlsFileIcon from '../../assets/images/AttachmentIcons/xls-file.svg'
 const DataRoom = () => {
   // tooltip
   const [showbarupload, setShowbarupload] = useState(false);
@@ -900,11 +911,18 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            let findExt = text.split(".").pop();
+            let FindExt = record.name.split(".")[1];
+            console.log(FindExt, "FindExtFindExtFindExtFindExt")
             return (
               <>
                 <section className="d-flex gap-2">
-                  <FileIcon size={22} extension={findExt} />
+                  <img src={
+                    FindExt === "png" || FindExt === "jpg" || FindExt === "jpeg" ? photosIcon
+                      : FindExt === "docx" || FindExt === "doc" || FindExt === "txt" ? docIcon
+                        : FindExt === "mp4" ? videoIcon
+                          : FindExt === "pdf" ? pdfIcon
+                            : FindExt === "xls" || FindExt === "xlsx" ? xlsFileIcon
+                              : FindExt === "ppt" || FindExt === "pptx" ? pptIcon : null} alt="" />
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
                       {text} <img src={sharedIcon} alt="" />
@@ -931,11 +949,16 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            let findExt = text.split(".").pop();
+            let FindExt = data.name.split(".")[1];
             return (
               <>
                 <section className="d-flex gap-2">
-                  <FileIcon size={22} extension={findExt} />
+                  {FindExt === "png" || FindExt === "jpg" || FindExt === "jpeg" ? <img src={photosIcon} />
+                    : FindExt === "docx" || FindExt === "doc" || FindExt === "txt" ? <img src={docIcon} />
+                      : FindExt === "mp4" ? <img src={videoIcon} />
+                        : FindExt === "xls" || FindExt === "xlsx" ? <img src={xlsFileIcon} />
+                          : FindExt === "ppt" || FindExt === "pptx" ? <img src={pptIcon} />
+                            : null}
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
                       {text}
@@ -1183,15 +1206,24 @@ const DataRoom = () => {
               <img src={featherfolder} alt="" />
               <span
                 className={styles["dataroom_table_heading"]}
-                onClick={() => getFolderDocuments(data.id)}
+                onClick={() => getFolderDocuments(record.id)}
               >
                 {text} <img src={sharedIcon} alt="" />
               </span>
             </div>
           );
         } else {
+          let FindExt = record.name.split(".")[1];
+          console.log(FindExt, "FindExtFindExtFindExt")
           return (
             <div className={`${styles["dataFolderRow"]}`}>
+
+              {FindExt === "png" || FindExt === "jpg" || FindExt === "jpeg" ? <img src={photosIcon} />
+                : FindExt === "docx" || FindExt === "doc" || FindExt === "txt" ? <img src={docIcon} />
+                  : FindExt === "mp4" ? <img src={videoIcon} />
+                    : FindExt === "xls" || FindExt === "xlsx" ? <img src={xlsFileIcon} />
+                      : FindExt === "ppt" || FindExt === "pptx" ? <img src={pptIcon} />
+                        : null}
               <span
                 className={styles["dataroom_table_heading"]}
               // onClick={() => getFolderDocuments(data.id)}
