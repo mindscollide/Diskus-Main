@@ -1614,7 +1614,7 @@ const DataRoom = () => {
     if (DataRoomReducer.FolderisExistCheck === true) {
       // its check that reducer state is true its open modal for this
       console.log("handleChangeFolderUpload open modal");
-      setIsExistFolder(true);
+      setIsFolderExist(true);
       // when modal opnen the its set reducer value null so else vlue cannot hit again if hook triiger by defult for any how
       dispatch(FolderisExist_success(null));
     } else {
@@ -1690,10 +1690,18 @@ const DataRoom = () => {
     setDirectoryNames("");
     setFileLists([]);
     dispatch(CreateFolder_success(0));
+    let currentView = localStorage.getItem("setTableView")
+    let viewFolderID = localStorage.getItem("folderID")
+    if (viewFolderID !== null) {
+      dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1));
+    } else {
+      dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2));
+    }
 
     // All API calls are complete, you can perform other actions here
     console.log("handleChangeFolderUpload All API calls are complete");
   };
+
 
   const handleChangeLocationValue = (event) => {
     setSearchResultBoxFields({

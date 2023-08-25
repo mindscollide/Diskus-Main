@@ -447,6 +447,7 @@ const CheckFolderisExist = (navigate, folderName, t) => {
                 )
             ) {
               await dispatch(FolderisExist_success(true));
+              localStorage.setItem("folderName", folderName)
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -728,12 +729,12 @@ const saveFilesandFoldersApi = (navigate, folderID, data, t, setShowbarupload, s
     UserID: JSON.parse(createrID),
     Type: 0
   };
-  return (dispatch) => {
+  return async (dispatch) => {
     // dispatch(savefilesandfolders_init())
     let form = new FormData();
     form.append("RequestMethod", saveFilesandFolderRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
-    axios({
+    await axios({
       method: "post",
       url: dataRoomApi,
       data: form,
@@ -756,13 +757,13 @@ const saveFilesandFoldersApi = (navigate, folderID, data, t, setShowbarupload, s
               );
               setShowbarupload(false);
               setTasksAttachments([]);
-              let currentView = localStorage.getItem("setTableView")
-              let viewFolderID = localStorage.getItem("folderID")
-              if (viewFolderID !== null) {
-                await dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1));
-              } else {
-                await dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2));
-              }
+              // let currentView = localStorage.getItem("setTableView")
+              // let viewFolderID = localStorage.getItem("folderID")
+              // if (viewFolderID !== null) {
+              //   await dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1));
+              // } else {
+              //   await dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2));
+              // }
 
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes("DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase())) {
               dispatch(savefilesandfolders_fail(t("Failed-to-save-any-file")));
