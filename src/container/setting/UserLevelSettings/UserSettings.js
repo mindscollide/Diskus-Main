@@ -55,7 +55,7 @@ const UserSettings = () => {
     PushNotificationEditMeeting: false,
     PushNotificationCancelledOrDeleteMeeting: false,
     ShowNotificationOnParticipantJoining: false,
-    AllowCalenderSync: false,
+    AllowGoogleCalenderSync: false,
     AllowMicrosoftCalenderSync: false,
     EmailWhenAddedToCommittee: false,
     EmailWhenRemovedFromCommittee: false,
@@ -114,7 +114,7 @@ const UserSettings = () => {
     setSignUpCodeToken(response.code);
     setUserOptionsSettings({
       ...userOptionsSettings,
-      AllowCalenderSync: true,
+      AllowGoogleCalenderSync: true,
     });
   };
 
@@ -122,7 +122,7 @@ const UserSettings = () => {
     setSignUpCodeToken("");
     setUserOptionsSettings({
       ...userOptionsSettings,
-      AllowCalenderSync: userOptionsSettings.AllowCalenderSync,
+      AllowGoogleCalenderSync: userOptionsSettings.AllowGoogleCalenderSync,
     });
   };
 
@@ -144,18 +144,6 @@ const UserSettings = () => {
       settingReducer.UserProfileData !== undefined
     ) {
       if (Object.keys(settingReducer.UserProfileData).length > 0) {
-        localStorage.setItem(
-          "officeEventColor",
-          settingReducer.UserProfileData.officeEventColor
-        );
-        localStorage.setItem(
-          "googleEventColor",
-          settingReducer.UserProfileData.googleEventColor
-        );
-        localStorage.setItem(
-          "diskusEventColor",
-          settingReducer.UserProfileData.diskusEventColor
-        );
         setUserOptionsSettings({
           Is2FAEnabled: settingReducer.UserProfileData.iS2FAEnabled,
           EmailOnNewMeeting: settingReducer.UserProfileData.emailOnNewMeeting,
@@ -171,7 +159,7 @@ const UserSettings = () => {
               .pushNotificationonCancelledORDeleteMeeting,
           ShowNotificationOnParticipantJoining:
             settingReducer.UserProfileData.showNotificationOnParticipantJoining,
-          AllowCalenderSync:
+          AllowGoogleCalenderSync:
             settingReducer.UserProfileData.userAllowGoogleCalendarSynch,
           AllowMicrosoftCalenderSync:
             settingReducer.UserProfileData.userAllowMicrosoftCalendarSynch,
@@ -448,7 +436,7 @@ const UserSettings = () => {
     } else {
       setUserOptionsSettings({
         ...userOptionsSettings,
-        AllowCalenderSync: false,
+        AllowGoogleCalenderSync: false,
       });
     }
   };
@@ -766,7 +754,7 @@ const UserSettings = () => {
       await dispatch(revokeToken(navigate, userOptionsSettings, t));
     }
   };
-  
+
   const onChangeEmailWhenNewTODOEdited = (e) => {
     let value = e.target.checked;
     setUserOptionsSettings({
@@ -1331,14 +1319,16 @@ const UserSettings = () => {
                 ) : null}
                 {calender ? (
                   <>
-                    {userOptionsSettings.AllowCalenderSync !== null &&
+                    {userOptionsSettings.AllowGoogleCalenderSync !== null &&
                     roleID != 1 &&
                     roleID != 2 ? (
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
                             onChange={onChangeAllowCalenderSync}
-                            checked={userOptionsSettings.AllowCalenderSync}
+                            checked={
+                              userOptionsSettings.AllowGoogleCalenderSync
+                            }
                           >
                             <span className={styles["Class_CheckBox"]}>
                               {t("Allow-calender-sync")}
@@ -1987,7 +1977,8 @@ const UserSettings = () => {
                         </Row>
                       </Col>
                     </Row>
-                    {userOptionsSettings.AllowCalenderSync !== null &&
+                    {userOptionsSettings.AllowGoogleCalenderSync !== null &&
+                    userOptionsSettings.AllowGoogleCalenderSync !== false &&
                     roleID != 1 &&
                     roleID != 2 ? (
                       <Row className="mt-4">
@@ -2026,6 +2017,7 @@ const UserSettings = () => {
                       </Row>
                     ) : null}
                     {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
+                    userOptionsSettings.AllowMicrosoftCalenderSync !== false &&
                     roleID != 1 &&
                     roleID != 2 ? (
                       <Row className="mt-4">

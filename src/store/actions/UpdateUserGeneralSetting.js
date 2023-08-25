@@ -101,7 +101,7 @@ const updateUserSettingFunc = (navigate, userOptionsSettings, t) => {
       PushNotificationWhenWhenResolutionIsCancelledAfterCirculation:
         userOptionsSettings.PushNotificationWhenNewResolutionIsCancelledAfterCirculated,
       UserAllowGoogleCalendarSynch:
-        userOptionsSettings.UserAllowGoogleCalendarSynch,
+        userOptionsSettings.AllowGoogleCalenderSync,
       UserAllowMicrosoftCalendarSynch:
         userOptionsSettings.AllowMicrosoftCalenderSync,
       GoogleEventColor: userOptionsSettings.GoogleCalenderColor,

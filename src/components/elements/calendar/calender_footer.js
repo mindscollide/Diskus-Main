@@ -15,7 +15,7 @@ const CalendarFooter = () => {
       <>
         <span className="d-flex gap-2  ">
           <div style={{ backgroundColor }} className={styles["cirle"]}></div>
-          <p>{t("Diskus")}</p>
+          <p className={styles["cirleheading"]}>{t("Diskus")}</p>
         </span>
       </>
     );
@@ -26,7 +26,7 @@ const CalendarFooter = () => {
       <>
         <span className="d-flex gap-2 ">
           <div style={{ backgroundColor }} className={styles["cirle"]}></div>
-          <p>{t("Google")}</p>
+          <p className={styles["cirleheading"]}>{t("Google")}</p>
         </span>
       </>
     );
@@ -37,7 +37,7 @@ const CalendarFooter = () => {
       <>
         <span className="d-flex gap-2">
           <div style={{ backgroundColor }} className={styles["cirle"]}></div>
-          <p>{t("Microsoft")}</p>
+          <p className={styles["cirleheading"]}>{t("Microsoft")}</p>
         </span>
       </>
     );

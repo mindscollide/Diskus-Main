@@ -69,3 +69,6 @@ body[dir="rtl"] .calendar-add-event-label {
   height: 16px;
   border-radius: 50%;
 }
+.cirleheading{
+  font-family: "MontserratSemiBold";
+}
