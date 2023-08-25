@@ -90,9 +90,6 @@ const TalkHeader = () => {
         setChatFilterName(value.label)
       } else {
       }
-      // } catch {
-      //   console.log('Error on Chat Filter Object.Keys')
-      // }
       try {
         if (value.label !== chatFilter.label) {
           if (value.label === t('Recent-Chats')) {

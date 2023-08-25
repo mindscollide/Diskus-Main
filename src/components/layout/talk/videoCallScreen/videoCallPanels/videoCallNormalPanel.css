@@ -1,0 +1,42 @@
+.videoCallScreen {
+    position: absolute;
+    left: 65px;
+    width: 95%;
+    height: 55vh;
+    background-color: #fff !important;
+    bottom: 0;
+    padding: 10px 15px 15px 15px;
+    border: 1px solid #4adede;
+    border-radius: 4px !important;
+    justify-content: center;
+    align-items: center;
+    /* overflow: hidden !important; */
+    z-index: 1 !important;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+    animation: slideUp 0.5s ease-in-out;
+}
+
+.two-images-before-expand {
+    display: flex;
+    justify-content: start;
+    align-items: flex-start;
+    gap: 60px;
+}
+
+.video-side-icons {
+    display: flex;
+    justify-content: flex-end !important;
+    flex-direction: column !important;
+    width: 7%;
+    gap: 10px;
+    margin-left: 10px;
+}
+
+.normal-avatar {
+    height: 325px;
+}
+
+.normal-avatar img {
+    width: 100%;
+    height: 100%;
+}

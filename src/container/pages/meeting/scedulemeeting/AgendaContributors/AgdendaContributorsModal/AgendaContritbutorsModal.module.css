@@ -36,7 +36,8 @@
 }
 
 .remove_Organizers {
-  padding: 12px 30px !important;
+  width: 90px !important;
+  height: 29px !important;
   border: 1px solid #f16b6b;
   border-radius: 4px !important;
   font-size: 12px !important;
@@ -49,12 +50,13 @@
 .remove_Organizers:active,
 .remove_Organizers:focus,
 .remove_Organizers:focus-visible {
-  padding: 12px 30px !important;
-  border: 1px solid #f16b6b !important;
+  width: 90px !important;
+  height: 29px !important;
+  border: 1px solid #f16b6b;
   border-radius: 4px !important;
   font-size: 12px !important;
   font-family: "MontserratSemiBold" !important;
-  background: #fff !important;
+  background: #fff;
   color: #f16b6b !important;
 }
 
@@ -79,4 +81,8 @@
   font-family: "MontserratSemiBold" !important;
   background: #5f78d6 !important;
   color: #fff !important;
+}
+
+.OverAll_Padding {
+  padding: 0px 40px !important;
 }

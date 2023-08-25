@@ -17,13 +17,34 @@ import {
 } from "../../../../../components/elements";
 import { Plus } from "react-bootstrap-icons";
 import desh from "../../../../../assets/images/desh.svg";
+import {
+  regexOnlyCharacters,
+  validateInput,
+} from "../../../../../commen/functions/regex";
 
 const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   const { t } = useTranslation();
   const [options, setOptions] = useState([]);
   const [rows, setRows] = useState([
-    { selectedOption: null, startDate: null, endDate: null },
+    { selectedOption: "", startDate: "", endDate: "" },
   ]);
+  const [error, seterror] = useState(false);
+
+  const [meetingDetails, setMeetingDetails] = useState({
+    MeetingTitle: "",
+    MeetingType: "",
+    Location: "",
+    Description: "",
+    Link: "",
+    ReminderFrequency: 0,
+    ReminderFrequencyTwo: 0,
+    ReminderFrequencyThree: 0,
+    Notes: "",
+    groupChat: false,
+    AllowRSPV: false,
+    NotifyMeetingOrganizer: false,
+  });
+
   const handleSelectChange = (selectedOption) => {
     setOptions({ ...options, selectedOption });
   };
@@ -37,10 +58,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
   };
 
   const addRow = () => {
-    setRows([
-      ...rows,
-      { selectedOption: null, startDate: null, endDate: null },
-    ]);
+    setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
   };
 
   const HandleCancelFunction = (index) => {
@@ -54,6 +72,127 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     setmeetingDetails(false);
   };
 
+  const handlePublish = () => {
+    seterror(true);
+  };
+
+  const handleReminderFrequency = (e) => {
+    setMeetingDetails({
+      ...meetingDetails,
+      ReminderFrequency: e.value,
+    });
+  };
+
+  const handleReminderFrequencyTwo = (e) => {
+    setMeetingDetails({
+      ...meetingDetails,
+      ReminderFrequencyTwo: e.value,
+    });
+  };
+
+  const handleReminderFrequencyThree = (e) => {
+    setMeetingDetails({
+      ...meetingDetails,
+      ReminderFrequencyThree: e.value,
+    });
+  };
+
+  const HandleChange = (e, index) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "Meetingtitle") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setMeetingDetails({
+          ...meetingDetails,
+          MeetingTitle: valueCheck,
+        });
+      } else {
+        setMeetingDetails({
+          ...meetingDetails,
+          MeetingTitle: "",
+        });
+      }
+    }
+    if (name === "MeetingType") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setMeetingDetails({
+          ...meetingDetails,
+          MeetingType: valueCheck,
+        });
+      } else {
+        setMeetingDetails({
+          ...meetingDetails,
+          MeetingType: "",
+        });
+      }
+    }
+    if (name === "Location") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setMeetingDetails({
+          ...meetingDetails,
+          Location: valueCheck,
+        });
+      } else {
+        setMeetingDetails({
+          ...meetingDetails,
+          Location: "",
+        });
+      }
+    }
+    if (name === "Description") {
+      let valueCheck = regexOnlyCharacters(value);
+      if (valueCheck !== "") {
+        setMeetingDetails({
+          ...meetingDetails,
+          Description: valueCheck,
+        });
+      } else {
+        setMeetingDetails({
+          ...meetingDetails,
+          Description: "",
+        });
+      }
+    }
+    if (name === "Link") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setMeetingDetails({
+          ...meetingDetails,
+          Link: valueCheck,
+        });
+      } else {
+        setMeetingDetails({
+          ...meetingDetails,
+          Link: "",
+        });
+      }
+    }
+  };
+
+  const handleGroupChat = () => {
+    setMeetingDetails({
+      ...meetingDetails,
+      groupChat: !meetingDetails.groupChat,
+    });
+  };
+
+  const handleRSPV = () => {
+    setMeetingDetails({
+      ...meetingDetails,
+      AllowRSPV: !meetingDetails.AllowRSPV,
+    });
+  };
+
+  const handleNotifyOrganizers = () => {
+    setMeetingDetails({
+      ...meetingDetails,
+      NotifyMeetingOrganizer: !meetingDetails.NotifyMeetingOrganizer,
+    });
+  };
+
   console.log(rows, "optionsoptionsoptions");
   return (
     <section>
@@ -65,8 +204,24 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
               <TextField
                 placeholder={t("Meeting-title")}
                 applyClass={"meetinInnerSearch"}
+                name={"Meetingtitle"}
                 labelClass="d-none"
+                change={HandleChange}
+                value={meetingDetails.MeetingTitle}
               />
+              <Row>
+                <Col>
+                  <p
+                    className={
+                      error && meetingDetails.MeetingTitle === ""
+                        ? ` ${styles["errorMessage-inLogin"]} `
+                        : `${styles["errorMessage-inLogin_hidden"]}`
+                    }
+                  >
+                    {t("Please-enter-meeting-title")}
+                  </p>
+                </Col>
+              </Row>
             </Col>
           </Row>
           <Row className="mt-3">
@@ -84,8 +239,24 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                   <TextField
                     placeholder={t("Meeting-type")}
                     applyClass={"meetinInnerSearch"}
+                    name={"MeetingType"}
+                    change={HandleChange}
                     labelClass="d-none"
+                    value={meetingDetails.MeetingType}
                   />
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          error && meetingDetails.MeetingType === ""
+                            ? ` ${styles["errorMessage-inLogin"]} `
+                            : `${styles["errorMessage-inLogin_hidden"]}`
+                        }
+                      >
+                        {t("Please-select-meeting-type")}
+                      </p>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </Col>
@@ -104,8 +275,24 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                     width={"350px"}
                     placeholder={t("Location")}
                     applyClass={"meetinInnerSearch"}
+                    name={"Location"}
+                    change={HandleChange}
                     labelClass="d-none"
+                    value={meetingDetails.Location}
                   />
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          error && meetingDetails.Location === ""
+                            ? ` ${styles["errorMessage-inLogin"]} `
+                            : `${styles["errorMessage-inLogin_hidden"]}`
+                        }
+                      >
+                        {t("Please-select-location")}
+                      </p>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </Col>
@@ -126,15 +313,31 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                 rows="4"
                 placeholder={t("Description") + "*"}
                 required={true}
+                name={"Description"}
+                change={HandleChange}
+                value={meetingDetails.Description}
                 maxLength={500}
               />
+              <Row>
+                <Col>
+                  <p
+                    className={
+                      error && meetingDetails.Description === ""
+                        ? ` ${styles["errorMessage-inLogin"]} `
+                        : `${styles["errorMessage-inLogin_hidden"]}`
+                    }
+                  >
+                    {t("Please-enter-meeting-description")}
+                  </p>
+                </Col>
+              </Row>
             </Col>
           </Row>
           <Row className="mt-3">
             <Col lg={4} md={4} sm={12}>
               <Row className="mt-2">
                 <Col lg={12} md={12} sm={12} className="d-flex gap-3">
-                  <Switch />
+                  <Switch onChange={handleGroupChat} />
                   <span className={styles["Create_group_chat_heading"]}>
                     {t("Create-group-chat")}
                   </span>
@@ -161,7 +364,23 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                     placeholder={t("Paste-microsoft-team-zoom-link") + "*"}
                     applyClass={"meetinInnerSearch"}
                     labelClass="d-none"
+                    name={"Link"}
+                    change={HandleChange}
+                    value={meetingDetails.Link}
                   />
+                  <Row>
+                    <Col>
+                      <p
+                        className={
+                          error && meetingDetails.Link === ""
+                            ? ` ${styles["errorMessage-inLogin"]} `
+                            : `${styles["errorMessage-inLogin_hidden"]}`
+                        }
+                      >
+                        {t("Please-enter-meeting-link")}
+                      </p>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </Col>
@@ -190,6 +409,19 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                     onChange={handleSelectChange}
                                     isSearchable={false}
                                   />
+                                  <Row>
+                                    <Col>
+                                      <p
+                                        className={
+                                          error && data.selectedOption === ""
+                                            ? ` ${styles["errorMessage-inLogin"]} `
+                                            : `${styles["errorMessage-inLogin_hidden"]}`
+                                        }
+                                      >
+                                        {t("Please-select-data-and-time")}
+                                      </p>
+                                    </Col>
+                                  </Row>
                                 </Col>
                                 <Col
                                   lg={3}
@@ -372,14 +604,30 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
               </Col>
             </Row>
             <Col lg={4} md={4} sm={12}>
-              <Select />
+              <Select onChange={handleReminderFrequency} />
             </Col>
             <Col lg={4} md={4} sm={12}>
-              <Select />
+              <Select onChange={handleReminderFrequencyTwo} />
             </Col>
             <Col lg={4} md={4} sm={12}>
-              <Select />
+              <Select onChange={handleReminderFrequencyThree} />
             </Col>
+            <Row>
+              <Col>
+                <p
+                  className={
+                    error &&
+                    meetingDetails.ReminderFrequency === 0 &&
+                    meetingDetails.ReminderFrequencyTwo === 0 &&
+                    meetingDetails.ReminderFrequencyThree === 0
+                      ? ` ${styles["errorMessage-inLogin"]} `
+                      : `${styles["errorMessage-inLogin_hidden"]}`
+                  }
+                >
+                  {t("Please-select-reminder-frequency")}
+                </p>
+              </Col>
+            </Row>
           </Row>
           <Row className="mt-3">
             <Col lg={12} md={12} sm={12}>
@@ -391,14 +639,28 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                 placeholder={t("Note-for-this-meeting") + "*"}
                 required={true}
                 maxLength={500}
+                value={meetingDetails.Notes}
               />
+              <Row>
+                <Col>
+                  <p
+                    className={
+                      error && meetingDetails.Notes === 0
+                        ? ` ${styles["errorMessage-inLogin"]} `
+                        : `${styles["errorMessage-inLogin_hidden"]}`
+                    }
+                  >
+                    {t("Please-select-reminder-frequency")}
+                  </p>
+                </Col>
+              </Row>
             </Col>
           </Row>
           <Row className="mt-4">
             <Col lg={3} md={3} sm={12}>
               <Row>
                 <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                  <Switch />
+                  <Switch onChange={handleRSPV} />
                   <span className={styles["Notify_heading"]}>
                     {t("Allow-rspv")}
                   </span>
@@ -408,7 +670,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
             <Col lg={9} md={9} sm={12}>
               <Row>
                 <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                  <Switch />
+                  <Switch onChange={handleNotifyOrganizers} />
                   <span className={styles["Notify_heading"]}>
                     {t("Notify-meeting-organizer-when-members-rspv")}
                   </span>
@@ -435,7 +697,11 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
               sm={12}
               className="d-flex gap-3 justify-content-end"
             >
-              <Button text={t("Publish")} className={styles["Published"]} />
+              <Button
+                text={t("Publish")}
+                className={styles["Published"]}
+                onClick={handlePublish}
+              />
               <Button
                 text={t("Update-and-next")}
                 className={styles["Update_Next"]}

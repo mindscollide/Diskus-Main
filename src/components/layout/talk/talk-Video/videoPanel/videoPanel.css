@@ -1,0 +1,9 @@
+svg.pointer-video-icon {
+    position: fixed;
+    bottom: 135px;
+    right: 74px;
+    transform: rotate(90deg);
+    background: #fff;
+    color: #6172d6;
+    border-left: none !important;
+}

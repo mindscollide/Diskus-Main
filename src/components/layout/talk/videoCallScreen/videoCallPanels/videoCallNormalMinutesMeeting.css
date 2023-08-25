@@ -1,0 +1,31 @@
+.isMinutesmedium-div-changes {
+    height: 47vh;
+    position: absolute;
+    bottom: 10px;
+    right: 115px;
+    width: 30%;
+    background: #fff;
+    border: 1px solid #6172d6;
+    border-radius: 4px;
+}
+
+.isMinutes-paragraph {
+    font-size: 10px;
+    font-weight: 600;
+    color: #000;
+    position: relative;
+    bottom: 10px;
+}
+
+.minutesmedium-video-field input {
+    position: relative;
+    width: 100%;
+    top: 30px;
+    left: 20px;
+}
+
+.minutesmedium-video-sendIcon {
+    top: 25px;
+    position: relative;
+    right: 0px;
+}
