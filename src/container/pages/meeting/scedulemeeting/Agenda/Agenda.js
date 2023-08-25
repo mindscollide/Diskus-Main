@@ -925,7 +925,7 @@ const Agenda = () => {
                                         <Col lg={6} md={6} sm={6}>
                                           <Radio.Group
                                             onChange={subAjendaonChange}
-                                            value={subValue}
+                                            value={subAgendaData.value}
                                             disabled={
                                               apllyLockOnParentAgenda(index) ||
                                               apllyLockOnSubAgenda(
@@ -936,7 +936,7 @@ const Agenda = () => {
                                                 : false
                                             }
                                           >
-                                            <Radio subValue={1}>
+                                            <Radio value={1}>
                                               <span
                                                 className={
                                                   styles["Radio_Button_options"]
@@ -945,7 +945,7 @@ const Agenda = () => {
                                                 {t("Document")}
                                               </span>
                                             </Radio>
-                                            <Radio subValue={2}>
+                                            <Radio value={2}>
                                               <span
                                                 className={
                                                   styles["Radio_Button_options"]
@@ -954,7 +954,7 @@ const Agenda = () => {
                                                 {t("URL")}
                                               </span>
                                             </Radio>
-                                            <Radio subValue={3}>
+                                            <Radio value={3}>
                                               <span
                                                 className={
                                                   styles["Radio_Button_options"]
@@ -1023,7 +1023,7 @@ const Agenda = () => {
                                           />
                                         </Col>
                                       </Row>
-                                      {subValue === 1 ? (
+                                      {value === 1 ? (
                                         <>
                                           <Row>
                                             <Col
@@ -1097,7 +1097,7 @@ const Agenda = () => {
                                                       );
                                                     }
                                                   )
-                                                ) : subValue === 2 ? (
+                                                ) : value === 2 ? (
                                                   <>
                                                     <Row className="mt-2">
                                                       <Col
@@ -1117,7 +1117,7 @@ const Agenda = () => {
                                                       </Col>
                                                     </Row>
                                                   </>
-                                                ) : subValue === 3 ? (
+                                                ) : value === 3 ? (
                                                   <>
                                                     <Row className="mt-2">
                                                       <Col
