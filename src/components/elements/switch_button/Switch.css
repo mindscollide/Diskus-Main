@@ -1,9 +1,9 @@
 button.ant-switch.ant-switch-checked .ant-switch-handle::before {
   border-radius: 3px !important;
-  width: 20px !important;
+  width: 12px !important;
   margin: 0 !important;
   padding: 0 !important;
-  height: 20px !important;
+  height: 14px !important;
   top: -3px !important;
   left: 0px !important;
   transition: all 0.5s ease-in-out !important;
@@ -21,10 +21,10 @@ body[rtl] .ant-switch-checked .ant-switch-handle {
 }
 button.ant-switch .ant-switch-handle::before {
   border-radius: 3px !important;
-  width: 20px !important;
+  width: 12px !important;
   margin: 0 !important;
   padding: 0 !important;
-  height: 20px !important;
+  height: 14px !important;
   top: -3px !important;
   left: 0px !important;
   transition: all 0.5s ease-in-out !important;
@@ -59,8 +59,8 @@ body[dir="rtl"] .ant-switch-checked .ant-switch-handle {
 .ant-switch {
   border-radius: 3px;
   min-width: 25px;
-  width: 37.8px !important;
-  height: 20px;
+  width: 10px !important;
+  height: 14px;
   background: #fff !important;
   border: 1px solid #e1e1e1 !important;
 }
