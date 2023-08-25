@@ -20,7 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { message, Upload } from "antd";
 import Lock from "../../../../../assets/images/LOCK.svg";
 import featherupload from "../../../../../assets/images/featherupload.svg";
-import DarkLock from "../../../../../assets/images/DarkLock.svg";
+import DarkLock from "../../../../../assets/images/BlackLock.svg";
 import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
 import Key from "../../../../../assets/images/KEY.svg";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
@@ -1009,11 +1009,23 @@ const Agenda = () => {
                                                 subIndex
                                               )
                                                 ? closedLocked
+                                                : apllyLockOnSubAgenda(
+                                                    index,
+                                                    subIndex
+                                                  )
+                                                ? DarkLock
                                                 : Lock
                                             }
                                             width="18.87px"
                                             height="26.72px"
-                                            className={styles["lockBtn"]}
+                                            className={
+                                              apllyLockOnSubAgenda(
+                                                index,
+                                                subIndex
+                                              )
+                                                ? styles["lockBtn_inActive"]
+                                                : styles["lockBtn"]
+                                            }
                                             onClick={() =>
                                               lockFunctionActiveSubMenus(
                                                 index,
