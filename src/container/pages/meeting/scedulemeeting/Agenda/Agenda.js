@@ -64,8 +64,11 @@ const Agenda = () => {
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [disbaleFields, setDisbaleFields] = useState(false);
+  const [subMenudisbaleFields, setSubMenuDisbaleFields] = useState(false);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
   const [mainLock, setmainLock] = useState(0);
+  const [subLock, setSubLock] = useState([]);
+  console.log(subLock, "subLocksubLocksubLock");
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -240,6 +243,21 @@ const Agenda = () => {
   const lockFunctionActive = (index) => {
     setmainLock(index);
     setDisbaleFields(!disbaleFields);
+  };
+
+  const lockFunctionActiveSubMenus = (index, subIndex) => {
+    let findsubIndex = subLock.findIndex((data, index) => data === index);
+    console.log(findsubIndex, "findsubIndexfindsubIndexfindsubIndex");
+    if (findsubIndex !== -1) {
+      let removeIndex = subLock.filter((data, index) => data !== findsubIndex);
+      console.log(removeIndex, "subLocksubLocksubLocksubLocksubLocksubLock");
+      setSubLock(removeIndex);
+    } else {
+      subLock.push(subIndex);
+      setSubLock([...subLock]);
+    }
+    setmainLock(index);
+    setSubMenuDisbaleFields(!subMenudisbaleFields);
   };
 
   const HandleChange = (e, index) => {
@@ -669,7 +687,9 @@ const Agenda = () => {
                                   md={11}
                                   sm={11}
                                   className={
-                                    disbaleFields && mainLock === index
+                                    subMenudisbaleFields &&
+                                    mainLock === index &&
+                                    subLock.includes(subIndex)
                                       ? styles["SubajendaBox_Inactive"]
                                       : styles["SubajendaBox"]
                                   }
@@ -680,7 +700,9 @@ const Agenda = () => {
                                         applyClass={"AgendaTextField"}
                                         labelClass={"d-none"}
                                         disable={
-                                          disbaleFields && mainLock === index
+                                          subMenudisbaleFields &&
+                                          mainLock === index &&
+                                          subLock.includes(subIndex)
                                             ? true
                                             : false
                                         }
@@ -692,7 +714,9 @@ const Agenda = () => {
                                       <Select
                                         value={subAgendaData.subajendaOptions}
                                         isDisabled={
-                                          disbaleFields && mainLock === index
+                                          subMenudisbaleFields &&
+                                          mainLock === index &&
+                                          subLock.includes(subIndex)
                                             ? true
                                             : false
                                         }
@@ -711,7 +735,9 @@ const Agenda = () => {
                                         disableDayPicker
                                         inputClass="inputTImeMeeting"
                                         disabled={
-                                          disbaleFields && mainLock === index
+                                          subMenudisbaleFields &&
+                                          mainLock === index &&
+                                          subLock.includes(subIndex)
                                             ? true
                                             : false
                                         }
@@ -729,7 +755,9 @@ const Agenda = () => {
                                         disableDayPicker
                                         inputClass="inputTImeMeeting"
                                         disabled={
-                                          disbaleFields && mainLock === index
+                                          subMenudisbaleFields &&
+                                          mainLock === index &&
+                                          subLock.includes(subIndex)
                                             ? true
                                             : false
                                         }
@@ -781,8 +809,9 @@ const Agenda = () => {
                                             onChange={subAjendaonChange}
                                             value={subValue}
                                             disabled={
-                                              disbaleFields &&
-                                              mainLock === index
+                                              subMenudisbaleFields &&
+                                              mainLock === index &&
+                                              subLock.includes(subIndex)
                                                 ? true
                                                 : false
                                             }
@@ -827,7 +856,9 @@ const Agenda = () => {
                                             width="24.07px"
                                             height="24.09px"
                                             onClick={
-                                              disbaleFields
+                                              subMenudisbaleFields &&
+                                              subLock.includes(subIndex) &&
+                                              mainLock === index
                                                 ? ""
                                                 : openAdvancePermissionModal
                                             }
@@ -837,19 +868,28 @@ const Agenda = () => {
                                             width="25.85px"
                                             height="25.89px"
                                             onClick={
-                                              disbaleFields ? "" : openVoteMOdal
+                                              subMenudisbaleFields &&
+                                              subLock.includes(subIndex) &&
+                                              mainLock === index
+                                                ? ""
+                                                : openVoteMOdal
                                             }
                                           />
                                           <img
                                             src={
-                                              disbaleFields
+                                              subMenudisbaleFields
                                                 ? closedLocked
                                                 : Lock
                                             }
                                             width="18.87px"
                                             height="26.72px"
                                             className={styles["lockBtn"]}
-                                            // onClick={lockFunctionActive}
+                                            onClick={() =>
+                                              lockFunctionActiveSubMenus(
+                                                index,
+                                                subIndex
+                                              )
+                                            }
                                           />
                                         </Col>
                                       </Row>
