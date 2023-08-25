@@ -66,7 +66,6 @@ const Agenda = () => {
   const [disbaleFields, setDisbaleFields] = useState(false);
   const [subMenudisbaleFields, setSubMenuDisbaleFields] = useState(false);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
-  const [mainLock, setmainLock] = useState(0);
   const [subLock, setSubLock] = useState([]);
   console.log(subLock, "subLocksubLocksubLock");
   const [open, setOpen] = useState({
@@ -275,26 +274,38 @@ const Agenda = () => {
   const openVoteMOdal = () => {
     dispatch(showVoteAgendaModal(true));
   };
+  const [mainLock, setmainLock] = useState([]);
 
-  const lockFunctionActive = (index) => {
-    setmainLock(index);
-    setDisbaleFields(!disbaleFields);
-  };
-
-  const lockFunctionActiveSubMenus = (index, subIndex) => {
-    let findsubIndex = subLock.findIndex((data, index) => data === index);
-    console.log(findsubIndex, "findsubIndexfindsubIndexfindsubIndex");
-    if (findsubIndex !== -1) {
-      let removeIndex = subLock.filter((data, index) => data !== findsubIndex);
-      console.log(removeIndex, "subLocksubLocksubLocksubLocksubLocksubLock");
-      setSubLock(removeIndex);
+  const lockFunctionActive = (data) => {
+    if (mainLock.length === 0) {
+      // If state is empty, add the data
+      setmainLock([data]);
     } else {
-      subLock.push(subIndex);
-      setSubLock([...subLock]);
+      const existingIndex = mainLock.findIndex((item) => item === data);
+      if (existingIndex >= 0) {
+        // If parentIndex exists, remove it
+        const updatedData = mainLock.filter((item) => item !== data);
+        setmainLock(updatedData);
+      } else {
+        // If parentIndex doesn't exist, add it
+        setmainLock([...mainLock, data]);
+      }
     }
-    setmainLock(index);
-    setSubMenuDisbaleFields(!subMenudisbaleFields);
   };
+  const apllyLockOnParentAgenda = (parentIndex) => {
+    const exists = mainLock.some((item) => {
+      if (item === parentIndex) {
+        return true;
+      }
+      return false;
+    });
+
+    return exists;
+  };
+  console.log(
+    mainLock,
+    "findsubIndexfindsubIndexfindsubIndex newCloneParentIndex"
+  );
 
   const HandleChange = (e, index) => {
     let name = parseInt(e.target.name);
@@ -307,6 +318,44 @@ const Agenda = () => {
       })
     );
   };
+  const [subLockArry, setSubLockArray] = useState([]);
+
+  const lockFunctionActiveSubMenus = (index, subindex) => {
+    let cloneSubLockArry = [...subLockArry];
+    console.log(index, subindex, "findsubIndexfindsubIndexfindsubIndex");
+
+    const parentIndexExists = cloneSubLockArry.findIndex(
+      (item) => item.parentIndex === index
+    );
+
+    if (parentIndexExists >= 0) {
+      const existingParentIndexObj = cloneSubLockArry[parentIndexExists];
+
+      const subIndexExists = existingParentIndexObj.SubIndexArray.findIndex(
+        (item) => item.subIndex === subindex
+      );
+
+      if (subIndexExists >= 0) {
+        existingParentIndexObj.SubIndexArray.splice(subIndexExists, 1);
+
+        // If SubIndexArray is empty, remove the entire parent index object
+        if (existingParentIndexObj.SubIndexArray.length === 0) {
+          cloneSubLockArry.splice(parentIndexExists, 1);
+        }
+      } else {
+        existingParentIndexObj.SubIndexArray.push({ subIndex: subindex });
+      }
+    } else {
+      let newData = {
+        parentIndex: index,
+        SubIndexArray: [{ subIndex: subindex }],
+      };
+      cloneSubLockArry.push(newData);
+    }
+
+    setSubLockArray(cloneSubLockArry);
+  };
+  console.log(subLockArry, "findsubIndexfindsubIndexfindsubIndex");
 
   const handleNotes = (e) => {
     let name = parseInt(e.target.name);
@@ -324,6 +373,19 @@ const Agenda = () => {
     dispatch(showImportPreviousAgendaModal(true));
   };
 
+  const apllyLockOnSubAgenda = (parentIndex, subIndex) => {
+    const exists = subLockArry.some((item) => {
+      if (item.parentIndex === parentIndex) {
+        return item.SubIndexArray.some(
+          (subItem) => subItem.subIndex === subIndex
+        );
+      }
+      return false;
+    });
+
+    return exists;
+  };
+
   return (
     <>
       <section>
@@ -339,7 +401,7 @@ const Agenda = () => {
                           md={12}
                           sm={12}
                           className={
-                            disbaleFields && mainLock === index
+                            apllyLockOnParentAgenda(index)
                               ? styles["BackGround_Agenda_InActive"]
                               : styles["BackGround_Agenda"]
                           }
@@ -354,9 +416,7 @@ const Agenda = () => {
                                 name={data.name}
                                 change={(e) => HandleChange(e)}
                                 disable={
-                                  disbaleFields && mainLock === index
-                                    ? true
-                                    : false
+                                  apllyLockOnParentAgenda(index) ? true : false
                                 }
                               />
                             </Col>
@@ -365,9 +425,7 @@ const Agenda = () => {
                                 options={options}
                                 value={data.selectedOption}
                                 isDisabled={
-                                  disbaleFields && mainLock === index
-                                    ? true
-                                    : false
+                                  apllyLockOnParentAgenda(index) ? true : false
                                 }
                               />
                             </Col>
@@ -387,9 +445,7 @@ const Agenda = () => {
                                 selected={data.startDate}
                                 plugins={[<TimePicker hideSeconds />]}
                                 disabled={
-                                  disbaleFields && mainLock === index
-                                    ? true
-                                    : false
+                                  apllyLockOnParentAgenda(index) ? true : false
                                 }
                               />
                               <img src={desh} width="19.02px" />
@@ -403,9 +459,7 @@ const Agenda = () => {
                                 selected={data.endDate}
                                 plugins={[<TimePicker hideSeconds />]}
                                 disabled={
-                                  disbaleFields && mainLock === index
-                                    ? true
-                                    : false
+                                  apllyLockOnParentAgenda(index) ? true : false
                                 }
                               />
                               <img
@@ -445,7 +499,7 @@ const Agenda = () => {
                                     onChange={onChange}
                                     value={data.value}
                                     disabled={
-                                      disbaleFields && mainLock === index
+                                      apllyLockOnParentAgenda(index)
                                         ? true
                                         : false
                                     }
@@ -490,7 +544,7 @@ const Agenda = () => {
                                     width="24.07px"
                                     height="24.09px"
                                     onClick={
-                                      disbaleFields
+                                      apllyLockOnParentAgenda(index)
                                         ? ""
                                         : openAdvancePermissionModal
                                     }
@@ -499,11 +553,15 @@ const Agenda = () => {
                                     src={Cast}
                                     width="25.85px"
                                     height="25.89px"
-                                    onClick={disbaleFields ? "" : openVoteMOdal}
+                                    onClick={
+                                      apllyLockOnParentAgenda(index)
+                                        ? ""
+                                        : openVoteMOdal
+                                    }
                                   />
                                   <img
                                     src={
-                                      disbaleFields && mainLock === index
+                                      apllyLockOnParentAgenda(index)
                                         ? closedLocked
                                         : Lock
                                     }
@@ -726,9 +784,8 @@ const Agenda = () => {
                                   md={11}
                                   sm={11}
                                   className={
-                                    subMenudisbaleFields &&
-                                    mainLock === index &&
-                                    subLock.includes(subIndex)
+                                    apllyLockOnParentAgenda(index) ||
+                                    apllyLockOnSubAgenda(index, subIndex)
                                       ? styles["SubajendaBox_Inactive"]
                                       : styles["SubajendaBox"]
                                   }
@@ -739,9 +796,8 @@ const Agenda = () => {
                                         applyClass={"AgendaTextField"}
                                         labelClass={"d-none"}
                                         disable={
-                                          subMenudisbaleFields &&
-                                          mainLock === index &&
-                                          subLock.includes(subIndex)
+                                          apllyLockOnParentAgenda(index) ||
+                                          apllyLockOnSubAgenda(index, subIndex)
                                             ? true
                                             : false
                                         }
@@ -753,9 +809,8 @@ const Agenda = () => {
                                       <Select
                                         value={subAgendaData.subajendaOptions}
                                         isDisabled={
-                                          subMenudisbaleFields &&
-                                          mainLock === index &&
-                                          subLock.includes(subIndex)
+                                          apllyLockOnParentAgenda(index) ||
+                                          apllyLockOnSubAgenda(index, subIndex)
                                             ? true
                                             : false
                                         }
@@ -774,9 +829,8 @@ const Agenda = () => {
                                         disableDayPicker
                                         inputClass="inputTImeMeeting"
                                         disabled={
-                                          subMenudisbaleFields &&
-                                          mainLock === index &&
-                                          subLock.includes(subIndex)
+                                          apllyLockOnParentAgenda(index) ||
+                                          apllyLockOnSubAgenda(index, subIndex)
                                             ? true
                                             : false
                                         }
@@ -794,9 +848,8 @@ const Agenda = () => {
                                         disableDayPicker
                                         inputClass="inputTImeMeeting"
                                         disabled={
-                                          subMenudisbaleFields &&
-                                          mainLock === index &&
-                                          subLock.includes(subIndex)
+                                          apllyLockOnParentAgenda(index) ||
+                                          apllyLockOnSubAgenda(index, subIndex)
                                             ? true
                                             : false
                                         }
@@ -812,7 +865,11 @@ const Agenda = () => {
                                         height="9.2px"
                                         className="cursor-pointer"
                                         onClick={() => {
-                                          handleSubMenuExpand(index, subIndex);
+                                          apllyLockOnParentAgenda(index) ||
+                                            handleSubMenuExpand(
+                                              index,
+                                              subIndex
+                                            );
                                         }}
                                       />
                                       <img
@@ -823,7 +880,11 @@ const Agenda = () => {
                                           styles["RedCross_Icon_class"]
                                         }
                                         onClick={() => {
-                                          handleCrossSubAjenda(index, subIndex);
+                                          apllyLockOnParentAgenda(index) ||
+                                            handleCrossSubAjenda(
+                                              index,
+                                              subIndex
+                                            );
                                         }}
                                       />
                                     </Col>
@@ -848,9 +909,11 @@ const Agenda = () => {
                                             onChange={subAjendaonChange}
                                             value={subAgendaData.value}
                                             disabled={
-                                              subMenudisbaleFields &&
-                                              mainLock === index &&
-                                              subLock.includes(subIndex)
+                                              apllyLockOnParentAgenda(index) ||
+                                              apllyLockOnSubAgenda(
+                                                index,
+                                                subIndex
+                                              )
                                                 ? true
                                                 : false
                                             }
@@ -895,9 +958,11 @@ const Agenda = () => {
                                             width="24.07px"
                                             height="24.09px"
                                             onClick={
-                                              subMenudisbaleFields &&
-                                              subLock.includes(subIndex) &&
-                                              mainLock === index
+                                              apllyLockOnParentAgenda(index) ||
+                                              apllyLockOnSubAgenda(
+                                                index,
+                                                subIndex
+                                              )
                                                 ? ""
                                                 : openAdvancePermissionModal
                                             }
@@ -907,16 +972,22 @@ const Agenda = () => {
                                             width="25.85px"
                                             height="25.89px"
                                             onClick={
-                                              subMenudisbaleFields &&
-                                              subLock.includes(subIndex) &&
-                                              mainLock === index
+                                              apllyLockOnParentAgenda(index) ||
+                                              apllyLockOnSubAgenda(
+                                                index,
+                                                subIndex
+                                              )
                                                 ? ""
                                                 : openVoteMOdal
                                             }
                                           />
                                           <img
                                             src={
-                                              subMenudisbaleFields
+                                              apllyLockOnParentAgenda(index) ||
+                                              apllyLockOnSubAgenda(
+                                                index,
+                                                subIndex
+                                              )
                                                 ? closedLocked
                                                 : Lock
                                             }
@@ -1177,6 +1248,19 @@ const Agenda = () => {
                                   ) : null}
                                 </Col>
                               </Row>
+                              {/* {data.subAgenda.length == 1 ? null : data
+                                  .subAgenda.length -
+                                  1 ===
+                                subIndex ? null : (
+                                <Row className="mt-3">
+                                  <Col lg={12} md={12} sm={12}>
+                                    <img
+                                      src={line}
+                                      className={styles["LineStyles"]}
+                                    />
+                                  </Col>
+                                </Row>
+                              )} */}
                             </>
                           );
                         })}
