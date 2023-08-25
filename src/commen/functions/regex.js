@@ -15,3 +15,9 @@ export const validateInput = (data) => {
   }
   return data;
 };
+
+// replace slash / with \\
+export const replaceSlashWithBackslash = (inputString) => {
+  // Use the global "g" flag in the regular expression to replace all occurrences
+  return inputString.replace(/\//g, '\\');
+}

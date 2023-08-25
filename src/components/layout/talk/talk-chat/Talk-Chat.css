@@ -9,6 +9,13 @@
   overflow: hidden auto;
   border-radius: 4px;
   top: 80px;
+  opacity: 1;
+  /* Initial opacity */
+  transition: opacity 0.2s ease-in;
+  -webkit-transition: opacity 0.2s ease-in !important;
+  -moz-transition: opacity 0.2s ease-in;
+  -o-transition: opacity 0.2s ease-in;
+  -ms-transition: opacity 0.2s ease-in;
 }
 
 .chatBox.height {

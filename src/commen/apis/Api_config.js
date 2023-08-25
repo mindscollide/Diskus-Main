@@ -780,6 +780,9 @@ const getAllStarredMessages = {
   RequestMethod: 'ServiceManager.GetAllFlaggedMessages',
 }
 
+const saveFilesandFolderRM = {
+  RequestMethod: 'ServiceManager.SaveFileAndFolder'
+}
 export {
   subscriptionPackageUpgradeAmount,
   paymentCompleteMethod,
@@ -990,4 +993,5 @@ export {
   deltePolls,
   updateMessageAcknowledgement,
   getAllStarredMessages,
+  saveFilesandFolderRM
 }

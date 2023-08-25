@@ -1,0 +1,79 @@
+.chatmedium-messenger-IsOpen {
+    height: 47vh;
+    position: absolute;
+    bottom: 10px;
+    right: 115px;
+    width: 30%;
+    background: #fff;
+    border: 1px solid #6172d6;
+    border-radius: 4px;
+}
+
+.video-chat-group-icon {
+    position: absolute;
+    top: 5px;
+}
+
+.video-chat-It-Heading {
+    font-size: 10px !important;
+    font-weight: 600;
+}
+
+.video-crypto-row {
+    background-color: #f16b6b !important;
+    margin-top: 10px;
+    color: #fff !important;
+}
+
+.bottom-video-chat-input-div {
+    position: absolute;
+    bottom: 0px;
+    left: 13px;
+    border: 1px solid #e1e1e1;
+    padding: 5px 5px !important;
+    width: 99%;
+}
+
+.encryption-videoCalling-video-chat p.level-videoCalling-heading {
+    font-size: 12px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    margin-left: 15px;
+}
+
+.encryption-videoCalling-video-chat span.securityicon-Video-box {
+    position: absolute;
+    right: 25px;
+    bottom: 10px;
+}
+
+p.level-videoCalling-heading {
+    font-size: 12px;
+}
+
+p.level-NIAP {
+    text-align: left;
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+span.securityicon-Video-box {
+    position: absolute;
+    right: 15px;
+}
+
+.chat-inside-video-plus-img {
+    position: absolute;
+    left: 15%;
+}
+
+.chat-inside-video-sendIcon-img {
+    position: relative;
+    right: 10px;
+}
+
+.chat-video-field input {
+    position: absolute;
+    width: 57%;
+    left: 23%;
+}

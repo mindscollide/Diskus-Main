@@ -55,6 +55,8 @@ const saveFilesApi = (
   let createrID = localStorage.getItem('userID')
   let OrganizationID = localStorage.getItem('organizationID')
   let folderID = JSON.parse(localStorage.getItem('folderID'))
+  let currentView = localStorage.getItem("setTableView")
+  let viewFolderID = localStorage.getItem("folderID")
   console.log(folderID, 'folderIDfolderIDfolderID')
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
@@ -113,10 +115,15 @@ const saveFilesApi = (
               )
               setShowbarupload(false)
               setTasksAttachments([])
-              if (folderID !== null) {
-                dispatch(getFolderDocumentsApi(navigate, folderID, t))
+              // if (folderID !== null) {
+              //   dispatch(getFolderDocumentsApi(navigate, folderID, t))
+              // } else {
+              //   dispatch(getDocumentsAndFolderApi(navigate, 1, t))
+              // }
+              if (viewFolderID !== null) {
+                dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1));
               } else {
-                dispatch(getDocumentsAndFolderApi(navigate, 1, t))
+                dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2));
               }
             } else if (
               response.data.responseResult.responseMessage
@@ -187,6 +194,8 @@ const uploadDocumentsApi = (
 ) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let startTime = Date.now()
+  console.log("uploadFileFolder single", file)
+
   return (dispatch) => {
     // dispatch(uploadDocument_init())
     setProgress(0)
@@ -397,11 +406,13 @@ const getFolerDocuments_fail = (message) => {
 }
 
 // Get Folder Documents Api
-const getFolderDocumentsApi = (navigate, FolderId, t) => {
+const getFolderDocumentsApi = (navigate, FolderId, t, no) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = { FolderID: JSON.parse(FolderId) }
   return (dispatch) => {
-    dispatch(getFolerDocuments_init())
+    if (no !== 1) {
+      dispatch(getFolerDocuments_init())
+    }
     let form = new FormData()
     form.append('RequestMethod', getFolderDocumentsRequestMethod.RequestMethod)
     form.append('RequestData', JSON.stringify(Data))
@@ -595,7 +606,7 @@ const getDocumentsAndFolders_fail = (message) => {
 }
 
 // Get Documents And Folder API
-const getDocumentsAndFolderApi = (navigate, statusID, t) => {
+const getDocumentsAndFolderApi = (navigate, statusID, t, no) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let createrID = localStorage.getItem('userID')
   let OrganizationID = localStorage.getItem('organizationID')
@@ -603,6 +614,8 @@ const getDocumentsAndFolderApi = (navigate, statusID, t) => {
     UserID: parseInt(createrID),
     OrganizationID: parseInt(OrganizationID),
     StatusID: parseInt(statusID),
+    SortBy: 1,
+    isDescending: false
     // sRow: 10
   }
   // let Data = {
@@ -611,7 +624,9 @@ const getDocumentsAndFolderApi = (navigate, statusID, t) => {
   //     StatusID: parseInt(statusID)
   // }
   return (dispatch) => {
-    dispatch(getDocumentsAndFolders_init())
+    if (no !== 1) {
+      dispatch(getDocumentsAndFolders_init())
+    }
     let form = new FormData()
     form.append(
       'RequestMethod',
@@ -829,6 +844,7 @@ const shareFoldersApi = (navigate, FolderData, t, setShowrequestsend) => {
               } else {
                 dispatch(getDocumentsAndFolderApi(navigate, 3, t))
               }
+
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()

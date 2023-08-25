@@ -62,7 +62,9 @@
   margin-left: -15px;
 }
 
-.dropdown-assignee:has(.dropdown-row-assignee.d-flex.align-items-center.flex-row) {
+.dropdown-assignee:has(
+    .dropdown-row-assignee.d-flex.align-items-center.flex-row
+  ) {
   border: 1px solid #ced4da !important;
 }
 
@@ -89,4 +91,8 @@
 .dropdown-row-assignee p {
   font-size: 15px;
   font-weight: 600;
+}
+
+.SearchFilter_Meetings {
+  height: 39px !important;
 }
