@@ -14,6 +14,7 @@ const initialState = {
   advancePermissionConfirmation: false,
   voteAgendaModal: false,
   voteConfirmationModal: false,
+  importPreviousAgendaModal: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -98,6 +99,13 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         voteConfirmationModal: action.response,
+      };
+    }
+
+    case actions.IMPORT_PREVIOUS_AGENDA: {
+      return {
+        ...state,
+        importPreviousAgendaModal: action.response,
       };
     }
 

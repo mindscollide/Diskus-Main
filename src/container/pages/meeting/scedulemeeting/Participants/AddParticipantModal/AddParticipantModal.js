@@ -26,6 +26,9 @@ const AddParticipantModal = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  const [addParticipant, setAddParticipant] = useState({
+    SearhParticipant: "",
+  });
   const data = [
     {
       key: "1",
@@ -114,6 +117,14 @@ const AddParticipantModal = () => {
     },
   ];
 
+  const handleSearchParticpants = (e) => {
+    let value = e.target.value;
+    setAddParticipant({
+      ...addParticipant,
+      SearhParticipant: value,
+    });
+  };
+
   const handleCrossIcon = () => {
     dispatch(showAddParticipantsModal(false));
   };
@@ -126,56 +137,79 @@ const AddParticipantModal = () => {
         onHide={() => {
           dispatch(showAddParticipantsModal(false));
         }}
-        size={"md"}
+        size={"lg"}
         ModalBody={
           <>
             <Row>
-              <Col lg={5} md={5} sm={12}>
-                <span className={styles["Add_organization"]}>
-                  {t("Add-participants")}
-                </span>
-              </Col>
-              <Col lg={7} md={7} sm={12} className="d-flex justify-content-end">
-                <img
-                  src={BlackCrossIcon}
-                  className={"cursor-pointer"}
-                  width="16px"
-                  height="16px"
-                  onClick={handleCrossIcon}
-                />
-              </Col>
-            </Row>
-            <Row className="mt-5">
-              <Col lg={12} md={12} sm={12}>
-                <TextField labelClass={"d-none"} applyClass={"addOraganizer"} />
-              </Col>
-            </Row>
-            <Row className="mt-2">
-              <Col lg={12} md={12} sm={12}>
-                <Table
-                  column={ModalOrganizorsColoumns}
-                  scroll={{ y: "62vh" }}
-                  pagination={false}
-                  className="Polling_table"
-                  rows={rowsData}
-                />
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className={styles["OverAll_padding"]}
+              >
+                <Row>
+                  <Col lg={5} md={5} sm={12}>
+                    <span className={styles["Add_organization"]}>
+                      {t("Add-participants")}
+                    </span>
+                  </Col>
+                  <Col
+                    lg={7}
+                    md={7}
+                    sm={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <img
+                      src={BlackCrossIcon}
+                      className={"cursor-pointer"}
+                      width="16px"
+                      height="16px"
+                      onClick={handleCrossIcon}
+                    />
+                  </Col>
+                </Row>
+                <Row className="mt-5">
+                  <Col lg={12} md={12} sm={12}>
+                    <TextField
+                      labelClass={"d-none"}
+                      applyClass={"addOraganizer"}
+                      value={addParticipant.SearhParticipant}
+                      change={handleSearchParticpants}
+                    />
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Col lg={12} md={12} sm={12}>
+                    <Table
+                      column={ModalOrganizorsColoumns}
+                      scroll={{ y: "62vh" }}
+                      pagination={false}
+                      className="Polling_table"
+                      rows={rowsData}
+                    />
+                  </Col>
+                </Row>
               </Col>
             </Row>
           </>
         }
         ModalFooter={
           <>
-            <Row className="mt-2 m-0 p-0">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-end"
-              >
-                <Button
-                  text={t("Done")}
-                  className={styles["Done_btn_organizor_modal"]}
-                />
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                <Row className="mt-2">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-end"
+                  >
+                    <Button
+                      text={t("Done")}
+                      className={styles["Done_btn_organizor_modal"]}
+                    />
+                  </Col>
+                </Row>
               </Col>
             </Row>
           </>

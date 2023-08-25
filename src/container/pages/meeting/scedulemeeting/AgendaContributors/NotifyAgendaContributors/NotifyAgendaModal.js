@@ -17,12 +17,15 @@ import {
 import UpperArrow from "../../../../../../assets/images/blueUp.svg";
 import { Col, Row } from "react-bootstrap";
 import styles from "./NotifyAgendaModal.module.css";
+import { validateInput } from "../../../../../../commen/functions/regex";
+import BlueDownArrow from "../../../../../../assets/images/blueDownDirect.png";
 
 const NotifyAgendaModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  const [hidemembes, setHidemembes] = useState(false);
   const [members, setMembers] = useState([
     {
       name: "saif",
@@ -47,8 +50,35 @@ const NotifyAgendaModal = () => {
     },
   ]);
 
+  const [agendaMessege, setAgendaMessege] = useState({
+    Messege: "",
+  });
+
   const handleCrossIcon = () => {
     dispatch(showAgendaContributorsModals(false));
+  };
+
+  const HandleChange = (e, index) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "AgendaMessege") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setAgendaMessege({
+          ...agendaMessege,
+          Messege: valueCheck,
+        });
+      } else {
+        setAgendaMessege({
+          ...agendaMessege,
+          Messege: "",
+        });
+      }
+    }
+  };
+
+  const handleExpandNames = () => {
+    setHidemembes(!hidemembes);
   };
 
   return (
@@ -85,7 +115,9 @@ const NotifyAgendaModal = () => {
                   type="text"
                   as={"textarea"}
                   rows="4"
-                  placeholder={t("Message")}
+                  placeholder={t("AgendaMessege")}
+                  value={agendaMessege.Messege}
+                  change={HandleChange}
                   required={true}
                   maxLength={500}
                 />
@@ -98,62 +130,71 @@ const NotifyAgendaModal = () => {
                 sm={12}
                 className="d-flex justify-content-end align-items-center gap-2"
               >
-                <span className={styles["Hide_names"]}>{t("Hide-names")}</span>
+                <span className={styles["Hide_names"]}>
+                  {hidemembes ? t("Show-names") : t("Hide-names")}
+                </span>
                 <img
-                  src={UpperArrow}
+                  src={hidemembes ? BlueDownArrow : UpperArrow}
                   width="18.4px"
                   height="9.2px"
                   className="cursor-pointer"
+                  onClick={handleExpandNames}
                 />
               </Col>
             </Row>
-            <Row className="mt-3">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className={styles["Scroller_notify"]}
-              >
-                <Row>
-                  {members.map((data, index) => {
-                    return (
-                      <Col lg={6} md={6} sm={12} className="mt-2">
-                        <Row className="m-0 p-0">
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Box_for_Assignee"]}
-                          >
-                            <Row>
+            {hidemembes ? null : (
+              <>
+                <Row className="mt-3">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Scroller_notify"]}
+                  >
+                    <Row>
+                      {members.map((data, index) => {
+                        return (
+                          <Col lg={6} md={6} sm={12} className="mt-2">
+                            <Row className="m-0 p-0">
                               <Col
-                                lg={10}
-                                md={10}
+                                lg={12}
+                                md={12}
                                 sm={12}
-                                className="d-flex gap-2 align-items-center"
+                                className={styles["Box_for_Assignee"]}
                               >
-                                <img
-                                  src={profile}
-                                  width="33px"
-                                  height="33px"
-                                  className={styles["ProfilePic"]}
-                                />
-                                <span className={styles["Participants_Name"]}>
-                                  {data.name}
-                                </span>
-                              </Col>
-                              <Col lg={2} md={2} sm={12}>
-                                <Checkbox />
+                                <Row>
+                                  <Col
+                                    lg={10}
+                                    md={10}
+                                    sm={12}
+                                    className="d-flex gap-2 align-items-center"
+                                  >
+                                    <img
+                                      src={profile}
+                                      width="33px"
+                                      height="33px"
+                                      className={styles["ProfilePic"]}
+                                    />
+                                    <span
+                                      className={styles["Participants_Name"]}
+                                    >
+                                      {data.name}
+                                    </span>
+                                  </Col>
+                                  <Col lg={2} md={2} sm={12}>
+                                    <Checkbox />
+                                  </Col>
+                                </Row>
                               </Col>
                             </Row>
                           </Col>
-                        </Row>
-                      </Col>
-                    );
-                  })}
+                        );
+                      })}
+                    </Row>
+                  </Col>
                 </Row>
-              </Col>
-            </Row>
+              </>
+            )}
           </>
         }
         ModalFooter={
