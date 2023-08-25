@@ -16,7 +16,8 @@ import CommentIcon from "../../../assets/images/Comment-Icon.png";
 import IconAttachment from "../../../assets/images/Icon-Attachment.png";
 import VideoIcon from "../../../assets/images/Video-Icon.png";
 import UserImageInTable from "../../../assets/images/newElements/meetingtableuserIcon.png";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Form from "react-bootstrap/Form";
 import "./Meeting.css";
 
@@ -62,7 +63,6 @@ import { Pagination, Select } from "antd";
 const { Option } = Select;
 const Meeting = () => {
   //For Localization
-
   const { t } = useTranslation();
   registerLocale("ar", ar);
   registerLocale("en", enGB);
@@ -179,7 +179,7 @@ const Meeting = () => {
     }
   }, [MeetingStatusSocket]);
 
-  useEffect(() => { }, [rows]);
+  useEffect(() => {}, [rows]);
 
   useEffect(() => {
     if (
@@ -274,7 +274,7 @@ const Meeting = () => {
           return false;
         }
       });
-    } catch (e) { }
+    } catch (e) {}
   };
 
   const columns = [
@@ -599,9 +599,9 @@ const Meeting = () => {
     if (
       minuteofMeetingReducer.AddMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.AddMeetingofMinutesMessage !=
-      t("The-record-has-been-saved-successfully") &&
+        t("The-record-has-been-saved-successfully") &&
       minuteofMeetingReducer.AddMeetingofMinutesMessage !==
-      t("No-records-found")
+        t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -620,9 +620,9 @@ const Meeting = () => {
     } else if (
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage != "" &&
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage !=
-      t("The-record-has-been-saved-successfully") &&
+        t("The-record-has-been-saved-successfully") &&
       minuteofMeetingReducer.UpdateMeetingofMinutesMessage !==
-      t("No-records-found")
+        t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -641,7 +641,7 @@ const Meeting = () => {
     } else if (
       minuteofMeetingReducer.ResponseMessage != "" &&
       assignees.ResponseMessage !=
-      t("The-record-has-been-saved-successfully") &&
+        t("The-record-has-been-saved-successfully") &&
       minuteofMeetingReducer.ResponseMessage !== t("No-records-found") &&
       assignees.ResponseMessage !== t("No-records-found")
     ) {
@@ -851,6 +851,10 @@ const Meeting = () => {
     });
   };
 
+  const handleNavigationToAdnvanceMeeting = () => {
+    navigate("/DisKus/Meeting2");
+  };
+
   return (
     <>
       <Col className="meeting_container">
@@ -870,14 +874,14 @@ const Meeting = () => {
               variant={"Primary"}
               icon={<Plus width={20} height={20} fontWeight={800} />}
               // className={"Meeting-schedule-btn"}
-              text={t("Schedule-a-meeting")}
+              text={t("Quick-meeting")}
               onClick={modalHandler}
             />
           </Col>
           <Col
-            md={8}
-            lg={8}
-            sm={8}
+            md={6}
+            lg={6}
+            sm={6}
             // xs={12}
             className="meeting-fields p-0 meeting-searchfileds"
           >
@@ -1002,6 +1006,20 @@ const Meeting = () => {
               </>
             )}
           </Col>
+          <Col
+            lg={2}
+            md={2}
+            sm={2}
+            className="d-flex justify-content-center  p-0 m-0 align-items-center"
+          >
+            <Button
+              text={t("Advance-meeting")}
+              className={"ScheduleAMeeting"}
+              icon={<Plus width={20} height={20} fontWeight={800} />}
+              variant={"Primary"}
+              onClick={handleNavigationToAdnvanceMeeting}
+            />
+          </Col>
         </Row>
         <Row className="mx-1 meeting-table-row">
           <Col>
@@ -1067,10 +1085,12 @@ const Meeting = () => {
               <Pagination
                 className="PaginationStyle-Meeting"
                 onChange={paginationChangeHandlerMeeting}
-                current={meetingPageCurrent !== null &&
+                current={
+                  meetingPageCurrent !== null &&
                   meetingPageCurrent !== undefined
-                  ? meetingPageCurrent
-                  : 1}
+                    ? meetingPageCurrent
+                    : 1
+                }
                 pageSize={
                   meetingpageRow !== null && meetingpageRow !== undefined
                     ? meetingpageRow
@@ -1100,9 +1120,9 @@ const Meeting = () => {
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
 
       {meetingIdReducer.Loading ||
-        assignees.Loading ||
-        uploadReducer.Loading ||
-        minuteofMeetingReducer.Loading ? (
+      assignees.Loading ||
+      uploadReducer.Loading ||
+      minuteofMeetingReducer.Loading ? (
         <Loader />
       ) : null}
     </>

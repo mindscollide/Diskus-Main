@@ -19,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { message, Upload } from "antd";
 import Lock from "../../../../../assets/images/LOCK.svg";
 import featherupload from "../../../../../assets/images/featherupload.svg";
+import DarkLock from "../../../../../assets/images/DarkLock.svg";
 import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
 import Key from "../../../../../assets/images/KEY.svg";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
@@ -543,6 +544,7 @@ const Agenda = () => {
                                     src={Key}
                                     width="24.07px"
                                     height="24.09px"
+                                    className="cursor-pointer"
                                     onClick={
                                       apllyLockOnParentAgenda(index)
                                         ? ""
@@ -553,6 +555,7 @@ const Agenda = () => {
                                     src={Cast}
                                     width="25.85px"
                                     height="25.89px"
+                                    className="cursor-pointer"
                                     onClick={
                                       apllyLockOnParentAgenda(index)
                                         ? ""
@@ -562,11 +565,15 @@ const Agenda = () => {
                                   <img
                                     src={
                                       apllyLockOnParentAgenda(index)
-                                        ? closedLocked
+                                        ? DarkLock
                                         : Lock
                                     }
                                     width="18.87px"
-                                    className={styles["lockBtn"]}
+                                    className={
+                                      apllyLockOnParentAgenda(index)
+                                        ? styles["lockBtn_inActive"]
+                                        : styles["lockBtn"]
+                                    }
                                     height="26.72px"
                                     onClick={() => lockFunctionActive(index)}
                                   />
@@ -956,6 +963,7 @@ const Agenda = () => {
                                           <img
                                             src={Key}
                                             width="24.07px"
+                                            className="cursor-pointer"
                                             height="24.09px"
                                             onClick={
                                               apllyLockOnParentAgenda(index) ||
@@ -971,6 +979,7 @@ const Agenda = () => {
                                             src={Cast}
                                             width="25.85px"
                                             height="25.89px"
+                                            className="cursor-pointer"
                                             onClick={
                                               apllyLockOnParentAgenda(index) ||
                                               apllyLockOnSubAgenda(
