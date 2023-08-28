@@ -406,7 +406,7 @@ const getFolerDocuments_fail = (message) => {
 }
 
 // Get Folder Documents Api
-const getFolderDocumentsApi = (navigate, FolderId, t, no, sort, orderby) => {
+const getFolderDocumentsApi = (navigate, FolderId, t, no) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = { FolderID: JSON.parse(FolderId) }
   return (dispatch) => {
@@ -607,8 +607,6 @@ const getDocumentsAndFolders_fail = (message) => {
 
 // Get Documents And Folder API
 const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
-  console.log(navigate, statusID, t, no, order, sort, "getDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApi")
-  console.log(no, order, sort, " 2 getDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApi")
 
   let token = JSON.parse(localStorage.getItem('token'))
   let createrID = localStorage.getItem('userID')
@@ -617,7 +615,7 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
     UserID: parseInt(createrID),
     OrganizationID: parseInt(OrganizationID),
     StatusID: parseInt(statusID),
-    SortBy: sort !== null && sort !== undefined ? sort : 2,
+    SortBy: sort !== null && sort !== undefined ? sort : 1,
     isDescending: order !== null & order !== undefined ? order : true,
     sRow: 0,
     Length: 10

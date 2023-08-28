@@ -194,7 +194,8 @@ const DataRoom = () => {
   const [searchDocumentTypeValue, setSearchDocumentTypeValue] = useState(0);
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
   const [currentSort, setCurrentSort] = useState("descend"); // Initial sort order
-  const [currentFilter, setCurrentFilter] = useState(t("Last-modified")); // Initial filter value
+  const [currentFilter, setCurrentFilter] = useState(t("Last-modified"));
+  const [currentFilterID, setCurrentFilterID] = useState(t("Last-modified")); // Initial filter value
   let viewFolderID = localStorage.getItem("folderID")
   const [searchResultBoxFields, setSearchResultBoxFields] = useState({
     documentType: {
@@ -880,35 +881,24 @@ const DataRoom = () => {
     fetchDataWithFilter(filterValue);
   };
 
+  useEffect(() => {
+    if (currentFilter !== null && currentFilter !== undefined, currentFilter !== "") {
+      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, currentFilter));
+    }
+  }, [currentFilter])
   const handleSortChange = (pagination, filters, sorter) => {
     if (sorter.field === "sharedDate") {
       if (sorter.order === "ascend") {
-        if (viewFolderID !== null) {
-          dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1, false, 2));
-        } else {
-          dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, 2));
-        }
+        dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, 2));
       } else {
-        if (viewFolderID !== null) {
-          dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1, true, 2));
-        } else {
-          dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, true, 2));
-        }
+        dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, true, 2));
       }
     }
     if (sorter.field === "name") {
       if (sorter.order === "descend") {
-        if (viewFolderID !== null) {
-          dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1, false, 1));
-        } else {
-          dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
-        }
+        dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
       } else {
-        if (viewFolderID !== null) {
-          dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1, false, 1));
-        } else {
-          dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
-        }
+        dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
       }
     }
     setCurrentSort(sorter?.order);
@@ -917,8 +907,23 @@ const DataRoom = () => {
 
   const handleSortMyDocuments = (pagination, filters, sorter) => {
     console.log(sorter, "handleSortMyDocumentshandleSortMyDocuments")
+    if (sorter.field === "name") {
+      if (sorter.order === "ascend") {
+        dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
+      } else {
+        dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
+      }
+    }
+    // if (sorter.field === "modifiedDate") {
+    //   if (sorter.order === "ascend") {
+    //     dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 2));
+    //   } else {
+    //     dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 2));
+    //   }
+    // }
   }
   const fetchDataWithFilter = async (filterValue) => {
+    // dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, true, filterValue));
     // Call your API with the selected filter value and current sort order
     // Update the data state with the response data
   };
@@ -1051,15 +1056,15 @@ const DataRoom = () => {
       filters: [
         {
           text: t("Last-modified"),
-          value: "Last modified",
+          value: 2,
         },
         {
           text: t("Last-modified-by-me"),
-          value: "Last modified by me",
+          value: 3,
         },
         {
           text: t("Last-open-by-me"),
-          value: "Last open by me",
+          value: 4,
         },
         // ... other filters ...
       ],
@@ -1686,7 +1691,6 @@ const DataRoom = () => {
     }
 
     setDirectoryNames("");
-    setFileLists([]);
     dispatch(CreateFolder_success(0));
     let currentView = localStorage.getItem("setTableView")
     let viewFolderID = localStorage.getItem("folderID")
@@ -2878,7 +2882,7 @@ const DataRoom = () => {
                             md={12}
                             sm={12}
                             key={index}
-                            className="d-flex gap-1 mt-2 flex-column"
+                            className="d-flex gap-1 mt-2 flex-column mb-3"
                           >
                             <Space
                               direction="vertical"

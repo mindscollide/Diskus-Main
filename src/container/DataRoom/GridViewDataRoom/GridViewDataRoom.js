@@ -25,20 +25,37 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile }) => {
   const navigate = useNavigate()
   const { t } = useTranslation()
   const [sharefoldermodal, setSharefoldermodal] = useState(false);
+  const currentView = JSON.parse(localStorage.getItem("setTableView"));
   const [showrenameFile, setShowRenameFile] = useState(false)
   const [shareFileModal, setShareFileModal] = useState(false);
+  const [sortIon, setSortIcon] = useState(false)
   const [showrenameFolder, setShowreanmeFolder] = useState(false);
   const [folderId, setFolderId] = useState(0);
   const [fileName, setFileName] = useState("");
   const [folderName, setFolderName] = useState("");
   const [isDataforGrid, setDataForGrid] = useState(null)
   const [isRenameFolderData, setRenameFolderData] = useState(null)
-  const [filterOptionsValues, setFilterOptionValues] = useState([
+  const [filterValue, setFilterValue] = useState({
+    label: t('Name'),
+    value: 1
+  })
+  const [filterShareTabValue, setFilteShareTabrValue] = useState({
+    label: t('Name'),
+    value: 2
+  })
+  const filterOptionsValues = [
     { label: t('Name'), value: 1 },
     { label: t('Last-modifed'), value: 2 },
     { label: t('Last-modified-by-me'), value: 3 },
     { label: t('Last-open-by-me'), value: 4 },
-  ])
+  ]
+  const filterOptionsShareTab = [
+    { label: t('Share-date'), value: 1 },
+    { label: t('Name'), value: 2 },
+    { label: t('Last-modifed'), value: 3 },
+    { label: t('Last-modified-by-me'), value: 4 },
+    { label: t('Last-open-by-me'), value: 5 },
+  ]
   const getFolderDocuments = (folderid) => {
     console.log(folderid, 'folderidfolderidfolderidfolderid')
     localStorage.setItem('folderID', folderid)
@@ -46,12 +63,23 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile }) => {
   }
   const handleClickFilter = (filterValue) => {
     console.log(filterValue, "filterValuefilterValuefilterValue")
+    setFilterValue({
+      label: filterValue.label,
+      value: filterValue.value
+    })
     if (filterValue.value === 1) {
       let SortData = data && data.sort((a, b) => a.name.toLowerCase() < b.name.toLowerCase());
       setDataForGrid(SortData)
       console.log(SortData, "datadatadatadata")
       console.log(data, "datadatadatadata")
     }
+  }
+
+  const handleShareTabFilter = (filterValue) => {
+    setFilteShareTabrValue({
+      label: filterValue.label,
+      value: filterValue.value
+    })
   }
 
   const handleClickforFolder = (dataId, record) => {
@@ -87,38 +115,87 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile }) => {
       <Row>
         <Col sm={12} lg={12} md={12} className={styles['folderContainer']}>
           <Row>
-            <Col sm={12} md={12} lg={12} className="d-flex gap-2" >
-              <span className={styles['Name_heading__gridView']}>
+            <Col sm={12} md={12} lg={12} className="d-flex gap-2 align-items-center justify-content-start" >
+              {/* <span className={styles['Name_heading__gridView']}>
                 {t('Name')}{' '}
-              </span>
-              <Dropdown
-                drop="down"
-                align="start"
-                className={`${styles['options_dropdown']
-                  } ${'dataroom_options'}`}
-              >
-                <Dropdown.Toggle id="dropdown-autoclose-true">
-                  <img
-                    src={ArrowUp}
-                    width="15.02px"
-                    height="10.71px"
-                  />
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  {filterOptionsValues.map((data, index) => {
-                    return (
-                      <Dropdown.Item
-                        key={index}
-                        onClick={() =>
-                          handleClickFilter(data)
-                        }
-                      >
-                        {data.label}
-                      </Dropdown.Item>
-                    )
-                  })}
-                </Dropdown.Menu>
-              </Dropdown>
+              </span> */}
+              {currentView === 1 ? <>
+                <Dropdown
+                  drop="down"
+                  align="start"
+                  className={`${styles['options_dropdown']
+                    } ${'dataroom_options'}`}
+                >
+                  <Dropdown.Toggle id="dropdown-autoclose-true">
+                    <span className={styles['Name_heading__gridView']}>
+                      {filterValue.label}
+                    </span>
+                    {/* {filterValue.label} */}
+
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {filterOptionsValues.map((data, index) => {
+                      return (
+                        <Dropdown.Item
+                          key={index}
+                          onClick={() =>
+                            handleClickFilter(data)
+                          }
+                        >
+                          {data.label}
+                        </Dropdown.Item>
+                      )
+                    })}
+                  </Dropdown.Menu>
+                </Dropdown>
+                {sortIon ? <img
+                  src={ArrowUp}
+                  width="15.02px"
+                  height="10.71px"
+                /> : <img
+                  src={ArrowUp}
+                  width="15.02px"
+                  height="10.71px"
+                />}</> : <>
+                <Dropdown
+                  drop="down"
+                  align="start"
+                  className={`${styles['options_dropdown']
+                    } ${'dataroom_options'}`}
+                >
+                  <Dropdown.Toggle id="dropdown-autoclose-true">
+                    <span className={styles['Name_heading__gridView']}>
+                      {filterShareTabValue.label}
+                    </span>
+                    {/* {filterValue.label} */}
+
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    {filterOptionsShareTab.map((data, index) => {
+                      return (
+                        <Dropdown.Item
+                          key={index}
+                          onClick={() =>
+                            handleShareTabFilter(data)
+                          }
+                        >
+                          {data.label}
+                        </Dropdown.Item>
+                      )
+                    })}
+                  </Dropdown.Menu>
+                </Dropdown>
+                {sortIon ? <img
+                  src={ArrowUp}
+                  width="15.02px"
+                  height="10.71px"
+                /> : <img
+                  src={ArrowUp}
+                  width="15.02px"
+                  height="10.71px"
+                />}</>}
+
+
 
 
             </Col>

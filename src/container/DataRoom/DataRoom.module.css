@@ -545,6 +545,7 @@ body[dir="rtl"] .Search_Icon {
 .Scroller_bar_of_BarUploder {
   height: 13vh !important;
   overflow-x: hidden !important;
+  padding-bottom: 10px;
 }
 
 .Scroller_bar_of_BarUploder::-webkit-scrollbar {

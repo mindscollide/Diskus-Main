@@ -87,8 +87,13 @@
     font-family: "MontserratSemiBold-600" !important;
     position: relative !important;
     margin-left: 10px;
-    display: flex !important;
+    display: block;
     gap: 12px !important;
+    width: auto;
+    overflow: hidden;
+    text-overflow: ellipsis !important;
+    white-space: nowrap;
+    max-width: 110px;
 }
 
 .border_bottom__gridView {
