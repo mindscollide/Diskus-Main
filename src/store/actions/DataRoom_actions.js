@@ -608,6 +608,8 @@ const getDocumentsAndFolders_fail = (message) => {
 // Get Documents And Folder API
 const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
   console.log(navigate, statusID, t, no, order, sort, "getDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApi")
+  console.log(no, order, sort, " 2 getDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApi")
+
   let token = JSON.parse(localStorage.getItem('token'))
   let createrID = localStorage.getItem('userID')
   let OrganizationID = localStorage.getItem('organizationID')
@@ -616,8 +618,9 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
     OrganizationID: parseInt(OrganizationID),
     StatusID: parseInt(statusID),
     SortBy: sort !== null && sort !== undefined ? sort : 2,
-    isDescending: order !== null & order !== null ? order : true
-    // sRow: 10
+    isDescending: order !== null & order !== undefined ? order : true,
+    sRow: 0,
+    Length: 5
   }
   // let Data = {
   //     UserID: 722,
@@ -647,7 +650,7 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(getDocumentsAndFolderApi(navigate, statusID, t))
+          dispatch(getDocumentsAndFolderApi(navigate, statusID, t, no, order, sort))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -688,6 +691,94 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
       })
       .catch((error) => {
         dispatch(getDocumentsAndFolders_fail(t('Something-went-wrong')))
+      })
+  }
+}
+
+// Get All Data from scroll behaviour
+
+// Get Documents And Folder API
+const getDocumentsAndFolderApiScrollbehaviour = (navigate, statusID, t, sRows) => {
+  console.log(navigate, statusID, t, sRows, "getDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApi")
+
+  let token = JSON.parse(localStorage.getItem('token'))
+  let createrID = localStorage.getItem('userID')
+  let OrganizationID = localStorage.getItem('organizationID')
+  let Data = {
+    UserID: parseInt(createrID),
+    OrganizationID: parseInt(OrganizationID),
+    StatusID: parseInt(statusID),
+    SortBy: 1,
+    isDescending: true,
+    sRow: Number(sRows),
+    Length: 5
+  }
+  return (dispatch) => {
+    dispatch(tableSpinner(true))
+    let form = new FormData()
+    form.append(
+      'RequestMethod',
+      getDocumentsAndFolderRequestMethod.RequestMethod,
+    )
+    form.append('RequestData', JSON.stringify(Data))
+    axios({
+      method: 'post',
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(getDocumentsAndFolderApi(navigate, statusID, t, no, order, sort))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              'DataRoom_DataRoomManager_GetDocumentsAndFolders_01'.toLowerCase()
+            ) {
+              dispatch(tableSpinner(false))
+              dispatch(
+                getDocumentsAndFolders_success(
+                  response.data.responseResult.data,
+                  t('Data-available'),
+                ),
+              )
+              if (statusID === 1) {
+                localStorage.setItem('setTableView', 1)
+              } else if (statusID === 2) {
+                localStorage.setItem('setTableView', 2)
+              } else if (statusID === 3) {
+                localStorage.setItem('setTableView', 3)
+              }
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              'DataRoom_DataRoomManager_GetDocumentsAndFolders_02'.toLowerCase()
+            ) {
+              dispatch(getDocumentsAndFolders_fail(t('No-record-found')))
+              dispatch(tableSpinner(false))
+              console.log('checking1212')
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              'DataRoom_DataRoomManager_GetDocumentsAndFolders_03'.toLowerCase()
+            ) {
+              dispatch(getDocumentsAndFolders_fail(t('Something-went-wrong')))
+              dispatch(tableSpinner(false))
+            }
+          } else {
+            dispatch(getDocumentsAndFolders_fail(t('Something-went-wrong')))
+            dispatch(tableSpinner(false))
+          }
+        } else {
+          dispatch(getDocumentsAndFolders_fail(t('Something-went-wrong')))
+          dispatch(tableSpinner(false))
+        }
+      })
+      .catch((error) => {
+        dispatch(getDocumentsAndFolders_fail(t('Something-went-wrong')))
+        dispatch(tableSpinner(false))
       })
   }
 }
@@ -1680,6 +1771,13 @@ const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
       })
   }
 }
+const tableSpinner = (payload) => {
+  console.log(payload, "payloadpayload")
+  return {
+    type: actions.DATAROOM_TABLE_SCROLL_BAR,
+    response: payload
+  }
+}
 const clearDataResponseMessage = () => {
   return {
     type: actions.CLEARE_MESSAGE,
@@ -1701,4 +1799,6 @@ export {
   FolderisExist,
   FolderisExistRename,
   FileisExist2,
+  getDocumentsAndFolderApiScrollbehaviour,
+  tableSpinner
 }

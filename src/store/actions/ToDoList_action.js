@@ -767,6 +767,7 @@ const deleteCommentApi = (navigate, t, commmentID, taskID) => {
     FK_TID: Number(taskID),
     FK_UID: Number(createrID)
   }
+  let newData = { ToDoListID: taskID }
   return (dispatch) => {
     dispatch(deleteComment_init());
     let form = new FormData()
@@ -788,7 +789,7 @@ const deleteCommentApi = (navigate, t, commmentID, taskID) => {
           if (response.data.responseResult.isExecuted === true) {
             if (response.data.responseResult.responseMessage.toLowerCase().includes("ToDoList_ToDoListServiceManager_DeleteComment_01".toLowerCase())) {
               await dispatch(deleteComment_success(response.data.responseResult, t("Comment-Deleted")))
-              // dispatch(ViewToDoList(navigate, object, t))
+              dispatch(ViewToDoList(navigate, newData, t))
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ToDoList_ToDoListServiceManager_DeleteComment_02".toLowerCase())) {
               dispatch(deleteComment_fail(t("Comment-Not-Deleted")))
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ToDoList_ToDoListServiceManager_DeleteComment_03".toLowerCase())) {

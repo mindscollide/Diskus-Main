@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import "react-dropzone-uploader/dist/styles.css";
-import { Progress, Space, Tooltip } from "antd";
+import { Progress, Space, Spin, Tooltip } from "antd";
 import Cancellicon from "../../assets/images/cross_dataroom.svg";
 import images from "../../assets/images/Imagesandphotos.svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -67,6 +67,7 @@ import {
   FileisExist,
   FolderisExist,
   getDocumentsAndFolderApi,
+  getDocumentsAndFolderApiScrollbehaviour,
   getFolderDocumentsApi,
   getSharedFilesandFolderApi,
   uploadDocumentsApi,
@@ -239,7 +240,6 @@ const DataRoom = () => {
   const [directoryNames, setDirectoryNames] = useState("");
   // this state contain file which is in the folder
   const [fileLists, setFileLists] = useState([]);
-  console.log(fileLists, "fileListsfileListsfileLists");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -867,7 +867,6 @@ const DataRoom = () => {
   };
 
   const handleFilterMenuClick = async (filterValue) => {
-    console.log(filterValue, "filterValuefilterValuefilterValue")
     setCurrentFilter(filterValue);
     fetchDataWithFilter(filterValue);
   };
@@ -943,7 +942,7 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            let FindExt = data.name.split(".")[1];
+            let FindExt = data?.name?.split(".")[1];
             return (
               <>
                 <section className="d-flex gap-2">
@@ -995,8 +994,7 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            let FindExt = data.name.split(".")[1];
-            console.log(FindExt, "FindExtFindExtFindExtFindExt")
+            let FindExt = data?.name?.split(".")[1];
             return (
               <>
                 <section className="d-flex gap-2">
@@ -1070,7 +1068,7 @@ const DataRoom = () => {
       },
       sorter: (a, b) =>
         _justShowDateformat(a.modifiedDate) <
-        _justShowDateformat(b.modifiedDate),
+        _justShowDateformat(b?.modifiedDate),
     },
     {
       title: t("File-size"),
@@ -1292,7 +1290,6 @@ const DataRoom = () => {
           );
         } else {
           let FindExt = record.name.split(".")[1];
-          console.log(FindExt, "FindExtFindExtFindExt");
           return (
             <div className={`${styles["dataFolderRow"]}`}>
               {FindExt === "png" || FindExt === "jpg" || FindExt === "jpeg" ? (
@@ -1552,7 +1549,6 @@ const DataRoom = () => {
   };
 
   const handleUploadFile = ({ file }) => {
-    console.log(file, "fileListsfileListsfileLists");
     dispatch(
       FileisExist(
         navigate,
@@ -1572,7 +1568,6 @@ const DataRoom = () => {
 
   // this fun triger when upload folder triiger
   const handleChangeFolderUpload = ({ directoryName, fileList }) => {
-    console.log("handleChangeFolderUpload create folder", directoryName, fileList);
 
     try {
       // this is used for prevent multi trigger
@@ -1587,7 +1582,6 @@ const DataRoom = () => {
         }
       }
     } catch (error) {
-      console.log("handleChangeFolderUpload error");
       // Handle errors
     }
   };
@@ -1604,7 +1598,6 @@ const DataRoom = () => {
         // Handle any errors that occur during the API call
       }
     } else {
-      console.log("have to work on this ");
     }
   }, [directoryNames, fileLists]);
 
@@ -1613,7 +1606,6 @@ const DataRoom = () => {
     // its check that reducer state is not null
     if (DataRoomReducer.FolderisExistCheck === true) {
       // its check that reducer state is true its open modal for this
-      console.log("handleChangeFolderUpload open modal");
       setIsFolderExist(true);
       // when modal opnen the its set reducer value null so else vlue cannot hit again if hook triiger by defult for any how
       dispatch(FolderisExist_success(null));
@@ -1624,7 +1616,6 @@ const DataRoom = () => {
         DataRoomReducer.FolderisExistCheck === false
       ) {
         // iits call api for create folder
-        console.log("handleChangeFolderUpload create folder");
         dispatch(createFolder(navigate, t, directoryNames, 0));
 
       }
@@ -1637,10 +1628,7 @@ const DataRoom = () => {
     try {
       if (DataRoomReducer.CreatedFolderID != 0) {
         // this is checker if its hase no file in it so dont perform any action futer other wise hot this function for upload files
-        console.log(
-          "ataRoomReducer.CreatedFolderID",
-          DataRoomReducer.CreatedFolderID
-        );
+
         if (fileLists.length > 0) {
           try {
             processArraySequentially();
@@ -1648,7 +1636,6 @@ const DataRoom = () => {
             console.error(error);
           }
         } else {
-          console.log("work on this later");
         }
       }
     } catch (error) {
@@ -1677,7 +1664,6 @@ const DataRoom = () => {
             )
           );
           // Perform other actions with the result
-          console.log("handleChangeFolderUpload API call result:", result);
 
           // You can wait for some time before proceeding to the next item
           await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
@@ -1699,7 +1685,6 @@ const DataRoom = () => {
     }
 
     // All API calls are complete, you can perform other actions here
-    console.log("handleChangeFolderUpload All API calls are complete");
   };
 
 
@@ -1886,7 +1871,13 @@ const DataRoom = () => {
       setOptionsFileisShown(false);
     }
   };
-
+  // api call onscroll
+  const handleScroll = (e) => {
+    const { scrollHeight, scrollTop, clientHeight } = e.target;
+    if (scrollHeight - scrollTop === clientHeight) {
+      dispatch(getDocumentsAndFolderApiScrollbehaviour(navigate, currentView, t, 5))
+    }
+  };
   // const handleUploadDocuemtuploadOptions = () => { }
   useEffect(() => {
     document.addEventListener("click", handleOutsideClick);
@@ -1924,10 +1915,12 @@ const DataRoom = () => {
         DataRoomReducer.getAllDocumentandShareFolderResponse !== undefined &&
         DataRoomReducer.getAllDocumentandShareFolderResponse.length > 0
       ) {
-        // DataRoomReducer.getAllDocumentandShareFolderResponse.map((data, index) => {
-        //   setGetAllData([...getAllData, data])
-        // })
-        setGetAllData(DataRoomReducer.getAllDocumentandShareFolderResponse);
+        let copyData = [...getAllData];
+        DataRoomReducer.getAllDocumentandShareFolderResponse.map((data, index) => {
+          copyData.push(data)
+        })
+
+        setGetAllData(copyData);
         // setGetAllData([DataRoomReducer.getAllDocumentandShareFolderResponse, getAllData]);
       } else {
         setGetAllData([]);
@@ -2622,8 +2615,8 @@ const DataRoom = () => {
                   ) : null}
                   {currentView === 2 ? (
                     <>
-                      <Row className="mt-3">
-                        <Col lg={12} sm={12} md={12}>
+                      <Row className="mt-3" >
+                        <Col lg={12} sm={12} md={12} >
                           {getAllData.length > 0 &&
                             getAllData !== undefined &&
                             getAllData !== null &&
@@ -2692,13 +2685,14 @@ const DataRoom = () => {
                               </Row>
                             </>
                           )}
+                          {DataRoomReducer.TableSpinner && <Spin />}
                         </Col>
                       </Row>
                     </>
                   ) : (
                     <>
                       <Row className="mt-3">
-                        <Col lg={12} sm={12} md={12}>
+                        <Col lg={12} sm={12} md={12} style={{ height: 300, overflowY: "scroll" }} onScroll={handleScroll}>
                           {getAllData.length > 0 &&
                             getAllData !== undefined &&
                             getAllData !== null &&
@@ -2721,7 +2715,6 @@ const DataRoom = () => {
                                 className={"DataRoom_Table"}
                                 rows={getAllData}
                                 pagination={false}
-                                scroll={{ x: 400 }}
                                 // rowSelection={rowSelection}
                                 size={"middle"}
                               />
@@ -2778,6 +2771,7 @@ const DataRoom = () => {
                               </Row>
                             </>
                           )}
+                          {DataRoomReducer.TableSpinner && <Row><Col sm={12} md={12} lg={12} className="d-flex justify-content-center align-items-center"><Spin /></Col></Row>}
                         </Col>
                       </Row>
                     </>

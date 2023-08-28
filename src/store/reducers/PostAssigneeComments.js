@@ -5,6 +5,7 @@ const initialState = {
   ResponseMessage: "",
   Loading: false,
   Comments: [],
+  createCommentID: 0
 };
 
 const postAssigneeComments = (state = initialState, action) => {
@@ -31,6 +32,7 @@ const postAssigneeComments = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        createCommentID: action.response.commmentID,
         ResponseMessage: action.message,
       };
     }
@@ -40,6 +42,7 @@ const postAssigneeComments = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
+        createCommentID: 0,
         ResponseMessage:
           action.response.responseMessage !== undefined
             ? action.response.responseMessage
