@@ -18,6 +18,7 @@ import {
   videoCallReducer,
   talkReducer,
   talkFeatureReducer,
+  LanguageReducer,
   CommitteeReducer,
   GroupsReducer,
   ResolutionReducer,
@@ -76,6 +77,7 @@ const AppReducer = combineReducers({
   DataRoomReducer: DataRoomReducer,
   PollsReducer: PollsReducer,
   NewMeetingreducer: NewMeetingReducer,
+  LanguageReducer: LanguageReducer,
 })
 
 const rootReducer = (state, action) => {
