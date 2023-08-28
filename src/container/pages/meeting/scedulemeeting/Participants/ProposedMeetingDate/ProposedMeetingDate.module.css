@@ -1,0 +1,28 @@
+.Prposed_Meeting_heading {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 30px !important;
+  color: #5f78d6 !important;
+}
+
+.Paper_styling {
+  width: 100% !important;
+  height: auto !important;
+  padding: 40px 40px !important;
+}
+
+.Heading_prposed_meeting {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 30px !important;
+  color: #5f78d6 !important;
+  display: inline-block !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  width: 100% !important;
+}
+
+.Staff_meeting_Heading {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+}

@@ -81,9 +81,13 @@
 .Plus_Button_class {
   height: 39px !important;
   width: 39px;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border-radius: 4px !important;
   border: none !important;
+}
+
+body[dir="rtl"] .Plus_Button_class {
+  background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
 }
 
 .Plus_Button_class:hover,
@@ -92,7 +96,7 @@
 .Plus_Button_class:focus-visible {
   height: 39px !important;
   width: 39px !important;
-  background: linear-gradient(to bottom, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   border-radius: 4px !important;
   border: none !important;
 }
