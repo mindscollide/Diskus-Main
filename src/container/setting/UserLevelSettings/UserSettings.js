@@ -43,7 +43,7 @@ const UserSettings = () => {
   const roleID = localStorage.getItem("roleID");
   const { loaded, clientId } = useGoogleLogin({
     clientId:
-      "509020224191-pst82a2kqjq33phenb35b0bg1i0q762o.apps.googleusercontent.com",
+      "103867674074-tllj4s4mt4c5t15omf2t0s92097622jv.apps.googleusercontent.com",
   });
   const [signUpCodeToken, setSignUpCodeToken] = useState("");
   const [userOptionsSettings, setUserOptionsSettings] = useState({
@@ -1320,8 +1320,8 @@ const UserSettings = () => {
                 {calender ? (
                   <>
                     {userOptionsSettings.AllowGoogleCalenderSync !== null &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
+                      roleID != 1 &&
+                      roleID != 2 ? (
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
@@ -1338,8 +1338,8 @@ const UserSettings = () => {
                       </Row>
                     ) : null}
                     {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
+                      roleID != 1 &&
+                      roleID != 2 ? (
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
@@ -1978,9 +1978,9 @@ const UserSettings = () => {
                       </Col>
                     </Row>
                     {userOptionsSettings.AllowGoogleCalenderSync !== null &&
-                    userOptionsSettings.AllowGoogleCalenderSync !== false &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
+                      userOptionsSettings.AllowGoogleCalenderSync !== false &&
+                      roleID != 1 &&
+                      roleID != 2 ? (
                       <Row className="mt-4">
                         <Col
                           lg={12}
@@ -2017,9 +2017,9 @@ const UserSettings = () => {
                       </Row>
                     ) : null}
                     {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
-                    userOptionsSettings.AllowMicrosoftCalenderSync !== false &&
-                    roleID != 1 &&
-                    roleID != 2 ? (
+                      userOptionsSettings.AllowMicrosoftCalenderSync !== false &&
+                      roleID != 1 &&
+                      roleID != 2 ? (
                       <Row className="mt-4">
                         <Col
                           lg={12}
