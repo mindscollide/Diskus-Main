@@ -884,5 +884,7 @@
   "Authenticating-your-credentials": "Authenticating your credentials",
   "Generating-secure-token": "Generating secure token",
   "Authenticating-identity": "Authenticating identity",
-  "Propose-meeting-date": "Propose Meeting Date"
+  "Propose-meeting-date": "Propose Meeting Date",
+  "Proposed-on": "Proposed on",
+  "Send-response-by": "Send Response by"
 }

@@ -26,3 +26,35 @@
   font-size: 20px !important;
   color: #5a5a5a !important;
 }
+
+.Paragraph_Styles {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+}
+
+.Prposed_On_Heading {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+  color: #5f78d6 !important;
+}
+
+.Steric_Color {
+  color: #f16b6b !important;
+}
+
+.Box_for_Send_Request {
+  height: 39px !important;
+  width: 100%;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.Date_Year_Styles {
+  font-family: "Montserrat";
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 10px !important;
+}
