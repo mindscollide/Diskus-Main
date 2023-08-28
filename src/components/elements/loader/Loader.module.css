@@ -15,26 +15,18 @@
 }
 
 .overlay-content {
-  margin: 0 !important;
-  padding: 20px !important;
   position: fixed;
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  top: 7vh;
+  top: 50%;
   left: 50%;
-  transform: translate(-50%, 50%);
-  /* background-color: rgba(255, 255, 255, 0.9); */
+  transform: translate(-50%, -50%);
   z-index: 999999999;
-  overflow: hidden;
+  background-color: rgba(255, 255, 255, 0.9);
   padding: 20px;
   text-align: center;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  align-items: center !important;
   flex-direction: column;
   gap: 20px;
-  text-align: center;
 }
 
 .overlay-content-v2 {
