@@ -13,6 +13,7 @@ export { default as videoFeatureReducer } from './VideoFeature_reducer'
 export { default as minuteofMeetingReducer } from './MinutesOfMeeting_reducer'
 export { default as countryNamesReducer } from './GetCountryNames_reducer'
 export { default as GetSubscriptionPackages } from './GetSubscriptionPackages_reducer'
+export { default as LanguageReducer } from './Language_reducer'
 
 // Auth 2 Reducer
 export { default as AuthReducer } from './Auth2_reducer'

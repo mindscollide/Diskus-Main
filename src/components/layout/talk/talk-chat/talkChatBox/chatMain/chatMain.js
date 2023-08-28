@@ -3587,11 +3587,9 @@ const ChatMainBody = () => {
           GroupID: talkStateData.ActiveChatData.id,
           GroupName: groupName,
           Users: editGroupUsersHashCheck.join(','),
-          RemovedUsers: '',
         },
       },
     }
-    // console.log('editGroup', data)
     dispatch(UpdatePrivateGroup(data, t, navigate))
     setShowGroupEdit(false)
   }
