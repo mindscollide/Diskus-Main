@@ -11,6 +11,7 @@ import {
   searchTodoList,
   getWeekToDo,
   searchTodoListRequestMethod,
+  DeleteCommentRM,
 } from '../../commen/apis/Api_config'
 
 const ShowNotification = (message) => {
@@ -738,6 +739,76 @@ const SearchTodoListApi = (navigate, searchData, page, size, t) => {
       })
   }
 }
+
+const deleteComment_init = () => {
+  return {
+    type: actions.DELETE_TODO_COMMENT_INIT
+  }
+}
+const deleteComment_success = (response, message) => {
+  return {
+    type: actions.DELETE_TODO_COMMENT_SUCCESS,
+    response: response,
+    message: message
+  }
+}
+const deleteComment_fail = (message) => {
+  return {
+    type: actions.DELETE_TODO_COMMENT_FAIL,
+    message: message
+  }
+}
+
+const deleteCommentApi = (navigate, t, commmentID, taskID) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  let createrID = localStorage.getItem('userID');
+  let Data = {
+    PK_TCID: Number(commmentID),
+    FK_TID: Number(taskID),
+    FK_UID: Number(createrID)
+  }
+  return (dispatch) => {
+    dispatch(deleteComment_init());
+    let form = new FormData()
+    form.append('RequestMethod', DeleteCommentRM.RequestMethod)
+    form.append('RequestData', JSON.stringify(Data))
+    axios({
+      method: 'post',
+      url: toDoListApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(deleteCommentApi(navigate, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (response.data.responseResult.responseMessage.toLowerCase().includes("ToDoList_ToDoListServiceManager_DeleteComment_01".toLowerCase())) {
+              await dispatch(deleteComment_success(response.data.responseResult, t("Comment-Deleted")))
+              // dispatch(ViewToDoList(navigate, object, t))
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ToDoList_ToDoListServiceManager_DeleteComment_02".toLowerCase())) {
+              dispatch(deleteComment_fail(t("Comment-Not-Deleted")))
+            } else if (response.data.responseResult.responseMessage.toLowerCase().includes("ToDoList_ToDoListServiceManager_DeleteComment_03".toLowerCase())) {
+              dispatch(deleteComment_fail(t("Something-went-wrong")))
+            } else {
+              dispatch(deleteComment_fail(t("Something-went-wrong")))
+            }
+          } else {
+            dispatch(deleteComment_fail(t("Something-went-wrong")))
+          }
+        } else {
+          dispatch(deleteComment_fail(t("Something-went-wrong")))
+        }
+      })
+      .catch((error) => {
+        dispatch(deleteComment_fail(t("Something-went-wrong")))
+      })
+  }
+
+}
 const TodoCounter = (response) => {
   return {
     type: actions.RECENT_TODOCOUNTER,
@@ -767,5 +838,6 @@ export {
   TodoCounter,
   SearchTodoListApi,
   getTodoListInit,
-  SetSpinnersTrue
+  SetSpinnersTrue,
+  deleteCommentApi
 }

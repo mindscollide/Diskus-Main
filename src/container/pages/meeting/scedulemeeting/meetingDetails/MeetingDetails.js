@@ -7,6 +7,7 @@ import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
+import whiteplusicon from "../../../../../assets/images/white plus icon.svg";
 import { Col, Row } from "react-bootstrap";
 import {
   Button,
@@ -299,7 +300,17 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
             <Col lg={2} md={2} sm={12} className="d-flex justify-content-end">
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
-                  <Button className={styles["Plus_Button_class"]} />
+                  <Button
+                    className={styles["Plus_Button_class"]}
+                    icon={
+                      <img
+                        src={whiteplusicon}
+                        height="23.88px"
+                        width="23.55px"
+                        className={styles["White_Icon_class"]}
+                      />
+                    }
+                  />
                 </Col>
               </Row>
             </Col>
@@ -657,9 +668,9 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
             </Col>
           </Row>
           <Row className="mt-4">
-            <Col lg={3} md={3} sm={12}>
+            <Col lg={4} md={4} sm={12}>
               <Row>
-                <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                <Col lg={12} md={12} sm={12} className="d-flex gap-3">
                   <Switch onChange={handleRSPV} />
                   <span className={styles["Notify_heading"]}>
                     {t("Allow-rspv")}
@@ -667,9 +678,14 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                 </Col>
               </Row>
             </Col>
-            <Col lg={9} md={9} sm={12}>
+            <Col lg={8} md={8} sm={12}>
               <Row>
-                <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="d-flex gap-3 justify-content-start"
+                >
                   <Switch onChange={handleNotifyOrganizers} />
                   <span className={styles["Notify_heading"]}>
                     {t("Notify-meeting-organizer-when-members-rspv")}

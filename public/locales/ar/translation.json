@@ -1284,5 +1284,7 @@
   "The-new-poll-is-published-for-your-review": "The New Poll is published for your review",
   "Due-date-of-poll-has-passed": "Due date of Poll has passed",
   "The-poll-has-been-updated": "The Poll has been updated",
-  "The-poll-has-been-deleted": "The poll has been deleted"
+  "The-poll-has-been-deleted": "The poll has been deleted",
+  "All-options-must-be-selected": "All options must be selected",
+  "Advance-meeting": "Advance Meeting"
 }

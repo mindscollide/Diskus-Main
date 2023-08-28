@@ -17,9 +17,7 @@ import { useTranslation } from "react-i18next";
 import Cookies from "js-cookie";
 import LanguageChangeIcon from "../../../assets/images/newElements/Language.svg";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  ResendOTP,
-} from "../../../../src/store/actions/Auth_Verify_Opt";
+import { ResendOTP } from "../../../../src/store/actions/Auth_Verify_Opt";
 import { cleareChangePasswordMessage } from "../../../store/actions/Auth_Forgot_Password";
 import {
   cleareMessage,
@@ -45,21 +43,25 @@ const ForgotPasswordVerification = () => {
     open: false,
     message: "",
   });
+  // Constants for timer
+  const timerDurationMinutes = 5;
+  const initialSeconds = 0;
+  const initialMinutes = timerDurationMinutes;
+
+  // State for timer
   const [seconds, setSeconds] = useState(
-    localStorage.getItem("seconds") ? localStorage.getItem("seconds") : 60
+    localStorage.getItem("seconds")
+      ? parseInt(localStorage.getItem("seconds"))
+      : initialSeconds
   );
   const [minutes, setMinutes] = useState(
-    localStorage.getItem("minutes") ? localStorage.getItem("minutes") : 4
+    localStorage.getItem("minutes")
+      ? parseInt(localStorage.getItem("minutes"))
+      : initialMinutes
   );
   const [errorBar, setErrorBar] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [verifyOTP, setVerifyOTP] = useState("");
-  const handleChangeLocale = (e) => {
-    const lang = e.target.value;
-    setLanguage(lang);
-    localStorage.setItem("i18nextLng", lang);
-    i18n.changeLanguage(lang);
-  };
 
   // Resending the OTP CODE
   const sendRequestResend = () => {
@@ -75,98 +77,47 @@ const ForgotPasswordVerification = () => {
     dispatch(ResendOTP(t, data, setSeconds, setMinutes));
     // setStartTimer(true)
   };
+
+  // Start the timer when the component mounts
   useEffect(() => {
-    // if value was cleared, set key to re-render the element
-    if (verifyOTP.length === 0) {
-      setKey(key + 1);
-      return;
+    if (minutes === 0 && seconds === 0) {
+      return; // Don't start the timer if it's already at 00:00
     }
-  }, [verifyOTP]);
 
-  const changeHandler = (e) => {
-    let otpval = e.toUpperCase();
-    console.log("changeHandler", otpval);
-    setVerifyOTP(otpval);
-  };
-
-  const SubmitOTP = (e) => {
-    e.preventDefault();
-    console.log("changeHandler", verifyOTP);
-
-    if (verifyOTP.length !== 6) {
-      setErrorBar(true);
-      setErrorMessage("OTP should be a 6 digit code");
-    } else {
-      setErrorBar(false);
-      setErrorMessage("");
-      setVerifyOTP("");
-
-      dispatch(
-        verificationEmailOTP(
-          verifyOTP,
-          navigate,
-          t,
-          true,
-          setSeconds,
-          setMinutes
-        )
-      );
-    }
-  };
-
-  useEffect(() => {
-    // if (startTimer) {
     const interval = setInterval(() => {
       if (seconds > 0) {
-        setSeconds(seconds - 1);
+        setSeconds(prevSeconds => prevSeconds - 1);
         localStorage.setItem("seconds", seconds - 1);
         localStorage.setItem("minutes", minutes);
-      }
-      if (seconds === 0) {
-        if (minutes === 0) {
-          clearInterval(interval);
-          // setStartTimer(false)
-          localStorage.removeItem("seconds");
-          localStorage.removeItem("minutes");
-        } else {
+      } else {
+        if (minutes > 0) {
           setSeconds(59);
-          setMinutes(minutes - 1);
+          setMinutes(prevMinutes => prevMinutes - 1);
           localStorage.setItem("seconds", 59);
           localStorage.setItem("minutes", minutes - 1);
+        } else {
+          clearInterval(interval);
         }
       }
     }, 1000);
 
     return () => {
       clearInterval(interval);
-      // localStorage.removeItem("seconds");
-      // localStorage.removeItem("minutes");
     };
-    // }
-  }, [
-    seconds,
-    // startTimer
-  ]);
+  }, [seconds, minutes]);
+
+  // Clear timer state when navigating away from the page
+  const handleRouteChange = () => {
+    localStorage.removeItem("seconds");
+    localStorage.removeItem("minutes");
+  };
 
   useEffect(() => {
-    let s = localStorage.getItem("seconds");
-    let m = localStorage.getItem("minutes");
-    window.addEventListener("beforeunload ", (e) => {
-      console.log("ttt");
-      e.preventDefault();
-      if (m != undefined && s != undefined) {
-        if (s === 1) {
-          setSeconds(59);
-          setMinutes(m - 1);
-        } else {
-          setSeconds(s - 1);
-          setMinutes(minutes);
-        }
-      } else {
-        setSeconds(59);
-        setMinutes(4);
-      }
-    });
+    window.addEventListener("beforeunload", handleRouteChange);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleRouteChange);
+    };
   }, []);
 
   useEffect(() => {
@@ -217,14 +168,51 @@ const ForgotPasswordVerification = () => {
     }
   }, [Authreducer.VerifyOTPEmailResponseMessage]);
 
+  useEffect(() => {
+    // if value was cleared, set key to re-render the element
+    if (verifyOTP.length === 0) {
+      setKey(key + 1);
+      return;
+    }
+  }, [verifyOTP]);
+
+  const changeHandler = (e) => {
+    let otpval = e.toUpperCase();
+    console.log("changeHandler", otpval);
+    setVerifyOTP(otpval);
+  };
+
+  const SubmitOTP = (e) => {
+    e.preventDefault();
+    console.log("changeHandler", verifyOTP);
+
+    if (verifyOTP.length !== 6) {
+      setErrorBar(true);
+      setErrorMessage("OTP should be a 6 digit code");
+    } else {
+      setErrorBar(false);
+      setErrorMessage("");
+      setVerifyOTP("");
+
+      dispatch(
+        verificationEmailOTP(
+          verifyOTP,
+          navigate,
+          t,
+          true,
+          setSeconds,
+          setMinutes
+        )
+      );
+    }
+  };
   return (
     <>
       <Container fluid className={styles["auth_container"]}>
         <Row className="posotion-relative">
-          <Col className={styles["languageSelector"]} >
+          <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
-
         </Row>
 
         <Row>
@@ -290,18 +278,19 @@ const ForgotPasswordVerification = () => {
                         <Button
                           className={
                             styles[
-                            "Forgot_Password_Verification_resendCode_btn"
+                              "Forgot_Password_Verification_resendCode_btn"
                             ]
                           }
                           disableBtn={seconds > 0 || minutes > 0}
                           text={t("Resend-code")}
+                          type="button"
                           onClick={sendRequestResend}
                         />
                       </span>
                       <span
                         className={
                           styles[
-                          "Forgot_password_Verification_update_OTPCounter"
+                            "Forgot_password_Verification_update_OTPCounter"
                           ]
                         }
                       >
@@ -332,10 +321,10 @@ const ForgotPasswordVerification = () => {
                         onClick={SubmitOTP}
                         className={
                           styles[
-                          "Forgot_Password_Verification_Next_button_EmailVerify"
+                            "Forgot_Password_Verification_Next_button_EmailVerify"
                           ]
                         }
-                      // disableBtn={disablebtnverify}
+                        // disableBtn={disablebtnverify}
                       />
                     </Col>
                   </Row>

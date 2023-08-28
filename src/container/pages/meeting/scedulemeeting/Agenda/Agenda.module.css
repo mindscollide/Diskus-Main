@@ -5,6 +5,7 @@
   border-radius: 4px !important;
   padding: 10px 15px !important;
 }
+
 .BackGround_Agenda_InActive {
   width: 100% !important;
   height: auto !important;
@@ -12,6 +13,19 @@
   border-radius: 4px !important;
   padding: 10px 15px !important;
   filter: opacity(0.5);
+}
+
+.BackGround_Agenda_InActive:has(.lockBtn_inActive) .lockBtn_inActive {
+  filter: opacity(1) !important;
+  cursor: pointer !important;
+}
+
+.lockBtn_inActive_coursor {
+  cursor: pointer !important;
+}
+
+.lockBtn {
+  cursor: pointer !important;
 }
 
 .SubajendaBox {
@@ -31,7 +45,7 @@
   padding: 10px 15px !important;
   margin-left: 10px !important;
   filter: opacity(0.5);
-  pointer-events: none !important;
+  /* pointer-events: none !important; */
 }
 
 .Agenda_Heading {
@@ -106,6 +120,7 @@
 
 .Image_class_Agenda {
   border-radius: 50% !important;
+  cursor: pointer !important;
 }
 
 .Name_Class {
@@ -201,6 +216,7 @@
   width: 180px !important;
   font-family: "Montserrat" !important;
 }
+
 /* card */
 
 .card {

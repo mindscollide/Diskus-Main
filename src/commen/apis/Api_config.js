@@ -783,7 +783,11 @@ const getAllStarredMessages = {
 const saveFilesandFolderRM = {
   RequestMethod: 'ServiceManager.SaveFileAndFolder'
 }
+const DeleteCommentRM = {
+  RequestMethod: "ServiceManager.DeleteComment"
+}
 export {
+  DeleteCommentRM,
   subscriptionPackageUpgradeAmount,
   paymentCompleteMethod,
   subscriptionPackageUpgradePayment,
