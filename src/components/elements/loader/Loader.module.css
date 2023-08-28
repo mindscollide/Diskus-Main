@@ -21,12 +21,11 @@
   display: flex;
   justify-content: center;
   align-content: center;
-  top: 20%;
+  top: 0%;
   left: 50%;
-  transform: translate(-50%, 100%);
+  transform: translate(-50%, 50%);
   /* background-color: rgba(255, 255, 255, 0.9); */
   z-index: 999999999;
-  max-width: 650px;
   overflow: hidden;
   padding: 20px;
   text-align: center;
@@ -138,4 +137,13 @@
 } */
 .deleteOrganizationContent {
   font-weight: bold !important;
+}
+
+.Messeges_Styles {
+  font-size: 40px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
 }

@@ -119,7 +119,7 @@ const TodoList = () => {
     return () => {
       localStorage.removeItem("todoListPage");
       localStorage.removeItem("todoListRow");
-    }
+    };
   }, []);
 
   //get todolist reducer
@@ -191,16 +191,16 @@ const TodoList = () => {
                   statusID === 1
                     ? "In Progress"
                     : statusID === 2
-                      ? "Pending"
-                      : statusID === 3
-                        ? "Upcoming"
-                        : statusID === 4
-                          ? "Cancelled"
-                          : statusID === 5
-                            ? "Completed"
-                            : statusID === 6
-                              ? "Deleted"
-                              : null,
+                    ? "Pending"
+                    : statusID === 3
+                    ? "Upcoming"
+                    : statusID === 4
+                    ? "Cancelled"
+                    : statusID === 5
+                    ? "Completed"
+                    : statusID === 6
+                    ? "Deleted"
+                    : null,
               },
             };
             return newData;
@@ -427,14 +427,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "InProgress MontserratSemiBold  margin-left-55"
                     : text.pK_TSID === 2
-                      ? "Pending MontserratSemiBold margin-left-55"
-                      : text.pK_TSID === 3
-                        ? "Upcoming MontserratSemiBold margin-left-55"
-                        : text.pK_TSID === 4
-                          ? "Cancelled MontserratSemiBold margin-left-55"
-                          : text.pK_TSID === 5
-                            ? "Completed MontserratSemiBold margin-left-55"
-                            : null
+                    ? "Pending MontserratSemiBold margin-left-55"
+                    : text.pK_TSID === 3
+                    ? "Upcoming MontserratSemiBold margin-left-55"
+                    : text.pK_TSID === 4
+                    ? "Cancelled MontserratSemiBold margin-left-55"
+                    : text.pK_TSID === 5
+                    ? "Completed MontserratSemiBold margin-left-55"
+                    : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
@@ -454,14 +454,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
                     : text.pK_TSID === 2
-                      ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
-                      : text.pK_TSID === 3
-                        ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
-                        : text.pK_TSID === 4
-                          ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
-                          : text.pK_TSID === 5
-                            ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
-                            : null
+                    ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 3
+                    ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                    : text.pK_TSID === 4
+                    ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 5
+                    ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                    : null
                 }
               >
                 {text.status}
@@ -641,14 +641,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "InProgress MontserratSemiBold  margin-left-55"
                     : text.pK_TSID === 2
-                      ? "Pending MontserratSemiBold margin-left-55"
-                      : text.pK_TSID === 3
-                        ? "Upcoming MontserratSemiBold margin-left-55"
-                        : text.pK_TSID === 4
-                          ? "Cancelled MontserratSemiBold margin-left-55"
-                          : text.pK_TSID === 5
-                            ? "Completed MontserratSemiBold margin-left-55"
-                            : null
+                    ? "Pending MontserratSemiBold margin-left-55"
+                    : text.pK_TSID === 3
+                    ? "Upcoming MontserratSemiBold margin-left-55"
+                    : text.pK_TSID === 4
+                    ? "Cancelled MontserratSemiBold margin-left-55"
+                    : text.pK_TSID === 5
+                    ? "Completed MontserratSemiBold margin-left-55"
+                    : null
                 }
                 onChange={(e) => statusChangeHandler(e, record.pK_TID)}
               >
@@ -668,14 +668,14 @@ const TodoList = () => {
                   text.pK_TSID === 1
                     ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
                     : text.pK_TSID === 2
-                      ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
-                      : text.pK_TSID === 3
-                        ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
-                        : text.pK_TSID === 4
-                          ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
-                          : text.pK_TSID === 5
-                            ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
-                            : null
+                    ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 3
+                    ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                    : text.pK_TSID === 4
+                    ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                    : text.pK_TSID === 5
+                    ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                    : null
                 }
               >
                 {text.status}
@@ -692,7 +692,7 @@ const TodoList = () => {
       key: "taskCreator",
       width: "120px",
       render: (record, index) => {
-        console.log(record, index, "recordrecordrecordrecordrecord")
+        console.log(record, index, "recordrecordrecordrecordrecord");
         if (parseInt(record?.pK_UID) === parseInt(createrID)) {
           return (
             <i
@@ -1077,8 +1077,8 @@ const TodoList = () => {
             <Row className="row-scroll-todolist">
               <Col className="">
                 {rowsToDo.length > 0 &&
-                  rowsToDo !== undefined &&
-                  rowsToDo !== null ? (
+                rowsToDo !== undefined &&
+                rowsToDo !== null ? (
                   <TableToDo
                     sortDirections={["descend", "ascend"]}
                     column={
@@ -1119,7 +1119,7 @@ const TodoList = () => {
                             // className="PaginationStyle-Meeting"
                             current={
                               todoListCurrentPage !== null &&
-                                todoListCurrentPage !== undefined
+                              todoListCurrentPage !== undefined
                                 ? todoListCurrentPage
                                 : 1
                             }
@@ -1132,7 +1132,7 @@ const TodoList = () => {
                             pageSizeOptions={["30", "50", "100", "200"]}
                             pageSize={
                               todoListPageSize !== null &&
-                                todoListPageSize !== undefined
+                              todoListPageSize !== undefined
                                 ? todoListPageSize
                                 : 50
                             }
@@ -1164,8 +1164,8 @@ const TodoList = () => {
         />
       </Col>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
-
-      {toDoListReducer.Loading || (todoStatus.Loading && <Loader />)}
+      <Loader />
+      {/* // {toDoListReducer.Loading || (todoStatus.Loading && <Loader />)} */}
     </>
   );
 };

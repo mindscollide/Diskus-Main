@@ -23,13 +23,17 @@ import {
   showCrossConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
-const Participants = ({ setParticipants, setAgenda }) => {
+const Participants = ({
+  setParticipants,
+  setAgenda,
+  setProposeMeetingDate,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [rspvTable, setrspvTable] = useState(false);
-  const [proposedMeetingDate, setproposedMeetingDate] = useState(false);
+
   const openCrossIconModal = () => {
     dispatch(showCrossConfirmationModal(true));
   };
@@ -209,7 +213,14 @@ const Participants = ({ setParticipants, setAgenda }) => {
     setrspvTable(!rspvTable);
   };
 
-  const handleProposedMeetingDate = () => {};
+  const handleProposedMeetingDate = () => {
+    setProposeMeetingDate(true);
+  };
+
+  console.log(
+    setProposeMeetingDate,
+    "setProposeMeetingDatesetProposeMeetingDate"
+  );
 
   return (
     <>
