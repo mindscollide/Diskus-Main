@@ -29,7 +29,7 @@ const Participants = ({ setParticipants, setAgenda }) => {
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [rspvTable, setrspvTable] = useState(false);
-
+  const [proposedMeetingDate, setproposedMeetingDate] = useState(false);
   const openCrossIconModal = () => {
     dispatch(showCrossConfirmationModal(true));
   };
@@ -209,6 +209,8 @@ const Participants = ({ setParticipants, setAgenda }) => {
     setrspvTable(!rspvTable);
   };
 
+  const handleProposedMeetingDate = () => {};
+
   return (
     <>
       <section>
@@ -273,6 +275,7 @@ const Participants = ({ setParticipants, setAgenda }) => {
             <Button
               text={t("Propose-meeting-dates")}
               className={styles["Cancel_Organization"]}
+              onClick={handleProposedMeetingDate}
             />
             <Button
               text={t("Publish")}

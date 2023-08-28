@@ -20,8 +20,10 @@ import { Col, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import moment from "moment";
 import SceduleMeeting from "./scedulemeeting/SceduleMeeting";
+import { useSelector } from "react-redux";
 const NewMeeting = () => {
   const { t } = useTranslation();
+  const { NewMeetingreducer } = useSelector((state) => state);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
