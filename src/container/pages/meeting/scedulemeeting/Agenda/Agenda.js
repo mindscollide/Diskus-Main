@@ -397,18 +397,19 @@ const Agenda = () => {
               ? rows.map((data, index) => {
                   return (
                     <>
-                      <Row className="mt-4 m-0 p-0">
+                      <Row key={index} className="mt-4 m-0 p-0">
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
+                          key={index + 1}
                           className={
                             apllyLockOnParentAgenda(index)
                               ? styles["BackGround_Agenda_InActive"]
                               : styles["BackGround_Agenda"]
                           }
                         >
-                          <Row className="mt-2 mb-2">
+                          <Row key={index + 2} className="mt-2 mb-2">
                             <Col lg={5} md={5} sm={12}>
                               <TextField
                                 applyClass={"AgendaTextField"}
@@ -492,14 +493,14 @@ const Agenda = () => {
                           </Row>
                           {expandIndex === index && expand === true ? (
                             <>
-                              <Row className="mt-3">
+                              <Row key={index + 3} className="mt-3">
                                 <Col lg={12} md={12} sm={12}>
                                   <span className={styles["Agenda_Heading"]}>
                                     {t("Attachments")}
                                   </span>
                                 </Col>
                               </Row>
-                              <Row className="mt-3">
+                              <Row key={index + 4} className="mt-3">
                                 <Col lg={6} md={6} sm={6}>
                                   <Radio.Group
                                     onChange={onChange}
@@ -586,7 +587,7 @@ const Agenda = () => {
                               </Row>
                               {value === 1 ? (
                                 <>
-                                  <Row>
+                                  <Row key={index + 5}>
                                     <Col
                                       lg={12}
                                       md={12}
@@ -650,7 +651,7 @@ const Agenda = () => {
                                 </>
                               ) : value === 2 ? (
                                 <>
-                                  <Row className="mt-3">
+                                  <Row key={index + 5} className="mt-3">
                                     <Col lg={12} md={12} sm={12}>
                                       <TextField
                                         applyClass={"AgendaTextField"}
@@ -662,7 +663,7 @@ const Agenda = () => {
                                 </>
                               ) : value === 3 ? (
                                 <>
-                                  <Row className="mt-2">
+                                  <Row key={index + 5} className="mt-2">
                                     <Col lg={12} md={12} sm={12}>
                                       <TextField
                                         applyClass={"AgendaTextField"}
@@ -692,7 +693,7 @@ const Agenda = () => {
                                 </>
                               ) : (
                                 <>
-                                  <Row className="mt-4 mb-2">
+                                  <Row key={index + 5} className="mt-4 mb-2">
                                     <Col lg={12} md={12} sm={12}>
                                       <Dragger
                                         {...props}
@@ -789,7 +790,7 @@ const Agenda = () => {
                         data.subAgenda.map((subAgendaData, subIndex) => {
                           return (
                             <>
-                              <Row className="mt-3">
+                              <Row key={subIndex} className="mt-3">
                                 <Col lg={1} md={1} sm={1}></Col>
                                 <Col
                                   lg={11}
@@ -1003,38 +1004,45 @@ const Agenda = () => {
                                           />
                                           <img
                                             src={
-                                              apllyLockOnSubAgenda(
-                                                index,
-                                                subIndex
-                                              )
-                                                ? DarkLock
-                                                : apllyLockOnParentAgenda(
-                                                    index
-                                                  ) ||
-                                                  apllyLockOnSubAgenda(
+                                              apllyLockOnParentAgenda(index)
+                                                ? closedLocked
+                                                : apllyLockOnSubAgenda(
                                                     index,
                                                     subIndex
                                                   )
-                                                ? closedLocked
+                                                ? DarkLock
                                                 : Lock
                                             }
                                             width="18.87px"
                                             height="26.72px"
                                             className={
-                                              apllyLockOnParentAgenda(index) ||
-                                              apllyLockOnSubAgenda(
-                                                index,
-                                                subIndex
-                                              )
+                                              apllyLockOnParentAgenda(index)
                                                 ? styles["lockBtn_inActive"]
+                                                : apllyLockOnSubAgenda(
+                                                    index,
+                                                    subIndex
+                                                  )
+                                                ? styles["lockBtn_inActive_coursor"]
                                                 : styles["lockBtn"]
+                                              // apllyLockOnParentAgenda(index) ||
+                                              // apllyLockOnSubAgenda(
+                                              //   index,
+                                              //   subIndex
+                                              // )
+                                              //   ? styles["lockBtn_inActive"]
+                                              //   : styles["lockBtn"]
                                             }
-                                            onClick={() =>
-                                              lockFunctionActiveSubMenus(
-                                                index,
-                                                subIndex
-                                              )
-                                            }
+                                            onClick={() => {
+                                              if (
+                                                apllyLockOnParentAgenda(index)
+                                              ) {
+                                              } else {
+                                                lockFunctionActiveSubMenus(
+                                                  index,
+                                                  subIndex
+                                                );
+                                              }
+                                            }}
                                           />
                                         </Col>
                                       </Row>

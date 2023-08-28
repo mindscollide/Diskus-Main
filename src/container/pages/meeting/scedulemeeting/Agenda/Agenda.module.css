@@ -17,6 +17,15 @@
 
 .BackGround_Agenda_InActive:has(.lockBtn_inActive) .lockBtn_inActive {
   filter: opacity(1) !important;
+  cursor: pointer !important;
+}
+
+.lockBtn_inActive_coursor {
+  cursor: pointer !important;
+}
+
+.lockBtn {
+  cursor: pointer !important;
 }
 
 .SubajendaBox {
@@ -207,6 +216,7 @@
   width: 180px !important;
   font-family: "Montserrat" !important;
 }
+
 /* card */
 
 .card {
