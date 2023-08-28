@@ -1311,5 +1311,15 @@
   "Email-when-new-comment-added": "Email When new Comment Added",
   "Email-when-comment-deleted": "Email When Comment Deleted",
   "All-options-must-be-selected": "All options must be selected",
-  "Advance-meeting": "Advance Meeting"
+  "Advance-meeting": "Advance Meeting",
+  "Securing-your-session-one-step-at-a-time": "Securing your session, one step at a time",
+  "Deploying-multiple-encryption-layers": "Deploying multiple encryption layers",
+  "Obfuscating-network": "Obfuscating network",
+  "Containing-&-encrypting-network": "Containing & encrypting network",
+  "Securing-your-data": "Securing your data",
+  "Generating-new-key-for-security": "Generating new key for security",
+  "Encrypting-your-data": "Encrypting your data",
+  "Authenticating-your-credentials": "Authenticating your credentials",
+  "Generating-secure-token": "Generating secure token",
+  "Authenticating-identity": "Authenticating identity"
 }
