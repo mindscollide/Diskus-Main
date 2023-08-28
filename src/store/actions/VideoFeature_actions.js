@@ -175,6 +175,13 @@ const maximizeVideoPanelFlag = (response) => {
   }
 }
 
+const incomingVideoCallFlag = (response) => {
+  return {
+    type: actions.INCOMING_VIDEO_FLAG,
+    response: response,
+  }
+}
+
 //Aun Work
 
 // const videoMaximizePanel = (response) => {
@@ -217,4 +224,5 @@ export {
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
   maximizeVideoPanelFlag,
+  incomingVideoCallFlag,
 }

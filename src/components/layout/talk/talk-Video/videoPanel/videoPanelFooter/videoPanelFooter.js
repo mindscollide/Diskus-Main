@@ -4,11 +4,16 @@ import { Row, Col, Container } from 'react-bootstrap'
 import { Button } from '../../../../../elements'
 import './videoPanelFooter.css'
 import VideoCallWhiteIcon from './../../../../../../assets/images/Video-White-Icon.png'
+import { incomingVideoCallFlag } from '../../../../../../store/actions/VideoFeature_actions'
 
 const VideoPanelFooter = () => {
   const dispatch = useDispatch()
 
   const { videoFeatureReducer } = useSelector((state) => state)
+
+  const incomingCall = () => {
+    dispatch(incomingVideoCallFlag(true))
+  }
 
   return (
     <>
@@ -19,7 +24,7 @@ const VideoPanelFooter = () => {
               <Button
                 text="Group Call"
                 className="group-btn"
-                // onClick={() => anotherVideoPanelHandler(true)}
+                onClick={incomingCall}
                 icon2={<img src={VideoCallWhiteIcon} />}
               />
             </div>

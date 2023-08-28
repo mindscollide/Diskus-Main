@@ -1278,5 +1278,11 @@
   "Email-when-new-todo-assigned": "Email When new TODO Assigned",
   "Email-when-new-todo-deleted": "Email When new TODO Deleted",
   "Email-when-new-comment-added": "Email When new Comment Added",
-  "Email-when-comment-deleted": "Email When Comment Deleted"
+  "Email-when-comment-deleted": "Email When Comment Deleted",
+  "The-new-todo-creation": "The New Todo Creation",
+  "The-new-meeting-creation": "The New Meeting Creation",
+  "The-new-poll-is-published-for-your-review": "The New Poll is published for your review",
+  "Due-date-of-poll-has-passed": "Due date of Poll has passed",
+  "The-poll-has-been-updated": "The Poll has been updated",
+  "The-poll-has-been-deleted": "The poll has been deleted"
 }
