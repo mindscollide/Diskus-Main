@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import "react-dropzone-uploader/dist/styles.css";
 import { Progress, Space, Spin, Tooltip } from "antd";
 import Cancellicon from "../../assets/images/cross_dataroom.svg";
+import { LoadingOutlined } from '@ant-design/icons';
 import images from "../../assets/images/Imagesandphotos.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -216,6 +217,14 @@ const DataRoom = () => {
     },
     specifiPeople: "",
   });
+  const antIcon = (
+    <LoadingOutlined
+      style={{
+        fontSize: 36,
+      }}
+      spin
+    />
+  );
 
   const [searchResultsFields, setSearchResultFields] = useState({
     lastModifiedDate: {
@@ -906,6 +915,9 @@ const DataRoom = () => {
     fetchDataWithSorting(sorter?.order);
   };
 
+  const handleSortMyDocuments = (pagination, filters, sorter) => {
+    console.log(sorter, "handleSortMyDocumentshandleSortMyDocuments")
+  }
   const fetchDataWithFilter = async (filterValue) => {
     // Call your API with the selected filter value and current sort order
     // Update the data state with the response data
@@ -2685,14 +2697,14 @@ const DataRoom = () => {
                               </Row>
                             </>
                           )}
-                          {DataRoomReducer.TableSpinner && <Spin />}
+                          {DataRoomReducer.TableSpinner && <Row><Col sm={12} md={12} lg={12} className="d-flex justify-content-center align-items-center my-4"><Spin indicator={antIcon} /></Col></Row>}
                         </Col>
                       </Row>
                     </>
                   ) : (
                     <>
                       <Row className="mt-3">
-                        <Col lg={12} sm={12} md={12} style={{ height: 300, overflowY: "scroll" }} onScroll={handleScroll}>
+                        <Col lg={12} sm={12} md={12} style={{ height: 380, overflowY: "auto" }} onScroll={handleScroll}>
                           {getAllData.length > 0 &&
                             getAllData !== undefined &&
                             getAllData !== null &&
@@ -2715,6 +2727,7 @@ const DataRoom = () => {
                                 className={"DataRoom_Table"}
                                 rows={getAllData}
                                 pagination={false}
+                                onChange={handleSortMyDocuments}
                                 // rowSelection={rowSelection}
                                 size={"middle"}
                               />
@@ -2771,7 +2784,7 @@ const DataRoom = () => {
                               </Row>
                             </>
                           )}
-                          {DataRoomReducer.TableSpinner && <Row><Col sm={12} md={12} lg={12} className="d-flex justify-content-center align-items-center"><Spin /></Col></Row>}
+                          {DataRoomReducer.TableSpinner && <Row><Col sm={12} md={12} lg={12} className="d-flex justify-content-center align-items-center my-4"><Spin indicator={antIcon} /></Col></Row>}
                         </Col>
                       </Row>
                     </>

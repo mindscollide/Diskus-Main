@@ -620,7 +620,7 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
     SortBy: sort !== null && sort !== undefined ? sort : 2,
     isDescending: order !== null & order !== undefined ? order : true,
     sRow: 0,
-    Length: 5
+    Length: 10
   }
   // let Data = {
   //     UserID: 722,
