@@ -1337,5 +1337,9 @@
   "Functional-review": "Functional Review",
   "Finance-summary": "Finance Summary",
   "Ceo-report": "CEO Report",
-  "Introduction": "Introduction"
+  "Introduction": "Introduction",
+  "Import-previous-minutes": "Import Previous Minutes",
+  "Upload": "Upload",
+  "Create-from-scratch": "Create From Scratch",
+  "IT-departmental-meeting": "IT Departmental Meeting"
 }
