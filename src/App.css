@@ -5951,3 +5951,8 @@ input::-webkit-calendar-picker-indicator {
 .SelectOptions_drop_active__control.css-13cymwt-control {
   border: 1px solid #e1e1e1 !important;
 }
+
+.ProposedMeeting_Checkbox-input {
+  width: 15.5px !important;
+  height: 15.5px !important;
+}
