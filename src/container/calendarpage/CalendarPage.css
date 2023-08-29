@@ -472,3 +472,7 @@ body[dir="rtl"] .heading_button {
 .rbc-button-link {
   color: #000 !important;
 }
+.calendar_container {
+  width: 90% !important;
+  margin: 0 auto !important;
+}

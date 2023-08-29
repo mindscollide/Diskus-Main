@@ -576,7 +576,7 @@ const CalendarPage = () => {
 
   return (
     <>
-      <Container id={"calender"}>
+      <Col className="calendar_container">
         <Row>
           <Col lg={2} md={2} sm={2} xs={12}>
             <span className="Calender-heading">{t("Calendar")}</span>
@@ -624,27 +624,25 @@ const CalendarPage = () => {
           </Col>
         </Row>
         <Row>
-          <Col>
-            <Calendar
-              events={calenderData}
-              startDataUpdate={startDataUpdate}
-              setStartDataUpdate={setStartDataUpdate}
-              endDataUpdate={endDataUpdate}
-              setEndDataUpdate={setEndDataUpdate}
-              handleEventSelect={viewModalHandler}
-              className="calendar"
-              onChange={onChange}
-              handleAddEvent={handleAddEvent}
-              setCalendarView={setCalendarView}
-              calendarView={calendarView}
-              defaultValue={defaultValue}
-              setDefaultValue={setDefaultValue}
-              setOpen={setOpen}
-              selectable={true}
-            />
-          </Col>
+          <Calendar
+            events={calenderData}
+            startDataUpdate={startDataUpdate}
+            setStartDataUpdate={setStartDataUpdate}
+            endDataUpdate={endDataUpdate}
+            setEndDataUpdate={setEndDataUpdate}
+            handleEventSelect={viewModalHandler}
+            className="calendar"
+            onChange={onChange}
+            handleAddEvent={handleAddEvent}
+            setCalendarView={setCalendarView}
+            calendarView={calendarView}
+            defaultValue={defaultValue}
+            setDefaultValue={setDefaultValue}
+            setOpen={setOpen}
+            selectable={true}
+          />
         </Row>
-      </Container>
+      </Col>
       {assignees.Loading ||
       calendarReducer.Loading ||
       toDoListReducer.Loading ? (
