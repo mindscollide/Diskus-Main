@@ -250,7 +250,13 @@ body[dir="rtl"] .todolist-heading-size {
     border: none !important;
   }
 }
-
+.ant-result.ant-result-info.NoTaskTodo{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
 .MuiPaper-root.MuiPaper-elevation0.MuiPaper-rounded:has(.ant-result.ant-result-info.NoTaskTodo) {
   background: none;
 }

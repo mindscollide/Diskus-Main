@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 
 const Loader = () => {
   const { t } = useTranslation();
-  let currentLanguage = localStorage.getItem("i18nextLng");
   const messages = [
     t("Securing-your-session-one-step-at-a-time"),
     t("Deploying-multiple-encryption-layers"),
@@ -25,17 +24,23 @@ const Loader = () => {
   const [randomIndex, setRandomIndex] = useState(0);
 
   useEffect(() => {
-    // Get the last displayed index from local storage or start from 0
-    const lastDisplayedIndex = localStorage.getItem("lastDisplayedIndex") || 0;
+    // // Get the last displayed index from local storage or start from 0
+    // const lastDisplayedIndex = localStorage.getItem("lastDisplayedIndex") || 0;
 
-    // Calculate the next index based on the last displayed index
-    const nextIndex = (parseInt(lastDisplayedIndex) + 1) % messages.length;
+    // // Calculate the next index based on the last displayed index
+    // const nextIndex = (parseInt(lastDisplayedIndex) + 1) % messages.length;
 
-    // Save the next index in local storage
-    localStorage.setItem("lastDisplayedIndex", nextIndex);
+    // // Save the next index in local storage
+    // localStorage.setItem("lastDisplayedIndex", nextIndex);
 
-    // Update the state with the new index
-    setRandomIndex(nextIndex);
+    // // Update the state with the new index
+    // setRandomIndex(nextIndex);
+
+    // Generate a random index
+    const randomIdx = Math.floor(Math.random() * messages.length);
+
+    // Update the state with the new random index
+    setRandomIndex(randomIdx);
   }, []);
 
   return (
@@ -46,7 +51,7 @@ const Loader = () => {
           <img src={newlogo} widt="269.97px" height="259.69px" />
           {localStorage.getItem("deleteContent") && (
             <p className={styles["deleteOrganizationContent"]}>
-              Please wait while we delete your organization relevant data…
+              {t("Please-wait-loader")}
             </p>
           )}
           <div className={styles["loader-line"]}></div>
