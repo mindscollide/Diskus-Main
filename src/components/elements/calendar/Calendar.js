@@ -323,39 +323,37 @@ function CustomCalendar({
   // };
 
   return (
-    <Container className="bg-white border-radius-4 border ">
-      <Row>
-        <Col sm={12}>
-          <Calendar
-            selectable
-            localizer={localizer}
-            resizable
-            events={events}
-            startAccessor="start"
-            endAccessor="end"
-            views={true}
-            date={defaultValue}
-            onSelectEvent={handleEventSelect}
-            className={className}
-            components={{
-              toolbar: customToolbar,
-              // header: customTimeSlotHeader,
-              month: false,
-            }}
-            // dayPropGetter={dayPropGetter}
-            eventPropGetter={eventPropGetter}
-            onNavigate={onNavigate}
-            step={15}
-            timeslots={15}
-            popup={true}
-            culture={culture}
-            messages={messages}
-            rtl={rightToLeft}
-          />
-           <CalendarFooter />
-        </Col>
-      </Row>
-    </Container>
+    <div className="bg-white border-radius-4 border">
+      <Col sm={12}>
+        <Calendar
+          selectable
+          localizer={localizer}
+          resizable
+          events={events}
+          startAccessor="start"
+          endAccessor="end"
+          views={true}
+          date={defaultValue}
+          onSelectEvent={handleEventSelect}
+          className={className}
+          components={{
+            toolbar: customToolbar,
+            // header: customTimeSlotHeader,
+            month: false,
+          }}
+          // dayPropGetter={dayPropGetter}
+          eventPropGetter={eventPropGetter}
+          onNavigate={onNavigate}
+          step={15}
+          timeslots={15}
+          popup={true}
+          culture={culture}
+          messages={messages}
+          rtl={rightToLeft}
+        />
+        <CalendarFooter />
+      </Col>
+    </div>
   );
 }
 

@@ -577,16 +577,15 @@ const CalendarPage = () => {
   return (
     <>
       <Col className="calendar_container">
-        <Row>
+        <Row className="d-flex justify-content-start align-items-center margin-bottom-15 mt-2">
           <Col lg={2} md={2} sm={2} xs={12}>
             <span className="Calender-heading">{t("Calendar")}</span>
           </Col>
           <Col
-            lg={3}
-            md={3}
-            sm={12}
-            xs={12}
-            className=" mt-2 d-flex justify-content-center"
+            lg={2}
+            md={2}
+            sm={2}
+            // className=" mt-2 d-flex justify-content-center"
           >
             <Row>
               <Col lg={12} md={12} sm={12}>
@@ -623,7 +622,7 @@ const CalendarPage = () => {
             </Row>
           </Col>
         </Row>
-        <Row>
+        <Row className="align-items-center">
           <Calendar
             events={calenderData}
             startDataUpdate={startDataUpdate}
