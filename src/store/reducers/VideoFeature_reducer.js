@@ -26,6 +26,7 @@ const initialState = {
   MaximizeVideoFlag: false,
   MinimizeVideoFlag: false,
   NormalizeVideoFlag: false,
+  IncomingVideoCallFlag: false,
 }
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -230,6 +231,13 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         MaximizeVideoFlag: action.response,
+      }
+    }
+
+    case actions.INCOMING_VIDEO_FLAG: {
+      return {
+        ...state,
+        IncomingVideoCallFlag: action.response,
       }
     }
 

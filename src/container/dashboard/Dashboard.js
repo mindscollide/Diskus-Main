@@ -6,6 +6,7 @@ import { Layout, message } from 'antd'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { setRecentActivityDataNotification } from '../../store/actions/GetUserSetting'
 import VideoCallScreen from '../../components/layout/talk/videoCallScreen/VideoCallScreen'
+import VideoMaxIncoming from '../../components/layout/talk/videoCallScreen/videoCallBody/VideoMaxIncoming'
 import {
   allMeetingsSocket,
   getMeetingStatusfromSocket,
@@ -59,6 +60,7 @@ import { useTranslation } from 'react-i18next'
 import numeral from 'numeral'
 import 'numeral/locales'
 import { notifyPollingSocket } from '../../store/actions/Polls_actions'
+
 const Dashboard = () => {
   const location = useLocation()
   const [client, setClient] = useState(null)
@@ -866,6 +868,9 @@ const Dashboard = () => {
 
   return (
     <>
+      {videoFeatureReducer.IncomingVideoCallFlag === true && (
+        <div className="overlay-incoming-videocall" />
+      )}
       <Layout>
         <Sidebar />
         {location.pathname === '/DisKus/videochat' ? null : <Header2 />}
@@ -880,6 +885,9 @@ const Dashboard = () => {
             id={notificationID}
           />
           <Outlet />
+          {videoFeatureReducer.IncomingVideoCallFlag === true ? (
+            <VideoMaxIncoming />
+          ) : null}
           {videoFeatureReducer.NormalizeVideoFlag === true ||
           videoFeatureReducer.MinimizeVideoFlag === true ||
           videoFeatureReducer.MaximizeVideoFlag === true ? (

@@ -212,7 +212,11 @@ const NewMeeting = () => {
 
   return (
     <section className={styles["NewMeeting_container"]}>
-      {sceduleMeeting ? (
+      {proposeMeetingDate ? (
+        <>
+          <ProposedMeetingDate setProposeMeetingDate={setProposeMeetingDate} />
+        </>
+      ) : sceduleMeeting ? (
         <SceduleMeeting
           setSceduleMeeting={setSceduleMeeting}
           setProposeMeetingDate={setProposeMeetingDate}
