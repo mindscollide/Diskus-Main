@@ -63,7 +63,7 @@
 
 .folderContainer {
     height: 70vh !important;
-    overflow-y: auto;
+    /* overflow-y: auto; */
     overflow-x: hidden;
 }
 
@@ -220,4 +220,9 @@
 
 .options_dropdown button:is(:hover, :active, :focus, :focus-visible, :visited) {
     border: none !important;
+}
+
+.sortIconGrid {
+    cursor: pointer;
+
 }

@@ -631,6 +631,7 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
     } else {
       dispatch(getDocumentsAndFolders_init())
     }
+    dispatch(tableSpinner(false, 0))
     let form = new FormData()
     form.append(
       'RequestMethod',
@@ -694,9 +695,7 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
 }
 
 // Get All Data from scroll behaviour
-
-// Get Documents And Folder API
-const getDocumentsAndFolderApiScrollbehaviour = (navigate, statusID, t, sRows) => {
+const getDocumentsAndFolderApiScrollbehaviour = (navigate, statusID, t, sRows, filterValue) => {
   console.log(navigate, statusID, t, sRows, "getDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApi")
 
   let token = JSON.parse(localStorage.getItem('token'))
@@ -706,10 +705,10 @@ const getDocumentsAndFolderApiScrollbehaviour = (navigate, statusID, t, sRows) =
     UserID: parseInt(createrID),
     OrganizationID: parseInt(OrganizationID),
     StatusID: parseInt(statusID),
-    SortBy: 1,
+    SortBy: filterValue !== 0 ? filterValue : 1,
     isDescending: true,
     sRow: Number(sRows),
-    Length: 5
+    Length: 10
   }
   return (dispatch) => {
     dispatch(tableSpinner(true))
@@ -730,14 +729,14 @@ const getDocumentsAndFolderApiScrollbehaviour = (navigate, statusID, t, sRows) =
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(getDocumentsAndFolderApi(navigate, statusID, t, no, order, sort))
+          dispatch(getDocumentsAndFolderApiScrollbehaviour(navigate, statusID, t, sRows))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               'DataRoom_DataRoomManager_GetDocumentsAndFolders_01'.toLowerCase()
             ) {
-              dispatch(tableSpinner(false))
+              dispatch(tableSpinner(false, 1))
               dispatch(
                 getDocumentsAndFolders_success(
                   response.data.responseResult.data,
@@ -756,27 +755,27 @@ const getDocumentsAndFolderApiScrollbehaviour = (navigate, statusID, t, sRows) =
               'DataRoom_DataRoomManager_GetDocumentsAndFolders_02'.toLowerCase()
             ) {
               dispatch(getDocumentsAndFolders_fail(t('No-record-found')))
-              dispatch(tableSpinner(false))
+              dispatch(tableSpinner(false, 2))
               console.log('checking1212')
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               'DataRoom_DataRoomManager_GetDocumentsAndFolders_03'.toLowerCase()
             ) {
               dispatch(getDocumentsAndFolders_fail(t('Something-went-wrong')))
-              dispatch(tableSpinner(false))
+              dispatch(tableSpinner(false, 2))
             }
           } else {
             dispatch(getDocumentsAndFolders_fail(t('Something-went-wrong')))
-            dispatch(tableSpinner(false))
+            dispatch(tableSpinner(false, 2))
           }
         } else {
           dispatch(getDocumentsAndFolders_fail(t('Something-went-wrong')))
-          dispatch(tableSpinner(false))
+          dispatch(tableSpinner(false, 2))
         }
       })
       .catch((error) => {
         dispatch(getDocumentsAndFolders_fail(t('Something-went-wrong')))
-        dispatch(tableSpinner(false))
+        dispatch(tableSpinner(false, 2))
       })
   }
 }
@@ -1769,13 +1768,15 @@ const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
       })
   }
 }
-const tableSpinner = (payload) => {
-  console.log(payload, "payloadpayload")
+const tableSpinner = (payload, value) => {
+  console.log(payload, value, "payloadpayload")
   return {
     type: actions.DATAROOM_TABLE_SCROLL_BAR,
-    response: payload
+    response: payload,
+    value: value
   }
 }
+// const resetSpinner = () => {}
 const clearDataResponseMessage = () => {
   return {
     type: actions.CLEARE_MESSAGE,

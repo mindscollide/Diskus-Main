@@ -20,7 +20,9 @@ const initialState = {
     FolderisExistCheck: null,
     CreatedFolderID: 0,
     SavefilesandfoldersResponse: null,
-    TableSpinner: false
+    TableSpinner: false,
+    NotFound: 0,
+    sortedData: []
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -376,6 +378,8 @@ const DataRoomReducer = (state = initialState, action) => {
             return {
                 ...state,
                 TableSpinner: action.response,
+                NotFound: action.value
+
             };
         }
         default:

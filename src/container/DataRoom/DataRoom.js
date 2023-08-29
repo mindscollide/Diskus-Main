@@ -150,6 +150,7 @@ const DataRoom = () => {
   const [searchbarshow, setSearchbarshow] = useState(false);
   const [searchbarsearchoptions, setSearchbarsearchoptions] = useState(false);
   const [searchoptions, setSearchoptions] = useState(false);
+  const [sRowsData, setSRowsData] = useState(0)
   const [gridbtnactive, setGridbtnactive] = useState(false);
   const [listviewactive, setListviewactive] = useState(true);
   const [optionsthreedoticon, setOptionsthreedoticon] = useState(false);
@@ -183,10 +184,15 @@ const DataRoom = () => {
   const [fileName, setFileName] = useState("");
   const [folderName, setFolderName] = useState("");
   const [filterVal, setFilterVal] = useState("");
+  const [sorted, setSorted] = useState(false)
+  console.log(sorted, "sortedsortedsortedsorted")
   const dispatch = useDispatch();
+  const [lengthValue, setLengthValue] = useState(0)
   const navigate = useNavigate();
   const [threeDotOptions, setThreeDotOptions] = useState(0);
   const [folderID, setFolderID] = useState([]);
+  const [filterValue, setFilterValue] = useState(0)
+  const [sortByValue, setSortByValue] = useState(true)
   const [rows, setRow] = useState([]);
   const [uploadDocumentAgain, setUploadDocumentAgain] = useState(null);
   const [getAllData, setGetAllData] = useState([]);
@@ -195,7 +201,7 @@ const DataRoom = () => {
   const currentView = JSON.parse(localStorage.getItem("setTableView"));
   const [currentSort, setCurrentSort] = useState("descend"); // Initial sort order
   const [currentFilter, setCurrentFilter] = useState(t("Last-modified"));
-  const [currentFilterID, setCurrentFilterID] = useState(t("Last-modified")); // Initial filter value
+  const [currentFilterID, setCurrentFilterID] = useState(2); // Initial filter value
   let viewFolderID = localStorage.getItem("folderID")
   const [searchResultBoxFields, setSearchResultBoxFields] = useState({
     documentType: {
@@ -279,9 +285,11 @@ const DataRoom = () => {
       });
     } catch { }
     if (currentView !== null) {
+      setSorted(false)
       dispatch(getDocumentsAndFolderApi(navigate, currentView, t));
     } else {
       localStorage.setItem("setTableView", 3);
+      setSorted(false)
       dispatch(getDocumentsAndFolderApi(navigate, 3, t));
     }
     return () => {
@@ -765,7 +773,10 @@ const DataRoom = () => {
 
   const SharewithmeButonShow = async () => {
     localStorage.setItem("setTableView", 2);
+    setSorted(true)
     await dispatch(getDocumentsAndFolderApi(navigate, 2, t));
+    setSRowsData(0)
+    setGetAllData([])
     // setSharemebtn(true);
     setSharedwithmebtn(true);
     // setAllDocumentActive(false);
@@ -778,7 +789,11 @@ const DataRoom = () => {
 
   const MydocumentButtonShow = async () => {
     localStorage.setItem("setTableView", 1);
+    setSorted(true)
+
     await dispatch(getDocumentsAndFolderApi(navigate, 1, t));
+    setSRowsData(0)
+    setGetAllData([])
     localStorage.removeItem("folderID");
     // setAllDocumentActive(false);
     // setSharemebtn(false);
@@ -787,11 +802,16 @@ const DataRoom = () => {
     if (searchoptions) {
       setSearchoptions(false);
     }
+
   };
 
   const AllDocuments = async () => {
     localStorage.setItem("setTableView", 3);
+    setSorted(true)
+
     await dispatch(getDocumentsAndFolderApi(navigate, 3, t));
+    setSRowsData(0)
+    setGetAllData([])
     localStorage.removeItem("folderID");
     // setSharemebtn(false);
     // setAllDocumentActive(true);
@@ -877,43 +897,86 @@ const DataRoom = () => {
   };
 
   const handleFilterMenuClick = async (filterValue) => {
-    setCurrentFilter(filterValue);
-    fetchDataWithFilter(filterValue);
+    console.log(filterValue, "filterValuefilterValuefilterValue")
+    setCurrentFilterID(filterValue)
+    // setCurrentFilter(filterValue);
+    // fetchDataWithFilter(filterValue);
   };
 
-  useEffect(() => {
-    if (currentFilter !== null && currentFilter !== undefined, currentFilter !== "") {
-      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, currentFilter));
-    }
-  }, [currentFilter])
+  // useEffect(() => {
+  //   if (currentFilter !== null && currentFilter !== undefined, currentFilter !== "") {
+  //     dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, currentFilter));
+  //   }
+  // }, [currentFilter])
   const handleSortChange = (pagination, filters, sorter) => {
+    console.log(filters, sorter, "filtersfiltersfilters")
     if (sorter.field === "sharedDate") {
       if (sorter.order === "ascend") {
+        setSorted(true)
+        setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, 2));
       } else {
+        setSorted(true)
+        setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, true, 2));
       }
     }
     if (sorter.field === "name") {
-      if (sorter.order === "descend") {
+      if (sorter.order === "ascend") {
+        setSorted(true)
+        setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
       } else {
-        dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
+        setSorted(true)
+        setSRowsData(0)
+        dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1));
       }
     }
+    if (sorter.field === "owner") {
+      if (sorter.order === "ascend") {
+        setSorted(true)
+        setSRowsData(0)
+        dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
+      } else {
+        setSorted(true)
+        setSRowsData(0)
+        dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1));
+      }
+    }
+    // if (filters.)
     setCurrentSort(sorter?.order);
     fetchDataWithSorting(sorter?.order);
   };
 
   const handleSortMyDocuments = (pagination, filters, sorter) => {
-    console.log(sorter, "handleSortMyDocumentshandleSortMyDocuments")
     if (sorter.field === "name") {
       if (sorter.order === "ascend") {
+        setSorted(true)
+        setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
       } else {
-        dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
+        setSorted(true)
+        setSRowsData(0)
+        dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1));
       }
     }
+    if (filters.modifiedDate !== null) {
+      let getFilterValue = filters.modifiedDate[0];
+      if (getFilterValue === 2) {
+        setCurrentFilter(t("Last-modified"))
+        setFilterValue(2)
+      } else if (getFilterValue === 3) {
+        setCurrentFilter(t("Last-modified-by-me"))
+        setFilterValue(3)
+      } else if (getFilterValue === 4) {
+        setFilterValue(4)
+        setCurrentFilter(t("Last-open-by-me"))
+      }
+      setSorted(true)
+      dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, filterValue));
+      setSRowsData(0)
+    }
+
     // if (sorter.field === "modifiedDate") {
     //   if (sorter.order === "ascend") {
     //     dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 2));
@@ -1071,10 +1134,6 @@ const DataRoom = () => {
       filterIcon: (filtered) => (
         <DownOutlined className="filter-chevron-icon-todolist" />
       ),
-      onFilter: (value, record) => {
-        handleFilterMenuClick(value);
-        // Implement your custom filtering logic here
-      },
       sortDirections: ["descend", "ascend"],
       render: (text, data) => {
         return (
@@ -1338,6 +1397,8 @@ const DataRoom = () => {
       dataIndex: "owner",
       key: "owner",
       width: "90px",
+      sorter: true,
+      sortOrder: currentSort,
       sortDirections: ["descend", "ascend"],
       render: (text, record) => {
         return <span className={styles["ownerName"]}>{text}</span>;
@@ -1354,29 +1415,16 @@ const DataRoom = () => {
       filters: [
         {
           text: t("Share-date"),
-          value: "Shared date",
-        },
-        {
-          text: t("Last-modified"),
-          value: "Last modified",
-        },
-        {
-          text: t("Last-modified-by-me"),
-          value: "Last modified by me",
-        },
-        {
-          text: t("Last-open-by-me"),
-          value: "Last open by me",
-        },
-        // ... other filters ...
+          value: 1,
+        }
       ],
       filterIcon: (filtered) => (
         <DownOutlined className="filter-chevron-icon-todolist" />
       ),
-      onFilter: (value, record) => {
-        handleFilterMenuClick(value);
-        // Implement your custom filtering logic here
-      },
+      // onFilter: (value, record) => {
+      //   handleFilterMenuClick(value);
+      //   // Implement your custom filtering logic here
+      // },
       render: (text, record) => {
         return (
           <span className={styles["dataroom_table_heading"]}>
@@ -1703,7 +1751,6 @@ const DataRoom = () => {
     // All API calls are complete, you can perform other actions here
   };
 
-
   const handleChangeLocationValue = (event) => {
     setSearchResultBoxFields({
       ...searchResultBoxFields,
@@ -1889,11 +1936,22 @@ const DataRoom = () => {
   };
   // api call onscroll
   const handleScroll = (e) => {
+    console.log("test")
     const { scrollHeight, scrollTop, clientHeight } = e.target;
+    console.log("test")
     if (scrollHeight - scrollTop === clientHeight) {
-      dispatch(getDocumentsAndFolderApiScrollbehaviour(navigate, currentView, t, 5))
+      console.log("test")
+      console.log(sRowsData, "sRowsDatasRowsDatasRowsData")
+      console.log(DataRoomReducer.NotFound !== 2 && sorted === false, DataRoomReducer.NotFound, sorted, "test")
+      if (DataRoomReducer.NotFound !== 2 && sorted === false) {
+        console.log("test")
+        let addNewData = Number(sRowsData) + 5
+        setSRowsData(addNewData)
+        dispatch(getDocumentsAndFolderApiScrollbehaviour(navigate, currentView, t, Number(addNewData), Number(filterValue)))
+      }
     }
   };
+
   // const handleUploadDocuemtuploadOptions = () => { }
   useEffect(() => {
     document.addEventListener("click", handleOutsideClick);
@@ -1924,6 +1982,7 @@ const DataRoom = () => {
       dispatch(clearDataResponseMessage());
     }
   }, [DataRoomReducer.ResponseMessage]);
+
   useEffect(() => {
     try {
       if (
@@ -1931,15 +1990,23 @@ const DataRoom = () => {
         DataRoomReducer.getAllDocumentandShareFolderResponse !== undefined &&
         DataRoomReducer.getAllDocumentandShareFolderResponse.length > 0
       ) {
-        let copyData = [...getAllData];
-        DataRoomReducer.getAllDocumentandShareFolderResponse.map((data, index) => {
-          copyData.push(data)
-        })
+        if (sorted) {
+          console.log("Test")
+          setGetAllData(DataRoomReducer.getAllDocumentandShareFolderResponse)
+          setSorted(false)
+        } else {
+          setSorted(false)
+          console.log("Test")
+          let copyData = [...getAllData];
+          DataRoomReducer.getAllDocumentandShareFolderResponse.map((data, index) => {
+            copyData.push(data)
+          })
+          setGetAllData(copyData);
+        }
 
-        setGetAllData(copyData);
         // setGetAllData([DataRoomReducer.getAllDocumentandShareFolderResponse, getAllData]);
       } else {
-        setGetAllData([]);
+        // setGetAllData([]);
       }
     } catch (error) { }
   }, [DataRoomReducer.getAllDocumentandShareFolderResponse]);
@@ -2642,6 +2709,10 @@ const DataRoom = () => {
                                 data={getAllData}
                                 optionsforFolder={optionsforFolder}
                                 optionsforFile={optionsforFile}
+                                setSorted={setSorted}
+                                sRowsData={sRowsData}
+                                setSRowsData={setSRowsData}
+                                sorted={sorted}
                               />
                             </>
                           ) : getAllData.length > 0 &&
@@ -2649,15 +2720,18 @@ const DataRoom = () => {
                             getAllData !== null &&
                             listviewactive === true ? (
                             <>
-                              <TableToDo
-                                sortDirections={["descend", "ascend"]}
-                                column={shareWithmeColoumns}
-                                className={"DataRoom_Table"}
-                                size={"small"}
-                                onChange={handleSortChange}
-                                rows={getAllData}
-                                pagination={false}
-                              />
+                              <section style={{ height: 380, overflowY: "auto", overflowX: "hidden" }} onScroll={handleScroll}>
+                                <TableToDo
+                                  sortDirections={["descend", "ascend"]}
+                                  column={shareWithmeColoumns}
+                                  className={"DataRoom_Table"}
+                                  size={"small"}
+                                  onChange={handleSortChange}
+                                  rows={getAllData}
+                                  pagination={false}
+                                />
+                                {DataRoomReducer.TableSpinner && <Row><Col sm={12} md={12} lg={12} className="d-flex justify-content-center align-items-center my-4"><Spin indicator={antIcon} /></Col></Row>}
+                              </section>
                             </>
                           ) : (
                             <>
@@ -2708,7 +2782,7 @@ const DataRoom = () => {
                   ) : (
                     <>
                       <Row className="mt-3">
-                        <Col lg={12} sm={12} md={12} style={{ height: 380, overflowY: "auto" }} onScroll={handleScroll}>
+                        <Col lg={12} sm={12} md={12} >
                           {getAllData.length > 0 &&
                             getAllData !== undefined &&
                             getAllData !== null &&
@@ -2718,6 +2792,10 @@ const DataRoom = () => {
                                 data={getAllData}
                                 optionsforFolder={optionsforFolder}
                                 optionsforFile={optionsforFile}
+                                setSorted={setSorted}
+                                sRowsData={sRowsData}
+                                setSRowsData={setSRowsData}
+                                sorted={sorted}
                               />
                             </>
                           ) : getAllData.length > 0 &&
@@ -2725,16 +2803,19 @@ const DataRoom = () => {
                             getAllData !== null &&
                             listviewactive === true ? (
                             <>
-                              <TableToDo
-                                sortDirections={["descend", "ascend"]}
-                                column={MyDocumentsColumns}
-                                className={"DataRoom_Table"}
-                                rows={getAllData}
-                                pagination={false}
-                                onChange={handleSortMyDocuments}
-                                // rowSelection={rowSelection}
-                                size={"middle"}
-                              />
+                              <section style={{ height: 380, overflowY: "auto", overflowX: "hidden" }} onScroll={handleScroll}>
+                                <TableToDo
+                                  sortDirections={["descend", "ascend"]}
+                                  column={MyDocumentsColumns}
+                                  className={"DataRoom_Table"}
+                                  rows={getAllData}
+                                  pagination={false}
+                                  onChange={handleSortMyDocuments}
+                                  // rowSelection={rowSelection}
+                                  size={"middle"}
+                                />
+                                {DataRoomReducer.TableSpinner && <Row><Col sm={12} md={12} lg={12} className="d-flex justify-content-center align-items-center my-4"><Spin indicator={antIcon} /></Col></Row>}
+                              </section>
                             </>
                           ) : (
                             <>
@@ -2788,7 +2869,7 @@ const DataRoom = () => {
                               </Row>
                             </>
                           )}
-                          {DataRoomReducer.TableSpinner && <Row><Col sm={12} md={12} lg={12} className="d-flex justify-content-center align-items-center my-4"><Spin indicator={antIcon} /></Col></Row>}
+
                         </Col>
                       </Row>
                     </>
