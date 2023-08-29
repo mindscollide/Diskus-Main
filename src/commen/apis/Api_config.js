@@ -781,11 +781,25 @@ const getAllStarredMessages = {
 }
 
 const saveFilesandFolderRM = {
-  RequestMethod: 'ServiceManager.SaveFileAndFolder'
+  RequestMethod: 'ServiceManager.SaveFileAndFolder',
 }
+
 const DeleteCommentRM = {
-  RequestMethod: "ServiceManager.DeleteComment"
+  RequestMethod: 'ServiceManager.DeleteComment',
 }
+
+const getSystemSupportedLanguage = {
+  RequestMethod: 'ServiceManager.GetSystemSupportedLanguage',
+}
+
+const getLastSelectedLanguage = {
+  RequestMethod: 'ServiceManager.GetLastSelectedLanguage',
+}
+
+const setLastSelectedLanguage = {
+  RequestMethod: 'ServiceManager.SetLastSelectedLanguage',
+}
+
 export {
   DeleteCommentRM,
   subscriptionPackageUpgradeAmount,
@@ -997,5 +1011,9 @@ export {
   deltePolls,
   updateMessageAcknowledgement,
   getAllStarredMessages,
-  saveFilesandFolderRM
+  saveFilesandFolderRM,
+  //Languages
+  getSystemSupportedLanguage,
+  getLastSelectedLanguage,
+  setLastSelectedLanguage,
 }

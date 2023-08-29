@@ -1,49 +1,43 @@
-.videoIncoming-max {
-  position: relative;
-  display: content !important;
-  height: 67vh;
-  width: 100%;
+.videoIncoming-max-call {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 370px;
+  width: 350px;
   background-color: #707070 !important;
-  top: 5px !important;
-  /* border: 2px solid #ccc; */
-  justify-content: center;
-  align-items: center;
-  padding: 0px 10px !important;
+  z-index: 9;
+  padding-top: 25px;
+  border-radius: 4px;
 }
 
-.outgoing-call-text-max {
+.outgoing-call-text-max-call {
   font-size: 19px !important;
   color: #fff !important;
   font-weight: 600;
+  margin-top: 20px;
 }
 
-.calling-text-max {
+.calling-text-max-call {
   font-size: 15px !important;
   color: #fff !important;
 }
 
-.avatar-column-max {
-  display: flex;
-  justify-content: center;
-  position: relative;
-  top: 80px !important;
+.avatar-column-max-call {
+  text-align: center;
 }
 
-.someone-calling-title-max {
-  display: flex;
-  justify-content: center;
-  position: relative;
-  top: 40px !important;
+.someone-calling-title-max-call {
+  text-align: center;
+
 }
 
-.calling-title-max {
-  display: flex;
-  justify-content: center;
-  position: relative;
-  top: 20px !important;
+.calling-title-max-call {
+  text-align: center;
+
 }
 
-.button-img-max {
+.button-img-max-call {
   background-color: transparent !important;
   border: none !important;
 }
