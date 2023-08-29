@@ -755,8 +755,6 @@ const saveFilesandFoldersApi = (navigate, folderID, data, t, setShowbarupload, s
                   t("Files-saved-successfully")
                 )
               );
-              setShowbarupload(false);
-              setTasksAttachments([]);
               // let currentView = localStorage.getItem("setTableView")
               // let viewFolderID = localStorage.getItem("folderID")
               // if (viewFolderID !== null) {
