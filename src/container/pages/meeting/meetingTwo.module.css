@@ -143,6 +143,46 @@ body[dir="rtl"] .polling_searchinput {
   border-radius: 4px !important;
 }
 
+.Start-Meeting {
+  width: 118px;
+  height: 28px;
+  font-size: 12px;
+  color: #fff;
+  background: #81db86;
+  border: none;
+  border-radius: 4px !important;
+}
+
+.Start-Meeting:is(:hover, :focus, :focus-visible:active) {
+  width: 118px !important;
+  height: 28px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #81db86 !important;
+  border: none !important;
+  border-radius: 4px !important;
+}
+
+.End-Meeting {
+  width: 118px !important;
+  height: 28px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #f16b6b !important;
+  border: none !important;
+  border-radius: 4px !important;
+}
+
+.End-Meeting:is(:hover, :focus, :focus-visible:active) {
+  width: 118px !important;
+  height: 28px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #f16b6b !important;
+  border: none !important;
+  border-radius: 4px !important;
+}
+
 .Title_desc {
   white-space: nowrap !important;
   text-overflow: ellipsis;
@@ -166,4 +206,36 @@ body[dir="rtl"] .polling_searchinput {
 body[dir="rtl"] .PaginationStyle-Committee {
   width: 100% !important;
   padding: 12px 10px !important;
+}
+
+.PaginationStyle-Committee {
+  margin-top: 5px !important;
+  background-color: #fff !important;
+  width: auto !important;
+  display: flex !important;
+  justify-content: center !important;
+  padding: 12px 40px !important;
+  height: 54px !important;
+  box-shadow: 0px 0px 5px #ccc !important;
+  border-radius: 4px !important;
+  position: fixed !important;
+  bottom: 10px !important;
+}
+
+body[dir="rtl"] .PaginationStyle-Committee {
+  width: auto !important;
+  padding: 8px 10px !important;
+}
+
+.Empty_State_styles {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999999999;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  align-items: center !important;
+  flex-direction: column;
 }

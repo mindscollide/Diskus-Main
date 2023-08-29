@@ -26,3 +26,106 @@
   font-size: 20px !important;
   color: #5a5a5a !important;
 }
+
+.Paragraph_Styles {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+}
+
+.Prposed_On_Heading {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+  color: #5f78d6 !important;
+}
+
+.Steric_Color {
+  color: #f16b6b !important;
+}
+
+.Box_for_Send_Request {
+  height: 39px !important;
+  width: 100%;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.Date_Year_Styles {
+  font-family: "Montserrat";
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 10px !important;
+}
+
+.Add_Dates_Btn_Class {
+  border: 1px dotted #ccc !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  height: 39px !important;
+  width: 100%;
+}
+
+.Add_dates_label {
+  font-size: 12px !important;
+  color: #5f78d6 !important;
+  font-family: "MontserratMedium-500" !important;
+}
+
+.Scroller_meeting {
+  height: 23vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_meeting::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_meeting::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Cancel_Button_ProposedMeeting {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff;
+  border: 1px solid #e1e1e1;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+}
+
+.Cancel_Button_ProposedMeeting:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+}
+
+.Save_Button_ProposedMeeting {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #5f78d6;
+  border: none;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+}
+
+.Save_Button_ProposedMeeting:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #5f78d6 !important;
+  border: none !important;
+  font-family: "MontserratSemiBold" !important;
+  border-radius: 4px !important;
+}
