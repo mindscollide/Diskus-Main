@@ -260,6 +260,8 @@ const CalendarPage = () => {
             start: new Date(StartingTime),
             end: new Date(EndingTime),
             border: "2px solid" + googleEventColor,
+            // color: "#ffff",
+            backgroundColor:googleEventColor,
           });
         } else if (cData.fK_CESID === 2) {
           newList.push({
@@ -270,6 +272,8 @@ const CalendarPage = () => {
             start: new Date(StartingTime),
             end: new Date(EndingTime),
             border: "2px solid" + officeEventColor,
+            // color: "#ffff",
+            backgroundColor:officeEventColor,
           });
         } else if (cData.fK_CESID === 3) {
           newList.push({
@@ -280,6 +284,8 @@ const CalendarPage = () => {
             start: new Date(StartingTime),
             end: new Date(EndingTime),
             border: "2px solid" + diskusEventColor,
+            // color: "#ffff",
+            backgroundColor:diskusEventColor,
           });
         }
       });
@@ -576,17 +582,16 @@ const CalendarPage = () => {
 
   return (
     <>
-      <Container id={"calender"}>
-        <Row>
+      <Col className="calendar_container">
+        <Row className="d-flex justify-content-start align-items-center margin-bottom-15 mt-2">
           <Col lg={2} md={2} sm={2} xs={12}>
             <span className="Calender-heading">{t("Calendar")}</span>
           </Col>
           <Col
-            lg={3}
-            md={3}
-            sm={12}
-            xs={12}
-            className=" mt-2 d-flex justify-content-center"
+            lg={2}
+            md={2}
+            sm={2}
+            // className=" mt-2 d-flex justify-content-center"
           >
             <Row>
               <Col lg={12} md={12} sm={12}>
@@ -623,28 +628,26 @@ const CalendarPage = () => {
             </Row>
           </Col>
         </Row>
-        <Row>
-          <Col>
-            <Calendar
-              events={calenderData}
-              startDataUpdate={startDataUpdate}
-              setStartDataUpdate={setStartDataUpdate}
-              endDataUpdate={endDataUpdate}
-              setEndDataUpdate={setEndDataUpdate}
-              handleEventSelect={viewModalHandler}
-              className="calendar"
-              onChange={onChange}
-              handleAddEvent={handleAddEvent}
-              setCalendarView={setCalendarView}
-              calendarView={calendarView}
-              defaultValue={defaultValue}
-              setDefaultValue={setDefaultValue}
-              setOpen={setOpen}
-              selectable={true}
-            />
-          </Col>
+        <Row className="align-items-center">
+          <Calendar
+            events={calenderData}
+            startDataUpdate={startDataUpdate}
+            setStartDataUpdate={setStartDataUpdate}
+            endDataUpdate={endDataUpdate}
+            setEndDataUpdate={setEndDataUpdate}
+            handleEventSelect={viewModalHandler}
+            className="calendar"
+            onChange={onChange}
+            handleAddEvent={handleAddEvent}
+            setCalendarView={setCalendarView}
+            calendarView={calendarView}
+            defaultValue={defaultValue}
+            setDefaultValue={setDefaultValue}
+            setOpen={setOpen}
+            selectable={true}
+          />
         </Row>
-      </Container>
+      </Col>
       {assignees.Loading ||
       calendarReducer.Loading ||
       toDoListReducer.Loading ? (

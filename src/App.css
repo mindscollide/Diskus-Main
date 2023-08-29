@@ -5956,3 +5956,15 @@ input::-webkit-calendar-picker-indicator {
   width: 15.5px !important;
   height: 15.5px !important;
 }
+
+.bg-white.border-radius-4.border {
+  margin-left: calc(var(--bs-gutter-x) * .5);
+  width: 98%;
+  margin-right: 0;
+}
+
+body[dir="rtl"] .bg-white.border-radius-4.border {
+  margin-right: calc(var(--bs-gutter-x) * .5);
+  width: 98%;
+  margin-left: 0;
+}
