@@ -1021,56 +1021,67 @@ const Meeting = () => {
             />
           </Col>
         </Row>
-        <Row className="mx-1 meeting-table-row">
+        <Row>
           <Col>
             {rows.length > 0 && rows !== undefined && rows !== null ? (
               <>
-                <Table
-                  column={columns}
-                  className="hello"
-                  onChange={tableChangeHandler}
-                  rows={rows}
-                  scroll={{ y: "50vh" }}
-                  pagination={false}
-                  // key={flag}
-                  labelTitle={t("Meetings")}
-                  expandable={{
-                    expandedRowRender: (record) => {
-                      return record.meetingAgenda.map((data) => (
-                        <p className="meeting-expanded-row">
-                          {data.objMeetingAgenda.title}
-                        </p>
-                      ));
-                    },
-                    rowExpandable: (record) => record.host !== "Test",
-                  }}
-                />
-              </>
-            ) : (
-              <Paper className="No-Meeting-Table">
-                <ResultMessage
-                  icon={
-                    <img src={NoMeetingsIcon} className="nodata-table-icon" />
-                  }
-                  title={
-                    meetingIdReducer.searchRecordFound === true
-                      ? t("No-records-found")
-                      : t("No-new-meetings")
-                  }
-                  subTitle={t("Anything-important-thats-needs-discussion")}
-                />
-                <Row>
-                  <Col className="d-flex justify-content-center">
-                    <Button
-                      className={"ScheduleAMeeting"}
-                      variant={"Primary"}
-                      // className={"Meeting-schedule-btn"}
-                      text={"+ " + t("Schedule-a-meeting")}
-                      onClick={modalHandler}
+                <Row className="mx-1 meeting-table-row">
+                  <Col lg={12} md={12} sm={12}>
+                    <Table
+                      column={columns}
+                      className="hello"
+                      onChange={tableChangeHandler}
+                      rows={rows}
+                      scroll={{ y: "50vh" }}
+                      pagination={false}
+                      // key={flag}
+                      labelTitle={t("Meetings")}
+                      expandable={{
+                        expandedRowRender: (record) => {
+                          return record.meetingAgenda.map((data) => (
+                            <p className="meeting-expanded-row">
+                              {data.objMeetingAgenda.title}
+                            </p>
+                          ));
+                        },
+                        rowExpandable: (record) => record.host !== "Test",
+                      }}
                     />
                   </Col>
                 </Row>
-              </Paper>
+              </>
+            ) : (
+              <>
+                <Row>
+                  <Col lg={12} md={12} sm={12} className="Empty_State_styles">
+                    <ResultMessage
+                      icon={
+                        <img
+                          src={NoMeetingsIcon}
+                          className="nodata-table-icon"
+                        />
+                      }
+                      title={
+                        meetingIdReducer.searchRecordFound === true
+                          ? t("No-records-found")
+                          : t("No-new-meetings")
+                      }
+                      subTitle={t("Anything-important-thats-needs-discussion")}
+                    />
+                    <Row>
+                      <Col className="d-flex justify-content-center">
+                        <Button
+                          className={"ScheduleAMeeting"}
+                          variant={"Primary"}
+                          // className={"Meeting-schedule-btn"}
+                          text={"+ " + t("Schedule-a-meeting")}
+                          onClick={modalHandler}
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </>
             )}
           </Col>
         </Row>

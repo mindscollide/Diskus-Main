@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
+import Select from "react-select";
 import styles from "./ProposedMeetingDate.module.css";
+import { Button } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import BackArrow from "../../../../../../assets/images/Back Arrow.svg";
+import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
+import DatePicker from "react-multi-date-picker";
+import TimePicker from "react-multi-date-picker/plugins/time_picker";
+import plusFaddes from "../../../../../../assets/images/BluePlus.svg";
+import desh from "../../../../../../assets/images/desh.svg";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -11,6 +18,33 @@ const ProposedMeetingDate = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [options, setOptions] = useState([]);
+  const [rows, setRows] = useState([
+    { selectedOption: "", startDate: "", endDate: "" },
+  ]);
+
+  const addRow = () => {
+    setRows([...rows, { selectedOption: "", startDate: "", endDate: "" }]);
+  };
+
+  const HandleCancelFunction = (index) => {
+    let optionscross = [...rows];
+    optionscross.splice(index, 1);
+    setRows(optionscross);
+  };
+
+  const handleStartDateChange = (date) => {
+    setOptions({ ...options, startDate: date });
+  };
+
+  const handleEndDateChange = (date) => {
+    setOptions({ ...options, endDate: date });
+  };
+
+  const handleSelectChange = (selectedOption) => {
+    setOptions({ ...options, selectedOption });
+  };
+
   return (
     <section>
       <Row className="mt-2">
@@ -83,6 +117,131 @@ const ProposedMeetingDate = () => {
                     </span>
                   </Col>
                 </Row>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Scroller_meeting"]}
+                  >
+                    {rows.length > 0
+                      ? rows.map((data, index) => {
+                          return (
+                            <>
+                              <Row>
+                                <Col lg={12} md={12} sm={12} key={index}>
+                                  <Row className="mt-2">
+                                    <Col lg={4} md={4} sm={12}>
+                                      <Select
+                                        value={rows.selectedOption}
+                                        onChange={handleSelectChange}
+                                        isSearchable={false}
+                                      />
+                                    </Col>
+                                    <Col
+                                      lg={3}
+                                      md={3}
+                                      sm={12}
+                                      className="timePicker"
+                                    >
+                                      <DatePicker
+                                        arrowClassName="arrowClass"
+                                        containerClassName="containerClassTimePicker"
+                                        className="timePicker"
+                                        disableDayPicker
+                                        inputClass="inputTIme"
+                                        format="HH:mm A"
+                                        plugins={[<TimePicker hideSeconds />]}
+                                        selected={rows.startDate}
+                                        onChange={handleStartDateChange}
+                                      />
+                                    </Col>
+                                    <Col
+                                      lg={1}
+                                      md={1}
+                                      sm={12}
+                                      className="d-flex justify-content-end align-items-center"
+                                    >
+                                      <img src={desh} width="19.02px" />
+                                    </Col>
+                                    <Col
+                                      lg={3}
+                                      md={3}
+                                      sm={12}
+                                      // className="d-flex justify-content-end"
+                                    >
+                                      <DatePicker
+                                        arrowClassName="arrowClass"
+                                        containerClassName="containerClassTimePicker"
+                                        className="timePicker"
+                                        disableDayPicker
+                                        inputClass="inputTIme"
+                                        format="HH:mm A"
+                                        plugins={[<TimePicker hideSeconds />]}
+                                        selected={rows.endDate}
+                                        onChange={handleEndDateChange}
+                                      />
+                                    </Col>
+                                    {index <= 0 ? null : (
+                                      <>
+                                        <Col
+                                          lg={1}
+                                          md={1}
+                                          sm={12}
+                                          className="d-flex justify-content-end position-relative align-items-center"
+                                        >
+                                          <img
+                                            src={redcrossIcon}
+                                            width="23px"
+                                            height="23px"
+                                            className={
+                                              styles["Cross_icon_class"]
+                                            }
+                                            onClick={() => {
+                                              HandleCancelFunction(index);
+                                            }}
+                                          />
+                                        </Col>
+                                      </>
+                                    )}
+                                  </Row>
+                                </Col>
+                              </Row>
+                            </>
+                          );
+                        })
+                      : null}
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col lg={12} md={12} sm={12}>
+                    <Button
+                      text={
+                        <>
+                          <Row className="mt-1">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-center gap-2 align-items-center"
+                            >
+                              <img
+                                src={plusFaddes}
+                                width="15.87px"
+                                height="15.87px"
+                              />
+                              <span className={styles["Add_dates_label"]}>
+                                {t("Add-dates")}
+                              </span>
+                            </Col>
+                          </Row>
+                        </>
+                      }
+                      className={styles["Add_Dates_Btn_Class"]}
+                      onClick={addRow}
+                    />
+                  </Col>
+                </Row>
               </Col>
               <Col lg={4} md={4} sm={4}>
                 <Row>
@@ -105,6 +264,23 @@ const ProposedMeetingDate = () => {
                     </span>
                   </Col>
                 </Row>
+              </Col>
+            </Row>
+            <Row className="mt-3">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end gap-2"
+              >
+                <Button
+                  text={t("Cancel")}
+                  className={styles["Cancel_Button_ProposedMeeting"]}
+                />
+                <Button
+                  text={t("Save")}
+                  className={styles["Save_Button_ProposedMeeting"]}
+                />
               </Col>
             </Row>
           </Paper>
