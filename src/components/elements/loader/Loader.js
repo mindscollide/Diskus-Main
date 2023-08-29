@@ -1,7 +1,9 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Logo from '../../../assets/images/newElements/Diskus_newLogo.svg'
 import { Container, Row, Col } from 'react-bootstrap'
 import styles from './Loader.module.css'
+import { useTranslation } from 'react-i18next'
+import newlogo from '../../../assets/images/Newlogo.svg'
 
 const Loader = () => {
   const { t } = useTranslation()
