@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import styles from "./ProposedMeetingDate.module.css";
-import { Button } from "../../../../../../components/elements";
+import { Button, Checkbox } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import BackArrow from "../../../../../../assets/images/Back Arrow.svg";
 import redcrossIcon from "../../../../../../assets/images/Artboard 9.png";
@@ -115,15 +115,150 @@ const ProposedMeetingDate = () => {
             {sendDates ? (
               <>
                 <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <span className={styles["Prposed_On_Heading"]}>
-                      {t("Proposed-on")}
-                      <span className={styles["Steric_Color"]}>*</span>
-                    </span>
+                  <Col lg={4} md={4} sm={4}>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <span className={styles["Prposed_On_Heading"]}>
+                          {t("Proposed-on")}
+                          <span className={styles["Steric_Color"]}>*</span>
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row className="m-0 p-0 mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["Box_To_Show_Time"]}
+                      >
+                        <Row className={styles["Inner_Send_class"]}>
+                          <Col lg={10} md={10} sm={10}>
+                            <span className={styles["Time_Class"]}>
+                              03:30 pm - 05:30 pm | 17th May, 2020
+                            </span>
+                          </Col>
+                          <Col lg={2} md={2} sm={2}>
+                            <Checkbox
+                              prefixCls={"ProposedMeeting_Checkbox"}
+                              classNameCheckBoxP="d-none"
+                            />
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                    <Row className="m-0 p-0 mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["Box_To_Show_Time"]}
+                      >
+                        <Row className={styles["Inner_Send_class"]}>
+                          <Col lg={10} md={10} sm={10}>
+                            <span className={styles["Time_Class"]}>
+                              03:30 pm - 05:30 pm | 17th May, 2020
+                            </span>
+                          </Col>
+                          <Col lg={2} md={2} sm={2}>
+                            <Checkbox
+                              prefixCls={"ProposedMeeting_Checkbox"}
+                              classNameCheckBoxP="d-none"
+                            />
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                    <Row className="m-0 p-0 mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["Box_To_Show_Time"]}
+                      >
+                        <Row className={styles["Inner_Send_class"]}>
+                          <Col lg={10} md={10} sm={10}>
+                            <span className={styles["Time_Class"]}>
+                              03:30 pm - 05:30 pm | 17th May, 2020
+                            </span>
+                          </Col>
+                          <Col lg={2} md={2} sm={2}>
+                            <Checkbox
+                              prefixCls={"ProposedMeeting_Checkbox"}
+                              classNameCheckBoxP="d-none"
+                            />
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                    <Row className="m-0 p-0 mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["Box_To_Show_Time"]}
+                      >
+                        <Row className={styles["Inner_Send_class"]}>
+                          <Col lg={10} md={10} sm={10}>
+                            <span className={styles["Time_Class"]}>
+                              03:30 pm - 05:30 pm | 17th May, 2020
+                            </span>
+                          </Col>
+                          <Col lg={2} md={2} sm={2}>
+                            <Checkbox
+                              prefixCls={"ProposedMeeting_Checkbox"}
+                              classNameCheckBoxP="d-none"
+                            />
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <span className={styles["Prposed_On_Heading"]}>
+                          {t("Send-response-by")}{" "}
+                          <span className={styles["Steric_Color"]}>*</span>
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row className="mt-1">
+                      <Col lg={12} md={12} sm={12}>
+                        <span className={styles["Date"]}>21st May, 2020</span>
+                      </Col>
+                    </Row>
                   </Col>
-                </Row>
-                <Row>
-                  <Col lg={12} md={12} sm={12}></Col>
+                  <Col
+                    lg={2}
+                    md={2}
+                    sm={2}
+                    className="d-flex justify-content-center mt-4"
+                  >
+                    <span className={styles["OR_Heading"]}>{"OR"}</span>
+                  </Col>
+
+                  <Col lg={4} md={4} sm={4}>
+                    <Row className="m-0 p-0 mt-4">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["Box_To_Show_Time"]}
+                      >
+                        <Row className={styles["Inner_Send_class"]}>
+                          <Col lg={10} md={10} sm={10}>
+                            <span className={styles["Time_Class"]}>
+                              None of the above
+                            </span>
+                          </Col>
+                          <Col lg={2} md={2} sm={2}>
+                            <Checkbox
+                              prefixCls={"ProposedMeeting_Checkbox"}
+                              classNameCheckBoxP="d-none"
+                            />
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                  </Col>
                 </Row>
               </>
             ) : (
