@@ -14,7 +14,7 @@ import Organizers from "./Organizers/Organizers";
 import AgendaContributers from "./AgendaContributors/AgendaContributers";
 import Participants from "./Participants/Participants";
 import Agenda from "./Agenda/Agenda";
-const SceduleMeeting = ({ setProposeMeetingDate }) => {
+const SceduleMeeting = ({ setSceduleMeeting }) => {
   const { t } = useTranslation();
   const [meetingDetails, setmeetingDetails] = useState(true);
   const [organizers, setorganizers] = useState(false);
@@ -158,7 +158,6 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
               <Participants
                 setParticipants={setParticipants}
                 setAgenda={setAgenda}
-                setProposeMeetingDate={setProposeMeetingDate}
               />
             )}
             {agenda && <Agenda />}

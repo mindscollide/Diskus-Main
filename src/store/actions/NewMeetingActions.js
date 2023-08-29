@@ -91,13 +91,6 @@ const showImportPreviousAgendaModal = (response) => {
   };
 };
 
-const showEnableProposedMeetingDate = (response) => {
-  return {
-    type: actions.ENABLE_PROPOSED_MEETING_DATE,
-    response: response,
-  };
-};
-
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -112,5 +105,4 @@ export {
   showVoteAgendaModal,
   showVoteConfirmationModal,
   showImportPreviousAgendaModal,
-  showEnableProposedMeetingDate,
 };
