@@ -15,6 +15,7 @@ import AgendaContributers from "./AgendaContributors/AgendaContributers";
 import Participants from "./Participants/Participants";
 import Agenda from "./Agenda/Agenda";
 import MeetingMaterial from "./MeetingMaterial/MeetingMaterial";
+import Minutes from "./Minutes/Minutes";
 const SceduleMeeting = ({ setProposeMeetingDate }) => {
   const { t } = useTranslation();
   const [meetingDetails, setmeetingDetails] = useState(true);
@@ -23,13 +24,14 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
   const [participants, setParticipants] = useState(false);
   const [agenda, setAgenda] = useState(false);
   const [meetingMaterial, setMeetingMaterial] = useState(false);
-
+  const [minutes, setMinutes] = useState(false);
   const showMeetingDeitals = () => {
     setmeetingDetails(true);
     setorganizers(false);
     setAgendaContributors(false);
     setParticipants(false);
     setAgenda(false);
+    setMinutes(false);
     setMeetingMaterial(false);
   };
   const showOrganizers = () => {
@@ -38,6 +40,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setAgendaContributors(false);
     setParticipants(false);
     setAgenda(false);
+    setMinutes(false);
     setMeetingMaterial(false);
   };
   const showAgendaContributers = () => {
@@ -46,6 +49,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setorganizers(false);
     setParticipants(false);
     setAgenda(false);
+    setMinutes(false);
     setMeetingMaterial(false);
   };
 
@@ -55,6 +59,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setorganizers(false);
     setmeetingDetails(false);
     setAgenda(false);
+    setMinutes(false);
     setMeetingMaterial(false);
   };
 
@@ -64,6 +69,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setAgendaContributors(false);
     setorganizers(false);
     setmeetingDetails(false);
+    setMinutes(false);
     setMeetingMaterial(false);
   };
 
@@ -73,7 +79,18 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setParticipants(false);
     setAgendaContributors(false);
     setorganizers(false);
+    setMinutes(false);
     setmeetingDetails(false);
+  };
+
+  const showMinutes = () => {
+    setMinutes(true);
+    setMeetingMaterial(false);
+    setParticipants(false);
+    setAgendaContributors(false);
+    setmeetingDetails(false);
+    setorganizers(false);
+    setAgenda(false);
   };
   return (
     <section>
@@ -142,6 +159,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
                 <Button
                   text={t("Minutes")}
                   className={styles["Schedule_meetings_options"]}
+                  onClick={showMinutes}
                 />
                 <Button
                   text={t("Actions")}
@@ -180,6 +198,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
             )}
             {agenda && <Agenda />}
             {meetingMaterial && <MeetingMaterial />}
+            {minutes && <Minutes />}
           </Paper>
         </Col>
       </Row>
