@@ -58,6 +58,7 @@ import ModalCancellResolution2 from "../ModalCancellResolution2/ModalCancellReso
 import CrossResolution from "../../assets/images/resolutions/cross_icon_resolution.svg";
 import { updateResolutionModal } from "../../store/actions/Resolution_actions";
 import { viewResolutionModal } from "../../store/actions/Resolution_actions";
+import { validateInput } from "../../commen/functions/regex";
 const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -113,7 +114,7 @@ const Resolution = () => {
         localStorage.setItem("ButtonTab", 1);
         dispatch(getResolutions(navigate, 1, t));
       }
-    } catch { }
+    } catch {}
 
     return () => {
       localStorage.removeItem("moderatorPage");
@@ -121,9 +122,9 @@ const Resolution = () => {
       localStorage.removeItem("voterPage");
       localStorage.removeItem("voterRows");
       localStorage.removeItem("ResolutionID");
-      dispatch(createResolutionModal(false))
-      dispatch(updateResolutionModal(false))
-      dispatch(viewResolutionModal(false))
+      dispatch(createResolutionModal(false));
+      dispatch(updateResolutionModal(false));
+      dispatch(viewResolutionModal(false));
     };
   }, []);
 
@@ -138,7 +139,7 @@ const Resolution = () => {
   });
 
   const showSearchOptions = () => {
-    let getUserID = JSON.parse(localStorage.getItem("userID"))
+    let getUserID = JSON.parse(localStorage.getItem("userID"));
     let resolutionView = JSON.parse(localStorage.getItem("resolutionView"));
     let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"));
 
@@ -151,8 +152,17 @@ const Resolution = () => {
         Length: moderatorRows !== null ? moderatorRows : 50,
         CirculationDate: `${createConvert(searchModalDates.circulationDate)}`,
         VotingDeadlineDate: `${createConvert(searchModalDates.votingDate)}`,
-      }
-      dispatch(getResolutions(navigate, buttonTab, t, Data.Title, Data.CirculationDate, Data.VotingDeadlineDate))
+      };
+      dispatch(
+        getResolutions(
+          navigate,
+          buttonTab,
+          t,
+          Data.Title,
+          Data.CirculationDate,
+          Data.VotingDeadlineDate
+        )
+      );
       setSearchResultsArea(false);
       setSearchIcon(false);
     } else {
@@ -164,16 +174,25 @@ const Resolution = () => {
         Length: moderatorRows !== null ? moderatorRows : 50,
         CirculationDate: `${createConvert(searchModalDates.circulationDate)}`,
         VotingDeadlineDate: `${createConvert(searchModalDates.votingDate)}`,
-      }
+      };
       setSearchResultsArea(false);
       setSearchIcon(false);
-      dispatch(getVoterResolution(navigate, buttonTab, t, Data.Title, Data.CirculationDate, Data.VotingDeadlineDate));
+      dispatch(
+        getVoterResolution(
+          navigate,
+          buttonTab,
+          t,
+          Data.Title,
+          Data.CirculationDate,
+          Data.VotingDeadlineDate
+        )
+      );
     }
   };
 
   const hideSearchOptions = () => {
     if (resolutionView === 1) {
-      dispatch(getResolutions(navigate, buttonTab, t))
+      dispatch(getResolutions(navigate, buttonTab, t));
     } else {
       dispatch(getVoterResolution(navigate, buttonTab, t));
     }
@@ -276,12 +295,12 @@ const Resolution = () => {
   };
 
   const filterResolution = (e) => {
-    let value = e.target.value;
-    setAllSearchInput(value)
+    let value = validateInput(e.target.value);
+    setAllSearchInput(value);
   };
   const handleClickSearch = (event) => {
     if (event.key === "Enter") {
-      let getUserID = JSON.parse(localStorage.getItem("userID"))
+      let getUserID = JSON.parse(localStorage.getItem("userID"));
       let resolutionView = JSON.parse(localStorage.getItem("resolutionView"));
       let buttonTab = JSON.parse(localStorage.getItem("ButtonTab"));
       if (resolutionView === 1) {
@@ -294,12 +313,11 @@ const Resolution = () => {
             Length: moderatorRows !== null ? moderatorRows : 50,
             CirculationDate: "",
             VotingDeadlineDate: "",
-          }
-          dispatch(getResolutions(navigate, buttonTab, t, Data.Title))
-          setAllSearchInput("")
+          };
+          dispatch(getResolutions(navigate, buttonTab, t, Data.Title));
+          setAllSearchInput("");
         } else {
-          dispatch(getResolutions(navigate, buttonTab, t))
-
+          dispatch(getResolutions(navigate, buttonTab, t));
         }
       } else {
         if (allSearchInput !== "") {
@@ -311,16 +329,15 @@ const Resolution = () => {
             Length: moderatorRows !== null ? moderatorRows : 50,
             CirculationDate: "",
             VotingDeadlineDate: "",
-          }
+          };
           dispatch(getVoterResolution(navigate, buttonTab, t, Data.Title));
-          setAllSearchInput("")
+          setAllSearchInput("");
         } else {
           dispatch(getVoterResolution(navigate, buttonTab, t));
         }
       }
     }
-  }
-
+  };
 
   const OpenCancelModal = (id) => {
     setResolutionIDForCancel(id);
@@ -412,11 +429,17 @@ const Resolution = () => {
         if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else if (text === "Not Approved") {
-          return <span className={styles["decision_non_Approved"]}>{text}</span>
+          return (
+            <span className={styles["decision_non_Approved"]}>{text}</span>
+          );
         } else if (text === "Tie") {
-          return <span className={styles["decision_text_Pending"]}>{text}</span>;
+          return (
+            <span className={styles["decision_text_Pending"]}>{text}</span>
+          );
         } else {
-          return <span className={styles["decision_text_Pending"]}>{text}</span>;
+          return (
+            <span className={styles["decision_text_Pending"]}>{text}</span>
+          );
         }
       },
     },
@@ -461,10 +484,7 @@ const Resolution = () => {
               />
             );
           }
-
-
         }
-
       },
     },
     {
@@ -570,11 +590,17 @@ const Resolution = () => {
         if (text === "Approved") {
           return <span className={styles["decision_Approved"]}>{text}</span>;
         } else if (text === "Not Approved") {
-          return <span className={styles["decision_non_Approved"]}>{text}</span>
+          return (
+            <span className={styles["decision_non_Approved"]}>{text}</span>
+          );
         } else if (text === "Tie") {
-          return <span className={styles["decision_text_Pending"]}>{text}</span>;
+          return (
+            <span className={styles["decision_text_Pending"]}>{text}</span>
+          );
         } else {
-          return <span className={styles["decision_text_Pending"]}>{text}</span>;
+          return (
+            <span className={styles["decision_text_Pending"]}>{text}</span>
+          );
         }
       },
     },
@@ -987,9 +1013,6 @@ const Resolution = () => {
     }
   }, [ResolutionReducer.GetResolutions]);
 
-  const formatNumber = (value) => {
-    return numeral(value).format();
-  };
   return (
     <>
       <section className={styles["resolution_container"]}>
@@ -1339,8 +1362,8 @@ const Resolution = () => {
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12}>
                   {isSearchVoter !== null &&
-                    isSearchVoter !== undefined &&
-                    isSearchVoter.length > 0 ? (
+                  isSearchVoter !== undefined &&
+                  isSearchVoter.length > 0 ? (
                     <>
                       <TableToDo
                         sortDirections={["descend", "ascend"]}
@@ -1352,7 +1375,6 @@ const Resolution = () => {
                         className="Resolution_table"
                         scroll={{ y: "53vh" }}
                         pagination={false}
-
                         loading={{
                           indicator: (
                             <div className={styles["resolution_spinner"]}>

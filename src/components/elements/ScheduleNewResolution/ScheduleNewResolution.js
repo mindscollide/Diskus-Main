@@ -66,6 +66,7 @@ import TextFieldDateTime from '../input_field_date/Input_field'
 
 import 'react-datepicker/dist/react-datepicker.css'
 import TextFieldTime from '../input_field_time/Input_field'
+import { validateInput } from '../../../commen/functions/regex'
 // import TimePickerResolution from "../timePickerNew/timePickerNew";
 
 const ScheduleNewResolution = () => {
@@ -809,7 +810,7 @@ const ScheduleNewResolution = () => {
     let name = e.target.name
     let value = e.target.value
     if (name === 'ResolutionTitle') {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, '')
+      let valueCheck = validateInput(value)
       if (valueCheck !== '') {
         setCreateResolutionData({
           ...createResolutionData,

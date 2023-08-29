@@ -1317,5 +1317,20 @@
   "The-poll-has-been-updated": "The Poll has been updated",
   "The-poll-has-been-deleted": "The poll has been deleted",
   "All-options-must-be-selected": "All options must be selected",
-  "Advance-meeting": "Advance Meeting"
+  "Advance-meeting": "Advance Meeting",
+  "Securing-your-session-one-step-at-a-time": "Securing your session, one step at a time",
+  "Deploying-multiple-encryption-layers": "Deploying multiple encryption layers",
+  "Obfuscating-network": "Obfuscating network",
+  "Containing-&-encrypting-network": "Containing & encrypting network",
+  "Securing-your-data": "Securing your data",
+  "Generating-new-key-for-security": "Generating new key for security",
+  "Encrypting-your-data": "Encrypting your data",
+  "Authenticating-your-credentials": "Authenticating your credentials",
+  "Generating-secure-token": "Generating secure token",
+  "Authenticating-identity": "Authenticating identity",
+  "Propose-meeting-date": "Propose Meeting Date",
+  "Please-wait-loader": "Please wait while we delete your organization relevant data…",
+  "No-Task": "NO TASK",
+  "Proposed-on": "Proposed on",
+  "Send-response-by": "Send Response by"
 }
