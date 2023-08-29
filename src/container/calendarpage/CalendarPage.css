@@ -28,7 +28,7 @@
 }
 
 .calendar {
-  height: 600px;
+  height: 61vh;
   margin: 50px;
   border-radius: 4px;
 }
@@ -471,4 +471,8 @@ body[dir="rtl"] .heading_button {
 
 .rbc-button-link {
   color: #000 !important;
+}
+.calendar_container {
+  width: 90% !important;
+  margin: 0 auto !important;
 }
