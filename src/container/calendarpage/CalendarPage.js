@@ -260,6 +260,8 @@ const CalendarPage = () => {
             start: new Date(StartingTime),
             end: new Date(EndingTime),
             border: "2px solid" + googleEventColor,
+            // color: "#ffff",
+            backgroundColor:googleEventColor,
           });
         } else if (cData.fK_CESID === 2) {
           newList.push({
@@ -270,6 +272,8 @@ const CalendarPage = () => {
             start: new Date(StartingTime),
             end: new Date(EndingTime),
             border: "2px solid" + officeEventColor,
+            // color: "#ffff",
+            backgroundColor:officeEventColor,
           });
         } else if (cData.fK_CESID === 3) {
           newList.push({
@@ -280,6 +284,8 @@ const CalendarPage = () => {
             start: new Date(StartingTime),
             end: new Date(EndingTime),
             border: "2px solid" + diskusEventColor,
+            // color: "#ffff",
+            backgroundColor:diskusEventColor,
           });
         }
       });

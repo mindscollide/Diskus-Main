@@ -658,8 +658,8 @@ const Sidebar = () => {
                   to="Notes"
                   eventKey="link-4"
                   className={
-                    location.pathname === "/DisKus/notes" ||
-                    location.pathname === "/Diskus/notes"
+                    location.pathname === "/DisKus/Notes" ||
+                    location.pathname === "/Diskus/Notes"
                       ? "m-0 p-0 iconSidebar-active-sidebar"
                       : "m-0 p-0 iconSidebar"
                   }
@@ -740,8 +740,8 @@ const Sidebar = () => {
                     </svg>
                     <span
                       className={
-                        location.pathname === "/DisKus/notes" ||
-                        location.pathname === "/Diskus/notes"
+                        location.pathname === "/DisKus/Notes" ||
+                        location.pathname === "/Diskus/Notes"
                           ? "Meeting_Side_bar_Tag_active"
                           : "Meeting_Side_bar_Tag"
                       }
@@ -756,7 +756,12 @@ const Sidebar = () => {
                   disabled={false}
                   eventKey="link-6"
                   className={
-                    showMore
+                    showMore ||
+                    location.pathname === "/DisKus/dataroom" ||
+                    location.pathname === "/DisKus/groups" ||
+                    location.pathname === "/DisKus/committee" ||
+                    location.pathname === "/DisKus/resolution" ||
+                    location.pathname === "/DisKus/polling"
                       ? "m-0 p-0 iconSidebar-active-sidebar position-relative"
                       : "m-0 p-0 iconSidebar  position-relative"
                   }
@@ -819,7 +824,12 @@ const Sidebar = () => {
                     </svg>
                     <span
                       className={
-                        showMore
+                        showMore||
+                        location.pathname === "/DisKus/dataroom" ||
+                        location.pathname === "/DisKus/groups" ||
+                        location.pathname === "/DisKus/committee" ||
+                        location.pathname === "/DisKus/resolution" ||
+                        location.pathname === "/DisKus/polling"
                           ? "Meeting_Side_bar_Tag_active"
                           : "Meeting_Side_bar_Tag"
                       }
