@@ -56,6 +56,7 @@ import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
 import TextFieldDateTime from "../input_field_date/Input_field";
 import { ArrowLeft } from "react-bootstrap-icons";
+import { validateInput } from "../../../commen/functions/regex";
 const EditResolution = ({
   setCancelresolution
 }) => {
@@ -862,7 +863,7 @@ const EditResolution = ({
     let value = e.target.value;
     console.log("handleChangehandleChangehandleChange", name, value);
     if (name === "ResolutionTitle") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      let valueCheck = validateInput(value);
       if (valueCheck !== "") {
         setEditResolutionData({
           ...editResolutionData,
