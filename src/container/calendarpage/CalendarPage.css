@@ -28,11 +28,13 @@
 }
 
 .calendar {
-  height: 61vh;
-  margin: 50px;
+  height: 68.5vh;
+  margin: 21px;
   border-radius: 4px;
 }
-
+.calendar-header {
+  margin: 2px;
+}
 .ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected .ant-picker-calendar-date,
 .ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected:hover .ant-picker-calendar-date,
 .ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected .ant-picker-calendar-date-today,
