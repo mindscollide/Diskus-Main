@@ -403,33 +403,37 @@ const NewMeeting = () => {
               )}
             </Col>
           </Row>
-          <Row className="mt-5">
-            <Col lg={4} md={4} sm={4}></Col>
-            <Col
-              lg={4}
-              md={4}
-              sm={4}
-              className="d-flex justify-content-center "
-            >
-              <Row className={styles["PaginationStyle-Committee"]}>
+          {tablerowsData.length <= 0 ? (
+            <>
+              <Row className="mt-5">
+                <Col lg={4} md={4} sm={4}></Col>
                 <Col
-                  className={"pagination-groups-table"}
-                  sm={12}
-                  md={12}
-                  lg={12}
+                  lg={4}
+                  md={4}
+                  sm={4}
+                  className="d-flex justify-content-center "
                 >
-                  <Pagination
-                    showSizeChanger
-                    locale={{
-                      items_per_page: t("items_per_page"),
-                      page: t("page"),
-                    }}
-                    pageSizeOptions={["30", "50", "100", "200"]}
-                  />
+                  <Row className={styles["PaginationStyle-Committee"]}>
+                    <Col
+                      className={"pagination-groups-table"}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                    >
+                      <Pagination
+                        showSizeChanger
+                        locale={{
+                          items_per_page: t("items_per_page"),
+                          page: t("page"),
+                        }}
+                        pageSizeOptions={["30", "50", "100", "200"]}
+                      />
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
-            </Col>
-          </Row>
+            </>
+          ) : null}
         </>
       )}
     </section>
