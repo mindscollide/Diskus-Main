@@ -3,8 +3,8 @@
   padding: 0 !important;
   background-color: #fff !important;
   position: fixed;
-  height: 100vw;
-  width: 65px !important;
+  height: 100vh !important;
+  width: 3.99vw !important;
   text-align: center;
   display: flex;
   justify-content: center;
@@ -339,6 +339,7 @@ a.icon_expand.nav-link svg {
   width: 100% !important;
   height: 26px;
 }
+
 a.iconSidebar-active-sidebar.nav-link:active svg path {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
   fill: #6172d6 !important;
@@ -355,11 +356,13 @@ body[dir="rtl"] a.iconSidebar-active-sidebar.nav-link svg {
   width: 100% !important;
   height: 26px !important;
 }
+
 a.icon-active-sidebar_expand.nav-link svg {
   margin-top: 10px !important;
   width: 100% !important;
   height: 26px !important;
 }
+
 a.icon-active-sidebar_expand.nav-link {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
   height: 55px !important;

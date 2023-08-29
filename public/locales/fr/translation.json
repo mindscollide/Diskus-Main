@@ -885,6 +885,8 @@
   "Generating-secure-token": "Generating secure token",
   "Authenticating-identity": "Authenticating identity",
   "Propose-meeting-date": "Propose Meeting Date",
+  "Please-wait-loader": "Please wait while we delete your organization relevant data…",
+  "No-Task": "NO TASK",
   "Proposed-on": "Proposed on",
   "Send-response-by": "Send Response by"
 }

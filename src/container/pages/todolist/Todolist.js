@@ -1094,7 +1094,7 @@ const TodoList = () => {
                   <Paper>
                     <ResultMessage
                       icon={<img src={TodoMessageIcon1} width={250} />}
-                      title="NO TASK"
+                      title="No-Task"
                       className="NoTaskTodo"
                     />
                   </Paper>
