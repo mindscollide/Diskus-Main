@@ -77,6 +77,7 @@ const Notes = () => {
   const [notes, setNotes] = useState([]);
   //for view modal notes
   const [viewModalShow, setViewModalShow] = useState(false);
+  const [isExpanded, setExpanded] = useState(false);
 
   useEffect(() => {
     if (notesPagesize !== null && notesPage !== null) {
@@ -111,13 +112,49 @@ const Notes = () => {
 
   // render Notes Data
   useEffect(() => {
+    console.log("check note empty state");
     try {
       if (
         NotesReducer.GetAllNotesResponse !== null &&
         NotesReducer.GetAllNotesResponse !== undefined
       ) {
+        console.log("check note empty state");
         setTotalRecords(NotesReducer.GetAllNotesResponse.totalRecords);
-        if (NotesReducer.GetAllNotesResponse.getNotes.length > 0) {
+        if (NotesReducer.GetAllNotesResponse.getNotes === null) {
+          console.log("check note empty state");
+          setNotes([]);
+        } else if (
+          Array.isArray(NotesReducer.GetAllNotesResponse.getNotes) &&
+          NotesReducer.GetAllNotesResponse.getNotes.length > 0
+        ) {
+          console.log("check note empty state");
+          let notes = [];
+          NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
+            notes.push({
+              date: data.date,
+              description: data.description,
+              fK_NotesStatus: data.fK_NotesStatus,
+              fK_OrganizationID: data.fK_OrganizationID,
+              fK_UserID: data.fK_UserID,
+              isAttachment: data.isAttachment,
+              isStarred: data.isStarred,
+              modifiedDate: data.modifiedDate,
+              modifiedTime: data.modifiedTime,
+              notesAttachments: data.notesAttachments,
+              notesStatus: data.notesStatus,
+              organizationName: data.organizationName,
+              pK_NotesID: data.pK_NotesID,
+              time: data.time,
+              title: data.title,
+              username: data.username,
+            });
+          });
+          setNotes(notes);
+        } else if (
+          typeof NotesReducer.GetAllNotesResponse.getNotes === "object" &&
+          Object.keys(NotesReducer.GetAllNotesResponse.getNotes).length > 0
+        ) {
+          console.log("check note empty state");
           let notes = [];
           NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
             notes.push({
@@ -141,12 +178,43 @@ const Notes = () => {
           });
           setNotes(notes);
         } else {
+          console.log("check note empty state");
           setNotes([]);
         }
+        // if (Object.keys(NotesReducer.GetAllNotesResponse.getNotes).length > 0) {
+        //   let notes = [];
+        //   NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
+        //     notes.push({
+        //       date: data.date,
+        //       description: data.description,
+        //       fK_NotesStatus: data.fK_NotesStatus,
+        //       fK_OrganizationID: data.fK_OrganizationID,
+        //       fK_UserID: data.fK_UserID,
+        //       isAttachment: data.isAttachment,
+        //       isStarred: data.isStarred,
+        //       modifiedDate: data.modifiedDate,
+        //       modifiedTime: data.modifiedTime,
+        //       notesAttachments: data.notesAttachments,
+        //       notesStatus: data.notesStatus,
+        //       organizationName: data.organizationName,
+        //       pK_NotesID: data.pK_NotesID,
+        //       time: data.time,
+        //       title: data.title,
+        //       username: data.username,
+        //     });
+        //   });
+        //   setNotes(notes);
+        // } else {
+        //   console.log("check note empty state");
+        //   setNotes([]);
+        // }
       } else {
+        console.log("check note empty state");
         setNotes([]);
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log("check note empty state", error);
+    }
   }, [NotesReducer.GetAllNotesResponse]);
 
   //for open Add User Notes Modal
@@ -186,7 +254,7 @@ const Notes = () => {
   const ColorStarIcon = (id, index) => {
     setStarIcon(!showStarIcon);
   };
-  const [isExpanded, setExpanded] = useState(false);
+
   const handleChangeExpanded = (id) => (event, newExpanded) => {
     setExpanded(newExpanded ? id : false);
   };
@@ -229,9 +297,6 @@ const Notes = () => {
     }
   }, [NotesReducer.ResponseMessage]);
 
-  const toggleAcordion = (e) => {
-    setExpanded(e);
-  };
   return (
     <>
       <Col className={styles["notescontainer"]}>

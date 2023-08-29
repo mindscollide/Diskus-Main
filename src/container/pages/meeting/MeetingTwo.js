@@ -6,6 +6,7 @@ import ClipIcon from "../../../assets/images/ClipIcon.png";
 import CommentIcon from "../../../assets/images/Comment-Icon.png";
 import member from "../../../assets/images/member.svg";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
+import NoMeetingsIcon from "../../../assets/images/No-Meetings.png";
 import { useTranslation } from "react-i18next";
 import { Pagination, Tooltip } from "antd";
 import Select from "react-select";
@@ -13,8 +14,7 @@ import {
   Button,
   Table,
   TextField,
-  Loader,
-  Notification,
+  ResultMessage,
 } from "../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
@@ -44,8 +44,8 @@ const NewMeeting = () => {
       Date: <label className="column-boldness"> 3:30pm - 17th May, 2020</label>,
     },
   ];
-  const [rowsData, setRowsData] = useState(data);
-  console.log(rowsData, "rowsDatarowsDatarowsData");
+  const [tablerowsData, setTablerowsData] = useState(0);
+  console.log(tablerowsData, "rowsDatarowsDatarowsData");
   const HandleShowSearch = () => {
     setSearchMeeting(!searchMeeting);
   };
@@ -168,14 +168,30 @@ const NewMeeting = () => {
       render: (text, record) => {
         return (
           <>
-            <Row>
+            {/* <Row>
               <Col sm={12} md={12} lg={12}>
                 <Button
                   text={t("Join-meeting")}
                   className={styles["joining-Meeting"]}
                 />
               </Col>
+            </Row> */}
+            <Row>
+              <Col sm={12} md={12} lg={12}>
+                <Button
+                  text={t("Start-meeting")}
+                  className={styles["Start-Meeting"]}
+                />
+              </Col>
             </Row>
+            {/* <Row>
+              <Col sm={12} md={12} lg={12}>
+                <Button
+                  text={t("End-meeting")}
+                  className={styles["End-Meeting"]}
+                />
+              </Col>
+            </Row> */}
           </>
         );
       },
@@ -338,35 +354,86 @@ const NewMeeting = () => {
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <Table
-                column={MeetingColoumns}
-                scroll={{ y: "62vh" }}
-                pagination={false}
-                className="Polling_table"
-                rows={rowsData}
-              />
+              {tablerowsData.length > 0 ? (
+                <>
+                  <Table
+                    column={MeetingColoumns}
+                    scroll={{ y: "62vh" }}
+                    pagination={false}
+                    className="Polling_table"
+                    rows={tablerowsData}
+                    // expandable={{
+                    //   expandedRowRender: (record) => {
+                    //     return record.meetingAgenda.map((data) => (
+                    //       <p className="meeting-expanded-row">
+                    //         {/* {data.objMeetingAgenda.title} */}
+                    //       </p>
+                    //     ));
+                    //   },
+                    //   rowExpandable: (record) => record.host !== "Test",
+                    // }}
+                  />
+                </>
+              ) : (
+                <>
+                  <Row>
+                    <Col lg={4} md={4} sm={4}></Col>
+                    <Col
+                      lg={4}
+                      md={4}
+                      sm={4}
+                      className={styles["Empty_State_styles"]}
+                    >
+                      <ResultMessage
+                        icon={
+                          <img
+                            src={NoMeetingsIcon}
+                            className="nodata-table-icon"
+                          />
+                        }
+                        title={t("No-new-meetings")}
+                        subTitle={t(
+                          "Anything-important-thats-needs-discussion"
+                        )}
+                      />
+                    </Col>
+                    <Col lg={4} md={4} sm={4}></Col>
+                  </Row>
+                </>
+              )}
             </Col>
           </Row>
-          <Row className="mt-5">
-            <Col lg={4} md={4} sm={4}></Col>
-            <Col
-              lg={4}
-              md={4}
-              sm={4}
-              className="d-flex justify-content-center "
-            >
-              <Row className={styles["PaginationStyle-Committee"]}>
+          {tablerowsData.length <= 0 ? (
+            <>
+              <Row className="mt-5">
+                <Col lg={4} md={4} sm={4}></Col>
                 <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className={"pagination-groups-table"}
+                  lg={4}
+                  md={4}
+                  sm={4}
+                  className="d-flex justify-content-center "
                 >
-                  <Pagination />
+                  <Row className={styles["PaginationStyle-Committee"]}>
+                    <Col
+                      className={"pagination-groups-table"}
+                      sm={12}
+                      md={12}
+                      lg={12}
+                    >
+                      <Pagination
+                        showSizeChanger
+                        locale={{
+                          items_per_page: t("items_per_page"),
+                          page: t("page"),
+                        }}
+                        pageSizeOptions={["30", "50", "100", "200"]}
+                      />
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
-            </Col>
-          </Row>
+            </>
+          ) : null}
         </>
       )}
     </section>
