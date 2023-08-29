@@ -126,8 +126,8 @@ function CustomCalendar({
     };
 
     return (
-      <Container>
-        <Row className="d-flex justify-content-center">
+      // <Container>
+        <Row className="d-flex justify-content-center calendar-header">
           <Col lg={3} md={3} sm={false}></Col>
           <Col
             lg={1}
@@ -189,7 +189,7 @@ function CustomCalendar({
             />
           </Col>
         </Row>
-      </Container>
+      // </Container>
     );
   };
 
