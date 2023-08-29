@@ -16,6 +16,7 @@ const initialState = {
   voteConfirmationModal: false,
   importPreviousAgendaModal: false,
   enableProposedMeetingDate: false,
+  prposedMeetingUnsavedModal: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -114,6 +115,13 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         enableProposedMeetingDate: action.response,
+      };
+    }
+
+    case actions.PROPOSED_MEETING_SAVED_MODAL: {
+      return {
+        ...state,
+        prposedMeetingUnsavedModal: action.response,
       };
     }
 

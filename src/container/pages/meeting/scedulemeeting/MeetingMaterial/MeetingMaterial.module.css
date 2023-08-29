@@ -1,0 +1,33 @@
+.MeetinMaterial_Heading {
+  color: #5f78d6 !important;
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Bottom_Line {
+  width: 98% !important;
+  border: 1px solid #e1e1e1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  margin-top: 8px !important;
+}
+
+.File_Structure {
+  height: 54.4px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  width: 226px !important;
+  margin-left: 10px !important;
+  margin-top: 5px !important;
+}
+
+.Meeting_file_name {
+  font-size: 16px !important;
+  font-family: "Montserrat";
+  color: #5a5a5a !important;
+  display: inline-block !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 125px !important;
+}

@@ -98,6 +98,13 @@ const showEnableProposedMeetingDate = (response) => {
   };
 };
 
+const showPrposedMeetingUnsavedModal = (response) => {
+  return {
+    type: actions.PROPOSED_MEETING_SAVED_MODAL,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -113,4 +120,5 @@ export {
   showVoteConfirmationModal,
   showImportPreviousAgendaModal,
   showEnableProposedMeetingDate,
+  showPrposedMeetingUnsavedModal,
 };
