@@ -129,3 +129,39 @@
   font-family: "MontserratSemiBold" !important;
   border-radius: 4px !important;
 }
+
+.Box_To_Show_Time {
+  width: 100% !important;
+  height: 39px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+}
+
+.Time_Class {
+  color: #5a5a5a;
+  font-family: "Montserrat";
+  font-size: 12px !important;
+  display: flex !important;
+}
+
+.CheckBox_Class {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.Inner_Send_class {
+  margin-top: 10px !important;
+}
+
+.Date {
+  color: #5a5a5a;
+  font-family: "Montserrat";
+  font-size: 12px !important;
+}
+
+.OR_Heading {
+  font-size: 30px !important;
+  font-family: "MontserratExtraBold-800";
+  color: #a2a2a2;
+}

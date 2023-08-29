@@ -1053,7 +1053,8 @@ const Meeting = () => {
             ) : (
               <>
                 <Row>
-                  <Col lg={12} md={12} sm={12} className="Empty_State_styles">
+                  <Col lg={4} md={4} sm={4}></Col>
+                  <Col lg={4} md={4} sm={4} className="Empty_State_styles">
                     <ResultMessage
                       icon={
                         <img
@@ -1080,6 +1081,7 @@ const Meeting = () => {
                       </Col>
                     </Row>
                   </Col>
+                  <Col lg={4} md={4} sm={4}></Col>
                 </Row>
               </>
             )}
