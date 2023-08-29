@@ -316,7 +316,8 @@ const Header2 = () => {
         </Navbar>
       ) : (
         <Navbar className="header2-container " sticky="top">
-          <Container>
+          {/* <Container> */}
+          <section className="d-flex justify-content-between w-100  align-items-center px-5">
             <Navbar.Brand
               as={Link}
               to={
@@ -520,7 +521,8 @@ const Header2 = () => {
                 </Nav.Link>
               ) : null} */}
             </Nav>
-          </Container>
+            </section>
+          {/* </Container> */}
         </Navbar>
       )}
       {show ? (
