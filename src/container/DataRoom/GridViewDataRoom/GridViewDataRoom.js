@@ -72,13 +72,22 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, setSorted, s
 
   // api call onscroll
   const handleScroll = (e) => {
+    console.log("checkgridview")
     const { scrollHeight, scrollTop, clientHeight } = e.target;
+    console.log("checkgridview", scrollHeight)
+    console.log("checkgridview", scrollTop)
+    console.log("checkgridview", clientHeight)
+    console.log("checkgridview", scrollHeight - scrollTop === clientHeight)
     if (scrollHeight - scrollTop === clientHeight) {
+      console.log("checkgridview")
       console.log(DataRoomReducer.NotFound !== 2 && sorted === false, DataRoomReducer.NotFound, sorted, "test")
       if (DataRoomReducer.NotFound !== 2 && sorted === false) {
+        console.log("checkgridview")
         let addNewData = Number(sRowsData) + 5
         setSRowsData(addNewData)
+        console.log("checkgridview")
         dispatch(getDocumentsAndFolderApiScrollbehaviour(navigate, currentView, t, Number(addNewData)))
+        console.log("checkgridview")
       }
     }
   };
@@ -91,17 +100,20 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, setSorted, s
     })
     if (filterValue.value === 1) {
       setSorted(true)
+      setSRowsData(0)
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
     } else if (filterValue.value === 2) {
       setSorted(true)
+      setSRowsData(0)
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 2));
     } else if (filterValue.value === 3) {
       setSorted(true)
+      setSRowsData(0)
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 3));
     } else if (filterValue.value === 4) {
       setSorted(true)
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 4));
-
+      setSRowsData(0)
     }
   }
 
@@ -109,9 +121,11 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, setSorted, s
     if (filterValue.value === 1) {
       setSorted(true)
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
+      setSRowsData(0)
     } else if (filterValue.value === 2) {
       setSorted(true)
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 2));
+      setSRowsData(0)
     }
     setFilteShareTabrValue({
       label: filterValue.label,
@@ -124,6 +138,7 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, setSorted, s
     if (dataId.value === 2) {
       setShowreanmeFolder(true)
       setRenameFolderData(record)
+
     } else if (dataId.value === 1) {
       setSharefoldermodal(true)
       setFolderName(record.name)
@@ -133,11 +148,13 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, setSorted, s
   const handleClickSortDecsending = () => {
     setSortIcon(false)
     setSorted(true)
+    setSRowsData(0)
     dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1));
   }
   const handleClickSortAscending = () => {
     setSortIcon(true)
     setSorted(true)
+    setSRowsData(0)
     dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
   }
   const antIcon = (
@@ -171,9 +188,6 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, setSorted, s
         <Col sm={12} lg={12} md={12} className={styles['folderContainer']}>
           <Row>
             <Col sm={12} md={12} lg={12} className="d-flex gap-2 align-items-center justify-content-start" >
-              {/* <span className={styles['Name_heading__gridView']}>
-                {t('Name')}{' '}
-              </span> */}
               {currentView === 1 ? <>
                 <Dropdown
                   drop="down"
@@ -258,7 +272,7 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, setSorted, s
               <span className={styles['border_bottom__gridView']}></span>
             </Col>
           </Row>
-          <section style={{ height: 250, overflowX: "hidden", overflowY: "auto" }} onScroll={handleScroll}>
+          <section style={{ height: 251, overflowX: "hidden", overflowY: "auto" }} onScroll={handleScroll}>
             <Row>
               <Col sm={12} lg={12} md={12} className={styles['FolderHeading']}>
                 {t('Folders')}
