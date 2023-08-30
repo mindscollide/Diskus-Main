@@ -44,7 +44,7 @@ const NewMeeting = () => {
       Date: <label className="column-boldness"> 3:30pm - 17th May, 2020</label>,
     },
   ];
-  const [tablerowsData, setTablerowsData] = useState(0);
+  const [tablerowsData, setTablerowsData] = useState(data);
   console.log(tablerowsData, "rowsDatarowsDatarowsData");
   const HandleShowSearch = () => {
     setSearchMeeting(!searchMeeting);

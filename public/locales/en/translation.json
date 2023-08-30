@@ -1332,5 +1332,15 @@
   "Please-wait-loader": "Please wait while we delete your organization relevant data…",
   "No-Task": "NO TASK",
   "Proposed-on": "Proposed on",
-  "Send-response-by": "Send Response by"
+  "Send-response-by": "Send Response by",
+  "Closing-report": "Closing Report",
+  "Functional-review": "Functional Review",
+  "Finance-summary": "Finance Summary",
+  "Ceo-report": "CEO Report",
+  "Introduction": "Introduction",
+  "Import-previous-minutes": "Import Previous Minutes",
+  "Upload": "Upload",
+  "Create-from-scratch": "Create From Scratch",
+  "IT-departmental-meeting": "IT Departmental Meeting",
+  "Uploaded-by": "Uploaded by"
 }

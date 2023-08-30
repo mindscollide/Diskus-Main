@@ -5001,6 +5001,13 @@ body[dir="rtl"] .ql-editor.ql-blank::before {
   border-radius: 4px !important;
 }
 
+.ImportPreviousMinutes input.form-control {
+  height: 39px !important;
+  color: #5a5a5a !important;
+  border-radius: 4px !important;
+  margin-left: -13px !important;
+}
+
 .Update_committee_input_searchfield input.form-control {
   margin-top: -5px !important;
 }
@@ -5958,13 +5965,13 @@ input::-webkit-calendar-picker-indicator {
 }
 
 .bg-white.border-radius-4.border {
-  margin-left: calc(var(--bs-gutter-x) * .5);
+  margin-left: calc(var(--bs-gutter-x) * 0.5);
   width: 98%;
   margin-right: 0;
 }
 
 body[dir="rtl"] .bg-white.border-radius-4.border {
-  margin-right: calc(var(--bs-gutter-x) * .5);
+  margin-right: calc(var(--bs-gutter-x) * 0.5);
   width: 98%;
   margin-left: 0;
 }
