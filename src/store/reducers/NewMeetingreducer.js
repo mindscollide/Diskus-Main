@@ -17,6 +17,8 @@ const initialState = {
   importPreviousAgendaModal: false,
   enableProposedMeetingDate: false,
   prposedMeetingUnsavedModal: false,
+  ImportPreviousMinutes: false,
+  afterImportState: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -122,6 +124,20 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         prposedMeetingUnsavedModal: action.response,
+      };
+    }
+
+    case actions.IMPORT_PREVIOUS_MINUTES: {
+      return {
+        ...state,
+        ImportPreviousMinutes: action.response,
+      };
+    }
+
+    case actions.AFTER_IMPORT_STATE: {
+      return {
+        ...state,
+        afterImportState: action.response,
       };
     }
 
