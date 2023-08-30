@@ -3,7 +3,7 @@ import { Row, Col, NavDropdown, MenuItem, Dropdown } from 'react-bootstrap'
 import styles from './GridViewDataRoom.module.css'
 import folder_icon_gridview from '../../../assets/images/folder_icon_gridview.svg'
 import file_image from '../../../assets/images/file_image.svg'
-import { getFolderDocumentsApi, getDocumentsAndFolderApiScrollbehaviour, getDocumentsAndFolderApi } from '../../../store/actions/DataRoom_actions'
+import { getFolderDocumentsApi, getDocumentsAndFolderApiScrollbehaviour, deleteFileDataroom, getDocumentsAndFolderApi, deleteFolder, dataBehaviour } from '../../../store/actions/DataRoom_actions'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { NavLink, useNavigate } from 'react-router-dom'
@@ -18,7 +18,8 @@ import { Spin } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons';
 
 
-const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, setSorted, sRowsData, setSRowsData, sorted }) => {
+
+const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, sRowsData, setSRowsData }) => {
   console.log(
     optionsforFolder,
     optionsforFile,
@@ -78,12 +79,13 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, setSorted, s
     console.log("checkgridview", scrollTop)
     console.log("checkgridview", clientHeight)
     console.log("checkgridview", scrollHeight - scrollTop === clientHeight)
+    console.log(sRowsData, "addNewDataaddNewData")
     if (scrollHeight - scrollTop === clientHeight) {
       console.log("checkgridview")
-      console.log(DataRoomReducer.NotFound !== 2 && sorted === false, DataRoomReducer.NotFound, sorted, "test")
-      if (DataRoomReducer.NotFound !== 2 && sorted === false) {
+      if (DataRoomReducer.NotFound !== 2 && DataRoomReducer.dataBehaviour === false) {
         console.log("checkgridview")
         let addNewData = Number(sRowsData) + 5
+        console.log(addNewData, "addNewDataaddNewData")
         setSRowsData(addNewData)
         console.log("checkgridview")
         dispatch(getDocumentsAndFolderApiScrollbehaviour(navigate, currentView, t, Number(addNewData)))
@@ -99,19 +101,23 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, setSorted, s
       value: filterValue.value
     })
     if (filterValue.value === 1) {
-      setSorted(true)
+      // setSorted(true)
+      dispatch(dataBehaviour(true))
       setSRowsData(0)
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
     } else if (filterValue.value === 2) {
-      setSorted(true)
+      // setSorted(true)
+      dispatch(dataBehaviour(true))
       setSRowsData(0)
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 2));
     } else if (filterValue.value === 3) {
-      setSorted(true)
+      // setSorted(true)
+      dispatch(dataBehaviour(true))
       setSRowsData(0)
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 3));
     } else if (filterValue.value === 4) {
-      setSorted(true)
+      // setSorted(true)
+      dispatch(dataBehaviour(true))
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 4));
       setSRowsData(0)
     }
@@ -119,11 +125,13 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, setSorted, s
 
   const handleShareTabFilter = (filterValue) => {
     if (filterValue.value === 1) {
-      setSorted(true)
+      // setSorted(true)
+      dispatch(dataBehaviour(true))
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
       setSRowsData(0)
     } else if (filterValue.value === 2) {
-      setSorted(true)
+      // setSorted(true)
+      dispatch(dataBehaviour(true))
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 2));
       setSRowsData(0)
     }
@@ -142,18 +150,22 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, setSorted, s
     } else if (dataId.value === 1) {
       setSharefoldermodal(true)
       setFolderName(record.name)
+    } else if (dataId.value === 5) {
+      dispatch(deleteFolder(navigate, record.id, t))
     }
   }
 
   const handleClickSortDecsending = () => {
     setSortIcon(false)
-    setSorted(true)
+    // setSorted(true)
+    dispatch(dataBehaviour(true))
     setSRowsData(0)
     dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1));
   }
   const handleClickSortAscending = () => {
     setSortIcon(true)
-    setSorted(true)
+    // setSorted(true)
+    dispatch(dataBehaviour(true))
     setSRowsData(0)
     dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
   }
@@ -174,6 +186,8 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, setSorted, s
     } else if (dataId.value === 2) {
       setFileName(record.name);
       setShareFileModal(true)
+    } else if (dataId.value === 6) {
+      dispatch(deleteFileDataroom(navigate, record.id, t))
     }
     console.log(dataId)
   }
@@ -272,7 +286,7 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, setSorted, s
               <span className={styles['border_bottom__gridView']}></span>
             </Col>
           </Row>
-          <section style={{ height: 251, overflowX: "hidden", overflowY: "auto" }} onScroll={handleScroll}>
+          <section style={{ height: 370, overflowX: "hidden", overflowY: "auto" }} onScroll={handleScroll}>
             <Row>
               <Col sm={12} lg={12} md={12} className={styles['FolderHeading']}>
                 {t('Folders')}

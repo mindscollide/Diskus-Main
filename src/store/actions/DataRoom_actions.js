@@ -123,6 +123,7 @@ const saveFilesApi = (
               if (viewFolderID !== null) {
                 dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1));
               } else {
+                dispatch(dataBehaviour(true))
                 dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2));
               }
             } else if (
@@ -510,6 +511,7 @@ const createFolderApi = (
   let OrganizationID = localStorage.getItem('organizationID')
   let token = JSON.parse(localStorage.getItem('token'))
   let folderID = JSON.parse(localStorage.getItem('folderID'))
+  let currentView = localStorage.getItem("setTableView")
   let Data = {
     FolderName: folder,
     UserID: parseInt(createrID),
@@ -555,7 +557,8 @@ const createFolderApi = (
               if (folderID !== null && folderID !== undefined) {
                 dispatch(getFolderDocumentsApi(navigate, folderID, t))
               } else {
-                dispatch(getDocumentsAndFolderApi(navigate, 3, t))
+                dispatch(dataBehaviour(true))
+                dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t))
               }
 
             } else if (response.data.responseResult.responseMessage.toLowerCase().includes('DataRoom_DataRoomServiceManager_CreateFolder_02'.toLowerCase())) {
@@ -618,7 +621,7 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
     SortBy: sort !== null && sort !== undefined ? sort : 1,
     isDescending: order !== null & order !== undefined ? order : true,
     sRow: 0,
-    Length: 10
+    Length: 30
   }
   // let Data = {
   //     UserID: 722,
@@ -708,7 +711,7 @@ const getDocumentsAndFolderApiScrollbehaviour = (navigate, statusID, t, sRows, f
     SortBy: filterValue !== 0 ? filterValue : 1,
     isDescending: true,
     sRow: Number(sRows),
-    Length: 10
+    Length: 30
   }
   return (dispatch) => {
     dispatch(tableSpinner(true))
@@ -897,6 +900,7 @@ const shareFolders_fail = (message) => {
 const shareFoldersApi = (navigate, FolderData, t, setShowrequestsend) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let folderID = JSON.parse(localStorage.getItem('folderID'))
+  let currentView = localStorage.getItem("setTableView")
   return (dispatch) => {
     dispatch(shareFolders_init())
     let form = new FormData()
@@ -933,7 +937,8 @@ const shareFoldersApi = (navigate, FolderData, t, setShowrequestsend) => {
               if (folderID !== null && folderID !== undefined) {
                 dispatch(getFolderDocumentsApi(navigate, folderID, t))
               } else {
-                dispatch(getDocumentsAndFolderApi(navigate, 3, t))
+                dispatch(dataBehaviour(true))
+                dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t))
               }
 
             } else if (
@@ -992,8 +997,9 @@ const deleteFileDataroom_fail = (message) => {
 }
 
 // Delete file API
-const deleteFileDataroom = (navigate, id, t) => {
+const deleteFileDataroom = (navigate, id, t, setSorted) => {
   let token = JSON.parse(localStorage.getItem('token'))
+  let currentView = localStorage.getItem("setTableView")
   let data = []
   data.push(id)
   let Data = { FileID: data }
@@ -1024,7 +1030,8 @@ const deleteFileDataroom = (navigate, id, t) => {
                 )
             ) {
               console.log('hello')
-              dispatch(getDocumentsAndFolderApi(navigate, 3, t))
+              dispatch(dataBehaviour(true))
+              dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t))
               dispatch(
                 deleteFileDataroom_success(
                   response.data.responseResult,
@@ -1331,8 +1338,10 @@ const deleteFolder_fail = (message) => {
   }
 }
 
-const deleteFolder = (navigate, id, t) => {
+const deleteFolder = (navigate, id, t, setSorted) => {
   let token = JSON.parse(localStorage.getItem('token'))
+  let currentView = localStorage.getItem("setTableView")
+
   let data = []
   data.push(id)
   let Data = { FolderID: data }
@@ -1363,7 +1372,9 @@ const deleteFolder = (navigate, id, t) => {
                 )
             ) {
               console.log('hello')
-              dispatch(getDocumentsAndFolderApi(navigate, 3, t))
+              // setSorted(true)
+              dispatch(dataBehaviour(true))
+              dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t))
               dispatch(
                 deleteFolder_success(
                   response.data.responseResult,
@@ -1531,7 +1542,7 @@ const renameFolder_fail = (message) => {
 }
 const renameFolderApi = (navigate, folderData, t, setRenamefolder) => {
   let token = JSON.parse(localStorage.getItem('token'))
-  let currentView = +localStorage.getItem('setTableView')
+  let currentView = localStorage.getItem('setTableView')
   let Data = {
     FolderName: folderData.FolderName,
     FolderID: folderData.folderId,
@@ -1562,7 +1573,8 @@ const renameFolderApi = (navigate, folderData, t, setRenamefolder) => {
                   'DataRoom_DataRoomServiceManager_RenameFolder_01'.toLowerCase(),
                 )
             ) {
-              dispatch(getDocumentsAndFolderApi(navigate, currentView, t))
+              dispatch(dataBehaviour(true))
+              dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t))
               setRenamefolder(false)
             } else if (
               response.data.responseResult.responseMessage
@@ -1698,7 +1710,7 @@ const renameFile_fail = (message) => {
 }
 const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
   let token = JSON.parse(localStorage.getItem('token'))
-  let currentView = +localStorage.getItem('setTableView')
+  let currentView = localStorage.getItem('setTableView')
   let Data = {
     FileName: filedata.FileName,
     FileID: filedata.FileId,
@@ -1730,7 +1742,8 @@ const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
                 )
             ) {
               setShowRenameFile(false)
-              dispatch(getDocumentsAndFolderApi(navigate, currentView, t))
+              dispatch(dataBehaviour(true))
+              dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1776,6 +1789,13 @@ const tableSpinner = (payload, value) => {
     value: value
   }
 }
+
+const dataBehaviour = (payload) => {
+  return {
+    type: actions.DATAROOM_DATA_BEHAVIOUR,
+    response: payload
+  }
+}
 // const resetSpinner = () => {}
 const clearDataResponseMessage = () => {
   return {
@@ -1799,5 +1819,6 @@ export {
   FolderisExistRename,
   FileisExist2,
   getDocumentsAndFolderApiScrollbehaviour,
-  tableSpinner
+  tableSpinner,
+  dataBehaviour
 }

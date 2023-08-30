@@ -63,6 +63,7 @@ import ModalRenameFolder from "./ModalRenameFolder/ModalRenameFolder";
 import ModalOptionsFolder from "./ModalUploadOptions_Folder/ModalOptions_Folder";
 import {
   clearDataResponseMessage,
+  dataBehaviour,
   deleteFileDataroom,
   deleteFolder,
   FileisExist,
@@ -111,6 +112,7 @@ import shareIcon from "../../assets/images/AttachmentIcons/share.svg";
 import sites_Icon from "../../assets/images/AttachmentIcons/sites.svg";
 import videoIcon from "../../assets/images/AttachmentIcons/video.svg";
 import xlsFileIcon from "../../assets/images/AttachmentIcons/xls-file.svg";
+
 const DataRoom = () => {
   // tooltip
   const [showbarupload, setShowbarupload] = useState(false);
@@ -285,11 +287,13 @@ const DataRoom = () => {
       });
     } catch { }
     if (currentView !== null) {
-      setSorted(false)
+      // setSorted(false)
+      dispatch(dataBehaviour(false))
       dispatch(getDocumentsAndFolderApi(navigate, currentView, t));
     } else {
       localStorage.setItem("setTableView", 3);
-      setSorted(false)
+      // setSorted(false)
+      dispatch(dataBehaviour(false))
       dispatch(getDocumentsAndFolderApi(navigate, 3, t));
     }
     return () => {
@@ -773,7 +777,8 @@ const DataRoom = () => {
 
   const SharewithmeButonShow = async () => {
     localStorage.setItem("setTableView", 2);
-    setSorted(true)
+    dispatch(dataBehaviour(true))
+    // setSorted(true)
     await dispatch(getDocumentsAndFolderApi(navigate, 2, t));
     setSRowsData(0)
     setGetAllData([])
@@ -789,8 +794,8 @@ const DataRoom = () => {
 
   const MydocumentButtonShow = async () => {
     localStorage.setItem("setTableView", 1);
-    setSorted(true)
-
+    dispatch(dataBehaviour(true))
+    // setSorted(true)
     await dispatch(getDocumentsAndFolderApi(navigate, 1, t));
     setSRowsData(0)
     setGetAllData([])
@@ -807,8 +812,8 @@ const DataRoom = () => {
 
   const AllDocuments = async () => {
     localStorage.setItem("setTableView", 3);
-    setSorted(true)
-
+    // setSorted(true)
+    dispatch(dataBehaviour(true))
     await dispatch(getDocumentsAndFolderApi(navigate, 3, t));
     setSRowsData(0)
     setGetAllData([])
@@ -884,6 +889,8 @@ const DataRoom = () => {
       setRenameFileData(record);
     } else if (data.value === 2) {
       showShareFileModal(record.id, record.name);
+    } else if (data.value === 6) {
+      dispatch(deleteFileDataroom(navigate, record.id, t))
     }
   };
 
@@ -893,6 +900,8 @@ const DataRoom = () => {
       setRenameFolderData(record);
     } else if (data.value === 1) {
       showShareFolderModal(record.id, record.name);
+    } else if (data.value === 5) {
+      dispatch(deleteFolder(navigate, record.id, t))
     }
   };
 
@@ -912,33 +921,39 @@ const DataRoom = () => {
     console.log(filters, sorter, "filtersfiltersfilters")
     if (sorter.field === "sharedDate") {
       if (sorter.order === "ascend") {
-        setSorted(true)
+        // setSorted(true)
+        dispatch(dataBehaviour(true))
         setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, 2));
       } else {
-        setSorted(true)
+        // setSorted(true)
+        dispatch(dataBehaviour(true))
         setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, true, 2));
       }
     }
     if (sorter.field === "name") {
       if (sorter.order === "ascend") {
-        setSorted(true)
+        // setSorted(true)
+        dispatch(dataBehaviour(true))
         setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
       } else {
-        setSorted(true)
+        // setSorted(true)
+        dispatch(dataBehaviour(true))
         setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1));
       }
     }
     if (sorter.field === "owner") {
       if (sorter.order === "ascend") {
-        setSorted(true)
+        // setSorted(true)
+        dispatch(dataBehaviour(true))
         setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
       } else {
-        setSorted(true)
+        // setSorted(true)
+        dispatch(dataBehaviour(true))
         setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1));
       }
@@ -951,11 +966,13 @@ const DataRoom = () => {
   const handleSortMyDocuments = (pagination, filters, sorter) => {
     if (sorter.field === "name") {
       if (sorter.order === "ascend") {
-        setSorted(true)
+        // setSorted(true)
+        dispatch(dataBehaviour(true))
         setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
       } else {
-        setSorted(true)
+        // setSorted(true)
+        dispatch(dataBehaviour(true))
         setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1));
       }
@@ -972,7 +989,8 @@ const DataRoom = () => {
         setFilterValue(4)
         setCurrentFilter(t("Last-open-by-me"))
       }
-      setSorted(true)
+      // setSorted(true)
+      dispatch(dataBehaviour(true))
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, filterValue));
       setSRowsData(0)
     }
@@ -1936,14 +1954,16 @@ const DataRoom = () => {
   };
   // api call onscroll
   const handleScroll = (e) => {
+
     console.log("test")
     const { scrollHeight, scrollTop, clientHeight } = e.target;
     console.log("test")
     if (scrollHeight - scrollTop === clientHeight) {
+      dispatch(dataBehaviour(false))
       console.log("test")
       console.log(sRowsData, "sRowsDatasRowsDatasRowsData")
-      console.log(DataRoomReducer.NotFound !== 2 && sorted === false, DataRoomReducer.NotFound, sorted, "test")
-      if (DataRoomReducer.NotFound !== 2 && sorted === false) {
+      console.log(DataRoomReducer.NotFound !== 2 && DataRoomReducer.dataBehaviour === false, DataRoomReducer.NotFound, DataRoomReducer.dataBehaviour, "test")
+      if (DataRoomReducer.NotFound !== 2 && DataRoomReducer.dataBehaviour === false) {
         console.log("test")
         let addNewData = Number(sRowsData) + 5
         setSRowsData(addNewData)
@@ -1990,12 +2010,14 @@ const DataRoom = () => {
         DataRoomReducer.getAllDocumentandShareFolderResponse !== undefined &&
         DataRoomReducer.getAllDocumentandShareFolderResponse.length > 0
       ) {
-        if (sorted) {
+        if (DataRoomReducer.dataBehaviour) {
           console.log("Test")
           setGetAllData(DataRoomReducer.getAllDocumentandShareFolderResponse)
-          setSorted(false)
+          // setSorted(false)
+          dispatch(dataBehaviour(false))
         } else {
-          setSorted(false)
+          // setSorted(false)
+          dispatch(dataBehaviour(false))
           console.log("Test")
           let copyData = [...getAllData];
           DataRoomReducer.getAllDocumentandShareFolderResponse.map((data, index) => {
@@ -2709,10 +2731,8 @@ const DataRoom = () => {
                                 data={getAllData}
                                 optionsforFolder={optionsforFolder}
                                 optionsforFile={optionsforFile}
-                                setSorted={setSorted}
                                 sRowsData={sRowsData}
                                 setSRowsData={setSRowsData}
-                                sorted={sorted}
                               />
                             </>
                           ) : getAllData.length > 0 &&
@@ -2792,10 +2812,8 @@ const DataRoom = () => {
                                 data={getAllData}
                                 optionsforFolder={optionsforFolder}
                                 optionsforFile={optionsforFile}
-                                setSorted={setSorted}
                                 sRowsData={sRowsData}
                                 setSRowsData={setSRowsData}
-                                sorted={sorted}
                               />
                             </>
                           ) : getAllData.length > 0 &&

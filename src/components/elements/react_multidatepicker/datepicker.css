@@ -11,23 +11,41 @@
                                              padding: 0 10px !important;
 } */
 .datePicker_createTodo {
-                                             max-width: 100% !important;
-                                             width: 100% !important;
-                                             height: 39px !important;
-                                             border: 1px solid #e1e1e1 !important;
-                                             display: flex !important;
-                                             justify-content: center !important;
-                                             align-items: center !important;
-                                             border-radius: 4px !important;
-                                             background: #fff !important;
-                                             color: #000 !important;
-                                             margin-left: 15px !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  height: 39px !important;
+  border: 1px solid #e1e1e1 !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border-radius: 4px !important;
+  background: #fff !important;
+  color: #000 !important;
+  margin-left: 15px !important;
 }
 
 .datePicker_Value {
-                                             color: #000 !important;
+  color: #000 !important;
 }
 
 .datePicker_createTodo svg {
-                                             right: auto !important
+  right: auto !important;
+}
+
+.datepicker_input {
+  padding: 0px 10px !important;
+  border-radius: 4px !important;
+  border: 1px solid #ced4da;
+  width: 100% !important;
+  height: 39px !important;
+  font-weight: 500;
+  font-size: 13px !important;
+  font-family: "Montserrat", sans-serif !important;
+  cursor: pointer;
+}
+.datepicker_input:is(:hover, :focus, :focus-visible, :visited) {
+  outline: none !important;
+}
+.datePickerTodoCreate2 {
+  border: 1px solid #e1e1e1 !important;
 }
