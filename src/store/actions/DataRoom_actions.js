@@ -123,7 +123,7 @@ const saveFilesApi = (
               if (viewFolderID !== null) {
                 dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1));
               } else {
-                dispatch(dataBehaviour(true))
+                // dispatch(dataBehaviour(true))
                 dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2));
               }
             } else if (
@@ -557,7 +557,7 @@ const createFolderApi = (
               if (folderID !== null && folderID !== undefined) {
                 dispatch(getFolderDocumentsApi(navigate, folderID, t))
               } else {
-                dispatch(dataBehaviour(true))
+                // dispatch(dataBehaviour(true))
                 dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t))
               }
 
@@ -937,7 +937,7 @@ const shareFoldersApi = (navigate, FolderData, t, setShowrequestsend) => {
               if (folderID !== null && folderID !== undefined) {
                 dispatch(getFolderDocumentsApi(navigate, folderID, t))
               } else {
-                dispatch(dataBehaviour(true))
+                // dispatch(dataBehaviour(true))
                 dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t))
               }
 
@@ -1030,7 +1030,7 @@ const deleteFileDataroom = (navigate, id, t, setSorted) => {
                 )
             ) {
               console.log('hello')
-              dispatch(dataBehaviour(true))
+              // dispatch(dataBehaviour(true))
               dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t))
               dispatch(
                 deleteFileDataroom_success(
@@ -1373,7 +1373,7 @@ const deleteFolder = (navigate, id, t, setSorted) => {
             ) {
               console.log('hello')
               // setSorted(true)
-              dispatch(dataBehaviour(true))
+              // dispatch(dataBehaviour(true))
               dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t))
               dispatch(
                 deleteFolder_success(
@@ -1573,7 +1573,7 @@ const renameFolderApi = (navigate, folderData, t, setRenamefolder) => {
                   'DataRoom_DataRoomServiceManager_RenameFolder_01'.toLowerCase(),
                 )
             ) {
-              dispatch(dataBehaviour(true))
+              // dispatch(dataBehaviour(true))
               dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t))
               setRenamefolder(false)
             } else if (
@@ -1742,7 +1742,7 @@ const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
                 )
             ) {
               setShowRenameFile(false)
-              dispatch(dataBehaviour(true))
+              // dispatch(dataBehaviour(true))
               dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t))
             } else if (
               response.data.responseResult.responseMessage

@@ -287,17 +287,13 @@ const DataRoom = () => {
       });
     } catch { }
     if (currentView !== null) {
-      // setSorted(false)
-      dispatch(dataBehaviour(false))
       dispatch(getDocumentsAndFolderApi(navigate, currentView, t));
     } else {
       localStorage.setItem("setTableView", 3);
-      // setSorted(false)
-      dispatch(dataBehaviour(false))
       dispatch(getDocumentsAndFolderApi(navigate, 3, t));
     }
     return () => {
-      // localStorage.removeItem("setTableView");
+      localStorage.removeItem("folderID");
     };
   }, []);
 
@@ -777,7 +773,7 @@ const DataRoom = () => {
 
   const SharewithmeButonShow = async () => {
     localStorage.setItem("setTableView", 2);
-    dispatch(dataBehaviour(true))
+    // dispatch(dataBehaviour(true))
     // setSorted(true)
     await dispatch(getDocumentsAndFolderApi(navigate, 2, t));
     setSRowsData(0)
@@ -794,7 +790,7 @@ const DataRoom = () => {
 
   const MydocumentButtonShow = async () => {
     localStorage.setItem("setTableView", 1);
-    dispatch(dataBehaviour(true))
+    // dispatch(dataBehaviour(true))
     // setSorted(true)
     await dispatch(getDocumentsAndFolderApi(navigate, 1, t));
     setSRowsData(0)
@@ -813,7 +809,7 @@ const DataRoom = () => {
   const AllDocuments = async () => {
     localStorage.setItem("setTableView", 3);
     // setSorted(true)
-    dispatch(dataBehaviour(true))
+    // dispatch(dataBehaviour(true))
     await dispatch(getDocumentsAndFolderApi(navigate, 3, t));
     setSRowsData(0)
     setGetAllData([])
@@ -922,12 +918,12 @@ const DataRoom = () => {
     if (sorter.field === "sharedDate") {
       if (sorter.order === "ascend") {
         // setSorted(true)
-        dispatch(dataBehaviour(true))
+        // dispatch(dataBehaviour(true))
         setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, 2));
       } else {
         // setSorted(true)
-        dispatch(dataBehaviour(true))
+        // dispatch(dataBehaviour(true))
         setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, true, 2));
       }
@@ -935,12 +931,12 @@ const DataRoom = () => {
     if (sorter.field === "name") {
       if (sorter.order === "ascend") {
         // setSorted(true)
-        dispatch(dataBehaviour(true))
+        // dispatch(dataBehaviour(true))
         setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
       } else {
         // setSorted(true)
-        dispatch(dataBehaviour(true))
+        // dispatch(dataBehaviour(true))
         setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1));
       }
@@ -948,12 +944,12 @@ const DataRoom = () => {
     if (sorter.field === "owner") {
       if (sorter.order === "ascend") {
         // setSorted(true)
-        dispatch(dataBehaviour(true))
+        // dispatch(dataBehaviour(true))
         setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
       } else {
         // setSorted(true)
-        dispatch(dataBehaviour(true))
+        // dispatch(dataBehaviour(true))
         setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1));
       }
@@ -967,12 +963,12 @@ const DataRoom = () => {
     if (sorter.field === "name") {
       if (sorter.order === "ascend") {
         // setSorted(true)
-        dispatch(dataBehaviour(true))
+        // dispatch(dataBehaviour(true))
         setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
       } else {
         // setSorted(true)
-        dispatch(dataBehaviour(true))
+        // dispatch(dataBehaviour(true))
         setSRowsData(0)
         dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1));
       }
@@ -990,7 +986,7 @@ const DataRoom = () => {
         setCurrentFilter(t("Last-open-by-me"))
       }
       // setSorted(true)
-      dispatch(dataBehaviour(true))
+      // dispatch(dataBehaviour(true))
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, filterValue));
       setSRowsData(0)
     }
@@ -1133,7 +1129,8 @@ const DataRoom = () => {
       key: "modifiedDate",
       width: "110px",
       align: "center",
-      sortOrder: currentSort,
+      sorter: true,
+      sortOrder: true,
       filters: [
         {
           text: t("Last-modified"),
@@ -1160,9 +1157,6 @@ const DataRoom = () => {
           </span>
         );
       },
-      sorter: (a, b) =>
-        _justShowDateformat(a.modifiedDate) <
-        _justShowDateformat(b?.modifiedDate),
     },
     {
       title: t("File-size"),
@@ -1959,7 +1953,7 @@ const DataRoom = () => {
     const { scrollHeight, scrollTop, clientHeight } = e.target;
     console.log("test")
     if (scrollHeight - scrollTop === clientHeight) {
-      dispatch(dataBehaviour(false))
+      dispatch(dataBehaviour(true))
       console.log("test")
       console.log(sRowsData, "sRowsDatasRowsDatasRowsData")
       console.log(DataRoomReducer.NotFound !== 2 && DataRoomReducer.dataBehaviour === false, DataRoomReducer.NotFound, DataRoomReducer.dataBehaviour, "test")
@@ -2011,22 +2005,15 @@ const DataRoom = () => {
         DataRoomReducer.getAllDocumentandShareFolderResponse.length > 0
       ) {
         if (DataRoomReducer.dataBehaviour) {
-          console.log("Test")
-          setGetAllData(DataRoomReducer.getAllDocumentandShareFolderResponse)
-          // setSorted(false)
           dispatch(dataBehaviour(false))
-        } else {
-          // setSorted(false)
-          dispatch(dataBehaviour(false))
-          console.log("Test")
           let copyData = [...getAllData];
           DataRoomReducer.getAllDocumentandShareFolderResponse.map((data, index) => {
             copyData.push(data)
           })
           setGetAllData(copyData);
+        } else {
+          setGetAllData(DataRoomReducer.getAllDocumentandShareFolderResponse)
         }
-
-        // setGetAllData([DataRoomReducer.getAllDocumentandShareFolderResponse, getAllData]);
       } else {
         // setGetAllData([]);
       }

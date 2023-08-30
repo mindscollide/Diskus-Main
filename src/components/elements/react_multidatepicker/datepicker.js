@@ -34,7 +34,9 @@ const MultiDatePicker = ({
     <>
       <span className={spanClass}>
         <label className="f-0">
+
           <DatePicker
+            render={<Icon />}
             onChange={onChange}
             inputClass="datepicker_input"
             format={dateFormat}

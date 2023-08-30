@@ -275,6 +275,8 @@ export const MEETING_STATUS_SOCKET = 'MEETING_STATUS_SOCKET'
 // For comments Socket
 export const POST_COMMENTS = 'POST_COMMENTS'
 
+export const DELETE_COMMENTS = "DELETE_COMMENTS"
+
 // Aun work on admin action types (START) //
 
 //For Admin AddUser

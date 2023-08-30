@@ -102,22 +102,22 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, sRowsData, s
     })
     if (filterValue.value === 1) {
       // setSorted(true)
-      dispatch(dataBehaviour(true))
+      // dispatch(dataBehaviour(true))
       setSRowsData(0)
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
     } else if (filterValue.value === 2) {
       // setSorted(true)
-      dispatch(dataBehaviour(true))
+      // dispatch(dataBehaviour(true))
       setSRowsData(0)
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 2));
     } else if (filterValue.value === 3) {
       // setSorted(true)
-      dispatch(dataBehaviour(true))
+      // dispatch(dataBehaviour(true))
       setSRowsData(0)
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 3));
     } else if (filterValue.value === 4) {
       // setSorted(true)
-      dispatch(dataBehaviour(true))
+      // dispatch(dataBehaviour(true))
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 4));
       setSRowsData(0)
     }
@@ -126,12 +126,12 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, sRowsData, s
   const handleShareTabFilter = (filterValue) => {
     if (filterValue.value === 1) {
       // setSorted(true)
-      dispatch(dataBehaviour(true))
+      // dispatch(dataBehaviour(true))
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
       setSRowsData(0)
     } else if (filterValue.value === 2) {
       // setSorted(true)
-      dispatch(dataBehaviour(true))
+      // dispatch(dataBehaviour(true))
       dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 2));
       setSRowsData(0)
     }
@@ -146,26 +146,26 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, sRowsData, s
     if (dataId.value === 2) {
       setShowreanmeFolder(true)
       setRenameFolderData(record)
-
     } else if (dataId.value === 1) {
       setSharefoldermodal(true)
       setFolderName(record.name)
     } else if (dataId.value === 5) {
       dispatch(deleteFolder(navigate, record.id, t))
     }
+    setSRowsData(0)
   }
 
   const handleClickSortDecsending = () => {
     setSortIcon(false)
     // setSorted(true)
-    dispatch(dataBehaviour(true))
+    // dispatch(dataBehaviour(true))
     setSRowsData(0)
     dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1));
   }
   const handleClickSortAscending = () => {
     setSortIcon(true)
     // setSorted(true)
-    dispatch(dataBehaviour(true))
+    // dispatch(dataBehaviour(true))
     setSRowsData(0)
     dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1));
   }
@@ -202,7 +202,7 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, sRowsData, s
         <Col sm={12} lg={12} md={12} className={styles['folderContainer']}>
           <Row>
             <Col sm={12} md={12} lg={12} className="d-flex gap-2 align-items-center justify-content-start" >
-              {currentView === 1 ? <>
+              {currentView === 1 && currentView === 3 ? <>
                 <Dropdown
                   drop="down"
                   align="start"
@@ -275,11 +275,15 @@ const GridViewDataRoom = ({ data, optionsforFolder, optionsforFile, sRowsData, s
                 {sortIon ? <img
                   src={ArrowUp}
                   width="15.02px"
+                  className={styles["sortIconGrid"]}
+                  onClick={handleClickSortDecsending}
                   height="10.71px"
                 /> : <img
                   src={ArrowDown}
                   width="15.02px"
+                  className={styles["sortIconGrid"]}
                   height="10.71px"
+                  onClick={handleClickSortAscending}
                 />}</>}
             </Col>
             <Col sm={12} md={12} lg={12}>
