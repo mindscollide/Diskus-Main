@@ -406,7 +406,7 @@ const getFolerDocuments_fail = (message) => {
 }
 
 // Get Folder Documents Api
-const getFolderDocumentsApi = (navigate, FolderId, t, no, sort, orderby) => {
+const getFolderDocumentsApi = (navigate, FolderId, t, no) => {
   let token = JSON.parse(localStorage.getItem('token'))
   let Data = { FolderID: JSON.parse(FolderId) }
   return (dispatch) => {
@@ -607,7 +607,7 @@ const getDocumentsAndFolders_fail = (message) => {
 
 // Get Documents And Folder API
 const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
-  console.log(navigate, statusID, t, no, order, sort, "getDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApi")
+
   let token = JSON.parse(localStorage.getItem('token'))
   let createrID = localStorage.getItem('userID')
   let OrganizationID = localStorage.getItem('organizationID')
@@ -615,9 +615,10 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
     UserID: parseInt(createrID),
     OrganizationID: parseInt(OrganizationID),
     StatusID: parseInt(statusID),
-    SortBy: sort !== null && sort !== undefined ? sort : 2,
-    isDescending: order !== null & order !== null ? order : true
-    // sRow: 10
+    SortBy: sort !== null && sort !== undefined ? sort : 1,
+    isDescending: order !== null & order !== undefined ? order : true,
+    sRow: 0,
+    Length: 10
   }
   // let Data = {
   //     UserID: 722,
@@ -630,6 +631,7 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
     } else {
       dispatch(getDocumentsAndFolders_init())
     }
+    dispatch(tableSpinner(false, 0))
     let form = new FormData()
     form.append(
       'RequestMethod',
@@ -647,7 +649,7 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
-          dispatch(getDocumentsAndFolderApi(navigate, statusID, t))
+          dispatch(getDocumentsAndFolderApi(navigate, statusID, t, no, order, sort))
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -688,6 +690,92 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
       })
       .catch((error) => {
         dispatch(getDocumentsAndFolders_fail(t('Something-went-wrong')))
+      })
+  }
+}
+
+// Get All Data from scroll behaviour
+const getDocumentsAndFolderApiScrollbehaviour = (navigate, statusID, t, sRows, filterValue) => {
+  console.log(navigate, statusID, t, sRows, "getDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApi")
+
+  let token = JSON.parse(localStorage.getItem('token'))
+  let createrID = localStorage.getItem('userID')
+  let OrganizationID = localStorage.getItem('organizationID')
+  let Data = {
+    UserID: parseInt(createrID),
+    OrganizationID: parseInt(OrganizationID),
+    StatusID: parseInt(statusID),
+    SortBy: filterValue !== 0 ? filterValue : 1,
+    isDescending: true,
+    sRow: Number(sRows),
+    Length: 10
+  }
+  return (dispatch) => {
+    dispatch(tableSpinner(true))
+    let form = new FormData()
+    form.append(
+      'RequestMethod',
+      getDocumentsAndFolderRequestMethod.RequestMethod,
+    )
+    form.append('RequestData', JSON.stringify(Data))
+    axios({
+      method: 'post',
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(getDocumentsAndFolderApiScrollbehaviour(navigate, statusID, t, sRows))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              'DataRoom_DataRoomManager_GetDocumentsAndFolders_01'.toLowerCase()
+            ) {
+              dispatch(tableSpinner(false, 1))
+              dispatch(
+                getDocumentsAndFolders_success(
+                  response.data.responseResult.data,
+                  t('Data-available'),
+                ),
+              )
+              if (statusID === 1) {
+                localStorage.setItem('setTableView', 1)
+              } else if (statusID === 2) {
+                localStorage.setItem('setTableView', 2)
+              } else if (statusID === 3) {
+                localStorage.setItem('setTableView', 3)
+              }
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              'DataRoom_DataRoomManager_GetDocumentsAndFolders_02'.toLowerCase()
+            ) {
+              dispatch(getDocumentsAndFolders_fail(t('No-record-found')))
+              dispatch(tableSpinner(false, 2))
+              console.log('checking1212')
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              'DataRoom_DataRoomManager_GetDocumentsAndFolders_03'.toLowerCase()
+            ) {
+              dispatch(getDocumentsAndFolders_fail(t('Something-went-wrong')))
+              dispatch(tableSpinner(false, 2))
+            }
+          } else {
+            dispatch(getDocumentsAndFolders_fail(t('Something-went-wrong')))
+            dispatch(tableSpinner(false, 2))
+          }
+        } else {
+          dispatch(getDocumentsAndFolders_fail(t('Something-went-wrong')))
+          dispatch(tableSpinner(false, 2))
+        }
+      })
+      .catch((error) => {
+        dispatch(getDocumentsAndFolders_fail(t('Something-went-wrong')))
+        dispatch(tableSpinner(false, 2))
       })
   }
 }
@@ -1680,6 +1768,15 @@ const renameFileApi = (navigate, filedata, t, setShowRenameFile) => {
       })
   }
 }
+const tableSpinner = (payload, value) => {
+  console.log(payload, value, "payloadpayload")
+  return {
+    type: actions.DATAROOM_TABLE_SCROLL_BAR,
+    response: payload,
+    value: value
+  }
+}
+// const resetSpinner = () => {}
 const clearDataResponseMessage = () => {
   return {
     type: actions.CLEARE_MESSAGE,
@@ -1701,4 +1798,6 @@ export {
   FolderisExist,
   FolderisExistRename,
   FileisExist2,
+  getDocumentsAndFolderApiScrollbehaviour,
+  tableSpinner
 }
