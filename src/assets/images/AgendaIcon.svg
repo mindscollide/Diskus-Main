@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="85.444" height="128.683" viewBox="0 0 85.444 128.683">
+  <g id="Group_4000" data-name="Group 4000" transform="translate(-4642.927 -1560.539)">
+    <g id="Group_4021" data-name="Group 4021" transform="translate(4642.927 1560.539)">
+      <g id="Group_4020" data-name="Group 4020" transform="translate(0)">
+        <path id="Path_1991" data-name="Path 1991" d="M9.689,0H75.756a9.689,9.689,0,0,1,9.689,9.689V107.52a9.689,9.689,0,0,1-9.689,9.689H9.689A9.689,9.689,0,0,1,0,107.52V9.689A9.689,9.689,0,0,1,9.689,0Z" transform="translate(0 11.474)" fill="#e4e4e4"/>
+        <g id="Group_4018" data-name="Group 4018" transform="translate(3.828 16.198)">
+          <g id="Group_4000-2" data-name="Group 4000" transform="translate(0 0)">
+            <path id="Path_1987" data-name="Path 1987" d="M5698.313,1755.866c.022,39.836,1.309,87.881-3.166,98.519-19.71,1.92-42.788,2.537-67.161,2.651l9.265-100.862Z" transform="translate(-5624.093 -1755.866)" fill="#f1f1f1"/>
+            <path id="Path_1988" data-name="Path 1988" d="M5648.944,1851.217c-30.721,4.916-51.252,5.176-67.9,3.939,2.158-22.972,3.022-61.134,3.893-99.234l37.019.082,33.5,2.211C5655.943,1797.76,5656,1834.288,5648.944,1851.217Z" transform="translate(-5581.04 -1755.917)" fill="#fff"/>
+          </g>
+          <g id="Group_4017" data-name="Group 4017" transform="translate(10.971 9.421)">
+            <rect id="Rectangle_1392" data-name="Rectangle 1392" width="37.007" height="5.637" transform="translate(9.082 0) rotate(1.348)" fill="#e4e4e4"/>
+            <g id="Group_4016" data-name="Group 4016" transform="translate(0 20.715)">
+              <g id="Group_4003" data-name="Group 4003" transform="translate(1.239 0)">
+                <g id="Group_4001" data-name="Group 4001" transform="translate(18.54 2.831)">
+                  <rect id="Rectangle_1393" data-name="Rectangle 1393" width="33.38" height="2.58" transform="matrix(1, 0.024, -0.024, 1, 0.061, 0)" fill="#e4e4e4"/>
+                </g>
+                <g id="Group_4002" data-name="Group 4002" transform="translate(0 0)">
+                  <rect id="Rectangle_1395" data-name="Rectangle 1395" width="7.902" height="7.902" transform="matrix(1, 0.024, -0.024, 1, 0.186, 0)" fill="none" stroke="#e4e4e4" stroke-miterlimit="10" stroke-width="6"/>
+                </g>
+              </g>
+              <g id="Group_4009" data-name="Group 4009" transform="translate(0.563 21.62)">
+                <g id="Group_4007" data-name="Group 4007" transform="translate(18.54 2.321)">
+                  <rect id="Rectangle_1399" data-name="Rectangle 1399" width="33.38" height="2.58" transform="translate(0.061 0) rotate(1.348)" fill="#e4e4e4"/>
+                </g>
+                <g id="Group_4008" data-name="Group 4008" transform="translate(0 0)">
+                  <rect id="Rectangle_1401" data-name="Rectangle 1401" width="7.902" height="7.902" transform="matrix(1, 0.024, -0.024, 1, 0.186, 0)" fill="none" stroke="#e4e4e4" stroke-miterlimit="10" stroke-width="6"/>
+                </g>
+              </g>
+              <g id="Group_4015" data-name="Group 4015" transform="translate(0 43.101)">
+                <g id="Group_4013" data-name="Group 4013" transform="translate(18.43 2.829)">
+                  <rect id="Rectangle_1405" data-name="Rectangle 1405" width="13.232" height="2.58" transform="matrix(1, 0.024, -0.024, 1, 0.061, 0)" fill="#e4e4e4"/>
+                </g>
+                <g id="Group_4014" data-name="Group 4014" transform="translate(0 0)">
+                  <rect id="Rectangle_1406" data-name="Rectangle 1406" width="7.902" height="7.902" transform="translate(0.186 0) rotate(1.348)" fill="none" stroke="#e4e4e4" stroke-miterlimit="10" stroke-width="6"/>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g id="Group_4019" data-name="Group 4019" transform="translate(26.882)">
+          <path id="Path_1990" data-name="Path 1990" d="M5890.715,1572.723v7.885h-31.678v-7.885a4.548,4.548,0,0,1,1.333-3.221,3.7,3.7,0,0,1,.322-.289,4.519,4.519,0,0,1,2.9-1.045,5.364,5.364,0,0,0,2.329-.531,5.63,5.63,0,0,0,.875-.527,5.361,5.361,0,0,0,1.943-2.756,5.383,5.383,0,0,1,5.149-3.815h1.977a5.383,5.383,0,0,1,5.148,3.815,5.361,5.361,0,0,0,1.943,2.756,5.567,5.567,0,0,0,.876.527,5.367,5.367,0,0,0,2.329.531,4.559,4.559,0,0,1,4.554,4.554Z" transform="translate(-5859.037 -1560.539)" fill="#e4e4e4"/>
+          <ellipse id="Ellipse_189" data-name="Ellipse 189" cx="2.81" cy="2.671" rx="2.81" ry="2.671" transform="translate(13.03 2.056)" fill="#e4e4e4"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

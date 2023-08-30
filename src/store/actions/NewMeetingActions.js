@@ -98,6 +98,27 @@ const showEnableProposedMeetingDate = (response) => {
   };
 };
 
+const showPrposedMeetingUnsavedModal = (response) => {
+  return {
+    type: actions.PROPOSED_MEETING_SAVED_MODAL,
+    response: response,
+  };
+};
+
+const showImportPreviousMinutes = (response) => {
+  return {
+    type: actions.IMPORT_PREVIOUS_MINUTES,
+    response: response,
+  };
+};
+
+const showAfterImportState = (response) => {
+  return {
+    type: actions.AFTER_IMPORT_STATE,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -113,4 +134,7 @@ export {
   showVoteConfirmationModal,
   showImportPreviousAgendaModal,
   showEnableProposedMeetingDate,
+  showPrposedMeetingUnsavedModal,
+  showImportPreviousMinutes,
+  showAfterImportState,
 };

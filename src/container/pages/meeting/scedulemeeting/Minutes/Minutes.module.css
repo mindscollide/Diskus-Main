@@ -1,0 +1,115 @@
+.Minustes_Buttons_Import {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Minustes_Buttons_Import:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Box_For_Options {
+  width: 404px !important;
+  height: 305px !important;
+  border: 1px solid #e1e1e1;
+  border-radius: 4px !important;
+}
+
+.Box_For_Options:is(:hover, :focus, :focus-visible, :active) {
+  transform: scale(1.04);
+  -webkit-box-shadow: 0px 0px 13px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 0px 13px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 0px 13px 0px rgba(0, 0, 0, 0.75);
+  border: 1px solid #5a5a5a !important;
+}
+
+.BackGround_Image {
+  height: 159.76px !important;
+  width: 159.76px !important;
+  background: #f1f1f1 !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  justify-content: center !important;
+}
+
+.Upload_Btn_Styles {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Upload_Btn_Styles:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Download_Icon {
+  margin-top: 8px !important;
+}
+
+.Scratch_Icon {
+  margin-left: 20px !important;
+}
+
+.Box_Minutes {
+  width: 617px !important;
+  height: 92px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  position: relative !important;
+  margin-left: 12px !important;
+}
+
+.Title_File {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+}
+
+.Date_Minutes_And_time {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+  color: #5f78d6 !important;
+}
+
+.Uploaded_heading {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+}
+
+.Profile_minutes {
+  border-radius: 50% !important;
+}
+
+.Name {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+}
+
+.RedCrossClass {
+  position: absolute !important;
+  right: -6px;
+  top: -4px;
+  cursor: pointer !important;
+}

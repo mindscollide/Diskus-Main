@@ -1316,5 +1316,15 @@
   "NEW_POLL_PUBLISHED": "A new Poll [Poll Title] is published for your review..",
   "POLL_UPDATED": "The Poll [Poll Title] has been updated",
   "POLL_EXPIRED": "Due date of Poll [Poll Title] has passed",
-  "PUBLISHED_POLL_DELETED": "The Poll [Poll Title] has been deleted"
+  "PUBLISHED_POLL_DELETED": "The Poll [Poll Title] has been deleted",
+  "Closing-report": "Closing Report",
+  "Functional-review": "Functional Review",
+  "Finance-summary": "Finance Summary",
+  "Ceo-report": "CEO Report",
+  "Introduction": "Introduction",
+  "Import-previous-minutes": "Import Previous Minutes",
+  "Upload": "Upload",
+  "Create-from-scratch": "Create From Scratch",
+  "IT-departmental-meeting": "IT Departmental Meeting",
+  "Uploaded-by": "Uploaded by"
 }
