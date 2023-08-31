@@ -1,16 +1,32 @@
 import React from 'react'
 import { useEffect, useState, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { ChevronDown, ChevronUp } from 'react-bootstrap-icons'
 import LanguageIcon from '../../../assets/images/Language.svg'
 import LanguageBlack from '../../../assets/images/Language_Black.svg'
 import styles from './Language-selector.module.css'
 import { useTranslation } from 'react-i18next'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { Loader } from './../../elements'
 import Cookies from 'js-cookie'
-import moment from 'moment'
 import numeral from 'numeral'
+import {
+  getAllLanguages,
+  getSelectedLanguage,
+  changeNewLanguage,
+} from '../../../store/actions/Language_actions'
 
 const LanguageSelector = () => {
+  const { LanguageReducer } = useSelector((state) => state)
+
+  console.log('LanguageReducer', LanguageReducer)
+
+  const navigate = useNavigate()
+
+  const dispatch = useDispatch()
+
+  let currentUserID = Number(localStorage.getItem('userID'))
+
   const languageref = useRef()
   const location = useLocation()
   let currentLanguage = localStorage.getItem('i18nextLng')
@@ -19,36 +35,108 @@ const LanguageSelector = () => {
   const currentLocale = Cookies.get('i18next') || 'en'
   const [language, setLanguage] = useState(currentLocale)
   const { t, i18n } = useTranslation()
-  // Languages
-  const languages = [
-    { name: 'English', code: 'en' },
-    // { name: "日本語", code: "ja" },
-    { name: 'Français', code: 'fr' },
-    { name: 'العربية', code: 'ar', dir: 'rtl' },
-  ]
-  useEffect(() => {
-    if (language !== null) {
-      let currentLanguageForView = languages.filter(
-        (data, index) => data.code === language,
-      )
 
-      setLanguageforView(currentLanguageForView[0]?.name)
+  const [languages, setLanguages] = useState([])
+  console.log(languages, 'languageslanguageslanguages')
+  const [selectedLanguage, setSelectedLanguage] = useState({
+    systemSupportedLanguageID: 1,
+    languageTitle: 'English',
+    code: 'en',
+  })
+
+  useEffect(() => {
+    dispatch(getAllLanguages(navigate, t))
+  }, [])
+
+  useEffect(() => {
+    if (
+      currentUserID !== null &&
+      currentUserID !== undefined &&
+      currentUserID !== 0
+    ) {
+      let data = { UserID: currentUserID }
+      dispatch(getSelectedLanguage(data, navigate, t))
     }
   }, [])
+
+  useEffect(() => {
+    if (
+      LanguageReducer.AllLanguagesData !== null &&
+      LanguageReducer.AllLanguagesData !== undefined &&
+      LanguageReducer.AllLanguagesData.length !== 0
+    ) {
+      setLanguages(LanguageReducer?.AllLanguagesData)
+    }
+  }, [LanguageReducer.AllLanguagesData])
+
+  useEffect(() => {
+    if (
+      LanguageReducer.SetLanguageData !== null &&
+      LanguageReducer.SetLanguageData !== undefined &&
+      LanguageReducer.SetLanguageData.length !== 0
+    ) {
+      setSelectedLanguage({
+        ...selectedLanguage,
+        systemSupportedLanguageID:
+          LanguageReducer.SetLanguageData.systemSupportedLanguageID,
+        languageTitle: LanguageReducer.SetLanguageData.languageTitle,
+        code:
+          LanguageReducer.SetLanguageData.systemSupportedLanguageID === 1
+            ? 'en'
+            : LanguageReducer.SetLanguageData.systemSupportedLanguageID === 2
+            ? 'ar'
+            : LanguageReducer.SetLanguageData.systemSupportedLanguageID === 3
+            ? 'fr'
+            : '',
+      })
+    }
+  }, [LanguageReducer.SetLanguageData])
+
   const handleChangeLocale = (lang) => {
     setLanguageDropdown(false)
-    setLanguage(lang)
+    // setLanguage(lang)
+    let data = {
+      UserID: currentUserID,
+      SystemSupportedLanguageID: lang,
+    }
+    dispatch(changeNewLanguage(data, navigate, t))
+    if (lang === 1) {
+      setSelectedLanguage({
+        languageTitle: 'English',
+        systemSupportedLanguageID: 1,
+        code: 'en',
+      })
+      localStorage.setItem('i18nextLng', 'en')
+      setTimeout(() => {
+        // window.location.reload()
+        i18n.changeLanguage('en')
+      }, 100)
+    } else if (lang === 2) {
+      setSelectedLanguage({
+        languageTitle: 'Arabic',
+        systemSupportedLanguageID: 2,
+        code: 'ar',
+      })
+      localStorage.setItem('i18nextLng', 'ar')
 
-    let currentLanguageForView = languages.filter(
-      (data, index) => data.code === lang,
-    )
-
-    setLanguageforView(currentLanguageForView[0].name)
-    numeral.locale(currentLanguageForView[0].code)
-    localStorage.setItem('i18nextLng', lang)
-
-    window.location.reload()
+      setTimeout(() => {
+        // window.location.reload()
+        i18n.changeLanguage('ar')
+      }, 100)
+    } else {
+      setSelectedLanguage({
+        languageTitle: 'French',
+        systemSupportedLanguageID: 3,
+        code: 'fr',
+      })
+      localStorage.setItem('i18nextLng', 'fr')
+      setTimeout(() => {
+        // window.location.reload()
+        i18n.changeLanguage('fr')
+      }, 1000)
+    }
   }
+
   const handleOutsideClick = (event) => {
     if (
       languageref.current &&
@@ -68,15 +156,32 @@ const LanguageSelector = () => {
   useEffect(() => {
     let currentLanguage = localStorage.getItem('i18nextLng')
     const currentLangObj = languages.find(
-      (lang) => lang.code === currentLanguage,
+      (lang) => lang.systemSupportedLanguageID === Number(currentLanguage),
     )
-    if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-      setTimeout(() => {
-        i18n.changeLanguage(currentLanguage)
-        document.body.dir = currentLangObj.dir || 'ltr'
-      }, 1000)
-    }
+    let currentLanguageforDiskus =
+      currentLangObj?.systemSupportedLanguageID === 1
+        ? 'en'
+        : currentLangObj?.systemSupportedLanguageID === 2
+        ? 'ar'
+        : currentLangObj?.systemSupportedLanguageID === 3
+        ? 'fr'
+        : ''
+    // if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+    //   setTimeout(() => {
+    //     i18n.changeLanguage(currentLanguageforDiskus)
+    //     document.body.dir = currentLanguageforDiskus.dir || 'ltr'
+    //   }, 1000)
+    // }
   }, [i18n])
+
+  useEffect(() => {
+    if (currentLanguage === 'ar') {
+      document.body.dir = 'rtl'
+    } else {
+      document.body.dir = 'ltr'
+    }
+  }, [currentLanguage])
+
   return (
     <section
       className="position-relative"
@@ -103,7 +208,14 @@ const LanguageSelector = () => {
               : LanguageBlack
           }
         />
-        {languageforView}
+        {/* {selectedLanguage.languageTitle} */}
+        {currentLanguage === 'en'
+          ? 'English'
+          : currentLanguage === 'ar'
+          ? 'Arabic'
+          : currentLanguage === 'fr'
+          ? 'French'
+          : null}
         {languageDropdown ? <ChevronUp /> : <ChevronDown />}
       </span>
       <div
@@ -113,18 +225,22 @@ const LanguageSelector = () => {
             : styles['language_options_active']
         }
       >
-        {languages.map((data, index) => {
-          return (
-            <span
-              className="cursor-pointer"
-              onClick={() => handleChangeLocale(data.code)}
-              key={index}
-            >
-              {data.name}
-            </span>
-          )
-        })}
+        {languages.length > 0 &&
+          languages.map((data, index) => {
+            return (
+              <span
+                className="cursor-pointer"
+                onClick={() =>
+                  handleChangeLocale(data.systemSupportedLanguageID)
+                }
+                key={index}
+              >
+                {data.languageTitle}
+              </span>
+            )
+          })}
       </div>
+      {LanguageReducer.Loading === true ? <Loader /> : null}
     </section>
   )
 }

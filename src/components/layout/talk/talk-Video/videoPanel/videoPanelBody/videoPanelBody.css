@@ -38,6 +38,9 @@ p.video-chat-date {
     text-align: left !important;
     font-size: 10px;
     margin-left: 10px !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 body[dir="rtl"] p.video-chat-date {

@@ -171,7 +171,6 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.VIDEO_INCOMING_CALL_MAX: {
-      console.log(actions, 'actionnnnnsss')
       return {
         ...state,
         VideoIncomingCallFlag: action.response,

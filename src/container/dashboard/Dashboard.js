@@ -7,6 +7,12 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { setRecentActivityDataNotification } from "../../store/actions/GetUserSetting";
 import VideoCallScreen from "../../components/layout/talk/videoCallScreen/VideoCallScreen";
 import VideoMaxIncoming from "../../components/layout/talk/videoCallScreen/videoCallBody/VideoMaxIncoming";
+import VideoOutgoing from "../../components/layout/talk/videoCallScreen/videoCallBody/VideoMaxOutgoing";
+import {
+  incomingVideoCallFlag,
+  videoOutgoingCallFlag,
+  normalizeVideoPanelFlag,
+} from "../../store/actions/VideoFeature_actions";
 import {
   allMeetingsSocket,
   getMeetingStatusfromSocket,
@@ -29,8 +35,13 @@ import {
   mqttMessageDeleted,
   GetAllUserChats,
 } from "../../store/actions/Talk_action";
+import {
+  incomingVideoCallMQTT,
+  videoCallAccepted,
+} from "../../store/actions/VideoMain_actions";
 import Helper from "../../commen/functions/history_logout";
 import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
+// import io from "socket.io-client";
 import {
   setTodoListActivityData,
   setTodoStatusDataFormSocket,
@@ -63,9 +74,11 @@ const Dashboard = () => {
   const location = useLocation();
 
   const { talkStateData, videoFeatureReducer } = useSelector((state) => state);
+  // const [socket, setSocket] = useState(Helper.socket);
   const navigate = useNavigate();
   let createrID = localStorage.getItem("userID");
   let currentOrganization = localStorage.getItem("organizationID");
+  let currentUserName = localStorage.getItem("name");
 
   //Translation
   const { t } = useTranslation();
@@ -882,6 +895,54 @@ const Dashboard = () => {
         dispatch(resolutionMQTTCreate(data.payload.model));
       }
     }
+    if (data.action.toLowerCase() === "Video".toLowerCase()) {
+      if (
+        data.payload.message.toLowerCase() ===
+        "NEW_VIDEO_CALL_INITIATED".toLowerCase()
+      ) {
+        dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
+        dispatch(incomingVideoCallFlag(true));
+        localStorage.setItem("RoomID", data.payload.roomID);
+        localStorage.setItem("callerID", data.payload.callerID);
+        localStorage.setItem("callerName", data.payload.callerName);
+        localStorage.setItem("recipentID", data.receiverID[0]);
+        localStorage.setItem("recipentName", currentUserName);
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "VIDEO_CALL_ACCEPTED".toLowerCase()
+      ) {
+        dispatch(videoOutgoingCallFlag(false));
+        dispatch(normalizeVideoPanelFlag(true));
+        dispatch(videoCallAccepted(data.payload, data.payload.message));
+        localStorage.setItem("RoomID", data.payload.roomID);
+        localStorage.setItem("callerID", data.senderID);
+        localStorage.setItem("callerName", currentUserName);
+        localStorage.setItem("recipentID", data.payload.recepientID);
+        localStorage.setItem("recipentName", data.payload.recepientName);
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "VIDEO_CALL_REJECTED".toLowerCase()
+      ) {
+        dispatch(videoOutgoingCallFlag(false));
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `The call has been rejected`,
+        });
+        setNotificationID(id);
+      } else if (
+        data.payload.message.toLowerCase() ===
+        "VIDEO_CALL_UNANSWERED".toLowerCase()
+      ) {
+        dispatch(videoOutgoingCallFlag(false));
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `The call was unanswered`,
+        });
+        setNotificationID(id);
+      }
+    }
   };
 
   const onConnectionLost = () => {
@@ -952,7 +1013,8 @@ const Dashboard = () => {
 
   return (
     <>
-      {videoFeatureReducer.IncomingVideoCallFlag === true && (
+      {(videoFeatureReducer.IncomingVideoCallFlag === true ||
+        videoFeatureReducer.VideoOutgoingCallFlag === true) && (
         <div className="overlay-incoming-videocall" />
       )}
       <Layout>
@@ -971,6 +1033,9 @@ const Dashboard = () => {
           <Outlet />
           {videoFeatureReducer.IncomingVideoCallFlag === true ? (
             <VideoMaxIncoming />
+          ) : null}
+          {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
+            <VideoOutgoing />
           ) : null}
           {videoFeatureReducer.NormalizeVideoFlag === true ||
           videoFeatureReducer.MinimizeVideoFlag === true ||

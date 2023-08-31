@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Container, Row, Col, Form } from "react-bootstrap";
+import React, { useEffect, useState } from 'react'
+import { Container, Row, Col, Form } from 'react-bootstrap'
 import {
   Button,
   Paper,
@@ -7,119 +7,117 @@ import {
   Checkbox,
   Notification,
   Loader,
-} from "./../../../components/elements";
-import { Link, useNavigate } from "react-router-dom";
-import DiskusLogo from "./../../../assets/images/newElements/Diskus_newLogo.svg";
-import styles from "./ForgotPassword.module.css";
-import DiskusAuthPageLogo from "./../../../assets/images/newElements/Diskus_newRoundIcon.svg";
-import { useTranslation } from "react-i18next";
-import Cookies from "js-cookie";
-import LanguageChangeIcon from "../../../assets/images/newElements/Language.svg";
-import { validateEmail } from "../../../commen/functions/validations";
+} from './../../../components/elements'
+import { Link, useNavigate } from 'react-router-dom'
+import DiskusLogo from './../../../assets/images/newElements/Diskus_newLogo.svg'
+import styles from './ForgotPassword.module.css'
+import DiskusAuthPageLogo from './../../../assets/images/newElements/Diskus_newRoundIcon.svg'
+import { useTranslation } from 'react-i18next'
+import Cookies from 'js-cookie'
+import LanguageChangeIcon from '../../../assets/images/newElements/Language.svg'
+import { validateEmail } from '../../../commen/functions/validations'
 import {
   changePasswordRequest,
   cleareChangePasswordMessage,
-} from "../../../store/actions/Auth_Forgot_Password";
-import { useDispatch, useSelector } from "react-redux";
-import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
+} from '../../../store/actions/Auth_Forgot_Password'
+import { useDispatch, useSelector } from 'react-redux'
+import LanguageSelector from '../../../components/elements/languageSelector/Language-selector'
 
 const ForgotPassword = () => {
-  const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
-  const [email, setEmail] = useState("");
-  const [messege, setMessege] = useState("");
-  const dispatch = useDispatch();
+  const navigate = useNavigate()
+  const { t, i18n } = useTranslation()
+  const [email, setEmail] = useState('')
+  const [messege, setMessege] = useState('')
+  const dispatch = useDispatch()
   const languages = [
-    { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
-    { name: "العربية", code: "ar", dir: "rtl" },
-  ];
-  const currentLocale = Cookies.get("i18next") || "en";
-  const [language, setLanguage] = useState(currentLocale);
-  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
-  const state = useSelector((state) => state);
-  const { auth } = state;
+    { name: 'English', code: 'en' },
+    { name: 'Français', code: 'fr' },
+    { name: 'العربية', code: 'ar', dir: 'rtl' },
+  ]
+  const currentLocale = Cookies.get('i18next') || 'en'
+  // const [language, setLanguage] = useState(currentLocale);
+  // const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+  const state = useSelector((state) => state)
+  const { auth } = state
   const [open, setOpen] = useState({
     open: false,
-    message: "",
-  });
+    message: '',
+  })
   const submitForm = async (e) => {
-    e.preventDefault();
-    if (email !== "") {
+    e.preventDefault()
+    if (email !== '') {
       if (validateEmail(email)) {
-        setMessege("");
-        await dispatch(changePasswordRequest(email, t, navigate));
+        setMessege('')
+        await dispatch(changePasswordRequest(email, t, navigate))
       } else {
-        setMessege(t("Please-enter-a-valid-email"));
+        setMessege(t('Please-enter-a-valid-email'))
       }
     } else {
       setOpen({
         ...open,
         open: true,
-        message: t("Please-enter-email"),
-      });
+        message: t('Please-enter-email'),
+      })
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: "",
-        });
-      }, 3000);
-      setMessege("");
+          message: '',
+        })
+      }, 3000)
+      setMessege('')
     }
-  };
+  }
 
   const handleChange = (e) => {
-    e.preventDefault();
-    let name = e.target.name;
-    let value = e.target.value;
-    if (value != "" && name === "forgotEmail") {
-      setEmail(value);
+    e.preventDefault()
+    let name = e.target.name
+    let value = e.target.value
+    if (value != '' && name === 'forgotEmail') {
+      setEmail(value)
     } else {
-      setEmail("");
+      setEmail('')
     }
-  };
+  }
 
-  const handleChangeLocale = (e) => {
-    const lang = e.target.value;
-    setLanguage(lang);
-    localStorage.setItem("i18nextLng", lang);
-    i18n.changeLanguage(lang);
-  };
+  // const handleChangeLocale = (e) => {
+  //   const lang = e.target.value;
+  //   setLanguage(lang);
+  //   localStorage.setItem("i18nextLng", lang);
+  //   i18n.changeLanguage(lang);
+  // };
+
+  // useEffect(() => {
+  //   document.body.dir = currentLangObj.dir || "ltr";
+  // }, [currentLangObj, t]);
 
   useEffect(() => {
-    document.body.dir = currentLangObj.dir || "ltr";
-  }, [currentLangObj, t]);
-
-  useEffect(() => {
-    if (auth.ResponseMessage !== "") {
+    if (auth.ResponseMessage !== '') {
       setOpen({
         ...open,
         open: true,
         message: auth.ResponseMessage,
-      });
+      })
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: "",
-        });
-      }, 3000);
+          message: '',
+        })
+      }, 3000)
 
-      dispatch(cleareChangePasswordMessage());
+      dispatch(cleareChangePasswordMessage())
     } else {
-      dispatch(cleareChangePasswordMessage());
+      dispatch(cleareChangePasswordMessage())
     }
-  }, [auth.ResponseMessage]);
+  }, [auth.ResponseMessage])
   return (
     <>
-      <Container fluid className={styles["auth_container"]}>
+      <Container fluid className={styles['auth_container']}>
         <Row>
-          <Col className={styles["languageSelector"]} >
+          <Col className={styles['languageSelector']}>
             <LanguageSelector />
-
           </Col>
-
         </Row>
         <Row>
           <Col
@@ -128,12 +126,12 @@ const ForgotPassword = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper className={styles["Forgotpasswordloginbox_auth_paper"]}>
+            <Paper className={styles['Forgotpasswordloginbox_auth_paper']}>
               <Col
                 sm={12}
                 lg={12}
                 md={12}
-                className={styles["ForgotPassword_EmailVerifyBox"]}
+                className={styles['ForgotPassword_EmailVerifyBox']}
               >
                 <Row>
                   <Col
@@ -147,13 +145,13 @@ const ForgotPassword = () => {
                 </Row>
                 <Row className="text-center mt-5">
                   <Col sm={12} md={12} lg={12} className="m-0 p-0">
-                    <span className={styles["ForgotPassword_heading1"]}>
-                      {t("Forgot")}
+                    <span className={styles['ForgotPassword_heading1']}>
+                      {t('Forgot')}
                     </span>
                   </Col>
                   <Col sm={12} md={12} lg={12} className="m-0 p-0">
-                    <span className={styles["ForgotPassword_heading1"]}>
-                      {t("Password")}?
+                    <span className={styles['ForgotPassword_heading1']}>
+                      {t('Password')}?
                     </span>
                   </Col>
                 </Row>
@@ -163,10 +161,10 @@ const ForgotPassword = () => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className={styles["forgotpassword_label"]}
+                      className={styles['forgotpassword_label']}
                     >
                       {/*Email */}
-                      {t("Email-address")}
+                      {t('Email-address')}
                     </Col>
                   </Row>
                   <Row>
@@ -179,17 +177,17 @@ const ForgotPassword = () => {
                       <Form.Control
                         required
                         type="email"
-                        className={styles["Forgot_Password_Email_Field"]}
+                        className={styles['Forgot_Password_Email_Field']}
                         onChange={handleChange}
                         value={email}
                         name="forgotEmail"
                         width="100%"
-                        placeholder={t("Email")}
+                        placeholder={t('Email')}
                         maxLength={160}
-                      // autoComplete={"off"}
-                      // autoComplete="on"
+                        // autoComplete={"off"}
+                        // autoComplete="on"
                       />
-                      <p className={styles["ErrorMessege"]}>{messege}</p>
+                      <p className={styles['ErrorMessege']}>{messege}</p>
                     </Col>
                   </Row>
 
@@ -215,10 +213,10 @@ const ForgotPassword = () => {
                       className="d-flex justify-content-center  "
                     >
                       <Button
-                        text={t("Next")}
+                        text={t('Next')}
                         onClick={submitForm}
                         className={
-                          styles["Forgot_PasswordNext_button_EmailVerify"]
+                          styles['Forgot_PasswordNext_button_EmailVerify']
                         }
                       />
                     </Col>
@@ -229,9 +227,9 @@ const ForgotPassword = () => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className={styles["Forgot_passwordforogt_email_link"]}
+                    className={styles['Forgot_passwordforogt_email_link']}
                   >
-                    <Link to="/">{t("Back-to-sign-in")}</Link>
+                    <Link to="/">{t('Back-to-sign-in')}</Link>
                   </Col>
                 </Row>
               </Col>
@@ -243,19 +241,19 @@ const ForgotPassword = () => {
             sm={8}
             className="position-relative d-flex overflow-hidden"
           >
-            <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
-              <h1 className={styles["heading-1"]}>
-                {t("Simplify-management")}
+            <Col md={8} lg={8} sm={12} className={styles['Login_page_text']}>
+              <h1 className={styles['heading-1']}>
+                {t('Simplify-management')}
               </h1>
-              <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
-              <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
+              <h1 className={styles['heading-2']}>{t('Collaborate')}</h1>
+              <h1 className={styles['heading-1']}>{t('Prioritize')}</h1>
             </Col>
             <Col md={4} lg={4} sm={12} className="position-relative">
               <img
                 src={DiskusAuthPageLogo}
                 alt="auth_icon"
                 width="600px"
-                className={styles["Forgot_Password_Auth_Icon"]}
+                className={styles['Forgot_Password_Auth_Icon']}
               />
             </Col>
           </Col>
@@ -264,7 +262,7 @@ const ForgotPassword = () => {
       {auth.Loading ? <Loader /> : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
-  );
-};
+  )
+}
 
-export default ForgotPassword;
+export default ForgotPassword

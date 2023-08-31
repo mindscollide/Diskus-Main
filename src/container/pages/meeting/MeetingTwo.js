@@ -20,15 +20,11 @@ import { Col, Row } from "react-bootstrap";
 import { ChevronDown, Plus } from "react-bootstrap-icons";
 import moment from "moment";
 import SceduleMeeting from "./scedulemeeting/SceduleMeeting";
-import { useSelector } from "react-redux";
-import ProposedMeetingDate from "./scedulemeeting/Participants/ProposedMeetingDate/ProposedMeetingDate";
 const NewMeeting = () => {
   const { t } = useTranslation();
-  const { NewMeetingreducer } = useSelector((state) => state);
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [sceduleMeeting, setSceduleMeeting] = useState(false);
   const [searchMeeting, setSearchMeeting] = useState(false);
-  const [proposeMeetingDate, setProposeMeetingDate] = useState(false);
   // data for rows for first table
   const data = [
     {
@@ -228,19 +224,8 @@ const NewMeeting = () => {
 
   return (
     <section className={styles["NewMeeting_container"]}>
-      {proposeMeetingDate ? (
-        <>
-          <ProposedMeetingDate setProposeMeetingDate={setProposeMeetingDate} />
-        </>
-      ) : sceduleMeeting ? (
-        <SceduleMeeting
-          setSceduleMeeting={setSceduleMeeting}
-          setProposeMeetingDate={setProposeMeetingDate}
-        />
-      ) : proposeMeetingDate ? (
-        <>
-          <ProposedMeetingDate />
-        </>
+      {sceduleMeeting ? (
+        <SceduleMeeting setSceduleMeeting={setSceduleMeeting} />
       ) : (
         <>
           <Row className="mt-2">

@@ -800,6 +800,18 @@ const setLastSelectedLanguage = {
   RequestMethod: 'ServiceManager.SetLastSelectedLanguage',
 }
 
+const getAllVideoCallUsers = {
+  RequestMethod: 'ServiceManager.GetAllUsers',
+}
+
+const initiateVideoCall = {
+  RequestMethod: 'ServiceManager.InitiateVideoCall',
+}
+
+const videoCallResponse = {
+  RequestMethod: 'ServiceManager.VideoCallResponse',
+}
+
 export {
   DeleteCommentRM,
   subscriptionPackageUpgradeAmount,
@@ -1016,4 +1028,8 @@ export {
   getSystemSupportedLanguage,
   getLastSelectedLanguage,
   setLastSelectedLanguage,
+  //Video Panel
+  getAllVideoCallUsers,
+  initiateVideoCall,
+  videoCallResponse,
 }
