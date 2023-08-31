@@ -181,7 +181,14 @@ const getResolutions_Fail = (message) => {
     message: message,
   };
 };
-const getResolutions = (navigate, id, t, title, circulationDate, votingDateLine) => {
+const getResolutions = (
+  navigate,
+  id,
+  t,
+  title,
+  circulationDate,
+  votingDateLine
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
   let moderatorPage = JSON.parse(localStorage.getItem("moderatorPage"));
@@ -193,8 +200,14 @@ const getResolutions = (navigate, id, t, title, circulationDate, votingDateLine)
     Title: title !== null && title !== undefined ? title : "",
     PageNumber: moderatorPage !== null ? moderatorPage : 1,
     Length: moderatorRows !== null ? moderatorRows : 50,
-    CirculationDate: circulationDate !== null && circulationDate !== undefined ? circulationDate : "",
-    VotingDeadlineDate: votingDateLine !== null && votingDateLine !== undefined ? votingDateLine : "",
+    CirculationDate:
+      circulationDate !== null && circulationDate !== undefined
+        ? circulationDate
+        : "",
+    VotingDeadlineDate:
+      votingDateLine !== null && votingDateLine !== undefined
+        ? votingDateLine
+        : "",
   };
   return (dispatch) => {
     dispatch(getResolutions_Init());
@@ -908,7 +921,6 @@ const closeResolutionApi = (
   setResultresolution
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let userID = JSON.parse(localStorage.getItem("userID"));
   let resolutionView = localStorage.getItem("resolutionView");
   let currentView = localStorage.getItem("ButtonTab");
   let Data = {
@@ -1003,7 +1015,6 @@ const updateVote_Fail = (message) => {
 };
 const updateVoteApi = (navigate, Data, t, setVoteresolution) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let userID = JSON.parse(localStorage.getItem("userID"));
   let resolutionView = localStorage.getItem("resolutionView");
   let currentView = localStorage.getItem("ButtonTab");
   return (dispatch) => {
@@ -1083,7 +1094,14 @@ const getVoterResolution_fail = (message) => {
     message: message,
   };
 };
-const getVoterResolution = (navigate, id, t, title, circulationDate, votingDateLine) => {
+const getVoterResolution = (
+  navigate,
+  id,
+  t,
+  title,
+  circulationDate,
+  votingDateLine
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let userID = JSON.parse(localStorage.getItem("userID"));
   let voterPage = JSON.parse(localStorage.getItem("voterPage"));
@@ -1092,8 +1110,14 @@ const getVoterResolution = (navigate, id, t, title, circulationDate, votingDateL
     FK_UID: userID,
     ResolutionStatus: JSON.parse(id),
     Title: title !== null && title !== undefined ? title : "",
-    CirculationDate: circulationDate !== null && circulationDate !== undefined ? circulationDate : "",
-    VotingDeadlineDate: votingDateLine !== null && votingDateLine !== undefined ? votingDateLine : "",
+    CirculationDate:
+      circulationDate !== null && circulationDate !== undefined
+        ? circulationDate
+        : "",
+    VotingDeadlineDate:
+      votingDateLine !== null && votingDateLine !== undefined
+        ? votingDateLine
+        : "",
     PageNumber: voterPage !== null ? voterPage : 1,
     Length: voterRows !== null ? voterRows : 50,
   };
@@ -1186,6 +1210,14 @@ const viewResolutionModal = (value) => {
     payload: value,
   };
 };
+
+const resolutionMQTTCreate = (response) => {
+  return {
+    type: actions.NEW_RESOLUTION_CREATED_MQTT,
+    response: response,
+  };
+};
+
 export {
   viewResolutionModal,
   updateResolutionModal,
@@ -1205,4 +1237,5 @@ export {
   createResolution,
   getResolutionResult,
   getResolutionbyResolutionID,
+  resolutionMQTTCreate,
 };

@@ -4,10 +4,11 @@ import arabic from "react-date-object/calendars/arabic";
 import arabic_ar from "react-date-object/locales/arabic_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import moment from "moment";
-import { DateObject } from "react-multi-date-picker";
+import DatePicker, { DateObject } from "react-multi-date-picker";
 import "./ModalToDoList.css";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
+import InputIcon from "react-multi-date-picker/components/input_icon"
 import {
   TextField,
   Button,
@@ -67,6 +68,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
+  const calendRef = useRef();
 
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
@@ -401,7 +403,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     }
   };
 
-  const toDoDateHandler = (date, format = "YYYYMMDD") => {
+  const toDoDateHandler = (e, date, format = "YYYYMMDD") => {
+
     let toDoDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     let toDoDateSaveFormat = new DateObject(date).format("YYYYMMDD");
     setCreateTodoDate(toDoDateSaveFormat);
@@ -410,6 +413,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       ...task,
       DeadLineDate: toDoDateSaveFormat,
     });
+    if (calendRef.current.isOpen) {
+      calendRef.current.closeCalendar()
+    }
   };
 
   //Save To-Do List Function
@@ -583,11 +589,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                 <div>
                   <Row>
                     <Col
-                      lg={2}
-                      md={2}
-                      sm={3}
+                      lg={6}
+                      md={6}
+                      sm={6}
                       xs={12}
-                      className="CreateMeetingTime"
+                      className="CreateMeetingTime d-flex align-items-center gap-2 h-100"
                     >
                       <TimePickers
                         change={taskHandler}
@@ -595,27 +601,47 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         name="DeadLineTime"
                         value={task.DeadLineTime}
                       />
+                      <DatePicker
+                        onChange={toDoDateHandler}
+                        // inputClass="datepicker_input"
+                        format={"DD/MM/YYYY"}
+                        minDate={moment().toDate()}
+                        placeholder="DD/MM/YYYY"
+                        render={<InputIcon placeholder="DD/MM/YYYY" className="datepicker_input" />}
+                        editable={false}
+
+                        className="datePickerTodoCreate2"
+                        // disabled={disabled}
+                        // name={name}
+                        onOpenPickNewDate={false}
+                        inputMode=""
+                        // value={value}
+                        calendar={calendarValue}
+                        locale={localValue}
+                        ref={calendRef}
+                      />
+                      {/* <MultiDatePicker
+                        onChange={toDoDateHandler}
+                        name="DeadLineDate"
+                        // value={toDoDate}
+                        refProp={calendRef}
+                        calendar={calendarValue}
+                        locale={localValue}
+                      /> */}
                     </Col>
-                    <Col
+                    {/* <Col
                       lg={3}
                       md={3}
                       sm={2}
                       xs={12}
                       className="CreateMeetingDate text-center"
                     >
-                      <MultiDatePicker
-                        onChange={toDoDateHandler}
-                        name="DeadLineDate"
-                        value={toDoDate}
-                        calendar={calendarValue}
-                        locale={localValue}
-                      // newValue={createMeeting.MeetingDate}
-                      />
-                    </Col>
+                      
+                    </Col> */}
                     <Col
-                      lg={7}
-                      md={7}
-                      sm={7}
+                      lg={6}
+                      md={6}
+                      sm={6}
                       xs={12}
                       className="todolist-modal-fields margin-top--20 d-flex  flex-column"
                     >

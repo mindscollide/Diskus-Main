@@ -112,4 +112,11 @@ const postComments = (response) => {
     response: response,
   };
 };
-export { postAssgineeComment, HideNotificationTodoComment, postComments };
+const deleteCommentsMQTT = (response) => {
+  console.log(response, "postAssigneeCommentspostAssigneeCommentspostAssigneeComments")
+  return {
+    type: actions.DELETE_COMMENTS,
+    response: response
+  }
+}
+export { postAssgineeComment, HideNotificationTodoComment, postComments, deleteCommentsMQTT };
