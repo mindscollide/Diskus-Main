@@ -10,7 +10,7 @@ export const regexOnlyCharacters = (data) => {
 
 // not  allow first charector as an space
 export const validateInput = (data) => {
-  if (data.charAt(0) === ' ') {
+  if (data.charAt(0) === " ") {
     return data.slice(1);
   }
   return data;
@@ -19,5 +19,5 @@ export const validateInput = (data) => {
 // replace slash / with \\
 export const replaceSlashWithBackslash = (inputString) => {
   // Use the global "g" flag in the regular expression to replace all occurrences
-  return inputString.replace(/\//g, '\\');
-}
+  return inputString.replace(/\//g, "\\");
+};
