@@ -21,9 +21,16 @@ const initialState = {
   createResolutionModal: false,
   updateResolutionModal: false,
   viewResolutionModal: false,
+  mqttResolutionCreated: null,
 };
 const ResolutionReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.NEW_RESOLUTION_CREATED_MQTT: {
+      return {
+        ...state,
+        mqttResolutionCreated: action.response,
+      };
+    }
     case actions.CURRENTRESOLUTIONSTATE: {
       return {
         ...state,

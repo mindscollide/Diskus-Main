@@ -5,7 +5,8 @@ const initialState = {
   ResponseMessage: "",
   Loading: false,
   Comments: [],
-  createCommentID: 0
+  createCommentID: 0,
+  DeleteCommentsId: null,
 };
 
 const postAssigneeComments = (state = initialState, action) => {
@@ -55,6 +56,16 @@ const postAssigneeComments = (state = initialState, action) => {
         ...state,
         Loading: false,
         Comments: action.response,
+      };
+    }
+    case actions.DELETE_COMMENTS: {
+      console.log(
+        action,
+        "postAssigneeCommentspostAssigneeCommentspostAssigneeComments"
+      );
+      return {
+        ...state,
+        DeleteCommentsId: action.response,
       };
     }
 

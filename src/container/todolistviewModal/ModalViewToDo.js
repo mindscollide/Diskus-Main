@@ -5,7 +5,7 @@ import FileIcon, { defaultStyles } from "react-file-icon";
 import moment from "moment";
 import { ChevronRight, ChevronLeft } from "react-bootstrap-icons";
 import Form from "react-bootstrap/Form";
-import CrossIcon from '../../assets/images/CrossIcon.svg'
+import CrossIcon from "../../assets/images/CrossIcon.svg";
 import {
   TextField,
   Modal,
@@ -13,7 +13,7 @@ import {
   Loader,
   TodoAssgineeEmployeeCard,
   TextArea,
-  Button
+  Button,
 } from "./../../components/elements";
 import userImage from "../../assets/images/user.png";
 import {
@@ -25,7 +25,7 @@ import {
   GetAllAssigneesToDoList,
   clearState,
   ViewToDoList,
-  deleteCommentApi
+  deleteCommentApi,
 } from "./../../store/actions/ToDoList_action";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -44,8 +44,12 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
 
   const state = useSelector((state) => state);
   const { toDoListReducer, postAssigneeComments } = state;
-  const [commentID, setCommentID] = useState(0)
+  const [commentID, setCommentID] = useState(0);
   const { Comments } = postAssigneeComments;
+  console.log(
+    postAssigneeComments,
+    "postAssigneeCommentspostAssigneeCommentspostAssigneeComments"
+  );
   //To Display Modal
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -102,7 +106,11 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   const [taskAssignedName, setTaskAssignedName] = useState([]);
   const [taskAssigneeComments, setTaskAssigneeComments] = useState([]);
   const [assgineeComments, setAssgieeComments] = useState("");
-  console.log("TaskCreatorIDTaskCreatorIDTaskCreatorID", taskAssigneeComments, assgineeComments);
+  console.log(
+    "TaskCreatorIDTaskCreatorIDTaskCreatorID",
+    taskAssigneeComments,
+    assgineeComments
+  );
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
@@ -213,8 +221,28 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
     }
   }, [Comments]);
 
+  // for Comment delete from MQTT Notification
+  useEffect(() => {
+    if (
+      postAssigneeComments.DeleteCommentsId !== null &&
+      postAssigneeComments.DeleteCommentsId !== undefined
+    ) {
+      if (
+        postAssigneeComments.DeleteCommentsId.commentID !== 0 &&
+        postAssigneeComments.DeleteCommentsId.commentID !== null
+      ) {
+        let commentsData = [...taskAssigneeComments];
+        let deleteComments = commentsData.filter(
+          (data, index) =>
+            data.taskCommentID !==
+            postAssigneeComments.DeleteCommentsId.commentID
+        );
+        setTaskAssigneeComments(deleteComments);
+      }
+    }
+  }, [postAssigneeComments.DeleteCommentsId]);
   // for comment update
-  useEffect(() => { }, [taskAssigneeComments]);
+  useEffect(() => {}, [taskAssigneeComments]);
 
   //Get All Assignees API hit
   useEffect(() => {
@@ -263,13 +291,12 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
         DateTime: "",
       };
       await dispatch(postAssgineeComment(navigate, commentData, t));
+      setAssgieeComments("");
       // document.getElementById("commentviews").scrollHeight({block: "end"})
       // if (Object.keys(Comments).length > 0) {
 
-
-      let data = { ToDoListID: parseInt(id) };
+      // let data = { ToDoListID: parseInt(id) };
       // await dispatch(ViewToDoList(data));
-
     }
   };
   // useEffect(() => { }, [toDoListReducer.ToDoDetails]);
@@ -290,25 +317,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
     }
     dispatch(HideNotificationTodoComment());
   }, [postAssigneeComments.ResponseMessage]);
-  useEffect(() => {
-    if (postAssigneeComments.createCommentID !== null && postAssigneeComments.createCommentID !== undefined && postAssigneeComments.createCommentID !== 0) {
-      if (postAssigneeComments.createCommentID !== 0 && postAssigneeComments.createCommentID !== commentID) {
-        let newComment = {
-          userID: parseInt(TaskCreatorID),
-          TaskID: parseInt(task.PK_TID),
-          Comment: assgineeComments,
-          taskCommentID: postAssigneeComments.createCommentID,
-          taskCommentUserName: UserName,
-          DateTime: convertFormation,
-        };
 
-        taskAssigneeComments.push(newComment);
-        setTaskAssigneeComments(taskAssigneeComments);
-        setAssgieeComments("");
-      }
-    }
-  }, [postAssigneeComments.createCommentID])
-  console.log(taskAssigneeComments, "taskAssigneeCommentstaskAssigneeComments")
   return (
     <>
       <Container>
@@ -392,67 +401,80 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
               <Row className="comment-Height" id="commentviews">
                 {taskAssigneeComments.length > 0
                   ? taskAssigneeComments.map((commentData, index) => {
-                    console.log(
-                      "commentDatacommentData",
-                      commentData.userID == createrID,
-                      commentData
-                    );
-                    if (commentData.userID == createrID) {
-                      return (
-                        <>
-                          <Col
-                            sm={12}
-                            lg={12}
-                            md={12}
-                            className="MontserratRegular my-1 FontArabicRegular position-relative"
-                            key={commentData.taskCommentID}
-                          >
-                            <TextArea
-                              rows={2}
-                              timeValue={newTimeFormaterAsPerUTCFullDate(
-                                commentData.DateTime
-                              )}
-                              label={commentData.taskCommentUserName}
-                              labelClassName="MontserratSemiBold-600 d-flex justify-content-start  fw-bold "
-                              disable="false"
-                              className="comment-view sender text-white  "
-                              value={commentData.Comment}
-                              timeClass={"timeClass"}
-                              formClassPosition="relative-position-form"
-                            />
-                            <img src={CrossIcon} width={14} onClick={() => dispatch(deleteCommentApi(navigate, t, commentData.taskCommentID, commentData.TaskID))} className="crossIconTodoComment" />
-                          </Col>
-                        </>
+                      console.log(
+                        "commentDatacommentData",
+                        commentData.userID == createrID,
+                        commentData
                       );
-                    } else {
-                      return (
-                        <>
-                          <Col
-                            sm={12}
-                            lg={12}
-                            md={12}
-                            className="MontserratRegular my-1 FontArabicRegular"
-                            key={commentData.taskCommentID}
-                          >
-                            <TextArea
-                              rows={2}
-                              label={commentData.taskCommentUserName}
-                              disable="false"
-                              className="comment-view"
-                              value={commentData.Comment}
-                              labelClassName="MontserratSemiBold-600 d-flex justify-content-start mx-2 "
-                              timeValue={newTimeFormaterAsPerUTCFullDate(
-                                commentData.DateTime
-                              )}
-                              timeClass={"timeClass Participant"}
-                              formClassPosition="relative-position-form"
-                            />
-
-                          </Col>
-                        </>
-                      );
-                    }
-                  })
+                      if (commentData.userID == createrID) {
+                        return (
+                          <>
+                            <Col
+                              sm={12}
+                              lg={12}
+                              md={12}
+                              className="MontserratRegular my-1 FontArabicRegular position-relative"
+                              key={commentData.taskCommentID}
+                            >
+                              <TextArea
+                                rows={2}
+                                timeValue={newTimeFormaterAsPerUTCFullDate(
+                                  commentData.DateTime
+                                )}
+                                label={commentData.taskCommentUserName}
+                                labelClassName="MontserratSemiBold-600 d-flex justify-content-start  fw-bold "
+                                disable="false"
+                                className="comment-view sender text-white  "
+                                value={commentData.Comment}
+                                timeClass={"timeClass"}
+                                formClassPosition="relative-position-form"
+                              />
+                              <img
+                                src={CrossIcon}
+                                width={14}
+                                onClick={() =>
+                                  dispatch(
+                                    deleteCommentApi(
+                                      navigate,
+                                      t,
+                                      commentData.taskCommentID,
+                                      commentData.TaskID
+                                    )
+                                  )
+                                }
+                                className="crossIconTodoComment"
+                              />
+                            </Col>
+                          </>
+                        );
+                      } else {
+                        return (
+                          <>
+                            <Col
+                              sm={12}
+                              lg={12}
+                              md={12}
+                              className="MontserratRegular my-1 FontArabicRegular"
+                              key={commentData.taskCommentID}
+                            >
+                              <TextArea
+                                rows={2}
+                                label={commentData.taskCommentUserName}
+                                disable="false"
+                                className="comment-view"
+                                value={commentData.Comment}
+                                labelClassName="MontserratSemiBold-600 d-flex justify-content-start mx-2 "
+                                timeValue={newTimeFormaterAsPerUTCFullDate(
+                                  commentData.DateTime
+                                )}
+                                timeClass={"timeClass Participant"}
+                                formClassPosition="relative-position-form"
+                              />
+                            </Col>
+                          </>
+                        );
+                      }
+                    })
                   : null}
                 <div ref={todoComments} />
               </Row>
@@ -520,117 +542,127 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                 >
                   {tasksAttachments.TasksAttachments.length > 0
                     ? tasksAttachments.TasksAttachments.map(
-                      (modalviewAttachmentFiles, index) => {
-                        var ext =
-                          modalviewAttachmentFiles.DisplayAttachmentName.split(
-                            "."
-                          ).pop();
-                        const first =
-                          modalviewAttachmentFiles.DisplayAttachmentName.split(
-                            " "
-                          )[0];
-                        return (
-                          <Col
-                            sm={12}
-                            lg={2}
-                            md={2}
-                            className="fileIconBoxView"
-                            onClick={(e) =>
-                              downloadClick(e, modalviewAttachmentFiles)
-                            }
-                          >
-                            {ext === "doc" ? (
-                              <FileIcon
-                                extension={"docx"}
-                                size={78}
-                                type={"document"}
-                                labelColor={"rgba(44, 88, 152)"}
-                              />
-                            ) : ext === "docx" ? (
-                              <FileIcon
-                                extension={"docx"}
-                                size={78}
-                                type={"font"}
-                                labelColor={"rgba(44, 88, 152)"}
-                              />
-                            ) : ext === "xls" ? (
-                              <FileIcon
-                                extension={"xls"}
-                                type={"spreadsheet"}
-                                size={78}
-                                labelColor={"rgba(16, 121, 63)"}
-                              />
-                            ) : ext === "xlsx" ? (
-                              <FileIcon
-                                extension={"xls"}
-                                type={"spreadsheet"}
-                                size={78}
-                                labelColor={"rgba(16, 121, 63)"}
-                              />
-                            ) : ext === "pdf" ? (
-                              <FileIcon
-                                extension={"pdf"}
-                                size={78}
-                                {...defaultStyles.pdf}
-                              />
-                            ) : ext === "png" ? (
-                              <FileIcon
-                                extension={"png"}
-                                size={78}
-                                type={"image"}
-                                labelColor={"rgba(102, 102, 224)"}
-                              />
-                            ) : ext === "txt" ? (
-                              <FileIcon
-                                extension={"txt"}
-                                size={78}
-                                type={"document"}
-                                labelColor={"rgba(52, 120, 199)"}
-                              />
-                            ) : ext === "jpg" ? (
-                              <FileIcon
-                                extension={"jpg"}
-                                size={78}
-                                type={"image"}
-                                labelColor={"rgba(102, 102, 224)"}
-                              />
-                            ) : ext === "jpeg" ? (
-                              <FileIcon
-                                extension={"jpeg"}
-                                size={78}
-                                type={"image"}
-                                labelColor={"rgba(102, 102, 224)"}
-                              />
-                            ) : ext === "gif" ? (
-                              <FileIcon
-                                extension={"gif"}
-                                size={78}
-                                {...defaultStyles.gif}
-                              />
-                            ) : <FileIcon
-                              extension={ext}
-                              size={78}
-                              {...defaultStyles.ext}
-                            />}
-                            <p className="todoModalFileAttach FontArabicRegular">
-                              {first}
-                            </p>
-                          </Col>
-                        );
-                      }
-                    )
+                        (modalviewAttachmentFiles, index) => {
+                          var ext =
+                            modalviewAttachmentFiles.DisplayAttachmentName.split(
+                              "."
+                            ).pop();
+                          const first =
+                            modalviewAttachmentFiles.DisplayAttachmentName.split(
+                              " "
+                            )[0];
+                          return (
+                            <Col
+                              sm={12}
+                              lg={2}
+                              md={2}
+                              className="fileIconBoxView"
+                              onClick={(e) =>
+                                downloadClick(e, modalviewAttachmentFiles)
+                              }
+                            >
+                              {ext === "doc" ? (
+                                <FileIcon
+                                  extension={"docx"}
+                                  size={78}
+                                  type={"document"}
+                                  labelColor={"rgba(44, 88, 152)"}
+                                />
+                              ) : ext === "docx" ? (
+                                <FileIcon
+                                  extension={"docx"}
+                                  size={78}
+                                  type={"font"}
+                                  labelColor={"rgba(44, 88, 152)"}
+                                />
+                              ) : ext === "xls" ? (
+                                <FileIcon
+                                  extension={"xls"}
+                                  type={"spreadsheet"}
+                                  size={78}
+                                  labelColor={"rgba(16, 121, 63)"}
+                                />
+                              ) : ext === "xlsx" ? (
+                                <FileIcon
+                                  extension={"xls"}
+                                  type={"spreadsheet"}
+                                  size={78}
+                                  labelColor={"rgba(16, 121, 63)"}
+                                />
+                              ) : ext === "pdf" ? (
+                                <FileIcon
+                                  extension={"pdf"}
+                                  size={78}
+                                  {...defaultStyles.pdf}
+                                />
+                              ) : ext === "png" ? (
+                                <FileIcon
+                                  extension={"png"}
+                                  size={78}
+                                  type={"image"}
+                                  labelColor={"rgba(102, 102, 224)"}
+                                />
+                              ) : ext === "txt" ? (
+                                <FileIcon
+                                  extension={"txt"}
+                                  size={78}
+                                  type={"document"}
+                                  labelColor={"rgba(52, 120, 199)"}
+                                />
+                              ) : ext === "jpg" ? (
+                                <FileIcon
+                                  extension={"jpg"}
+                                  size={78}
+                                  type={"image"}
+                                  labelColor={"rgba(102, 102, 224)"}
+                                />
+                              ) : ext === "jpeg" ? (
+                                <FileIcon
+                                  extension={"jpeg"}
+                                  size={78}
+                                  type={"image"}
+                                  labelColor={"rgba(102, 102, 224)"}
+                                />
+                              ) : ext === "gif" ? (
+                                <FileIcon
+                                  extension={"gif"}
+                                  size={78}
+                                  {...defaultStyles.gif}
+                                />
+                              ) : (
+                                <FileIcon
+                                  extension={ext}
+                                  size={78}
+                                  {...defaultStyles.ext}
+                                />
+                              )}
+                              <p className="todoModalFileAttach FontArabicRegular">
+                                {first}
+                              </p>
+                            </Col>
+                          );
+                        }
+                      )
                     : null}
-
                 </Col>
               </Row>
               <Row>
-                <Col className="d-flex justify-content-end" sm={12} md={12} lg={12}><Button className={"cancelButton_createTodo"} onClick={() => setViewFlagToDo(false)} text="Close" /></Col>
+                <Col
+                  className="d-flex justify-content-end"
+                  sm={12}
+                  md={12}
+                  lg={12}
+                >
+                  <Button
+                    className={"cancelButton_createTodo"}
+                    onClick={() => setViewFlagToDo(false)}
+                    text="Close"
+                  />
+                </Col>
               </Row>
             </>
           }
-        // ModalFooter = {() }
-
-
+          // ModalFooter = {() }
         />
       </Container>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />

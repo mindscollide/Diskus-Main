@@ -22,11 +22,19 @@ const initialState = {
     SavefilesandfoldersResponse: null,
     TableSpinner: false,
     NotFound: 0,
-    sortedData: []
+    sortedData: [],
+    dataBehaviour: false
 };
 
 const DataRoomReducer = (state = initialState, action) => {
     switch (action.type) {
+
+        case actions.DATAROOM_DATA_BEHAVIOUR: {
+            return {
+                ...state,
+                dataBehaviour: action.response
+            }
+        }
         case actions.SAVEFILES_DATAROOM_INIT: {
             return {
                 ...state,
