@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import './videoCallNormalPanel.css'
@@ -11,6 +11,10 @@ import {
   chatEnableNormalFlag,
   minutesMeetingEnableNormalFlag,
 } from '../../../../../store/actions/VideoFeature_actions'
+import {
+  generateURLCaller,
+  generateURLParticipant,
+} from '../../../../../commen/functions/urlVideoCalls'
 import ChatNonActive from '../../../../../assets/images/newElements/ChatIconNonActive.svg'
 import NoteNonActive from '../../../../../assets/images/newElements/NoteIconNonActive.svg'
 import Note_2NonActive from '../../../../../assets/images/newElements/Note_2NonActive.svg'
@@ -22,7 +26,33 @@ import Avatar2 from '../../../../../assets/images/newElements/Avatar2.png'
 const VideoPanelNormal = () => {
   const dispatch = useDispatch()
 
-  const { videoFeatureReducer } = useSelector((state) => state)
+  const { videoFeatureReducer, VideoMainReducer } = useSelector(
+    (state) => state,
+  )
+
+  // let currentUserID = Number(localStorage.getItem('userID'))
+  // let currentUserName = localStorage.getItem('name')
+
+  let callerID = Number(localStorage.getItem('callerID'))
+  let recipentID = Number(localStorage.getItem('recipentID'))
+  let roomID = localStorage.getItem('RoomID')
+  let callerName = localStorage.getItem('callerName')
+  let recipentName = localStorage.getItem('recipentName')
+
+  const [incomingCallerData, setIncomingCallerData] = useState({
+    callerID: 0,
+    callerName: '',
+    roomID: '',
+  })
+
+  const [recipentCallerData, setRecipentCallerData] = useState({
+    callerID: 0,
+    callerName: '',
+    roomID: '',
+  })
+
+  const [callerURL, setCallerURL] = useState('')
+  const [participantURL, setParticipantURL] = useState('')
 
   const [isActiveIcon, setIsActiveIcon] = useState(false)
   const [isNoteActive, setIsNoteActive] = useState(false)
@@ -82,7 +112,61 @@ const VideoPanelNormal = () => {
     }
   }
 
+  // let urlCaller = generateURLCaller(currentUserName, currentRoomID)
+
+  // useEffect(() => {
+  //   if (
+  //     VideoMainReducer.InitiateVideoCallDataMQTT !== undefined &&
+  //     VideoMainReducer.InitiateVideoCallDataMQTT !== null &&
+  //     VideoMainReducer.InitiateVideoCallDataMQTT.length !== 0
+  //   ) {
+  //     if (
+  //       currentUserID !== VideoMainReducer.InitiateVideoCallDataMQTT.callerID
+  //     ) {
+  //       setIncomingCallerData({
+  //         ...incomingCallerData,
+  //         callerID: VideoMainReducer.InitiateVideoCallDataMQTT.callerID,
+  //         callerName: currentUserName,
+  //         roomID: VideoMainReducer.InitiateVideoCallDataMQTT.roomID,
+  //       })
+  //     }
+  //   } else if (
+  //     VideoMainReducer.InitiateVideoCallData !== undefined &&
+  //     VideoMainReducer.InitiateVideoCallData !== null &&
+  //     VideoMainReducer.InitiateVideoCallData.length !== 0
+  //   ) {
+  //     if (
+  //       currentUserID === VideoMainReducer.InitiateVideoCallDataMQTT.callerID
+  //     ) {
+  //     setRecipentCallerData({
+  //       ...recipentCallerData,
+  //       callerID: currentUserID,
+  //       callerName: currentUserName,
+  //       roomID: VideoMainReducer.InitiateVideoCallData.roomID,
+  //     })
+  //   } else if ()
+
+  //   else {
+  //     setIncomingCallerData({
+  //       ...incomingCallerData,
+  //       callerID: 0,
+  //       callerName: '',
+  //       roomID: '',
+  //     })
+  //   }
+  // }, [
+  //   VideoMainReducer?.InitiateVideoCallDataMQTT,
+  //   VideoMainReducer?.InitiateVideoCallData,
+  // ])
+
+  useEffect(() => {
+    setCallerURL(generateURLCaller(callerName, roomID))
+    setParticipantURL(generateURLParticipant(recipentName, roomID))
+  }, [])
+
   console.log('videoFeatureReducer', videoFeatureReducer)
+
+  console.log('CALLER URL THEN PARTICIPANT', callerURL, participantURL)
 
   return (
     <>
@@ -96,22 +180,30 @@ const VideoPanelNormal = () => {
                   <Row>
                     <Col lg={6} md={6} sm={12}>
                       <div className="normal-avatar">
-                        <img
+                        {/* <img
                           src={Avatar2}
-                          // width={550}
-                          // height={280}
-                          // className="img-fluid"
+                        /> */}
+                        <iframe
+                          src={callerURL}
+                          title="Live Video"
+                          width="100%"
+                          height="100%"
+                          frameBorder="0"
                         />
                       </div>
                     </Col>
                     <Col lg={6} md={6} sm={12}>
                       <div className="normal-avatar">
-                        <img
-                          src={Avatar2}
-                          // width={550}
-                          // height={280}
-                          // className="img-fluid"
+                        <iframe
+                          src={participantURL}
+                          title="Live Video"
+                          width="100%"
+                          height="100%"
+                          frameBorder="0"
                         />
+                        {/* <img
+                          src={Avatar2}
+                        /> */}
                       </div>
                     </Col>
                   </Row>

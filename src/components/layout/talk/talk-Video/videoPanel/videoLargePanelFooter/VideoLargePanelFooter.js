@@ -44,21 +44,21 @@ const VideoLargePanelFooter = () => {
   const [outgoingCall, setOutgoingCall] = useState(false)
   const [multipleScreen, setMultipltScreen] = useState(false)
 
-  const videoCallingIncominCall = () => {
-    if (isVideoIconActive === true) {
-      dispatch(videoIncomingCallFlag(false))
-    } else {
-      dispatch(videoIncomingCallFlag(true))
-    }
-  }
+  // const videoCallingIncominCall = () => {
+  //   if (isVideoIconActive === true) {
+  //     dispatch(videoIncomingCallFlag(false))
+  //   } else {
+  //     dispatch(videoIncomingCallFlag(true))
+  //   }
+  // }
 
-  const videoCallingOutgoingCall = () => {
-    if (isMicActive === true) {
-      dispatch(videoOutgoingCallFlag(false))
-    } else {
-      dispatch(videoOutgoingCallFlag(true))
-    }
-  }
+  // const videoCallingOutgoingCall = () => {
+  //   if (isMicActive === true) {
+  //     dispatch(videoOutgoingCallFlag(false))
+  //   } else {
+  //     dispatch(videoOutgoingCallFlag(true))
+  //   }
+  // }
 
   const videoMultipleScreen = () => {
     if (isScreenActive === true) {
@@ -95,12 +95,12 @@ const VideoLargePanelFooter = () => {
             {isVideoIconActive ? (
               <img
                 src={ActiveVideo}
-                onClick={videoCallingIncominCall}
+                // onClick={videoCallingIncominCall}
                 alt="Active Video"
               />
             ) : (
               <img
-                onClick={videoCallingIncominCall}
+                // onClick={videoCallingIncominCall}
                 alt="NonActive Video"
                 src={NonActiveVideo}
                 className="videoNonActive-border-footer"
@@ -112,14 +112,14 @@ const VideoLargePanelFooter = () => {
             {isMicActive ? (
               <img
                 src={ActiveMic}
-                onClick={videoCallingOutgoingCall}
+                // onClick={videoCallingOutgoingCall}
                 alt="Active Mic"
               />
             ) : (
               <img
                 alt="NonActive Mic"
                 src={NonActiveMic}
-                onClick={videoCallingOutgoingCall}
+                // onClick={videoCallingOutgoingCall}
               />
             )}
           </div>
