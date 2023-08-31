@@ -404,16 +404,6 @@ const EmailValidation = () => {
                     </Col>
                   </Row>
                 </Form>
-                {/* <Row className="">
-                  <Col
-                    sm={12}
-                    md={12}
-                    lg={12}
-                    className={styles["forogt_email_link"]}
-                  >
-                    <Link to="/">{t("Forgot-email")}</Link>
-                  </Col>
-                </Row> */}
                 <Row className="mt-3">
                   <Col sm={12} md={12} lg={12}>
                     {' '}
