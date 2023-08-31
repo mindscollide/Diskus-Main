@@ -900,13 +900,16 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         "NEW_VIDEO_CALL_INITIATED".toLowerCase()
       ) {
-        dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
-        dispatch(incomingVideoCallFlag(true));
-        localStorage.setItem("RoomID", data.payload.roomID);
-        localStorage.setItem("callerID", data.payload.callerID);
-        localStorage.setItem("callerName", data.payload.callerName);
-        localStorage.setItem("recipentID", data.receiverID[0]);
-        localStorage.setItem("recipentName", currentUserName);
+        if(Number(data.senderID)!==Number(createrID)){
+          dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
+          dispatch(incomingVideoCallFlag(true));
+          localStorage.setItem("RoomID", data.payload.roomID);
+          localStorage.setItem("callerID", data.payload.callerID);
+          localStorage.setItem("callerName", data.payload.callerName);
+          localStorage.setItem("recipentID", data.receiverID[0]);
+          localStorage.setItem("recipentName", currentUserName);
+        }
+     
       } else if (
         data.payload.message.toLowerCase() ===
         "VIDEO_CALL_ACCEPTED".toLowerCase()
@@ -934,6 +937,7 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         "VIDEO_CALL_UNANSWERED".toLowerCase()
       ) {
+        if(Number(data.senderID)!==Number(createrID)){
         dispatch(videoOutgoingCallFlag(false));
         setNotification({
           ...notification,
@@ -941,6 +945,7 @@ const Dashboard = () => {
           message: `The call was unanswered`,
         });
         setNotificationID(id);
+      }
       }
     }
   };
