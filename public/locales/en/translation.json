@@ -1365,5 +1365,6 @@
   "Advanced-data-protection-in-progress": " Advanced Data Protection in Progress",
   "Securing-your-data-please-wait": "Securing Your Data, Please Wait.",
   "NEW_RESOLUTION_CREATION": "A new Resolution [Resolution Title] is circulated for your review",
-  "RESOLUTION_CANCELLED": "The Resolution [Resolution Title] has been cancelled till further notice"
+  "RESOLUTION_CANCELLED": "The Resolution [Resolution Title] has been cancelled till further notice",
+  "Drop-files-here": "DROP FILES HERE"
 }
