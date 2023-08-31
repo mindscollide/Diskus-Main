@@ -1345,5 +1345,11 @@
   "MEETING_STATUS_EDITED_CANCELLED": "Meeting [Meeting Title] has been Cancelled. Refer to Meeting List for details",
   "MEETING_STATUS_EDITED_ENDED": "Meeting [Meeting Title] has been Ended. Refer to Meeting List for details",
   "MEETING_STATUS_EDITED_STARTED": "Meeting [Meeting Title] has been Started. Refer to Meeting List for details",
-  "MEETING_EDITED_HOST": "Meeting [Meeting Title] has been updated. Refer to Meeting List for details"
+  "MEETING_EDITED_HOST": "Meeting [Meeting Title] has been updated. Refer to Meeting List for details",
+  "Authenticating-identity-&-encrypting-network": "Authenticating Identity & Encrypting Network",
+  "Welcome-to-the-admin-panel-your-trusted-control-center": "Welcome to the Admin Panel, Your Trusted Control Center.",
+  "Protecting-your-data-during-onboarding": "Protecting Your Data During Onboarding",
+  "Protecting-your-data": "Protecting Your Data",
+  "Advanced-data-protection-in-progress": " Advanced Data Protection in Progress",
+  "Securing-your-data-please-wait": "Securing Your Data, Please Wait."
 }
