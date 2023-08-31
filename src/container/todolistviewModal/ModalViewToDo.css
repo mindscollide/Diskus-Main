@@ -298,4 +298,5 @@ body[dir="rtl"] label.MontserratSemiBold-600.todo-employee-name-card {
   position: absolute;
   right: 8px;
   top: 15px;
+  cursor: pointer !important;
 }
