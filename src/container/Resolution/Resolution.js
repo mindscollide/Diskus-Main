@@ -80,6 +80,8 @@ const Resolution = () => {
   const [searchIcon, setSearchIcon] = useState(false);
   const [rows, setRows] = useState([]);
   const [isSearchVoter, setSearchVoter] = useState([]);
+  console.log(rows, "isSearchVoterisSearchVoterisSearchVoter");
+  console.log(isSearchVoter, "isSearchVoterisSearchVoterisSearchVoter");
   const [resolutionmodalupdated, setRresolutionmodalupdated] = useState(false);
   const [resolutionAttachments, setResolutionAttachments] = useState([]);
   const [viewattachmentpage, setViewattachmentpage] = useState(false);
@@ -461,7 +463,7 @@ const Resolution = () => {
       width: "78px",
       render: (table, data) => {
         let newDate = new Date();
-        let votingDeadline = resolutionResultTable(data.votingDeadline);
+        let votingDeadline = resolutionResultTable(data?.votingDeadline);
         if (data.resolutionStatus === "Circulated") {
           if (votingDeadline < newDate) {
             return (
@@ -469,6 +471,7 @@ const Resolution = () => {
                 src={ResultResolutionIcon}
                 onClick={() => getResultHandle(data.resolutionID)}
                 className={styles["Result_icon"]}
+                alt=""
               />
             );
           } else {
@@ -481,6 +484,7 @@ const Resolution = () => {
                 src={ResultResolutionIcon}
                 onClick={() => getResultHandle(data.resolutionID)}
                 className={styles["Result_icon"]}
+                alt=""
               />
             );
           }
@@ -855,6 +859,7 @@ const Resolution = () => {
               className="text-center cursor-pointer"
               src={AttachmentIcon}
               onClick={() => viewAttachmentHandle(data.attachments)}
+              alt=""
             />
           );
         } else {
@@ -873,13 +878,13 @@ const Resolution = () => {
             if (data.fK_VotingStatus_ID === 1) {
               return (
                 <span className="d-flex justify-content-center">
-                  <img src={thumbsup} />
+                  <img src={thumbsup} alt="" />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 2) {
               return (
                 <span className="d-flex justify-content-center">
-                  <img src={thumbsdown} />
+                  <img src={thumbsdown} alt="" />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 3) {
@@ -887,7 +892,7 @@ const Resolution = () => {
             } else if (data.fK_VotingStatus_ID === 4) {
               return (
                 <span className="d-flex justify-content-center">
-                  <img src={AbstainvoterIcon} />
+                  <img src={AbstainvoterIcon} alt="" />
                 </span>
               );
             }
@@ -1012,6 +1017,30 @@ const Resolution = () => {
       setRows([]);
     }
   }, [ResolutionReducer.GetResolutions]);
+
+  // useEffect(() => {
+  //   if (ResolutionReducer.mqttResolutionCreated !== null) {
+  //     let findIndexModerator = isSearchVoter.findIndex(
+  //       (data, index) =>
+  //         data.resolutionID ===
+  //         ResolutionReducer.mqttResolutionCreated.resolution.pK_ResolutionID
+  //     );
+  //     if (findIndexModerator === -1) {
+  //       setSearchVoter([
+  //         ResolutionReducer.mqttResolutionCreated.resolution,
+  //         ...isSearchVoter,
+  //       ]);
+  //     } else {
+  //       let copyData = [...isSearchVoter];
+  //       copyData.splice(
+  //         findIndexModerator,
+  //         1,
+  //         ResolutionReducer.mqttResolutionCreated.resolution
+  //       );
+  //       setSearchVoter(copyData);
+  //     }
+  //   }
+  // }, [ResolutionReducer.mqttResolutionCreated]);
 
   return (
     <>

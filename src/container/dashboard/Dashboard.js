@@ -157,11 +157,14 @@ const Dashboard = () => {
           setNotification({
             ...notification,
             notificationShow: true,
-            message: `Meeting ${data.payload.meeting.MeetingTitle} has been updated. Refer to Meeting List for details`,
+            message: changeMQTTJSONOne(
+              t("MEETING_EDITED_HOST"),
+              "[Meeting Title]",
+              data.payload.meetingTitle
+            ),
           });
         }
         dispatch(allMeetingsSocket(data.payload.meeting));
-        // dispatch(setTodoListActivityData(data.payload.message + data.payload.meeting.meetingTitle))
         setNotificationID(id);
       } else if (
         data.payload.message.toLowerCase() ===
@@ -171,11 +174,14 @@ const Dashboard = () => {
           setNotification({
             ...notification,
             notificationShow: true,
-            message: `Meeting  ${data.payload.MeetingTitle} has been Started. Refer to Meeting List for details`,
+            message: changeMQTTJSONOne(
+              t("MEETING_STATUS_EDITED_STARTED"),
+              "[Meeting Title]",
+              data.payload.meetingTitle
+            ),
           });
         }
         dispatch(getMeetingStatusfromSocket(data.payload));
-        // dispatch(setTodoListActivityData(data.payload.message + data.payload.meetingTitle))
         setNotificationID(id);
       } else if (
         data.payload.message.toLowerCase() ===
@@ -185,7 +191,11 @@ const Dashboard = () => {
           setNotification({
             ...notification,
             notificationShow: true,
-            message: `Meeting ${data.payload.MeetingTitle} has been Ended. Refer to Meeting List for details`,
+            message: changeMQTTJSONOne(
+              t("MEETING_STATUS_EDITED_ENDED"),
+              "[Meeting Title]",
+              data.payload.meetingTitle
+            ),
           });
         }
         dispatch(getMeetingStatusfromSocket(data.payload));
@@ -198,7 +208,11 @@ const Dashboard = () => {
           setNotification({
             ...notification,
             notificationShow: true,
-            message: `Meeting ${data.payload.MeetingTitle} has been Cancelled. Refer to Meeting List for details`,
+            message: changeMQTTJSONOne(
+              t("MEETING_STATUS_EDITED_CANCELLED"),
+              "[Meeting Title]",
+              data.payload.meetingTitle
+            ),
           });
         }
 
@@ -212,7 +226,11 @@ const Dashboard = () => {
           setNotification({
             ...notification,
             notificationShow: true,
-            message: `Meeting ${data.payload.meetingTitle} has been Changed By Admin. Refer to Meeting List for details`,
+            message: changeMQTTJSONOne(
+              t("MEETING_STATUS_EDITED_ADMIN"),
+              "[Meeting Title]",
+              data.payload.meetingTitle
+            ),
           });
         }
         dispatch(getMeetingStatusfromSocket(data.payload));
@@ -334,7 +352,11 @@ const Dashboard = () => {
       ) {
         setNotification({
           notificationShow: true,
-          message: `Your account status in ${data.payload.organizationName} has been changed. Please re-login again to continue working`,
+          message: changeMQTTJSONOne(
+            t("USER_STATUS_EDITED"),
+            "[organizationName]",
+            data.payload.organizationName
+          ),
         });
         setNotificationID(id);
         setTimeout(() => {
@@ -346,7 +368,11 @@ const Dashboard = () => {
       ) {
         setNotification({
           notificationShow: true,
-          message: `Great News. Now you can schedule & attend meetings for ${data.payload.organizationName} also. Please login again to do so`,
+          message: changeMQTTJSONOne(
+            t("USER_STATUS_ENABLED"),
+            "[organizationName]",
+            data.payload.organizationName
+          ),
         });
         setNotificationID(id);
       } else if (
@@ -354,7 +380,11 @@ const Dashboard = () => {
       ) {
         setNotification({
           notificationShow: true,
-          message: `Your role in ${data.payload.organizationName} has been updated. Please login again to continue working`,
+          message: changeMQTTJSONOne(
+            t("USER_ROLE_EDITED"),
+            "[organizationName]",
+            data.payload.organizationName
+          ),
         });
         setNotificationID(id);
         setTimeout(() => {
@@ -366,7 +396,11 @@ const Dashboard = () => {
       ) {
         setNotification({
           notificationShow: true,
-          message: `Organization Subscription of ${data.payload.organizationName} has been cancelled by the Organization Admin. Try logging in after some time`,
+          message: changeMQTTJSONOne(
+            t("ORGANIZATION_SUBSCRIPTION_CANCELLED"),
+            "[organizationName]",
+            data.payload.organizationName
+          ),
         });
         setNotificationID(id);
         setTimeout(() => {
@@ -378,7 +412,11 @@ const Dashboard = () => {
       ) {
         setNotification({
           notificationShow: true,
-          message: `Organization  ${data.payload.organizationName}  has been unregistered from the System by the Organization Admin. Try logging in after some time`,
+          message: changeMQTTJSONOne(
+            t("ORGANIZATION_DELETED"),
+            "[organizationName]",
+            data.payload.organizationName
+          ),
         });
         setNotificationID(id);
         setTimeout(() => {
@@ -390,7 +428,7 @@ const Dashboard = () => {
       ) {
         setNotification({
           notificationShow: true,
-          message: `The User Profile has been Updated. Try logging in after some time`,
+          message: t("USER_PROFILE_EDITED"),
         });
         setNotificationID(id);
       } else if (
@@ -402,7 +440,7 @@ const Dashboard = () => {
             creationDateTime: data.payload.creationDateTime,
             notificationTypes: {
               pK_NTID: data.payload.notificationStatusID,
-              description: "The New Todo Creation",
+              description: t("NEW_TODO_CREATION_RECENT_ACTIVITY"),
               icon: "",
             },
             key: 0,
@@ -418,7 +456,7 @@ const Dashboard = () => {
             creationDateTime: data.payload.creationDateTime,
             notificationTypes: {
               pK_NTID: data.payload.notificationStatusID,
-              description: "The New Meeting Creation",
+              description: t("NEW_MEETTING_CREATION_RECENT_ACTIVITY"),
               icon: "",
             },
             key: 0,
@@ -434,7 +472,7 @@ const Dashboard = () => {
             creationDateTime: data.payload.creationDateTime,
             notificationTypes: {
               pK_NTID: data.payload.notificationStatusID,
-              description: "The New Poll is published for your review",
+              description: t("NEW_POLL_PUBLISHED_RECENT_ACTIVITY"),
               icon: "",
             },
             key: 0,
@@ -450,7 +488,7 @@ const Dashboard = () => {
             creationDateTime: data.payload.creationDateTime,
             notificationTypes: {
               pK_NTID: data.payload.notificationStatusID,
-              description: "Due date of Poll  has passed",
+              description: t("POLL_EXPIRED_RECENT_ACTIVITY"),
               icon: "",
             },
             key: 0,
@@ -466,7 +504,7 @@ const Dashboard = () => {
             creationDateTime: data.payload.creationDateTime,
             notificationTypes: {
               pK_NTID: data.payload.notificationStatusID,
-              description: "The Poll has been updated",
+              description: t("POLL_UPDATED_RECENT_ACTIVITY"),
               icon: "",
             },
             key: 0,
@@ -900,7 +938,7 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         "NEW_VIDEO_CALL_INITIATED".toLowerCase()
       ) {
-        if(Number(data.senderID)!==Number(createrID)){
+        if (Number(data.senderID) !== Number(createrID)) {
           dispatch(incomingVideoCallMQTT(data.payload, data.payload.message));
           dispatch(incomingVideoCallFlag(true));
           localStorage.setItem("RoomID", data.payload.roomID);
@@ -909,7 +947,6 @@ const Dashboard = () => {
           localStorage.setItem("recipentID", data.receiverID[0]);
           localStorage.setItem("recipentName", currentUserName);
         }
-     
       } else if (
         data.payload.message.toLowerCase() ===
         "VIDEO_CALL_ACCEPTED".toLowerCase()
@@ -937,15 +974,15 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         "VIDEO_CALL_UNANSWERED".toLowerCase()
       ) {
-        if(Number(data.senderID)!==Number(createrID)){
-        dispatch(videoOutgoingCallFlag(false));
-        setNotification({
-          ...notification,
-          notificationShow: true,
-          message: `The call was unanswered`,
-        });
-        setNotificationID(id);
-      }
+        if (Number(data.senderID) !== Number(createrID)) {
+          dispatch(videoOutgoingCallFlag(false));
+          setNotification({
+            ...notification,
+            notificationShow: true,
+            message: `The call was unanswered`,
+          });
+          setNotificationID(id);
+        }
       }
     }
   };
