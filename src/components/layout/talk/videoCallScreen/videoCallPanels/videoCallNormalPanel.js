@@ -178,21 +178,19 @@ const VideoPanelNormal = () => {
               <>
                 <Col lg={11} md={11} sm={11}>
                   <Row>
-                    <Col lg={6} md={6} sm={12}>
+                    <Col lg={12} md={12} sm={12}>
                       <div className="normal-avatar">
-                        {/* <img
-                          src={Avatar2}
-                        /> */}
                         <iframe
                           src={callerURL}
                           title="Live Video"
                           width="100%"
                           height="100%"
                           frameBorder="0"
+                          allow="camera;microphone;display-capture"
                         />
                       </div>
                     </Col>
-                    <Col lg={6} md={6} sm={12}>
+                    {/* <Col lg={6} md={6} sm={12}>
                       <div className="normal-avatar">
                         <iframe
                           src={participantURL}
@@ -200,12 +198,10 @@ const VideoPanelNormal = () => {
                           width="100%"
                           height="100%"
                           frameBorder="0"
+                          allow="camera;microphone;display-capture"
                         />
-                        {/* <img
-                          src={Avatar2}
-                        /> */}
                       </div>
-                    </Col>
+                    </Col> */}
                   </Row>
                 </Col>
               </>
