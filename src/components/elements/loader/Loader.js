@@ -4,9 +4,11 @@ import { Container, Row, Col } from 'react-bootstrap'
 import styles from './Loader.module.css'
 import newlogo from '../../../assets/images/Newlogo.svg'
 import { useTranslation } from 'react-i18next'
+import { useLocation } from 'react-router-dom'
 
 const Loader = () => {
   const { t } = useTranslation()
+  const location = useLocation()
   const messages = [
     t('Securing-your-session-one-step-at-a-time'),
     t('Deploying-multiple-encryption-layers'),
@@ -18,16 +20,15 @@ const Loader = () => {
     t('Authenticating-your-credentials'),
     t('Generating-secure-token'),
     t('Authenticating-identity'),
+    t('Authenticating-your-credentials'),
     t('Containing-&-encrypting-network'),
   ]
 
+  console.log(location.pathname, 'locationpathname')
   const [randomIndex, setRandomIndex] = useState(0)
 
   useEffect(() => {
-    // Generate a random index
     const randomIdx = Math.floor(Math.random() * messages.length)
-
-    // Update the state with the new random index
     setRandomIndex(randomIdx)
   }, [])
 
@@ -45,9 +46,65 @@ const Loader = () => {
           <div className={styles['loader-line']}></div>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <p className={styles['Messeges_Styles']}>
-                {messages[randomIndex]}
-              </p>
+              {location.pathname === '/' ? (
+                <>
+                  <p className={styles['Messeges_Styles']}>{messages[0]}</p>
+                </>
+              ) : null}
+              {location.pathname === '/enterPassword' ? (
+                <>
+                  <p className={styles['Messeges_Styles']}>{messages[0]}</p>
+                </>
+              ) : null}
+
+              {location.pathname === '/DisKus/meeting' ? (
+                <>
+                  <p className={styles['Messeges_Styles']}>{messages[1]}</p>
+                </>
+              ) : null}
+              {location.pathname === '/DisKus/calendar' ? (
+                <>
+                  <p className={styles['Messeges_Styles']}>{messages[2]}</p>
+                </>
+              ) : null}
+              {location.pathname === '/DisKus/dataroom' ? (
+                <>
+                  <p className={styles['Messeges_Styles']}>{messages[3]}</p>
+                </>
+              ) : null}
+              {location.pathname === '/DisKus/Notes' ? (
+                <>
+                  <p className={styles['Messeges_Styles']}>{messages[4]}</p>
+                </>
+              ) : null}
+              {location.pathname === '/DisKus/groups' ? (
+                <>
+                  <p className={styles['Messeges_Styles']}>{messages[5]}</p>
+                </>
+              ) : null}
+              {location.pathname === '/DisKus/committee' ? (
+                <>
+                  <p className={styles['Messeges_Styles']}>{messages[6]}</p>
+                </>
+              ) : null}
+
+              {location.pathname === '/DisKus/resolution' ? (
+                <>
+                  <p className={styles['Messeges_Styles']}>{messages[10]}</p>
+                </>
+              ) : null}
+
+              {location.pathname === '/DisKus/setting' ? (
+                <>
+                  <p className={styles['Messeges_Styles']}>{messages[9]}</p>
+                </>
+              ) : null}
+
+              {location.pathname === "/DisKus/faq's" ? (
+                <>
+                  <p className={styles['Messeges_Styles']}>{messages[8]}</p>
+                </>
+              ) : null}
             </Col>
           </Row>
         </Col>

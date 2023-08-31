@@ -19,7 +19,10 @@ const initialState = {
     RenameFileResponse: null,
     FolderisExistCheck: null,
     CreatedFolderID: 0,
-    SavefilesandfoldersResponse: null
+    SavefilesandfoldersResponse: null,
+    TableSpinner: false,
+    NotFound: 0,
+    sortedData: []
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -142,6 +145,7 @@ const DataRoomReducer = (state = initialState, action) => {
             };
         }
         case actions.GETALLDOCUMENTSANDFOLDER_DATAROOM_SUCCESS: {
+            let mergeData = [...state.getAllDocumentandShareFolderResponse]
             return {
                 ...state,
                 Loading: false,
@@ -368,6 +372,15 @@ const DataRoomReducer = (state = initialState, action) => {
                 SaveFilesAndFoldersResponse: null,
                 ResponseMessage: action.message
             }
+        }
+        case actions.DATAROOM_TABLE_SCROLL_BAR: {
+            console.log(action, "sssasasasasas")
+            return {
+                ...state,
+                TableSpinner: action.response,
+                NotFound: action.value
+
+            };
         }
         default:
             return { ...state };

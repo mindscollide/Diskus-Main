@@ -8,8 +8,8 @@
   max-width: 90%;
   width: 90%;
   margin: 0 auto;
-  max-height: 90vh !important;
-  min-height: 90vh !important;
+  max-height: calc(100vh - 60px) !important;
+  max-height: calc(100vh - 60px) !important;
   height: 100%;
 }
 
@@ -545,6 +545,7 @@ body[dir="rtl"] .Search_Icon {
 .Scroller_bar_of_BarUploder {
   height: 13vh !important;
   overflow-x: hidden !important;
+  padding-bottom: 10px;
 }
 
 .Scroller_bar_of_BarUploder::-webkit-scrollbar {

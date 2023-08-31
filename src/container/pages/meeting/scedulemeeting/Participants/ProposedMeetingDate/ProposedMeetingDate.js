@@ -9,15 +9,18 @@ import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import plusFaddes from "../../../../../../assets/images/BluePlus.svg";
 import desh from "../../../../../../assets/images/desh.svg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { Paper } from "@material-ui/core";
 import { style } from "@mui/system";
+import UnsavedModal from "./UnsavedChangesModal/UnsavedModal";
+import { showPrposedMeetingUnsavedModal } from "../../../../../../store/actions/NewMeetingActions";
 const ProposedMeetingDate = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
   const [sendDates, setSendDates] = useState(false);
   const [options, setOptions] = useState([]);
   const [rows, setRows] = useState([
@@ -48,6 +51,10 @@ const ProposedMeetingDate = () => {
 
   const handleSend = () => {
     setSendDates(!sendDates);
+  };
+
+  const CancelModal = () => {
+    dispatch(showPrposedMeetingUnsavedModal(true));
   };
 
   return (
@@ -438,6 +445,7 @@ const ProposedMeetingDate = () => {
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Button_ProposedMeeting"]}
+                  onClick={CancelModal}
                 />
                 <Button
                   text={t("Send")}
@@ -449,6 +457,7 @@ const ProposedMeetingDate = () => {
           </Paper>
         </Col>
       </Row>
+      {NewMeetingreducer.prposedMeetingUnsavedModal && <UnsavedModal />}
     </section>
   );
 };

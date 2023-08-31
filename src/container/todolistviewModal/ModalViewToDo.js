@@ -44,6 +44,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
 
   const state = useSelector((state) => state);
   const { toDoListReducer, postAssigneeComments } = state;
+  const [commentID, setCommentID] = useState(0)
   const { Comments } = postAssigneeComments;
   //To Display Modal
   const dispatch = useDispatch();
@@ -264,19 +265,11 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
       await dispatch(postAssgineeComment(navigate, commentData, t));
       // document.getElementById("commentviews").scrollHeight({block: "end"})
       // if (Object.keys(Comments).length > 0) {
-      let newComment = {
-        userID: parseInt(TaskCreatorID),
-        TaskID: parseInt(id),
-        Comment: assgineeComments,
-        taskCommentID: 1,
-        taskCommentUserName: UserName,
-        DateTime: convertFormation,
-      };
-      taskAssigneeComments.push(newComment);
-      setTaskAssigneeComments(taskAssigneeComments);
+
+
       let data = { ToDoListID: parseInt(id) };
       // await dispatch(ViewToDoList(data));
-      setAssgieeComments("");
+
     }
   };
   // useEffect(() => { }, [toDoListReducer.ToDoDetails]);
@@ -297,7 +290,25 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
     }
     dispatch(HideNotificationTodoComment());
   }, [postAssigneeComments.ResponseMessage]);
+  useEffect(() => {
+    if (postAssigneeComments.createCommentID !== null && postAssigneeComments.createCommentID !== undefined && postAssigneeComments.createCommentID !== 0) {
+      if (postAssigneeComments.createCommentID !== 0 && postAssigneeComments.createCommentID !== commentID) {
+        let newComment = {
+          userID: parseInt(TaskCreatorID),
+          TaskID: parseInt(task.PK_TID),
+          Comment: assgineeComments,
+          taskCommentID: postAssigneeComments.createCommentID,
+          taskCommentUserName: UserName,
+          DateTime: convertFormation,
+        };
 
+        taskAssigneeComments.push(newComment);
+        setTaskAssigneeComments(taskAssigneeComments);
+        setAssgieeComments("");
+      }
+    }
+  }, [postAssigneeComments.createCommentID])
+  console.log(taskAssigneeComments, "taskAssigneeCommentstaskAssigneeComments")
   return (
     <>
       <Container>
