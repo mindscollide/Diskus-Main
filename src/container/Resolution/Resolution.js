@@ -80,6 +80,8 @@ const Resolution = () => {
   const [searchIcon, setSearchIcon] = useState(false);
   const [rows, setRows] = useState([]);
   const [isSearchVoter, setSearchVoter] = useState([]);
+  console.log(rows, "isSearchVoterisSearchVoterisSearchVoter");
+  console.log(isSearchVoter, "isSearchVoterisSearchVoterisSearchVoter");
   const [resolutionmodalupdated, setRresolutionmodalupdated] = useState(false);
   const [resolutionAttachments, setResolutionAttachments] = useState([]);
   const [viewattachmentpage, setViewattachmentpage] = useState(false);
@@ -461,7 +463,7 @@ const Resolution = () => {
       width: "78px",
       render: (table, data) => {
         let newDate = new Date();
-        let votingDeadline = resolutionResultTable(data.votingDeadline);
+        let votingDeadline = resolutionResultTable(data?.votingDeadline);
         if (data.resolutionStatus === "Circulated") {
           if (votingDeadline < newDate) {
             return (
@@ -469,6 +471,7 @@ const Resolution = () => {
                 src={ResultResolutionIcon}
                 onClick={() => getResultHandle(data.resolutionID)}
                 className={styles["Result_icon"]}
+                alt=""
               />
             );
           } else {
@@ -481,6 +484,7 @@ const Resolution = () => {
                 src={ResultResolutionIcon}
                 onClick={() => getResultHandle(data.resolutionID)}
                 className={styles["Result_icon"]}
+                alt=""
               />
             );
           }
@@ -1013,6 +1017,34 @@ const Resolution = () => {
     }
   }, [ResolutionReducer.GetResolutions]);
 
+  useEffect(() => {
+    if (ResolutionReducer.mqttResolutionCreated !== null) {
+      let findIndexModerator = isSearchVoter.findIndex(
+        (data, index) =>
+          data.resolutionID ===
+          ResolutionReducer.mqttResolutionCreated.resolution.pK_ResolutionID
+      );
+      if (findIndexModerator === -1) {
+        setSearchVoter([
+          ResolutionReducer.mqttResolutionCreated.resolution,
+          ...isSearchVoter,
+        ]);
+      } else {
+        let copyData = [...isSearchVoter];
+        copyData.splice(
+          findIndexModerator,
+          1,
+          ResolutionReducer.mqttResolutionCreated.resolution
+        );
+        setSearchVoter(copyData);
+        // setRows([ResolutionReducer.mqttResolutionCreated, ...rows]);
+      }
+    }
+  }, [ResolutionReducer.mqttResolutionCreated]);
+  console.log(
+    ResolutionReducer.mqttResolutionCreated,
+    "ResolutionReducerResolutionReducerResolutionReducer"
+  );
   return (
     <>
       <section className={styles["resolution_container"]}>
