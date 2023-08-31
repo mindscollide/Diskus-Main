@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Header, Sidebar, Talk } from "../../components/layout";
+import { Sidebar, Talk } from "../../components/layout";
 import Header2 from "../../components/layout/header2/Header2";
-import { Layout, message } from "antd";
+import { Layout } from "antd";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { setRecentActivityDataNotification } from "../../store/actions/GetUserSetting";
 import VideoCallScreen from "../../components/layout/talk/videoCallScreen/VideoCallScreen";
@@ -25,18 +25,12 @@ import {
   mqttInsertBroadcastMessage,
   mqttUnreadMessageCount,
   mqttMessageStatusUpdate,
-  InsertOTOMessages,
   UpdateMessageAcknowledgement,
   mqttMessageDeleted,
   GetAllUserChats,
 } from "../../store/actions/Talk_action";
-import Paho from "paho-mqtt";
 import Helper from "../../commen/functions/history_logout";
 import IconMetroAttachment from "../../assets/images/newElements/Icon metro-attachment.svg";
-import { GetNotes } from "../../store/actions/Notes_actions";
-// import io from "socket.io-client";
-import { Col, Row, Container } from "react-bootstrap";
-import { getSocketConnection } from "../../commen/apis/Api_ends_points";
 import {
   setTodoListActivityData,
   setTodoStatusDataFormSocket,
@@ -47,7 +41,6 @@ import {
   postComments,
 } from "../../store/actions/Post_AssigneeComments";
 import "./Dashboard.css";
-import AttachmentIcon from "../../assets/images/Icon-Attachment.png";
 import { NotificationBar } from "../../components/elements";
 import {
   realtimeGroupStatusResponse,
@@ -58,27 +51,19 @@ import {
   realtimeCommitteeStatusResponse,
 } from "../../store/actions/Committee_actions";
 import { mqttConnection } from "../../commen/functions/mqttconnection";
-import { realtimeNotificationRecent } from "../../store/actions/RealtimeNotification_actions";
 import { useTranslation } from "react-i18next";
-import numeral from "numeral";
-import "numeral/locales";
 import { notifyPollingSocket } from "../../store/actions/Polls_actions";
 import {
   changeMQTTJSONOne,
   changeMQQTTJSONTwo,
 } from "../../commen/functions/MQTTJson";
+import { resolutionMQTTCreate } from "../../store/actions/Resolution_actions";
 
 const Dashboard = () => {
   const location = useLocation();
-  const [client, setClient] = useState(null);
-  const [searchVisible, setSearchVisible] = useState(false);
 
-  const { videoCall, talkStateData, videoFeatureReducer } = useSelector(
-    (state) => state
-  );
-  // const [socket, setSocket] = useState(Helper.socket);
+  const { talkStateData, videoFeatureReducer } = useSelector((state) => state);
   const navigate = useNavigate();
-  const { Content } = Layout;
   let createrID = localStorage.getItem("userID");
   let currentOrganization = localStorage.getItem("organizationID");
 
@@ -87,31 +72,15 @@ const Dashboard = () => {
 
   // let createrID = 5;
   const dispatch = useDispatch();
-  const [newRecentData, setNewRecentData] = useState({
-    creationDateTime: "",
-    notificationTypes: {
-      pK_NTID: 0,
-      description: "",
-      icon: "",
-    },
-    key: 0,
-  });
-  const [newTodoData, setNewTodoData] = useState([]);
-  const [newTodoDataComment, setNewTodoDataComment] = useState([]);
-  const [meetingStatus, setMeetingStatus] = useState([]);
-  let subscribeID =
-    createrID != null && createrID != undefined ? createrID.toString() : "";
-  let RandomNumber = Math.random();
+
   // for real time Notification
   const [notification, setNotification] = useState({
     notificationShow: false,
     message: "",
   });
   // for sub menus Icons
-  const [subIcons, setSubIcons] = useState(false);
 
   //State For Meeting Data
-  const [newMeetingData, setNewMeetingData] = useState([]);
   const [activateBlur, setActivateBlur] = useState(false);
   const [notificationID, setNotificationID] = useState(0);
 
@@ -164,14 +133,8 @@ const Dashboard = () => {
               data.payload.meetingTitle
             ),
           });
-          changeMQTTJSONOne(
-            t("NEW_MEETING_CREATION"),
-            "[Place holder]",
-            data.payload.meetingTitle
-          );
         }
         dispatch(allMeetingsSocket(data.payload.meeting));
-        // dispatch(setTodoListActivityData(data.payload.message + data.payload.meetingTitle))
         setNotificationID(id);
       } else if (
         data.payload.message.toLowerCase() ===
@@ -863,6 +826,62 @@ const Dashboard = () => {
         setNotificationID(id);
       }
     }
+    if (data.action.toLowerCase() === "Resolution is Created".toLowerCase()) {
+      if (
+        data.payload.message.toLowerCase() ===
+        "NEW_RESOLUTION_CREATION".toLowerCase()
+      ) {
+        if (data.viewable) {
+          setNotification({
+            ...notification,
+            notificationShow: true,
+            message: changeMQTTJSONOne(
+              t("NEW_RESOLUTION_CREATION"),
+              "[Resolution Title]",
+              data.payload.model.resolution.title
+            ),
+          });
+        }
+        dispatch(resolutionMQTTCreate(data.payload.model));
+      }
+    }
+    if (data.action.toLowerCase() === "Resolution Cancelled".toLowerCase()) {
+      if (
+        data.payload.message.toLowerCase() ===
+        "RESOLUTION_CANCELLED".toLowerCase()
+      ) {
+        if (data.viewable) {
+          setNotification({
+            ...notification,
+            notificationShow: true,
+            message: changeMQTTJSONOne(
+              t("RESOLUTION_CANCELLED"),
+              "[Resolution Title]",
+              data.payload.model.resolution.title
+            ),
+          });
+        }
+        dispatch(resolutionMQTTCreate(data.payload.model));
+      }
+    }
+    if (data.action.toLowerCase() === "Resolution Closed".toLowerCase()) {
+      if (
+        data.payload.message.toLowerCase() === "RESOLUTION_CLOSED".toLowerCase()
+      ) {
+        if (data.viewable) {
+          setNotification({
+            ...notification,
+            notificationShow: true,
+            message: changeMQTTJSONOne(
+              t("RESOLUTION_CLOSED"),
+              "[Resolution Title]",
+              data.payload.model.resolution.title
+            ),
+          });
+        }
+        dispatch(resolutionMQTTCreate(data.payload.model));
+      }
+    }
   };
 
   const onConnectionLost = () => {
@@ -903,10 +922,6 @@ const Dashboard = () => {
       setVideoPanel(videoGroupPanel);
     }
   }, [videoGroupPanel]);
-
-  const showsubTalkIcons = () => {
-    setSubIcons(!subIcons);
-  };
 
   const [isOnline, setIsOnline] = useState(window.navigator.onLine);
 

@@ -1357,5 +1357,7 @@
   "Upload": "Upload",
   "Create-from-scratch": "Create From Scratch",
   "IT-departmental-meeting": "IT Departmental Meeting",
-  "Uploaded-by": "Uploaded by"
+  "Uploaded-by": "Uploaded by",
+  "NEW_RESOLUTION_CREATION": "A new Resolution [Resolution Title] is circulated for your review",
+  "RESOLUTION_CANCELLED": "The Resolution [Resolution Title] has been cancelled till further notice"
 }

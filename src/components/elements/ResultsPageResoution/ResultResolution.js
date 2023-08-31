@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import styles from "./ResultResolution.module.css";
 import { Paper } from "@material-ui/core";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import result from "../../../assets/images/result.svg";
 import Abstain from "../../../assets/images/Abstain.svg";
 import Clock from "../../../assets/images/Clock.svg";
-import line from "../../../assets/images/line.png";
 import thumbsup from "../../../assets/images/thumbsup.svg";
 import Tie from "../../../assets/images/Tie.svg";
 import thumbsdown from "../../../assets/images/thumbsdown.svg";
@@ -17,22 +16,22 @@ import { useSelector, useDispatch } from "react-redux";
 import { closeResolutionApi } from "../../../store/actions/Resolution_actions";
 import { resolutionResultTable } from "../../../commen/functions/date_formater";
 import { useNavigate } from "react-router-dom";
-import SeceretBallotingIcon from '../../../assets/images/resolutions/Secret_Balloting_icon.svg'
+import SeceretBallotingIcon from "../../../assets/images/resolutions/Secret_Balloting_icon.svg";
 
 const ResultResolution = ({ setResultresolution, resultresolution }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { ResolutionReducer } = useSelector((state) => state);
-  let ButtonTab = JSON.parse(localStorage.getItem("ButtonTab"))
+  let ButtonTab = JSON.parse(localStorage.getItem("ButtonTab"));
   const [resolutionTitle, setResolutionTitle] = useState("");
   const [approved, setApproved] = useState(0);
   const [resolutionID, setResolutionID] = useState(0);
   const [nonApproved, setNonApproved] = useState(0);
   const [pending, setPending] = useState(0);
   const [abstain, setAbstain] = useState(0);
-  const [votingMethod, setVotingMethod] = useState("")
-  console.log(votingMethod, "votingMethodvotingMethod")
+  const [votingMethod, setVotingMethod] = useState("");
+  console.log(votingMethod, "votingMethodvotingMethod");
   const [notes, setNotes] = useState("");
   const [totalVoters, setTotalVoters] = useState(0);
   const [decisionDateExpiry, setDesicionDateExpiry] = useState(false);
@@ -94,7 +93,14 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
   ];
   const closeResolutionHandleClick = () => {
     dispatch(
-      closeResolutionApi(navigate, resolutionID, 2, notes, t, setResultresolution)
+      closeResolutionApi(
+        navigate,
+        resolutionID,
+        2,
+        notes,
+        t,
+        setResultresolution
+      )
     );
   };
   useEffect(() => {
@@ -108,7 +114,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
         setApproved(resolutionresult.approvedVotes);
         setAbstain();
 
-        setVotingMethod(resolutionresult.votingMethod)
+        setVotingMethod(resolutionresult.votingMethod);
         setPending(resolutionresult.pendingVoters);
         setNonApproved(resolutionresult.nonApprovedVotes);
         setTotalVoters(resolutionresult.totalVoters);
@@ -126,10 +132,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
           setDesicionDateExpiry(false);
         }
       }
-    } catch (error) {
-
-    }
-
+    } catch (error) {}
   }, [ResolutionReducer.getResolutionResult]);
   return (
     <section>
@@ -147,12 +150,34 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
             <Row>
               <Col lg={6} md={6} sm={12} className="d-flex gap-2">
                 <span className={styles["results_paper_heading"]}>
-                  {resolutionTitle || ""} {" "}{votingMethod === "Secret Balloting" ? <img src={SeceretBallotingIcon} height="23.19px" width="23.19px" /> : <img src={result} height="23.19px" width="23.19px" />}
+                  {resolutionTitle || ""}{" "}
+                  {votingMethod === "Secret Balloting" ? (
+                    <img
+                      src={SeceretBallotingIcon}
+                      height="23.19px"
+                      width="23.19px"
+                      alt=""
+                    />
+                  ) : (
+                    <img src={result} alt="" height="23.19px" width="23.19px" />
+                  )}
                 </span>
-
               </Col>
-              <Col sm={12} md={6} lg={6} className="d-flex align-items-center justify-content-end">
-                <span className={styles["voting_method_heading"]}>{t("Voting-method") + " : "}   </span>  <span className={styles["voting_methong_value"]}> {votingMethod === "Secret Balloting" ? t("Secret-balloting") : t("Show-of-hands")}</span>
+              <Col
+                sm={12}
+                md={6}
+                lg={6}
+                className="d-flex align-items-center justify-content-end"
+              >
+                <span className={styles["voting_method_heading"]}>
+                  {t("Voting-method") + " : "}{" "}
+                </span>{" "}
+                <span className={styles["voting_methong_value"]}>
+                  {" "}
+                  {votingMethod === "Secret Balloting"
+                    ? t("Secret-balloting")
+                    : t("Show-of-hands")}
+                </span>
               </Col>
             </Row>
             <Row className="mt-2">
@@ -181,21 +206,22 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                             <img
                               src={
                                 decision.toLowerCase() ===
-                                  "Approved".toLowerCase()
+                                "Approved".toLowerCase()
                                   ? Clock
                                   : decision.toLowerCase() ===
                                     "Not Approved".toLowerCase()
-                                    ? thumbsdown
-                                    : decision.toLowerCase() ===
-                                      "Pending".toLowerCase()
-                                      ? Clock
-                                      : decision.toLowerCase() ===
-                                        "tie".toLowerCase()
-                                        ? Tie
-                                        : null
+                                  ? thumbsdown
+                                  : decision.toLowerCase() ===
+                                    "Pending".toLowerCase()
+                                  ? Clock
+                                  : decision.toLowerCase() ===
+                                    "tie".toLowerCase()
+                                  ? Tie
+                                  : null
                               }
                               width="36.98px"
                               height="37px"
+                              alt=""
                             />
                           </Col>
                         </Row>
@@ -216,7 +242,12 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col lg={12} md={12} sm={12} className="d-flex justify-content-center">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center"
+                  >
                     <Chart
                       // controls={false}
                       chartType="ColumnChart"
@@ -271,41 +302,42 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                     <Row>
                       {voter.length > 0
                         ? voter.map((data, index) => {
-                          console.log(data, "datadatadata");
-                          return (
-                            <>
-                              <Col
-                                lg={6}
-                                md={6}
-                                sm={6}
-                                key={data.pK_RV_ID}
-                                className="mt-1"
-                              >
-                                <EmployeeinfoCard
-                                  Employeename={data.username}
-                                  Employeeemail={data.email}
-                                  Icon={
-                                    <img
-                                      src={
-                                        data.fK_VotingStatus_ID === 1
-                                          ? thumbsup
-                                          : data.fK_VotingStatus_ID === 2
+                            console.log(data, "datadatadata");
+                            return (
+                              <>
+                                <Col
+                                  lg={6}
+                                  md={6}
+                                  sm={6}
+                                  key={data.pK_RV_ID}
+                                  className="mt-1"
+                                >
+                                  <EmployeeinfoCard
+                                    Employeename={data.username}
+                                    Employeeemail={data.email}
+                                    Icon={
+                                      <img
+                                        src={
+                                          data.fK_VotingStatus_ID === 1
+                                            ? thumbsup
+                                            : data.fK_VotingStatus_ID === 2
                                             ? thumbsdown
                                             : data.fK_VotingStatus_ID === 3
-                                              ? Clock
-                                              : data.fK_VotingStatus_ID === 4
-                                                ? Abstain
-                                                : null
-                                      }
-                                      width="20px"
-                                      height="20px"
-                                    />
-                                  }
-                                />
-                              </Col>
-                            </>
-                          );
-                        })
+                                            ? Clock
+                                            : data.fK_VotingStatus_ID === 4
+                                            ? Abstain
+                                            : null
+                                        }
+                                        width="20px"
+                                        height="20px"
+                                        alt=""
+                                      />
+                                    }
+                                  />
+                                </Col>
+                              </>
+                            );
+                          })
                         : null}
                     </Row>
                   </Col>
@@ -342,15 +374,16 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                       className={styles["Close_Btn_Resultresolution"]}
                       onClick={() => setResultresolution(false)}
                     />
-                    {ButtonTab !== 2 && <Button
-                      text={t("Close-resolution")}
-                      className={
-                        styles["Close_resolution_Btn_Resultresolution"]
-                      }
-                      disableBtn={decisionDateExpiry ? false : true}
-                      onClick={closeResolutionHandleClick}
-                    />}
-
+                    {ButtonTab !== 2 && (
+                      <Button
+                        text={t("Close-resolution")}
+                        className={
+                          styles["Close_resolution_Btn_Resultresolution"]
+                        }
+                        disableBtn={decisionDateExpiry ? false : true}
+                        onClick={closeResolutionHandleClick}
+                      />
+                    )}
                   </Col>
                 </Row>
               </Col>
