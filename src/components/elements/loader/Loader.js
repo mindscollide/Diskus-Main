@@ -34,8 +34,179 @@ const Loader = () => {
   const [randomIndex, setRandomIndex] = useState(0);
 
   useEffect(() => {
-    const randomIdx = Math.floor(Math.random() * messages.length);
-    setRandomIndex(randomIdx);
+    if (location.pathname === "/") {
+      setRandomIndex(messages[0]);
+    } else if (location.pathname === "/enterPassword") {
+      setRandomIndex(messages[0]);
+    } else if (location.pathname === "/DisKus/meeting") {
+      setRandomIndex(messages[1]);
+    } else if (location.pathname === "/Diskus/Admin/AllMeeting") {
+      setRandomIndex(messages[1]);
+    } else if (location.pathname === "/DisKus/calendar") {
+      setRandomIndex(messages[2]);
+    } else if (location.pathname === "/DisKus/dataroom") {
+      setRandomIndex(messages[3]);
+    } else if (location.pathname === "/DisKus/Notes") {
+      setRandomIndex(messages[4]);
+    } else if (location.pathname === "/DisKus/groups") {
+      setRandomIndex(messages[5]);
+    } else if (location.pathname === "/DisKus/committee") {
+      setRandomIndex(messages[6]);
+    } else if (location.pathname === "/DisKus/resolution") {
+      setRandomIndex(messages[10]);
+    } else if (location.pathname === "/DisKus/setting") {
+      setRandomIndex(messages[12]);
+    } else if (location.pathname === "/Diskus/Admin/Organization") {
+      setRandomIndex(messages[12]);
+    } else if (location.pathname === "/Diskus/Admin/setting") {
+      setRandomIndex(messages[12]);
+    } else if (location.pathname === "/DisKus/faq's") {
+      setRandomIndex(messages[8]);
+    } else if (location.pathname === "/DisKus/todolist") {
+      setRandomIndex(messages[4]);
+    } else if (location.pathname === "/DisKus/polling") {
+      setRandomIndex(messages[6]);
+    } else if (location.pathname === "/Diskus/Admin/") {
+      setRandomIndex(messages[13]);
+    } else if (location.pathname === "/Diskus/Admin/Summary") {
+      setRandomIndex(messages[13]);
+    } else if (location.pathname === "/Diskus/Admin/AddUser") {
+      setRandomIndex(messages[14]);
+    } else if (location.pathname === "/Diskus/Admin/EditUser") {
+      setRandomIndex(messages[15]);
+    } else if (location.pathname === "/Diskus/Admin/AllUserPage") {
+      setRandomIndex(messages[15]);
+    } else if (location.pathname === "/packageselection") {
+      setRandomIndex(messages[15]);
+    } else if (location.pathname === "/paymentForm") {
+      setRandomIndex(messages[17]);
+    } else if (location.pathname === "/Diskus/Admin/PackageDetail") {
+      setRandomIndex(messages[17]);
+    } else if (location.pathname === "/Diskus/Admin/UpgradePackage") {
+      setRandomIndex(messages[17]);
+    } else if (location.pathname === "/Diskus/Admin/UpgradePackageDetail") {
+      setRandomIndex(messages[17]);
+    } else if (location.pathname === "/Diskus/Admin/paymentform") {
+      setRandomIndex(messages[17]);
+    } else if (location.pathname === "/Diskus/Admin/CancelSub") {
+      setRandomIndex(messages[17]);
+    } else {
+      const randomIdx = Math.floor(Math.random() * messages.length);
+      setRandomIndex(randomIdx);
+    }
+
+    // <>
+    //   <p className={styles["Messeges_Styles"]}>{messages[0]}</p>
+    // </>
+    // ) :location.pathname === "/enterPassword" ? (
+    // <>
+    //   <p className={styles["Messeges_Styles"]}>{messages[0]}</p>
+    // </>
+    // ) : location.pathname === "/DisKus/meeting" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[1]}</p>
+    //   </>
+    // ) : location.pathname === "/Diskus/Admin/AllMeeting" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[1]}</p>
+    //   </>
+    // ) : location.pathname === "/DisKus/calendar" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[2]}</p>
+    //   </>
+    // ) : location.pathname === "/DisKus/dataroom" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[3]}</p>
+    //   </>
+    // ) : location.pathname === "/DisKus/Notes" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[4]}</p>
+    //   </>
+    // ) : location.pathname === "/DisKus/groups" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[5]}</p>
+    //   </>
+    // ) : location.pathname === "/DisKus/committee" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[6]}</p>
+    //   </>
+    // ) : location.pathname === "/DisKus/resolution" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[10]}</p>
+    //   </>
+    // ) : location.pathname === "/DisKus/setting" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[12]}</p>
+    //   </>
+    // ) : location.pathname === "/Diskus/Admin/Organization" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[12]}</p>
+    //   </>
+    // ) : location.pathname === "/Diskus/Admin/setting" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[12]}</p>
+    //   </>
+    // ) : location.pathname === "/DisKus/faq's" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[8]}</p>
+    //   </>
+    // ) : location.pathname === "/DisKus/todolist" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[4]}</p>
+    //   </>
+    // ) : location.pathname === "/DisKus/polling" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[6]}</p>
+    //   </>
+    // ) : location.pathname === "/Diskus/Admin/" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[13]}</p>
+    //   </>
+    // ) : location.pathname === "/Diskus/Admin/Summary" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[13]}</p>
+    //   </>
+    // ) : location.pathname === "/Diskus/Admin/AddUser" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[14]}</p>
+    //   </>
+    // ) :location.pathname === "/Diskus/Admin/EditUser" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[15]}</p>
+    //   </>
+    // ) : location.pathname === "/Diskus/Admin/AllUserPage" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[15]}</p>
+    //   </>
+    // ) : location.pathname === "/packageselection" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[16]}</p>
+    //   </>
+    // ) :location.pathname === "/paymentForm" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[17]}</p>
+    //   </>
+    // ) : location.pathname === "/Diskus/Admin/PackageDetail" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[17]}</p>
+    //   </>
+    // ) :location.pathname === "/Diskus/Admin/UpgradePackage" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[17]}</p>
+    //   </>
+    // ) : location.pathname === "/Diskus/Admin/UpgradePackageDetail" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[17]}</p>
+    //   </>
+    // ) : location.pathname === "/Diskus/Admin/paymentform" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[17]}</p>
+    //   </>
+    // ) : location.pathname === "/Diskus/Admin/CancelSub" ? (
+    //   <>
+    //     <p className={styles["Messeges_Styles"]}>{messages[17]}</p>
+    //   </>
+    // ) : null}
   }, []);
 
   return (
@@ -56,156 +227,111 @@ const Loader = () => {
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[0]}</p>
                 </>
-              ) : null}
-              {location.pathname === "/enterPassword" ? (
+              ) : location.pathname === "/enterPassword" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[0]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/DisKus/meeting" ? (
+              ) : location.pathname === "/DisKus/meeting" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[1]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/Diskus/Admin/AllMeeting" ? (
+              ) : location.pathname === "/Diskus/Admin/AllMeeting" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[1]}</p>
                 </>
-              ) : null}
-              {location.pathname === "/DisKus/calendar" ? (
+              ) : location.pathname === "/DisKus/calendar" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[2]}</p>
                 </>
-              ) : null}
-              {location.pathname === "/DisKus/dataroom" ? (
+              ) : location.pathname === "/DisKus/dataroom" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[3]}</p>
                 </>
-              ) : null}
-              {location.pathname === "/DisKus/Notes" ? (
+              ) : location.pathname === "/DisKus/Notes" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[4]}</p>
                 </>
-              ) : null}
-              {location.pathname === "/DisKus/groups" ? (
+              ) : location.pathname === "/DisKus/groups" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[5]}</p>
                 </>
-              ) : null}
-              {location.pathname === "/DisKus/committee" ? (
+              ) : location.pathname === "/DisKus/committee" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[6]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/DisKus/resolution" ? (
+              ) : location.pathname === "/DisKus/resolution" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[10]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/DisKus/setting" ? (
+              ) : location.pathname === "/DisKus/setting" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[12]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/Diskus/Admin/Organization" ? (
+              ) : location.pathname === "/Diskus/Admin/Organization" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[12]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/Diskus/Admin/setting" ? (
+              ) : location.pathname === "/Diskus/Admin/setting" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[12]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/DisKus/faq's" ? (
+              ) : location.pathname === "/DisKus/faq's" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[8]}</p>
                 </>
-              ) : null}
-              {location.pathname === "/DisKus/todolist" ? (
+              ) : location.pathname === "/DisKus/todolist" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[4]}</p>
                 </>
-              ) : null}
-              {location.pathname === "/DisKus/polling" ? (
+              ) : location.pathname === "/DisKus/polling" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[6]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/Diskus/Admin/" ? (
+              ) : location.pathname === "/Diskus/Admin/" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[13]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/Diskus/Admin/Summary" ? (
+              ) : location.pathname === "/Diskus/Admin/Summary" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[13]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/Diskus/Admin/AddUser" ? (
+              ) : location.pathname === "/Diskus/Admin/AddUser" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[14]}</p>
                 </>
-              ) : null}
-              {location.pathname === "/Diskus/Admin/EditUser" ? (
+              ) : location.pathname === "/Diskus/Admin/EditUser" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[15]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/Diskus/Admin/AllUserPage" ? (
+              ) : location.pathname === "/Diskus/Admin/AllUserPage" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[15]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/packageselection" ? (
+              ) : location.pathname === "/packageselection" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[16]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/paymentForm" ? (
+              ) : location.pathname === "/paymentForm" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[17]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/Diskus/Admin/PackageDetail" ? (
+              ) : location.pathname === "/Diskus/Admin/PackageDetail" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[17]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/Diskus/Admin/UpgradePackage" ? (
+              ) : location.pathname === "/Diskus/Admin/UpgradePackage" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[17]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/Diskus/Admin/UpgradePackageDetail" ? (
+              ) : location.pathname === "/Diskus/Admin/UpgradePackageDetail" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[17]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/Diskus/Admin/paymentform" ? (
+              ) : location.pathname === "/Diskus/Admin/paymentform" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[17]}</p>
                 </>
-              ) : null}
-
-              {location.pathname === "/Diskus/Admin/CancelSub" ? (
+              ) : location.pathname === "/Diskus/Admin/CancelSub" ? (
                 <>
                   <p className={styles["Messeges_Styles"]}>{messages[17]}</p>
                 </>
