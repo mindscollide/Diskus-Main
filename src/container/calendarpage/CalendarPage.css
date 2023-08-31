@@ -443,8 +443,8 @@ body[dir="rtl"] .Calender-heading {
 
 .rbc-event.rbc-event-allday.rbc-event-continues-after {
   /* background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important; */
-  background: #fff !important;
-  color: #000;
+  /* background: #fff !important; */
+  /* color: #000; */
   border-radius: 4px !important;
 }
 
