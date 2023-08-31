@@ -302,7 +302,6 @@ function CustomCalendar({
       style = {
         // Disable pointer events for past events
         border: event.border,
-        color: event.color,
         backgroundColor: event.backgroundColor, // Apply opacity to visually indicate past events
       };
     }
