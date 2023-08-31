@@ -859,6 +859,7 @@ const Resolution = () => {
               className="text-center cursor-pointer"
               src={AttachmentIcon}
               onClick={() => viewAttachmentHandle(data.attachments)}
+              alt=""
             />
           );
         } else {
@@ -877,13 +878,13 @@ const Resolution = () => {
             if (data.fK_VotingStatus_ID === 1) {
               return (
                 <span className="d-flex justify-content-center">
-                  <img src={thumbsup} />
+                  <img src={thumbsup} alt="" />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 2) {
               return (
                 <span className="d-flex justify-content-center">
-                  <img src={thumbsdown} />
+                  <img src={thumbsdown} alt="" />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 3) {
@@ -891,7 +892,7 @@ const Resolution = () => {
             } else if (data.fK_VotingStatus_ID === 4) {
               return (
                 <span className="d-flex justify-content-center">
-                  <img src={AbstainvoterIcon} />
+                  <img src={AbstainvoterIcon} alt="" />
                 </span>
               );
             }
@@ -1017,34 +1018,30 @@ const Resolution = () => {
     }
   }, [ResolutionReducer.GetResolutions]);
 
-  useEffect(() => {
-    if (ResolutionReducer.mqttResolutionCreated !== null) {
-      let findIndexModerator = isSearchVoter.findIndex(
-        (data, index) =>
-          data.resolutionID ===
-          ResolutionReducer.mqttResolutionCreated.resolution.pK_ResolutionID
-      );
-      if (findIndexModerator === -1) {
-        setSearchVoter([
-          ResolutionReducer.mqttResolutionCreated.resolution,
-          ...isSearchVoter,
-        ]);
-      } else {
-        let copyData = [...isSearchVoter];
-        copyData.splice(
-          findIndexModerator,
-          1,
-          ResolutionReducer.mqttResolutionCreated.resolution
-        );
-        setSearchVoter(copyData);
-        // setRows([ResolutionReducer.mqttResolutionCreated, ...rows]);
-      }
-    }
-  }, [ResolutionReducer.mqttResolutionCreated]);
-  console.log(
-    ResolutionReducer.mqttResolutionCreated,
-    "ResolutionReducerResolutionReducerResolutionReducer"
-  );
+  // useEffect(() => {
+  //   if (ResolutionReducer.mqttResolutionCreated !== null) {
+  //     let findIndexModerator = isSearchVoter.findIndex(
+  //       (data, index) =>
+  //         data.resolutionID ===
+  //         ResolutionReducer.mqttResolutionCreated.resolution.pK_ResolutionID
+  //     );
+  //     if (findIndexModerator === -1) {
+  //       setSearchVoter([
+  //         ResolutionReducer.mqttResolutionCreated.resolution,
+  //         ...isSearchVoter,
+  //       ]);
+  //     } else {
+  //       let copyData = [...isSearchVoter];
+  //       copyData.splice(
+  //         findIndexModerator,
+  //         1,
+  //         ResolutionReducer.mqttResolutionCreated.resolution
+  //       );
+  //       setSearchVoter(copyData);
+  //     }
+  //   }
+  // }, [ResolutionReducer.mqttResolutionCreated]);
+
   return (
     <>
       <section className={styles["resolution_container"]}>
