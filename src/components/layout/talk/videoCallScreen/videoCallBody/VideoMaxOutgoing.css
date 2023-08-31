@@ -45,3 +45,48 @@
   background-color: transparent !important;
   border: none !important;
 }
+
+/* */
+.videoIncoming-max-call {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 370px;
+  width: 350px;
+  background-color: #707070 !important;
+  z-index: 9;
+  padding-top: 25px;
+  border-radius: 4px;
+}
+
+.outgoing-call-text-max-call {
+  font-size: 19px !important;
+  color: #fff !important;
+  font-weight: 600;
+  margin-top: 20px;
+}
+
+.calling-text-max-call {
+  font-size: 15px !important;
+  color: #fff !important;
+}
+
+.avatar-column-max-call {
+  text-align: center;
+}
+
+.someone-calling-title-max-call {
+  text-align: center;
+
+}
+
+.calling-title-max-call {
+  text-align: center;
+
+}
+
+.button-img-max-call {
+  background-color: transparent !important;
+  border: none !important;
+}

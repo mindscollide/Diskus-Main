@@ -9,7 +9,9 @@ import { incomingVideoCallFlag } from '../../../../../../store/actions/VideoFeat
 const VideoPanelFooter = () => {
   const dispatch = useDispatch()
 
-  const { videoFeatureReducer } = useSelector((state) => state)
+  const { videoFeatureReducer, VideoMainReducer } = useSelector(
+    (state) => state,
+  )
 
   const incomingCall = () => {
     dispatch(incomingVideoCallFlag(true))
@@ -20,14 +22,16 @@ const VideoPanelFooter = () => {
       <Container>
         <Row>
           <Col>
-            <div className="group-call">
-              <Button
-                text="Group Call"
-                className="group-btn"
-                onClick={incomingCall}
-                icon2={<img src={VideoCallWhiteIcon} />}
-              />
-            </div>
+            {VideoMainReducer.Loading === false ? (
+              <div className="group-call">
+                <Button
+                  text="Group Call"
+                  className="group-btn"
+                  // onClick={incomingCall}
+                  icon2={<img src={VideoCallWhiteIcon} />}
+                />
+              </div>
+            ) : null}
           </Col>
         </Row>
       </Container>

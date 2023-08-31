@@ -9,6 +9,7 @@
     border-radius: 4px;
     font-size: 13px;
     font-family: 'MontserratRegular';
+    filter: grayscale(1);
 }
 
 button.group-btn.btn.btn-primary span {

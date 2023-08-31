@@ -1,0 +1,307 @@
+import * as actions from '../action_types'
+import axios from 'axios'
+import { videoApi } from '../../commen/apis/Api_ends_points'
+import { RefreshToken } from './Auth_action'
+import {
+  getAllVideoCallUsers,
+  initiateVideoCall,
+  videoCallResponse,
+} from '../../commen/apis/Api_config'
+
+const getAllVideoCallUsersInitial = () => {
+  return {
+    type: actions.GET_ALL_VIDEOCALL_USERS_INITIAL,
+  }
+}
+
+const getAllVideoCallUsersSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_VIDEOCALL_USERS_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+const getAllVideoCallUsersFail = (message) => {
+  return {
+    type: actions.GET_ALL_VIDEOCALL_USERS_FAIL,
+    message: message,
+  }
+}
+
+const GetAllVideoCallUsers = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(getAllVideoCallUsersInitial())
+    let form = new FormData()
+    form.append('RequestMethod', getAllVideoCallUsers.RequestMethod)
+    form.append('RequestData', JSON.stringify(Data))
+
+    axios({
+      method: 'post',
+      url: videoApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log('GetAllVideoCallUsers', response)
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(GetAllVideoCallUsers(Data, navigate, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_GetAllUsers_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getAllVideoCallUsersSuccess(
+                  response.data.responseResult,
+                  t('Record-found'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_GetAllUsers_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(getAllVideoCallUsersFail(t('No-records-found')))
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_GetAllUsers_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getAllVideoCallUsersFail(t('Something-went-wrong')),
+              )
+            }
+          } else {
+            await dispatch(getAllVideoCallUsersFail(t('Something-went-wrong')))
+          }
+        } else {
+          await dispatch(getAllVideoCallUsersFail(t('Something-went-wrong')))
+        }
+      })
+      .catch((response) => {
+        dispatch(getAllVideoCallUsersFail(t('Something-went-wrong')))
+      })
+  }
+}
+
+const initiateVideoCallInitial = () => {
+  return {
+    type: actions.INITIATE_VIDEO_CALL_INITIAL,
+  }
+}
+
+const initiateVideoCallSuccess = (response, message) => {
+  return {
+    type: actions.INITIATE_VIDEO_CALL_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+const initiateVideoCallFail = (message) => {
+  return {
+    type: actions.INITIATE_VIDEO_CALL_FAIL,
+    message: message,
+  }
+}
+
+const InitiateVideoCall = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(initiateVideoCallInitial())
+    let form = new FormData()
+    form.append('RequestMethod', initiateVideoCall.RequestMethod)
+    form.append('RequestData', JSON.stringify(Data))
+
+    axios({
+      method: 'post',
+      url: videoApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log('InitiateVideoCall', response)
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(InitiateVideoCall(Data, navigate, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_InitiateVideoCall_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                initiateVideoCallSuccess(
+                  response.data.responseResult,
+                  t('Call-initiated-successfully'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_InitiateVideoCall_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                initiateVideoCallFail(t('Call-not-initiated-successfully')),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_InitiateVideoCall_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(initiateVideoCallFail(t('Something-went-wrong')))
+            }
+          } else {
+            await dispatch(initiateVideoCallFail(t('Something-went-wrong')))
+          }
+        } else {
+          await dispatch(initiateVideoCallFail(t('Something-went-wrong')))
+        }
+      })
+      .catch((response) => {
+        dispatch(initiateVideoCallFail(t('Something-went-wrong')))
+      })
+  }
+}
+
+const incomingVideoCallMQTT = (response, message) => {
+  return {
+    type: actions.INCOMING_VIDEO_CALL_MQTT,
+    response: response,
+    message: message,
+  }
+}
+
+const videoCallAccepted = (response, message) => {
+  return {
+    type: actions.INCOMING_VIDEO_CALL_ACCEPTED_MQTT,
+    response: response,
+    message: message,
+  }
+}
+
+const videoCallResponseInitial = () => {
+  return {
+    type: actions.VIDEO_CALL_RESPONSE_INITIAL,
+  }
+}
+
+const videoCallResponseSuccess = (response, message) => {
+  return {
+    type: actions.VIDEO_CALL_RESPONSE_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+const videoCallResponseFail = (message) => {
+  return {
+    type: actions.VIDEO_CALL_RESPONSE_FAIL,
+    message: message,
+  }
+}
+
+const VideoCallResponse = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(videoCallResponseInitial())
+    let form = new FormData()
+    form.append('RequestMethod', videoCallResponse.RequestMethod)
+    form.append('RequestData', JSON.stringify(Data))
+    axios({
+      method: 'post',
+      url: videoApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log('VideoCallResponse', response)
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(VideoCallResponse(Data, navigate, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_VideoCallResponse_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                videoCallResponseSuccess(
+                  response.data.responseResult,
+                  t('Video-Call-Status-Updated'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_VideoCallResponse_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                videoCallResponseFail(t('Call-not-initiated-successfully')),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_VideoCallResponse_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(videoCallResponseFail(t('Something-went-wrong')))
+            }
+          } else {
+            await dispatch(videoCallResponseFail(t('Something-went-wrong')))
+          }
+        } else {
+          await dispatch(videoCallResponseFail(t('Something-went-wrong')))
+        }
+      })
+      .catch((response) => {
+        dispatch(videoCallResponseFail(t('Something-went-wrong')))
+      })
+  }
+}
+
+const getVideoRecipentData = (response) => {
+  return {
+    type: actions.GET_VIDEO_RECIPENT_DATA,
+    response: response,
+  }
+}
+
+export {
+  GetAllVideoCallUsers,
+  InitiateVideoCall,
+  incomingVideoCallMQTT,
+  VideoCallResponse,
+  getVideoRecipentData,
+  videoCallAccepted,
+}

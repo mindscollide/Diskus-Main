@@ -27,6 +27,7 @@ import {
   DataRoomReducer,
   PollsReducer,
   NewMeetingReducer,
+  VideoMainReducer,
   videoFeatureReducer,
 } from './reducers'
 import * as actions from './action_types'
@@ -78,6 +79,7 @@ const AppReducer = combineReducers({
   PollsReducer: PollsReducer,
   NewMeetingreducer: NewMeetingReducer,
   LanguageReducer: LanguageReducer,
+  VideoMainReducer: VideoMainReducer,
 })
 
 const rootReducer = (state, action) => {

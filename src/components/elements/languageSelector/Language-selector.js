@@ -7,6 +7,7 @@ import LanguageBlack from '../../../assets/images/Language_Black.svg'
 import styles from './Language-selector.module.css'
 import { useTranslation } from 'react-i18next'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { Loader } from './../../elements'
 import Cookies from 'js-cookie'
 import numeral from 'numeral'
 import {
@@ -207,7 +208,14 @@ const LanguageSelector = () => {
               : LanguageBlack
           }
         />
-        {selectedLanguage.languageTitle}
+        {/* {selectedLanguage.languageTitle} */}
+        {currentLanguage === 'en'
+          ? 'English'
+          : currentLanguage === 'ar'
+          ? 'Arabic'
+          : currentLanguage === 'fr'
+          ? 'French'
+          : null}
         {languageDropdown ? <ChevronUp /> : <ChevronDown />}
       </span>
       <div
@@ -232,6 +240,7 @@ const LanguageSelector = () => {
             )
           })}
       </div>
+      {LanguageReducer.Loading === true ? <Loader /> : null}
     </section>
   )
 }
