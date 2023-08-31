@@ -1,40 +1,40 @@
-import React, { useState, useEffect } from "react";
-import { Row, Col, Image } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { Button, Paper } from "../../../components/elements";
-import "./Password_Update_Message.css";
-import "./../../../i18n.js";
-import logo from "./../../../assets/images/diskuslogo-forsigncard.svg";
-import { useTranslation } from "react-i18next";
-import Cookies from "js-cookie";
+import React, { useState, useEffect } from 'react'
+import { Row, Col, Image } from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom'
+import { Button, Paper } from '../../../components/elements'
+import './Password_Update_Message.css'
+import './../../../i18n.js'
+import logo from './../../../assets/images/diskuslogo-forsigncard.svg'
+import { useTranslation } from 'react-i18next'
+import Cookies from 'js-cookie'
 
 const PasswordUpdateMessage = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const handleGoLogin = () => {
-    navigate("/");
-  };
+    navigate('/')
+  }
 
   //For Localization
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation()
 
   // Languages
-  const languages = [
-    { name: "English", code: "en" },
-    { name: "Français", code: "fr" },
-  ];
+  // const languages = [
+  //   { name: "English", code: "en" },
+  //   { name: "Français", code: "fr" },
+  // ];
 
-  const currentLocale = Cookies.get("i18next") || "en";
+  // const currentLocale = Cookies.get("i18next") || "en";
 
-  const [language, setLanguage] = useState(currentLocale);
+  // const [language, setLanguage] = useState(currentLocale);
 
-  const handleChangeLocale = (e) => {
-    const lang = e.target.value;
-    setLanguage(lang);
-    localStorage.setItem("i18nextLng", lang);
-    i18n.changeLanguage(lang);
-  };
+  // const handleChangeLocale = (e) => {
+  //   const lang = e.target.value;
+  //   setLanguage(lang);
+  //   localStorage.setItem("i18nextLng", lang);
+  //   i18n.changeLanguage(lang);
+  // };
 
-  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
+  // const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
   // useEffect(() => {
   //   document.body.dir = currentLangObj.dir || "ltr";
@@ -74,7 +74,7 @@ const PasswordUpdateMessage = () => {
                         className="verification-box-heading color-primary fw-600 my-3"
                       >
                         {/* Your Password has been updated */}
-                        {t("Your-password-has-been-updated")}
+                        {t('Your-password-has-been-updated')}
                       </Col>
                     </Row>
 
@@ -87,7 +87,7 @@ const PasswordUpdateMessage = () => {
                       >
                         <Button
                           className="SignInButton"
-                          text={t("Back-to-signin")}
+                          text={t('Back-to-signin')}
                           onClick={handleGoLogin}
                         />
                       </Col>
@@ -117,7 +117,7 @@ const PasswordUpdateMessage = () => {
         </Col>
       </Row>
     </>
-  );
-};
+  )
+}
 
-export default PasswordUpdateMessage;
+export default PasswordUpdateMessage

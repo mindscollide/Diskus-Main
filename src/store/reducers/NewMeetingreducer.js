@@ -1,4 +1,4 @@
-import * as actions from "../action_types";
+import * as actions from '../action_types'
 
 const initialState = {
   Loader: false,
@@ -19,7 +19,7 @@ const initialState = {
   prposedMeetingUnsavedModal: false,
   ImportPreviousMinutes: false,
   afterImportState: false,
-};
+}
 
 const NewMeetingreducer = (state = initialState, action) => {
   switch (action.type) {
@@ -27,124 +27,124 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         adduserModal: action.response,
-      };
+      }
     }
     case actions.CROSS_CONFIRMATION_MODAL: {
       return {
         ...state,
         crossConfirmation: action.response,
-      };
+      }
     }
 
     case actions.NOTIFY_ORGANIZORS_MODAL: {
       return {
         ...state,
         notifyOrganizors: action.response,
-      };
+      }
     }
 
     case actions.ADD_AGENDA_CONTRIBUTORS: {
       return {
         ...state,
         agendaContributors: action.response,
-      };
+      }
     }
 
     case actions.NOTIFY_AGENDA_CONTRIBUTORS: {
       return {
         ...state,
         notifyAgendaContributors: action.response,
-      };
+      }
     }
 
     case actions.ADD_PARTICIPANTS_MODAL: {
       return {
         ...state,
         participantModal: action.response,
-      };
+      }
     }
 
     case actions.AGENDA_ITEM_REMOVED: {
       return {
         ...state,
         agendaItemRemoved: action.response,
-      };
+      }
     }
 
     case actions.MAIN_AGENDA_ITEM_REMOVED: {
       return {
         ...state,
         mainAgendaItemRemoved: action.response,
-      };
+      }
     }
 
     case actions.ADVANCED_PERSMISSION_MODAL: {
       return {
         ...state,
         advancePermissionModal: action.response,
-      };
+      }
     }
 
     case actions.ADVANCE_PERMISSION_CONFIRMATION: {
       return {
         ...state,
         advancePermissionConfirmation: action.response,
-      };
+      }
     }
 
     case actions.VOTE_AGENDA_MODAL: {
       return {
         ...state,
         voteAgendaModal: action.response,
-      };
+      }
     }
 
     case actions.VOTE_MODAL_CONFIRMATION: {
       return {
         ...state,
         voteConfirmationModal: action.response,
-      };
+      }
     }
 
     case actions.IMPORT_PREVIOUS_AGENDA: {
       return {
         ...state,
         importPreviousAgendaModal: action.response,
-      };
+      }
     }
 
     case actions.ENABLE_PROPOSED_MEETING_DATE: {
       return {
         ...state,
         enableProposedMeetingDate: action.response,
-      };
+      }
     }
 
     case actions.PROPOSED_MEETING_SAVED_MODAL: {
       return {
         ...state,
         prposedMeetingUnsavedModal: action.response,
-      };
+      }
     }
 
     case actions.IMPORT_PREVIOUS_MINUTES: {
       return {
         ...state,
         ImportPreviousMinutes: action.response,
-      };
+      }
     }
 
     case actions.AFTER_IMPORT_STATE: {
       return {
         ...state,
         afterImportState: action.response,
-      };
+      }
     }
 
     default: {
-      return { ...state };
+      return { ...state }
     }
   }
-};
+}
 
-export default NewMeetingreducer;
+export default NewMeetingreducer
