@@ -17,7 +17,9 @@ import { isHTML } from "../../../../commen/functions/html_formater";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 
 const PackageSelected = () => {
-  const { Authreducer, countryNamesReducer } = useSelector((state) => state);
+  const { Authreducer, countryNamesReducer, LanguageReducer } = useSelector(
+    (state) => state
+  );
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [organizationData, setOrganizationData] = useState({
@@ -32,9 +34,9 @@ const PackageSelected = () => {
   });
   const [totalBillAmount, setTotalBillAmount] = useState({
     MonthlyBill: 0,
-    TotalBill: 0
-  })
-  console.log(totalBillAmount, "totalBillAmounttotalBillAmounttotalBillAmount")
+    TotalBill: 0,
+  });
+  console.log(totalBillAmount, "totalBillAmounttotalBillAmounttotalBillAmount");
   const [organizationDataRole, setorganizationDataRole] = useState({});
   const [countryData, setCountyData] = useState("");
   const [open, setOpen] = useState({
@@ -48,7 +50,7 @@ const PackageSelected = () => {
       PackageAllowedBoardMembers: "",
       PackageAllowedAdminMembers: "",
       PackageDescriptive: "",
-      TenureSubscription: 0
+      TenureSubscription: 0,
     });
   const [organizationDataSubscription, setorganizationDataSubscription] =
     useState({});
@@ -94,7 +96,7 @@ const PackageSelected = () => {
     City: "",
     PostalCode: "",
   });
-  console.log(packageSelectedData, "packageSelectedDatapackageSelectedData")
+  console.log(packageSelectedData, "packageSelectedDatapackageSelectedData");
   console.log(Authreducer, countryNamesReducer, "AuthreducerAuthreducer");
   useEffect(() => {
     localStorage.removeItem("flagForSelectedPackeg");
@@ -104,9 +106,7 @@ const PackageSelected = () => {
     dispatch(getSelectedPacakgeDetail(navigate, t));
   };
 
-
-
-  console.log("test")
+  console.log("test");
   useEffect(() => {
     dataCallForDetails();
   }, []);
@@ -164,12 +164,24 @@ const PackageSelected = () => {
       };
       setPackageSelectedData(Organizationdata);
       let PackageDetails = {
-        PackageTitle: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageName,
-        SelectedPackageAmount: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageActualPrice,
-        PackageAllowedBoardMembers: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageAllowedBoardMemberUsers,
-        PackageAllowedAdminMembers: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageAllowedAdminUsers,
-        PackageDescriptive: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.packageDescriptiveDetails,
-        TenureSubscription: Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage.fK_TenureOfSubscription
+        PackageTitle:
+          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+            .packageName,
+        SelectedPackageAmount:
+          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+            .packageActualPrice,
+        PackageAllowedBoardMembers:
+          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+            .packageAllowedBoardMemberUsers,
+        PackageAllowedAdminMembers:
+          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+            .packageAllowedAdminUsers,
+        PackageDescriptive:
+          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+            .packageDescriptiveDetails,
+        TenureSubscription:
+          Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage
+            .fK_TenureOfSubscription,
       };
       console.log(
         "packageDetailpackageDetailpackageDetailpackageDetail",
@@ -184,15 +196,15 @@ const PackageSelected = () => {
     if (Authreducer.getSubscriptiondetails !== null) {
       setTotalBillAmount({
         TotalBill: Authreducer.getSubscriptiondetails?.totalBill,
-        MonthlyBill: Authreducer.getSubscriptiondetails?.monthlyBill
-      })
+        MonthlyBill: Authreducer.getSubscriptiondetails?.monthlyBill,
+      });
     } else {
       setTotalBillAmount({
         TotalBill: 0,
-        MonthlyBill: 0
-      })
+        MonthlyBill: 0,
+      });
     }
-  }, [Authreducer.getSubscriptiondetails])
+  }, [Authreducer.getSubscriptiondetails]);
   const goBacktoSignUp = () => {
     localStorage.setItem("flagForSelectedPackeg", true);
     navigate("/packageselection");
@@ -227,10 +239,10 @@ const PackageSelected = () => {
       Authreducer.EnterPasswordResponseMessage !== "" &&
       Authreducer.EnterPasswordResponseMessage !== t("Record-found") &&
       Authreducer.EnterPasswordResponseMessage !==
-      t("The-user-is-an-admin-user") &&
+        t("The-user-is-an-admin-user") &&
       Authreducer.EnterPasswordResponseMessage !== t("2fa-enabled") &&
       Authreducer.EnterPasswordResponseMessage !==
-      t("The-user-is-not-an-admin-user") &&
+        t("The-user-is-not-an-admin-user") &&
       Authreducer.EnterPasswordResponseMessage !== undefined &&
       Authreducer.EnterPasswordResponseMessage !== t("2fa-verification") &&
       Authreducer.EnterPasswordResponseMessage !== t("2fa-enabled")
@@ -274,16 +286,16 @@ const PackageSelected = () => {
       Authreducer.CreatePasswordResponseMessage !== "" &&
       Authreducer.CreatePasswordResponseMessage !== t("Record-found") &&
       Authreducer.CreatePasswordResponseMessage !==
-      t("The-user-is-an-admin-user") &&
+        t("The-user-is-an-admin-user") &&
       Authreducer.CreatePasswordResponseMessage !== t("2fa-enabled") &&
       Authreducer.CreatePasswordResponseMessage !==
-      t("Tthe-user-is-a-partial-admin-user") &&
+        t("Tthe-user-is-a-partial-admin-user") &&
       Authreducer.CreatePasswordResponseMessage !==
-      t("The-user-is-not-an-admin-user") &&
+        t("The-user-is-not-an-admin-user") &&
       Authreducer.CreatePasswordResponseMessage !==
-      t("User-is-not-a-new-user-the-user-is-a-partial-admin-user") &&
+        t("User-is-not-a-new-user-the-user-is-a-partial-admin-user") &&
       Authreducer.CreatePasswordResponseMessage !==
-      t("User-is-not-a-new-user-the-user-is-not-an-admin-user") &&
+        t("User-is-not-a-new-user-the-user-is-not-an-admin-user") &&
       Authreducer.CreatePasswordResponseMessage !== undefined &&
       Authreducer.CreatePasswordResponseMessage !== t("2fa-verification") &&
       Authreducer.CreatePasswordResponseMessage !== t("2fa-enabled")
@@ -358,9 +370,7 @@ const PackageSelected = () => {
 
   return (
     <>
-      <Row >
-
-      </Row>
+      <Row></Row>
       <Container>
         <Row>
           <Col sm={12} lg={10} md={10} className="mx-auto my-auto">
@@ -370,7 +380,7 @@ const PackageSelected = () => {
                   {t("Subscription-details")}
                 </h2>
               </Col>
-              <Col className={styles["languageSelector"]} >
+              <Col className={styles["languageSelector"]}>
                 <LanguageSelector />
               </Col>
             </Row>
@@ -380,8 +390,9 @@ const PackageSelected = () => {
                   <Row>
                     <Col sm={12}>
                       <h4
-                        className={`${"text-center"} ${styles["selectPackage_title"]
-                          }`}
+                        className={`${"text-center"} ${
+                          styles["selectPackage_title"]
+                        }`}
                       >
                         {organizationDataSelectedPackage.PackageTitle}
                       </h4>
@@ -395,11 +406,16 @@ const PackageSelected = () => {
                         <div className={styles["selectedPackage_priceDetails"]}>
                           <div className={styles["packagecard_disoucntprice"]}>
                             <h4 className="selected-amount d-flex justify-content-center align-items-end text-capitalize mb-2">
-                              $
-                              {
-                                totalBillAmount.TotalBill
-                              }
-                              /<p className=" m-0 p-0">{organizationDataSelectedPackage.TenureSubscription === 1 ? t("Annually") : organizationDataSelectedPackage.TenureSubscription === 2 ? t("Month") : null}</p>
+                              ${totalBillAmount.TotalBill}/
+                              <p className=" m-0 p-0">
+                                {organizationDataSelectedPackage.TenureSubscription ===
+                                1
+                                  ? t("Annually")
+                                  : organizationDataSelectedPackage.TenureSubscription ===
+                                    2
+                                  ? t("Month")
+                                  : null}
+                              </p>
                             </h4>
                             <p
                               className={
@@ -415,8 +431,9 @@ const PackageSelected = () => {
                   </Row>
 
                   <div
-                    className={`${"MontserratMedium-500"} ${styles["selected-package-text"]
-                      }`}
+                    className={`${"MontserratMedium-500"} ${
+                      styles["selected-package-text"]
+                    }`}
                   >
                     {isHTML(
                       organizationDataSelectedPackage.PackageDescriptive
@@ -444,8 +461,9 @@ const PackageSelected = () => {
                         <Col sm={12}>
                           <Col className={styles["packagecard_usersallows"]}>
                             <h1
-                              className={`${"MontserratBold-700"} ${styles["packagecard_usersallows_heading"]
-                                }`}
+                              className={`${"MontserratBold-700"} ${
+                                styles["packagecard_usersallows_heading"]
+                              }`}
                             >
                               {t("Allowed-users")}
                             </h1>
@@ -463,8 +481,9 @@ const PackageSelected = () => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={`${"MontserratBold-700"} ${styles["package_membersHeading_values"]
-                                    }`}
+                                  className={`${"MontserratBold-700"} ${
+                                    styles["package_membersHeading_values"]
+                                  }`}
                                 >
                                   {
                                     organizationDataSelectedPackage.PackageAllowedBoardMembers
@@ -484,8 +503,9 @@ const PackageSelected = () => {
                                   sm={12}
                                   md={12}
                                   lg={12}
-                                  className={`${"MontserratBold-700"} ${styles["package_membersHeading_values"]
-                                    }`}
+                                  className={`${"MontserratBold-700"} ${
+                                    styles["package_membersHeading_values"]
+                                  }`}
                                 >
                                   {
                                     organizationDataSelectedPackage.PackageAllowedAdminMembers
@@ -633,7 +653,7 @@ const PackageSelected = () => {
             </Row>
           </Col>
         </Row>
-        {Authreducer.Loading && <Loader />}
+        {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
         <Notification
           setOpen={setOpen}
           open={open.open}

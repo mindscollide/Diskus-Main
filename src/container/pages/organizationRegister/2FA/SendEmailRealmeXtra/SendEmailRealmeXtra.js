@@ -29,7 +29,7 @@ import LanguageSelector from "../../../../../components/elements/languageSelecto
 const SendEmailRealmeXtra = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { Authreducer } = useSelector((state) => state);
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const [xtrazoom, setXtrazoom] = useState(false);
   const [codeemail, setCodeemail] = useState(false);
   const [codesms, setCodesms] = useState(false);
@@ -208,7 +208,7 @@ const SendEmailRealmeXtra = () => {
       </Row> */}
       <Container fluid className="auth_container">
         <Row className="position-relative">
-          <Col className="languageSelector" >
+          <Col className="languageSelector">
             <LanguageSelector />
           </Col>
         </Row>
@@ -410,7 +410,7 @@ const SendEmailRealmeXtra = () => {
           </Col>
         </Row>
       </Container>
-      {Authreducer.Loading ? <Loader /> : null}
+      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

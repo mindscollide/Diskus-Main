@@ -295,7 +295,7 @@ const ExpandedMenu = () => {
                     : "Meeting_Side_bar_Tag"
                 }
               >
-                {t("DataRoom")}
+                {t("Data-room")}
               </span>
             </div>
           </Nav.Link>
@@ -391,7 +391,7 @@ const ExpandedMenu = () => {
                     : "Meeting_Side_bar_Tag"
                 }
               >
-                {t("Committee")}
+                {t("Committees")}
               </span>
             </div>
           </Nav.Link>
@@ -449,7 +449,7 @@ const ExpandedMenu = () => {
                     : "Meeting_Side_bar_Tag"
                 }
               >
-                {t("Resolution")}
+                {t("Resolutions")}
               </span>
             </div>
           </Nav.Link>

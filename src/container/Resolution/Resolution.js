@@ -56,7 +56,7 @@ const Resolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { ResolutionReducer } = useSelector((state) => state);
+  const { ResolutionReducer, LanguageReducer } = useSelector((state) => state);
   const [totalResolution, setTotalResolution] = useState(0);
   const [totalVoterResolution, setTotalVoterResolution] = useState(0);
   const [cancelResolutionModal, setCancelResolutionModal] = useState(false);
@@ -1593,7 +1593,7 @@ const Resolution = () => {
         setCancelresolution={setCancelResolutionModal}
         Id={resolutionIDForCancel}
       />
-      {ResolutionReducer.Loading ? <Loader /> : null}
+      {ResolutionReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
   );

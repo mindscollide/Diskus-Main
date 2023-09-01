@@ -28,7 +28,7 @@ import CommitteeStatusModal from "../../components/elements/committeeChangeStatu
 import { Plus } from "react-bootstrap-icons";
 
 const Committee = () => {
-  const { CommitteeReducer } = useSelector((state) => state);
+  const { CommitteeReducer, LanguageReducer } = useSelector((state) => state);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -461,7 +461,7 @@ const Committee = () => {
           </>
         )}
       </Col>
-      {CommitteeReducer.Loading ? <Loader /> : null}
+      {CommitteeReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       {showModal ? (
         <ModalArchivedCommittee

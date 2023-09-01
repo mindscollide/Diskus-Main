@@ -68,9 +68,8 @@ const Summary = () => {
     }
   }, [Blur]);
 
-  const { Authreducer, OrganizationBillingReducer } = useSelector(
-    (state) => state
-  );
+  const { Authreducer, OrganizationBillingReducer, LanguageReducer } =
+    useSelector((state) => state);
   const dispatch = useDispatch();
   const [open, setOpen] = useState({
     open: false,
@@ -81,7 +80,9 @@ const Summary = () => {
   useEffect(() => {
     if (
       Authreducer.VerifyOTPEmailResponseMessage !== "" &&
-      Authreducer.VerifyOTPEmailResponseMessage !== undefined && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
+      Authreducer.VerifyOTPEmailResponseMessage !== undefined &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -99,7 +100,9 @@ const Summary = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.EnterPasswordResponseMessage !== "" &&
-      Authreducer.EnterPasswordResponseMessage !== undefined && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
+      Authreducer.EnterPasswordResponseMessage !== undefined &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -117,7 +120,9 @@ const Summary = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.OrganizationCreateResponseMessage !== "" &&
-      Authreducer.OrganizationCreateResponseMessage !== undefined && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
+      Authreducer.OrganizationCreateResponseMessage !== undefined &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -135,7 +140,9 @@ const Summary = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.CreatePasswordResponseMessage !== "" &&
-      Authreducer.CreatePasswordResponseMessage !== undefined && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
+      Authreducer.CreatePasswordResponseMessage !== undefined &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -153,7 +160,9 @@ const Summary = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.GetSelectedPackageResponseMessage !== "" &&
-      Authreducer.GetSelectedPackageResponseMessage !== undefined && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
+      Authreducer.GetSelectedPackageResponseMessage !== undefined &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -171,7 +180,9 @@ const Summary = () => {
       dispatch(cleareMessage());
     } else if (
       Authreducer.EmailValidationResponseMessage !== "" &&
-      Authreducer.EmailValidationResponseMessage !== undefined && Authreducer.EnterPasswordResponseMessage !== t("The-user-is-an-admin-user")
+      Authreducer.EmailValidationResponseMessage !== undefined &&
+      Authreducer.EnterPasswordResponseMessage !==
+        t("The-user-is-an-admin-user")
     ) {
       setOpen({
         ...open,
@@ -457,7 +468,9 @@ const Summary = () => {
           message={open.message}
         />
       </Fragment>
-      {OrganizationBillingReducer.Loading ? <Loader /> : null}
+      {OrganizationBillingReducer.Loading || LanguageReducer.Loading ? (
+        <Loader />
+      ) : null}
     </>
   );
 };

@@ -21,9 +21,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 const ChangePassword = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { t } = useTranslation();
-  const { Authreducer } = useSelector((state) => state);
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const [oldPassword, setOldPassword] = useState("");
   const [showOldPassword, setShowOldPasssword] = useState(false);
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
@@ -68,7 +68,9 @@ const ChangePassword = () => {
   };
 
   const handleConformationUpdate = async () => {
-    await dispatch(changePasswordFunc(navigate, oldPassword, Password.newPassword, t));
+    await dispatch(
+      changePasswordFunc(navigate, oldPassword, Password.newPassword, t)
+    );
   };
 
   const cancelHandler = () => {
@@ -83,11 +85,11 @@ const ChangePassword = () => {
     if (
       Authreducer.ChangeUserPasswordResponseMessage != t("Change-password") &&
       Authreducer.ChangeUserPasswordResponseMessage !=
-      t("Your-password-has-been-updated") &&
+        t("Your-password-has-been-updated") &&
       Authreducer.ChangeUserPasswordResponseMessage !=
-      t("Your-password-has-been-changed-successfully") &&
+        t("Your-password-has-been-changed-successfully") &&
       Authreducer.ChangeUserPasswordResponseMessage !=
-      t("Password-updated-successfully") &&
+        t("Password-updated-successfully") &&
       Authreducer.ChangeUserPasswordResponseMessage != ""
     ) {
       console.log(
@@ -157,7 +159,12 @@ const ChangePassword = () => {
               >
                 {t("Old-password")}
               </Col>
-              <Col sm={12} md={6} lg={6} className="password-change-branch p-0 position-relative">
+              <Col
+                sm={12}
+                md={6}
+                lg={6}
+                className="password-change-branch p-0 position-relative"
+              >
                 <TextField
                   applyClass="form-control3"
                   className="PasswordTextField"
@@ -191,7 +198,12 @@ const ChangePassword = () => {
               >
                 {t("New-password")}
               </Col>
-              <Col sm={12} md={6} lg={6} className="password-change-branch p-0 position-relative">
+              <Col
+                sm={12}
+                md={6}
+                lg={6}
+                className="password-change-branch p-0 position-relative"
+              >
                 {" "}
                 <TextField
                   applyClass="form-control3"
@@ -233,7 +245,12 @@ const ChangePassword = () => {
               >
                 {t("Confirm-password")}
               </Col>
-              <Col sm={12} md={6} lg={6} className="password-change-branch p-0 position-relative">
+              <Col
+                sm={12}
+                md={6}
+                lg={6}
+                className="password-change-branch p-0 position-relative"
+              >
                 {" "}
                 <TextField
                   applyClass="form-control3"
@@ -308,12 +325,12 @@ const ChangePassword = () => {
                     oldPassword === ""
                       ? true
                       : Password.newPassword === ""
-                        ? true
-                        : Password.ConfirmPassword === ""
-                          ? true
-                          : !isPasswordStrong
-                            ? true
-                            : false
+                      ? true
+                      : Password.ConfirmPassword === ""
+                      ? true
+                      : !isPasswordStrong
+                      ? true
+                      : false
                   }
                   text={t("Update")}
                   onClick={handleConformationUpdate}
@@ -378,7 +395,7 @@ const ChangePassword = () => {
         }
       />
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
-      {Authreducer.Loading ? <Loader /> : null}
+      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

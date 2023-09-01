@@ -34,7 +34,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const state = useSelector((state) => state);
-  const { adminReducer, roleListReducer } = state;
+  const { adminReducer, roleListReducer, LanguageReducer } = state;
   const [rows, setRows] = useState([]);
 
   const [allUserData, setAllUserData] = useState([]);
@@ -450,13 +450,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       return (
         (filterFieldSection.Names != ""
           ? a.Names.toLowerCase().includes(
-            filterFieldSection.Names.toLowerCase()
-          )
+              filterFieldSection.Names.toLowerCase()
+            )
           : a.Names) &&
         (filterFieldSection.Emails.value != ""
           ? a.Emails.toLowerCase().includes(
-            filterFieldSection.Emails.value.toLowerCase()
-          )
+              filterFieldSection.Emails.value.toLowerCase()
+            )
           : a.Emails) &&
         (filterFieldSection.OrganizationRoles != ""
           ? a.OrganizationRole === filterFieldSection.OrganizationRoles
@@ -752,7 +752,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           />
         </Col>
       </Row>
-      {adminReducer.Loading ? <Loader /> : null}
+      {adminReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
       <Modal
         modalParentClass={"parentClassModalAllUser"}

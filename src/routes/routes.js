@@ -73,6 +73,7 @@ import PaymentForm2 from "../container/Admin/Subscriptions/PaymentForm2/PaymentF
 import NewMeeting from "../container/pages/meeting/MeetingTwo";
 import UserSettings from "../container/setting/UserLevelSettings/UserSettings";
 import OrganizationLevelSetting from "../container/setting/OrganizationLevelSetting/OrganizationLevelSetting";
+import EmptyState from "../container/Admin/Subscriptions/PackageDetail/EmptyStatePage/EmptyState";
 
 export const router = createHashRouter(
   createRoutesFromElements(
@@ -152,6 +153,7 @@ export const router = createHashRouter(
           <Route path="AllMeeting" element={<AllMeetings />} />
           <Route path="CancelSub" element={<CancelSubs />} />
           <Route path="PackageDetail" element={<PackageDetails />} />
+          <Route path="EmptyState" element={<EmptyState />} />
           <Route path="UpgradePackage" element={<PackageUpgrade />} />
           <Route path="changePassword" element={<ChangePassword />} />
           <Route path="faq's" element={<CustomMiscellaneous />} />

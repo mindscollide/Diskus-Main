@@ -50,6 +50,7 @@ const CalendarPage = () => {
     adminReducer,
     meetingIdReducer,
     getTodosStatus,
+    LanguageReducer,
   } = state;
   const [calenderData, setCalenderDatae] = useState([]);
   const [calendarView, setCalendarView] = useState(false);
@@ -261,7 +262,7 @@ const CalendarPage = () => {
             end: new Date(EndingTime),
             border: "2px solid" + googleEventColor,
             // color: "#ffff",
-            backgroundColor:googleEventColor,
+            backgroundColor: googleEventColor,
           });
         } else if (cData.fK_CESID === 2) {
           newList.push({
@@ -273,7 +274,7 @@ const CalendarPage = () => {
             end: new Date(EndingTime),
             border: "2px solid" + officeEventColor,
             // color: "#ffff",
-            backgroundColor:officeEventColor,
+            backgroundColor: officeEventColor,
           });
         } else if (cData.fK_CESID === 3) {
           newList.push({
@@ -285,7 +286,7 @@ const CalendarPage = () => {
             end: new Date(EndingTime),
             border: "2px solid" + diskusEventColor,
             // color: "#ffff",
-            backgroundColor:diskusEventColor,
+            backgroundColor: diskusEventColor,
           });
         }
       });
@@ -650,7 +651,8 @@ const CalendarPage = () => {
       </Col>
       {assignees.Loading ||
       calendarReducer.Loading ||
-      toDoListReducer.Loading ? (
+      toDoListReducer.Loading ||
+      LanguageReducer.Loading ? (
         <Loader />
       ) : null}
       <ModalView

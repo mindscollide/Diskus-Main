@@ -28,7 +28,7 @@ import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 
 const TwoFacSendEmail = () => {
-  const { Authreducer } = useSelector((state) => state);
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -209,7 +209,7 @@ const TwoFacSendEmail = () => {
       </Row> */}
       <Container fluid className="auth_container">
         <Row className="position-relative">
-          <Col className="languageSelector" >
+          <Col className="languageSelector">
             <LanguageSelector />
           </Col>
         </Row>
@@ -382,8 +382,8 @@ const TwoFacSendEmail = () => {
                             onClick={onClickSendOnDevice}
                             disableBtn={
                               notificationsms ||
-                                notificationemail ||
-                                notificationdevice
+                              notificationemail ||
+                              notificationdevice
                                 ? false
                                 : true
                             }
@@ -423,7 +423,7 @@ const TwoFacSendEmail = () => {
           </Col>
         </Row>
       </Container>
-      {Authreducer.Loading ? <Loader /> : null}
+      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       <Notification
         open={open.open}
         setOpen={open.open}

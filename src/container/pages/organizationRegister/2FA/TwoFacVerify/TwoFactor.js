@@ -14,7 +14,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import LanguageChangeIcon from "../../../../../assets/images/newElements/Language.svg";
 import { sendTwoFacAction } from "../../../../../store/actions/TwoFactorsAuthenticate_actions";
-import LanguageSelector from '../../../../../components/elements/languageSelector/Language-selector'
+import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 // import DiskusAuthPageLogo from "../../../../../assets/images/newElements/DiskusAuthPageLogo.svg";
 import Cookies from "js-cookie";
 import { useTranslation } from "react-i18next";
@@ -28,7 +28,7 @@ const TwoFactor = () => {
     open: false,
     message: "",
   });
-  const { Authreducer } = useSelector((state) => state);
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const [sendCodeEmailPhone, setSendCodeEmailPhone] = useState(false);
   const [sendCodeEmail, setSendCodeEmail] = useState(false);
   const onChangeHandlerTwoFactor = (e) => {
@@ -99,10 +99,9 @@ const TwoFactor = () => {
   }, [Helper.socket]);
   return (
     <>
-
       <Container fluid className="auth_container">
         <Row className="position-relative">
-          <Col className="languageSelector" >
+          <Col className="languageSelector">
             <LanguageSelector />
           </Col>
         </Row>
@@ -281,7 +280,7 @@ const TwoFactor = () => {
           </Col>
         </Row>
       </Container>
-      {Authreducer.Loading ? <Loader /> : null}
+      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };
