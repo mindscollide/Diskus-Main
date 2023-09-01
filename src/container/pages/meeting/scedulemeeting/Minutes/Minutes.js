@@ -9,6 +9,7 @@ import { message, Upload } from "antd";
 import download from "../../../../../assets/images/Download.svg";
 import scratch from "../../../../../assets/images/Scratch.svg";
 import AgendaIcon from "../../../../../assets/images/AgendaIcon.svg";
+import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import { Col, Row } from "react-bootstrap";
 import ImportMinutesModal from "./ImportPreviousMinutesModal/ImportMinutesModal";
 import {
@@ -19,6 +20,7 @@ import Clip from "../../../../../assets/images/ClipTurned.svg";
 import profile from "../../../../../assets/images/newprofile.png";
 import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
+import CreateFromScratch from "./CreateFromScratch/CreateFromScratch";
 const Minutes = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -26,6 +28,7 @@ const Minutes = () => {
   const { Dragger } = Upload;
   const { NewMeetingreducer } = useSelector((state) => state);
   const [uploadbtn, setUploadbtn] = useState(false);
+  const [createFromScratch, setCreateFromScratch] = useState(false);
   const [attachments, setAttachments] = useState([]);
   const [afterSaveFiles, setafterSaveFiles] = useState(false);
   const [afterSaveDocs, setafterSaveDocs] = useState([
@@ -68,7 +71,10 @@ const Minutes = () => {
     dispatch(showUnsaveMinutesFileUpload(true));
   };
 
-  const handleSaveFunctionality = () => {};
+  const handleSaveFunctionality = () => {
+    setUploadbtn(false);
+    setafterSaveFiles(true);
+  };
 
   const props = {
     name: "file",
@@ -90,6 +96,14 @@ const Minutes = () => {
     let optionscross = [...attachments];
     optionscross.splice(index, 1);
     setAttachments(optionscross);
+  };
+
+  const handleEditButton = () => {
+    setUploadbtn(true);
+  };
+
+  const handleCreateFromScratch = () => {
+    setCreateFromScratch(true);
   };
 
   return (
@@ -352,7 +366,119 @@ const Minutes = () => {
           </Row>
         </>
       ) : afterSaveFiles ? (
-        <></>
+        <>
+          <Row className="mt-3 m-0 p-0">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-end gap-2"
+            >
+              <Button
+                text={t("Invite-to-contribute")}
+                className={styles["InviteToContributeButton"]}
+              />
+              <Button
+                text={t("Publish-minutes")}
+                className={styles["InviteToContributeButton"]}
+              />
+              <Button
+                text={t("Edit")}
+                icon={<img src={EditIcon} width="11.75px" height="11.75px" />}
+                className={styles["InviteToContributeButton"]}
+                onClick={handleEditButton}
+              />
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <Row className={styles["Scroller_On_Save"]}>
+                {attachments.length > 0
+                  ? attachments.map((data, index) => {
+                      return (
+                        <>
+                          <Col
+                            lg={6}
+                            md={6}
+                            sm={6}
+                            className={styles["Box_Minutes"]}
+                          >
+                            <Row>
+                              <Col lg={8} md={8} sm={8}>
+                                <Row className="mt-3">
+                                  <Col
+                                    lg={12}
+                                    md={12}
+                                    sm={12}
+                                    className="d-flex align-items-center gap-3"
+                                  >
+                                    <img src={Clip} />
+                                    <span className={styles["Title_File"]}>
+                                      {data.name}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <Row className="mt-1">
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={
+                                        styles["Date_Minutes_And_time"]
+                                      }
+                                    >
+                                      4:00pm, 18th May, 2020
+                                    </span>
+                                  </Col>
+                                </Row>
+                              </Col>
+                              <Col lg={4} md={4} sm={4} className="">
+                                <Row className="mt-3">
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={styles["Uploaded_heading"]}
+                                    >
+                                      {t("Uploaded-by")}
+                                    </span>
+                                  </Col>
+                                </Row>
+                                <Row>
+                                  <Col
+                                    lg={12}
+                                    md={12}
+                                    sm={12}
+                                    className="d-flex gap-2 align-items-center"
+                                  >
+                                    <img
+                                      src={profile}
+                                      height="27px"
+                                      width="27px"
+                                      className={styles["Profile_minutes"]}
+                                    />
+                                    <span className={styles["Name"]}>
+                                      Saaf Fudda
+                                    </span>
+                                  </Col>
+                                </Row>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </>
+                      );
+                    })
+                  : null}
+              </Row>
+            </Col>
+          </Row>
+          <Row className="m-0 p-0 mt-5">
+            <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
+              <Button
+                text={t("Save")}
+                className={styles["Save_Btn_After_save"]}
+              />
+            </Col>
+          </Row>
+        </>
+      ) : createFromScratch ? (
+        <CreateFromScratch />
       ) : (
         <>
           <Row className="m-0 p-0 mt-3">
@@ -448,6 +574,7 @@ const Minutes = () => {
                   <Button
                     text={t("Create-from-scratch")}
                     className={styles["Upload_Btn_Styles"]}
+                    onClick={handleCreateFromScratch}
                   />
                 </Col>
               </Row>

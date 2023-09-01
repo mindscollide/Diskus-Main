@@ -19,6 +19,8 @@ const UnsavedMinutes = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+
+  const handleYesFunctionality = () => {};
   return (
     <section>
       <Modal
@@ -73,6 +75,7 @@ const UnsavedMinutes = () => {
                 <Button
                   text={t("Yes")}
                   className={styles["No_unsave_File_Upload"]}
+                  onClick={handleYesFunctionality}
                 />
               </Col>
             </Row>

@@ -154,6 +154,26 @@
   font-family: "MontserratSemiBold" !important;
 }
 
+.Save_Btn_After_save {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Save_Btn_After_save:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
 .Save_Minutes_upload_section {
   padding: 12px 30px !important;
   font-size: 12px !important;
@@ -174,8 +194,30 @@
   font-family: "MontserratSemiBold" !important;
 }
 
+.InviteToContributeButton {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  gap: 10px !important;
+}
+
+.Cancel_Minutes_upload_section:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #fff !important;
+  color: #5a5a5a !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  gap: 10px !important;
+}
+
 .Scroller {
-  height: 20vh !important;
+  height: 22vh !important;
   overflow-x: hidden !important;
   margin-top: 15px !important;
 }
@@ -187,6 +229,24 @@
 }
 
 .Scroller::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Scroller_On_Save {
+  height: 30vh !important;
+  overflow-x: hidden !important;
+  margin-top: 5px !important;
+}
+
+.Scroller_On_Save::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_On_Save::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
