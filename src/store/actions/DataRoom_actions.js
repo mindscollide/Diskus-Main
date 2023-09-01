@@ -638,21 +638,12 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
     OrganizationID: parseInt(OrganizationID),
     StatusID: parseInt(statusID),
     SortBy: sort !== null && sort !== undefined ? sort : 1,
-    isDescending: (order !== null) & (order !== undefined) ? order : true,
+    isDescending: order !== null && order !== undefined ? order : true,
     sRow: 0,
-    Length: 5,
+    Length: 10,
   };
-  // let Data = {
-  //     UserID: 722,
-  //     OrganizationID: 270,
-  //     StatusID: parseInt(statusID)
-  // }
   return (dispatch) => {
-    if (no === 2) {
-    } else {
-      dispatch(getDocumentsAndFolders_init());
-    }
-    dispatch(tableSpinner(false, 0));
+    dispatch(getDocumentsAndFolders_init());
     let form = new FormData();
     form.append(
       "RequestMethod",
@@ -697,18 +688,22 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
               response.data.responseResult.responseMessage.toLowerCase() ===
               "DataRoom_DataRoomManager_GetDocumentsAndFolders_02".toLowerCase()
             ) {
+              console.log("Test one");
               dispatch(getDocumentsAndFolders_fail(t("No-record-found")));
               console.log("checking1212");
             } else if (
               response.data.responseResult.responseMessage.toLowerCase() ===
               "DataRoom_DataRoomManager_GetDocumentsAndFolders_03".toLowerCase()
             ) {
+              console.log("Test one");
               dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
             }
           } else {
+            console.log("Test one");
             dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
           }
         } else {
+          console.log("Test one");
           dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
         }
       })
@@ -726,14 +721,6 @@ const getDocumentsAndFolderApiScrollbehaviour = (
   sRows,
   filterValue
 ) => {
-  console.log(
-    navigate,
-    statusID,
-    t,
-    sRows,
-    "getDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApigetDocumentsAndFolderApi"
-  );
-
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -744,7 +731,7 @@ const getDocumentsAndFolderApiScrollbehaviour = (
     SortBy: filterValue !== 0 ? filterValue : 1,
     isDescending: true,
     sRow: Number(sRows),
-    Length: 5,
+    Length: 10,
   };
   return (dispatch) => {
     dispatch(tableSpinner(true));

@@ -812,7 +812,11 @@ const videoCallResponse = {
   RequestMethod: "ServiceManager.VideoCallResponse",
 };
 
+const updateProfilePictureRM = {
+  RequestMethod: "ServiceManager.UpdateProfilePicture",
+};
 export {
+  updateProfilePictureRM,
   DeleteCommentRM,
   subscriptionPackageUpgradeAmount,
   paymentCompleteMethod,

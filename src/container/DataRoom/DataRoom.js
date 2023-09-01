@@ -763,6 +763,7 @@ const DataRoom = () => {
   };
 
   const SharewithmeButonShow = async () => {
+    setSRowsData(0);
     localStorage.setItem("setTableView", 2);
     await dispatch(getDocumentsAndFolderApi(navigate, 2, t));
     setGetAllData([]);
@@ -774,6 +775,7 @@ const DataRoom = () => {
   };
 
   const MydocumentButtonShow = async () => {
+    setSRowsData(0);
     localStorage.setItem("setTableView", 1);
     await dispatch(getDocumentsAndFolderApi(navigate, 1, t));
     setGetAllData([]);
@@ -785,6 +787,7 @@ const DataRoom = () => {
   };
 
   const AllDocuments = async () => {
+    setSRowsData(0);
     localStorage.setItem("setTableView", 3);
     await dispatch(getDocumentsAndFolderApi(navigate, 3, t));
     setGetAllData([]);
@@ -1090,21 +1093,21 @@ const DataRoom = () => {
                   {FindExt === "png" ||
                   FindExt === "jpg" ||
                   FindExt === "jpeg" ? (
-                    <img src={photosIcon} />
+                    <img src={photosIcon} alt="" />
                   ) : FindExt === "docx" ||
                     FindExt === "doc" ||
                     FindExt === "txt" ? (
-                    <img src={docIcon} />
+                    <img src={docIcon} alt="" />
                   ) : FindExt === "mp4" ? (
-                    <img src={videoIcon} />
+                    <img src={videoIcon} alt="" />
                   ) : FindExt === "xls" || FindExt === "xlsx" ? (
-                    <img src={xlsFileIcon} />
+                    <img src={xlsFileIcon} alt="" />
                   ) : FindExt === "ppt" || FindExt === "pptx" ? (
-                    <img src={pptIcon} />
+                    <img src={pptIcon} alt="" />
                   ) : FindExt === undefined ? (
-                    <img src={docIcon} />
+                    <img src={docIcon} alt="" />
                   ) : (
-                    <img src={docIcon} />
+                    <img src={docIcon} alt="" />
                   )}
 
                   <abbr title={text}>
@@ -1395,17 +1398,17 @@ const DataRoom = () => {
           return (
             <div className={`${styles["dataFolderRow"]}`}>
               {FindExt === "png" || FindExt === "jpg" || FindExt === "jpeg" ? (
-                <img src={photosIcon} />
+                <img src={photosIcon} alt="" />
               ) : FindExt === "docx" ||
                 FindExt === "doc" ||
                 FindExt === "txt" ? (
-                <img src={docIcon} />
+                <img src={docIcon} alt="" />
               ) : FindExt === "mp4" ? (
-                <img src={videoIcon} />
+                <img src={videoIcon} alt="" />
               ) : FindExt === "xls" || FindExt === "xlsx" ? (
-                <img src={xlsFileIcon} />
+                <img src={xlsFileIcon} alt="" />
               ) : FindExt === "ppt" || FindExt === "pptx" ? (
-                <img src={pptIcon} />
+                <img src={pptIcon} alt="" />
               ) : null}
               <span
                 className={styles["dataroom_table_heading"]}
@@ -1969,12 +1972,11 @@ const DataRoom = () => {
       setOptionsFileisShown(false);
     }
   };
+
   // api call onscroll
   const handleScroll = (e) => {
     const { scrollHeight, scrollTop, clientHeight } = e.target;
     if (scrollHeight - scrollTop === clientHeight) {
-      console.log(sRowsData, "sRowsDatasRowsDatasRowsData sRowsData");
-      console.log(totalRecords, "sRowsDatasRowsDatasRowsData totalRecords");
       if (sRowsData < totalRecords) {
         dispatch(dataBehaviour(true));
         if (DataRoomReducer.dataBehaviour === false) {
@@ -2036,35 +2038,36 @@ const DataRoom = () => {
       ) {
         if (DataRoomReducer.dataBehaviour) {
           dispatch(dataBehaviour(false));
-          setTotalRecords(
-            DataRoomReducer.getAllDocumentandShareFolderResponse.totalCount
-          );
           let copyData = [...getAllData];
           DataRoomReducer.getAllDocumentandShareFolderResponse.data.map(
             (data, index) => {
               copyData.push(data);
             }
           );
-
           setGetAllData(copyData);
-          let newCount =
-            sRowsData +
-            DataRoomReducer.getAllDocumentandShareFolderResponse.data.length;
-          setSRowsData(newCount);
-
+          let newCount = sRowsData;
+          console.log(newCount, "newCountnewCountnewCountnewCount");
+          setSRowsData(
+            newCount +
+              DataRoomReducer.getAllDocumentandShareFolderResponse.data.length
+          );
           setTotalRecords(
             DataRoomReducer.getAllDocumentandShareFolderResponse.totalCount
           );
         } else {
-          let newCount =
-            sRowsData +
-            DataRoomReducer.getAllDocumentandShareFolderResponse.data.length;
-          setSRowsData(newCount);
+          setSRowsData(
+            DataRoomReducer.getAllDocumentandShareFolderResponse.data.length
+          );
           setTotalRecords(
             DataRoomReducer.getAllDocumentandShareFolderResponse.totalCount
           );
           setGetAllData(
             DataRoomReducer.getAllDocumentandShareFolderResponse.data
+          );
+          console.log(
+            sRowsData,
+            DataRoomReducer.getAllDocumentandShareFolderResponse.data.length,
+            "newCountnewCountnewCountnewCount"
           );
         }
       } else {
@@ -2790,6 +2793,8 @@ const DataRoom = () => {
                                 optionsforFolder={optionsforFolder}
                                 optionsforFile={optionsforFile}
                                 sRowsData={sRowsData}
+                                totalRecords={totalRecords}
+                                filterValue={filterValue}
                               />
                             </>
                           ) : getAllData.length > 0 &&
@@ -2898,6 +2903,9 @@ const DataRoom = () => {
                                 data={getAllData}
                                 optionsforFolder={optionsforFolder}
                                 optionsforFile={optionsforFile}
+                                sRowsData={sRowsData}
+                                totalRecords={totalRecords}
+                                filterValue={filterValue}
                               />
                             </>
                           ) : getAllData.length > 0 &&

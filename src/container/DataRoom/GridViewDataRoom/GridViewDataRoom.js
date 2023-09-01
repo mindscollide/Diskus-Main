@@ -29,7 +29,8 @@ const GridViewDataRoom = ({
   optionsforFolder,
   optionsforFile,
   sRowsData,
-  setSRowsData,
+  totalRecords,
+  Value,
 }) => {
   console.log(
     optionsforFolder,
@@ -82,88 +83,58 @@ const GridViewDataRoom = ({
 
   // api call onscroll
   const handleScroll = (e) => {
-    console.log("checkgridview");
     const { scrollHeight, scrollTop, clientHeight } = e.target;
-    console.log("checkgridview", scrollHeight);
-    console.log("checkgridview", scrollTop);
-    console.log("checkgridview", clientHeight);
-    console.log("checkgridview", scrollHeight - scrollTop === clientHeight);
-    console.log(sRowsData, "addNewDataaddNewData");
     if (scrollHeight - scrollTop === clientHeight) {
-      console.log("checkgridview");
-      if (
-        DataRoomReducer.NotFound !== 2 &&
-        DataRoomReducer.dataBehaviour === false
-      ) {
-        console.log("checkgridview");
-        // let addNewData = Number(sRowsData) + 5
-        // setSRowsData(addNewData)
-        console.log("checkgridview");
-        dispatch(
-          getDocumentsAndFolderApiScrollbehaviour(
-            navigate,
-            currentView,
-            t,
-            Number(sRowsData)
-          )
-        );
-        console.log("checkgridview");
+      if (sRowsData < totalRecords) {
+        dispatch(dataBehaviour(true));
+        if (DataRoomReducer.dataBehaviour === false) {
+          dispatch(
+            getDocumentsAndFolderApiScrollbehaviour(
+              navigate,
+              currentView,
+              t,
+              Number(sRowsData),
+              Number(Value)
+            )
+          );
+        }
       }
     }
   };
 
   const handleClickFilter = (filterValue) => {
-    console.log(filterValue, "filterValuefilterValuefilterValue");
     setFilterValue({
       label: filterValue.label,
       value: filterValue.value,
     });
     if (filterValue.value === 1) {
-      // setSorted(true)
-      // dispatch(dataBehaviour(true))
-      // setSRowsData(0)
       dispatch(
         getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1)
       );
     } else if (filterValue.value === 2) {
-      // setSorted(true)
-      // dispatch(dataBehaviour(true))
-      // setSRowsData(0)
       dispatch(
         getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 2)
       );
     } else if (filterValue.value === 3) {
-      // setSorted(true)
-      // dispatch(dataBehaviour(true))
-      // setSRowsData(0)
       dispatch(
         getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 3)
       );
     } else if (filterValue.value === 4) {
-      // setSorted(true)
-      // dispatch(dataBehaviour(true))
       dispatch(
         getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 4)
       );
-      // setSRowsData(0)
     }
   };
 
   const handleShareTabFilter = (filterValue) => {
     if (filterValue.value === 1) {
-      // setSorted(true)
-      // dispatch(dataBehaviour(true))
       dispatch(
         getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1)
       );
-      // setSRowsData(0)
     } else if (filterValue.value === 2) {
-      // setSorted(true)
-      // dispatch(dataBehaviour(true))
       dispatch(
         getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 2)
       );
-      // setSRowsData(0)
     }
     setFilteShareTabrValue({
       label: filterValue.label,
@@ -182,23 +153,16 @@ const GridViewDataRoom = ({
     } else if (dataId.value === 5) {
       dispatch(deleteFolder(navigate, record.id, t));
     }
-    // setSRowsData(0)
   };
 
   const handleClickSortDecsending = () => {
     setSortIcon(false);
-    // setSorted(true)
-    // dispatch(dataBehaviour(true))
-    // setSRowsData(0)
     dispatch(
       getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1)
     );
   };
   const handleClickSortAscending = () => {
     setSortIcon(true);
-    // setSorted(true)
-    // dispatch(dataBehaviour(true))
-    // setSRowsData(0)
     dispatch(
       getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1)
     );
