@@ -30,7 +30,7 @@ const Loader = () => {
     t("Securing-your-data-please-wait"),
   ];
 
-  console.log(location.pathname, "locationpathname");
+  console.log(messages[0], "locationpathname");
   const [randomIndex, setRandomIndex] = useState(0);
 
   useEffect(() => {

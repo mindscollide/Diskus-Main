@@ -1022,7 +1022,9 @@ const Agenda = () => {
                                                     index,
                                                     subIndex
                                                   )
-                                                ? styles["lockBtn_inActive_coursor"]
+                                                ? styles[
+                                                    "lockBtn_inActive_coursor"
+                                                  ]
                                                 : styles["lockBtn"]
                                               // apllyLockOnParentAgenda(index) ||
                                               // apllyLockOnSubAgenda(
