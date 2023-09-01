@@ -156,7 +156,11 @@ const VideoPanelBodyRecent = () => {
                     <p className="Video-chat-username m-0">
                       {recentCallData.callerName}
                       <span className="call-status-icon">
-                        <img src={MissedCallIcon} />
+                        {recentCallData.isIncoming === false ? (
+                          <img src={MissedCallIcon} />
+                        ) : (
+                          <img src={IncomingIcon} />
+                        )}
                       </span>
                     </p>
 

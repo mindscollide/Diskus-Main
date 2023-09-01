@@ -943,7 +943,7 @@ const Dashboard = () => {
           dispatch(incomingVideoCallFlag(true))
           localStorage.setItem('RoomID', data.payload.roomID)
           localStorage.setItem('callerID', data.payload.callerID)
-          localStorage.setItem('callerName', data.payload.callerName)
+          localStorage.setItem('callerNameInitiate', data.payload.callerName)
           localStorage.setItem('recipentID', data.receiverID[0])
           localStorage.setItem('recipentName', currentUserName)
         }
@@ -1078,9 +1078,9 @@ const Dashboard = () => {
           {videoFeatureReducer.IncomingVideoCallFlag === true ? (
             <VideoMaxIncoming />
           ) : null}
-          {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
+          {/* {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
             <VideoOutgoing />
-          ) : null}
+          ) : null} */}
           {videoFeatureReducer.NormalizeVideoFlag === true ||
           videoFeatureReducer.MinimizeVideoFlag === true ||
           videoFeatureReducer.MaximizeVideoFlag === true ? (

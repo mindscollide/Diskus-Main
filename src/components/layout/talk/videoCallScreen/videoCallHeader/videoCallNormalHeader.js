@@ -27,6 +27,10 @@ const VideoCallNormalHeader = () => {
     (state) => state,
   )
 
+  let callerNameInitiate = localStorage.getItem('callerNameInitiate')
+  let currentUserName = localStorage.getItem('name')
+  let callerName = localStorage.getItem('callerName')
+
   const dispatch = useDispatch()
 
   const otoMaximizeVideoPanel = () => {
@@ -67,7 +71,11 @@ const VideoCallNormalHeader = () => {
     <Row className="mb-4">
       <Col lg={3} md={3} sm={12} className="mt-1">
         <p className="title-heading">
-          {VideoMainReducer.VideoRecipentData.userName}
+          {currentUserName !== callerNameInitiate
+            ? callerNameInitiate
+            : currentUserName === callerName
+            ? callerName
+            : null}
         </p>
       </Col>
       <>

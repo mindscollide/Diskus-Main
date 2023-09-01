@@ -43,19 +43,11 @@ const VideoPanelNormal = () => {
   let callerName = localStorage.getItem('callerName')
   let recipentName = localStorage.getItem('recipentName')
   let initiateCallRoomID = localStorage.getItem('initiateCallRoomID')
+  let callAcceptedRoomID = localStorage.getItem('acceptedRoomID')
+  let callAcceptedRecipientID = Number(
+    localStorage.getItem('acceptedRecipientID'),
+  )
   let currentUserName = localStorage.getItem('name')
-
-  const [incomingCallerData, setIncomingCallerData] = useState({
-    callerID: 0,
-    callerName: '',
-    roomID: '',
-  })
-
-  const [recipentCallerData, setRecipentCallerData] = useState({
-    callerID: 0,
-    callerName: '',
-    roomID: '',
-  })
 
   const [callerURL, setCallerURL] = useState('')
   const [participantURL, setParticipantURL] = useState('')
@@ -125,14 +117,6 @@ const VideoPanelNormal = () => {
       dynamicBaseURLCaller,
       endIndexBaseURLCaller,
     )
-    let dynamicBaseURLParticipant = localStorage.getItem(
-      'videoBaseURLParticipant',
-    )
-    const endIndexBaseURLParticipant = endIndexUrl(dynamicBaseURLParticipant)
-    const extractedBaseURLParticipant = extractedUrl(
-      dynamicBaseURLParticipant,
-      endIndexBaseURLParticipant,
-    )
     setCallerURL(
       generateURLCaller(
         extractedBaseURLCaller,
@@ -143,27 +127,20 @@ const VideoPanelNormal = () => {
   }, [initiateCallRoomID])
 
   useEffect(() => {
-    let dynamicBaseURLCaller = localStorage.getItem('videoBaseURLCaller')
+    let dynamicBaseURLCaller = localStorage.getItem('videoBaseURLParticipant')
     const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller)
     const extractedBaseURLCaller = extractedUrl(
       dynamicBaseURLCaller,
       endIndexBaseURLCaller,
     )
-    let dynamicBaseURLParticipant = localStorage.getItem(
-      'videoBaseURLParticipant',
-    )
-    const endIndexBaseURLParticipant = endIndexUrl(dynamicBaseURLParticipant)
-    const extractedBaseURLParticipant = extractedUrl(
-      dynamicBaseURLParticipant,
-      endIndexBaseURLParticipant,
-    )
-
     setParticipantURL(
-      generateURLParticipant(extractedBaseURLParticipant, recipentName, roomID),
+      generateURLParticipant(
+        extractedBaseURLCaller,
+        currentUserName,
+        callAcceptedRoomID,
+      ),
     )
-  }, [])
-
-  console.log('videoFeatureReducer', videoFeatureReducer)
+  }, [callAcceptedRoomID])
 
   console.log('CALLER URL THEN PARTICIPANT', callerURL, participantURL)
 
@@ -179,7 +156,10 @@ const VideoPanelNormal = () => {
             ) : (
               <>
                 <VideoCallNormalHeader />
-                <VideoOutgoing />
+                {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
+                  <VideoOutgoing />
+                ) : null}
+
                 {/* <Row>
                   <Col lg={12} md={12} sm={12}>
                     <div className="Caller-Status">
@@ -191,9 +171,14 @@ const VideoPanelNormal = () => {
                   <>
                     <Col lg={12} md={12} sm={12}>
                       <div className="normal-avatar">
-                        {initiateCallRoomID !== null ? (
+                        {initiateCallRoomID !== null ||
+                        callAcceptedRoomID !== null ? (
                           <iframe
-                            src={callerURL}
+                            src={
+                              callAcceptedRecipientID === currentUserID
+                                ? participantURL
+                                : callerURL
+                            }
                             title="Live Video"
                             width="100%"
                             height="100%"
