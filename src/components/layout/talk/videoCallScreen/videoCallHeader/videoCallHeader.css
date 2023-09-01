@@ -27,7 +27,7 @@
 .normal-screen-top-icons {
     display: flex !important;
     align-items: center !important;
-    justify-content: start !important;
+    justify-content: end !important;
     gap: 25px !important;
 }
 

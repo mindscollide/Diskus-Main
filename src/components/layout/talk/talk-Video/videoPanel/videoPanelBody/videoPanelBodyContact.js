@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { Container, Row, Col } from 'react-bootstrap'
-import { TextField } from '../../../../../elements'
+import { TextField, Loader } from '../../../../../elements'
 import './videoPanelBody.css'
 import VideoCallIcon from '../../../../../../assets/images/VideoCall-Icon.png'
 import { Spin } from 'antd'
@@ -13,7 +13,10 @@ import {
   InitiateVideoCall,
   getVideoRecipentData,
 } from '../../../../../../store/actions/VideoMain_actions'
-import { videoOutgoingCallFlag } from '../../../../../../store/actions/VideoFeature_actions'
+import {
+  videoOutgoingCallFlag,
+  normalizeVideoPanelFlag,
+} from '../../../../../../store/actions/VideoFeature_actions'
 
 const VideoPanelBodyContact = () => {
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
@@ -81,7 +84,7 @@ const VideoPanelBodyContact = () => {
   }, [VideoMainReducer?.VideoCallUsersData])
 
   const otoVideoCall = (userData) => {
-    dispatch(videoOutgoingCallFlag(true))
+    // dispatch(videoOutgoingCallFlag(true))
     console.log('Video Called User Data', userData)
     let Data = {
       RecipentIDs: [userData.userID],
@@ -90,6 +93,7 @@ const VideoPanelBodyContact = () => {
     }
     dispatch(InitiateVideoCall(Data, navigate, t))
     dispatch(getVideoRecipentData(userData))
+    dispatch(normalizeVideoPanelFlag(true))
     console.log('Video Called User Data', Data)
   }
 

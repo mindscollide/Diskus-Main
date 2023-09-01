@@ -5888,7 +5888,6 @@ body[dir="rtl"] .bg-white.border-radius-4.border {
   border: none !important;
 }
 
-
 .ant-upload-list-picture-card-container {
   display: block !important;
 }
@@ -5897,6 +5896,7 @@ body[dir="rtl"] .bg-white.border-radius-4.border {
   margin: 0 auto !important;
   display: flex !important;
 }
+
 .ant-upload-list-picture-card .ant-upload-list-item-uploading.ant-upload-list-item {
   border-radius: 50% !important;
   display: flex;

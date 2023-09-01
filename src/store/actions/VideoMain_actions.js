@@ -6,7 +6,12 @@ import {
   getAllVideoCallUsers,
   initiateVideoCall,
   videoCallResponse,
+  getUserRecentCalls,
 } from '../../commen/apis/Api_config'
+import {
+  normalizeVideoPanelFlag,
+  videoOutgoingCallFlag,
+} from './VideoFeature_actions'
 
 const getAllVideoCallUsersInitial = () => {
   return {
@@ -154,6 +159,7 @@ const InitiateVideoCall = (Data, navigate, t) => {
                   t('Call-initiated-successfully'),
                 ),
               )
+              await dispatch(videoOutgoingCallFlag(true))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -164,6 +170,8 @@ const InitiateVideoCall = (Data, navigate, t) => {
               await dispatch(
                 initiateVideoCallFail(t('Call-not-initiated-successfully')),
               )
+              await dispatch(videoOutgoingCallFlag(false))
+              await dispatch(normalizeVideoPanelFlag(false))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -297,6 +305,93 @@ const getVideoRecipentData = (response) => {
   }
 }
 
+const getUserRecentCallsInitial = () => {
+  return {
+    type: actions.GET_ALL_RECENTCALLS_INITIAL,
+  }
+}
+
+const getUserRecentCallsSuccess = (response, message) => {
+  return {
+    type: actions.GET_ALL_RECENTCALLS_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+const getUserRecentCallsFail = (message) => {
+  return {
+    type: actions.GET_ALL_RECENTCALLS_FAIL,
+    message: message,
+  }
+}
+
+const GetUserRecentCalls = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(getUserRecentCallsInitial())
+    let form = new FormData()
+    form.append('RequestMethod', getUserRecentCalls.RequestMethod)
+    form.append('RequestData', JSON.stringify(Data))
+
+    axios({
+      method: 'post',
+      url: videoApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log('GetUserRecentCalls', response)
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(GetUserRecentCalls(Data, navigate, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_GetUserRecetCalls_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getUserRecentCallsSuccess(
+                  response.data.responseResult,
+                  t('Record-found'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_GetUserRecetCalls_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(getUserRecentCallsFail(t('No-records-found')))
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_GetUserRecetCalls_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(getUserRecentCallsFail(t('Something-went-wrong')))
+            }
+          } else {
+            await dispatch(getUserRecentCallsFail(t('Something-went-wrong')))
+          }
+        } else {
+          await dispatch(getUserRecentCallsFail(t('Something-went-wrong')))
+        }
+      })
+      .catch((response) => {
+        dispatch(getUserRecentCallsFail(t('Something-went-wrong')))
+      })
+  }
+}
+
 export {
   GetAllVideoCallUsers,
   InitiateVideoCall,
@@ -304,4 +399,5 @@ export {
   VideoCallResponse,
   getVideoRecipentData,
   videoCallAccepted,
+  GetUserRecentCalls,
 }

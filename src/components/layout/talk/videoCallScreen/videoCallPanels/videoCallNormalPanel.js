@@ -6,6 +6,7 @@ import VideoCallNormalHeader from '../videoCallHeader/videoCallNormalHeader'
 import VideoPanelNormalChat from './videoCallNormalChat'
 import VideoPanelNormalAgenda from './videoCallNormalAgenda'
 import VideoPanelNormalMinutesMeeting from './videoCallNormalMinutesMeeting'
+import { Spin } from 'antd'
 import {
   agendaEnableNormalFlag,
   chatEnableNormalFlag,
@@ -24,6 +25,7 @@ import ActiveChat from '../../../../../assets/images/newElements/ActiveChatIcon.
 import ActiveNote from '../../../../../assets/images/newElements/ActiveNoteIcon.svg'
 import ActiveNote2 from '../../../../../assets/images/newElements/ActiveNote2Icon.svg'
 import Avatar2 from '../../../../../assets/images/newElements/Avatar2.png'
+import VideoOutgoing from '../videoCallBody/VideoMaxOutgoing'
 
 const VideoPanelNormal = () => {
   const dispatch = useDispatch()
@@ -40,18 +42,12 @@ const VideoPanelNormal = () => {
   let roomID = localStorage.getItem('RoomID')
   let callerName = localStorage.getItem('callerName')
   let recipentName = localStorage.getItem('recipentName')
-
-  const [incomingCallerData, setIncomingCallerData] = useState({
-    callerID: 0,
-    callerName: '',
-    roomID: '',
-  })
-
-  const [recipentCallerData, setRecipentCallerData] = useState({
-    callerID: 0,
-    callerName: '',
-    roomID: '',
-  })
+  let initiateCallRoomID = localStorage.getItem('initiateCallRoomID')
+  let callAcceptedRoomID = localStorage.getItem('acceptedRoomID')
+  let callAcceptedRecipientID = Number(
+    localStorage.getItem('acceptedRecipientID'),
+  )
+  let currentUserName = localStorage.getItem('name')
 
   const [callerURL, setCallerURL] = useState('')
   const [participantURL, setParticipantURL] = useState('')
@@ -121,21 +117,30 @@ const VideoPanelNormal = () => {
       dynamicBaseURLCaller,
       endIndexBaseURLCaller,
     )
-    let dynamicBaseURLParticipant = localStorage.getItem(
-      'videoBaseURLParticipant',
+    setCallerURL(
+      generateURLCaller(
+        extractedBaseURLCaller,
+        currentUserName,
+        initiateCallRoomID,
+      ),
     )
-    const endIndexBaseURLParticipant = endIndexUrl(dynamicBaseURLParticipant)
-    const extractedBaseURLParticipant = extractedUrl(
-      dynamicBaseURLParticipant,
-      endIndexBaseURLParticipant,
-    )
-    setCallerURL(generateURLCaller(extractedBaseURLCaller, callerName, roomID))
-    setParticipantURL(
-      generateURLParticipant(extractedBaseURLParticipant, recipentName, roomID),
-    )
-  }, [])
+  }, [initiateCallRoomID])
 
-  console.log('videoFeatureReducer', videoFeatureReducer)
+  useEffect(() => {
+    let dynamicBaseURLCaller = localStorage.getItem('videoBaseURLParticipant')
+    const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller)
+    const extractedBaseURLCaller = extractedUrl(
+      dynamicBaseURLCaller,
+      endIndexBaseURLCaller,
+    )
+    setParticipantURL(
+      generateURLParticipant(
+        extractedBaseURLCaller,
+        currentUserName,
+        callAcceptedRoomID,
+      ),
+    )
+  }, [callAcceptedRoomID])
 
   console.log('CALLER URL THEN PARTICIPANT', callerURL, participantURL)
 
@@ -144,96 +149,103 @@ const VideoPanelNormal = () => {
       <Row>
         <Col sm={12} md={12} lg={12}>
           <div className="videoCallScreen">
-            <VideoCallNormalHeader />
-            <Row>
+            {VideoMainReducer.FullLoader === true ? (
               <>
-                <Col lg={11} md={11} sm={11}>
-                  <Row>
+                <Spin className="talk-overallchat-spinner" />
+              </>
+            ) : (
+              <>
+                <VideoCallNormalHeader />
+                {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
+                  <VideoOutgoing />
+                ) : null}
+
+                {/* <Row>
+                  <Col lg={12} md={12} sm={12}>
+                    <div className="Caller-Status">
+                      Calling {VideoMainReducer.VideoRecipentData.userName}
+                    </div>
+                  </Col>
+                </Row> */}
+                <Row>
+                  <>
                     <Col lg={12} md={12} sm={12}>
                       <div className="normal-avatar">
-                        <iframe
-                          src={
-                            currentUserID === callerID
-                              ? callerURL
-                              : participantURL
-                          }
-                          title="Live Video"
-                          width="100%"
-                          height="100%"
-                          frameBorder="0"
-                          allow="camera;microphone;display-capture"
-                        />
+                        {initiateCallRoomID !== null ||
+                        callAcceptedRoomID !== null ? (
+                          <iframe
+                            src={
+                              callAcceptedRecipientID === currentUserID
+                                ? participantURL
+                                : callerURL
+                            }
+                            title="Live Video"
+                            width="100%"
+                            height="100%"
+                            frameBorder="0"
+                            allow="camera;microphone;display-capture"
+                          />
+                        ) : null}
                       </div>
                     </Col>
-                    {/* <Col lg={6} md={6} sm={12}>
-                      <div className="normal-avatar">
-                        <iframe
-                          src={participantURL}
-                          title="Live Video"
-                          width="100%"
-                          height="100%"
-                          frameBorder="0"
-                          allow="camera;microphone;display-capture"
-                        />
-                      </div>
-                    </Col> */}
-                  </Row>
-                </Col>
+                  </>
+                </Row>
+
+                {/* <>
+                          <Col lg={1} md={1} sm={1} className="video-side-icons">
+                            <div>
+                              {isActiveIcon ? (
+                                <img src={ActiveChat} onClick={onClickCloseChatHandler} />
+                              ) : (
+                                <img
+                                  src={ChatNonActive}
+                                  onClick={onClickCloseChatHandler}
+                                />
+                              )}
+                            </div>
+          
+                            <div>
+                              {isNoteActive ? (
+                                <img src={ActiveNote} onClick={onClickNoteIconHandler} />
+                              ) : (
+                                <img
+                                  src={NoteNonActive}
+                                  onClick={onClickNoteIconHandler}
+                                />
+                              )}
+                            </div>
+          
+                            <div onClick={() => setIsNote2Active(!isNote2Active)}>
+                              {isNote2Active ? (
+                                <img src={ActiveNote2} onClick={onClickMinutesHandler} />
+                              ) : (
+                                <img
+                                  src={Note_2NonActive}
+                                  onClick={onClickMinutesHandler}
+                                />
+                              )}
+                            </div>
+                          </Col>
+                        </> */}
+                <Row>
+                  <Col lg={8} md={8} sm={12}></Col>
+                  <Col lg={4} md={4} sm={12}>
+                    {videoFeatureReducer.VideoChatNormalFlag === true ? (
+                      <VideoPanelNormalChat />
+                    ) : null}
+
+                    {videoFeatureReducer.VideoAgendaNormalFlag === true ? (
+                      <VideoPanelNormalAgenda />
+                    ) : null}
+
+                    {videoFeatureReducer.VideoMinutesMeetingNormalFlag ===
+                    true ? (
+                      <VideoPanelNormalMinutesMeeting />
+                    ) : null}
+                  </Col>
+                </Row>
               </>
-
-              <>
-                <Col lg={1} md={1} sm={1} className="video-side-icons">
-                  <div>
-                    {isActiveIcon ? (
-                      <img src={ActiveChat} onClick={onClickCloseChatHandler} />
-                    ) : (
-                      <img
-                        src={ChatNonActive}
-                        onClick={onClickCloseChatHandler}
-                      />
-                    )}
-                  </div>
-
-                  <div>
-                    {isNoteActive ? (
-                      <img src={ActiveNote} onClick={onClickNoteIconHandler} />
-                    ) : (
-                      <img
-                        src={NoteNonActive}
-                        onClick={onClickNoteIconHandler}
-                      />
-                    )}
-                  </div>
-
-                  <div onClick={() => setIsNote2Active(!isNote2Active)}>
-                    {isNote2Active ? (
-                      <img src={ActiveNote2} onClick={onClickMinutesHandler} />
-                    ) : (
-                      <img
-                        src={Note_2NonActive}
-                        onClick={onClickMinutesHandler}
-                      />
-                    )}
-                  </div>
-                </Col>
-              </>
-            </Row>
-            <Row>
-              <Col lg={8} md={8} sm={12}></Col>
-              <Col lg={4} md={4} sm={12}>
-                {videoFeatureReducer.VideoChatNormalFlag === true ? (
-                  <VideoPanelNormalChat />
-                ) : null}
-
-                {videoFeatureReducer.VideoAgendaNormalFlag === true ? (
-                  <VideoPanelNormalAgenda />
-                ) : null}
-
-                {videoFeatureReducer.VideoMinutesMeetingNormalFlag === true ? (
-                  <VideoPanelNormalMinutesMeeting />
-                ) : null}
-              </Col>
-            </Row>
+            )}
           </div>
         </Col>
       </Row>
