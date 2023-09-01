@@ -27,7 +27,7 @@ const OrganizationLevelSetting = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { settingReducer } = useSelector((state) => state);
+  const { settingReducer, LanguageReducer } = useSelector((state) => state);
   const [securitystate, setSecuritystate] = useState(true);
   const [todo, setTodo] = useState(false);
   const [meetingsState, setmeetingsState] = useState(false);
@@ -2224,7 +2224,7 @@ const OrganizationLevelSetting = () => {
           </Col>
         </Row>
       </section>
-      {settingReducer.Loading ? <Loader /> : null}
+      {settingReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

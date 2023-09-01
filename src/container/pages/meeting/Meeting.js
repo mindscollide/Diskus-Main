@@ -88,8 +88,13 @@ const Meeting = () => {
   let meetingPageCurrent = parseInt(localStorage.getItem("MeetingPageCurrent"));
 
   //import meetingReducer and gettodolistreducer from reducers
-  const { meetingIdReducer, assignees, minuteofMeetingReducer, uploadReducer } =
-    state;
+  const {
+    meetingIdReducer,
+    assignees,
+    minuteofMeetingReducer,
+    uploadReducer,
+    LanguageReducer,
+  } = state;
   const {
     allMeetingsSocketData,
     MeetingStatusSocket,
@@ -1135,7 +1140,8 @@ const Meeting = () => {
       {meetingIdReducer.Loading ||
       assignees.Loading ||
       uploadReducer.Loading ||
-      minuteofMeetingReducer.Loading ? (
+      minuteofMeetingReducer.Loading ||
+      LanguageReducer.Loading ? (
         <Loader />
       ) : null}
     </>

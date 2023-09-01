@@ -22,7 +22,7 @@ const DeleteOrganization = () => {
     open: false,
     message: "",
   });
-  const { adminReducer } = useSelector((state) => state);
+  const { adminReducer, LanguageReducer } = useSelector((state) => state);
   const [deleteModal, setDeleteModal] = useState(false);
   const [deleteConfirmModal, setDeleteConfirmModal] = useState(false);
   const [deleteSuccessModal, setDeleteSuccesModal] = useState(false);
@@ -125,7 +125,7 @@ const DeleteOrganization = () => {
           </Col>
         </Row>
       </Container>
-      {adminReducer.Loading ? <Loader /> : null}
+      {adminReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       <Notification
         open={open.open}
         setOpen={open.open}
