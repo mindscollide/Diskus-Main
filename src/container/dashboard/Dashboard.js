@@ -68,7 +68,11 @@ import {
   changeMQTTJSONOne,
   changeMQQTTJSONTwo,
 } from "../../commen/functions/MQTTJson";
-import { resolutionMQTTCreate } from "../../store/actions/Resolution_actions";
+import {
+  resolutionMQTTCancelled,
+  resolutionMQTTClosed,
+  resolutionMQTTCreate,
+} from "../../store/actions/Resolution_actions";
 
 const Dashboard = () => {
   const location = useLocation();
@@ -877,7 +881,7 @@ const Dashboard = () => {
         setNotificationID(id);
       }
     }
-    if (data.action.toLowerCase() === "Resolution is Created".toLowerCase()) {
+    if (data.action.toLowerCase() === "Resolution".toLowerCase()) {
       if (
         data.payload.message.toLowerCase() ===
         "NEW_RESOLUTION_CREATION".toLowerCase()
@@ -894,10 +898,7 @@ const Dashboard = () => {
           });
         }
         dispatch(resolutionMQTTCreate(data.payload.model));
-      }
-    }
-    if (data.action.toLowerCase() === "Resolution Cancelled".toLowerCase()) {
-      if (
+      } else if (
         data.payload.message.toLowerCase() ===
         "RESOLUTION_CANCELLED".toLowerCase()
       ) {
@@ -912,11 +913,8 @@ const Dashboard = () => {
             ),
           });
         }
-        dispatch(resolutionMQTTCreate(data.payload.model));
-      }
-    }
-    if (data.action.toLowerCase() === "Resolution Closed".toLowerCase()) {
-      if (
+        dispatch(resolutionMQTTCancelled(data.payload.model));
+      } else if (
         data.payload.message.toLowerCase() === "RESOLUTION_CLOSED".toLowerCase()
       ) {
         if (data.viewable) {
@@ -930,9 +928,10 @@ const Dashboard = () => {
             ),
           });
         }
-        dispatch(resolutionMQTTCreate(data.payload.model));
+        dispatch(resolutionMQTTClosed(data.payload.model));
       }
     }
+
     if (data.action.toLowerCase() === "Video".toLowerCase()) {
       if (
         data.payload.message.toLowerCase() ===
