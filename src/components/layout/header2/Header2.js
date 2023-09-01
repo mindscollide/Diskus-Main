@@ -521,7 +521,7 @@ const Header2 = () => {
                 </Nav.Link>
               ) : null} */}
             </Nav>
-            </section>
+          </section>
           {/* </Container> */}
         </Navbar>
       )}
@@ -591,7 +591,6 @@ const Header2 = () => {
           setEditFlag={setEditFlag}
         />
       ) : null}
-      {/* {settingReducer.Loading ? <Loader /> : null} */}
     </>
   );
 };

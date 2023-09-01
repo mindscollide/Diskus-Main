@@ -31,7 +31,7 @@ const UserSettings = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { settingReducer } = useSelector((state) => state);
+  const { settingReducer, LanguageReducer } = useSelector((state) => state);
   const [securitystate, setSecuritystate] = useState(true);
   const [todo, setTodo] = useState(false);
   const [meetingsState, setmeetingsState] = useState(false);
@@ -1320,8 +1320,8 @@ const UserSettings = () => {
                 {calender ? (
                   <>
                     {userOptionsSettings.AllowGoogleCalenderSync !== null &&
-                      roleID != 1 &&
-                      roleID != 2 ? (
+                    roleID != 1 &&
+                    roleID != 2 ? (
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
@@ -1338,8 +1338,8 @@ const UserSettings = () => {
                       </Row>
                     ) : null}
                     {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
-                      roleID != 1 &&
-                      roleID != 2 ? (
+                    roleID != 1 &&
+                    roleID != 2 ? (
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <Checkbox
@@ -1978,9 +1978,9 @@ const UserSettings = () => {
                       </Col>
                     </Row>
                     {userOptionsSettings.AllowGoogleCalenderSync !== null &&
-                      userOptionsSettings.AllowGoogleCalenderSync !== false &&
-                      roleID != 1 &&
-                      roleID != 2 ? (
+                    userOptionsSettings.AllowGoogleCalenderSync !== false &&
+                    roleID != 1 &&
+                    roleID != 2 ? (
                       <Row className="mt-4">
                         <Col
                           lg={12}
@@ -2017,9 +2017,9 @@ const UserSettings = () => {
                       </Row>
                     ) : null}
                     {userOptionsSettings.AllowMicrosoftCalenderSync !== null &&
-                      userOptionsSettings.AllowMicrosoftCalenderSync !== false &&
-                      roleID != 1 &&
-                      roleID != 2 ? (
+                    userOptionsSettings.AllowMicrosoftCalenderSync !== false &&
+                    roleID != 1 &&
+                    roleID != 2 ? (
                       <Row className="mt-4">
                         <Col
                           lg={12}
@@ -2068,7 +2068,7 @@ const UserSettings = () => {
           </Col>
         </Row>
       </section>
-      {settingReducer.Loading ? <Loader /> : null}
+      {settingReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };
