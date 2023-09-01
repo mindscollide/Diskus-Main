@@ -17,8 +17,8 @@ const VideoPanelHeader = () => {
 
   // Chat Filter Options
   const chatFilterOptions = [
-    { className: 'talk-chat-filter', label: 'Contact', value: 1 },
-    { className: 'talk-chat-filter', label: 'Recent', value: 2 },
+    { className: 'talk-video-filter', label: 'Contact', value: 1 },
+    { className: 'talk-video-filter', label: 'Recent', value: 2 },
   ]
 
   //Chat Filter State
@@ -102,7 +102,7 @@ const VideoPanelHeader = () => {
               defaultValue={chatFilterOptions[0]}
               onChange={chatFilterHandler}
               className="videoFilter"
-              popupClassName="talk-chat-filter"
+              popupClassName="talk-video-filter"
             />
           </Col>
           <Col lg={5} md={5} sm={12}></Col>

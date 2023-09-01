@@ -90,3 +90,13 @@
   background-color: transparent !important;
   border: none !important;
 }
+
+.Caller-Status {
+  background: #d1edf1;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  margin-top: -10px;
+}

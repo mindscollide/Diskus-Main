@@ -2,6 +2,7 @@ import * as actions from '../action_types'
 
 const initialState = {
   Loading: false,
+  FullLoader: false,
   ResponseMessage: '',
   VideoCallUsersData: [],
   InitiateVideoCallData: [],
@@ -9,6 +10,7 @@ const initialState = {
   VideoRecipentData: [],
   InitiateVideoCallDataMQTT: [],
   VideoCallAcceptedData: [],
+  RecentCallsData: [],
 }
 
 const VideoMainReducer = (state = initialState, action) => {
@@ -41,14 +43,15 @@ const VideoMainReducer = (state = initialState, action) => {
     case actions.INITIATE_VIDEO_CALL_INITIAL: {
       return {
         ...state,
-        Loading: false,
+        FullLoader: true,
       }
     }
 
     case actions.INITIATE_VIDEO_CALL_SUCCESS: {
+      localStorage.setItem('initiateCallRoomID', action.response.roomID)
       return {
         ...state,
-        Loading: false,
+        FullLoader: false,
         InitiateVideoCallData: action.response,
         ResponseMessage: action.message,
       }
@@ -57,7 +60,7 @@ const VideoMainReducer = (state = initialState, action) => {
     case actions.INITIATE_VIDEO_CALL_FAIL: {
       return {
         ...state,
-        Loading: false,
+        FullLoader: false,
         InitiateVideoCallData: [],
         ResponseMessage: action.message,
       }
@@ -107,6 +110,31 @@ const VideoMainReducer = (state = initialState, action) => {
       return {
         ...state,
         VideoCallAcceptedData: action.response,
+      }
+    }
+
+    case actions.GET_ALL_RECENTCALLS_INITIAL: {
+      return {
+        ...state,
+        Loading: true,
+      }
+    }
+
+    case actions.GET_ALL_RECENTCALLS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        RecentCallsData: action.response,
+        ResponseMessage: action.message,
+      }
+    }
+
+    case actions.GET_ALL_RECENTCALLS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        RecentCallsData: [],
+        ResponseMessage: action.message,
       }
     }
 

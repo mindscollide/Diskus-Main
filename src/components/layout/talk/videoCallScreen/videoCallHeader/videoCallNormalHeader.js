@@ -10,14 +10,22 @@ import ScreenShare from '../../../../../assets/images/newElements/ScreenShareIco
 import HandRaise from '../../../../../assets/images/newElements/HandRaiseIcon.svg'
 import Board from '../../../../../assets/images/newElements/WhiteBoard.svg'
 import ThreeDots from '../../../../../assets/images/newElements/ThreeDotsIcon.svg'
+import ChatNonActive from '../../../../../assets/images/newElements/ChatIconNonActive.svg'
+import ActiveChat from '../../../../../assets/images/newElements/ActiveChatIcon.svg'
 import CallEndRedIcon from '../../../../../assets/images/newElements/CallRedIcon.svg'
 import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
   normalizeVideoPanelFlag,
+  agendaEnableNormalFlag,
+  chatEnableNormalFlag,
+  minutesMeetingEnableNormalFlag,
 } from '../../../../../store/actions/VideoFeature_actions'
+
 const VideoCallNormalHeader = () => {
-  const { videoFeatureReducer } = useSelector((state) => state)
+  const { videoFeatureReducer, VideoMainReducer } = useSelector(
+    (state) => state,
+  )
 
   const dispatch = useDispatch()
 
@@ -39,27 +47,59 @@ const VideoCallNormalHeader = () => {
     dispatch(minimizeVideoPanelFlag(false))
   }
 
+  const [isActiveIcon, setIsActiveIcon] = useState(false)
+
+  const onClickCloseChatHandler = () => {
+    if (isActiveIcon === false) {
+      dispatch(chatEnableNormalFlag(true))
+      setIsActiveIcon(true)
+      dispatch(agendaEnableNormalFlag(false))
+      dispatch(minutesMeetingEnableNormalFlag(false))
+    } else {
+      dispatch(chatEnableNormalFlag(false))
+      setIsActiveIcon(false)
+      dispatch(agendaEnableNormalFlag(false))
+      dispatch(minutesMeetingEnableNormalFlag(false))
+    }
+  }
+
   return (
     <Row className="mb-4">
-      <Col lg={3} md={3} sm={3} className="mt-1">
-        <p className="title-heading">IT Departmental Meeting</p>
+      <Col lg={3} md={3} sm={12} className="mt-1">
+        <p className="title-heading">
+          {VideoMainReducer.VideoRecipentData.userName}
+        </p>
       </Col>
       <>
-        <Col lg={6} md={6} sm={6} className="normal-screen-top-icons">
-          <img src={VideoCallIcon} />
-          <img src={MicVideo} />
-          <img src={ScreenShare} />
-          <img src={HandRaise} />
-          <img src={Board} />
-          <img src={ThreeDots} />
+        <Col lg={9} md={9} sm={12} className="normal-screen-top-icons">
+          {/* <img src={VideoCallIcon} /> */}
+          {/* <img src={MicVideo} /> */}
+          {/* <img src={ScreenShare} /> */}
+          {/* <img src={HandRaise} /> */}
+          {/* <img src={Board} /> */}
+          {/* <img src={ThreeDots} /> */}
+          {isActiveIcon ? (
+            <img
+              width={30}
+              src={ActiveChat}
+              onClick={onClickCloseChatHandler}
+            />
+          ) : (
+            <img
+              width={30}
+              src={ChatNonActive}
+              onClick={onClickCloseChatHandler}
+            />
+          )}
           <img src={CallEndRedIcon} onClick={closeVideoPanel} />
-        </Col>
-      </>
-      <>
-        <Col lg={2} md={2} sm={12} className="top-right-icons">
           <img width={20} src={MinimizeIcon} onClick={minimizeVideoPanel} />
           <img width={17} src={ExpandIcon} onClick={otoMaximizeVideoPanel} />
         </Col>
+      </>
+      <>
+        {/* <Col lg={2} md={2} sm={12} className="top-right-icons">
+
+        </Col> */}
       </>
 
       <>
