@@ -10,7 +10,6 @@ import {
   TextField,
   Modal,
   Notification,
-  Loader,
   TodoAssgineeEmployeeCard,
   TextArea,
   Button,
@@ -666,11 +665,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
         />
       </Container>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
-      {/* {toDoListReducer.Loading ? (
-        <Loader />
-      ) : postAssigneeComments.Loading ? (
-        <Loader />
-      ) : null} */}
     </>
   );
 };

@@ -8,7 +8,6 @@ import {
   CustomDatePicker,
   Notification,
   InputSearchFilter,
-  Loader,
 } from "./../../components/elements";
 import userImage from "../../assets/images/user.png";
 import { RemoveTimeDashes } from "./../../commen/functions/date_formater";
@@ -533,7 +532,6 @@ const ModalUpdateToDo = ({ updateFlagToDo, setUpdateFlagToDo, ModalTitle }) => {
         />
       </Container>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
-      {toDoListReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

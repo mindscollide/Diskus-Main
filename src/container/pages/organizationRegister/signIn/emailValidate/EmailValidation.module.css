@@ -110,7 +110,7 @@ body[dir="rtl"] .subscribNow_button_EmailVerify {
   right: -115px;
   bottom: -135px;
   transform: rotate(0deg);
-  z-index: 99999;
+  z-index: 0;
 }
 
 body[dir="rtl"] .Auth_Icon {

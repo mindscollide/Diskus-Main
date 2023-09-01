@@ -17,7 +17,6 @@ import {
   CustomDatePicker,
   Notification,
   InputSearchFilter,
-  Loader,
   MultiDatePicker,
 } from "./../../components/elements";
 import userImage from "../../assets/images/user.png";

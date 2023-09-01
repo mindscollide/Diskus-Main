@@ -5863,38 +5863,43 @@ body[dir="rtl"] .bg-white.border-radius-4.border {
   margin-left: 0;
 }
 
-.normal-avatar nav.navbar.navbar-expand-lg.navbar-dark.bg-dark {
-  display: none !important;
+.ant-modal-wrap {
+  z-index: 1000000000 !important;
 }
 
-.avatar-editor-container {
-  position: relative;
+.ant-upload.ant-upload-select-picture-card {
+  border-radius: 50% !important;
+  text-align: center;
+  /* display: flex !important;
+  justify-content: center !important;
+  align-items: center !important; */
+  margin: 0 auto !important;
 }
 
-.upload-button-container {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background-color: #007bff;
-  color: #fff;
-  padding: 5px 10px;
-  border-radius: 5px;
-  cursor: pointer;
+.ant-upload-list-picture-card .ant-upload-list-item-info {
+  border-radius: 50% !important;
 }
 
-.upload-button-label {
-  cursor: pointer;
+.ant-upload-list-picture-card-container {
+  margin: 0 auto !important;
 }
 
-.button-container {
-  margin-top: 10px;
+.ant-upload-list-picture-card .ant-upload-list-item {
+  border: none !important;
 }
 
-.preview-container {
-  margin-top: 20px;
+.ant-upload-list-picture-card-container {
+  display: block !important;
 }
 
-/* Style for the input[type="file"] element (hidden by default) */
-input[type="file"] {
-  display: none;
+.ant-upload-list-picture-card {
+  margin: 0 auto !important;
+  display: flex !important;
+}
+
+.ant-upload-list-picture-card .ant-upload-list-item-uploading.ant-upload-list-item {
+  border-radius: 50% !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
