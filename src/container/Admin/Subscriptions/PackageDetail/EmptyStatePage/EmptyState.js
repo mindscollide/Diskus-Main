@@ -8,6 +8,9 @@ import emptyState from "../../../../../assets/images/EmptyUpgradePakage.svg";
 const EmptyState = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const handleGoBack = () => {
+    navigate("/Diskus/Admin/PackageDetail");
+  };
   return (
     <Container>
       <Row className="mt-3">
@@ -59,7 +62,9 @@ const EmptyState = () => {
 
       <Row className="mt-4">
         <Col lg={12} md={12} sm={12} className="d-flex justify-content-center">
-          <span className={styles["Go_Back_Styles"]}>{t("Go-back")}</span>
+          <span className={styles["Go_Back_Styles"]} onClick={handleGoBack}>
+            {t("Go-back")}
+          </span>
         </Col>
       </Row>
     </Container>
