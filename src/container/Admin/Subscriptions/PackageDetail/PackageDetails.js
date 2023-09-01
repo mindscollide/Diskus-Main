@@ -18,9 +18,12 @@ import {
 } from "../../../../commen/functions/date_formater";
 import moment from "moment";
 import { isHTML } from "../../../../commen/functions/html_formater";
+import { packagesforUpgrade } from "../../../../store/actions/Admin_PackageUpgrade";
 const PackageDetails = () => {
   const dispatch = useDispatch();
-  const { GetSubscriptionPackage } = useSelector((state) => state);
+  const { GetSubscriptionPackage, LanguageReducer } = useSelector(
+    (state) => state
+  );
   const [maxAdminUser, setMaxAdminUser] = useState(0);
   const [maxBoardMembers, setBoardMembers] = useState(0);
   const [maxOtherUsers, setOtherUsers] = useState(0);
@@ -41,9 +44,7 @@ const PackageDetails = () => {
   //for translation
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const navigatetoUpgrade = () => {
-    navigate("/Diskus/Admin/UpgradePackage");
-  };
+
   useEffect(() => {
     dispatch(getSubscribeOrganizationPackage(navigate, t));
   }, []);
@@ -94,8 +95,12 @@ const PackageDetails = () => {
       );
     }
   }, [GetSubscriptionPackage.getCurrentActiveSubscriptionPackage]);
-  let newDate = moment(isPackageDetail.PackageSubscriptionDate).format("LL");
-  console.log(newDate, "newDatenewDatenewDatenewDate");
+
+  const navigatetoUpgrade = () => {
+    // navigate("/Diskus/Admin/UpgradePackage");
+    dispatch(packagesforUpgrade(navigate, t));
+  };
+
   return (
     <>
       <Container>
@@ -310,7 +315,9 @@ const PackageDetails = () => {
           </Col>
         </Row>
       </Container>
-      {GetSubscriptionPackage.Loading ? <Loader /> : null}
+      {GetSubscriptionPackage.Loading || LanguageReducer.Loading ? (
+        <Loader />
+      ) : null}
     </>
   );
 };

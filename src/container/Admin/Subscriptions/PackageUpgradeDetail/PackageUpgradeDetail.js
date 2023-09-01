@@ -18,7 +18,7 @@ import { getSubscriptionUpgradeAmountInfoApi } from "../../../../store/actions/A
 
 const PackageUpgradeDetail = () => {
   const Data = useSelector((state) => state);
-  const { GetSubscriptionPackage, Authreducer } = Data;
+  const { GetSubscriptionPackage, Authreducer, LanguageReducer } = Data;
   console.log("GetSubscriptionPackage", GetSubscriptionPackage);
   const [open, setOpen] = useState({
     open: false,
@@ -27,7 +27,7 @@ const PackageUpgradeDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  let tenureId = JSON.parse(localStorage.getItem("TenureOfSuscriptionID"))
+  let tenureId = JSON.parse(localStorage.getItem("TenureOfSuscriptionID"));
   let packageColorPath1 = "";
   let packageColorPath2 = "";
   console.log(
@@ -54,7 +54,7 @@ const PackageUpgradeDetail = () => {
     if (
       GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !== "" &&
       GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage !==
-      t("Organization-subscription-update")
+        t("Organization-subscription-update")
     ) {
       setOpen({
         ...open,
@@ -75,10 +75,12 @@ const PackageUpgradeDetail = () => {
     }
   }, [GetSubscriptionPackage.upgradeSubscriptionPackageResponseMessage]);
   useEffect(() => {
-    if (Authreducer.ResponseMessage !== "" && Authreducer.ResponseMessage !== t("Data-available")) {
-
+    if (
+      Authreducer.ResponseMessage !== "" &&
+      Authreducer.ResponseMessage !== t("Data-available")
+    ) {
     }
-  }, [Authreducer?.ResponseMessage])
+  }, [Authreducer?.ResponseMessage]);
   return (
     <>
       <Container className="py-4">
@@ -142,12 +144,21 @@ const PackageUpgradeDetail = () => {
                     {state.PackageTitle}
                   </h3>
                   <h4 className={styles["packageheading_amount"]}>
-                    ${tenureId !== null && tenureId !== undefined && tenureId === 1 ? state.FirstYearDiscountedPrice : state.PackageAmount}/
-                    <span className="fs-6">{t("Month")}</span>
+                    $
+                    {tenureId !== null &&
+                    tenureId !== undefined &&
+                    tenureId === 1
+                      ? state.FirstYearDiscountedPrice
+                      : state.PackageAmount}
+                    /<span className="fs-6">{t("Month")}</span>
                   </h4>
-                  {tenureId !== null && tenureId !== undefined && tenureId === 1 ? <p className={styles["packageheading_desciprtion"]}>
-                    {t("Annually-subscription")}
-                  </p> : null}
+                  {tenureId !== null &&
+                  tenureId !== undefined &&
+                  tenureId === 1 ? (
+                    <p className={styles["packageheading_desciprtion"]}>
+                      {t("Annually-subscription")}
+                    </p>
+                  ) : null}
 
                   <div className={styles["packageDetails"]}>
                     <p>{t("Get-more-users")}</p>
@@ -214,7 +225,11 @@ const PackageUpgradeDetail = () => {
           </Col>
         </Row>
       </Container>
-      {GetSubscriptionPackage.Loading || Authreducer.Loading ? <Loader /> : null}
+      {GetSubscriptionPackage.Loading ||
+      Authreducer.Loading ||
+      LanguageReducer.Loading ? (
+        <Loader />
+      ) : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
   );

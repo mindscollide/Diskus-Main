@@ -26,7 +26,7 @@ import { useNavigate } from "react-router-dom";
 
 const Organization = () => {
   //for translation
-  const { settingReducer } = useSelector((state) => state);
+  const { settingReducer, LanguageReducer } = useSelector((state) => state);
   console.log("settingReducersettingReducersettingReducer", settingReducer);
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -1909,7 +1909,7 @@ const Organization = () => {
           </Row>
         </Col>
       </Container>
-      {settingReducer.Loading ? <Loader /> : null}
+      {settingReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

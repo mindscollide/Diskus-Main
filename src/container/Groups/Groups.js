@@ -27,7 +27,7 @@ import { useNavigate } from "react-router-dom";
 
 const Groups = () => {
   const { t } = useTranslation();
-  const { GroupsReducer } = useSelector((state) => state);
+  const { GroupsReducer, LanguageReducer } = useSelector((state) => state);
   const [modalStatusChange, setModalStatusChange] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [statusValue, setStatusValue] = useState("");
@@ -511,7 +511,11 @@ const Groups = () => {
         />
       ) : null}
 
-      {GroupsReducer.getAllLoading || GroupsReducer.Loading ? <Loader /> : null}
+      {GroupsReducer.getAllLoading ||
+      GroupsReducer.Loading ||
+      LanguageReducer.Loading ? (
+        <Loader />
+      ) : null}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );

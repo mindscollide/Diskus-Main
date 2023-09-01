@@ -74,7 +74,7 @@ const UserProfileModal = ({
   const [message, setMessege] = useState("");
   // const [errorMessage, setErrorMessage] = useState(false);
   const state = useSelector((state) => state);
-  const { settingReducer } = state;
+  const { settingReducer, LanguageReducer } = state;
   console.log("settingReducer", settingReducer);
 
   const [selected, setSelected] = useState("US");
@@ -638,7 +638,7 @@ const UserProfileModal = ({
           }
         />
       </Container>
-      {settingReducer.Loading ? <Loader /> : null}
+      {settingReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );

@@ -48,6 +48,7 @@ const Signup = () => {
     GetSubscriptionPackage,
     Authreducer,
     adminReducer,
+    LanguageReducer,
   } = useSelector((state) => state);
 
   const navigate = useNavigate();
@@ -1137,7 +1138,7 @@ const Signup = () => {
         </Row>
       </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
-      {Authreducer.Loading && <Loader />}
+      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

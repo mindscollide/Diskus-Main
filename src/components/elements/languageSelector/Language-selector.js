@@ -255,7 +255,7 @@ const LanguageSelector = () => {
             );
           })}
       </div>
-      {LanguageReducer.Loading === true ? <Loader /> : null}
+      {/* {LanguageReducer.Loading === true ? <Loader /> : null} */}
     </section>
   );
 };

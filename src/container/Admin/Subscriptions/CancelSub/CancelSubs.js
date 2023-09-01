@@ -45,7 +45,7 @@ const CancelSubs = () => {
   const [isCompletionOfContract, setCompletionOfContract] = useState(false);
   const [enableTextArea, setEnableTextArea] = useState(false);
   const [isReason, setReason] = useState("");
-  const { GetSubscriptionPackage, adminReducer } = useSelector(
+  const { GetSubscriptionPackage, adminReducer, LanguageReducer } = useSelector(
     (state) => state
   );
   console.log("adminReduceradminReducer", GetSubscriptionPackage);
@@ -725,9 +725,9 @@ const CancelSubs = () => {
           }
         />
       </Container>
-      {GetSubscriptionPackage.Loading ? (
+      {GetSubscriptionPackage.Loading || LanguageReducer.Loading ? (
         <Loader />
-      ) : adminReducer.Loading ? (
+      ) : adminReducer.Loading || LanguageReducer.Loading ? (
         <Loader />
       ) : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />

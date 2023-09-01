@@ -36,7 +36,7 @@ const CreatePassword = () => {
   const [password, setPassword] = useState("");
 
   const [isPasswordStrong, setPasswordStrong] = useState(false);
-  const { Authreducer } = useSelector((state) => state);
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const [showNewPasswordIcon, setShowNewPasswordIcon] = useState(false);
   const [showConfirmPasswordIcon, setConfirmShowPasswordIcon] = useState(false);
   const [passwordDetails, setPasswordDetails] = useState({
@@ -313,7 +313,7 @@ const CreatePassword = () => {
       Authreducer.passwordUpdateOnForgotPasswordMessege !== "" &&
       Authreducer.passwordUpdateOnForgotPasswordMessege !== undefined &&
       Authreducer.passwordUpdateOnForgotPasswordMessege !==
-      t("2fa-verification") &&
+        t("2fa-verification") &&
       Authreducer.passwordUpdateOnForgotPasswordMessege !== t("2fa-enabled")
     ) {
       setOpen({
@@ -371,10 +371,9 @@ const CreatePassword = () => {
 
   return (
     <>
-
       <Container fluid>
         <Row className="position-relative">
-          <Col className="languageSelector" >
+          <Col className="languageSelector">
             <LanguageSelector />
           </Col>
         </Row>
@@ -521,9 +520,9 @@ const CreatePassword = () => {
                         type="submit"
                         text={
                           updateCheckPasswordFlag !== undefined &&
-                            updateCheckPasswordFlag !== null &&
-                            (updateCheckPasswordFlag === true ||
-                              updateCheckPasswordFlag === "true")
+                          updateCheckPasswordFlag !== null &&
+                          (updateCheckPasswordFlag === true ||
+                            updateCheckPasswordFlag === "true")
                             ? t("Confirm")
                             : t("Sign-up")
                         }
@@ -531,10 +530,10 @@ const CreatePassword = () => {
                           passwordDetails.Password === ""
                             ? true
                             : passwordDetails.ConfirmPassword === ""
-                              ? true
-                              : !isPasswordStrong
-                                ? true
-                                : false
+                            ? true
+                            : !isPasswordStrong
+                            ? true
+                            : false
                         }
                         className={styles["subscribNow_button_EmailVerify"]}
                       />
@@ -569,7 +568,7 @@ const CreatePassword = () => {
         </Row>
       </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
-      {Authreducer.Loading ? <Loader /> : null}
+      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };
