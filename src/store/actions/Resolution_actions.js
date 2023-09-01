@@ -1218,6 +1218,19 @@ const resolutionMQTTCreate = (response) => {
   };
 };
 
+const resolutionMQTTCancelled = (response) => {
+  return {
+    type: actions.CANCELLED_RESOLUTION_MQTT,
+    response: response,
+  };
+};
+const resolutionMQTTClosed = (response) => {
+  return {
+    type: actions.CLOSED_RESOLUTION_MQTT,
+    response: response,
+  };
+};
+
 export {
   viewResolutionModal,
   updateResolutionModal,
@@ -1238,4 +1251,6 @@ export {
   getResolutionResult,
   getResolutionbyResolutionID,
   resolutionMQTTCreate,
+  resolutionMQTTClosed,
+  resolutionMQTTCancelled,
 };

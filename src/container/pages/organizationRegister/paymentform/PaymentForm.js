@@ -8,7 +8,12 @@ import {
   X,
 } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { Accordian, Button, Loader, TextField } from "../../../../components/elements";
+import {
+  Accordian,
+  Button,
+  Loader,
+  TextField,
+} from "../../../../components/elements";
 import PayonnerLogo from "../../../../assets/images/payoneer-logo.svg";
 import { Link, useNavigate } from "react-router-dom";
 import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/Diskus_newRoundIcon_SignUp.svg";
@@ -22,14 +27,13 @@ import { useTranslation } from "react-i18next";
 import { getSelectedPacakgeDetail } from "../../../../store/actions/Auth2_actions";
 import Cookies from "js-cookie";
 
-
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
 import { subscriptionPaymentApi } from "../../../../store/actions/Admin_PackageDetail";
 const PaymentForm = () => {
   const { t, i18n } = useTranslation();
   const [annualPackageShow, setAnnualPackageShow] = useState(false);
   const [monthlyPackageShow, setMonthlyPackageShow] = useState(false);
-  const { Authreducer } = useSelector((state) => state);
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
   console.log("AuthreducerAuthreducer", Authreducer);
   const [isSelectedPacakage, setSelectedPackage] = useState({
     PackageCategory: "",
@@ -45,8 +49,8 @@ const PaymentForm = () => {
     InvoiceID: 0,
     OrganizationSubscriptionID: 0,
     AnuallyDiscountRate: 0,
-    PaymentBeforeDiscount: 0
-  })
+    PaymentBeforeDiscount: 0,
+  });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const goBack = () => {
@@ -61,12 +65,10 @@ const PaymentForm = () => {
     setMonthlyPackageShow(false);
   };
 
-
-
   const handleSubmit = async () => {
-    dispatch(subscriptionPaymentApi(navigate, BillDetails, t))
-  }
-  console.log("test")
+    dispatch(subscriptionPaymentApi(navigate, BillDetails, t));
+  };
+  console.log("test");
 
   useEffect(() => {
     dispatch(getSelectedPacakgeDetail(navigate, t));
@@ -114,23 +116,26 @@ const PaymentForm = () => {
         MonthlyBill: Authreducer.getSubscriptiondetails?.monthlyBill,
         TotalBill: Authreducer.getSubscriptiondetails?.totalBill,
         InvoiceID: Authreducer.getSubscriptiondetails?.pk_OrganizationInvoiceID,
-        OrganizationSubscriptionID: Authreducer.getSubscriptiondetails?.pK_OrganizationSubscriptionID,
-        AnuallyDiscountRate: Authreducer.getSubscriptiondetails?.firstYearDiscountPercentage,
-        PaymentBeforeDiscount: Authreducer.getSubscriptiondetails?.amountBeforeDiscount
-      })
+        OrganizationSubscriptionID:
+          Authreducer.getSubscriptiondetails?.pK_OrganizationSubscriptionID,
+        AnuallyDiscountRate:
+          Authreducer.getSubscriptiondetails?.firstYearDiscountPercentage,
+        PaymentBeforeDiscount:
+          Authreducer.getSubscriptiondetails?.amountBeforeDiscount,
+      });
     }
-  }, [Authreducer.getSubscriptiondetails])
+  }, [Authreducer.getSubscriptiondetails]);
 
   useEffect(() => {
     if (Authreducer.GetSelectedPacakgeDetails !== null) {
       let packageData =
         Authreducer.GetSelectedPacakgeDetails.organizationSelectedPackage;
       if (packageData.fK_TenureOfSubscription === 1) {
-        setAnnualPackageShow(true)
-        setMonthlyPackageShow(false)
+        setAnnualPackageShow(true);
+        setMonthlyPackageShow(false);
       } else {
-        setAnnualPackageShow(false)
-        setMonthlyPackageShow(true)
+        setAnnualPackageShow(false);
+        setMonthlyPackageShow(true);
       }
       setSelectedPackage({
         ...isSelectedPacakage,
@@ -146,10 +151,7 @@ const PaymentForm = () => {
   }, [Authreducer.GetSelectedPacakgeDetails]);
   return (
     <>
-
-
       <Container className={styles["paymentformBackground"]}>
-
         <Row className="position-relative">
           <Col sm={12} md={12} lg={12} className={styles["bg_roundimage"]}>
             <img src={DiskusnewRoundIconSignUp} alt="" />
@@ -161,13 +163,14 @@ const PaymentForm = () => {
             className="mx-auto mt-5 mb-4 col-lg-12 col-md-12 col-sm-12"
           >
             <h3
-              className={`${"Payment-Method-Heading MontserratSemiBold-600"} ${styles["paymentform_heading"]
-                }`}
+              className={`${"Payment-Method-Heading MontserratSemiBold-600"} ${
+                styles["paymentform_heading"]
+              }`}
             >
               {t("Choose-payment-method")}
             </h3>
           </Col>
-          <Col className={styles["languageSelector"]} >
+          <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
           <Col
@@ -255,7 +258,7 @@ const PaymentForm = () => {
                               ? styles["spanActive"]
                               : styles["span-formontly"]
                           }
-                        // onClick={handleManualPackage}
+                          // onClick={handleManualPackage}
                         >
                           {/* Monthly */}
                           {t("Monthly")}
@@ -266,7 +269,7 @@ const PaymentForm = () => {
                               ? styles["spanActive"]
                               : styles["span-forAnnually"]
                           }
-                        // onClick={handleAnnualPackage}
+                          // onClick={handleAnnualPackage}
                         >
                           {/* Annually */}
                           {t("Annually")}
@@ -284,7 +287,9 @@ const PaymentForm = () => {
                       }
                     >
                       ${BillDetails.TotalBill}/
-                      <span className="fs-6">{monthlyPackageShow ? t("Monthly") : t("Annually")}</span>
+                      <span className="fs-6">
+                        {monthlyPackageShow ? t("Monthly") : t("Annually")}
+                      </span>
                     </span>
 
                     <br />
@@ -296,16 +301,15 @@ const PaymentForm = () => {
                       }
                     >
                       ${BillDetails.PaymentBeforeDiscount}/
-                      <span className="text-xs ">
-                        {t("Annually")}
-                      </span>
+                      <span className="text-xs ">{t("Annually")}</span>
                     </span>
                   </div>
                   {annualPackageShow && (
                     <>
                       <div
-                        className={`${styles["disount_per"]
-                          } ${"MontserratMedium-500 text-center border w-25 mx-auto mb-3 fs-4"}`}
+                        className={`${
+                          styles["disount_per"]
+                        } ${"MontserratMedium-500 text-center border w-25 mx-auto mb-3 fs-4"}`}
                       >
                         <span className={styles["Arabic_Styles_Percent"]}>
                           {BillDetails.AnuallyDiscountRate}% {t("off")}
@@ -325,8 +329,9 @@ const PaymentForm = () => {
                     sm={12}
                     lg={12}
                     md={12}
-                    className={`${styles["Ordersummaryheading"]
-                      } ${"MontserratMedium-500"}`}
+                    className={`${
+                      styles["Ordersummaryheading"]
+                    } ${"MontserratMedium-500"}`}
                   >
                     {t("Order-summary")}
                   </Col>
@@ -355,8 +360,17 @@ const PaymentForm = () => {
                       </Col>
                     </Row>
                   </Col>
-                  <Col sm={12} md={12} lg={12} className="d-flex mt-4 justify-content-center">
-                    <Button text={t("Payment-procced")} onClick={handleSubmit} className={styles["PaymentFormSubmitPayment"]} />
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className="d-flex mt-4 justify-content-center"
+                  >
+                    <Button
+                      text={t("Payment-procced")}
+                      onClick={handleSubmit}
+                      className={styles["PaymentFormSubmitPayment"]}
+                    />
                   </Col>
                   {/* <Col
                     sm={12}
@@ -442,7 +456,7 @@ const PaymentForm = () => {
           </Col>
         </Row>
       </Container>
-      {Authreducer.Loading && <Loader />}
+      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

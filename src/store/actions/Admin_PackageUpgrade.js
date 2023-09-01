@@ -4,7 +4,10 @@ import {
   GetSubscriptionPackagesByOrganizationID,
   updateSubscriptionPackage,
 } from "../../commen/apis/Api_config";
-import { authenticationApi, getAdminURLs } from "../../commen/apis/Api_ends_points";
+import {
+  authenticationApi,
+  getAdminURLs,
+} from "../../commen/apis/Api_ends_points";
 import { RefreshToken } from "./Auth_action";
 
 const packageUpgradeInit = () => {
@@ -64,6 +67,7 @@ const packagesforUpgrade = (navigate, t) => {
               response.data.responseResult.responseMessage ===
               "ERM_AuthService_SignUpManager_GetSubscriptionPackagesForUpgrade_01"
             ) {
+              navigate("/Diskus/Admin/UpgradePackage");
               dispatch(
                 packageUpgradeSuccess(
                   response.data.responseResult.subscriptionPackages,
@@ -79,7 +83,9 @@ const packagesforUpgrade = (navigate, t) => {
               response.data.responseResult.responseMessage ===
               "ERM_AuthService_SignUpManager_GetSubscriptionPackagesForUpgrade_03"
             ) {
-              dispatch(packageUpgradeFail(t("Something-went-wrong")));
+              navigate("/Diskus/Admin/EmptyState");
+
+              dispatch(packageUpgradeFail(t("No-record-found")));
             } else {
               dispatch(packageUpgradeFail(t("Something-went-wrong")));
             }
@@ -118,7 +124,9 @@ const updateSubscribePackageFail = (message) => {
 const updateSubscribePackage = (navigate, ID, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let organizationID = JSON.parse(localStorage.getItem("organizationID"));
-  let tenureOfSuscriptionID = JSON.parse(localStorage.getItem("TenureOfSuscriptionID"));
+  let tenureOfSuscriptionID = JSON.parse(
+    localStorage.getItem("TenureOfSuscriptionID")
+  );
   let data = {
     OrganizationID: organizationID,
     SelectedPackageID: JSON.parse(ID),

@@ -5866,3 +5866,35 @@ body[dir="rtl"] .bg-white.border-radius-4.border {
 .normal-avatar nav.navbar.navbar-expand-lg.navbar-dark.bg-dark {
   display: none !important;
 }
+
+.avatar-editor-container {
+  position: relative;
+}
+
+.upload-button-container {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #007bff;
+  color: #fff;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.upload-button-label {
+  cursor: pointer;
+}
+
+.button-container {
+  margin-top: 10px;
+}
+
+.preview-container {
+  margin-top: 20px;
+}
+
+/* Style for the input[type="file"] element (hidden by default) */
+input[type="file"] {
+  display: none;
+}

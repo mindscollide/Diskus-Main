@@ -25,10 +25,10 @@ const ExpandedMenu = () => {
             as={Link}
             to="dataroom"
             eventKey="link-5"
-            onClick={() => {
-              dispatch(getDocumentsAndFolderApi(navigate, 3, t));
-              localStorage.setItem("setTableView", 3);
-            }}
+            // onClick={() => {
+            //   dispatch(getDocumentsAndFolderApi(navigate, 3, t));
+            //   localStorage.setItem("setTableView", 3);
+            // }}
             className={
               location.pathname === "/DisKus/dataroom" ||
               location.pathname === "/Diskus/dataroom"
@@ -295,7 +295,7 @@ const ExpandedMenu = () => {
                     : "Meeting_Side_bar_Tag"
                 }
               >
-                {t("DataRoom")}
+                {t("Data-room")}
               </span>
             </div>
           </Nav.Link>
@@ -391,7 +391,7 @@ const ExpandedMenu = () => {
                     : "Meeting_Side_bar_Tag"
                 }
               >
-                {t("Committee")}
+                {t("Committees")}
               </span>
             </div>
           </Nav.Link>
@@ -449,7 +449,7 @@ const ExpandedMenu = () => {
                     : "Meeting_Side_bar_Tag"
                 }
               >
-                {t("Resolution")}
+                {t("Resolutions")}
               </span>
             </div>
           </Nav.Link>

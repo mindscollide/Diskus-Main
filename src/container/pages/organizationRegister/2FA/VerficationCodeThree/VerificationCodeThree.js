@@ -17,7 +17,7 @@ import { mqttConnection } from "../../../../../commen/functions/mqttconnection";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
 const VerificationCodeThree = () => {
   const { t, i18n } = useTranslation();
-  const { Authreducer } = useSelector((state) => state);
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [verifyOTP, setVerifyOTP] = useState(null);
@@ -211,7 +211,7 @@ const VerificationCodeThree = () => {
       </Row> */}
       <Container fluid className="VerificationCodeThree">
         <Row className="position-relative">
-          <Col className="languageSelector" >
+          <Col className="languageSelector">
             <LanguageSelector />
           </Col>
         </Row>
@@ -240,9 +240,9 @@ const VerificationCodeThree = () => {
                       src={img1}
                       width="220px"
                       height="69px"
-                    // width="229.58px"
-                    // height="72.03px"
-                    // alt="diskus_logo"
+                      // width="229.58px"
+                      // height="72.03px"
+                      // alt="diskus_logo"
                     />
                   </Col>
                 </Row>
@@ -321,10 +321,10 @@ const VerificationCodeThree = () => {
                         parseInt(GobackSelection) === 1
                           ? "/twofac"
                           : parseInt(GobackSelection) === 2
-                            ? "/sendmailwithdevice"
-                            : parseInt(GobackSelection) === 3
-                              ? "/twofacmultidevice"
-                              : "/twofac"
+                          ? "/sendmailwithdevice"
+                          : parseInt(GobackSelection) === 3
+                          ? "/twofacmultidevice"
+                          : "/twofac"
                       }
                     >
                       {t("Go-back")}
@@ -371,7 +371,8 @@ const VerificationCodeThree = () => {
             />
           </Col> */}
         </Row>
-        {Authreducer.Loading && Authreducer.SendTwoFacOTPResponse !== null ? (
+        {(Authreducer.Loading && Authreducer.SendTwoFacOTPResponse !== null) ||
+        LanguageReducer.Loading ? (
           <Loader />
         ) : null}
       </Container>

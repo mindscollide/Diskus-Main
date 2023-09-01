@@ -20,9 +20,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import {
-  ResendOTP,
-} from "../../../../store/actions/Auth_Verify_Opt";
+import { ResendOTP } from "../../../../store/actions/Auth_Verify_Opt";
 import Cookies from "js-cookie";
 import LanguageChangeIcon from "../../../../assets/images/newElements/Language.svg";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
@@ -30,7 +28,7 @@ import LanguageSelector from "../../../../components/elements/languageSelector/L
 const VerifyEmailOTP = () => {
   const { t, i18n } = useTranslation();
 
-  const { Authreducer } = useSelector((state) => state);
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [key, setKey] = useState(1);
@@ -335,7 +333,7 @@ const VerifyEmailOTP = () => {
   return (
     <>
       <Row>
-        <Col className={styles["languageSelector"]} >
+        <Col className={styles["languageSelector"]}>
           <LanguageSelector />
         </Col>
       </Row>
@@ -465,7 +463,7 @@ const VerifyEmailOTP = () => {
         </Row>
       </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
-      {Authreducer.Loading && <Loader />}
+      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

@@ -29,15 +29,16 @@ import searchPaymentHistoryApi from "../../../../store/actions/Admin_SearchPayme
 import { Spin } from "antd";
 
 const EditUser = ({ show, setShow, ModalTitle }) => {
-  const { OrganizationBillingReducer, adminReducer } = useSelector((state) => state);
-  console.log(adminReducer, "adminReduceradminReduceradminReducer")
+  const { OrganizationBillingReducer, adminReducer, LanguageReducer } =
+    useSelector((state) => state);
+  console.log(adminReducer, "adminReduceradminReduceradminReducer");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [paymentMethods, setPaymentMethods] = useState([])
+  const [paymentMethods, setPaymentMethods] = useState([]);
 
   // for payment history
   const [paymentHistoryModal, setPaymentHistoryModal] = useState(false);
-  const [InvoiceNumber, setInvoiceNumber] = useState("")
+  const [InvoiceNumber, setInvoiceNumber] = useState("");
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -64,7 +65,6 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const PaymentStart = useRef(null);
   const PaymentEnd = useRef(null);
   const PaymentBy = useRef(null);
-
 
   //state for FilterbarModal
   const [filterSection, setFilterSection] = useState({
@@ -96,13 +96,16 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     PaymentEnd: "",
     PaymentBy: "",
   });
-  console.log(paymentInvoiceSection, "paymentInvoiceSectionpaymentInvoiceSectionpaymentInvoiceSection")
+  console.log(
+    paymentInvoiceSection,
+    "paymentInvoiceSectionpaymentInvoiceSectionpaymentInvoiceSection"
+  );
   const [invoiceStartDate, setInvoiceStartDate] = useState("");
   const [invoiceEndDate, setInvoiceEndDate] = useState("");
   const [paymentMethodValue, setPaymentMethodValue] = useState({
     label: "",
-    value: 0
-  })
+    value: 0,
+  });
   const [paymentStartDate, setPaymentStartDate] = useState("");
   const [paymentEndDate, setPaymentEndDate] = useState("");
 
@@ -135,7 +138,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
 
   //Open payment history modal
 
-  const openPaymentModal = async () => { };
+  const openPaymentModal = async () => {};
 
   // open delete modal on search button
 
@@ -153,11 +156,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setInvoiceEndDate("");
     setPaymentStartDate("");
     setPaymentEndDate("");
-    setLateSurcharge(false)
+    setLateSurcharge(false);
     setPaymentMethodValue({
       label: "",
-      value: 0
-    })
+      value: 0,
+    });
   };
 
   const resetPaymentHandler = () => {
@@ -168,9 +171,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       PaymentStartDate: "",
       PaymentEndDate: "",
       PaymentID: 0,
-      IsLateSurcharge: true
-    }
-    dispatch(searchPaymentHistoryApi(navigate, Data, t, setPaymentHistoryModal, 1))
+      IsLateSurcharge: true,
+    };
+    dispatch(
+      searchPaymentHistoryApi(navigate, Data, t, setPaymentHistoryModal, 1)
+    );
     setpaymentInvoiceSection({
       Invoice: "",
       InvoiceStart: "",
@@ -186,22 +191,28 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setLateSurcharge(false);
     setPaymentMethodValue({
       value: 0,
-      label: ""
-    })
+      label: "",
+    });
   };
   // convertGMTDateintoUTC
 
   const searchPaymentHandler = () => {
     let Data = {
       InvoiceNo: paymentInvoiceSection.Invoice,
-      InvoiceStartDate: invoiceStartDate !== "" ? convertGMTDateintoUTC(invoiceStartDate) : "",
-      InvoiceEndDate: invoiceEndDate !== "" ? convertGMTDateintoUTC(invoiceEndDate) : "",
-      PaymentStartDate: paymentStartDate !== "" ? convertGMTDateintoUTC(paymentStartDate) : "",
-      PaymentEndDate: paymentEndDate !== "" ? convertGMTDateintoUTC(paymentEndDate) : "",
+      InvoiceStartDate:
+        invoiceStartDate !== "" ? convertGMTDateintoUTC(invoiceStartDate) : "",
+      InvoiceEndDate:
+        invoiceEndDate !== "" ? convertGMTDateintoUTC(invoiceEndDate) : "",
+      PaymentStartDate:
+        paymentStartDate !== "" ? convertGMTDateintoUTC(paymentStartDate) : "",
+      PaymentEndDate:
+        paymentEndDate !== "" ? convertGMTDateintoUTC(paymentEndDate) : "",
       PaymentID: paymentMethodValue.value,
-      IsLateSurcharge: lateSurcharge
-    }
-    dispatch(searchPaymentHistoryApi(navigate, Data, t, setPaymentHistoryModal, 1))
+      IsLateSurcharge: lateSurcharge,
+    };
+    dispatch(
+      searchPaymentHistoryApi(navigate, Data, t, setPaymentHistoryModal, 1)
+    );
     setpaymentInvoiceSection({
       Invoice: "",
       InvoiceStart: "",
@@ -217,10 +228,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     setLateSurcharge(false);
     setPaymentMethodValue({
       value: 0,
-      label: ""
-    })
+      label: "",
+    });
   };
-
 
   const EditUserColumn = [
     {
@@ -259,8 +269,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       key: "paidamount",
       width: "13rem",
       render: (text, data) => {
-        return <span>${text}</span>
-      }
+        return <span>${text}</span>;
+      },
     },
   ];
 
@@ -308,15 +318,18 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const handleChangePaymentMethod = (data) => {
     setpaymentInvoiceSection({
       ...paymentInvoiceSection,
-      PaymentBy: data.value
-    })
+      PaymentBy: data.value,
+    });
     setPaymentMethodValue({
       ...paymentMethodValue,
       label: data.label,
-      value: data.value
-    })
-  }
-  console.log(paymentMethodValue, "paymentMethodValuepaymentMethodValuepaymentMethodValue")
+      value: data.value,
+    });
+  };
+  console.log(
+    paymentMethodValue,
+    "paymentMethodValuepaymentMethodValuepaymentMethodValue"
+  );
 
   function onChangeSurcharge(e) {
     setLateSurcharge(e.target.checked);
@@ -327,12 +340,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     if (name === "InvoiceNum" && value !== "") {
       // let valueCheck = value.replace(/[^0-9]/g, "")
       // if (valueCheck !== "") {
-      setInvoiceNumber(value)
+      setInvoiceNumber(value);
       // }
     } else if (name === "InvoiceNum" && value === "") {
-      setInvoiceNumber("")
+      setInvoiceNumber("");
     }
-  }
+  };
   // useEffect(() => {
   //   if (OrganizationBillingReducer.getInvoiceAndPaymentHistory !== null) {
   //     console.log(
@@ -359,7 +372,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   useEffect(() => {
     try {
       if (adminReducer.searchPaymentHistory !== null) {
-        let getPaymentHistory = adminReducer?.searchPaymentHistory?.paymentInfo?.paymentHistory;
+        let getPaymentHistory =
+          adminReducer?.searchPaymentHistory?.paymentInfo?.paymentHistory;
         if (getPaymentHistory.length > 0) {
           let newArr = [];
           getPaymentHistory.map((data, index) => {
@@ -368,45 +382,42 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
               invoiceDate: data.invoiceDate,
               paymentdate: data.paymentRecieveDate,
               paidamount: data.paidAmount,
-            })
-          })
+            });
+          });
           setRows(newArr);
         } else {
-          setRows([])
+          setRows([]);
         }
       } else {
-        setRows([])
+        setRows([]);
       }
-    } catch (error) {
-
-    }
-
-  }, [adminReducer.searchPaymentHistory])
+    } catch (error) {}
+  }, [adminReducer.searchPaymentHistory]);
 
   useEffect(() => {
     try {
-      if (adminReducer.PaymentMethods !== null && adminReducer.PaymentMethods.length > 0) {
-        let newArr = []
+      if (
+        adminReducer.PaymentMethods !== null &&
+        adminReducer.PaymentMethods.length > 0
+      ) {
+        let newArr = [];
         adminReducer.PaymentMethods.map((data, index) => {
           newArr.push({
             label: data.methodName,
-            value: data.pK_PaymentMethodID
-          })
-        })
-        setPaymentMethods(newArr)
+            value: data.pK_PaymentMethodID,
+          });
+        });
+        setPaymentMethods(newArr);
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
     return () => {
       setPaymentMethodValue({
         ...paymentMethodValue,
         label: "",
-        value: 0
-      })
-    }
-
-  }, [adminReducer.PaymentMethods])
+        value: 0,
+      });
+    };
+  }, [adminReducer.PaymentMethods]);
 
   useEffect(() => {
     let Data = {
@@ -416,11 +427,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       PaymentStartDate: "",
       PaymentEndDate: "",
       PaymentID: 0,
-      IsLateSurcharge: true
-    }
-    dispatch(searchPaymentHistoryApi(navigate, Data, t, setPaymentHistoryModal))
+      IsLateSurcharge: true,
+    };
+    dispatch(
+      searchPaymentHistoryApi(navigate, Data, t, setPaymentHistoryModal)
+    );
     // dispatch(invoiceandpaymenthistory(navigate, t));
-    dispatch(getPaymentMethodApi(navigate, t))
+    dispatch(getPaymentMethodApi(navigate, t));
   }, []);
 
   const handleSubmitSearchInvoice = (e) => {
@@ -433,9 +446,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         PaymentStartDate: "",
         PaymentEndDate: "",
         PaymentID: 0,
-        IsLateSurcharge: true
-      }
-      dispatch(searchPaymentHistoryApi(navigate, Data, t))
+        IsLateSurcharge: true,
+      };
+      dispatch(searchPaymentHistoryApi(navigate, Data, t));
     } else {
       let Data = {
         InvoiceNo: "",
@@ -444,41 +457,49 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         PaymentStartDate: "",
         PaymentEndDate: "",
         PaymentID: 0,
-        IsLateSurcharge: true
-      }
-      dispatch(searchPaymentHistoryApi(navigate, Data, t))
+        IsLateSurcharge: true,
+      };
+      dispatch(searchPaymentHistoryApi(navigate, Data, t));
     }
-  }
+  };
 
   useEffect(() => {
-    if (adminReducer.ResponseMessage !== "" && adminReducer.ResponseMessage !== t("Data-available") && adminReducer.ResponseMessage !== t("No-data-available")) {
+    if (
+      adminReducer.ResponseMessage !== "" &&
+      adminReducer.ResponseMessage !== t("Data-available") &&
+      adminReducer.ResponseMessage !== t("No-data-available")
+    ) {
       setOpen({
         open: true,
-        message: adminReducer.ResponseMessage
-      })
+        message: adminReducer.ResponseMessage,
+      });
       setTimeout(() => {
         setOpen({
           open: false,
-          message: ""
-        })
-      }, 4000)
+          message: "",
+        });
+      }, 4000);
     }
-  }, [adminReducer.ResponseMessage])
+  }, [adminReducer.ResponseMessage]);
 
   useEffect(() => {
-    if (OrganizationBillingReducer.ResponseMessage !== "" && OrganizationBillingReducer.ResponseMessage !== t("Data-available") && OrganizationBillingReducer.ResponseMessage !== t("No-data-available")) {
+    if (
+      OrganizationBillingReducer.ResponseMessage !== "" &&
+      OrganizationBillingReducer.ResponseMessage !== t("Data-available") &&
+      OrganizationBillingReducer.ResponseMessage !== t("No-data-available")
+    ) {
       setOpen({
         open: true,
-        message: OrganizationBillingReducer.ResponseMessage
-      })
+        message: OrganizationBillingReducer.ResponseMessage,
+      });
       setTimeout(() => {
         setOpen({
           open: false,
-          message: ""
-        })
-      }, 4000)
+          message: "",
+        });
+      }, 4000);
     }
-  }, [OrganizationBillingReducer.ResponseMessage])
+  }, [OrganizationBillingReducer.ResponseMessage]);
 
   return (
     <>
@@ -774,7 +795,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         />
       </Container>
       <Notification open={open.open} message={open.message} setOpen={setOpen} />
-      {OrganizationBillingReducer.Loading ? <Loader /> : null}
+      {OrganizationBillingReducer.Loading || LanguageReducer.Loading ? (
+        <Loader />
+      ) : null}
     </>
   );
 };

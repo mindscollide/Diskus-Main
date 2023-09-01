@@ -8,7 +8,12 @@ import {
   X,
 } from "react-bootstrap-icons";
 import { useDispatch, useSelector } from "react-redux";
-import { Accordian, Button, Loader, TextField } from "../../../../components/elements";
+import {
+  Accordian,
+  Button,
+  Loader,
+  TextField,
+} from "../../../../components/elements";
 import PayonnerLogo from "../../../../assets/images/payoneer-logo.svg";
 import { Link, useNavigate } from "react-router-dom";
 import DiskusnewRoundIconSignUp from "../../../../assets/images/newElements/Diskus_newRoundIcon_SignUp.svg";
@@ -22,12 +27,15 @@ import { useTranslation } from "react-i18next";
 import { getSelectedPacakgeDetail } from "../../../../store/actions/Auth2_actions";
 import Cookies from "js-cookie";
 import LanguageSelector from "../../../../components/elements/languageSelector/Language-selector";
-import { getSubscriptionPaymentDetail, getSubscriptionUpgradePaymentCompleteApi } from "../../../../store/actions/Admin_PackageDetail";
+import {
+  getSubscriptionPaymentDetail,
+  getSubscriptionUpgradePaymentCompleteApi,
+} from "../../../../store/actions/Admin_PackageDetail";
 const PaymentForm2 = () => {
   const { t, i18n } = useTranslation();
   const [annualPackageShow, setAnnualPackageShow] = useState(false);
   const [monthlyPackageShow, setMonthlyPackageShow] = useState(false);
-  const { Authreducer } = useSelector((state) => state);
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
   console.log("AuthreducerAuthreducer", Authreducer);
   const [isSelectedPacakage, setSelectedPackage] = useState({
     PackageCategory: "",
@@ -36,21 +44,19 @@ const PaymentForm2 = () => {
     DisountPer: "",
     OrderAmount: "",
   });
-  const [totalAmount, setTotalAmount] = useState(0)
-  let PaymentAmount = JSON.parse(localStorage.getItem("PaymentAmount"))
+  const [totalAmount, setTotalAmount] = useState(0);
+  let PaymentAmount = JSON.parse(localStorage.getItem("PaymentAmount"));
   useEffect(() => {
     if (PaymentAmount !== null && PaymentAmount !== undefined) {
-      setTotalAmount(PaymentAmount)
+      setTotalAmount(PaymentAmount);
     }
-  }, [PaymentAmount])
+  }, [PaymentAmount]);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const goBack = () => {
     navigate("/selectedpackage");
   };
-
-
 
   const languages = [
     { name: "English", code: "en" },
@@ -75,27 +81,21 @@ const PaymentForm2 = () => {
     document.body.dir = currentLangObj.dir || "ltr";
   }, [currentLangObj, t]);
 
-
   let currentLanguage = localStorage.getItem("i18nextLng");
   /// calcuate Anually price
 
-
   const handleSubmitforPayment = () => {
-    dispatch(getSubscriptionUpgradePaymentCompleteApi(navigate, t))
-  }
-
+    dispatch(getSubscriptionUpgradePaymentCompleteApi(navigate, t));
+  };
 
   useEffect(() => {
     if (Authreducer.getSubscriptionUpgradePaymentDetail !== null) {
-      setTotalAmount(Authreducer.getSubscriptionUpgradePaymentDetail.totalBill)
+      setTotalAmount(Authreducer.getSubscriptionUpgradePaymentDetail.totalBill);
     }
-  }, [Authreducer.getSubscriptionUpgradePaymentDetail])
+  }, [Authreducer.getSubscriptionUpgradePaymentDetail]);
   return (
     <>
-
-
       <Container className={styles["paymentformBackground"]}>
-
         <Row className="position-relative">
           {/* <Col sm={12} md={12} lg={12} className={styles["bg_roundimage"]}>
             <img src={DiskusnewRoundIconSignUp} alt="" />
@@ -107,8 +107,9 @@ const PaymentForm2 = () => {
             className="mx-auto  mt-3 mb-4 col-lg-12 col-md-12 col-sm-12 "
           >
             <h3
-              className={`${"Payment-Method-Heading MontserratSemiBold-600"} ${styles["paymentform_heading"]
-                }`}
+              className={`${"Payment-Method-Heading MontserratSemiBold-600"} ${
+                styles["paymentform_heading"]
+              }`}
             >
               {t("Choose-payment-method")}
             </h3>
@@ -120,7 +121,9 @@ const PaymentForm2 = () => {
             sm={12}
             md={12}
             lg={12}
-            className={`${"mx-auto border-radius-4 py-2 bg-white"} ${styles["paymentbox"]}`}
+            className={`${"mx-auto border-radius-4 py-2 bg-white"} ${
+              styles["paymentbox"]
+            }`}
           >
             <Row>
               <Col
@@ -183,8 +186,9 @@ const PaymentForm2 = () => {
                   sm={12}
                   lg={12}
                   md={12}
-                  className={`${styles["Ordersummaryheading"]
-                    } ${"MontserratMedium-500"}`}
+                  className={`${
+                    styles["Ordersummaryheading"]
+                  } ${"MontserratMedium-500"}`}
                 >
                   {t("Order-summary")}
                 </Col>
@@ -213,8 +217,17 @@ const PaymentForm2 = () => {
                     </Col>
                   </Row>
                 </Col>
-                <Col sm={12} md={12} lg={12} className="d-flex justify-content-center">
-                  <Button text={t("Payment-procced")} onClick={handleSubmitforPayment} className={styles["PaymentFormSubmitPayment"]} />
+                <Col
+                  sm={12}
+                  md={12}
+                  lg={12}
+                  className="d-flex justify-content-center"
+                >
+                  <Button
+                    text={t("Payment-procced")}
+                    onClick={handleSubmitforPayment}
+                    className={styles["PaymentFormSubmitPayment"]}
+                  />
                 </Col>
                 {/* <Col
                   sm={12}
@@ -299,7 +312,7 @@ const PaymentForm2 = () => {
           </Col>
         </Row>
       </Container>
-      {Authreducer.Loading && <Loader />}
+      {Authreducer.Loading || (LanguageReducer.Loading && <Loader />)}
     </>
   );
 };

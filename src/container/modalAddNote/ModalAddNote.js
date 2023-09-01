@@ -25,6 +25,10 @@ import StarIcon from "../../assets/images/Star.svg";
 import hollowstar from "../../assets/images/Hollowstar.svg";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../../components/elements/confirmationModal/ConfirmationModal";
+import {
+  regexOnlyForNumberNCharacters,
+  validateInput,
+} from "../../commen/functions/regex";
 const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   //For Localization
   const { uploadReducer } = useSelector((state) => state);
@@ -90,7 +94,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     let value = e.target.value;
     console.log("values", name, value);
     if (name === "Title" && value !== "") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      let valueCheck = validateInput(value);
       console.log(value, "Titlellee");
 
       if (valueCheck !== "") {
@@ -118,10 +122,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   const onTextChange = (content, delta, source) => {
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText != "") {
-      console.log(
-        JSON.stringify(content),
-        "tasksAttachmentstasksAttachmentstasksAttachments"
-      );
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -144,53 +144,46 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
   // for save button hit
   const notesSaveHandler = async () => {
-    if (
-      addNoteFields.Title.value !== "" &&
-      addNoteFields.Description.value !== ""
-    ) {
-      setIsAddNote(false);
-      setIsCreateNote(true);
-    } else {
-      setAddNoteFields({
-        ...addNoteFields,
-        Title: {
-          value: addNoteFields.Title.value,
-          errorMessage:
-            addNoteFields.Title.value === ""
-              ? t("Title-is-required")
-              : addNoteFields.Title.errorMessage,
-          errorStatus:
-            addNoteFields.Title.value === ""
-              ? true
-              : addNoteFields.Title.errorStatus,
-        },
+    try {
+      if (addNoteFields.Title.value !== "") {
+        setIsAddNote(false);
+        setIsCreateNote(true);
+      } else {
+        setAddNoteFields({
+          ...addNoteFields,
+          Title: {
+            value: addNoteFields.Title.value,
+            errorMessage:
+              addNoteFields.Title.value === ""
+                ? t("Title-is-required")
+                : addNoteFields.Title.errorMessage,
+            errorStatus:
+              addNoteFields.Title.value === ""
+                ? true
+                : addNoteFields.Title.errorStatus,
+          },
 
-        Description: {
-          value: addNoteFields.Description.value,
-          errorMessage:
-            addNoteFields.Description.value === ""
-              ? t("Description-is-required")
-              : addNoteFields.Description.errorMessage,
-          errorStatus:
-            addNoteFields.Description.value === ""
-              ? true
-              : addNoteFields.Description.errorStatus,
-        },
-      });
-      setIsCreateNote(false);
-      setOpen({
-        ...open,
-        open: true,
-        message: t("Field-should-not-be-empty"),
-      });
-      setTimeout(() => {
+          Description: {
+            value: addNoteFields.Description.value,
+            errorMessage: "",
+            errorStatus: false,
+          },
+        });
+        setIsCreateNote(false);
         setOpen({
           ...open,
-          open: false,
-          message: "",
+          open: true,
+          message: t("Field-should-not-be-empty"),
         });
-      }, 3000);
-    }
+        setTimeout(() => {
+          setOpen({
+            ...open,
+            open: false,
+            message: "",
+          });
+        }, 3000);
+      }
+    } catch (error) {}
   };
 
   //Upload File Handler
@@ -373,12 +366,8 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   };
 
   const handleClick = async () => {
-    if (
-      addNoteFields.Title.value !== "" &&
-      addNoteFields.Description.value !== ""
-    ) {
+    if (addNoteFields.Title.value !== "") {
       let counter = Object.keys(fileForSend).length - 1;
-
       if (Object.keys(fileForSend).length > 0) {
         const uploadFiles = (fileForSend) => {
           const uploadPromises = fileForSend.map((newData) => {
@@ -435,10 +424,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     } else {
     }
   };
-
-  // useEffect(() => {
-  //   NoteTitle.current.focus();
-  // }, []);
 
   const enterKeyHandler = (event) => {
     if (event.key === "Tab" && !event.shiftKey) {
@@ -512,21 +497,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                     </Col>
                   </Row>
 
-                  {/* <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      xs={12}
-                      className="d-flex justify-content-start"
-                    >
-                      <p className={styles["date-addnote"]}>
-                        {t("Created-on")}: {moment(date).format("Do-MMM-YYYY")}{" "}
-                        | {moment(date).format("LT")}
-                      </p>
-                    </Col>
-                  </Row> */}
-
                   <Row className="mt-2">
                     <Col
                       lg={12}
@@ -538,7 +508,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       <Form.Control
                         placeholder={t("Note-title")}
                         className={styles["modal-Note-Title-Input"]}
-                        // className="modalAddNoteTitleInput"
                         name="Title"
                         ref={NoteTitle}
                         onKeyDown={(event) => enterKeyHandler(event, editorRef)}
@@ -795,8 +764,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       lg={12}
                       className={styles["Confirmationmodal_body_text"]}
                     >
-                      Are you sure? If you click on close button the data will
-                      reset and modal will close.
+                      {t("Are-you-sure-note-reset-closed")}
                     </Col>
                   </Row>
                 </>
@@ -880,7 +848,6 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                         text={"Close"}
                       />
                     </Col>
-                    {/* <Col sm={12} md={6} lg={6} onClick={() => setAddNewModal(false)}>Close</Col> */}
                   </Row>
                 </>
               ) : null}

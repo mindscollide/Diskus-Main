@@ -1,0 +1,31 @@
+.Emplty_state_heading {
+  font-family: "MontserratSemiBold";
+  font-size: 40px !important;
+  color: #5a5a5a;
+}
+
+.Empty_State_SubHeading {
+  font-family: "Montserrat";
+  font-size: 16px !important;
+  color: #5a5a5a;
+}
+
+.UpgradePackageCard {
+  background-color: #fff;
+  border-radius: 4px;
+  padding: 30px 10px;
+  position: relative;
+}
+
+.Go_Back_Styles {
+  color: #6172d6;
+  font-family: "Montserrat";
+  font-size: 20px !important;
+  text-decoration: underline !important;
+}
+
+.UpgradeYourPakage {
+  color: #6172d6;
+  font-family: "MontserratSemiBold";
+  font-size: 40px !important;
+}

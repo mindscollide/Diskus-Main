@@ -816,7 +816,11 @@ const getUserRecentCalls = {
   RequestMethod: 'ServiceManager.GetUserRecetCalls',
 }
 
+const updateProfilePictureRM = {
+  RequestMethod: "ServiceManager.UpdateProfilePicture",
+};
 export {
+  updateProfilePictureRM,
   DeleteCommentRM,
   subscriptionPackageUpgradeAmount,
   paymentCompleteMethod,

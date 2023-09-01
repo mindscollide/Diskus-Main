@@ -646,7 +646,7 @@ const Sidebar = () => {
                           : "Meeting_Side_bar_Tag"
                       }
                     >
-                      {t("Calender")}
+                      {t("Calendar")}
                     </span>
                   </div>
                 </Nav.Link>
@@ -824,7 +824,7 @@ const Sidebar = () => {
                     </svg>
                     <span
                       className={
-                        showMore||
+                        showMore ||
                         location.pathname === "/DisKus/dataroom" ||
                         location.pathname === "/DisKus/groups" ||
                         location.pathname === "/DisKus/committee" ||

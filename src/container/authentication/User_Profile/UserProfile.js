@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import UserProfileSetting from "../../../../src/assets/images/Userprofile-1.png";
+import ImageUpload from "react-image-easy-upload";
 import {
   TextField,
   Button,
@@ -29,6 +30,8 @@ import {
   updateuserprofile,
 } from "../../../store/actions/GetUserSetting";
 import settingReducer from "../../../store/reducers/Setting_reducer";
+import { updateUserProfilePicture } from "../../../store/actions/UpdateUserProfile";
+import AvatarEditorComponent from "../../../components/elements/imageUploader/ImageUploader";
 
 const UserProfileModal = ({
   ModalTitle,
@@ -59,16 +62,19 @@ const UserProfileModal = ({
   // for enable states
   const [nameEnable, setNameEanble] = useState(true);
   const [erorbar, setErrorBar] = useState(false);
+  const [userProfile, setUserProfile] = useState("");
+  const [Base64Url, setBase64Url] = useState(null);
+  console.log(userProfile, "userProfileuserProfileuserProfile");
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [designationEnable, setDesignationEnable] = useState(true);
   const [selectedNonEditCountry, setSelectedNonEditCountry] = useState("");
   const [mobileEnable, setMobileEnable] = useState(true);
-  const [isFlagEnable, setIsFlagEnable] = useState(false);
-  const [localValue, setLocalValue] = useState(gregorian_en);
+  // const [isFlagEnable, setIsFlagEnable] = useState(false);
+  // const [localValue, setLocalValue] = useState(gregorian_en);
   const [message, setMessege] = useState("");
-  const [errorMessage, setErrorMessage] = useState(false);
+  // const [errorMessage, setErrorMessage] = useState(false);
   const state = useSelector((state) => state);
-  const { countryNamesReducer, settingReducer } = state;
+  const { settingReducer, LanguageReducer } = state;
   console.log("settingReducer", settingReducer);
 
   const [selected, setSelected] = useState("US");
@@ -79,7 +85,7 @@ const UserProfileModal = ({
     setSelected(country);
     setSelectedCountry(country);
     let a = Object.values(countryNameforPhoneNumber).find((obj) => {
-      return obj.primary == country;
+      return obj.primary === country;
     });
     console.log("Selected-Values", a, country);
     setUserProfileEdit({
@@ -122,7 +128,7 @@ const UserProfileModal = ({
     if (name === "Designation" && value !== "") {
       let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
       if (valueCheck !== "") {
-        setErrorMessage(false);
+        // setErrorMessage(false);
         setUserProfileEdit({
           ...userProfileEdit,
           Designation: valueCheck.trimStart(),
@@ -130,7 +136,7 @@ const UserProfileModal = ({
         setMessege(t("(Maximum-character-100.-alpha-numeric-field)"));
       }
     } else if (name === "Designation" && value === "") {
-      setErrorMessage(true);
+      // setErrorMessage(true);
       setUserProfileEdit({
         ...userProfileEdit,
         Designation: "",
@@ -188,7 +194,7 @@ const UserProfileModal = ({
       );
       let a = Object.values(countryNameforPhoneNumber).find((obj) => {
         return (
-          obj.primary ==
+          obj.primary ===
           UserData.organization.countryCode.fK_NumberWorldCountryID
         );
       });
@@ -262,11 +268,11 @@ const UserProfileModal = ({
   }, [settingReducer.GetUserDetailsResponse]);
 
   useEffect(() => {
-    if (currentLanguage != undefined) {
+    if (currentLanguage !== undefined) {
       if (currentLanguage === "en") {
-        setLocalValue(gregorian_en);
+        // setLocalValue(gregorian_en);
       } else if (currentLanguage === "ar") {
-        setLocalValue(arabic_ar);
+        // setLocalValue(arabic_ar);
       }
     }
   }, [currentLanguage]);
@@ -281,10 +287,10 @@ const UserProfileModal = ({
       let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
       let userID = JSON.parse(localStorage.getItem("userID"));
       if (
-        userProfileEdit.Designation != "" &&
-        userProfileEdit.Name != "" &&
-        userProfileEdit.CountyCode != 0 &&
-        userProfileEdit.Mobile != ""
+        userProfileEdit.Designation !== "" &&
+        userProfileEdit.Name !== "" &&
+        userProfileEdit.CountyCode !== 0 &&
+        userProfileEdit.Mobile !== ""
       ) {
         let userInformation = {
           UserID: userID,
@@ -299,7 +305,16 @@ const UserProfileModal = ({
         setMobileEnable(true);
         setDesignationEnable(true);
         setNameEanble(true);
-        dispatch(updateuserprofile(navigate, userInformation, t, setMobileEnable, setDesignationEnable, setNameEanble));
+        dispatch(
+          updateuserprofile(
+            navigate,
+            userInformation,
+            t,
+            setMobileEnable,
+            setDesignationEnable,
+            setNameEanble
+          )
+        );
       }
     } else {
       setErrorBar(true);
@@ -307,6 +322,29 @@ const UserProfileModal = ({
         flag: true,
         message: t("Please-fill-all-the-fields"),
       });
+    }
+  };
+
+  const uploadProfilePicChangeHandler = (imageObj) => {
+    // Create a FileReader
+
+    if (imageObj) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        const base64String = e.target.result;
+        console.log(
+          base64String.split(","),
+          userProfile,
+          "imageObjimageObjimageObjimageObj"
+        );
+        setBase64Url({ base64String });
+        setUserProfile(imageObj);
+        dispatch(
+          updateUserProfilePicture(navigate, t, imageObj.name, base64String)
+        );
+      };
+      reader.readAsDataURL(imageObj);
     }
   };
 
@@ -335,11 +373,14 @@ const UserProfileModal = ({
                     xs={12}
                     className="d-flex justify-content-center"
                   >
-                    <img
+                    <AvatarEditorComponent />
+
+                    {/* <img
                       src={UserProfileSetting}
                       value={userProfileEdit.ProfilePicture}
                       width={100}
-                    />
+                      alt=""
+                    /> */}
                   </Col>
                 </Row>
 
@@ -411,7 +452,7 @@ const UserProfileModal = ({
                     sm={6}
                     xs={12}
                     className="user-Profile"
-                  // className="d-flex justify-content-center"
+                    // className="d-flex justify-content-center"
                   >
                     <Form.Control
                       ref={Designation}
@@ -597,7 +638,7 @@ const UserProfileModal = ({
           }
         />
       </Container>
-      {settingReducer.Loading ? <Loader /> : null}
+      {settingReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
   );
