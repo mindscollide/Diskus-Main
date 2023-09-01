@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Row, Col } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import './videoCallHeader.css'
@@ -75,7 +75,7 @@ const VideoCallNormalHeader = () => {
             ? callerNameInitiate
             : currentUserName === callerName
             ? callerName
-            : null}
+            : VideoMainReducer.VideoRecipentData.userName}
         </p>
       </Col>
       <>
