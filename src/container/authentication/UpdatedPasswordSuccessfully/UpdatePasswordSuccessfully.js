@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Container, Row, Col, Form } from 'react-bootstrap'
+import React, { useEffect, useState } from "react";
+import { Container, Row, Col, Form } from "react-bootstrap";
 import {
   Button,
   Paper,
@@ -8,23 +8,23 @@ import {
   Notification,
   Loader,
   VerificationInputField,
-} from './../../../components/elements'
-import { Link, useNavigate } from 'react-router-dom'
-import DiskusLogo from './../../../assets/images/newElements/Diskus_newLogo.svg'
-import { cleareMessage } from '../../../store/actions/Auth2_actions'
-import styles from './UpdatePasswordSuccessfully.module.css'
-import DiskusAuthPageLogo from './../../../assets/images/newElements/Diskus_newRoundIcon.svg'
-import { useTranslation } from 'react-i18next'
-import Cookies from 'js-cookie'
-import LanguageChangeIcon from '../../../assets/images/newElements/Language.svg'
-import { useDispatch, useSelector } from 'react-redux'
-import LanguageSelector from '../../../components/elements/languageSelector/Language-selector'
+} from "./../../../components/elements";
+import { Link, useNavigate } from "react-router-dom";
+import DiskusLogo from "./../../../assets/images/newElements/Diskus_newLogo.svg";
+import { cleareMessage } from "../../../store/actions/Auth2_actions";
+import styles from "./UpdatePasswordSuccessfully.module.css";
+import DiskusAuthPageLogo from "./../../../assets/images/newElements/Diskus_newRoundIcon.svg";
+import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
+import LanguageChangeIcon from "../../../assets/images/newElements/Language.svg";
+import { useDispatch, useSelector } from "react-redux";
+import LanguageSelector from "../../../components/elements/languageSelector/Language-selector";
 
 const UpdatePasswordSuccessfully = () => {
-  const { Authreducer } = useSelector((state) => state)
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const { t, i18n } = useTranslation()
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { t, i18n } = useTranslation();
   // const languages = [
   //   { name: "English", code: "en" },
   //   { name: "Français", code: "fr" },
@@ -42,12 +42,12 @@ const UpdatePasswordSuccessfully = () => {
 
   const [open, setOpen] = useState({
     open: false,
-    message: '',
-  })
+    message: "",
+  });
   const handlechange = (e) => {
-    e.preventDefault()
-    navigate('/')
-  }
+    e.preventDefault();
+    navigate("/");
+  };
 
   // useEffect(() => {
   //   document.body.dir = currentLangObj.dir || "ltr";
@@ -55,32 +55,32 @@ const UpdatePasswordSuccessfully = () => {
 
   useEffect(() => {
     if (
-      Authreducer.passwordUpdateOnForgotPasswordMessege !== '' &&
+      Authreducer.passwordUpdateOnForgotPasswordMessege !== "" &&
       Authreducer.passwordUpdateOnForgotPasswordMessege !==
-        t('Password-updated-successfully')
+        t("Password-updated-successfully")
     ) {
       setOpen({
         ...open,
         open: true,
         message: Authreducer.passwordUpdateOnForgotPasswordMessege,
-      })
+      });
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
-          message: '',
-        })
-      }, 3000)
+          message: "",
+        });
+      }, 3000);
 
-      dispatch(cleareMessage())
+      dispatch(cleareMessage());
     }
-  }, [Authreducer.passwordUpdateOnForgotPasswordMessege])
+  }, [Authreducer.passwordUpdateOnForgotPasswordMessege]);
 
   return (
     <>
-      <Container fluid className={styles['auth_container']}>
+      <Container fluid className={styles["auth_container"]}>
         <Row>
-          <Col className={styles['languageSelector']}>
+          <Col className={styles["languageSelector"]}>
             <LanguageSelector />
           </Col>
         </Row>
@@ -92,12 +92,12 @@ const UpdatePasswordSuccessfully = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100"
           >
-            <Paper className={styles['Update_password_loginbox_auth_paper']}>
+            <Paper className={styles["Update_password_loginbox_auth_paper"]}>
               <Col
                 sm={12}
                 lg={12}
                 md={12}
-                className={styles['ForgotPassword_Verification_EmailVerifyBox']}
+                className={styles["ForgotPassword_Verification_EmailVerifyBox"]}
               >
                 <Row>
                   <Col
@@ -117,20 +117,20 @@ const UpdatePasswordSuccessfully = () => {
                       lg={12}
                       className="d-flex justify-content-center"
                     >
-                      <span className={styles['Update_Password_Heading']}>
-                        {t('Your-password')}
+                      <span className={styles["Update_Password_Heading"]}>
+                        {t("Your-password")}
                       </span>
                     </Col>
                   </Row>
-                  <Row className={styles['update_password_second_heading']}>
+                  <Row className={styles["update_password_second_heading"]}>
                     <Col
                       sm={12}
                       md={12}
                       lg={12}
                       className="d-flex justify-content-center"
                     >
-                      <span className={styles['Update_Password_Heading']}>
-                        {t('Has-been-updated')}
+                      <span className={styles["Update_Password_Heading"]}>
+                        {t("Has-been-updated")}
                       </span>
                     </Col>
                   </Row>
@@ -144,10 +144,10 @@ const UpdatePasswordSuccessfully = () => {
                       className="d-flex justify-content-center mt-1 "
                     >
                       <Button
-                        text={t('Back-to-sign-in')}
+                        text={t("Back-to-sign-in")}
                         className={
                           styles[
-                            'Update_Password_successfull_Next_button_EmailVerify'
+                            "Update_Password_successfull_Next_button_EmailVerify"
                           ]
                         }
                         onClick={handlechange}
@@ -164,28 +164,28 @@ const UpdatePasswordSuccessfully = () => {
             sm={8}
             className="position-relative d-flex overflow-hidden"
           >
-            <Col md={8} lg={8} sm={12} className={styles['Login_page_text']}>
-              <h1 className={styles['heading-1']}>
-                {t('Simplify-management')}
+            <Col md={8} lg={8} sm={12} className={styles["Login_page_text"]}>
+              <h1 className={styles["heading-1"]}>
+                {t("Simplify-management")}
               </h1>
-              <h1 className={styles['heading-2']}>{t('Collaborate')}</h1>
-              <h1 className={styles['heading-1']}>{t('Prioritize')}</h1>
+              <h1 className={styles["heading-2"]}>{t("Collaborate")}</h1>
+              <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
             <Col md={4} lg={4} sm={12} className="position-relative">
               <img
                 src={DiskusAuthPageLogo}
                 alt="auth_icon"
                 width="600px"
-                className={styles['Update_password_successfully_Auth_Icon']}
+                className={styles["Update_password_successfully_Auth_Icon"]}
               />
             </Col>
           </Col>
         </Row>
       </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
-      {Authreducer.Loading ? <Loader /> : null}
+      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
-  )
-}
+  );
+};
 
-export default UpdatePasswordSuccessfully
+export default UpdatePasswordSuccessfully;
