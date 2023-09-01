@@ -115,14 +115,13 @@ const updateUserPicture_fail = (message) => {
 };
 
 const updateUserProfilePicture = (navigate, t, fileName, base64) => {
-  let getBase64 = base64.split(",")[1];
   let currentUserID = localStorage.getItem("userID");
   let token = JSON.parse(localStorage.getItem("token"));
   let OrganizationID = localStorage.getItem("organizationID");
   let Data = {
     FK_UserID: Number(currentUserID),
     FK_OrganizationID: Number(OrganizationID),
-    Base64Img: getBase64,
+    Base64Img: base64,
     FileName: fileName,
   };
 
