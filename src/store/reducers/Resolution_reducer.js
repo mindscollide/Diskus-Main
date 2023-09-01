@@ -22,13 +22,27 @@ const initialState = {
   updateResolutionModal: false,
   viewResolutionModal: false,
   mqttResolutionCreated: null,
+  mqttResolutionCancelled: null,
+  mqttResolutionClosed: null,
 };
 const ResolutionReducer = (state = initialState, action) => {
   switch (action.type) {
+    case actions.CANCELLED_RESOLUTION_MQTT: {
+      return {
+        ...state,
+        mqttResolutionCancelled: action.response,
+      };
+    }
     case actions.NEW_RESOLUTION_CREATED_MQTT: {
       return {
         ...state,
         mqttResolutionCreated: action.response,
+      };
+    }
+    case actions.CLOSED_RESOLUTION_MQTT: {
+      return {
+        ...state,
+        mqttResolutionClosed: action.response,
       };
     }
     case actions.CURRENTRESOLUTIONSTATE: {

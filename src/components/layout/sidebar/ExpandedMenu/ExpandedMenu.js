@@ -25,10 +25,10 @@ const ExpandedMenu = () => {
             as={Link}
             to="dataroom"
             eventKey="link-5"
-            onClick={() => {
-              dispatch(getDocumentsAndFolderApi(navigate, 3, t));
-              localStorage.setItem("setTableView", 3);
-            }}
+            // onClick={() => {
+            //   dispatch(getDocumentsAndFolderApi(navigate, 3, t));
+            //   localStorage.setItem("setTableView", 3);
+            // }}
             className={
               location.pathname === "/DisKus/dataroom" ||
               location.pathname === "/Diskus/dataroom"
