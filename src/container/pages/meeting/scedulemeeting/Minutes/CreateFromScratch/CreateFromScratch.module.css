@@ -1,0 +1,58 @@
+.Box_Minutes {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 92px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  position: relative !important;
+  margin-left: 12px !important;
+  margin-top: 15px !important;
+}
+
+.Title_File {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 20px !important;
+  color: #5a5a5a !important;
+}
+
+.Date_Minutes_And_time {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+  color: #5f78d6 !important;
+}
+
+.Uploaded_heading {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+}
+
+.RedCrossClass {
+  position: absolute !important;
+  right: -6px;
+  top: -4px;
+  cursor: pointer !important;
+}
+
+.Show_more_Styles {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+  text-decoration: underline;
+  cursor: pointer !important;
+}
+
+.Name {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+}
+
+.Profile_minutes {
+  border-radius: 50% !important;
+}
+
+.Line_heigh {
+  margin-top: 7px !important;
+  line-height: 15px !important;
+}
