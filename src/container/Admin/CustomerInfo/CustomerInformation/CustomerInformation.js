@@ -39,7 +39,9 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let currentLanguage = localStorage.getItem("i18nextLng");
-  const { countryNamesReducer, adminReducer } = useSelector((state) => state);
+  const { countryNamesReducer, adminReducer, LanguageReducer } = useSelector(
+    (state) => state
+  );
   console.log(adminReducer, "adminReducer");
   const [countryNames, setCountryNames] = useState([]);
   const Name = useRef(null);
@@ -426,7 +428,9 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
       "customerInformationcustomerInformationcustomerInformation",
       customerInformation
     );
-    dispatch(updateCustomerOrganizationProfileDetail(navigate, customerInformation, t));
+    dispatch(
+      updateCustomerOrganizationProfileDetail(navigate, customerInformation, t)
+    );
     setCountrySelectEnable(true);
     setAddressEnable(true);
     setAddressTwoEnable(true);
@@ -483,7 +487,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
         console.log("obj", obj);
         return obj.shortCode == value;
       });
-    } catch { }
+    } catch {}
 
     console.log("CountryNamesData", a);
     console.log("CountryNamesData", a.pK_WorldCountryID);
@@ -766,7 +770,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         name="Address2"
                         onChange={customerInfoHandler}
                         value={customerSection.Address2 || ""}
-                      // applyClass="form-control2"
+                        // applyClass="form-control2"
                       />
                       <span className={styles["address_bottom_line"]}>
                         {!addressTwoEnable
@@ -986,7 +990,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
                         onKeyDown={(event) => handleKeyEnter(event, Number)}
                         maxLength={160}
                         placeholder={t("Contact-email")}
-                      // applyClass="form-control2"
+                        // applyClass="form-control2"
                       />
                     </Col>
                     <Col sm={12} md={2} lg={2}>
@@ -1203,7 +1207,7 @@ const CustomerInformation = ({ show, setShow, ModalTitle }) => {
           }
         />
       </Container>
-      {adminReducer.Loading ? <Loader /> : null}
+      {adminReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       <Notification
         open={open.open}
         message={open.message}

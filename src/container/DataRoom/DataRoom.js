@@ -126,7 +126,9 @@ const DataRoom = () => {
     { label: "Remove", value: 6, labelIcon: PDFICON },
   ]);
   const { t } = useTranslation();
-  const { uploadReducer, DataRoomReducer } = useSelector((state) => state);
+  const { uploadReducer, DataRoomReducer, LanguageReducer } = useSelector(
+    (state) => state
+  );
   const searchBarRef = useRef();
   const threedotFile = useRef();
   const threedotFolder = useRef();
@@ -3214,7 +3216,7 @@ const DataRoom = () => {
           setShowRenameFile={setShowRenameFile}
         />
       )}
-      {DataRoomReducer.Loading ? <Loader /> : null}
+      {DataRoomReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       {/* <Loader /> */}
       <Notification open={open.open} message={open.message} setOpen={setOpen} />
     </>

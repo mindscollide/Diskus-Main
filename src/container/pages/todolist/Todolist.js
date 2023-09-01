@@ -70,6 +70,7 @@ const TodoList = () => {
     assignees,
     getTodosStatus,
     socketTodoStatusData,
+    LanguageReducer,
   } = state;
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -1165,7 +1166,11 @@ const TodoList = () => {
       </Col>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
 
-      {toDoListReducer.Loading || (todoStatus.Loading && <Loader />)}
+      {toDoListReducer.Loading ||
+      todoStatus.Loading ||
+      LanguageReducer.Loading ? (
+        <Loader />
+      ) : null}
     </>
   );
 };

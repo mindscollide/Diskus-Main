@@ -174,7 +174,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       });
     }
   };
-  console.log(fileForSend, "fileForSendfileForSendfileForSendfileForSend");
 
   //State management of the Quill Editor
   const onTextChange = (content, delta, source) => {
@@ -202,55 +201,54 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   };
 
   useEffect(() => {
-    if (
-      NotesReducer.GetNotesByNotesId !== null &&
-      NotesReducer.GetNotesByNotesId !== undefined
-    ) {
-      console.log("NotesReducer", NotesReducer.GetNotesByNotesId);
-      setAddNoteFields({
-        ...addNoteFields,
-        Title: {
-          value: NotesReducer.GetNotesByNotesId.title,
-          errorMessage: "",
-          errorStatus: false,
-        },
-        createdDate: {
-          value: NotesReducer.GetNotesByNotesId.date,
-          errorMessage: "",
-          errorStatus: false,
-        },
-        createdTime: {
-          value: NotesReducer.GetNotesByNotesId.time,
-          errorMessage: "",
-          errorStatus: false,
-        },
-        ModifiedDate: {
-          value: NotesReducer.GetNotesByNotesId.modifiedDate,
-          errorMessage: "",
-          errorStatus: false,
-        },
-        ModifieTime: {
-          value: NotesReducer.GetNotesByNotesId.modifiedTime,
-          errorMessage: "",
-          errorStatus: false,
-        },
-        Description: {
-          value: NotesReducer.GetNotesByNotesId.description,
-          errorMessage: "",
-          errorStatus: false,
-        },
-        PK_NotesID: NotesReducer.GetNotesByNotesId.pK_NotesID,
+    try {
+      if (
+        NotesReducer.GetNotesByNotesId !== null &&
+        NotesReducer.GetNotesByNotesId !== undefined
+      ) {
+        setAddNoteFields({
+          ...addNoteFields,
+          Title: {
+            value: NotesReducer.GetNotesByNotesId.title,
+            errorMessage: "",
+            errorStatus: false,
+          },
+          createdDate: {
+            value: NotesReducer.GetNotesByNotesId.date,
+            errorMessage: "",
+            errorStatus: false,
+          },
+          createdTime: {
+            value: NotesReducer.GetNotesByNotesId.time,
+            errorMessage: "",
+            errorStatus: false,
+          },
+          ModifiedDate: {
+            value: NotesReducer.GetNotesByNotesId.modifiedDate,
+            errorMessage: "",
+            errorStatus: false,
+          },
+          ModifieTime: {
+            value: NotesReducer.GetNotesByNotesId.modifiedTime,
+            errorMessage: "",
+            errorStatus: false,
+          },
+          Description: {
+            value: NotesReducer.GetNotesByNotesId.description,
+            errorMessage: "",
+            errorStatus: false,
+          },
+          PK_NotesID: NotesReducer.GetNotesByNotesId.pK_NotesID,
 
-        FK_NotesStatusID: NotesReducer.GetNotesByNotesId.fK_NotesStatus,
-      });
-      setIsStarrted(NotesReducer.GetNotesByNotesId.isStarred);
-      setTasksAttachments({
-        TasksAttachments: NotesReducer.GetNotesByNotesId.notesAttachments,
-      });
-    }
+          FK_NotesStatusID: NotesReducer.GetNotesByNotesId.fK_NotesStatus,
+        });
+        setIsStarrted(NotesReducer.GetNotesByNotesId.isStarred);
+        setTasksAttachments({
+          TasksAttachments: NotesReducer.GetNotesByNotesId.notesAttachments,
+        });
+      }
+    } catch (error) {}
   }, [NotesReducer.GetNotesByNotesId]);
-
-  console.log(fileSize, fileForSend, "checking22");
 
   const uploadFilesToDo = (data) => {
     let fileSizeArr;
@@ -416,114 +414,107 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
       }
     }
   };
-  console.log(
-    tasksAttachments.TasksAttachments,
-    "tasksAttachmentstasksAttachmentstasksAttachmentstasksAttachments"
-  );
+
   const notesSaveHandler = () => {
-    if (
-      addNoteFields.Title.value !== "" &&
-      addNoteFields.Description.value !== ""
-    ) {
-      console.log("check2", fileForSend.length);
-
-      let counter = fileForSend.length;
-      if (Object.keys(fileForSend).length > 0) {
-        const uploadFiles = (fileForSend) => {
-          const uploadPromises = fileForSend.map((newData) => {
-            dispatch(FileUploadToDo(navigate, newData, t));
-          });
-          return Promise.all(uploadPromises);
-        };
-        uploadFiles(fileForSend)
-          .then((response) => {
-            setErrorBar(false);
-            let createrID = localStorage.getItem("userID");
-            let OrganizationID = localStorage.getItem("organizationID");
-            let notesAttachment = [];
-            if (tasksAttachments.TasksAttachments.length > 0) {
-              tasksAttachments.TasksAttachments.map((data, index) => {
-                console.log("datadata", data);
-                notesAttachment.push({
-                  DisplayAttachmentName: data.displayAttachmentName,
-                  OriginalAttachmentName: data.originalAttachmentName,
-                });
-              });
-            }
-            console.log("check2");
-
-            let Data = {
-              PK_NotesID: addNoteFields.PK_NotesID,
-              Title: addNoteFields.Title.value,
-              Description: addNoteFields.Description.value,
-              isStarred: isStarred,
-              FK_UserID: JSON.parse(createrID),
-              FK_OrganizationID: JSON.parse(OrganizationID),
-              FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
-              NotesAttachments: notesAttachment,
-            };
-            console.log("check2");
-
-            dispatch(
-              UpdateNotesAPI(
-                navigate,
-                Data,
-                t,
-                setIsUpdateNote,
-                setIsDeleteNote,
-                setUpdateNotes
-              )
-            );
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      } else {
-        setErrorBar(false);
-        // setUpdateNotesModalHomePage(false);
-        let createrID = localStorage.getItem("userID");
-        let OrganizationID = localStorage.getItem("organizationID");
-        let notesAttachment = [];
-        console.log("setIsUpdateNotesetIsUpdateNote");
-
-        if (tasksAttachments.TasksAttachments.length > 0) {
-          tasksAttachments.TasksAttachments.map((data, index) => {
-            console.log("datadata", data);
-            notesAttachment.push({
-              DisplayAttachmentName: data.displayAttachmentName,
-              OriginalAttachmentName: data.originalAttachmentName,
+    try {
+      if (addNoteFields.Title.value !== "") {
+        let counter = fileForSend.length;
+        if (Object.keys(fileForSend).length > 0) {
+          const uploadFiles = (fileForSend) => {
+            const uploadPromises = fileForSend.map((newData) => {
+              dispatch(FileUploadToDo(navigate, newData, t));
             });
-          });
+            return Promise.all(uploadPromises);
+          };
+          uploadFiles(fileForSend)
+            .then((response) => {
+              setErrorBar(false);
+              let createrID = localStorage.getItem("userID");
+              let OrganizationID = localStorage.getItem("organizationID");
+              let notesAttachment = [];
+              if (tasksAttachments.TasksAttachments.length > 0) {
+                tasksAttachments.TasksAttachments.map((data, index) => {
+                  console.log("datadata", data);
+                  notesAttachment.push({
+                    DisplayAttachmentName: data.displayAttachmentName,
+                    OriginalAttachmentName: data.originalAttachmentName,
+                  });
+                });
+              }
+              console.log("check2");
+
+              let Data = {
+                PK_NotesID: addNoteFields.PK_NotesID,
+                Title: addNoteFields.Title.value,
+                Description: addNoteFields.Description.value,
+                isStarred: isStarred,
+                FK_UserID: JSON.parse(createrID),
+                FK_OrganizationID: JSON.parse(OrganizationID),
+                FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
+                NotesAttachments: notesAttachment,
+              };
+              console.log("check2");
+
+              dispatch(
+                UpdateNotesAPI(
+                  navigate,
+                  Data,
+                  t,
+                  setIsUpdateNote,
+                  setIsDeleteNote,
+                  setUpdateNotes
+                )
+              );
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        } else {
+          setErrorBar(false);
+          // setUpdateNotesModalHomePage(false);
+          let createrID = localStorage.getItem("userID");
+          let OrganizationID = localStorage.getItem("organizationID");
+          let notesAttachment = [];
+          console.log("setIsUpdateNotesetIsUpdateNote");
+
+          if (tasksAttachments.TasksAttachments.length > 0) {
+            tasksAttachments.TasksAttachments.map((data, index) => {
+              console.log("datadata", data);
+              notesAttachment.push({
+                DisplayAttachmentName: data.displayAttachmentName,
+                OriginalAttachmentName: data.originalAttachmentName,
+              });
+            });
+          }
+          let Data = {
+            PK_NotesID: addNoteFields.PK_NotesID,
+            Title: addNoteFields.Title.value,
+            Description: addNoteFields.Description.value,
+            isStarred: isStarred,
+            FK_UserID: JSON.parse(createrID),
+            FK_OrganizationID: JSON.parse(OrganizationID),
+            FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
+            NotesAttachments: notesAttachment,
+          };
+          dispatch(
+            UpdateNotesAPI(
+              navigate,
+              Data,
+              t,
+              setIsUpdateNote,
+              setIsDeleteNote,
+              setUpdateNotes
+            )
+          );
         }
-        let Data = {
-          PK_NotesID: addNoteFields.PK_NotesID,
-          Title: addNoteFields.Title.value,
-          Description: addNoteFields.Description.value,
-          isStarred: isStarred,
-          FK_UserID: JSON.parse(createrID),
-          FK_OrganizationID: JSON.parse(OrganizationID),
-          FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
-          NotesAttachments: notesAttachment,
-        };
-        dispatch(
-          UpdateNotesAPI(
-            navigate,
-            Data,
-            t,
-            setIsUpdateNote,
-            setIsDeleteNote,
-            setUpdateNotes
-          )
-        );
+      } else {
+        setErrorBar(true);
+        setOpen({
+          open: true,
+          message: t("Please-fill-all-the-fields"),
+        });
       }
-    } else {
-      console.log("setIsUpdateNotesetIsUpdateNote");
-      setErrorBar(true);
-      setOpen({
-        open: true,
-        message: t("Please-fill-all-the-fields"),
-      });
-    }
+    } catch {}
   };
 
   const handleClickCancelDeleteModal = () => {
@@ -536,7 +527,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     }
     dispatch(deleteNotesApi(navigate, id, t, setUpdateNotes));
   };
-  console.log(fileSize, fileForSend, "cheking_fileSzie");
+
   return (
     <>
       <Container>
@@ -659,11 +650,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
 
                       <Row>
                         <Col>
-                          {console.log(
-                            "erorbarerorbar",
-                            erorbar,
-                            addNoteFields.Title.value
-                          )}
                           <p
                             className={
                               erorbar && addNoteFields.Title.value === ""
@@ -677,17 +663,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       </Row>
                     </Col>
                   </Row>
-                  {/* <Row>
-                    <Col>
-                      <p
-                        className={
-                          erorbar && addNoteFields.Title.value === ""
-                            ? styles["errorMessage"]
-                            : styles["errorMessage_hidden"]
-                        }
-                      ></p>
-                    </Col>
-                  </Row> */}
 
                   <Row className={styles["QuillRow"]}>
                     <Col lg={12} md={12} sm={12} xs={12} className="mt-1">
@@ -703,15 +678,10 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                   </Row>
                   <Row>
                     <Col>
-                      {console.log(
-                        "erorbarerorbar",
-                        erorbar,
-                        addNoteFields.Description.value
-                      )}
                       <p
                         className={
                           erorbar && addNoteFields.Description.value === ""
-                            ? ` ${styles["errorUpdateMessage"]} `
+                            ? ` ${styles["errorUpdateMessage_hidden"]} `
                             : `${styles["errorUpdateMessage_hidden"]}`
                         }
                       >
@@ -915,8 +885,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       lg={12}
                       className={styles["Confirmationmodal_body_text"]}
                     >
-                      Are you sure? If you click on close button the data will
-                      reset and modal will close.
+                      {t("Are-you-sure-note-reset-closed")}
                     </Col>
                   </Row>
                 </>

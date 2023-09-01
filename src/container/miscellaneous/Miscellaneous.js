@@ -15,9 +15,9 @@ const CustomMiscellaneous = () => {
   const state = useSelector((state) => state);
   const { t } = useTranslation();
   //import faqsReducer from reducers
-  const { fAQsReducer } = state;
+  const { fAQsReducer, LanguageReducer } = state;
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -67,7 +67,7 @@ const CustomMiscellaneous = () => {
           );
         })}
       </Container>
-      {fAQsReducer.Loading ? <Loader /> : null}
+      {fAQsReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

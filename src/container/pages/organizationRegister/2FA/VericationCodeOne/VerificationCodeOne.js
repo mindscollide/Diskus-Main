@@ -39,7 +39,7 @@ const VerificationCodeOne = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [value, setValue] = useState(null);
-  const { Authreducer } = useSelector((state) => state);
+  const { Authreducer, LanguageReducer } = useSelector((state) => state);
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -266,7 +266,7 @@ const VerificationCodeOne = () => {
       </Row> */}
       <Container fluid className="VerifyCodeOneOverflow">
         <Row className="position-relative">
-          <Col className="languageSelector" >
+          <Col className="languageSelector">
             <LanguageSelector />
           </Col>
         </Row>
@@ -388,10 +388,10 @@ const VerificationCodeOne = () => {
                         parseInt(GobackSelection) === 1
                           ? "/twofac"
                           : parseInt(GobackSelection) === 2
-                            ? "/sendmailwithdevice"
-                            : parseInt(GobackSelection) === 3
-                              ? "/twofacmultidevice"
-                              : "/twofac"
+                          ? "/sendmailwithdevice"
+                          : parseInt(GobackSelection) === 3
+                          ? "/twofacmultidevice"
+                          : "/twofac"
                       }
                     >
                       {t("Go-back")}
@@ -423,7 +423,7 @@ const VerificationCodeOne = () => {
           </Col>
         </Row>
       </Container>
-      {Authreducer.Loading ? <Loader /> : null}
+      {Authreducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
       <Notification open={open.open} setOpen={setOpen} message={open.message} />
     </div>
   );

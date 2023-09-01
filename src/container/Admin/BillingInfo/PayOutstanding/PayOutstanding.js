@@ -16,7 +16,9 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const PayOutstanding = () => {
-  const { OrganizationBillingReducer } = useSelector((state) => state);
+  const { OrganizationBillingReducer, LanguageReducer } = useSelector(
+    (state) => state
+  );
   // for translation
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -176,7 +178,9 @@ const PayOutstanding = () => {
           </Col>
         </Row>
       </Fragment>
-      {OrganizationBillingReducer.Loading ? <Loader /> : null}
+      {OrganizationBillingReducer.Loading || LanguageReducer.Loading ? (
+        <Loader />
+      ) : null}
     </>
   );
 };

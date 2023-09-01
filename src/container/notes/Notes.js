@@ -53,7 +53,7 @@ const Notes = () => {
   const [expand, setExpand] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { NotesReducer } = useSelector((state) => state);
+  const { NotesReducer, LanguageReducer } = useSelector((state) => state);
   const { Panel } = Collapse;
   const [input, setInput] = useState("");
   const [show, setShow] = useState(false);
@@ -635,7 +635,7 @@ const Notes = () => {
         open={open.open}
         setOpen={open.open}
       />
-      {NotesReducer.Loading ? <Loader /> : null}
+      {NotesReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );
 };

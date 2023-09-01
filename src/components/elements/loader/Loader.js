@@ -31,7 +31,6 @@ const Loader = () => {
     t("Securing-your-data-please-wait"),
   ];
 
-  console.log(messages[0], "locationpathname");
   const [randomIndex, setRandomIndex] = useState(0);
 
   useEffect(() => {
@@ -93,7 +92,7 @@ const Loader = () => {
       setRandomIndex(messages[17]);
     } else {
       const randomIdx = Math.floor(Math.random() * messages.length);
-      setRandomIndex(messages[randomIndex]);
+      setRandomIndex(messages[randomIdx]);
     }
   }, []);
 
