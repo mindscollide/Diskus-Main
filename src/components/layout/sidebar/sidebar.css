@@ -253,7 +253,7 @@ body[dir="rtl"] .Meeting_Side_bar_Tag_todo {
 
 .expanded_menu {
   position: absolute !important;
-  width: 193px !important;
+  width: 210px !important;
   height: auto !important;
   left: 61px !important;
   background-color: #fff !important;
@@ -366,7 +366,7 @@ a.icon-active-sidebar_expand.nav-link svg {
 a.icon-active-sidebar_expand.nav-link {
   background: linear-gradient(to right, #49dbdb 0%, #6172d6 100%) !important;
   height: 55px !important;
-  width: 96% !important;
+  width: 98% !important;
   border-radius: 4px;
 }
 
@@ -375,7 +375,7 @@ a.m-0.p-0.icon_expand.nav-link:hover {
   border-radius: 4px;
   fill: #fff !important;
   height: 55px !important;
-  width: 98% !important;
+  width: 99% !important;
 }
 
 a.m-0.p-0.icon_expand.nav-link:hover svg path {

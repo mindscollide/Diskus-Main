@@ -25,6 +25,10 @@ import StarIcon from "../../assets/images/Star.svg";
 import hollowstar from "../../assets/images/Hollowstar.svg";
 import { useNavigate } from "react-router-dom";
 import ConfirmationModal from "../../components/elements/confirmationModal/ConfirmationModal";
+import {
+  regexOnlyForNumberNCharacters,
+  validateInput,
+} from "../../commen/functions/regex";
 const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   //For Localization
   const { uploadReducer } = useSelector((state) => state);
@@ -90,7 +94,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
     let value = e.target.value;
     console.log("values", name, value);
     if (name === "Title" && value !== "") {
-      let valueCheck = value.replace(/[^a-zA-Z ]/g, "");
+      let valueCheck = validateInput(value);
       console.log(value, "Titlellee");
 
       if (valueCheck !== "") {
