@@ -20,18 +20,16 @@ const AvatarEditorComponent = () => {
   const [previewImage, setPreviewImage] = useState("");
 
   const onChange = ({ fileList: newFileList }) => {
-    console.log(newFileList[0].originFileObj, "newFileListnewFileList");
     let fileObj = newFileList[0].originFileObj;
     getBase64(fileObj)
       .then((res) => {
         let fileUrL = res.split(",")[1];
-        setFileList(newFileList)
+        setFileList(newFileList);
         dispatch(updateUserProfilePicture(navigate, t, fileObj.name, fileUrL));
         // setFileList(onHold);
         // setTimeout(() => {
         //   setFileList(newFileList)
         // }, 10000)
-
       })
       .catch((err) => console.log(err, "newFileListnewFileList"));
   };
@@ -61,7 +59,7 @@ const AvatarEditorComponent = () => {
   //     }
   //   }
   // }, [Authreducer.UpdateProfilePicture]);
-  
+
   console.log(onHold, "fileListfileList");
   return (
     <>
@@ -72,6 +70,7 @@ const AvatarEditorComponent = () => {
           fileList={fileList}
           onChange={onChange}
           onPreview={handlePreview}
+          onRemove={() => setFileList([])}
           className={styles["image_uploader_box"]}
         >
           {fileList.length === 0 ? (
