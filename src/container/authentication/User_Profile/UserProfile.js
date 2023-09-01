@@ -325,28 +325,7 @@ const UserProfileModal = ({
     }
   };
 
-  const uploadProfilePicChangeHandler = (imageObj) => {
-    // Create a FileReader
-
-    if (imageObj) {
-      const reader = new FileReader();
-
-      reader.onload = (e) => {
-        const base64String = e.target.result;
-        console.log(
-          base64String.split(","),
-          userProfile,
-          "imageObjimageObjimageObjimageObj"
-        );
-        setBase64Url({ base64String });
-        setUserProfile(imageObj);
-        dispatch(
-          updateUserProfilePicture(navigate, t, imageObj.name, base64String)
-        );
-      };
-      reader.readAsDataURL(imageObj);
-    }
-  };
+ 
 
   return (
     <>
