@@ -21,6 +21,7 @@ import profile from "../../../../../assets/images/newprofile.png";
 import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
 import CreateFromScratch from "./CreateFromScratch/CreateFromScratch";
+import AgendaImport from "./AgendaimportMinutes/AgendaImport";
 const Minutes = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ const Minutes = () => {
   const [createFromScratch, setCreateFromScratch] = useState(false);
   const [attachments, setAttachments] = useState([]);
   const [afterSaveFiles, setafterSaveFiles] = useState(false);
+  const [agenda, setAgenda] = useState(false);
   const [afterSaveDocs, setafterSaveDocs] = useState([
     {
       name: "teams_Collaboration.PDF",
@@ -104,6 +106,10 @@ const Minutes = () => {
 
   const handleCreateFromScratch = () => {
     setCreateFromScratch(true);
+  };
+
+  const handleAgenadFile = () => {
+    setAgenda(true);
   };
 
   return (
@@ -479,6 +485,8 @@ const Minutes = () => {
         </>
       ) : createFromScratch ? (
         <CreateFromScratch />
+      ) : agenda ? (
+        <AgendaImport />
       ) : (
         <>
           <Row className="m-0 p-0 mt-3">
@@ -617,6 +625,7 @@ const Minutes = () => {
                   <Button
                     text={t("Agenda")}
                     className={styles["Upload_Btn_Styles"]}
+                    onClick={handleAgenadFile}
                   />
                 </Col>
               </Row>
