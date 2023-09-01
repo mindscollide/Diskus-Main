@@ -8,7 +8,10 @@ import {
   videoCallResponse,
   getUserRecentCalls,
 } from '../../commen/apis/Api_config'
-import { videoOutgoingCallFlag } from './VideoFeature_actions'
+import {
+  normalizeVideoPanelFlag,
+  videoOutgoingCallFlag,
+} from './VideoFeature_actions'
 
 const getAllVideoCallUsersInitial = () => {
   return {
@@ -167,6 +170,8 @@ const InitiateVideoCall = (Data, navigate, t) => {
               await dispatch(
                 initiateVideoCallFail(t('Call-not-initiated-successfully')),
               )
+              await dispatch(videoOutgoingCallFlag(false))
+              await dispatch(normalizeVideoPanelFlag(false))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
