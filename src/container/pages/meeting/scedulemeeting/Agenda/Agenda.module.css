@@ -1,18 +1,22 @@
 .BackGround_Agenda {
   width: 100% !important;
   height: auto !important;
+  min-height: 126px !important;
   border: 1px solid #bbbbbb !important;
   border-radius: 4px !important;
   padding: 1px 15px !important;
+  position: relative;
 }
 
 .BackGround_Agenda_InActive {
   width: 100% !important;
+  min-height: 126px !important;
   height: auto !important;
   border: 1px solid #bbbbbb !important;
   border-radius: 4px !important;
   padding: 1px 15px !important;
   filter: opacity(0.5);
+  position: relative;
 }
 
 .BackGround_Agenda_InActive:has(.lockBtn_inActive) .lockBtn_inActive {
@@ -196,7 +200,11 @@
   margin-right: -5.6% !important;
   margin-top: -18.9% !important;
 }
-
+.RedCross_Icon_class_Main_agenda {
+  position: absolute !important;
+  right: -10px !important;
+  top: -7px !important;
+}
 .Documentdiv {
   border: 1px solid #d4d4d4;
   border-radius: 4px !important;
@@ -235,24 +243,42 @@
 }
 
 .SectionInnerClass {
-  /* width: 100% !important; */
+  width: 100% !important;
+  margin-left: 50px !important;
 }
 
 .BackGroundNewImplemented {
   background: #5f78d6;
-  height: auto;
+  height: 100%;
   width: 48px !important;
-  margin-left: -2.5px;
-  margin-top: -1px !important;
+  left: 0;
+  top: 0;
   border-top-left-radius: 4px !important;
   border-bottom-left-radius: 4px !important;
+  position: absolute !important;
 }
 
 .Arrow {
   cursor: pointer !important;
-  position: fixed;
+}
 
-  text-align: center;
-  display: flex;
-  align-items: center !important;
+.Meeting_title_heading {
+  color: #5f78d6 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.backGroundDubTree {
+  background: #000 !important;
+  height: 100%;
+  width: 48px !important;
+  left: 0;
+  top: 0;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+  position: absolute !important;
+}
+
+.backGorund {
+  background: #000 !important;
 }
