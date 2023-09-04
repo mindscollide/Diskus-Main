@@ -24,11 +24,11 @@ body[dir="rtl"] .notes-heading-size {
 .create-note-btn {
   width: 150px;
   height: 31px;
-  font-size: calc(14px - 20%)!important;
+  font-size: calc(14px - 20%) !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold"!important;
+  font-family: "MontserratSemiBold" !important;
   border: none !important;
 }
 
@@ -38,11 +38,11 @@ body[dir="rtl"] .notes-heading-size {
 .create-note-btn:focus-visible {
   width: 150pxv !important;
   height: 31px !important;
-  font-size: calc(14px - 20%)!important;
+  font-size: calc(14px - 20%) !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold"!important;
+  font-family: "MontserratSemiBold" !important;
   border: none !important;
 }
 
@@ -55,7 +55,7 @@ body[dir="rtl"] .create-note-btn {
 } */
 
 .notescontainer {
-  height: 90vh;
+  height: 91vh;
   width: 90% !important;
   margin: 0 auto;
 }

@@ -2080,7 +2080,7 @@ const DataRoom = () => {
 
   return (
     <>
-      <section className={styles["DataRoom_container"]}>
+      <div className={styles["DataRoom_container"]}>
         {deletenotification && <DeleteNotificationBox />}
         {fileremoved && <FileRemoveBox />}
         {showrenamenotification && (
@@ -3009,7 +3009,7 @@ const DataRoom = () => {
             </Row>
           </Col>
         </Row>
-      </section>
+      </div>
       {showbarupload ? (
         <>
           <Row>
