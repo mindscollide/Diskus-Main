@@ -1015,23 +1015,18 @@ const Resolution = () => {
         );
         if (resolutionView === 2) {
           if (buttonTab === 3 || buttonTab === 1) {
+            let findVoterisValid =
+              getData?.voters.filter((obj) => obj.fK_UID === Number(userID)) ||
+              getData?.nonVoters.filter((obj) => obj.fK_UID === Number(userID));
             if (findIndexModerator === -1) {
-              let findVoterisValid =
-                getData?.voters.filter(
-                  (obj) => obj.fK_UID === Number(userID)
-                ) ||
-                getData?.nonVoters.filter(
-                  (obj) => obj.fK_UID === Number(userID)
-                );
               let voterResolution = {
                 attachments: getData.attachments,
                 decision: getData.resolution.resolutionDecision,
                 decisionDate: getData.resolution.decisionAnnouncementDateTime,
                 fK_VotingStatus_ID: findVoterisValid[0].fK_VotingStatus_ID,
-                isAlreadyVoted: true,
-                isAttachmentAvailable:
-                  getData.attachments.length > 0 ? true : false,
-                isVoter: findVoterisValid[0].isVoter ? 1 : 0,
+                isAlreadyVoted: findVoterisValid[0].isAlreadyVoted,
+                isAttachmentAvailable: getData.isAttachmentAvailable,
+                isVoter: findVoterisValid[0].isVoter,
                 resolutionID: getData.resolution.pK_ResolutionID,
                 resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
                 resolutionTitle: getData.resolution.title,
@@ -1042,21 +1037,13 @@ const Resolution = () => {
               };
               setSearchVoter([voterResolution, ...isSearchVoter]);
             } else {
-              let findVoterisValid =
-                getData?.voters.filter(
-                  (obj) => obj.fK_UID === Number(userID)
-                ) ||
-                getData?.nonVoters.filter(
-                  (obj) => obj.fK_UID === Number(userID)
-                );
               let voterResolution = {
                 attachments: getData.attachments,
                 decision: getData.resolution.resolutionDecision,
                 decisionDate: getData.resolution.decisionAnnouncementDateTime,
                 fK_VotingStatus_ID: findVoterisValid[0].fK_VotingStatus_ID,
-                isAlreadyVoted: true,
-                isAttachmentAvailable:
-                  getData.attachments.length > 0 ? true : false,
+                isAlreadyVoted: findVoterisValid[0].isAlreadyVoted,
+                isAttachmentAvailable: getData.isAttachmentAvailable,
                 isVoter: findVoterisValid[0].isVoter,
                 resolutionID: getData.resolution.pK_ResolutionID,
                 resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
@@ -1115,10 +1102,9 @@ const Resolution = () => {
               decision: getData.resolution.resolutionDecision,
               decisionDate: getData.resolution.decisionAnnouncementDateTime,
               fK_VotingStatus_ID: findVoterisValid[0].fK_VotingStatus_ID,
-              isAlreadyVoted: true,
-              isAttachmentAvailable:
-                getData.attachments.length > 0 ? true : false,
-              isVoter: findVoterisValid[0].isVoter ? 1 : 0,
+              isAlreadyVoted: findVoterisValid[0].isAlreadyVoted,
+              isAttachmentAvailable: getData.isAttachmentAvailable,
+              isVoter: findVoterisValid[0].isVoter,
               resolutionID: getData.resolution.pK_ResolutionID,
               resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
               resolutionTitle: getData.resolution.title,
@@ -1137,10 +1123,9 @@ const Resolution = () => {
               decision: getData.resolution.resolutionDecision,
               decisionDate: getData.resolution.decisionAnnouncementDateTime,
               fK_VotingStatus_ID: findVoterisValid[0].fK_VotingStatus_ID,
-              isAlreadyVoted: true,
-              isAttachmentAvailable:
-                getData.attachments.length > 0 ? true : false,
-              isVoter: findVoterisValid[0].isVoter ? 1 : 0,
+              isAlreadyVoted: findVoterisValid[0].isAlreadyVoted,
+              isAttachmentAvailable: getData.isAttachmentAvailable,
+              isVoter: findVoterisValid[0].isVoter,
               resolutionID: getData.resolution.pK_ResolutionID,
               resolutionStatusID: getData.resolution.fK_ResolutionStatusID,
               resolutionTitle: getData.resolution.title,
