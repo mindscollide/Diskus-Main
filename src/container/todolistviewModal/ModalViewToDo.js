@@ -505,6 +505,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                         width={25}
                         height={35}
                         color={"white"}
+                        className="cursor-pointer"
                         onClick={(e) =>
                           handleClickCommentSubmit(e, task.PK_TID)
                         }
@@ -514,6 +515,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                         width={25}
                         height={35}
                         color={"white"}
+                        className="cursor-pointer"
                         onClick={(e) =>
                           handleClickCommentSubmit(e, task.PK_TID)
                         }
