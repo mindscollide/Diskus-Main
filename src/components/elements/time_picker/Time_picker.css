@@ -5,10 +5,12 @@
 .timepicker_width {
   width: 100px !important;
   border: 1px solid #e1e1e1 !important;
+  cursor: pointer !important;
 }
 
 body[dir="rtl"] .timepicker_width {
   font-family: "IBMPlexSansArabic-Regular" !important;
+  cursor: pointer !important;
 }
 
 .ant-picker-focused {
