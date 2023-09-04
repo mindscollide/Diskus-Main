@@ -1084,73 +1084,11 @@ const UserSettings = () => {
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
-                          onChange={onChangeEmailWhenCommentDeleted}
-                          checked={userOptionsSettings.EmailWhenCommentDeleted}
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Email-when-comment-deleted")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
-                          onChange={onChangeEmailWhenNewCommentAdded}
-                          checked={userOptionsSettings.EmailWhenNewCommentAdded}
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Email-when-new-comment-added")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
-                          onChange={onChangeEmailWhenNewTODODeleted}
-                          checked={userOptionsSettings.EmailWhenNewTODODeleted}
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Email-when-new-todo-deleted")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
                           onChange={onChangeEmailWhenNewTODOAssigned}
                           checked={userOptionsSettings.EmailWhenNewTODOAssigned}
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-when-new-todo-assigned")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
-                          onChange={onChangeEmailWhenNewTODOEdited}
-                          checked={userOptionsSettings.EmailWhenNewTODOEdited}
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Email-when-new-todo-edited")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
-                          onChange={onChangePushNotificationWhenNewCommentAdded}
-                          checked={
-                            userOptionsSettings.PushNotificationWhenNewCommentAdded
-                          }
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Push-notification-when-new-comment-added")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1172,6 +1110,18 @@ const UserSettings = () => {
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
+                          onChange={onChangeEmailWhenNewTODOEdited}
+                          checked={userOptionsSettings.EmailWhenNewTODOEdited}
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-new-todo-edited")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
                           onChange={onChangePushNotificationWhenNewTODOEdited}
                           checked={
                             userOptionsSettings.PushNotificationWhenNewTODOEdited
@@ -1186,13 +1136,11 @@ const UserSettings = () => {
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
-                          onChange={onChangePushNotificationWhenCommentDeleted}
-                          checked={
-                            userOptionsSettings.PushNotificationWhenCommentDeleted
-                          }
+                          onChange={onChangeEmailWhenNewTODODeleted}
+                          checked={userOptionsSettings.EmailWhenNewTODODeleted}
                         >
                           <span className={styles["Class_CheckBox"]}>
-                            {t("Push-notification-when-comment-deleted")}
+                            {t("Email-when-new-todo-deleted")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1207,6 +1155,58 @@ const UserSettings = () => {
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t("Push-notification-when-new-todo-deleted")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeEmailWhenNewCommentAdded}
+                          checked={userOptionsSettings.EmailWhenNewCommentAdded}
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-new-comment-added")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangePushNotificationWhenNewCommentAdded}
+                          checked={
+                            userOptionsSettings.PushNotificationWhenNewCommentAdded
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-new-comment-added")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeEmailWhenCommentDeleted}
+                          checked={userOptionsSettings.EmailWhenCommentDeleted}
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-comment-deleted")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangePushNotificationWhenCommentDeleted}
+                          checked={
+                            userOptionsSettings.PushNotificationWhenCommentDeleted
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-comment-deleted")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1230,32 +1230,6 @@ const UserSettings = () => {
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
-                          onChange={onChangeEmailOnEditMeeting}
-                          checked={userOptionsSettings.EmailEditMeeting}
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Email-on-edit-meeting")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
-                          onChange={onChangeEmailOnCancelledOrDeletedMeeting}
-                          checked={
-                            userOptionsSettings.EmailCancelOrDeleteMeeting
-                          }
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Email-on-cancelled-or-deleted-meeting")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
                           onChange={onChangePushNotificationonNewMeeting}
                           checked={
                             userOptionsSettings.PushNotificationonNewMeeting
@@ -1270,6 +1244,18 @@ const UserSettings = () => {
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
+                          onChange={onChangeEmailOnEditMeeting}
+                          checked={userOptionsSettings.EmailEditMeeting}
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-on-edit-meeting")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
                           onChange={onChangePushNotificationOnEditMeeting}
                           checked={
                             userOptionsSettings.PushNotificationEditMeeting
@@ -1277,6 +1263,20 @@ const UserSettings = () => {
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t("Push-notification-on-edit-meeting")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeEmailOnCancelledOrDeletedMeeting}
+                          checked={
+                            userOptionsSettings.EmailCancelOrDeleteMeeting
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-on-cancelled-or-deleted-meeting")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1383,66 +1383,6 @@ const UserSettings = () => {
                         <Row className="mt-4">
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
-                              onChange={onChangeEmailWhenRemovedFromCommittee}
-                              checked={
-                                userOptionsSettings.EmailWhenRemovedFromCommittee
-                              }
-                            >
-                              <span className={styles["Class_CheckBox"]}>
-                                {t("Email-when-removed-from-committee")}
-                              </span>
-                            </Checkbox>
-                          </Col>
-                        </Row>
-                        <Row className="mt-4">
-                          <Col lg={12} md={12} sm={12}>
-                            <Checkbox
-                              onChange={
-                                onChangeWhenCommitteeIsDissolvedOrArchived
-                              }
-                              checked={
-                                userOptionsSettings.EmailWhenCommitteeIsDissolvedOrArchived
-                              }
-                            >
-                              <span className={styles["Class_CheckBox"]}>
-                                {t(
-                                  "Email-when-committee-is-dissolved-or-archived"
-                                )}
-                              </span>
-                            </Checkbox>
-                          </Col>
-                        </Row>
-                        <Row className="mt-4">
-                          <Col lg={12} md={12} sm={12}>
-                            <Checkbox
-                              onChange={onChangeEmailWhenCommitteeIsInActive}
-                              checked={
-                                userOptionsSettings.EmailWhenCommitteeIsSetInactive
-                              }
-                            >
-                              <span className={styles["Class_CheckBox"]}>
-                                {t("Email-when-committee-is-set-inactive")}
-                              </span>
-                            </Checkbox>
-                          </Col>
-                        </Row>
-                        <Row className="mt-4">
-                          <Col lg={12} md={12} sm={12}>
-                            <Checkbox
-                              onChange={onChangeEmailWhenCommitteeIsActive}
-                              checked={
-                                userOptionsSettings.EmailWhenCommitteeIsActive
-                              }
-                            >
-                              <span className={styles["Class_CheckBox"]}>
-                                {t("Email-when-committee-is-set-active")}
-                              </span>
-                            </Checkbox>
-                          </Col>
-                        </Row>
-                        <Row className="mt-4">
-                          <Col lg={12} md={12} sm={12}>
-                            <Checkbox
                               onChange={
                                 onChangePushNotificationWhenAddedToCommittee
                               }
@@ -1452,6 +1392,20 @@ const UserSettings = () => {
                             >
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Push-notification-when-added-to-committee")}
+                              </span>
+                            </Checkbox>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
+                              onChange={onChangeEmailWhenRemovedFromCommittee}
+                              checked={
+                                userOptionsSettings.EmailWhenRemovedFromCommittee
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-removed-from-committee")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1478,6 +1432,24 @@ const UserSettings = () => {
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
                               onChange={
+                                onChangeWhenCommitteeIsDissolvedOrArchived
+                              }
+                              checked={
+                                userOptionsSettings.EmailWhenCommitteeIsDissolvedOrArchived
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t(
+                                  "Email-when-committee-is-dissolved-or-archived"
+                                )}
+                              </span>
+                            </Checkbox>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
+                              onChange={
                                 onChangepushNotificationWhenCommitteeIsDissolvedOrArchived
                               }
                               checked={
@@ -1488,6 +1460,20 @@ const UserSettings = () => {
                                 {t(
                                   "Push-notification-when-committee-is-dissolved-or-archived"
                                 )}
+                              </span>
+                            </Checkbox>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
+                              onChange={onChangeEmailWhenCommitteeIsInActive}
+                              checked={
+                                userOptionsSettings.EmailWhenCommitteeIsSetInactive
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-committee-is-set-inactive")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1506,6 +1492,20 @@ const UserSettings = () => {
                                 {t(
                                   "Push-notification-when-committee-is-inActive"
                                 )}
+                              </span>
+                            </Checkbox>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
+                              onChange={onChangeEmailWhenCommitteeIsActive}
+                              checked={
+                                userOptionsSettings.EmailWhenCommitteeIsActive
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-committee-is-set-active")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1558,64 +1558,6 @@ const UserSettings = () => {
                         <Row className="mt-4">
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
-                              onChange={onChangeEmailWhenRemovedFromGroup}
-                              checked={
-                                userOptionsSettings.EmailWhenRemovedFromGroup
-                              }
-                            >
-                              <span className={styles["Class_CheckBox"]}>
-                                {t("Email-when-removed-from-group")}
-                              </span>
-                            </Checkbox>
-                          </Col>
-                        </Row>
-                        <Row className="mt-4">
-                          <Col lg={12} md={12} sm={12}>
-                            <Checkbox
-                              onChange={
-                                onChangeEmailWhenGroupIsDissolvedOrArchived
-                              }
-                              checked={
-                                userOptionsSettings.EmailWhenGroupIsDissolvedOrArchived
-                              }
-                            >
-                              <span className={styles["Class_CheckBox"]}>
-                                {t("Email-when-group-is-dissolved-or-archived")}
-                              </span>
-                            </Checkbox>
-                          </Col>
-                        </Row>
-                        <Row className="mt-4">
-                          <Col lg={12} md={12} sm={12}>
-                            <Checkbox
-                              onChange={onChangeWhenGroupIsSetInactive}
-                              checked={
-                                userOptionsSettings.EmailWhenGroupisSetInactive
-                              }
-                            >
-                              <span className={styles["Class_CheckBox"]}>
-                                {t("Email-when-group-is-set-inactive")}
-                              </span>
-                            </Checkbox>
-                          </Col>
-                        </Row>
-                        <Row className="mt-4">
-                          <Col lg={12} md={12} sm={12}>
-                            <Checkbox
-                              onChange={onChangeWhenEmailWhenGroupIsActive}
-                              checked={
-                                userOptionsSettings.EmailWhenGroupIsActive
-                              }
-                            >
-                              <span className={styles["Class_CheckBox"]}>
-                                {t("Email-when-group-is-set-active")}
-                              </span>
-                            </Checkbox>
-                          </Col>
-                        </Row>
-                        <Row className="mt-4">
-                          <Col lg={12} md={12} sm={12}>
-                            <Checkbox
                               onChange={
                                 onChangePushNotificationWhenAddedToGroup
                               }
@@ -1632,6 +1574,20 @@ const UserSettings = () => {
                         <Row className="mt-4">
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
+                              onChange={onChangeEmailWhenRemovedFromGroup}
+                              checked={
+                                userOptionsSettings.EmailWhenRemovedFromGroup
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-removed-from-group")}
+                              </span>
+                            </Checkbox>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
                               onChange={
                                 onChangePushNotificationWhenRemovedFromGroup
                               }
@@ -1641,6 +1597,22 @@ const UserSettings = () => {
                             >
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Push-notification-when-removed-from-group")}
+                              </span>
+                            </Checkbox>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
+                              onChange={
+                                onChangeEmailWhenGroupIsDissolvedOrArchived
+                              }
+                              checked={
+                                userOptionsSettings.EmailWhenGroupIsDissolvedOrArchived
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-group-is-dissolved-or-archived")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1666,6 +1638,20 @@ const UserSettings = () => {
                         <Row className="mt-4">
                           <Col lg={12} md={12} sm={12}>
                             <Checkbox
+                              onChange={onChangeWhenGroupIsSetInactive}
+                              checked={
+                                userOptionsSettings.EmailWhenGroupisSetInactive
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-group-is-set-inactive")}
+                              </span>
+                            </Checkbox>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
                               onChange={
                                 onChangePushNotificationWhenGroupIsSetInActive
                               }
@@ -1675,6 +1661,20 @@ const UserSettings = () => {
                             >
                               <span className={styles["Class_CheckBox"]}>
                                 {t("Push-notification-when-group-is-inActive")}
+                              </span>
+                            </Checkbox>
+                          </Col>
+                        </Row>
+                        <Row className="mt-4">
+                          <Col lg={12} md={12} sm={12}>
+                            <Checkbox
+                              onChange={onChangeWhenEmailWhenGroupIsActive}
+                              checked={
+                                userOptionsSettings.EmailWhenGroupIsActive
+                              }
+                            >
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-group-is-set-active")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1721,38 +1721,6 @@ const UserSettings = () => {
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
                           onChange={
-                            onChangeEmailWhenResolutionIsCancelledAfterCirculation
-                          }
-                          checked={
-                            userOptionsSettings.EmailWhenNewResolutionIsCancelledAfterCirculation
-                          }
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t(
-                              "Email-when-new-resolution-is-cancelled-after-circulation"
-                            )}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-4">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
-                          onChange={onChangeEmailWhenResolutionisClosed}
-                          checked={
-                            userOptionsSettings.EmailWhenResolutionIsClosed
-                          }
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Email-when-resolution-is-closed")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-4">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
-                          onChange={
                             onChangePushNotificationWhenResolutionIsCirculated
                           }
                           checked={
@@ -1762,6 +1730,24 @@ const UserSettings = () => {
                           <span className={styles["Class_CheckBox"]}>
                             {t(
                               "Push-notification-when-new-resolution-is-circulated"
+                            )}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={
+                            onChangeEmailWhenResolutionIsCancelledAfterCirculation
+                          }
+                          checked={
+                            userOptionsSettings.EmailWhenNewResolutionIsCancelledAfterCirculation
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t(
+                              "Email-when-new-resolution-is-cancelled-after-circulation"
                             )}
                           </span>
                         </Checkbox>
@@ -1781,6 +1767,20 @@ const UserSettings = () => {
                             {t(
                               "Push-notification-when-new-resolution-is-cancelled-after-circulated"
                             )}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeEmailWhenResolutionisClosed}
+                          checked={
+                            userOptionsSettings.EmailWhenResolutionIsClosed
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-resolution-is-closed")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1822,48 +1822,6 @@ const UserSettings = () => {
                     <Row className="mt-4">
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
-                          onChange={onChangeWhenPollsDueDateIsPassed}
-                          checked={
-                            userOptionsSettings.EmailWhenPollDueDateIsPassed
-                          }
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Email-when-poll-duedate-is-passed")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-4">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
-                          onChange={onChangeWhenPublishedPollIsDeleted}
-                          checked={
-                            userOptionsSettings.EmailWhenPublishedPollIsDeleted
-                          }
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Email-when-published-poll-is-deleted")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-4">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
-                          onChange={onChangeWhenPublishedPollIsUpdated}
-                          checked={
-                            userOptionsSettings.EmailWhenPublishedPollIsUpdated
-                          }
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Email-when-published-poll-is-updated")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-4">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
                           onChange={
                             onChangePushNotificationWhenNewPollIsPublished
                           }
@@ -1873,6 +1831,20 @@ const UserSettings = () => {
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t("Push-notification-when-new-poll-is-published")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeWhenPollsDueDateIsPassed}
+                          checked={
+                            userOptionsSettings.EmailWhenPollDueDateIsPassed
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-poll-duedate-is-passed")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1896,6 +1868,20 @@ const UserSettings = () => {
                     <Row className="mt-4">
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
+                          onChange={onChangeWhenPublishedPollIsDeleted}
+                          checked={
+                            userOptionsSettings.EmailWhenPublishedPollIsDeleted
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-published-poll-is-deleted")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
                           onChange={
                             onChangePushNotificationWhenPublishedPollIsDeleted
                           }
@@ -1907,6 +1893,20 @@ const UserSettings = () => {
                             {t(
                               "Push-notification-when-published-poll-is-deleted"
                             )}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-4">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeWhenPublishedPollIsUpdated}
+                          checked={
+                            userOptionsSettings.EmailWhenPublishedPollIsUpdated
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-published-poll-is-updated")}
                           </span>
                         </Checkbox>
                       </Col>
