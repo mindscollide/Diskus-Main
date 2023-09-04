@@ -398,10 +398,11 @@ const Agenda = () => {
                   return (
                     <>
                       <Row key={index} className="mt-4 m-0 p-0">
+                        <Col lg={2} md={2} sm={2}></Col>
                         <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
+                          lg={10}
+                          md={10}
+                          sm={10}
                           key={index + 1}
                           className={
                             apllyLockOnParentAgenda(index)

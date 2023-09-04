@@ -4,6 +4,7 @@
   border-radius: 4px !important;
   font-family: "MontserratMedium-500";
   display: flex;
+  align-items: center !important;
   gap: 5px;
   border: none;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;

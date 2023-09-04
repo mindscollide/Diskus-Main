@@ -282,6 +282,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
     setSelectedOption(option);
   };
 
+  // React select tick option handled
   const CustomOption = ({ innerProps, label, isSelected }) => (
     <div {...innerProps} className={styles["option"]}>
       {console.log(label, "labellabellabel")}
