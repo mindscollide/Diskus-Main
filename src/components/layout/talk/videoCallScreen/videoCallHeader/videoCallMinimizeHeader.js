@@ -14,12 +14,21 @@ import CallEndRedIcon from '../../../../../assets/images/newElements/CallRedIcon
 import MinToNormalIcon from '../../../../../assets/images/newElements/Min-to-normal-Icon.svg'
 
 const VideoCallMinimizeHeader = () => {
+  let callerNameInitiate = localStorage.getItem('callerNameInitiate')
+  let currentUserName = localStorage.getItem('name')
+  let callerName = localStorage.getItem('callerName')
+
+  const { videoFeatureReducer, VideoMainReducer } = useSelector(
+    (state) => state,
+  )
+
   const dispatch = useDispatch()
 
   const closeVideoPanel = () => {
     dispatch(normalizeVideoPanelFlag(false))
     dispatch(maximizeVideoPanelFlag(false))
     dispatch(minimizeVideoPanelFlag(false))
+    localStorage.setItem('activeCall', false)
   }
 
   const normalizePanel = () => {
@@ -38,7 +47,15 @@ const VideoCallMinimizeHeader = () => {
     <div className="videoCallGroupScreen-minmizeVideoCall">
       <Row className="mt-2 mb-4">
         <Col lg={3} md={3} sm={12} className="mt-1">
-          <p className="title-heading">Group Meeting Video</p>
+          <p className="title-heading">
+            {currentUserName === VideoMainReducer.VideoRecipentData.userName
+              ? callerNameInitiate
+              : currentUserName !== callerNameInitiate
+              ? callerNameInitiate
+              : currentUserName === callerName
+              ? callerName
+              : null}
+          </p>
         </Col>
         <Col lg={7} md={7} sm={12}>
           <div className="minimize-screen-on-bottom">

@@ -49,6 +49,7 @@ const VideoCallNormalHeader = () => {
     dispatch(normalizeVideoPanelFlag(false))
     dispatch(maximizeVideoPanelFlag(false))
     dispatch(minimizeVideoPanelFlag(false))
+    localStorage.setItem('activeCall', false)
   }
 
   const [isActiveIcon, setIsActiveIcon] = useState(false)
@@ -67,15 +68,28 @@ const VideoCallNormalHeader = () => {
     }
   }
 
+  console.log(
+    'currentUserName, callerNameInitiate, callerName, VideoMainReducer.VideoRecipentData.userName',
+    currentUserName,
+    callerNameInitiate,
+    callerName,
+    VideoMainReducer.VideoRecipentData.userName,
+    currentUserName !== VideoMainReducer.VideoRecipentData.userName,
+    currentUserName !== callerNameInitiate,
+    currentUserName === callerName,
+  )
+
   return (
     <Row className="mb-4">
       <Col lg={3} md={3} sm={12} className="mt-1">
         <p className="title-heading">
-          {currentUserName !== callerNameInitiate
+          {currentUserName === VideoMainReducer.VideoRecipentData.userName
+            ? callerNameInitiate
+            : currentUserName !== callerNameInitiate
             ? callerNameInitiate
             : currentUserName === callerName
             ? callerName
-            : VideoMainReducer.VideoRecipentData.userName}
+            : null}
         </p>
       </Col>
       <>

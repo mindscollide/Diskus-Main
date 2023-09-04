@@ -1,14 +1,78 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Row, Col } from 'react-bootstrap'
-import Avatar2 from '../../../../../assets/images/newElements/Avatar2.png'
 import './VideoLargeBody.css'
+import {
+  endIndexUrl,
+  extractedUrl,
+  generateURLCaller,
+  generateURLParticipant,
+} from '../../../../../commen/functions/urlVideoCalls'
 
 const VideoLargeBody = () => {
+  let currentUserID = Number(localStorage.getItem('userID'))
+  let initiateCallRoomID = localStorage.getItem('initiateCallRoomID')
+  let callAcceptedRoomID = localStorage.getItem('acceptedRoomID')
+  let callAcceptedRecipientID = Number(
+    localStorage.getItem('acceptedRecipientID'),
+  )
+  let currentUserName = localStorage.getItem('name')
+
+  const [callerURL, setCallerURL] = useState('')
+  const [participantURL, setParticipantURL] = useState('')
+
+  useEffect(() => {
+    let dynamicBaseURLCaller = localStorage.getItem('videoBaseURLCaller')
+    const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller)
+    const extractedBaseURLCaller = extractedUrl(
+      dynamicBaseURLCaller,
+      endIndexBaseURLCaller,
+    )
+    setCallerURL(
+      generateURLCaller(
+        extractedBaseURLCaller,
+        currentUserName,
+        initiateCallRoomID,
+      ),
+    )
+  }, [initiateCallRoomID])
+
+  useEffect(() => {
+    let dynamicBaseURLCaller = localStorage.getItem('videoBaseURLParticipant')
+    const endIndexBaseURLCaller = endIndexUrl(dynamicBaseURLCaller)
+    const extractedBaseURLCaller = extractedUrl(
+      dynamicBaseURLCaller,
+      endIndexBaseURLCaller,
+    )
+    setParticipantURL(
+      generateURLParticipant(
+        extractedBaseURLCaller,
+        currentUserName,
+        callAcceptedRoomID,
+      ),
+    )
+  }, [callAcceptedRoomID])
+
   return (
     <>
       <Row>
-        <Col lg={11} md={11} sm={12}>
-          <Row>
+        <Col lg={12} md={12} sm={12}>
+          <div className="normal-avatar-large">
+            {initiateCallRoomID !== null || callAcceptedRoomID !== null ? (
+              <iframe
+                src={
+                  callAcceptedRecipientID === currentUserID
+                    ? participantURL
+                    : callerURL
+                }
+                title="Live Video"
+                width="100%"
+                height="100%"
+                frameBorder="0"
+                allow="camera;microphone;display-capture"
+              />
+            ) : null}
+          </div>
+          {/* <Row>
             <Col lg={6} md={6} sm={12}>
               <div className="normal-avatar-large">
                 <img
@@ -27,7 +91,7 @@ const VideoLargeBody = () => {
                 />
               </div>
             </Col>
-          </Row>
+          </Row> */}
         </Col>
       </Row>
     </>

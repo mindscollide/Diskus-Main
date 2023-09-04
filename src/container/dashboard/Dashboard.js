@@ -38,6 +38,7 @@ import {
 import {
   incomingVideoCallMQTT,
   videoCallAccepted,
+  VideoCallResponse,
 } from '../../store/actions/VideoMain_actions'
 import Helper from '../../commen/functions/history_logout'
 import IconMetroAttachment from '../../assets/images/newElements/Icon metro-attachment.svg'
@@ -83,6 +84,15 @@ const Dashboard = () => {
   let createrID = localStorage.getItem('userID')
   let currentOrganization = localStorage.getItem('organizationID')
   let currentUserName = localStorage.getItem('name')
+  let callStatus = localStorage.getItem('activeCall')
+
+  console.log(
+    'CALL STATUS',
+    callStatus,
+    typeof callStatus,
+    callStatus === 'true',
+    callStatus === 'false',
+  )
 
   //Translation
   const { t } = useTranslation()
@@ -937,6 +947,15 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         'NEW_VIDEO_CALL_INITIATED'.toLowerCase()
       ) {
+        // if (callStatus === 'true') {
+        //   console.log('Call status True Check')
+        //   let Data = {
+        //     ReciepentID: Number(createrID),
+        //     RoomID: data.payload.roomID,
+        //     CallStatusID: 6,
+        //   }
+        //   dispatch(VideoCallResponse(Data, navigate, t))
+        // } else if (callStatus === 'false') {
         if (Number(data.senderID) !== Number(createrID)) {
           dispatch(incomingVideoCallMQTT(data.payload, data.payload.message))
           dispatch(incomingVideoCallFlag(true))
@@ -945,7 +964,9 @@ const Dashboard = () => {
           localStorage.setItem('callerNameInitiate', data.payload.callerName)
           localStorage.setItem('recipentID', data.receiverID[0])
           localStorage.setItem('recipentName', currentUserName)
+          dispatch(normalizeVideoPanelFlag(false))
         }
+        // }
       } else if (
         data.payload.message.toLowerCase() ===
         'VIDEO_CALL_ACCEPTED'.toLowerCase()
@@ -958,12 +979,14 @@ const Dashboard = () => {
         localStorage.setItem('callerName', currentUserName)
         localStorage.setItem('recipentID', data.payload.recepientID)
         localStorage.setItem('recipentName', data.payload.recepientName)
+        localStorage.setItem('activeCall', true)
       } else if (
         data.payload.message.toLowerCase() ===
         'VIDEO_CALL_REJECTED'.toLowerCase()
       ) {
         // dispatch(videoOutgoingCallFlag(false))
         dispatch(normalizeVideoPanelFlag(false))
+        localStorage.setItem('activeCall', false)
         setNotification({
           ...notification,
           notificationShow: true,
@@ -983,6 +1006,7 @@ const Dashboard = () => {
             message: `The call was unanswered`,
           })
           setNotificationID(id)
+          localStorage.setItem('activeCall', false)
         }
       }
     }
