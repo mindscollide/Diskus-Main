@@ -18,3 +18,12 @@
     color: #fff !important;
     font-weight: 600 !important;
 }
+
+.ant-select-dropdown.ant-select-dropdown-placement-bottomLeft:has(.rc-virtual-list-holder-inner .ant-select-item.ant-select-item-option.talk-video-filter) {
+    min-width: 110px !important;
+    width: 110px !important;
+}
+
+.rc-virtual-list-holder-inner:has(.talk-video-filter) {
+    display: flex !important;
+}
