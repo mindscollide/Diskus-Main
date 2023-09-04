@@ -52,11 +52,11 @@ body[dir="rtl"] .todolist-create-btn {
 .todolist-create-btn button {
   width: 131px;
   height: 31px;
-  font-size: calc(14px - 20%)!important;
+  font-size: calc(14px - 20%) !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold"!important;
+  font-family: "MontserratSemiBold" !important;
   border: none !important;
   position: relative;
 }
@@ -178,7 +178,7 @@ body[dir="rtl"] .ToDo tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell:n
 }
 
 .todolistContainer {
-  height: 90vh;
+  height: 91vh;
   width: 90% !important;
   margin: 0 auto !important;
 }
@@ -242,21 +242,23 @@ body[dir="rtl"] .todolist-heading-size {
   }
 
   .todolist-create-btn button {
-    font-size: calc(14px - 20%)!important;
+    font-size: calc(14px - 20%) !important;
     background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
     color: #fff !important;
     border-radius: 4px !important;
-    font-family: "MontserratSemiBold"!important;
+    font-family: "MontserratSemiBold" !important;
     border: none !important;
   }
 }
-.ant-result.ant-result-info.NoTaskTodo{
+
+.ant-result.ant-result-info.NoTaskTodo {
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
 }
+
 .MuiPaper-root.MuiPaper-elevation0.MuiPaper-rounded:has(.ant-result.ant-result-info.NoTaskTodo) {
   background: none;
 }

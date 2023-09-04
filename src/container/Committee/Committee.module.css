@@ -15,13 +15,13 @@ body[dir="rtl"] .Committee-heading-size {
   justify-content: center;
   margin-top: 8px !important;
   align-items: center;
-  font-size: calc(14px - 20%)!important;
+  font-size: calc(14px - 20%) !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold"!important;
+  font-family: "MontserratSemiBold" !important;
   border: none !important;
-  
+
 }
 
 body[dir="rtl"] .create-Committee-btn {
@@ -35,11 +35,11 @@ body[dir="rtl"] .create-Committee-btn {
 .create-Committee-btn:hover {
   width: 219px !important;
   height: 31px !important;
-  font-size: calc(14px - 20%)!important;
+  font-size: calc(14px - 20%) !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold"!important;
+  font-family: "MontserratSemiBold" !important;
   border: none !important;
   display: flex !important;
   justify-content: center !important;
@@ -65,11 +65,11 @@ body[dir="rtl"] .PLusICon {
 .Archived-Group-btn-Committee-section {
   width: 219px !important;
   height: 31px !important;
-  font-size: calc(14px - 20%)!important;
+  font-size: calc(14px - 20%) !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold"!important;
+  font-family: "MontserratSemiBold" !important;
   border: none !important;
   display: flex;
   justify-content: center !important;
@@ -88,11 +88,11 @@ body[dir="rtl"] .Archived-Group-btn-Committee-section {
 .Archived-Group-btn-Committee-section:focus-visible {
   width: 219px !important;
   height: 31px !important;
-  font-size: calc(14px - 20%)!important;
+  font-size: calc(14px - 20%) !important;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   color: #fff !important;
   border-radius: 4px !important;
-  font-family: "MontserratSemiBold"!important;
+  font-family: "MontserratSemiBold" !important;
   border: none !important;
   display: flex !important;
   justify-content: center !important;
@@ -121,7 +121,7 @@ body[dir="rtl"] .Archived-Group-btn-Committee-section {
 
 
 .CommitteeContainer {
-  height: 90vh;
+  height: 91vh;
   width: 90% !important;
   position: relative !important;
   margin: 0 auto;
