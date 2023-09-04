@@ -102,3 +102,33 @@
   font-size: 12px !important;
   font-family: "MontserratSemiBold" !important;
 }
+
+.Empty_state_heading {
+  color: #505050 !important;
+  font-size: 30px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Empty_state_Subheading {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "Montserrat";
+}
+
+.label_Styles {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  cursor: pointer;
+}
+
+.OverAll_padding {
+  padding: 0px 27px !important;
+}
+
+.option:nth-child(1) {
+  border-bottom: 1px solid #e1e1e1;
+}
+
+.border {
+}

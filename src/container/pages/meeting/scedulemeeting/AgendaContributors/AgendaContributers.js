@@ -27,6 +27,7 @@ import {
   showCrossConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
+import tick from "../../../../../assets/images/PNG tick.png";
 import NotifyAgendaModal from "./NotifyAgendaContributors/NotifyAgendaModal";
 import { notification } from "antd";
 const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
@@ -93,7 +94,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
       ),
     },
   ];
-  const [rowsData, setRowsData] = useState(data);
+  const [rowsData, setRowsData] = useState(0);
 
   const AgendaColoumns = [
     {
@@ -275,6 +276,30 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
     },
   ];
 
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleOptionSelect = (option) => {
+    setSelectedOption(option);
+  };
+
+  const CustomOption = ({ innerProps, label, isSelected }) => (
+    <div {...innerProps} className={styles["option"]}>
+      {console.log(label, "labellabellabel")}
+      <Row>
+        <Col lg={12} md={12} sm={12} className={styles["OverAll_padding"]}>
+          <Row className="mt-2">
+            <Col lg={11} md={11} sm={11}>
+              <span className={styles["label_Styles"]}>{label}</span>
+            </Col>
+            <Col lg={1} md={1} sm={1}>
+              {isSelected && <img src={tick} />}
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </div>
+  );
+
   const options = [
     {
       value: "chocolate",
@@ -329,7 +354,15 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
       <section>
         <Row className="mt-5">
           <Col lg={4} md={4} sm={12}>
-            <Select options={options} />
+            <Select
+              options={options}
+              value={selectedOption}
+              onChange={handleOptionSelect}
+              isSearchable={false}
+              components={{
+                Option: CustomOption,
+              }}
+            />
           </Col>
           <Col
             lg={8}
@@ -360,6 +393,50 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                   scroll={{ y: "62vh" }}
                   pagination={false}
                   className="Polling_table"
+                  locale={{
+                    emptyText: (
+                      <>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <img
+                              src={emptyContributorState}
+                              width="274.05px"
+                              height="230.96px"
+                            />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <span className={styles["Empty_state_heading"]}>
+                              {t("No-agenda-contributor")}
+                            </span>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <span className={styles["Empty_state_Subheading"]}>
+                              {t("There-are-no-agenda-contributors")}
+                            </span>
+                          </Col>
+                        </Row>
+                      </>
+                    ),
+                  }}
                   rows={notificationRows}
                 />
               </>
@@ -370,6 +447,50 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                   scroll={{ y: "62vh" }}
                   pagination={false}
                   className="Polling_table"
+                  locale={{
+                    emptyText: (
+                      <>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <img
+                              src={emptyContributorState}
+                              width="274.05px"
+                              height="230.96px"
+                            />
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <span className={styles["Empty_state_heading"]}>
+                              {t("No-agenda-contributor")}
+                            </span>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <span className={styles["Empty_state_Subheading"]}>
+                              {t("There-are-no-agenda-contributors")}
+                            </span>
+                          </Col>
+                        </Row>
+                      </>
+                    ),
+                  }}
                   rows={rspvRows}
                 />
               </>
@@ -379,16 +500,15 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                   column={AgendaColoumns}
                   scroll={{ y: "62vh" }}
                   pagination={false}
-                  className="Polling_table"
-                  rows={
-                    rowsData.length === 0 ? (
+                  locale={{
+                    emptyText: (
                       <>
                         <Row>
                           <Col
                             lg={12}
                             md={12}
                             sm={12}
-                            className="d-flex justifys-content-center"
+                            className="d-flex justify-content-center"
                           >
                             <img
                               src={emptyContributorState}
@@ -397,11 +517,35 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                             />
                           </Col>
                         </Row>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <span className={styles["Empty_state_heading"]}>
+                              {t("No-agenda-contributor")}
+                            </span>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className="d-flex justify-content-center"
+                          >
+                            <span className={styles["Empty_state_Subheading"]}>
+                              {t("There-are-no-agenda-contributors")}
+                            </span>
+                          </Col>
+                        </Row>
                       </>
-                    ) : (
-                      rowsData
-                    )
-                  }
+                    ),
+                  }}
+                  className="Polling_table"
+                  rows={rowsData}
                 />
               </>
             )}
