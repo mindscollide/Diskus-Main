@@ -20,6 +20,7 @@ const AgendaImport = () => {
   const [mainAgendaMinuteRemove, setmainAgendaMinuteRemove] = useState(0);
   const [subAgendaMinuteRemove, setSubAgendaMinuteRemove] = useState(0);
   const [indexForMainEdit, setIndexForMainEdit] = useState(0);
+  const [indexForSubAgendaEdit, setIndexForSubAgendaEdit] = useState(0);
 
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
@@ -46,6 +47,11 @@ const AgendaImport = () => {
       subAgendaMinute: [],
     },
   ]);
+
+  const EditSubAgendaMinutes = (index, subAgendaIndex) => {
+    setIndexForMainEdit(index);
+    setIndexForSubAgendaEdit(subAgendaIndex);
+  };
 
   const cancelEditFunctionality = () => {
     setallowEditMainAgenda(false);
@@ -83,8 +89,6 @@ const AgendaImport = () => {
     setIndexForMainEdit(index);
     setallowEditMainAgenda(true);
   };
-
-  console.log(indexForMainEdit, "indexForMainEditindexForMainEdit");
 
   const enterKeyHandler = (event) => {
     if (event.key === "Tab" && !event.shiftKey) {
@@ -390,6 +394,12 @@ const AgendaImport = () => {
                                               height="21.55px"
                                               width="21.55px"
                                               className="cursor-pointer"
+                                              onClick={() => {
+                                                EditSubAgendaMinutes(
+                                                  index,
+                                                  subAgendaIndex
+                                                );
+                                              }}
                                             />
                                           </Col>
                                         </Row>

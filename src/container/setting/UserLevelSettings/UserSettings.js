@@ -1084,73 +1084,11 @@ const UserSettings = () => {
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
-                          onChange={onChangeEmailWhenCommentDeleted}
-                          checked={userOptionsSettings.EmailWhenCommentDeleted}
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Email-when-comment-deleted")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
-                          onChange={onChangeEmailWhenNewCommentAdded}
-                          checked={userOptionsSettings.EmailWhenNewCommentAdded}
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Email-when-new-comment-added")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
-                          onChange={onChangeEmailWhenNewTODODeleted}
-                          checked={userOptionsSettings.EmailWhenNewTODODeleted}
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Email-when-new-todo-deleted")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
                           onChange={onChangeEmailWhenNewTODOAssigned}
                           checked={userOptionsSettings.EmailWhenNewTODOAssigned}
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t("Email-when-new-todo-assigned")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
-                          onChange={onChangeEmailWhenNewTODOEdited}
-                          checked={userOptionsSettings.EmailWhenNewTODOEdited}
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Email-when-new-todo-edited")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
-                          onChange={onChangePushNotificationWhenNewCommentAdded}
-                          checked={
-                            userOptionsSettings.PushNotificationWhenNewCommentAdded
-                          }
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Push-notification-when-new-comment-added")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1172,6 +1110,18 @@ const UserSettings = () => {
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
+                          onChange={onChangeEmailWhenNewTODOEdited}
+                          checked={userOptionsSettings.EmailWhenNewTODOEdited}
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-new-todo-edited")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
                           onChange={onChangePushNotificationWhenNewTODOEdited}
                           checked={
                             userOptionsSettings.PushNotificationWhenNewTODOEdited
@@ -1186,13 +1136,11 @@ const UserSettings = () => {
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
-                          onChange={onChangePushNotificationWhenCommentDeleted}
-                          checked={
-                            userOptionsSettings.PushNotificationWhenCommentDeleted
-                          }
+                          onChange={onChangeEmailWhenNewTODODeleted}
+                          checked={userOptionsSettings.EmailWhenNewTODODeleted}
                         >
                           <span className={styles["Class_CheckBox"]}>
-                            {t("Push-notification-when-comment-deleted")}
+                            {t("Email-when-new-todo-deleted")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1207,6 +1155,58 @@ const UserSettings = () => {
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t("Push-notification-when-new-todo-deleted")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeEmailWhenNewCommentAdded}
+                          checked={userOptionsSettings.EmailWhenNewCommentAdded}
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-new-comment-added")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangePushNotificationWhenNewCommentAdded}
+                          checked={
+                            userOptionsSettings.PushNotificationWhenNewCommentAdded
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-new-comment-added")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeEmailWhenCommentDeleted}
+                          checked={userOptionsSettings.EmailWhenCommentDeleted}
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-comment-deleted")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangePushNotificationWhenCommentDeleted}
+                          checked={
+                            userOptionsSettings.PushNotificationWhenCommentDeleted
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-comment-deleted")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1230,32 +1230,6 @@ const UserSettings = () => {
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
-                          onChange={onChangeEmailOnEditMeeting}
-                          checked={userOptionsSettings.EmailEditMeeting}
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Email-on-edit-meeting")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
-                          onChange={onChangeEmailOnCancelledOrDeletedMeeting}
-                          checked={
-                            userOptionsSettings.EmailCancelOrDeleteMeeting
-                          }
-                        >
-                          <span className={styles["Class_CheckBox"]}>
-                            {t("Email-on-cancelled-or-deleted-meeting")}
-                          </span>
-                        </Checkbox>
-                      </Col>
-                    </Row>
-                    <Row className="mt-3">
-                      <Col lg={12} md={12} sm={12}>
-                        <Checkbox
                           onChange={onChangePushNotificationonNewMeeting}
                           checked={
                             userOptionsSettings.PushNotificationonNewMeeting
@@ -1263,6 +1237,18 @@ const UserSettings = () => {
                         >
                           <span className={styles["Class_CheckBox"]}>
                             {t("Push-notification-on-new-meeting")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeEmailOnEditMeeting}
+                          checked={userOptionsSettings.EmailEditMeeting}
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-on-edit-meeting")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1281,6 +1267,21 @@ const UserSettings = () => {
                         </Checkbox>
                       </Col>
                     </Row>
+                    <Row className="mt-3">
+                      <Col lg={12} md={12} sm={12}>
+                        <Checkbox
+                          onChange={onChangeEmailOnCancelledOrDeletedMeeting}
+                          checked={
+                            userOptionsSettings.EmailCancelOrDeleteMeeting
+                          }
+                        >
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-on-cancelled-or-deleted-meeting")}
+                          </span>
+                        </Checkbox>
+                      </Col>
+                    </Row>
+
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12}>
                         <Checkbox
