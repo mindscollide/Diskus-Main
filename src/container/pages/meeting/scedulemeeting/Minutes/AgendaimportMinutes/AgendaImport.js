@@ -19,6 +19,7 @@ const AgendaImport = () => {
   const [allowEditMainAgenda, setallowEditMainAgenda] = useState(false);
   const [mainAgendaMinuteRemove, setmainAgendaMinuteRemove] = useState(0);
   const [subAgendaMinuteRemove, setSubAgendaMinuteRemove] = useState(0);
+  const [indexForMainEdit, setIndexForMainEdit] = useState(0);
 
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
@@ -38,21 +39,17 @@ const AgendaImport = () => {
           subAgenda:
             "Saif ul islam Contrary to popular belis, very popular during theContrary to popular belis, very popular during the Renaissance. The firstContrary to popular belis, very popular during the Renaissance. The firstContrary to popular belis, very popular during the Renaissance. The firstContrary to popular belis, very popular during the Renaissance. The firstContrary to popular belis, very popular during the Renaissance. The firstContrary to popular belis, very popular during the Renaissance. The firstContrary to popular belis, very popular during the Renaissance. The first Renaissance. The first line of Lorem Ipsum,Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.",
         },
-        {
-          subAgenda: "Sub Agenda One ",
-        },
-        {
-          subAgenda: "Sub Agenda two ",
-        },
-        {
-          subAgenda: "Sub Agenda three ",
-        },
-        {
-          subAgenda: "Sub Agenda Four ",
-        },
       ],
     },
+    {
+      name: "Contrary to popular belis, very popular during the Renaissance. The first line of Lorem Ipsum,Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.",
+      subAgendaMinute: [],
+    },
   ]);
+
+  const cancelEditFunctionality = () => {
+    setallowEditMainAgenda(false);
+  };
 
   const toggleExpansion = () => {
     setExpanded(!expanded);
@@ -83,8 +80,11 @@ const AgendaImport = () => {
   };
 
   const handleMainAgendaEditOptions = (index) => {
+    setIndexForMainEdit(index);
     setallowEditMainAgenda(true);
   };
+
+  console.log(indexForMainEdit, "indexForMainEditindexForMainEdit");
 
   const enterKeyHandler = (event) => {
     if (event.key === "Tab" && !event.shiftKey) {
@@ -124,7 +124,9 @@ const AgendaImport = () => {
               console.log(data, "datadatadatadatadata");
               return (
                 <>
-                  {allowEditMainAgenda ? (
+                  {allowEditMainAgenda &&
+                  indexForMainEdit === index &&
+                  allowEditMainAgenda === true ? (
                     <>
                       <Row className={styles["Add-note-QuillRow"]}>
                         <Col
@@ -139,7 +141,6 @@ const AgendaImport = () => {
                             theme="snow"
                             value={data.name}
                             placeholder={t("Note-details")}
-                            // onChange={onTextChange}
                             modules={modules}
                             className={styles["quill-height-addNote"]}
                           />
@@ -159,6 +160,7 @@ const AgendaImport = () => {
                           <Button
                             text={t("Cancel")}
                             className={styles["CancelButtonOnSaveAgendaImport"]}
+                            onClick={cancelEditFunctionality}
                           />
                           <Button
                             text={t("Save")}
