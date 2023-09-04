@@ -3,7 +3,7 @@
   height: auto !important;
   border: 1px solid #bbbbbb !important;
   border-radius: 4px !important;
-  padding: 10px 15px !important;
+  padding: 1px 15px !important;
 }
 
 .BackGround_Agenda_InActive {
@@ -11,7 +11,7 @@
   height: auto !important;
   border: 1px solid #bbbbbb !important;
   border-radius: 4px !important;
-  padding: 10px 15px !important;
+  padding: 1px 15px !important;
   filter: opacity(0.5);
 }
 
@@ -232,4 +232,27 @@
 
 .LineStyles {
   width: 100% !important;
+}
+
+.SectionInnerClass {
+  /* width: 100% !important; */
+}
+
+.BackGroundNewImplemented {
+  background: #5f78d6;
+  height: auto;
+  width: 48px !important;
+  margin-left: -2.5px;
+  margin-top: -1px !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+
+.Arrow {
+  cursor: pointer !important;
+  position: fixed;
+
+  text-align: center;
+  display: flex;
+  align-items: center !important;
 }
