@@ -1976,13 +1976,13 @@ const DataRoom = () => {
   };
 
   // api call onscroll
-  const handleScroll = (e) => {
+  const handleScroll = async (e) => {
     const { scrollHeight, scrollTop, clientHeight } = e.target;
     if (scrollHeight - scrollTop === clientHeight) {
+      await dispatch(dataBehaviour(true));
       if (sRowsData < totalRecords) {
-        dispatch(dataBehaviour(true));
         if (DataRoomReducer.dataBehaviour === false) {
-          dispatch(
+          await dispatch(
             getDocumentsAndFolderApiScrollbehaviour(
               navigate,
               currentView,
@@ -2047,10 +2047,9 @@ const DataRoom = () => {
             }
           );
           setGetAllData(copyData);
-          let newCount = sRowsData;
-          console.log(newCount, "newCountnewCountnewCountnewCount");
           setSRowsData(
-            newCount +
+            (prev) =>
+              prev +
               DataRoomReducer.getAllDocumentandShareFolderResponse.data.length
           );
           setTotalRecords(
@@ -2065,11 +2064,6 @@ const DataRoom = () => {
           );
           setGetAllData(
             DataRoomReducer.getAllDocumentandShareFolderResponse.data
-          );
-          console.log(
-            sRowsData,
-            DataRoomReducer.getAllDocumentandShareFolderResponse.data.length,
-            "newCountnewCountnewCountnewCount"
           );
         }
       } else {
