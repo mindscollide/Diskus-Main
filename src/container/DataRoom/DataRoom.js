@@ -67,6 +67,7 @@ import {
   getDocumentsAndFolderApi,
   getDocumentsAndFolderApiScrollbehaviour,
   getFolderDocumentsApi,
+  isFolder,
 } from "../../store/actions/DataRoom_actions";
 import sharedIcon from "../../assets/images/shared_icon.svg";
 import UploadDataFolder from "../../components/elements/Dragger/UploadFolder";
@@ -102,6 +103,7 @@ import shareIcon from "../../assets/images/AttachmentIcons/share.svg";
 import sites_Icon from "../../assets/images/AttachmentIcons/sites.svg";
 import videoIcon from "../../assets/images/AttachmentIcons/video.svg";
 import xlsFileIcon from "../../assets/images/AttachmentIcons/xls-file.svg";
+import { getFolderDocumentsApiScrollBehaviour } from "../../store/actions/DataRoom_actions";
 
 const DataRoom = () => {
   // tooltip
@@ -817,31 +819,6 @@ const DataRoom = () => {
     dispatch(getFolderDocumentsApi(navigate, folderid, t));
   };
 
-  useEffect(() => {
-    if (
-      DataRoomReducer.getFolderDocumentResponse !== null &&
-      DataRoomReducer.getFolderDocumentResponse !== undefined &&
-      DataRoomReducer.getFolderDocumentResponse.length > 0
-    ) {
-      setGetAllData(DataRoomReducer.getFolderDocumentResponse);
-    } else {
-      setGetAllData([]);
-    }
-  }, [DataRoomReducer.getFolderDocumentResponse]);
-
-  useEffect(() => {
-    if (uploadReducer.uploadDocumentsList !== null) {
-      let attachmentData = [];
-      attachmentData.push({
-        DisplayAttachmentName:
-          uploadReducer.uploadDocumentsList.displayFileName,
-        OriginalAttachmentName:
-          uploadReducer.uploadDocumentsList.originalFileName,
-      });
-      setTasksAttachments(attachmentData);
-    }
-  }, [uploadReducer.uploadDocumentsList]);
-
   // const foldersHandler = (id) => {
   //   if (folderID.includes(id)) {
   //     let findFolderIDIndex = getAllData.findIndex(
@@ -903,42 +880,42 @@ const DataRoom = () => {
         );
       }
     }
-    if (sorter.field === "name") {
-      if (sorter.order === "ascend") {
-        dispatch(
-          getDocumentsAndFolderApi(
-            navigate,
-            Number(currentView),
-            t,
-            2,
-            false,
-            1
-          )
-        );
-      } else {
-        dispatch(
-          getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1)
-        );
-      }
-    }
-    if (sorter.field === "owner") {
-      if (sorter.order === "ascend") {
-        dispatch(
-          getDocumentsAndFolderApi(
-            navigate,
-            Number(currentView),
-            t,
-            2,
-            false,
-            1
-          )
-        );
-      } else {
-        dispatch(
-          getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1)
-        );
-      }
-    }
+    // if (sorter.field === "name") {
+    //   if (sorter.order === "ascend") {
+    //     dispatch(
+    //       getDocumentsAndFolderApi(
+    //         navigate,
+    //         Number(currentView),
+    //         t,
+    //         2,
+    //         false,
+    //         1
+    //       )
+    //     );
+    //   } else {
+    //     dispatch(
+    //       getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1)
+    //     );
+    //   }
+    // }
+    // if (sorter.field === "owner") {
+    //   if (sorter.order === "ascend") {
+    //     dispatch(
+    //       getDocumentsAndFolderApi(
+    //         navigate,
+    //         Number(currentView),
+    //         t,
+    //         2,
+    //         false,
+    //         1
+    //       )
+    //     );
+    //   } else {
+    //     dispatch(
+    //       getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1)
+    //     );
+    //   }
+    // }
     // if (filters.)
     setCurrentSort(sorter?.order);
     fetchDataWithSorting(sorter?.order);
@@ -1428,9 +1405,9 @@ const DataRoom = () => {
       dataIndex: "owner",
       key: "owner",
       width: "90px",
-      sorter: true,
-      sortOrder: currentSort,
-      sortDirections: ["descend", "ascend"],
+      // sorter: true,
+      // sortOrder: currentSort,
+      // sortDirections: ["descend", "ascend"],
       render: (text, record) => {
         return <span className={styles["ownerName"]}>{text}</span>;
       },
@@ -1443,19 +1420,6 @@ const DataRoom = () => {
       sorter: true,
       sortDirections: ["descend", "ascend"],
       sortOrder: currentSort,
-      filters: [
-        {
-          text: t("Share-date"),
-          value: 1,
-        },
-      ],
-      filterIcon: (filtered) => (
-        <DownOutlined className="filter-chevron-icon-todolist" />
-      ),
-      // onFilter: (value, record) => {
-      //   handleFilterMenuClick(value);
-      //   // Implement your custom filtering logic here
-      // },
       render: (text, record) => {
         return (
           <span className={styles["dataroom_table_heading"]}>
@@ -1464,179 +1428,7 @@ const DataRoom = () => {
         );
       },
     },
-    {
-      title: t("File-size"),
-      dataIndex: "fileSize",
-      key: "fileSize",
-      width: "90px",
-      sortDirections: ["descend", "ascend"],
-      render: (text, record) => {
-        return <span className={styles["ownerName"]}>{text}</span>;
-      },
-    },
-    {
-      dataIndex: "OtherStuff",
-      key: "OtherStuff",
-      width: "180px",
-      sortDirections: ["descend", "ascend"],
-      render: (text, record) => {
-        return (
-          <>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex justify-content-end gap-2 position-relative otherstuff"
-              >
-                <div className="tablerowFeatures">
-                  <Tooltip placement="topRight" title={t("Share")}>
-                    <span className={styles["share__Icon"]}>
-                      <svg
-                        className={styles["share__Icon_img"]}
-                        onClick={() => {
-                          if (record.isFolder) {
-                            showShareFolderModal(record.id, record.name);
-                          } else {
-                            showShareFileModal(record.id, record.name);
-                          }
-                        }}
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="16.022"
-                        height="11.71"
-                        viewBox="0 0 16.022 11.71"
-                      >
-                        <path
-                          id="Icon_material-group-add"
-                          data-name="Icon material-group-add"
-                          d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
-                          transform="translate(0.5 -7)"
-                          fill="none"
-                          stroke="#5a5a5a"
-                        />
-                      </svg>
-                    </span>
-                  </Tooltip>
-                  <Tooltip placement="topRight" title={t("Download")}>
-                    <span className={styles["download__Icon"]}>
-                      <img
-                        src={download}
-                        alt=""
-                        height="10.71px"
-                        width="15.02px"
-                        className={styles["download__Icon_img"]}
-                        onClick={showRequestingAccessModal}
-                      />
-                    </span>
-                  </Tooltip>
-                  <Tooltip placement="topRight" title={t("Delete")}>
-                    <span className={styles["delete__Icon"]}>
-                      <img
-                        src={del}
-                        height="10.71px"
-                        alt=""
-                        width="15.02px"
-                        className={styles["delete__Icon_img"]}
-                        onClick={() => {
-                          if (record.isFolder) {
-                            dispatch(deleteFolder(navigate, record.id, t));
-                          } else {
-                            dispatch(
-                              deleteFileDataroom(navigate, record.id, t)
-                            );
-                          }
-                        }}
-                      />
-                    </span>
-                  </Tooltip>
-                  <Tooltip placement="topRight" title={t("Start")}>
-                    <span className={styles["start__Icon"]}>
-                      <img
-                        src={start}
-                        alt=""
-                        className={styles["start__Icon_img"]}
-                        height="10.71px"
-                        width="15.02px"
-                      />
-                    </span>
-                  </Tooltip>
-                </div>
-
-                <span className={styles["threeDot__Icon"]}>
-                  {record.isFolder ? (
-                    <Dropdown
-                      className={`${
-                        styles["options_dropdown"]
-                      } ${"dataroom_options"}`}
-                    >
-                      <Dropdown.Toggle id="dropdown-autoclose-true">
-                        <img
-                          src={dot}
-                          alt=""
-                          width="15.02px"
-                          height="10.71px"
-                        />
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        {optionsforFolder.map((data, index) => {
-                          return (
-                            <Dropdown.Item
-                              key={index}
-                              onClick={() => folderOptionsSelect(data, record)}
-                            >
-                              {data.label}
-                            </Dropdown.Item>
-                          );
-                        })}
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  ) : (
-                    <Dropdown
-                      className={`${
-                        styles["options_dropdown"]
-                      } ${"dataroom_options"}`}
-                    >
-                      <Dropdown.Toggle id="dropdown-autoclose-true">
-                        <img
-                          src={dot}
-                          alt=""
-                          width="15.02px"
-                          height="10.71px"
-                        />
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        {optionsforFile.map((data, index) => {
-                          return (
-                            <Dropdown.Item
-                              key={index}
-                              onClick={() => fileOptionsSelect(data, record)}
-                            >
-                              {data.label}
-                            </Dropdown.Item>
-                          );
-                        })}
-                      </Dropdown.Menu>
-                    </Dropdown>
-                  )}
-                </span>
-              </Col>
-            </Row>
-          </>
-        );
-      },
-    },
   ];
-
-  // const handleClickDropDown = (rowData) => {
-  //   setThreeDotOptions(rowData.id);
-  //   if (rowData.isFolder === true) {
-  //     setOptionsFolderisShown(true);
-  //     setOptionsFileisShown(false);
-  //   } else {
-  //     setOptionsFileisShown(true);
-  //     setOptionsFolderisShown(false);
-  //   }
-  // };
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -1846,18 +1638,30 @@ const DataRoom = () => {
   const handleChangeDocuments = (documentID) => {
     setSearchDocumentTypeValue(documentID);
     setSearchoptions(true);
-    OptionsDocument.map((data, index) => {
-      if (data.value === documentID) {
-        setSearchResultFields({
-          ...searchResultsFields,
-          DocumentType: {
-            value: data.value,
-            label: data.label,
-          },
-        });
-      }
+
+    // Create a Promise to handle the mapping operation
+    const mapPromise = new Promise((resolve) => {
+      OptionsDocument.forEach((data, index) => {
+        if (data.value === documentID) {
+          setSearchResultFields({
+            ...searchResultsFields,
+            DocumentType: {
+              value: data.value,
+              label: data.label,
+            },
+          });
+        }
+        // Resolve the promise after processing all elements
+        if (index === OptionsDocument.length - 1) {
+          resolve();
+        }
+      });
     });
-    setSearchbarshow(false);
+
+    // Wait for the mapping operation to complete before hiding the search bar
+    mapPromise.then(() => {
+      setSearchbarshow(false);
+    });
   };
 
   // Search Box Document Type handle Change Function
@@ -1976,21 +1780,39 @@ const DataRoom = () => {
   };
 
   // api call onscroll
-  const handleScroll = (e) => {
+  const handleScroll = async (e) => {
     const { scrollHeight, scrollTop, clientHeight } = e.target;
     if (scrollHeight - scrollTop === clientHeight) {
+      await dispatch(dataBehaviour(true));
       if (sRowsData < totalRecords) {
-        dispatch(dataBehaviour(true));
         if (DataRoomReducer.dataBehaviour === false) {
-          dispatch(
-            getDocumentsAndFolderApiScrollbehaviour(
-              navigate,
-              currentView,
-              t,
-              Number(sRowsData),
-              Number(filterValue)
-            )
-          );
+          if (
+            viewFolderID !== null &&
+            viewFolderID !== undefined &&
+            Number(viewFolderID) !== 0
+          ) {
+            await dispatch(
+              getFolderDocumentsApiScrollBehaviour(
+                navigate,
+                viewFolderID,
+                t,
+                2,
+                sRowsData,
+                1,
+                true
+              )
+            );
+          } else {
+            await dispatch(
+              getDocumentsAndFolderApiScrollbehaviour(
+                navigate,
+                currentView,
+                t,
+                Number(sRowsData),
+                Number(filterValue)
+              )
+            );
+          }
         }
       }
     }
@@ -2047,10 +1869,9 @@ const DataRoom = () => {
             }
           );
           setGetAllData(copyData);
-          let newCount = sRowsData;
-          console.log(newCount, "newCountnewCountnewCountnewCount");
           setSRowsData(
-            newCount +
+            (prev) =>
+              prev +
               DataRoomReducer.getAllDocumentandShareFolderResponse.data.length
           );
           setTotalRecords(
@@ -2066,11 +1887,6 @@ const DataRoom = () => {
           setGetAllData(
             DataRoomReducer.getAllDocumentandShareFolderResponse.data
           );
-          console.log(
-            sRowsData,
-            DataRoomReducer.getAllDocumentandShareFolderResponse.data.length,
-            "newCountnewCountnewCountnewCount"
-          );
         }
       } else {
         // setGetAllData([]);
@@ -2078,6 +1894,61 @@ const DataRoom = () => {
     } catch (error) {}
   }, [DataRoomReducer.getAllDocumentandShareFolderResponse]);
 
+  useEffect(() => {
+    try {
+      if (
+        DataRoomReducer.getFolderDocumentResponse !== null &&
+        DataRoomReducer.getFolderDocumentResponse !== undefined
+      ) {
+        if (DataRoomReducer.isFolder === 1) {
+          dispatch(isFolder(0));
+          if (DataRoomReducer.getFolderDocumentResponse?.data.length > 0) {
+            if (DataRoomReducer.dataBehaviour) {
+              dispatch(dataBehaviour(false));
+              let newCopy = [...getAllData];
+              DataRoomReducer.getFolderDocumentResponse?.data.map(
+                (data, index) => newCopy.push(data)
+              );
+              setGetAllData(newCopy);
+              setTotalRecords(
+                DataRoomReducer.getFolderDocumentResponse.totalCount
+              );
+              setSRowsData(
+                (prev) =>
+                  prev + DataRoomReducer.getFolderDocumentResponse.data.length
+              );
+            } else {
+              setGetAllData(DataRoomReducer.getFolderDocumentResponse.data);
+              setTotalRecords(
+                DataRoomReducer.getFolderDocumentResponse.totalCount
+              );
+              setSRowsData(
+                DataRoomReducer.getFolderDocumentResponse.data.length
+              );
+            }
+          }
+        } else if (DataRoomReducer.isFolder === 2) {
+          dispatch(isFolder(0));
+          setGetAllData([]);
+        }
+      } else {
+        // setGetAllData([]);
+      }
+    } catch {}
+  }, [DataRoomReducer.getFolderDocumentResponse]);
+
+  useEffect(() => {
+    if (uploadReducer.uploadDocumentsList !== null) {
+      let attachmentData = [];
+      attachmentData.push({
+        DisplayAttachmentName:
+          uploadReducer.uploadDocumentsList.displayFileName,
+        OriginalAttachmentName:
+          uploadReducer.uploadDocumentsList.originalFileName,
+      });
+      setTasksAttachments(attachmentData);
+    }
+  }, [uploadReducer.uploadDocumentsList]);
   return (
     <>
       <div className={styles["DataRoom_container"]}>
@@ -2172,10 +2043,7 @@ const DataRoom = () => {
                         </Col>
                       </Row>
                     </Dropdown.Item>
-                    <Dropdown.Item
-                      className="dropdown-item_folder"
-                      // onClick={handleCreateTodo}
-                    >
+                    <Dropdown.Item className="dropdown-item_folder">
                       <Row className="mt-1">
                         <Col
                           lg={12}
@@ -2796,7 +2664,7 @@ const DataRoom = () => {
                                 optionsforFile={optionsforFile}
                                 sRowsData={sRowsData}
                                 totalRecords={totalRecords}
-                                filterValue={filterValue}
+                                filter_Value={filterValue}
                               />
                             </>
                           ) : getAllData.length > 0 &&
@@ -2806,7 +2674,7 @@ const DataRoom = () => {
                             <>
                               <section
                                 style={{
-                                  height: 250,
+                                  height: 380,
                                   overflowY: "scroll",
                                   overflowX: "hidden",
                                 }}
@@ -2907,7 +2775,7 @@ const DataRoom = () => {
                                 optionsforFile={optionsforFile}
                                 sRowsData={sRowsData}
                                 totalRecords={totalRecords}
-                                filterValue={filterValue}
+                                filter_Value={filterValue}
                               />
                             </>
                           ) : getAllData.length > 0 &&
@@ -2917,7 +2785,7 @@ const DataRoom = () => {
                             <>
                               <section
                                 style={{
-                                  height: 250,
+                                  height: 380,
                                   overflowY: "scroll",
                                   overflowX: "hidden",
                                 }}

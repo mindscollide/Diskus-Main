@@ -28,8 +28,6 @@ const Sidebar = () => {
   const sidebarshow = useRef();
 
   const handleOutsideClick = (event) => {
-    console.log(sidebarshow, "eventeventevent");
-    console.log(event.target, "eventeventevent");
     if (
       sidebarshow.current &&
       !sidebarshow.current.contains(event.target) &&
@@ -47,12 +45,11 @@ const Sidebar = () => {
   }, [showMore]);
 
   const handleMoreOptions = () => {
-    console.log("clickeddddddd");
     setShowMore(!showMore);
   };
 
   useEffect(() => {
-    if (Blur != undefined) {
+    if (Blur !== undefined && Blur !== null) {
       console.log("Blur", Blur);
 
       setActivateBlur(true);

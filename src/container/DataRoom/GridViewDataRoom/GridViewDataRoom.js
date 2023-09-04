@@ -10,6 +10,7 @@ import {
   getDocumentsAndFolderApi,
   deleteFolder,
   dataBehaviour,
+  getFolderDocumentsApiScrollBehaviour,
 } from "../../../store/actions/DataRoom_actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -30,8 +31,10 @@ const GridViewDataRoom = ({
   optionsforFile,
   sRowsData,
   totalRecords,
-  Value,
+  filter_Value,
 }) => {
+  console.log(totalRecords, "totalRecordstotalRecords");
+  console.log(filter_Value, "ValueValueValue");
   console.log(
     optionsforFolder,
     optionsforFile,
@@ -56,6 +59,7 @@ const GridViewDataRoom = ({
     label: t("Name"),
     value: 1,
   });
+  const viewFolderId = localStorage.getItem("folderID");
   const [filterShareTabValue, setFilteShareTabrValue] = useState({
     label: t("Name"),
     value: 2,
@@ -80,23 +84,41 @@ const GridViewDataRoom = ({
     localStorage.setItem("folderID", folderid);
     dispatch(getFolderDocumentsApi(navigate, folderid, t));
   };
-
+  console.log(viewFolderId, "viewFolderIdviewFolderId");
   // api call onscroll
-  const handleScroll = (e) => {
+  const handleScroll = async (e) => {
     const { scrollHeight, scrollTop, clientHeight } = e.target;
     if (scrollHeight - scrollTop === clientHeight) {
       if (sRowsData < totalRecords) {
         dispatch(dataBehaviour(true));
         if (DataRoomReducer.dataBehaviour === false) {
-          dispatch(
-            getDocumentsAndFolderApiScrollbehaviour(
-              navigate,
-              currentView,
-              t,
-              Number(sRowsData),
-              Number(Value)
-            )
-          );
+          if (
+            viewFolderId !== null &&
+            viewFolderId !== undefined &&
+            viewFolderId !== 0
+          ) {
+            await dispatch(
+              getFolderDocumentsApiScrollBehaviour(
+                navigate,
+                Number(viewFolderId),
+                t,
+                2,
+                Number(sRowsData),
+                Number(filter_Value),
+                true
+              )
+            );
+          } else {
+            await dispatch(
+              getDocumentsAndFolderApiScrollbehaviour(
+                navigate,
+                currentView,
+                t,
+                Number(sRowsData),
+                Number(filter_Value)
+              )
+            );
+          }
         }
       }
     }
@@ -238,12 +260,14 @@ const GridViewDataRoom = ({
                       src={ArrowUp}
                       width="15.02px"
                       height="10.71px"
+                      alt=""
                       className={styles["sortIconGrid"]}
                       onClick={handleClickSortDecsending}
                     />
                   ) : (
                     <img
                       src={ArrowDown}
+                      alt=""
                       width="15.02px"
                       height="10.71px"
                       className={styles["sortIconGrid"]}
@@ -285,6 +309,7 @@ const GridViewDataRoom = ({
                       width="15.02px"
                       className={styles["sortIconGrid"]}
                       onClick={handleClickSortDecsending}
+                      alt=""
                       height="10.71px"
                     />
                   ) : (
@@ -292,6 +317,7 @@ const GridViewDataRoom = ({
                       src={ArrowDown}
                       width="15.02px"
                       className={styles["sortIconGrid"]}
+                      alt=""
                       height="10.71px"
                       onClick={handleClickSortAscending}
                     />
@@ -304,7 +330,11 @@ const GridViewDataRoom = ({
             </Col>
           </Row>
           <section
-            style={{ height: 370, overflowX: "hidden", overflowY: "auto" }}
+            style={{
+              height: 370,
+              overflowX: "hidden",
+              overflowY: "auto",
+            }}
             onScroll={handleScroll}
           >
             <Row>
@@ -324,7 +354,7 @@ const GridViewDataRoom = ({
                                 className={styles["folderName__text"]}
                                 onClick={() => getFolderDocuments(fileData.id)}
                               >
-                                <img src={folder_icon_gridview} />{" "}
+                                <img src={folder_icon_gridview} alt="" />{" "}
                                 {fileData.name}
                               </span>
                               {!fileData.isShared && (
@@ -338,6 +368,7 @@ const GridViewDataRoom = ({
                                   >
                                     <Dropdown.Toggle id="dropdown-autoclose-true">
                                       <img
+                                        alt=""
                                         src={threedots_dataroom}
                                         width="15.02px"
                                         height="10.71px"
@@ -391,14 +422,14 @@ const GridViewDataRoom = ({
                             <div className={styles["fileview__Box"]}>
                               <Row>
                                 <Col sm={12} md={12} lg={12}>
-                                  <img src={file_image} width={"100%"} />
+                                  <img src={file_image} width={"100%"} alt="" />
                                 </Col>
                                 <Col sm={12} md={12} lg={12}>
                                   <div className={styles["gridViewFile__name"]}>
                                     <span
                                       className={styles["folderFile__text"]}
                                     >
-                                      <img src={folder_icon_gridview} />{" "}
+                                      <img src={folder_icon_gridview} alt="" />{" "}
                                       {fileData.name}
                                     </span>
                                     {!fileData.isShared && (
@@ -419,6 +450,7 @@ const GridViewDataRoom = ({
                                               src={threedots_dataroom}
                                               width="15.02px"
                                               height="10.71px"
+                                              alt=""
                                             />
                                           </Dropdown.Toggle>
                                           <Dropdown.Menu>
