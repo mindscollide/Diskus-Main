@@ -24,6 +24,7 @@ const AdvancePersmissionModal = () => {
   const { Sider } = Layout;
   const { NewMeetingreducer } = useSelector((state) => state);
   const [expandmenuIntroduction, setExpandmenuIntroduction] = useState(false);
+  const [sidebarindex, setSidebarindex] = useState(0);
   const [sidebarOptions, setsidebarOptions] = useState([
     {
       title: t("Introduction"),
@@ -93,7 +94,8 @@ const AdvancePersmissionModal = () => {
     dispatch(showAdvancePermissionConfirmation(true));
   };
 
-  const handleExpandIntroduction = () => {
+  const handleExpandIntroduction = (index) => {
+    setSidebarindex(index);
     setExpandmenuIntroduction(!expandmenuIntroduction);
   };
   return (
@@ -173,7 +175,7 @@ const AdvancePersmissionModal = () => {
                           ? sidebarOptions.map((data, index) => {
                               return (
                                 <>
-                                  <Col lg={12} md={12} sm={12} className="mt-3">
+                                  <Col lg={12} md={12} sm={12} className="mt-4">
                                     <section
                                       className={styles["SidebarSection"]}
                                     >
@@ -183,7 +185,7 @@ const AdvancePersmissionModal = () => {
                                         }
                                       >
                                         <span>
-                                          {index}
+                                          {index + 1}
                                           <span>.</span>
                                         </span>
                                         <span
@@ -197,19 +199,24 @@ const AdvancePersmissionModal = () => {
 
                                       <img
                                         src={
-                                          expandmenuIntroduction
+                                          sidebarindex === index &&
+                                          expandmenuIntroduction === true
                                             ? Minus
                                             : PlusIcon
                                         }
                                         height="14px"
                                         width="14px"
                                         className={styles["Plus_icon-Class"]}
-                                        onClick={handleExpandIntroduction}
+                                        onClick={() => {
+                                          handleExpandIntroduction(index);
+                                        }}
                                       />
                                     </section>
-                                    {expandmenuIntroduction ? (
+
+                                    {sidebarindex === index &&
+                                    expandmenuIntroduction === true ? (
                                       <>
-                                        <Row>
+                                        <Row className="mt-2">
                                           <Col lg={7} md={7} sm={7}>
                                             <Row>
                                               <Col
@@ -257,7 +264,9 @@ const AdvancePersmissionModal = () => {
                                             </span>
                                           </Col>
                                         </Row>
-                                        <Row>
+                                        <Row
+                                          className={styles["tranisitionStyle"]}
+                                        >
                                           {data.IntroductionFiles.map(
                                             (Filesdata, Filesindex) => {
                                               return (
@@ -290,6 +299,9 @@ const AdvancePersmissionModal = () => {
                                         </Row>
                                       </>
                                     ) : null}
+                                    <span
+                                      className={styles["Bottom_Line"]}
+                                    ></span>
                                   </Col>
                                 </>
                               );
@@ -336,7 +348,7 @@ const AdvancePersmissionModal = () => {
                         {members.map((data, index) => {
                           return (
                             <>
-                              <Col lg={6} md={6} sm={6}>
+                              <Col lg={6} md={6} sm={6} className="mt-3">
                                 <Row>
                                   <Col lg={12} md={12} sm={12}>
                                     <span
@@ -388,7 +400,11 @@ const AdvancePersmissionModal = () => {
                   </Row>
                 </Col>
               </Row>
-              {/* <Row className="mt-5">
+            </>
+          }
+          ModalFooter={
+            <>
+              <Row>
                 <Col
                   lg={12}
                   md={12}
@@ -402,7 +418,7 @@ const AdvancePersmissionModal = () => {
                   />
                   <Button text={t("Save")} className={styles["Save_Button"]} />
                 </Col>
-              </Row> */}
+              </Row>
             </>
           }
         />
