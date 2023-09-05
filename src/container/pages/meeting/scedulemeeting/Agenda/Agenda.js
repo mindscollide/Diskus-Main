@@ -1141,7 +1141,7 @@ const Agenda = () => {
                                             <Col lg={6} md={6} sm={6}>
                                               <Radio.Group
                                                 onChange={subAjendaonChange}
-                                                value={subAgendaData.value}
+                                                value={subValue}
                                                 disabled={
                                                   apllyLockOnParentAgenda(
                                                     index
@@ -1154,7 +1154,7 @@ const Agenda = () => {
                                                     : false
                                                 }
                                               >
-                                                <Radio value={1}>
+                                                <Radio subValue={1}>
                                                   <span
                                                     className={
                                                       styles[
@@ -1165,7 +1165,7 @@ const Agenda = () => {
                                                     {t("Document")}
                                                   </span>
                                                 </Radio>
-                                                <Radio value={2}>
+                                                <Radio subValue={2}>
                                                   <span
                                                     className={
                                                       styles[
@@ -1176,7 +1176,7 @@ const Agenda = () => {
                                                     {t("URL")}
                                                   </span>
                                                 </Radio>
-                                                <Radio value={3}>
+                                                <Radio subValue={3}>
                                                   <span
                                                     className={
                                                       styles[
@@ -1272,7 +1272,7 @@ const Agenda = () => {
                                               />
                                             </Col>
                                           </Row>
-                                          {value === 1 ? (
+                                          {subValue === 1 ? (
                                             <>
                                               <Row>
                                                 <Col
@@ -1348,7 +1348,7 @@ const Agenda = () => {
                                                           );
                                                         }
                                                       )
-                                                    ) : value === 2 ? (
+                                                    ) : subValue === 2 ? (
                                                       <>
                                                         <Row className="mt-2">
                                                           <Col
@@ -1370,7 +1370,7 @@ const Agenda = () => {
                                                           </Col>
                                                         </Row>
                                                       </>
-                                                    ) : value === 3 ? (
+                                                    ) : subValue === 3 ? (
                                                       <>
                                                         <Row className="mt-2">
                                                           <Col
