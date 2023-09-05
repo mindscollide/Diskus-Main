@@ -363,7 +363,7 @@ const AdvancePersmissionModal = () => {
                               </Col>
                               <Col lg={3} md={3} sm={3}>
                                 <Row>
-                                  <Col lg={12} md={12} sm={12} className="m-1">
+                                  <Col lg={12} md={12} sm={12} className="m-3">
                                     <Switch
                                       className={
                                         styles[
@@ -376,7 +376,7 @@ const AdvancePersmissionModal = () => {
                               </Col>
                               <Col lg={3} md={3} sm={3}>
                                 <Row>
-                                  <Col lg={12} md={12} sm={12} className="m-1">
+                                  <Col lg={12} md={12} sm={12} className="m-3">
                                     <Switch
                                       className={
                                         styles["AdvancePermission_switches"]
