@@ -299,3 +299,22 @@ aside.ant-layout-sider.ant-layout-sider-dark {
 .modal_body {
   padding-top: 0 !important;
 }
+
+.Times_styles {
+  color: #5a5a5a !important;
+  font-size: 10px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+.minus_sign {
+  width: 10px;
+  height: 1px;
+  background: #5a5a5a;
+  display: inline-block !important;
+}
+.attachment_line {
+  width: 100% !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis !important;
+  display: inline-block !important;
+}

@@ -12,6 +12,7 @@ import {
 import { Col, Row } from "react-bootstrap";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
 import PlusIcon from "../../../../../../assets/images/SVGPLUS.svg";
+import PDF from "../../../../../../assets/images/pdf_icon.svg";
 import Minus from "../../../../../../assets/images/SVGMINUS.svg";
 import profile from "../../../../../../assets/images/newprofile.png";
 import Key from "../../../../../../assets/images/KEY.svg";
@@ -23,6 +24,44 @@ const AdvancePersmissionModal = () => {
   const { Sider } = Layout;
   const { NewMeetingreducer } = useSelector((state) => state);
   const [expandmenuIntroduction, setExpandmenuIntroduction] = useState(false);
+  const [sidebarOptions, setsidebarOptions] = useState([
+    {
+      title: t("Introduction"),
+      IntroductionFiles: [
+        {
+          name: "Axis.Diskus.Com",
+        },
+        {
+          name: "Axis.Diskus.Com",
+        },
+        {
+          name: "Axis.Diskus.Com",
+        },
+        {
+          name: "Axis.Diskus.Com",
+        },
+        {
+          name: "Axis.Diskus.Com",
+        },
+      ],
+    },
+    {
+      title: t("Ceo-report"),
+      IntroductionFiles: [],
+    },
+    {
+      title: t("Finance-summary"),
+      IntroductionFiles: [],
+    },
+    {
+      title: t("Functional-review"),
+      IntroductionFiles: [],
+    },
+    {
+      title: t("Closing-report"),
+      IntroductionFiles: [],
+    },
+  ]);
   const options = [
     { value: "All", label: "All" },
     { value: "organizer", label: "organizer" },
@@ -119,65 +158,143 @@ const AdvancePersmissionModal = () => {
           ModalBody={
             <>
               <Row>
-                <Col lg={4} md={4} sm={12}>
+                <Col lg={5} md={5} sm={12}>
                   <Row>
                     <Col lg={12} md={12} sm={12} className="ms-2 ">
                       <Row className="mt-4">
-                        <Col lg={11} md={11} sm={12} className="d-flex ">
+                        <Col lg={12} md={12} sm={12} className="d-flex ">
                           <span className={styles["Agenda_heading_Advance"]}>
                             {t("Agenda")}
                           </span>
                         </Col>
-                        <Col lg={1} md={1} sm={12}></Col>
                       </Row>
                       <Row className="mt-2">
-                        <Col lg={12} md={12} sm={12}>
-                          <section className={styles["SidebarSection"]}>
-                            <span className={styles["Heading_introductions"]}>
-                              1.
-                              <span className={styles["Heading_introductions"]}>
-                                {t("Introduction")}
-                              </span>
-                            </span>
-
-                            <img
-                              src={expandmenuIntroduction ? Minus : PlusIcon}
-                              height="14px"
-                              width="14px"
-                              className={styles["Plus_icon-Class"]}
-                              onClick={handleExpandIntroduction}
-                            />
-                          </section>
-                          {expandmenuIntroduction ? (
-                            <>
-                              <Row>
-                                <Col lg={8} md={8} sm={8}>
-                                  <Row>
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      className="d-flex gap-2"
+                        {sidebarOptions.length > 0
+                          ? sidebarOptions.map((data, index) => {
+                              return (
+                                <>
+                                  <Col lg={12} md={12} sm={12} className="mt-3">
+                                    <section
+                                      className={styles["SidebarSection"]}
                                     >
-                                      <img
-                                        src={profile}
-                                        height="19px"
-                                        width="19px"
-                                        className={styles["Profile"]}
-                                      />
                                       <span
-                                        className={styles["ParticipantName"]}
+                                        className={
+                                          styles["Heading_introductions"]
+                                        }
                                       >
-                                        Salman Memon
+                                        <span>
+                                          {index}
+                                          <span>.</span>
+                                        </span>
+                                        <span
+                                          className={
+                                            styles["Heading_introductions"]
+                                          }
+                                        >
+                                          {data.title}
+                                        </span>
                                       </span>
-                                    </Col>
-                                  </Row>
-                                </Col>
-                                <Col lg={6} md={6} sm={6}></Col>
-                              </Row>
-                            </>
-                          ) : null}
-                        </Col>
+
+                                      <img
+                                        src={
+                                          expandmenuIntroduction
+                                            ? Minus
+                                            : PlusIcon
+                                        }
+                                        height="14px"
+                                        width="14px"
+                                        className={styles["Plus_icon-Class"]}
+                                        onClick={handleExpandIntroduction}
+                                      />
+                                    </section>
+                                    {expandmenuIntroduction ? (
+                                      <>
+                                        <Row>
+                                          <Col lg={7} md={7} sm={7}>
+                                            <Row>
+                                              <Col
+                                                lg={12}
+                                                md={12}
+                                                sm={12}
+                                                className="d-flex gap-1"
+                                              >
+                                                <img
+                                                  src={profile}
+                                                  height="19px"
+                                                  width="19px"
+                                                  className={styles["Profile"]}
+                                                />
+                                                <span
+                                                  className={
+                                                    styles["ParticipantName"]
+                                                  }
+                                                >
+                                                  Salman Memon
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                          </Col>
+                                          <Col
+                                            lg={5}
+                                            md={5}
+                                            sm={5}
+                                            className="d-flex align-items-center gap-1"
+                                          >
+                                            <span
+                                              className={styles["Times_styles"]}
+                                            >
+                                              12:15 PM
+                                            </span>
+
+                                            <span
+                                              className={styles["minus_sign"]}
+                                            ></span>
+
+                                            <span
+                                              className={styles["Times_styles"]}
+                                            >
+                                              12:15 PM
+                                            </span>
+                                          </Col>
+                                        </Row>
+                                        <Row>
+                                          {data.IntroductionFiles.map(
+                                            (Filesdata, Filesindex) => {
+                                              return (
+                                                <>
+                                                  <Col
+                                                    lg={4}
+                                                    md={4}
+                                                    sm={12}
+                                                    className="flex-wrap my-1   d-flex justify-content-center"
+                                                  >
+                                                    <img
+                                                      src={PDF}
+                                                      height="38.57px"
+                                                      width="38.57px"
+                                                    />
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "attachment_line"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {Filesdata.name}
+                                                    </span>
+                                                  </Col>
+                                                </>
+                                              );
+                                            }
+                                          )}
+                                        </Row>
+                                      </>
+                                    ) : null}
+                                  </Col>
+                                </>
+                              );
+                            })
+                          : null}
                       </Row>
                     </Col>
                   </Row>
@@ -185,7 +302,7 @@ const AdvancePersmissionModal = () => {
                 <Col lg={1} md={1} sm={12}>
                   <span className={styles["LineUpper"]}></span>
                 </Col>
-                <Col lg={7} md={7} sm={12}>
+                <Col lg={6} md={6} sm={12}>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <Row className="mt-4 mb-4">
