@@ -38,6 +38,9 @@ import {
 import {
   incomingVideoCallMQTT,
   videoCallAccepted,
+  VideoCallResponse,
+  CallRequestReceived,
+  callRequestReceivedMQTT,
 } from '../../store/actions/VideoMain_actions'
 import Helper from '../../commen/functions/history_logout'
 import IconMetroAttachment from '../../assets/images/newElements/Icon metro-attachment.svg'
@@ -937,7 +940,34 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         'NEW_VIDEO_CALL_INITIATED'.toLowerCase()
       ) {
-        if (Number(data.senderID) !== Number(createrID)) {
+        let callStatus = JSON.parse(localStorage.getItem('activeCall'))
+
+        console.log(
+          'CALL STATUS',
+          callStatus,
+          typeof callStatus,
+          callStatus === true,
+          callStatus === false,
+        )
+        if (callStatus === true) {
+          let timeValue = Number(localStorage.getItem('callRingerTimeout'))
+          timeValue = timeValue * 1000
+
+          const timeoutId = setTimeout(() => {
+            let Data = {
+              ReciepentID: Number(createrID),
+              RoomID: data.payload.roomID,
+              CallStatusID: 3,
+            }
+            dispatch(VideoCallResponse(Data, navigate, t))
+          }, timeValue)
+
+          return () => clearTimeout(timeoutId)
+        } else if (callStatus === false) {
+          let Data = {
+            OrganizationID: Number(currentOrganization),
+            RoomID: data.payload.roomID,
+          }
           dispatch(incomingVideoCallMQTT(data.payload, data.payload.message))
           dispatch(incomingVideoCallFlag(true))
           localStorage.setItem('RoomID', data.payload.roomID)
@@ -945,7 +975,10 @@ const Dashboard = () => {
           localStorage.setItem('callerNameInitiate', data.payload.callerName)
           localStorage.setItem('recipentID', data.receiverID[0])
           localStorage.setItem('recipentName', currentUserName)
+          dispatch(normalizeVideoPanelFlag(false))
+          dispatch(CallRequestReceived(Data, navigate, t))
         }
+        dispatch(callRequestReceivedMQTT({}, ''))
       } else if (
         data.payload.message.toLowerCase() ===
         'VIDEO_CALL_ACCEPTED'.toLowerCase()
@@ -955,27 +988,35 @@ const Dashboard = () => {
         dispatch(videoCallAccepted(data.payload, data.payload.message))
         localStorage.setItem('RoomID', data.payload.roomID)
         localStorage.setItem('callerID', data.senderID)
-        localStorage.setItem('callerName', currentUserName)
+        localStorage.setItem('callerName', data.payload.callerName)
         localStorage.setItem('recipentID', data.payload.recepientID)
         localStorage.setItem('recipentName', data.payload.recepientName)
+        localStorage.setItem('activeCall', true)
+        if (data.payload.recepientID === Number(createrID)) {
+          localStorage.setItem('initiateVideoCall', false)
+        }
+        dispatch(callRequestReceivedMQTT({}, ''))
       } else if (
         data.payload.message.toLowerCase() ===
         'VIDEO_CALL_REJECTED'.toLowerCase()
       ) {
-        // dispatch(videoOutgoingCallFlag(false))
+        dispatch(videoOutgoingCallFlag(false))
         dispatch(normalizeVideoPanelFlag(false))
+        localStorage.setItem('activeCall', false)
+        localStorage.setItem('initiateVideoCall', false)
         setNotification({
           ...notification,
           notificationShow: true,
           message: `The call has been rejected`,
         })
         setNotificationID(id)
+        dispatch(callRequestReceivedMQTT({}, ''))
       } else if (
         data.payload.message.toLowerCase() ===
         'VIDEO_CALL_UNANSWERED'.toLowerCase()
       ) {
         if (Number(data.senderID) !== Number(createrID)) {
-          // dispatch(videoOutgoingCallFlag(false))
+          dispatch(videoOutgoingCallFlag(false))
           dispatch(normalizeVideoPanelFlag(false))
           setNotification({
             ...notification,
@@ -983,7 +1024,17 @@ const Dashboard = () => {
             message: `The call was unanswered`,
           })
           setNotificationID(id)
+          localStorage.setItem('activeCall', false)
         }
+        dispatch(callRequestReceivedMQTT({}, ''))
+        localStorage.setItem('initiateVideoCall', false)
+      } else if (
+        data.payload.message.toLowerCase() ===
+        'VIDEO_CALL_RINGING'.toLowerCase()
+      ) {
+        dispatch(callRequestReceivedMQTT(data.payload, data.payload.message))
+        localStorage.setItem('activeCall', false)
+        localStorage.setItem('initiateVideoCall', true)
       }
     }
   }
@@ -1056,8 +1107,7 @@ const Dashboard = () => {
 
   return (
     <>
-      {(videoFeatureReducer.IncomingVideoCallFlag === true ||
-        videoFeatureReducer.VideoOutgoingCallFlag === true) && (
+      {videoFeatureReducer.IncomingVideoCallFlag === true && (
         <div className="overlay-incoming-videocall" />
       )}
       <Layout>

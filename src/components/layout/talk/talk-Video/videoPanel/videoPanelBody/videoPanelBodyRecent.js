@@ -6,11 +6,16 @@ import { TextField } from '../../../../../elements'
 import { Container, Row, Col } from 'react-bootstrap'
 import './videoPanelBody.css'
 import { Spin } from 'antd'
+import moment from 'moment'
 import {
   GetUserRecentCalls,
   InitiateVideoCall,
   getVideoRecipentData,
 } from '../../../../../../store/actions/VideoMain_actions'
+import {
+  newTimeFormaterAsPerUTCTalkTime,
+  newTimeFormaterAsPerUTCTalkDate,
+} from '../../../../../../commen/functions/date_formater'
 import { normalizeVideoPanelFlag } from '../../../../../../store/actions/VideoFeature_actions'
 import MissedRedIcon from '../../../../../../assets/images/Missed-Red-Icon.png'
 import MissedCallIcon from '../../../../../../assets/images/newElements/MissedCallIcon.png'
@@ -29,6 +34,26 @@ const VideoPanelBodyRecent = () => {
   const { t } = useTranslation()
 
   let currentOrganization = Number(localStorage.getItem('organizationID'))
+
+  //CURRENT DATE TIME UTC
+  let currentDateTime = new Date()
+
+  let changeDateFormatCurrent = moment(currentDateTime).utc()
+
+  let currentDateTimeUtc = moment(changeDateFormatCurrent).format(
+    'YYYYMMDDHHmmss',
+  )
+
+  let currentUtcDate = currentDateTimeUtc.slice(0, 8)
+
+  //YESTERDAY'S DATE
+  let yesterdayDate = new Date()
+
+  yesterdayDate.setDate(yesterdayDate.getDate() - 1) // Subtract 1 day
+
+  let changeDateFormatYesterday = moment(yesterdayDate).utc()
+
+  let yesterdayDateUtc = moment(changeDateFormatYesterday).format('YYYYMMDD')
 
   const [searchChatValue, setSearchChatValue] = useState('')
 
@@ -123,8 +148,10 @@ const VideoPanelBodyRecent = () => {
         recentVideoCalls.length > 0 &&
         VideoMainReducer.Loading === false ? (
           recentVideoCalls.map((recentCallData, index) => {
+            let recentCallDateTime =
+              recentCallData.callDate + recentCallData.callTime
             return (
-              <Row className="single-chat">
+              <Row className="single-chat" key={index}>
                 <Col lg={2} md={2} sm={12} className="bottom-border">
                   <div className="video-profile-icon">
                     <svg
@@ -149,23 +176,53 @@ const VideoPanelBodyRecent = () => {
                   </div>
                 </Col>
                 <Col lg={8} md={8} sm={12} className="bottom-border">
-                  <div
-                    className={'video-block'}
-                    //   onClick={() => chatClick(dataItem)}
-                  >
-                    <p className="Video-chat-username m-0">
-                      {recentCallData.callerName}
-                      <span className="call-status-icon">
-                        {recentCallData.isIncoming === false ? (
-                          <img src={MissedCallIcon} />
-                        ) : (
-                          <img src={IncomingIcon} />
-                        )}
-                      </span>
-                    </p>
+                  <div className={'video-block'}>
+                    {recentCallData.callStatus.status === 'Unanswered' ||
+                    recentCallData.callStatus.status === 'Busy' ? (
+                      <p className="Video-chat-username missed m-0">
+                        {recentCallData.callerName}
+                        <span className="call-status-icon">
+                          <img src={MissedRedIcon} />
+                        </span>
+                      </p>
+                    ) : (
+                      <p className="Video-chat-username m-0">
+                        {recentCallData.callerName}
+                        <span className="call-status-icon">
+                          {recentCallData.isIncoming === false ? (
+                            <img src={MissedCallIcon} />
+                          ) : (
+                            <img src={IncomingIcon} />
+                          )}
+                        </span>
+                      </p>
+                    )}
 
                     <p className="video-chat-date m-0">
-                      10 Jan, 2023 | Yesterday
+                      {recentCallData.callDate === currentUtcDate &&
+                      recentCallData.callDate !== '' &&
+                      recentCallData.callDate !== undefined ? (
+                        <>
+                          {newTimeFormaterAsPerUTCTalkTime(recentCallDateTime)}
+                        </>
+                      ) : recentCallData.callDate === yesterdayDateUtc &&
+                        recentCallData.callDate !== '' &&
+                        recentCallData.callDate !== undefined ? (
+                        <>
+                          {newTimeFormaterAsPerUTCTalkDate(recentCallDateTime) +
+                            ' '}
+                          | {t('Yesterday')}
+                        </>
+                      ) : (
+                        <>
+                          {recentCallData.callDate !== '' &&
+                          recentCallData.callDate !== undefined
+                            ? newTimeFormaterAsPerUTCTalkDate(
+                                recentCallDateTime,
+                              )
+                            : ''}
+                        </>
+                      )}
                     </p>
                   </div>
                 </Col>

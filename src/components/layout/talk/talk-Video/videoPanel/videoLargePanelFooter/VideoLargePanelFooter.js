@@ -61,11 +61,11 @@ const VideoLargePanelFooter = () => {
   // }
 
   const videoMultipleScreen = () => {
-    if (isScreenActive === true) {
-      dispatch(videoMultipleCallFlag(false))
-    } else {
-      dispatch(videoMultipleCallFlag(true))
-    }
+    // if (isScreenActive === true) {
+    //   dispatch(videoMultipleCallFlag(false))
+    // } else {
+    //   dispatch(videoMultipleCallFlag(true))
+    // }
   }
 
   // For Open video modal screen
@@ -77,6 +77,7 @@ const VideoLargePanelFooter = () => {
     dispatch(normalizeVideoPanelFlag(false))
     dispatch(maximizeVideoPanelFlag(false))
     dispatch(minimizeVideoPanelFlag(false))
+    localStorage.setItem('activeCall', false)
   }
 
   return (
@@ -140,7 +141,7 @@ const VideoLargePanelFooter = () => {
             )}
           </div>
 
-          <div
+          {/* <div
             onClick={() => setIsHandActive(!isHandActive)}
             className="handraise-border-bottom-img"
           >
@@ -173,7 +174,7 @@ const VideoLargePanelFooter = () => {
             ) : (
               <img src={NonActiveDots} alt="NonActive Dots" />
             )}
-          </div>
+          </div> */}
 
           <img
             src={NonActiveCall}

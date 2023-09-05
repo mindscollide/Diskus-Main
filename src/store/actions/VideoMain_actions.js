@@ -7,6 +7,7 @@ import {
   initiateVideoCall,
   videoCallResponse,
   getUserRecentCalls,
+  callRequestReceived,
 } from '../../commen/apis/Api_config'
 import {
   normalizeVideoPanelFlag,
@@ -160,6 +161,7 @@ const InitiateVideoCall = (Data, navigate, t) => {
                 ),
               )
               await dispatch(videoOutgoingCallFlag(true))
+              localStorage.setItem('initiateVideoCall', true)
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -392,6 +394,100 @@ const GetUserRecentCalls = (Data, navigate, t) => {
   }
 }
 
+const callRequestReceivedInitial = () => {
+  return {
+    type: actions.CALL_REQUEST_RECEIVED_INITIAL,
+  }
+}
+
+const callRequestReceivedSuccess = (response, message) => {
+  return {
+    type: actions.CALL_REQUEST_RECEIVED_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+const callRequestReceivedFail = (message) => {
+  return {
+    type: actions.CALL_REQUEST_RECEIVED_FAIL,
+    message: message,
+  }
+}
+
+const CallRequestReceived = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(callRequestReceivedInitial())
+    let form = new FormData()
+    form.append('RequestMethod', callRequestReceived.RequestMethod)
+    form.append('RequestData', JSON.stringify(Data))
+    axios({
+      method: 'post',
+      url: videoApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log('CallRequestReceived', response)
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(CallRequestReceived(Data, navigate, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_CallRequestReceived_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                callRequestReceivedSuccess(
+                  response.data.responseResult,
+                  t('Record-Updated'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_CallRequestReceived_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(callRequestReceivedFail(t('No-Record-Updated')))
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_CallRequestReceived_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(callRequestReceivedFail(t('Something-went-wrong')))
+            }
+          } else {
+            await dispatch(callRequestReceivedFail(t('Something-went-wrong')))
+          }
+        } else {
+          await dispatch(callRequestReceivedFail(t('Something-went-wrong')))
+        }
+      })
+      .catch((response) => {
+        dispatch(callRequestReceivedFail(t('Something-went-wrong')))
+      })
+  }
+}
+
+const callRequestReceivedMQTT = (response, message) => {
+  return {
+    type: actions.CALL_REQUEST_RECEIVED_MQTT,
+    response: response,
+    message: message,
+  }
+}
+
 export {
   GetAllVideoCallUsers,
   InitiateVideoCall,
@@ -400,4 +496,6 @@ export {
   getVideoRecipentData,
   videoCallAccepted,
   GetUserRecentCalls,
+  CallRequestReceived,
+  callRequestReceivedMQTT,
 }

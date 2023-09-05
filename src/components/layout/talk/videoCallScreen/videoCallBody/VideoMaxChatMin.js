@@ -1,93 +1,93 @@
-import React, { useState } from "react";
-import { Row, Col, Container, Form } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import React, { useState } from 'react'
+import { Row, Col, Container, Form } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
 
-import { X } from "react-bootstrap-icons";
-import GroupIcon from "../../../../../assets/images/newElements/Peoplegroup.png";
-import EmojiIcon from "../../../../../assets/images/Emoji-Select-Icon.png";
-import ChatPlus from "../../../../../assets/images/newElements/chatPlus.png";
-import SendIcon from "../../../../../assets/images/newElements/sendIcon.png";
-import Avatar2 from "../../../../../assets/images/newElements/Avatar2.png";
-import ActiveChat from "../../../../../assets/images/newElements/ActiveChatIcon.svg";
-import ActiveNote from "../../../../../assets/images/newElements/ActiveNoteIcon.svg";
-import SecurityIconMessasgeBox from "../../../../../assets/images/SecurityIcon-MessasgeBox.png";
-import SearchIcon from "../../../../../assets/images/Search-Icon.png";
-import MinimizeIcon from "../../../../../assets/images/newElements/MinimizeIcon.png";
+import { X } from 'react-bootstrap-icons'
+import GroupIcon from '../../../../../assets/images/newElements/Peoplegroup.png'
+import EmojiIcon from '../../../../../assets/images/Emoji-Select-Icon.png'
+import ChatPlus from '../../../../../assets/images/newElements/chatPlus.png'
+import SendIcon from '../../../../../assets/images/newElements/sendIcon.png'
+import Avatar2 from '../../../../../assets/images/newElements/Avatar2.png'
+import ActiveChat from '../../../../../assets/images/newElements/ActiveChatIcon.svg'
+import ActiveNote from '../../../../../assets/images/newElements/ActiveNoteIcon.svg'
+import SecurityIconMessasgeBox from '../../../../../assets/images/SecurityIcon-MessasgeBox.png'
+import SearchIcon from '../../../../../assets/images/Search-Icon.png'
+import MinimizeIcon from '../../../../../assets/images/newElements/MinimizeIcon.png'
 
 // import VideoCallLargeHeader from "../videoCallHeader/videoCallLargeHeader";
-import ChatNonActive from "../../../../../assets/images/newElements/ChatIconNonActive.svg";
-import NoteNonActive from "../../../../../assets/images/newElements/NoteIconNonActive.svg";
-import ActiveNote2 from "../../../../../assets/images/newElements/ActiveNote2Icon.svg";
-import Note_2NonActive from "../../../../../assets/images/newElements/Note_2NonActive.svg";
-import "./VideoMaxChatMin.css";
+import ChatNonActive from '../../../../../assets/images/newElements/ChatIconNonActive.svg'
+import NoteNonActive from '../../../../../assets/images/newElements/NoteIconNonActive.svg'
+import ActiveNote2 from '../../../../../assets/images/newElements/ActiveNote2Icon.svg'
+import Note_2NonActive from '../../../../../assets/images/newElements/Note_2NonActive.svg'
+import './VideoMaxChatMin.css'
 import {
   videoChatOpenFlag,
   videoAgendaOpenFlag,
   videoMinutesOpenFlag,
-} from "../../../../../store/actions/VideoFeature_actions";
+} from '../../../../../store/actions/VideoFeature_actions'
 
 const VideoLargeBody = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   // for open chat div
-  const [isChatOpen, setIsChatOpen] = useState(false);
-  const [isAgendaOpen, setIsAgendaOpen] = useState(false);
-  const [isMinuteOpen, setIsMinuteOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false)
+  const [isAgendaOpen, setIsAgendaOpen] = useState(false)
+  const [isMinuteOpen, setIsMinuteOpen] = useState(false)
 
   //for icons chat active or non active
-  const [isActiveIcon, setIsActiveIcon] = useState(false);
+  const [isActiveIcon, setIsActiveIcon] = useState(false)
 
   //for icon note active or non active
-  const [isNoteActive, setIsNoteActive] = useState(false);
+  const [isNoteActive, setIsNoteActive] = useState(false)
 
   //for icon note_2 active or non active
-  const [isNote2Active, setIsNote2Active] = useState(false);
+  const [isNote2Active, setIsNote2Active] = useState(false)
 
   //for close Chat
   const onClickCloseChatHandler = async () => {
     if (isChatOpen === false) {
-      setIsChatOpen(true);
-      videoChatOpenFlag(true);
+      setIsChatOpen(true)
+      videoChatOpenFlag(true)
     } else {
-      setIsChatOpen(false);
-      videoChatOpenFlag(false);
+      setIsChatOpen(false)
+      videoChatOpenFlag(false)
     }
-  };
+  }
 
   //for open note agenda
   const onClickNoteIconHandler = async () => {
     if (isAgendaOpen === false) {
-      setIsAgendaOpen(true);
-      videoAgendaOpenFlag(true);
+      setIsAgendaOpen(true)
+      videoAgendaOpenFlag(true)
     } else {
-      setIsAgendaOpen(false);
-      videoAgendaOpenFlag(false);
+      setIsAgendaOpen(false)
+      videoAgendaOpenFlag(false)
     }
-  };
+  }
 
   //for open minutesmeeting
   const onClickMinutesHandler = async () => {
     if (isMinuteOpen === false) {
-      setIsMinuteOpen(true);
-      videoMinutesOpenFlag(true);
+      setIsMinuteOpen(true)
+      videoMinutesOpenFlag(true)
     } else {
-      setIsMinuteOpen(false);
-      videoMinutesOpenFlag(false);
+      setIsMinuteOpen(false)
+      videoMinutesOpenFlag(false)
     }
-  };
+  }
 
   //for note onClose
   const onClickCloseAgendaHandler = async () => {
-    setIsAgendaOpen(false);
-  };
+    setIsAgendaOpen(false)
+  }
 
   //for close minutes
   const onClickCloseMinutesHandler = async () => {
-    setIsMinuteOpen(false);
-  };
+    setIsMinuteOpen(false)
+  }
 
   return (
     <>
-      <Row>
+      {/* <Row>
         <Col lg={2} md={2} sm={12}>
           <div className="fullScreen-video-icons">
             <div onClick={() => setIsActiveIcon(!isActiveIcon)}>
@@ -440,9 +440,9 @@ const VideoLargeBody = () => {
           ) : null}
         </Col>
         <Col lg={8} md={8} sm={12} />
-      </Row>
+      </Row> */}
     </>
-  );
-};
+  )
+}
 
-export default VideoLargeBody;
+export default VideoLargeBody

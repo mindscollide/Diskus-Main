@@ -28,7 +28,7 @@ const VideoCallLargeHeader = () => {
 
   return (
     <Row className="mt-2 mb-0">
-      <Col lg={11} md={11} sm={12} className="d-flex justify-content-end gap-3">
+      <Col lg={12} md={12} sm={12} className="d-flex justify-content-end gap-3">
         <img
           width={20}
           src={MinimizeIcon}
@@ -43,7 +43,6 @@ const VideoCallLargeHeader = () => {
           onClick={normalizeScreen}
         />
       </Col>
-      <Col lg={1} md={1} sm={12} />
     </Row>
   )
 }
