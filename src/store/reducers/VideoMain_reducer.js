@@ -7,10 +7,12 @@ const initialState = {
   VideoCallUsersData: [],
   InitiateVideoCallData: [],
   VideoCallResponseData: [],
-  VideoRecipentData: [],
+  VideoRecipentData: {},
   InitiateVideoCallDataMQTT: [],
   VideoCallAcceptedData: [],
   RecentCallsData: [],
+  CallRequestReceivedData: [],
+  CallRequestReceivedMQTTData: {},
 }
 
 const VideoMainReducer = (state = initialState, action) => {
@@ -136,6 +138,40 @@ const VideoMainReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         RecentCallsData: [],
+        ResponseMessage: action.message,
+      }
+    }
+
+    case actions.CALL_REQUEST_RECEIVED_INITIAL: {
+      return {
+        ...state,
+        Loading: true,
+      }
+    }
+
+    case actions.CALL_REQUEST_RECEIVED_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        CallRequestReceivedData: action.response,
+        ResponseMessage: action.message,
+      }
+    }
+
+    case actions.CALL_REQUEST_RECEIVED_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        CallRequestReceivedData: [],
+        ResponseMessage: action.message,
+      }
+    }
+
+    case actions.CALL_REQUEST_RECEIVED_MQTT: {
+      return {
+        ...state,
+        Loading: false,
+        CallRequestReceivedMQTTData: action.response,
         ResponseMessage: action.message,
       }
     }

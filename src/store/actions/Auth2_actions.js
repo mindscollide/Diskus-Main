@@ -521,6 +521,7 @@ const enterPasswordvalidation = (value, navigate, t) => {
               )
               localStorage.setItem('activeOtoChatID', 0)
               localStorage.setItem('activeCall', false)
+              localStorage.setItem('initiateVideoCall', false)
             }
 
             if (
