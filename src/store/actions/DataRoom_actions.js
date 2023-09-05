@@ -413,7 +413,17 @@ const getFolerDocuments_fail = (message) => {
 // Get Folder Documents Api
 const getFolderDocumentsApi = (navigate, FolderId, t, no) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let Data = { FolderID: JSON.parse(FolderId) };
+  let createrID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
+  let Data = {
+    FolderID: Number(FolderId),
+    UserID: Number(createrID),
+    OrganizationID: Number(OrganizationID),
+    sRow: 0,
+    Length: 10,
+    SortBy: 1,
+    isDescending: true,
+  };
   return (dispatch) => {
     if (no !== 1) {
       dispatch(getFolerDocuments_init());
@@ -444,10 +454,11 @@ const getFolderDocumentsApi = (navigate, FolderId, t, no) => {
             ) {
               dispatch(
                 getFolerDocuments_success(
-                  response.data.responseResult.data,
+                  response.data.responseResult,
                   t("Data-available")
                 )
               );
+              dispatch(isFolder(1));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -455,7 +466,13 @@ const getFolderDocumentsApi = (navigate, FolderId, t, no) => {
                   "DataRoom_DataRoomManager_GetFolderDocuments_02".toLowerCase()
                 )
             ) {
-              dispatch(getFolerDocuments_fail(t("No-record-found")));
+              dispatch(isFolder(2));
+              dispatch(
+                getFolerDocuments_success(
+                  response.data.responseResult,
+                  t("No-record-found")
+                )
+              );
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -463,16 +480,20 @@ const getFolderDocumentsApi = (navigate, FolderId, t, no) => {
                   "DataRoom_DataRoomManager_GetFolderDocuments_03".toLowerCase()
                 )
             ) {
+              dispatch(isFolder(3));
               dispatch(getFolerDocuments_fail(t("Something-went-wrong")));
             }
           } else {
+            dispatch(isFolder(3));
             dispatch(getFolerDocuments_fail(t("Something-went-wrong")));
           }
         } else {
+          dispatch(isFolder(3));
           dispatch(getFolerDocuments_fail(t("Something-went-wrong")));
         }
       })
       .catch((error) => {
+        dispatch(isFolder(3));
         dispatch(getFolerDocuments_fail(t("Something-went-wrong")));
       });
   };
@@ -721,6 +742,14 @@ const getDocumentsAndFolderApiScrollbehaviour = (
   sRows,
   filterValue
 ) => {
+  console.log(
+    navigate,
+    statusID,
+    t,
+    sRows,
+    filterValue,
+    "getFolderDocumentsApiScrollBehaviour"
+  );
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -806,6 +835,122 @@ const getDocumentsAndFolderApiScrollbehaviour = (
       .catch((error) => {
         dispatch(getDocumentsAndFolders_fail(t("Something-went-wrong")));
         dispatch(tableSpinner(false));
+      });
+  };
+};
+
+// Get folder Data from Scroll Behaviour
+const getFolderDocumentsApiScrollBehaviour = (
+  navigate,
+  FolderId,
+  t,
+  no,
+  sRow,
+  SortBy,
+  order
+) => {
+  console.log(
+    navigate,
+    FolderId,
+    t,
+    no,
+    sRow,
+    SortBy,
+    order,
+    "getFolderDocumentsApiScrollBehaviour"
+  );
+  let token = JSON.parse(localStorage.getItem("token"));
+  let createrID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
+  let Data = {
+    FolderID: Number(FolderId),
+    UserID: Number(createrID),
+    OrganizationID: Number(OrganizationID),
+    sRow: Number(sRow),
+    Length: 10,
+    SortBy: SortBy !== null && SortBy !== undefined ? Number(SortBy) : 1,
+    isDescending: order !== null && order !== undefined ? order : true,
+  };
+  return (dispatch) => {
+    dispatch(tableSpinner(true));
+    let form = new FormData();
+    form.append("RequestMethod", getFolderDocumentsRequestMethod.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(
+            getFolderDocumentsApiScrollBehaviour(
+              navigate,
+              FolderId,
+              t,
+              no,
+              sRow,
+              SortBy,
+              order
+            )
+          );
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetFolderDocuments_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getFolerDocuments_success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+              dispatch(isFolder(1));
+              dispatch(tableSpinner(false));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetFolderDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(tableSpinner(false));
+              dispatch(
+                getFolerDocuments_success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomManager_GetFolderDocuments_03".toLowerCase()
+                )
+            ) {
+              dispatch(tableSpinner(false));
+              dispatch(getFolerDocuments_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(tableSpinner(false));
+            dispatch(getFolerDocuments_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(tableSpinner(false));
+          dispatch(getFolerDocuments_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch((error) => {
+        dispatch(tableSpinner(false));
+        dispatch(getFolerDocuments_fail(t("Something-went-wrong")));
       });
   };
 };
@@ -1850,6 +1995,13 @@ const dataBehaviour = (payload) => {
     response: payload,
   };
 };
+
+const isFolder = (response) => {
+  return {
+    type: actions.ISFOLDER,
+    response: response,
+  };
+};
 // const resetSpinner = () => {}
 const clearDataResponseMessage = () => {
   return {
@@ -1875,4 +2027,6 @@ export {
   getDocumentsAndFolderApiScrollbehaviour,
   tableSpinner,
   dataBehaviour,
+  getFolderDocumentsApiScrollBehaviour,
+  isFolder,
 };

@@ -180,29 +180,29 @@ const Header2 = () => {
     <>
       {activateBlur ? (
         <Navbar className="header2-container " sticky="top">
-          <Container fluid>
-            <Navbar.Brand as={Link}>
-              <img src={DiskusLogoHeader} width={120} />
+          {/* <Container> */}
+          <section className="d-flex justify-content-between w-100  align-items-center px-5">
+            <Navbar.Brand
+              as={Link}
+              to={
+                location.pathname.includes("/Admin")
+                  ? "/Diskus/Admin/Summary"
+                  : "/DisKus/home"
+              }
+            >
+              <img src={DiskusLogoHeader} alt="" width={120} />
             </Navbar.Brand>
-            <Nav className="ml-auto">
-              {/* <section className="position-relative" ref={languageref}>
-                <span className="text-white d-flex gap-2 align-items-center position-relative" onClick={() => setLanguageDropdown(!languageDropdown)}>
-                  <img src={LanguageIcon} />
-                  {languageforView}
-                  {languageDropdown ? <ChevronUp fontWeight={"bold"} /> : < ChevronDown fontWeight={"bold"} />}
-                </span>
-                <div className={!languageDropdown ? "language-options" : "language-options active"}>
-                  {languages.map((data, index) => {
-                    return <span onClick={() => handleChangeLocale(data.code)}>{data.name}</span>
-                  }
-                  )}</div>
-              </section> */}
-              <Nav.Link disabled={true} className="me-2">
+            <Nav className="ml-auto align-items-center">
+              <LanguageSelector />
+              <Nav.Link className="me-2">
                 <div className="dropdown-btn_dotted">
                   <DropdownButton
                     id="dropdown-btn_dotted"
-                    className="dropdown-btn_dotted m-0 p-0"
-                    title={<img src={DiskusNotificationIcon} width={33} />}
+                    className="dropdown-btn_dotted"
+                    disabled={true}
+                    title={
+                      <img src={DiskusNotificationIcon} alt="" width={28} />
+                    }
                     onClick={dropDownMenuFunction}
                   >
                     <Dropdown.Item className="d-flex title-className">
@@ -214,31 +214,47 @@ const Header2 = () => {
                     <Dropdown.Item className="d-flex title-className">
                       {t("Recently-added-files")}
                     </Dropdown.Item>
+                    {/* <Dropdown.Item className="title-className">
+                      {t("Upload-documents")}
+                    </Dropdown.Item>
+                    <Dropdown.Item className="title-className">
+                      {t("Create-a-meeting")}
+                    </Dropdown.Item>
+                    <Dropdown.Item className="title-className">
+                      {t("Data-room")}
+                    </Dropdown.Item>
+                    <Dropdown.Item className="title-className">
+                      {t("Pending-tasks")}
+                    </Dropdown.Item>
+                    <Dropdown.Item className="title-language-className">
+                      {t("Language")}
+                    </Dropdown.Item> */}
                   </DropdownButton>
                 </div>
               </Nav.Link>
-              <Dropdown className="DropDownAdmin">
+              <Dropdown className="profilebtn-dropdown">
                 <Dropdown.Toggle className="dropdown-toggle">
                   <img
                     src={currentUserImage}
-                    className="user-img me-2 "
+                    className="user-img me-3 "
                     width={30}
+                    alt=""
                   />
 
-                  <p className={"user-name me-2" + " " + currentLanguage}>
+                  <p className={`${"user-name me-2"} ${currentLanguage}`}>
                     {currentUserName}
                   </p>
                 </Dropdown.Toggle>
                 {location.pathname.includes("/Admin") ? (
-                  <Dropdown.Menu className="DropDownAdmin">
+                  <Dropdown.Menu className="dropdown_menu_admin">
                     <Dropdown.Item
-                      className={"DropDownAdmin" + " " + currentLanguage}
+                      className={`${" text-black"} ${currentLanguage}`}
                       onClick={() => forgotPasswordCheck()}
                     >
                       <Nav.Link
-                        disabled={true}
                         as={Link}
                         to="CustomerInformation"
+                        disabled={true}
                         className="text-black"
                       >
                         {/* Change Password */}
@@ -251,8 +267,8 @@ const Header2 = () => {
                     >
                       <Nav.Link
                         as={Link}
-                        disabled={true}
                         to="changePassword"
+                        disabled={true}
                         className="text-black"
                       >
                         {/* Change Password */}
@@ -260,7 +276,7 @@ const Header2 = () => {
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item
-                      className={currentLanguage}
+                      // className={currentLanguage}
                       onClick={modalLogoutHandler}
                     >
                       {/* Sign Out */}
@@ -270,8 +286,42 @@ const Header2 = () => {
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 ) : (
-                  <Dropdown.Menu className="DropDownAdmin">
+                  <Dropdown.Menu className="Profile_dropdown_menu">
                     <Dropdown.Item
+                      className={currentLanguage}
+                      onClick={modalUserProfileHandler}
+                    >
+                      <Nav.Link className="d-flex text-black border-none FontClass">
+                        {t("My-profile")}
+                      </Nav.Link>
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      className={" text-black" + " " + currentLanguage}
+                      onClick={() => forgotPasswordCheck()}
+                    >
+                      <Nav.Link
+                        as={Link}
+                        to="setting"
+                        className="d-flex text-black FontClass"
+                      >
+                        {/* Change Password */}
+                        {t("Setting")}
+                      </Nav.Link>
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      className={" text-black" + " " + currentLanguage}
+                      onClick={() => forgotPasswordCheck()}
+                    >
+                      <Nav.Link
+                        as={Link}
+                        to="faq's"
+                        className="d-flex text-black FontClass"
+                      >
+                        {/* Change Password */}
+                        {t("Help")}
+                      </Nav.Link>
+                    </Dropdown.Item>
+                    {/* <Dropdown.Item
                       className={" text-black" + " " + currentLanguage}
                       onClick={() => forgotPasswordCheck()}
                     >
@@ -279,40 +329,43 @@ const Header2 = () => {
                         as={Link}
                         to="changePassword"
                         className="text-black"
-                        disabled={true}
                       >
-                        {/* Change Password */}
                         {t("Change-password")}
                       </Nav.Link>
-                    </Dropdown.Item>
+                    </Dropdown.Item> */}
+
                     <Dropdown.Item
                       className={currentLanguage}
                       onClick={modalLogoutHandler}
                     >
                       {/* Sign Out */}
-                      <Nav.Link className="SignOutOptionMenu text-black border-none">
+                      <Nav.Link className="SignOutOptionMenu d-flex text-black border-none FontClass">
                         {t("Sign-out")}
                       </Nav.Link>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 )}
               </Dropdown>
-
-              <Nav.Link disabled={true} as={Link} to="faq's" className="mx-3">
-                <img src={DiskusHeaderInfo} width={25} />
+              <Nav.Link
+                as={Link}
+                disabled={true}
+                to={
+                  location.pathname.includes("/Admin")
+                    ? "/Diskus/Admin/faq's"
+                    : "/DisKus/faq's"
+                }
+                className="mx-3"
+              >
+                <img src={DiskusHeaderInfo} alt="" width={28} />
               </Nav.Link>
-              {roleID != 2 && roleID != 1 ? (
-                <Nav.Link
-                  disabled={true}
-                  className="me-2"
-                  as={Link}
-                  to="setting"
-                >
-                  <img src={DiskusHeaderSetting} width={25} />
+              {/* {roleID != 2 && roleID != 1 ? (
+                <Nav.Link className="me-2" as={Link} to="setting">
+                  <img src={DiskusHeaderSetting} width={28} />
                 </Nav.Link>
-              ) : null}
+              ) : null} */}
             </Nav>
-          </Container>
+          </section>
+          {/* </Container> */}
         </Navbar>
       ) : (
         <Navbar className="header2-container " sticky="top">
@@ -326,7 +379,7 @@ const Header2 = () => {
                   : "/DisKus/home"
               }
             >
-              <img src={DiskusLogoHeader} width={120} />
+              <img src={DiskusLogoHeader} alt="" width={120} />
             </Navbar.Brand>
             <Nav className="ml-auto align-items-center">
               <LanguageSelector />
@@ -363,7 +416,9 @@ const Header2 = () => {
                   <DropdownButton
                     id="dropdown-btn_dotted"
                     className="dropdown-btn_dotted"
-                    title={<img src={DiskusNotificationIcon} width={28} />}
+                    title={
+                      <img src={DiskusNotificationIcon} alt="" width={28} />
+                    }
                     onClick={dropDownMenuFunction}
                   >
                     <Dropdown.Item className="d-flex title-className">
@@ -399,16 +454,17 @@ const Header2 = () => {
                     src={currentUserImage}
                     className="user-img me-3 "
                     width={30}
+                    alt=""
                   />
 
-                  <p className={"user-name me-2" + " " + currentLanguage}>
+                  <p className={`${"user-name me-2"} ${currentLanguage}`}>
                     {currentUserName}
                   </p>
                 </Dropdown.Toggle>
                 {location.pathname.includes("/Admin") ? (
                   <Dropdown.Menu className="dropdown_menu_admin">
                     <Dropdown.Item
-                      className={" text-black" + " " + currentLanguage}
+                      className={`${" text-black"} ${currentLanguage}`}
                       onClick={() => forgotPasswordCheck()}
                     >
                       <Nav.Link

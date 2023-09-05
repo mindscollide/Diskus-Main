@@ -7,7 +7,7 @@ const initialState = {
   UploadDocumentsResponse: [],
   SaveFolderResponse: null,
   getAllDocumentandShareFolderResponse: [],
-  getFolderDocumentResponse: [],
+  getFolderDocumentResponse: null,
   createFolderResponse: null,
   shareFilesResponse: null,
   shareFoldersResponse: null,
@@ -24,6 +24,7 @@ const initialState = {
   NotFound: 0,
   sortedData: [],
   dataBehaviour: false,
+  isFolder: 0,
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -119,7 +120,7 @@ const DataRoomReducer = (state = initialState, action) => {
       return {
         ...state,
         Loading: false,
-        getFolderDocumentResponse: [],
+        getFolderDocumentResponse: null,
         ResponseMessage: action.message,
       };
     }
@@ -385,6 +386,13 @@ const DataRoomReducer = (state = initialState, action) => {
         ...state,
         TableSpinner: action.response,
         NotFound: action.value,
+      };
+    }
+
+    case actions.ISFOLDER: {
+      return {
+        ...state,
+        isFolder: action.response,
       };
     }
     default:

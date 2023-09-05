@@ -123,12 +123,6 @@ const EditResolution = ({ setCancelresolution }) => {
     },
   ]);
 
-  const dateformatYYYYMMDD = (date) => {
-    console.log(date, "dateformatYYYYMMDDdateformatYYYYMMDD");
-    if (!!date && typeof date === "string") {
-      return moment(date).add(1, "days").format("YYYY-MM-DD");
-    }
-  };
   const [circulationDateTime, setCirculationDateTime] = useState({
     date: "",
     time: "",
@@ -243,11 +237,6 @@ const EditResolution = ({ setCancelresolution }) => {
     setVoterID(0);
     setVoterName("");
     setVoterModalRemove(false);
-    console.log(
-      "votingMethodsvotingMethods",
-      findIndexVoter,
-      findIndexFromSendData
-    );
   };
 
   const removeNonVoterInfo = () => {
@@ -266,11 +255,6 @@ const EditResolution = ({ setCancelresolution }) => {
     setNonVoterModalRemove(false);
     setVoterID(0);
     setVoterName("");
-    console.log(
-      "votingMethodsvotingMethods",
-      findIndexVoter,
-      findIndexFromSendData
-    );
   };
 
   //On Click Of Dropdown Value
@@ -279,25 +263,18 @@ const EditResolution = ({ setCancelresolution }) => {
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
-    console.log("idididid", id);
     if (meetingAttendeesList.length > 0) {
       let findAttendeeEmail = meetingAttendeesList.find(
         (data, index) => data.pK_UID === id
       );
       setEmailValue(findAttendeeEmail.emailAddress);
-      console.log(
-        "findAttendeeEmailfindAttendeeEmail",
-        findAttendeeEmail.emailAddress
-      );
     }
   };
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
     setOnclickFlag(false);
-    console.log(e.target.value, "eeeeeeee");
     setTaskAssignedToInput(e.target.value.trimStart());
-    // setEmailValue
   };
 
   const ReminderChangeHandler = (e) => {
@@ -346,24 +323,16 @@ const EditResolution = ({ setCancelresolution }) => {
   // };
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
-    console.log("Input Value", allAssignees);
     if (
-      allAssignees != undefined &&
-      allAssignees != null &&
-      allAssignees != NaN &&
-      allAssignees != []
+      allAssignees !== undefined &&
+      allAssignees !== null &&
+      allAssignees !== []
     ) {
       return allAssignees
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
-          console.log("Input Value in searchTerm", searchTerm);
-          console.log("Input Value in assigneesName", assigneesName);
-
-          return (
-            searchTerm && assigneesName.startsWith(searchTerm)
-            // assigneesName !== searchTerm.toLowerCase()
-          );
+          return searchTerm && assigneesName.startsWith(searchTerm);
         })
         .slice(0, 10)
         .map((item) => (
@@ -372,24 +341,14 @@ const EditResolution = ({ setCancelresolution }) => {
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
-            {console.log("itemitem", item)}
-            <img src={userImage} />
+            <img src={userImage} alt="" />
             <p className="p-0 m-0">{item.name}</p>
           </div>
         ));
     } else {
-      console.log("not found");
     }
   };
   const deleteFilefromAttachments = (data, index) => {
-    console.log(
-      data,
-      data.fileSize,
-      data.DisplayAttachmentName,
-      fileForSend,
-      fileSize,
-      "checkingelemnaiteFile"
-    );
     let fileSizefound = fileSize - data.fileSize;
     let fileForSendingIndex = fileForSend.findIndex(
       (newData, index) => newData.name === data.DisplayAttachmentName
@@ -455,12 +414,6 @@ const EditResolution = ({ setCancelresolution }) => {
     let findisAlreadyExist = voters.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo
     );
-    console.log(
-      "findVoterfindVoterfindVoterfindVoter",
-      findVoter,
-      nonVoter,
-      taskAssignedTo
-    );
     if (findisAlreadyExist === -1) {
       if (findVoter === -1) {
         if (taskAssignedToInput !== 0) {
@@ -505,7 +458,6 @@ const EditResolution = ({ setCancelresolution }) => {
     multiple: true,
     showUploadList: false,
     onChange(data) {
-      const { status } = data.file;
       let fileSizeArr;
       if (tasksAttachments.length > 10) {
         setOpen({
@@ -608,16 +560,13 @@ const EditResolution = ({ setCancelresolution }) => {
         }
       }
     },
-    onDrop(e) {
-      console.log("Dropped files", e.dataTransfer.files);
-    },
+    onDrop(e) {},
     customRequest() {},
   };
 
   const handleCirculateResolution = () => {
     if (fileForSend.length > 0) {
       let counter = fileForSend.length;
-      console.log(counter, "countercountercounter");
       fileForSend.map(async (newData, index) => {
         await dispatch(FileUploadToDo(navigate, newData, t));
         counter = counter - 1;
@@ -709,7 +658,6 @@ const EditResolution = ({ setCancelresolution }) => {
   const handleUpdateResolution = () => {
     if (fileForSend.length > 0) {
       let counter = fileForSend.length;
-      console.log(counter, "countercountercounter");
       fileForSend.map(async (newData, index) => {
         await dispatch(FileUploadToDo(navigate, newData, t));
         counter = counter - 1;
@@ -754,7 +702,6 @@ const EditResolution = ({ setCancelresolution }) => {
           1
         )
       );
-      // }
     } else {
       let Data = {
         ResolutionModel: {
@@ -834,7 +781,6 @@ const EditResolution = ({ setCancelresolution }) => {
   };
 
   const handleChangeChecker = (e, checked) => {
-    console.log(e.target.checked, checked, "testing1212");
     setEditResolutionData({
       ...editResolutionData,
       IsResolutionPublic: e.target.checked,
@@ -843,8 +789,6 @@ const EditResolution = ({ setCancelresolution }) => {
 
   // Resolution Voting Method ID
   const detailDropDownhandler = (e) => {
-    console.log(" handleChangehandleChangehandleChangehandleChange", e);
-
     setEditResolutionData({
       ...editResolutionData,
       FK_ResolutionVotingMethodID: e.value,
@@ -859,7 +803,6 @@ const EditResolution = ({ setCancelresolution }) => {
   const handleChange = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log("handleChangehandleChangehandleChange", name, value);
     if (name === "ResolutionTitle") {
       let valueCheck = validateInput(value);
       if (valueCheck !== "") {
@@ -948,17 +891,13 @@ const EditResolution = ({ setCancelresolution }) => {
           value: methodData.value,
         });
       });
-    console.log(
-      "resolutionData",
-      resolutionData.circulationDateTime.slice(0, 4)
-    );
     setCirculationDateTime({
       date: editResolutionDate(resolutionData.circulationDateTime),
       time: editResolutionTime(resolutionData.circulationDateTime),
     });
     setVotingDateTime({
-      date: editResolutionDate(resolutionData.deadlineDateTime),
-      time: editResolutionTime(resolutionData.deadlineDateTime),
+      date: editResolutionDate(resolutionData?.deadlineDateTime),
+      time: editResolutionTime(resolutionData?.deadlineDateTime),
     });
     setDecisionDateTime({
       date: editResolutionDate(resolutionData.decisionAnnouncementDateTime),
@@ -1129,13 +1068,7 @@ const EditResolution = ({ setCancelresolution }) => {
         });
         if (attachmentsResolution.length > 0) {
           let atCH = [];
-          // if (tasksAttachments.length === 0) {
           attachmentsResolution.map((data, index) => {
-            console.log("datadata", data);
-            console.log(
-              ResolutionReducer.getResolutionbyID,
-              "ResolutionReducer.getResolutionbyID"
-            );
             atCH.push({
               DisplayAttachmentName: data.displayAttachmentName,
               OriginalAttachmentName: data.originalAttachmentName,
@@ -1151,7 +1084,6 @@ const EditResolution = ({ setCancelresolution }) => {
         ) {
           let vTrs = [];
           let vTrsVie = [];
-          // if (voters.length === 0 && votersForView.length === 0) {
           votersResolutionMembers.map((voterMember, index) => {
             meetingAttendeesList
               .filter(
@@ -1204,8 +1136,6 @@ const EditResolution = ({ setCancelresolution }) => {
   const handleChangeDateSelection = (e) => {
     let name = e.target.name;
     let value = e.target.value;
-    console.log("handleChangeCiculationDate", name);
-    console.log("handleChangeCiculationDate", value);
     if (name === "circulation") {
       setCirculationDateTime({
         ...circulationDateTime,
@@ -1882,6 +1812,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                                                   src={
                                                                     CrossIcon
                                                                   }
+                                                                  alt=""
                                                                   width="18px"
                                                                   height="18px"
                                                                   onClick={() =>
@@ -2009,6 +1940,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                                                   src={
                                                                     CrossIcon
                                                                   }
+                                                                  alt=""
                                                                   width="18px"
                                                                   height="18px"
                                                                   onClick={() =>
@@ -2069,6 +2001,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                               <Button
                                                 icon={
                                                   <img
+                                                    alt=""
                                                     src={Leftploygon}
                                                     width="20px"
                                                     height="15px"
@@ -2211,6 +2144,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                                                 deleteButtonCreateMeeting
                                                               }
                                                               width={15}
+                                                              alt=""
                                                               height={15}
                                                               onClick={() =>
                                                                 deleteFilefromAttachments(
@@ -2245,6 +2179,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                                     src={Rightploygon}
                                                     width="20px"
                                                     height="15px"
+                                                    alt=""
                                                   />
                                                 }
                                                 onClick={Slideright}
@@ -2278,6 +2213,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                             src={featherupload}
                                             width="18.87px"
                                             height="18.87px"
+                                            alt=""
                                           />
                                         </span>
                                       </p>
