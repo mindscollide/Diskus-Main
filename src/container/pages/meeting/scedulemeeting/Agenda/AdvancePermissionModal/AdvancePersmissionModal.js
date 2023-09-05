@@ -177,7 +177,12 @@ const AdvancePersmissionModal = () => {
                                 <>
                                   <Col lg={12} md={12} sm={12} className="mt-4">
                                     <section
-                                      className={styles["SidebarSection"]}
+                                      className={
+                                        sidebarindex === index &&
+                                        expandmenuIntroduction
+                                          ? styles["SidebarSection_expanded"]
+                                          : styles["SidebarSection"]
+                                      }
                                     >
                                       <span
                                         className={
@@ -212,96 +217,112 @@ const AdvancePersmissionModal = () => {
                                         }}
                                       />
                                     </section>
-
-                                    {sidebarindex === index &&
-                                    expandmenuIntroduction === true ? (
-                                      <>
-                                        <Row className="mt-2">
-                                          <Col lg={7} md={7} sm={7}>
-                                            <Row>
-                                              <Col
-                                                lg={12}
-                                                md={12}
-                                                sm={12}
-                                                className="d-flex gap-1"
-                                              >
-                                                <img
-                                                  src={profile}
-                                                  height="19px"
-                                                  width="19px"
-                                                  className={styles["Profile"]}
-                                                />
-                                                <span
-                                                  className={
-                                                    styles["ParticipantName"]
-                                                  }
+                                    <section
+                                      className={
+                                        sidebarindex === index &&
+                                        expandmenuIntroduction
+                                          ? styles["Background"]
+                                          : styles["Hidden"]
+                                      }
+                                    >
+                                      {sidebarindex === index &&
+                                      expandmenuIntroduction === true ? (
+                                        <>
+                                          <Row className="mt-2">
+                                            <Col lg={7} md={7} sm={7}>
+                                              <Row>
+                                                <Col
+                                                  lg={12}
+                                                  md={12}
+                                                  sm={12}
+                                                  className="d-flex gap-1"
                                                 >
-                                                  Salman Memon
-                                                </span>
-                                              </Col>
-                                            </Row>
-                                          </Col>
-                                          <Col
-                                            lg={5}
-                                            md={5}
-                                            sm={5}
-                                            className="d-flex align-items-center gap-1"
-                                          >
-                                            <span
-                                              className={styles["Times_styles"]}
-                                            >
-                                              12:15 PM
-                                            </span>
-
-                                            <span
-                                              className={styles["minus_sign"]}
-                                            ></span>
-
-                                            <span
-                                              className={styles["Times_styles"]}
-                                            >
-                                              12:15 PM
-                                            </span>
-                                          </Col>
-                                        </Row>
-                                        <Row
-                                          className={styles["tranisitionStyle"]}
-                                        >
-                                          {data.IntroductionFiles.map(
-                                            (Filesdata, Filesindex) => {
-                                              return (
-                                                <>
-                                                  <Col
-                                                    lg={4}
-                                                    md={4}
-                                                    sm={12}
-                                                    className="flex-wrap my-1   d-flex justify-content-center"
+                                                  <img
+                                                    src={profile}
+                                                    height="19px"
+                                                    width="19px"
+                                                    className={
+                                                      styles["Profile"]
+                                                    }
+                                                  />
+                                                  <span
+                                                    className={
+                                                      styles["ParticipantName"]
+                                                    }
                                                   >
-                                                    <img
-                                                      src={PDF}
-                                                      height="38.57px"
-                                                      width="38.57px"
-                                                    />
-                                                    <span
-                                                      className={
-                                                        styles[
-                                                          "attachment_line"
-                                                        ]
-                                                      }
-                                                    >
-                                                      {Filesdata.name}
-                                                    </span>
-                                                  </Col>
-                                                </>
-                                              );
+                                                    Salman Memon
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                            </Col>
+                                            <Col
+                                              lg={5}
+                                              md={5}
+                                              sm={5}
+                                              className="d-flex align-items-center gap-1"
+                                            >
+                                              <span
+                                                className={
+                                                  styles["Times_styles"]
+                                                }
+                                              >
+                                                12:15 PM
+                                              </span>
+
+                                              <span
+                                                className={styles["minus_sign"]}
+                                              ></span>
+
+                                              <span
+                                                className={
+                                                  styles["Times_styles"]
+                                                }
+                                              >
+                                                12:15 PM
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                          <Row
+                                            className={
+                                              styles["tranisitionStyle"]
                                             }
-                                          )}
-                                        </Row>
-                                      </>
-                                    ) : null}
-                                    <span
-                                      className={styles["Bottom_Line"]}
-                                    ></span>
+                                          >
+                                            {data.IntroductionFiles.map(
+                                              (Filesdata, Filesindex) => {
+                                                return (
+                                                  <>
+                                                    <Col
+                                                      lg={4}
+                                                      md={4}
+                                                      sm={12}
+                                                      className="flex-wrap my-1   d-flex justify-content-center"
+                                                    >
+                                                      <img
+                                                        src={PDF}
+                                                        height="38.57px"
+                                                        width="38.57px"
+                                                      />
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                            "attachment_line"
+                                                          ]
+                                                        }
+                                                      >
+                                                        {Filesdata.name}
+                                                      </span>
+                                                    </Col>
+                                                  </>
+                                                );
+                                              }
+                                            )}
+                                          </Row>
+                                        </>
+                                      ) : null}
+                                      <span
+                                        className={styles["Bottom_Line"]}
+                                      ></span>
+                                    </section>
                                   </Col>
                                 </>
                               );

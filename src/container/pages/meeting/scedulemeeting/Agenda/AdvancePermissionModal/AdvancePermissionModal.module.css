@@ -19,7 +19,7 @@
 }
 
 .Bottom_line_names {
-  width: 108% !important;
+  width: 104% !important;
   height: 1px !important;
   display: block;
   margin: 0 !important;
@@ -275,7 +275,20 @@ aside.ant-layout-sider.ant-layout-sider-dark {
   justify-content: space-between;
   height: auto;
   align-items: flex-start !important;
-  /* gap: 120px !important; */
+  padding-bottom: 0px !important;
+}
+
+.SidebarSection_expanded {
+  display: flex !important;
+  justify-content: space-between;
+  height: auto;
+  align-items: flex-start !important;
+  background: #f6f6f6 !important;
+  padding-bottom: 0px !important;
+}
+.Background {
+  padding-top: 1px !important;
+  background: #f6f6f6 !important;
 }
 
 .LineUpper {
