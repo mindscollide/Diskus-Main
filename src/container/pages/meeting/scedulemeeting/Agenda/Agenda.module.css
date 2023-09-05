@@ -39,6 +39,7 @@
   border-radius: 4px !important;
   padding: 10px 15px !important;
   margin-left: 10px !important;
+  position: relative;
 }
 
 .SubajendaBox_Inactive {
@@ -49,6 +50,7 @@
   padding: 10px 15px !important;
   margin-left: 10px !important;
   filter: opacity(0.5);
+  position: relative;
   /* pointer-events: none !important; */
 }
 
@@ -280,5 +282,12 @@
 }
 
 .backGorund {
-  background: #000 !important;
+  background: #4adede !important;
+  height: 100% !important;
+  width: 23px !important;
+  position: absolute !important;
+  left: 0;
+  top: 0;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
 }
