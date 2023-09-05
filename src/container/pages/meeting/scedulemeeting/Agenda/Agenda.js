@@ -7,6 +7,8 @@ import {
   Loader,
   Notification,
 } from "../../../../../components/elements";
+import { DownOutlined } from "@ant-design/icons";
+import { Tree } from "antd";
 import { useTranslation } from "react-i18next";
 import { Radio } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -30,6 +32,7 @@ import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import line from "../../../../../assets/images/LineAgenda.svg";
 import PdfIcon from "../../../../../assets/images/pdf_icon.svg";
 import closedLocked from "../../../../../assets/images/CloseLocked.svg";
+import lineBLue from "../../../../../assets/images/BlueLine.png";
 import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal";
 import {
   showAdvancePermissionModal,
@@ -431,7 +434,11 @@ const Agenda = () => {
                                     }
                                     width="18.71px"
                                     height="9.36px"
-                                    className={styles["Arrow"]}
+                                    className={
+                                      expand === true
+                                        ? styles["Arrow_Expanded"]
+                                        : styles["Arrow"]
+                                    }
                                     onClick={() => {
                                       handleExpandedBtn(index);
                                     }}
@@ -439,6 +446,7 @@ const Agenda = () => {
                                 </Col>
                               </Row>
                             </Col>
+
                             <Col lg={11} md={11} sm={11}>
                               <section className={styles["SectionInnerClass"]}>
                                 <Row key={index + 2} className="mt-4">
@@ -476,7 +484,7 @@ const Agenda = () => {
                                             styles["Meeting_title_heading"]
                                           }
                                         >
-                                          {t("Participants")}
+                                          {t("Presenter")}
                                         </span>
                                       </Col>
                                     </Row>
@@ -916,31 +924,29 @@ const Agenda = () => {
                                 >
                                   <Row>
                                     <Col lg={1} md={1} sm={1}>
-                                      <section className={styles["backGorund"]}>
-                                        <img
-                                          src={
-                                            subexpandIndex === index &&
-                                            expandSubIndex === subIndex &&
-                                            subExpand === true
-                                              ? blackArrowUpper
-                                              : dropmdownblack
-                                          }
-                                          width="18.4px"
-                                          height="9.2px"
-                                          className={styles["Arrow"]}
-                                          onClick={() => {
-                                            apllyLockOnParentAgenda(index) ||
-                                              handleSubMenuExpand(
-                                                index,
-                                                subIndex
-                                              );
-                                          }}
-                                        />
-                                      </section>
+                                      <section
+                                        className={styles["backGorund"]}
+                                      ></section>
                                     </Col>
-                                    <Col lg={11} md={11} sm={11}>
+                                    <Col
+                                      lg={11}
+                                      md={11}
+                                      sm={11}
+                                      className={styles["SubAgendaSection"]}
+                                    >
                                       <Row className="mt-2 mb-2">
                                         <Col lg={5} md={5} sm={12}>
+                                          <Row>
+                                            <Col lg={12} md={12} sm={12}>
+                                              <span
+                                                className={
+                                                  styles["Meeting_subAgenda"]
+                                                }
+                                              >
+                                                {t("Meeting-title")}
+                                              </span>
+                                            </Col>
+                                          </Row>
                                           <TextField
                                             applyClass={"AgendaTextField"}
                                             labelClass={"d-none"}
@@ -958,6 +964,17 @@ const Agenda = () => {
                                           />
                                         </Col>
                                         <Col lg={3} md={3} sm={12}>
+                                          <Row>
+                                            <Col lg={12} md={12} sm={12}>
+                                              <span
+                                                className={
+                                                  styles["Meeting_subAgenda"]
+                                                }
+                                              >
+                                                {t("Presenter")}
+                                              </span>
+                                            </Col>
+                                          </Row>
                                           <Select
                                             value={
                                               subAgendaData.subajendaOptions
@@ -979,54 +996,96 @@ const Agenda = () => {
                                           lg={4}
                                           className="d-flex gap-4 justify-content-start align-items-center"
                                         >
-                                          <DatePicker
-                                            arrowClassName="arrowClass"
-                                            containerClassName="containerClassTimePicker"
-                                            className="timePicker"
-                                            disableDayPicker
-                                            inputClass="inputTImeMeeting"
-                                            disabled={
-                                              apllyLockOnParentAgenda(index) ||
-                                              apllyLockOnSubAgenda(
-                                                index,
-                                                subIndex
-                                              )
-                                                ? true
-                                                : false
-                                            }
-                                            format="HH:mm A"
-                                            selected={
-                                              subAgendaData.subAjendaStartDate
-                                            }
-                                            plugins={[
-                                              <TimePicker hideSeconds />,
-                                            ]}
-                                          />
-                                          <img src={desh} width="19.02px" />
-                                          <DatePicker
-                                            arrowClassName="arrowClass"
-                                            containerClassName="containerClassTimePicker"
-                                            className="timePicker"
-                                            disableDayPicker
-                                            inputClass="inputTImeMeeting"
-                                            disabled={
-                                              apllyLockOnParentAgenda(index) ||
-                                              apllyLockOnSubAgenda(
-                                                index,
-                                                subIndex
-                                              )
-                                                ? true
-                                                : false
-                                            }
-                                            format="HH:mm A"
-                                            selected={
-                                              subAgendaData.subAjendaEndDate
-                                            }
-                                            plugins={[
-                                              <TimePicker hideSeconds />,
-                                            ]}
-                                          />
-
+                                          <Row>
+                                            <Col lg={5} md={5} sm={5}>
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles[
+                                                        "Meeting_subAgenda"
+                                                      ]
+                                                    }
+                                                  >
+                                                    {t("Start-date")}
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                              <DatePicker
+                                                arrowClassName="arrowClass"
+                                                containerClassName="containerClassTimePicker"
+                                                className="timePicker"
+                                                disableDayPicker
+                                                inputClass="inputTImeMeeting"
+                                                disabled={
+                                                  apllyLockOnParentAgenda(
+                                                    index
+                                                  ) ||
+                                                  apllyLockOnSubAgenda(
+                                                    index,
+                                                    subIndex
+                                                  )
+                                                    ? true
+                                                    : false
+                                                }
+                                                format="HH:mm A"
+                                                selected={
+                                                  subAgendaData.subAjendaStartDate
+                                                }
+                                                plugins={[
+                                                  <TimePicker hideSeconds />,
+                                                ]}
+                                              />
+                                            </Col>
+                                            <Col
+                                              lg={2}
+                                              md={2}
+                                              sm={2}
+                                              className="d-flex justify-content-center align-items-center"
+                                            >
+                                              <img src={desh} width="19.02px" />
+                                            </Col>
+                                            <Col lg={5} md={5} sm={5}>
+                                              <Row>
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles[
+                                                        "Meeting_subAgenda"
+                                                      ]
+                                                    }
+                                                  >
+                                                    {t("End-date")}
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                              <DatePicker
+                                                arrowClassName="arrowClass"
+                                                containerClassName="containerClassTimePicker"
+                                                className="timePicker"
+                                                disableDayPicker
+                                                inputClass="inputTImeMeeting"
+                                                disabled={
+                                                  apllyLockOnParentAgenda(
+                                                    index
+                                                  ) ||
+                                                  apllyLockOnSubAgenda(
+                                                    index,
+                                                    subIndex
+                                                  )
+                                                    ? true
+                                                    : false
+                                                }
+                                                format="HH:mm A"
+                                                selected={
+                                                  subAgendaData.subAjendaEndDate
+                                                }
+                                                plugins={[
+                                                  <TimePicker hideSeconds />,
+                                                ]}
+                                              />
+                                            </Col>
+                                          </Row>
                                           <img
                                             src={redcrossIcon}
                                             height="25px"
@@ -1042,6 +1101,24 @@ const Agenda = () => {
                                                 );
                                             }}
                                           />
+                                        </Col>
+                                      </Row>
+                                      <Row>
+                                        <Col lg={12} md={12} sm={12}>
+                                          <span
+                                            className={
+                                              styles["Show_More_Styles"]
+                                            }
+                                            onClick={() => {
+                                              apllyLockOnParentAgenda(index) ||
+                                                handleSubMenuExpand(
+                                                  index,
+                                                  subIndex
+                                                );
+                                            }}
+                                          >
+                                            {t("Show-more")}
+                                          </span>
                                         </Col>
                                       </Row>
                                       {/* Condition for Subajencda */}
@@ -1488,6 +1565,7 @@ const Agenda = () => {
                           />
                         </Col>
                       </Row>
+                      {/* Line Seperator */}
                       <Row className="mt-3">
                         <Col lg={12} md={12} sm={12}>
                           <img src={line} className={styles["LineStyles"]} />

@@ -176,6 +176,22 @@ aside.ant-layout-sider.ant-layout-sider-dark {
   font-family: "MontserratSemiBold" !important;
 }
 
+.All_Heading_Advance_permission_View {
+  color: #5a5a5a !important;
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.ParticipantName {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Profile {
+  border-radius: 50% !important;
+}
+
 .Names_advance_permission {
   color: #5a5a5a !important;
   font-size: 12px !important;
@@ -237,4 +253,49 @@ aside.ant-layout-sider.ant-layout-sider-dark {
 }
 .AdvancePermission_switches_View {
   margin-left: 11px !important;
+}
+
+.Heading_introductions {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Plus_icon-Class {
+  cursor: pointer !important;
+}
+
+.AgendaPermissionModal .modal-dialog .modal-content {
+  padding: 12px !important;
+}
+
+.SidebarSection {
+  display: flex !important;
+  justify-content: space-between;
+  height: auto;
+  align-items: flex-start !important;
+  /* gap: 120px !important; */
+}
+
+.LineUpper {
+  width: 1px !important;
+  height: 60vh !important;
+  display: inline-block;
+  background: #e1e1e1 !important;
+}
+.footerClassAgendaPermission {
+  display: block !important;
+  margin-right: 10px !important;
+}
+
+.expandmenuIntroduction {
+  cursor: pointer !important;
+}
+.modal_header {
+  display: block !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+.modal_body {
+  padding-top: 0 !important;
 }

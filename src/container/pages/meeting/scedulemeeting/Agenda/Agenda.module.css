@@ -35,6 +35,7 @@
 .SubajendaBox {
   width: 90% !important;
   height: auto !important;
+  min-height: 126px !important;
   border: 1px solid #bbbbbb !important;
   border-radius: 4px !important;
   padding: 10px 15px !important;
@@ -45,6 +46,7 @@
 .SubajendaBox_Inactive {
   width: 90% !important;
   height: auto !important;
+  min-height: 126px !important;
   border: 1px solid #bbbbbb !important;
   border-radius: 4px !important;
   padding: 10px 15px !important;
@@ -199,8 +201,9 @@
 }
 
 .RedCross_Icon_class {
-  margin-right: -5.6% !important;
-  margin-top: -18.9% !important;
+  margin-right: -10% !important;
+  margin-top: -24.9% !important;
+  cursor: pointer !important;
 }
 .RedCross_Icon_class_Main_agenda {
   position: absolute !important;
@@ -262,12 +265,32 @@
 
 .Arrow {
   cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 38px !important;
+}
+
+.Arrow_Expanded {
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 120px !important;
 }
 
 .Meeting_title_heading {
   color: #5f78d6 !important;
   font-size: 12px !important;
   font-family: "MontserratSemiBold" !important;
+}
+
+.blueLine {
+  background: #5f78d6 !important;
+  height: auto !important;
+  max-height: 126px !important;
+  width: 6px !important;
+  position: fixed !important;
+  top: 123px;
+  right: 96.2%;
 }
 
 .backGroundDubTree {
@@ -290,4 +313,22 @@
   top: 0;
   border-top-left-radius: 4px !important;
   border-bottom-left-radius: 4px !important;
+}
+
+.Meeting_subAgenda {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Show_More_Styles {
+  color: #5f78d6 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  cursor: pointer !important;
+}
+
+.SubAgendaSection {
+  width: 96% !important;
+  margin-left: 36px !important;
 }

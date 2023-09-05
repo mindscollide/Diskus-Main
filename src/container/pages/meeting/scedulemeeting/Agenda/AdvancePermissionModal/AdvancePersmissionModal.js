@@ -11,6 +11,9 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
+import PlusIcon from "../../../../../../assets/images/SVGPLUS.svg";
+import Minus from "../../../../../../assets/images/SVGMINUS.svg";
+import profile from "../../../../../../assets/images/newprofile.png";
 import Key from "../../../../../../assets/images/KEY.svg";
 const AdvancePersmissionModal = () => {
   const { t } = useTranslation();
@@ -19,6 +22,7 @@ const AdvancePersmissionModal = () => {
   const { SubMenu } = Menu;
   const { Sider } = Layout;
   const { NewMeetingreducer } = useSelector((state) => state);
+  const [expandmenuIntroduction, setExpandmenuIntroduction] = useState(false);
   const options = [
     { value: "All", label: "All" },
     { value: "organizer", label: "organizer" },
@@ -49,6 +53,10 @@ const AdvancePersmissionModal = () => {
     dispatch(showAdvancePermissionModal(false));
     dispatch(showAdvancePermissionConfirmation(true));
   };
+
+  const handleExpandIntroduction = () => {
+    setExpandmenuIntroduction(!expandmenuIntroduction);
+  };
   return (
     <>
       <section>
@@ -56,7 +64,10 @@ const AdvancePersmissionModal = () => {
           show={NewMeetingreducer.advancePermissionModal}
           setShow={dispatch(showAdvancePermissionModal)}
           modalFooterClassName={"d-block"}
-          modalHeaderClassName={"d-block"}
+          modalParentClass={"AgendaPermissionModal"}
+          className={styles["AgendaPermissionModal"]}
+          modalBodyClassName={styles["modal_body"]}
+          modalHeaderClassName={styles["modal_header"]}
           onHide={() => {
             dispatch(showAdvancePermissionModal(false));
           }}
@@ -103,90 +114,78 @@ const AdvancePersmissionModal = () => {
                   <span className={styles["Bottom_line"]}></span>
                 </Col>
               </Row>
+            </>
+          }
+          ModalBody={
+            <>
               <Row>
-                <Col lg={3} md={3} sm={3}>
+                <Col lg={4} md={4} sm={12}>
                   <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <Row className="mt-4 mb-4 m-0 p-0">
-                        <Col
-                          lg={11}
-                          md={11}
-                          sm={12}
-                          className="d-flex justify-content-center"
-                        >
+                    <Col lg={12} md={12} sm={12} className="ms-2 ">
+                      <Row className="mt-4">
+                        <Col lg={11} md={11} sm={12} className="d-flex ">
                           <span className={styles["Agenda_heading_Advance"]}>
                             {t("Agenda")}
                           </span>
                         </Col>
                         <Col lg={1} md={1} sm={12}></Col>
                       </Row>
-                      <Layout>
-                        <Sider width={250}>
-                          <Menu
-                            theme="light"
-                            // defaultOpenKeys={[defaultOpenKey]}
-                            // defaultSelectedKeys={[defaultSelectedKey]}
-                            mode="inline"
-                            className="Menu-sidebar-class"
-                          >
-                            <SubMenu
-                              key="sub1"
-                              icon={<i className="icon-user menu-icons"></i>}
-                              title="Introduction"
-                              className="submenu-sidebar-icons"
-                            >
-                              <Menu.Item className="menu-items-sidebar" key="3">
-                                Introduction SubMenus
-                              </Menu.Item>
-                            </SubMenu>
-                            <SubMenu
-                              key="sub2"
-                              icon={<i className="icon-user menu-icons"></i>}
-                              title="CEO Report"
-                              className="submenu-sidebar-icons"
-                            >
-                              <Menu.Item className="menu-items-sidebar" key="6">
-                                CEO Report
-                              </Menu.Item>
-                            </SubMenu>
-                            <SubMenu
-                              key="sub3"
-                              icon={<i className="icon-user menu-icons"></i>}
-                              title="Finance Summary"
-                              className="submenu-sidebar-icons"
-                            >
-                              <Menu.Item className="menu-items-sidebar" key="8">
-                                Finance Summmary SubMenus
-                              </Menu.Item>
-                            </SubMenu>
-                            <SubMenu
-                              key="sub4"
-                              icon={<i className="icon-user menu-icons"></i>}
-                              title="Functional Review"
-                              className="submenu-sidebar-icons"
-                            >
-                              <Menu.Item className="menu-items-sidebar" key="9">
-                                Functional Review Submenu
-                              </Menu.Item>
-                            </SubMenu>
-                            <SubMenu
-                              key="sub5"
-                              icon={<i className="icon-user menu-icons"></i>}
-                              title="Closing Report"
-                              className="submenu-sidebar-icons"
-                            >
-                              <Menu.Item className="menu-items-sidebar" key="9">
-                                Closing Report Submenu
-                              </Menu.Item>
-                            </SubMenu>
-                          </Menu>
-                        </Sider>
-                      </Layout>
+                      <Row className="mt-2">
+                        <Col lg={12} md={12} sm={12}>
+                          <section className={styles["SidebarSection"]}>
+                            <span className={styles["Heading_introductions"]}>
+                              1.
+                              <span className={styles["Heading_introductions"]}>
+                                {t("Introduction")}
+                              </span>
+                            </span>
+
+                            <img
+                              src={expandmenuIntroduction ? Minus : PlusIcon}
+                              height="14px"
+                              width="14px"
+                              className={styles["Plus_icon-Class"]}
+                              onClick={handleExpandIntroduction}
+                            />
+                          </section>
+                          {expandmenuIntroduction ? (
+                            <>
+                              <Row>
+                                <Col lg={8} md={8} sm={8}>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className="d-flex gap-2"
+                                    >
+                                      <img
+                                        src={profile}
+                                        height="19px"
+                                        width="19px"
+                                        className={styles["Profile"]}
+                                      />
+                                      <span
+                                        className={styles["ParticipantName"]}
+                                      >
+                                        Salman Memon
+                                      </span>
+                                    </Col>
+                                  </Row>
+                                </Col>
+                                <Col lg={6} md={6} sm={6}></Col>
+                              </Row>
+                            </>
+                          ) : null}
+                        </Col>
+                      </Row>
                     </Col>
                   </Row>
                 </Col>
-                <Col lg={2} md={2} sm={2}></Col>
-                <Col lg={7} md={7} sm={7}>
+                <Col lg={1} md={1} sm={12}>
+                  <span className={styles["LineUpper"]}></span>
+                </Col>
+                <Col lg={7} md={7} sm={12}>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <Row className="mt-4 mb-4">
@@ -199,14 +198,18 @@ const AdvancePersmissionModal = () => {
                         </Col>
                         <Col lg={3} md={3} sm={3}>
                           <span
-                            className={styles["All_Heading_Advance_permission"]}
+                            className={
+                              styles["All_Heading_Advance_permission_View"]
+                            }
                           >
                             {"View"}
                           </span>
                         </Col>
                         <Col lg={3} md={3} sm={3}>
                           <span
-                            className={styles["All_Heading_Advance_permission"]}
+                            className={
+                              styles["All_Heading_Advance_permission_View"]
+                            }
                           >
                             {"Modify"}
                           </span>
@@ -268,11 +271,7 @@ const AdvancePersmissionModal = () => {
                   </Row>
                 </Col>
               </Row>
-            </>
-          }
-          ModalBody={
-            <>
-              <Row className="m-0 p-0 mt-5">
+              {/* <Row className="mt-5">
                 <Col
                   lg={12}
                   md={12}
@@ -286,7 +285,7 @@ const AdvancePersmissionModal = () => {
                   />
                   <Button text={t("Save")} className={styles["Save_Button"]} />
                 </Col>
-              </Row>
+              </Row> */}
             </>
           }
         />
