@@ -520,6 +520,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
                 response.data.responseResult.authToken.isFirstLogIn,
               )
               localStorage.setItem('activeOtoChatID', 0)
+              localStorage.setItem('activeCall', false)
+              localStorage.setItem('initiateVideoCall', false)
             }
 
             if (

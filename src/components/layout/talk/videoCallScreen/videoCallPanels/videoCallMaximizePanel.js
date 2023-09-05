@@ -1,16 +1,16 @@
-import { Row, Col, Container } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import VideoCallLargeHeader from "../videoCallHeader/videoCallLargeHeader";
-import VideoLargeBody from "../videoCallBody/VideoLargeBody";
-import VideoMaxIncoming from "../videoCallBody/VideoMaxIncoming";
-import VideoMaxOutgoing from "../videoCallBody/VideoMaxOutgoing";
-import VideoMaxMultiple from "../videoCallBody/VideoMaxMultiple";
-import VideoMaxChatMin from "../videoCallBody/VideoMaxChatMin";
-import VideoLargePanelFooter from "../../talk-Video/videoPanel/videoLargePanelFooter/VideoLargePanelFooter";
-import "./videoCallMaximizePanel.css";
+import { Row, Col, Container } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
+import VideoCallLargeHeader from '../videoCallHeader/videoCallLargeHeader'
+import VideoLargeBody from '../videoCallBody/VideoLargeBody'
+import VideoMaxIncoming from '../videoCallBody/VideoMaxIncoming'
+import VideoMaxOutgoing from '../videoCallBody/VideoMaxOutgoing'
+import VideoMaxMultiple from '../videoCallBody/VideoMaxMultiple'
+import VideoMaxChatMin from '../videoCallBody/VideoMaxChatMin'
+import VideoLargePanelFooter from '../../talk-Video/videoPanel/videoLargePanelFooter/VideoLargePanelFooter'
+import './videoCallMaximizePanel.css'
 
 const VideoPanelMaximize = () => {
-  const { videoFeatureReducer } = useSelector((state) => state);
+  const { videoFeatureReducer } = useSelector((state) => state)
 
   return (
     <>
@@ -41,7 +41,7 @@ const VideoPanelMaximize = () => {
         </Row>
       </div>
     </>
-  );
-};
+  )
+}
 
-export default VideoPanelMaximize;
+export default VideoPanelMaximize
