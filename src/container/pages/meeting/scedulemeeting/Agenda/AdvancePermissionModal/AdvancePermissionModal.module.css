@@ -261,6 +261,23 @@ aside.ant-layout-sider.ant-layout-sider-dark {
   font-family: "MontserratSemiBold" !important;
 }
 
+.Heading_introductions_Of_SubAgenda {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  display: inline-block !important;
+  overflow: hidden;
+  width: 280px !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.UpperLineSubAgenda {
+  height: 1px !important;
+  color: #e1e1e1 !important;
+  width: 100% !important;
+}
+
 .Plus_icon-Class {
   cursor: pointer !important;
   transition: ease-in-out 0.3s;
@@ -276,6 +293,31 @@ aside.ant-layout-sider.ant-layout-sider-dark {
   height: auto;
   align-items: flex-start !important;
   padding-bottom: 0px !important;
+}
+
+.SidebarSectionSubAgenda {
+  display: flex !important;
+  justify-content: space-between;
+  height: auto;
+  align-items: flex-start !important;
+  padding-bottom: 0px !important;
+  gap: 10px !important;
+}
+
+.SidebarSectionSubAgendaActive {
+  display: flex !important;
+  justify-content: space-between;
+  height: auto;
+  align-items: flex-start !important;
+  padding-bottom: 0px !important;
+  gap: 10px !important;
+  background: #f6f6f6 !important;
+}
+.SubAgendaBackground {
+  /* background: #f6f6f6 !important; */
+  display: flex !important;
+}
+.SubAgendaBox {
 }
 
 .SidebarSection_expanded {
@@ -327,9 +369,12 @@ aside.ant-layout-sider.ant-layout-sider-dark {
 }
 .attachment_line {
   width: 100% !important;
+  font-size: 8px !important;
+  font-family: "Montserrat";
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis !important;
+  color: #5a5a5a;
   display: inline-block !important;
 }
 

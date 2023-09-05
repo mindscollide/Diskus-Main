@@ -16,6 +16,7 @@ import PDF from "../../../../../../assets/images/pdf_icon.svg";
 import Minus from "../../../../../../assets/images/SVGMINUS.svg";
 import profile from "../../../../../../assets/images/newprofile.png";
 import Key from "../../../../../../assets/images/KEY.svg";
+import { style } from "@mui/system";
 const AdvancePersmissionModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ const AdvancePersmissionModal = () => {
   const { NewMeetingreducer } = useSelector((state) => state);
   const [expandmenuIntroduction, setExpandmenuIntroduction] = useState(false);
   const [sidebarindex, setSidebarindex] = useState(0);
+  const [subAgendaExpand, setsubAgendaExpand] = useState(false);
   const [sidebarOptions, setsidebarOptions] = useState([
     {
       title: t("Introduction"),
@@ -44,6 +46,9 @@ const AdvancePersmissionModal = () => {
         {
           name: "Axis.Diskus.Com",
         },
+      ],
+      SubAgendaOptions: [
+        { SubTitle: "Get New Agenda For You Knowledge and we are" },
       ],
     },
     {
@@ -98,6 +103,11 @@ const AdvancePersmissionModal = () => {
     setSidebarindex(index);
     setExpandmenuIntroduction(!expandmenuIntroduction);
   };
+
+  const subAgendaExpandFunction = () => {
+    setsubAgendaExpand(!subAgendaExpand);
+  };
+
   return (
     <>
       <section>
@@ -295,7 +305,7 @@ const AdvancePersmissionModal = () => {
                                                       lg={4}
                                                       md={4}
                                                       sm={12}
-                                                      className="flex-wrap my-1   d-flex justify-content-center"
+                                                      className="flex-wrap my-1 text-center   d-flex justify-content-center"
                                                     >
                                                       <img
                                                         src={PDF}
@@ -319,6 +329,180 @@ const AdvancePersmissionModal = () => {
                                           </Row>
                                         </>
                                       ) : null}
+                                      <Row className="mt-2">
+                                        {data?.SubAgendaOptions?.map(
+                                          (SubAgendaData, SubAgendaIndex) => {
+                                            return (
+                                              <>
+                                                <Col
+                                                  lg={1}
+                                                  md={1}
+                                                  sm={12}
+                                                ></Col>
+                                                <Col lg={11} md={11} sm={12}>
+                                                  <section
+                                                    className={
+                                                      styles["SubAgendaBox"]
+                                                    }
+                                                  >
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "UpperLineSubAgenda"
+                                                        ]
+                                                      }
+                                                    ></span>
+                                                    <section
+                                                      className={
+                                                        subAgendaExpand
+                                                          ? styles[
+                                                              "SidebarSectionSubAgendaActive"
+                                                            ]
+                                                          : styles[
+                                                              "SidebarSectionSubAgenda"
+                                                            ]
+                                                      }
+                                                    >
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                            "Heading_introductions_Of_SubAgenda"
+                                                          ]
+                                                        }
+                                                      >
+                                                        <span>
+                                                          {index}
+                                                          <span>
+                                                            .{SubAgendaData + 1}
+                                                          </span>
+                                                        </span>
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "Heading_introductions_"
+                                                            ]
+                                                          }
+                                                        >
+                                                          {
+                                                            SubAgendaData.SubTitle
+                                                          }
+                                                        </span>
+                                                      </span>
+
+                                                      <img
+                                                        src={
+                                                          subAgendaExpand
+                                                            ? Minus
+                                                            : PlusIcon
+                                                        }
+                                                        height="14px"
+                                                        width="14px"
+                                                        className={
+                                                          styles[
+                                                            "Plus_icon-Class"
+                                                          ]
+                                                        }
+                                                        onClick={
+                                                          subAgendaExpandFunction
+                                                        }
+                                                      />
+                                                    </section>
+                                                    {subAgendaExpand ? (
+                                                      <>
+                                                        <Row className="mt-2">
+                                                          <section
+                                                            className={
+                                                              subAgendaExpand
+                                                                ? styles[
+                                                                    "SubAgendaBackground"
+                                                                  ]
+                                                                : styles[
+                                                                    "Hidden"
+                                                                  ]
+                                                            }
+                                                          >
+                                                            <Col
+                                                              lg={7}
+                                                              md={7}
+                                                              sm={7}
+                                                            >
+                                                              <Row>
+                                                                <Col
+                                                                  lg={12}
+                                                                  md={12}
+                                                                  sm={12}
+                                                                  className="d-flex gap-1"
+                                                                >
+                                                                  <img
+                                                                    src={
+                                                                      profile
+                                                                    }
+                                                                    height="19px"
+                                                                    width="19px"
+                                                                    className={
+                                                                      styles[
+                                                                        "Profile"
+                                                                      ]
+                                                                    }
+                                                                  />
+                                                                  <span
+                                                                    className={
+                                                                      styles[
+                                                                        "ParticipantName"
+                                                                      ]
+                                                                    }
+                                                                  >
+                                                                    Salman Memon
+                                                                  </span>
+                                                                </Col>
+                                                              </Row>
+                                                            </Col>
+                                                            <Col
+                                                              lg={5}
+                                                              md={5}
+                                                              sm={5}
+                                                              className="d-flex align-items-center gap-1"
+                                                            >
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "Times_styles"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                12:15 PM
+                                                              </span>
+
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "minus_sign"
+                                                                  ]
+                                                                }
+                                                              ></span>
+
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "Times_styles"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                12:15 PM
+                                                              </span>
+                                                            </Col>
+                                                          </section>
+                                                        </Row>
+                                                      </>
+                                                    ) : null}
+                                                  </section>
+                                                </Col>
+                                              </>
+                                            );
+                                          }
+                                        )}
+                                      </Row>
+
                                       <span
                                         className={styles["Bottom_Line"]}
                                       ></span>
