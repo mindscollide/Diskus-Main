@@ -72,7 +72,6 @@ const Agenda = () => {
   const [subMenudisbaleFields, setSubMenuDisbaleFields] = useState(false);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
   const [subLock, setSubLock] = useState([]);
-  console.log(subLock, "subLocksubLocksubLock");
   const [open, setOpen] = useState({
     flag: false,
     message: "",
@@ -167,6 +166,7 @@ const Agenda = () => {
     console.log("subAjendaonChange", e.target.value);
     setSubValue(e.target.value);
   };
+
   const props = {
     name: "file",
     // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
@@ -180,6 +180,7 @@ const Agenda = () => {
     },
     customRequest() {},
   };
+
   const options = [
     {
       value: "chocolate",
@@ -205,6 +206,7 @@ const Agenda = () => {
       ),
     },
   ];
+
   const handleExpandedBtn = (index) => {
     console.log(index, "recordrecordrecordrecord");
     setExpandIndex(index);
@@ -246,8 +248,6 @@ const Agenda = () => {
       return updatedRows;
     });
   };
-
-  console.log(rows, "rowsrowsrowsrowsrows");
 
   const handleCrossIcon = (index) => {
     dispatch(showMainAgendaItemRemovedModal(true));
@@ -307,10 +307,6 @@ const Agenda = () => {
 
     return exists;
   };
-  console.log(
-    mainLock,
-    "findsubIndexfindsubIndexfindsubIndex newCloneParentIndex"
-  );
 
   const HandleChange = (e, index) => {
     let name = parseInt(e.target.name);
@@ -585,6 +581,20 @@ const Agenda = () => {
                                         }}
                                       />
                                     )}
+                                  </Col>
+                                </Row>
+                                <Row className="mt-2">
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span
+                                      className={styles["Show_Details_Tag"]}
+                                      onClick={() => {
+                                        handleExpandedBtn(index);
+                                      }}
+                                    >
+                                      {expand === true
+                                        ? t("Hide-details")
+                                        : t("Show-details")}
+                                    </span>
                                   </Col>
                                 </Row>
                                 {expandIndex === index && expand === true ? (
