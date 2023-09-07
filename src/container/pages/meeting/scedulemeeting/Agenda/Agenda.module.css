@@ -332,3 +332,10 @@
   width: 96% !important;
   margin-left: 36px !important;
 }
+
+.Show_Details_Tag {
+  color: #5f78d6 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  cursor: pointer !important;
+}

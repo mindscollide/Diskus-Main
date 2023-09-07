@@ -955,5 +955,7 @@
   "There-are-no-agenda-contributors": "There are no agenda contributors",
   "Start-date": "Start Time",
   "End-date": "End Time",
-  "Show-more": "Show Details"
+  "Show-more": "Show Details",
+  "Hide-details": "Hide Details",
+  "Show-details": "Show Details"
 }
