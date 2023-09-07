@@ -17,6 +17,7 @@ const AgendaImport = () => {
   const [expanded, setExpanded] = useState(false);
   const [subExpand, setSubExpand] = useState(false);
   const [allowEditMainAgenda, setallowEditMainAgenda] = useState(false);
+  const [allowEditSubAgenda, setallowEditSubAgenda] = useState(false);
   const [mainAgendaMinuteRemove, setmainAgendaMinuteRemove] = useState(0);
   const [subAgendaMinuteRemove, setSubAgendaMinuteRemove] = useState(0);
   const [indexForMainEdit, setIndexForMainEdit] = useState(0);
@@ -42,15 +43,12 @@ const AgendaImport = () => {
         },
       ],
     },
-    {
-      name: "Contrary to popular belis, very popular during the Renaissance. The first line of Lorem Ipsum,Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.",
-      subAgendaMinute: [],
-    },
   ]);
 
   const EditSubAgendaMinutes = (index, subAgendaIndex) => {
     setIndexForMainEdit(index);
     setIndexForSubAgendaEdit(subAgendaIndex);
+    setallowEditSubAgenda(true);
   };
 
   const cancelEditFunctionality = () => {
@@ -280,105 +278,81 @@ const AgendaImport = () => {
                     {data.subAgendaMinute.length > 0
                       ? data.subAgendaMinute.map(
                           (subAgendaData, subAgendaIndex) => {
-                            console.log(
-                              subAgendaData.subAgenda,
-                              "subAgendaDatasubAgendaData"
-                            );
                             return (
                               <>
-                                <Col
-                                  lg={12}
-                                  md={12}
-                                  sm={12}
-                                  className="d-flex justify-content-end"
-                                >
-                                  <section
-                                    className={styles["Box_Minutes_SubAgenda"]}
-                                  >
-                                    <Row>
-                                      <Col lg={9} md={9} sm={9}>
-                                        <Row className="mt-3">
-                                          <Col lg={12} md={12} sm={12}>
-                                            <span
-                                              className={styles["Title_File"]}
-                                            >
-                                              {subExpand ? (
-                                                <>
-                                                  {subAgendaData.subAgenda.substring(
-                                                    0,
-                                                    190
-                                                  )}
-                                                  ...
-                                                </>
-                                              ) : (
-                                                <>{subAgendaData.subAgenda}</>
-                                              )}
-
-                                              <span
-                                                className={
-                                                  styles["Show_more_Styles"]
-                                                }
-                                                onClick={SubtoggleExpansion}
-                                              >
-                                                {subExpand
-                                                  ? t("See-more")
-                                                  : t("See-less")}
-                                              </span>
-                                            </span>
-                                          </Col>
-                                        </Row>
-                                        <Row className="mt-1">
-                                          <Col lg={12} md={12} sm={12}>
-                                            <span
-                                              className={
-                                                styles["Date_Minutes_And_time"]
-                                              }
-                                            >
-                                              4:00pm, 18th May, 2020
-                                            </span>
-                                          </Col>
-                                        </Row>
-                                      </Col>
-                                      <Col
-                                        lg={3}
-                                        md={3}
-                                        sm={3}
-                                        className="mt-4"
+                                {indexForSubAgendaEdit === subAgendaIndex &&
+                                indexForMainEdit === index &&
+                                allowEditSubAgenda ? (
+                                  "React Quill"
+                                ) : (
+                                  <>
+                                    {" "}
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className="d-flex justify-content-end"
+                                    >
+                                      <section
+                                        className={
+                                          styles["Box_Minutes_SubAgenda"]
+                                        }
                                       >
-                                        <Row className="d-flex justify-content-end">
-                                          <Col lg={2} md={2} sm={2}>
-                                            <img
-                                              src={profile}
-                                              height="39px"
-                                              width="39px"
-                                              className={
-                                                styles["Profile_minutes"]
-                                              }
-                                            />
-                                          </Col>
-                                          <Col
-                                            lg={6}
-                                            md={6}
-                                            sm={6}
-                                            className={styles["Line_heigh"]}
-                                          >
-                                            <Row>
+                                        <Row>
+                                          <Col lg={9} md={9} sm={9}>
+                                            <>
+                                              <Row className="mt-3">
+                                                <Col lg={12} md={12} sm={12}>
+                                                  <span
+                                                    className={
+                                                      styles["Title_File"]
+                                                    }
+                                                  >
+                                                    {subExpand ? (
+                                                      <>
+                                                        {subAgendaData.subAgenda.substring(
+                                                          0,
+                                                          190
+                                                        )}
+                                                        ...
+                                                      </>
+                                                    ) : (
+                                                      <>
+                                                        {
+                                                          subAgendaData.subAgenda
+                                                        }
+                                                      </>
+                                                    )}
+
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "Show_more_Styles"
+                                                        ]
+                                                      }
+                                                      onClick={
+                                                        SubtoggleExpansion
+                                                      }
+                                                    >
+                                                      {subExpand
+                                                        ? t("See-more")
+                                                        : t("See-less")}
+                                                    </span>
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                            </>
+
+                                            <Row className="mt-1">
                                               <Col lg={12} md={12} sm={12}>
                                                 <span
                                                   className={
-                                                    styles["Uploaded_heading"]
+                                                    styles[
+                                                      "Date_Minutes_And_time"
+                                                    ]
                                                   }
                                                 >
-                                                  {t("Uploaded-by")}
-                                                </span>
-                                              </Col>
-                                            </Row>
-                                            <Row>
-                                              <Col lg={12} md={12} sm={12}>
-                                                <span
-                                                  className={styles["Name"]}
-                                                >
-                                                  SAIF UL ISLAM
+                                                  4:00pm, 18th May, 2020
                                                 </span>
                                               </Col>
                                             </Row>
@@ -387,38 +361,86 @@ const AgendaImport = () => {
                                             lg={3}
                                             md={3}
                                             sm={3}
-                                            className="d-flex justify-content-start align-items-center"
+                                            className="mt-4"
                                           >
-                                            <img
-                                              src={EditIcon}
-                                              height="21.55px"
-                                              width="21.55px"
-                                              className="cursor-pointer"
-                                              onClick={() => {
-                                                EditSubAgendaMinutes(
-                                                  index,
-                                                  subAgendaIndex
-                                                );
-                                              }}
-                                            />
+                                            <Row className="d-flex justify-content-end">
+                                              <Col lg={2} md={2} sm={2}>
+                                                <img
+                                                  src={profile}
+                                                  height="39px"
+                                                  width="39px"
+                                                  className={
+                                                    styles["Profile_minutes"]
+                                                  }
+                                                />
+                                              </Col>
+                                              <Col
+                                                lg={6}
+                                                md={6}
+                                                sm={6}
+                                                className={styles["Line_heigh"]}
+                                              >
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "Uploaded_heading"
+                                                        ]
+                                                      }
+                                                    >
+                                                      {t("Uploaded-by")}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row>
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={styles["Name"]}
+                                                    >
+                                                      SAIF UL ISLAM
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                              <Col
+                                                lg={3}
+                                                md={3}
+                                                sm={3}
+                                                className="d-flex justify-content-start align-items-center"
+                                              >
+                                                <img
+                                                  src={EditIcon}
+                                                  height="21.55px"
+                                                  width="21.55px"
+                                                  className="cursor-pointer"
+                                                  onClick={() => {
+                                                    EditSubAgendaMinutes(
+                                                      index,
+                                                      subAgendaIndex
+                                                    );
+                                                  }}
+                                                />
+                                              </Col>
+                                            </Row>
                                           </Col>
                                         </Row>
-                                      </Col>
-                                    </Row>
-                                    <img
-                                      src={RedCroseeIcon}
-                                      height="20.76px"
-                                      width="20.76px"
-                                      className={styles["RedCrossClass"]}
-                                      onClick={() => {
-                                        handleRemoveFilesForSubFiles(
-                                          index,
-                                          subAgendaIndex
-                                        );
-                                      }}
-                                    />
-                                  </section>
-                                </Col>
+                                        <img
+                                          src={RedCroseeIcon}
+                                          height="20.76px"
+                                          width="20.76px"
+                                          className={styles["RedCrossClass"]}
+                                          onClick={() => {
+                                            handleRemoveFilesForSubFiles(
+                                              index,
+                                              subAgendaIndex
+                                            );
+                                          }}
+                                        />
+                                      </section>
+                                    </Col>
+                                  </>
+                                )}
                               </>
                             );
                           }
