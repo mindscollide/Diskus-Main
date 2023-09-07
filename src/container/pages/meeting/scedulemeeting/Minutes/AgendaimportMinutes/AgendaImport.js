@@ -55,6 +55,10 @@ const AgendaImport = () => {
     setallowEditMainAgenda(false);
   };
 
+  const canceLsubAgendaEditFunctionality = () => {
+    setallowEditSubAgenda(false);
+  };
+
   const toggleExpansion = () => {
     setExpanded(!expanded);
   };
@@ -283,7 +287,64 @@ const AgendaImport = () => {
                                 {indexForSubAgendaEdit === subAgendaIndex &&
                                 indexForMainEdit === index &&
                                 allowEditSubAgenda ? (
-                                  "React Quill"
+                                  <>
+                                    <Row
+                                      className={styles["Add-note-QuillRow"]}
+                                    >
+                                      <Col
+                                        lg={12}
+                                        md={12}
+                                        sm={12}
+                                        xs={12}
+                                        className={
+                                          styles["Arabic_font_Applied"]
+                                        }
+                                      >
+                                        <ReactQuill
+                                          ref={editorRef}
+                                          theme="snow"
+                                          value={subAgendaData.subAgenda}
+                                          placeholder={t("Note-details")}
+                                          modules={modules}
+                                          className={
+                                            styles["quill-height-addNote"]
+                                          }
+                                        />
+                                        <img
+                                          src={RedCroseeIcon}
+                                          className={styles["RedCrossForEdit"]}
+                                        />
+                                      </Col>
+                                    </Row>
+                                    <Row className="mt-5">
+                                      <Col
+                                        lg={12}
+                                        md={12}
+                                        sm={12}
+                                        className="d-flex justify-content-end gap-2"
+                                      >
+                                        <Button
+                                          text={t("Cancel")}
+                                          className={
+                                            styles[
+                                              "CancelButtonOnSaveAgendaImport"
+                                            ]
+                                          }
+                                          onClick={
+                                            canceLsubAgendaEditFunctionality
+                                          }
+                                        />
+                                        <Button
+                                          text={t("Save")}
+                                          className={
+                                            styles[
+                                              "SaveButtonOnSaveAgendaImport"
+                                            ]
+                                          }
+                                        />
+                                      </Col>
+                                    </Row>
+                                  </>
                                 ) : (
                                   <>
                                     {" "}
