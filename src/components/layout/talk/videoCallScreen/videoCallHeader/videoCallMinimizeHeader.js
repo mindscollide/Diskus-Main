@@ -17,6 +17,9 @@ const VideoCallMinimizeHeader = () => {
   let callerNameInitiate = localStorage.getItem('callerNameInitiate')
   let currentUserName = localStorage.getItem('name')
   let callerName = localStorage.getItem('callerName')
+  let initiateVideoCallFlag = JSON.parse(
+    localStorage.getItem('initiateVideoCall'),
+  )
 
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
     (state) => state,
@@ -48,11 +51,16 @@ const VideoCallMinimizeHeader = () => {
       <Row className="mt-2 mb-4">
         <Col lg={3} md={3} sm={12} className="mt-1">
           <p className="title-heading">
-            {currentUserName === VideoMainReducer.VideoRecipentData.userName
+            {currentUserName !== VideoMainReducer.VideoRecipentData.userName &&
+            Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
+            initiateVideoCallFlag === true
+              ? VideoMainReducer.VideoRecipentData.userName
+              : currentUserName !==
+                  VideoMainReducer.VideoRecipentData.userName &&
+                Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
+                initiateVideoCallFlag === false
               ? callerNameInitiate
-              : currentUserName !== callerNameInitiate
-              ? callerNameInitiate
-              : currentUserName === callerName
+              : Object.keys(VideoMainReducer.VideoRecipentData).length === 0
               ? callerName
               : null}
           </p>

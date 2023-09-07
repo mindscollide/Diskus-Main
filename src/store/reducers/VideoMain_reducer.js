@@ -13,6 +13,7 @@ const initialState = {
   RecentCallsData: [],
   CallRequestReceivedData: [],
   CallRequestReceivedMQTTData: {},
+  MissedCallCountData: {},
 }
 
 const VideoMainReducer = (state = initialState, action) => {
@@ -172,6 +173,31 @@ const VideoMainReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         CallRequestReceivedMQTTData: action.response,
+        ResponseMessage: action.message,
+      }
+    }
+
+    case actions.GET_MISSED_CALL_COUNT_INITIAL: {
+      return {
+        ...state,
+        Loading: true,
+      }
+    }
+
+    case actions.GET_MISSED_CALL_COUNT_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        MissedCallCountData: action.response,
+        ResponseMessage: action.message,
+      }
+    }
+
+    case actions.GET_MISSED_CALL_COUNT_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        CallRequestReceivedData: {},
         ResponseMessage: action.message,
       }
     }

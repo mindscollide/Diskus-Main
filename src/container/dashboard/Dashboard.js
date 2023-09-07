@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Sidebar, Talk } from '../../components/layout'
+import { LoaderPanel } from '../../components/elements'
 import Header2 from '../../components/layout/header2/Header2'
 import { Layout } from 'antd'
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
@@ -41,6 +42,7 @@ import {
   VideoCallResponse,
   CallRequestReceived,
   callRequestReceivedMQTT,
+  GetUserMissedCallCount,
 } from '../../store/actions/VideoMain_actions'
 import Helper from '../../commen/functions/history_logout'
 import IconMetroAttachment from '../../assets/images/newElements/Icon metro-attachment.svg'
@@ -80,7 +82,9 @@ import {
 const Dashboard = () => {
   const location = useLocation()
 
-  const { talkStateData, videoFeatureReducer } = useSelector((state) => state)
+  const { talkStateData, videoFeatureReducer, VideoMainReducer } = useSelector(
+    (state) => state,
+  )
   // const [socket, setSocket] = useState(Helper.socket);
   const navigate = useNavigate()
   let createrID = localStorage.getItem('userID')
@@ -1001,7 +1005,9 @@ const Dashboard = () => {
         'VIDEO_CALL_REJECTED'.toLowerCase()
       ) {
         dispatch(videoOutgoingCallFlag(false))
+        // if (callStatus === false) {
         dispatch(normalizeVideoPanelFlag(false))
+        // }
         localStorage.setItem('activeCall', false)
         localStorage.setItem('initiateVideoCall', false)
         setNotification({
@@ -1102,8 +1108,11 @@ const Dashboard = () => {
 
   useEffect(() => {
     dispatch(GetAllUserChats(navigate, createrID, currentOrganization, t))
+    dispatch(GetUserMissedCallCount(navigate, t))
     localStorage.setItem('activeOtoChatID', 0)
   }, [])
+
+  console.log('VideoMainReducer', VideoMainReducer)
 
   return (
     <>

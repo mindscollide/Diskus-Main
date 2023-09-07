@@ -41,7 +41,7 @@
 
 .minimize_icon-class {
     height: 2px;
-    margin-top: 7px !important;
+    margin-top: 13px !important;
     cursor: pointer;
 }
 
@@ -62,4 +62,10 @@
     font-weight: 600;
     color: #fff !important;
     margin-left: 15px !important;
+}
+
+img.normalize-Icon-Large {
+    width: 20px;
+    height: 20px;
+    margin-top: 6px;
 }
