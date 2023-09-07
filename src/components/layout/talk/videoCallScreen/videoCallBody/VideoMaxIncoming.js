@@ -54,6 +54,7 @@ const VideoMaxIncoming = () => {
     dispatch(VideoCallResponse(Data, navigate, t))
     dispatch(incomingVideoCallFlag(false))
     dispatch(normalizeVideoPanelFlag(true))
+    localStorage.setItem('activeCall', true)
   }
 
   const rejectCall = () => {
@@ -64,6 +65,7 @@ const VideoMaxIncoming = () => {
     }
     dispatch(VideoCallResponse(Data, navigate, t))
     dispatch(incomingVideoCallFlag(false))
+    localStorage.setItem('activeCall', false)
   }
 
   let timeValue = Number(localStorage.getItem('callRingerTimeout'))
@@ -86,7 +88,6 @@ const VideoMaxIncoming = () => {
         RoomID: incomingRoomID,
         CallStatusID: 3,
       }
-
       dispatch(VideoCallResponse(Data, navigate, t))
       setIsVisible(false)
       audioElement.pause()

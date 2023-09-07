@@ -817,8 +817,13 @@ const getUserRecentCalls = {
 }
 
 const updateProfilePictureRM = {
-  RequestMethod: "ServiceManager.UpdateProfilePicture",
-};
+  RequestMethod: 'ServiceManager.UpdateProfilePicture',
+}
+
+const callRequestReceived = {
+  RequestMethod: 'ServiceManager.CallRequestReceived',
+}
+
 export {
   updateProfilePictureRM,
   DeleteCommentRM,
@@ -1041,4 +1046,5 @@ export {
   initiateVideoCall,
   videoCallResponse,
   getUserRecentCalls,
+  callRequestReceived,
 }
