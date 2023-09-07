@@ -79,7 +79,7 @@ const Agenda = () => {
   });
   const [rows, setRows] = useState([
     {
-      ID: "1",
+      ID: "0",
       title: null,
       selectedOption: null,
       startDate: null,
@@ -87,7 +87,7 @@ const Agenda = () => {
       Notes: "",
       subAgenda: [
         {
-          ID: "111",
+          ID: "00",
 
           files: [
             {
@@ -229,7 +229,6 @@ const Agenda = () => {
         Notes: "",
         subAgenda: [
           {
-            ID: "111",
             subAjendaTitle: null,
             subajendaOptions: null,
             subAjendaStartDate: null,
@@ -413,7 +412,7 @@ const Agenda = () => {
       const [removeItems] = reOrderedStructure.splice(SourceIndex, 1);
       reOrderedStructure.splice(desitinationIndex, 0, removeItems);
 
-      return setRows(reOrderedStructure);
+      setRows(reOrderedStructure);
     }
   };
 
@@ -2020,6 +2019,7 @@ const Agenda = () => {
                           );
                         })
                       : null}
+                    {provided.placeholder}
                   </div>
                 )}
               </Droppable>
