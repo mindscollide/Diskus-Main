@@ -7,6 +7,7 @@ import { TextField, Loader } from '../../../../../elements'
 import './videoPanelBody.css'
 import VideoCallIcon from '../../../../../../assets/images/VideoCall-Icon.png'
 import { Spin } from 'antd'
+import { LoaderPanel } from '../../../../../elements'
 import { Checkbox } from 'antd'
 import {
   GetAllVideoCallUsers,
@@ -173,7 +174,7 @@ const VideoPanelBodyContact = () => {
           })
         ) : VideoMainReducer.Loading === true ? (
           <>
-            <Spin className="talk-overallchat-spinner" />
+            <LoaderPanel />
           </>
         ) : (
           <p>No Users Available</p>

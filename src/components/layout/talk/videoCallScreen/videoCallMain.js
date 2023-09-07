@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import VideoPanelNormal from './videoCallPanels/videoCallNormalPanel'
 import VideoPanelMaximize from './videoCallPanels/videoCallMaximizePanel'
@@ -7,31 +7,30 @@ import VideoCallMinimizeHeader from './videoCallHeader/videoCallMinimizeHeader'
 const VideoMain = () => {
   const { videoFeatureReducer } = useSelector((state) => state)
 
-  console.log(
-    'Condition Video Panels',
-    videoFeatureReducer.NormalizeVideoFlag === true &&
-      videoFeatureReducer.MinimizeVideoFlag === false &&
-      videoFeatureReducer.MaximizeVideoFlag === false,
-    videoFeatureReducer.NormalizeVideoFlag === false &&
-      videoFeatureReducer.MinimizeVideoFlag === false &&
-      videoFeatureReducer.MaximizeVideoFlag === true,
-  )
-
   return (
     <>
-      {videoFeatureReducer.NormalizeVideoFlag === true &&
-      videoFeatureReducer.MinimizeVideoFlag === false &&
-      videoFeatureReducer.MaximizeVideoFlag === false ? (
+      <div
+        className={
+          (videoFeatureReducer.NormalizeVideoFlag === true ||
+            videoFeatureReducer.MaximizeVideoFlag === true) &&
+          videoFeatureReducer.MinimizeVideoFlag === false
+            ? 'd-block'
+            : 'd-none'
+        }
+      >
         <VideoPanelNormal />
-      ) : videoFeatureReducer.NormalizeVideoFlag === false &&
-        videoFeatureReducer.MinimizeVideoFlag === false &&
-        videoFeatureReducer.MaximizeVideoFlag === true ? (
-        <VideoPanelMaximize />
-      ) : videoFeatureReducer.NormalizeVideoFlag === false &&
-        videoFeatureReducer.MinimizeVideoFlag === true &&
-        videoFeatureReducer.MaximizeVideoFlag === false ? (
+      </div>
+      <div
+        className={
+          videoFeatureReducer.NormalizeVideoFlag === false &&
+          videoFeatureReducer.MinimizeVideoFlag === true &&
+          videoFeatureReducer.MaximizeVideoFlag === false
+            ? 'd-block'
+            : 'd-none'
+        }
+      >
         <VideoCallMinimizeHeader />
-      ) : null}
+      </div>
     </>
   )
 }

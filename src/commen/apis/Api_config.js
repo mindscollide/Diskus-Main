@@ -824,6 +824,10 @@ const callRequestReceived = {
   RequestMethod: 'ServiceManager.CallRequestReceived',
 }
 
+const getUserMissedCallCount = {
+  RequestMethod: 'ServiceManager.GetUserMissedCallCount',
+}
+
 export {
   updateProfilePictureRM,
   DeleteCommentRM,
@@ -1047,4 +1051,5 @@ export {
   videoCallResponse,
   getUserRecentCalls,
   callRequestReceived,
+  getUserMissedCallCount,
 }

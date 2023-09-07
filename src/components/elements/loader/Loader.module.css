@@ -28,8 +28,30 @@
   gap: 20px;
 }
 
+.overlay-content-panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999999999;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  align-items: center !important;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .LoadderImageclass {
   width: 100% !important;
+}
+
+.LoadderImagePanelclass {
+  width: 100% !important;
+}
+
+.LoadderImageVideoScreenclass {
+  width: 43% !important;
 }
 
 .overlay-content-v2 {
@@ -144,6 +166,24 @@
   top: 70%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 999999999;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  align-items: center !important;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.Messeges_Styles_Panel {
+  font-size: 18px !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #5a5a5a !important;
+  width: 100% !important;
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  transform: translate(-50%, -45%);
   z-index: 999999999;
   padding: 20px;
   text-align: center;
