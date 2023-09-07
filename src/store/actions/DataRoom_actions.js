@@ -196,6 +196,7 @@ const uploadDocumentsApi = (
   setShowbarupload,
   setTasksAttachments,
   type
+  // cancelToken
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let startTime = Date.now();
@@ -217,9 +218,8 @@ const uploadDocumentsApi = (
         _token: token,
       },
       onUploadProgress: (progressEvent) => {
-        setTasksAttachments((prev) => {
-          return { ...prev, [file.uid]: file };
-        });
+        setTasksAttachments((prev) => [...prev, file]);
+
         const percentCompleted = Math.round(
           (progressEvent.loaded * 100) / progressEvent.total
         );
@@ -240,8 +240,15 @@ const uploadDocumentsApi = (
         setProgress(percentCompleted);
         setRemainingTime(remainingTime + secondsRemaining);
       },
+      // cancelToken: cancelToken.token,
     })
       .then(async (response) => {
+        // if (axios.isCancel(response)) {
+        //   console.log("API call was canceled.");
+        //   return;
+        // }
+        //  else
+        //   {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
@@ -254,6 +261,7 @@ const uploadDocumentsApi = (
               remainingTime,
               setShowbarupload,
               type
+              // cancelToken
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -304,6 +312,7 @@ const uploadDocumentsApi = (
         } else {
           dispatch(uploadDocument_fail(t("Something-went-wrong")));
         }
+        // }
       })
       .catch((error) => {
         dispatch(uploadDocument_fail(t("Something-went-wrong")));
@@ -1282,6 +1291,7 @@ const FileisExist = (
   setTasksAttachments,
   setUploadOptionsmodal,
   setUploadDocumentAgain
+  // cancelToken
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
@@ -1358,7 +1368,9 @@ const FileisExist = (
                   setRemainingTime,
                   remainingTime,
                   setShowbarupload,
-                  setTasksAttachments
+                  setTasksAttachments,
+                  0
+                  // cancelToken
                 )
               );
             } else if (

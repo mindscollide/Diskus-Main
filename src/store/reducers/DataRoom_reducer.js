@@ -25,6 +25,7 @@ const initialState = {
   sortedData: [],
   dataBehaviour: false,
   isFolder: 0,
+  folderUploadData: null,
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -393,6 +394,12 @@ const DataRoomReducer = (state = initialState, action) => {
       return {
         ...state,
         isFolder: action.response,
+      };
+    }
+    case actions.FOLDER_UPLOAD_DATA: {
+      return {
+        ...state,
+        folderUploadData: action.response,
       };
     }
     default:

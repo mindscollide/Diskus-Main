@@ -74,7 +74,6 @@
   color: #5a5a5a !important;
 }
 
-
 .myDocument_btn_active {
   padding: 6px 12px !important;
   font-size: 12px !important;
@@ -416,7 +415,6 @@ body[dir="rtl"] .Search_Icon {
   /* outline: none !important; */
 }
 
-
 .grid_view_btn_active {
   height: 100% !important;
   width: 39px !important;
@@ -464,8 +462,6 @@ body[dir="rtl"] .Search_Icon {
   border-bottom-left-radius: 4px !important;
 }
 
-
-
 .new_folder {
   font-size: 10px !important;
   margin-left: 3px !important;
@@ -496,7 +492,7 @@ body[dir="rtl"] .Search_Icon {
 
 .Back_ground_For_uploader {
   width: 425px !important;
-  height: 124px !important;
+  max-height: 320px !important;
   background: #fff;
   border-top-right-radius: 4px !important;
   border-top-left-radius: 4px !important;
@@ -507,6 +503,21 @@ body[dir="rtl"] .Search_Icon {
   border-radius: 4px !important;
   right: 90px !important;
   border: 1px solid #e1e1e1 !important;
+  height: 130px;
+}
+.Back_ground_For_uploader_folder {
+  width: 425px !important;
+  background: #fff;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+  border: #e1e1e1;
+  position: fixed;
+  z-index: 1 !important;
+  bottom: 0px !important;
+  border-radius: 4px !important;
+  right: 90px !important;
+  border: 1px solid #e1e1e1 !important;
+  height: 110px;
 }
 
 .Back_ground_For_uploader_active {
@@ -536,12 +547,30 @@ body[dir="rtl"] .Search_Icon {
   color: #5a5a5a;
   font-family: "MontserratSemiBold";
 }
-
 .Progress_bar {
-  font-size: 12px !important;
   color: #fff !important;
 }
-
+.progress_bar {
+  width: 80px;
+  font-size: 0px !important;
+  display: flex;
+  justify-content: flex-end;
+  /* color: #fff !important; */
+}
+.Scroller_bar_of_BarUploder_folder {
+  height: 9.8vh !important;
+  overflow-x: hidden !important;
+  background-color: #fff !important;
+  /* padding-bottom: 10px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: ease-in-out 0.3s;
+}
+/* .Scroller_bar_of_BarUploder_folder:hover {
+  background-color: #e1e1e1 !important;
+  filter: opacity(0.2);
+} */
 .Scroller_bar_of_BarUploder {
   height: 13vh !important;
   overflow-x: hidden !important;
@@ -565,7 +594,6 @@ body[dir="rtl"] .Search_Icon {
   color: #fff;
   font-family: "MontserratSemiBold";
 }
-
 
 .Drop_Down_container {
   width: 145px !important;
@@ -607,10 +635,6 @@ body[dir="rtl"] .Search_Icon {
   bottom: 0;
   left: 5%;
 }
-
-
-
-
 
 .Option_Document_button {
   font-size: 12px !important;
@@ -756,7 +780,7 @@ body[dir="rtl"] .dataroom_searchinput {
 }
 
 .share__Icon_img:hover path {
-  stroke: #6172D6 !important;
+  stroke: #6172d6 !important;
 }
 
 .download__Icon {
@@ -820,8 +844,6 @@ body[dir="rtl"] .dataroom_searchinput {
   position: relative !important;
 }
 
-
-
 .lsit_grid_buttons {
   border: 1px solid #e1e1e1 !important;
   display: flex;
@@ -834,7 +856,7 @@ body[dir="rtl"] .dataroom_searchinput {
 
 .dataroom_table_heading {
   font-family: "MontserratSemiBold-600" !important;
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
   font-size: 12px !important;
   white-space: nowrap;
   overflow: hidden;
@@ -847,23 +869,22 @@ body[dir="rtl"] .dataroom_searchinput {
   overflow: hidden;
   text-overflow: ellipsis !important;
   font-family: "MontserratSemiBold-600" !important;
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
   font-size: 12px !important;
 }
 
 .NavLink__filter_Folder {
-  border-bottom: 1px solid #5A5A5A !important;
+  border-bottom: 1px solid #5a5a5a !important;
   padding: 5px 0;
-  color: #5A5A5A;
+  color: #5a5a5a;
   font-family: "MontserratSemiBold-600" !important;
   display: flex;
-
 }
 
 .NavLink__filter_Folder:is(:hover) {
-  border-bottom: 1px solid #5A5A5A !important;
+  border-bottom: 1px solid #5a5a5a !important;
   padding: 5px 0;
-  color: #5A5A5A;
+  color: #5a5a5a;
   font-family: "MontserratSemiBold-600" !important;
 }
 
@@ -872,18 +893,17 @@ body[dir="rtl"] .dataroom_searchinput {
 }
 
 .NavLink__filter__file {
-  border-bottom: 1px solid #5A5A5A !important;
+  border-bottom: 1px solid #5a5a5a !important;
   padding: 5px 0;
-  color: #5A5A5A;
+  color: #5a5a5a;
   font-family: "MontserratSemiBold-600" !important;
   display: flex;
-
 }
 
 .NavLink__filter__file:is(:hover) {
-  border-bottom: 1px solid #5A5A5A !important;
+  border-bottom: 1px solid #5a5a5a !important;
   padding: 5px 0;
-  color: #5A5A5A;
+  color: #5a5a5a;
   font-family: "MontserratSemiBold-600" !important;
 }
 
@@ -924,7 +944,6 @@ body[dir="rtl"] .dataroom_searchinput {
   border-radius: 4px;
   background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
   gap: 5px;
-
 }
 
 .overflow-text {
@@ -950,8 +969,6 @@ body[dir="rtl"] .dataroom_searchinput {
   padding: 5px 0px !important;
 }
 
-
-
 .options_dropdown button:is(:hover, :active, :focus, :focus-visible, :visited) {
   border: none !important;
 }
@@ -967,10 +984,44 @@ body[dir="rtl"] .dataroom_searchinput {
 
 .ownerName {
   font-family: "MontserratSemiBold-600" !important;
-  color: #5A5A5A !important;
+  color: #5a5a5a !important;
   font-size: 12px !important;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   width: 120px;
+}
+.crossIcon {
+  display: none !important;
+}
+.folderProgress {
+  width: 40%;
+}
+
+.Scroller_bar_of_BarUploder_folder:hover .crossIcon {
+  display: block !important;
+}
+.Scroller_bar_of_BarUploder_folder:hover .folderProgress {
+  display: none !important;
+}
+/* .crossIcon {
+  display: none !important;
+}
+.Scroller_bar_of_BarUploder_folder:hover .crossIcon {
+  display: block !important;
+}
+.Scroller_bar_of_BarUploder_folder:hover .folderProgress {
+  display: none !important;
+}
+.Scroller_bar_of_BarUploder_folder:hover .folderProgress .ant-progress-inner {
+  width: 25px !important;
+  height: 25px !important;
+  font-size: 0px !important;
+  display: none !important;
+} */
+.folderProgress .ant-progress-inner {
+  font-size: 0px !important;
+}
+.folderProgress .ant-progress-inner .ant-progress-text {
+  display: none !important;
 }
