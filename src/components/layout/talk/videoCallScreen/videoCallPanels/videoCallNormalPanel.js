@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Container, Row, Col } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import './videoCallNormalPanel.css'
@@ -7,6 +7,7 @@ import VideoPanelNormalChat from './videoCallNormalChat'
 import VideoPanelNormalAgenda from './videoCallNormalAgenda'
 import VideoPanelNormalMinutesMeeting from './videoCallNormalMinutesMeeting'
 import { Spin } from 'antd'
+import { LoaderPanelVideoScreen } from '../../../../elements'
 import {
   agendaEnableNormalFlag,
   chatEnableNormalFlag,
@@ -26,6 +27,7 @@ import ActiveNote from '../../../../../assets/images/newElements/ActiveNoteIcon.
 import ActiveNote2 from '../../../../../assets/images/newElements/ActiveNote2Icon.svg'
 import Avatar2 from '../../../../../assets/images/newElements/Avatar2.png'
 import VideoOutgoing from '../videoCallBody/VideoMaxOutgoing'
+import ScreenShare from '../../../../../assets/images/newElements/ScreenShareIcon.png'
 
 const VideoPanelNormal = () => {
   const dispatch = useDispatch()
@@ -55,6 +57,7 @@ const VideoPanelNormal = () => {
   const [isActiveIcon, setIsActiveIcon] = useState(false)
   const [isNoteActive, setIsNoteActive] = useState(false)
   const [isNote2Active, setIsNote2Active] = useState(false)
+  const [isScreenActive, setIsScreenActive] = useState(false)
 
   const onClickCloseChatHandler = () => {
     if (isActiveIcon === false) {
@@ -142,35 +145,67 @@ const VideoPanelNormal = () => {
     )
   }, [callAcceptedRoomID])
 
+  // Create a ref for the iframe element
+  const iframeRef = useRef(null)
+
+  // Function to trigger the action in the iframe
+  const handleScreenShareButton = () => {
+    const iframe = iframeRef.current
+    if (iframe) {
+      iframe.contentWindow.postMessage('ScreenShare', '*')
+      setIsScreenActive(!isScreenActive)
+    }
+  }
+
   console.log('CALLER URL THEN PARTICIPANT', callerURL, participantURL)
 
   return (
     <>
       <Row>
         <Col sm={12} md={12} lg={12}>
-          <div className="videoCallScreen">
+          <div
+            className={
+              videoFeatureReducer.NormalizeVideoFlag === true &&
+              videoFeatureReducer.MinimizeVideoFlag === false &&
+              videoFeatureReducer.MaximizeVideoFlag === false
+                ? 'videoCallScreen'
+                : videoFeatureReducer.NormalizeVideoFlag === false &&
+                  videoFeatureReducer.MinimizeVideoFlag === false &&
+                  videoFeatureReducer.MaximizeVideoFlag === true
+                ? 'max-video-panel'
+                : ''
+            }
+          >
             {VideoMainReducer.FullLoader === true ? (
               <>
-                <Spin className="talk-overallchat-spinner" />
+                <LoaderPanelVideoScreen />
               </>
             ) : (
               <>
-                <VideoCallNormalHeader />
+                <VideoCallNormalHeader
+                  screenShareButton={handleScreenShareButton}
+                  isScreenActive={isScreenActive}
+                />
                 {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
                   <VideoOutgoing />
                 ) : null}
-
-                {/* <Row>
-                  <Col lg={12} md={12} sm={12}>
-                    <div className="Caller-Status">
-                      Calling {VideoMainReducer.VideoRecipentData.userName}
-                    </div>
-                  </Col>
-                </Row> */}
                 <Row>
                   <>
                     <Col lg={12} md={12} sm={12}>
-                      <div className="normal-avatar">
+                      <div
+                        className={
+                          videoFeatureReducer.NormalizeVideoFlag === true &&
+                          videoFeatureReducer.MinimizeVideoFlag === false &&
+                          videoFeatureReducer.MaximizeVideoFlag === false
+                            ? 'normal-avatar'
+                            : videoFeatureReducer.NormalizeVideoFlag ===
+                                false &&
+                              videoFeatureReducer.MinimizeVideoFlag === false &&
+                              videoFeatureReducer.MaximizeVideoFlag === true
+                            ? 'normal-avatar-large'
+                            : ''
+                        }
+                      >
                         {initiateCallRoomID !== null ||
                         callAcceptedRoomID !== null ? (
                           <iframe
@@ -179,6 +214,7 @@ const VideoPanelNormal = () => {
                                 ? participantURL
                                 : callerURL
                             }
+                            ref={iframeRef}
                             title="Live Video"
                             width="100%"
                             height="100%"

@@ -35,7 +35,7 @@ const VideoPanelMaximize = () => {
               videoFeatureReducer.VideoMultipleCallFlag === true ? (
               <VideoMaxMultiple />
             ) : null}
-            <VideoLargePanelFooter />
+            {/* <VideoLargePanelFooter /> */}
             <VideoMaxChatMin />
           </Col>
         </Row>

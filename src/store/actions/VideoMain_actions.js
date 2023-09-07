@@ -8,6 +8,7 @@ import {
   videoCallResponse,
   getUserRecentCalls,
   callRequestReceived,
+  getUserMissedCallCount,
 } from '../../commen/apis/Api_config'
 import {
   normalizeVideoPanelFlag,
@@ -488,6 +489,95 @@ const callRequestReceivedMQTT = (response, message) => {
   }
 }
 
+const getUserMissedCallCountInitial = () => {
+  return {
+    type: actions.GET_MISSED_CALL_COUNT_INITIAL,
+  }
+}
+
+const getUserMissedCallCountSuccess = (response, message) => {
+  return {
+    type: actions.GET_MISSED_CALL_COUNT_SUCCESS,
+    response: response,
+    message: message,
+  }
+}
+
+const getUserMissedCallCountFail = (message) => {
+  return {
+    type: actions.GET_MISSED_CALL_COUNT_FAIL,
+    message: message,
+  }
+}
+
+const GetUserMissedCallCount = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    dispatch(getUserMissedCallCountInitial())
+    let form = new FormData()
+    form.append('RequestMethod', getUserMissedCallCount.RequestMethod)
+    axios({
+      method: 'post',
+      url: videoApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log('GetUserMissedCallCount', response)
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(GetUserMissedCallCount(navigate, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_GetUserMissedCallCount_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getUserMissedCallCountSuccess(
+                  response.data.responseResult,
+                  t('Record-found'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_GetUserMissedCallCount_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(getUserMissedCallCountFail(t('No-records-found')))
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_GetUserMissedCallCount_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getUserMissedCallCountFail(t('Something-went-wrong')),
+              )
+            }
+          } else {
+            await dispatch(
+              getUserMissedCallCountFail(t('Something-went-wrong')),
+            )
+          }
+        } else {
+          await dispatch(getUserMissedCallCountFail(t('Something-went-wrong')))
+        }
+      })
+      .catch((response) => {
+        dispatch(getUserMissedCallCountFail(t('Something-went-wrong')))
+      })
+  }
+}
+
 export {
   GetAllVideoCallUsers,
   InitiateVideoCall,
@@ -498,4 +588,5 @@ export {
   GetUserRecentCalls,
   CallRequestReceived,
   callRequestReceivedMQTT,
+  GetUserMissedCallCount,
 }

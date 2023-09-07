@@ -32,7 +32,9 @@ const Talk = () => {
   const navigate = useNavigate()
 
   //Getting api result from the reducer
-  const { talkStateData, videoFeatureReducer } = useSelector((state) => state)
+  const { talkStateData, videoFeatureReducer, VideoMainReducer } = useSelector(
+    (state) => state,
+  )
 
   //Current User ID
   let currentUserId = localStorage.getItem('userID')
@@ -109,6 +111,8 @@ const Talk = () => {
 
   const [unreadMessageCount, setUnreadMessageCount] = useState(0)
 
+  const [missedCallCount, setMissedCallCount] = useState(0)
+
   // useEffect(() => {
   //   dispatch(
   //     GetAllUserChats(
@@ -156,6 +160,19 @@ const Talk = () => {
     talkStateData.talkSocketUnreadMessageCount.unreadMessageData,
     talkStateData?.AllUserChats?.AllUserChatsData?.unreadMessageCount,
   ])
+
+  //Setting state data of global response all chat to chatdata
+  useEffect(() => {
+    if (
+      VideoMainReducer.MissedCallCountData !== undefined &&
+      VideoMainReducer.MissedCallCountData !== null &&
+      Object.keys(VideoMainReducer.MissedCallCountData).length !== 0
+    ) {
+      setMissedCallCount(VideoMainReducer?.MissedCallCountData?.missedCallCount)
+    }
+  }, [VideoMainReducer?.MissedCallCountData?.missedCallCount])
+
+  let totalValue = Number(missedCallCount) + Number(unreadMessageCount)
 
   console.log('Video Feature Reducer', videoFeatureReducer)
 
@@ -207,6 +224,9 @@ const Talk = () => {
           onClick={videoIconClick}
         >
           {/* <span className="talk-count"></span> */}
+          <span className={missedCallCount === 0 ? '' : 'talk-count'}>
+            {missedCallCount === 0 ? '' : missedCallCount}
+          </span>
           <svg
             id="Icon_feather-video"
             data-name="Icon feather-video"
@@ -271,8 +291,8 @@ const Talk = () => {
         </div>
       </div>
       <div className="talk_Icon" onClick={showsubTalkIcons}>
-        <span className={unreadMessageCount === 0 ? '' : 'talk-count total'}>
-          {unreadMessageCount === 0 ? '' : unreadMessageCount}
+        <span className={totalValue === 0 ? '' : 'talk-count total'}>
+          {totalValue === 0 ? '' : totalValue}
         </span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
