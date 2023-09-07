@@ -303,6 +303,7 @@ const Agenda = () => {
       }
     }
   };
+
   const apllyLockOnParentAgenda = (parentIndex) => {
     const exists = mainLock.some((item) => {
       if (item === parentIndex) {
@@ -325,6 +326,7 @@ const Agenda = () => {
       })
     );
   };
+
   const [subLockArry, setSubLockArray] = useState([]);
 
   const lockFunctionActiveSubMenus = (index, subindex) => {
@@ -394,6 +396,25 @@ const Agenda = () => {
 
   const HandleDragDrop = (results) => {
     console.log(results, "Hello Threre");
+    const { source, destination, type } = results;
+
+    if (!destination) return;
+
+    if (
+      source.droppableId === destination.droppableId &&
+      source.index === destination.index
+    )
+      return;
+
+    if (type === "group") {
+      const reOrderedStructure = [...rows];
+      const SourceIndex = source.index;
+      const desitinationIndex = destination.index;
+      const [removeItems] = reOrderedStructure.splice(SourceIndex, 1);
+      reOrderedStructure.splice(desitinationIndex, 0, removeItems);
+
+      return setRows(reOrderedStructure);
+    }
   };
 
   return (
@@ -402,7 +423,7 @@ const Agenda = () => {
         <DragDropContext onDragEnd={HandleDragDrop}>
           <Row>
             <Col lg={12} md={12} sm={12} className={styles["Scroller_Agenda"]}>
-              <Droppable droppableId="ROOT">
+              <Droppable droppableId="ROOT" type="group" direction="horizontal">
                 {(provided) => (
                   <div {...provided.droppableProps} ref={provided.innerRef}>
                     {rows.length > 0
