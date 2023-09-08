@@ -51,3 +51,8 @@ body[dir="rtl"] p.video-chat-date {
 span.call-status-icon {
     margin-left: 8px;
 }
+
+.recent-scroll {
+    height: 78vh;
+    overflow: hidden auto;
+}
