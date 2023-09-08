@@ -126,6 +126,20 @@ const showUnsaveMinutesFileUpload = (response) => {
   };
 };
 
+const showUnsavedCreateFromScratch = (response) => {
+  return {
+    type: actions.UNSAVED_CREATE_FROM_SCRATCH,
+    response: response,
+  };
+};
+
+const showUnsavedForButonCreateFromScratch = (response) => {
+  return {
+    type: actions.UNSAVED_BUTTON_CREATE_SCRATCH,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -145,4 +159,6 @@ export {
   showImportPreviousMinutes,
   showAfterImportState,
   showUnsaveMinutesFileUpload,
+  showUnsavedCreateFromScratch,
+  showUnsavedForButonCreateFromScratch,
 };

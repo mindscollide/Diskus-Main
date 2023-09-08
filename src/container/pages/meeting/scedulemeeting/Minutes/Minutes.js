@@ -22,7 +22,7 @@ import RedCroseeIcon from "../../../../../assets/images/CrossIcon.svg";
 import UnsavedMinutes from "./UnsavedFileUploadMinutes/UnsavedMinutes";
 import CreateFromScratch from "./CreateFromScratch/CreateFromScratch";
 import AgendaImport from "./AgendaimportMinutes/AgendaImport";
-const Minutes = () => {
+const Minutes = ({ setMinutes }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -364,6 +364,7 @@ const Minutes = () => {
                 onClick={handleUnsaveFileUploadMinues}
               />
               <Button
+                disableBtn={attachments.length <= 0 ? true : false}
                 text={t("Save")}
                 className={styles["Save_Minutes_upload_section"]}
                 onClick={handleSaveFunctionality}
@@ -635,7 +636,9 @@ const Minutes = () => {
       )}
 
       {NewMeetingreducer.ImportPreviousMinutes && <ImportMinutesModal />}
-      {NewMeetingreducer.unsaveFileUploadMinutes && <UnsavedMinutes />}
+      {NewMeetingreducer.unsaveFileUploadMinutes && (
+        <UnsavedMinutes setMinutes={setMinutes} />
+      )}
     </section>
   );
 };
