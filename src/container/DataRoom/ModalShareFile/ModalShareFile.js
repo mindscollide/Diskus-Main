@@ -30,27 +30,32 @@ import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { shareFilesApi } from "../../../store/actions/DataRoom_actions";
 import { useNavigate } from "react-router-dom";
 
-
-const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileName }) => {
+const ModalShareFile = ({
+  ModalTitle,
+  shareFile,
+  setShareFile,
+  folderId,
+  fileName,
+}) => {
   const [showaccessrequest, setShowaccessrequest] = useState(false);
-  const { assignees } = useSelector(state => state)
+  const { assignees } = useSelector((state) => state);
   const [showrequestsend, setShowrequestsend] = useState(false);
   const [generalaccessdropdown, setGeneralaccessdropdown] = useState(false);
   const [linkedcopied, setLinkedcopied] = useState(false);
   const [expirationheader, setExpirationheader] = useState(false);
   const [calenderdate, setCalenderdate] = useState(false);
   const [inviteedit, setInviteedit] = useState(true);
-  const [notifyPeople, setNotifyPeople] = useState(false)
+  const [notifyPeople, setNotifyPeople] = useState(false);
   const [open, setOpen] = useState({
     flag: false,
-    message: ""
-  })
+    message: "",
+  });
   const [fileData, setFileData] = useState({
     Files: [],
-  })
-  console.log(fileData, "datadatadata")
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  });
+  console.log(fileData, "datadatadata");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [meetingDate, setMeetingDate] = useState("");
@@ -60,18 +65,18 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [permissionID, setPermissionID] = useState({
     label: "",
-    value: 0
-  })
+    value: 0,
+  });
   const [generalAccess, setGeneralAccess] = useState({
     label: "",
-    value: 0
-  })
+    value: 0,
+  });
   const [taskAssignedName, setTaskAssignedName] = useState("");
-  const [organizationMembers, setOrganizationMembers] = useState([])
-  const [isMembers, setMembers] = useState([])
-  let organizationName = localStorage.getItem("OrganizatioName")
-  console.log(isMembers, "isMembersisMembersisMembersisMembers")
-  const [flag, setFlag] = useState(1)
+  const [organizationMembers, setOrganizationMembers] = useState([]);
+  const [isMembers, setMembers] = useState([]);
+  let organizationName = localStorage.getItem("OrganizatioName");
+  console.log(isMembers, "isMembersisMembersisMembersisMembers");
+  const [flag, setFlag] = useState(1);
   const showcalender = () => {
     // setCalenderdate(!calenderdate);
     setInviteedit(!inviteedit);
@@ -89,8 +94,8 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
     console.log("handlechangehandlechange", SelectedOptions);
     setPermissionID({
       label: SelectedOptions.label,
-      value: SelectedOptions.value
-    })
+      value: SelectedOptions.value,
+    });
     if (SelectedOptions.value === 3) {
       console.log("yes add expiration selected ");
       setExpirationheader(true);
@@ -119,10 +124,10 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
     { value: 2, label: organizationName },
     { value: 3, label: "Any One With link" },
   ];
-  const [onclickFlag, setOnclickFlag] = useState(false)
+  const [onclickFlag, setOnclickFlag] = useState(false);
   const onSearch = (name, id) => {
     console.log("name id", name, id);
-    setOnclickFlag(true)
+    setOnclickFlag(true);
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
@@ -197,10 +202,9 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
     }
   };
 
-
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setOnclickFlag(false)
+    setOnclickFlag(false);
     if (e.target.value.trimStart() != "") {
       setTaskAssignedToInput(e.target.value.trimStart());
     } else {
@@ -214,82 +218,83 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
   const Notificationnaccessrequest = () => {
     console.log("hnbhaiclicktuhorahahy");
     if (fileData.Files.length > 0) {
-      dispatch(shareFilesApi(navigate, fileData, t))
+      dispatch(shareFilesApi(navigate, fileData, t));
       setShowrequestsend(true);
-
     } else {
-
     }
   };
   const openAccessRequestModalClick = () => {
     if (fileData.Files.length > 0) {
-      setShowaccessrequest(true);
+      // setShareFile(false);
+      dispatch(shareFilesApi(navigate, fileData, t, setShareFile));
     } else {
       setOpen({
         flag: true,
-        message: t("User-required-must-for-share")
-      })
+        message: t("User-required-must-for-share"),
+      });
     }
-
   };
 
   const handleAddMember = () => {
-    console.log(taskAssignedName, "taskAssignedNametaskAssignedName")
-    console.log(fileData.Files, "handleAddMemberhandleAddMemberhandleAddMemberhandleAddMember")
-    let findIndexData = fileData.Files.findIndex((listData, index) => listData.FK_UserID === taskAssignedTo)
+    console.log(taskAssignedName, "taskAssignedNametaskAssignedName");
+    console.log(
+      fileData.Files,
+      "handleAddMemberhandleAddMemberhandleAddMemberhandleAddMember"
+    );
+    let findIndexData = fileData.Files.findIndex(
+      (listData, index) => listData.FK_UserID === taskAssignedTo
+    );
     if (permissionID.value !== 0) {
       if (taskAssignedName !== "") {
         if (findIndexData === -1) {
           let Data = {
             FK_FileID: folderId,
             FK_PermissionID: JSON.parse(permissionID.value),
-            FK_UserID: taskAssignedTo
-          }
+            FK_UserID: taskAssignedTo,
+          };
           if (taskAssignedTo !== 0) {
             if (assignees.user.length > 0) {
               assignees.user.map((data, index) => {
                 if (data.pK_UID === taskAssignedTo) {
-                  setMembers([...isMembers, data])
+                  setMembers([...isMembers, data]);
                 }
-              })
+              });
             }
           }
           setFileData((prev) => {
-            return { ...prev, Files: [...prev.Files, Data] }
-          })
+            return { ...prev, Files: [...prev.Files, Data] };
+          });
         } else {
           setOpen({
             flag: true,
-            message: t("User-is-already-exist")
-          })
+            message: t("User-is-already-exist"),
+          });
         }
       } else {
         setOpen({
           flag: true,
-          message: t("Please-select-user")
-        })
+          message: t("Please-select-user"),
+        });
       }
     } else {
       setOpen({
         flag: true,
-        message: t("All-options-must-be-selected")
-      })
+        message: t("All-options-must-be-selected"),
+      });
     }
-
-
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
     setTaskAssignedName("");
     setPermissionID({
       label: "",
-      value: 0
-    })
+      value: 0,
+    });
     setGeneralAccess({
       label: "",
-      value: 0
-    })
-  }
+      value: 0,
+    });
+  };
 
   const { t } = useTranslation();
   const closebtn = async () => {
@@ -299,22 +304,25 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
   const handleChangeGeneralAccess = (selectedValue) => {
     setGeneralAccess({
       label: selectedValue.label,
-      value: selectedValue.value
-    })
-  }
+      value: selectedValue.value,
+    });
+  };
   const handleRemoveMember = (memberData) => {
-    let findIndexfromsendData = fileData.Files.findIndex((data, index) => data.FK_UserID === memberData.pK_UID)
-    let findIndexfromViewData = isMembers.findIndex((data, index) => data.pK_UID === memberData.pK_UID)
-    console.log(findIndexfromViewData, "findIndexfromsendData")
-    console.log(findIndexfromsendData, "findIndexfromsendData")
+    let findIndexfromsendData = fileData.Files.findIndex(
+      (data, index) => data.FK_UserID === memberData.pK_UID
+    );
+    let findIndexfromViewData = isMembers.findIndex(
+      (data, index) => data.pK_UID === memberData.pK_UID
+    );
+    console.log(findIndexfromViewData, "findIndexfromsendData");
+    console.log(findIndexfromsendData, "findIndexfromsendData");
     fileData.Files.splice(findIndexfromsendData, 1);
     isMembers.splice(findIndexfromViewData, 1);
-    setMembers([...isMembers])
+    setMembers([...isMembers]);
     setFileData((prev) => {
-      return { ...prev, Files: [...prev.Files] }
-    })
-
-  }
+      return { ...prev, Files: [...prev.Files] };
+    });
+  };
   useEffect(() => {
     dispatch(allAssignessList(navigate, t));
   }, []);
@@ -345,7 +353,7 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
                         value={meetingDate}
                         calendar={calendarValue}
                         locale={localValue}
-                      // newValue={createMeeting.MeetingDate}
+                        // newValue={createMeeting.MeetingDate}
                       />
                     </>
                   ) : null}
@@ -463,7 +471,7 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
                     </Container>
                   </>
                 )
-              ) :
+              ) : (
                 // inviteedit ? (
                 //   <>
                 //     <Container>
@@ -558,33 +566,33 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
                 //     </Container>
                 //   </>
                 // ) :
-                (
-                  <>
-                    <Container>
-                      <Row>
-                        <Col lg={12} md={12} sm={12}>
-                          <span className={styles["Share_folder_modal_Heading"]}>
-                            {t("Share")} <span>{fileName}</span>
-                          </span>
-                        </Col>
-                      </Row>
-                      <Row className="mt-3">
-                        <Col lg={4} md={4} sm={4}>
-                          <InputSearchFilter
-                            labelClass="d-none"
-                            flag={flag}
-                            applyClass="sharefoldersearchInput"
-                            placeholder={t("Search-member-here")}
-                            value={taskAssignedToInput}
-                            filteredDataHandler={searchFilterHandler(
-                              taskAssignedToInput
-                            )}
-                            change={onChangeSearch}
-                            onclickFlag={onclickFlag}
-                          />
-                        </Col>
-                        <Col lg={3} md={3} sm={3}>
-                          {permissionID.value !== 0 ? <div className={styles["dropdown__Document_Value"]}>
+                <>
+                  <Container>
+                    <Row>
+                      <Col lg={12} md={12} sm={12}>
+                        <span className={styles["Share_folder_modal_Heading"]}>
+                          {t("Share")} <span>{fileName}</span>
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col lg={4} md={4} sm={4}>
+                        <InputSearchFilter
+                          labelClass="d-none"
+                          flag={flag}
+                          applyClass="sharefoldersearchInput"
+                          placeholder={t("Search-member-here")}
+                          value={taskAssignedToInput}
+                          filteredDataHandler={searchFilterHandler(
+                            taskAssignedToInput
+                          )}
+                          change={onChangeSearch}
+                          onclickFlag={onclickFlag}
+                        />
+                      </Col>
+                      <Col lg={3} md={3} sm={3}>
+                        {permissionID.value !== 0 ? (
+                          <div className={styles["dropdown__Document_Value"]}>
                             <span className={styles["overflow-text"]}>
                               {permissionID.label}
                             </span>
@@ -599,16 +607,19 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
                               }}
                               src={ChevronDownWhite}
                             />
-                          </div> : <Select
+                          </div>
+                        ) : (
+                          <Select
                             options={options}
                             placeholder={t("Editor")}
                             className={styles["Editor_select"]}
                             onChange={handlechange}
-                          />}
-
-                        </Col>
-                        <Col lg={3} md={3} sm={3}>
-                          {generalAccess.value !== 0 ? <div className={styles["dropdown__Document_Value"]}>
+                          />
+                        )}
+                      </Col>
+                      <Col lg={3} md={3} sm={3}>
+                        {generalAccess.value !== 0 ? (
+                          <div className={styles["dropdown__Document_Value"]}>
                             <span className={styles["overflow-text"]}>
                               {generalAccess.label}
                             </span>
@@ -623,75 +634,93 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
                               }}
                               src={ChevronDownWhite}
                             />
-                          </div> : <Select
+                          </div>
+                        ) : (
+                          <Select
                             options={optionsgeneralAccess}
                             placeholder={t("General-access")}
                             className={styles["Editor_select"]}
                             onChange={handleChangeGeneralAccess}
-                          />}
-
-                        </Col>
-                        <Col lg={2} md={2} sm={2}>
-                          <Button text="Add" className={styles["shareFolderAddMemberBtn"]} onClick={handleAddMember} />
-                        </Col>
-                      </Row>
-                      <Row className="mt-2">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className={styles["Scroller_particiapnt_shared_folder"]}
-                        >
-                          <Row>
-                            {isMembers.length > 0 ? isMembers.map((data, index) => {
-                              return (<Col lg={4} md={4} sm={4} key={data.pK_UID}>
-                                <ParticipantInfoShareFolder
-                                  participantname={data.name}
-                                  particiapantdesignation={data.designation}
-                                  icon={
-                                    <img
-                                      src={crossIcon}
-                                      height="14px"
-                                      width="14px"
-                                      onClick={() => handleRemoveMember(data)}
-                                    />
-                                  }
-                                />
-                              </Col>
-                              )
-                            })
-                              : null}
-                          </Row>
-                        </Col>
-                      </Row>
-                      <Row className="mt-2">
-                        <Col
-                          lg={12}
-                          md={12}
-                          sm={12}
-                          className="CreateMeetingInput "
-                        >
-                          <TextField
-                            applyClass="text-area-create-group"
-                            type="text"
-                            as={"textarea"}
-                            rows="4"
-                            placeholder={t("Messege")}
-                            required={true}
                           />
-                        </Col>
-                      </Row>
-                      <Row className="mt-3">
-                        <Col lg={12} md={12} sm={12} className="d-flex gap-3 align-items-center">
-                          <Checkbox checked={notifyPeople} onChange={() => setNotifyPeople(!notifyPeople)} />
-                          <span className={styles["Notify_people_styles"]}>
-                            {t("Notify-people")}
-                          </span>
-                        </Col>
-                      </Row>
-                    </Container>
-                  </>
-                )}
+                        )}
+                      </Col>
+                      <Col lg={2} md={2} sm={2}>
+                        <Button
+                          text="Add"
+                          className={styles["shareFolderAddMemberBtn"]}
+                          onClick={handleAddMember}
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["Scroller_particiapnt_shared_folder"]}
+                      >
+                        <Row>
+                          {isMembers.length > 0
+                            ? isMembers.map((data, index) => {
+                                return (
+                                  <Col lg={4} md={4} sm={4} key={data.pK_UID}>
+                                    <ParticipantInfoShareFolder
+                                      participantname={data.name}
+                                      particiapantdesignation={data.designation}
+                                      icon={
+                                        <img
+                                          src={crossIcon}
+                                          height="14px"
+                                          width="14px"
+                                          onClick={() =>
+                                            handleRemoveMember(data)
+                                          }
+                                        />
+                                      }
+                                    />
+                                  </Col>
+                                );
+                              })
+                            : null}
+                        </Row>
+                      </Col>
+                    </Row>
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="CreateMeetingInput "
+                      >
+                        <TextField
+                          applyClass="text-area-create-group"
+                          type="text"
+                          as={"textarea"}
+                          rows="4"
+                          placeholder={t("Messege")}
+                          required={true}
+                        />
+                      </Col>
+                    </Row>
+                    <Row className="mt-3">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex gap-3 align-items-center"
+                      >
+                        <Checkbox
+                          checked={notifyPeople}
+                          onChange={() => setNotifyPeople(!notifyPeople)}
+                        />
+                        <span className={styles["Notify_people_styles"]}>
+                          {t("Notify-people")}
+                        </span>
+                      </Col>
+                    </Row>
+                  </Container>
+                </>
+              )}
             </>
           }
           ModalFooter={
@@ -715,7 +744,7 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
                     </Row>
                   </>
                 )
-              ) :
+              ) : (
                 //  inviteedit ? (
                 //   <>
                 //     <Row>
@@ -732,119 +761,117 @@ const ModalShareFile = ({ ModalTitle, shareFile, setShareFile, folderId, fileNam
                 //       </Col>
                 //     </Row>
                 //   </>
-                // ) : 
-                (
-                  <>
-                    <Row>
-                      <Col
-                        lg={6}
-                        md={6}
-                        sm={6}
-                        className="d-flex justify-content-start"
-                      >
-                        <Button
-                          text={t("Copy-link")}
-                          className={styles["Copy_Link_btn"]}
-                          onClick={NotificationForlinkCopied}
-                        />
-                      </Col>
-                      <Col
-                        lg={6}
-                        md={6}
-                        sm={6}
-                        className="d-flex justify-content-end"
-                      >
-                        <Button
-                          text={t("Send")}
-                          className={styles["send_btn"]}
-                          onClick={openAccessRequestModalClick}
-                        />
-                      </Col>
-                    </Row>
-                    {linkedcopied ? (
-                      <>
-                        <Row>
-                          <Col
-                            lg={12}
-                            sm={12}
-                            md={12}
-                            className={styles["Background_notification"]}
-                          >
-                            <Row className="mt-2">
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center"
-                              >
-                                <span className={styles["Link_copied"]}>
-                                  {t("Link-copied")}
-                                </span>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </>
-                    ) : null}
-                    {EditNotification ? (
-                      <>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Back_ground_editNotification"]}
-                          >
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center mt-2"
-                              >
-                                <span className={styles["Edit_notification"]}>
-                                  {t("You-dont-have-permission-to-edit")} "Folder
-                                  1"
-                                </span>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </>
-                    ) : null}
-                    {accessupdate ? (
-                      <>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className={styles["Back_ground_accessupdate"]}
-                          >
-                            <Row>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                className="d-flex justify-content-center mt-2"
-                              >
-                                <span className={styles["Access_updated"]}>
-                                  {t("Access-updated")}
-                                </span>
-                              </Col>
-                            </Row>
-                          </Col>
-                        </Row>
-                      </>
-                    ) : null}
-                  </>
-                )}
+                // ) :
+                <>
+                  <Row>
+                    <Col
+                      lg={6}
+                      md={6}
+                      sm={6}
+                      className="d-flex justify-content-start"
+                    >
+                      <Button
+                        text={t("Copy-link")}
+                        className={styles["Copy_Link_btn"]}
+                        onClick={NotificationForlinkCopied}
+                      />
+                    </Col>
+                    <Col
+                      lg={6}
+                      md={6}
+                      sm={6}
+                      className="d-flex justify-content-end"
+                    >
+                      <Button
+                        text={t("Send")}
+                        className={styles["send_btn"]}
+                        onClick={openAccessRequestModalClick}
+                      />
+                    </Col>
+                  </Row>
+                  {linkedcopied ? (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          sm={12}
+                          md={12}
+                          className={styles["Background_notification"]}
+                        >
+                          <Row className="mt-2">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-center"
+                            >
+                              <span className={styles["Link_copied"]}>
+                                {t("Link-copied")}
+                              </span>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
+                  {EditNotification ? (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={styles["Back_ground_editNotification"]}
+                        >
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-center mt-2"
+                            >
+                              <span className={styles["Edit_notification"]}>
+                                {t("You-dont-have-permission-to-edit")} "Folder
+                                1"
+                              </span>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
+                  {accessupdate ? (
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className={styles["Back_ground_accessupdate"]}
+                        >
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex justify-content-center mt-2"
+                            >
+                              <span className={styles["Access_updated"]}>
+                                {t("Access-updated")}
+                              </span>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                    </>
+                  ) : null}
+                </>
+              )}
             </>
           }
         />
       </Container>
-      <Notification open={open.flag} message={open.message}
-        setOpen={setOpen} />
+      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
   );
 };

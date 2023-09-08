@@ -1059,8 +1059,8 @@ const EditResolution = ({ setCancelresolution }) => {
           time: editResolutionTime(resolutionData.circulationDateTime),
         });
         setVotingDateTime({
-          date: editResolutionDate(resolutionData?.deadlineDateTime),
-          time: editResolutionTime(resolutionData?.deadlineDateTime),
+          date: editResolutionDate(resolutionData?.votingDeadline),
+          time: editResolutionTime(resolutionData?.votingDeadline),
         });
         setDecisionDateTime({
           date: editResolutionDate(resolutionData.decisionAnnouncementDateTime),

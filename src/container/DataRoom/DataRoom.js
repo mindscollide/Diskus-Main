@@ -109,6 +109,7 @@ import videoIcon from "../../assets/images/AttachmentIcons/video.svg";
 import xlsFileIcon from "../../assets/images/AttachmentIcons/xls-file.svg";
 import { getFolderDocumentsApiScrollBehaviour } from "../../store/actions/DataRoom_actions";
 import axios from "axios";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const DataRoom = () => {
   // tooltip
@@ -116,6 +117,9 @@ const DataRoom = () => {
   const [showbarupload, setShowbarupload] = useState(false);
   const [progress, setProgress] = useState(0);
   const [inviteModal, setInviteModal] = useState(false);
+  const [folderUploadsData, setFolderUploadsData] = useState([
+    // Folders: []
+  ]);
   // console.log(navigator.onLine, "navigatornavigatornavigatornavigator");
   const [optionsFileisShown, setOptionsFileisShown] = useState(false);
   const [optionsFolderisShown, setOptionsFolderisShown] = useState(false);
@@ -210,6 +214,12 @@ const DataRoom = () => {
   const [currentFilterID, setCurrentFilterID] = useState(2); // Initial filter value
   let viewFolderID = localStorage.getItem("folderID");
   const [cancelToken, setCancelToken] = useState(axios.CancelToken.source());
+  console.log(
+    getAllData.length,
+    totalRecords,
+    getAllData.length <= totalRecords,
+    "totalRecortotalRecordstotalRecordsds"
+  );
   const [searchResultBoxFields, setSearchResultBoxFields] = useState({
     documentType: {
       value: 0,
@@ -1007,6 +1017,7 @@ const DataRoom = () => {
     //   }
     // }
   };
+
   const fetchDataWithFilter = async (filterValue) => {
     // dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, true, filterValue));
     // Call your API with the selected filter value and current sort order
@@ -1519,6 +1530,55 @@ const DataRoom = () => {
     }
   };
 
+  const handleFolderSelect = (folderInputFiles) => {
+    if (folderInputFiles.length === 0) {
+      return; // No folders selected
+    }
+
+    const selectedFolders = [];
+
+    // Iterate through the selected folder inputs
+    for (let i = 0; i < folderInputFiles.length; i++) {
+      const folderInput = folderInputFiles[i];
+      const directoryName = folderInput.webkitRelativePath.split("/")[0];
+      console.log(
+        folderInput,
+        directoryName,
+        "folderInputfolderInputfolderInput"
+      );
+      // const fileList = Array.from(folderInput.files);
+
+      // Add the selected folder to the list
+      // selectedFolders.push({ directoryName, fileList });
+    }
+
+    // Now, you have an array of selected folders
+    // Pass it to your handleFolderUpload function
+    handleChangeFolderUpload2({ selectedFolders });
+  };
+
+  // this fun triger when upload folder triiger
+  const handleChangeFolderUpload2 = ({ selectedFolders }) => {
+    console.log(
+      selectedFolders,
+      "selectedFoldersselectedFoldersselectedFolders"
+    );
+    // try {
+    //   // this is used for prevent multi trigger
+    //   if (directoryName !== directoryNames) {
+    //     // this is use to set data in sate of current upload
+    //     if (directoryName) {
+    //       setDirectoryNames(directoryName);
+    //     }
+    //     if (fileList) {
+    //       setFileLists(fileList);
+    //     }
+    //   }
+    // } catch (error) {
+    //   // Handle errors
+    // }
+  };
+
   // when state update of upload new file this use effect call
   useEffect(() => {
     // its chekrer for the directory name given from upload
@@ -1624,6 +1684,7 @@ const DataRoom = () => {
 
     // All API calls are complete, you can perform other actions here
   };
+
   const cancelfunc = () => {
     cancelToken.cancel("API call canceled by user");
     console.log("API call was canceled.");
@@ -1632,6 +1693,7 @@ const DataRoom = () => {
   const CanceApicalling = () => {
     cancelfunc();
   };
+
   const handleChangeLocationValue = (event) => {
     setSearchResultBoxFields({
       ...searchResultBoxFields,
@@ -1830,44 +1892,34 @@ const DataRoom = () => {
 
   // api call onscroll
   const handleScroll = async (e) => {
-    const { scrollHeight, scrollTop, clientHeight } = e.target;
-    if (scrollHeight - scrollTop === clientHeight) {
+    if (sRowsData <= totalRecords) {
       await dispatch(dataBehaviour(true));
-      if (sRowsData < totalRecords) {
-        console.log(
-          sRowsData,
-          totalRecords,
-          "totalRecordstotalRecordstotalRecords"
+      if (
+        viewFolderID !== null &&
+        viewFolderID !== undefined &&
+        Number(viewFolderID) !== 0
+      ) {
+        await dispatch(
+          getFolderDocumentsApiScrollBehaviour(
+            navigate,
+            viewFolderID,
+            t,
+            2,
+            sRowsData,
+            1,
+            true
+          )
         );
-        if (DataRoomReducer.dataBehaviour === false) {
-          if (
-            viewFolderID !== null &&
-            viewFolderID !== undefined &&
-            Number(viewFolderID) !== 0
-          ) {
-            await dispatch(
-              getFolderDocumentsApiScrollBehaviour(
-                navigate,
-                viewFolderID,
-                t,
-                2,
-                sRowsData,
-                1,
-                true
-              )
-            );
-          } else {
-            await dispatch(
-              getDocumentsAndFolderApiScrollbehaviour(
-                navigate,
-                currentView,
-                t,
-                Number(sRowsData),
-                Number(filterValue)
-              )
-            );
-          }
-        }
+      } else {
+        await dispatch(
+          getDocumentsAndFolderApiScrollbehaviour(
+            navigate,
+            currentView,
+            t,
+            Number(sRowsData),
+            Number(filterValue)
+          )
+        );
       }
     }
   };
@@ -1932,6 +1984,7 @@ const DataRoom = () => {
             DataRoomReducer.getAllDocumentandShareFolderResponse.totalCount
           );
         } else {
+          dispatch(dataBehaviour(false));
           setSRowsData(
             DataRoomReducer.getAllDocumentandShareFolderResponse.data.length
           );
@@ -1993,17 +2046,64 @@ const DataRoom = () => {
   }, [DataRoomReducer.getFolderDocumentResponse]);
 
   useEffect(() => {
-    if (uploadReducer.uploadDocumentsList !== null) {
-      let attachmentData = {
-        DisplayAttachmentName:
-          uploadReducer.uploadDocumentsList.displayFileName,
-        OriginalAttachmentName:
-          uploadReducer.uploadDocumentsList.originalFileName,
+    if (DataRoomReducer.folderUploadData !== null) {
+      const folderName = DataRoomReducer.folderUploadData.displayFolderName;
+      const folderId = DataRoomReducer.folderUploadData.folderID;
+      // if (tasksAttachments.length > 0) {
+      //   let findFilesdata = tasksAttachments.filter(
+      //     (fileData, index) =>
+      //       fileData.webkitRelativePath.split("/")[0] === folderName
+      //   );
+      //   console.log(findFilesdata, "findFilesdatafindFilesdata");
+      let folderData = {
+        FolderID: folderId,
+        FolderName: folderName,
+        Files: [],
       };
-      setTasksAttachments((prev) => [...prev, attachmentData]);
-      // setTasksAttachments([...tasksAttachments, attachmentData]);
+
+      setFolderUploadsData([...folderUploadsData, folderData]);
+      // }
     }
-  }, [uploadReducer.uploadDocumentsList]);
+  }, [DataRoomReducer.folderUploadData]);
+  useEffect(() => {
+    if (tasksAttachments.length > 0) {
+      const folderName = DataRoomReducer.folderUploadData.displayFolderName;
+      let findFilesdata = tasksAttachments.filter(
+        (fileData, index) =>
+          fileData.webkitRelativePath.split("/")[0] === folderName
+      );
+      const findFolderDataIndex = folderUploadsData.findIndex(
+        (folderData) => folderData.FolderName === folderName
+      );
+      const updatedFolderUploadsData = [...folderUploadsData];
+
+      // Check if each file is not already in the Files array before pushing it
+      findFilesdata.forEach((file) => {
+        const fileAlreadyExists = updatedFolderUploadsData[
+          findFolderDataIndex
+        ].Files.some((existingFile) => existingFile.name === file.name);
+        if (!fileAlreadyExists) {
+          updatedFolderUploadsData[findFolderDataIndex].Files.push(file);
+        }
+      });
+
+      setFolderUploadsData(updatedFolderUploadsData);
+    }
+  }, [tasksAttachments, DataRoomReducer.folderUploadData]);
+
+  console.log(folderUploadsData, "folderUploadsDatafolderUploadsData");
+  // useEffect(() => {
+  //   if (uploadReducer.uploadDocumentsList !== null) {
+  //     let attachmentData = {
+  //       DisplayAttachmentName:
+  //         uploadReducer.uploadDocumentsList.displayFileName,
+  //       OriginalAttachmentName:
+  //         uploadReducer.uploadDocumentsList.originalFileName,
+  //     };
+  //     setTasksAttachments((prev) => [...prev, attachmentData]);
+  //     // setTasksAttachments([...tasksAttachments, attachmentData]);
+  //   }
+  // }, [uploadReducer.uploadDocumentsList]);
   return (
     <>
       <div className={styles["DataRoom_container"]}>
@@ -2126,6 +2226,12 @@ const DataRoom = () => {
                 className="d-flex position-relative Inputfield_for_data_room justify-content-end "
               >
                 <div className="position-relative">
+                  {/* <input
+                    type="file"
+                    webkitdirectory="true"
+                    multiple
+                    onChange={(e) => handleFolderSelect(e.target.files)}
+                  /> */}
                   <TextField
                     value={filterVal}
                     change={handleFilter}
@@ -2343,7 +2449,7 @@ const DataRoom = () => {
                                 })}
                               </Col>
                             </Row>
-                            <Row className="mt-4">
+                            <Row className="mt-2">
                               <Col
                                 lg={12}
                                 md={12}
@@ -2713,27 +2819,76 @@ const DataRoom = () => {
                           getAllData !== null &&
                           gridbtnactive ? (
                             <>
-                              <GridViewDataRoom
-                                data={getAllData}
-                                optionsforFolder={optionsforFolder}
-                                optionsforFile={optionsforFile}
-                                sRowsData={sRowsData}
-                                totalRecords={totalRecords}
-                                filter_Value={filterValue}
-                              />
+                              <InfiniteScroll
+                                dataLength={getAllData.length}
+                                next={handleScroll}
+                                style={{
+                                  overflowX: "hidden",
+                                }}
+                                hasMore={
+                                  getAllData.length === totalRecords
+                                    ? false
+                                    : true
+                                }
+                                height={"57vh"}
+                                endMessage=""
+                                loader={
+                                  getAllData.length <= totalRecords && (
+                                    <Row>
+                                      <Col
+                                        sm={12}
+                                        md={12}
+                                        lg={12}
+                                        className="d-flex justify-content-center mt-2"
+                                      >
+                                        <Spin indicator={antIcon} />
+                                      </Col>
+                                    </Row>
+                                  )
+                                }
+                              >
+                                <GridViewDataRoom
+                                  data={getAllData}
+                                  optionsforFolder={optionsforFolder}
+                                  optionsforFile={optionsforFile}
+                                  sRowsData={sRowsData}
+                                  totalRecords={totalRecords}
+                                  filter_Value={filterValue}
+                                />
+                              </InfiniteScroll>
                             </>
                           ) : getAllData.length > 0 &&
                             getAllData !== undefined &&
                             getAllData !== null &&
                             listviewactive === true ? (
                             <>
-                              <section
+                              <InfiniteScroll
+                                dataLength={getAllData.length}
+                                next={handleScroll}
                                 style={{
-                                  height: 380,
-                                  overflowY: "scroll",
                                   overflowX: "hidden",
                                 }}
-                                onScroll={handleScroll}
+                                hasMore={
+                                  getAllData.length === totalRecords
+                                    ? false
+                                    : true
+                                }
+                                height={"57vh"}
+                                endMessage=""
+                                loader={
+                                  getAllData.length <= totalRecords && (
+                                    <Row>
+                                      <Col
+                                        sm={12}
+                                        md={12}
+                                        lg={12}
+                                        className="d-flex justify-content-center mt-2"
+                                      >
+                                        <Spin indicator={antIcon} />
+                                      </Col>
+                                    </Row>
+                                  )
+                                }
                               >
                                 <TableToDo
                                   sortDirections={["descend", "ascend"]}
@@ -2744,19 +2899,7 @@ const DataRoom = () => {
                                   rows={getAllData}
                                   pagination={false}
                                 />
-                                {DataRoomReducer.TableSpinner && (
-                                  <Row>
-                                    <Col
-                                      sm={12}
-                                      md={12}
-                                      lg={12}
-                                      className="d-flex justify-content-center align-items-center my-4"
-                                    >
-                                      <Spin indicator={antIcon} />
-                                    </Col>
-                                  </Row>
-                                )}
-                              </section>
+                              </InfiniteScroll>
                             </>
                           ) : (
                             <>
@@ -2800,18 +2943,6 @@ const DataRoom = () => {
                               </Row>
                             </>
                           )}
-                          {DataRoomReducer.TableSpinner && (
-                            <Row>
-                              <Col
-                                sm={12}
-                                md={12}
-                                lg={12}
-                                className="d-flex justify-content-center align-items-center my-4"
-                              >
-                                <Spin indicator={antIcon} />
-                              </Col>
-                            </Row>
-                          )}
                         </Col>
                       </Row>
                     </>
@@ -2824,52 +2955,90 @@ const DataRoom = () => {
                           getAllData !== null &&
                           gridbtnactive ? (
                             <>
-                              <GridViewDataRoom
-                                data={getAllData}
-                                optionsforFolder={optionsforFolder}
-                                optionsforFile={optionsforFile}
-                                sRowsData={sRowsData}
-                                totalRecords={totalRecords}
-                                filter_Value={filterValue}
-                              />
+                              <InfiniteScroll
+                                dataLength={getAllData.length}
+                                next={handleScroll}
+                                style={{
+                                  overflowX: "hidden",
+                                }}
+                                hasMore={
+                                  getAllData.length === totalRecords
+                                    ? false
+                                    : true
+                                }
+                                height={"57vh"}
+                                endMessage=""
+                                loader={
+                                  getAllData.length <= totalRecords && (
+                                    <Row>
+                                      <Col
+                                        sm={12}
+                                        md={12}
+                                        lg={12}
+                                        className="d-flex justify-content-center mt-2"
+                                      >
+                                        <Spin indicator={antIcon} />
+                                      </Col>
+                                    </Row>
+                                  )
+                                }
+                              >
+                                <GridViewDataRoom
+                                  data={getAllData}
+                                  optionsforFolder={optionsforFolder}
+                                  optionsforFile={optionsforFile}
+                                  sRowsData={sRowsData}
+                                  totalRecords={totalRecords}
+                                  filter_Value={filterValue}
+                                />
+                              </InfiniteScroll>
                             </>
                           ) : getAllData.length > 0 &&
                             getAllData !== undefined &&
                             getAllData !== null &&
                             listviewactive === true ? (
-                            <>
-                              <section
-                                style={{
-                                  height: 380,
-                                  overflowY: "scroll",
-                                  overflowX: "hidden",
-                                }}
-                                onScroll={handleScroll}
-                              >
-                                <TableToDo
-                                  sortDirections={["descend", "ascend"]}
-                                  column={MyDocumentsColumns}
-                                  className={"DataRoom_Table"}
-                                  rows={getAllData}
-                                  pagination={false}
-                                  onChange={handleSortMyDocuments}
-                                  // rowSelection={rowSelection}
-                                  size={"middle"}
-                                />
-                                {DataRoomReducer.TableSpinner && (
-                                  <Row>
-                                    <Col
-                                      sm={12}
-                                      md={12}
-                                      lg={12}
-                                      className="d-flex justify-content-center align-items-center my-4"
-                                    >
-                                      <Spin indicator={antIcon} />
-                                    </Col>
-                                  </Row>
-                                )}
-                              </section>
-                            </>
+                            <InfiniteScroll
+                              dataLength={getAllData.length}
+                              next={handleScroll}
+                              style={{
+                                overflowX: "hidden",
+                              }}
+                              hasMore={
+                                getAllData.length === totalRecords
+                                  ? false
+                                  : true
+                              }
+                              height={"57vh"}
+                              endMessage=""
+                              loader={
+                                getAllData.length <= totalRecords && (
+                                  <>
+                                    <Row>
+                                      <Col
+                                        sm={12}
+                                        md={12}
+                                        lg={12}
+                                        className="d-flex justify-content-center mt-2"
+                                      >
+                                        <Spin indicator={antIcon} />
+                                      </Col>
+                                    </Row>
+                                  </>
+                                )
+                              }
+                              scrollableTarget="scrollableDiv"
+                            >
+                              <TableToDo
+                                sortDirections={["descend", "ascend"]}
+                                column={MyDocumentsColumns}
+                                className={"DataRoom_Table"}
+                                rows={getAllData}
+                                pagination={false}
+                                onChange={handleSortMyDocuments}
+                                // rowSelection={rowSelection}
+                                size={"middle"}
+                              />
+                            </InfiniteScroll>
                           ) : (
                             <>
                               <Row className="mt-2">
@@ -2957,9 +3126,9 @@ const DataRoom = () => {
                         className="d-flex justify-content-start gap-3"
                       >
                         <span className={styles["Uploading"]}>
-                          {`${t("Uploading")} ${
-                            Object.keys(tasksAttachments).length
-                          } ${t("items")}`}
+                          {`${t("Uploading")} ${tasksAttachments.length} ${t(
+                            "items"
+                          )}`}
                           {/* {} */}
                           {/* {Object.keys(tasksAttachments).length} {} */}
                         </span>
@@ -2967,7 +3136,7 @@ const DataRoom = () => {
                           {parseInt(progress) + "%"}
                         </Space>
                         <Space className={styles["Progress_bar"]}>
-                          {remainingTime + t("Sec-remaining")}
+                          {`${remainingTime} ${t("Sec-remaining")}`}
                         </Space>
                       </Col>
 
@@ -3027,9 +3196,9 @@ const DataRoom = () => {
                             {DataRoomReducer.folderUploadData.displayFolderName}
                           </span>
                           <span>
-                            {`${
-                              Object.keys(tasksAttachments).length
-                            }  ${"Of"}  ${fileLists.length}  `}{" "}
+                            {`${tasksAttachments.length}  ${"Of"}  ${
+                              fileLists.length
+                            }  `}{" "}
                           </span>
                         </Col>
                         <Col
@@ -3039,7 +3208,7 @@ const DataRoom = () => {
                           className={styles["progress_bar"]}
                         >
                           <CircularProgressbar
-                            value={Object.keys(tasksAttachments).length}
+                            value={tasksAttachments.length}
                             maxValue={fileLists.length}
                             // text={`${percentage}%`}
                             className={styles["folderProgress"]}
@@ -3131,8 +3300,8 @@ const DataRoom = () => {
                         className="d-flex justify-content-start gap-3"
                       >
                         <span className={styles["Uploading"]}>
-                          {t("Uploading")}{" "}
-                          {Object.keys(tasksAttachments).length} {t("items")}
+                          {t("Uploading")} {tasksAttachments.length}{" "}
+                          {t("items")}
                         </span>
                         <Space className={styles["Progress_bar"]}>
                           {parseInt(progress) + "%"}
@@ -3185,7 +3354,7 @@ const DataRoom = () => {
                     className={styles["Scroller_bar_of_BarUploder"]}
                   >
                     {Object.values(tasksAttachments).length > 0
-                      ? Object.values(tasksAttachments).map((data, index) => {
+                      ? tasksAttachments.map((data, index) => {
                           return (
                             <>
                               <Col

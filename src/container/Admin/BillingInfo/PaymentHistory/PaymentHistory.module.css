@@ -166,9 +166,8 @@ body[dir="rtl"] .Edit-Main-Heading {
 
 .filterModal {
   position: absolute;
-  top: -3px;
-  right: 30px;
-  font-size: 21px;
+  top: 7px;
+  right: 23px;
   cursor: pointer;
 }
 
