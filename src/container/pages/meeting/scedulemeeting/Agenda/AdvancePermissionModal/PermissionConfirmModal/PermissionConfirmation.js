@@ -40,7 +40,7 @@ const PermissionConfirmation = () => {
                 className="d-flex justify-content-center"
               >
                 <span className={styles["Advance_permission_Confirmation"]}>
-                  {"Any-unsaved-changes-will"}
+                  {t("Any-unsaved-changes-will")}
                 </span>
               </Col>
             </Row>
@@ -52,7 +52,7 @@ const PermissionConfirmation = () => {
                 className="d-flex justify-content-center"
               >
                 <span className={styles["Advance_permission_Confirmation"]}>
-                  {"Be-lost-continue"}
+                  {t("Be-lost-continue")}
                 </span>
               </Col>
             </Row>

@@ -109,7 +109,6 @@ import videoIcon from "../../assets/images/AttachmentIcons/video.svg";
 import xlsFileIcon from "../../assets/images/AttachmentIcons/xls-file.svg";
 import { getFolderDocumentsApiScrollBehaviour } from "../../store/actions/DataRoom_actions";
 import axios from "axios";
-import InfiniteScroll from "react-infinite-scroll-component";
 
 const DataRoom = () => {
   // tooltip
@@ -117,9 +116,6 @@ const DataRoom = () => {
   const [showbarupload, setShowbarupload] = useState(false);
   const [progress, setProgress] = useState(0);
   const [inviteModal, setInviteModal] = useState(false);
-  const [folderUploadsData, setFolderUploadsData] = useState([
-    // Folders: []
-  ]);
   // console.log(navigator.onLine, "navigatornavigatornavigatornavigator");
   const [optionsFileisShown, setOptionsFileisShown] = useState(false);
   const [optionsFolderisShown, setOptionsFolderisShown] = useState(false);
@@ -214,12 +210,6 @@ const DataRoom = () => {
   const [currentFilterID, setCurrentFilterID] = useState(2); // Initial filter value
   let viewFolderID = localStorage.getItem("folderID");
   const [cancelToken, setCancelToken] = useState(axios.CancelToken.source());
-  console.log(
-    getAllData.length,
-    totalRecords,
-    getAllData.length <= totalRecords,
-    "totalRecortotalRecordstotalRecordsds"
-  );
   const [searchResultBoxFields, setSearchResultBoxFields] = useState({
     documentType: {
       value: 0,
@@ -1017,7 +1007,6 @@ const DataRoom = () => {
     //   }
     // }
   };
-
   const fetchDataWithFilter = async (filterValue) => {
     // dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, true, filterValue));
     // Call your API with the selected filter value and current sort order
@@ -1684,7 +1673,6 @@ const DataRoom = () => {
 
     // All API calls are complete, you can perform other actions here
   };
-
   const cancelfunc = () => {
     cancelToken.cancel("API call canceled by user");
     console.log("API call was canceled.");

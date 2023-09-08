@@ -14,6 +14,7 @@ const initialState = {
   CallRequestReceivedData: [],
   CallRequestReceivedMQTTData: {},
   MissedCallCountData: {},
+  ScrollBehavior: false,
 }
 
 const VideoMainReducer = (state = initialState, action) => {
@@ -201,7 +202,12 @@ const VideoMainReducer = (state = initialState, action) => {
         ResponseMessage: action.message,
       }
     }
-
+    case actions.SCROLL_BEHAVIOR_SPINNER: {
+      return {
+        ...state,
+        ScrollBehavior: action.response,
+      }
+    }
     default:
       return { ...state }
   }

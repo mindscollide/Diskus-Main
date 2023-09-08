@@ -7,3 +7,13 @@ svg.pointer-video-icon {
     color: #6172d6;
     border-left: none !important;
 }
+
+span.triangle-overlay-video {
+    position: fixed;
+    height: 13px;
+    width: 2px;
+    bottom: 134px;
+    right: 85px;
+    background: #fff;
+    z-index: 1;
+}

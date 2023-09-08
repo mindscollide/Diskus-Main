@@ -56,3 +56,109 @@
   margin-top: 7px !important;
   line-height: 15px !important;
 }
+
+.quill-height-addNote {
+  border-top: 1px solid lightgrey;
+  height: 18vh !important;
+  border-radius: 3px !important;
+  position: relative;
+}
+
+.quill-height-addNote .ql-toolbar.ql-snow {
+  color: #a2a2a2 !important;
+}
+
+.Add-note-QuillRow {
+  position: relative;
+  margin-top: 20px !important;
+  margin-bottom: 10px !important;
+}
+
+.RedCrossForEdit {
+  position: absolute !important;
+  right: 12px !important;
+  top: -7px !important;
+}
+
+.CancelButtonOnSaveAgendaImport {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.CancelButtonOnSaveAgendaImport:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.SaveButtonOnSaveAgendaImport {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.SaveButtonOnSaveAgendaImport:is(:hover, :focus, :focus-visible, :active) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.CreateAnotherScratchBtn {
+  color: #5f78d6;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  width: 100% !important;
+  height: 39px !important;
+  border: 1px dotted #e1e1e1;
+  background: #fff !important;
+  border-radius: 4px !important;
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+.CreateAnotherScratchBtn:is(:hover, :active, :focus, :focus-visible) {
+  color: #5f78d6;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  width: 100% !important;
+  height: 39px !important;
+  border: 1px dotted #e1e1e1;
+  background: #fff !important;
+  border-radius: 4px !important;
+  margin-right: 0px !important;
+  margin-left: 0px !important;
+}
+
+.Scroller {
+  height: 30vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}

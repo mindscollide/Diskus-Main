@@ -1,32 +1,33 @@
 import React from "react";
-import { Modal, Button } from "../../../../../../components/elements";
-import styles from "./UnsavedMinutes.module.css";
-import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
-import { showUnsaveMinutesFileUpload } from "../../../../../../store/actions/NewMeetingActions";
+import styles from "./UnsavedModalScratch.module.css";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { showUnsavedCreateFromScratch } from "../../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
+import { Modal, Button } from "../../../../../../../components/elements";
 
-const UnsavedMinutes = ({ setMinutes }) => {
+const UndavedModalScratch = ({ setEditable }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const handleYesFunctionality = () => {
-    setMinutes(true);
-    dispatch(showUnsaveMinutesFileUpload(false));
+    dispatch(showUnsavedCreateFromScratch(false));
+    setEditable(false);
   };
+
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.unsaveFileUploadMinutes}
-        setShow={dispatch(showUnsaveMinutesFileUpload)}
+        show={NewMeetingreducer.unsavedModalScratch}
+        setShow={dispatch(showUnsavedCreateFromScratch)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
         onHide={() => {
-          dispatch(showUnsaveMinutesFileUpload(false));
+          dispatch(showUnsavedCreateFromScratch(false));
         }}
         ModalBody={
           <>
@@ -83,4 +84,4 @@ const UnsavedMinutes = ({ setMinutes }) => {
   );
 };
 
-export default UnsavedMinutes;
+export default UndavedModalScratch;
