@@ -395,6 +395,77 @@ const GetUserRecentCalls = (Data, navigate, t) => {
   }
 }
 
+const ScrollRecentCalls = (response) => {
+  return {
+    type: actions.SCROLL_BEHAVIOR_SPINNER,
+    response: response,
+  }
+}
+const GetUserRecentCallsScroll = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    let form = new FormData()
+    form.append('RequestMethod', getUserRecentCalls.RequestMethod)
+    form.append('RequestData', JSON.stringify(Data))
+
+    axios({
+      method: 'post',
+      url: videoApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log('GetUserRecentCalls', response)
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(GetUserRecentCalls(Data, navigate, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_GetUserRecetCalls_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                getUserRecentCallsSuccess(
+                  response.data.responseResult,
+                  t('Record-found'),
+                ),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_GetUserRecetCalls_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(getUserRecentCallsFail(t('No-records-found')))
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_GetUserRecetCalls_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(getUserRecentCallsFail(t('Something-went-wrong')))
+            }
+          } else {
+            await dispatch(getUserRecentCallsFail(t('Something-went-wrong')))
+          }
+        } else {
+          await dispatch(getUserRecentCallsFail(t('Something-went-wrong')))
+        }
+      })
+      .catch((response) => {
+        dispatch(getUserRecentCallsFail(t('Something-went-wrong')))
+      })
+  }
+}
+
 const callRequestReceivedInitial = () => {
   return {
     type: actions.CALL_REQUEST_RECEIVED_INITIAL,
@@ -589,4 +660,6 @@ export {
   CallRequestReceived,
   callRequestReceivedMQTT,
   GetUserMissedCallCount,
+  GetUserRecentCallsScroll,
+  ScrollRecentCalls,
 }
