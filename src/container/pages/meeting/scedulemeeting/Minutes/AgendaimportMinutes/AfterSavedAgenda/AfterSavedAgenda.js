@@ -71,12 +71,7 @@ const AfterSavedAgenda = ({ AgendaData }) => {
                             <Button
                               text={t("View-minutes")}
                               className={styles["ViewMinutesButton"]}
-                              onClick={
-                                expandIndex === index &&
-                                expandSubAgenda === true
-                                  ? handleViewMinutesButton
-                                  : " "
-                              }
+                              onClick={handleViewMinutesButton}
                             />
                           </Col>
                           <Col
