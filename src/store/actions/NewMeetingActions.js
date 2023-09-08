@@ -140,6 +140,13 @@ const showUnsavedForButonCreateFromScratch = (response) => {
   };
 };
 
+const showUnsavedModalImportAgenda = (response) => {
+  return {
+    type: actions.UNSAVED_IMPORT_AGENDA,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -161,4 +168,5 @@ export {
   showUnsaveMinutesFileUpload,
   showUnsavedCreateFromScratch,
   showUnsavedForButonCreateFromScratch,
+  showUnsavedModalImportAgenda,
 };

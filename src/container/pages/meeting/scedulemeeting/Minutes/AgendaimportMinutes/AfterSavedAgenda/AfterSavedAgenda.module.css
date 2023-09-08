@@ -1,0 +1,64 @@
+.MeetinMaterial_Heading {
+  color: #5f78d6 !important;
+  font-size: 16px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Bottom_Line {
+  width: 98% !important;
+  border: 1px solid #e1e1e1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  margin-top: 8px !important;
+}
+
+.ViewMinutesButton {
+  width: 96px !important;
+  height: 22.666px;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-size: 8px !important;
+  font-family: "MontserratSemiBold" !important;
+  border: none !important;
+}
+
+.ViewMinutesButton:is(:hover, :active, :focus, :focus-visible) {
+  width: 96px !important;
+  height: 22.666px;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-size: 8px !important;
+  font-family: "MontserratSemiBold" !important;
+  border: none !important;
+}
+
+.ViewMinutesButtonSubAgendaViewButton {
+  width: 96px !important;
+  height: 22.666px;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-size: 8px !important;
+  font-family: "MontserratSemiBold" !important;
+  border: none !important;
+  margin-left: -8px !important;
+}
+
+.ViewMinutesButtonSubAgendaViewButton:is(
+    :hover,
+    :active,
+    :focus,
+    :focus-visible
+  ) {
+  width: 96px !important;
+  height: 22.666px;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border-radius: 4px !important;
+  font-size: 8px !important;
+  font-family: "MontserratSemiBold" !important;
+  border: none !important;
+  margin-left: -8px !important;
+}

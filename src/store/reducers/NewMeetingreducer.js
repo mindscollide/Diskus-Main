@@ -22,6 +22,7 @@ const initialState = {
   unsaveFileUploadMinutes: false,
   unsavedModalScratch: false,
   UnsavedButtonCreateScratch: false,
+  unsavedModalImportAgenda: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -162,6 +163,13 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         UnsavedButtonCreateScratch: action.response,
+      };
+    }
+
+    case actions.UNSAVED_IMPORT_AGENDA: {
+      return {
+        ...state,
+        unsavedModalImportAgenda: action.response,
       };
     }
 

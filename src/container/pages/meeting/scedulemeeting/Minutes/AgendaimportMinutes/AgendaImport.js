@@ -9,19 +9,43 @@ import RedCroseeIcon from "../../../../../../assets/images/CrossIcon.svg";
 import { Col, Row } from "react-bootstrap";
 import ReactQuill, { Quill } from "react-quill";
 import { Button } from "../../../../../../components/elements";
+import ImportAgendaImport from "./ImportAgendaUnsaved/ImportAgendaImport";
+import { useSelector } from "react-redux";
+import { showUnsavedModalImportAgenda } from "../../../../../../store/actions/NewMeetingActions";
+import AfterSavedAgenda from "./AfterSavedAgenda/AfterSavedAgenda";
 
 const AgendaImport = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { NewMeetingreducer } = useSelector((state) => state);
   const [expanded, setExpanded] = useState(false);
   const [subExpand, setSubExpand] = useState(false);
   const [allowEditMainAgenda, setallowEditMainAgenda] = useState(false);
   const [allowEditSubAgenda, setallowEditSubAgenda] = useState(false);
+  const [savedAgenda, setsavedAgenda] = useState(false);
   const [mainAgendaMinuteRemove, setmainAgendaMinuteRemove] = useState(0);
   const [subAgendaMinuteRemove, setSubAgendaMinuteRemove] = useState(0);
   const [indexForMainEdit, setIndexForMainEdit] = useState(0);
   const [indexForSubAgendaEdit, setIndexForSubAgendaEdit] = useState(0);
+  const [AgendaData, setAgendaData] = useState([
+    {
+      MainTitle: "Intrduction",
+      SubAgenda: [
+        {
+          SubTitle: "A brief overview of the main subject or theme.",
+        },
+      ],
+    },
+    {
+      MainTitle: "SEO Report",
+      SubAgenda: [],
+    },
+    {
+      MainTitle: "Clossing Report",
+      SubAgenda: [],
+    },
+  ]);
 
   var Size = Quill.import("attributors/style/size");
   Size.whitelist = ["14px", "16px", "18px"];
@@ -129,9 +153,190 @@ const AgendaImport = () => {
     },
   };
 
+  const HandleCancelButtonImportAgenda = () => {
+    dispatch(showUnsavedModalImportAgenda(true));
+  };
+
+  const handleSavedFunctionalityImportAgenda = () => {
+    setsavedAgenda(true);
+  };
+
   return (
     <section>
-      <Row className={styles["Scroller"]}>
+      {savedAgenda ? (
+        <AfterSavedAgenda AgendaData={AgendaData} />
+      ) : (
+        <>
+          <Row>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className={styles["Main_scroller_Agenda_minutes"]}
+            >
+              <Row>
+                {AgendaData.length > 0
+                  ? AgendaData.map((createData, createindex) => {
+                      return (
+                        <>
+                          <Col lg={12} md={12} sm={12} className="mt-3">
+                            <Row className="mt-2">
+                              <Col lg={12} md={12} sm={12}>
+                                <span
+                                  className={styles["HeadingMinutesAgenda"]}
+                                >
+                                  1.<span>{createData.MainTitle}</span>
+                                </span>
+                              </Col>
+                            </Row>
+                            <Row className={styles["Add-note-QuillRow"]}>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                xs={12}
+                                className={styles["Arabic_font_Applied"]}
+                              >
+                                <ReactQuill
+                                  ref={editorRef}
+                                  theme="snow"
+                                  // value={data.name}
+                                  placeholder={t("Note-details")}
+                                  modules={modules}
+                                  className={styles["quill-height-addNote"]}
+                                />
+                                <img
+                                  src={RedCroseeIcon}
+                                  className={styles["RedCrossForEdit"]}
+                                />
+                              </Col>
+                            </Row>
+                            {/* subAgenda Mapping */}
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className={styles["SubAgendaCreateScroller"]}
+                              >
+                                <Row>
+                                  {createData.SubAgenda.map(
+                                    (
+                                      createsubAgendaTitle,
+                                      createSubAgendaIndex
+                                    ) => {
+                                      return (
+                                        <>
+                                          <Col
+                                            lg={12}
+                                            md={12}
+                                            sm={12}
+                                            className="mt-3"
+                                          >
+                                            <Row className="mt-5">
+                                              <Col lg={1} md={1} sm={1}></Col>
+                                              <Col lg={11} md={11} sm={11}>
+                                                <span
+                                                  className={
+                                                    styles[
+                                                      "HeadingMinutesAgenda"
+                                                    ]
+                                                  }
+                                                >
+                                                  1.1.
+                                                  <span>
+                                                    {
+                                                      createsubAgendaTitle.SubTitle
+                                                    }
+                                                  </span>
+                                                </span>
+                                              </Col>
+                                            </Row>
+                                            <Row>
+                                              <Col lg={1} md={1} sm={1}></Col>
+                                              <Col lg={11} md={11} sm={11}>
+                                                <Row
+                                                  className={
+                                                    styles["Add-note-QuillRow"]
+                                                  }
+                                                >
+                                                  <Col
+                                                    lg={12}
+                                                    md={12}
+                                                    sm={12}
+                                                    xs={12}
+                                                    className={
+                                                      styles[
+                                                        "Arabic_font_Applied"
+                                                      ]
+                                                    }
+                                                  >
+                                                    <ReactQuill
+                                                      ref={editorRef}
+                                                      theme="snow"
+                                                      // value={data.name}
+                                                      placeholder={t(
+                                                        "Note-details"
+                                                      )}
+                                                      modules={modules}
+                                                      className={
+                                                        styles[
+                                                          "quill-height-addNote"
+                                                        ]
+                                                      }
+                                                    />
+                                                    <img
+                                                      src={RedCroseeIcon}
+                                                      className={
+                                                        styles[
+                                                          "RedCrossForEdit"
+                                                        ]
+                                                      }
+                                                    />
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+                                            </Row>
+                                          </Col>
+                                        </>
+                                      );
+                                    }
+                                  )}
+                                </Row>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </>
+                      );
+                    })
+                  : null}
+              </Row>
+            </Col>
+          </Row>
+          <Row className="mt-3">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-end gap-2"
+            >
+              <Button
+                text={t("Cancel")}
+                className={styles["CancelButtonOnSaveAgendaImport"]}
+                onClick={HandleCancelButtonImportAgenda}
+              />
+              <Button
+                text={t("Save")}
+                className={styles["SaveButtonOnSaveAgendaImport"]}
+                onClick={handleSavedFunctionalityImportAgenda}
+              />
+            </Col>
+          </Row>
+        </>
+      )}
+
+      {/* For Edit Functionality Agenda */}
+      {/* <Row className={styles["Scroller"]}>
         {showAgendaMinutes.length > 0
           ? showAgendaMinutes.map((data, index) => {
               console.log(data, "datadatadatadatadata");
@@ -519,7 +724,8 @@ const AgendaImport = () => {
               );
             })
           : null}
-      </Row>
+      </Row> */}
+      {NewMeetingreducer.unsavedModalImportAgenda && <ImportAgendaImport />}
     </section>
   );
 };
