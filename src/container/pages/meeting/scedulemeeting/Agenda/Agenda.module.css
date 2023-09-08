@@ -1,18 +1,22 @@
 .BackGround_Agenda {
   width: 100% !important;
   height: auto !important;
+  min-height: 126px !important;
   border: 1px solid #bbbbbb !important;
   border-radius: 4px !important;
-  padding: 10px 15px !important;
+  padding: 1px 15px !important;
+  position: relative;
 }
 
 .BackGround_Agenda_InActive {
   width: 100% !important;
+  min-height: 126px !important;
   height: auto !important;
   border: 1px solid #bbbbbb !important;
   border-radius: 4px !important;
-  padding: 10px 15px !important;
+  padding: 1px 15px !important;
   filter: opacity(0.5);
+  position: relative;
 }
 
 .BackGround_Agenda_InActive:has(.lockBtn_inActive) .lockBtn_inActive {
@@ -31,20 +35,24 @@
 .SubajendaBox {
   width: 90% !important;
   height: auto !important;
+  min-height: 126px !important;
   border: 1px solid #bbbbbb !important;
   border-radius: 4px !important;
   padding: 10px 15px !important;
   margin-left: 10px !important;
+  position: relative;
 }
 
 .SubajendaBox_Inactive {
   width: 90% !important;
   height: auto !important;
+  min-height: 126px !important;
   border: 1px solid #bbbbbb !important;
   border-radius: 4px !important;
   padding: 10px 15px !important;
   margin-left: 10px !important;
   filter: opacity(0.5);
+  position: relative;
   /* pointer-events: none !important; */
 }
 
@@ -159,7 +167,7 @@
 }
 
 .Scroller_Agenda {
-  height: 40vh !important;
+  height: 70vh !important;
   overflow-x: hidden !important;
 }
 
@@ -193,10 +201,15 @@
 }
 
 .RedCross_Icon_class {
-  margin-right: -5.6% !important;
-  margin-top: -18.9% !important;
+  margin-right: -10% !important;
+  margin-top: -24.9% !important;
+  cursor: pointer !important;
 }
-
+.RedCross_Icon_class_Main_agenda {
+  position: absolute !important;
+  right: -10px !important;
+  top: -7px !important;
+}
 .Documentdiv {
   border: 1px solid #d4d4d4;
   border-radius: 4px !important;
@@ -232,4 +245,97 @@
 
 .LineStyles {
   width: 100% !important;
+}
+
+.SectionInnerClass {
+  width: 100% !important;
+  margin-left: 50px !important;
+}
+
+.BackGroundNewImplemented {
+  background: #5f78d6;
+  height: 100%;
+  width: 48px !important;
+  left: 0;
+  top: 0;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+  position: absolute !important;
+}
+
+.Arrow {
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 38px !important;
+}
+
+.Arrow_Expanded {
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 120px !important;
+}
+
+.Meeting_title_heading {
+  color: #5f78d6 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.blueLine {
+  background: #5f78d6 !important;
+  height: auto !important;
+  max-height: 126px !important;
+  width: 6px !important;
+  position: fixed !important;
+  top: 123px;
+  right: 96.2%;
+}
+
+.backGroundDubTree {
+  background: #000 !important;
+  height: 100%;
+  width: 48px !important;
+  left: 0;
+  top: 0;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+  position: absolute !important;
+}
+
+.backGorund {
+  background: #4adede !important;
+  height: 100% !important;
+  width: 23px !important;
+  position: absolute !important;
+  left: 0;
+  top: 0;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important;
+}
+
+.Meeting_subAgenda {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Show_More_Styles {
+  color: #5f78d6 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  cursor: pointer !important;
+}
+
+.SubAgendaSection {
+  width: 96% !important;
+  margin-left: 36px !important;
+}
+
+.Show_Details_Tag {
+  color: #5f78d6 !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  cursor: pointer !important;
 }

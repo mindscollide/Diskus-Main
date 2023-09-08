@@ -783,6 +783,19 @@ const VoteModal = () => {
                       className="NewMeeting_table"
                       rows={rowsData}
                     />
+                    <Row>
+                      <Col>
+                        <p
+                          className={
+                            error && rowsData.length <= 0
+                              ? ` ${styles["errorMessage-inLogin"]} `
+                              : `${styles["errorMessage-inLogin_hidden"]}`
+                          }
+                        >
+                          {t("Please-add-members")}
+                        </p>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               </Col>

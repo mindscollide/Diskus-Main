@@ -19,7 +19,7 @@
 }
 
 .Bottom_line_names {
-  width: 100% !important;
+  width: 104% !important;
   height: 1px !important;
   display: block;
   margin: 0 !important;
@@ -176,6 +176,22 @@ aside.ant-layout-sider.ant-layout-sider-dark {
   font-family: "MontserratSemiBold" !important;
 }
 
+.All_Heading_Advance_permission_View {
+  color: #5a5a5a !important;
+  font-size: 20px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.ParticipantName {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Profile {
+  border-radius: 50% !important;
+}
+
 .Names_advance_permission {
   color: #5a5a5a !important;
   font-size: 12px !important;
@@ -237,4 +253,138 @@ aside.ant-layout-sider.ant-layout-sider-dark {
 }
 .AdvancePermission_switches_View {
   margin-left: 11px !important;
+}
+
+.Heading_introductions {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Heading_introductions_Of_SubAgenda {
+  color: #5a5a5a !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+  display: inline-block !important;
+  overflow: hidden;
+  width: 280px !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+.UpperLineSubAgenda {
+  height: 1px !important;
+  color: #e1e1e1 !important;
+  width: 100% !important;
+}
+
+.Plus_icon-Class {
+  cursor: pointer !important;
+  transition: ease-in-out 0.3s;
+}
+
+.AgendaPermissionModal .modal-dialog .modal-content {
+  padding: 12px !important;
+}
+
+.SidebarSection {
+  display: flex !important;
+  justify-content: space-between;
+  height: auto;
+  align-items: flex-start !important;
+  padding-bottom: 0px !important;
+}
+
+.SidebarSectionSubAgenda {
+  display: flex !important;
+  justify-content: space-between;
+  height: auto;
+  align-items: flex-start !important;
+  padding-bottom: 0px !important;
+  gap: 10px !important;
+}
+
+.SidebarSectionSubAgendaActive {
+  display: flex !important;
+  justify-content: space-between;
+  height: auto;
+  align-items: flex-start !important;
+  padding-bottom: 0px !important;
+  gap: 10px !important;
+  background: #f6f6f6 !important;
+}
+.SubAgendaBackground {
+  /* background: #f6f6f6 !important; */
+  display: flex !important;
+}
+.SubAgendaBox {
+}
+
+.SidebarSection_expanded {
+  display: flex !important;
+  justify-content: space-between;
+  height: auto;
+  align-items: flex-start !important;
+  background: #f6f6f6 !important;
+  padding-bottom: 0px !important;
+}
+.Background {
+  padding-top: 1px !important;
+  background: #f6f6f6 !important;
+}
+
+.LineUpper {
+  width: 1px !important;
+  height: 60vh !important;
+  display: inline-block;
+  background: #e1e1e1 !important;
+}
+.footerClassAgendaPermission {
+  display: block !important;
+  margin-right: 10px !important;
+}
+
+.expandmenuIntroduction {
+  cursor: pointer !important;
+}
+.modal_header {
+  display: block !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+.modal_body {
+  padding-top: 0 !important;
+}
+
+.Times_styles {
+  color: #5a5a5a !important;
+  font-size: 10px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+.minus_sign {
+  width: 10px;
+  height: 1px;
+  background: #5a5a5a;
+  display: inline-block !important;
+}
+.attachment_line {
+  width: 100% !important;
+  font-size: 8px !important;
+  font-family: "Montserrat";
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis !important;
+  color: #5a5a5a;
+  display: inline-block !important;
+}
+
+.Bottom_Line {
+  margin-top: 8px !important;
+  width: 100%;
+  height: 1px;
+  background: #e1e1e1;
+  display: flex !important;
+}
+.tranisitionStyle {
+  transition: ease-in-out 0.1s;
 }

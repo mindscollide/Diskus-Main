@@ -1393,5 +1393,13 @@
   "No-more-levels-to-climb": "No More Levels to Climb.",
   "Are-you-sure-note-reset-closed": "Are you sure? If you click on close button the data will reset and modal will close.",
   "No-agenda-contributor": "NO AGENDA CONTRIBUTOR",
-  "There-are-no-agenda-contributors": "There are no agenda contributors"
+  "There-are-no-agenda-contributors": "There are no agenda contributors",
+  "Start-date": "Start Time",
+  "End-date": "End Time",
+  "Show-more": "Show Details",
+  "Hide-details": "Hide Details",
+  "Show-details": "Show Details",
+  "Please-add-members": "Please add members*",
+  "Create-another-from-scratch": "Create another from scratch",
+  "View-minutes": "View Minutes"
 }

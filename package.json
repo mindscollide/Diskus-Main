@@ -45,6 +45,7 @@
     "paho-mqtt": "^1.1.0",
     "react": "^18.2.0",
     "react-avatar-edit": "^1.2.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-big-calendar": "^1.5.0",
     "react-bootstrap": "^2.6.0",
     "react-bootstrap-date-picker": "^5.1.0",
