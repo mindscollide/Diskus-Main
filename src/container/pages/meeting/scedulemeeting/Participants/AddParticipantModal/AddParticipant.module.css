@@ -86,3 +86,33 @@
 .OverAll_padding {
   padding: 0px 40px !important;
 }
+
+.Card_border2 {
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  margin-left: 0px;
+  margin-left: 0px;
+  padding: 8px 0;
+  display: flex;
+  align-items: center;
+}
+
+.Name_cards {
+  font-size: 12px !important;
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold" !important;
+  margin-left: 5px !important;
+}
+
+.Scroller_For_CreatePollModal2 {
+  height: 14vh !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  margin-top: 20px !important;
+}
+
+.Scroller_For_CreatePollModal2::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}

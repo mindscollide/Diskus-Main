@@ -92,7 +92,7 @@
 
 .RedCrossForEdit {
   position: absolute !important;
-  right: 12px !important;
+  right: 8px !important;
   top: -7px !important;
 }
 
@@ -145,4 +145,44 @@
 
 .quill-height-addNote .ql-toolbar.ql-snow {
   color: #a2a2a2 !important;
+}
+
+.HeadingMinutesAgenda {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+}
+
+.Main_scroller_Agenda_minutes {
+  height: 60vh !important;
+  overflow-x: hidden !important;
+}
+
+.Main_scroller_Agenda_minutes::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Main_scroller_Agenda_minutes::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.SubAgendaCreateScroller {
+  height: 40vh !important;
+  overflow-x: hidden !important;
+}
+
+.SubAgendaCreateScroller::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.SubAgendaCreateScroller::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
 }

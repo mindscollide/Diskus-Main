@@ -148,7 +148,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
         <Col lg={12} md={12} sm={12}>
           <Paper className={styles["Result_page_paper"]}>
             <Row>
-              <Col lg={6} md={6} sm={12} className="d-flex gap-2">
+              <Col lg={5} md={5} sm={12} className="d-flex gap-2">
                 <span className={styles["results_paper_heading"]}>
                   {resolutionTitle || ""}{" "}
                   {votingMethod === "Secret Balloting" ? (
@@ -165,8 +165,8 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
               </Col>
               <Col
                 sm={12}
-                md={6}
-                lg={6}
+                md={7}
+                lg={7}
                 className="d-flex align-items-center justify-content-end"
               >
                 <span className={styles["voting_method_heading"]}>

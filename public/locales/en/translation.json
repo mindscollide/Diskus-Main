@@ -835,6 +835,7 @@
   "An-item-named": "An item named",
   "Replace-existing-file": "Replace existing file",
   "Keep-both-files": "Keep Both files",
+  "Keep-both-folders": "Keep Both folders",
   "Your-upload-is-not-complete-would-you-like-to-cancel-the-upload": "Your upload is not complete. Would you like to cancel the upload",
   "Continue-upload": "Continue Upload",
   "Cancel-upload": "Cancel Upload",
@@ -1393,5 +1394,13 @@
   "No-more-levels-to-climb": "No More Levels to Climb.",
   "Are-you-sure-note-reset-closed": "Are you sure? If you click on close button the data will reset and modal will close.",
   "No-agenda-contributor": "NO AGENDA CONTRIBUTOR",
-  "There-are-no-agenda-contributors": "There are no agenda contributors"
+  "There-are-no-agenda-contributors": "There are no agenda contributors",
+  "Start-date": "Start Time",
+  "End-date": "End Time",
+  "Show-more": "Show Details",
+  "Hide-details": "Hide Details",
+  "Show-details": "Show Details",
+  "Please-add-members": "Please add members*",
+  "Create-another-from-scratch": "Create another from scratch",
+  "View-minutes": "View Minutes"
 }

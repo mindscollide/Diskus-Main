@@ -11,7 +11,12 @@ import {
 } from "../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
 import { Breadcrumb, Layout, Menu, theme } from "antd";
+import PlusIcon from "../../../../../../assets/images/SVGPLUS.svg";
+import PDF from "../../../../../../assets/images/pdf_icon.svg";
+import Minus from "../../../../../../assets/images/SVGMINUS.svg";
+import profile from "../../../../../../assets/images/newprofile.png";
 import Key from "../../../../../../assets/images/KEY.svg";
+import { style } from "@mui/system";
 const AdvancePersmissionModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -19,6 +24,50 @@ const AdvancePersmissionModal = () => {
   const { SubMenu } = Menu;
   const { Sider } = Layout;
   const { NewMeetingreducer } = useSelector((state) => state);
+  const [expandmenuIntroduction, setExpandmenuIntroduction] = useState(false);
+  const [sidebarindex, setSidebarindex] = useState(0);
+  const [subAgendaExpand, setsubAgendaExpand] = useState(false);
+  const [sidebarOptions, setsidebarOptions] = useState([
+    {
+      title: t("Introduction"),
+      IntroductionFiles: [
+        {
+          name: "Axis.Diskus.Com",
+        },
+        {
+          name: "Axis.Diskus.Com",
+        },
+        {
+          name: "Axis.Diskus.Com",
+        },
+        {
+          name: "Axis.Diskus.Com",
+        },
+        {
+          name: "Axis.Diskus.Com",
+        },
+      ],
+      SubAgendaOptions: [
+        { SubTitle: "Get New Agenda For You Knowledge and we are" },
+      ],
+    },
+    {
+      title: t("Ceo-report"),
+      IntroductionFiles: [],
+    },
+    {
+      title: t("Finance-summary"),
+      IntroductionFiles: [],
+    },
+    {
+      title: t("Functional-review"),
+      IntroductionFiles: [],
+    },
+    {
+      title: t("Closing-report"),
+      IntroductionFiles: [],
+    },
+  ]);
   const options = [
     { value: "All", label: "All" },
     { value: "organizer", label: "organizer" },
@@ -49,6 +98,16 @@ const AdvancePersmissionModal = () => {
     dispatch(showAdvancePermissionModal(false));
     dispatch(showAdvancePermissionConfirmation(true));
   };
+
+  const handleExpandIntroduction = (index) => {
+    setSidebarindex(index);
+    setExpandmenuIntroduction(!expandmenuIntroduction);
+  };
+
+  const subAgendaExpandFunction = () => {
+    setsubAgendaExpand(!subAgendaExpand);
+  };
+
   return (
     <>
       <section>
@@ -56,7 +115,10 @@ const AdvancePersmissionModal = () => {
           show={NewMeetingreducer.advancePermissionModal}
           setShow={dispatch(showAdvancePermissionModal)}
           modalFooterClassName={"d-block"}
-          modalHeaderClassName={"d-block"}
+          modalParentClass={"AgendaPermissionModal"}
+          className={styles["AgendaPermissionModal"]}
+          modalBodyClassName={styles["modal_body"]}
+          modalHeaderClassName={styles["modal_header"]}
           onHide={() => {
             dispatch(showAdvancePermissionModal(false));
           }}
@@ -103,90 +165,361 @@ const AdvancePersmissionModal = () => {
                   <span className={styles["Bottom_line"]}></span>
                 </Col>
               </Row>
+            </>
+          }
+          ModalBody={
+            <>
               <Row>
-                <Col lg={3} md={3} sm={3}>
+                <Col lg={5} md={5} sm={12}>
                   <Row>
-                    <Col lg={12} md={12} sm={12}>
-                      <Row className="mt-4 mb-4 m-0 p-0">
-                        <Col
-                          lg={11}
-                          md={11}
-                          sm={12}
-                          className="d-flex justify-content-center"
-                        >
+                    <Col lg={12} md={12} sm={12} className="ms-2 ">
+                      <Row className="mt-4">
+                        <Col lg={12} md={12} sm={12} className="d-flex ">
                           <span className={styles["Agenda_heading_Advance"]}>
                             {t("Agenda")}
                           </span>
                         </Col>
-                        <Col lg={1} md={1} sm={12}></Col>
                       </Row>
-                      <Layout>
-                        <Sider width={250}>
-                          <Menu
-                            theme="light"
-                            // defaultOpenKeys={[defaultOpenKey]}
-                            // defaultSelectedKeys={[defaultSelectedKey]}
-                            mode="inline"
-                            className="Menu-sidebar-class"
-                          >
-                            <SubMenu
-                              key="sub1"
-                              icon={<i className="icon-user menu-icons"></i>}
-                              title="Introduction"
-                              className="submenu-sidebar-icons"
-                            >
-                              <Menu.Item className="menu-items-sidebar" key="3">
-                                Introduction SubMenus
-                              </Menu.Item>
-                            </SubMenu>
-                            <SubMenu
-                              key="sub2"
-                              icon={<i className="icon-user menu-icons"></i>}
-                              title="CEO Report"
-                              className="submenu-sidebar-icons"
-                            >
-                              <Menu.Item className="menu-items-sidebar" key="6">
-                                CEO Report
-                              </Menu.Item>
-                            </SubMenu>
-                            <SubMenu
-                              key="sub3"
-                              icon={<i className="icon-user menu-icons"></i>}
-                              title="Finance Summary"
-                              className="submenu-sidebar-icons"
-                            >
-                              <Menu.Item className="menu-items-sidebar" key="8">
-                                Finance Summmary SubMenus
-                              </Menu.Item>
-                            </SubMenu>
-                            <SubMenu
-                              key="sub4"
-                              icon={<i className="icon-user menu-icons"></i>}
-                              title="Functional Review"
-                              className="submenu-sidebar-icons"
-                            >
-                              <Menu.Item className="menu-items-sidebar" key="9">
-                                Functional Review Submenu
-                              </Menu.Item>
-                            </SubMenu>
-                            <SubMenu
-                              key="sub5"
-                              icon={<i className="icon-user menu-icons"></i>}
-                              title="Closing Report"
-                              className="submenu-sidebar-icons"
-                            >
-                              <Menu.Item className="menu-items-sidebar" key="9">
-                                Closing Report Submenu
-                              </Menu.Item>
-                            </SubMenu>
-                          </Menu>
-                        </Sider>
-                      </Layout>
+                      <Row className="mt-2">
+                        {sidebarOptions.length > 0
+                          ? sidebarOptions.map((data, index) => {
+                              return (
+                                <>
+                                  <Col lg={12} md={12} sm={12} className="mt-4">
+                                    <section
+                                      className={
+                                        sidebarindex === index &&
+                                        expandmenuIntroduction
+                                          ? styles["SidebarSection_expanded"]
+                                          : styles["SidebarSection"]
+                                      }
+                                    >
+                                      <span
+                                        className={
+                                          styles["Heading_introductions"]
+                                        }
+                                      >
+                                        <span>
+                                          {index + 1}
+                                          <span>.</span>
+                                        </span>
+                                        <span
+                                          className={
+                                            styles["Heading_introductions"]
+                                          }
+                                        >
+                                          {data.title}
+                                        </span>
+                                      </span>
+
+                                      <img
+                                        src={
+                                          sidebarindex === index &&
+                                          expandmenuIntroduction === true
+                                            ? Minus
+                                            : PlusIcon
+                                        }
+                                        height="14px"
+                                        width="14px"
+                                        className={styles["Plus_icon-Class"]}
+                                        onClick={() => {
+                                          handleExpandIntroduction(index);
+                                        }}
+                                      />
+                                    </section>
+                                    <section
+                                      className={
+                                        sidebarindex === index &&
+                                        expandmenuIntroduction
+                                          ? styles["Background"]
+                                          : styles["Hidden"]
+                                      }
+                                    >
+                                      {sidebarindex === index &&
+                                      expandmenuIntroduction === true ? (
+                                        <>
+                                          <Row className="mt-2">
+                                            <Col lg={7} md={7} sm={7}>
+                                              <Row>
+                                                <Col
+                                                  lg={12}
+                                                  md={12}
+                                                  sm={12}
+                                                  className="d-flex gap-1"
+                                                >
+                                                  <img
+                                                    src={profile}
+                                                    height="19px"
+                                                    width="19px"
+                                                    className={
+                                                      styles["Profile"]
+                                                    }
+                                                  />
+                                                  <span
+                                                    className={
+                                                      styles["ParticipantName"]
+                                                    }
+                                                  >
+                                                    Salman Memon
+                                                  </span>
+                                                </Col>
+                                              </Row>
+                                            </Col>
+                                            <Col
+                                              lg={5}
+                                              md={5}
+                                              sm={5}
+                                              className="d-flex align-items-center gap-1"
+                                            >
+                                              <span
+                                                className={
+                                                  styles["Times_styles"]
+                                                }
+                                              >
+                                                12:15 PM
+                                              </span>
+
+                                              <span
+                                                className={styles["minus_sign"]}
+                                              ></span>
+
+                                              <span
+                                                className={
+                                                  styles["Times_styles"]
+                                                }
+                                              >
+                                                12:15 PM
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                          <Row
+                                            className={
+                                              styles["tranisitionStyle"]
+                                            }
+                                          >
+                                            {data.IntroductionFiles.map(
+                                              (Filesdata, Filesindex) => {
+                                                return (
+                                                  <>
+                                                    <Col
+                                                      lg={4}
+                                                      md={4}
+                                                      sm={12}
+                                                      className="flex-wrap my-1 text-center   d-flex justify-content-center"
+                                                    >
+                                                      <img
+                                                        src={PDF}
+                                                        height="38.57px"
+                                                        width="38.57px"
+                                                      />
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                            "attachment_line"
+                                                          ]
+                                                        }
+                                                      >
+                                                        {Filesdata.name}
+                                                      </span>
+                                                    </Col>
+                                                  </>
+                                                );
+                                              }
+                                            )}
+                                          </Row>
+                                        </>
+                                      ) : null}
+                                      <Row className="mt-2">
+                                        {data?.SubAgendaOptions?.map(
+                                          (SubAgendaData, SubAgendaIndex) => {
+                                            return (
+                                              <>
+                                                <Col
+                                                  lg={1}
+                                                  md={1}
+                                                  sm={12}
+                                                ></Col>
+                                                <Col lg={11} md={11} sm={12}>
+                                                  <section
+                                                    className={
+                                                      styles["SubAgendaBox"]
+                                                    }
+                                                  >
+                                                    <span
+                                                      className={
+                                                        styles[
+                                                          "UpperLineSubAgenda"
+                                                        ]
+                                                      }
+                                                    ></span>
+                                                    <section
+                                                      className={
+                                                        subAgendaExpand
+                                                          ? styles[
+                                                              "SidebarSectionSubAgendaActive"
+                                                            ]
+                                                          : styles[
+                                                              "SidebarSectionSubAgenda"
+                                                            ]
+                                                      }
+                                                    >
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                            "Heading_introductions_Of_SubAgenda"
+                                                          ]
+                                                        }
+                                                      >
+                                                        <span>
+                                                          {index}
+                                                          <span>
+                                                            .{SubAgendaData + 1}
+                                                          </span>
+                                                        </span>
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "Heading_introductions_"
+                                                            ]
+                                                          }
+                                                        >
+                                                          {
+                                                            SubAgendaData.SubTitle
+                                                          }
+                                                        </span>
+                                                      </span>
+
+                                                      <img
+                                                        src={
+                                                          subAgendaExpand
+                                                            ? Minus
+                                                            : PlusIcon
+                                                        }
+                                                        height="14px"
+                                                        width="14px"
+                                                        className={
+                                                          styles[
+                                                            "Plus_icon-Class"
+                                                          ]
+                                                        }
+                                                        onClick={
+                                                          subAgendaExpandFunction
+                                                        }
+                                                      />
+                                                    </section>
+                                                    {subAgendaExpand ? (
+                                                      <>
+                                                        <Row className="mt-2">
+                                                          <section
+                                                            className={
+                                                              subAgendaExpand
+                                                                ? styles[
+                                                                    "SubAgendaBackground"
+                                                                  ]
+                                                                : styles[
+                                                                    "Hidden"
+                                                                  ]
+                                                            }
+                                                          >
+                                                            <Col
+                                                              lg={7}
+                                                              md={7}
+                                                              sm={7}
+                                                            >
+                                                              <Row>
+                                                                <Col
+                                                                  lg={12}
+                                                                  md={12}
+                                                                  sm={12}
+                                                                  className="d-flex gap-1"
+                                                                >
+                                                                  <img
+                                                                    src={
+                                                                      profile
+                                                                    }
+                                                                    height="19px"
+                                                                    width="19px"
+                                                                    className={
+                                                                      styles[
+                                                                        "Profile"
+                                                                      ]
+                                                                    }
+                                                                  />
+                                                                  <span
+                                                                    className={
+                                                                      styles[
+                                                                        "ParticipantName"
+                                                                      ]
+                                                                    }
+                                                                  >
+                                                                    Salman Memon
+                                                                  </span>
+                                                                </Col>
+                                                              </Row>
+                                                            </Col>
+                                                            <Col
+                                                              lg={5}
+                                                              md={5}
+                                                              sm={5}
+                                                              className="d-flex align-items-center gap-1"
+                                                            >
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "Times_styles"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                12:15 PM
+                                                              </span>
+
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "minus_sign"
+                                                                  ]
+                                                                }
+                                                              ></span>
+
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "Times_styles"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                12:15 PM
+                                                              </span>
+                                                            </Col>
+                                                          </section>
+                                                        </Row>
+                                                      </>
+                                                    ) : null}
+                                                  </section>
+                                                </Col>
+                                              </>
+                                            );
+                                          }
+                                        )}
+                                      </Row>
+
+                                      <span
+                                        className={styles["Bottom_Line"]}
+                                      ></span>
+                                    </section>
+                                  </Col>
+                                </>
+                              );
+                            })
+                          : null}
+                      </Row>
                     </Col>
                   </Row>
                 </Col>
-                <Col lg={2} md={2} sm={2}></Col>
-                <Col lg={7} md={7} sm={7}>
+                <Col lg={1} md={1} sm={12}>
+                  <span className={styles["LineUpper"]}></span>
+                </Col>
+                <Col lg={6} md={6} sm={12}>
                   <Row>
                     <Col lg={12} md={12} sm={12}>
                       <Row className="mt-4 mb-4">
@@ -199,14 +532,18 @@ const AdvancePersmissionModal = () => {
                         </Col>
                         <Col lg={3} md={3} sm={3}>
                           <span
-                            className={styles["All_Heading_Advance_permission"]}
+                            className={
+                              styles["All_Heading_Advance_permission_View"]
+                            }
                           >
                             {"View"}
                           </span>
                         </Col>
                         <Col lg={3} md={3} sm={3}>
                           <span
-                            className={styles["All_Heading_Advance_permission"]}
+                            className={
+                              styles["All_Heading_Advance_permission_View"]
+                            }
                           >
                             {"Modify"}
                           </span>
@@ -216,7 +553,7 @@ const AdvancePersmissionModal = () => {
                         {members.map((data, index) => {
                           return (
                             <>
-                              <Col lg={6} md={6} sm={6}>
+                              <Col lg={6} md={6} sm={6} className="mt-3">
                                 <Row>
                                   <Col lg={12} md={12} sm={12}>
                                     <span
@@ -231,7 +568,7 @@ const AdvancePersmissionModal = () => {
                               </Col>
                               <Col lg={3} md={3} sm={3}>
                                 <Row>
-                                  <Col lg={12} md={12} sm={12} className="m-1">
+                                  <Col lg={12} md={12} sm={12} className="m-3">
                                     <Switch
                                       className={
                                         styles[
@@ -244,7 +581,7 @@ const AdvancePersmissionModal = () => {
                               </Col>
                               <Col lg={3} md={3} sm={3}>
                                 <Row>
-                                  <Col lg={12} md={12} sm={12} className="m-1">
+                                  <Col lg={12} md={12} sm={12} className="m-3">
                                     <Switch
                                       className={
                                         styles["AdvancePermission_switches"]
@@ -270,9 +607,9 @@ const AdvancePersmissionModal = () => {
               </Row>
             </>
           }
-          ModalBody={
+          ModalFooter={
             <>
-              <Row className="m-0 p-0 mt-5">
+              <Row>
                 <Col
                   lg={12}
                   md={12}

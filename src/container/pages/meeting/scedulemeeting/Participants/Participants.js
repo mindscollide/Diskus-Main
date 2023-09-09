@@ -23,7 +23,10 @@ import {
   showCrossConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
+import ProposedMeetingDate from "./ProposedMeetingDate/ProposedMeetingDate";
+
 const Participants = ({ setParticipants, setAgenda }) => {
+  const [proposeMeeting, setPropseMeeting] = useState(false);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -273,6 +276,9 @@ const Participants = ({ setParticipants, setAgenda }) => {
             <Button
               text={t("Propose-meeting-dates")}
               className={styles["Cancel_Organization"]}
+              onClick={() => {
+                setPropseMeeting(true);
+              }}
             />
             <Button
               text={t("Publish")}
@@ -289,6 +295,7 @@ const Participants = ({ setParticipants, setAgenda }) => {
       </section>
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
       {NewMeetingreducer.participantModal && <AddParticipantModal />}
+      {/* {proposeMeeting && <ProposedMeetingDate />} */}
     </>
   );
 };

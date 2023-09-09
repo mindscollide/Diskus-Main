@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Modal,
-  InputSearchFilter,
-  Table,
-  TextField,
-  Button,
-} from "../../../../../../components/elements";
+import { Modal, Button } from "../../../../../../components/elements";
 import styles from "./UnsavedMinutes.module.css";
 import BlackCrossIcon from "../../../../../../assets/images/BlackCrossIconModals.svg";
 import { showUnsaveMinutesFileUpload } from "../../../../../../store/actions/NewMeetingActions";
@@ -14,13 +8,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
 
-const UnsavedMinutes = () => {
+const UnsavedMinutes = ({ setMinutes }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
-  const handleYesFunctionality = () => {};
+  const handleYesFunctionality = () => {
+    setMinutes(true);
+    dispatch(showUnsaveMinutesFileUpload(false));
+  };
   return (
     <section>
       <Modal

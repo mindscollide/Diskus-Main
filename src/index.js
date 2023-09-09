@@ -1,28 +1,28 @@
-import React, { Suspense } from 'react'
-import ReactDOM from 'react-dom/client'
-import './index.css'
-import App from './App'
-import { RouterProvider, HashRouter } from 'react-router-dom'
-import { Provider } from 'react-redux'
-import store from './store/store'
-import { Loader } from './components/elements'
-import { router } from './routes/routes'
-import { GoogleOAuthProvider } from '@react-oauth/google'
-import { ConfigProvider } from 'antd'
-import ar_EG from 'antd/es/locale/ar_EG'
-import en_US from 'antd/es/locale/en_US'
+import React, { Suspense } from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import { RouterProvider, HashRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./store/store";
+import { Loader } from "./components/elements";
+import { router } from "./routes/routes";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { ConfigProvider } from "antd";
+import ar_EG from "antd/es/locale/ar_EG";
+import en_US from "antd/es/locale/en_US";
 
-const root = ReactDOM.createRoot(document.getElementById('root'))
-let currentLanguage = localStorage.getItem('i18nextLng')
+const root = ReactDOM.createRoot(document.getElementById("root"));
+let currentLanguage = localStorage.getItem("i18nextLng");
 
 root.render(
   <GoogleOAuthProvider clientId="509020224191-pst82a2kqjq33phenb35b0bg1i0q762o.apps.googleusercontent.com">
     <Provider store={store}>
       <Suspense fallback={<Loader />}>
-        <ConfigProvider locale={currentLanguage === 'en' ? en_US : ar_EG}>
+        <ConfigProvider locale={currentLanguage === "en" ? en_US : ar_EG}>
           <RouterProvider router={router} />
         </ConfigProvider>
       </Suspense>
     </Provider>
-  </GoogleOAuthProvider>,
-)
+  </GoogleOAuthProvider>
+);

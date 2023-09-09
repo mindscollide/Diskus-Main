@@ -49,14 +49,14 @@ const ModalShareFolder = ({
   const [expirationheader, setExpirationheader] = useState(false);
   const [calenderdate, setCalenderdate] = useState(false);
   const [inviteedit, setInviteedit] = useState(false);
-  const [notifyPeople, setNotifyPeople] = useState(false)
+  const [notifyPeople, setNotifyPeople] = useState(false);
   const [folderData, setFolderData] = useState({
     Folders: [],
   });
   const [open, setOpen] = useState({
     flag: false,
-    message: ""
-  })
+    message: "",
+  });
   console.log(folderData, "datadatadata");
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -73,15 +73,15 @@ const ModalShareFolder = ({
   });
   const [generalAccess, setGeneralAccess] = useState({
     label: "",
-    value: 0
-  })
+    value: 0,
+  });
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [organizationMembers, setOrganizationMembers] = useState([]);
   const [isMembers, setMembers] = useState([]);
   console.log(isMembers, "isMembersisMembersisMembersisMembers");
   const [flag, setFlag] = useState(1);
   const [onclickFlag, setOnclickFlag] = useState(false);
-  let organizationName = localStorage.getItem("OrganizatioName")
+  let organizationName = localStorage.getItem("OrganizatioName");
 
   const showcalender = () => {
     // setCalenderdate(!calenderdate);
@@ -174,17 +174,16 @@ const ModalShareFolder = ({
   };
 
   const onSearch = (name, id) => {
-    setOnclickFlag(true)
+    setOnclickFlag(true);
     console.log("name id", name, id);
     setTaskAssignedToInput(name);
     setTaskAssignedTo(id);
     setTaskAssignedName(name);
   };
 
-
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setOnclickFlag(false)
+    setOnclickFlag(false);
     if (e.target.value.trimStart() != "") {
       setTaskAssignedToInput(e.target.value.trimStart());
     } else {
@@ -199,18 +198,17 @@ const ModalShareFolder = ({
     console.log("hnbhaiclicktuhorahahy");
     if (folderData.Folders.length > 0) {
       setShowrequestsend(true);
-      dispatch(shareFoldersApi(navigate, folderData, t, setShowrequestsend));
+      dispatch(shareFoldersApi(navigate, folderData, t, setSharefolder));
     }
   };
   const openAccessRequestModalClick = () => {
     if (folderData.Folders.length > 0) {
-      setShowaccessrequest(true);
-
+      dispatch(shareFoldersApi(navigate, folderData, t, setSharefolder));
     } else {
       setOpen({
         flag: true,
-        message: t("User-required-must-for-share")
-      })
+        message: t("User-required-must-for-share"),
+      });
     }
   };
 
@@ -221,7 +219,6 @@ const ModalShareFolder = ({
     if (permissionID.value !== 0) {
       if (taskAssignedName !== "") {
         if (findIndexData === -1) {
-
           let Data = {
             FK_FolderID: folderId,
             FK_PermissionID: JSON.parse(permissionID.value),
@@ -242,35 +239,33 @@ const ModalShareFolder = ({
         } else {
           setOpen({
             flag: true,
-            message: t("User-is-already-exist")
-          })
+            message: t("User-is-already-exist"),
+          });
         }
       } else {
         setOpen({
           flag: true,
-          message: t("Please-select-user")
-        })
+          message: t("Please-select-user"),
+        });
       }
     } else {
       setOpen({
         flag: true,
-        message: t("All-options-must-be-selected")
-      })
+        message: t("All-options-must-be-selected"),
+      });
     }
-
-
 
     setTaskAssignedToInput("");
     setTaskAssignedTo(0);
     setTaskAssignedName("");
     setPermissionID({
       label: "",
-      value: 0
-    })
+      value: 0,
+    });
     setGeneralAccess({
       label: "",
-      value: 0
-    })
+      value: 0,
+    });
   };
 
   const { t } = useTranslation();
@@ -280,21 +275,24 @@ const ModalShareFolder = ({
   const handleChangeGeneralAccess = (selectValue) => {
     setGeneralAccess({
       label: selectValue.label,
-      value: selectValue.value
-    })
-  }
+      value: selectValue.value,
+    });
+  };
 
   const handleRemoveMember = (memberData) => {
-    let findIndexfromsendData = folderData.Folders.findIndex((data, index) => data.FK_UserID === memberData.pK_UID)
-    let findIndexfromViewData = isMembers.findIndex((data, index) => data.pK_UID === memberData.pK_UID)
+    let findIndexfromsendData = folderData.Folders.findIndex(
+      (data, index) => data.FK_UserID === memberData.pK_UID
+    );
+    let findIndexfromViewData = isMembers.findIndex(
+      (data, index) => data.pK_UID === memberData.pK_UID
+    );
     folderData.Folders.splice(findIndexfromsendData, 1);
     isMembers.splice(findIndexfromViewData, 1);
-    setMembers([...isMembers])
+    setMembers([...isMembers]);
     setFolderData((prev) => {
-      return { ...prev, Folders: [...prev.Folders] }
-    })
-
-  }
+      return { ...prev, Folders: [...prev.Folders] };
+    });
+  };
 
   return (
     <>
@@ -323,7 +321,7 @@ const ModalShareFolder = ({
                         value={meetingDate}
                         calendar={calendarValue}
                         locale={localValue}
-                      // newValue={createMeeting.MeetingDate}
+                        // newValue={createMeeting.MeetingDate}
                       />
                     </>
                   ) : null}
@@ -588,29 +586,32 @@ const ModalShareFolder = ({
                         )}
                       </Col>
                       <Col lg={3} md={3} sm={3}>
-                        {generalAccess.value !== 0 ? <div className={styles["dropdown__Document_Value"]}>
-                          <span className={styles["overflow-text"]}>
-                            {generalAccess.label}
-                          </span>
-                          <img
-                            width="12px"
-                            height="12px"
-                            onClick={() => {
-                              setGeneralAccess({
-                                label: "",
-                                value: 0,
-                              });
-                            }}
-                            src={ChevronDownWhite}
+                        {generalAccess.value !== 0 ? (
+                          <div className={styles["dropdown__Document_Value"]}>
+                            <span className={styles["overflow-text"]}>
+                              {generalAccess.label}
+                            </span>
+                            <img
+                              width="12px"
+                              height="12px"
+                              onClick={() => {
+                                setGeneralAccess({
+                                  label: "",
+                                  value: 0,
+                                });
+                              }}
+                              src={ChevronDownWhite}
+                            />
+                          </div>
+                        ) : (
+                          <Select
+                            options={optionsgeneralAccess}
+                            placeholder={t("General-access")}
+                            className={styles["Editor_select"]}
+                            classNamePrefix={"editSelector"}
+                            onChange={handleChangeGeneralAccess}
                           />
-                        </div> : <Select
-                          options={optionsgeneralAccess}
-                          placeholder={t("General-access")}
-                          className={styles["Editor_select"]}
-                          classNamePrefix={"editSelector"}
-                          onChange={handleChangeGeneralAccess}
-                        />}
-
+                        )}
                       </Col>
                       <Col lg={2} md={2} sm={2}>
                         <Button
@@ -630,23 +631,25 @@ const ModalShareFolder = ({
                         <Row>
                           {isMembers.length > 0
                             ? isMembers.map((data, index) => {
-                              return (
-                                <Col lg={4} md={4} sm={4} key={data.pK_UID}>
-                                  <ParticipantInfoShareFolder
-                                    participantname={data.name}
-                                    particiapantdesignation={data.designation}
-                                    icon={
-                                      <img
-                                        src={crossIcon}
-                                        height="14px"
-                                        width="14px"
-                                        onClick={() => handleRemoveMember(data)}
-                                      />
-                                    }
-                                  />
-                                </Col>
-                              );
-                            })
+                                return (
+                                  <Col lg={4} md={4} sm={4} key={data.pK_UID}>
+                                    <ParticipantInfoShareFolder
+                                      participantname={data.name}
+                                      particiapantdesignation={data.designation}
+                                      icon={
+                                        <img
+                                          src={crossIcon}
+                                          height="14px"
+                                          width="14px"
+                                          onClick={() =>
+                                            handleRemoveMember(data)
+                                          }
+                                        />
+                                      }
+                                    />
+                                  </Col>
+                                );
+                              })
                             : null}
 
                           {/* <Col lg={4} md={4} sm={4}>
@@ -689,8 +692,10 @@ const ModalShareFolder = ({
                         sm={12}
                         className="d-flex gap-3 align-items-center"
                       >
-                        <Checkbox checked={notifyPeople} onChange={() => setNotifyPeople(!notifyPeople)
-                        } />
+                        <Checkbox
+                          checked={notifyPeople}
+                          onChange={() => setNotifyPeople(!notifyPeople)}
+                        />
                         <span className={styles["Notify_people_styles"]}>
                           {t("Notify-people")}
                         </span>
@@ -848,8 +853,7 @@ const ModalShareFolder = ({
           }
         />
       </Container>
-      <Notification open={open.flag} message={open.message}
-        setOpen={setOpen} />
+      <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
   );
 };
