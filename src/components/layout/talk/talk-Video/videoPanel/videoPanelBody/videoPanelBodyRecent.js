@@ -136,8 +136,6 @@ const VideoPanelBodyRecent = () => {
         setTotalRecords(VideoMainReducer?.RecentCallsData?.recentCallCount)
         setRecentVideoCalls(VideoMainReducer?.RecentCallsData?.videoCallHistory)
       }
-    } else {
-      setRecentVideoCalls([])
     }
   }, [VideoMainReducer?.RecentCallsData])
 
@@ -153,6 +151,13 @@ const VideoPanelBodyRecent = () => {
       await dispatch(GetUserRecentCallsScroll(Data, navigate, t))
     }
   }
+
+  console.log(
+    'Lengths',
+    recentVideoCalls.length,
+    totalRecords,
+    recentVideoCalls.length <= totalRecords,
+  )
 
   return (
     <>
@@ -181,7 +186,7 @@ const VideoPanelBodyRecent = () => {
           <InfiniteScroll
             dataLength={recentVideoCalls.length}
             next={fetchMoreData}
-            hasMore={recentVideoCalls.length <= totalRecords}
+            hasMore={recentVideoCalls.length === totalRecords ? false : true}
             // scrollThreshold="200px"
             height={'80vh'}
             loader={

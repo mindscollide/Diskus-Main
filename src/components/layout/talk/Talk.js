@@ -172,6 +172,28 @@ const Talk = () => {
     }
   }, [VideoMainReducer?.MissedCallCountData?.missedCallCount])
 
+  //MQTT Unread Message Count
+  useEffect(() => {
+    if (
+      VideoMainReducer.MissedCallCountMqttData !== undefined &&
+      VideoMainReducer.MissedCallCountMqttData !== null &&
+      Object.keys(VideoMainReducer.MissedCallCountMqttData).length !== 0
+    ) {
+      let missedCallCountMqtt =
+        VideoMainReducer.MissedCallCountMqttData.missedCallCount
+      if (missedCallCountMqtt !== 0) {
+        setMissedCallCount(missedCallCountMqtt)
+      } else {
+        setMissedCallCount(
+          VideoMainReducer?.MissedCallCountData?.missedCallCount,
+        )
+      }
+    }
+  }, [
+    VideoMainReducer?.MissedCallCountMqttData?.missedCallCount,
+    VideoMainReducer?.MissedCallCountData?.missedCallCount,
+  ])
+
   let totalValue = Number(missedCallCount) + Number(unreadMessageCount)
 
   console.log('Video Feature Reducer', videoFeatureReducer)

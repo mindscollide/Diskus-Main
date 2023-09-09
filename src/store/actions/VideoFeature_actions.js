@@ -182,6 +182,13 @@ const incomingVideoCallFlag = (response) => {
   }
 }
 
+const leaveCallModal = (response) => {
+  return {
+    type: actions.LEAVE_CALL_MODAL,
+    response: response,
+  }
+}
+
 //Aun Work
 
 // const videoMaximizePanel = (response) => {
@@ -225,4 +232,5 @@ export {
   normalizeVideoPanelFlag,
   maximizeVideoPanelFlag,
   incomingVideoCallFlag,
+  leaveCallModal,
 }

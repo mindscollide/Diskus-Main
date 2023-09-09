@@ -37,29 +37,29 @@ const VideoOutgoing = () => {
 
   // console.log('timeValue', timeValue, typeof timeValue)
 
-  useEffect(() => {
-    // Create the audio element
-    const audioElement = new Audio('/CallRing.wav')
+  // useEffect(() => {
+  //   // Create the audio element
+  //   const audioElement = new Audio('/CallRing.wav')
 
-    audioElement.loop = true
+  //   audioElement.loop = true
 
-    // Play the audio when the component mounts
-    audioElement.play()
+  //   // Play the audio when the component mounts
+  //   audioElement.play()
 
-    // const timer = setTimeout(() => {
-    //   // Dispatch action to update global state
-    //   dispatch(videoOutgoingCallFlag(false))
-    //   setIsVisible(false)
-    //   audioElement.pause()
-    //   audioElement.currentTime = 0
-    // }, timeValue)
+  //   // const timer = setTimeout(() => {
+  //   //   // Dispatch action to update global state
+  //   //   dispatch(videoOutgoingCallFlag(false))
+  //   //   setIsVisible(false)
+  //   //   audioElement.pause()
+  //   //   audioElement.currentTime = 0
+  //   // }, timeValue)
 
-    return () => {
-      audioElement.pause()
-      audioElement.currentTime = 0
-      // clearTimeout(timer)
-    }
-  }, [])
+  //   return () => {
+  //     audioElement.pause()
+  //     audioElement.currentTime = 0
+  //     // clearTimeout(timer)
+  //   }
+  // }, [])
 
   return (
     <>

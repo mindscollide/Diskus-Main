@@ -27,6 +27,7 @@ const initialState = {
   MinimizeVideoFlag: false,
   NormalizeVideoFlag: false,
   IncomingVideoCallFlag: false,
+  LeaveCallModalFlag: false,
 }
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -237,6 +238,13 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         IncomingVideoCallFlag: action.response,
+      }
+    }
+
+    case actions.LEAVE_CALL_MODAL: {
+      return {
+        ...state,
+        LeaveCallModalFlag: action.response,
       }
     }
 
