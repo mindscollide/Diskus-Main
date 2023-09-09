@@ -21,13 +21,14 @@ body[dir="rtl"] .Result_Heading_resolution {
   color: #6172d6 !important;
   word-wrap: break-word;
   max-height: 120px;
-  overflow-y: auto;
+  overflow-y: scroll;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   gap: 5px;
+  overflow-x: hidden;
+  word-break: break-word;
 }
-
 
 .results_paper_heading::-webkit-scrollbar {
   width: 0.5rem;

@@ -175,7 +175,7 @@ const ViewResolution = ({ setViewresolution }) => {
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Datetime_view_resolution"]}>
                       {newTimeFormaterAsPerUTCFullDate(
-                        resolutionData?.resolution?.deadlineDateTime
+                        resolutionData?.resolution?.votingDeadline
                       )}
                     </span>
                   </Col>
@@ -277,24 +277,24 @@ const ViewResolution = ({ setViewresolution }) => {
                       <Row className="mt-4">
                         {resolutionData?.voters.length > 0
                           ? resolutionData?.voters.map((data, index) => {
-                            return (
-                              <Col lg={6} md={6} sm={6}>
-                                <Row>
-                                  <Col
-                                    lg={12}
-                                    md={12}
-                                    sm={12}
-                                    className="mt-1"
-                                  >
-                                    <EmployeeinfoCard
-                                      Employeename={data.username}
-                                      Employeeemail={data.email}
-                                    />
-                                  </Col>
-                                </Row>
-                              </Col>
-                            );
-                          })
+                              return (
+                                <Col lg={6} md={6} sm={6}>
+                                  <Row>
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className="mt-1"
+                                    >
+                                      <EmployeeinfoCard
+                                        Employeename={data.username}
+                                        Employeeemail={data.email}
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              );
+                            })
                           : null}
                       </Row>
                     </Col>
@@ -310,19 +310,19 @@ const ViewResolution = ({ setViewresolution }) => {
                       <Row className="mt-4">
                         {resolutionData?.nonVoters.length > 0
                           ? resolutionData?.nonVoters.map((data, index) => {
-                            return (
-                              <Col lg={6} md={6} sm={6} className="mt-1">
-                                <Row>
-                                  <Col lg={12} md={12} sm={12}>
-                                    <EmployeeinfoCard
-                                      Employeename={data.username}
-                                      Employeeemail={data.email}
-                                    />
-                                  </Col>
-                                </Row>
-                              </Col>
-                            );
-                          })
+                              return (
+                                <Col lg={6} md={6} sm={6} className="mt-1">
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <EmployeeinfoCard
+                                        Employeename={data.username}
+                                        Employeeemail={data.email}
+                                      />
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              );
+                            })
                           : null}
                       </Row>
                     </Col>
@@ -370,98 +370,98 @@ const ViewResolution = ({ setViewresolution }) => {
                           >
                             {resolutionData?.attachments.length > 0
                               ? resolutionData?.attachments.map(
-                                (data, index) => {
-                                  var ext = data.displayAttachmentName
-                                    .split(".")
-                                    .pop();
-                                  const first =
-                                    data.displayAttachmentName.split(" ")[0];
-                                  return (
-                                    <>
-                                      <Col
-                                        sm={12}
-                                        lg={2}
-                                        md={2}
-                                        className="file-icon-viewResolution text-center"
-                                      >
-                                        {ext === "doc" ? (
-                                          <FileIcon
-                                            extension={"docx"}
-                                            size={78}
-                                            type={"document"}
-                                            labelColor={"rgba(44, 88, 152)"}
-                                          />
-                                        ) : ext === "docx" ? (
-                                          <FileIcon
-                                            extension={"docx"}
-                                            size={78}
-                                            type={"font"}
-                                            labelColor={"rgba(44, 88, 152)"}
-                                          />
-                                        ) : ext === "xls" ? (
-                                          <FileIcon
-                                            extension={"xls"}
-                                            type={"spreadsheet"}
-                                            size={78}
-                                            labelColor={"rgba(16, 121, 63)"}
-                                          />
-                                        ) : ext === "xlsx" ? (
-                                          <FileIcon
-                                            extension={"xls"}
-                                            type={"spreadsheet"}
-                                            size={78}
-                                            labelColor={"rgba(16, 121, 63)"}
-                                          />
-                                        ) : ext === "pdf" ? (
-                                          <FileIcon
-                                            extension={"pdf"}
-                                            size={78}
-                                            {...defaultStyles.pdf}
-                                          />
-                                        ) : ext === "png" ? (
-                                          <FileIcon
-                                            extension={"png"}
-                                            size={78}
-                                            type={"image"}
-                                            labelColor={"rgba(102, 102, 224)"}
-                                          />
-                                        ) : ext === "txt" ? (
-                                          <FileIcon
-                                            extension={"txt"}
-                                            size={78}
-                                            type={"document"}
-                                            labelColor={"rgba(52, 120, 199)"}
-                                          />
-                                        ) : ext === "jpg" ? (
-                                          <FileIcon
-                                            extension={"jpg"}
-                                            size={78}
-                                            type={"image"}
-                                            labelColor={"rgba(102, 102, 224)"}
-                                          />
-                                        ) : ext === "jpeg" ? (
-                                          <FileIcon
-                                            extension={"jpeg"}
-                                            size={78}
-                                            type={"image"}
-                                            labelColor={"rgba(102, 102, 224)"}
-                                          />
-                                        ) : ext === "gif" ? (
-                                          <FileIcon
-                                            extension={"gif"}
-                                            size={78}
-                                            {...defaultStyles.gif}
-                                          />
-                                        ) : null}
-                                        <span className="deleteBtn"></span>
-                                        <p className="file-icon-modalmeeting-p text-center FontArabicRegular">
-                                          {first}
-                                        </p>
-                                      </Col>
-                                    </>
-                                  );
-                                }
-                              )
+                                  (data, index) => {
+                                    var ext = data.displayAttachmentName
+                                      .split(".")
+                                      .pop();
+                                    const first =
+                                      data.displayAttachmentName.split(" ")[0];
+                                    return (
+                                      <>
+                                        <Col
+                                          sm={12}
+                                          lg={2}
+                                          md={2}
+                                          className="file-icon-viewResolution text-center"
+                                        >
+                                          {ext === "doc" ? (
+                                            <FileIcon
+                                              extension={"docx"}
+                                              size={78}
+                                              type={"document"}
+                                              labelColor={"rgba(44, 88, 152)"}
+                                            />
+                                          ) : ext === "docx" ? (
+                                            <FileIcon
+                                              extension={"docx"}
+                                              size={78}
+                                              type={"font"}
+                                              labelColor={"rgba(44, 88, 152)"}
+                                            />
+                                          ) : ext === "xls" ? (
+                                            <FileIcon
+                                              extension={"xls"}
+                                              type={"spreadsheet"}
+                                              size={78}
+                                              labelColor={"rgba(16, 121, 63)"}
+                                            />
+                                          ) : ext === "xlsx" ? (
+                                            <FileIcon
+                                              extension={"xls"}
+                                              type={"spreadsheet"}
+                                              size={78}
+                                              labelColor={"rgba(16, 121, 63)"}
+                                            />
+                                          ) : ext === "pdf" ? (
+                                            <FileIcon
+                                              extension={"pdf"}
+                                              size={78}
+                                              {...defaultStyles.pdf}
+                                            />
+                                          ) : ext === "png" ? (
+                                            <FileIcon
+                                              extension={"png"}
+                                              size={78}
+                                              type={"image"}
+                                              labelColor={"rgba(102, 102, 224)"}
+                                            />
+                                          ) : ext === "txt" ? (
+                                            <FileIcon
+                                              extension={"txt"}
+                                              size={78}
+                                              type={"document"}
+                                              labelColor={"rgba(52, 120, 199)"}
+                                            />
+                                          ) : ext === "jpg" ? (
+                                            <FileIcon
+                                              extension={"jpg"}
+                                              size={78}
+                                              type={"image"}
+                                              labelColor={"rgba(102, 102, 224)"}
+                                            />
+                                          ) : ext === "jpeg" ? (
+                                            <FileIcon
+                                              extension={"jpeg"}
+                                              size={78}
+                                              type={"image"}
+                                              labelColor={"rgba(102, 102, 224)"}
+                                            />
+                                          ) : ext === "gif" ? (
+                                            <FileIcon
+                                              extension={"gif"}
+                                              size={78}
+                                              {...defaultStyles.gif}
+                                            />
+                                          ) : null}
+                                          <span className="deleteBtn"></span>
+                                          <p className="file-icon-modalmeeting-p text-center FontArabicRegular">
+                                            {first}
+                                          </p>
+                                        </Col>
+                                      </>
+                                    );
+                                  }
+                                )
                               : null}
                           </Col>
                         </Row>

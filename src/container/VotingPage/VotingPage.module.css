@@ -12,6 +12,8 @@ body[dir="rtl"] .Vote_Heading {
   font-size: 20pt !important;
   font-family: "MontserratSemiBold";
   color: #6172d6;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 body[dir="rtl"] .Sub_heading_VoteResolution {
@@ -51,11 +53,13 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   gap: 5px !important;
 }
 
-.Abstain_btn_vote_resolution:is( :hover,
-  :active,
-  :focus-visible,
-  :focus,
-  :visited) {
+.Abstain_btn_vote_resolution:is(
+    :hover,
+    :active,
+    :focus-visible,
+    :focus,
+    :visited
+  ) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
@@ -78,11 +82,13 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   gap: 5px !important;
 }
 
-.Abstain_btn_vote_resolution_Active:is( :hover,
-  :active,
-  :focus-visible,
-  :focus,
-  :visited) {
+.Abstain_btn_vote_resolution_Active:is(
+    :hover,
+    :active,
+    :focus-visible,
+    :focus,
+    :visited
+  ) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #828282 !important;
@@ -110,11 +116,13 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   gap: 5px !important;
 }
 
-.Notapproved_btn_voteresolution:is( :hover,
-  :focus,
-  :focus-visible,
-  :visited,
-  :active) {
+.Notapproved_btn_voteresolution:is(
+    :hover,
+    :focus,
+    :focus-visible,
+    :visited,
+    :active
+  ) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
@@ -137,11 +145,13 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   gap: 5px !important;
 }
 
-.Notapproved_btn_voteresolution_Active:is( :hover,
-  :focus,
-  :focus-visible,
-  :visited,
-  :active) {
+.Notapproved_btn_voteresolution_Active:is(
+    :hover,
+    :focus,
+    :focus-visible,
+    :visited,
+    :active
+  ) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #f16b6b !important;
@@ -164,11 +174,13 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   gap: 5px !important;
 }
 
-.approved_btn_voteresolution:is( :hover,
-  :focus,
-  :focus-visible,
-  :visited,
-  :active) {
+.approved_btn_voteresolution:is(
+    :hover,
+    :focus,
+    :focus-visible,
+    :visited,
+    :active
+  ) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #fff !important;
@@ -191,11 +203,13 @@ body[dir="rtl"] .Sub_heading_VoteResolution {
   gap: 5px !important;
 }
 
-.approved_btn_voteresolution_Active:is( :hover,
-  :focus,
-  :focus-visible,
-  :visited,
-  :active) {
+.approved_btn_voteresolution_Active:is(
+    :hover,
+    :focus,
+    :focus-visible,
+    :visited,
+    :active
+  ) {
   padding: 12px 30px !important;
   font-size: 12px !important;
   background: #6de595 !important;
