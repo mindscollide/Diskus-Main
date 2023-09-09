@@ -534,7 +534,21 @@ body[dir="rtl"] .Search_Icon {
   right: 90px !important;
   border: 1px solid #e1e1e1 !important;
 }
-
+.Back_ground_For_uploader_active_folder {
+  width: 425px !important;
+  height: 44px !important;
+  background: #fff;
+  border-top-right-radius: 4px !important;
+  border-top-left-radius: 4px !important;
+  border: #e1e1e1;
+  position: fixed;
+  z-index: 1 !important;
+  bottom: 0px !important;
+  border-radius: 4px !important;
+  right: 90px !important;
+  overflow-y: auto;
+  border: 1px solid #e1e1e1 !important;
+}
 .Blue_Strip {
   width: 425px !important;
   height: 43px !important;
@@ -995,7 +1009,7 @@ body[dir="rtl"] .dataroom_searchinput {
   display: none !important;
 }
 .folderProgress {
-  width: 40%;
+  width: 40% !important;
 }
 
 .Scroller_bar_of_BarUploder_folder:hover .crossIcon {
