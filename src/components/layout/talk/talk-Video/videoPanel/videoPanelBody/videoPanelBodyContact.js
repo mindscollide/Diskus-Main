@@ -17,6 +17,7 @@ import {
 import {
   videoOutgoingCallFlag,
   normalizeVideoPanelFlag,
+  videoChatPanel,
 } from '../../../../../../store/actions/VideoFeature_actions'
 
 const VideoPanelBodyContact = () => {
@@ -95,6 +96,7 @@ const VideoPanelBodyContact = () => {
     dispatch(InitiateVideoCall(Data, navigate, t))
     dispatch(getVideoRecipentData(userData))
     dispatch(normalizeVideoPanelFlag(true))
+    dispatch(videoChatPanel(false))
     console.log('Video Called User Data', Data)
   }
 

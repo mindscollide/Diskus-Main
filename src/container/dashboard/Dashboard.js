@@ -1060,10 +1060,13 @@ const Dashboard = () => {
       ) {
         localStorage.setItem('activeCall', false)
         localStorage.setItem('initiateVideoCall', false)
-        dispatch(normalizeVideoPanelFlag(false))
-        dispatch(maximizeVideoPanelFlag(false))
-        dispatch(minimizeVideoPanelFlag(false))
-        dispatch(leaveCallModal(false))
+        // let callerID = Number(localStorage.getItem('callerID'))
+        // if (Number(createrID) !== callerID) {
+        //   dispatch(normalizeVideoPanelFlag(false))
+        //   dispatch(maximizeVideoPanelFlag(false))
+        //   dispatch(minimizeVideoPanelFlag(false))
+        //   dispatch(leaveCallModal(false))
+        // }
         setNotification({
           ...notification,
           notificationShow: true,

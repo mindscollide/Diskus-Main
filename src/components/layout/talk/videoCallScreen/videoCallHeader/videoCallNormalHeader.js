@@ -83,6 +83,19 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
     localStorage.setItem('activeCall', false)
   }
 
+  const endCallParticipant = () => {
+    let Data = {
+      OrganizationID: currentOrganization,
+      RoomID: roomID,
+      IsCaller: false,
+    }
+    dispatch(LeaveCall(Data, navigate, t))
+    dispatch(normalizeVideoPanelFlag(false))
+    dispatch(maximizeVideoPanelFlag(false))
+    dispatch(minimizeVideoPanelFlag(false))
+    localStorage.setItem('activeCall', false)
+  }
+
   const [isActiveIcon, setIsActiveIcon] = useState(false)
 
   const onClickCloseChatHandler = () => {
@@ -120,6 +133,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
       IsCaller: callerID === currentUserID ? true : false,
     }
     dispatch(LeaveCall(Data, navigate, t))
+    localStorage.setItem('activeCall', false)
     dispatch(normalizeVideoPanelFlag(false))
     dispatch(maximizeVideoPanelFlag(false))
     dispatch(minimizeVideoPanelFlag(false))
@@ -199,26 +213,35 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                 onClick={onClickCloseChatHandler}
               />
             )}
-            {videoFeatureReducer.LeaveCallModalFlag === true ? (
+            {videoFeatureReducer.LeaveCallModalFlag === true &&
+            callerID === currentUserID ? (
               <img
                 width={25}
                 onClick={cancelLeaveCallOption}
                 src={CancelIcon}
               />
-            ) : (
+            ) : videoFeatureReducer.LeaveCallModalFlag === false &&
+              callerID === currentUserID ? (
               <img width={25} src={CallEndRedIcon} onClick={closeVideoPanel} />
-            )}
-            <img
-              className={
-                videoFeatureReducer.LeaveCallModalFlag === true
-                  ? 'grayScaleImage'
-                  : ''
-              }
-              width={20}
-              src={MinimizeIcon}
-              onClick={minimizeVideoPanel}
-            />
-
+            ) : videoFeatureReducer.LeaveCallModalFlag === false &&
+              callerID !== currentUserID ? (
+              <img
+                width={25}
+                src={CallEndRedIcon}
+                onClick={endCallParticipant}
+              />
+            ) : null}
+            <div onClick={minimizeVideoPanel}>
+              <img
+                className={
+                  videoFeatureReducer.LeaveCallModalFlag === true
+                    ? 'grayScaleImage'
+                    : ''
+                }
+                width={20}
+                src={MinimizeIcon}
+              />
+            </div>
             {videoFeatureReducer.NormalizeVideoFlag === true &&
             videoFeatureReducer.MinimizeVideoFlag === false &&
             videoFeatureReducer.MaximizeVideoFlag === false ? (

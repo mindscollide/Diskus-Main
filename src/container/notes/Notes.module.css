@@ -178,9 +178,9 @@ body[dir="rtl"] .collapse-text-attached-material {
   color: #6172d6 !important;
 }
 
-.editIcon-In-Collapse-material {
+/* .editIcon-In-Collapse-material {
   z-index: 1 !important;
-}
+} */
 
 .editIconBox {
   position: absolute !important;
