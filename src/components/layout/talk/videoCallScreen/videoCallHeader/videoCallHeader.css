@@ -69,3 +69,85 @@ img.normalize-Icon-Large {
     height: 20px;
     margin-top: 6px;
 }
+
+.video-menu-popups {
+    position: absolute;
+    top: 50px;
+    right: 14px;
+    background: #fff;
+    width: 20%;
+    padding: 15px 0px;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+}
+
+.grayScaleImage {
+    filter: grayscale(1);
+}
+
+.leave-meeting-options {
+    background: rgba(9, 10, 10, .8);
+    border-radius: 12px;
+    padding: 16px;
+    position: absolute;
+    width: 248px;
+    top: 50px;
+    right: 10px;
+}
+
+
+
+.leave-meeting-options__btn {
+    border-radius: 8px;
+    cursor: pointer;
+    height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    font-size: 12px;
+    font-family: 'MontserratMedium-500';
+}
+
+.leave-meeting-red-button {
+    background: #de2828;
+    border: none;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.leave-meeting-red-button:focus,
+.leave-meeting-red-button:focus-visible,
+.leave-meeting-red-button:hover,
+.leave-meeting-red-button:active {
+    background: #de2828 !important;
+    border: none;
+    color: #fff;
+}
+
+.leave-meeting-gray-button {
+    background: hsla(0, 0%, 100%, .09);
+    border: none;
+    color: #fff;
+}
+
+.leave-meeting-gray-button:focus,
+.leave-meeting-gray-button:focus-visible,
+.leave-meeting-gray-button:hover,
+.leave-meeting-gray-button:active {
+    background: hsla(0, 0%, 100%, .09) !important;
+    border: none;
+    color: #fff;
+}
+
+.screenShare-Toggle:active,
+.screenShare-Toggle:focus,
+.screenShare-Toggle:focus-within,
+.screenShare-Toggle:target,
+.screenShare-Toggle:visited,
+.screenShare-Toggle:focus-visible {
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    border-radius: 25px;
+    border-color: transparent;
+    outline: none;
+}

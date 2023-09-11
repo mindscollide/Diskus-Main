@@ -828,6 +828,10 @@ const getUserMissedCallCount = {
   RequestMethod: 'ServiceManager.GetUserMissedCallCount',
 }
 
+const leaveCall = {
+  RequestMethod: 'ServiceManager.LeaveCall',
+}
+
 export {
   updateProfilePictureRM,
   DeleteCommentRM,
@@ -1052,4 +1056,5 @@ export {
   getUserRecentCalls,
   callRequestReceived,
   getUserMissedCallCount,
+  leaveCall,
 }

@@ -17,7 +17,9 @@ import {
 import {
   videoOutgoingCallFlag,
   normalizeVideoPanelFlag,
+  videoChatPanel,
 } from '../../../../../../store/actions/VideoFeature_actions'
+import VideoPanelFooter from '../videoPanelFooter/videoPanelFooter'
 
 const VideoPanelBodyContact = () => {
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
@@ -35,6 +37,23 @@ const VideoPanelBodyContact = () => {
   const [searchChatValue, setSearchChatValue] = useState('')
 
   const [allUsers, setAllUsers] = useState([])
+
+  const [groupCallUsers, setGroupCallUsers] = useState([])
+
+  const groupCallUsersHandler = (data) => {
+    if (groupCallUsers.includes(data.userID)) {
+      let groupUsersIndex = groupCallUsers.findIndex(
+        (userID) => userID === data.userID,
+      )
+      if (groupUsersIndex !== -1) {
+        groupCallUsers.splice(groupUsersIndex, 1)
+        setGroupCallUsers([...groupCallUsers])
+      }
+    } else {
+      groupCallUsers.push(data.userID)
+      setGroupCallUsers([...groupCallUsers])
+    }
+  }
 
   const searchChat = (e) => {
     setSearchChatValue(e)
@@ -95,7 +114,25 @@ const VideoPanelBodyContact = () => {
     dispatch(InitiateVideoCall(Data, navigate, t))
     dispatch(getVideoRecipentData(userData))
     dispatch(normalizeVideoPanelFlag(true))
+    dispatch(videoChatPanel(false))
     console.log('Video Called User Data', Data)
+  }
+
+  const initiateGroupCall = () => {
+    if (groupCallUsers.length <= 1) {
+      console.log('Initiate Group Call Boys Less', groupCallUsers)
+    } else {
+      let Data = {
+        RecipentIDs: groupCallUsers,
+        CallTypeID: 1,
+        OrganizationID: currentOrganization,
+      }
+      dispatch(InitiateVideoCall(Data, navigate, t))
+      // dispatch(getVideoRecipentData(userData))
+      dispatch(normalizeVideoPanelFlag(true))
+      dispatch(videoChatPanel(false))
+      console.log('Initiate Group Call Boys More', groupCallUsers)
+    }
   }
 
   return (
@@ -123,10 +160,11 @@ const VideoPanelBodyContact = () => {
         allUsers.length > 0 &&
         VideoMainReducer.Loading === false ? (
           allUsers.map((userData, index) => {
+            console.log('userData', userData)
             return (
               <Row className="single-chat" key={index}>
                 <Col lg={1} md={1} sm={1} className="mt-4">
-                  <Checkbox />
+                  <Checkbox onChange={() => groupCallUsersHandler(userData)} />
                 </Col>
                 <Col lg={2} md={2} sm={2} className="bottom-border">
                   <div className="video-profile-icon">
@@ -180,6 +218,12 @@ const VideoPanelBodyContact = () => {
           <p>No Users Available</p>
         )}
       </Container>
+      <VideoPanelFooter
+        groupCallClick={initiateGroupCall}
+        groupbtnClassName={
+          groupCallUsers.length <= 1 ? 'group-btn-gray' : 'group-btn'
+        }
+      />
     </>
   )
 }

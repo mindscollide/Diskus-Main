@@ -311,7 +311,7 @@ body[dir="rtl"] .Resolution-Current-btn_Active {
 
 .Search_Icon {
   cursor: pointer !important;
-  z-index: 1 !important;
+  /* z-index: 1 !important; */
   display: block;
   top: 6px !important;
   position: absolute;

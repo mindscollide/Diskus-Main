@@ -39,6 +39,8 @@ const VideoPanelBodyRecent = () => {
 
   let currentOrganization = Number(localStorage.getItem('organizationID'))
 
+  let currentUserName = localStorage.getItem('name')
+
   //CURRENT DATE TIME UTC
   let currentDateTime = new Date()
 
@@ -136,8 +138,6 @@ const VideoPanelBodyRecent = () => {
         setTotalRecords(VideoMainReducer?.RecentCallsData?.recentCallCount)
         setRecentVideoCalls(VideoMainReducer?.RecentCallsData?.videoCallHistory)
       }
-    } else {
-      setRecentVideoCalls([])
     }
   }, [VideoMainReducer?.RecentCallsData])
 
@@ -153,6 +153,13 @@ const VideoPanelBodyRecent = () => {
       await dispatch(GetUserRecentCallsScroll(Data, navigate, t))
     }
   }
+
+  console.log(
+    'Lengths',
+    recentVideoCalls.length,
+    totalRecords,
+    recentVideoCalls.length <= totalRecords,
+  )
 
   return (
     <>
@@ -181,7 +188,7 @@ const VideoPanelBodyRecent = () => {
           <InfiniteScroll
             dataLength={recentVideoCalls.length}
             next={fetchMoreData}
-            hasMore={recentVideoCalls.length <= totalRecords}
+            hasMore={recentVideoCalls.length === totalRecords ? false : true}
             // scrollThreshold="200px"
             height={'80vh'}
             loader={
@@ -231,14 +238,18 @@ const VideoPanelBodyRecent = () => {
                         {recentCallData.callStatus.status === 'Unanswered' ||
                         recentCallData.callStatus.status === 'Busy' ? (
                           <p className="Video-chat-username missed m-0">
-                            {recentCallData.callerName}
+                            {recentCallData.callerName === currentUserName
+                              ? recentCallData.recipients[0].userName
+                              : recentCallData.callerName}
                             <span className="call-status-icon">
                               <img src={MissedRedIcon} />
                             </span>
                           </p>
                         ) : (
                           <p className="Video-chat-username m-0">
-                            {recentCallData.callerName}
+                            {recentCallData.callerName === currentUserName
+                              ? recentCallData.recipients[0].userName
+                              : recentCallData.callerName}
                             <span className="call-status-icon">
                               {recentCallData.isIncoming === false ? (
                                 <img src={MissedCallIcon} />
