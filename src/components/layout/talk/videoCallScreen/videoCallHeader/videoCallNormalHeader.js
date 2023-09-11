@@ -167,18 +167,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
         </Col>
         <>
           <Col lg={9} md={9} sm={12} className="normal-screen-top-icons">
-            {isScreenActive ? (
-              <img
-                className={
-                  videoFeatureReducer.LeaveCallModalFlag === true
-                    ? 'grayScaleImage'
-                    : ''
-                }
-                width={30}
-                onClick={screenShareButton}
-                src={ActiveScreenShare}
-              />
-            ) : (
+            <div className="screenShare-Toggle">
               <img
                 className={
                   videoFeatureReducer.LeaveCallModalFlag === true
@@ -189,7 +178,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                 onClick={screenShareButton}
                 src={NonActiveScreenShare}
               />
-            )}
+            </div>
             {isActiveIcon ? (
               <img
                 className={

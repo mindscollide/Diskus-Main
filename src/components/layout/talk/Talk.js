@@ -211,24 +211,24 @@ const Talk = () => {
 
   const videoPanelRef = useRef(null)
 
-  // const handleOutsideClick = (event) => {
-  //   if (
-  //     videoPanelRef.current &&
-  //     !videoPanelRef.current.contains(event.target) &&
-  //     activeVideoIcon
-  //   ) {
-  //     setActiveVideoIcon(false)
-  //     dispatch(videoChatPanel(false))
-  //   }
-  //   console.log('This Event got Clicked')
-  // }
+  const handleOutsideClick = (event) => {
+    if (
+      videoPanelRef.current &&
+      !videoPanelRef.current.contains(event.target) &&
+      activeVideoIcon
+    ) {
+      setActiveVideoIcon(false)
+      dispatch(videoChatPanel(false))
+    }
+    console.log('This Event got Clicked')
+  }
 
-  // useEffect(() => {
-  //   document.addEventListener('click', handleOutsideClick)
-  //   return () => {
-  //     document.removeEventListener('click', handleOutsideClick)
-  //   }
-  // }, [activeVideoIcon])
+  useEffect(() => {
+    document.addEventListener('click', handleOutsideClick)
+    return () => {
+      document.removeEventListener('click', handleOutsideClick)
+    }
+  }, [activeVideoIcon])
 
   return (
     <div ref={videoPanelRef} className={'talk_nav' + ' ' + currentLang}>

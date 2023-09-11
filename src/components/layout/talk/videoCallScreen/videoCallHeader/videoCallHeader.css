@@ -139,3 +139,15 @@ img.normalize-Icon-Large {
     border: none;
     color: #fff;
 }
+
+.screenShare-Toggle:active,
+.screenShare-Toggle:focus,
+.screenShare-Toggle:focus-within,
+.screenShare-Toggle:target,
+.screenShare-Toggle:visited,
+.screenShare-Toggle:focus-visible {
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    border-radius: 25px;
+    border-color: transparent;
+    outline: none;
+}
