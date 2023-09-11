@@ -1,11 +1,7 @@
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col } from "react-bootstrap";
-import {
-  ArrowCounterclockwise,
-  ChevronDown,
-  Plus,
-} from "react-bootstrap-icons";
-import { Input, Pagination, Select } from "antd";
+import React, { useState, useEffect } from "react"
+import { Container, Row, Col } from "react-bootstrap"
+import { ArrowCounterclockwise, ChevronDown, Plus } from "react-bootstrap-icons"
+import { Input, Pagination, Select } from "antd"
 import {
   Button,
   TableToDo,
@@ -15,55 +11,50 @@ import {
   CustomDatePicker,
   TextField,
   Notification,
-} from "../../../components/elements";
-import { useSelector, useDispatch } from "react-redux";
-import UserImage from "../../../assets/images/user.png";
-import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png";
-import del from "../../../assets/images/del.png";
-import { Dropdown, Space, Typography } from "antd";
-import {
-  Paragraph,
-  Search,
-  ArrowRight,
-  ArrowLeft,
-} from "react-bootstrap-icons";
+} from "../../../components/elements"
+import { useSelector, useDispatch } from "react-redux"
+import UserImage from "../../../assets/images/user.png"
+import TodoMessageIcon1 from "../../../assets/images/Todomsg-1.png"
+import del from "../../../assets/images/del.png"
+import { Dropdown, Space, Typography } from "antd"
+import { Paragraph, Search, ArrowRight, ArrowLeft } from "react-bootstrap-icons"
 import {
   ViewToDoList,
   GetTodoListByUser,
   searchTodoListByUser,
   clearResponce,
   SearchTodoListApi,
-} from "../../../store/actions/ToDoList_action";
-import "antd/dist/antd.css";
+} from "../../../store/actions/ToDoList_action"
+import "antd/dist/antd.css"
 
-import ModalToDoList from "../../todolistModal/ModalToDoList";
-import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
-import ModalUpdateToDo from "../../todolistupdateModal/ModalUpdateToDo";
+import ModalToDoList from "../../todolistModal/ModalToDoList"
+import ModalViewToDo from "../../todolistviewModal/ModalViewToDo"
+import ModalUpdateToDo from "../../todolistupdateModal/ModalUpdateToDo"
 import {
   cleareMessage,
   getTodoStatus,
   updateTodoStatusFunc,
-} from "../../../store/actions/GetTodos";
-import Form from "react-bootstrap/Form";
-import moment from "moment";
-import "./Todolist.css";
-import { useTranslation } from "react-i18next";
-import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees";
-import { enGB, ar } from "date-fns/locale";
-import { registerLocale } from "react-datepicker";
+} from "../../../store/actions/GetTodos"
+import Form from "react-bootstrap/Form"
+import moment from "moment"
+import "./Todolist.css"
+import { useTranslation } from "react-i18next"
+import { clearResponseMessage } from "../../../store/actions/Get_List_Of_Assignees"
+import { enGB, ar } from "date-fns/locale"
+import { registerLocale } from "react-datepicker"
 import {
   _justShowDateformat,
   newDateFormaterAsPerUTC,
   newTimeFormaterAsPerUTC,
   newTimeFormaterAsPerUTCFullDate,
-} from "../../../commen/functions/date_formater";
-import { useNavigate } from "react-router-dom";
+} from "../../../commen/functions/date_formater"
+import { useNavigate } from "react-router-dom"
 
 const TodoList = () => {
   //For Localization
-  const { t } = useTranslation();
-  let currentLanguage = localStorage.getItem("i18nextLng");
-  const state = useSelector((state) => state);
+  const { t } = useTranslation()
+  let currentLanguage = localStorage.getItem("i18nextLng")
+  const state = useSelector((state) => state)
   const {
     toDoListReducer,
     todoStatus,
@@ -71,37 +62,37 @@ const TodoList = () => {
     getTodosStatus,
     socketTodoStatusData,
     LanguageReducer,
-  } = state;
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [isExpand, setExpand] = useState(false);
-  const { Option } = Select;
-  const [rowsToDo, setRowToDo] = useState([]);
-  const [totalRecords, setTotalRecords] = useState(0);
-  const [show, setShow] = useState(false);
-  const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
-  const [viewFlagToDo, setViewFlagToDo] = useState(false);
-  const [modalsflag, setModalsflag] = useState(false);
+  } = state
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [isExpand, setExpand] = useState(false)
+  const { Option } = Select
+  const [rowsToDo, setRowToDo] = useState([])
+  const [totalRecords, setTotalRecords] = useState(0)
+  const [show, setShow] = useState(false)
+  const [updateFlagToDo, setUpdateFlagToDo] = useState(false)
+  const [viewFlagToDo, setViewFlagToDo] = useState(false)
+  const [modalsflag, setModalsflag] = useState(false)
   const [searchData, setSearchData] = useState({
     Date: "",
     Title: "",
     AssignedToName: "",
     UserID: 0,
-  });
-  let todoListCurrentPage = JSON.parse(localStorage.getItem("todoListPage"));
-  let todoListPageSize = localStorage.getItem("todoListRow");
+  })
+  let todoListCurrentPage = JSON.parse(localStorage.getItem("todoListPage"))
+  let todoListPageSize = localStorage.getItem("todoListRow")
   const [open, setOpen] = useState({
     open: false,
     message: "",
-  });
-  const [statusOptions, setStatusOptions] = useState([]);
-  const [tableFilterOptions, setTableFilterOptions] = useState([]);
+  })
+  const [statusOptions, setStatusOptions] = useState([])
+  const [tableFilterOptions, setTableFilterOptions] = useState([])
   //Get Current User ID
-  let createrID = localStorage.getItem("userID");
+  let createrID = localStorage.getItem("userID")
 
   // GET TODOS STATUS
   useEffect(() => {
-    dispatch(getTodoStatus(navigate, t));
+    dispatch(getTodoStatus(navigate, t))
     if (todoListPageSize !== null && todoListCurrentPage !== null) {
       dispatch(
         SearchTodoListApi(
@@ -111,17 +102,17 @@ const TodoList = () => {
           todoListPageSize,
           t
         )
-      );
+      )
     } else {
-      localStorage.setItem("todoListPage", 1);
-      localStorage.setItem("todoListRow", 50);
-      dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
+      localStorage.setItem("todoListPage", 1)
+      localStorage.setItem("todoListRow", 50)
+      dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t))
     }
     return () => {
-      localStorage.removeItem("todoListPage");
-      localStorage.removeItem("todoListRow");
-    };
-  }, []);
+      localStorage.removeItem("todoListPage")
+      localStorage.removeItem("todoListRow")
+    }
+  }, [])
 
   //get todolist reducer
   useEffect(() => {
@@ -129,61 +120,61 @@ const TodoList = () => {
       toDoListReducer.SearchTodolist !== null &&
       toDoListReducer.SearchTodolist !== undefined
     ) {
-      setTotalRecords(toDoListReducer.SearchTodolist.totalRecords);
+      setTotalRecords(toDoListReducer.SearchTodolist.totalRecords)
       if (toDoListReducer.SearchTodolist.toDoLists.length > 0) {
-        setRowToDo(toDoListReducer.SearchTodolist.toDoLists);
+        setRowToDo(toDoListReducer.SearchTodolist.toDoLists)
       } else {
-        setRowToDo([]);
+        setRowToDo([])
       }
     } else {
-      setRowToDo([]);
+      setRowToDo([])
     }
-  }, [toDoListReducer.SearchTodolist]);
+  }, [toDoListReducer.SearchTodolist])
 
   useEffect(() => {
     if (Object.keys(toDoListReducer.SocketTodoActivityData).length > 0) {
-      setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo]);
+      setRowToDo([toDoListReducer.SocketTodoActivityData, ...rowsToDo])
     } else {
-      setRowToDo(toDoListReducer.AllTodolistData);
+      setRowToDo(toDoListReducer.AllTodolistData)
     }
-  }, [toDoListReducer.SocketTodoActivityData]);
+  }, [toDoListReducer.SocketTodoActivityData])
 
   // SET STATUS VALUES
   useEffect(() => {
-    let optionsArr = [];
-    let newOptionsFilter = [];
+    let optionsArr = []
+    let newOptionsFilter = []
     if (todoStatus.Response !== null && todoStatus.Response !== "") {
       todoStatus.Response.map((data, index) => {
         optionsArr.push({
           id: data.pK_TSID,
           status: data.status,
-        });
+        })
         newOptionsFilter.push({
           key: data.pK_TSID,
           label: data.status,
-        });
-      });
+        })
+      })
     }
-    setStatusOptions(optionsArr);
-    setTableFilterOptions(newOptionsFilter);
-  }, [todoStatus]);
+    setStatusOptions(optionsArr)
+    setTableFilterOptions(newOptionsFilter)
+  }, [todoStatus])
 
   // for modal create  handler
   const modalHandler = (e) => {
-    setShow(true);
-  };
+    setShow(true)
+  }
 
   // for Socket Update meeting status update
   useEffect(() => {
     if (Object.keys(toDoListReducer.socketTodoStatusData).length > 0) {
-      let tableRowsData = [...rowsToDo];
+      let tableRowsData = [...rowsToDo]
       var foundIndex = tableRowsData.findIndex(
         (x) => x.pK_TID === toDoListReducer.socketTodoStatusData.todoid
-      );
+      )
       if (foundIndex !== -1) {
         let newArr = tableRowsData.map((rowObj, index) => {
           if (index === foundIndex) {
-            let statusID = toDoListReducer.socketTodoStatusData.todoStatusID;
+            let statusID = toDoListReducer.socketTodoStatusData.todoStatusID
             const newData = {
               ...rowObj,
               status: {
@@ -203,37 +194,37 @@ const TodoList = () => {
                     ? "Deleted"
                     : null,
               },
-            };
-            return newData;
+            }
+            return newData
           }
-          return rowObj;
-        });
-        setRowToDo(newArr);
+          return rowObj
+        })
+        setRowToDo(newArr)
       }
     }
-  }, [toDoListReducer.socketTodoStatusData]);
+  }, [toDoListReducer.socketTodoStatusData])
 
   const ShowHide = () => {
-    setExpand(!isExpand);
+    setExpand(!isExpand)
     setSearchData({
       Date: "",
       Title: "",
       AssignedToName: "",
       UserID: parseInt(0),
-    });
-  };
+    })
+  }
 
   // for view modal  handler
   const viewModalHandler = (id) => {
     // setViewFlagToDo(true);
-    let Data = { ToDoListID: id };
-    dispatch(ViewToDoList(navigate, Data, t));
-  };
+    let Data = { ToDoListID: id }
+    dispatch(ViewToDoList(navigate, Data, t))
+  }
 
   // for search Date handler
   const tableTodoChange = (pagination, filters, sorter) => {
-    let newArrData = [];
-    let todoStatus = filters.status;
+    let newArrData = []
+    let todoStatus = filters.status
     if (
       todoStatus !== null &&
       todoStatus !== undefined &&
@@ -242,22 +233,22 @@ const TodoList = () => {
       todoStatus.map((statusValue, index) => {
         let newArr = toDoListReducer.SearchTodolist.toDoLists.filter(
           (data, index) => {
-            return data.status.status === statusValue;
+            return data.status.status === statusValue
           }
-        );
+        )
         if (newArr.length > 0) {
-          setRowToDo(newArr);
+          setRowToDo(newArr)
         } else {
-          setRowToDo([]);
+          setRowToDo([])
         }
-      });
+      })
     } else if (todoStatus === null) {
-      setRowToDo(toDoListReducer.SearchTodolist.toDoLists);
+      setRowToDo(toDoListReducer.SearchTodolist.toDoLists)
     }
-  };
+  }
 
   const deleteTodolist = async (record) => {
-    await dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false));
+    await dispatch(updateTodoStatusFunc(navigate, 6, record.pK_TID, t, false))
     if (todoListPageSize !== null && todoListCurrentPage !== null) {
       dispatch(
         SearchTodoListApi(
@@ -267,13 +258,13 @@ const TodoList = () => {
           todoListPageSize,
           t
         )
-      );
+      )
     } else {
-      localStorage.setItem("todoListPage", 1);
-      localStorage.setItem("todoListRow", 50);
-      dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t));
+      localStorage.setItem("todoListPage", 1)
+      localStorage.setItem("todoListRow", 50)
+      dispatch(SearchTodoListApi(navigate, searchData, 1, 50, t))
     }
-  };
+  }
 
   const columnsToDoAr = [
     {
@@ -301,18 +292,23 @@ const TodoList = () => {
       sortDirections: ["descend", "ascend"],
       // align: "left",
       render: (record, index) => {
+        console.log(record, "recordrecordrecord1212")
         return (
           <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular">
             {" "}
-            <img className="data-img" src={UserImage} alt="userimage" />
+            <img
+              className="data-img"
+              src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
+              alt="userimage"
+            />
             {record.name}
           </p>
-        );
+        )
       },
       sorter: (a, b) => {
         return a?.taskCreator?.name
           .toLowerCase()
-          .localeCompare(b?.taskCreator?.name.toLowerCase());
+          .localeCompare(b?.taskCreator?.name.toLowerCase())
       },
     },
     {
@@ -327,13 +323,18 @@ const TodoList = () => {
           .localeCompare(b.taskAssignedTo[0].name.toLowerCase()),
       render: (text, record) => {
         if (text !== undefined && text !== null && text.length > 0) {
+          console.log(record, "recordrecordrecord1212")
           return (
             <>
               <p className="m-0 MontserratRegular color-505050 FontArabicRegular">
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
-                    <img className="data-img" src={UserImage} alt="userimage" />
+                    <img
+                      className="data-img"
+                      src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
+                      alt="userimage"
+                    />
 
                     {text[0].name}
                   </>
@@ -341,7 +342,7 @@ const TodoList = () => {
                   <>
                     <img
                       className="data-img "
-                      src={UserImage}
+                      src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
                       alt="userimage"
                     />
                     {text[0].name}
@@ -349,7 +350,7 @@ const TodoList = () => {
                 )}
               </p>
             </>
-          );
+          )
         }
       },
     },
@@ -365,12 +366,12 @@ const TodoList = () => {
         return (
           _justShowDateformat(a.deadlineDateTime) <
           _justShowDateformat(b.deadlineDateTime)
-        );
+        )
       },
 
       // width: "220px",
       render: (text, record) => {
-        return newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime);
+        return newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime)
       },
     },
     {
@@ -414,7 +415,7 @@ const TodoList = () => {
       ),
 
       onFilter: (value, record) => {
-        return record.status.status.toLowerCase().includes(value.toLowerCase());
+        return record.status.status.toLowerCase().includes(value.toLowerCase())
       },
       render: (text, record) => {
         return record.taskAssignedTo.map((newdata, index) => {
@@ -444,10 +445,10 @@ const TodoList = () => {
                     <option key={optValue.id} value={optValue.id}>
                       {optValue.status}
                     </option>
-                  );
+                  )
                 })}
               </Select>
-            );
+            )
           } else {
             return (
               <p
@@ -467,9 +468,9 @@ const TodoList = () => {
               >
                 {text.status}
               </p>
-            );
+            )
           }
-        });
+        })
       },
       filterMultiple: true,
     },
@@ -487,13 +488,13 @@ const TodoList = () => {
             >
               <img src={del} alt="" />
             </i>
-          );
+          )
         } else {
-          <></>;
+          ;<></>
         }
       },
     },
-  ];
+  ]
 
   const columnsToDo = [
     {
@@ -524,15 +525,19 @@ const TodoList = () => {
         return (
           <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular">
             {" "}
-            <img className="data-img" src={UserImage} alt="userimage" />
+            <img
+              className="data-img"
+              src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
+              alt="userimage"
+            />
             {record?.name}
           </p>
-        );
+        )
       },
       sorter: (a, b) => {
         return a?.taskCreator?.name
           .toLowerCase()
-          .localeCompare(b?.taskCreator?.name.toLowerCase());
+          .localeCompare(b?.taskCreator?.name.toLowerCase())
       },
     },
     {
@@ -553,7 +558,11 @@ const TodoList = () => {
                 {" "}
                 {currentLanguage === "ar" ? (
                   <>
-                    <img className="data-img" src={UserImage} alt="userimage" />
+                    <img
+                      className="data-img"
+                      src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
+                      alt="userimage"
+                    />
 
                     {text[0].name}
                   </>
@@ -561,7 +570,7 @@ const TodoList = () => {
                   <>
                     <img
                       className="data-img "
-                      src={UserImage}
+                      src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
                       alt="userimage"
                     />
                     {text[0].name}
@@ -569,7 +578,7 @@ const TodoList = () => {
                 )}
               </p>
             </>
-          );
+          )
         }
       },
     },
@@ -585,7 +594,7 @@ const TodoList = () => {
         newTimeFormaterAsPerUTCFullDate(b.deadlineDateTime),
       // width: "220px",
       render: (text, record) => {
-        return newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime);
+        return newTimeFormaterAsPerUTCFullDate(record.deadlineDateTime)
       },
     },
     {
@@ -628,7 +637,7 @@ const TodoList = () => {
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
       onFilter: (value, record) => {
-        return record.status.status.toLowerCase().includes(value.toLowerCase());
+        return record.status.status.toLowerCase().includes(value.toLowerCase())
       },
       render: (text, record) => {
         return record.taskAssignedTo.map((newdata, index) => {
@@ -658,10 +667,10 @@ const TodoList = () => {
                     <option key={optValue.id} value={optValue.id}>
                       {optValue.status}
                     </option>
-                  );
+                  )
                 })}
               </Select>
-            );
+            )
           } else {
             return (
               <p
@@ -681,9 +690,9 @@ const TodoList = () => {
               >
                 {text.status}
               </p>
-            );
+            )
           }
-        });
+        })
       },
       filterMultiple: true,
     },
@@ -693,7 +702,7 @@ const TodoList = () => {
       key: "taskCreator",
       width: "120px",
       render: (record, index) => {
-        console.log(record, index, "recordrecordrecordrecordrecord");
+        console.log(record, index, "recordrecordrecordrecordrecord")
         if (parseInt(record?.pK_UID) === parseInt(createrID)) {
           return (
             <i
@@ -702,25 +711,25 @@ const TodoList = () => {
             >
               <img src={del} alt="" />
             </i>
-          );
+          )
         } else {
-          <></>;
+          ;<></>
         }
       },
     },
-  ];
+  ]
 
   useEffect(() => {
-    setViewFlagToDo(false);
+    setViewFlagToDo(false)
     if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
       if (modalsflag === true) {
-        setUpdateFlagToDo(true);
-        setModalsflag(false);
+        setUpdateFlagToDo(true)
+        setModalsflag(false)
       } else {
-        setViewFlagToDo(true);
+        setViewFlagToDo(true)
       }
     }
-  }, [toDoListReducer.ToDoDetails]);
+  }, [toDoListReducer.ToDoDetails])
 
   // for search Date handler
   const searchHandlerDate = (e) => {
@@ -728,44 +737,44 @@ const TodoList = () => {
       ...searchData,
       Date: e.target.value,
       UserID: parseInt(createrID),
-    });
-  };
+    })
+  }
 
   // CHANGE HANDLER STATUS
   const statusChangeHandler = (e, statusdata) => {
-    dispatch(updateTodoStatusFunc(navigate, e, statusdata, t, false));
+    dispatch(updateTodoStatusFunc(navigate, e, statusdata, t, false))
     // let data = { UserID: parseInt(createrID), NumberOfRecords: 300 };
     // dispatch(GetTodoListByUser(data, t));
-  };
+  }
 
   // for search handler
   const searchHandler = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
+    let name = e.target.name
+    let value = e.target.value
     if (name === "Title") {
       setSearchData({
         ...searchData,
         [name]: value.trimStart(),
         UserID: parseInt(createrID),
-      });
+      })
     } else if (name === "AssignedToName") {
       setSearchData({
         ...searchData,
         [name]: value.trimStart(),
         UserID: parseInt(createrID),
-      });
+      })
     }
-  };
+  }
 
   const paginationChangeHandlerTodo = async (current, pageSize) => {
-    localStorage.setItem("todoListPage", current);
-    localStorage.setItem("todoListRow", pageSize);
-    dispatch(SearchTodoListApi(navigate, searchData, current, pageSize, t));
-  };
+    localStorage.setItem("todoListPage", current)
+    localStorage.setItem("todoListRow", pageSize)
+    dispatch(SearchTodoListApi(navigate, searchData, current, pageSize, t))
+  }
 
   // for search
   const search = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (
       searchData.Date === "" &&
       searchData.Title === "" &&
@@ -776,15 +785,15 @@ const TodoList = () => {
         Title: "",
         AssignedToName: "",
         UserID: parseInt(createrID),
-      };
-      dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
+      }
+      dispatch(SearchTodoListApi(navigate, newData, 1, 50, t))
       setSearchData({
         ...searchData,
         Date: "",
         Title: "",
         AssignedToName: "",
         UserID: parseInt(0),
-      });
+      })
     } else {
       // make notification for if input fields is empty here
       let newData = {
@@ -792,33 +801,33 @@ const TodoList = () => {
         Title: "",
         AssignedToName: "",
         UserID: parseInt(createrID),
-      };
-      dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
+      }
+      dispatch(SearchTodoListApi(navigate, newData, 1, 50, t))
       setSearchData({
         Date: "",
         Title: "",
         AssignedToName: "",
         UserID: parseInt(0),
-      });
+      })
     }
-  };
+  }
   const resetSearchBar = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     let newData = {
       Date: "",
       Title: "",
       AssignedToName: "",
       UserID: parseInt(createrID),
-    };
-    localStorage.setItem("todoListPage", 1);
-    dispatch(SearchTodoListApi(navigate, newData, 1, 50, t));
+    }
+    localStorage.setItem("todoListPage", 1)
+    dispatch(SearchTodoListApi(navigate, newData, 1, 50, t))
     setSearchData({
       Date: "",
       Title: "",
       AssignedToName: "",
       UserID: parseInt(0),
-    });
-  };
+    })
+  }
   useEffect(() => {
     if (
       toDoListReducer.ResponseMessage != "" &&
@@ -830,16 +839,16 @@ const TodoList = () => {
         ...open,
         open: true,
         message: toDoListReducer.ResponseMessage,
-      });
+      })
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
           message: "",
-        });
-      }, 3000);
+        })
+      }, 3000)
 
-      dispatch(clearResponce());
+      dispatch(clearResponce())
     } else if (
       assignees.ResponseMessage !== "" &&
       assignees.ResponseMessage !== t("Record-found") &&
@@ -849,21 +858,21 @@ const TodoList = () => {
         ...open,
         open: true,
         message: assignees.ResponseMessage,
-      });
+      })
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
           message: "",
-        });
-      }, 3000);
+        })
+      }, 3000)
 
-      dispatch(clearResponseMessage());
+      dispatch(clearResponseMessage())
     } else {
-      dispatch(clearResponce());
-      dispatch(clearResponseMessage());
+      dispatch(clearResponce())
+      dispatch(clearResponseMessage())
     }
-  }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage]);
+  }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage])
 
   useEffect(() => {
     if (
@@ -876,16 +885,16 @@ const TodoList = () => {
         ...open,
         open: true,
         message: getTodosStatus.ResponseMessage,
-      });
+      })
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
           message: "",
-        });
-      }, 3000);
+        })
+      }, 3000)
 
-      dispatch(cleareMessage());
+      dispatch(cleareMessage())
     } else if (
       getTodosStatus.UpdateTodoStatusMessage != "" &&
       getTodosStatus.UpdateTodoStatusMessage != undefined &&
@@ -896,16 +905,16 @@ const TodoList = () => {
         ...open,
         open: true,
         message: getTodosStatus.UpdateTodoStatusMessage,
-      });
+      })
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
           message: "",
-        });
-      }, 3000);
+        })
+      }, 3000)
 
-      dispatch(cleareMessage());
+      dispatch(cleareMessage())
     } else if (
       getTodosStatus.UpdateTodoStatus != "" &&
       getTodosStatus.UpdateTodoStatus != undefined &&
@@ -916,24 +925,24 @@ const TodoList = () => {
         ...open,
         open: true,
         message: getTodosStatus.UpdateTodoStatus,
-      });
+      })
       setTimeout(() => {
         setOpen({
           ...open,
           open: false,
           message: "",
-        });
-      }, 3000);
+        })
+      }, 3000)
 
-      dispatch(cleareMessage());
+      dispatch(cleareMessage())
     } else {
-      dispatch(cleareMessage());
+      dispatch(cleareMessage())
     }
   }, [
     getTodosStatus.ResponseMessage,
     getTodosStatus.UpdateTodoStatusMessage,
     getTodosStatus.UpdateTodoStatus,
-  ]);
+  ])
 
   return (
     <>
@@ -1172,6 +1181,6 @@ const TodoList = () => {
         <Loader />
       ) : null}
     </>
-  );
-};
-export default TodoList;
+  )
+}
+export default TodoList

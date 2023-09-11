@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import {
   Container,
   Nav,
@@ -7,54 +7,55 @@ import {
   DropdownButton,
   Row,
   Col,
-} from "react-bootstrap";
-import Dropdown from "react-bootstrap/Dropdown";
-import { useNavigate, Link } from "react-router-dom";
-import DiskusLogoHeader from "../../../assets/images/newElements/diskus_newheader.svg";
-import DiskusHeaderSetting from "../../../assets/images/newElements/Diskus_newSetting.svg";
-import DiskusHeaderInfo from "../../../assets/images/newElements/Diskus-infoIcon.svg";
-import DiskusNotificationIcon from "../../../assets/images/newElements/Diskus-notification_icon.svg";
-import "./Header.css";
-import "../../../i18n.js";
-import { useTranslation } from "react-i18next";
-import { signOut } from "../../../store/actions/Auth_Sign_Out";
+} from "react-bootstrap"
+import Dropdown from "react-bootstrap/Dropdown"
+import { useNavigate, Link } from "react-router-dom"
+import DiskusLogoHeader from "../../../assets/images/newElements/diskus_newheader.svg"
+import DiskusHeaderSetting from "../../../assets/images/newElements/Diskus_newSetting.svg"
+import DiskusHeaderInfo from "../../../assets/images/newElements/Diskus-infoIcon.svg"
+import DiskusNotificationIcon from "../../../assets/images/newElements/Diskus-notification_icon.svg"
+import "./Header.css"
+import "../../../i18n.js"
+import { useTranslation } from "react-i18next"
+import { signOut } from "../../../store/actions/Auth_Sign_Out"
 import {
   getUserDetails,
   getUserSetting,
-} from "../../../store/actions/GetUserSetting";
-import currentUserImage from "../../../assets/images/avatar.png";
-import LanguageIcon from "../../../assets/images/Language.svg";
-import { useLocation } from "react-router-dom";
-import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
-import { Button, Loader, Modal } from "../../../components/elements";
-import UserProfile from "../../../container/authentication/User_Profile/UserProfile";
-import { Select } from "antd";
-import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
-import { useRef } from "react";
-import LanguageSelector from "../../elements/languageSelector/Language-selector";
+} from "../../../store/actions/GetUserSetting"
+import currentUserImage from "../../../assets/images/avatar.png"
+import LanguageIcon from "../../../assets/images/Language.svg"
+import { useLocation } from "react-router-dom"
+import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails"
+import { Button, Loader, Modal } from "../../../components/elements"
+import UserProfile from "../../../container/authentication/User_Profile/UserProfile"
+import { Select } from "antd"
+import { ChevronDown, ChevronUp } from "react-bootstrap-icons"
+import { useRef } from "react"
+import LanguageSelector from "../../elements/languageSelector/Language-selector"
 
 const Header2 = () => {
-  const location = useLocation();
+  const location = useLocation()
   // const languageref = useRef()
-  const state = useSelector((state) => state);
-  const { settingReducer } = state;
-  const { NotificationData, UserProfileData } = settingReducer;
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [reload, setReload] = useState(false);
-  const [currentUserName, setCurrentUserName] = useState("");
+  const state = useSelector((state) => state)
+  const { settingReducer } = state
+  const { NotificationData, UserProfileData } = settingReducer
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [reload, setReload] = useState(false)
+  const [currentUserName, setCurrentUserName] = useState("")
+  const [currentUserProfilePic, setCurrentUserProfilePic] = useState(null)
   //for dropdown
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [activateBlur, setActivateBlur] = useState(false);
-  let roleID = localStorage.getItem("roleID");
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [activateBlur, setActivateBlur] = useState(false)
+  let roleID = localStorage.getItem("roleID")
 
   // for userProfile
-  const [userProfileModal, setUserProfileModal] = useState(false);
+  const [userProfileModal, setUserProfileModal] = useState(false)
   //for userprofile edit modal
-  const [editFlag, setEditFlag] = useState(false);
-  const [modalsflag, setModalsflag] = useState(false);
+  const [editFlag, setEditFlag] = useState(false)
+  const [modalsflag, setModalsflag] = useState(false)
   // const [languageforView, setLanguageforView] = useState("")
-  let Blur = localStorage.getItem("blur");
+  let Blur = localStorage.getItem("blur")
   // const [languageDropdown, setLanguageDropdown] = useState(false)
   // Languages
   // const languages = [
@@ -65,9 +66,9 @@ const Header2 = () => {
   // ];
 
   // const currentLocale = Cookies.get("i18next");
-  let currentLanguage = localStorage.getItem("i18nextLng");
-  const [show, setShow] = useState(false);
-  const { t, i18n } = useTranslation();
+  let currentLanguage = localStorage.getItem("i18nextLng")
+  const [show, setShow] = useState(false)
+  const { t, i18n } = useTranslation()
   // useEffect(() => {
   //   if (currentLanguage !== null) {
   //     let currentLanguageForView = languages.filter((data, index) => data.code === currentLanguage)
@@ -77,40 +78,43 @@ const Header2 = () => {
   // }, [])
   useEffect(() => {
     if (Blur != undefined) {
-      console.log("Blur", Blur);
+      console.log("Blur", Blur)
 
-      setActivateBlur(true);
+      setActivateBlur(true)
     } else {
-      console.log("Blur", Blur);
+      console.log("Blur", Blur)
 
-      setActivateBlur(false);
+      setActivateBlur(false)
     }
-  }, [Blur]);
+  }, [Blur])
 
   useEffect(() => {
     if (reload === false) {
-      setReload(true);
+      setReload(true)
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    let currentUserID = localStorage.getItem("userID");
-    let OrganizationID = localStorage.getItem("organizationID");
-    dispatch(getUserSetting(navigate, t));
-  }, []);
+    let currentUserID = localStorage.getItem("userID")
+    let OrganizationID = localStorage.getItem("organizationID")
+    dispatch(getUserSetting(navigate, t))
+  }, [])
 
   useEffect(() => {
-    console.log("UserProfileDataUserProfileData", UserProfileData);
+    console.log("UserProfileDataUserProfileData", UserProfileData)
     if (UserProfileData !== undefined && UserProfileData !== null) {
-      setCurrentUserName(UserProfileData?.userName);
+      setCurrentUserName(UserProfileData?.userName)
+      setCurrentUserProfilePic(
+        UserProfileData?.userProfilePicture?.displayProfilePictureName
+      )
     }
-  }, [UserProfileData]);
+  }, [UserProfileData])
 
   // const [language, setLanguage] = useState(currentLanguage);
 
   const forgotPasswordCheck = () => {
-    localStorage.setItem("globalPassowrdChecker", true);
-  };
+    localStorage.setItem("globalPassowrdChecker", true)
+  }
 
   // const handleChangeLocale = (lang) => {
   //   setLanguageDropdown(false)
@@ -134,31 +138,31 @@ const Header2 = () => {
   // }, [i18n]);
 
   const dropDownMenuFunction = () => {
-    setDropdownOpen(!dropdownOpen);
-  };
+    setDropdownOpen(!dropdownOpen)
+  }
 
   // userProfile handler
   const modalUserProfileHandler = (e) => {
     // setUserProfileModal(true);
-    let userID = localStorage.getItem("userID");
-    let OrganizationID = localStorage.getItem("organizationID");
+    let userID = localStorage.getItem("userID")
+    let OrganizationID = localStorage.getItem("organizationID")
     dispatch(
       getUserDetails(navigate, userID, t, OrganizationID, setUserProfileModal)
-    );
-  };
+    )
+  }
 
   // for modal create  handler
   const modalLogoutHandler = async (e) => {
-    await setShow(true);
-  };
+    await setShow(true)
+  }
 
   const handleCancel = async (e) => {
-    await setShow(false);
-  };
+    await setShow(false)
+  }
 
   const logoutFunction = () => {
-    dispatch(signOut(navigate));
-  };
+    dispatch(signOut(navigate))
+  }
   // const handleOutsideClick = (event) => {
   //   if (
   //     languageref.current &&
@@ -235,7 +239,7 @@ const Header2 = () => {
               <Dropdown className="profilebtn-dropdown">
                 <Dropdown.Toggle className="dropdown-toggle">
                   <img
-                    src={currentUserImage}
+                    src={`data:image/jpeg;base64,${currentUserProfilePic}`}
                     className="user-img me-3 "
                     width={30}
                     alt=""
@@ -451,7 +455,7 @@ const Header2 = () => {
               <Dropdown className="profilebtn-dropdown">
                 <Dropdown.Toggle className="dropdown-toggle">
                   <img
-                    src={currentUserImage}
+                    src={`data:image/jpeg;base64,${currentUserProfilePic}`}
                     className="user-img me-3 "
                     width={30}
                     alt=""
@@ -648,7 +652,7 @@ const Header2 = () => {
         />
       ) : null}
     </>
-  );
-};
+  )
+}
 
-export default Header2;
+export default Header2

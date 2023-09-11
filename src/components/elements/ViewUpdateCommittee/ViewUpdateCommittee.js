@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import styles from "./ViewUpdateCommittee.module.css";
-import Newprofile from "../../../assets/images/newprofile.png";
-import { Paper } from "@material-ui/core";
-import { Button } from "./../../../components/elements";
-import { useTranslation } from "react-i18next";
-import Committee from "../../../container/Committee/Committee";
-import { useDispatch, useSelector } from "react-redux";
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react"
+import { Col, Container, Row } from "react-bootstrap"
+import styles from "./ViewUpdateCommittee.module.css"
+import Newprofile from "../../../assets/images/newprofile.png"
+import { Paper } from "@material-ui/core"
+import { Button } from "./../../../components/elements"
+import { useTranslation } from "react-i18next"
+import Committee from "../../../container/Committee/Committee"
+import { useDispatch, useSelector } from "react-redux"
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees"
+import { useNavigate } from "react-router-dom"
 const ViewUpdateCommittee = ({ setViewGroupPage }) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { t } = useTranslation();
-  const [viewCommitteeClose, setViewCommitteeClose] = useState(true);
-  const { CommitteeReducer } = useSelector((state) => state);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { t } = useTranslation()
+  const [viewCommitteeClose, setViewCommitteeClose] = useState(true)
+  const { CommitteeReducer } = useSelector((state) => state)
   const [committeeData, setCommitteeData] = useState({
     committeeTitle: "",
     committeeDescription: "",
@@ -23,16 +23,16 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
     committeeStatus: 0,
     committeeID: 0,
     committeeMembers: [],
-  });
+  })
   const closebtn = async () => {
-    setViewGroupPage(false);
-  };
+    setViewGroupPage(false)
+  }
   useEffect(() => {
     if (
       CommitteeReducer.getCommitteeByCommitteeID !== null &&
       CommitteeReducer.getCommitteeByCommitteeID !== undefined
     ) {
-      let committeedetails = CommitteeReducer.getCommitteeByCommitteeID;
+      let committeedetails = CommitteeReducer.getCommitteeByCommitteeID
       setCommitteeData({
         committeeTitle: committeedetails.committeeTitle,
         committeeDescription: committeedetails.committeeDescription,
@@ -41,14 +41,14 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
         committeeStatus: committeedetails.committeeStatus.committeeStatusID,
         committeeID: 0,
         committeeMembers: committeedetails.committeMembers,
-      });
+      })
     }
-  }, [CommitteeReducer.getCommitteeByCommitteeID]);
+  }, [CommitteeReducer.getCommitteeByCommitteeID])
 
   useEffect(() => {
-    let UserID = JSON.parse(localStorage.getItem("userID"));
-    dispatch(allAssignessList(navigate, t));
-  }, []);
+    let UserID = JSON.parse(localStorage.getItem("userID"))
+    dispatch(allAssignessList(navigate, t))
+  }, [])
 
   return (
     <>
@@ -109,7 +109,12 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                       <Col lg={4} md={4} sm={12} className="mt-2">
                         <Row>
                           <Col lg={2} md={2} sm={12}>
-                            <img src={Newprofile} width={50} />
+                            <img
+                              src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                              width={50}
+                              height={50}
+                              alt=""
+                            />
                           </Col>
                           <Col
                             lg={9}
@@ -135,7 +140,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                                     <span
                                       className={
                                         styles[
-                                        "Designation-ViewCommittee-group"
+                                          "Designation-ViewCommittee-group"
                                         ]
                                       }
                                     >
@@ -159,7 +164,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                           </Col>
                         </Row>
                       </Col>
-                    );
+                    )
                   })}
               </Row>
               {/* Regular Members */}
@@ -181,7 +186,12 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                       <Col lg={4} md={4} sm={12} className="mt-2">
                         <Row>
                           <Col lg={2} md={2} sm={12}>
-                            <img src={Newprofile} width={50} />
+                            <img
+                              src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                              width={50}
+                              height={50}
+                              alt=""
+                            />
                           </Col>
                           <Col
                             lg={9}
@@ -207,7 +217,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                                     <span
                                       className={
                                         styles[
-                                        "Designation-ViewCommittee-group"
+                                          "Designation-ViewCommittee-group"
                                         ]
                                       }
                                     >
@@ -231,7 +241,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                           </Col>
                         </Row>
                       </Col>
-                    );
+                    )
                   })}
               </Row>
               {/* Chair Person Members */}
@@ -249,12 +259,20 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                       filterData.committeeRole.committeeRoleID === 3
                   )
                   .map((data, index) => {
-                    console.log(data, "ChairPersonChairPersonChairPersonChairPerson")
+                    console.log(
+                      data,
+                      "ChairPersonChairPersonChairPersonChairPerson"
+                    )
                     return (
                       <Col lg={4} md={4} sm={12} className="mt-2">
                         <Row>
                           <Col lg={2} md={2} sm={12}>
-                            <img src={Newprofile} width={50} />
+                            <img
+                              src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                              width={50}
+                              height={50}
+                              alt=""
+                            />
                           </Col>
                           <Col
                             lg={9}
@@ -280,7 +298,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                                     <span
                                       className={
                                         styles[
-                                        "Designation-ViewCommittee-group"
+                                          "Designation-ViewCommittee-group"
                                         ]
                                       }
                                     >
@@ -304,7 +322,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                           </Col>
                         </Row>
                       </Col>
-                    );
+                    )
                   })}
               </Row>
               {/* Vice Chair Person Members */}
@@ -322,12 +340,20 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                       filterData.committeeRole.committeeRoleID === 4
                   )
                   .map((data, index) => {
-                    console.log(data, "ChairPersonChairPersonChairPersonChairPerson")
+                    console.log(
+                      data,
+                      "ChairPersonChairPersonChairPersonChairPerson"
+                    )
                     return (
                       <Col lg={4} md={4} sm={12} className="mt-2">
                         <Row>
                           <Col lg={2} md={2} sm={12}>
-                            <img src={Newprofile} width={50} />
+                            <img
+                              src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                              width={50}
+                              height={50}
+                              alt=""
+                            />
                           </Col>
                           <Col
                             lg={9}
@@ -353,7 +379,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                                     <span
                                       className={
                                         styles[
-                                        "Designation-ViewCommittee-group"
+                                          "Designation-ViewCommittee-group"
                                         ]
                                       }
                                     >
@@ -377,7 +403,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                           </Col>
                         </Row>
                       </Col>
-                    );
+                    )
                   })}
               </Row>
               {/* Secretary Members */}
@@ -399,7 +425,12 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                       <Col lg={4} md={4} sm={12} className="mt-2">
                         <Row>
                           <Col lg={2} md={2} sm={12}>
-                            <img src={Newprofile} width={50} />
+                            <img
+                              src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                              width={50}
+                              height={50}
+                              alt=""
+                            />
                           </Col>
                           <Col
                             lg={9}
@@ -425,7 +456,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                                     <span
                                       className={
                                         styles[
-                                        "Designation-ViewCommittee-group"
+                                          "Designation-ViewCommittee-group"
                                         ]
                                       }
                                     >
@@ -449,7 +480,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
                           </Col>
                         </Row>
                       </Col>
-                    );
+                    )
                   })}
               </Row>
             </Col>
@@ -466,7 +497,7 @@ const ViewUpdateCommittee = ({ setViewGroupPage }) => {
         </Paper>
       </section>
     </>
-  );
-};
+  )
+}
 
-export default ViewUpdateCommittee;
+export default ViewUpdateCommittee
