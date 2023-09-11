@@ -97,7 +97,9 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
   return (
     <>
       {proposedMeetingDates ? (
-        <ProposedMeetingDate />
+        <ProposedMeetingDate
+          setProposedMeetingDates={setProposedMeetingDates}
+        />
       ) : (
         <>
           <section>
