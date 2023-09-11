@@ -274,314 +274,327 @@ const EditAgenda = ({ AgendaData }) => {
                                     styles["OverAll_padding_SubAgenda"]
                                   }
                                 >
-                                  <Row className="mt-2">
-                                    <Col lg={1} md={1} sm={1}></Col>
-                                    <Col
-                                      lg={11}
-                                      md={11}
-                                      sm={11}
-                                      className={
-                                        styles["Scroller_SubAgendaView"]
-                                      }
-                                    >
-                                      {data.SubAgenda.map(
-                                        (
-                                          subAgendaViewData,
-                                          subAgendaViewIndex
-                                        ) => {
-                                          return (
-                                            <>
-                                              {editSubAgendaIndex ===
-                                                subAgendaViewIndex &&
-                                              EditMainAgendaIndex === index &&
-                                              editSubAgenda ? (
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <Row className="mt-4 mb-2">
+                                        <Col lg={1} md={1} sm={1}></Col>
+                                        <Col lg={11} md={11} sm={11}>
+                                          {data.SubAgenda.map(
+                                            (
+                                              subAgendaViewData,
+                                              subAgendaViewIndex
+                                            ) => {
+                                              return (
                                                 <>
-                                                  <Row>
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                      //   className=""
-                                                    >
-                                                      <Row
-                                                        className={
-                                                          styles[
-                                                            "Add-note-QuillRow"
-                                                          ]
-                                                        }
-                                                      >
+                                                  {editSubAgendaIndex ===
+                                                    subAgendaViewIndex &&
+                                                  EditMainAgendaIndex ===
+                                                    index &&
+                                                  editSubAgenda ? (
+                                                    <>
+                                                      <Row>
                                                         <Col
                                                           lg={12}
                                                           md={12}
                                                           sm={12}
-                                                          xs={12}
-                                                          className={
-                                                            styles[
-                                                              "Arabic_font_Applied"
-                                                            ]
-                                                          }
+                                                          //   className=""
                                                         >
-                                                          <ReactQuill
-                                                            ref={editorRef}
-                                                            theme="snow"
-                                                            // value={data.name}
-                                                            placeholder={t(
-                                                              "Note-details"
-                                                            )}
-                                                            modules={modules}
+                                                          <Row
                                                             className={
                                                               styles[
-                                                                "quill-height-addNote"
+                                                                "Add-note-QuillRow"
                                                               ]
                                                             }
-                                                          />
-                                                          <img
-                                                            src={RedCroseeIcon}
-                                                            className={
-                                                              styles[
-                                                                "RedCrossForEdit"
-                                                              ]
-                                                            }
-                                                          />
+                                                          >
+                                                            <Col
+                                                              lg={12}
+                                                              md={12}
+                                                              sm={12}
+                                                              xs={12}
+                                                              className={
+                                                                styles[
+                                                                  "Arabic_font_Applied"
+                                                                ]
+                                                              }
+                                                            >
+                                                              <ReactQuill
+                                                                ref={editorRef}
+                                                                theme="snow"
+                                                                // value={data.name}
+                                                                placeholder={t(
+                                                                  "Note-details"
+                                                                )}
+                                                                modules={
+                                                                  modules
+                                                                }
+                                                                className={
+                                                                  styles[
+                                                                    "quill-height-addNote"
+                                                                  ]
+                                                                }
+                                                              />
+                                                              <img
+                                                                src={
+                                                                  RedCroseeIcon
+                                                                }
+                                                                className={
+                                                                  styles[
+                                                                    "RedCrossForEdit"
+                                                                  ]
+                                                                }
+                                                              />
+                                                            </Col>
+                                                          </Row>
                                                         </Col>
                                                       </Row>
-                                                    </Col>
-                                                  </Row>
-                                                </>
-                                              ) : (
-                                                <>
-                                                  <Col
-                                                    lg={12}
-                                                    md={12}
-                                                    sm={12}
-                                                    className={"mt-5"}
-                                                  >
-                                                    <Row>
-                                                      <Col
-                                                        lg={12}
-                                                        md={12}
-                                                        sm={12}
-                                                      >
-                                                        <span
-                                                          className={
-                                                            styles[
-                                                              "SubAgendaSubTitleHeaeding"
-                                                            ]
-                                                          }
-                                                        >
-                                                          1.1.
-                                                          <span>
-                                                            {
-                                                              subAgendaViewData.SubTitle
-                                                            }
-                                                          </span>
-                                                        </span>
-                                                      </Col>
-                                                    </Row>
-                                                    <Row>
+                                                    </>
+                                                  ) : (
+                                                    <>
                                                       <Col
                                                         lg={12}
                                                         md={12}
                                                         sm={12}
                                                         className={
-                                                          styles["Box_Minutes"]
+                                                          editSubAgenda
+                                                            ? "mt-5"
+                                                            : "mt-3"
                                                         }
                                                       >
                                                         <Row>
                                                           <Col
-                                                            lg={8}
-                                                            md={8}
-                                                            sm={8}
+                                                            lg={12}
+                                                            md={12}
+                                                            sm={12}
                                                           >
-                                                            <Row className="mt-3">
+                                                            <span
+                                                              className={
+                                                                styles[
+                                                                  "SubAgendaSubTitleHeaeding"
+                                                                ]
+                                                              }
+                                                            >
+                                                              1.1.
+                                                              <span>
+                                                                {
+                                                                  subAgendaViewData.SubTitle
+                                                                }
+                                                              </span>
+                                                            </span>
+                                                          </Col>
+                                                        </Row>
+                                                        <Row>
+                                                          <Col
+                                                            lg={12}
+                                                            md={12}
+                                                            sm={12}
+                                                            className={
+                                                              styles[
+                                                                "Box_Minutes_SubAgenda_Edit"
+                                                              ]
+                                                            }
+                                                          >
+                                                            <Row>
                                                               <Col
-                                                                lg={12}
-                                                                md={12}
-                                                                sm={12}
+                                                                lg={8}
+                                                                md={8}
+                                                                sm={8}
                                                               >
-                                                                <span
-                                                                  className={
-                                                                    styles[
-                                                                      "Title_File"
-                                                                    ]
-                                                                  }
-                                                                >
-                                                                  {expandIndex ===
-                                                                    index &&
-                                                                  expanded ===
-                                                                    true ? (
-                                                                    <>
-                                                                      {subAgendaViewData?.SubTitle?.substring(
-                                                                        0,
-                                                                        190
-                                                                      )}
-                                                                      ...
-                                                                    </>
-                                                                  ) : (
-                                                                    <>
-                                                                      {
-                                                                        subAgendaViewData?.SubTitle
+                                                                <Row className="mt-3">
+                                                                  <Col
+                                                                    lg={12}
+                                                                    md={12}
+                                                                    sm={12}
+                                                                  >
+                                                                    <span
+                                                                      className={
+                                                                        styles[
+                                                                          "Title_File"
+                                                                        ]
                                                                       }
-                                                                    </>
-                                                                  )}
+                                                                    >
+                                                                      {expandIndex ===
+                                                                        index &&
+                                                                      expanded ===
+                                                                        true ? (
+                                                                        <>
+                                                                          {subAgendaViewData?.SubTitle?.substring(
+                                                                            0,
+                                                                            190
+                                                                          )}
+                                                                          ...
+                                                                        </>
+                                                                      ) : (
+                                                                        <>
+                                                                          {
+                                                                            subAgendaViewData?.SubTitle
+                                                                          }
+                                                                        </>
+                                                                      )}
 
-                                                                  <span
+                                                                      <span
+                                                                        className={
+                                                                          styles[
+                                                                            "Show_more_Styles"
+                                                                          ]
+                                                                        }
+                                                                        onClick={() =>
+                                                                          toggleExpansion(
+                                                                            index
+                                                                          )
+                                                                        }
+                                                                      >
+                                                                        {expanded
+                                                                          ? t(
+                                                                              "See-more"
+                                                                            )
+                                                                          : t(
+                                                                              "See-less"
+                                                                            )}
+                                                                      </span>
+                                                                    </span>
+                                                                  </Col>
+                                                                </Row>
+                                                                <Row className="mt-1">
+                                                                  <Col
+                                                                    lg={12}
+                                                                    md={12}
+                                                                    sm={12}
+                                                                  >
+                                                                    <span
+                                                                      className={
+                                                                        styles[
+                                                                          "Date_Minutes_And_time"
+                                                                        ]
+                                                                      }
+                                                                    >
+                                                                      4:00pm,
+                                                                      18th May,
+                                                                      2020
+                                                                    </span>
+                                                                  </Col>
+                                                                </Row>
+                                                              </Col>
+                                                              <Col
+                                                                lg={4}
+                                                                md={4}
+                                                                sm={4}
+                                                                className="mt-4"
+                                                              >
+                                                                <Row className="d-flex justify-content-end">
+                                                                  <Col
+                                                                    lg={2}
+                                                                    md={2}
+                                                                    sm={2}
+                                                                  >
+                                                                    <img
+                                                                      src={
+                                                                        profile
+                                                                      }
+                                                                      height="39px"
+                                                                      width="39px"
+                                                                      className={
+                                                                        styles[
+                                                                          "Profile_minutes"
+                                                                        ]
+                                                                      }
+                                                                    />
+                                                                  </Col>
+                                                                  <Col
+                                                                    lg={6}
+                                                                    md={6}
+                                                                    sm={6}
                                                                     className={
                                                                       styles[
-                                                                        "Show_more_Styles"
+                                                                        "Line_heigh"
                                                                       ]
                                                                     }
-                                                                    onClick={() =>
-                                                                      toggleExpansion(
-                                                                        index
-                                                                      )
-                                                                    }
                                                                   >
-                                                                    {expanded
-                                                                      ? t(
-                                                                          "See-more"
-                                                                        )
-                                                                      : t(
-                                                                          "See-less"
-                                                                        )}
-                                                                  </span>
-                                                                </span>
-                                                              </Col>
-                                                            </Row>
-                                                            <Row className="mt-1">
-                                                              <Col
-                                                                lg={12}
-                                                                md={12}
-                                                                sm={12}
-                                                              >
-                                                                <span
-                                                                  className={
-                                                                    styles[
-                                                                      "Date_Minutes_And_time"
-                                                                    ]
-                                                                  }
-                                                                >
-                                                                  4:00pm, 18th
-                                                                  May, 2020
-                                                                </span>
-                                                              </Col>
-                                                            </Row>
-                                                          </Col>
-                                                          <Col
-                                                            lg={4}
-                                                            md={4}
-                                                            sm={4}
-                                                            className="mt-4"
-                                                          >
-                                                            <Row className="d-flex justify-content-end">
-                                                              <Col
-                                                                lg={2}
-                                                                md={2}
-                                                                sm={2}
-                                                              >
-                                                                <img
-                                                                  src={profile}
-                                                                  height="39px"
-                                                                  width="39px"
-                                                                  className={
-                                                                    styles[
-                                                                      "Profile_minutes"
-                                                                    ]
-                                                                  }
-                                                                />
-                                                              </Col>
-                                                              <Col
-                                                                lg={6}
-                                                                md={6}
-                                                                sm={6}
-                                                                className={
-                                                                  styles[
-                                                                    "Line_heigh"
-                                                                  ]
-                                                                }
-                                                              >
-                                                                <Row>
-                                                                  <Col
-                                                                    lg={12}
-                                                                    md={12}
-                                                                    sm={12}
-                                                                  >
-                                                                    <span
-                                                                      className={
-                                                                        styles[
-                                                                          "Uploaded_heading"
-                                                                        ]
-                                                                      }
-                                                                    >
-                                                                      {t(
-                                                                        "Uploaded-by"
-                                                                      )}
-                                                                    </span>
+                                                                    <Row>
+                                                                      <Col
+                                                                        lg={12}
+                                                                        md={12}
+                                                                        sm={12}
+                                                                      >
+                                                                        <span
+                                                                          className={
+                                                                            styles[
+                                                                              "Uploaded_heading"
+                                                                            ]
+                                                                          }
+                                                                        >
+                                                                          {t(
+                                                                            "Uploaded-by"
+                                                                          )}
+                                                                        </span>
+                                                                      </Col>
+                                                                    </Row>
+                                                                    <Row>
+                                                                      <Col
+                                                                        lg={12}
+                                                                        md={12}
+                                                                        sm={12}
+                                                                      >
+                                                                        <span
+                                                                          className={
+                                                                            styles[
+                                                                              "Name"
+                                                                            ]
+                                                                          }
+                                                                        >
+                                                                          Mehtab
+                                                                          Ahmed
+                                                                        </span>
+                                                                      </Col>
+                                                                    </Row>
                                                                   </Col>
-                                                                </Row>
-                                                                <Row>
                                                                   <Col
-                                                                    lg={12}
-                                                                    md={12}
-                                                                    sm={12}
+                                                                    lg={3}
+                                                                    md={3}
+                                                                    sm={3}
+                                                                    className="d-flex justify-content-start align-items-center"
                                                                   >
-                                                                    <span
-                                                                      className={
-                                                                        styles[
-                                                                          "Name"
-                                                                        ]
+                                                                    <img
+                                                                      src={
+                                                                        Editicon
                                                                       }
-                                                                    >
-                                                                      Mehtab
-                                                                      Ahmed
-                                                                    </span>
-                                                                  </Col>
-                                                                </Row>
-                                                              </Col>
-                                                              <Col
-                                                                lg={3}
-                                                                md={3}
-                                                                sm={3}
-                                                                className="d-flex justify-content-start align-items-center"
-                                                              >
-                                                                <img
-                                                                  src={Editicon}
-                                                                  height="21.55px"
-                                                                  width="21.55px"
-                                                                  className="cursor-pointer"
-                                                                  onClick={() => {
-                                                                    HandleSubAgendaEdit(
-                                                                      index,
-                                                                      subAgendaViewIndex
-                                                                    );
-                                                                  }}
-                                                                />
+                                                                      height="21.55px"
+                                                                      width="21.55px"
+                                                                      className="cursor-pointer"
+                                                                      onClick={() => {
+                                                                        HandleSubAgendaEdit(
+                                                                          index,
+                                                                          subAgendaViewIndex
+                                                                        );
+                                                                      }}
+                                                                    />
 
-                                                                <img
-                                                                  src={
-                                                                    RedCroseeIcon
-                                                                  }
-                                                                  height="20.76px"
-                                                                  width="20.76px"
-                                                                  className={
-                                                                    styles[
-                                                                      "RedCrossClassSubAgenda"
-                                                                    ]
-                                                                  }
-                                                                />
+                                                                    <img
+                                                                      src={
+                                                                        RedCroseeIcon
+                                                                      }
+                                                                      height="20.76px"
+                                                                      width="20.76px"
+                                                                      className={
+                                                                        styles[
+                                                                          "RedCrossClassSubAgenda"
+                                                                        ]
+                                                                      }
+                                                                    />
+                                                                  </Col>
+                                                                </Row>
                                                               </Col>
                                                             </Row>
                                                           </Col>
                                                         </Row>
                                                       </Col>
-                                                    </Row>
-                                                  </Col>
+                                                    </>
+                                                  )}
                                                 </>
-                                              )}
-                                            </>
-                                          );
-                                        }
-                                      )}
+                                              );
+                                            }
+                                          )}
+                                        </Col>
+                                      </Row>
                                     </Col>
                                   </Row>
                                 </Col>
