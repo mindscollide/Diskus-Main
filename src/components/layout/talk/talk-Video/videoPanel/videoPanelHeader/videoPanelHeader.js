@@ -88,6 +88,10 @@ const VideoPanelHeader = () => {
     }
   }
 
+  const preventPropagation = (event) => {
+    event.stopPropagation()
+  }
+
   return (
     <>
       <Container>
@@ -103,6 +107,7 @@ const VideoPanelHeader = () => {
               onChange={chatFilterHandler}
               className="videoFilter"
               popupClassName="talk-video-filter"
+              onClick={preventPropagation}
             />
           </Col>
           <Col lg={5} md={5} sm={12}></Col>

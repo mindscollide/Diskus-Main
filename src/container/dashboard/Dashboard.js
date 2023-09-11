@@ -13,6 +13,9 @@ import {
   incomingVideoCallFlag,
   videoOutgoingCallFlag,
   normalizeVideoPanelFlag,
+  maximizeVideoPanelFlag,
+  minimizeVideoPanelFlag,
+  leaveCallModal,
 } from '../../store/actions/VideoFeature_actions'
 import {
   allMeetingsSocket,
@@ -43,6 +46,7 @@ import {
   CallRequestReceived,
   callRequestReceivedMQTT,
   GetUserMissedCallCount,
+  missedCallCount,
 } from '../../store/actions/VideoMain_actions'
 import Helper from '../../commen/functions/history_logout'
 import IconMetroAttachment from '../../assets/images/newElements/Icon metro-attachment.svg'
@@ -938,25 +942,15 @@ const Dashboard = () => {
         dispatch(resolutionMQTTClosed(data.payload.model))
       }
     }
-
     if (data.action.toLowerCase() === 'Video'.toLowerCase()) {
       if (
         data.payload.message.toLowerCase() ===
         'NEW_VIDEO_CALL_INITIATED'.toLowerCase()
       ) {
         let callStatus = JSON.parse(localStorage.getItem('activeCall'))
-
-        console.log(
-          'CALL STATUS',
-          callStatus,
-          typeof callStatus,
-          callStatus === true,
-          callStatus === false,
-        )
         if (callStatus === true) {
           let timeValue = Number(localStorage.getItem('callRingerTimeout'))
           timeValue = timeValue * 1000
-
           const timeoutId = setTimeout(() => {
             let Data = {
               ReciepentID: Number(createrID),
@@ -965,7 +959,9 @@ const Dashboard = () => {
             }
             dispatch(VideoCallResponse(Data, navigate, t))
           }, timeValue)
-
+          localStorage.setItem('newRoomID', data.payload.roomID)
+          dispatch(incomingVideoCallMQTT(data.payload, data.payload.message))
+          dispatch(incomingVideoCallFlag(true))
           return () => clearTimeout(timeoutId)
         } else if (callStatus === false) {
           let Data = {
@@ -991,7 +987,7 @@ const Dashboard = () => {
         // dispatch(normalizeVideoPanelFlag(true));
         dispatch(videoCallAccepted(data.payload, data.payload.message))
         localStorage.setItem('RoomID', data.payload.roomID)
-        localStorage.setItem('callerID', data.senderID)
+        localStorage.setItem('callerID', data.receiverID[0])
         localStorage.setItem('callerName', data.payload.callerName)
         localStorage.setItem('recipentID', data.payload.recepientID)
         localStorage.setItem('recipentName', data.payload.recepientName)
@@ -1041,6 +1037,61 @@ const Dashboard = () => {
         dispatch(callRequestReceivedMQTT(data.payload, data.payload.message))
         localStorage.setItem('activeCall', false)
         localStorage.setItem('initiateVideoCall', true)
+      } else if (
+        data.payload.message.toLowerCase() ===
+        'VIDEO_CALL_DISCONNECTED_CALLER'.toLowerCase()
+      ) {
+        localStorage.setItem('activeCall', false)
+        localStorage.setItem('initiateVideoCall', false)
+        dispatch(normalizeVideoPanelFlag(false))
+        dispatch(maximizeVideoPanelFlag(false))
+        dispatch(minimizeVideoPanelFlag(false))
+        dispatch(leaveCallModal(false))
+        dispatch(incomingVideoCallFlag(false))
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `Call has been disconnected by the caller`,
+        })
+        setNotificationID(id)
+      } else if (
+        data.payload.message.toLowerCase() ===
+        'VIDEO_CALL_DISCONNECTED_RECIPIENT'.toLowerCase()
+      ) {
+        localStorage.setItem('activeCall', false)
+        localStorage.setItem('initiateVideoCall', false)
+        // let callerID = Number(localStorage.getItem('callerID'))
+        // if (Number(createrID) !== callerID) {
+        //   dispatch(normalizeVideoPanelFlag(false))
+        //   dispatch(maximizeVideoPanelFlag(false))
+        //   dispatch(minimizeVideoPanelFlag(false))
+        //   dispatch(leaveCallModal(false))
+        // }
+        setNotification({
+          ...notification,
+          notificationShow: true,
+          message: `Call has been disconnected by the recipient`,
+        })
+        setNotificationID(id)
+      } else if (
+        data.payload.message.toLowerCase() ===
+        'MISSED_CALLS_COUNT'.toLowerCase()
+      ) {
+        dispatch(missedCallCount(data.payload, data.payload.message))
+      } else if (
+        data.payload.message.toLowerCase() === 'VIDEO_CALL_BUSY'.toLowerCase()
+      ) {
+        if (data.payload.recepientID !== Number(createrID)) {
+          dispatch(normalizeVideoPanelFlag(false))
+          dispatch(maximizeVideoPanelFlag(false))
+          dispatch(minimizeVideoPanelFlag(false))
+          setNotification({
+            ...notification,
+            notificationShow: true,
+            message: `User Is Busy`,
+          })
+          setNotificationID(id)
+        }
       }
     }
   }

@@ -1,11 +1,16 @@
 import React, { useMemo } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { Modal, Button } from '../../../elements'
+import { Row, Col } from 'react-bootstrap'
 import VideoPanelNormal from './videoCallPanels/videoCallNormalPanel'
 import VideoPanelMaximize from './videoCallPanels/videoCallMaximizePanel'
 import VideoCallMinimizeHeader from './videoCallHeader/videoCallMinimizeHeader'
+import { leaveCallModal } from '../../../../store/actions/VideoFeature_actions'
 
 const VideoMain = () => {
   const { videoFeatureReducer } = useSelector((state) => state)
+
+  const dispatch = useDispatch()
 
   return (
     <>

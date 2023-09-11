@@ -900,6 +900,7 @@ const DataRoom = () => {
   //     dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, currentFilter));
   //   }
   // }, [currentFilter])
+
   const handleSortChange = (pagination, filters, sorter) => {
     console.log(filters, sorter, "filtersfiltersfilters")
     if (sorter.field === "sharedDate") {
@@ -1005,6 +1006,7 @@ const DataRoom = () => {
     //   }
     // }
   }
+
   const fetchDataWithFilter = async (filterValue) => {
     // dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, true, filterValue));
     // Call your API with the selected filter value and current sort order
@@ -1496,72 +1498,49 @@ const DataRoom = () => {
       )
     )
   }
-
+  const [detaUplodingForFOlder, setDetaUplodingForFOlder] = useState([])
+  const [lastUploadingFolderID, setLastUploadingFolderID] = useState([])
   // this fun triger when upload folder triiger
   const handleChangeFolderUpload = ({ directoryName, fileList }) => {
     try {
+      let newJsonCreate = { FolderName: "", FileList: [] }
+      let indexingRecordArray = { FolderName: "", FolderID: 0 }
       // this is used for prevent multi trigger
       if (directoryName !== directoryNames) {
         // this is use to set data in sate of current upload
         if (directoryName) {
+          newJsonCreate = {
+            FolderName: directoryName,
+            FileList: newJsonCreate.FileList,
+          }
+          indexingRecordArray = {
+            FolderName: directoryName,
+            FolderID: indexingRecordArray.FolderID,
+          }
+
           setDirectoryNames(directoryName)
         }
         if (fileList) {
+          newJsonCreate = {
+            FolderName: newJsonCreate.FolderName,
+            FileList: fileList,
+          }
+
           setFileLists(fileList)
         }
+        let duplicateIndexingRecordArray = [...detaUplodingForFOlder]
+        duplicateIndexingRecordArray.push(indexingRecordArray)
+        setLastUploadingFolderID({
+          ...lastUploadingFolderID,
+          duplicateIndexingRecordArray,
+        })
+        let duplicateUploadingArray = [...detaUplodingForFOlder]
+        duplicateUploadingArray.push(newJsonCreate)
+        setDetaUplodingForFOlder(duplicateUploadingArray)
       }
     } catch (error) {
       // Handle errors
     }
-  }
-
-  const handleFolderSelect = (folderInputFiles) => {
-    if (folderInputFiles.length === 0) {
-      return // No folders selected
-    }
-
-    const selectedFolders = []
-
-    // Iterate through the selected folder inputs
-    for (let i = 0; i < folderInputFiles.length; i++) {
-      const folderInput = folderInputFiles[i]
-      const directoryName = folderInput.webkitRelativePath.split("/")[0]
-      console.log(
-        folderInput,
-        directoryName,
-        "folderInputfolderInputfolderInput"
-      )
-      // const fileList = Array.from(folderInput.files);
-
-      // Add the selected folder to the list
-      // selectedFolders.push({ directoryName, fileList });
-    }
-
-    // Now, you have an array of selected folders
-    // Pass it to your handleFolderUpload function
-    handleChangeFolderUpload2({ selectedFolders })
-  }
-
-  // this fun triger when upload folder triiger
-  const handleChangeFolderUpload2 = ({ selectedFolders }) => {
-    console.log(
-      selectedFolders,
-      "selectedFoldersselectedFoldersselectedFolders"
-    )
-    // try {
-    //   // this is used for prevent multi trigger
-    //   if (directoryName !== directoryNames) {
-    //     // this is use to set data in sate of current upload
-    //     if (directoryName) {
-    //       setDirectoryNames(directoryName);
-    //     }
-    //     if (fileList) {
-    //       setFileLists(fileList);
-    //     }
-    //   }
-    // } catch (error) {
-    //   // Handle errors
-    // }
   }
 
   // when state update of upload new file this use effect call
@@ -1577,7 +1556,8 @@ const DataRoom = () => {
       }
     } else {
     }
-  }, [directoryNames, fileLists])
+    // }, [directoryNames, fileLists])
+  }, [directoryNames])
 
   // this hooks update when check folder responce update and also its shoulde not be equal to nul
   useEffect(() => {
@@ -1604,15 +1584,29 @@ const DataRoom = () => {
     // this is checker of reducer if its not on its initial state
     try {
       if (DataRoomReducer.CreatedFolderID !== 0) {
+        // this is for check and include id in folder of upload
+        // Find the last object in the array
+        const lastIndexofRecordArray = lastUploadingFolderID.length - 1
+        const lastIndexofUploadinArray = detaUplodingForFOlder.length - 1
+
+        // Check if the array is not empty
+        if (lastIndexofRecordArray >= 0) {
+          // Update the last object's FolderID with dynamicData
+          lastUploadingFolderID[lastIndexofRecordArray].FolderID = parseInt(
+            DataRoomReducer.CreatedFolderID
+          )
+        }
+        if (lastIndexofUploadinArray >= 0) {
+          // Update the last object's FolderID with dynamicData
+          detaUplodingForFOlder[lastIndexofUploadinArray].FolderName = parseInt(
+            DataRoomReducer.CreatedFolderID
+          )
+        }
         // this is checker if its hase no file in it so dont perform any action futer other wise hot this function for upload files
 
         if (fileLists.length > 0) {
           try {
-            // if (cancelUpload) {
-            // return;
-            // } else {
-            processArraySequentially()
-            // }
+            processArraySequentially(DataRoomReducer.CreatedFolderID)
           } catch (error) {
             console.error(error)
           }
@@ -1625,47 +1619,51 @@ const DataRoom = () => {
   }, [DataRoomReducer.CreatedFolderID])
 
   // this function call for current files which is in the folder
-  const processArraySequentially = async () => {
-    let newarray = [...fileLists]
-    // let shouldContinue = true; // Flag to control API calls
-    if (newarray.length > 0) {
-      for (const file of newarray) {
-        try {
-          // Call your API for the current item
-          const result = await dispatch(
-            uploadFile(
-              navigate,
-              file,
-              DataRoomReducer.CreatedFolderID,
-              t,
-              setProgress,
-              setRemainingTime,
-              remainingTime,
-              setShowbarupload,
-              setTasksAttachments,
-              cancelToken
-              // abortController.signal
+  const processArraySequentially = async (id) => {
+    let newarray = [...detaUplodingForFOlder]
+    const index = detaUplodingForFOlder.findIndex(
+      (folder) => folder.FolderName === id
+    )
+    if (index !== -1) {
+      // let shouldContinue = true; // Flag to control API calls
+      if (newarray.length > 0) {
+        for (const file of newarray[index].FileList) {
+          try {
+            // Call your API for the current item
+            const result = await dispatch(
+              uploadFile(
+                navigate,
+                file,
+                id,
+                t,
+                setProgress,
+                setRemainingTime,
+                remainingTime,
+                setShowbarupload,
+                setTasksAttachments,
+                cancelToken
+                // abortController.signal
+              )
             )
-          )
-          // Perform other actions with the result
+            // Perform other actions with the result
 
-          // You can wait for some time before proceeding to the next item
-          await new Promise((resolve) => setTimeout(resolve, 1000)) // Wait for 1 second
-        } catch (error) {
-          console.error("handleChangeFolderUpload API call error:", error)
+            // You can wait for some time before proceeding to the next item
+            await new Promise((resolve) => setTimeout(resolve, 1000)) // Wait for 1 second
+          } catch (error) {
+            console.error("handleChangeFolderUpload API call error:", error)
+          }
         }
       }
     }
-
     setDirectoryNames("")
     dispatch(CreateFolder_success(0))
-    let currentView = localStorage.getItem("setTableView")
-    let viewFolderID = localStorage.getItem("folderID")
-    if (viewFolderID !== null) {
-      dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1))
-    } else {
-      dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2))
-    }
+    // let currentView = localStorage.getItem("setTableView")
+    // let viewFolderID = localStorage.getItem("folderID")
+    // if (viewFolderID !== null) {
+    //   dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1))
+    // } else {
+    //   dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2))
+    // }
 
     // All API calls are complete, you can perform other actions here
   }
@@ -2028,19 +2026,14 @@ const DataRoom = () => {
       }
     } catch {}
   }, [DataRoomReducer.getFolderDocumentResponse])
-
-  // useEffect(() => {
-  //   if (uploadReducer.uploadDocumentsList !== null) {
-  //     let attachmentData = {
-  //       DisplayAttachmentName:
-  //         uploadReducer.uploadDocumentsList.displayFileName,
-  //       OriginalAttachmentName:
-  //         uploadReducer.uploadDocumentsList.originalFileName,
-  //     };
-  //     setTasksAttachments((prev) => [...prev, attachmentData]);
-  //     // setTasksAttachments([...tasksAttachments, attachmentData]);
-  //   }
-  // }, [uploadReducer.uploadDocumentsList]);
+  console.log(
+    "DataRoomReducer.folderUploadData",
+    DataRoomReducer.folderUploadData
+  )
+  console.log(
+    "DataRoomReducer.folderUploadData",
+    Object.keys(DataRoomReducer.folderUploadData).length
+  )
   return (
     <>
       <div className={styles["DataRoom_container"]}>
@@ -2715,10 +2708,6 @@ const DataRoom = () => {
                                   }
                                   onChange={handleChange}
                                   isSearchable={false}
-                                  // value={{
-                                  //   value: searchResultsFields.lastModifiedDate.value,
-                                  //   label: searchResultsFields.lastModifiedDate.label
-                                  // }}
                                 />
                               )}
                               {showsubmenu && (
@@ -3040,180 +3029,135 @@ const DataRoom = () => {
         </Row>
       </div>
       {showbarupload ? (
-        DataRoomReducer.folderUploadData !== null ? (
-          <>
-            <Row>
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className={
-                  collapes
-                    ? styles["Back_ground_For_uploader_active"]
-                    : styles["Back_ground_For_uploader_folder"]
-                }
-              >
-                <Row>
-                  <Col lg={12} md={12} sm={12} className={styles["Blue_Strip"]}>
-                    <Row className="mt-2">
-                      <Col
-                        lg={9}
-                        md={9}
-                        sm={9}
-                        className="d-flex justify-content-start gap-3"
-                      >
-                        <span className={styles["Uploading"]}>
-                          {`${t("Uploading")} ${tasksAttachments.length} ${t(
-                            "items"
-                          )}`}
-                          {/* {} */}
-                          {/* {Object.keys(tasksAttachments).length} {} */}
-                        </span>
-                        <Space className={styles["Progress_bar"]}>
-                          {parseInt(progress) + "%"}
-                        </Space>
-                        <Space className={styles["Progress_bar"]}>
-                          {`${remainingTime} ${t("Sec-remaining")}`}
-                        </Space>
-                      </Col>
-
-                      <Col
-                        lg={3}
-                        md={3}
-                        sm={3}
-                        className="d-flex justify-content-end gap-2 mt-1"
-                      >
-                        {collapes ? (
-                          <img
-                            src={chevronUp}
-                            width={9}
-                            alt=""
-                            className="cursor-pointer"
-                            onClick={() => setCollapes(false)}
-                          />
-                        ) : (
-                          <img
-                            src={chevdown}
-                            alt=""
-                            width={9}
-                            className="cursor-pointer"
-                            onClick={() => setCollapes(true)}
-                          />
-                        )}
-
-                        <img
-                          src={Cancellicon}
-                          width={9}
-                          alt=""
-                          className="cursor-pointer"
-                          onClick={closeSearchBar}
-                        />
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-                <Row>
+        Object.keys(DataRoomReducer.folderUploadData).length > 0 ? (
+          DataRoomReducer.folderUploadData.map((data, index) => {
+            return (
+              <>
+                <Row key={index}>
                   <Col
                     lg={12}
                     md={12}
                     sm={12}
-                    className={styles["Scroller_bar_of_BarUploder_folder"]}
+                    className={
+                      collapes
+                        ? styles["Back_ground_For_uploader_active"]
+                        : styles["Back_ground_For_uploader_folder"]
+                    }
                   >
-                    <Col sm={12} md={12} lg={12} className="">
-                      <Row>
-                        <Col
-                          sm={9}
-                          md={9}
-                          lg={9}
-                          className="d-flex align-items-center gap-3"
-                        >
-                          <img src={featherfolder} width={20} alt="" />
-                          <span>
-                            {" "}
-                            {DataRoomReducer.folderUploadData.displayFolderName}
-                          </span>
-                          <span>
-                            {`${tasksAttachments.length}  ${"Of"}  ${
-                              fileLists.length
-                            }  `}{" "}
-                          </span>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["Blue_Strip"]}
+                      >
+                        <Row className="mt-2">
+                          <Col
+                            lg={9}
+                            md={9}
+                            sm={9}
+                            className="d-flex justify-content-start gap-3"
+                          >
+                            <span className={styles["Uploading"]}>
+                              {`${t("Uploading")} ${
+                                tasksAttachments.length
+                              } ${t("items")}`}
+                            </span>
+                            <Space className={styles["Progress_bar"]}>
+                              {parseInt(progress) + "%"}
+                            </Space>
+                            <Space className={styles["Progress_bar"]}>
+                              {`${remainingTime} ${t("Sec-remaining")}`}
+                            </Space>
+                          </Col>
+
+                          <Col
+                            lg={3}
+                            md={3}
+                            sm={3}
+                            className="d-flex justify-content-end gap-2 mt-1"
+                          >
+                            {collapes ? (
+                              <img
+                                src={chevronUp}
+                                width={9}
+                                alt=""
+                                className="cursor-pointer"
+                                onClick={() => setCollapes(false)}
+                              />
+                            ) : (
+                              <img
+                                src={chevdown}
+                                alt=""
+                                width={9}
+                                className="cursor-pointer"
+                                onClick={() => setCollapes(true)}
+                              />
+                            )}
+
+                            <img
+                              src={Cancellicon}
+                              width={9}
+                              alt=""
+                              className="cursor-pointer"
+                              onClick={closeSearchBar}
+                            />
+                          </Col>
+                        </Row>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className={styles["Scroller_bar_of_BarUploder_folder"]}
+                      >
+                        <Col sm={12} md={12} lg={12} className="">
+                          <Row>
+                            <Col
+                              sm={9}
+                              md={9}
+                              lg={9}
+                              className="d-flex align-items-center gap-3"
+                            >
+                              <img src={featherfolder} width={20} alt="" />
+                              <span> {data.displayFolderName}</span>
+                              <span>
+                                {`${tasksAttachments.length}  ${"Of"}  ${
+                                  fileLists.length
+                                }  `}{" "}
+                              </span>
+                            </Col>
+                            <Col
+                              sm={3}
+                              md={3}
+                              lg={3}
+                              className={styles["progress_bar"]}
+                            >
+                              <CircularProgressbar
+                                value={tasksAttachments.length}
+                                maxValue={fileLists.length}
+                                // text={`${percentage}%`}
+                                className={styles["folderProgress"]}
+                                // value={progress}
+                              />
+                              <img
+                                src={CrossIcon}
+                                alt=""
+                                onClick={CanceApicalling}
+                                className={styles["crossIcon"]}
+                              />
+                            </Col>
+                          </Row>
                         </Col>
-                        <Col
-                          sm={3}
-                          md={3}
-                          lg={3}
-                          className={styles["progress_bar"]}
-                        >
-                          <CircularProgressbar
-                            value={tasksAttachments.length}
-                            maxValue={fileLists.length}
-                            // text={`${percentage}%`}
-                            className={styles["folderProgress"]}
-                            // value={progress}
-                          />
-                          {/* <Progress
-                            type="circle"
-                            className={styles["folderProgress"]}
-                            percent={progress}
-                            width={20}
-                            showInfo={false}
-                            size={20}
-                          /> */}
-                          <img
-                            src={CrossIcon}
-                            alt=""
-                            onClick={CanceApicalling}
-                            className={styles["crossIcon"]}
-                          />
-                          {/* <XCircleFill
-                            onClick={() => CanceApicalling()}
-                            className={styles["crossIcon"]}
-                            size={20}
-                          /> */}
-                        </Col>
-                      </Row>
-                    </Col>
-                    {/* {Object.values(tasksAttachments).length > 0
-                      ? Object.values(tasksAttachments).map((data, index) => {
-                          return (
-                            <>
-                              <Col
-                                lg={12}
-                                md={12}
-                                sm={12}
-                                key={index}
-                                className="d-flex gap-1 mt-2 flex-column mb-3"
-                              >
-                                <Space
-                                  direction="vertical"
-                                  className="d-flex flex-row"
-                                >
-                                  <img
-                                    src={PDFICON}
-                                    height="16px"
-                                    alt=""
-                                    width="16px"
-                                    className={styles["Icon_in_Bar"]}
-                                  />
-                                  <span
-                                    className={styles["name_of_life_in_Bar"]}
-                                  >
-                                    {data.name}
-                                  </span>
-                                </Space>
-                                {progress > 0 && (
-                                  <Progress percent={progress} />
-                                )}
-                              </Col>
-                            </>
-                          );
-                        })
-                      : null} */}
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
-              </Col>
-            </Row>
-          </>
+              </>
+            )
+          })
         ) : (
           <>
             <Row>
