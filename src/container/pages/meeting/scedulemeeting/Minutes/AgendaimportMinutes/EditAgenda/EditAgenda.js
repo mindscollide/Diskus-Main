@@ -289,7 +289,13 @@ const EditAgenda = ({ AgendaData }) => {
                                   lg={12}
                                   md={12}
                                   sm={12}
-                                  className={styles["Scroller_SubAgenda"]}
+                                  className={
+                                    data.SubAgenda.length <= 0
+                                      ? styles[
+                                          "Scroller_SubAgenda_WhenNO_SubAgenda"
+                                        ]
+                                      : styles["Scroller_SubAgenda"]
+                                  }
                                 >
                                   <Row>
                                     <Col
