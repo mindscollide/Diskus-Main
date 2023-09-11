@@ -101,19 +101,6 @@ const ViewMinutes = ({ AgendaData }) => {
                               </Col>
                             </Row>
                           </Col>
-                          <Col
-                            lg={3}
-                            md={3}
-                            sm={3}
-                            className="d-flex justify-content-start align-items-center"
-                          >
-                            <img
-                              src={Editicon}
-                              height="21.55px"
-                              width="21.55px"
-                              className="cursor-pointer"
-                            />
-                          </Col>
                         </Row>
                       </Col>
                     </Row>
@@ -248,19 +235,6 @@ const ViewMinutes = ({ AgendaData }) => {
                                                 </span>
                                               </Col>
                                             </Row>
-                                          </Col>
-                                          <Col
-                                            lg={3}
-                                            md={3}
-                                            sm={3}
-                                            className="d-flex justify-content-start align-items-center"
-                                          >
-                                            <img
-                                              src={Editicon}
-                                              height="21.55px"
-                                              width="21.55px"
-                                              className="cursor-pointer"
-                                            />
                                           </Col>
                                         </Row>
                                       </Col>

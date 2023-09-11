@@ -9,6 +9,7 @@ import { Col, Row } from "react-bootstrap";
 import { Button } from "../../../../../../../components/elements";
 import Editicon from "../../../../../../../assets/images/Edit-Icon.png";
 import ViewMinutes from "../ViewMinutes/ViewMinutes";
+import EditAgenda from "../EditAgenda/EditAgenda";
 
 const AfterSavedAgenda = ({ AgendaData }) => {
   const { t } = useTranslation();
@@ -17,6 +18,7 @@ const AfterSavedAgenda = ({ AgendaData }) => {
   const [expandSubAgenda, setexpandSubAgenda] = useState(false);
   const [expandIndex, setexpandIndex] = useState(0);
   const [viewMinutesPage, setviewMinutesPage] = useState(false);
+  const [showEditPage, setShowEditPage] = useState(false);
 
   const HandleExpandOptions = (index) => {
     setexpandIndex(index);
@@ -27,10 +29,16 @@ const AfterSavedAgenda = ({ AgendaData }) => {
     setviewMinutesPage(true);
   };
 
+  const handleEditAgendaPage = () => {
+    setShowEditPage(true);
+  };
+
   return (
     <section>
       {viewMinutesPage ? (
         <ViewMinutes AgendaData={AgendaData} />
+      ) : showEditPage ? (
+        <EditAgenda AgendaData={AgendaData} />
       ) : (
         <>
           <Row className="mt-3">
@@ -52,6 +60,7 @@ const AfterSavedAgenda = ({ AgendaData }) => {
                 text={t("Edit")}
                 className={styles["ButtonsAftersavedEdit"]}
                 icon={<img src={Editicon} height="11.75px" width="11.75px" />}
+                onClick={handleEditAgendaPage}
               />
             </Col>
           </Row>

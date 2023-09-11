@@ -1099,9 +1099,7 @@ const shareFoldersApi = (navigate, FolderData, t, setSharefolder) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            shareFoldersApi(navigate, FolderData, t, setShowrequestsend)
-          );
+          dispatch(shareFoldersApi(navigate, FolderData, t, setSharefolder));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
