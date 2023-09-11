@@ -9,6 +9,7 @@ import {
   getUserRecentCalls,
   callRequestReceived,
   getUserMissedCallCount,
+  leaveCall,
 } from '../../commen/apis/Api_config'
 import {
   normalizeVideoPanelFlag,
@@ -622,7 +623,12 @@ const GetUserMissedCallCount = (navigate, t) => {
                   'Video_VideoServiceManager_GetUserMissedCallCount_02'.toLowerCase(),
                 )
             ) {
-              await dispatch(getUserMissedCallCountFail(t('No-records-found')))
+              await dispatch(
+                getUserMissedCallCountSuccess(
+                  response.data.responseResult,
+                  t('No-records-found'),
+                ),
+              )
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -649,6 +655,82 @@ const GetUserMissedCallCount = (navigate, t) => {
   }
 }
 
+const leaveCallAction = (message) => {
+  return {
+    type: actions.LEAVE_CALL_ACTION,
+    message: message,
+  }
+}
+
+const LeaveCall = (Data, navigate, t) => {
+  let token = JSON.parse(localStorage.getItem('token'))
+  return (dispatch) => {
+    let form = new FormData()
+    form.append('RequestMethod', leaveCall.RequestMethod)
+    form.append('RequestData', JSON.stringify(Data))
+    axios({
+      method: 'post',
+      url: videoApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        console.log('LeaveCall', response)
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t))
+          dispatch(LeaveCall(Data, navigate, t))
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_LeaveCall_01'.toLowerCase(),
+                )
+            ) {
+              await dispatch(leaveCallAction(t('Call-disconnected-by-caller')))
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_LeaveCall_02'.toLowerCase(),
+                )
+            ) {
+              await dispatch(
+                leaveCallAction(t('Call-disconnected-by-recipient')),
+              )
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  'Video_VideoServiceManager_LeaveCall_03'.toLowerCase(),
+                )
+            ) {
+              await dispatch(leaveCallAction(t('Something-went-wrong')))
+            }
+          } else {
+            await dispatch(leaveCallAction(t('Something-went-wrong')))
+          }
+        } else {
+          await dispatch(leaveCallAction(t('Something-went-wrong')))
+        }
+      })
+      .catch((response) => {
+        dispatch(leaveCallAction(t('Something-went-wrong')))
+      })
+  }
+}
+
+const missedCallCount = (response, message) => {
+  return {
+    type: actions.MISSED_CALL_COUNT_MQTT,
+    response: response,
+    message: message,
+  }
+}
+
 export {
   GetAllVideoCallUsers,
   InitiateVideoCall,
@@ -662,4 +744,6 @@ export {
   GetUserMissedCallCount,
   GetUserRecentCallsScroll,
   ScrollRecentCalls,
+  LeaveCall,
+  missedCallCount,
 }

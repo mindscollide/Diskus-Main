@@ -14,7 +14,9 @@ const initialState = {
   CallRequestReceivedData: [],
   CallRequestReceivedMQTTData: {},
   MissedCallCountData: {},
+  MissedCallCountMqttData: {},
   ScrollBehavior: false,
+  LeaveCallResponse: {},
 }
 
 const VideoMainReducer = (state = initialState, action) => {
@@ -208,6 +210,22 @@ const VideoMainReducer = (state = initialState, action) => {
         ScrollBehavior: action.response,
       }
     }
+
+    case actions.LEAVE_CALL_ACTION: {
+      return {
+        ...state,
+        LeaveCallResponse: action.message,
+      }
+    }
+
+    case actions.MISSED_CALL_COUNT_MQTT: {
+      return {
+        ...state,
+        MissedCallCountMqttData: action.response,
+        ResponseMessage: action.message,
+      }
+    }
+
     default:
       return { ...state }
   }

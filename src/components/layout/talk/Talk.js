@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './Talk.css'
 import { Triangle } from 'react-bootstrap-icons'
 import { GetAllUserChats } from '../../../store/actions/Talk_action'
@@ -79,6 +79,8 @@ const Talk = () => {
   const showsubTalkIcons = () => {
     setSubIcons(!subIcons)
     setActiveChatBox(false)
+    setActiveVideoIcon(false)
+    dispatch(videoChatPanel(false))
   }
 
   let currentLang = localStorage.getItem('i18nextLng')
@@ -106,6 +108,7 @@ const Talk = () => {
     } else {
       setActiveChatBox(false)
       setActiveVideoIcon(false)
+      dispatch(videoChatPanel(false))
     }
   }
 
@@ -172,12 +175,63 @@ const Talk = () => {
     }
   }, [VideoMainReducer?.MissedCallCountData?.missedCallCount])
 
+  //MQTT Unread Message Count
+  useEffect(() => {
+    if (
+      VideoMainReducer.MissedCallCountMqttData !== undefined &&
+      VideoMainReducer.MissedCallCountMqttData !== null &&
+      Object.keys(VideoMainReducer.MissedCallCountMqttData).length !== 0
+    ) {
+      let missedCallCountMqtt =
+        VideoMainReducer.MissedCallCountMqttData.missedCallCount
+      if (missedCallCountMqtt !== 0) {
+        setMissedCallCount(missedCallCountMqtt)
+      } else {
+        setMissedCallCount(
+          VideoMainReducer?.MissedCallCountData?.missedCallCount,
+        )
+      }
+    }
+  }, [
+    VideoMainReducer?.MissedCallCountMqttData?.missedCallCount,
+    VideoMainReducer?.MissedCallCountData?.missedCallCount,
+  ])
+
   let totalValue = Number(missedCallCount) + Number(unreadMessageCount)
 
   console.log('Video Feature Reducer', videoFeatureReducer)
 
+  useEffect(() => {
+    if (videoFeatureReducer.VideoChatPanel === false) {
+      setActiveVideoIcon(false)
+    } else {
+      setActiveVideoIcon(true)
+    }
+  }, [videoFeatureReducer.VideoChatPanel])
+
+  const videoPanelRef = useRef(null)
+
+  const handleOutsideClick = (event) => {
+    if (
+      videoPanelRef.current &&
+      !videoPanelRef.current.contains(event.target) &&
+      activeVideoIcon
+    ) {
+      setActiveVideoIcon(false)
+      dispatch(videoChatPanel(false))
+    }
+    console.log('This Event got Clicked')
+  }
+
+  useEffect(() => {
+    document.addEventListener('click', handleOutsideClick)
+    return () => {
+      document.removeEventListener('click', handleOutsideClick)
+    }
+  }, [activeVideoIcon])
+
   return (
-    <div className={'talk_nav' + ' ' + currentLang}>
+    <div ref={videoPanelRef} className={'talk_nav' + ' ' + currentLang}>
       {activeChatBox === true ? (
         <TalkNew />
       ) : activeVideoIcon === true ? (
