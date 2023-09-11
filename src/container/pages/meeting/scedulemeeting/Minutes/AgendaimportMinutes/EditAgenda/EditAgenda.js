@@ -251,87 +251,107 @@ const EditAgenda = ({ AgendaData }) => {
                               </Col>
                             </>
                           )}
-                          {editSubAgenda ? (
-                            <>
-                              <Row>
-                                <Col lg={12} md={12} sm={12} className="mb-5">
-                                  <Row className={styles["Add-note-QuillRow"]}>
-                                    <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
-                                      xs={12}
-                                      className={styles["Arabic_font_Applied"]}
-                                    >
-                                      <ReactQuill
-                                        ref={editorRef}
-                                        theme="snow"
-                                        // value={data.name}
-                                        placeholder={t("Note-details")}
-                                        modules={modules}
-                                        className={
-                                          styles["quill-height-addNote"]
-                                        }
-                                      />
-                                      <img
-                                        src={RedCroseeIcon}
-                                        className={styles["RedCrossForEdit"]}
-                                      />
-                                    </Col>
-                                  </Row>
-                                </Col>
-                              </Row>
-                            </>
-                          ) : (
-                            <>
+
+                          <Row>
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className={
+                                data.SubAgenda.length <= 0
+                                  ? styles[
+                                      "Scroller_SubAgenda_WhenNO_SubAgenda"
+                                    ]
+                                  : styles["Scroller_SubAgenda"]
+                              }
+                            >
                               <Row>
                                 <Col
                                   lg={12}
                                   md={12}
                                   sm={12}
                                   className={
-                                    data.SubAgenda.length <= 0
-                                      ? styles[
-                                          "Scroller_SubAgenda_WhenNO_SubAgenda"
-                                        ]
-                                      : styles["Scroller_SubAgenda"]
+                                    styles["OverAll_padding_SubAgenda"]
                                   }
                                 >
-                                  <Row>
+                                  <Row className="mt-2">
+                                    <Col lg={1} md={1} sm={1}></Col>
                                     <Col
-                                      lg={12}
-                                      md={12}
-                                      sm={12}
+                                      lg={11}
+                                      md={11}
+                                      sm={11}
                                       className={
-                                        styles["OverAll_padding_SubAgenda"]
+                                        styles["Scroller_SubAgendaView"]
                                       }
                                     >
-                                      <Row className="mt-2">
-                                        <Col lg={1} md={1} sm={1}></Col>
-                                        <Col
-                                          lg={11}
-                                          md={11}
-                                          sm={11}
-                                          className={
-                                            styles["Scroller_SubAgendaView"]
-                                          }
-                                        >
-                                          {data.SubAgenda.map(
-                                            (
-                                              subAgendaViewData,
-                                              subAgendaViewIndex
-                                            ) => {
-                                              return (
+                                      {data.SubAgenda.map(
+                                        (
+                                          subAgendaViewData,
+                                          subAgendaViewIndex
+                                        ) => {
+                                          return (
+                                            <>
+                                              {editSubAgenda ? (
+                                                <>
+                                                  <Row>
+                                                    <Col
+                                                      lg={12}
+                                                      md={12}
+                                                      sm={12}
+                                                      //   className=""
+                                                    >
+                                                      <Row
+                                                        className={
+                                                          styles[
+                                                            "Add-note-QuillRow"
+                                                          ]
+                                                        }
+                                                      >
+                                                        <Col
+                                                          lg={12}
+                                                          md={12}
+                                                          sm={12}
+                                                          xs={12}
+                                                          className={
+                                                            styles[
+                                                              "Arabic_font_Applied"
+                                                            ]
+                                                          }
+                                                        >
+                                                          <ReactQuill
+                                                            ref={editorRef}
+                                                            theme="snow"
+                                                            // value={data.name}
+                                                            placeholder={t(
+                                                              "Note-details"
+                                                            )}
+                                                            modules={modules}
+                                                            className={
+                                                              styles[
+                                                                "quill-height-addNote"
+                                                              ]
+                                                            }
+                                                          />
+                                                          <img
+                                                            src={RedCroseeIcon}
+                                                            className={
+                                                              styles[
+                                                                "RedCrossForEdit"
+                                                              ]
+                                                            }
+                                                          />
+                                                        </Col>
+                                                      </Row>
+                                                    </Col>
+                                                  </Row>
+                                                </>
+                                              ) : (
                                                 <>
                                                   <Col
                                                     lg={12}
                                                     md={12}
                                                     sm={12}
-                                                    className={
-                                                      editSpecificAgenda
-                                                        ? "mt-5"
-                                                        : "mt-2"
-                                                    }
+                                                    className={"mt-5"}
                                                   >
                                                     <Row>
                                                       <Col
@@ -554,17 +574,17 @@ const EditAgenda = ({ AgendaData }) => {
                                                     </Row>
                                                   </Col>
                                                 </>
-                                              );
-                                            }
-                                          )}
-                                        </Col>
-                                      </Row>
+                                              )}
+                                            </>
+                                          );
+                                        }
+                                      )}
                                     </Col>
                                   </Row>
                                 </Col>
                               </Row>
-                            </>
-                          )}
+                            </Col>
+                          </Row>
                         </>
                       );
                     })
