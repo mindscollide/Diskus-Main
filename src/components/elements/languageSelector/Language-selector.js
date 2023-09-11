@@ -224,7 +224,8 @@ const LanguageSelector = () => {
         {languageDropdown ? (
           <img
             src={
-              location.pathname.includes("/DisKus")
+              location.pathname.includes("/DisKus") ||
+              location.pathname.includes("/Diskus")
                 ? LanguageArrowUp
                 : LanguageArrowUpBlack
             }
@@ -234,7 +235,8 @@ const LanguageSelector = () => {
         ) : (
           <img
             src={
-              location.pathname.includes("/DisKus")
+              location.pathname.includes("/DisKus") ||
+              location.pathname.includes("/Diskus")
                 ? LanguageArrowDown
                 : LanguageArrowDownBlack
             }

@@ -27,6 +27,7 @@ const UploadDataFolder = ({ setProgress, title, onChange }) => {
     <Upload
       directory
       showUploadList={false}
+      multiple
       beforeUpload={customBeforeUpload}
       customRequest={(options) => {
         // Implement your file upload logic here

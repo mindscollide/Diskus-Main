@@ -3,10 +3,6 @@ import { Col, Container, Form, Row } from "react-bootstrap";
 import styles from "../ModalUploadOptions_Folder/ModalOptions_Folder.module.css";
 import { useTranslation } from "react-i18next";
 import { Button, Modal } from "../../../components/elements";
-import {
-  createFolderApi,
-  uploadDocumentsApi,
-} from "../../../store/actions/DataRoom_actions";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createFolder } from "../../../store/actions/FolderUploadDataroom";
@@ -93,7 +89,7 @@ const ModalOptionsisExistFolder = ({
                       name="dataroomfiles"
                     />
                     <span className={styles["Options"]}>
-                      {t("Keep-both-files")}
+                      {t("Keep-both-folders")}
                     </span>
                   </Col>
                 </Row>

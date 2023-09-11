@@ -601,7 +601,7 @@ const uploadFile = (
       },
       onUploadProgress: (progressEvent) => {
         setTasksAttachments((prev) => {
-          return { ...prev, [file.uid]: file };
+          return [...prev, file];
         });
         const percentCompleted = Math.round(
           (progressEvent.loaded * 100) / progressEvent.total

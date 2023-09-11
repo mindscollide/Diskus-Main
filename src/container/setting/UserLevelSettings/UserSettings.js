@@ -1,51 +1,51 @@
-import React, { useState } from 'react'
-import styles from './UserSettings.module.css'
-import { Col, Row } from 'react-bootstrap'
-import { Loader, Button } from '../../../components/elements'
-import backbutton from '../../../assets/images/backbutton.svg'
-import { useTranslation } from 'react-i18next'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { Checkbox } from 'antd'
-import SecurityIcon from '../../../assets/images/SecuritySetting.svg'
-import TodoIcon from '../../../assets/images/Todo_icon.svg'
-import MeetingIcon from '../../../assets/images/MeetingSetting.svg'
-import Calender from '../../../assets/images/CalenderSetting.svg'
-import pollsIcon from '../../../assets/images/pollsIcon.svg'
-import Committee from '../../../assets/images/CommitteSetting.svg'
-import GroupIcon from '../../../assets/images/GroupSetting.svg'
-import ResolutionIcon from '../../../assets/images/new_ResolutionIcon2.svg'
-import line from '../../../assets/images/Line 27.svg'
-import { getUserSetting } from '../../../store/actions/GetUserSetting'
-import { useEffect } from 'react'
+import React, { useState } from "react";
+import styles from "./UserSettings.module.css";
+import { Col, Row } from "react-bootstrap";
+import { Loader, Button } from "../../../components/elements";
+import backbutton from "../../../assets/images/backbutton.svg";
+import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Checkbox } from "antd";
+import SecurityIcon from "../../../assets/images/SecuritySetting.svg";
+import TodoIcon from "../../../assets/images/Todo_icon.svg";
+import MeetingIcon from "../../../assets/images/MeetingSetting.svg";
+import Calender from "../../../assets/images/CalenderSetting.svg";
+import pollsIcon from "../../../assets/images/pollsIcon.svg";
+import Committee from "../../../assets/images/CommitteSetting.svg";
+import GroupIcon from "../../../assets/images/GroupSetting.svg";
+import ResolutionIcon from "../../../assets/images/new_ResolutionIcon2.svg";
+import line from "../../../assets/images/Line 27.svg";
+import { getUserSetting } from "../../../store/actions/GetUserSetting";
+import { useEffect } from "react";
 import {
   GoogleOAuthProvider,
   useGoogleLogin,
   useGoogleLogout,
-} from '@react-oauth/google'
+} from "@react-oauth/google";
 import {
   getGoogleValidToken,
   revokeToken,
-} from '../../../store/actions/UpdateUserGeneralSetting'
+} from "../../../store/actions/UpdateUserGeneralSetting";
 const UserSettings = () => {
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { settingReducer, LanguageReducer } = useSelector((state) => state)
-  const [securitystate, setSecuritystate] = useState(true)
-  const [todo, setTodo] = useState(false)
-  const [meetingsState, setmeetingsState] = useState(false)
-  const [calender, setCalender] = useState(false)
-  const [committee, setCommittee] = useState(false)
-  const [group, setGroup] = useState(false)
-  const [resolution, setResolution] = useState(false)
-  const [polls, setpolls] = useState(false)
-  const roleID = localStorage.getItem('roleID')
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { settingReducer, LanguageReducer } = useSelector((state) => state);
+  const [securitystate, setSecuritystate] = useState(true);
+  const [todo, setTodo] = useState(false);
+  const [meetingsState, setmeetingsState] = useState(false);
+  const [calender, setCalender] = useState(false);
+  const [committee, setCommittee] = useState(false);
+  const [group, setGroup] = useState(false);
+  const [resolution, setResolution] = useState(false);
+  const [polls, setpolls] = useState(false);
+  const roleID = localStorage.getItem("roleID");
   const { loaded, clientId } = useGoogleLogin({
     clientId:
-      '103867674074-tllj4s4mt4c5t15omf2t0s92097622jv.apps.googleusercontent.com',
-  })
-  const [signUpCodeToken, setSignUpCodeToken] = useState('')
+      "103867674074-tllj4s4mt4c5t15omf2t0s92097622jv.apps.googleusercontent.com",
+  });
+  const [signUpCodeToken, setSignUpCodeToken] = useState("");
   const [userOptionsSettings, setUserOptionsSettings] = useState({
     Is2FAEnabled: false,
     EmailOnNewMeeting: false,
@@ -82,9 +82,9 @@ const UserSettings = () => {
     PushNotificationWhenNewResolutionIsCirculated: false,
     PushNotificationWhenNewResolutionIsCancelledAfterCirculated: false,
     PushNotificationWhenResolutionISClosed: false,
-    DiskusCalenderColor: '',
-    GoogleCalenderColor: '',
-    MicrosoftCalenderColor: '',
+    DiskusCalenderColor: "",
+    GoogleCalenderColor: "",
+    MicrosoftCalenderColor: "",
     EmailWhenNewPollIsPublished: false,
     EmailWhenPollDueDateIsPassed: false,
     EmailWhenPublishedPollIsDeleted: false,
@@ -104,39 +104,39 @@ const UserSettings = () => {
     EmailWhenNewTODOAssigned: false,
     EmailWhenNewTODODeleted: false,
     EmailWhenNewTODOEdited: false,
-  })
+  });
 
   useEffect(() => {
-    dispatch(getUserSetting(navigate, t))
-  }, [])
+    dispatch(getUserSetting(navigate, t));
+  }, []);
 
   const handleGoogleLoginSuccess = (response) => {
-    setSignUpCodeToken(response.code)
+    setSignUpCodeToken(response.code);
     setUserOptionsSettings({
       ...userOptionsSettings,
       AllowGoogleCalenderSync: true,
-    })
-  }
+    });
+  };
 
   const handleGoogleLoginFailure = (response) => {
-    setSignUpCodeToken('')
+    setSignUpCodeToken("");
     setUserOptionsSettings({
       ...userOptionsSettings,
       AllowGoogleCalenderSync: userOptionsSettings.AllowGoogleCalenderSync,
-    })
-  }
+    });
+  };
 
   const signIn = useGoogleLogin({
     onSuccess: handleGoogleLoginSuccess,
     onError: handleGoogleLoginFailure,
-    flow: 'auth-code',
-    cookiePolicy: 'single_host_origin',
+    flow: "auth-code",
+    cookiePolicy: "single_host_origin",
     scope:
-      'https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/calendar.events', //openid email profile
-    access_type: 'offline',
-    responseType: 'code',
-    prompt: 'consent',
-  })
+      "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.readonly https://www.googleapis.com/auth/calendar.events.readonly https://www.googleapis.com/auth/calendar.events", //openid email profile
+    access_type: "offline",
+    responseType: "code",
+    prompt: "consent",
+  });
 
   useEffect(() => {
     if (
@@ -272,562 +272,562 @@ const UserSettings = () => {
             settingReducer.UserProfileData.emailWhenNewTODODeleted,
           EmailWhenNewTODOEdited:
             settingReducer.UserProfileData.emailWhenNewTODOEdited,
-        })
+        });
       }
     }
-  }, [settingReducer.UserProfileData])
+  }, [settingReducer.UserProfileData]);
 
   const openSecurityTab = () => {
-    setSecuritystate(true)
-    setmeetingsState(false)
-    setCalender(false)
-    setCommittee(false)
-    setGroup(false)
-    setResolution(false)
-    setpolls(false)
-    setTodo(false)
-  }
+    setSecuritystate(true);
+    setmeetingsState(false);
+    setCalender(false);
+    setCommittee(false);
+    setGroup(false);
+    setResolution(false);
+    setpolls(false);
+    setTodo(false);
+  };
 
   const openMeetingTab = () => {
-    setmeetingsState(true)
-    setSecuritystate(false)
-    setCalender(false)
-    setCommittee(false)
-    setGroup(false)
-    setResolution(false)
-    setpolls(false)
-    setTodo(false)
-  }
+    setmeetingsState(true);
+    setSecuritystate(false);
+    setCalender(false);
+    setCommittee(false);
+    setGroup(false);
+    setResolution(false);
+    setpolls(false);
+    setTodo(false);
+  };
 
   const opentodo = () => {
-    setTodo(true)
-    setSecuritystate(false)
-    setmeetingsState(false)
-    setCalender(false)
-    setCommittee(false)
-    setGroup(false)
-    setResolution(false)
-    setpolls(false)
-  }
+    setTodo(true);
+    setSecuritystate(false);
+    setmeetingsState(false);
+    setCalender(false);
+    setCommittee(false);
+    setGroup(false);
+    setResolution(false);
+    setpolls(false);
+  };
 
   const openCalenderTab = () => {
-    setCalender(true)
-    setmeetingsState(false)
-    setSecuritystate(false)
-    setCommittee(false)
-    setGroup(false)
-    setResolution(false)
-    setpolls(false)
-    setTodo(false)
-  }
+    setCalender(true);
+    setmeetingsState(false);
+    setSecuritystate(false);
+    setCommittee(false);
+    setGroup(false);
+    setResolution(false);
+    setpolls(false);
+    setTodo(false);
+  };
 
   const openCommitteTab = () => {
-    setCommittee(true)
-    setCalender(false)
-    setmeetingsState(false)
-    setSecuritystate(false)
-    setGroup(false)
-    setResolution(false)
-    setpolls(false)
-    setTodo(false)
-  }
+    setCommittee(true);
+    setCalender(false);
+    setmeetingsState(false);
+    setSecuritystate(false);
+    setGroup(false);
+    setResolution(false);
+    setpolls(false);
+    setTodo(false);
+  };
 
   const openGroupTab = () => {
-    setGroup(true)
-    setCommittee(false)
-    setCalender(false)
-    setmeetingsState(false)
-    setSecuritystate(false)
-    setResolution(false)
-    setpolls(false)
-    setTodo(false)
-  }
+    setGroup(true);
+    setCommittee(false);
+    setCalender(false);
+    setmeetingsState(false);
+    setSecuritystate(false);
+    setResolution(false);
+    setpolls(false);
+    setTodo(false);
+  };
 
   const openResolutionTab = () => {
-    setResolution(true)
-    setGroup(false)
-    setCommittee(false)
-    setCalender(false)
-    setmeetingsState(false)
-    setSecuritystate(false)
-    setpolls(false)
-    setTodo(false)
-  }
+    setResolution(true);
+    setGroup(false);
+    setCommittee(false);
+    setCalender(false);
+    setmeetingsState(false);
+    setSecuritystate(false);
+    setpolls(false);
+    setTodo(false);
+  };
 
   const openPollsTab = () => {
-    setpolls(true)
-    setResolution(false)
-    setGroup(false)
-    setCommittee(false)
-    setCalender(false)
-    setmeetingsState(false)
-    setSecuritystate(false)
-    setTodo(false)
-  }
+    setpolls(true);
+    setResolution(false);
+    setGroup(false);
+    setCommittee(false);
+    setCalender(false);
+    setmeetingsState(false);
+    setSecuritystate(false);
+    setTodo(false);
+  };
 
   const onChangeIsTwoFaceEnabled = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       Is2FAEnabled: value,
-    })
-  }
+    });
+  };
 
   const onChangeEmailOnNewMeeting = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailOnNewMeeting: value,
-    })
-  }
+    });
+  };
 
   const onChangeEmailOnEditMeeting = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailEditMeeting: value,
-    })
-  }
+    });
+  };
 
   const onChangeEmailOnCancelledOrDeletedMeeting = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailCancelOrDeleteMeeting: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNotificationonNewMeeting = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationonNewMeeting: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNotificationOnEditMeeting = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationEditMeeting: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNotificationOnCancelledOrDeleteMeeting = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationCancelledOrDeleteMeeting: value,
-    })
-  }
+    });
+  };
 
   const onChangeShowNotificationonJoiningParticiapnts = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       ShowNotificationOnParticipantJoining: value,
-    })
-  }
+    });
+  };
 
   const onChangeAllowCalenderSync = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     if (value) {
-      signIn()
+      signIn();
     } else {
       setUserOptionsSettings({
         ...userOptionsSettings,
         AllowGoogleCalenderSync: false,
-      })
+      });
     }
-  }
+  };
 
   const onChangeAllowMicrosoftCalenderSync = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       AllowMicrosoftCalenderSync: value,
-    })
-  }
+    });
+  };
 
   const onChangeEmailWhenAddedToCommittee = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenAddedToCommittee: value,
-    })
-  }
+    });
+  };
 
   const onChangeEmailWhenRemovedFromCommittee = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenRemovedFromCommittee: value,
-    })
-  }
+    });
+  };
 
   const onChangeWhenCommitteeIsDissolvedOrArchived = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenCommitteeIsDissolvedOrArchived: value,
-    })
-  }
+    });
+  };
 
   const onChangeEmailWhenCommitteeIsInActive = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenCommitteeIsSetInactive: value,
-    })
-  }
+    });
+  };
 
   const onChangeEmailWhenCommitteeIsActive = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenCommitteeIsActive: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNotificationWhenAddedToCommittee = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenAddedToCommittee: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNotificationWhenRemovedFromCommittee = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenRemovedFromCommittee: value,
-    })
-  }
+    });
+  };
 
   const onChangepushNotificationWhenCommitteeIsDissolvedOrArchived = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenCommitteeIsDissolvedOrArchived: value,
-    })
-  }
+    });
+  };
 
   const onChangepushNotificationWhenCommitteeIsInActive = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenCommitteeIsInActive: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNotificationwhenCommitteeissetActive = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationwhenCommitteeissetActive: value,
-    })
-  }
+    });
+  };
 
   const onChangeEmailWhenAddedToGroup = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenAddedToGroup: value,
-    })
-  }
+    });
+  };
 
   const onChangeEmailWhenRemovedFromGroup = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenRemovedFromGroup: value,
-    })
-  }
+    });
+  };
 
   const onChangeEmailWhenGroupIsDissolvedOrArchived = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenGroupIsDissolvedOrArchived: value,
-    })
-  }
+    });
+  };
 
   const onChangeWhenGroupIsSetInactive = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenGroupisSetInactive: value,
-    })
-  }
+    });
+  };
 
   const onChangeWhenEmailWhenGroupIsActive = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenGroupIsActive: value,
-    })
-  }
+    });
+  };
 
   const onChangeWhenPushNotificationwhenGroupissetActive = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationwhenGroupissetActive: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNotificationWhenAddedToGroup = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenAddedToGroup: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNotificationWhenRemovedFromGroup = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenRemovedFromGroup: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNotificationWhenGroupIsDissolvedOrArchived = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenGroupIsDissolvedOrArchived: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNotificationWhenGroupIsSetInActive = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenGroupIsInActive: value,
-    })
-  }
+    });
+  };
 
   const onChangeWhenResolutionIsCirculated = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenResolutionIsCirculated: value,
-    })
-  }
+    });
+  };
 
   const onChangeWhenNewPollIsPublished = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenNewPollIsPublished: value,
-    })
-  }
+    });
+  };
 
   const onChangeWhenPollsDueDateIsPassed = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenPollDueDateIsPassed: value,
-    })
-  }
+    });
+  };
 
   const onChangeWhenPublishedPollIsDeleted = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenPublishedPollIsDeleted: value,
-    })
-  }
+    });
+  };
 
   const onChangeWhenPublishedPollIsUpdated = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenPublishedPollIsUpdated: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNotificationWhenNewPollIsPublished = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenNewPollIsPublished: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNotificationWhenPollsDueDateIsPassed = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenPollDueDateIsPassed: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNotificationWhenPublishedPollIsDeleted = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenPublishedPollIsDeleted: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNotificationWhenPublishedPollisUpdated = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenPublishedPollIsUpdated: value,
-    })
-  }
+    });
+  };
 
   const onChangeEmailWhenResolutionIsCancelledAfterCirculation = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenNewResolutionIsCancelledAfterCirculation: value,
-    })
-  }
+    });
+  };
 
   const onChangeEmailWhenResolutionisClosed = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenResolutionIsClosed: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNotificationWhenResolutionIsCirculated = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenNewResolutionIsCirculated: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNoficationWhenNewResolutionIsCanelledAfterCirculated = (
-    e,
+    e
   ) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenNewResolutionIsCancelledAfterCirculated: value,
-    })
-  }
+    });
+  };
 
   const onChangePushNotificationWhenResolutionIsClosed = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenResolutionISClosed: value,
-    })
-  }
+    });
+  };
 
   const onChangeDiskusCalenderColor = (e) => {
     setUserOptionsSettings({
       ...userOptionsSettings,
       DiskusCalenderColor: e.target.value,
-    })
-  }
+    });
+  };
 
   const onChangeGoogleCalenderColor = (e) => {
     setUserOptionsSettings({
       ...userOptionsSettings,
       GoogleCalenderColor: e.target.value,
-    })
-  }
+    });
+  };
 
   const onChangeMicrosoftColorChange = (e) => {
     setUserOptionsSettings({
       ...userOptionsSettings,
       MicrosoftCalenderColor: e.target.value,
-    })
-  }
+    });
+  };
 
   const updateOrganizationLevelSettings = async () => {
-    if (signUpCodeToken != '') {
+    if (signUpCodeToken != "") {
       await dispatch(
-        getGoogleValidToken(navigate, signUpCodeToken, userOptionsSettings, t),
-      )
-      setSignUpCodeToken('')
+        getGoogleValidToken(navigate, signUpCodeToken, userOptionsSettings, t)
+      );
+      setSignUpCodeToken("");
     } else {
-      await dispatch(revokeToken(navigate, userOptionsSettings, t))
+      await dispatch(revokeToken(navigate, userOptionsSettings, t));
     }
-  }
+  };
 
   const onChangeEmailWhenNewTODOEdited = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenNewTODOEdited: value,
-    })
-  }
+    });
+  };
   const onChangeEmailWhenNewTODODeleted = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenNewTODODeleted: value,
-    })
-  }
+    });
+  };
   const onChangeEmailWhenNewTODOAssigned = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenNewTODOAssigned: value,
-    })
-  }
+    });
+  };
   const onChangeEmailWhenNewCommentAdded = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenNewCommentAdded: value,
-    })
-  }
+    });
+  };
   const onChangeEmailWhenCommentDeleted = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       EmailWhenCommentDeleted: value,
-    })
-  }
+    });
+  };
   const onChangePushNotificationWhenCommentDeleted = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenCommentDeleted: value,
-    })
-  }
+    });
+  };
   const onChangePushNotificationWhenNewCommentAdded = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenNewCommentAdded: value,
-    })
-  }
+    });
+  };
   const onChangePushNotificationWhenNewTODOEdited = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenNewTODOEdited: value,
-    })
-  }
+    });
+  };
   const onChangePushNotificationWhenNewTODODeleted = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenNewTODODeleted: value,
-    })
-  }
+    });
+  };
   const onChangePushNotificationWhenNewTODOAssigned = (e) => {
-    let value = e.target.checked
+    let value = e.target.checked;
     setUserOptionsSettings({
       ...userOptionsSettings,
       PushNotificationWhenNewTODOAssigned: value,
-    })
-  }
+    });
+  };
   return (
     <>
-      <section className={styles['UserConfigsContainer']}>
+      <section className={styles["UserConfigsContainer"]}>
         <Row className="mt-3">
           <Col
             lg={12}
@@ -835,8 +835,8 @@ const UserSettings = () => {
             sm={12}
             className="d-flex gap-3 align-items-center"
           >
-            <span className={styles['UserLevelConfig_Heading']}>
-              {t('User-level-configurations')}
+            <span className={styles["UserLevelConfig_Heading"]}>
+              {t("User-level-configurations")}
             </span>
           </Col>
         </Row>
@@ -845,7 +845,7 @@ const UserSettings = () => {
             lg={12}
             md={12}
             sm={12}
-            className={styles['Padding_around_class']}
+            className={styles["Padding_around_class"]}
           >
             <Row className="mt-3">
               <Col lg={3} md={3} sm={3}>
@@ -867,11 +867,11 @@ const UserSettings = () => {
                       <span
                         className={
                           securitystate
-                            ? styles['Options_headings_active']
-                            : styles['Options_headings']
+                            ? styles["Options_headings_active"]
+                            : styles["Options_headings"]
                         }
                       >
-                        {t('Security-settings')}
+                        {t("Security-settings")}
                       </span>
                     </Col>
                   </Row>
@@ -891,11 +891,11 @@ const UserSettings = () => {
                       <span
                         className={
                           todo
-                            ? styles['Options_headings_active']
-                            : styles['Options_headings']
+                            ? styles["Options_headings_active"]
+                            : styles["Options_headings"]
                         }
                       >
-                        {t('Todo')}
+                        {t("Todo")}
                       </span>
                     </Col>
                   </Row>
@@ -915,11 +915,11 @@ const UserSettings = () => {
                       <span
                         className={
                           meetingsState
-                            ? styles['Options_headings_active']
-                            : styles['Options_headings']
+                            ? styles["Options_headings_active"]
+                            : styles["Options_headings"]
                         }
                       >
-                        {t('Meetings')}
+                        {t("Meetings")}
                       </span>
                     </Col>
                   </Row>
@@ -939,11 +939,11 @@ const UserSettings = () => {
                       <span
                         className={
                           calender
-                            ? styles['Options_headings_active']
-                            : styles['Options_headings']
+                            ? styles["Options_headings_active"]
+                            : styles["Options_headings"]
                         }
                       >
-                        {t('Calender')}
+                        {t("Calender")}
                       </span>
                     </Col>
                   </Row>
@@ -963,11 +963,11 @@ const UserSettings = () => {
                       <span
                         className={
                           committee
-                            ? styles['Options_headings_active']
-                            : styles['Options_headings']
+                            ? styles["Options_headings_active"]
+                            : styles["Options_headings"]
                         }
                       >
-                        {t('Committee')}
+                        {t("Committee")}
                       </span>
                     </Col>
                   </Row>
@@ -987,11 +987,11 @@ const UserSettings = () => {
                       <span
                         className={
                           group
-                            ? styles['Options_headings_active']
-                            : styles['Options_headings']
+                            ? styles["Options_headings_active"]
+                            : styles["Options_headings"]
                         }
                       >
-                        {t('Group')}
+                        {t("Group")}
                       </span>
                     </Col>
                   </Row>
@@ -1007,7 +1007,7 @@ const UserSettings = () => {
                     >
                       <img
                         src={ResolutionIcon}
-                        width={'30px'}
+                        width={"30px"}
                         height="31.18px"
                       />
                     </Col>
@@ -1015,11 +1015,11 @@ const UserSettings = () => {
                       <span
                         className={
                           resolution
-                            ? styles['Options_headings_active']
-                            : styles['Options_headings']
+                            ? styles["Options_headings_active"]
+                            : styles["Options_headings"]
                         }
                       >
-                        {t('Resolution')}
+                        {t("Resolution")}
                       </span>
                     </Col>
                   </Row>
@@ -1039,11 +1039,11 @@ const UserSettings = () => {
                       <span
                         className={
                           polls
-                            ? styles['Options_headings_active']
-                            : styles['Options_headings']
+                            ? styles["Options_headings_active"]
+                            : styles["Options_headings"]
                         }
                       >
-                        {t('Polls')}
+                        {t("Polls")}
                       </span>
                     </Col>
                   </Row>
@@ -1055,7 +1055,7 @@ const UserSettings = () => {
                 sm={1}
                 className="d-flex justify-content-center"
               >
-                <img src={line} className={styles['user-setting-row']} />
+                <img src={line} className={styles["user-setting-row"]} />
               </Col>
               <Col
                 lg={4}
@@ -1071,8 +1071,8 @@ const UserSettings = () => {
                           onChange={onChangeIsTwoFaceEnabled}
                           checked={userOptionsSettings.Is2FAEnabled}
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('2FA-is-enabled-heading')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("2FA-is-enabled-heading")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1087,8 +1087,8 @@ const UserSettings = () => {
                           onChange={onChangeEmailWhenNewTODOAssigned}
                           checked={userOptionsSettings.EmailWhenNewTODOAssigned}
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Email-when-new-todo-assigned')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-new-todo-assigned")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1101,8 +1101,8 @@ const UserSettings = () => {
                             userOptionsSettings.PushNotificationWhenNewTODOAssigned
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Push-notification-when-new-todo-assigned')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-new-todo-assigned")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1113,8 +1113,8 @@ const UserSettings = () => {
                           onChange={onChangeEmailWhenNewTODOEdited}
                           checked={userOptionsSettings.EmailWhenNewTODOEdited}
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Email-when-new-todo-edited')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-new-todo-edited")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1127,8 +1127,8 @@ const UserSettings = () => {
                             userOptionsSettings.PushNotificationWhenNewTODOEdited
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Push-notification-when-new-todo-edited')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-new-todo-edited")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1139,8 +1139,8 @@ const UserSettings = () => {
                           onChange={onChangeEmailWhenNewTODODeleted}
                           checked={userOptionsSettings.EmailWhenNewTODODeleted}
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Email-when-new-todo-deleted')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-new-todo-deleted")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1153,8 +1153,8 @@ const UserSettings = () => {
                             userOptionsSettings.PushNotificationWhenNewTODODeleted
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Push-notification-when-new-todo-deleted')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-new-todo-deleted")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1165,8 +1165,8 @@ const UserSettings = () => {
                           onChange={onChangeEmailWhenNewCommentAdded}
                           checked={userOptionsSettings.EmailWhenNewCommentAdded}
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Email-when-new-comment-added')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-new-comment-added")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1179,8 +1179,8 @@ const UserSettings = () => {
                             userOptionsSettings.PushNotificationWhenNewCommentAdded
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Push-notification-when-new-comment-added')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-new-comment-added")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1191,8 +1191,8 @@ const UserSettings = () => {
                           onChange={onChangeEmailWhenCommentDeleted}
                           checked={userOptionsSettings.EmailWhenCommentDeleted}
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Email-when-comment-deleted')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-comment-deleted")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1205,8 +1205,8 @@ const UserSettings = () => {
                             userOptionsSettings.PushNotificationWhenCommentDeleted
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Push-notification-when-comment-deleted')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-comment-deleted")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1221,8 +1221,8 @@ const UserSettings = () => {
                           onChange={onChangeEmailOnNewMeeting}
                           checked={userOptionsSettings.EmailOnNewMeeting}
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Email-on-new-meeting')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-on-new-meeting")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1235,8 +1235,8 @@ const UserSettings = () => {
                             userOptionsSettings.PushNotificationonNewMeeting
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Push-notification-on-new-meeting')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-on-new-meeting")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1247,8 +1247,8 @@ const UserSettings = () => {
                           onChange={onChangeEmailOnEditMeeting}
                           checked={userOptionsSettings.EmailEditMeeting}
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Email-on-edit-meeting')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-on-edit-meeting")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1261,8 +1261,8 @@ const UserSettings = () => {
                             userOptionsSettings.PushNotificationEditMeeting
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Push-notification-on-edit-meeting')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-on-edit-meeting")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1275,8 +1275,8 @@ const UserSettings = () => {
                             userOptionsSettings.EmailCancelOrDeleteMeeting
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Email-on-cancelled-or-deleted-meeting')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-on-cancelled-or-deleted-meeting")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1291,9 +1291,9 @@ const UserSettings = () => {
                             userOptionsSettings.PushNotificationCancelledOrDeleteMeeting
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
+                          <span className={styles["Class_CheckBox"]}>
                             {t(
-                              'Push-notification-on-cancelled-or-deleted-meeting',
+                              "Push-notification-on-cancelled-or-deleted-meeting"
                             )}
                           </span>
                         </Checkbox>
@@ -1309,8 +1309,8 @@ const UserSettings = () => {
                             userOptionsSettings.ShowNotificationOnParticipantJoining
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Show-notification-on-joining-participant')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Show-notification-on-joining-participant")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1330,8 +1330,8 @@ const UserSettings = () => {
                               userOptionsSettings.AllowGoogleCalenderSync
                             }
                           >
-                            <span className={styles['Class_CheckBox']}>
-                              {t('Allow-calender-sync')}
+                            <span className={styles["Class_CheckBox"]}>
+                              {t("Allow-calender-sync")}
                             </span>
                           </Checkbox>
                         </Col>
@@ -1348,8 +1348,8 @@ const UserSettings = () => {
                               userOptionsSettings.AllowMicrosoftCalenderSync
                             }
                           >
-                            <span className={styles['Class_CheckBox']}>
-                              {t('Allow-microsoft-calender-sync')}
+                            <span className={styles["Class_CheckBox"]}>
+                              {t("Allow-microsoft-calender-sync")}
                             </span>
                           </Checkbox>
                         </Col>
@@ -1364,7 +1364,7 @@ const UserSettings = () => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles['Committee_material']}
+                        className={styles["Committee_material"]}
                       >
                         <Row className="mt-4">
                           <Col lg={12} md={12} sm={12}>
@@ -1374,8 +1374,8 @@ const UserSettings = () => {
                                 userOptionsSettings.EmailWhenAddedToCommittee
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
-                                {t('Email-when-added-to-committee')}
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-added-to-committee")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1390,8 +1390,8 @@ const UserSettings = () => {
                                 userOptionsSettings.PushNotificationWhenAddedToCommittee
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
-                                {t('Push-notification-when-added-to-committee')}
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Push-notification-when-added-to-committee")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1404,8 +1404,8 @@ const UserSettings = () => {
                                 userOptionsSettings.EmailWhenRemovedFromCommittee
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
-                                {t('Email-when-removed-from-committee')}
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-removed-from-committee")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1420,9 +1420,9 @@ const UserSettings = () => {
                                 userOptionsSettings.PushNotificationWhenRemovedFromCommittee
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
+                              <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  'Push-notification-when-removed-from-committee',
+                                  "Push-notification-when-removed-from-committee"
                                 )}
                               </span>
                             </Checkbox>
@@ -1438,9 +1438,9 @@ const UserSettings = () => {
                                 userOptionsSettings.EmailWhenCommitteeIsDissolvedOrArchived
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
+                              <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  'Email-when-committee-is-dissolved-or-archived',
+                                  "Email-when-committee-is-dissolved-or-archived"
                                 )}
                               </span>
                             </Checkbox>
@@ -1456,9 +1456,9 @@ const UserSettings = () => {
                                 userOptionsSettings.PushNotificationWhenCommitteeIsDissolvedOrArchived
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
+                              <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  'Push-notification-when-committee-is-dissolved-or-archived',
+                                  "Push-notification-when-committee-is-dissolved-or-archived"
                                 )}
                               </span>
                             </Checkbox>
@@ -1472,8 +1472,8 @@ const UserSettings = () => {
                                 userOptionsSettings.EmailWhenCommitteeIsSetInactive
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
-                                {t('Email-when-committee-is-set-inactive')}
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-committee-is-set-inactive")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1488,9 +1488,9 @@ const UserSettings = () => {
                                 userOptionsSettings.PushNotificationWhenCommitteeIsInActive
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
+                              <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  'Push-notification-when-committee-is-inActive',
+                                  "Push-notification-when-committee-is-inActive"
                                 )}
                               </span>
                             </Checkbox>
@@ -1504,8 +1504,8 @@ const UserSettings = () => {
                                 userOptionsSettings.EmailWhenCommitteeIsActive
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
-                                {t('Email-when-committee-is-set-active')}
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-committee-is-set-active")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1520,9 +1520,9 @@ const UserSettings = () => {
                                 userOptionsSettings.PushNotificationwhenCommitteeissetActive
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
+                              <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  'Push-notification-when-committee-is-set-active',
+                                  "Push-notification-when-committee-is-set-active"
                                 )}
                               </span>
                             </Checkbox>
@@ -1539,7 +1539,7 @@ const UserSettings = () => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles['Committee_material']}
+                        className={styles["Committee_material"]}
                       >
                         <Row className="mt-4">
                           <Col lg={12} md={12} sm={12}>
@@ -1549,8 +1549,8 @@ const UserSettings = () => {
                                 userOptionsSettings.EmailWhenAddedToGroup
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
-                                {t('Email-when-added-to-group')}
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-added-to-group")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1565,8 +1565,8 @@ const UserSettings = () => {
                                 userOptionsSettings.PushNotificationWhenAddedToGroup
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
-                                {t('Push-notification-when-added-to-group')}
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Push-notification-when-added-to-group")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1579,8 +1579,8 @@ const UserSettings = () => {
                                 userOptionsSettings.EmailWhenRemovedFromGroup
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
-                                {t('Email-when-removed-from-group')}
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-removed-from-group")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1595,8 +1595,8 @@ const UserSettings = () => {
                                 userOptionsSettings.PushNotificationWhenRemovedFromGroup
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
-                                {t('Push-notification-when-removed-from-group')}
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Push-notification-when-removed-from-group")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1611,8 +1611,8 @@ const UserSettings = () => {
                                 userOptionsSettings.EmailWhenGroupIsDissolvedOrArchived
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
-                                {t('Email-when-group-is-dissolved-or-archived')}
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-group-is-dissolved-or-archived")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1627,9 +1627,9 @@ const UserSettings = () => {
                                 userOptionsSettings.PushNotificationWhenGroupIsDissolvedOrArchived
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
+                              <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  'Push-notification-when-group-is-dissolved-or-archived',
+                                  "Push-notification-when-group-is-dissolved-or-archived"
                                 )}
                               </span>
                             </Checkbox>
@@ -1643,8 +1643,8 @@ const UserSettings = () => {
                                 userOptionsSettings.EmailWhenGroupisSetInactive
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
-                                {t('Email-when-group-is-set-inactive')}
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-group-is-set-inactive")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1659,8 +1659,8 @@ const UserSettings = () => {
                                 userOptionsSettings.PushNotificationWhenGroupIsInActive
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
-                                {t('Push-notification-when-group-is-inActive')}
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Push-notification-when-group-is-inActive")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1673,8 +1673,8 @@ const UserSettings = () => {
                                 userOptionsSettings.EmailWhenGroupIsActive
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
-                                {t('Email-when-group-is-set-active')}
+                              <span className={styles["Class_CheckBox"]}>
+                                {t("Email-when-group-is-set-active")}
                               </span>
                             </Checkbox>
                           </Col>
@@ -1689,9 +1689,9 @@ const UserSettings = () => {
                                 userOptionsSettings.PushNotificationwhenGroupissetActive
                               }
                             >
-                              <span className={styles['Class_CheckBox']}>
+                              <span className={styles["Class_CheckBox"]}>
                                 {t(
-                                  'Push-notification-when-group-is-set-active',
+                                  "Push-notification-when-group-is-set-active"
                                 )}
                               </span>
                             </Checkbox>
@@ -1711,8 +1711,8 @@ const UserSettings = () => {
                             userOptionsSettings.EmailWhenResolutionIsCirculated
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Email-when-resolution-is-circulated')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-resolution-is-circulated")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1727,9 +1727,9 @@ const UserSettings = () => {
                             userOptionsSettings.PushNotificationWhenNewResolutionIsCirculated
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
+                          <span className={styles["Class_CheckBox"]}>
                             {t(
-                              'Push-notification-when-new-resolution-is-circulated',
+                              "Push-notification-when-new-resolution-is-circulated"
                             )}
                           </span>
                         </Checkbox>
@@ -1745,9 +1745,9 @@ const UserSettings = () => {
                             userOptionsSettings.EmailWhenNewResolutionIsCancelledAfterCirculation
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
+                          <span className={styles["Class_CheckBox"]}>
                             {t(
-                              'Email-when-new-resolution-is-cancelled-after-circulation',
+                              "Email-when-new-resolution-is-cancelled-after-circulation"
                             )}
                           </span>
                         </Checkbox>
@@ -1763,9 +1763,9 @@ const UserSettings = () => {
                             userOptionsSettings.PushNotificationWhenNewResolutionIsCancelledAfterCirculated
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
+                          <span className={styles["Class_CheckBox"]}>
                             {t(
-                              'Push-notification-when-new-resolution-is-cancelled-after-circulated',
+                              "Push-notification-when-new-resolution-is-cancelled-after-circulated"
                             )}
                           </span>
                         </Checkbox>
@@ -1779,8 +1779,8 @@ const UserSettings = () => {
                             userOptionsSettings.EmailWhenResolutionIsClosed
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Email-when-resolution-is-closed')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-resolution-is-closed")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1795,8 +1795,8 @@ const UserSettings = () => {
                             userOptionsSettings.PushNotificationWhenResolutionISClosed
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Push-notification-when-resolution-is-closed')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-resolution-is-closed")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1813,8 +1813,8 @@ const UserSettings = () => {
                             userOptionsSettings.EmailWhenNewPollIsPublished
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Email-when-new-poll-is-published')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-new-poll-is-published")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1829,8 +1829,8 @@ const UserSettings = () => {
                             userOptionsSettings.PushNotificationWhenNewPollIsPublished
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Push-notification-when-new-poll-is-published')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-new-poll-is-published")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1843,8 +1843,8 @@ const UserSettings = () => {
                             userOptionsSettings.EmailWhenPollDueDateIsPassed
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Email-when-poll-duedate-is-passed')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-poll-duedate-is-passed")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1859,8 +1859,8 @@ const UserSettings = () => {
                             userOptionsSettings.PushNotificationWhenPollDueDateIsPassed
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Push-notification-when-poll-duedate-is-passed')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Push-notification-when-poll-duedate-is-passed")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1873,8 +1873,8 @@ const UserSettings = () => {
                             userOptionsSettings.EmailWhenPublishedPollIsDeleted
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Email-when-published-poll-is-deleted')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-published-poll-is-deleted")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1889,9 +1889,9 @@ const UserSettings = () => {
                             userOptionsSettings.PushNotificationWhenPublishedPollIsDeleted
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
+                          <span className={styles["Class_CheckBox"]}>
                             {t(
-                              'Push-notification-when-published-poll-is-deleted',
+                              "Push-notification-when-published-poll-is-deleted"
                             )}
                           </span>
                         </Checkbox>
@@ -1905,8 +1905,8 @@ const UserSettings = () => {
                             userOptionsSettings.EmailWhenPublishedPollIsUpdated
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
-                            {t('Email-when-published-poll-is-updated')}
+                          <span className={styles["Class_CheckBox"]}>
+                            {t("Email-when-published-poll-is-updated")}
                           </span>
                         </Checkbox>
                       </Col>
@@ -1921,9 +1921,9 @@ const UserSettings = () => {
                             userOptionsSettings.PushNotificationWhenPublishedPollIsUpdated
                           }
                         >
-                          <span className={styles['Class_CheckBox']}>
+                          <span className={styles["Class_CheckBox"]}>
                             {t(
-                              'Push-notification-when-published-poll-is--updated',
+                              "Push-notification-when-published-poll-is--updated"
                             )}
                           </span>
                         </Checkbox>
@@ -1938,7 +1938,7 @@ const UserSettings = () => {
                 sm={1}
                 className="d-flex justify-content-center"
               >
-                <img src={line} className={styles['user-setting-row']} />
+                <img src={line} className={styles["user-setting-row"]} />
               </Col>
               <Col lg={3} md={3} sm={3}>
                 {calender ? (
@@ -1948,7 +1948,7 @@ const UserSettings = () => {
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles['BackGround_Calender_color_box']}
+                        className={styles["BackGround_Calender_color_box"]}
                       >
                         <Row className="mt-4">
                           <Col
@@ -1957,8 +1957,8 @@ const UserSettings = () => {
                             sm={12}
                             className="d-flex align-items-center justify-content-center"
                           >
-                            <span className={styles['Diskus_calender']}>
-                              {t('Diskus-calender')}
+                            <span className={styles["Diskus_calender"]}>
+                              {t("Diskus-calender")}
                             </span>
                           </Col>
                           <Col
@@ -1986,7 +1986,7 @@ const UserSettings = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles['BackGround_Calender_color_box']}
+                          className={styles["BackGround_Calender_color_box"]}
                         >
                           <Row className="mt-4">
                             <Col
@@ -1995,8 +1995,8 @@ const UserSettings = () => {
                               sm={12}
                               className="d-flex align-items-center justify-content-center"
                             >
-                              <span className={styles['Diskus_calender']}>
-                                {t('Google-calender')}
+                              <span className={styles["Diskus_calender"]}>
+                                {t("Google-calender")}
                               </span>
                             </Col>
                             <Col
@@ -2025,7 +2025,7 @@ const UserSettings = () => {
                           lg={12}
                           md={12}
                           sm={12}
-                          className={styles['BackGround_Calender_color_box']}
+                          className={styles["BackGround_Calender_color_box"]}
                         >
                           <Row className="mt-4">
                             <Col
@@ -2034,8 +2034,8 @@ const UserSettings = () => {
                               sm={9}
                               className="d-flex align-items-center justify-content-center"
                             >
-                              <span className={styles['Diskus_calender']}>
-                                {t('Microsoft-calender')}
+                              <span className={styles["Diskus_calender"]}>
+                                {t("Microsoft-calender")}
                               </span>
                             </Col>
                             <Col lg={3} md={3} sm={3} className="">
@@ -2061,8 +2061,8 @@ const UserSettings = () => {
         <Row>
           <Col lg={12} md={12} sm={12} className="d-flex justify-content-end">
             <Button
-              text={t('Update')}
-              className={styles['New_settings_Update_Button']}
+              text={t("Update")}
+              className={styles["New_settings_Update_Button"]}
               onClick={updateOrganizationLevelSettings}
             />
           </Col>
@@ -2070,7 +2070,7 @@ const UserSettings = () => {
       </section>
       {settingReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
-  )
-}
+  );
+};
 
-export default UserSettings
+export default UserSettings;

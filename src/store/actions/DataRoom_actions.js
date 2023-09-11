@@ -989,7 +989,7 @@ const shareFiles_fail = (message) => {
 };
 
 // Share Files Api
-const shareFilesApi = (navigate, FileData, t) => {
+const shareFilesApi = (navigate, FileData, t, setShareFile) => {
   let token = JSON.parse(localStorage.getItem("token"));
   return (dispatch) => {
     dispatch(shareFiles_init());
@@ -1023,6 +1023,7 @@ const shareFilesApi = (navigate, FileData, t) => {
                   t("Files-shared-successfully")
                 )
               );
+              setShareFile(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1078,7 +1079,7 @@ const shareFolders_fail = (message) => {
 };
 
 // Share Folders Api
-const shareFoldersApi = (navigate, FolderData, t, setShowrequestsend) => {
+const shareFoldersApi = (navigate, FolderData, t, setSharefolder) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let folderID = JSON.parse(localStorage.getItem("folderID"));
   let currentView = localStorage.getItem("setTableView");
@@ -1116,7 +1117,7 @@ const shareFoldersApi = (navigate, FolderData, t, setShowrequestsend) => {
                   t("Folder-share-successfully")
                 )
               );
-              setShowrequestsend(false);
+              setSharefolder(false);
               if (folderID !== null && folderID !== undefined) {
                 dispatch(getFolderDocumentsApi(navigate, folderID, t));
               } else {
