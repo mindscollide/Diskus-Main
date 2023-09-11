@@ -91,3 +91,24 @@
 .OverAll_padding {
   padding: 0px 30px !important;
 }
+
+.Scroller_SubAgendaView {
+  height: 25vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_SubAgendaView::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_SubAgendaView::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Scroller_SubAgendaView_when_No {
+  height: 0vh !important;
+}

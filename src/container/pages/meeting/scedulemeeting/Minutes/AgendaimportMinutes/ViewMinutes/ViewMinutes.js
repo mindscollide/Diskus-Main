@@ -115,12 +115,6 @@ const ViewMinutes = ({ AgendaData }) => {
                               </Row>
                             </Col>
                           </Row>
-                          {/* <img
-            src={RedCroseeIcon}
-            height="20.76px"
-            width="20.76px"
-            className={styles["RedCrossClass"]}
-          /> */}
                         </Col>
                         {/* SubAgenda Mapping */}
                         <Row className="mt-2">
@@ -129,7 +123,13 @@ const ViewMinutes = ({ AgendaData }) => {
                             lg={11}
                             md={11}
                             sm={11}
-                            className={styles["Scroller_SubAgendaView"]}
+                            className={
+                              data.SubAgenda <= 0
+                                ? styles[
+                                    "Scroller_SubAgendaView_when_No+SubAgenda_View"
+                                  ]
+                                : styles["Scroller_SubAgendaView"]
+                            }
                           >
                             {data.SubAgenda.map(
                               (subAgendaViewData, subAgendaViewIndex) => {
@@ -295,7 +295,6 @@ const ViewMinutes = ({ AgendaData }) => {
                     );
                   })
                 : null}
-              s
             </Col>
           </Row>
         </Col>
