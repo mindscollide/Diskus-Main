@@ -291,7 +291,10 @@ const EditAgenda = ({ AgendaData }) => {
                                         ) => {
                                           return (
                                             <>
-                                              {editSubAgenda ? (
+                                              {editSubAgendaIndex ===
+                                                subAgendaViewIndex &&
+                                              EditMainAgendaIndex === index &&
+                                              editSubAgenda ? (
                                                 <>
                                                   <Row>
                                                     <Col

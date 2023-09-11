@@ -183,7 +183,7 @@ const AgendaImport = () => {
                   ? AgendaData.map((createData, createindex) => {
                       return (
                         <>
-                          <Col lg={12} md={12} sm={12} className="mt-3">
+                          <Col lg={12} md={12} sm={12} className="mt-5">
                             <Row className="mt-2">
                               <Col lg={12} md={12} sm={12}>
                                 <span
@@ -221,7 +221,13 @@ const AgendaImport = () => {
                                 lg={12}
                                 md={12}
                                 sm={12}
-                                className={styles["SubAgendaCreateScroller"]}
+                                className={
+                                  createData.SubAgenda <= 0
+                                    ? styles[
+                                        "SubAgendaCreateScroller_When_NoSubAgenda_Is"
+                                      ]
+                                    : styles["SubAgendaCreateScroller"]
+                                }
                               >
                                 <Row>
                                   {createData.SubAgenda.map(
