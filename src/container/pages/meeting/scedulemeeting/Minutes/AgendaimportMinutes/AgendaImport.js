@@ -189,7 +189,8 @@ const AgendaImport = () => {
                                 <span
                                   className={styles["HeadingMinutesAgenda"]}
                                 >
-                                  1.<span>{createData.MainTitle}</span>
+                                  {createindex + 1}.
+                                  <span>{createData.MainTitle}</span>
                                 </span>
                               </Col>
                             </Row>

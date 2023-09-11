@@ -5,7 +5,18 @@
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   position: relative !important;
+  margin-left: 0px !important;
+}
+
+.Box_Minutes_For_main_agenda {
+  width: 100% !important;
+  height: auto !important;
+  min-height: 92px !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  position: relative !important;
   margin-left: 12px !important;
+  padding: 0px 8px !important;
 }
 
 .Title_File {
@@ -58,4 +69,25 @@
   font-family: "MontserratSemiBold" !important;
   font-size: 16px !important;
   color: #5f78d6 !important;
+}
+
+.Main_scroller_View {
+  height: 63vh !important;
+  overflow-x: hidden !important;
+}
+
+.Main_scroller_View::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Main_scroller_View::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.OverAll_padding {
+  padding: 0px 30px !important;
 }
