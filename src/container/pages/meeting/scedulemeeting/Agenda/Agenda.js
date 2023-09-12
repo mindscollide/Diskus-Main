@@ -1,12 +1,7 @@
 import React, { useState } from "react";
 import styles from "./Agenda.module.css";
 import { Col, Row } from "react-bootstrap";
-import {
-  Button,
-  TextField,
-  Loader,
-  Notification,
-} from "../../../../../components/elements";
+import { Button, TextField } from "../../../../../components/elements";
 import { DownOutlined } from "@ant-design/icons";
 import { Tree } from "antd";
 import { useTranslation } from "react-i18next";
