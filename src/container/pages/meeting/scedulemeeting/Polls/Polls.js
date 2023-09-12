@@ -10,11 +10,13 @@ import { Button, Table } from "../../../../../components/elements";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import { ChevronDown } from "react-bootstrap-icons";
 import emtystate from "../../../../../assets/images/EmptyStatesMeetingPolls.svg";
+import Createpolls from "./CreatePolls/Createpolls";
 const Polls = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  const [createpoll, setCreatepoll] = useState(false);
   const PollsData = [
     {
       key: "1",
@@ -33,10 +35,10 @@ const Polls = () => {
         <>
           <Row>
             <Col lf={12} md={12} sm={12}>
-              <Button
+              {/* <Button
                 text={t("Voted")}
                 className={styles["Vote_Button_Polls"]}
-              />
+              /> */}
               <Button
                 text={t("Vote")}
                 className={styles["Not_Vote_Button_Polls"]}
@@ -116,71 +118,87 @@ const Polls = () => {
     },
   ];
 
+  const handleCreatepolls = () => {
+    setCreatepoll(true);
+  };
+
   return (
     <section>
-      <Row className="mt-4">
-        <Col lg={12} md={12} sm={12} className="d-flex justify-content-end ">
-          <Button
-            text={t("Create-polls")}
-            icon={<img src={addmore} />}
-            className={styles["Create_polls_Button"]}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col lg={12} md={12} sm={12}>
-          {pollsRows.length <= 0 ? (
-            <>
-              <Row className="mt-3">
-                <Col
-                  lg={12}
-                  ms={12}
-                  sm={12}
-                  className="d-flex justify-content-center"
-                >
-                  <img src={emtystate} height="230px" width="293.93px" />
-                </Col>
-              </Row>
-              <Row className="mt-2">
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-center"
-                >
-                  <span className={styles["EmptyState_heading"]}>
-                    {t("No-polls")}
-                  </span>
-                </Col>
-              </Row>
-              <Row>
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-center"
-                >
-                  <span className={styles["EmptyState_subHeading"]}>
-                    {t(
-                      "Be-the-first-to-create-a-poll-and-spark-the-conversation"
-                    )}
-                  </span>
-                </Col>
-              </Row>
-            </>
-          ) : (
-            <>
-              <Table
-                column={PollsColoumn}
-                scroll={{ y: "62vh" }}
-                pagination={false}
-                className="Polling_table"
-                rows={pollsRows}
+      {createpoll ? (
+        <Createpolls />
+      ) : (
+        <>
+          <Row className="mt-4">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-end "
+            >
+              <Button
+                text={t("Create-polls")}
+                icon={<img src={addmore} />}
+                className={styles["Create_polls_Button"]}
+                onClick={handleCreatepolls}
               />
-            </>
-          )}
-        </Col>
-      </Row>
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              {pollsRows.length <= 0 ? (
+                <>
+                  <Row className="mt-3">
+                    <Col
+                      lg={12}
+                      ms={12}
+                      sm={12}
+                      className="d-flex justify-content-center"
+                    >
+                      <img src={emtystate} height="230px" width="293.93px" />
+                    </Col>
+                  </Row>
+                  <Row className="mt-2">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex justify-content-center"
+                    >
+                      <span className={styles["EmptyState_heading"]}>
+                        {t("No-polls")}
+                      </span>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex justify-content-center"
+                    >
+                      <span className={styles["EmptyState_subHeading"]}>
+                        {t(
+                          "Be-the-first-to-create-a-poll-and-spark-the-conversation"
+                        )}
+                      </span>
+                    </Col>
+                  </Row>
+                </>
+              ) : (
+                <>
+                  <Table
+                    column={PollsColoumn}
+                    scroll={{ y: "62vh" }}
+                    pagination={false}
+                    className="Polling_table"
+                    rows={pollsRows}
+                  />
+                </>
+              )}
+            </Col>
+          </Row>
+        </>
+      )}
     </section>
   );
 };
