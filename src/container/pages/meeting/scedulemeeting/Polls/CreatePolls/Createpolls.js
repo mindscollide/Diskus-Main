@@ -25,6 +25,8 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import Profile from "../../../../../../assets/images/newprofile.png";
 import RedCross from "../../../../../../assets/images/CrossIcon.svg";
+import UnsavedPollsMeeting from "./UnsavedPollsMeeting/UnsavedPollsMeeting";
+import { showUnsavedPollsMeeting } from "../../../../../../store/actions/NewMeetingActions";
 
 const Createpolls = () => {
   const { t } = useTranslation();
@@ -131,6 +133,10 @@ const Createpolls = () => {
     const updateMember = [...members];
     updateMember.splice(index, 1);
     setMembers(updateMember);
+  };
+
+  const handleCancelButton = () => {
+    dispatch(showUnsavedPollsMeeting(true));
   };
 
   return (
@@ -368,25 +374,27 @@ const Createpolls = () => {
               </Row>
             </Col>
           </Row>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-end gap-2"
-            >
-              <Button
-                text={t("Cancel")}
-                className={styles["Cancel_Button_Meeting_Creat_Polls"]}
-              />
-              <Button
-                text={t("Save")}
-                className={styles["Save_Button_Meeting_Creat_Polls"]}
-              />
-            </Col>
-          </Row>
         </Col>
       </Row>
+      <Row>
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className="d-flex justify-content-end gap-2"
+        >
+          <Button
+            text={t("Cancel")}
+            className={styles["Cancel_Button_Meeting_Creat_Polls"]}
+            onClick={handleCancelButton}
+          />
+          <Button
+            text={t("Save")}
+            className={styles["Save_Button_Meeting_Creat_Polls"]}
+          />
+        </Col>
+      </Row>
+      {NewMeetingreducer.unsavedPollsMeeting && <UnsavedPollsMeeting />}
     </section>
   );
 };
