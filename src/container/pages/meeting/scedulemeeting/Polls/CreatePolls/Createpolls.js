@@ -23,6 +23,8 @@ import moment from "moment";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import Profile from "../../../../../../assets/images/newprofile.png";
+import RedCross from "../../../../../../assets/images/CrossIcon.svg";
 
 const Createpolls = () => {
   const { t } = useTranslation();
@@ -54,6 +56,33 @@ const Createpolls = () => {
     flag: false,
     message: "",
   });
+
+  const [members, setMembers] = useState([
+    {
+      name: "SAIF UL ISLAM",
+    },
+    {
+      name: "SAIF UL ISLAM",
+    },
+    {
+      name: "SAIF UL ISLAM",
+    },
+    {
+      name: "SAIF UL ISLAM",
+    },
+    {
+      name: "SAIF UL ISLAM",
+    },
+    {
+      name: "SAIF UL ISLAM",
+    },
+    {
+      name: "SAIF UL ISLAM",
+    },
+    {
+      name: "SAIF UL ISLAM",
+    },
+  ]);
 
   const HandleCancelFunction = (index) => {
     let optionscross = [...options];
@@ -254,22 +283,98 @@ const Createpolls = () => {
           </Row>
         </Col>
         <Col lg={6} md={6} sm={6}>
-          <Row className="mt-5">
+          <Row>
+            <Col lg={12} md={12} sm={12} className={styles["MarginSection"]}>
+              <Row className="mt-5">
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className="group-fields d-flex align-items-center gap-2"
+                >
+                  <Select
+                    classNamePrefix={"Polls_Meeting"}
+                    closeMenuOnSelect={false}
+                    components={animatedComponents}
+                    isMulti
+                  />
+                  <Button
+                    text={t("ADD")}
+                    className={styles["ADD_Btn_CreatePool_Modal"]}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+          <Row>
+            <Col lg={12} md={12} sm={12} className={styles["Scroller_Members"]}>
+              <Row>
+                {members.length > 0
+                  ? members.map((data, index) => {
+                      return (
+                        <>
+                          <Col lg={6} md={6} sm={6} className="mt-3">
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <section
+                                  className={styles["Outer_Box_Members"]}
+                                >
+                                  <Row className="mt-2">
+                                    <Col
+                                      lg={10}
+                                      md={10}
+                                      sm={10}
+                                      className="d-flex gap-2 align-items-center"
+                                    >
+                                      <img
+                                        src={Profile}
+                                        height="33px"
+                                        width="33px"
+                                        className={styles["ProfileStyles"]}
+                                      />
+                                      <span className={styles["Name_Members"]}>
+                                        {data.name}
+                                      </span>
+                                    </Col>
+                                    <Col
+                                      lg={2}
+                                      md={2}
+                                      sm={2}
+                                      className="d-flex align-items-center"
+                                    >
+                                      <img
+                                        src={RedCross}
+                                        height="14px"
+                                        width="14px"
+                                        className="cursor-pointer"
+                                      />
+                                    </Col>
+                                  </Row>
+                                </section>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </>
+                      );
+                    })
+                  : null}
+              </Row>
+            </Col>
+          </Row>
+          <Row>
             <Col
               lg={12}
               md={12}
               sm={12}
-              className="group-fields d-flex align-items-center gap-2"
+              className="d-flex justify-content-end gap-2"
             >
-              <Select
-                classNamePrefix={"selectMember"}
-                closeMenuOnSelect={false}
-                components={animatedComponents}
-                isMulti
+              <Button
+                text={t("Cancel")}
+                className={styles["Cancel_Button_Meeting_Creat_Polls"]}
               />
               <Button
-                text={t("ADD")}
-                className={styles["ADD_Btn_CreatePool_Modal"]}
+                text={t("Save")}
+                className={styles["Save_Button_Meeting_Creat_Polls"]}
               />
             </Col>
           </Row>
