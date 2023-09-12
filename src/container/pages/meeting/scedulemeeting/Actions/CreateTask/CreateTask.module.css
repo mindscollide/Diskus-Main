@@ -91,6 +91,11 @@
   padding: 0px 40px !important;
 }
 
+.OverAll_padding_Third {
+  padding: 0px 30px !important;
+  overflow-x: hidden !important;
+}
+
 .label_Styles {
   color: #5a5a5a !important;
   font-size: 12px !important;
@@ -109,11 +114,6 @@
   margin-top: 6px !important;
   padding-right: 10px !important;
 }
-
-/* 
-.option:nth-child(1) {
-  border-bottom: 1px solid #e1e1e1;
-} */
 
 .box_For_File {
   width: 248px !important;
@@ -153,4 +153,8 @@ body[dir="rtl"] .errorMessage-inLogin {
   margin: 0;
   height: 0px;
   color: #f16b6b;
+}
+
+.option {
+  overflow-x: hidden !important;
 }
