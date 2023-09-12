@@ -16,7 +16,7 @@ import { Paper } from "@material-ui/core";
 import { style } from "@mui/system";
 import UnsavedModal from "./UnsavedChangesModal/UnsavedModal";
 import { showPrposedMeetingUnsavedModal } from "../../../../../../store/actions/NewMeetingActions";
-const ProposedMeetingDate = () => {
+const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -457,7 +457,9 @@ const ProposedMeetingDate = () => {
           </Paper>
         </Col>
       </Row>
-      {NewMeetingreducer.prposedMeetingUnsavedModal && <UnsavedModal />}
+      {NewMeetingreducer.prposedMeetingUnsavedModal && (
+        <UnsavedModal setProposedMeetingDates={setProposedMeetingDates} />
+      )}
     </section>
   );
 };

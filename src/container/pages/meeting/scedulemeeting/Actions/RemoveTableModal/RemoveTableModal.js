@@ -1,35 +1,31 @@
 import React from "react";
-import styles from "./UnsavedModal.module.css";
-import { Modal, Button } from "../../../../../../../components/elements";
-
+import styles from "./RemoveTableModal.module.css";
+import { showRemovedTableModal } from "../../../../../../store/actions/NewMeetingActions";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { showPrposedMeetingUnsavedModal } from "../../../../../../../store/actions/NewMeetingActions";
+import { useSelector } from "react-redux";
+import { Button, Modal } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
-const UnsavedModal = ({ setProposedMeetingDates }) => {
+const RemoveTableModal = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
-  const handleNo = () => {
-    dispatch(showPrposedMeetingUnsavedModal(false));
+  const handleCancelFunctionality = () => {
+    dispatch(showRemovedTableModal(false));
   };
 
-  const handleYes = () => {
-    setProposedMeetingDates(false);
-    dispatch(showPrposedMeetingUnsavedModal(false));
-  };
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.prposedMeetingUnsavedModal}
-        setShow={dispatch(showPrposedMeetingUnsavedModal)}
-        modalFooterClassName={"d-block"}
+        show={NewMeetingreducer.removeTableModal}
+        setShow={dispatch(showRemovedTableModal)}
         modalHeaderClassName={"d-block"}
+        modalFooterClassName={"d-block"}
         onHide={() => {
-          dispatch(showPrposedMeetingUnsavedModal(false));
+          dispatch(showRemovedTableModal(false));
         }}
         ModalBody={
           <>
@@ -40,8 +36,8 @@ const UnsavedModal = ({ setProposedMeetingDates }) => {
                 sm={12}
                 className="d-flex justify-content-center"
               >
-                <span className={styles["UnsavedChanges_heading"]}>
-                  {t("Any-unsaved-changes-will-be")}
+                <span className={styles["Sure_Messege_Class"]}>
+                  {t("Are-you-sure-you-want-to")}
                 </span>
               </Col>
             </Row>
@@ -52,8 +48,8 @@ const UnsavedModal = ({ setProposedMeetingDates }) => {
                 sm={12}
                 className="d-flex justify-content-center"
               >
-                <span className={styles["UnsavedChanges_heading"]}>
-                  {t("Lost-continue")}
+                <span className={styles["Sure_Messege_Class"]}>
+                  {t("Remove-the-action")}
                 </span>
               </Col>
             </Row>
@@ -69,14 +65,13 @@ const UnsavedModal = ({ setProposedMeetingDates }) => {
                 className="d-flex justify-content-center gap-2"
               >
                 <Button
-                  text={t("No")}
-                  className={styles["Unsaved_No-btn"]}
-                  onClick={handleNo}
+                  text={t("Cancel")}
+                  className={styles["Cancel_Button_Remove_poll_meeting_Table"]}
+                  onClick={handleCancelFunctionality}
                 />
                 <Button
-                  text={t("Yes")}
-                  className={styles["Unsaved_Yes-btn"]}
-                  onClick={handleYes}
+                  text={t("Proceed")}
+                  className={styles["Proceed_Button_Remove_poll_meeting_Table"]}
                 />
               </Col>
             </Row>
@@ -87,4 +82,4 @@ const UnsavedModal = ({ setProposedMeetingDates }) => {
   );
 };
 
-export default UnsavedModal;
+export default RemoveTableModal;

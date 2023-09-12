@@ -68,6 +68,11 @@
   overflow-y: auto;
 }
 
+.Polls_meeting {
+  height: 110.96px !important;
+  resize: none !important;
+}
+
 .createtodo-description::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;

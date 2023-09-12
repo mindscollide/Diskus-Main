@@ -30,7 +30,7 @@ const ImportMinutesModal = () => {
           Stock and Shareholders Meeting
         </label>
       ),
-      Status: <label className="column-boldness">Ended</label>,
+      Status: <label className={styles["Status"]}>Ended</label>,
       Date: <label className="column-boldness">4:15pm - 26th May, 2020</label>,
     },
   ];

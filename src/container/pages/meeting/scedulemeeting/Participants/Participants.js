@@ -23,9 +23,12 @@ import {
   showCrossConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
-import ProposedMeetingDate from "./ProposedMeetingDate/ProposedMeetingDate";
 
-const Participants = ({ setParticipants, setAgenda }) => {
+const Participants = ({
+  setParticipants,
+  setAgenda,
+  setProposedMeetingDates,
+}) => {
   const [proposeMeeting, setPropseMeeting] = useState(false);
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -212,6 +215,11 @@ const Participants = ({ setParticipants, setAgenda }) => {
     setrspvTable(!rspvTable);
   };
 
+  const handleProposedmeetingDates = () => {
+    setParticipants(false);
+    setProposedMeetingDates(true);
+  };
+
   return (
     <>
       <section>
@@ -276,9 +284,7 @@ const Participants = ({ setParticipants, setAgenda }) => {
             <Button
               text={t("Propose-meeting-dates")}
               className={styles["Cancel_Organization"]}
-              onClick={() => {
-                setPropseMeeting(true);
-              }}
+              onClick={handleProposedmeetingDates}
             />
             <Button
               text={t("Publish")}
@@ -295,7 +301,7 @@ const Participants = ({ setParticipants, setAgenda }) => {
       </section>
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
       {NewMeetingreducer.participantModal && <AddParticipantModal />}
-      {/* {proposeMeeting && <ProposedMeetingDate />} */}
+      {/* {proposeMeeting && } */}
     </>
   );
 };
