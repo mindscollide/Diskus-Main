@@ -18,9 +18,9 @@ const VideoPanel = () => {
           <>
             <VideoPanelHeader />
             <VideoPanelBody />
-            {videoFeatureReducer.ContactVideoFlag === true ? (
+            {/* {videoFeatureReducer.ContactVideoFlag === true ? (
               <VideoPanelFooter />
-            ) : null}
+            ) : null} */}
           </>
         </div>
       </div>
