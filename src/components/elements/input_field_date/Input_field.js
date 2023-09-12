@@ -1,9 +1,10 @@
-import Form from "react-bootstrap/Form";
-import InputGroup from "react-bootstrap/InputGroup";
-import "bootstrap/dist/css/bootstrap.min.css";
-import styles from "./Input_field.module.css";
-import { ArrowRight } from "react-bootstrap-icons";
-import { FormControl, FormGroup } from "react-bootstrap";
+import Form from "react-bootstrap/Form"
+import { useRef } from "react"
+import InputGroup from "react-bootstrap/InputGroup"
+import "bootstrap/dist/css/bootstrap.min.css"
+import styles from "./Input_field.module.css"
+import { ArrowRight } from "react-bootstrap-icons"
+import { FormControl, FormGroup } from "react-bootstrap"
 
 const TextFieldDateTime = ({
   ref,
@@ -26,22 +27,27 @@ const TextFieldDateTime = ({
   clickIcon,
   max,
   min,
-  onkeyDown
+  onkeyDown,
 }) => {
-  console.log("applyClassapplyClass", applyClass);
+  const dateInputRef = useRef(null)
+  const openDatePicker = () => {
+    console.log("dateInputRefdateInputRefdateInputRef", dateInputRef.current)
+    if (dateInputRef.current) {
+      dateInputRef.current.click() // Simulate a click event to open the date picker
+    }
+  }
+  console.log("applyClassapplyClass", applyClass)
   return (
     <>
       <FormGroup className={styles[formParentClass]}>
         <Form.Label className={labelClass}>{label}</Form.Label>
         <Form.Control
-
           className={
-            applyClass != undefined && applyClass != null
+            applyClass !== undefined && applyClass !== null
               ? styles[applyClass]
               : "form-control2 Saved_money_Tagline"
           }
-
-          ref={ref}
+          ref={dateInputRef}
           id={id && id}
           name={name && name}
           onChange={change}
@@ -53,19 +59,20 @@ const TextFieldDateTime = ({
           type="date"
           max={max}
           min={min}
+          onClick={openDatePicker}
           // readOnly
           required={required ? true : false}
           onKeyDown={(event) => event.preventDefault()}
           onInput={(event) => event.preventDefault()}
           onPaste={(event) => event.preventDefault()}
-        // readOnly
+          // readOnly
         />
         <FormControl.Feedback className={iconClassName} onClick={clickIcon}>
           {inputicon}
         </FormControl.Feedback>
       </FormGroup>
     </>
-  );
-};
+  )
+}
 
-export default TextFieldDateTime;
+export default TextFieldDateTime

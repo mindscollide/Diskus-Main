@@ -43,7 +43,9 @@ import { useNavigate } from "react-router-dom"
 const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization
   const { t } = useTranslation()
+  const timePickerRef = useRef()
   const [fileSize, setFileSize] = useState(0)
+  const [visible, setVisible] = useState(false)
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false)
   const [isCreateTodo, setIsCreateTodo] = useState(true)
   const [fileForSend, setFileForSend] = useState([])
@@ -96,7 +98,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     DeadLineTime: "",
     CreationDateTime: "",
   })
-
+  console.log(task, "tasktasktask")
   //To Set task Creater ID
   const [TaskCreatorID, setTaskCreatorID] = useState(0)
 
@@ -104,6 +106,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("")
   const [TaskAssignedTo, setTaskAssignedTo] = useState([])
   const [taskAssignedName, setTaskAssignedName] = useState([])
+  const [assignees, setAssignees] = useState([])
+  console.log(assignees, "taskAssignedNametaskAssignedNametaskAssignedName")
   const [taskAssigneeLength, setTaskAssigneeLength] = useState(false)
 
   //Upload File States
@@ -174,6 +178,16 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           [name]: valueCheck.trimStart(),
         })
       }
+    }
+  }
+
+  const onOpenChangeHandler = (open) => {
+    if (!open) {
+      setTask({
+        ...task,
+        DeadLineTime: task.DeadLineTime,
+      })
+      setVisible(false)
     }
   }
 
@@ -333,11 +347,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   }, [show])
 
   //On Click Of Dropdown Value
-  const onSearch = (name, id) => {
+  const onSearch = (name, id, users) => {
     if (taskAssignedName.length === 1) {
       setOpen({
         flag: true,
-        message: "Only one assignee allow",
+        message: t("Only-one-assignee-allow"),
       })
       setTaskAssignedToInput("")
     } else {
@@ -349,6 +363,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       setTaskAssignedTo(temp2)
       setTaskAssignedName(temp)
       setTaskAssignedToInput("")
+      setAssignees([...assignees, users])
     }
   }
 
@@ -361,7 +376,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     if (taskAssignedName.length > 1) {
       setOpen({
         flag: true,
-        message: "Only one assignee allow",
+        message: t("Only-one-assignee-allow"),
       })
     } else {
       setTaskAssigneeLength(false)
@@ -375,7 +390,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     if (
       allAssignees !== undefined &&
       allAssignees !== null &&
-      allAssignees !== NaN &&
       allAssignees !== []
     ) {
       return allAssignees
@@ -390,7 +404,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         .slice(0, 10)
         .map((item) => (
           <div
-            onClick={() => onSearch(item.name, item.pK_UID)}
+            onClick={() => onSearch(item.name, item.pK_UID, item)}
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
@@ -424,14 +438,17 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //Save To-Do List Function
   const createToDoList = async () => {
     let TasksAttachments = tasksAttachments.TasksAttachments
+    let taskAssignedTO = [...TaskAssignedTo]
+    if (TaskAssignedTo.length === 0) {
+      taskAssignedTO.push(Number(createrID))
+      setTaskAssignedTo(taskAssignedTO)
+    }
+    console.log(taskAssignedTO, "taskAssignedTOtaskAssignedTOtaskAssignedTO")
     let newDate = createTodoDate
     let newTime = task.DeadLineTime
     let finalDateTime
     if (createTodoDate !== "" && task.DeadLineTime !== "") {
-      console.log("todo check", createTodoDate)
-      console.log("todo check", task.DeadLineTime)
       finalDateTime = createConvert(createTodoDate + task.DeadLineTime)
-      console.log("todo check", finalDateTime)
       newDate = finalDateTime.slice(0, 8)
       newTime = finalDateTime.slice(8, 14)
     }
@@ -476,18 +493,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         ...open,
         flag: true,
         message: t("Title-missing"),
-      })
-    } else if (Task.Description === "") {
-      setOpen({
-        ...open,
-        flag: true,
-        message: t("Description-missing"),
-      })
-    } else if (TaskAssignedTo.length === 0) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: t("Please-add-assignees"),
       })
     } else {
       let counter = Object.keys(fileForSend).length - 1
@@ -562,13 +567,13 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   }
 
   const handleDeleteAttendee = (data, index) => {
-    TaskAssignedTo.splice(index, 1)
-    taskAssignedName.splice(index, 1)
-    setTaskAssignedName([...taskAssignedName])
-    setTaskAssignedTo([...TaskAssignedTo])
+    // TaskAssignedTo.splice(index, 1)
+    // taskAssignedName.splice(index, 1)
+    setAssignees([])
+    setTaskAssignedName([])
+    setTaskAssignedTo([])
   }
 
-  useEffect(() => {}, [TaskAssignedTo, taskAssignedName])
   return (
     <>
       <Container>
@@ -600,9 +605,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     >
                       <TimePickers
                         change={taskHandler}
-                        placeholder={"00:00:00"}
+                        placeholder={"00:00"}
                         name="DeadLineTime"
                         value={task.DeadLineTime}
+                        // timeChangerHandler={timeChangeHandler}
                       />
                       <DatePicker
                         onChange={toDoDateHandler}
@@ -662,20 +668,26 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         disable={taskAssigneeLength}
                         change={onChangeSearch}
                       />
-                      {taskAssignedName ? (
+                      {assignees ? (
                         <>
-                          {taskAssignedName.map((taskAssignedName, index) => (
+                          {assignees.map((taskAssignedName, index) => (
                             <span>
                               <div className="dropdown-row-assignee dg-flex align-items-center flex-row">
                                 <div className="d-flex align-items-center position-relative">
-                                  <img src={userImage} />
-                                  <p className="p-0 m-0">{taskAssignedName}</p>
+                                  <img
+                                    alt=""
+                                    src={`data:image/jpeg;base64,${taskAssignedName.displayProfilePictureName}`}
+                                  />
+                                  <p className="p-0 m-0">
+                                    {taskAssignedName.name}
+                                  </p>
                                 </div>
                                 <span className="todolist-remove-assignee-icon">
                                   <img
                                     width={20}
                                     className="remove"
                                     height={20}
+                                    alt=""
                                     src={deleteButtonCreateMeeting}
                                     onClick={() =>
                                       handleDeleteAttendee(

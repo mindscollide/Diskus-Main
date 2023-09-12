@@ -10,37 +10,21 @@ import { base64UrlToFile, getBase64 } from "../../../commen/functions/getBase64"
 import { PlusLg } from "react-bootstrap-icons"
 
 const AvatarEditorComponent = ({ pictureObj }) => {
-  console.log(pictureObj, "pictureObjpictureObj")
-  const { Authreducer } = useSelector((state) => state)
   const [fileList, setFileList] = useState([])
-  console.log(fileList, "fileListfileListfileListfileList")
   const [onHold, setOnHold] = useState([])
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [previewOpen, setPreviewOpen] = useState(false)
-  const [previewImage, setPreviewImage] = useState("")
-
-  const onChange = ({ fileList: newFileList }) => {
-    let fileObj = newFileList[0].originFileObj
-    getBase64(fileObj)
-      .then((res) => {
-        let fileUrL = res.split(",")[1]
-        setFileList(newFileList)
-        dispatch(updateUserProfilePicture(navigate, t, fileObj.name, fileUrL))
-        // setFileList(onHold);
-        // setTimeout(() => {
-        //   setFileList(newFileList)
-        // }, 10000)
-      })
-      .catch((err) => console.log(err, "newFileListnewFileList"))
-  }
+  const [previewImage, setPreviewImage] = useState(null)
+  console.log(
+    previewOpen,
+    previewImage,
+    "previewImagepreviewImagepreviewImagepreviewImage"
+  )
 
   const handlePreview = async (file) => {
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj)
-    }
-    setPreviewImage(file.url || file.preview)
+    setPreviewImage(file.url)
     setPreviewOpen(true)
   }
   const handleCancel = () => setPreviewOpen(false)
@@ -50,46 +34,21 @@ const AvatarEditorComponent = ({ pictureObj }) => {
     getBase64(file)
       .then((res) => {
         console.log("Test")
+        setFileList([file])
         let fileUrL = res.split(",")[1]
-        setFileList([...fileList, file])
         dispatch(updateUserProfilePicture(navigate, t, file.name, fileUrL))
-        // setFileList(onHold);
-        // setTimeout(() => {
-        //   setFileList(newFileList)
-        // }, 10000)
       })
       .catch((err) => console.log(err, "newFileListnewFileList"))
   }
 
   useEffect(() => {
-    const fileName = "example.jpeg" // Replace with the desired file name
-    const mimeType = "image/jpeg" // Replace with the correct MIME type
-    const file = base64UrlToFile(
-      `data:image/jpeg;base64,${pictureObj.DisplayProfilePictureName}`,
-      fileName,
-      mimeType
-    )
-
-    // Add the file to the fileList
-    setFileList([...fileList, file])
-  }, [])
-  // useEffect(() => {
-  //   if (Authreducer.UpdateProfilePicture !== null) {
-  //     if (
-  //       Authreducer.UpdateProfilePicture.responseMessage
-  //         .toLowerCase()
-  //         .includes(
-  //           "ERM_AuthService_SignUpManager_UpdateProfilePicture_01".toLowerCase()
-  //         )
-  //     ) {
-  //       console.log(fileList, "fileListfileList");
-  //       if (onHold) {
-  //         console.log(fileList, "fileListfileList");
-  //         setFileList(onHold);
-  //       }
-  //     }
-  //   }
-  // }, [Authreducer.UpdateProfilePicture]);
+    let file = {
+      uid: "1",
+      name: "image.png",
+      url: `data:image/jpeg;base64,${pictureObj.DisplayProfilePictureName}`,
+    } // Set the base64 data as the URL
+    setFileList([file])
+  }, [pictureObj])
 
   console.log(onHold, "fileListfileList")
   return (
@@ -108,6 +67,7 @@ const AvatarEditorComponent = ({ pictureObj }) => {
           fileList={fileList}
           customRequest={uploadProfilePic}
           onPreview={handlePreview}
+          accept="image/png, image/jpeg"
           onRemove={() => setFileList([])}
           className={styles["image_uploader_box"]}
         >
@@ -119,7 +79,13 @@ const AvatarEditorComponent = ({ pictureObj }) => {
             </>
           ) : null}
         </Upload>
-        <Modal open={previewOpen} footer={null} onCancel={handleCancel}>
+
+        <Modal
+          zIndex={10}
+          open={previewOpen}
+          footer={null}
+          onCancel={handleCancel}
+        >
           <img
             alt="example"
             style={{

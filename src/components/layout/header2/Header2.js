@@ -38,7 +38,8 @@ const Header2 = () => {
   // const languageref = useRef()
   const state = useSelector((state) => state)
   const { settingReducer } = state
-  const { NotificationData, UserProfileData } = settingReducer
+  const { NotificationData, UserProfileData, GetUserDetailsResponse } =
+    settingReducer
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [reload, setReload] = useState(false)

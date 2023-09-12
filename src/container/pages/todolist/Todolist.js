@@ -332,7 +332,7 @@ const TodoList = () => {
                   <>
                     <img
                       className="data-img"
-                      src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
+                      src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
                       alt="userimage"
                     />
 
@@ -342,7 +342,7 @@ const TodoList = () => {
                   <>
                     <img
                       className="data-img "
-                      src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
+                      src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
                       alt="userimage"
                     />
                     {text[0].name}
@@ -560,7 +560,7 @@ const TodoList = () => {
                   <>
                     <img
                       className="data-img"
-                      src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
+                      src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
                       alt="userimage"
                     />
 
@@ -569,8 +569,8 @@ const TodoList = () => {
                 ) : (
                   <>
                     <img
-                      className="data-img "
-                      src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
+                      className="data-img"
+                      src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
                       alt="userimage"
                     />
                     {text[0].name}
@@ -811,6 +811,7 @@ const TodoList = () => {
       })
     }
   }
+
   const resetSearchBar = (e) => {
     e.preventDefault()
     let newData = {
@@ -828,6 +829,7 @@ const TodoList = () => {
       UserID: parseInt(0),
     })
   }
+
   useEffect(() => {
     if (
       toDoListReducer.ResponseMessage != "" &&
@@ -876,10 +878,10 @@ const TodoList = () => {
 
   useEffect(() => {
     if (
-      getTodosStatus.ResponseMessage != "" &&
-      getTodosStatus.ResponseMessage != undefined &&
-      getTodosStatus.ResponseMessage != t("Record-found") &&
-      getTodosStatus.ResponseMessage != t("No-records-found")
+      getTodosStatus.ResponseMessage !== "" &&
+      getTodosStatus.ResponseMessage !== undefined &&
+      getTodosStatus.ResponseMessage !== t("Record-found") &&
+      getTodosStatus.ResponseMessage !== t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -896,10 +898,10 @@ const TodoList = () => {
 
       dispatch(cleareMessage())
     } else if (
-      getTodosStatus.UpdateTodoStatusMessage != "" &&
-      getTodosStatus.UpdateTodoStatusMessage != undefined &&
-      getTodosStatus.UpdateTodoStatusMessage != t("Record-found") &&
-      getTodosStatus.UpdateTodoStatusMessage != t("No-records-found")
+      getTodosStatus.UpdateTodoStatusMessage !== "" &&
+      getTodosStatus.UpdateTodoStatusMessage !== undefined &&
+      getTodosStatus.UpdateTodoStatusMessage !== t("Record-found") &&
+      getTodosStatus.UpdateTodoStatusMessage !== t("No-records-found")
     ) {
       setOpen({
         ...open,
@@ -916,10 +918,10 @@ const TodoList = () => {
 
       dispatch(cleareMessage())
     } else if (
-      getTodosStatus.UpdateTodoStatus != "" &&
-      getTodosStatus.UpdateTodoStatus != undefined &&
-      getTodosStatus.UpdateTodoStatus != t("Record-found") &&
-      getTodosStatus.UpdateTodoStatus != t("No-records-found")
+      getTodosStatus.UpdateTodoStatus !== "" &&
+      getTodosStatus.UpdateTodoStatus !== undefined &&
+      getTodosStatus.UpdateTodoStatus !== t("Record-found") &&
+      getTodosStatus.UpdateTodoStatus !== t("No-records-found")
     ) {
       setOpen({
         ...open,

@@ -1,15 +1,14 @@
 {
-  "FolderID": 636,
-  "Files": [
-    {
-      "DisplayFileName": "File",
-      "DiskusFileName": 20230824110114972,
-      "ShareAbleLink": "D:\\Diskus\\Services\\DataRoom\\Documents\\DataRoom\\780_302\\20230824110114973",
-      "FK_UserID": 780,
-      "FK_OrganizationID": 302,
-      "UriPath": "ModalsDataRoom7\\neFolder\\ModalCancelDownload.js"
-    }
-  ],
-  "UserID": 780,
-  "Type": 0
+  "Task": {
+    "PK_TID": 1,
+    "Title": "check",
+    "Description": "",
+    "IsMainTask": true,
+    "DeadLineDate": "20230912",
+    "DeadLineTime": "093900",
+    "CreationDateTime": ""
+  },
+  "TaskCreatorID": 780,
+  "TaskAssignedTo": [],
+  "TasksAttachments": []
 }
