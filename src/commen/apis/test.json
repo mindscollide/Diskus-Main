@@ -1,15 +1,26 @@
-{
-  "FolderID": 636,
-  "Files": [
-    {
-      "DisplayFileName": "File",
-      "DiskusFileName": 20230824110114972,
-      "ShareAbleLink": "D:\\Diskus\\Services\\DataRoom\\Documents\\DataRoom\\780_302\\20230824110114973",
-      "FK_UserID": 780,
-      "FK_OrganizationID": 302,
-      "UriPath": "ModalsDataRoom7\\neFolder\\ModalCancelDownload.js"
-    }
-  ],
-  "UserID": 780,
-  "Type": 0
-}
+[
+  {
+      "FolderName": "1 aug",
+      "FileList": [
+          {
+              "uid": "rc-upload-1694423861316-4"
+          },
+          {
+              "uid": "rc-upload-1694423861316-5"
+          },
+          {
+              "uid": "rc-upload-1694423861316-6"
+          }
+      ],
+      "FolderID": 5397
+  },
+  {
+      "FolderName": "New folder",
+      "FileList": [
+          {
+              "uid": "rc-upload-1694423861316-8"
+          }
+      ],
+      "FolderID": 5398
+  }
+]

@@ -15,6 +15,7 @@ import {
   uploadDocumentsRequestMethod,
   renameFolderRequestMethod,
   renameFileRequestMethod,
+  searchDocumentsFoldersAPI,
 } from "../../commen/apis/Api_config";
 import { dataRoomApi } from "../../commen/apis/Api_ends_points";
 import * as actions from "../action_types";
@@ -1099,9 +1100,7 @@ const shareFoldersApi = (navigate, FolderData, t, setSharefolder) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            shareFoldersApi(navigate, FolderData, t, setShowrequestsend)
-          );
+          dispatch(shareFoldersApi(navigate, FolderData, t, setSharefolder));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -2021,6 +2020,100 @@ const clearDataResponseMessage = () => {
     type: actions.CLEARE_MESSAGE,
   };
 };
+// Get Documents and Folders Init
+const searchDocumentsAndFoldersApi_init = () => {
+  return {
+    type: actions.SEARCHDOCUMENTSANDFOLDERSAPI_DATAROOM_INIT,
+  };
+};
+
+// Get Documents and Folders Success
+const searchDocumentsAndFoldersApi_success = (response, message) => {
+  return {
+    type: actions.SEARCHDOCUMENTSANDFOLDERSAPI_DATAROOM_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+
+// Get Documents and Folders Fail
+const searchDocumentsAndFoldersApi_fail = (message) => {
+  return {
+    type: actions.SEARCHDOCUMENTSANDFOLDERSAPI_DATAROOM_FAIL,
+    message: message,
+  };
+};
+
+// Get Documents And Folder API
+const searchDocumentsAndFoldersApi = (navigate, t, data) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(searchDocumentsAndFoldersApi_init());
+    let form = new FormData();
+    form.append("RequestMethod", searchDocumentsFoldersAPI.RequestMethod);
+    form.append("RequestData", JSON.stringify(data));
+    axios({
+      method: "post",
+      url: dataRoomApi,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_SearchDocumentsAndFolders_01".toLowerCase()
+            ) {
+              console.log(
+                "DataRoomReducer.SearchFilesAndFoldersResponse",
+                response.data.responseResult.data
+              );
+              dispatch(
+                searchDocumentsAndFoldersApi_success(
+                  response.data.responseResult.data,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_SearchDocumentsAndFolders_02".toLowerCase()
+            ) {
+              dispatch(searchDocumentsAndFoldersApi_fail(t("No-record-found")));
+            } else if (
+              response.data.responseResult.responseMessage.toLowerCase() ===
+              "DataRoom_DataRoomManager_SearchDocumentsAndFolders_03".toLowerCase()
+            ) {
+              dispatch(
+                searchDocumentsAndFoldersApi_fail(t("Something-went-wrong"))
+              );
+            } else {
+              dispatch(
+                searchDocumentsAndFoldersApi_fail(t("Something-went-wrong"))
+              );
+            }
+          } else {
+            dispatch(
+              searchDocumentsAndFoldersApi_fail(t("Something-went-wrong"))
+            );
+          }
+        } else {
+          dispatch(
+            searchDocumentsAndFoldersApi_fail(t("Something-went-wrong"))
+          );
+        }
+      })
+      .catch((error) => {
+        dispatch(searchDocumentsAndFoldersApi_fail(t("Something-went-wrong")));
+      });
+  };
+};
 export {
   saveFilesApi,
   FileisExist,
@@ -2042,4 +2135,5 @@ export {
   dataBehaviour,
   getFolderDocumentsApiScrollBehaviour,
   isFolder,
+  searchDocumentsAndFoldersApi,
 };

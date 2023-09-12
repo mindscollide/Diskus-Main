@@ -4,24 +4,22 @@ import styles from "../ModalUploadOptions_Folder/ModalOptions_Folder.module.css"
 import { useTranslation } from "react-i18next";
 import { Button, Modal } from "../../../components/elements";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { createFolder } from "../../../store/actions/FolderUploadDataroom";
+import { FolderisExist_success } from "../../../store/actions/FolderUploadDataroom";
 
 const ModalOptionsisExistFolder = ({
   isFolderExist,
   setIsFolderExist,
   directoryNames,
+  setFolderUploadOptions,
+  folderUploadOptions,
 }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [folderUploadOptions, setFolderUploadOptions] = useState(1);
 
   const handleUploadFolder = async () => {
-    await dispatch(
-      createFolder(navigate, t, directoryNames, folderUploadOptions)
-    );
-    setIsFolderExist(false);
+    if (isFolderExist) {
+      await dispatch(FolderisExist_success(null));
+    }
   };
   return (
     <>
@@ -32,10 +30,8 @@ const ModalOptionsisExistFolder = ({
             setIsFolderExist(false);
           }}
           setShow={setIsFolderExist}
-          // ButtonTitle={ModalTitle}
           modalFooterClassName="d-block"
           centered
-          // size={UploadOptions === true ? "md" : "md"}
           ModalBody={
             <>
               <Container>
@@ -114,7 +110,6 @@ const ModalOptionsisExistFolder = ({
                   <Button
                     text={t("Upload")}
                     onClick={handleUploadFolder}
-                    // onClick={uploadOptionsonClickBtn}
                     className={styles["Create_button_UploadFile"]}
                   />
                 </Col>

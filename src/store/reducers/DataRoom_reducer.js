@@ -18,7 +18,7 @@ const initialState = {
   RenameFolderResponse: null,
   RenameFileResponse: null,
   FolderisExistCheck: null,
-  CreatedFolderID: 0,
+  CreatedFoldersArray: [],
   SavefilesandfoldersResponse: null,
   TableSpinner: false,
   NotFound: 0,
@@ -353,10 +353,12 @@ const DataRoomReducer = (state = initialState, action) => {
       }
     }
     case actions.CREATE_FOLDER_SUCCESS: {
+      let newData = [...state.CreatedFoldersArray]
+      newData.push(action.response)
       return {
         ...state,
         Loading: false,
-        CreatedFolderID: action.response,
+        CreatedFoldersArray: newData,
       }
     }
     case actions.SAVEFILESANDFOLDERS_INIT: {
@@ -412,7 +414,29 @@ const DataRoomReducer = (state = initialState, action) => {
         folderUploadData: action.response,
       }
     }
-
+    case actions.SEARCHDOCUMENTSANDFOLDERSAPI_DATAROOM_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.SEARCHDOCUMENTSANDFOLDERSAPI_DATAROOM_SUCCESS: {
+      console.log("DataRoomReducer.SearchFilesAndFoldersResponse", action);
+      return {
+        ...state,
+        Loading: false,
+        SearchFilesAndFoldersResponse: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.SEARCHDOCUMENTSANDFOLDERSAPI_DATAROOM_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        SearchFilesAndFoldersResponse: [],
+        ResponseMessage: action.message,
+      };
+    }
     default:
       return { ...state }
   }
