@@ -6,43 +6,21 @@
   border-radius: 4px !important;
   position: relative !important;
   margin-left: 12px !important;
-  margin-top: 15px !important;
 }
-
-.Box_Minutes_SubAgenda {
+.Box_Minutes_SubAgenda_Edit {
   width: 100% !important;
   height: auto !important;
   min-height: 92px !important;
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   position: relative !important;
-  margin-top: 15px !important;
-  padding: 0px 10px !important;
+  margin-left: 12px !important;
 }
 
 .Title_File {
   font-family: "MontserratSemiBold" !important;
   font-size: 20px !important;
   color: #5a5a5a !important;
-}
-
-.Date_Minutes_And_time {
-  font-family: "MontserratSemiBold" !important;
-  font-size: 12px !important;
-  color: #5f78d6 !important;
-}
-
-.Uploaded_heading {
-  font-family: "MontserratSemiBold" !important;
-  font-size: 16px !important;
-  color: #5f78d6 !important;
-}
-
-.RedCrossClass {
-  position: absolute !important;
-  right: -6px;
-  top: -4px;
-  cursor: pointer !important;
 }
 
 .Show_more_Styles {
@@ -53,87 +31,61 @@
   cursor: pointer !important;
 }
 
-.Name {
+.Date_Minutes_And_time {
   font-family: "MontserratSemiBold" !important;
-  font-size: 16px !important;
-  color: #5a5a5a !important;
+  font-size: 12px !important;
+  color: #5f78d6 !important;
 }
 
 .Profile_minutes {
   border-radius: 50% !important;
 }
 
-.Line_heigh {
-  margin-top: 7px !important;
-  line-height: 15px !important;
+.Uploaded_heading {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5f78d6 !important;
 }
 
-.Sub_Scroller {
-  margin-left: 30px !important ;
+.Name {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+}
+
+.Heading_View_Minutes {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+}
+
+.SubAgendaSection {
+  width: 100% !important;
+}
+
+.SubAgendaSubTitleHeaeding {
+  font-family: "MontserratSemiBold" !important;
+  font-size: 16px !important;
+  color: #5f78d6 !important;
+}
+
+.RedCrossIconClass {
+  position: absolute;
+  right: 0px !important;
+  top: 0px !important;
+}
+
+.RedCrossClass {
+  position: absolute !important;
+  right: -6px;
+  top: -4px;
+  cursor: pointer !important;
 }
 
 .Add-note-QuillRow {
   position: relative;
   margin-top: 10px !important;
   margin-bottom: 10px !important;
-}
-
-.ql-editor-custom {
-  height: 140px;
-  border-top: 1px solid #ccc !important;
-  border-top-right-radius: 4px;
-  border-top-left-radius: 4px;
-  width: 100% !important;
-}
-
-.ql-editor-custom .ql-toolbar {
-  width: 100% !important;
-}
-
-.RedCrossForEdit {
-  position: absolute !important;
-  right: 8px !important;
-  top: -7px !important;
-}
-
-.CancelButtonOnSaveAgendaImport {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  color: #5a5a5a !important;
-  background: #fff !important;
-  border-radius: 4px !important;
-  border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
-}
-
-.CancelButtonOnSaveAgendaImport:is(:hover, :focus, :focus-visible, :active) {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  color: #5a5a5a !important;
-  background: #fff !important;
-  border-radius: 4px !important;
-  border: 1px solid #e1e1e1 !important;
-  font-family: "MontserratSemiBold" !important;
-}
-
-.SaveButtonOnSaveAgendaImport {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  background: #5f78d6 !important;
-  color: #fff !important;
-  border: none !important;
-  border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
-}
-
-.SaveButtonOnSaveAgendaImport:is(:hover, :focus, :focus-visible, :active) {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  background: #5f78d6 !important;
-  color: #fff !important;
-  border: none !important;
-  border-radius: 4px !important;
-  font-family: "MontserratSemiBold" !important;
 }
 
 .quill-height-addNote {
@@ -147,46 +99,100 @@
   color: #a2a2a2 !important;
 }
 
-.HeadingMinutesAgenda {
-  font-family: "MontserratSemiBold" !important;
-  font-size: 16px !important;
-  color: #5f78d6 !important;
+.RedCrossForEdit {
+  position: absolute !important;
+  right: 7px !important;
+  top: -7px !important;
 }
 
-.Main_scroller_Agenda_minutes {
-  height: 60vh !important;
+.Cancel_button_Edit_Agenda_Minutes {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Cancel_button_Edit_Agenda_Minutes:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Save_button_Edit_Agenda_Minutes {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #5f78d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Save_button_Edit_Agenda_Minutes:is(:hover, :active, :focus, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #fff !important;
+  background: #5f78d6 !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Scroller_Edit_Ageda_Main {
+  height: 53vh !important;
   overflow-x: hidden !important;
 }
 
-.Main_scroller_Agenda_minutes::-webkit-scrollbar {
+.Scroller_Edit_Ageda_Main::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
   background-color: #f2f2f2;
 }
 
-.Main_scroller_Agenda_minutes::-webkit-scrollbar-thumb {
+.Scroller_Edit_Ageda_Main::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
 }
 
-.SubAgendaCreateScroller {
-  height: 40vh !important;
+.OverAll_Padding {
+  padding: 0px 40px !important;
+}
+
+.OverAll_padding_SubAgenda {
+  padding: 0px 30px !important;
+}
+
+.Scroller_SubAgenda {
+  height: 30vh !important;
   overflow-x: hidden !important;
 }
 
-.SubAgendaCreateScroller_When_NoSubAgenda_Is {
+.Scroller_SubAgenda_WhenNO_SubAgenda {
   height: 0vh !important;
 }
 
-.SubAgendaCreateScroller::-webkit-scrollbar {
+.Scroller_SubAgenda::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;
   background-color: #f2f2f2;
 }
 
-.SubAgendaCreateScroller::-webkit-scrollbar-thumb {
+.Scroller_SubAgenda::-webkit-scrollbar-thumb {
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
+}
+
+.RedCrossClassSubAgenda {
+  position: absolute !important;
+  right: -7px !important;
+  top: -5px !important;
 }

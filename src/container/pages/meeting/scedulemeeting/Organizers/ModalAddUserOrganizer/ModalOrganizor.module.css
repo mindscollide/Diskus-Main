@@ -121,3 +121,7 @@
   background: #ccc;
   margin-left: -15px;
 }
+
+.Padding_Class {
+  padding-right: 20px !important;
+}

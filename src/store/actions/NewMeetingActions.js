@@ -147,6 +147,20 @@ const showUnsavedModalImportAgenda = (response) => {
   };
 };
 
+const showUnsavedActionsModal = (response) => {
+  return {
+    type: actions.UNSAVED_MODAL_ACTIONS,
+    response: response,
+  };
+};
+
+const showRemovedTableModal = (response) => {
+  return {
+    type: actions.REMOVED_TABLE_MODAL,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -169,4 +183,6 @@ export {
   showUnsavedCreateFromScratch,
   showUnsavedForButonCreateFromScratch,
   showUnsavedModalImportAgenda,
+  showUnsavedActionsModal,
+  showRemovedTableModal,
 };

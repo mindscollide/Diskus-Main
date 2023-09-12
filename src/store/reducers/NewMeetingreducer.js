@@ -23,6 +23,8 @@ const initialState = {
   unsavedModalScratch: false,
   UnsavedButtonCreateScratch: false,
   unsavedModalImportAgenda: false,
+  unsavedActions: false,
+  removeTableModal: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -170,6 +172,20 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         unsavedModalImportAgenda: action.response,
+      };
+    }
+
+    case actions.UNSAVED_MODAL_ACTIONS: {
+      return {
+        ...state,
+        unsavedActions: action.response,
+      };
+    }
+
+    case actions.REMOVED_TABLE_MODAL: {
+      return {
+        ...state,
+        removeTableModal: action.response,
       };
     }
 

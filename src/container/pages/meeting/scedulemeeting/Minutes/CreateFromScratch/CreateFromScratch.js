@@ -24,6 +24,7 @@ const CreateFromScratch = () => {
   const navigate = useNavigate();
   const [editable, setEditable] = useState(false);
   const [createFromSratch, setCreateFromSratch] = useState(false);
+  const [editableIndex, setEditableIndex] = useState(0);
   const { NewMeetingreducer } = useSelector((state) => state);
 
   const [showScratchFiles, setShowScratchFiles] = useState([
@@ -46,7 +47,8 @@ const CreateFromScratch = () => {
     setExpanded(!expanded);
   };
 
-  const allowEditOptions = () => {
+  const allowEditOptions = (index) => {
+    setEditableIndex(index);
     setEditable(true);
     setCreateFromSratch(false);
   };
@@ -147,36 +149,16 @@ const CreateFromScratch = () => {
               <img src={RedCroseeIcon} className={styles["RedCrossForEdit"]} />
             </Col>
           </Row>
-          <Row className="mt-5">
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="d-flex justify-content-end gap-2"
-            >
-              <Button
-                text={t("Cancel")}
-                className={styles["CancelButtonOnSaveAgendaImport"]}
-                onClick={handleCancelonClickCreateFromScratch}
-              />
-              <Button
-                text={t("Save")}
-                className={styles["SaveButtonOnSaveAgendaImport"]}
-                onClick={(e) => {
-                  HandleSavingTheMinutes(e);
-                }}
-              />
-            </Col>
-          </Row>
         </>
       ) : null}
+
       <Row className="mt-5">
         {showScratchFiles.length > 0
           ? showScratchFiles.map((data, index) => {
               console.log(data, "datadatadatadatadata");
               return (
                 <>
-                  {editable ? (
+                  {editableIndex === index && editable ? (
                     <>
                       <Row className={styles["Add-note-QuillRow"]}>
                         <Col
@@ -325,7 +307,9 @@ const CreateFromScratch = () => {
                                       height="21.55px"
                                       width="21.55px"
                                       className="cursor-pointer"
-                                      onClick={allowEditOptions}
+                                      onClick={() => {
+                                        allowEditOptions(index);
+                                      }}
                                     />
                                   </Col>
                                 </Row>
@@ -350,6 +334,32 @@ const CreateFromScratch = () => {
             })
           : null}
       </Row>
+      {createFromSratch ? (
+        <>
+          <Row className="mt-5">
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className="d-flex justify-content-end gap-2"
+            >
+              <Button
+                text={t("Cancel")}
+                className={styles["CancelButtonOnSaveAgendaImport"]}
+                onClick={handleCancelonClickCreateFromScratch}
+              />
+              <Button
+                text={t("Save")}
+                className={styles["SaveButtonOnSaveAgendaImport"]}
+                onClick={(e) => {
+                  HandleSavingTheMinutes(e);
+                }}
+              />
+            </Col>
+          </Row>
+        </>
+      ) : null}
+
       {NewMeetingreducer.unsavedModalScratch && (
         <UndavedModalScratch setEditable={setEditable} />
       )}

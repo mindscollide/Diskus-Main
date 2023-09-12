@@ -116,3 +116,7 @@
   border-radius: 20px;
   background-color: #f2f2f2;
 }
+
+.OverAll_Padding {
+  padding-right: 20px !important;
+}
