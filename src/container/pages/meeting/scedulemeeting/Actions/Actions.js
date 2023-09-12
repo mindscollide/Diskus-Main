@@ -11,6 +11,8 @@ import CrossIcon from "../../../../../assets/images/CrossIcon.svg";
 import { useState } from "react";
 import EmptyStates from "../../../../../assets/images/EmptystateAction.svg";
 import CreateTask from "./CreateTask/CreateTask";
+import RemoveTableModal from "./RemoveTableModal/RemoveTableModal";
+import { showRemovedTableModal } from "../../../../../store/actions/NewMeetingActions";
 
 const Actions = () => {
   const { t } = useTranslation();
@@ -18,6 +20,11 @@ const Actions = () => {
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [createaTask, setCreateaTask] = useState(false);
+
+  const handleCrossIconModal = () => {
+    dispatch(showRemovedTableModal(true));
+  };
+
   const notificationData = [
     {
       key: "1",
@@ -39,13 +46,18 @@ const Actions = () => {
         <>
           <Row>
             <Col lf={12} md={12} sm={12}>
-              <img src={CrossIcon} />
+              <img
+                src={CrossIcon}
+                className="cursor-pointer"
+                onClick={handleCrossIconModal}
+              />
             </Col>
           </Row>
         </>
       ),
     },
   ];
+
   const [actionsRows, setActionsRows] = useState(notificationData);
   const ActionsColoumn = [
     {
@@ -166,6 +178,8 @@ const Actions = () => {
           </Row>
         </>
       )}
+
+      {NewMeetingreducer.removeTableModal && <RemoveTableModal />}
     </section>
   );
 };

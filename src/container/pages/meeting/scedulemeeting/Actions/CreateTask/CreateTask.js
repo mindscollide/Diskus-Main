@@ -15,6 +15,8 @@ import PDFIcon from "../../../../../../assets/images/pdf_icon.svg";
 import RedCrossIcon from "../../../../../../assets/images/CrossIcon.svg";
 import { style } from "@mui/system";
 import { validateInput } from "../../../../../../commen/functions/regex";
+import UnsavedActions from "../UnsavedActionModal/UnsavedActions";
+import { showUnsavedActionsModal } from "../../../../../../store/actions/NewMeetingActions";
 
 const CreateTask = () => {
   const { t } = useTranslation();
@@ -23,10 +25,13 @@ const CreateTask = () => {
   const { Dragger } = Upload;
   const { NewMeetingreducer } = useSelector((state) => state);
   const [selectedOption, setSelectedOption] = useState(null);
+  const [selectThird, setselectThird] = useState(null);
   const [taskAttachments, setTaskAttachments] = useState([]);
   const [error, seterror] = useState(false);
   const [createTaskDetails, setcreateTaskDetails] = useState({
     ActionsToTake: "",
+    SelectMember: 0,
+    SelectAgenda: 0,
   });
 
   const props = {
@@ -69,8 +74,31 @@ const CreateTask = () => {
     setSelectedOption(option);
   };
 
+  const handleSelectThird = (option) => {
+    setselectThird(option);
+  };
+
   // React select tick option handled
   const CustomOption = ({ innerProps, label, isSelected }) => (
+    <div {...innerProps} className={styles["option"]}>
+      {console.log(label, "labellabellabel")}
+      <Row>
+        <Col lg={12} md={12} sm={12} className={styles["OverAll_padding"]}>
+          <Row className="mt-2">
+            <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+              <span className={styles["label_Styles"]}>{label}</span>
+              {isSelected && <img src={tick} width={25} />}
+            </Col>
+
+            <span className={styles["BottomLine"]}></span>
+          </Row>
+        </Col>
+      </Row>
+    </div>
+  );
+
+  // For Third Select Options
+  const CustomOptionThird = ({ innerProps, label, isSelected }) => (
     <div {...innerProps} className={styles["option"]}>
       {console.log(label, "labellabellabel")}
       <Row>
@@ -161,6 +189,11 @@ const CreateTask = () => {
     },
   ];
 
+  const TwoOptions = [
+    { value: "Outstanding", label: "Outstanding" },
+    { value: "Completed", label: "Completed" },
+  ];
+
   const removeFileFunction = (index) => {
     const updateFile = [...taskAttachments];
     updateFile.splice(index, 1);
@@ -184,6 +217,21 @@ const CreateTask = () => {
         });
       }
     }
+  };
+
+  const saveButtonFunc = () => {
+    seterror(true);
+  };
+
+  const handleSelectMember = (e) => {
+    setcreateTaskDetails({
+      ...createTaskDetails,
+      SelectMember: e.value,
+    });
+  };
+
+  const handleUnsavedModal = () => {
+    dispatch(showUnsavedActionsModal(true));
   };
 
   return (
@@ -225,7 +273,7 @@ const CreateTask = () => {
                     : `${styles["errorMessage-inLogin_hidden"]}`
                 }
               >
-                {t("Please-enter-meeting-title")}
+                {t("Please-enter-action-to-take")}
               </p>
             </Col>
           </Row>
@@ -243,7 +291,10 @@ const CreateTask = () => {
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <Select options={optionsParticipants} />
+              <Select
+                options={optionsParticipants}
+                onChange={handleSelectMember}
+              />
             </Col>
           </Row>
         </Col>
@@ -281,10 +332,33 @@ const CreateTask = () => {
           </Row>
           <Row>
             <Col lg={12} md={12} sm={12}>
-              <Select />
+              <Select
+                options={TwoOptions}
+                value={selectThird}
+                onChange={handleSelectThird}
+                isSearchable={false}
+                components={{
+                  Option: CustomOptionThird,
+                }}
+              />
             </Col>
           </Row>
         </Col>
+        <Row>
+          <Col>
+            <p
+              className={
+                error &&
+                createTaskDetails.SelectMember === 0 &&
+                selectedOption === null
+                  ? ` ${styles["errorMessage-inLogin"]} `
+                  : `${styles["errorMessage-inLogin_hidden"]}`
+              }
+            >
+              {t("Please-select-assignees")}
+            </p>
+          </Col>
+        </Row>
       </Row>
       <Row className="mt-1">
         <Col lg={12} md={12} sm={12}>
@@ -437,13 +511,16 @@ const CreateTask = () => {
           <Button
             text={"Cancel"}
             className={styles["Cancel_Button_Polls_meeting"]}
+            onClick={handleUnsavedModal}
           />
           <Button
             text={"Save"}
             className={styles["Save_Button_Polls_meeting"]}
+            onClick={saveButtonFunc}
           />
         </Col>
       </Row>
+      {NewMeetingreducer.unsavedActions && <UnsavedActions />}
     </section>
   );
 };

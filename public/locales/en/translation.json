@@ -1410,5 +1410,7 @@
   "The-meeting-wrapped-up-lets-dive-into-some-action": "The meeting wrapped up, let's dive into some action!",
   "Actions-to-take": "Actions to take",
   "Select-agenda": "Select Agenda",
-  "Please-enter-action-to-take": "Please enter action to take *"
+  "Please-enter-action-to-take": "Please enter action to take *",
+  "Please-select-assignees": "Please select assignees *",
+  "Remove-the-action": "remove the action?"
 }
