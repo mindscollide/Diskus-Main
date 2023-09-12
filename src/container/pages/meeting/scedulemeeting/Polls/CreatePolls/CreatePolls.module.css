@@ -92,3 +92,35 @@ body[dir="rtl"] .polling_Options_backGround {
   background: #ccc;
   margin-left: -15px;
 }
+
+.CheckBoxTitle {
+  margin: 0;
+  padding: 0;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.ADD_Btn_CreatePool_Modal {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff;
+  border: none;
+  border-radius: 4px !important;
+}
+
+.ADD_Btn_CreatePool_Modal:hover,
+.ADD_Btn_CreatePool_Modal:active,
+.ADD_Btn_CreatePool_Modal:focus,
+.ADD_Btn_CreatePool_Modal:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+}
+
+.MarginSection {
+  margin-top: 30px !important;
+}
