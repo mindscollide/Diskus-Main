@@ -122,3 +122,7 @@
   background: #ccc;
   margin-left: -15px;
 }
+
+.padding_class {
+  padding-right: 20px !important;
+}

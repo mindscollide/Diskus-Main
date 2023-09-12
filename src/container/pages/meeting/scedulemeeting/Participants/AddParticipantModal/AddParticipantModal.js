@@ -61,6 +61,13 @@ const AddParticipantModal = () => {
       name: "ALI MAMDANI",
     },
   ]);
+
+  const RemovedParticipant = (index) => {
+    const updatedPartipants = [...membersParticipants];
+    updatedPartipants.splice(index, 1);
+    setMembersParticipants(updatedPartipants);
+  };
+
   const [addParticipant, setAddParticipant] = useState({
     SearhParticipant: "",
   });
@@ -125,24 +132,39 @@ const AddParticipantModal = () => {
                           <>
                             <Col lg={6} md={6} sm={12} className="mt-2">
                               <Row>
-                                <Col lg={12} md={12} sm={12}>
-                                  <Row className={styles["Card_border2"]}>
-                                    <Col sm={12} md={10} lg={10}>
-                                      <img
-                                        src={profile}
-                                        width="33px"
-                                        height="33px"
-                                      />
-                                      <span className={styles["Name_cards"]}>
-                                        {data.name}
-                                      </span>
-                                    </Col>
-                                    <Col sm={12} md={2} lg={2}>
-                                      <img
-                                        src={CrossIcon}
-                                        width="14px"
-                                        height="14px"
-                                      />
+                                <Col
+                                  lg={12}
+                                  md={12}
+                                  sm={12}
+                                  className={styles["OverAll_Padding"]}
+                                >
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <Row className={styles["Card_border2"]}>
+                                        <Col sm={12} md={10} lg={10}>
+                                          <img
+                                            src={profile}
+                                            width="33px"
+                                            height="33px"
+                                          />
+                                          <span
+                                            className={styles["Name_cards"]}
+                                          >
+                                            {data.name}
+                                          </span>
+                                        </Col>
+                                        <Col sm={12} md={2} lg={2}>
+                                          <img
+                                            src={CrossIcon}
+                                            width="14px"
+                                            height="14px"
+                                            className="cursor-pointer"
+                                            onClick={() =>
+                                              RemovedParticipant(index)
+                                            }
+                                          />
+                                        </Col>
+                                      </Row>
                                     </Col>
                                   </Row>
                                 </Col>

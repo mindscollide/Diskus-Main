@@ -1402,5 +1402,19 @@
   "Show-details": "Show Details",
   "Please-add-members": "Please add members*",
   "Create-another-from-scratch": "Create another from scratch",
-  "View-minutes": "View Minutes"
+  "View-minutes": "View Minutes",
+  "Comment-deleted": "Comment deleted",
+  "Create-task": "Create Task",
+  "Action": "Action",
+  "Meeting-date": "Meeting Date",
+  "Take-action": "Take Action",
+  "The-meeting-wrapped-up-lets-dive-into-some-action": "The meeting wrapped up, let's dive into some action!",
+  "Actions-to-take": "Actions to take",
+  "Select-agenda": "Select Agenda",
+  "Please-enter-action-to-take": "Please enter action to take *",
+  "Please-select-assignees": "Please select assignees *",
+  "Remove-the-action": "remove the action?",
+  "Create-polls": "Create Polls",
+  "Poll-title": "Poll Title",
+  "Poll-type": "Poll Type"
 }

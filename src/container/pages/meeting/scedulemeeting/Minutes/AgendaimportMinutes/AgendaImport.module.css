@@ -175,6 +175,10 @@
   overflow-x: hidden !important;
 }
 
+.SubAgendaCreateScroller_When_NoSubAgenda_Is {
+  height: 0vh !important;
+}
+
 .SubAgendaCreateScroller::-webkit-scrollbar {
   width: 0.5rem;
   border-radius: 20px;

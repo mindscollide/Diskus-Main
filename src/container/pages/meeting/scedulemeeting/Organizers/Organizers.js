@@ -5,8 +5,6 @@ import {
   Table,
   TextField,
   Switch,
-  Loader,
-  Notification,
 } from "../../../../../components/elements";
 import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import addmore from "../../../../../assets/images/addmore.png";

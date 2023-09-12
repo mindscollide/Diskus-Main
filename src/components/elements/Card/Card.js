@@ -1,19 +1,19 @@
-import { Container, Row, Col } from "react-bootstrap";
-import styles from "./Card.module.css";
-import React, { useEffect, useRef, useState } from "react";
-import picprofile from "../../../assets/images/picprofile.png";
-import img1 from "../../../assets/images/DropdownONE.svg";
-import { useTranslation } from "react-i18next";
-import img2 from "../../../assets/images/DropDownTWO.svg";
-import { Button } from "../../../components/elements";
-import img3 from "../../../assets/images/DropdownTHREE.svg";
-import img4 from "../../../assets/images/DropdownFOUR.svg";
-import img5 from "../../../assets/images/DropdownFIVE.svg";
-import editicon from "../../../assets/images/Esvg.svg";
-import doticon from "../../../assets/images/Dsvg.svg";
-import img6 from "../../../assets/images/DropdownSIX.svg";
-import img7 from "../../../assets/images/DropdownSEVEN.svg";
-import Group_Icon from "../../../assets/images/group_Icons.svg";
+import { Container, Row, Col } from "react-bootstrap"
+import styles from "./Card.module.css"
+import React, { useEffect, useRef, useState } from "react"
+import picprofile from "../../../assets/images/picprofile.png"
+import img1 from "../../../assets/images/DropdownONE.svg"
+import { useTranslation } from "react-i18next"
+import img2 from "../../../assets/images/DropDownTWO.svg"
+import { Button } from "../../../components/elements"
+import img3 from "../../../assets/images/DropdownTHREE.svg"
+import img4 from "../../../assets/images/DropdownFOUR.svg"
+import img5 from "../../../assets/images/DropdownFIVE.svg"
+import editicon from "../../../assets/images/Esvg.svg"
+import doticon from "../../../assets/images/Dsvg.svg"
+import img6 from "../../../assets/images/DropdownSIX.svg"
+import img7 from "../../../assets/images/DropdownSEVEN.svg"
+import Group_Icon from "../../../assets/images/group_Icons.svg"
 const Card = ({
   CardHeading,
   profile,
@@ -32,66 +32,69 @@ const Card = ({
   creatorId,
   titleOnCLick,
 }) => {
-  const { t } = useTranslation();
+  console.log(profile, "profileprofile")
+  const { t } = useTranslation()
   const [editItems, setEditItems] = useState([
     { key: t("In-active"), value: 1 },
     { key: t("Archived"), value: 2 },
     { key: t("Active"), value: 3 },
-  ]);
-  const cardRef = useRef();
+  ])
+  const cardRef = useRef()
 
-  const [dropdownthreedots, setdropdownthreedots] = useState(false);
-  const [editdropdown, setEditdropdown] = useState(false);
-  const creatorID = localStorage.getItem("userID");
-  const findLengthofGroups = associatedTags && associatedTags.length;
+  const [dropdownthreedots, setdropdownthreedots] = useState(false)
+  const [editdropdown, setEditdropdown] = useState(false)
+  const creatorID = localStorage.getItem("userID")
+  const findLengthofGroups = associatedTags && associatedTags.length
 
   useEffect(() => {
     try {
       window.addEventListener("click", function (e) {
-        let clsname = e.target.className;
-        let arr = clsname.split("_");
-        if (arr != undefined) {
-          if (arr[1] === "dot" && dropdownthreedots === true) {
-            setdropdownthreedots(false);
-          } else if (arr[1] === "dot" && dropdownthreedots === false) {
-            setEditdropdown(false);
-            setdropdownthreedots(true);
-          } else if (arr[1] === "Edit" && editdropdown === true) {
-            setEditdropdown(false);
-          } else if (arr[1] === "Edit" && editdropdown === false) {
-            setdropdownthreedots(false);
-            setEditdropdown(true);
+        let clsname = e.target.className
+        if (typeof clsname === "string") {
+          let arr = clsname.split("_")
+          if (arr !== undefined) {
+            if (arr[1] === "dot" && dropdownthreedots === true) {
+              setdropdownthreedots(false)
+            } else if (arr[1] === "dot" && dropdownthreedots === false) {
+              setEditdropdown(false)
+              setdropdownthreedots(true)
+            } else if (arr[1] === "Edit" && editdropdown === true) {
+              setEditdropdown(false)
+            } else if (arr[1] === "Edit" && editdropdown === false) {
+              setdropdownthreedots(false)
+              setEditdropdown(true)
+            } else {
+              setEditdropdown(false)
+              setdropdownthreedots(false)
+            }
           } else {
-            setEditdropdown(false);
-            setdropdownthreedots(false);
+            setEditdropdown(false)
+            setdropdownthreedots(false)
           }
-        } else {
-          setEditdropdown(false);
-          setdropdownthreedots(false);
         }
-      });
+      })
     } catch {
-      console.log("error");
+      console.log("error")
     }
-  }, []);
+  }, [])
   let sortedArraay =
     profile !== null &&
     profile !== undefined &&
     profile.length > 0 &&
     profile.sort((a, b) => {
-      const userNameA = a.userName.toLowerCase();
-      const userNameB = b.userName.toLowerCase();
+      const userNameA = a.userName.toLowerCase()
+      const userNameB = b.userName.toLowerCase()
 
       if (userNameA < userNameB) {
-        return -1;
+        return -1
       }
       if (userNameA > userNameB) {
-        return 1;
+        return 1
       }
-      return 0;
-    });
+      return 0
+    })
 
-  useEffect(() => {}, [editdropdown, dropdownthreedots]);
+  useEffect(() => {}, [editdropdown, dropdownthreedots])
   return (
     <Row
       className={
@@ -238,7 +241,7 @@ const Card = ({
                                 }
                               />
                             </>
-                          );
+                          )
                         })
                       : null}
                   </Container>
@@ -456,6 +459,7 @@ const Card = ({
             sortedArraay !== undefined &&
             sortedArraay.length > 0
               ? sortedArraay.map((data, index) => {
+                  console.log(data, "datadatadatadata1212")
                   if (index <= 3) {
                     return (
                       <Col
@@ -471,12 +475,16 @@ const Card = ({
                             : styles["card_profile_box"]
                         }
                       >
-                        <img src={picprofile} width="37px" height="37px" />
+                        <img
+                          src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                          alt=""
+                          className="user-img"
+                        />
                         <p className={styles["namesCards-Committee-Group"]}>
                           {data.userName}
                         </p>
                       </Col>
-                    );
+                    )
                   }
                 })
               : null}
@@ -517,7 +525,7 @@ const Card = ({
         </Col>
       </Row>
     </Row>
-  );
-};
+  )
+}
 
-export default Card;
+export default Card

@@ -1,0 +1,55 @@
+.Sure_Messege_Class {
+  font-family: "MontserratSemiBold" !important;
+  color: #6172d6 !important;
+  font-size: 15px !important;
+}
+
+.Proceed_Button_Remove_poll_meeting_Table {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #a2a2a2 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Proceed_Button_Remove_poll_meeting_Table:is(
+    :hover,
+    :focus,
+    :focus-visible,
+    :active
+  ) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  background: #fff !important;
+  border-radius: 4px !important;
+  border: 1px solid #a2a2a2 !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Cancel_Button_Remove_poll_meeting_Table {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Cancel_Button_Remove_poll_meeting_Table:is(
+    :hover,
+    :focus,
+    :focus-visible,
+    :active
+  ) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #5f78d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+}

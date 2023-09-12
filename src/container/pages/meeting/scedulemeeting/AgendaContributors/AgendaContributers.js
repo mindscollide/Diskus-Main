@@ -10,13 +10,7 @@ import RspvIcon from "../../../../../assets/images/rspvGreen.svg";
 import RspcAbstainIcon from "../../../../../assets/images/rspvAbstain.svg";
 import Select from "react-select";
 import { Col, Row } from "react-bootstrap";
-import {
-  Button,
-  Table,
-  TextField,
-  Loader,
-  Notification,
-} from "../../../../../components/elements";
+import { Button, Table, TextField } from "../../../../../components/elements";
 import { useTranslation } from "react-i18next";
 import AgendaContributorsModal from "./AgdendaContributorsModal/AgendaContributorsModal";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,6 +31,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
   const { NewMeetingreducer } = useSelector((state) => state);
   const [notificationTable, setNotificationTable] = useState(false);
   const [rspvTable, setrspvTable] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
 
   const shownotifyAgendaContrubutors = () => {
     dispatch(showAgendaContributorsModals(true));
@@ -275,8 +270,6 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
       width: "400px",
     },
   ];
-
-  const [selectedOption, setSelectedOption] = useState(null);
 
   const handleOptionSelect = (option) => {
     setSelectedOption(option);
