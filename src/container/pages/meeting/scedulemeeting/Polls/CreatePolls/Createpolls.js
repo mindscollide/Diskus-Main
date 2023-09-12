@@ -127,6 +127,12 @@ const Createpolls = () => {
     }
   };
 
+  const RemoveMembers = (index) => {
+    const updateMember = [...members];
+    updateMember.splice(index, 1);
+    setMembers(updateMember);
+  };
+
   return (
     <section>
       <Row>
@@ -225,7 +231,7 @@ const Createpolls = () => {
               <Button
                 text={
                   <>
-                    <Row>
+                    <Row className="mt-1">
                       <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                         <img
                           src={plusFaddes}
@@ -347,6 +353,7 @@ const Createpolls = () => {
                                         height="14px"
                                         width="14px"
                                         className="cursor-pointer"
+                                        onClick={() => RemoveMembers(index)}
                                       />
                                     </Col>
                                   </Row>
