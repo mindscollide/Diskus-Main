@@ -1412,5 +1412,8 @@
   "Select-agenda": "Select Agenda",
   "Please-enter-action-to-take": "Please enter action to take *",
   "Please-select-assignees": "Please select assignees *",
-  "Remove-the-action": "remove the action?"
+  "Remove-the-action": "remove the action?",
+  "Create-polls": "Create Polls",
+  "Poll-title": "Poll Title",
+  "Poll-type": "Poll Type"
 }

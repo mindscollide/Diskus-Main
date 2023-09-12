@@ -128,7 +128,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setmeetingDetails(false);
   };
 
-  const Polls = () => {
+  const ShowPolls = () => {
     setPolls(true);
     setactionsPage(false);
     setMinutes(false);
@@ -234,6 +234,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
                       <Button
                         text={t("Polls")}
                         className={styles["Schedule_meetings_options"]}
+                        onClick={ShowPolls}
                       />
                     </Col>
                   </Row>
