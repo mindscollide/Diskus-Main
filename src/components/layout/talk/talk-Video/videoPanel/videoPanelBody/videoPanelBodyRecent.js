@@ -22,9 +22,11 @@ import {
 } from '../../../../../../commen/functions/date_formater'
 import { normalizeVideoPanelFlag } from '../../../../../../store/actions/VideoFeature_actions'
 import MissedRedIcon from '../../../../../../assets/images/Missed-Red-Icon.png'
-import MissedCallIcon from '../../../../../../assets/images/newElements/MissedCallIcon.png'
+import MissedCallIcon from '../../../../../../assets/images/Missedcall-Icon.png'
 import VideoCallIcon from '../../../../../../assets/images/VideoCall-Icon.png'
 import IncomingIcon from '../../../../../../assets/images/Incoming-Icon.png'
+import OutgoingIcon from '../../../../../../assets/images/Outgoing-Icon.png'
+import EmptyRecentCalls from './emptyRecentCalls'
 
 const VideoPanelBodyRecent = () => {
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
@@ -166,7 +168,7 @@ const VideoPanelBodyRecent = () => {
       <Container>
         {videoFeatureReducer.VideoChatSearchFlag === true ? (
           <Row key={Math.random()}>
-            <Col lg={12} md={12} sm={12}>
+            <Col lg={12} md={12} sm={12} className="mt-2">
               <TextField
                 maxLength={200}
                 applyClass="form-control2"
@@ -242,7 +244,7 @@ const VideoPanelBodyRecent = () => {
                               ? recentCallData.recipients[0].userName
                               : recentCallData.callerName}
                             <span className="call-status-icon">
-                              <img src={MissedRedIcon} />
+                              <img src={MissedCallIcon} />
                             </span>
                           </p>
                         ) : (
@@ -252,7 +254,7 @@ const VideoPanelBodyRecent = () => {
                               : recentCallData.callerName}
                             <span className="call-status-icon">
                               {recentCallData.isIncoming === false ? (
-                                <img src={MissedCallIcon} />
+                                <img src={OutgoingIcon} />
                               ) : (
                                 <img src={IncomingIcon} />
                               )}
@@ -304,10 +306,10 @@ const VideoPanelBodyRecent = () => {
           </InfiniteScroll>
         ) : VideoMainReducer.Loading === true ? (
           <>
-            <LoaderPanel />
+            <LoaderPanel message={'Protecting your data'} />
           </>
         ) : (
-          <p>No Recent Calls</p>
+          <EmptyRecentCalls />
         )}
       </Container>
     </>
@@ -315,58 +317,3 @@ const VideoPanelBodyRecent = () => {
 }
 
 export default VideoPanelBodyRecent
-
-// import React, { useState, useEffect } from 'react'
-// import { render } from 'react-dom'
-// import InfiniteScroll from 'react-infinite-scroll-component'
-
-// const style = {
-//   height: 30,
-//   border: '1px solid green',
-//   margin: 6,
-//   padding: 8,
-// }
-
-// const VideoPanelBodyRecent = () => {
-//   const [items, setItems] = useState(Array.from({ length: 20 }))
-//   const [hasMore, setHasMore] = useState(true)
-
-//   const fetchMoreData = () => {
-//     if (items.length >= 500) {
-//       setHasMore(false)
-//       return
-//     }
-//     // A fake async api call like which sends
-//     // 20 more records in .5 seconds
-//     setTimeout(() => {
-//       setItems(items.concat(Array.from({ length: 20 })))
-//     }, 500)
-//   }
-
-//   return (
-//     <div>
-//       <h1>demo: react-infinite-scroll-component</h1>
-//       <hr />
-//       <InfiniteScroll
-//         dataLength={items.length}
-//         next={fetchMoreData}
-//         hasMore={hasMore}
-//         loader={<h4>Loading...</h4>}
-//         height={400}
-//         endMessage={
-//           <p style={{ textAlign: 'center' }}>
-//             <b>Yay! You have seen it all</b>
-//           </p>
-//         }
-//       >
-//         {items.map((i, index) => (
-//           <div style={style} key={index}>
-//             div - #{index}
-//           </div>
-//         ))}
-//       </InfiniteScroll>
-//     </div>
-//   )
-// }
-
-// export default VideoPanelBodyRecent

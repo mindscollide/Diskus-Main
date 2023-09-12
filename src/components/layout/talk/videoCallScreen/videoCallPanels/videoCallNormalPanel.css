@@ -48,6 +48,7 @@
 
 .normal-avatar {
     height: 42.5vh;
+    margin-top: -5px !important
 }
 
 .normal-avatar img {

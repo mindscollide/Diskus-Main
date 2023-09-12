@@ -68,9 +68,9 @@ const VideoOutgoing = () => {
           <div className="Caller-Status">
             {Object.keys(VideoMainReducer.CallRequestReceivedMQTTData).length >
             0
-              ? 'Ringing '
-              : 'Calling '}
-            {VideoMainReducer.VideoRecipentData.userName}
+              ? 'Ringing...'
+              : 'Calling...'}
+            {/* {VideoMainReducer.VideoRecipentData.userName} */}
           </div>
         </Col>
       </Row>

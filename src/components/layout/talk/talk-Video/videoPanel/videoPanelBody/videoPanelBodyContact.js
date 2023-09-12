@@ -135,12 +135,19 @@ const VideoPanelBodyContact = () => {
     }
   }
 
+  let buttonText = 'Group Call'
+
+  if (groupCallUsers.length > 0) {
+    const formattedLength = String(groupCallUsers.length).padStart(2, '0')
+    buttonText += ' (' + formattedLength + ')'
+  }
+
   return (
     <>
       <Container>
         {videoFeatureReducer.VideoChatSearchFlag === true ? (
           <Row>
-            <Col lg={12} md={12} sm={12}>
+            <Col lg={12} md={12} sm={12} className="mt-2">
               <TextField
                 maxLength={200}
                 applyClass="form-control2"
@@ -212,7 +219,9 @@ const VideoPanelBodyContact = () => {
           })
         ) : VideoMainReducer.Loading === true ? (
           <>
-            <LoaderPanel />
+            <LoaderPanel
+              message={'Safeguarding your data to enhance the experience'}
+            />
           </>
         ) : (
           <p>No Users Available</p>
@@ -223,6 +232,7 @@ const VideoPanelBodyContact = () => {
         groupbtnClassName={
           groupCallUsers.length <= 1 ? 'group-btn-gray' : 'group-btn'
         }
+        buttonText={buttonText}
       />
     </>
   )

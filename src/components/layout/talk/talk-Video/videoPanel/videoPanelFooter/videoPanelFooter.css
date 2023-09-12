@@ -1,29 +1,32 @@
 .group-btn {
     position: absolute;
     height: 40px !important;
-    width: 140px;
+    width: 150px;
     bottom: 3%;
     right: 3%;
     background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
     border: none;
     border-radius: 4px;
-    font-size: 13px;
+    font-size: 12px;
     font-family: 'MontserratRegular';
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
-
 
 .group-btn-gray {
     position: absolute;
     height: 40px !important;
-    width: 140px;
+    width: 150px;
     bottom: 3%;
     right: 3%;
     background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
     border: none;
     border-radius: 4px;
-    font-size: 13px;
+    font-size: 12px;
     font-family: 'MontserratRegular';
     filter: grayscale(1);
+    padding-left: 0 !important;
+    padding-right: 0 !important;
 }
 
 button.group-btn.btn.btn-primary span {
