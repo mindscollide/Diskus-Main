@@ -18,6 +18,7 @@ import MeetingMaterial from "./MeetingMaterial/MeetingMaterial";
 import Minutes from "./Minutes/Minutes";
 import ProposedMeetingDate from "./Participants/ProposedMeetingDate/ProposedMeetingDate";
 import Actions from "./Actions/Actions";
+import Polls from "./Polls/Polls";
 const SceduleMeeting = ({ setProposeMeetingDate }) => {
   const { t } = useTranslation();
   const [meetingDetails, setmeetingDetails] = useState(true);
@@ -29,6 +30,8 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
   const [minutes, setMinutes] = useState(false);
   const [proposedMeetingDates, setProposedMeetingDates] = useState(false);
   const [actionsPage, setactionsPage] = useState(false);
+  const [polls, setPolls] = useState(false);
+
   const showMeetingDeitals = () => {
     setmeetingDetails(true);
     setorganizers(false);
@@ -37,8 +40,10 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setAgenda(false);
     setMinutes(false);
     setactionsPage(false);
+    setPolls(false);
     setMeetingMaterial(false);
   };
+
   const showOrganizers = () => {
     setorganizers(true);
     setmeetingDetails(false);
@@ -47,8 +52,10 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setAgenda(false);
     setMinutes(false);
     setactionsPage(false);
+    setPolls(false);
     setMeetingMaterial(false);
   };
+
   const showAgendaContributers = () => {
     setAgendaContributors(true);
     setmeetingDetails(false);
@@ -57,6 +64,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setAgenda(false);
     setMinutes(false);
     setactionsPage(false);
+    setPolls(false);
     setMeetingMaterial(false);
   };
 
@@ -68,6 +76,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setAgenda(false);
     setMinutes(false);
     setactionsPage(false);
+    setPolls(false);
     setMeetingMaterial(false);
   };
 
@@ -79,6 +88,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setmeetingDetails(false);
     setMinutes(false);
     setactionsPage(false);
+    setPolls(false);
     setMeetingMaterial(false);
   };
 
@@ -90,6 +100,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setorganizers(false);
     setMinutes(false);
     setactionsPage(false);
+    setPolls(false);
     setmeetingDetails(false);
   };
 
@@ -101,6 +112,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setmeetingDetails(false);
     setorganizers(false);
     setAgenda(false);
+    setPolls(false);
     setactionsPage(false);
   };
 
@@ -112,8 +124,22 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
     setParticipants(false);
     setAgendaContributors(false);
     setorganizers(false);
+    setPolls(false);
     setmeetingDetails(false);
   };
+
+  const Polls = () => {
+    setPolls(true);
+    setactionsPage(false);
+    setMinutes(false);
+    setMeetingMaterial(false);
+    setAgenda(false);
+    setParticipants(false);
+    setAgendaContributors(false);
+    setorganizers(false);
+    setmeetingDetails(false);
+  };
+
   return (
     <>
       {proposedMeetingDates ? (
@@ -241,6 +267,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
                   {meetingMaterial && <MeetingMaterial />}
                   {minutes && <Minutes setMinutes={setMinutes} />}
                   {actionsPage && <Actions />}
+                  {polls && <Polls />}
                 </Paper>
               </Col>
             </Row>
