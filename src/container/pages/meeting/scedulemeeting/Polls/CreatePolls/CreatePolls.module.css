@@ -75,3 +75,20 @@ body[dir="rtl"] .polling_Options_backGround {
   height: 100% !important;
   align-items: start !important;
 }
+
+.Scroller_Meeting_polls {
+  height: 26vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_Meeting_polls::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_Meeting_polls::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}

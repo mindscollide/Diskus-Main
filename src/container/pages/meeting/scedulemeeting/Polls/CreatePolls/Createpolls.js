@@ -101,9 +101,13 @@ const Createpolls = () => {
               </span>
             </Col>
           </Row>
-
           <Row>
-            <Col lg={12} md={12} sm={12}>
+            <Col
+              lg={12}
+              md={12}
+              sm={12}
+              className={styles["Scroller_Meeting_polls"]}
+            >
               {options.length > 0
                 ? options.map((data, index) => {
                     return (
