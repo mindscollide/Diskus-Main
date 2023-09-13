@@ -11,11 +11,16 @@
     position: relative !important;
     margin-bottom: 10px;
     margin-left: 5px;
+    background-size: cover;
+    /* Ensure the image covers the entire div */
+    background-repeat: no-repeat;
+    /* Prevent image from repeating */
 }
 
-.video-profile-icon svg {
+
+/* .video-profile-icon img {
     width: 22px;
-}
+} */
 
 p.Video-chat-username {
     margin-top: 16px !important;

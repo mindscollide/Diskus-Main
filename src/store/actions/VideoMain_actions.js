@@ -731,6 +731,13 @@ const missedCallCount = (response, message) => {
   }
 }
 
+const groupCallRecipients = (response) => {
+  return {
+    type: actions.GROUP_CALL_RECIPIENTS,
+    response: response,
+  }
+}
+
 export {
   GetAllVideoCallUsers,
   InitiateVideoCall,
@@ -746,4 +753,5 @@ export {
   ScrollRecentCalls,
   LeaveCall,
   missedCallCount,
+  groupCallRecipients,
 }
