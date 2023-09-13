@@ -71,6 +71,7 @@ const ViewPollsPublished = () => {
               <span className={styles["Date_Heading"]}>{"Due-date"}</span>
             </Col>
           </Row>
+          <Row></Row>
         </Col>
         <Col lg={6} md={6} sm={6}></Col>
       </Row>
