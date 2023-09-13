@@ -172,3 +172,6 @@
   height: 110px !important;
   resize: none;
 }
+.createTodo_timePicker {
+  height: 39px !important;
+}

@@ -1,49 +1,49 @@
-import React, { useEffect, useState } from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
-import styles from './Notes.module.css'
-import IconAttachment from '../../assets/images/Icon-Attachment.png'
-import EditIcon from '../../assets/images/Edit-Icon.png'
-import NotesMainEmpty from '../../assets/images/NotesMain_Empty.svg'
-import ModalViewNote from '../modalViewNote/ModalViewNote'
-import ModalAddNote from '../modalAddNote/ModalAddNote'
-import ModalUpdateNote from '../modalUpdateNote/ModalUpdateNote'
-import ClipIcon from '../../assets/images/AttachmentNotes.svg'
-import StarIcon from '../../assets/images/Star.svg'
-import hollowstar from '../../assets/images/Hollowstar.svg'
-import PlusExpand from '../../assets/images/Plus-notesExpand.svg'
-import MinusExpand from '../../assets/images/close-accordion.svg'
-import EditIconNote from '../../assets/images/EditIconNotes.svg'
-import { Collapse, Pagination } from 'antd'
-import FileIcon, { defaultStyles } from 'react-file-icon'
-import { useDispatch, useSelector } from 'react-redux'
-import { useTranslation } from 'react-i18next'
+import React, { useEffect, useState } from "react"
+import { Container, Row, Col } from "react-bootstrap"
+import styles from "./Notes.module.css"
+import IconAttachment from "../../assets/images/Icon-Attachment.png"
+import EditIcon from "../../assets/images/Edit-Icon.png"
+import NotesMainEmpty from "../../assets/images/NotesMain_Empty.svg"
+import ModalViewNote from "../modalViewNote/ModalViewNote"
+import ModalAddNote from "../modalAddNote/ModalAddNote"
+import ModalUpdateNote from "../modalUpdateNote/ModalUpdateNote"
+import ClipIcon from "../../assets/images/AttachmentNotes.svg"
+import StarIcon from "../../assets/images/Star.svg"
+import hollowstar from "../../assets/images/Hollowstar.svg"
+import PlusExpand from "../../assets/images/Plus-notesExpand.svg"
+import MinusExpand from "../../assets/images/close-accordion.svg"
+import EditIconNote from "../../assets/images/EditIconNotes.svg"
+import { Collapse, Pagination } from "antd"
+import FileIcon, { defaultStyles } from "react-file-icon"
+import { useDispatch, useSelector } from "react-redux"
+import { useTranslation } from "react-i18next"
 import {
   ArrowLeft,
   Plus,
   Dash,
   StarFill,
   Paperclip,
-} from 'react-bootstrap-icons'
+} from "react-bootstrap-icons"
 import {
   Button,
   Paper,
   Loader,
   TextField,
   Notification,
-} from '../../components/elements'
-import { end, left } from '@popperjs/core'
-import { Accordion, AccordionSummary } from '@material-ui/core'
-import { AccordionDetails, Typography } from '@mui/material'
+} from "../../components/elements"
+import { end, left } from "@popperjs/core"
+import { Accordion, AccordionSummary } from "@material-ui/core"
+import { AccordionDetails, Typography } from "@mui/material"
 import {
   ClearNotesResponseMessage,
   GetNotes,
   GetNotesByIdAPI,
-} from '../../store/actions/Notes_actions'
+} from "../../store/actions/Notes_actions"
 import {
   _justShowDateformat,
   _justShowDay,
-} from '../../commen/functions/date_formater'
-import { useNavigate } from 'react-router-dom'
+} from "../../commen/functions/date_formater"
+import { useNavigate } from "react-router-dom"
 
 const Notes = () => {
   const [editFlag, setEditFlag] = useState(false)
@@ -55,21 +55,21 @@ const Notes = () => {
   const navigate = useNavigate()
   const { NotesReducer, LanguageReducer } = useSelector((state) => state)
   const { Panel } = Collapse
-  const [input, setInput] = useState('')
+  const [input, setInput] = useState("")
   const [show, setShow] = useState(false)
   //Get Current User ID
   const { t } = useTranslation()
-  let createrID = localStorage.getItem('userID')
-  let OrganizationID = localStorage.getItem('organizationID')
-  let notesPage = JSON.parse(localStorage.getItem('notesPage'))
-  let notesPagesize = localStorage.getItem('notesPageSize')
+  let createrID = localStorage.getItem("userID")
+  let OrganizationID = localStorage.getItem("organizationID")
+  let notesPage = JSON.parse(localStorage.getItem("notesPage"))
+  let notesPagesize = localStorage.getItem("notesPageSize")
   const [totalRecords, setTotalRecords] = useState(0)
   // for modal Add notes
   const [addNotes, setAddNotes] = useState(false)
 
   const [open, setOpen] = useState({
     open: false,
-    message: '',
+    message: "",
   })
   const [showStarIcon, setStarIcon] = useState(false)
   // for modal Update notes
@@ -84,18 +84,18 @@ const Notes = () => {
       let Data = {
         UserID: parseInt(createrID),
         OrganizationID: JSON.parse(OrganizationID),
-        Title: '',
+        Title: "",
         PageNumber: JSON.parse(notesPage),
         Length: JSON.parse(notesPagesize),
       }
       dispatch(GetNotes(navigate, Data, t))
     } else {
-      localStorage.setItem('notesPage', 1)
-      localStorage.setItem('notesPageSize', 50)
+      localStorage.setItem("notesPage", 1)
+      localStorage.setItem("notesPageSize", 50)
       let Data = {
         UserID: parseInt(createrID),
         OrganizationID: JSON.parse(OrganizationID),
-        Title: '',
+        Title: "",
         PageNumber: 1,
         Length: 50,
       }
@@ -105,29 +105,29 @@ const Notes = () => {
     setViewModalShow(false)
     setUpdateShow(false)
     return () => {
-      localStorage.removeItem('notesPage')
-      localStorage.removeItem('notesPageSize')
+      localStorage.removeItem("notesPage")
+      localStorage.removeItem("notesPageSize")
     }
   }, [])
 
   // render Notes Data
   useEffect(() => {
-    console.log('check note empty state')
+    console.log("check note empty state")
     try {
       if (
         NotesReducer.GetAllNotesResponse !== null &&
         NotesReducer.GetAllNotesResponse !== undefined
       ) {
-        console.log('check note empty state')
+        console.log("check note empty state")
         setTotalRecords(NotesReducer.GetAllNotesResponse.totalRecords)
         if (NotesReducer.GetAllNotesResponse.getNotes === null) {
-          console.log('check note empty state')
+          console.log("check note empty state")
           setNotes([])
         } else if (
           Array.isArray(NotesReducer.GetAllNotesResponse.getNotes) &&
           NotesReducer.GetAllNotesResponse.getNotes.length > 0
         ) {
-          console.log('check note empty state')
+          console.log("check note empty state")
           let notes = []
           NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
             notes.push({
@@ -151,10 +151,10 @@ const Notes = () => {
           })
           setNotes(notes)
         } else if (
-          typeof NotesReducer.GetAllNotesResponse.getNotes === 'object' &&
+          typeof NotesReducer.GetAllNotesResponse.getNotes === "object" &&
           Object.keys(NotesReducer.GetAllNotesResponse.getNotes).length > 0
         ) {
-          console.log('check note empty state')
+          console.log("check note empty state")
           let notes = []
           NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
             notes.push({
@@ -178,7 +178,7 @@ const Notes = () => {
           })
           setNotes(notes)
         } else {
-          console.log('check note empty state')
+          console.log("check note empty state")
           setNotes([])
         }
         // if (Object.keys(NotesReducer.GetAllNotesResponse.getNotes).length > 0) {
@@ -209,11 +209,11 @@ const Notes = () => {
         //   setNotes([]);
         // }
       } else {
-        console.log('check note empty state')
+        console.log("check note empty state")
         setNotes([])
       }
     } catch (error) {
-      console.log('check note empty state', error)
+      console.log("check note empty state", error)
     }
   }, [NotesReducer.GetAllNotesResponse])
 
@@ -223,6 +223,7 @@ const Notes = () => {
   }
   // for open Update User Notes Modal
   const editIconModal = async (id) => {
+    console.log(id, "editIconModaleditIconModaleditIconModal")
     dispatch(
       GetNotesByIdAPI(
         navigate,
@@ -231,8 +232,8 @@ const Notes = () => {
         setViewModalShow,
         setUpdateShow,
         setUpdateNotesModal,
-        2,
-      ),
+        2
+      )
     )
   }
 
@@ -246,8 +247,8 @@ const Notes = () => {
         setViewModalShow,
         setUpdateShow,
         setUpdateNotesModal,
-        1,
-      ),
+        1
+      )
     )
   }
 
@@ -260,12 +261,12 @@ const Notes = () => {
   }
 
   const handelChangeNotesPagination = async (current, pageSize) => {
-    localStorage.setItem('notesPage', current)
-    localStorage.setItem('notesPageSize', pageSize)
+    localStorage.setItem("notesPage", current)
+    localStorage.setItem("notesPageSize", pageSize)
     let Data = {
       UserID: parseInt(createrID),
       OrganizationID: JSON.parse(OrganizationID),
-      Title: '',
+      Title: "",
       PageNumber: current,
       Length: pageSize,
     }
@@ -274,9 +275,9 @@ const Notes = () => {
 
   useEffect(() => {
     if (
-      NotesReducer.ResponseMessage !== '' &&
-      NotesReducer.ResponseMessage !== t('Data-available') &&
-      NotesReducer.ResponseMessage !== t('No-data-available')
+      NotesReducer.ResponseMessage !== "" &&
+      NotesReducer.ResponseMessage !== t("Data-available") &&
+      NotesReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({
         ...open,
@@ -288,9 +289,9 @@ const Notes = () => {
           {
             ...open,
             open: false,
-            message: '',
+            message: "",
           },
-          4000,
+          4000
         )
       })
       dispatch(ClearNotesResponseMessage())
@@ -299,10 +300,10 @@ const Notes = () => {
 
   return (
     <>
-      <div className={styles['notescontainer']}>
+      <div className={styles["notescontainer"]}>
         <Row className="mt-3">
           <Col md={1} sm={12} lg={1}>
-            <h1 className={styles['notes-heading-size']}>{t('Notes')}</h1>
+            <h1 className={styles["notes-heading-size"]}>{t("Notes")}</h1>
           </Col>
           <Col
             lg={11}
@@ -311,15 +312,15 @@ const Notes = () => {
             className="d-flex justify-content-start mt-0 "
           >
             <Button
-              text={t('Create-new-note')}
+              text={t("Create-new-note")}
               icon={<Plus width={20} height={20} fontWeight={800} />}
-              className={styles['create-note-btn']}
+              className={styles["create-note-btn"]}
               onClick={modalAddUserModal}
             />
           </Col>
         </Row>
         <Row>
-          <Col sm={12} md={12} lg={12} className={styles['notesViewContainer']}>
+          <Col sm={12} md={12} lg={12} className={styles["notesViewContainer"]}>
             {/* Test Accordian Body Starts  */}
             {notes.length > 0 && notes !== null && notes !== undefined ? (
               notes.map((data, index) => {
@@ -327,10 +328,12 @@ const Notes = () => {
                   <Row className="mt-2">
                     <Col lg={12} md={12} sm={12}>
                       <Accordion
-                        className={styles['notes_accordion']}
+                        aria-controls="panel1a-content"
+                        id="panel1a-header"
+                        className={styles["notes_accordion"]}
                         expanded={isExpanded === JSON.parse(data?.pK_NotesID)}
                         key={data?.pK_NotesID}
-                        onChange={handleChangeExpanded(data?.pK_NotesID)}
+                        // onChange={handleChangeExpanded(data?.pK_NotesID)}
                       >
                         <AccordionSummary
                           disableRipple={true}
@@ -341,12 +344,14 @@ const Notes = () => {
                             isExpanded === JSON.parse(data?.pK_NotesID) ? (
                               <img
                                 src={MinusExpand}
-                                className={styles['MinusIcon']}
+                                className={styles["MinusIcon"]}
+                                alt=""
                               />
                             ) : (
                               <img
                                 src={PlusExpand}
-                                className={styles['PlusIcon']}
+                                alt=""
+                                className={styles["PlusIcon"]}
                               />
                             )
                           }
@@ -357,7 +362,7 @@ const Notes = () => {
                             <Col lg={6} md={6} sm={12}>
                               <div
                                 className={
-                                  styles['header-of-collapse-material']
+                                  styles["header-of-collapse-material"]
                                 }
                               >
                                 <span
@@ -386,7 +391,7 @@ const Notes = () => {
                                     width="15.86px"
                                     height="15.19px"
                                     className={
-                                      styles['starIcon-In-Collapse-material']
+                                      styles["starIcon-In-Collapse-material"]
                                     }
                                   />
                                 ) : (
@@ -395,7 +400,7 @@ const Notes = () => {
                                     width="15.86px"
                                     height="15.19px"
                                     className={
-                                      styles['starIcon-In-Collapse-material']
+                                      styles["starIcon-In-Collapse-material"]
                                     }
                                   />
                                 )}
@@ -407,7 +412,7 @@ const Notes = () => {
                                     width="15.96px"
                                     height="14.68px"
                                     className={
-                                      styles['attachIcon-In-Collapse-material']
+                                      styles["attachIcon-In-Collapse-material"]
                                     }
                                   />
                                 </span>
@@ -419,13 +424,13 @@ const Notes = () => {
 
                               <span
                                 className={
-                                  styles['collapse-text-attached-material']
+                                  styles["collapse-text-attached-material"]
                                 }
                               >
                                 {`${_justShowDateformat(
-                                  data?.modifiedDate + data?.modifiedTime,
-                                )} ${' | '} ${_justShowDay(
-                                  data?.modifiedDate + data?.modifiedTime,
+                                  data?.modifiedDate + data?.modifiedTime
+                                )} ${" | "} ${_justShowDay(
+                                  data?.modifiedDate + data?.modifiedTime
                                 )}`}
                               </span>
                             </Col>
@@ -434,15 +439,16 @@ const Notes = () => {
                               lg={3}
                               md={3}
                               sm={12}
-                              className={`${'d-flex justify-content-end align-items-center'} ${
-                                styles['editIconBox']
+                              className={`${"d-flex justify-content-end align-items-center"} ${
+                                styles["editIconBox"]
                               }`}
                             >
                               <img
                                 src={EditIconNote}
                                 width={17}
+                                alt=""
                                 className={
-                                  styles['editIcon-In-Collapse-material']
+                                  styles["editIcon-In-Collapse-material"]
                                 }
                                 onClick={() => editIconModal(data?.pK_NotesID)}
                               />
@@ -456,16 +462,15 @@ const Notes = () => {
                               sm={12}
                               lg={12}
                               md={12}
-                              className={styles['NotesAttachments']}
+                              className={styles["NotesAttachments"]}
                             >
                               {data?.notesAttachments.length > 0
                                 ? data?.notesAttachments.map((file, index) => {
                                     var ext = file.displayAttachmentName
-                                      .split('.')
+                                      .split(".")
                                       .pop()
-                                    const first = file.displayAttachmentName.split(
-                                      ' ',
-                                    )[0]
+                                    const first =
+                                      file.displayAttachmentName.split(" ")[0]
 
                                     return (
                                       <Col
@@ -473,74 +478,74 @@ const Notes = () => {
                                         lg={2}
                                         md={2}
                                         className={
-                                          styles['notes-attachment-icon']
+                                          styles["notes-attachment-icon"]
                                         }
                                       >
-                                        {ext === 'doc' ? (
+                                        {ext === "doc" ? (
                                           <FileIcon
-                                            extension={'docx'}
+                                            extension={"docx"}
                                             size={78}
-                                            type={'document'}
-                                            labelColor={'rgba(44, 88, 152)'}
+                                            type={"document"}
+                                            labelColor={"rgba(44, 88, 152)"}
                                           />
-                                        ) : ext === 'docx' ? (
+                                        ) : ext === "docx" ? (
                                           <FileIcon
-                                            extension={'docx'}
+                                            extension={"docx"}
                                             size={78}
-                                            type={'font'}
-                                            labelColor={'rgba(44, 88, 152)'}
+                                            type={"font"}
+                                            labelColor={"rgba(44, 88, 152)"}
                                           />
-                                        ) : ext === 'xls' ? (
+                                        ) : ext === "xls" ? (
                                           <FileIcon
-                                            extension={'xls'}
-                                            type={'spreadsheet'}
+                                            extension={"xls"}
+                                            type={"spreadsheet"}
                                             size={78}
-                                            labelColor={'rgba(16, 121, 63)'}
+                                            labelColor={"rgba(16, 121, 63)"}
                                           />
-                                        ) : ext === 'xlsx' ? (
+                                        ) : ext === "xlsx" ? (
                                           <FileIcon
-                                            extension={'xls'}
-                                            type={'spreadsheet'}
+                                            extension={"xls"}
+                                            type={"spreadsheet"}
                                             size={78}
-                                            labelColor={'rgba(16, 121, 63)'}
+                                            labelColor={"rgba(16, 121, 63)"}
                                           />
-                                        ) : ext === 'pdf' ? (
+                                        ) : ext === "pdf" ? (
                                           <FileIcon
-                                            extension={'pdf'}
+                                            extension={"pdf"}
                                             size={78}
                                             {...defaultStyles.pdf}
                                           />
-                                        ) : ext === 'png' ? (
+                                        ) : ext === "png" ? (
                                           <FileIcon
-                                            extension={'png'}
+                                            extension={"png"}
                                             size={78}
-                                            type={'image'}
-                                            labelColor={'rgba(102, 102, 224)'}
+                                            type={"image"}
+                                            labelColor={"rgba(102, 102, 224)"}
                                           />
-                                        ) : ext === 'txt' ? (
+                                        ) : ext === "txt" ? (
                                           <FileIcon
-                                            extension={'txt'}
+                                            extension={"txt"}
                                             size={78}
-                                            type={'document'}
-                                            labelColor={'rgba(52, 120, 199)'}
+                                            type={"document"}
+                                            labelColor={"rgba(52, 120, 199)"}
                                           />
-                                        ) : ext === 'jpg' ? (
+                                        ) : ext === "jpg" ? (
                                           <FileIcon
-                                            extension={'jpg'}
+                                            extension={"jpg"}
                                             size={78}
-                                            type={'image'}
-                                            labelColor={'rgba(102, 102, 224)'}
+                                            type={"image"}
+                                            labelColor={"rgba(102, 102, 224)"}
                                           />
-                                        ) : ext === 'jpeg' ? (
+                                        ) : ext === "jpeg" ? (
                                           <FileIcon
-                                            extension={'jpeg'}
+                                            extension={"jpeg"}
                                             size={78}
-                                            type={'image'}
-                                            labelColor={'rgba(102, 102, 224)'}
+                                            type={"image"}
+                                            labelColor={"rgba(102, 102, 224)"}
                                           />
-                                        ) : ext === 'gif' ? (
+                                        ) : ext === "gif" ? (
                                           <FileIcon
-                                            extension={'gif'}
+                                            extension={"gif"}
                                             size={78}
                                             {...defaultStyles.gif}
                                           />
@@ -554,7 +559,7 @@ const Notes = () => {
 
                                         <p
                                           className={
-                                            styles['notes-attachment-text']
+                                            styles["notes-attachment-text"]
                                           }
                                         >
                                           {first}
@@ -577,11 +582,11 @@ const Notes = () => {
                   sm={12}
                   md={12}
                   lg={12}
-                  className={styles['emptyNotesState']}
+                  className={styles["emptyNotesState"]}
                 >
                   <img src={NotesMainEmpty} />
-                  <p className={styles['emptystatetext']}>
-                    {t('Notes-you-add-appear-here')}
+                  <p className={styles["emptystatetext"]}>
+                    {t("Notes-you-add-appear-here")}
                   </p>
                 </Col>
               </Row>
@@ -599,15 +604,15 @@ const Notes = () => {
                   notesPage !== null && notesPage !== undefined ? notesPage : 1
                 }
                 locale={{
-                  items_per_page: t('items_per_page'),
-                  page: t('page'),
+                  items_per_page: t("items_per_page"),
+                  page: t("page"),
                 }}
                 onChange={handelChangeNotesPagination}
                 showSizeChanger
                 total={totalRecords}
-                pageSizeOptions={['30', '50', '100', '200']}
+                pageSizeOptions={["30", "50", "100", "200"]}
                 pageSize={notesPagesize !== null ? notesPagesize : 50}
-                className={styles['PaginationStyle-Notes']}
+                className={styles["PaginationStyle-Notes"]}
               />
             ) : null}
           </Col>

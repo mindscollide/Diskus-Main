@@ -1385,5 +1385,6 @@
   "Remove-the-action": "remove the action?",
   "Create-polls": "Create Polls",
   "Poll-title": "Poll Title",
-  "Poll-type": "Poll Type"
+  "Poll-type": "Poll Type",
+  "Please-select-title-for-the-task": "Please select title for the task"
 }

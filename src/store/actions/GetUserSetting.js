@@ -1,12 +1,12 @@
-import * as actions from '../action_types'
-import { settingApi } from '../../commen/apis/Api_ends_points'
+import * as actions from "../action_types"
+import { settingApi } from "../../commen/apis/Api_ends_points"
 import {
   getuserdetails,
   getUserSettings,
   updateProfileData,
-} from '../../commen/apis/Api_config'
-import { RefreshToken } from '../actions/Auth_action'
-import axios from 'axios'
+} from "../../commen/apis/Api_config"
+import { RefreshToken } from "../actions/Auth_action"
+import axios from "axios"
 
 const settingInit = () => {
   return {
@@ -28,7 +28,7 @@ const settingFail = (response, message) => {
   }
 }
 const setRecentActivityDataNotification = (response) => {
-  console.log('setRecentActivityDataNotification')
+  console.log("setRecentActivityDataNotification")
   return {
     type: actions.SET_RECENT_ACTIVITY_NOTIFICATION,
     response: response,
@@ -36,18 +36,18 @@ const setRecentActivityDataNotification = (response) => {
 }
 
 const getUserSetting = (navigate, t) => {
-  let token = JSON.parse(localStorage.getItem('token'))
-  let userID = localStorage.getItem('userID')
+  let token = JSON.parse(localStorage.getItem("token"))
+  let userID = localStorage.getItem("userID")
   let userSettingData = {
     UserID: JSON.parse(userID),
   }
   return async (dispatch) => {
     dispatch(settingInit())
     let form = new FormData()
-    form.append('RequestMethod', getUserSettings.RequestMethod)
-    form.append('RequestData', JSON.stringify(userSettingData))
+    form.append("RequestMethod", getUserSettings.RequestMethod)
+    form.append("RequestData", JSON.stringify(userSettingData))
     await axios({
-      method: 'post',
+      method: "post",
       url: settingApi,
       data: form,
       headers: {
@@ -62,15 +62,15 @@ const getUserSetting = (navigate, t) => {
           if (response.data.responseResult.isExecuted === true) {
             if (
               response.data.responseResult.responseMessage ===
-              'Settings_SettingsServiceManager_GetUserSettings_01'
+              "Settings_SettingsServiceManager_GetUserSettings_01"
             ) {
               console.log(
-                'officeEventColor',
-                response.data.responseResult.userSettings,
+                "officeEventColor",
+                response.data.responseResult.userSettings
               )
               localStorage.setItem(
-                'calenderMonthsSpan',
-                response.data.responseResult.userSettings.calenderMonthsSpan,
+                "calenderMonthsSpan",
+                response.data.responseResult.userSettings.calenderMonthsSpan
               )
               if (
                 response.data.responseResult.userSettings
@@ -79,11 +79,11 @@ const getUserSetting = (navigate, t) => {
                   .userAllowMicrosoftCalendarSynch != false
               ) {
                 localStorage.setItem(
-                  'officeEventColor',
-                  response.data.responseResult.userSettings.officeEventColor,
+                  "officeEventColor",
+                  response.data.responseResult.userSettings.officeEventColor
                 )
               } else {
-                localStorage.removeItem('officeEventColor')
+                localStorage.removeItem("officeEventColor")
               }
               if (
                 response.data.responseResult.userSettings
@@ -92,82 +92,82 @@ const getUserSetting = (navigate, t) => {
                   .userAllowGoogleCalendarSynch != false
               ) {
                 localStorage.setItem(
-                  'googleEventColor',
-                  response.data.responseResult.userSettings.googleEventColor,
+                  "googleEventColor",
+                  response.data.responseResult.userSettings.googleEventColor
                 )
               } else {
-                localStorage.removeItem('googleEventColor')
+                localStorage.removeItem("googleEventColor")
               }
 
               localStorage.setItem(
-                'diskusEventColor',
-                response.data.responseResult.userSettings.diskusEventColor,
+                "diskusEventColor",
+                response.data.responseResult.userSettings.diskusEventColor
               )
 
               localStorage.setItem(
-                'videoBaseURLCaller',
+                "videoBaseURLCaller",
                 response.data.responseResult.userSettings.configurations[1]
-                  .configValue,
+                  .configValue
               )
 
               localStorage.setItem(
-                'callRingerTimeout',
+                "callRingerTimeout",
                 response.data.responseResult.userSettings.configurations[2]
-                  .configValue,
+                  .configValue
               )
 
               localStorage.setItem(
-                'videoBaseURLParticipant',
+                "videoBaseURLParticipant",
                 response.data.responseResult.userSettings.configurations[3]
-                  .configValue,
+                  .configValue
               )
 
               await dispatch(
                 settingSuccess(
                   response.data.responseResult.userSettings,
-                  t('Record-found'),
-                ),
+                  t("Record-found")
+                )
               )
             } else if (
               response.data.responseResult.responseMessage ===
-              'Settings_SettingsServiceManager_GetUserSettings_02'
+              "Settings_SettingsServiceManager_GetUserSettings_02"
             ) {
               await dispatch(
                 settingFail(
                   response.data.responseResult.userSettings,
-                  t('No-records-found'),
-                ),
+                  t("No-records-found")
+                )
               )
             } else if (
               response.data.responseResult.responseMessage ===
-              'Settings_SettingsServiceManager_GetUserSettings_03'
+              "Settings_SettingsServiceManager_GetUserSettings_03"
             ) {
               await dispatch(
                 settingFail(
                   response.data.responseResult.userSettings,
-                  t('No-records-found'),
-                ),
+                  t("No-records-found")
+                )
               )
             }
           } else {
             dispatch(
               settingFail(
                 response.data.responseMessage,
-                t('Something-went-wrong'),
-              ),
+                t("Something-went-wrong")
+              )
             )
           }
         } else {
           dispatch(
             settingFail(
               response.data.responseMessage,
-              t('Something-went-wrong'),
-            ),
+              t("Something-went-wrong")
+            )
           )
         }
       })
       .catch((response) => {
-        dispatch(settingFail(t('Something-went-wrong')))
+        dispatch(settingFail(t("Something-went-wrong")))
       })
   }
 }
@@ -199,9 +199,9 @@ const getUserDetails = (
   userID,
   t,
   OrganizationID,
-  setUserProfileModal,
+  setUserProfileModal
 ) => {
-  let token = JSON.parse(localStorage.getItem('token'))
+  let token = JSON.parse(localStorage.getItem("token"))
   let userSettingData = {
     UserID: JSON.parse(userID),
     OrganizationID: JSON.parse(OrganizationID),
@@ -209,10 +209,10 @@ const getUserDetails = (
   return (dispatch) => {
     dispatch(getuserdetailinit())
     let form = new FormData()
-    form.append('RequestMethod', getuserdetails.RequestMethod)
-    form.append('RequestData', JSON.stringify(userSettingData))
+    form.append("RequestMethod", getuserdetails.RequestMethod)
+    form.append("RequestData", JSON.stringify(userSettingData))
     axios({
-      method: 'post',
+      method: "post",
       url: settingApi,
       data: form,
       headers: {
@@ -220,7 +220,7 @@ const getUserDetails = (
       },
     })
       .then(async (response) => {
-        console.log('responseresponse', response)
+        console.log("responseresponse", response)
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
           dispatch(
@@ -229,8 +229,8 @@ const getUserDetails = (
               userID,
               t,
               OrganizationID,
-              setUserProfileModal,
-            ),
+              setUserProfileModal
+            )
           )
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -238,46 +238,46 @@ const getUserDetails = (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Settings_SettingsServiceManager_GetUserDetails_01'.toLowerCase(),
+                  "Settings_SettingsServiceManager_GetUserDetails_01".toLowerCase()
                 )
             ) {
               await dispatch(
                 getuserdetailssuccess(
                   response.data.responseResult.organization,
-                  t('Record-found'),
-                ),
+                  t("Record-found")
+                )
               )
               setUserProfileModal(true)
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Settings_SettingsServiceManager_GetUserDetails_02'.toLowerCase(),
+                  "Settings_SettingsServiceManager_GetUserDetails_02".toLowerCase()
                 )
             ) {
-              await dispatch(getuserdetailsfail(t('No-records-found')))
+              await dispatch(getuserdetailsfail(t("No-records-found")))
               setUserProfileModal(false)
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Settings_SettingsServiceManager_GetUserDetails_03'.toLowerCase(),
+                  "Settings_SettingsServiceManager_GetUserDetails_03".toLowerCase()
                 )
             ) {
-              await dispatch(getuserdetailsfail(t('No-records-found')))
+              await dispatch(getuserdetailsfail(t("No-records-found")))
               setUserProfileModal(false)
             }
           } else {
-            dispatch(getuserdetailsfail(t('Something-went-wrong')))
+            dispatch(getuserdetailsfail(t("Something-went-wrong")))
             setUserProfileModal(false)
           }
         } else {
-          dispatch(getuserdetailsfail(t('Something-went-wrong')))
+          dispatch(getuserdetailsfail(t("Something-went-wrong")))
           setUserProfileModal(false)
         }
       })
       .catch((response) => {
-        dispatch(getuserdetailsfail(t('Something-went-wrong')))
+        dispatch(getuserdetailsfail(t("Something-went-wrong")))
         setUserProfileModal(false)
       })
   }
@@ -311,17 +311,18 @@ const updateuserprofile = (
   setMobileEnable,
   setDesignationEnable,
   setNameEanble,
+  setUser
 ) => {
-  let token = JSON.parse(localStorage.getItem('token'))
-  let userID = JSON.parse(localStorage.getItem('userID'))
-  let organizationID = JSON.parse(localStorage.getItem('organizationID'))
+  let token = JSON.parse(localStorage.getItem("token"))
+  let userID = JSON.parse(localStorage.getItem("userID"))
+  let organizationID = JSON.parse(localStorage.getItem("organizationID"))
   return (dispatch) => {
     dispatch(updateprofileinit())
     let form = new FormData()
-    form.append('RequestMethod', updateProfileData.RequestMethod)
-    form.append('RequestData', JSON.stringify(updateData))
+    form.append("RequestMethod", updateProfileData.RequestMethod)
+    form.append("RequestData", JSON.stringify(updateData))
     axios({
-      method: 'post',
+      method: "post",
       url: settingApi,
       data: form,
       headers: {
@@ -329,7 +330,7 @@ const updateuserprofile = (
       },
     })
       .then(async (response) => {
-        console.log('responsefortheupdate', response)
+        console.log("responsefortheupdate", response)
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t))
           dispatch(
@@ -339,59 +340,61 @@ const updateuserprofile = (
               t,
               setMobileEnable,
               setDesignationEnable,
-              setNameEanble,
-            ),
+              setNameEanble
+            )
           )
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
-            console.log(response, 'responseresponseresponse')
+            console.log(response, "responseresponseresponse")
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Settings_SettingsServiceManager_UpdateUserProfile_01'.toLowerCase(),
+                  "Settings_SettingsServiceManager_UpdateUserProfile_01".toLowerCase()
                 )
             ) {
               await dispatch(
-                updateprofilesuccess(t('Record-updated-successfully')),
+                updateprofilesuccess(t("Record-updated-successfully"))
               )
-              let userID = localStorage.getItem('userID')
-              let OrganizationID = localStorage.getItem('organizationID')
+              setUser(false)
+              let userID = localStorage.getItem("userID")
+              let OrganizationID = localStorage.getItem("organizationID")
               setMobileEnable(true)
               setDesignationEnable(true)
+
               setNameEanble(true)
               await dispatch(
-                getUserDetails(navigate, userID, t, OrganizationID),
+                getUserDetails(navigate, userID, t, OrganizationID)
               )
               await dispatch(getUserSetting(navigate, t))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Settings_SettingsServiceManager_UpdateUserProfile_02'.toLowerCase(),
+                  "Settings_SettingsServiceManager_UpdateUserProfile_02".toLowerCase()
                 )
             ) {
-              dispatch(updateprofilefail(t('No-Records-updated')))
+              dispatch(updateprofilefail(t("No-Records-updated")))
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  'Settings_SettingsServiceManager_UpdateUserProfile_03'.toLowerCase(),
+                  "Settings_SettingsServiceManager_UpdateUserProfile_03".toLowerCase()
                 )
             ) {
-              dispatch(updateprofilefail(t('Something-went-wrong')))
+              dispatch(updateprofilefail(t("Something-went-wrong")))
             }
           } else {
-            dispatch(updateprofilefail(t('Something-went-worng')))
+            dispatch(updateprofilefail(t("Something-went-worng")))
           }
         } else if (response.data.responseCode === 400) {
-          dispatch(updateprofilefail(t('Something-went-wrong')))
+          dispatch(updateprofilefail(t("Something-went-wrong")))
         } else {
-          dispatch(updateprofilefail(t('Something-went-wrong')))
+          dispatch(updateprofilefail(t("Something-went-wrong")))
         }
       })
       .catch((response) => {
-        dispatch(updateprofilefail(t('Something-went-wrong')))
+        dispatch(updateprofilefail(t("Something-went-wrong")))
       })
   }
 }

@@ -17,6 +17,10 @@ body[dir="rtl"] .header2-container {
 .profilebtn-dropdown button {
   background: #fff !important;
   border-radius: 4px;
+  width: 200px;
+  max-width: 100%;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .profilebtn-dropdown .dropdown_menu {
@@ -425,9 +429,9 @@ body[dir="rtl"] .dropdown-menu.show {
 }
 
 .Profile_dropdown_menu.dropdown-menu.show {
-  margin-top: -16px;
+  /* margin-top: -16px; */
   width: 200px;
-  top: 43px !important;
+  top: 30px !important;
   position: absolute;
   left: 0px;
 }

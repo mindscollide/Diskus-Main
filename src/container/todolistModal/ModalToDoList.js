@@ -39,6 +39,7 @@ import TodoList from "../pages/todolist/Todolist"
 import { FileUploadToDo } from "../../store/actions/Upload_action"
 import { useTranslation } from "react-i18next"
 import { useNavigate } from "react-router-dom"
+import TextFieldTime from "../../components/elements/input_field_time/Input_field"
 
 const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization
@@ -104,7 +105,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //task Asignees
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("")
+  console.log(taskAssignedToInput, "taskAssignedToInputtaskAssignedToInput")
   const [TaskAssignedTo, setTaskAssignedTo] = useState([])
+  console.log("TaskAssignedToTaskAssignedTo", TaskAssignedTo)
   const [taskAssignedName, setTaskAssignedName] = useState([])
   const [assignees, setAssignees] = useState([])
   console.log(assignees, "taskAssignedNametaskAssignedNametaskAssignedName")
@@ -178,16 +181,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           [name]: valueCheck.trimStart(),
         })
       }
-    }
-  }
-
-  const onOpenChangeHandler = (open) => {
-    if (!open) {
-      setTask({
-        ...task,
-        DeadLineTime: task.DeadLineTime,
-      })
-      setVisible(false)
     }
   }
 
@@ -322,7 +315,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     }
   }
 
-  //Get All Assignees API hit
   useEffect(() => {
     // dispatch(GetAllAssigneesToDoList(parseInt(createrID)));
     if (show) {
@@ -341,8 +333,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       })
       setToDoDate("")
       setTaskAssignedTo([])
-      setTasksAttachments({ ["TasksAttachments"]: [] })
+      setTasksAttachments({ TasksAttachments: [] })
       setTaskAssignedName([])
+      setAssignees([])
+      setTaskAssignedToInput("")
     }
   }, [show])
 
@@ -439,11 +433,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const createToDoList = async () => {
     let TasksAttachments = tasksAttachments.TasksAttachments
     let taskAssignedTO = [...TaskAssignedTo]
-    if (TaskAssignedTo.length === 0) {
+    if (taskAssignedTO.length === 0) {
       taskAssignedTO.push(Number(createrID))
       setTaskAssignedTo(taskAssignedTO)
     }
-    console.log(taskAssignedTO, "taskAssignedTOtaskAssignedTOtaskAssignedTO")
+    console.log(taskAssignedTO, "taskAssignedTOtaskAssignedTO")
     let newDate = createTodoDate
     let newTime = task.DeadLineTime
     let finalDateTime
@@ -463,39 +457,26 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       CreationDateTime: "",
     }
     if (finalDateTime === undefined) {
-      if (Task.DeadLineTime === "") {
+      if (Task.DeadLineTime === "" || Task.DeadLineTime === undefined) {
         setOpen({
           ...open,
           flag: true,
           message: t("Time-missing"),
         })
-      } else if (Task.DeadLineDate === "") {
+      } else if (Task.DeadLineDate === "" || Task.DeadLineDate === undefined) {
         setOpen({
           ...open,
           flag: true,
           message: t("Enter-date-must"),
         })
       }
-    } else if (Task.DeadLineTime === undefined || Task.DeadLineTime === "") {
-      setOpen({
-        ...open,
-        flag: true,
-        message: t("Time-missing"),
-      })
-    } else if (Task.DeadLineDate === undefined || Task.DeadLineDate === "") {
-      setOpen({
-        ...open,
-        flag: true,
-        message: t("Enter-date-must"),
-      })
     } else if (Task.Title === "") {
       setOpen({
         ...open,
         flag: true,
-        message: t("Title-missing"),
+        message: t("Please-select-title-for-the-task"),
       })
     } else {
-      let counter = Object.keys(fileForSend).length - 1
       if (Object.keys(fileForSend).length > 0) {
         const uploadFiles = (fileForSend) => {
           const uploadPromises = fileForSend.map((newData) => {
@@ -505,12 +486,28 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         }
         uploadFiles(fileForSend)
           .then((response) => {
-            let Data = {
-              Task,
-              TaskCreatorID,
-              TaskAssignedTo,
-              TasksAttachments,
+            let Data
+            if (TaskAssignedTo.length > 0) {
+              Data = {
+                Task,
+                TaskCreatorID,
+                TaskAssignedTo,
+                TasksAttachments,
+              }
+            } else {
+              Data = {
+                Task,
+                TaskCreatorID,
+                TaskAssignedTo: taskAssignedTO,
+                TasksAttachments,
+              }
             }
+            // let Data = {
+            //   Task,
+            //   TaskCreatorID,
+            //   TaskAssignedTo,
+            //   TasksAttachments,
+            // }
             dispatch(CreateToDoList(navigate, Data, t))
             setShow(false)
             setTask({
@@ -526,6 +523,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             setCreateTodoDate("")
             setCreateTodoTime("")
             setTaskAssignedTo([])
+            setAssignees([])
             setTasksAttachments({ ["TasksAttachments"]: [] })
             setTaskAssignedName([])
             setToDoDate("")
@@ -536,11 +534,21 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             console.log(error)
           })
       } else {
-        let Data = {
-          Task,
-          TaskCreatorID,
-          TaskAssignedTo,
-          TasksAttachments,
+        let Data
+        if (TaskAssignedTo.length > 0) {
+          Data = {
+            Task,
+            TaskCreatorID,
+            TaskAssignedTo,
+            TasksAttachments,
+          }
+        } else {
+          Data = {
+            Task,
+            TaskCreatorID,
+            TaskAssignedTo: taskAssignedTO,
+            TasksAttachments,
+          }
         }
         dispatch(CreateToDoList(navigate, Data, t))
         setShow(false)
@@ -560,6 +568,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         setTasksAttachments({ ["TasksAttachments"]: [] })
         setTaskAssignedName([])
         setToDoDate("")
+        setAssignees([])
         setFileForSend([])
         setFileSize(0)
       }
@@ -603,13 +612,22 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       xs={12}
                       className="CreateMeetingTime d-flex align-items-center gap-2 h-100"
                     >
-                      <TimePickers
+                      <TextFieldTime
+                        type="time"
+                        labelClass="d-none"
+                        value={task.DeadLineTime}
+                        change={taskHandler}
+                        placeholder={"00:00"}
+                        name="DeadLineTime"
+                        applyClass={"createTodo_timePicker"}
+                      />
+                      {/* <TimePickers
                         change={taskHandler}
                         placeholder={"00:00"}
                         name="DeadLineTime"
                         value={task.DeadLineTime}
                         // timeChangerHandler={timeChangeHandler}
-                      />
+                      /> */}
                       <DatePicker
                         onChange={toDoDateHandler}
                         // inputClass="datepicker_input"
@@ -732,7 +750,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         type="text"
                         as={"textarea"}
                         rows="7"
-                        placeholder={t("Description") + "*"}
+                        placeholder={t("Description")}
                         maxLength={300}
                       />
                     </Col>
