@@ -11,12 +11,19 @@ import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import { ChevronDown } from "react-bootstrap-icons";
 import emtystate from "../../../../../assets/images/EmptyStatesMeetingPolls.svg";
 import Createpolls from "./CreatePolls/Createpolls";
+import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
 const Polls = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
+
+  const handleCastVotePollMeeting = () => {
+    setvotePolls(true);
+  };
+
   const PollsData = [
     {
       key: "1",
@@ -42,6 +49,7 @@ const Polls = () => {
               <Button
                 text={t("Vote")}
                 className={styles["Not_Vote_Button_Polls"]}
+                onClick={handleCastVotePollMeeting}
               />
             </Col>
           </Row>
@@ -125,7 +133,9 @@ const Polls = () => {
   return (
     <section>
       {createpoll ? (
-        <Createpolls />
+        <Createpolls setCreatepoll={setCreatepoll} />
+      ) : votePolls ? (
+        <CastVotePollsMeeting />
       ) : (
         <>
           <Row className="mt-4">

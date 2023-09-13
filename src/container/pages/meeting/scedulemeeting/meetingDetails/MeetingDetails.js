@@ -194,7 +194,6 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     });
   };
 
-  console.log(rows, "optionsoptionsoptions");
   return (
     <section>
       <Row>
