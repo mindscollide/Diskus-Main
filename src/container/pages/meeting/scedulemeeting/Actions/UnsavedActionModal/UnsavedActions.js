@@ -8,7 +8,7 @@ import { Col, Row } from "react-bootstrap";
 import { Modal, Button } from "../../../../../../components/elements";
 import { showUnsavedActionsModal } from "../../../../../../store/actions/NewMeetingActions";
 
-const UnsavedActions = () => {
+const UnsavedActions = ({ setCreateaTask }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -16,6 +16,10 @@ const UnsavedActions = () => {
 
   const handleNoFunctionlity = () => {
     dispatch(showUnsavedActionsModal(false));
+  };
+
+  const handleYesFunctionality = () => {
+    setCreateaTask(false);
   };
 
   return (
@@ -73,7 +77,7 @@ const UnsavedActions = () => {
                 <Button
                   text={t("Yes")}
                   className={styles["No_unsave_File_Upload"]}
-                  //   onClick={handleYesFunctionality}
+                  onClick={handleYesFunctionality}
                 />
               </Col>
             </Row>

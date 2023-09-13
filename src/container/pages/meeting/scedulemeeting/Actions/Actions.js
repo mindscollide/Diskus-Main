@@ -111,7 +111,7 @@ const Actions = () => {
   return (
     <section>
       {createaTask ? (
-        <CreateTask />
+        <CreateTask setCreateaTask={setCreateaTask} />
       ) : (
         <>
           <Row className="mt-3">
