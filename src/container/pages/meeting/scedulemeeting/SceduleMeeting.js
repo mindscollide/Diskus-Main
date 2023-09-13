@@ -151,7 +151,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
           <section>
             <Row className="mt-2">
               <Col lg={12} md={12} sm={12}>
-                {minutes ? (
+                {minutes && actionsPage && polls ? (
                   <>
                     <span className={styles["Scedule_newMeeting_Heading"]}>
                       {t("IT-departmental-meeting")}

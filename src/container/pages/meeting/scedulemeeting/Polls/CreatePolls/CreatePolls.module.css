@@ -35,6 +35,46 @@
   font-size: 12px !important;
 }
 
+.Cancel_Button_Meeting_Creat_Polls {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #808080;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #fff !important;
+  color: #545454;
+}
+
+.Cancel_Button_Meeting_Creat_Polls:is(:hover, :focus, :active, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #808080;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #fff !important;
+  color: #545454;
+}
+
+.Save_Button_Meeting_Creat_Polls {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #5f78d6 !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #fff !important;
+}
+
+.Save_Button_Meeting_Creat_Polls:is(:hover, :focus, :active, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #5f78d6 !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #fff !important;
+}
+
 .Add_Button_Heading {
   color: #6172d6 !important;
   font-family: "MontserratMedium-500";
@@ -93,6 +133,23 @@ body[dir="rtl"] .polling_Options_backGround {
   margin-left: -15px;
 }
 
+.Scroller_Members {
+  height: 43vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_Members ::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_Members ::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
 .CheckBoxTitle {
   margin: 0;
   padding: 0;
@@ -122,5 +179,23 @@ body[dir="rtl"] .polling_Options_backGround {
 }
 
 .MarginSection {
-  margin-top: 30px !important;
+  margin-top: 22px !important;
+}
+
+.Outer_Box_Members {
+  height: 50px !important;
+  width: 100% !important;
+  border: 1px solid #a2a2a2 !important;
+  border-radius: 4px !important;
+  padding: 0px 20px !important;
+}
+
+.ProfileStyles {
+  border-radius: 50% !important;
+}
+
+.Name_Members {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
 }
