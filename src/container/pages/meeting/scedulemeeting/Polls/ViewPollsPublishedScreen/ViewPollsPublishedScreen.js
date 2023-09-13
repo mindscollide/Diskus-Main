@@ -9,7 +9,7 @@ import Profile from "../../../../../../assets/images/newprofile.png";
 import { Button, Checkbox } from "../../../../../../components/elements";
 import { Progress } from "antd";
 
-const ViewPollsPublishedScreen = () => {
+const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -39,6 +39,10 @@ const ViewPollsPublishedScreen = () => {
       name: "Saif Ul Islam",
     },
   ]);
+
+  const handleCancelButton = () => {
+    setSavePollsPublished(false);
+  };
   return (
     <section>
       <Row>
@@ -177,7 +181,7 @@ const ViewPollsPublishedScreen = () => {
               </Row>
             </Col>
           </Row>
-          <Row className="mt-4">
+          <Row className="mt-5">
             <Col
               lg={12}
               md={12}
@@ -187,6 +191,7 @@ const ViewPollsPublishedScreen = () => {
               <Button
                 text={t("Cancel")}
                 className={styles["Close_button_View"]}
+                onClick={handleCancelButton}
               />
               <Button
                 text={t("View-votes")}

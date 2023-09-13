@@ -156,7 +156,9 @@ const Createpolls = () => {
       {savedPolls ? (
         <ViewPollsUnPublished setSavedPolls={setSavedPolls} />
       ) : savePollsPublished ? (
-        <ViewPollsPublishedScreen />
+        <ViewPollsPublishedScreen
+          setSavePollsPublished={setSavePollsPublished}
+        />
       ) : (
         <>
           <section>
