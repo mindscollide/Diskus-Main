@@ -17,6 +17,7 @@ const initialState = {
   MissedCallCountMqttData: {},
   ScrollBehavior: false,
   LeaveCallResponse: {},
+  GroupCallRecipientsData: [],
 }
 
 const VideoMainReducer = (state = initialState, action) => {
@@ -223,6 +224,13 @@ const VideoMainReducer = (state = initialState, action) => {
         ...state,
         MissedCallCountMqttData: action.response,
         ResponseMessage: action.message,
+      }
+    }
+
+    case actions.GROUP_CALL_RECIPIENTS: {
+      return {
+        ...state,
+        GroupCallRecipientsData: action.response,
       }
     }
 

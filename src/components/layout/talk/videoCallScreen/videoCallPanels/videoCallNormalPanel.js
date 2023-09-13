@@ -180,7 +180,11 @@ const VideoPanelNormal = () => {
           >
             {VideoMainReducer.FullLoader === true ? (
               <>
-                <LoaderPanelVideoScreen />
+                <LoaderPanelVideoScreen
+                  message={
+                    "Securing your connection, You'll be able to join in a moment"
+                  }
+                />
               </>
             ) : (
               <>
