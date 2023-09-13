@@ -52,7 +52,7 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
   return (
     <>
       {viewVotes ? (
-        <ViewVotesScreen />
+        <ViewVotesScreen setviewVotes={setviewVotes} />
       ) : (
         <>
           <section>

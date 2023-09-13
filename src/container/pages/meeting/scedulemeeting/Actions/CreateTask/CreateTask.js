@@ -19,7 +19,7 @@ import UnsavedActions from "../UnsavedActionModal/UnsavedActions";
 import { showUnsavedActionsModal } from "../../../../../../store/actions/NewMeetingActions";
 import ViewActions from "../ViewActions/ViewActions";
 
-const CreateTask = () => {
+const CreateTask = ({ setCreateaTask }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -540,7 +540,9 @@ const CreateTask = () => {
                 />
               </Col>
             </Row>
-            {NewMeetingreducer.unsavedActions && <UnsavedActions />}
+            {NewMeetingreducer.unsavedActions && (
+              <UnsavedActions setCreateaTask={setCreateaTask} />
+            )}
           </section>
         </>
       )}

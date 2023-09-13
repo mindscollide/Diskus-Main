@@ -26,6 +26,7 @@ const initialState = {
   unsavedActions: false,
   removeTableModal: false,
   unsavedPollsMeeting: false,
+  unsavedEditPollsMeeting: false,
 };
 
 const NewMeetingreducer = (state = initialState, action) => {
@@ -194,6 +195,13 @@ const NewMeetingreducer = (state = initialState, action) => {
       return {
         ...state,
         unsavedPollsMeeting: action.response,
+      };
+    }
+
+    case actions.UNSAVED_EDIT_POLL_MEETING: {
+      return {
+        ...state,
+        unsavedEditPollsMeeting: action.response,
       };
     }
 
