@@ -1,36 +1,36 @@
 import React from "react";
-import styles from "./UnsavedActions.module.css";
+import styles from "./UnsavedEditPollsMeeting.module.css";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
-import { Modal, Button } from "../../../../../../components/elements";
-import { showUnsavedActionsModal } from "../../../../../../store/actions/NewMeetingActions";
+import { Modal, Button } from "../../../../../../../components/elements";
+import { showunsavedEditPollsMeetings } from "../../../../../../../store/actions/NewMeetingActions";
 
-const UnsavedActions = ({ setCreateaTask }) => {
+const UnsavedEditPollsMeeting = ({ setEditPolls }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
-  const handleNoFunctionlity = () => {
-    dispatch(showUnsavedActionsModal(false));
+  const handleNOFunctionality = () => {
+    dispatch(showunsavedEditPollsMeetings(false));
   };
 
   const handleYesFunctionality = () => {
-    setCreateaTask(false);
+    setEditPolls(false);
   };
 
   return (
     <section>
       <Modal
-        show={NewMeetingreducer.unsavedActions}
-        setShow={dispatch(showUnsavedActionsModal)}
+        show={NewMeetingreducer.unsavedEditPollsMeeting}
+        setShow={dispatch(showunsavedEditPollsMeetings)}
         modalHeaderClassName={"d-block"}
         modalFooterClassName={"d-block"}
         onHide={() => {
-          dispatch(showUnsavedActionsModal(false));
+          dispatch(showunsavedEditPollsMeetings(false));
         }}
         ModalBody={
           <>
@@ -72,7 +72,7 @@ const UnsavedActions = ({ setCreateaTask }) => {
                 <Button
                   text={t("No")}
                   className={styles["Yes_unsave_File_Upload"]}
-                  onClick={handleNoFunctionlity}
+                  onClick={handleNOFunctionality}
                 />
                 <Button
                   text={t("Yes")}
@@ -88,4 +88,4 @@ const UnsavedActions = ({ setCreateaTask }) => {
   );
 };
 
-export default UnsavedActions;
+export default UnsavedEditPollsMeeting;

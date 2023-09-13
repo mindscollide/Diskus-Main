@@ -8,7 +8,7 @@ import { Col, Row } from "react-bootstrap";
 import { Modal, Button } from "../../../../../../../components/elements";
 import { showUnsavedPollsMeeting } from "../../../../../../../store/actions/NewMeetingActions";
 
-const UnsavedPollsMeeting = () => {
+const UnsavedPollsMeeting = ({ setCreatepoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -16,6 +16,10 @@ const UnsavedPollsMeeting = () => {
 
   const handleNOFunctionality = () => {
     dispatch(showUnsavedPollsMeeting(false));
+  };
+
+  const handleYesFunctionality = () => {
+    setCreatepoll(false);
   };
 
   return (
@@ -73,6 +77,7 @@ const UnsavedPollsMeeting = () => {
                 <Button
                   text={t("Yes")}
                   className={styles["No_unsave_File_Upload"]}
+                  onClick={handleYesFunctionality}
                 />
               </Col>
             </Row>

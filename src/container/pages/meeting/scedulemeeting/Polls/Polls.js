@@ -11,12 +11,26 @@ import EditIcon from "../../../../../assets/images/Edit-Icon.png";
 import { ChevronDown } from "react-bootstrap-icons";
 import emtystate from "../../../../../assets/images/EmptyStatesMeetingPolls.svg";
 import Createpolls from "./CreatePolls/Createpolls";
+import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
+import { showUnsavedPollsMeeting } from "../../../../../store/actions/NewMeetingActions";
+import EditPollsMeeting from "./EditPollsMeeting/EditPollsMeeting";
 const Polls = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  const [votePolls, setvotePolls] = useState(false);
   const [createpoll, setCreatepoll] = useState(false);
+  const [editPolls, setEditPolls] = useState(false);
+
+  const handleCastVotePollMeeting = () => {
+    setvotePolls(true);
+  };
+
+  const handleEditPollsMeeting = () => {
+    setEditPolls(true);
+  };
+
   const PollsData = [
     {
       key: "1",
@@ -42,6 +56,7 @@ const Polls = () => {
               <Button
                 text={t("Vote")}
                 className={styles["Not_Vote_Button_Polls"]}
+                onClick={handleCastVotePollMeeting}
               />
             </Col>
           </Row>
@@ -51,7 +66,11 @@ const Polls = () => {
         <>
           <Row>
             <Col lf={12} md={12} sm={12}>
-              <img src={EditIcon} className="cursor-pointer" />
+              <img
+                src={EditIcon}
+                className="cursor-pointer"
+                onClick={handleEditPollsMeeting}
+              />
             </Col>
           </Row>
         </>
@@ -119,13 +138,18 @@ const Polls = () => {
   ];
 
   const handleCreatepolls = () => {
+    dispatch(showUnsavedPollsMeeting(false));
     setCreatepoll(true);
   };
 
   return (
     <section>
       {createpoll ? (
-        <Createpolls />
+        <Createpolls setCreatepoll={setCreatepoll} />
+      ) : votePolls ? (
+        <CastVotePollsMeeting setvotePolls={setvotePolls} />
+      ) : editPolls ? (
+        <EditPollsMeeting setEditPolls={setEditPolls} />
       ) : (
         <>
           <Row className="mt-4">

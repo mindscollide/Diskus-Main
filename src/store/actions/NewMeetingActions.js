@@ -168,6 +168,13 @@ const showUnsavedPollsMeeting = (response) => {
   };
 };
 
+const showunsavedEditPollsMeetings = (response) => {
+  return {
+    type: actions.UNSAVED_EDIT_POLL_MEETING,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -193,4 +200,5 @@ export {
   showUnsavedActionsModal,
   showRemovedTableModal,
   showUnsavedPollsMeeting,
+  showunsavedEditPollsMeetings,
 };

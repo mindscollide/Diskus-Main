@@ -30,7 +30,7 @@ import { showUnsavedPollsMeeting } from "../../../../../../store/actions/NewMeet
 import ViewPollsUnPublished from "../VIewPollsUnPublished/ViewPollsUnPublished";
 import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 
-const Createpolls = () => {
+const Createpolls = ({ setCreatepoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -452,7 +452,9 @@ const Createpolls = () => {
                 />
               </Col>
             </Row>
-            {NewMeetingreducer.unsavedPollsMeeting && <UnsavedPollsMeeting />}
+            {NewMeetingreducer.unsavedPollsMeeting && (
+              <UnsavedPollsMeeting setCreatepoll={setCreatepoll} />
+            )}
           </section>
         </>
       )}
