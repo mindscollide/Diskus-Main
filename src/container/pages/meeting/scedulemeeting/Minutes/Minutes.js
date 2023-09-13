@@ -592,6 +592,7 @@ const Minutes = ({ setMinutes }) => {
                             src={AgendaIcon}
                             width="161.76px"
                             height="161.76px"
+                            className={styles["AgendaIconStyles"]}
                           />
                         </Col>
                       </Row>
