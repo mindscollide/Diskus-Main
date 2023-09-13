@@ -27,8 +27,7 @@ import Profile from "../../../../../../assets/images/newprofile.png";
 import RedCross from "../../../../../../assets/images/CrossIcon.svg";
 import UnsavedPollsMeeting from "./UnsavedPollsMeeting/UnsavedPollsMeeting";
 import { showUnsavedPollsMeeting } from "../../../../../../store/actions/NewMeetingActions";
-import ViewPollsPublished from "../VIewPollsPublished/ViewPollsUnPublished";
-import ViewPollsUnPublished from "../VIewPollsPublished/ViewPollsUnPublished";
+import ViewPollsUnPublished from "../VIewPollsUnPublished/ViewPollsUnPublished";
 
 const Createpolls = () => {
   const { t } = useTranslation();
