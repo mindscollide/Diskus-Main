@@ -12,6 +12,7 @@ import { ChevronDown } from "react-bootstrap-icons";
 import emtystate from "../../../../../assets/images/EmptyStatesMeetingPolls.svg";
 import Createpolls from "./CreatePolls/Createpolls";
 import CastVotePollsMeeting from "./CastVotePollsMeeting/CastVotePollsMeeting";
+import { showUnsavedPollsMeeting } from "../../../../../store/actions/NewMeetingActions";
 const Polls = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -127,6 +128,7 @@ const Polls = () => {
   ];
 
   const handleCreatepolls = () => {
+    dispatch(showUnsavedPollsMeeting(false));
     setCreatepoll(true);
   };
 
