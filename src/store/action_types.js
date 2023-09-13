@@ -281,7 +281,6 @@ export const MEETING_STATUS_SOCKET = "MEETING_STATUS_SOCKET";
 export const POST_COMMENTS = "POST_COMMENTS";
 
 export const DELETE_COMMENTS = "DELETE_COMMENTS";
-
 // Aun work on admin action types (START) //
 
 //For Admin AddUser
@@ -362,7 +361,6 @@ export const ADMIN_SUMMARY_FAIL = "ADMIN_SUMMARY_FAIL";
 // Aun work on admin action types (END) //
 
 // for organization Sign up
-
 export const COUNTRYNAMES_INIT = "COUNTRYNAMES_INIT";
 export const COUNTRYNAMES_SUCCESS = "COUNTRYNAMES_SUCCESS";
 export const COUNTRYNAMES_FAIL = "COUNTRYNAMES_FAIL";
@@ -407,6 +405,8 @@ export const ADMIN_ALLORGANAIZATIONROLES_SUCCESS =
   "ADMIN_ALLORGANAIZATIONROLES_SUCCESS";
 export const ADMIN_ALLORGANAIZATIONROLES_FAIL =
   "ADMIN_ALLORGANAIZATIONROLES_FAIL";
+
+export const GROUP_CALL_RECIPIENTS = "GROUP_CALL_RECIPIENTS";
 
 // for user role list
 

@@ -1,27 +1,29 @@
 .talk-video-heading {
     position: relative;
     top: 15px;
-    font-size: 18px;
-    font-weight: 600;
+    font-size: 15px;
+    font-family: 'MontserratSemiBold';
+    color: #5a5a5a !important;
 }
 
 .videoFilter {
     margin-top: 10px;
-    width: 130px;
+    width: 108px;
 }
 
 .videoFilter .ant-select-selector {
     background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
     border: none !important;
-    border-radius: 3px !important;
-    width: 110px !important;
+    border-radius: 4px !important;
+    width: 85px !important;
     color: #fff !important;
     font-weight: 600 !important;
+    height: 27px !important;
 }
 
 .ant-select-dropdown.ant-select-dropdown-placement-bottomLeft:has(.rc-virtual-list-holder-inner .ant-select-item.ant-select-item-option.talk-video-filter) {
-    min-width: 110px !important;
-    width: 110px !important;
+    min-width: 87px !important;
+    width: 87px !important;
 }
 
 .rc-virtual-list-holder-inner:has(.talk-video-filter) {
