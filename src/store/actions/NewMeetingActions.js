@@ -161,6 +161,20 @@ const showRemovedTableModal = (response) => {
   };
 };
 
+const showUnsavedPollsMeeting = (response) => {
+  return {
+    type: actions.UNSAVED_POLLS_MEETING,
+    response: response,
+  };
+};
+
+const showunsavedEditPollsMeetings = (response) => {
+  return {
+    type: actions.UNSAVED_EDIT_POLL_MEETING,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -185,4 +199,6 @@ export {
   showUnsavedModalImportAgenda,
   showUnsavedActionsModal,
   showRemovedTableModal,
+  showUnsavedPollsMeeting,
+  showunsavedEditPollsMeetings,
 };

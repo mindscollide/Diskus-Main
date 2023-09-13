@@ -158,11 +158,23 @@ const VideoMaxIncoming = () => {
   return (
     <>
       {isVisible && (
-        <div className="videoIncoming-max-call">
+        <div
+          className={
+            activeCallState === true
+              ? 'videoIncoming-active-call'
+              : 'videoIncoming-max-call'
+          }
+        >
           <Container>
             <Row>
               <Col sm={12} md={12} lg={12}>
-                <div className="avatar-column-max-call">
+                <div
+                  className={
+                    activeCallState === true
+                      ? 'avatar-column-active-call'
+                      : 'avatar-column-max-call'
+                  }
+                >
                   <img src={videoAvatar} width={150} alt="Avatar video" />
                 </div>
               </Col>
@@ -171,7 +183,13 @@ const VideoMaxIncoming = () => {
             <Row>
               <Col sm={12} md={12} lg={12}>
                 <div className="someone-calling-title-max-call">
-                  <p className="outgoing-call-text-max-call">
+                  <p
+                    className={
+                      activeCallState === true
+                        ? 'outgoing-call-text-active-call'
+                        : 'outgoing-call-text-max-call'
+                    }
+                  >
                     {incomingCallerData.length !== 0 &&
                     incomingCallerData !== undefined &&
                     incomingCallerData !== null
@@ -194,17 +212,39 @@ const VideoMaxIncoming = () => {
               <Col sm={6} md={6} lg={6}>
                 <div className="d-flex justify-content-end">
                   {activeCallState === true ? (
-                    <Button
-                      className="button-img"
-                      icon={<img src={BusyIcon} width={50} />}
-                      onClick={busyCall}
-                    />
+                    <>
+                      <div className="incoming-action">
+                        <Button
+                          className={
+                            activeCallState === true
+                              ? 'button-active-img'
+                              : 'button-img'
+                          }
+                          icon={<img src={BusyIcon} width={50} />}
+                          onClick={busyCall}
+                        />
+                        <span
+                          className={
+                            activeCallState === true
+                              ? 'incoming-active-text'
+                              : 'incoming-text'
+                          }
+                        >
+                          Busy
+                        </span>
+                      </div>
+                    </>
                   ) : (
-                    <Button
-                      className="button-img-max-call"
-                      icon={<img src={videoEndIcon} width={50} />}
-                      onClick={rejectCall}
-                    />
+                    <>
+                      <div className="incoming-action">
+                        <Button
+                          className="button-img-max-call"
+                          icon={<img src={videoEndIcon} width={50} />}
+                          onClick={rejectCall}
+                        />
+                        <span className="incoming-text">Reject</span>
+                      </div>
+                    </>
                   )}
                 </div>
               </Col>
@@ -212,17 +252,44 @@ const VideoMaxIncoming = () => {
               <Col sm={6} md={6} lg={6}>
                 <div className="d-flex justify-content-start">
                   {activeCallState === true ? (
-                    <Button
-                      className="button-img"
-                      icon={<img src={videoAttendIcon} width={50} />}
-                      onClick={endAndAccept}
-                    />
+                    <>
+                      <div className="incoming-action">
+                        <Button
+                          style={
+                            activeCallState === true
+                              ? { marginTop: '10px' }
+                              : null
+                          }
+                          className={
+                            activeCallState === true
+                              ? 'button-active-img'
+                              : 'button-img'
+                          }
+                          icon={<img src={videoAttendIcon} width={50} />}
+                          onClick={endAndAccept}
+                        />
+                        <span
+                          className={
+                            activeCallState === true
+                              ? 'incoming-active-text'
+                              : 'incoming-text'
+                          }
+                        >
+                          End & Accept
+                        </span>
+                      </div>
+                    </>
                   ) : (
-                    <Button
-                      className="button-img"
-                      icon={<img src={videoAttendIcon} width={50} />}
-                      onClick={acceptCall}
-                    />
+                    <>
+                      <div className="incoming-action">
+                        <Button
+                          className="button-img"
+                          icon={<img src={videoAttendIcon} width={50} />}
+                          onClick={acceptCall}
+                        />
+                        <span className="incoming-text">Accept</span>
+                      </div>
+                    </>
                   )}
                 </div>
               </Col>

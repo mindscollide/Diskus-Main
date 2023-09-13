@@ -33,15 +33,6 @@
   border: 1px solid #5a5a5a !important;
 }
 
-.BackGround_Image {
-  height: 159.76px !important;
-  width: 159.76px !important;
-  background: #f1f1f1 !important;
-  border-radius: 50% !important;
-  display: flex !important;
-  justify-content: center !important;
-}
-
 .Upload_Btn_Styles {
   padding: 12px 30px !important;
   font-size: 12px !important;
@@ -60,14 +51,6 @@
   border: none !important;
   border-radius: 4px !important;
   font-family: "MontserratSemiBold" !important;
-}
-
-.Download_Icon {
-  margin-top: 8px !important;
-}
-
-.Scratch_Icon {
-  margin-left: 20px !important;
 }
 
 .Box_Minutes {
@@ -250,4 +233,8 @@
   border-radius: 20px;
   background: #ccc;
   margin-left: -15px;
+}
+
+.AgendaIconStyles {
+  margin-top: 8px !important;
 }

@@ -21,6 +21,7 @@ const CustomButton = ({
   pdfIconClass,
   iconClass,
   iconClass2,
+  textClass,
 }) => {
   return (
     <>
@@ -41,7 +42,7 @@ const CustomButton = ({
         style={style}
       >
         <span className={iconClass}>{icon}</span>
-        {text}
+        <span className={textClass}>{text}</span>
         <span className={iconClass2}>{icon2}</span>
         <img className={pdfIconClass} src={pdfIcon} />
       </Button>

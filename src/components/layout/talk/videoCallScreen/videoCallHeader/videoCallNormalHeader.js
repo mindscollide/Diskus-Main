@@ -6,19 +6,25 @@ import './videoCallHeader.css'
 import { Button, NotificationBar } from './../../../../elements'
 import MicVideo from '../../../../../assets/images/newElements/micVideo.png'
 import VideoCallIcon from '../../../../../assets/images/newElements/VideoIconExpand.png'
-import ExpandIcon from '../../../../../assets/images/newElements/ExpandColorfullIcon.png'
-import MinimizeIcon from '../../../../../assets/images/newElements/MinimizeIcon.png'
+import ExpandIcon from '../../../../../assets/images/ExpandColorfullIcon.png'
+import MinimizeIcon from '../../../../../assets/images/MinimizeIcon.png'
 import ActiveScreenShare from '../../../../../assets/images/newElements/ActiveScreenShareIcon.svg'
-import NonActiveScreenShare from '../../../../../assets/images/newElements/NonActiveScreenShare.svg'
+import NonActiveScreenShare from '../../../../../assets/images/NonActiveScreenShare.png'
 import ScreenShare from '../../../../../assets/images/newElements/ScreenShareIcon.png'
 import HandRaise from '../../../../../assets/images/newElements/HandRaiseIcon.svg'
 import Board from '../../../../../assets/images/newElements/WhiteBoard.svg'
 import ThreeDots from '../../../../../assets/images/newElements/ThreeDotsIcon.svg'
+import videoEndIcon from '../../../../../assets/images/newElements/VideoEndIcon.png'
 import ChatNonActive from '../../../../../assets/images/newElements/ChatIconNonActive.svg'
 import ActiveChat from '../../../../../assets/images/newElements/ActiveChatIcon.svg'
+import ChatIcon from '../../../../../assets/images/Chat-Icon.png'
 import CallEndRedIcon from '../../../../../assets/images/newElements/CallRedIcon.svg'
-import NormalizeIcon from '../../../../../assets/images/newElements/Normalize-Icon.png'
+import NormalizeIcon from '../../../../../assets/images/Normalize-Icon.png'
 import CancelIcon from '../../../../../assets/images/Artboard9.png'
+import CloseNotification from '../../../../../assets/images/Close-Notification.png'
+import ActiveParticipantIcon from '../../../../../assets/images/Active-Participant-Icon.png'
+import AddParticipantIcon from '../../../../../assets/images/Add-Participant-Icon.png'
+import ParticipantsIcon from '../../../../../assets/images/Participants-Icon.png'
 import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
@@ -54,10 +60,13 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
 
   const { t } = useTranslation()
 
-  console.log(
-    'VideoMainReducer.LeaveCallResponse',
-    VideoMainReducer.LeaveCallResponse,
-  )
+  const [showNotification, setShowNotification] = useState(true)
+
+  const [isActiveIcon, setIsActiveIcon] = useState(false)
+
+  const [isParticipantActive, setIsParticipantActive] = useState(false)
+
+  const [currentParticipants, setCurrentParticipants] = useState([])
 
   const otoMaximizeVideoPanel = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
@@ -65,6 +74,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
       dispatch(minimizeVideoPanelFlag(false))
       dispatch(normalizeVideoPanelFlag(false))
     }
+    setShowNotification(true)
   }
 
   const minimizeVideoPanel = () => {
@@ -76,6 +86,14 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
   }
 
   const closeVideoPanel = () => {
+    // dispatch(normalizeVideoPanelFlag(false))
+    // dispatch(maximizeVideoPanelFlag(false))
+    // dispatch(minimizeVideoPanelFlag(false))
+    dispatch(leaveCallModal(false))
+    localStorage.setItem('activeCall', false)
+  }
+
+  const openVideoPanel = () => {
     // dispatch(normalizeVideoPanelFlag(false))
     // dispatch(maximizeVideoPanelFlag(false))
     // dispatch(minimizeVideoPanelFlag(false))
@@ -96,20 +114,24 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
     localStorage.setItem('activeCall', false)
   }
 
-  const [isActiveIcon, setIsActiveIcon] = useState(false)
-
   const onClickCloseChatHandler = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
       if (isActiveIcon === false) {
         dispatch(chatEnableNormalFlag(true))
         setIsActiveIcon(true)
-        dispatch(agendaEnableNormalFlag(false))
-        dispatch(minutesMeetingEnableNormalFlag(false))
       } else {
         dispatch(chatEnableNormalFlag(false))
         setIsActiveIcon(false)
-        dispatch(agendaEnableNormalFlag(false))
-        dispatch(minutesMeetingEnableNormalFlag(false))
+      }
+    }
+  }
+
+  const closeParticipantHandler = () => {
+    if (videoFeatureReducer.LeaveCallModalFlag === false) {
+      if (isParticipantActive === false) {
+        setIsParticipantActive(true)
+      } else {
+        setIsParticipantActive(false)
       }
     }
   }
@@ -140,11 +162,38 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
     dispatch(leaveCallModal(false))
   }
 
+  const closeNotification = () => {
+    setShowNotification(false)
+  }
+
   useEffect(() => {}, [
     VideoMainReducer.VideoRecipentData.userName,
     callerNameInitiate,
     callerName,
   ])
+
+  useEffect(() => {
+    // Use setTimeout to hide the notification after 4 seconds
+    if (showNotification === true) {
+      const timeoutId = setTimeout(() => {
+        setShowNotification(false)
+      }, 4000)
+      // Clear the timeout when the component unmounts to avoid memory leaks
+      return () => clearTimeout(timeoutId)
+    }
+  }, [showNotification])
+
+  useEffect(() => {
+    if (
+      VideoMainReducer.GroupCallRecipientsData !== undefined &&
+      VideoMainReducer.GroupCallRecipientsData !== null &&
+      VideoMainReducer.GroupCallRecipientsData.length !== 0
+    ) {
+      setCurrentParticipants(VideoMainReducer.GroupCallRecipientsData)
+    } else {
+      setCurrentParticipants([])
+    }
+  }, [VideoMainReducer.GroupCallRecipientsData])
 
   return (
     <>
@@ -165,8 +214,24 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
               : null}
           </p>
         </Col>
+        <Col
+          lg={4}
+          md={4}
+          sm={12}
+          className="d-flex justify-content-center align-items-center mt-1"
+        >
+          {videoFeatureReducer.MaximizeVideoFlag === true &&
+          showNotification === true ? (
+            <div className="Notification-maximize">
+              <p className="Notification-text">
+                Minimize call to see the screen
+              </p>
+              <img src={CloseNotification} onClick={closeNotification} alt="" />
+            </div>
+          ) : null}
+        </Col>
         <>
-          <Col lg={9} md={9} sm={12} className="normal-screen-top-icons">
+          <Col lg={5} md={5} sm={12} className="normal-screen-top-icons">
             <div className="screenShare-Toggle">
               <img
                 className={
@@ -174,48 +239,35 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                     ? 'grayScaleImage'
                     : ''
                 }
-                width={30}
                 onClick={screenShareButton}
                 src={NonActiveScreenShare}
               />
             </div>
-            {isActiveIcon ? (
+            <div className="screenShare-Toggle">
               <img
                 className={
                   videoFeatureReducer.LeaveCallModalFlag === true
                     ? 'grayScaleImage'
                     : ''
                 }
-                width={30}
-                src={ActiveChat}
                 onClick={onClickCloseChatHandler}
+                src={ChatIcon}
               />
-            ) : (
-              <img
-                className={
-                  videoFeatureReducer.LeaveCallModalFlag === true
-                    ? 'grayScaleImage'
-                    : ''
-                }
-                width={30}
-                src={ChatNonActive}
-                onClick={onClickCloseChatHandler}
-              />
-            )}
+            </div>
             {videoFeatureReducer.LeaveCallModalFlag === true &&
             callerID === currentUserID ? (
               <img
                 width={25}
                 onClick={cancelLeaveCallOption}
-                src={CancelIcon}
+                src={videoEndIcon}
               />
             ) : videoFeatureReducer.LeaveCallModalFlag === false &&
               callerID === currentUserID ? (
-              <img width={25} src={CallEndRedIcon} onClick={closeVideoPanel} />
+              <img width={25} src={CallEndRedIcon} onClick={openVideoPanel} />
             ) : videoFeatureReducer.LeaveCallModalFlag === false &&
               callerID !== currentUserID ? (
               <img
-                width={25}
+                width={35}
                 src={CallEndRedIcon}
                 onClick={endCallParticipant}
               />
@@ -227,7 +279,6 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                     ? 'grayScaleImage'
                     : ''
                 }
-                width={20}
                 src={MinimizeIcon}
               />
             </div>
@@ -235,7 +286,6 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
             videoFeatureReducer.MinimizeVideoFlag === false &&
             videoFeatureReducer.MaximizeVideoFlag === false ? (
               <img
-                width={17}
                 src={ExpandIcon}
                 onClick={otoMaximizeVideoPanel}
                 className={
@@ -272,13 +322,14 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
           <div className="leave-meeting-options__inner">
             <Button
               className="leave-meeting-options__btn leave-meeting-red-button"
-              text="End Call"
+              text="End Call for Everyone"
               onClick={leaveCall}
             />
 
             <Button
               className="leave-meeting-options__btn leave-meeting-gray-button"
-              text="End Call For All"
+              text="Cancel"
+              onClick={closeVideoPanel}
             />
           </div>
         </div>

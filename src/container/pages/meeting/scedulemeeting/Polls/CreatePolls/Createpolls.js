@@ -23,13 +23,21 @@ import moment from "moment";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import Profile from "../../../../../../assets/images/newprofile.png";
+import RedCross from "../../../../../../assets/images/CrossIcon.svg";
+import UnsavedPollsMeeting from "./UnsavedPollsMeeting/UnsavedPollsMeeting";
+import { showUnsavedPollsMeeting } from "../../../../../../store/actions/NewMeetingActions";
+import ViewPollsUnPublished from "../VIewPollsUnPublished/ViewPollsUnPublished";
+import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 
-const Createpolls = () => {
+const Createpolls = ({ setCreatepoll }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
   const { NewMeetingreducer } = useSelector((state) => state);
+  const [savedPolls, setSavedPolls] = useState(false);
+  const [savePollsPublished, setSavePollsPublished] = useState(false);
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -54,6 +62,33 @@ const Createpolls = () => {
     flag: false,
     message: "",
   });
+
+  const [members, setMembers] = useState([
+    {
+      name: "SAIF UL ISLAM",
+    },
+    {
+      name: "SAIF UL ISLAM",
+    },
+    {
+      name: "SAIF UL ISLAM",
+    },
+    {
+      name: "SAIF UL ISLAM",
+    },
+    {
+      name: "SAIF UL ISLAM",
+    },
+    {
+      name: "SAIF UL ISLAM",
+    },
+    {
+      name: "SAIF UL ISLAM",
+    },
+    {
+      name: "SAIF UL ISLAM",
+    },
+  ]);
 
   const HandleCancelFunction = (index) => {
     let optionscross = [...options];
@@ -98,184 +133,332 @@ const Createpolls = () => {
     }
   };
 
+  const RemoveMembers = (index) => {
+    const updateMember = [...members];
+    updateMember.splice(index, 1);
+    setMembers(updateMember);
+  };
+
+  const handleCancelButton = () => {
+    dispatch(showUnsavedPollsMeeting(true));
+  };
+
+  const handleViewPollsUnPublished = () => {
+    setSavedPolls(true);
+  };
+
+  const handleViewPollsPublished = () => {
+    setSavePollsPublished(true);
+  };
+
   return (
-    <section>
-      <Row>
-        <Col lg={6} md={6} sm={6}>
-          <Row className="mt-5">
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Title_heading"]}>
-                {t("Title")} <span className={styles["steric"]}>*</span>
-              </span>
-            </Col>
-          </Row>
-          <Row className="mt-1">
-            <Col lg={12} md={12} sm={12}>
-              <TextField labelClass={"d-none"} />
-            </Col>
-          </Row>
-          <Row className="mt-2">
-            <Col lg={12} md={12} sm={12}>
-              <span className={styles["Title_heading"]}>
-                {t("Options")} <span className={styles["steric"]}>*</span>
-              </span>
-            </Col>
-          </Row>
-          <Row>
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className={styles["Scroller_Meeting_polls"]}
-            >
-              {options.length > 0
-                ? options.map((data, index) => {
-                    return (
-                      <>
-                        {index <= 1 ? (
-                          <Row key={index} className="mt-2">
-                            <Col lg={12} md={12} sm={12}>
-                              <span className="position-relative">
-                                <TextField
-                                  placeholder={
-                                    "Option" + " " + parseInt(index + 1)
-                                  }
-                                  applyClass={"PollingCreateModal"}
-                                  labelClass="d-none"
-                                  name={data.name}
-                                  maxLength={500}
-                                  value={data.value}
-                                  change={(e) => HandleOptionChange(e)}
-                                />
+    <>
+      {savedPolls ? (
+        <ViewPollsUnPublished setSavedPolls={setSavedPolls} />
+      ) : savePollsPublished ? (
+        <ViewPollsPublishedScreen
+          setSavePollsPublished={setSavePollsPublished}
+        />
+      ) : (
+        <>
+          <section>
+            <Row>
+              <Col lg={6} md={6} sm={6}>
+                <Row className="mt-5">
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["Title_heading"]}>
+                      {t("Title")} <span className={styles["steric"]}>*</span>
+                    </span>
+                  </Col>
+                </Row>
+                <Row className="mt-1">
+                  <Col lg={12} md={12} sm={12}>
+                    <TextField labelClass={"d-none"} />
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Col lg={12} md={12} sm={12}>
+                    <span className={styles["Title_heading"]}>
+                      {t("Options")} <span className={styles["steric"]}>*</span>
+                    </span>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Scroller_Meeting_polls"]}
+                  >
+                    {options.length > 0
+                      ? options.map((data, index) => {
+                          return (
+                            <>
+                              {index <= 1 ? (
+                                <Row key={index} className="mt-2">
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span className="position-relative">
+                                      <TextField
+                                        placeholder={
+                                          "Option" + " " + parseInt(index + 1)
+                                        }
+                                        applyClass={"PollingCreateModal"}
+                                        labelClass="d-none"
+                                        name={data.name}
+                                        maxLength={500}
+                                        value={data.value}
+                                        change={(e) => HandleOptionChange(e)}
+                                      />
+                                    </span>
+                                  </Col>
+                                </Row>
+                              ) : (
+                                <Row key={index} className="mt-2">
+                                  <Col lg={12} md={12} sm={12}>
+                                    <span className="position-relative">
+                                      <TextField
+                                        placeholder={
+                                          "Option" + " " + parseInt(index + 1)
+                                        }
+                                        applyClass={"PollingCreateModal"}
+                                        labelClass="d-none"
+                                        name={data.name}
+                                        value={data.value}
+                                        maxLength={500}
+                                        change={(e) => HandleOptionChange(e)}
+                                        inputicon={
+                                          <img
+                                            src={WhiteCrossIcon}
+                                            width="31.76px"
+                                            height="31.76px"
+                                            onClick={() =>
+                                              HandleCancelFunction(index)
+                                            }
+                                            className={
+                                              styles["Cross-icon-Create_poll"]
+                                            }
+                                          />
+                                        }
+                                        iconClassName={
+                                          styles["polling_Options_backGround"]
+                                        }
+                                      />
+                                    </span>
+                                  </Col>
+                                </Row>
+                              )}
+                            </>
+                          );
+                        })
+                      : null}
+                  </Col>
+                </Row>
+                <Row className="mt-2">
+                  <Col lg={12} md={12} sm={12}>
+                    <Button
+                      text={
+                        <>
+                          <Row className="mt-1">
+                            <Col
+                              lg={12}
+                              md={12}
+                              sm={12}
+                              className="d-flex gap-2"
+                            >
+                              <img
+                                src={plusFaddes}
+                                width="15.87px"
+                                height="15.87px"
+                              />
+                              <span className={styles["Add_Button_Heading"]}>
+                                {t("Add-another-field")}
                               </span>
                             </Col>
                           </Row>
-                        ) : (
-                          <Row key={index} className="mt-2">
-                            <Col lg={12} md={12} sm={12}>
-                              <span className="position-relative">
-                                <TextField
-                                  placeholder={
-                                    "Option" + " " + parseInt(index + 1)
-                                  }
-                                  applyClass={"PollingCreateModal"}
-                                  labelClass="d-none"
-                                  name={data.name}
-                                  value={data.value}
-                                  maxLength={500}
-                                  change={(e) => HandleOptionChange(e)}
-                                  inputicon={
-                                    <img
-                                      src={WhiteCrossIcon}
-                                      width="31.76px"
-                                      height="31.76px"
-                                      onClick={() =>
-                                        HandleCancelFunction(index)
-                                      }
-                                      className={
-                                        styles["Cross-icon-Create_poll"]
-                                      }
-                                    />
-                                  }
-                                  iconClassName={
-                                    styles["polling_Options_backGround"]
-                                  }
-                                />
-                              </span>
-                            </Col>
-                          </Row>
-                        )}
-                      </>
-                    );
-                  })
-                : null}
-            </Col>
-          </Row>
-          <Row className="mt-2">
-            <Col lg={12} md={12} sm={12}>
-              <Button
-                text={
-                  <>
-                    <Row>
-                      <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                        <img
-                          src={plusFaddes}
-                          width="15.87px"
-                          height="15.87px"
+                        </>
+                      }
+                      onClick={addNewRow}
+                      className={styles["Add_another_options"]}
+                    />
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    className="d-flex align-items-center"
+                  >
+                    <DatePicker
+                      format={"DD/MM/YYYY"}
+                      minDate={moment().toDate()}
+                      placeholder="DD/MM/YYYY"
+                      render={
+                        <InputIcon
+                          placeholder="DD/MM/YYYY"
+                          className="datepicker_input"
                         />
-                        <span className={styles["Add_Button_Heading"]}>
-                          {t("Add-another-field")}
-                        </span>
+                      }
+                      editable={false}
+                      className="datePickerTodoCreate2"
+                      onOpenPickNewDate={false}
+                      inputMode=""
+                      calendar={calendarValue}
+                      locale={localValue}
+                      ref={calendRef}
+                    />
+                  </Col>
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    className="d-flex justify-content-end"
+                  >
+                    <Row className="mt-2">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="d-flex align-items-center gap-2"
+                      >
+                        <Checkbox />
+                        <p className={styles["CheckBoxTitle"]}>
+                          {t("Allow-multiple-answers")}
+                        </p>
                       </Col>
                     </Row>
-                  </>
-                }
-                onClick={addNewRow}
-                className={styles["Add_another_options"]}
-              />
-            </Col>
-          </Row>
-          <Row className="mt-3">
-            <Col lg={6} md={6} sm={6} className="d-flex align-items-center">
-              <DatePicker
-                format={"DD/MM/YYYY"}
-                minDate={moment().toDate()}
-                placeholder="DD/MM/YYYY"
-                render={
-                  <InputIcon
-                    placeholder="DD/MM/YYYY"
-                    className="datepicker_input"
-                  />
-                }
-                editable={false}
-                className="datePickerTodoCreate2"
-                onOpenPickNewDate={false}
-                inputMode=""
-                calendar={calendarValue}
-                locale={localValue}
-                ref={calendRef}
-              />
-            </Col>
-            <Col lg={6} md={6} sm={6}>
-              <Row className="mt-2">
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex align-items-center gap-2"
-                >
-                  <Checkbox />
-                  <p className={styles["CheckBoxTitle"]}>
-                    {t("Allow-multiple-answers")}
-                  </p>
-                </Col>
-              </Row>
-            </Col>
-          </Row>
-        </Col>
-        <Col lg={6} md={6} sm={6}>
-          <Row className="mt-5">
-            <Col
-              lg={12}
-              md={12}
-              sm={12}
-              className="group-fields d-flex align-items-center gap-2"
-            >
-              <Select
-                classNamePrefix={"selectMember"}
-                closeMenuOnSelect={false}
-                components={animatedComponents}
-                isMulti
-              />
-              <Button
-                text={t("ADD")}
-                className={styles["ADD_Btn_CreatePool_Modal"]}
-              />
-            </Col>
-          </Row>
-        </Col>
-      </Row>
-    </section>
+                  </Col>
+                </Row>
+              </Col>
+              <Col lg={6} md={6} sm={6}>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["MarginSection"]}
+                  >
+                    <Row className="mt-5">
+                      <Col
+                        lg={12}
+                        md={12}
+                        sm={12}
+                        className="group-fields d-flex align-items-center gap-2"
+                      >
+                        <Select
+                          classNamePrefix={"Polls_Meeting"}
+                          closeMenuOnSelect={false}
+                          components={animatedComponents}
+                          isMulti
+                        />
+                        <Button
+                          text={t("ADD")}
+                          className={styles["ADD_Btn_CreatePool_Modal"]}
+                        />
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["Scroller_Members"]}
+                  >
+                    <Row>
+                      {members.length > 0
+                        ? members.map((data, index) => {
+                            return (
+                              <>
+                                <Col lg={6} md={6} sm={6} className="mt-3">
+                                  <Row>
+                                    <Col lg={12} md={12} sm={12}>
+                                      <section
+                                        className={styles["Outer_Box_Members"]}
+                                      >
+                                        <Row className="mt-2">
+                                          <Col
+                                            lg={10}
+                                            md={10}
+                                            sm={10}
+                                            className="d-flex gap-2 align-items-center"
+                                          >
+                                            <img
+                                              src={Profile}
+                                              height="33px"
+                                              width="33px"
+                                              className={
+                                                styles["ProfileStyles"]
+                                              }
+                                            />
+                                            <span
+                                              className={styles["Name_Members"]}
+                                            >
+                                              {data.name}
+                                            </span>
+                                          </Col>
+                                          <Col
+                                            lg={2}
+                                            md={2}
+                                            sm={2}
+                                            className="d-flex align-items-center"
+                                          >
+                                            <img
+                                              src={RedCross}
+                                              height="14px"
+                                              width="14px"
+                                              className="cursor-pointer"
+                                              onClick={() =>
+                                                RemoveMembers(index)
+                                              }
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </section>
+                                    </Col>
+                                  </Row>
+                                </Col>
+                              </>
+                            );
+                          })
+                        : null}
+                    </Row>
+                  </Col>
+                </Row>
+              </Col>
+            </Row>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end gap-2"
+              >
+                <Button
+                  text={t("Cancel")}
+                  className={styles["Cancel_Button_Meeting_Creat_Polls"]}
+                  onClick={handleCancelButton}
+                />
+                <Button
+                  text={t("Save")}
+                  className={styles["Save_Button_Meeting_Creat_Polls"]}
+                  onClick={handleViewPollsUnPublished}
+                />
+                <Button
+                  text={t("Save-and-published")}
+                  className={styles["Save_Button_Meeting_Creat_Polls"]}
+                  onClick={handleViewPollsPublished}
+                />
+              </Col>
+            </Row>
+            {NewMeetingreducer.unsavedPollsMeeting && (
+              <UnsavedPollsMeeting setCreatepoll={setCreatepoll} />
+            )}
+          </section>
+        </>
+      )}
+    </>
   );
 };
 

@@ -1386,5 +1386,9 @@
   "Create-polls": "Create Polls",
   "Poll-title": "Poll Title",
   "Poll-type": "Poll Type",
-  "Please-select-title-for-the-task": "Please select title for the task"
+  "Please-select-title-for-the-task": "Please select title for the task",
+  "Multiple-answers-allowed": "Multiple Answers Allowed",
+  "Save-and-published": "Save And Published",
+  "Update-and-published": "Update And Published",
+  "Please-select-date": "Please Select Date"
 }
