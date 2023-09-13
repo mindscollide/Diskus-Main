@@ -232,6 +232,56 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
         </Col>
         <>
           <Col lg={5} md={5} sm={12} className="normal-screen-top-icons">
+            <div className="positionRelative">
+              {isParticipantActive ? (
+                <>
+                  <img
+                    className={
+                      videoFeatureReducer.LeaveCallModalFlag === true
+                        ? 'grayScaleImage'
+                        : ''
+                    }
+                    src={ActiveParticipantIcon}
+                    onClick={closeParticipantHandler}
+                    height={30}
+                    width={30}
+                  />
+                  <div className="participants-list" key={Math.random()}>
+                    <div className="leave-meeting-options__inner">
+                      <p>{currentUserName}</p>
+                      {currentParticipants !== undefined &&
+                      currentParticipants !== null &&
+                      currentParticipants.length > 0
+                        ? currentParticipants.map((participantData, index) => {
+                            console.log('userData', participantData)
+                            return <p key={index}>{participantData.userName}</p>
+                          })
+                        : null}
+                      {/* <Button
+                        className="add-participant-button"
+                        text="Add Participants"
+                        icon={
+                          <img src={AddParticipantIcon} alt="participants" />
+                        }
+                        textClass="text-positioning"
+                      /> */}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <img
+                  className={
+                    videoFeatureReducer.LeaveCallModalFlag === true
+                      ? 'grayScaleImage'
+                      : ''
+                  }
+                  src={ParticipantsIcon}
+                  onClick={closeParticipantHandler}
+                  height={20}
+                  width={25}
+                />
+              )}
+            </div>
             <div className="screenShare-Toggle">
               <img
                 className={
