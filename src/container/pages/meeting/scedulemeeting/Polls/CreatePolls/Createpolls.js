@@ -28,6 +28,7 @@ import RedCross from "../../../../../../assets/images/CrossIcon.svg";
 import UnsavedPollsMeeting from "./UnsavedPollsMeeting/UnsavedPollsMeeting";
 import { showUnsavedPollsMeeting } from "../../../../../../store/actions/NewMeetingActions";
 import ViewPollsUnPublished from "../VIewPollsUnPublished/ViewPollsUnPublished";
+import ViewPollsPublishedScreen from "../ViewPollsPublishedScreen/ViewPollsPublishedScreen";
 
 const Createpolls = () => {
   const { t } = useTranslation();
@@ -36,6 +37,7 @@ const Createpolls = () => {
   const animatedComponents = makeAnimated();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [savedPolls, setSavedPolls] = useState(false);
+  const [savePollsPublished, setSavePollsPublished] = useState(false);
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -141,14 +143,20 @@ const Createpolls = () => {
     dispatch(showUnsavedPollsMeeting(true));
   };
 
-  const handleViewPollsPublished = () => {
+  const handleViewPollsUnPublished = () => {
     setSavedPolls(true);
+  };
+
+  const handleViewPollsPublished = () => {
+    setSavePollsPublished(true);
   };
 
   return (
     <>
       {savedPolls ? (
-        <ViewPollsUnPublished />
+        <ViewPollsUnPublished setSavedPolls={setSavedPolls} />
+      ) : savePollsPublished ? (
+        <ViewPollsPublishedScreen />
       ) : (
         <>
           <section>
@@ -433,11 +441,12 @@ const Createpolls = () => {
                 <Button
                   text={t("Save")}
                   className={styles["Save_Button_Meeting_Creat_Polls"]}
-                  onClick={handleViewPollsPublished}
+                  onClick={handleViewPollsUnPublished}
                 />
                 <Button
                   text={t("Save-and-published")}
                   className={styles["Save_Button_Meeting_Creat_Polls"]}
+                  onClick={handleViewPollsPublished}
                 />
               </Col>
             </Row>

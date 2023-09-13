@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import Profile from "../../../../../../assets/images/newprofile.png";
 import { style } from "@mui/system";
 import { Button } from "../../../../../../components/elements";
-const ViewPollsUnPublished = () => {
+const ViewPollsUnPublished = ({ setSavedPolls }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,6 +38,10 @@ const ViewPollsUnPublished = () => {
       name: "Saif Ul Islam",
     },
   ]);
+
+  const handleClosedButton = () => {
+    setSavedPolls(false);
+  };
   return (
     <section>
       <Row>
@@ -162,6 +166,7 @@ const ViewPollsUnPublished = () => {
               <Button
                 text={t("Close")}
                 className={styles["Close_button_View"]}
+                onClick={handleClosedButton}
               />
             </Col>
           </Row>
