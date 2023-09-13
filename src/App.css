@@ -533,8 +533,9 @@ body.login-body {
 }
 
 .user-img {
-  /* width: 40px;
-  height: 40px; */
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
   margin: 0 5px 0 0;
   display: inline-block;
   border: 1px solid #e1e1e1;
