@@ -55,13 +55,23 @@
   font-family: "MontserratSemiBold" !important;
 }
 
-.Cacnel_styles_button_view_Votes_screen
-  :is(:hover, :active, :focus, :focus-visible) {
+.Cacnel_styles_button_view_Votes_screen:is(
+    :hover,
+    :active,
+    :focus,
+    :focus-visible
+  ) {
   padding: 12px 30px !important;
-  border: 1px solid #e1e1e1;
+  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   font-size: 12px !important;
   background: #fff !important;
   color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.Messege_span_Class {
+  color: #5a5a5a !important;
+  font-size: 16px !important;
   font-family: "MontserratSemiBold" !important;
 }
