@@ -24,6 +24,7 @@ import makeAnimated from "react-select/animated";
 import Profile from "../../../../../../assets/images/newprofile.png";
 import RedCross from "../../../../../../assets/images/CrossIcon.svg";
 import UnsavedEditPollsMeeting from "./UnsavedEditPollsMeeting/UnsavedEditPollsMeeting";
+import { showunsavedEditPollsMeetings } from "../../../../../../store/actions/NewMeetingActions";
 
 const EditPollsMeeting = ({ setEditPolls }) => {
   const { t } = useTranslation();
@@ -135,7 +136,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
   };
 
   const handleCancelButton = () => {
-    setEditPolls(false);
+    dispatch(showunsavedEditPollsMeetings(true));
   };
 
   return (
