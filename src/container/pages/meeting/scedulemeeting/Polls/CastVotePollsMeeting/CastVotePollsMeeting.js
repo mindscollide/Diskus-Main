@@ -8,7 +8,7 @@ import { Col, Row } from "react-bootstrap";
 import { Button, Checkbox } from "../../../../../../components/elements";
 import { Progress } from "antd";
 
-const CastVotePollsMeeting = () => {
+const CastVotePollsMeeting = ({ setvotePolls }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -43,6 +43,10 @@ const CastVotePollsMeeting = () => {
     },
   ]);
 
+  const handleCancelButton = () => {
+    setvotePolls(false);
+  };
+
   return (
     <section>
       <Row>
@@ -70,18 +74,18 @@ const CastVotePollsMeeting = () => {
                           <Col lg={12} md={12} sm={12} className="mt-2">
                             <section>
                               <Row>
-                                <Col lg={10} md={10} sm={10}>
+                                <Col lg={12} md={12} sm={12}>
                                   <span
                                     className={styles["Messege_span_Class"]}
                                   >
                                     {data.text} <span>(12)</span>
                                   </span>
                                 </Col>
-                                <Col lg={2} md={2} sm={2}>
+                                {/* <Col lg={2} md={2} sm={2}>
                                   <span className={styles["Percentage_Class"]}>
                                     59%
                                   </span>
-                                </Col>
+                                </Col> */}
                               </Row>
                               <Row>
                                 <Col lg={12} md={12} sm={12}>
@@ -151,6 +155,7 @@ const CastVotePollsMeeting = () => {
           <Button
             text={t("Cancel")}
             className={styles["Cancel_Button_Cast_vote_polls_Meeting"]}
+            onClick={handleCancelButton}
           />
           <Button
             text={t("Submit")}

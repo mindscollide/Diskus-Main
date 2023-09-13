@@ -147,7 +147,7 @@ const Polls = () => {
       {createpoll ? (
         <Createpolls setCreatepoll={setCreatepoll} />
       ) : votePolls ? (
-        <CastVotePollsMeeting />
+        <CastVotePollsMeeting setvotePolls={setvotePolls} />
       ) : editPolls ? (
         <EditPollsMeeting setEditPolls={setEditPolls} />
       ) : (
