@@ -128,6 +128,7 @@ const VideoPanelBodyContact = () => {
       CallTypeID: 1,
       OrganizationID: currentOrganization,
     }
+    localStorage.setItem('CallType', Data.CallTypeID)
     dispatch(InitiateVideoCall(Data, navigate, t))
     dispatch(getVideoRecipentData(userData))
     dispatch(normalizeVideoPanelFlag(true))
@@ -144,6 +145,7 @@ const VideoPanelBodyContact = () => {
         CallTypeID: 2,
         OrganizationID: currentOrganization,
       }
+      localStorage.setItem('CallType', Data.CallTypeID)
       dispatch(InitiateVideoCall(Data, navigate, t))
       dispatch(groupCallRecipients(groupCallActiveUsers))
       // dispatch(getVideoRecipentData(userData))
