@@ -1,0 +1,201 @@
+.Title_heading {
+  color: #6172d6 !important;
+  font-family: "MontserratSemiBold" !important;
+  font-size: 12px !important;
+}
+
+.steric {
+  color: #f16b6b !important;
+}
+
+.Cross-icon-Create_poll {
+  padding: 5px 5px !important;
+  margin-top: 4px !important;
+  cursor: pointer !important;
+}
+
+.Add_another_options {
+  height: 39px !important;
+  background: #fff;
+  color: #d4d4d4 !important;
+  width: 100%;
+  font-size: 12px !important;
+  border: 1px dashed #a2a2a2 !important;
+}
+
+.Add_another_options:active,
+.Add_another_options:hover,
+.Add_another_options:focus,
+.Add_another_options:focus-visible {
+  height: 39px !important;
+  background: #fff !important;
+  color: #d4d4d4 !important;
+  width: 100% !important;
+  border: 1px dashed #a2a2a2 !important;
+  font-size: 12px !important;
+}
+
+.Cancel_Button_Meeting_Creat_Polls {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #808080;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #fff !important;
+  color: #545454;
+}
+
+.Cancel_Button_Meeting_Creat_Polls:is(:hover, :focus, :active, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #808080;
+  border-radius: 4px !important;
+  font-family: "MontserratSemiBold" !important;
+  background: #fff !important;
+  color: #545454;
+}
+
+.Save_Button_Meeting_Creat_Polls {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #5f78d6 !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #fff !important;
+}
+
+.Save_Button_Meeting_Creat_Polls:is(:hover, :focus, :active, :focus-visible) {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  border: 1px solid #5f78d6 !important;
+  border-radius: 4px !important;
+  background: #5f78d6 !important;
+  font-family: "MontserratSemiBold" !important;
+  color: #fff !important;
+}
+
+.Add_Button_Heading {
+  color: #6172d6 !important;
+  font-family: "MontserratMedium-500";
+  font-size: 12px !important;
+}
+
+.polling_Options_backGround {
+  background: #f16b6b !important;
+  display: block !important;
+  position: absolute;
+  width: auto !important;
+  right: 0;
+  margin-top: 0 !important;
+  top: 0;
+  height: 100%;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  border-top-right-radius: 4px !important;
+  border-bottom-right-radius: 4px !important ;
+  align-items: center;
+}
+
+body[dir="rtl"] .polling_Options_backGround {
+  position: absolute !important;
+  left: 0 !important;
+  right: auto;
+  display: flex !important;
+  width: auto !important;
+  z-index: 1 !important;
+  justify-content: end !important;
+  margin-top: 0 !important;
+  top: 0 !important;
+  border-top-left-radius: 4px !important;
+  border-bottom-left-radius: 4px !important ;
+  border-top-right-radius: 0px !important;
+  border-bottom-right-radius: 0px !important ;
+  height: 100% !important;
+  align-items: start !important;
+}
+
+.Scroller_Meeting_polls {
+  height: 26vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_Meeting_polls::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_Meeting_polls::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.Scroller_Members {
+  height: 43vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_Members ::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_Members ::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
+.CheckBoxTitle {
+  margin: 0;
+  padding: 0;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold" !important;
+}
+
+.ADD_Btn_CreatePool_Modal {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff;
+  border: none;
+  border-radius: 4px !important;
+}
+
+.ADD_Btn_CreatePool_Modal:hover,
+.ADD_Btn_CreatePool_Modal:active,
+.ADD_Btn_CreatePool_Modal:focus,
+.ADD_Btn_CreatePool_Modal:focus-visible {
+  padding: 12px 30px !important;
+  font-size: 12px !important;
+  background: #6172d6 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 4px !important;
+}
+
+.MarginSection {
+  margin-top: 22px !important;
+}
+
+.Outer_Box_Members {
+  height: 50px !important;
+  width: 100% !important;
+  border: 1px solid #a2a2a2 !important;
+  border-radius: 4px !important;
+  padding: 0px 20px !important;
+}
+
+.ProfileStyles {
+  border-radius: 50% !important;
+}
+
+.Name_Members {
+  font-size: 12px !important;
+  color: #5a5a5a !important;
+  font-family: "MontserratSemiBold" !important;
+}

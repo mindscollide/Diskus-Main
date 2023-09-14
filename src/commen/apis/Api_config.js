@@ -827,9 +827,15 @@ const callRequestReceived = {
 const getUserMissedCallCount = {
   RequestMethod: 'ServiceManager.GetUserMissedCallCount',
 }
+
 const searchDocumentsFoldersAPI = {
   RequestMethod: 'ServiceManager.SearchDocumentsAndFolders',
 }
+
+const leaveCall = {
+  RequestMethod: 'ServiceManager.LeaveCall',
+}
+
 export {
   updateProfilePictureRM,
   DeleteCommentRM,
@@ -1055,4 +1061,5 @@ export {
   callRequestReceived,
   getUserMissedCallCount,
   searchDocumentsFoldersAPI,
+  leaveCall,
 }

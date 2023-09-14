@@ -1017,7 +1017,7 @@ const DataRoom = () => {
       Uploading: false,
       UploadCancel: false,
       Progress: 0,
-      UploadingError:false
+      UploadingError: false,
     };
     if (file.name && Object.keys(file).length > 0) {
       newJsonCreateFile = {
@@ -1028,7 +1028,7 @@ const DataRoom = () => {
         Uploading: newJsonCreateFile.Uploading,
         UploadCancel: newJsonCreateFile.UploadCancel,
         Progress: newJsonCreateFile.Progress,
-        UploadingError:newJsonCreateFile.UploadingError
+        UploadingError: newJsonCreateFile.UploadingError,
       };
       setTasksAttachmentsID(newJsonCreateFile.TaskId);
       setTasksAttachments((prevTasks) => ({
@@ -1083,7 +1083,7 @@ const DataRoom = () => {
 
   // cancel file upload
   const cancelFileUpload = (data) => {
-    console.log("cancelFileUpload",data)
+    console.log("cancelFileUpload", data);
     setTasksAttachments((prevTasks) => ({
       ...prevTasks,
       [data.TaskId]: {
@@ -1091,7 +1091,7 @@ const DataRoom = () => {
         UploadCancel: true,
         Uploaded: false,
         Uploading: false,
-        Progress:0
+        Progress: 0,
       },
     }));
     // Optionally, you can also cancel the Axios request associated with this task here.
@@ -1313,11 +1313,9 @@ const DataRoom = () => {
   };
   // this is used for canle all uploadind
   const CanceUpload = () => {
-  const dataArray = Object.values(tasksAttachments);
-  const combinedArray = [...detaUplodingForFOlder, ...dataArray];
-    const isUploading = combinedArray.some(
-      (obj) => obj.Uploading === true
-    );
+    const dataArray = Object.values(tasksAttachments);
+    const combinedArray = [...detaUplodingForFOlder, ...dataArray];
+    const isUploading = combinedArray.some((obj) => obj.Uploading === true);
     if (isUploading) {
       setCanselingDetaUplodingForFOlder(true);
     } else {

@@ -150,10 +150,12 @@ const VideoPanelNormal = () => {
 
   // Function to trigger the action in the iframe
   const handleScreenShareButton = () => {
-    const iframe = iframeRef.current
-    if (iframe) {
-      iframe.contentWindow.postMessage('ScreenShare', '*')
-      setIsScreenActive(!isScreenActive)
+    if (videoFeatureReducer.LeaveCallModalFlag === false) {
+      const iframe = iframeRef.current
+      if (iframe) {
+        iframe.contentWindow.postMessage('ScreenShare', '*')
+        setIsScreenActive(!isScreenActive)
+      }
     }
   }
 
@@ -178,7 +180,11 @@ const VideoPanelNormal = () => {
           >
             {VideoMainReducer.FullLoader === true ? (
               <>
-                <LoaderPanelVideoScreen />
+                <LoaderPanelVideoScreen
+                  message={
+                    "Securing your connection, You'll be able to join in a moment"
+                  }
+                />
               </>
             ) : (
               <>

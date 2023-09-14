@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import styles from "./ProposedMeetingDate.module.css";
 import { Button, Checkbox } from "../../../../../../components/elements";
@@ -16,11 +16,15 @@ import { Paper } from "@material-ui/core";
 import { style } from "@mui/system";
 import UnsavedModal from "./UnsavedChangesModal/UnsavedModal";
 import { showPrposedMeetingUnsavedModal } from "../../../../../../store/actions/NewMeetingActions";
-const ProposedMeetingDate = () => {
+const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
+  const [error, seterror] = useState(false);
+  const [selectError, setSelectError] = useState(false);
+  const [startDateError, setStartDateError] = useState(false);
+  const [endDateError, setEndDateError] = useState(false);
   const [sendDates, setSendDates] = useState(false);
   const [options, setOptions] = useState([]);
   const [rows, setRows] = useState([
@@ -37,20 +41,48 @@ const ProposedMeetingDate = () => {
     setRows(optionscross);
   };
 
-  const handleStartDateChange = (date) => {
-    setOptions({ ...options, startDate: date });
+  const handleStartDateChange = (index, startDate) => {
+    const updatedRows = [...rows];
+    updatedRows[index].startDate = startDate;
+    setRows(updatedRows);
+    setStartDateError(false); // Clear the start date error
   };
 
-  const handleEndDateChange = (date) => {
-    setOptions({ ...options, endDate: date });
+  const handleEndDateChange = (index, endDate) => {
+    const updatedRows = [...rows];
+    updatedRows[index].endDate = endDate;
+    setRows(updatedRows);
+    setEndDateError(false); // Clear the end date error
   };
 
-  const handleSelectChange = (selectedOption) => {
-    setOptions({ ...options, selectedOption });
+  const handleSelectChange = (index, selectedOption) => {
+    const updatedRows = [...rows];
+    updatedRows[index].selectedOption = selectedOption;
+    setRows(updatedRows);
+    setSelectError(false); // Clear the select error
   };
+
+  const validate = () => {
+    // Check if any of the fields are empty
+    const hasSelectError = rows.some((row) => row.selectedOption === "");
+    const hasStartDateError = rows.some((row) => row.startDate === "");
+    const hasEndDateError = rows.some((row) => row.endDate === "");
+
+    setSelectError(hasSelectError);
+    setStartDateError(hasStartDateError);
+    setEndDateError(hasEndDateError);
+  };
+
+  useEffect(() => {
+    validate();
+  }, [rows]);
 
   const handleSend = () => {
-    setSendDates(!sendDates);
+    seterror(true);
+    setSelectError(true);
+    setStartDateError(true);
+    setEndDateError(true);
+    // setSendDates(!sendDates);
   };
 
   const CancelModal = () => {
@@ -291,7 +323,7 @@ const ProposedMeetingDate = () => {
                           ? rows.map((data, index) => {
                               return (
                                 <>
-                                  <Row>
+                                  <Row key={index}>
                                     <Col lg={12} md={12} sm={12} key={index}>
                                       <Row className="mt-2">
                                         <Col lg={4} md={4} sm={12}>
@@ -317,8 +349,10 @@ const ProposedMeetingDate = () => {
                                             plugins={[
                                               <TimePicker hideSeconds />,
                                             ]}
-                                            selected={rows.startDate}
-                                            onChange={handleStartDateChange}
+                                            selected={rows.startDate} // Use row.startDate instead of rows.startDate
+                                            onChange={(date) =>
+                                              handleStartDateChange(index, date)
+                                            } // Pass the index
                                           />
                                         </Col>
                                         <Col
@@ -345,8 +379,10 @@ const ProposedMeetingDate = () => {
                                             plugins={[
                                               <TimePicker hideSeconds />,
                                             ]}
-                                            selected={rows.endDate}
-                                            onChange={handleEndDateChange}
+                                            selected={rows.endDate} // Use row.endDate instead of rows.endDate
+                                            onChange={(date) =>
+                                              handleEndDateChange(index, date)
+                                            } // Pass the index
                                           />
                                         </Col>
                                         {index <= 0 ? null : (
@@ -431,6 +467,22 @@ const ProposedMeetingDate = () => {
                         </span>
                       </Col>
                     </Row>
+                    <Row>
+                      <Col>
+                        <p
+                          className={
+                            error &&
+                            selectError &&
+                            startDateError &&
+                            endDateError
+                              ? ` ${styles["errorMessage-inLogin"]} `
+                              : `${styles["errorMessage-inLogin_hidden"]}`
+                          }
+                        >
+                          {t("Please-select-date")}
+                        </p>
+                      </Col>
+                    </Row>
                   </Col>
                 </Row>
               </>
@@ -457,7 +509,9 @@ const ProposedMeetingDate = () => {
           </Paper>
         </Col>
       </Row>
-      {NewMeetingreducer.prposedMeetingUnsavedModal && <UnsavedModal />}
+      {NewMeetingreducer.prposedMeetingUnsavedModal && (
+        <UnsavedModal setProposedMeetingDates={setProposedMeetingDates} />
+      )}
     </section>
   );
 };

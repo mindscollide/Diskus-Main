@@ -1,14 +1,14 @@
-import React, { useRef, useState, useEffect } from "react";
-import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
-import arabic_ar from "react-date-object/locales/arabic_ar";
-import gregorian_en from "react-date-object/locales/gregorian_en";
-import moment from "moment";
-import DatePicker, { DateObject } from "react-multi-date-picker";
-import "./ModalToDoList.css";
-import FileIcon, { defaultStyles } from "react-file-icon";
-import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
-import InputIcon from "react-multi-date-picker/components/input_icon"
+import React, { useRef, useState, useEffect } from 'react'
+import gregorian from 'react-date-object/calendars/gregorian'
+import arabic from 'react-date-object/calendars/arabic'
+import arabic_ar from 'react-date-object/locales/arabic_ar'
+import gregorian_en from 'react-date-object/locales/gregorian_en'
+import moment from 'moment'
+import DatePicker, { DateObject } from 'react-multi-date-picker'
+import './ModalToDoList.css'
+import FileIcon, { defaultStyles } from 'react-file-icon'
+import deleteButtonCreateMeeting from '../../assets/images/cancel_meeting_icon.svg'
+import InputIcon from 'react-multi-date-picker/components/input_icon'
 import {
   TextField,
   Button,
@@ -18,418 +18,438 @@ import {
   Notification,
   InputSearchFilter,
   MultiDatePicker,
-} from "./../../components/elements";
-import userImage from "../../assets/images/user.png";
+} from './../../components/elements'
+import userImage from '../../assets/images/user.png'
 import {
   RemoveTimeDashes,
   TimeSendingFormat,
   DateSendingFormat,
   createConvert,
-} from "./../../commen/functions/date_formater";
-import CustomUpload from "./../../components/elements/upload/Upload";
-import { Row, Col, Container } from "react-bootstrap";
+} from './../../commen/functions/date_formater'
+import CustomUpload from './../../components/elements/upload/Upload'
+import { Row, Col, Container } from 'react-bootstrap'
 import {
   GetAllAssigneesToDoList,
   CreateToDoList,
   GetTodoListByUser,
   HideNotificationTodo,
-} from "./../../store/actions/ToDoList_action";
-import { useDispatch, useSelector } from "react-redux";
-import TodoList from "../pages/todolist/Todolist";
-import { FileUploadToDo } from "../../store/actions/Upload_action";
-import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+} from './../../store/actions/ToDoList_action'
+import { useDispatch, useSelector } from 'react-redux'
+import TodoList from '../pages/todolist/Todolist'
+import { FileUploadToDo } from '../../store/actions/Upload_action'
+import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 
 const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   //For Localization
-  const { t } = useTranslation();
-  const [fileSize, setFileSize] = useState(0);
-  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
-  const [isCreateTodo, setIsCreateTodo] = useState(true);
-  const [fileForSend, setFileForSend] = useState([]);
-  const [createTodoTime, setCreateTodoTime] = useState("");
-  const [createTodoDate, setCreateTodoDate] = useState("");
-  const state = useSelector((state) => state);
-  const { toDoListReducer } = state;
+  const { t } = useTranslation()
+  const timePickerRef = useRef()
+  const [fileSize, setFileSize] = useState(0)
+  const [visible, setVisible] = useState(false)
+  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false)
+  const [isCreateTodo, setIsCreateTodo] = useState(true)
+  const [fileForSend, setFileForSend] = useState([])
+  const [createTodoTime, setCreateTodoTime] = useState('')
+  const [createTodoDate, setCreateTodoDate] = useState('')
+  const state = useSelector((state) => state)
+  const { toDoListReducer } = state
   //To Display Modal
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   //Notification State
   const [open, setOpen] = useState({
     flag: false,
-    message: "",
-  });
+    message: '',
+  })
 
-  const [toDoDate, setToDoDate] = useState("");
+  const [toDoDate, setToDoDate] = useState('')
 
   //For Custom language datepicker
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
-  const calendRef = useRef();
+  const [calendarValue, setCalendarValue] = useState(gregorian)
+  const [localValue, setLocalValue] = useState(gregorian_en)
+  const calendRef = useRef()
 
   //Get Current User ID
-  let createrID = localStorage.getItem("userID");
+  let createrID = localStorage.getItem('userID')
 
-  let currentLanguage = localStorage.getItem("i18nextLng");
+  let currentLanguage = localStorage.getItem('i18nextLng')
 
   useEffect(() => {
     if (currentLanguage !== undefined && currentLanguage !== null) {
-      if (currentLanguage === "en") {
-        setCalendarValue(gregorian);
-        setLocalValue(gregorian_en);
-      } else if (currentLanguage === "ar") {
-        setCalendarValue(arabic);
-        setLocalValue(arabic_ar);
+      if (currentLanguage === 'en') {
+        setCalendarValue(gregorian)
+        setLocalValue(gregorian_en)
+      } else if (currentLanguage === 'ar') {
+        setCalendarValue(arabic)
+        setLocalValue(arabic_ar)
       }
     }
-  }, [currentLanguage]);
+  }, [currentLanguage])
 
   //task Object
   const [task, setTask] = useState({
     PK_TID: 1,
-    Title: "",
-    Description: "",
+    Title: '',
+    Description: '',
     IsMainTask: true,
-    DeadLineDate: "",
-    DeadLineTime: "",
-    CreationDateTime: "",
-  });
-
+    DeadLineDate: '',
+    DeadLineTime: '',
+    CreationDateTime: '',
+  })
+  console.log(task, 'tasktasktask')
   //To Set task Creater ID
-  const [TaskCreatorID, setTaskCreatorID] = useState(0);
+  const [TaskCreatorID, setTaskCreatorID] = useState(0)
 
   //task Asignees
-  const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
-  const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
-  const [taskAssignedName, setTaskAssignedName] = useState([]);
-  const [taskAssigneeLength, setTaskAssigneeLength] = useState(false);
+  const [taskAssignedToInput, setTaskAssignedToInput] = useState('')
+  const [TaskAssignedTo, setTaskAssignedTo] = useState([])
+  const [taskAssignedName, setTaskAssignedName] = useState([])
+  const [assignees, setAssignees] = useState([])
+  console.log(assignees, 'taskAssignedNametaskAssignedNametaskAssignedName')
+  const [taskAssigneeLength, setTaskAssigneeLength] = useState(false)
 
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
-  });
+  })
 
   const deleteFilefromAttachments = (data, index) => {
-    let fileSizefound = fileSize - data.fileSize;
+    let fileSizefound = fileSize - data.fileSize
     let fileForSendingIndex = fileForSend.findIndex(
-      (newData, index) => newData.name === data.DisplayAttachmentName
-    );
-    setFileForSend(fileForSend);
-    setFileSize(fileSizefound);
-    fileForSend.splice(fileForSendingIndex, 1);
-    let searchIndex = tasksAttachments.TasksAttachments;
-    searchIndex.splice(index, 1);
+      (newData, index) => newData.name === data.DisplayAttachmentName,
+    )
+    setFileForSend(fileForSend)
+    setFileSize(fileSizefound)
+    fileForSend.splice(fileForSendingIndex, 1)
+    let searchIndex = tasksAttachments.TasksAttachments
+    searchIndex.splice(index, 1)
     setTasksAttachments({
       ...tasksAttachments,
-      ["TasksAttachments"]: searchIndex,
-    });
-  };
+      ['TasksAttachments']: searchIndex,
+    })
+  }
 
   //To Set task Creater ID
   useEffect(() => {
-    setTaskCreatorID(parseInt(createrID));
-  }, []);
+    setTaskCreatorID(parseInt(createrID))
+  }, [])
 
   //task Handler aka Input fields
   const taskHandler = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-    var valueCheck = value.replace(/^\s/g, "");
-    if (name === "Title") {
+    let name = e.target.name
+    let value = e.target.value
+    var valueCheck = value.replace(/^\s/g, '')
+    if (name === 'Title') {
       if (valueCheck.length > 199) {
         setOpen({
           flag: true,
-          message: t("Title-limit-is-200"),
-        });
+          message: t('Title-limit-is-200'),
+        })
       } else {
         setOpen({
           flag: false,
-          message: "",
-        });
+          message: '',
+        })
         setTask({
           ...task,
           [name]: valueCheck.trimStart(),
-        });
+        })
       }
-    } else if (name === "DeadLineTime") {
+    } else if (name === 'DeadLineTime') {
       setTask({
         ...task,
         [name]: value,
-      });
-    } else if (name === "Description") {
+      })
+    } else if (name === 'Description') {
       if (valueCheck.length > 299) {
         setOpen({
           flag: true,
-          message: t("Description-limit-is-300"),
-        });
+          message: t('Description-limit-is-300'),
+        })
       } else {
         setOpen({
           flag: false,
-          message: "",
-        });
+          message: '',
+        })
         setTask({
           ...task,
           [name]: valueCheck.trimStart(),
-        });
+        })
       }
     }
-  };
+  }
+
+  const onOpenChangeHandler = (open) => {
+    if (!open) {
+      setTask({
+        ...task,
+        DeadLineTime: task.DeadLineTime,
+      })
+      setVisible(false)
+    }
+  }
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    let fileSizeArr;
+    let fileSizeArr
     if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
       setTimeout(
         setOpen({
           flag: true,
-          message: t("You-can-not-upload-more-then-10-files"),
+          message: t('You-can-not-upload-more-then-10-files'),
         }),
-        3000
-      );
+        3000,
+      )
     } else if (fileSize >= 104857600) {
       setTimeout(
         setOpen({
           open: true,
-          message: t("You-can-not-upload-more-then-100MB-files"),
+          message: t('You-can-not-upload-more-then-100MB-files'),
         }),
-        3000
-      );
+        3000,
+      )
     } else {
-      const uploadFilePath = data.target.value;
-      const uploadedFile = data.target.files[0];
-      var ext = uploadedFile.name.split(".").pop();
-      let file = tasksAttachments.TasksAttachments;
+      const uploadFilePath = data.target.value
+      const uploadedFile = data.target.files[0]
+      var ext = uploadedFile.name.split('.').pop()
+      let file = tasksAttachments.TasksAttachments
       if (
-        ext === "doc" ||
-        ext === "docx" ||
-        ext === "xls" ||
-        ext === "xlsx" ||
-        ext === "pdf" ||
-        ext === "png" ||
-        ext === "txt" ||
-        ext === "jpg" ||
-        ext === "jpeg" ||
-        ext === "gif"
+        ext === 'doc' ||
+        ext === 'docx' ||
+        ext === 'xls' ||
+        ext === 'xlsx' ||
+        ext === 'pdf' ||
+        ext === 'png' ||
+        ext === 'txt' ||
+        ext === 'jpg' ||
+        ext === 'jpeg' ||
+        ext === 'gif'
       ) {
-        let data;
-        let sizezero;
-        let size;
+        let data
+        let sizezero
+        let size
         if (file.length > 0) {
           file.map((filename, index) => {
             if (filename.DisplayAttachmentName === uploadedFile.name) {
-              data = false;
+              data = false
             }
-          });
+          })
           if (uploadedFile.size > 10485760) {
-            size = false;
+            size = false
           } else if (uploadedFile.size === 0) {
-            sizezero = false;
+            sizezero = false
           }
           if (data === false) {
             setTimeout(
               setOpen({
                 flag: true,
-                message: t("File-already-exisit"),
+                message: t('File-already-exisit'),
               }),
-              3000
-            );
+              3000,
+            )
           } else if (size === false) {
             setTimeout(
               setOpen({
                 flag: true,
-                message: t("File-size-should-not-be-greater-then-zero"),
+                message: t('File-size-should-not-be-greater-then-zero'),
               }),
-              3000
-            );
+              3000,
+            )
           } else if (sizezero === false) {
             setTimeout(
               setOpen({
                 flag: true,
-                message: t("File-size-should-not-be-zero"),
+                message: t('File-size-should-not-be-zero'),
               }),
-              3000
-            );
+              3000,
+            )
           } else {
-            fileSizeArr = uploadedFile.size + fileSize;
-            setFileForSend([...fileForSend, uploadedFile]);
-            setFileSize(fileSizeArr);
+            fileSizeArr = uploadedFile.size + fileSize
+            setFileForSend([...fileForSend, uploadedFile])
+            setFileSize(fileSizeArr)
             // dispatch(FileUploadToDo(navigate, uploadedFile, t));
             file.push({
               PK_TAID: 0,
               DisplayAttachmentName: uploadedFile.name,
               OriginalAttachmentName: uploadFilePath,
-              CreationDateTime: "",
+              CreationDateTime: '',
               FK_TID: 0,
               fileSize: uploadedFile.size,
-            });
-            setTasksAttachments({ ["TasksAttachments"]: file });
+            })
+            setTasksAttachments({ ['TasksAttachments']: file })
           }
         } else {
           if (uploadedFile.size > 10485760) {
-            size = false;
+            size = false
           } else if (uploadedFile.size === 0) {
-            sizezero = false;
+            sizezero = false
           }
           if (size === false) {
             setTimeout(
               setOpen({
                 flag: true,
-                message: t("File-size-should-not-be-greater-then-zero"),
+                message: t('File-size-should-not-be-greater-then-zero'),
               }),
-              3000
-            );
+              3000,
+            )
           } else if (sizezero === false) {
             setTimeout(
               setOpen({
                 flag: true,
-                message: t("File-size-should-not-be-zero"),
+                message: t('File-size-should-not-be-zero'),
               }),
-              3000
-            );
+              3000,
+            )
           } else {
             // dispatch(FileUploadToDo(navigate, uploadedFile, t));
-            fileSizeArr = uploadedFile.size + fileSize;
-            setFileForSend([...fileForSend, uploadedFile]);
-            setFileSize(fileSizeArr);
+            fileSizeArr = uploadedFile.size + fileSize
+            setFileForSend([...fileForSend, uploadedFile])
+            setFileSize(fileSizeArr)
             file.push({
               PK_TAID: 0,
               DisplayAttachmentName: uploadedFile.name,
               OriginalAttachmentName: uploadFilePath,
-              CreationDateTime: "",
+              CreationDateTime: '',
               FK_TID: 0,
               fileSize: uploadedFile.size,
-            });
-            setTasksAttachments({ ["TasksAttachments"]: file });
+            })
+            setTasksAttachments({ ['TasksAttachments']: file })
           }
         }
       }
     }
-  };
+  }
 
   //Get All Assignees API hit
   useEffect(() => {
     // dispatch(GetAllAssigneesToDoList(parseInt(createrID)));
     if (show) {
-      dispatch(GetAllAssigneesToDoList(navigate, parseInt(createrID), t));
+      dispatch(GetAllAssigneesToDoList(navigate, parseInt(createrID), t))
     } else {
-      setShow(false);
+      setShow(false)
       setTask({
         ...task,
         PK_TID: 1,
-        Title: "",
-        Description: "",
+        Title: '',
+        Description: '',
         IsMainTask: true,
-        DeadLineDate: "",
-        DeadLineTime: "",
-        CreationDateTime: "",
-      });
-      setToDoDate("");
-      setTaskAssignedTo([]);
-      setTasksAttachments({ ["TasksAttachments"]: [] });
-      setTaskAssignedName([]);
+        DeadLineDate: '',
+        DeadLineTime: '',
+        CreationDateTime: '',
+      })
+      setToDoDate('')
+      setTaskAssignedTo([])
+      setTasksAttachments({ ['TasksAttachments']: [] })
+      setTaskAssignedName([])
     }
-  }, [show]);
+  }, [show])
 
   //On Click Of Dropdown Value
-  const onSearch = (name, id) => {
+  const onSearch = (name, id, users) => {
     if (taskAssignedName.length === 1) {
       setOpen({
         flag: true,
-        message: "Only one assignee allow",
-      });
-      setTaskAssignedToInput("");
+        message: t('Only-one-assignee-allow'),
+      })
+      setTaskAssignedToInput('')
     } else {
-      setTaskAssignedToInput(name);
-      let temp = taskAssignedName;
-      let temp2 = TaskAssignedTo;
-      temp.push(name);
-      temp2.push(id);
-      setTaskAssignedTo(temp2);
-      setTaskAssignedName(temp);
-      setTaskAssignedToInput("");
+      setTaskAssignedToInput(name)
+      let temp = taskAssignedName
+      let temp2 = TaskAssignedTo
+      temp.push(name)
+      temp2.push(id)
+      setTaskAssignedTo(temp2)
+      setTaskAssignedName(temp)
+      setTaskAssignedToInput('')
+      setAssignees([...assignees, users])
     }
-  };
+  }
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setTaskAssignedToInput(e.target.value.trimStart());
-  };
+    setTaskAssignedToInput(e.target.value.trimStart())
+  }
 
   useEffect(() => {
     if (taskAssignedName.length > 1) {
       setOpen({
         flag: true,
-        message: "Only one assignee allow",
-      });
+        message: t('Only-one-assignee-allow'),
+      })
     } else {
-      setTaskAssigneeLength(false);
+      setTaskAssigneeLength(false)
     }
-  }, [taskAssignedName.length]);
+  }, [taskAssignedName.length])
 
   //Drop Down Values
   const searchFilterHandler = (value) => {
-    let allAssignees = toDoListReducer.AllAssigneesData;
+    let allAssignees = toDoListReducer.AllAssigneesData
+    console.log(allAssignees, 'allAssigneesallAssigneesallAssignees')
     if (
-      allAssignees != undefined &&
-      allAssignees != null &&
-      allAssignees != NaN &&
-      allAssignees != []
+      allAssignees !== undefined &&
+      allAssignees !== null &&
+      allAssignees !== []
     ) {
       return allAssignees
         .filter((item) => {
-          const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
+          const searchTerm = value.toLowerCase()
+          const assigneesName = item.name.toLowerCase()
           return (
             searchTerm && assigneesName.startsWith(searchTerm)
             // assigneesName !== searchTerm.toLowerCase()
-          );
+          )
         })
         .slice(0, 10)
         .map((item) => (
           <div
-            onClick={() => onSearch(item.name, item.pK_UID)}
+            onClick={() => onSearch(item.name, item.pK_UID, item)}
             className="dropdown-row-assignee d-flex align-items-center flex-row"
             key={item.pK_UID}
           >
-            <img src={userImage} />
+            <img
+              src={`data:image/jpeg;base64,${item?.displayProfilePictureName}`}
+              alt=""
+              className="user-img"
+            />
             <p className="p-0 m-0">{item.name}</p>
           </div>
-        ));
+        ))
     } else {
-      console.log("not found");
+      console.log('not found')
     }
-  };
+  }
 
-  const toDoDateHandler = (e, date, format = "YYYYMMDD") => {
-
-    let toDoDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
-    let toDoDateSaveFormat = new DateObject(date).format("YYYYMMDD");
-    setCreateTodoDate(toDoDateSaveFormat);
-    setToDoDate(toDoDateValueFormat);
+  const toDoDateHandler = (e, date, format = 'YYYYMMDD') => {
+    let toDoDateValueFormat = new DateObject(date).format('DD/MM/YYYY')
+    let toDoDateSaveFormat = new DateObject(date).format('YYYYMMDD')
+    setCreateTodoDate(toDoDateSaveFormat)
+    setToDoDate(toDoDateValueFormat)
     setTask({
       ...task,
       DeadLineDate: toDoDateSaveFormat,
-    });
+    })
     if (calendRef.current.isOpen) {
       calendRef.current.closeCalendar()
     }
-  };
+  }
 
   //Save To-Do List Function
   const createToDoList = async () => {
-    let TasksAttachments = tasksAttachments.TasksAttachments;
-    let newDate = createTodoDate;
-    let newTime = task.DeadLineTime;
-    let finalDateTime;
-    if (createTodoDate !== "" && task.DeadLineTime !== "") {
-      console.log("todo check", createTodoDate);
-      console.log("todo check", task.DeadLineTime);
-      finalDateTime = createConvert(createTodoDate + task.DeadLineTime);
-      console.log("todo check", finalDateTime);
-      newDate = finalDateTime.slice(0, 8);
-      newTime = finalDateTime.slice(8, 14);
+    let TasksAttachments = tasksAttachments.TasksAttachments
+    let taskAssignedTO = [...TaskAssignedTo]
+    if (TaskAssignedTo.length === 0) {
+      taskAssignedTO.push(Number(createrID))
+      setTaskAssignedTo(taskAssignedTO)
+    }
+    let newDate = createTodoDate
+    let newTime = task.DeadLineTime
+    let finalDateTime
+    if (createTodoDate !== '' && task.DeadLineTime !== '') {
+      finalDateTime = createConvert(createTodoDate + task.DeadLineTime)
+      newDate = finalDateTime.slice(0, 8)
+      newTime = finalDateTime.slice(8, 14)
     }
 
     let Task = {
@@ -439,61 +459,49 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       IsMainTask: task.IsMainTask,
       DeadLineDate: newDate,
       DeadLineTime: newTime,
-      CreationDateTime: "",
-    };
+      CreationDateTime: '',
+    }
     if (finalDateTime === undefined) {
-      if (Task.DeadLineTime === "") {
+      if (Task.DeadLineTime === '') {
         setOpen({
           ...open,
           flag: true,
-          message: t("Time-missing"),
-        });
-      } else if (Task.DeadLineDate === "") {
+          message: t('Time-missing'),
+        })
+      } else if (Task.DeadLineDate === '') {
         setOpen({
           ...open,
           flag: true,
-          message: t("Enter-date-must"),
-        });
+          message: t('Enter-date-must'),
+        })
       }
-    } else if (Task.DeadLineTime === undefined || Task.DeadLineTime === "") {
+    } else if (Task.DeadLineTime === undefined || Task.DeadLineTime === '') {
       setOpen({
         ...open,
         flag: true,
-        message: t("Time-missing"),
-      });
-    } else if (Task.DeadLineDate === undefined || Task.DeadLineDate === "") {
+        message: t('Time-missing'),
+      })
+    } else if (Task.DeadLineDate === undefined || Task.DeadLineDate === '') {
       setOpen({
         ...open,
         flag: true,
-        message: t("Enter-date-must"),
-      });
-    } else if (Task.Title === "") {
+        message: t('Enter-date-must'),
+      })
+    } else if (Task.Title === '') {
       setOpen({
         ...open,
         flag: true,
-        message: t("Title-missing"),
-      });
-    } else if (Task.Description === "") {
-      setOpen({
-        ...open,
-        flag: true,
-        message: t("Description-missing"),
-      });
-    } else if (TaskAssignedTo.length === 0) {
-      setOpen({
-        ...open,
-        flag: true,
-        message: t("Please-add-assignees"),
-      });
+        message: t('Title-missing'),
+      })
     } else {
-      let counter = Object.keys(fileForSend).length - 1;
+      let counter = Object.keys(fileForSend).length - 1
       if (Object.keys(fileForSend).length > 0) {
         const uploadFiles = (fileForSend) => {
           const uploadPromises = fileForSend.map((newData) => {
-            dispatch(FileUploadToDo(navigate, newData, t));
-          });
-          return Promise.all(uploadPromises);
-        };
+            dispatch(FileUploadToDo(navigate, newData, t))
+          })
+          return Promise.all(uploadPromises)
+        }
         uploadFiles(fileForSend)
           .then((response) => {
             let Data = {
@@ -501,82 +509,82 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
               TaskCreatorID,
               TaskAssignedTo,
               TasksAttachments,
-            };
-            dispatch(CreateToDoList(navigate, Data, t));
-            setShow(false);
+            }
+            dispatch(CreateToDoList(navigate, Data, t))
+            setShow(false)
             setTask({
               ...task,
               PK_TID: 1,
-              Title: "",
-              Description: "",
+              Title: '',
+              Description: '',
               IsMainTask: true,
-              DeadLineDate: "",
-              DeadLineTime: "",
-              CreationDateTime: "",
-            });
-            setCreateTodoDate("");
-            setCreateTodoTime("");
-            setTaskAssignedTo([]);
-            setTasksAttachments({ ["TasksAttachments"]: [] });
-            setTaskAssignedName([]);
-            setToDoDate("");
-            setFileForSend([]);
-            setFileSize(0);
+              DeadLineDate: '',
+              DeadLineTime: '',
+              CreationDateTime: '',
+            })
+            setCreateTodoDate('')
+            setCreateTodoTime('')
+            setTaskAssignedTo([])
+            setTasksAttachments({ ['TasksAttachments']: [] })
+            setTaskAssignedName([])
+            setToDoDate('')
+            setFileForSend([])
+            setFileSize(0)
           })
           .catch((error) => {
-            console.log(error);
-          });
+            console.log(error)
+          })
       } else {
         let Data = {
           Task,
           TaskCreatorID,
           TaskAssignedTo,
           TasksAttachments,
-        };
-        dispatch(CreateToDoList(navigate, Data, t));
-        setShow(false);
+        }
+        dispatch(CreateToDoList(navigate, Data, t))
+        setShow(false)
         setTask({
           ...task,
           PK_TID: 1,
-          Title: "",
-          Description: "",
+          Title: '',
+          Description: '',
           IsMainTask: true,
-          DeadLineDate: "",
-          DeadLineTime: "",
-          CreationDateTime: "",
-        });
-        setCreateTodoDate("");
-        setCreateTodoTime("");
-        setTaskAssignedTo([]);
-        setTasksAttachments({ ["TasksAttachments"]: [] });
-        setTaskAssignedName([]);
-        setToDoDate("");
-        setFileForSend([]);
-        setFileSize(0);
+          DeadLineDate: '',
+          DeadLineTime: '',
+          CreationDateTime: '',
+        })
+        setCreateTodoDate('')
+        setCreateTodoTime('')
+        setTaskAssignedTo([])
+        setTasksAttachments({ ['TasksAttachments']: [] })
+        setTaskAssignedName([])
+        setToDoDate('')
+        setFileForSend([])
+        setFileSize(0)
       }
     }
-  };
+  }
 
   const handleDeleteAttendee = (data, index) => {
-    TaskAssignedTo.splice(index, 1);
-    taskAssignedName.splice(index, 1);
-    setTaskAssignedName([...taskAssignedName]);
-    setTaskAssignedTo([...TaskAssignedTo]);
-  };
+    // TaskAssignedTo.splice(index, 1)
+    // taskAssignedName.splice(index, 1)
+    setAssignees([])
+    setTaskAssignedName([])
+    setTaskAssignedTo([])
+  }
 
-  useEffect(() => { }, [TaskAssignedTo, taskAssignedName]);
   return (
     <>
       <Container>
         <Modal
           onHide={() => {
-            setCloseConfirmationBox(true);
-            setIsCreateTodo(false);
+            setCloseConfirmationBox(true)
+            setIsCreateTodo(false)
           }}
           show={show}
           setShow={setShow}
           className="modaldialogTodoCreate"
-          modalBodyClassName={"bodytodoCreateModal"}
+          modalBodyClassName={'bodytodoCreateModal'}
           modalFooterClassName="footertodoCreateModal"
           modalHeaderClassName="headertodoCreateModal"
           ButtonTitle={ModalTitle}
@@ -596,19 +604,24 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     >
                       <TimePickers
                         change={taskHandler}
-                        placeholder={"00:00:00"}
+                        placeholder={'00:00'}
                         name="DeadLineTime"
                         value={task.DeadLineTime}
+                        // timeChangerHandler={timeChangeHandler}
                       />
                       <DatePicker
                         onChange={toDoDateHandler}
                         // inputClass="datepicker_input"
-                        format={"DD/MM/YYYY"}
+                        format={'DD/MM/YYYY'}
                         minDate={moment().toDate()}
                         placeholder="DD/MM/YYYY"
-                        render={<InputIcon placeholder="DD/MM/YYYY" className="datepicker_input" />}
+                        render={
+                          <InputIcon
+                            placeholder="DD/MM/YYYY"
+                            className="datepicker_input"
+                          />
+                        }
                         editable={false}
-
                         className="datePickerTodoCreate2"
                         // disabled={disabled}
                         // name={name}
@@ -645,34 +658,40 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       className="todolist-modal-fields margin-top--20 d-flex  flex-column"
                     >
                       <InputSearchFilter
-                        placeholder={t("Add-attendees") + "*"}
+                        placeholder={t('Add-attendees') + '*'}
                         value={taskAssignedToInput}
                         filteredDataHandler={searchFilterHandler(
-                          taskAssignedToInput
+                          taskAssignedToInput,
                         )}
                         applyClass="assigneeFindInCreateToDo"
                         disable={taskAssigneeLength}
                         change={onChangeSearch}
                       />
-                      {taskAssignedName ? (
+                      {assignees ? (
                         <>
-                          {taskAssignedName.map((taskAssignedName, index) => (
+                          {assignees.map((taskAssignedName, index) => (
                             <span>
                               <div className="dropdown-row-assignee dg-flex align-items-center flex-row">
                                 <div className="d-flex align-items-center position-relative">
-                                  <img src={userImage} />
-                                  <p className="p-0 m-0">{taskAssignedName}</p>
+                                  <img
+                                    alt=""
+                                    src={`data:image/jpeg;base64,${taskAssignedName.displayProfilePictureName}`}
+                                  />
+                                  <p className="p-0 m-0">
+                                    {taskAssignedName.name}
+                                  </p>
                                 </div>
                                 <span className="todolist-remove-assignee-icon">
                                   <img
                                     width={20}
                                     className="remove"
                                     height={20}
+                                    alt=""
                                     src={deleteButtonCreateMeeting}
                                     onClick={() =>
                                       handleDeleteAttendee(
                                         taskAssignedName,
-                                        index
+                                        index,
                                       )
                                     }
                                   />
@@ -696,7 +715,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         name="Title"
                         applyClass="createtodo-title"
                         type="text"
-                        placeholder={t("Title") + "*"}
+                        placeholder={t('Title') + '*'}
                         required
                         value={task.Title}
                         maxLength={200}
@@ -710,9 +729,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         name="Description"
                         applyClass="createtodo-description"
                         type="text"
-                        as={"textarea"}
+                        as={'textarea'}
                         rows="7"
-                        placeholder={t("Description") + "*"}
+                        placeholder={t('Description') + '*'}
                         maxLength={300}
                       />
                     </Col>
@@ -725,13 +744,13 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                       className="MontserratSemiBold-600 attachmentCon "
                     >
                       <label className="ArabicFontSemiBold">
-                        {t("Attachement")}
+                        {t('Attachement')}
                       </label>
                       <span className="custom-upload-input">
                         <CustomUpload
                           change={uploadFilesToDo}
                           onClick={(event) => {
-                            event.target.value = null;
+                            event.target.value = null
                           }}
                           className="UploadFileButton"
                         />
@@ -744,116 +763,116 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                           >
                             {tasksAttachments.TasksAttachments.length > 0
                               ? tasksAttachments.TasksAttachments.map(
-                                (data, index) => {
-                                  var ext =
-                                    data.DisplayAttachmentName.split(
-                                      "."
-                                    ).pop();
+                                  (data, index) => {
+                                    var ext = data.DisplayAttachmentName.split(
+                                      '.',
+                                    ).pop()
 
-                                  const first =
-                                    data.DisplayAttachmentName.split(" ")[0];
-                                  return (
-                                    <Col
-                                      sm={12}
-                                      lg={2}
-                                      md={2}
-                                      className="modaltodolist-attachment-icon"
-                                    >
-                                      {ext === "doc" ? (
-                                        <FileIcon
-                                          extension={"docx"}
-                                          size={78}
-                                          type={"document"}
-                                          labelColor={"rgba(44, 88, 152)"}
-                                        />
-                                      ) : ext === "docx" ? (
-                                        <FileIcon
-                                          extension={"docx"}
-                                          size={78}
-                                          type={"font"}
-                                          labelColor={"rgba(44, 88, 152)"}
-                                        />
-                                      ) : ext === "xls" ? (
-                                        <FileIcon
-                                          extension={"xls"}
-                                          type={"spreadsheet"}
-                                          size={78}
-                                          labelColor={"rgba(16, 121, 63)"}
-                                        />
-                                      ) : ext === "xlsx" ? (
-                                        <FileIcon
-                                          extension={"xls"}
-                                          type={"spreadsheet"}
-                                          size={78}
-                                          labelColor={"rgba(16, 121, 63)"}
-                                        />
-                                      ) : ext === "pdf" ? (
-                                        <FileIcon
-                                          extension={"pdf"}
-                                          size={78}
-                                          {...defaultStyles.pdf}
-                                        />
-                                      ) : ext === "png" ? (
-                                        <FileIcon
-                                          extension={"png"}
-                                          size={78}
-                                          type={"image"}
-                                          labelColor={"rgba(102, 102, 224)"}
-                                        />
-                                      ) : ext === "txt" ? (
-                                        <FileIcon
-                                          extension={"txt"}
-                                          size={78}
-                                          type={"document"}
-                                          labelColor={"rgba(52, 120, 199)"}
-                                        />
-                                      ) : ext === "jpg" ? (
-                                        <FileIcon
-                                          extension={"jpg"}
-                                          size={78}
-                                          type={"image"}
-                                          labelColor={"rgba(102, 102, 224)"}
-                                        />
-                                      ) : ext === "jpeg" ? (
-                                        <FileIcon
-                                          extension={"jpeg"}
-                                          size={78}
-                                          type={"image"}
-                                          labelColor={"rgba(102, 102, 224)"}
-                                        />
-                                      ) : ext === "gif" ? (
-                                        <FileIcon
-                                          extension={"gif"}
-                                          size={78}
-                                          {...defaultStyles.gif}
-                                        />
-                                      ) : (
-                                        <FileIcon
-                                          extension={ext}
-                                          size={78}
-                                          {...defaultStyles.ext}
-                                        />
-                                      )}
-                                      <span className="deleteBtn">
-                                        <img
-                                          src={deleteButtonCreateMeeting}
-                                          width={15}
-                                          height={15}
-                                          onClick={() =>
-                                            deleteFilefromAttachments(
-                                              data,
-                                              index
-                                            )
-                                          }
-                                        />
-                                      </span>
-                                      <p className="modaltodolist-attachment-text">
-                                        {first}
-                                      </p>
-                                    </Col>
-                                  );
-                                }
-                              )
+                                    const first = data.DisplayAttachmentName.split(
+                                      ' ',
+                                    )[0]
+                                    return (
+                                      <Col
+                                        sm={12}
+                                        lg={2}
+                                        md={2}
+                                        className="modaltodolist-attachment-icon"
+                                      >
+                                        {ext === 'doc' ? (
+                                          <FileIcon
+                                            extension={'docx'}
+                                            size={78}
+                                            type={'document'}
+                                            labelColor={'rgba(44, 88, 152)'}
+                                          />
+                                        ) : ext === 'docx' ? (
+                                          <FileIcon
+                                            extension={'docx'}
+                                            size={78}
+                                            type={'font'}
+                                            labelColor={'rgba(44, 88, 152)'}
+                                          />
+                                        ) : ext === 'xls' ? (
+                                          <FileIcon
+                                            extension={'xls'}
+                                            type={'spreadsheet'}
+                                            size={78}
+                                            labelColor={'rgba(16, 121, 63)'}
+                                          />
+                                        ) : ext === 'xlsx' ? (
+                                          <FileIcon
+                                            extension={'xls'}
+                                            type={'spreadsheet'}
+                                            size={78}
+                                            labelColor={'rgba(16, 121, 63)'}
+                                          />
+                                        ) : ext === 'pdf' ? (
+                                          <FileIcon
+                                            extension={'pdf'}
+                                            size={78}
+                                            {...defaultStyles.pdf}
+                                          />
+                                        ) : ext === 'png' ? (
+                                          <FileIcon
+                                            extension={'png'}
+                                            size={78}
+                                            type={'image'}
+                                            labelColor={'rgba(102, 102, 224)'}
+                                          />
+                                        ) : ext === 'txt' ? (
+                                          <FileIcon
+                                            extension={'txt'}
+                                            size={78}
+                                            type={'document'}
+                                            labelColor={'rgba(52, 120, 199)'}
+                                          />
+                                        ) : ext === 'jpg' ? (
+                                          <FileIcon
+                                            extension={'jpg'}
+                                            size={78}
+                                            type={'image'}
+                                            labelColor={'rgba(102, 102, 224)'}
+                                          />
+                                        ) : ext === 'jpeg' ? (
+                                          <FileIcon
+                                            extension={'jpeg'}
+                                            size={78}
+                                            type={'image'}
+                                            labelColor={'rgba(102, 102, 224)'}
+                                          />
+                                        ) : ext === 'gif' ? (
+                                          <FileIcon
+                                            extension={'gif'}
+                                            size={78}
+                                            {...defaultStyles.gif}
+                                          />
+                                        ) : (
+                                          <FileIcon
+                                            extension={ext}
+                                            size={78}
+                                            {...defaultStyles.ext}
+                                          />
+                                        )}
+                                        <span className="deleteBtn">
+                                          <img
+                                            src={deleteButtonCreateMeeting}
+                                            width={15}
+                                            height={15}
+                                            onClick={() =>
+                                              deleteFilefromAttachments(
+                                                data,
+                                                index,
+                                              )
+                                            }
+                                          />
+                                        </span>
+                                        <p className="modaltodolist-attachment-text">
+                                          {first}
+                                        </p>
+                                      </Col>
+                                    )
+                                  },
+                                )
                               : null}
                           </Col>
                         </Row>
@@ -869,10 +888,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                     sm={12}
                     md={12}
                     lg={12}
-                    className={"Confirmationmodal_body_text"}
+                    className={'Confirmationmodal_body_text'}
                   >
                     {t(
-                      "Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close"
+                      'Are-you-sure-if-you-click-on-close-button-the-data-will-reset-and-modal-will-close',
                     )}
                   </Col>
                 </Row>
@@ -891,17 +910,17 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                   >
                     <Button
                       onClick={() => {
-                        setCloseConfirmationBox(true);
-                        setIsCreateTodo(false);
+                        setCloseConfirmationBox(true)
+                        setIsCreateTodo(false)
                       }}
-                      className={"cancelButton_createTodo"}
-                      text={"Cancel"}
+                      className={'cancelButton_createTodo'}
+                      text={'Cancel'}
                     />
                     <Button
                       onClick={createToDoList}
-                      className={"btn todocreate-createbtn ArabicFontSemiBold"}
-                      variant={"Primary"}
-                      text={t("Create")}
+                      className={'btn todocreate-createbtn ArabicFontSemiBold'}
+                      variant={'Primary'}
+                      text={t('Create')}
                     />
                   </Col>
                 </Row>
@@ -917,16 +936,16 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                   >
                     <Button
                       onClick={() => setIsCreateTodo(true)}
-                      className={"cancelButton_createTodo"}
-                      text={"Cancel"}
+                      className={'cancelButton_createTodo'}
+                      text={'Cancel'}
                     />
                     <Button
                       onClick={() => {
-                        setShow(false);
-                        setIsCreateTodo(true);
+                        setShow(false)
+                        setIsCreateTodo(true)
                       }}
-                      className={"todocreate-createbtn"}
-                      text={"Close"}
+                      className={'todocreate-createbtn'}
+                      text={'Close'}
                     />
                   </Col>
                 </Row>
@@ -937,7 +956,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       </Container>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
-  );
-};
+  )
+}
 
-export default ModalToDoList;
+export default ModalToDoList

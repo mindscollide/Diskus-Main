@@ -5,7 +5,11 @@ import { Button } from '../../../../../elements'
 import './videoPanelFooter.css'
 import VideoCallWhiteIcon from './../../../../../../assets/images/Video-White-Icon.png'
 
-const VideoPanelFooter = () => {
+const VideoPanelFooter = ({
+  groupCallClick,
+  groupbtnClassName,
+  buttonText,
+}) => {
   const dispatch = useDispatch()
 
   const { videoFeatureReducer, VideoMainReducer } = useSelector(
@@ -20,9 +24,9 @@ const VideoPanelFooter = () => {
             {VideoMainReducer.Loading === false ? (
               <div className="group-call">
                 <Button
-                  text="Group Call"
-                  className="group-btn"
-                  // onClick={incomingCall}
+                  text={buttonText}
+                  className={groupbtnClassName}
+                  onClick={groupCallClick}
                   icon2={<img src={VideoCallWhiteIcon} />}
                 />
               </div>

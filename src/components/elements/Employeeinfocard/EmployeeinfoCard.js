@@ -1,22 +1,30 @@
-import { Col, Row, Container } from "react-bootstrap";
-import userImage from "./../../../assets/images/user.png";
-import newprofile from "../../../assets/images/newprofile.png";
-import thumbsup from "../../../assets/images/thumbsup.svg";
-import styles from "./EmployeeinfoCard.module.css";
+import { Col, Row, Container } from "react-bootstrap"
+import userImage from "./../../../assets/images/user.png"
+import newprofile from "../../../assets/images/newprofile.png"
+import thumbsup from "../../../assets/images/thumbsup.svg"
+import styles from "./EmployeeinfoCard.module.css"
 
 const EmployeeinfoCard = ({
   Employeename,
   Employeeemail,
   Icon,
+  EmployeePic,
   IconOnClick,
 }) => {
+  console.log(EmployeePic, "EmployeePicEmployeePicEmployeePic")
   //   let UserName = localStorage.getItem("UserName");
-  let currentLanguage = localStorage.getItem("i18nextLng");
+  let currentLanguage = localStorage.getItem("i18nextLng")
   return (
     <>
       <Row>
         <Col lg={2} md={12} sm={12}>
-          <img src={newprofile} width="50px" height="50px" />
+          <img
+            src={`data:image/jpeg;base64,${EmployeePic}`}
+            width="50px"
+            height="50px"
+            className="rounded-circle"
+            alt=""
+          />
         </Col>
         <Col lg={7} md={12} sm={12} className={styles["Lineheight"]}>
           <Row className="mt-1">
@@ -43,6 +51,6 @@ const EmployeeinfoCard = ({
         </Col>
       </Row>
     </>
-  );
-};
-export default EmployeeinfoCard;
+  )
+}
+export default EmployeeinfoCard

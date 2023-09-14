@@ -1,53 +1,58 @@
-import React, { useEffect } from "react";
-import styles from "./ViewPoll.module.css";
-import { Container, Row, Col } from "react-bootstrap";
-import { Modal, Button, TextField } from "../../../components/elements";
-import { useTranslation } from "react-i18next";
-import AlarmClock from "../../../assets/images/AlarmOptions.svg";
-import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
-import CrossIcon from "../../../assets/images/CrossIcon.svg";
-import profile from "../../../assets/images/profile_polls.svg";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { setviewpollModal } from "../../../store/actions/Polls_actions";
-import moment from "moment";
+import React, { useEffect } from "react"
+import styles from "./ViewPoll.module.css"
+import { Container, Row, Col } from "react-bootstrap"
+import { Modal, Button, TextField } from "../../../components/elements"
+import { useTranslation } from "react-i18next"
+import AlarmClock from "../../../assets/images/AlarmOptions.svg"
+import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg"
+import CrossIcon from "../../../assets/images/CrossIcon.svg"
+import profile from "../../../assets/images/profile_polls.svg"
+import { useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { setviewpollModal } from "../../../store/actions/Polls_actions"
+import moment from "moment"
 
 const ViewPoll = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { PollsReducer } = useSelector((state) => state);
-  console.log(PollsReducer, "PollsReducerPollsReducerPollsReducerPollsReducer");
-  const [viewpollMembers, setViewPollmembers] = useState([]);
-  const [pollAnswersDetailsView, setPollAnswersDetailsView] = useState([]);
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { PollsReducer } = useSelector((state) => state)
+  console.log(PollsReducer, "PollsReducerPollsReducerPollsReducerPollsReducer")
+  const [viewpollMembers, setViewPollmembers] = useState([])
+  console.log(viewpollMembers, "viewpollMembersviewpollMembersviewpollMembers")
+  const [pollAnswersDetailsView, setPollAnswersDetailsView] = useState([])
   const [viewPollsDetails, setViewPollsDetails] = useState({
     date: "",
     Title: "",
     allowmultipleanswers: false,
-  });
-  const { t } = useTranslation();
+  })
+  const { t } = useTranslation()
   const changeDateStartHandler2 = (date) => {
-    let newDate = moment(date).format("DD MMMM YYYY");
+    let newDate = moment(date).format("DD MMMM YYYY")
 
-    return newDate;
-  };
+    return newDate
+  }
 
   useEffect(() => {
     if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
-      let pollanswers = [];
+      let pollanswers = []
       if (Object.keys(PollsReducer.Allpolls.poll.pollOptions).length > 0) {
-        setPollAnswersDetailsView(PollsReducer.Allpolls.poll.pollOptions);
+        setPollAnswersDetailsView(PollsReducer.Allpolls.poll.pollOptions)
       }
     }
-  }, [PollsReducer.Allpolls]);
+  }, [PollsReducer.Allpolls])
 
   useEffect(() => {
     if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
-      let users = [];
+      let users = []
       if (Object.keys(PollsReducer.Allpolls.poll.pollParticipants).length > 0) {
         PollsReducer.Allpolls.poll.pollParticipants.map((data, index) => {
-          users.push(data.userName);
-        });
+          users.push({
+            emailAddress: data.emailAddress,
+            userName: data.userName,
+            profilePic: data.profilePicture,
+          })
+        })
       }
       setViewPollsDetails({
         ...viewPollsDetails,
@@ -55,10 +60,10 @@ const ViewPoll = () => {
         Title: PollsReducer.Allpolls.poll.pollDetails.pollTitle,
         allowmultipleanswers:
           PollsReducer.Allpolls.poll.pollDetails.allowMultipleAnswers,
-      });
-      setViewPollmembers(users);
+      })
+      setViewPollmembers(users)
     }
-  }, [PollsReducer.Allpolls]);
+  }, [PollsReducer.Allpolls])
   return (
     <Container>
       <Modal
@@ -69,7 +74,7 @@ const ViewPoll = () => {
         modalBodyClassName={"d-block"}
         modalFooterClassName={"d-block"}
         onHide={() => {
-          dispatch(setviewpollModal(false));
+          dispatch(setviewpollModal(false))
         }}
         ModalTitle={
           <>
@@ -115,7 +120,7 @@ const ViewPoll = () => {
                   height="16px"
                   className={styles["View_cross_icon"]}
                   onClick={() => {
-                    dispatch(setviewpollModal(false));
+                    dispatch(setviewpollModal(false))
                   }}
                 />
               </Col>
@@ -158,29 +163,33 @@ const ViewPoll = () => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col className={styles["scroll-height"]} sm={12} md={12} lg={12}>
+                  <Col
+                    className={styles["scroll-height"]}
+                    sm={12}
+                    md={12}
+                    lg={12}
+                  >
                     {pollAnswersDetailsView.length > 0 &&
                       pollAnswersDetailsView.map((list, index) => {
                         return (
                           <>
-                          <span   className={`${styles["BOx_for_yes"]} d-flex`}>
-                          {list.answer.length > 100 ? (
-                              <div
-                                className={`${styles["scrollable-title"]} d-flex justify-content-center `}
-                              >
-                                {list.answer}
-                              </div>
-                            ) : (
-                              <div
-                                className={`${styles["scrollable-title2"]} d-flex align-items-center`}
-                              >
-                                {list.answer}
-                              </div>
-                            )}
-                          </span>
-                        
+                            <span className={`${styles["BOx_for_yes"]} d-flex`}>
+                              {list.answer.length > 100 ? (
+                                <div
+                                  className={`${styles["scrollable-title"]} d-flex justify-content-center `}
+                                >
+                                  {list.answer}
+                                </div>
+                              ) : (
+                                <div
+                                  className={`${styles["scrollable-title2"]} d-flex align-items-center`}
+                                >
+                                  {list.answer}
+                                </div>
+                              )}
+                            </span>
                           </>
-                        );
+                        )
                       })}
                   </Col>
                 </Row>
@@ -219,19 +228,20 @@ const ViewPoll = () => {
                                 <Row className={styles["Card_border2"]}>
                                   <Col sm={12} md={12} lg={12}>
                                     <img
-                                      src={profile}
+                                      src={`data:image/jpeg;base64,${data.profilePic.displayProfilePictureName}`}
                                       width="33px"
                                       height="33px"
+                                      alt=""
                                     />
                                     <span className={styles["Name_cards"]}>
-                                      {data}
+                                      {data.userName}
                                     </span>
                                   </Col>
                                 </Row>
                               </Col>
                             </Row>
                           </Col>
-                        );
+                        )
                       })}
                     </Row>
                   </Col>
@@ -255,7 +265,7 @@ const ViewPoll = () => {
                       text={t("Close")}
                       className={styles["Close_btn_ViewPoll"]}
                       onClick={() => {
-                        dispatch(setviewpollModal(false));
+                        dispatch(setviewpollModal(false))
                       }}
                     />
                   </Col>
@@ -267,7 +277,7 @@ const ViewPoll = () => {
         size={"md"}
       />
     </Container>
-  );
-};
+  )
+}
 
-export default ViewPoll;
+export default ViewPoll

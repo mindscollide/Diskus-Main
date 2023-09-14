@@ -92,11 +92,13 @@
 }
 
 .Caller-Status {
-  background: #d1edf1;
   padding: 10px;
-  border-radius: 4px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 5px;
   margin-top: -15px;
+  background: linear-gradient(to left, #4ADEDE 0%, #6172d6 100%) !important;
+  color: #fff !important;
 }

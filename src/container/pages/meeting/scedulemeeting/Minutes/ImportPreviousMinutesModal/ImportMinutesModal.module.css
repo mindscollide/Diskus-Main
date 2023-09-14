@@ -67,3 +67,9 @@
 .OverAll_Padding {
   padding: 0px 40px !important;
 }
+
+.Status {
+  color: #f16b6b;
+  font-size: 12px !important;
+  font-family: "Montserrat";
+}

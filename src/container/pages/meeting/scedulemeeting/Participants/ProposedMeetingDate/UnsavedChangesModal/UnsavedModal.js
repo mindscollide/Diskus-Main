@@ -7,14 +7,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { showPrposedMeetingUnsavedModal } from "../../../../../../../store/actions/NewMeetingActions";
 import { Col, Row } from "react-bootstrap";
-const UnsavedModal = () => {
+const UnsavedModal = ({ setProposedMeetingDates }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
 
-  const handleNo = () => {};
+  const handleNo = () => {
+    dispatch(showPrposedMeetingUnsavedModal(false));
+  };
+
   const handleYes = () => {
+    setProposedMeetingDates(false);
     dispatch(showPrposedMeetingUnsavedModal(false));
   };
   return (

@@ -1,78 +1,78 @@
-import React, { useEffect } from "react";
-import styles from "./ViewResolution.module.css";
-import { useTranslation } from "react-i18next";
-import { Paper } from "@material-ui/core";
-import { Col, Row } from "react-bootstrap";
-import line from "../../../assets/images/line.png";
-import backward from "../../../assets/images/backward.svg";
-import forward from "../../../assets/images/forward.svg";
-import FileIcon, { defaultStyles } from "react-file-icon";
-import { Button, Checkbox } from "./../../../components/elements";
-import { useState } from "react";
-import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
-import { useDispatch, useSelector } from "react-redux";
-import { newTimeFormaterAsPerUTCFullDate } from "../../../commen/functions/date_formater";
-import { viewResolutionModal } from "../../../store/actions/Resolution_actions";
-import { ArrowLeft } from "react-bootstrap-icons";
+import React, { useEffect } from "react"
+import styles from "./ViewResolution.module.css"
+import { useTranslation } from "react-i18next"
+import { Paper } from "@material-ui/core"
+import { Col, Row } from "react-bootstrap"
+import line from "../../../assets/images/line.png"
+import backward from "../../../assets/images/backward.svg"
+import forward from "../../../assets/images/forward.svg"
+import FileIcon, { defaultStyles } from "react-file-icon"
+import { Button, Checkbox } from "./../../../components/elements"
+import { useState } from "react"
+import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard"
+import { useDispatch, useSelector } from "react-redux"
+import { newTimeFormaterAsPerUTCFullDate } from "../../../commen/functions/date_formater"
+import { viewResolutionModal } from "../../../store/actions/Resolution_actions"
+import { ArrowLeft } from "react-bootstrap-icons"
 const ViewResolution = ({ setViewresolution }) => {
-  const { t } = useTranslation();
-  const { ResolutionReducer } = useSelector((state) => state);
+  const { t } = useTranslation()
+  const { ResolutionReducer } = useSelector((state) => state)
   console.log(
     "ResolutionReduceResolutionReduceResolutionReduce",
     ResolutionReducer
-  );
-  const dispatch = useDispatch();
-  const [voterVeiwResolution, setVoterVeiwResolution] = useState(true);
-  const [nonVoterVeiwResolution, setNonVoterViewResolution] = useState(false);
-  const [attachments, setAttachments] = useState([]);
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const [resolutionData, setResolutionData] = useState(null);
+  )
+  const dispatch = useDispatch()
+  const [voterVeiwResolution, setVoterVeiwResolution] = useState(true)
+  const [nonVoterVeiwResolution, setNonVoterViewResolution] = useState(false)
+  const [attachments, setAttachments] = useState([])
+  const [scrollPosition, setScrollPosition] = useState(0)
+  const [resolutionData, setResolutionData] = useState(null)
   console.log(
     resolutionData,
     "resolutionDataresolutionDataresolutionDataresolutionData"
-  );
+  )
   const voterButtonForViewResolution = () => {
-    setVoterVeiwResolution(true);
-    setNonVoterViewResolution(false);
-  };
+    setVoterVeiwResolution(true)
+    setNonVoterViewResolution(false)
+  }
 
   const nonVotersForViewResolution = () => {
-    setNonVoterViewResolution(true);
-    setVoterVeiwResolution(false);
-  };
+    setNonVoterViewResolution(true)
+    setVoterVeiwResolution(false)
+  }
   const handleScroll = (scrollOffset) => {
-    const newPosition = scrollPosition + scrollOffset;
-    setScrollPosition(newPosition);
-  };
+    const newPosition = scrollPosition + scrollOffset
+    setScrollPosition(newPosition)
+  }
   const forwardhorizontal = () => {
-    handleScroll(-50);
-  };
+    handleScroll(-50)
+  }
   const SlideLeft = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft - 300;
-  };
+    var Slider = document.getElementById("Slider")
+    Slider.scrollLeft = Slider.scrollLeft - 300
+  }
 
   const Slideright = () => {
-    var Slider = document.getElementById("Slider");
-    Slider.scrollLeft = Slider.scrollLeft + 300;
-  };
+    var Slider = document.getElementById("Slider")
+    Slider.scrollLeft = Slider.scrollLeft + 300
+  }
 
   const backwardhorizontal = () => {
-    handleScroll(50);
-  };
+    handleScroll(50)
+  }
 
   const forwardscroll = () => {
-    window.scrollTo({ left: 100, behavior: "smooth" });
-  };
+    window.scrollTo({ left: 100, behavior: "smooth" })
+  }
   useEffect(() => {
     if (ResolutionReducer.getResolutionbyID !== null) {
       console.log(
         ResolutionReducer.getResolutionbyID,
         "ResolutionReducer.getResolutionbyIDResolutionReducer.getResolutionbyIDResolutionReducer.getResolutionbyID"
-      );
-      setResolutionData(ResolutionReducer.getResolutionbyID);
+      )
+      setResolutionData(ResolutionReducer.getResolutionbyID)
     }
-  }, [ResolutionReducer.getResolutionbyID]);
+  }, [ResolutionReducer.getResolutionbyID])
   return (
     <section>
       <Row className="my-3">
@@ -289,11 +289,12 @@ const ViewResolution = ({ setViewresolution }) => {
                                       <EmployeeinfoCard
                                         Employeename={data.username}
                                         Employeeemail={data.email}
+                                        EmployeePic={data.base64Img}
                                       />
                                     </Col>
                                   </Row>
                                 </Col>
-                              );
+                              )
                             })
                           : null}
                       </Row>
@@ -317,11 +318,12 @@ const ViewResolution = ({ setViewresolution }) => {
                                       <EmployeeinfoCard
                                         Employeename={data.username}
                                         Employeeemail={data.email}
+                                        EmployeePic={data.base64Img}
                                       />
                                     </Col>
                                   </Row>
                                 </Col>
-                              );
+                              )
                             })
                           : null}
                       </Row>
@@ -373,9 +375,9 @@ const ViewResolution = ({ setViewresolution }) => {
                                   (data, index) => {
                                     var ext = data.displayAttachmentName
                                       .split(".")
-                                      .pop();
+                                      .pop()
                                     const first =
-                                      data.displayAttachmentName.split(" ")[0];
+                                      data.displayAttachmentName.split(" ")[0]
                                     return (
                                       <>
                                         <Col
@@ -459,7 +461,7 @@ const ViewResolution = ({ setViewresolution }) => {
                                           </p>
                                         </Col>
                                       </>
-                                    );
+                                    )
                                   }
                                 )
                               : null}
@@ -509,7 +511,7 @@ const ViewResolution = ({ setViewresolution }) => {
         </Row>
       </Paper>
     </section>
-  );
-};
+  )
+}
 
-export default ViewResolution;
+export default ViewResolution

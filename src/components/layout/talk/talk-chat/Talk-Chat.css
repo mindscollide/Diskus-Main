@@ -5,7 +5,7 @@
   width: 325px;
   height: 87.3vh;
   background: #fff;
-  border: 1px solid #4cd7de;
+  border: 3px solid #4ADEDE;
   overflow: hidden auto;
   border-radius: 4px;
   top: 80px;
@@ -128,12 +128,12 @@ body[dir="rtl"] .chat-block {
 
 .chat-inner-content .ant-select-selection-item {
   text-overflow: unset !important;
-  font-size: 12px !important;
+  font-size: 11px !important;
   font-weight: 600;
 }
 
 .chatFilter .ant-select-selector {
-  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+  background: linear-gradient(to left, #4ADEDE 0%, #6172D6 100%) !important;
   border: none !important;
   border-radius: 3px !important;
   width: 140px !important;
@@ -143,8 +143,8 @@ body[dir="rtl"] .chat-block {
 
 .chat-inner-content span.ant-select-arrow {
   color: #fff !important;
-  right: 30px;
-  top: 22px;
+  right: 32px;
+  top: 19px;
 }
 
 body[dir="rtl"] .chat-inner-content span.ant-select-arrow {

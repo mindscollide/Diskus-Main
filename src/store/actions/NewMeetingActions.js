@@ -147,6 +147,34 @@ const showUnsavedModalImportAgenda = (response) => {
   };
 };
 
+const showUnsavedActionsModal = (response) => {
+  return {
+    type: actions.UNSAVED_MODAL_ACTIONS,
+    response: response,
+  };
+};
+
+const showRemovedTableModal = (response) => {
+  return {
+    type: actions.REMOVED_TABLE_MODAL,
+    response: response,
+  };
+};
+
+const showUnsavedPollsMeeting = (response) => {
+  return {
+    type: actions.UNSAVED_POLLS_MEETING,
+    response: response,
+  };
+};
+
+const showunsavedEditPollsMeetings = (response) => {
+  return {
+    type: actions.UNSAVED_EDIT_POLL_MEETING,
+    response: response,
+  };
+};
+
 export {
   showAddUserModal,
   showCrossConfirmationModal,
@@ -169,4 +197,8 @@ export {
   showUnsavedCreateFromScratch,
   showUnsavedForButonCreateFromScratch,
   showUnsavedModalImportAgenda,
+  showUnsavedActionsModal,
+  showRemovedTableModal,
+  showUnsavedPollsMeeting,
+  showunsavedEditPollsMeetings,
 };

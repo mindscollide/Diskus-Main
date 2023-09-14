@@ -1,19 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import styles from "./ModalShareFile.module.css";
-import newprofile from "../../../assets/images/Mask Group 67.svg";
-import clock from "../../../assets/images/Icon metro-alarm.svg";
-import DeleteiCon from "../../../assets/images/Icon material-delete.svg";
-import userImage from "../../../assets/images/user.png";
-import crossIcon from "../../../assets/images/CrossIcon.svg";
-import download from "../../../assets/images/Icon feather-download.svg";
-import star from "../../../assets/images/startd.png";
-import pdf from "../../../assets/images/222.svg";
-import gregorian from "react-date-object/calendars/gregorian";
-import gregorian_en from "react-date-object/locales/gregorian_en";
-import Select from "react-select";
-import { useDispatch, useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
+import React, { useState, useEffect } from "react"
+import { Col, Container, Row } from "react-bootstrap"
+import styles from "./ModalShareFile.module.css"
+import newprofile from "../../../assets/images/Mask Group 67.svg"
+import clock from "../../../assets/images/Icon metro-alarm.svg"
+import DeleteiCon from "../../../assets/images/Icon material-delete.svg"
+import userImage from "../../../assets/images/user.png"
+import crossIcon from "../../../assets/images/CrossIcon.svg"
+import download from "../../../assets/images/Icon feather-download.svg"
+import star from "../../../assets/images/startd.png"
+import pdf from "../../../assets/images/222.svg"
+import gregorian from "react-date-object/calendars/gregorian"
+import gregorian_en from "react-date-object/locales/gregorian_en"
+import Select from "react-select"
+import { useDispatch, useSelector } from "react-redux"
+import { useTranslation } from "react-i18next"
 import {
   Button,
   Checkbox,
@@ -22,13 +22,13 @@ import {
   Notification,
   TextField,
   InputSearchFilter,
-} from "../../../components/elements";
-import ChevronDownWhite from "../../../assets/images/chevron_down_white.svg";
-import ParticipantInfoShareFolder from "../../../components/elements/ParticipantInfoShareFolder/ParticipantInfoShareFolder";
-import EditIconNote from "../../../assets/images/EditIconNotes.svg";
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
-import { shareFilesApi } from "../../../store/actions/DataRoom_actions";
-import { useNavigate } from "react-router-dom";
+} from "../../../components/elements"
+import ChevronDownWhite from "../../../assets/images/chevron_down_white.svg"
+import ParticipantInfoShareFolder from "../../../components/elements/ParticipantInfoShareFolder/ParticipantInfoShareFolder"
+import EditIconNote from "../../../assets/images/EditIconNotes.svg"
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees"
+import { shareFilesApi } from "../../../store/actions/DataRoom_actions"
+import { useNavigate } from "react-router-dom"
 
 const ModalShareFile = ({
   ModalTitle,
@@ -37,101 +37,101 @@ const ModalShareFile = ({
   folderId,
   fileName,
 }) => {
-  const [showaccessrequest, setShowaccessrequest] = useState(false);
-  const { assignees } = useSelector((state) => state);
-  const [showrequestsend, setShowrequestsend] = useState(false);
-  const [generalaccessdropdown, setGeneralaccessdropdown] = useState(false);
-  const [linkedcopied, setLinkedcopied] = useState(false);
-  const [expirationheader, setExpirationheader] = useState(false);
-  const [calenderdate, setCalenderdate] = useState(false);
-  const [inviteedit, setInviteedit] = useState(true);
-  const [notifyPeople, setNotifyPeople] = useState(false);
+  const [showaccessrequest, setShowaccessrequest] = useState(false)
+  const { assignees } = useSelector((state) => state)
+  const [showrequestsend, setShowrequestsend] = useState(false)
+  const [generalaccessdropdown, setGeneralaccessdropdown] = useState(false)
+  const [linkedcopied, setLinkedcopied] = useState(false)
+  const [expirationheader, setExpirationheader] = useState(false)
+  const [calenderdate, setCalenderdate] = useState(false)
+  const [inviteedit, setInviteedit] = useState(true)
+  const [notifyPeople, setNotifyPeople] = useState(false)
   const [open, setOpen] = useState({
     flag: false,
     message: "",
-  });
+  })
   const [fileData, setFileData] = useState({
     Files: [],
-  });
-  console.log(fileData, "datadatadata");
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
-  const [meetingDate, setMeetingDate] = useState("");
-  const [EditNotification, setEditNotification] = useState(false);
-  const [accessupdate, setAccessupdate] = useState(false);
-  const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
-  const [taskAssignedTo, setTaskAssignedTo] = useState(0);
+  })
+  console.log(fileData, "datadatadata")
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [calendarValue, setCalendarValue] = useState(gregorian)
+  const [localValue, setLocalValue] = useState(gregorian_en)
+  const [meetingDate, setMeetingDate] = useState("")
+  const [EditNotification, setEditNotification] = useState(false)
+  const [accessupdate, setAccessupdate] = useState(false)
+  const [taskAssignedToInput, setTaskAssignedToInput] = useState("")
+  const [taskAssignedTo, setTaskAssignedTo] = useState(0)
   const [permissionID, setPermissionID] = useState({
     label: "",
     value: 0,
-  });
+  })
   const [generalAccess, setGeneralAccess] = useState({
     label: "",
     value: 0,
-  });
-  const [taskAssignedName, setTaskAssignedName] = useState("");
-  const [organizationMembers, setOrganizationMembers] = useState([]);
-  const [isMembers, setMembers] = useState([]);
-  let organizationName = localStorage.getItem("OrganizatioName");
-  console.log(isMembers, "isMembersisMembersisMembersisMembers");
-  const [flag, setFlag] = useState(1);
+  })
+  const [taskAssignedName, setTaskAssignedName] = useState("")
+  const [organizationMembers, setOrganizationMembers] = useState([])
+  const [isMembers, setMembers] = useState([])
+  let organizationName = localStorage.getItem("OrganizatioName")
+  console.log(isMembers, "isMembersisMembersisMembersisMembers")
+  const [flag, setFlag] = useState(1)
   const showcalender = () => {
     // setCalenderdate(!calenderdate);
-    setInviteedit(!inviteedit);
-    setExpirationheader(false);
-  };
+    setInviteedit(!inviteedit)
+    setExpirationheader(false)
+  }
   useEffect(() => {
     if (linkedcopied === true) {
       setTimeout(() => {
-        setLinkedcopied(false);
-      }, 2000);
+        setLinkedcopied(false)
+      }, 2000)
     }
-  }, []);
+  }, [])
 
   const handlechange = (SelectedOptions) => {
-    console.log("handlechangehandlechange", SelectedOptions);
+    console.log("handlechangehandlechange", SelectedOptions)
     setPermissionID({
       label: SelectedOptions.label,
       value: SelectedOptions.value,
-    });
+    })
     if (SelectedOptions.value === 3) {
-      console.log("yes add expiration selected ");
-      setExpirationheader(true);
-      setEditNotification(false);
-      setAccessupdate(false);
+      console.log("yes add expiration selected ")
+      setExpirationheader(true)
+      setEditNotification(false)
+      setAccessupdate(false)
     } else if (SelectedOptions.value === 1) {
-      setExpirationheader(false);
-      setEditNotification(false);
-      setAccessupdate(true);
+      setExpirationheader(false)
+      setEditNotification(false)
+      setAccessupdate(true)
     } else if (SelectedOptions.value === 2) {
-      setExpirationheader(false);
-      setEditNotification(true);
-      setAccessupdate(false);
+      setExpirationheader(false)
+      setEditNotification(true)
+      setAccessupdate(false)
     }
-  };
+  }
   const NotificationForlinkCopied = () => {
-    setLinkedcopied(true);
-  };
+    setLinkedcopied(true)
+  }
   const options = [
     { value: 1, label: "Viewer" },
     { value: 2, label: "Editor" },
     { value: 3, label: "Add Expiration" },
-  ];
+  ]
   const optionsgeneralAccess = [
     { value: 1, label: "Restricted" },
     { value: 2, label: organizationName },
     { value: 3, label: "Any One With link" },
-  ];
-  const [onclickFlag, setOnclickFlag] = useState(false);
+  ]
+  const [onclickFlag, setOnclickFlag] = useState(false)
   const onSearch = (name, id) => {
-    console.log("name id", name, id);
-    setOnclickFlag(true);
-    setTaskAssignedToInput(name);
-    setTaskAssignedTo(id);
-    setTaskAssignedName(name);
-  };
+    console.log("name id", name, id)
+    setOnclickFlag(true)
+    setTaskAssignedToInput(name)
+    setTaskAssignedTo(id)
+    setTaskAssignedName(name)
+  }
   //Drop Down Values
   // const searchFilterHandler = (value) => {
   //   let allAssignees = assignees.user;
@@ -166,8 +166,8 @@ const ModalShareFile = ({
   //   }
   // };
   const searchFilterHandler = (value) => {
-    let allAssignees = assignees.user;
-    console.log("Input Value", allAssignees);
+    let allAssignees = assignees.user
+    console.log("Input Value", allAssignees)
     if (
       allAssignees != undefined &&
       allAssignees != null &&
@@ -176,14 +176,14 @@ const ModalShareFile = ({
     ) {
       return allAssignees
         .filter((item) => {
-          const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
-          console.log("Input Value in searchTerm", searchTerm);
-          console.log("Input Value in assigneesName", assigneesName);
+          const searchTerm = value.toLowerCase()
+          const assigneesName = item.name.toLowerCase()
+          console.log("Input Value in searchTerm", searchTerm)
+          console.log("Input Value in assigneesName", assigneesName)
           return (
             searchTerm && assigneesName.startsWith(searchTerm)
             // assigneesName !== searchTerm.toLowerCase()
-          );
+          )
         })
         .slice(0, 10)
         .map((item) => (
@@ -193,57 +193,61 @@ const ModalShareFile = ({
             key={item.pK_UID}
           >
             {console.log("itemitem", item)}
-            <img src={userImage} />
+            <img
+              src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
+              alt=""
+              className="user-img"
+            />
             <p className="p-0 m-0">{item.name}</p>
           </div>
-        ));
+        ))
     } else {
-      console.log("not found");
+      console.log("not found")
     }
-  };
+  }
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setOnclickFlag(false);
+    setOnclickFlag(false)
     if (e.target.value.trimStart() != "") {
-      setTaskAssignedToInput(e.target.value.trimStart());
+      setTaskAssignedToInput(e.target.value.trimStart())
     } else {
-      setTaskAssignedToInput("");
-      setTaskAssignedTo(0);
-      setTaskAssignedName("");
+      setTaskAssignedToInput("")
+      setTaskAssignedTo(0)
+      setTaskAssignedName("")
     }
-    console.log("setTaskAssignedToInput", e.target.value.trimStart());
-  };
+    console.log("setTaskAssignedToInput", e.target.value.trimStart())
+  }
 
   const Notificationnaccessrequest = () => {
-    console.log("hnbhaiclicktuhorahahy");
+    console.log("hnbhaiclicktuhorahahy")
     if (fileData.Files.length > 0) {
-      dispatch(shareFilesApi(navigate, fileData, t));
-      setShowrequestsend(true);
+      dispatch(shareFilesApi(navigate, fileData, t))
+      setShowrequestsend(true)
     } else {
     }
-  };
+  }
   const openAccessRequestModalClick = () => {
     if (fileData.Files.length > 0) {
       // setShareFile(false);
-      dispatch(shareFilesApi(navigate, fileData, t, setShareFile));
+      dispatch(shareFilesApi(navigate, fileData, t, setShareFile))
     } else {
       setOpen({
         flag: true,
         message: t("User-required-must-for-share"),
-      });
+      })
     }
-  };
+  }
 
   const handleAddMember = () => {
-    console.log(taskAssignedName, "taskAssignedNametaskAssignedName");
+    console.log(taskAssignedName, "taskAssignedNametaskAssignedName")
     console.log(
       fileData.Files,
       "handleAddMemberhandleAddMemberhandleAddMemberhandleAddMember"
-    );
+    )
     let findIndexData = fileData.Files.findIndex(
       (listData, index) => listData.FK_UserID === taskAssignedTo
-    );
+    )
     if (permissionID.value !== 0) {
       if (taskAssignedName !== "") {
         if (findIndexData === -1) {
@@ -251,88 +255,88 @@ const ModalShareFile = ({
             FK_FileID: folderId,
             FK_PermissionID: JSON.parse(permissionID.value),
             FK_UserID: taskAssignedTo,
-          };
+          }
           if (taskAssignedTo !== 0) {
             if (assignees.user.length > 0) {
               assignees.user.map((data, index) => {
                 if (data.pK_UID === taskAssignedTo) {
-                  setMembers([...isMembers, data]);
+                  setMembers([...isMembers, data])
                 }
-              });
+              })
             }
           }
           setFileData((prev) => {
-            return { ...prev, Files: [...prev.Files, Data] };
-          });
+            return { ...prev, Files: [...prev.Files, Data] }
+          })
         } else {
           setOpen({
             flag: true,
             message: t("User-is-already-exist"),
-          });
+          })
         }
       } else {
         setOpen({
           flag: true,
           message: t("Please-select-user"),
-        });
+        })
       }
     } else {
       setOpen({
         flag: true,
         message: t("All-options-must-be-selected"),
-      });
+      })
     }
 
-    setTaskAssignedToInput("");
-    setTaskAssignedTo(0);
-    setTaskAssignedName("");
+    setTaskAssignedToInput("")
+    setTaskAssignedTo(0)
+    setTaskAssignedName("")
     setPermissionID({
       label: "",
       value: 0,
-    });
+    })
     setGeneralAccess({
       label: "",
       value: 0,
-    });
-  };
+    })
+  }
 
-  const { t } = useTranslation();
+  const { t } = useTranslation()
   const closebtn = async () => {
-    setShareFile(false);
-  };
+    setShareFile(false)
+  }
 
   const handleChangeGeneralAccess = (selectedValue) => {
     setGeneralAccess({
       label: selectedValue.label,
       value: selectedValue.value,
-    });
-  };
+    })
+  }
   const handleRemoveMember = (memberData) => {
     let findIndexfromsendData = fileData.Files.findIndex(
       (data, index) => data.FK_UserID === memberData.pK_UID
-    );
+    )
     let findIndexfromViewData = isMembers.findIndex(
       (data, index) => data.pK_UID === memberData.pK_UID
-    );
-    console.log(findIndexfromViewData, "findIndexfromsendData");
-    console.log(findIndexfromsendData, "findIndexfromsendData");
-    fileData.Files.splice(findIndexfromsendData, 1);
-    isMembers.splice(findIndexfromViewData, 1);
-    setMembers([...isMembers]);
+    )
+    console.log(findIndexfromViewData, "findIndexfromsendData")
+    console.log(findIndexfromsendData, "findIndexfromsendData")
+    fileData.Files.splice(findIndexfromsendData, 1)
+    isMembers.splice(findIndexfromViewData, 1)
+    setMembers([...isMembers])
     setFileData((prev) => {
-      return { ...prev, Files: [...prev.Files] };
-    });
-  };
+      return { ...prev, Files: [...prev.Files] }
+    })
+  }
   useEffect(() => {
-    dispatch(allAssignessList(navigate, t));
-  }, []);
+    dispatch(allAssignessList(navigate, t))
+  }, [])
   return (
     <>
       <Container>
         <Modal
           show={shareFile}
           onHide={() => {
-            setShareFile(false);
+            setShareFile(false)
           }}
           setShow={setShareFile}
           ButtonTitle={ModalTitle}
@@ -603,7 +607,7 @@ const ModalShareFile = ({
                                 setPermissionID({
                                   label: "",
                                   value: 0,
-                                });
+                                })
                               }}
                               src={ChevronDownWhite}
                             />
@@ -630,7 +634,7 @@ const ModalShareFile = ({
                                 setGeneralAccess({
                                   label: "",
                                   value: 0,
-                                });
+                                })
                               }}
                               src={ChevronDownWhite}
                             />
@@ -667,6 +671,7 @@ const ModalShareFile = ({
                                     <ParticipantInfoShareFolder
                                       participantname={data.name}
                                       particiapantdesignation={data.designation}
+                                      userPic={data.displayProfilePictureName}
                                       icon={
                                         <img
                                           src={crossIcon}
@@ -679,7 +684,7 @@ const ModalShareFile = ({
                                       }
                                     />
                                   </Col>
-                                );
+                                )
                               })
                             : null}
                         </Row>
@@ -873,7 +878,7 @@ const ModalShareFile = ({
       </Container>
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
-  );
-};
+  )
+}
 
-export default ModalShareFile;
+export default ModalShareFile

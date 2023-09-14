@@ -1,47 +1,47 @@
-import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import thumbsup from "../../assets/images/thumbsup.svg";
-import thumbsdown from "../../assets/images/thumbsdown.svg";
-import result from "../../assets/images/result.svg";
-import { Paper } from "@material-ui/core";
-import Clock from "../../assets/images/Clock.svg";
-import line from "../../assets/images/line.png";
-import VoterSecretBalloting from "../../assets/images/Voter_Secret_Balloting.svg";
-import Abstain from "../../assets/images/Abstain.svg";
-import { Chart } from "react-google-charts";
-import { Button, Notification } from "./../../components/elements";
-import { useTranslation } from "react-i18next";
-import styles from "./VotingPage.module.css";
-import EmployeeinfoCard from "../../components/elements/Employeeinfocard/EmployeeinfoCard";
-import SeceretBallotingIcon from '../../assets/images/resolutions/Secret_Balloting_icon.svg'
-import { useSelector, useDispatch } from "react-redux";
-import { updateVoteApi } from "../../store/actions/Resolution_actions";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react"
+import { Col, Container, Row } from "react-bootstrap"
+import thumbsup from "../../assets/images/thumbsup.svg"
+import thumbsdown from "../../assets/images/thumbsdown.svg"
+import result from "../../assets/images/result.svg"
+import { Paper } from "@material-ui/core"
+import Clock from "../../assets/images/Clock.svg"
+import line from "../../assets/images/line.png"
+import VoterSecretBalloting from "../../assets/images/Voter_Secret_Balloting.svg"
+import Abstain from "../../assets/images/Abstain.svg"
+import { Chart } from "react-google-charts"
+import { Button, Notification } from "./../../components/elements"
+import { useTranslation } from "react-i18next"
+import styles from "./VotingPage.module.css"
+import EmployeeinfoCard from "../../components/elements/Employeeinfocard/EmployeeinfoCard"
+import SeceretBallotingIcon from "../../assets/images/resolutions/Secret_Balloting_icon.svg"
+import { useSelector, useDispatch } from "react-redux"
+import { updateVoteApi } from "../../store/actions/Resolution_actions"
+import { useNavigate } from "react-router-dom"
 const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
-  const { t } = useTranslation();
-  const { ResolutionReducer } = useSelector((state) => state);
-  const dispatch = useDispatch();
+  const { t } = useTranslation()
+  const { ResolutionReducer } = useSelector((state) => state)
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [voteDetails, setVoteDetails] = useState({
     ResolutionTitle: "",
     ResolutionMethod: "",
-  });
+  })
   // const [voterID, setVoterID] = useState(0);
-  const [approved, setApproved] = useState(0);
-  const [nonApproved, setNonApproved] = useState(0);
-  const [pending, setPending] = useState(0);
-  const [abstain, setAbstain] = useState(0);
-  const [totalVoters, setTotalVoters] = useState(0);
-  const [isResolutionTitle, setResolutionTitle] = useState("");
-  const [isVotingMethod, setVotingMethod] = useState("");
-  const [voteId, setVoteId] = useState(1);
-  const [voter, setVoter] = useState([]);
-  const userID = JSON.parse(localStorage.getItem("userID"));
-  const [decision, setDecision] = useState("");
+  const [approved, setApproved] = useState(0)
+  const [nonApproved, setNonApproved] = useState(0)
+  const [pending, setPending] = useState(0)
+  const [abstain, setAbstain] = useState(0)
+  const [totalVoters, setTotalVoters] = useState(0)
+  const [isResolutionTitle, setResolutionTitle] = useState("")
+  const [isVotingMethod, setVotingMethod] = useState("")
+  const [voteId, setVoteId] = useState(1)
+  const [voter, setVoter] = useState([])
+  const userID = JSON.parse(localStorage.getItem("userID"))
+  const [decision, setDecision] = useState("")
   const [open, setOpen] = useState({
     flag: false,
     message: "",
-  });
+  })
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
@@ -69,7 +69,7 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
     bar: {
       groupWidth: "95%",
     },
-  };
+  }
   const data = [
     ["Year", "Visitations", { role: "style" }],
     [
@@ -94,38 +94,38 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
       abstain,
       "stroke-color: #000; stroke-color:#949494;  stroke-width: 4; fill-color: #949494 ; fill-opacity:1",
     ],
-  ];
+  ]
   console.log(voterID, "voterIDvoterIDvoterID")
   const isApprovedBtn = (statusID) => {
-    setVoteId(statusID);
-  };
+    setVoteId(statusID)
+  }
   const isNotApprovedBtn = (statusID) => {
-    setVoteId(statusID);
-  };
+    setVoteId(statusID)
+  }
   const isAbstainBtn = (statusID) => {
-    setVoteId(statusID);
-  };
+    setVoteId(statusID)
+  }
   const handleUpdateVote = () => {
     let Data = {
       PK_RV_ID: voterID,
       FK_VotingStatusID: voteId,
-    };
-    dispatch(updateVoteApi(navigate, Data, t, setVoteresolution));
+    }
+    dispatch(updateVoteApi(navigate, Data, t, setVoteresolution))
   }
   useEffect(() => {
     if (ResolutionReducer.getVoteDetailsByID !== null) {
-      let getVoteresult = ResolutionReducer.getVoteDetailsByID;
-      setResolutionTitle(getVoteresult.resolutionTite);
-      setVotingMethod(getVoteresult.votingMethod);
-      setApproved(getVoteresult.approvedVotes);
-      setAbstain();
-      setPending(getVoteresult.pendingVoters);
-      setNonApproved(getVoteresult.nonApprovedVotes);
-      setTotalVoters(getVoteresult.totalVoters);
-      setDecision(getVoteresult.decision);
-      setVoter(getVoteresult.voters);
+      let getVoteresult = ResolutionReducer.getVoteDetailsByID
+      setResolutionTitle(getVoteresult.resolutionTite)
+      setVotingMethod(getVoteresult.votingMethod)
+      setApproved(getVoteresult.approvedVotes)
+      setAbstain()
+      setPending(getVoteresult.pendingVoters)
+      setNonApproved(getVoteresult.nonApprovedVotes)
+      setTotalVoters(getVoteresult.totalVoters)
+      setDecision(getVoteresult.decision)
+      setVoter(getVoteresult.voters)
     }
-  }, [ResolutionReducer.getVoteDetailsByID]);
+  }, [ResolutionReducer.getVoteDetailsByID])
   return (
     <>
       <section>
@@ -151,7 +151,15 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                         {isResolutionTitle || ""}
                       </span>
                       <span>
-                        {isVotingMethod === "Secret Balloting" ? <img src={SeceretBallotingIcon} height="23.19px" width="23.19px" /> : <img src={result} height="23.19px" width="23.19px" />}
+                        {isVotingMethod === "Secret Balloting" ? (
+                          <img
+                            src={SeceretBallotingIcon}
+                            height="23.19px"
+                            width="23.19px"
+                          />
+                        ) : (
+                          <img src={result} height="23.19px" width="23.19px" />
+                        )}
                         {/* <img src={result} height="23.19px" width="23.19px" /> */}
                       </span>
                     </Col>
@@ -193,13 +201,14 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                                     src={Abstain}
                                     width="20px"
                                     height="20px"
+                                    alt=""
                                   />
                                 }
                                 className={
                                   voteId === 4
                                     ? styles[
-                                    "Abstain_btn_vote_resolution_Active"
-                                    ]
+                                        "Abstain_btn_vote_resolution_Active"
+                                      ]
                                     : styles["Abstain_btn_vote_resolution"]
                                 }
                                 onClick={() => isAbstainBtn(4)}
@@ -211,13 +220,14 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                                     src={thumbsdown}
                                     width="20px"
                                     height="20px"
+                                    alt=""
                                   />
                                 }
                                 className={
                                   voteId === 2
                                     ? styles[
-                                    "Notapproved_btn_voteresolution_Active"
-                                    ]
+                                        "Notapproved_btn_voteresolution_Active"
+                                      ]
                                     : styles["Notapproved_btn_voteresolution"]
                                 }
                                 onClick={() => isNotApprovedBtn(2)}
@@ -229,14 +239,15 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                                     src={thumbsup}
                                     width="20px"
                                     height="20px"
+                                    alt=""
                                   />
                                 }
                                 onClick={() => isApprovedBtn(1)}
                                 className={
                                   voteId === 1
                                     ? styles[
-                                    "approved_btn_voteresolution_Active"
-                                    ]
+                                        "approved_btn_voteresolution_Active"
+                                      ]
                                     : styles["approved_btn_voteresolution"]
                                 }
                               />
@@ -250,8 +261,21 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                             {t("Voters")}
                           </span>
                         </Col>
-                        <Col sm={12} md={6} lg={6} className="d-flex align-items-center justify-content-end">
-                          <span className={styles["voting_method_heading"]}>{t("Voting-method") + " : "}   </span>  <span className={styles["voting_methong_value"]}> {isVotingMethod === "Secret Balloting" ? t("Secret Balloting") : t("Show of Hands")}</span>
+                        <Col
+                          sm={12}
+                          md={6}
+                          lg={6}
+                          className="d-flex align-items-center justify-content-end"
+                        >
+                          <span className={styles["voting_method_heading"]}>
+                            {t("Voting-method") + " : "}{" "}
+                          </span>{" "}
+                          <span className={styles["voting_methong_value"]}>
+                            {" "}
+                            {isVotingMethod === "Secret Balloting"
+                              ? t("Secret Balloting")
+                              : t("Show of Hands")}
+                          </span>
                         </Col>
                       </Row>
                       {isVotingMethod === "Secret Balloting" ? (
@@ -263,7 +287,7 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                               lg={12}
                               className={styles["VotingMethods_box"]}
                             >
-                              <img src={VoterSecretBalloting} />
+                              <img src={VoterSecretBalloting} alt="" />
                               <span>
                                 {t("Voting-method")} {isVotingMethod || ""}
                               </span>
@@ -282,48 +306,49 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                               <Row>
                                 {voter.length > 0
                                   ? voter.map((data, index) => {
-                                    console.log(data, "datadadadasdad");
-                                    return (
-                                      <>
-                                        <Col
-                                          lg={6}
-                                          md={6}
-                                          sm={6}
-                                          key={data.pK_RV_ID}
-                                          className="mt-1"
-                                        >
-                                          <EmployeeinfoCard
-                                            Employeename={data.username}
-                                            Employeeemail={data.email}
-                                            Icon={
-                                              <img
-                                                src={
-                                                  data.fK_VotingStatus_ID ===
+                                      return (
+                                        <>
+                                          <Col
+                                            lg={6}
+                                            md={6}
+                                            sm={6}
+                                            key={data.pK_RV_ID}
+                                            className="mt-1"
+                                          >
+                                            <EmployeeinfoCard
+                                              Employeename={data.username}
+                                              Employeeemail={data.email}
+                                              EmployeePic={data.base64Img}
+                                              Icon={
+                                                <img
+                                                  src={
+                                                    data.fK_VotingStatus_ID ===
                                                     1
-                                                    ? thumbsup
-                                                    : data.fK_VotingStatus_ID ===
-                                                      2
+                                                      ? thumbsup
+                                                      : data.fK_VotingStatus_ID ===
+                                                        2
                                                       ? thumbsdown
                                                       : data.fK_VotingStatus_ID ===
                                                         3
-                                                        ? Clock
-                                                        : data.fK_VotingStatus_ID ===
-                                                          4
-                                                          ? Abstain
-                                                          : null
-                                                }
-                                                width="20px"
-                                                height="20px"
-                                              // onClick={() =>
-                                              //   setVoterID(data.pK_RV_ID)
-                                              // }
-                                              />
-                                            }
-                                          />
-                                        </Col>
-                                      </>
-                                    );
-                                  })
+                                                      ? Clock
+                                                      : data.fK_VotingStatus_ID ===
+                                                        4
+                                                      ? Abstain
+                                                      : null
+                                                  }
+                                                  alt=""
+                                                  width="20px"
+                                                  height="20px"
+                                                  // onClick={() =>
+                                                  //   setVoterID(data.pK_RV_ID)
+                                                  // }
+                                                />
+                                              }
+                                            />
+                                          </Col>
+                                        </>
+                                      )
+                                    })
                                   : null}
                               </Row>
                             </Col>
@@ -342,7 +367,6 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                       <span className={styles["line_voteResolution"]}></span>
                     </Col>
                     <Col lg={4} md={4} sm={12} className="px-3">
-
                       <Row>
                         <Col
                           lg={12}
@@ -456,7 +480,7 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
       </section>
       <Notification message={open.message} open={open.flag} setOpen={setOpen} />
     </>
-  );
-};
+  )
+}
 
-export default VotingPage;
+export default VotingPage

@@ -2,10 +2,10 @@
     display: flex;
     align-items: baseline;
     justify-content: start;
-    font-size: 20px !important;
-    font-weight: 600;
-    color: #000 !important;
+    font-size: 22px !important;
+    color: #6172D6 !important;
     margin: auto;
+    font-family: 'MontserratSemiBold';
 }
 
 .minimize-screen-on-bottom {
@@ -68,4 +68,170 @@ img.normalize-Icon-Large {
     width: 20px;
     height: 20px;
     margin-top: 6px;
+}
+
+.video-menu-popups {
+    position: absolute;
+    top: 50px;
+    right: 14px;
+    background: #fff;
+    width: 20%;
+    padding: 15px 0px;
+    border: 1px solid #e1e1e1;
+    border-radius: 4px;
+}
+
+.grayScaleImage {
+    filter: grayscale(1);
+}
+
+.leave-meeting-options {
+    background: #fff;
+    border-radius: 4px;
+    padding: 16px;
+    position: absolute;
+    width: 248px;
+    top: 50px;
+    right: 10px;
+    height: 130px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.leave-meeting-options__inner {
+    text-align: center;
+}
+
+.leave-meeting-options__btn {
+    border-radius: 4px;
+    cursor: pointer;
+    height: 40px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 75%;
+    font-size: 12px;
+    font-family: 'MontserratMedium-500';
+    text-align: center !important;
+}
+
+.leave-meeting-red-button {
+    background: #F16B6B;
+    border: none;
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.leave-meeting-red-button:focus,
+.leave-meeting-red-button:focus-visible,
+.leave-meeting-red-button:hover,
+.leave-meeting-red-button:active {
+    background: #F16b6b !important;
+    border: none !important;
+    color: #fff !important;
+}
+
+.leave-meeting-gray-button {
+    background: #fff;
+    color: #5a5a5a;
+    border: 1px solid #E1E1E1;
+    margin-bottom: 10px;
+}
+
+.leave-meeting-gray-button:focus,
+.leave-meeting-gray-button:focus-visible,
+.leave-meeting-gray-button:hover,
+.leave-meeting-gray-button:active {
+    background: #fff !important;
+    color: #5a5a5a !important;
+    border: 1px solid #E1E1E1 !important;
+    margin-bottom: 10px;
+}
+
+.screenShare-Toggle {
+    border-color: transparent;
+    padding: 8px;
+    outline: none;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.screenShare-Toggle:active,
+.screenShare-Toggle:focus,
+.screenShare-Toggle:focus-within,
+.screenShare-Toggle:target,
+.screenShare-Toggle:visited,
+.screenShare-Toggle:focus-visible {
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    border-color: transparent;
+    padding: 8px;
+    outline: none;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.Notification-maximize {
+    gap: 12px;
+    border-radius: 4px;
+    background: #6172D6;
+    width: 275px;
+    height: 40px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+}
+
+p.Notification-text {
+    margin: 0 !important;
+    font-size: 12px;
+    color: #fff;
+    font-family: 'MontserratMedium';
+}
+
+.participants-list {
+    background: #fff;
+    border-radius: 4px;
+    padding: 10px 0px;
+    position: absolute;
+    width: 235px;
+    top: 39px;
+    height: 175px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    left: -100px;
+}
+
+.add-participant-button {
+    border-radius: 4px;
+    height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 75%;
+    font-size: 11px;
+    font-family: 'MontserratMedium-500';
+    background: #6172D6 !important;
+    border: none;
+    color: #fff;
+    text-align: center !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    margin: 0 auto !important;
+}
+
+span.text-positioning {
+    position: relative;
+    top: 2px;
 }

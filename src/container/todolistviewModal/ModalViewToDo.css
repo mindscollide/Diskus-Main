@@ -300,3 +300,9 @@ body[dir="rtl"] label.MontserratSemiBold-600.todo-employee-name-card {
   top: 15px;
   cursor: pointer !important;
 }
+.deleteCommentSpinner {
+  position: absolute !important;
+  top: 14px !important;
+  cursor: pointer !important;
+  right: 9px !important;
+}

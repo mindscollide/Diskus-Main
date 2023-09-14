@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
-import styles from "./ViewGrouppage.module.css";
-import Newprofile from "../../../assets/images/newprofile.png";
-import { useTranslation } from "react-i18next";
-import { Paper } from "@material-ui/core";
+import React, { useEffect, useState } from "react"
+import { Col, Container, Row } from "react-bootstrap"
+import styles from "./ViewGrouppage.module.css"
+import Newprofile from "../../../assets/images/newprofile.png"
+import { useTranslation } from "react-i18next"
+import { Paper } from "@material-ui/core"
 import {
   TextField,
   Button,
   Checkbox,
   SelectBox,
   InputSearchFilter,
-} from "./../../../components/elements";
-import { useDispatch, useSelector } from "react-redux";
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
-import { useNavigate } from "react-router-dom";
+} from "./../../../components/elements"
+import { useDispatch, useSelector } from "react-redux"
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees"
+import { useNavigate } from "react-router-dom"
 const ViewGrouppage = ({ setViewGroupPage }) => {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const [viewGroupDetails, setViewGroupDetails] = useState({
     Title: "",
@@ -26,20 +26,19 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
     GroupStatus: null,
     GroupType: null,
     isTalk: false,
-  });
-  console.log("viewGroupDetails", viewGroupDetails);
+  })
 
-  const { GroupsReducer } = useSelector((state) => state);
+  const { GroupsReducer } = useSelector((state) => state)
 
   useEffect(() => {
     if (GroupsReducer.getGroupByGroupIdResponse !== null) {
-      let groupDetails = GroupsReducer.getGroupByGroupIdResponse;
+      let groupDetails = GroupsReducer.getGroupByGroupIdResponse
       let groupHeadsData = groupDetails.groupMembers.filter(
         (data, index) => data.groupRole.groupRoleID === 2
-      );
+      )
       let groupMembersData = groupDetails.groupMembers.filter(
         (data, index) => data.groupRole.groupRoleID === 1
-      );
+      )
       setViewGroupDetails({
         Title: groupDetails.title,
         Description: groupDetails.description,
@@ -48,16 +47,15 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
         GroupStatus: groupDetails.groupStatus,
         GroupType: groupDetails.groupType,
         isTalk: groupDetails.isTalk,
-      });
+      })
     }
-  }, [GroupsReducer]);
+  }, [GroupsReducer])
   useEffect(() => {
-    let UserID = JSON.parse(localStorage.getItem("userID"));
+    let UserID = JSON.parse(localStorage.getItem("userID"))
     try {
-      dispatch(allAssignessList(navigate, t));
-
-    } catch { }
-  }, []);
+      dispatch(allAssignessList(navigate, t))
+    } catch {}
+  }, [])
   return (
     <section className="MontserratSemiBold-600 color-5a5a5a">
       <Row className="mt-3">
@@ -107,46 +105,51 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
             <Row className="mt-3">
               {viewGroupDetails.GroupHeads !== null
                 ? viewGroupDetails.GroupHeads.map((data, index) => {
-                  return (
-                    <Col
-                      lg={4}
-                      md={4}
-                      sm={12}
-                      className={styles["group-head-info"]}
-                    >
-                      <Row>
-                        <Col lg={2} md={2} sm={12}>
-                          <img src={Newprofile} width={50} />
-                        </Col>
-                        <Col lg={10} md={10} sm={12} className="mt-1">
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span className={styles["name-create-group"]}>
-                                {data?.userName}
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={styles["Designation-create-group"]}
-                              >
-                                {data?.designation }
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span className={styles["email-create-group"]}>
-                                <a>{data?.emailAddress}</a>
-                              </span>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </Col>
-                  );
-                })
+                    return (
+                      <Col
+                        lg={4}
+                        md={4}
+                        sm={12}
+                        className={styles["group-head-info"]}
+                      >
+                        <Row>
+                          <Col lg={2} md={2} sm={12}>
+                            <img
+                              src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                              width={50}
+                              height={50}
+                              alt=""
+                            />
+                          </Col>
+                          <Col lg={10} md={10} sm={12} className="mt-1">
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <span className={styles["name-create-group"]}>
+                                  {data?.userName}
+                                </span>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <span
+                                  className={styles["Designation-create-group"]}
+                                >
+                                  {data?.designation}
+                                </span>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <span className={styles["email-create-group"]}>
+                                  <a>{data?.emailAddress}</a>
+                                </span>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </Col>
+                    )
+                  })
                 : null}
             </Row>
             <Row className="mt-3">
@@ -159,46 +162,51 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
             <Row className="mt-3">
               {viewGroupDetails.GroupMembers !== null
                 ? viewGroupDetails.GroupMembers.map((data, index) => {
-                  return (
-                    <Col lg={4} md={4} sm={12} className="mt-3">
-                      <Row>
-                        <Col lg={2} md={2} sm={12}>
-                          <img src={Newprofile} width={50} />
-                        </Col>
-                        <Col
-                          lg={10}
-                          md={10}
-                          sm={12}
-                          className={styles["group-head-info"]}
-                        >
-                          <Row className="mt-1">
-                            <Col lg={12} md={12} sm={12}>
-                              <span className={styles["name-create-group"]}>
-                                {data?.userName}
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span
-                                className={styles["Designation-create-group"]}
-                              >
-                                {data?.designation }
-                              </span>
-                            </Col>
-                          </Row>
-                          <Row>
-                            <Col lg={12} md={12} sm={12}>
-                              <span className={styles["email-create-group"]}>
-                                <a>{data?.emailAddress}</a>
-                              </span>
-                            </Col>
-                          </Row>
-                        </Col>
-                      </Row>
-                    </Col>
-                  );
-                })
+                    return (
+                      <Col lg={4} md={4} sm={12} className="mt-3">
+                        <Row>
+                          <Col lg={2} md={2} sm={12}>
+                            <img
+                              src={`data:image/jpeg;base64,${data.userProfilePicture.displayProfilePictureName}`}
+                              width={50}
+                              height={50}
+                              alt=""
+                            />
+                          </Col>
+                          <Col
+                            lg={10}
+                            md={10}
+                            sm={12}
+                            className={styles["group-head-info"]}
+                          >
+                            <Row className="mt-1">
+                              <Col lg={12} md={12} sm={12}>
+                                <span className={styles["name-create-group"]}>
+                                  {data?.userName}
+                                </span>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <span
+                                  className={styles["Designation-create-group"]}
+                                >
+                                  {data?.designation}
+                                </span>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col lg={12} md={12} sm={12}>
+                                <span className={styles["email-create-group"]}>
+                                  <a>{data?.emailAddress}</a>
+                                </span>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                      </Col>
+                    )
+                  })
                 : null}
             </Row>
           </Col>
@@ -215,7 +223,7 @@ const ViewGrouppage = ({ setViewGroupPage }) => {
         </Row>
       </Paper>
     </section>
-  );
-};
+  )
+}
 
-export default ViewGrouppage;
+export default ViewGrouppage
