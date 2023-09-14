@@ -79,6 +79,7 @@ const Agenda = () => {
       selectedOption: null,
       startDate: null,
       endDate: null,
+      selectedRadio: "0",
       files: [
         {
           name: "MeetingAgendas",
@@ -156,11 +157,6 @@ const Agenda = () => {
   console.log(rows.startDate, "rowsrowsrows");
   console.log(rows.endDate, "rowsrowsrows");
   const [files, setfiles] = useState([]);
-
-  const onChange = (e) => {
-    console.log("radiochecked", e.target.value);
-    setValue(e.target.value);
-  };
 
   const subAjendaonChange = (e) => {
     console.log("subAjendaonChange", e.target.value);
@@ -344,6 +340,13 @@ const Agenda = () => {
   const handleEndDateChange = (index, date) => {
     const updatedRows = [...rows];
     updatedRows[index].endDate = date;
+    setRows(updatedRows);
+  };
+
+  // Function to update the selected radio option for a specific row
+  const handleRadioChange = (index, value) => {
+    const updatedRows = [...rows];
+    updatedRows[index].selectedRadio = value;
     setRows(updatedRows);
   };
 
@@ -773,7 +776,12 @@ const Agenda = () => {
                                                   >
                                                     <Col lg={6} md={6} sm={6}>
                                                       <Radio.Group
-                                                        onChange={onChange}
+                                                        onChange={(e) =>
+                                                          handleRadioChange(
+                                                            index,
+                                                            e.target.value
+                                                          )
+                                                        }
                                                         value={data.value}
                                                         disabled={
                                                           apllyLockOnParentAgenda(
@@ -783,7 +791,7 @@ const Agenda = () => {
                                                             : false
                                                         }
                                                       >
-                                                        <Radio value={1}>
+                                                        <Radio value="1">
                                                           <span
                                                             className={
                                                               styles[
@@ -794,7 +802,7 @@ const Agenda = () => {
                                                             {t("Document")}
                                                           </span>
                                                         </Radio>
-                                                        <Radio value={2}>
+                                                        <Radio value="2">
                                                           <span
                                                             className={
                                                               styles[
@@ -805,7 +813,7 @@ const Agenda = () => {
                                                             {t("URL")}
                                                           </span>
                                                         </Radio>
-                                                        <Radio value={3}>
+                                                        <Radio value="3">
                                                           <span
                                                             className={
                                                               styles[
@@ -879,7 +887,8 @@ const Agenda = () => {
                                                       />
                                                     </Col>
                                                   </Row>
-                                                  {value === 1 ? (
+                                                  {data.selectedRadio ===
+                                                  "1" ? (
                                                     <>
                                                       <Row key={index + 5}>
                                                         <Col
@@ -975,7 +984,8 @@ const Agenda = () => {
                                                         </Col>
                                                       </Row>
                                                     </>
-                                                  ) : value === 2 ? (
+                                                  ) : data.selectedRadio ===
+                                                    "2" ? (
                                                     <>
                                                       <Row
                                                         key={index + 5}
@@ -1000,7 +1010,8 @@ const Agenda = () => {
                                                         </Col>
                                                       </Row>
                                                     </>
-                                                  ) : value === 3 ? (
+                                                  ) : data.selectedRadio ===
+                                                    "3" ? (
                                                     <>
                                                       <Row
                                                         key={index + 5}
