@@ -514,7 +514,11 @@ const Agenda = () => {
                                                           ]
                                                         }
                                                       >
-                                                        {t("Meeting-title")}
+                                                        <span>
+                                                          {index + 1}.
+                                                        </span>{" "}
+                                                        {t("Agenda-title")}{" "}
+                                                        <span>{index + 1}</span>
                                                       </span>
                                                     </Col>
                                                   </Row>
@@ -1192,9 +1196,18 @@ const Agenda = () => {
                                                                   ]
                                                                 }
                                                               >
+                                                                <span>
+                                                                  {index + 1}.
+                                                                </span>
+                                                                <span>
+                                                                  {subIndex + 1}
+                                                                </span>{" "}
                                                                 {t(
-                                                                  "Meeting-title"
-                                                                )}
+                                                                  "Sub-agenda-title"
+                                                                )}{" "}
+                                                                <span>
+                                                                  {subIndex + 1}
+                                                                </span>
                                                               </span>
                                                             </Col>
                                                           </Row>
@@ -1435,10 +1448,10 @@ const Agenda = () => {
                                                       </Row>
                                                       {/* Condition for Subajencda */}
                                                       {subexpandIndex ===
-                                                        index &&
-                                                      expandSubIndex ===
                                                         subIndex &&
-                                                      subExpand === true ? (
+                                                      expandSubIndex ===
+                                                        index &&
+                                                      subExpand ? (
                                                         <>
                                                           <Row className="mt-3">
                                                             <Col
