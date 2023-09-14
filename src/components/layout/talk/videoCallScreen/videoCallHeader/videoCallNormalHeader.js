@@ -53,10 +53,10 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
   let currentUserID = Number(localStorage.getItem('userID'))
   let currentOrganization = Number(localStorage.getItem('organizationID'))
   let roomID = localStorage.getItem('RoomID')
-  let initiateRoomID = localStorage.getItem('initiateCallRoomID')
   let callTypeID = Number(localStorage.getItem('callTypeID'))
-
-  console.log('callerIDcallerIDcallerID', callerID)
+  let initiateRoomID = localStorage.getItem('initiateCallRoomID')
+  let callerObject = localStorage.getItem('callerStatusObject')
+  let currentCallType = Number(localStorage.getItem('CallType'))
 
   const dispatch = useDispatch()
 
@@ -71,6 +71,8 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
   const [isParticipantActive, setIsParticipantActive] = useState(false)
 
   const [currentParticipants, setCurrentParticipants] = useState([])
+
+  const [participantStatus, setParticipantStatus] = useState([])
 
   const otoMaximizeVideoPanel = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
@@ -161,6 +163,9 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
       CallTypeID: callTypeID,
     }
     dispatch(LeaveCall(Data, navigate, t))
+    const emptyArray = []
+    localStorage.setItem('callerStatusObject', JSON.stringify(emptyArray))
+    setParticipantStatus([])
     localStorage.setItem('activeCall', false)
     dispatch(normalizeVideoPanelFlag(false))
     dispatch(maximizeVideoPanelFlag(false))
@@ -201,14 +206,15 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
     }
   }, [VideoMainReducer.GroupCallRecipientsData])
 
-  console.log(
-    'Header Name',
-    VideoMainReducer.VideoRecipentData.userName,
-    currentUserName,
-    callerNameInitiate,
-    callerName,
-    Object.keys(VideoMainReducer.VideoRecipentData).length,
-  )
+  useEffect(() => {
+    if (callerObject !== undefined && callerObject !== null) {
+      let callerObjectObj = JSON.parse(callerObject)
+      setParticipantStatus((prevStatus) => [callerObjectObj, ...prevStatus])
+      console.log('Hello checking')
+    }
+  }, [callerObject])
+
+  console.log('participantStatus', participantStatus[0])
 
   return (
     <>
@@ -274,7 +280,12 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                     currentParticipants !== null &&
                     currentParticipants.length > 0
                       ? currentParticipants.map((participantData, index) => {
-                          console.log('participantData', participantData)
+                          console.log('participantStatus', participantStatus[0])
+                          const matchingStatus = participantStatus[0].find(
+                            (status) =>
+                              status.RecipientID === participantData.userID &&
+                              status.RoomID === initiateRoomID,
+                          )
                           return (
                             <Row className="m-0" key={index}>
                               <Col className="p-0" lg={8} md={8} sm={12}>
@@ -283,7 +294,11 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                                 </p>
                               </Col>
                               <Col className="p-0" lg={4} md={4} sm={12}>
-                                <p className="participant-state">Calling...</p>
+                                <p className="participant-state">
+                                  {matchingStatus
+                                    ? matchingStatus.CallStatus
+                                    : 'Calling...'}
+                                </p>
                               </Col>
                             </Row>
                           )

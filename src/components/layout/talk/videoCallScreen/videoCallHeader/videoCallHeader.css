@@ -206,7 +206,7 @@ p.Notification-text {
     position: absolute;
     width: 235px;
     top: 39px;
-    height: 175px;
+    height: 100px;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
     left: -100px;
 }
