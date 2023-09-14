@@ -949,14 +949,18 @@ const Dashboard = () => {
         "NEW_VIDEO_CALL_INITIATED".toLowerCase()
       ) {
         let callStatus = JSON.parse(localStorage.getItem("activeCall"));
+        localStorage.setItem("callType", data.payload.callType);
+        localStorage.setItem("callTypeID", data.payload.callTypeID);
         if (callStatus === true) {
           let timeValue = Number(localStorage.getItem("callRingerTimeout"));
+          let callTypeID = Number(localStorage.getItem("callTypeID"));
           timeValue = timeValue * 1000;
           const timeoutId = setTimeout(() => {
             let Data = {
               ReciepentID: Number(createrID),
               RoomID: data.payload.roomID,
               CallStatusID: 3,
+              CallTypeID: callTypeID,
             };
             dispatch(VideoCallResponse(Data, navigate, t));
           }, timeValue);
@@ -996,17 +1000,104 @@ const Dashboard = () => {
         if (data.payload.recepientID === Number(createrID)) {
           localStorage.setItem("initiateVideoCall", false);
         }
+        // const emptyArray = []
+        // localStorage.setItem('callerStatusObject', JSON.stringify(emptyArray))
+        // let existingData =
+        //   JSON.parse(localStorage.getItem('callerStatusObject')) || []
+        // existingData.push({
+        //   RecipientName: data.payload.recepientName,
+        //   RecipientID: data.payload.recepientID,
+        //   CallStatus: 'Accepted',
+        //   RoomID: data.payload.roomID,
+        // })
+        // localStorage.setItem('callerStatusObject', JSON.stringify(existingData))
+        // Get the existing data from localStorage
+        let existingData =
+          JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+
+        // Define the new data to be pushed
+        let newData = {
+          RecipientName: data.payload.recepientName,
+          RecipientID: data.payload.recepientID,
+          CallStatus: "Accepted",
+          RoomID: data.payload.roomID,
+        };
+
+        // Find an existing object that matches the criteria
+        let existingObjectIndex = existingData.findIndex(
+          (item) =>
+            item.RecipientName === newData.RecipientName &&
+            item.RecipientID === newData.RecipientID &&
+            item.RoomID === newData.RoomID
+        );
+
+        // If an existing object was found, update it; otherwise, push the new data
+        if (existingObjectIndex !== -1) {
+          existingData[existingObjectIndex] = newData;
+        } else {
+          existingData.push(newData);
+        }
+
+        // Save the updated data back to localStorage
+        localStorage.setItem(
+          "callerStatusObject",
+          JSON.stringify(existingData)
+        );
         dispatch(callRequestReceivedMQTT({}, ""));
       } else if (
         data.payload.message.toLowerCase() ===
         "VIDEO_CALL_REJECTED".toLowerCase()
       ) {
+        let callTypeID = Number(localStorage.getItem("callTypeID"));
         dispatch(videoOutgoingCallFlag(false));
-        // if (callStatus === false) {
-        dispatch(normalizeVideoPanelFlag(false));
-        // }
+        if (callTypeID === 1) {
+          dispatch(normalizeVideoPanelFlag(false));
+        }
         localStorage.setItem("activeCall", false);
         localStorage.setItem("initiateVideoCall", false);
+        // const emptyArray = []
+        // localStorage.setItem('callerStatusObject', JSON.stringify(emptyArray))
+        // let existingData =
+        //   JSON.parse(localStorage.getItem('callerStatusObject')) || []
+        // existingData.push({
+        //   RecipientName: data.payload.recepientName,
+        //   RecipientID: data.payload.recepientID,
+        //   CallStatus: 'Rejected',
+        //   RoomID: data.payload.roomID,
+        // })
+        // localStorage.setItem('callerStatusObject', JSON.stringify(existingData))
+        // Get the existing data from localStorage
+        let existingData =
+          JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+
+        // Define the new data to be pushed
+        let newData = {
+          RecipientName: data.payload.recepientName,
+          RecipientID: data.payload.recepientID,
+          CallStatus: "Rejected",
+          RoomID: data.payload.roomID,
+        };
+
+        // Find an existing object that matches the criteria
+        let existingObjectIndex = existingData.findIndex(
+          (item) =>
+            item.RecipientName === newData.RecipientName &&
+            item.RecipientID === newData.RecipientID &&
+            item.RoomID === newData.RoomID
+        );
+
+        // If an existing object was found, update it; otherwise, push the new data
+        if (existingObjectIndex !== -1) {
+          existingData[existingObjectIndex] = newData;
+        } else {
+          existingData.push(newData);
+        }
+
+        // Save the updated data back to localStorage
+        localStorage.setItem(
+          "callerStatusObject",
+          JSON.stringify(existingData)
+        );
         setNotification({
           ...notification,
           notificationShow: true,
@@ -1018,9 +1109,12 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         "VIDEO_CALL_UNANSWERED".toLowerCase()
       ) {
+        let callTypeID = Number(localStorage.getItem("callTypeID"));
         if (Number(data.senderID) !== Number(createrID)) {
-          dispatch(videoOutgoingCallFlag(false));
-          dispatch(normalizeVideoPanelFlag(false));
+          if (callTypeID === 1) {
+            dispatch(videoOutgoingCallFlag(false));
+            dispatch(normalizeVideoPanelFlag(false));
+          }
           setNotification({
             ...notification,
             notificationShow: true,
@@ -1028,7 +1122,54 @@ const Dashboard = () => {
           });
           setNotificationID(id);
           localStorage.setItem("activeCall", false);
+          // const emptyArray = []
+          // localStorage.setItem('callerStatusObject', JSON.stringify(emptyArray))
+          // let existingData =
+          //   JSON.parse(localStorage.getItem('callerStatusObject')) || []
+          // existingData.push({
+          //   RecipientName: data.payload.recepientName,
+          //   RecipientID: data.payload.recepientID,
+          //   CallStatus: 'Unanswered',
+          //   RoomID: data.payload.roomID,
+          // })
+          // localStorage.setItem(
+          //   'callerStatusObject',
+          //   JSON.stringify(existingData),
+          // )
+          // Get the existing data from localStorage
+          let existingData =
+            JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+
+          // Define the new data to be pushed
+          let newData = {
+            RecipientName: data.payload.recepientName,
+            RecipientID: data.payload.recepientID,
+            CallStatus: "Unanswered",
+            RoomID: data.payload.roomID,
+          };
+
+          // Find an existing object that matches the criteria
+          let existingObjectIndex = existingData.findIndex(
+            (item) =>
+              item.RecipientName === newData.RecipientName &&
+              item.RecipientID === newData.RecipientID &&
+              item.RoomID === newData.RoomID
+          );
+
+          // If an existing object was found, update it; otherwise, push the new data
+          if (existingObjectIndex !== -1) {
+            existingData[existingObjectIndex] = newData;
+          } else {
+            existingData.push(newData);
+          }
+
+          // Save the updated data back to localStorage
+          localStorage.setItem(
+            "callerStatusObject",
+            JSON.stringify(existingData)
+          );
         }
+
         dispatch(callRequestReceivedMQTT({}, ""));
         localStorage.setItem("initiateVideoCall", false);
       } else if (
@@ -1038,6 +1179,49 @@ const Dashboard = () => {
         dispatch(callRequestReceivedMQTT(data.payload, data.payload.message));
         localStorage.setItem("activeCall", false);
         localStorage.setItem("initiateVideoCall", true);
+        // const emptyArray = []
+        // localStorage.setItem('callerStatusObject', JSON.stringify(emptyArray))
+        // let existingData =
+        //   JSON.parse(localStorage.getItem('callerStatusObject')) || []
+        // existingData.push({
+        //   RecipientName: data.payload.recepientName,
+        //   RecipientID: data.payload.recepientID,
+        //   CallStatus: 'Ringing',
+        //   RoomID: data.payload.roomID,
+        // })
+        // localStorage.setItem('callerStatusObject', JSON.stringify(existingData))
+        // Get the existing data from localStorage
+        let existingData =
+          JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+
+        // Define the new data to be pushed
+        let newData = {
+          RecipientName: data.payload.recepientName,
+          RecipientID: data.payload.recepientID,
+          CallStatus: "Ringing",
+          RoomID: data.payload.roomID,
+        };
+
+        // Find an existing object that matches the criteria
+        let existingObjectIndex = existingData.findIndex(
+          (item) =>
+            item.RecipientName === newData.RecipientName &&
+            item.RecipientID === newData.RecipientID &&
+            item.RoomID === newData.RoomID
+        );
+
+        // If an existing object was found, update it; otherwise, push the new data
+        if (existingObjectIndex !== -1) {
+          existingData[existingObjectIndex] = newData;
+        } else {
+          existingData.push(newData);
+        }
+
+        // Save the updated data back to localStorage
+        localStorage.setItem(
+          "callerStatusObject",
+          JSON.stringify(existingData)
+        );
       } else if (
         data.payload.message.toLowerCase() ===
         "VIDEO_CALL_DISCONNECTED_CALLER".toLowerCase()
@@ -1092,6 +1276,52 @@ const Dashboard = () => {
             message: `User Is Busy`,
           });
           setNotificationID(id);
+          // const emptyArray = []
+          // localStorage.setItem('callerStatusObject', JSON.stringify(emptyArray))
+          // let existingData =
+          //   JSON.parse(localStorage.getItem('callerStatusObject')) || []
+          // existingData.push({
+          //   RecipientName: data.payload.recepientName,
+          //   RecipientID: data.payload.recepientID,
+          //   CallStatus: 'Busy',
+          //   RoomID: data.payload.roomID,
+          // })
+          // localStorage.setItem(
+          //   'callerStatusObject',
+          //   JSON.stringify(existingData),
+          // )
+          // Get the existing data from localStorage
+          let existingData =
+            JSON.parse(localStorage.getItem("callerStatusObject")) || [];
+
+          // Define the new data to be pushed
+          let newData = {
+            RecipientName: data.payload.recepientName,
+            RecipientID: data.payload.recepientID,
+            CallStatus: "Busy",
+            RoomID: data.payload.roomID,
+          };
+
+          // Find an existing object that matches the criteria
+          let existingObjectIndex = existingData.findIndex(
+            (item) =>
+              item.RecipientName === newData.RecipientName &&
+              item.RecipientID === newData.RecipientID &&
+              item.RoomID === newData.RoomID
+          );
+
+          // If an existing object was found, update it; otherwise, push the new data
+          if (existingObjectIndex !== -1) {
+            existingData[existingObjectIndex] = newData;
+          } else {
+            existingData.push(newData);
+          }
+
+          // Save the updated data back to localStorage
+          localStorage.setItem(
+            "callerStatusObject",
+            JSON.stringify(existingData)
+          );
         }
       }
     }

@@ -14,6 +14,8 @@ const VideoOutgoing = () => {
 
   const [isVisible, setIsVisible] = useState(true)
 
+  let currentCallType = Number(localStorage.getItem('CallType'))
+
   // const [recipentData, setRecipentData] = useState([])
 
   // useEffect(() => {
@@ -65,13 +67,22 @@ const VideoOutgoing = () => {
     <>
       <Row>
         <Col lg={12} md={12} sm={12}>
-          <div className="Caller-Status">
-            {Object.keys(VideoMainReducer.CallRequestReceivedMQTTData).length >
-            0
-              ? 'Ringing...'
-              : 'Calling...'}
-            {/* {VideoMainReducer.VideoRecipentData.userName} */}
-          </div>
+          {currentCallType === 1 ? (
+            <div className="Caller-Status">
+              {Object.keys(VideoMainReducer.CallRequestReceivedMQTTData)
+                .length > 0 ? (
+                <>
+                  Ringing
+                  {' ' + VideoMainReducer.VideoRecipentData.userName}...
+                </>
+              ) : (
+                <>
+                  Calling
+                  {' ' + VideoMainReducer.VideoRecipentData.userName}...
+                </>
+              )}
+            </div>
+          ) : null}
         </Col>
       </Row>
       {/* {isVisible && (
