@@ -828,6 +828,10 @@ const getUserMissedCallCount = {
   RequestMethod: 'ServiceManager.GetUserMissedCallCount',
 }
 
+const searchDocumentsFoldersAPI = {
+  RequestMethod: 'ServiceManager.SearchDocumentsAndFolders',
+}
+
 const leaveCall = {
   RequestMethod: 'ServiceManager.LeaveCall',
 }
@@ -1056,5 +1060,6 @@ export {
   getUserRecentCalls,
   callRequestReceived,
   getUserMissedCallCount,
+  searchDocumentsFoldersAPI,
   leaveCall,
 }

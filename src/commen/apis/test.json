@@ -1,14 +1,35 @@
-{
-  "Task": {
-    "PK_TID": 1,
-    "Title": "check",
-    "Description": "",
-    "IsMainTask": true,
-    "DeadLineDate": "20230912",
-    "DeadLineTime": "093900",
-    "CreationDateTime": ""
+[
+  {
+    "TaskId": 851262,
+    "FilederName": "API TEXT RESPONSES (V.1.0.35) (1).docx",
+    "File": {
+      "uid": "rc-upload-1694610656853-4"
+    },
+    "Uploaded": false,
+    "Uploading": false,
+    "UploadCancel": false,
+    "Progress": 0
   },
-  "TaskCreatorID": 780,
-  "TaskAssignedTo": [],
-  "TasksAttachments": []
-}
+  {
+    "TaskId": 461578,
+    "FilederName": "Diskus API Document.docx",
+    "File": {
+      "uid": "rc-upload-1694610656853-7"
+    },
+    "Uploaded": false,
+    "Uploading": false,
+    "UploadCancel": false,
+    "Progress": 0
+  },
+  {
+    "TaskId": 710462,
+    "FilederName": "API TEXT RESPONSES (V.1.0.21).docx",
+    "File": {
+      "uid": "rc-upload-1694610656853-10"
+    },
+    "Uploaded": false,
+    "Uploading": false,
+    "UploadCancel": false,
+    "Progress": 0
+  }
+]
