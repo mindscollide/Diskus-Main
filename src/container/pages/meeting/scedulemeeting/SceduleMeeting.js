@@ -170,7 +170,12 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
               <Col lg={12} md={12} sm={12}>
                 <Paper className={styles["Scedule_meeting_paper"]}>
                   <Row>
-                    <Col lg={12} md={12} sm={12} className="d-flex gap-2">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="d-flex gap-2 flex-wrap"
+                    >
                       <Button
                         text={t("Meeting-details")}
                         className={
