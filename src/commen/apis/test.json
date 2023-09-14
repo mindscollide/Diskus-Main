@@ -1,26 +1,35 @@
 [
   {
-      "FolderName": "1 aug",
-      "FileList": [
-          {
-              "uid": "rc-upload-1694423861316-4"
-          },
-          {
-              "uid": "rc-upload-1694423861316-5"
-          },
-          {
-              "uid": "rc-upload-1694423861316-6"
-          }
-      ],
-      "FolderID": 5397
+    "TaskId": 851262,
+    "FilederName": "API TEXT RESPONSES (V.1.0.35) (1).docx",
+    "File": {
+      "uid": "rc-upload-1694610656853-4"
+    },
+    "Uploaded": false,
+    "Uploading": false,
+    "UploadCancel": false,
+    "Progress": 0
   },
   {
-      "FolderName": "New folder",
-      "FileList": [
-          {
-              "uid": "rc-upload-1694423861316-8"
-          }
-      ],
-      "FolderID": 5398
+    "TaskId": 461578,
+    "FilederName": "Diskus API Document.docx",
+    "File": {
+      "uid": "rc-upload-1694610656853-7"
+    },
+    "Uploaded": false,
+    "Uploading": false,
+    "UploadCancel": false,
+    "Progress": 0
+  },
+  {
+    "TaskId": 710462,
+    "FilederName": "API TEXT RESPONSES (V.1.0.21).docx",
+    "File": {
+      "uid": "rc-upload-1694610656853-10"
+    },
+    "Uploaded": false,
+    "Uploading": false,
+    "UploadCancel": false,
+    "Progress": 0
   }
 ]

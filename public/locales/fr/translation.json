@@ -962,6 +962,10 @@
   "Please-add-members": "Please add members*",
   "Create-another-from-scratch": "Create another from scratch",
   "View-minutes": "View Minutes",
-  "Upload-canceled":"Upload Canceled"
+  "Upload-canceled":"Upload Canceled",
+  "Uploaded":"Uploaded",
+  "item":"Item",
+  "Iitems":"Items",
+  "Uploading-cancel":"Uploading Cancel"
 
 }

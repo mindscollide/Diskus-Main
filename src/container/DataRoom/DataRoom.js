@@ -52,6 +52,7 @@ import {
   getDocumentsAndFolderApiScrollbehaviour,
   getFolderDocumentsApi,
   isFolder,
+  uploadDocumentsApi,
 } from "../../store/actions/DataRoom_actions";
 import sharedIcon from "../../assets/images/shared_icon.svg";
 import UploadDataFolder from "../../components/elements/Dragger/UploadFolder";
@@ -117,7 +118,7 @@ const DataRoom = () => {
   const [collapes, setCollapes] = useState(false);
   const [sharehoverstyle, setSharehoverstyle] = useState(false);
   const [sharefoldermodal, setSharefoldermodal] = useState(false);
-  const [tasksAttachments, setTasksAttachments] = useState([]);
+  // const [tasksAttachments, setTasksAttachments] = useState([]);
   const [deltehoverstyle, setDeltehoverstyle] = useState(false);
   const [sharedwithmebtn, setSharedwithmebtn] = useState(false);
   const [showcanceldownload, setShowcanceldownload] = useState(false);
@@ -163,6 +164,9 @@ const DataRoom = () => {
   const [folderUploadOptions, setFolderUploadOptions] = useState(1);
   // we are setting search tab for all view in different tab
   const [searchTabOpen, setSearchTabOpen] = useState(false);
+  // this is canseling modal of uploadin and stop uploading
+  const [canselingDetaUplodingForFOlder, setCanselingDetaUplodingForFOlder] =
+    useState(false);
   const antIcon = (
     <LoadingOutlined
       style={{
@@ -336,20 +340,15 @@ const DataRoom = () => {
       }
     } catch {}
   }, [DataRoomReducer.getFolderDocumentResponse]);
-
+  // for internet
   useEffect(() => {
     if (!isOnline) {
-      CanceApicalling();
+      // CanceUpload();
     }
   }, [isOnline]);
 
   const ClosingNotificationRenameFolder = () => {
     setShowrenamenotification(false);
-  };
-
-  const closeSearchBar = () => {
-    setShowbarupload(false);
-    setTasksAttachments([]);
   };
 
   const showRequestingAccessModal = () => {
@@ -1004,27 +1003,99 @@ const DataRoom = () => {
       },
     },
   ];
+  const [tasksAttachments, setTasksAttachments] = useState([]);
+  const [tasksAttachmentsID, setTasksAttachmentsID] = useState(0);
 
+  // this is file Upload
   const handleUploadFile = async ({ file }) => {
-    await dispatch(folderUploadData(null));
-    dispatch(
-      FileisExist(
-        navigate,
-        file.name,
-        t,
-        file,
-        setProgress,
-        setRemainingTime,
-        remainingTime,
-        setShowbarupload,
-        setTasksAttachments,
-        setUploadOptionsmodal,
-        setUploadDocumentAgain
-        // cancelToken
-      )
-    );
+    const taskId = Math.floor(Math.random() * 1000000);
+    let newJsonCreateFile = {
+      TaskId: taskId,
+      FileName: "",
+      File: {},
+      Uploaded: false,
+      Uploading: false,
+      UploadCancel: false,
+      Progress: 0,
+      UploadingError:false
+    };
+    if (file.name && Object.keys(file).length > 0) {
+      newJsonCreateFile = {
+        TaskId: newJsonCreateFile.TaskId,
+        FileName: file.name,
+        File: file,
+        Uploaded: newJsonCreateFile.Uploaded,
+        Uploading: newJsonCreateFile.Uploading,
+        UploadCancel: newJsonCreateFile.UploadCancel,
+        Progress: newJsonCreateFile.Progress,
+        UploadingError:newJsonCreateFile.UploadingError
+      };
+      setTasksAttachmentsID(newJsonCreateFile.TaskId);
+      setTasksAttachments((prevTasks) => ({
+        ...prevTasks,
+        [taskId]: newJsonCreateFile,
+      }));
+      dispatch(
+        FileisExist(
+          navigate,
+          t,
+          newJsonCreateFile,
+          setTasksAttachments,
+          tasksAttachments,
+          setShowbarupload,
+          showbarupload
+        )
+      );
+    }
   };
+  console.log("handleUploadFile", tasksAttachments);
 
+  // this is for file check
+  useEffect(() => {
+    // its check that reducer state is not null
+    if (DataRoomReducer.isFileExsist === true) {
+      setUploadOptionsmodal(true);
+    } else {
+      // if (uploadOptionsmodal) {
+      //   setUploadOptionsmodal(false);
+      //   if (
+      //     Object.keys(detaUplodingForFOlder).length > 0 &&
+      //     DataRoomReducer.isFileExsist === null
+      //   ) {
+      //     console.log("handleUploadFile", tasksAttachments);
+      //     dispatch(
+      //       uploadDocumentsApi(
+      //         navigate,
+      //         t,
+      //         tasksAttachments,
+      //         tasksAttachments.TaskId,
+      //         setTasksAttachments,
+      //         tasksAttachments,
+      //         fileUploadOptions
+      //       )
+      //     );
+      //     setFileUploadOptions(1);
+      //     // its call api for create folder
+      //   }
+      // }
+    }
+  }, [DataRoomReducer.isFileExsist]);
+
+  // cancel file upload
+  const cancelFileUpload = (data) => {
+    console.log("cancelFileUpload",data)
+    setTasksAttachments((prevTasks) => ({
+      ...prevTasks,
+      [data.TaskId]: {
+        ...prevTasks[data.TaskId],
+        UploadCancel: true,
+        Uploaded: false,
+        Uploading: false,
+        Progress:0
+      },
+    }));
+    // Optionally, you can also cancel the Axios request associated with this task here.
+  };
   // this fun triger when upload folder triiger
   const handleChangeFolderUpload = ({ directoryName, fileList }) => {
     try {
@@ -1036,7 +1107,7 @@ const DataRoom = () => {
         Uploaded: false,
         Uploading: false,
         UploadCancel: false,
-        UploadedAttachments:0,
+        UploadedAttachments: 0,
       };
       // this is use to set data in sate of current upload
       if (directoryName) {
@@ -1047,7 +1118,7 @@ const DataRoom = () => {
           Uploaded: newJsonCreate.Uploaded,
           Uploading: newJsonCreate.Uploading,
           UploadCancel: newJsonCreate.UploadCancel,
-          UploadedAttachments:newJsonCreate.UploadedAttachments
+          UploadedAttachments: newJsonCreate.UploadedAttachments,
         };
 
         setDirectoryNames(directoryName);
@@ -1086,6 +1157,7 @@ const DataRoom = () => {
                 folderUploadOptions
               )
             );
+            setFolderUploadOptions(1);
           }
         }
       }
@@ -1127,23 +1199,12 @@ const DataRoom = () => {
           try {
             if (folder.Uploaded === false && folder.UploadCancel === false) {
               const result = await dispatch(
-                uploadFile(
-                  navigate,
-                  file,
-                  folder.FolderID,
-                  t,
-                  // setProgress,
-                  // setRemainingTime,
-                  // remainingTime,
-                  setShowbarupload,
-                  showbarupload
-                  // setTasksAttachments,
-                )
+                uploadFile(navigate, file, folder.FolderID, t)
               );
               // Perform other actions with the result
-              folder.UploadedAttachments = folder.UploadedAttachments+1; // Update the count
+              folder.UploadedAttachments = folder.UploadedAttachments + 1; // Update the count
               setDetaUplodingForFOlder((prevFolders) => [...prevFolders]); // Update state
-            
+
               // You can wait for some time before proceeding to the next item
               await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
             }
@@ -1168,8 +1229,14 @@ const DataRoom = () => {
     // this is checker of reducer if its not on its initial state
     try {
       if (DataRoomReducer.CreatedFoldersArray.length > 0) {
+        // const currentIndexForReplaceName = DataRoomReducer.CreatedFoldersArray.findIndex(
+        //   (folder) =>
+        //     folder.DisplayFolderNameOLD === directoryNames);
         const existingIndex = detaUplodingForFOlder.findIndex(
-          (folder) => folder.FolderName === directoryNames && folder.Uploading === false
+          (folder) =>
+            folder.FolderName === directoryNames &&
+            folder.Uploading === false &&
+            folder.FolderID === 0
         );
         // const existingIndex = Object.keys(detaUplodingForFOlder).length - 1;
         console.log("handleChangeFolderUploadexistingIndex", existingIndex);
@@ -1177,7 +1244,7 @@ const DataRoom = () => {
         if (existingIndex >= 0) {
           if (
             detaUplodingForFOlder[existingIndex].Uploaded === false &&
-            detaUplodingForFOlder[existingIndex].UploadCancel === false&&
+            detaUplodingForFOlder[existingIndex].UploadCancel === false &&
             detaUplodingForFOlder[existingIndex].Uploading === false
           ) {
             const updatedFolder = {
@@ -1185,9 +1252,9 @@ const DataRoom = () => {
               FolderName:
                 DataRoomReducer.CreatedFoldersArray[existingIndex].FolderName, // Set the new folder name here
               FolderID: parseInt(
-                DataRoomReducer.CreatedFoldersArray[existingIndex].FolderID,
-              ),// Set the new folder ID here
-              Uploading:true, 
+                DataRoomReducer.CreatedFoldersArray[existingIndex].FolderID
+              ), // Set the new folder ID here
+              Uploading: true,
             };
             console.log("handleChangeFolderUploadexistingIndex", updatedFolder);
 
@@ -1241,11 +1308,32 @@ const DataRoom = () => {
 
   const cancelUpload = (folder) => {
     folder.UploadCancel = true;
+    folder.Uploading = false;
     setDetaUplodingForFOlder((prevFolders) => [...prevFolders]);
   };
+  // this is used for canle all uploadind
+  const CanceUpload = () => {
+  const dataArray = Object.values(tasksAttachments);
+  const combinedArray = [...detaUplodingForFOlder, ...dataArray];
+    const isUploading = combinedArray.some(
+      (obj) => obj.Uploading === true
+    );
+    if (isUploading) {
+      setCanselingDetaUplodingForFOlder(true);
+    } else {
+      setDetaUplodingForFOlder([]);
+      setTasksAttachments([]);
+      setShowbarupload(false);
+      dispatch(CreateFolder_success([]));
+    }
+  };
 
-  const CanceApicalling = () => {
-    // cancelfunc();
+  const CanceUploadinFromModalTrue = () => {
+    setDetaUplodingForFOlder([]);
+    setTasksAttachments([]);
+    setShowbarupload(false);
+    dispatch(CreateFolder_success([]));
+    setCanselingDetaUplodingForFOlder(false);
   };
 
   const handleOutsideClick = (event) => {
@@ -1870,9 +1958,10 @@ const DataRoom = () => {
           remainingTime={remainingTime}
           cancelUpload={cancelUpload}
           collapes={collapes}
-          closeSearchBar={closeSearchBar}
           Cancellicon={Cancellicon}
           progress={progress}
+          CanceUpload={CanceUpload}
+          cancelFileUpload={cancelFileUpload}
         />
       ) : null}
       {foldermodal ? (
@@ -1884,21 +1973,21 @@ const DataRoom = () => {
       ) : null}
       {uploadOptionsmodal ? (
         <ModalOptions
-          UploadOptions={uploadOptionsmodal}
-          setUploadOptions={setUploadOptionsmodal}
-          uploadDocumentfile={uploadDocumentAgain}
-          setProgress={setProgress}
-          setRemainingTime={setRemainingTime}
-          remainingTime={remainingTime}
-          setShowbarupload={setShowbarupload}
           setTasksAttachments={setTasksAttachments}
-          // uploadOptionsonClickBtn={handleUploadDocuemtuploadOptions}
+          tasksAttachments={tasksAttachments}
+          setTasksAttachmentsID={setTasksAttachmentsID}
+          tasksAttachmentsID={tasksAttachmentsID}
+          uploadOptionsmodal={uploadOptionsmodal}
+          setUploadOptions={setUploadOptionsmodal}
+          setShowbarupload={setShowbarupload}
+          showbarupload={showbarupload}
         />
       ) : null}
-      {canceluploadmodal ? (
+      {canselingDetaUplodingForFOlder ? (
         <ModalCancelUpload
-          cancellupload={canceluploadmodal}
-          setcancellupload={setCanceluploadmodal}
+          canselingDetaUplodingForFOlder={canselingDetaUplodingForFOlder}
+          setCanselingDetaUplodingForFOlder={setCanselingDetaUplodingForFOlder}
+          CanceUploadinFromModalTrue={CanceUploadinFromModalTrue}
         />
       ) : null}
       {sharefoldermodal ? (
@@ -1915,12 +2004,12 @@ const DataRoom = () => {
           setRequestingAccess={setRequestingAccess}
         />
       ) : null}
-      {showcanceldownload ? (
+      {/* {canselingDetaUplodingForFOlder ? (
         <ModalCancelDownload
-          cancelDownload={showcanceldownload}
-          setCancelDownload={setShowcanceldownload}
+          cancelDownload={canselingDetaUplodingForFOlder}
+          setCancelDownload={canselingDetaUplodingForFOlder}
         />
-      ) : null}
+      ) : null} */}
       {showrenamemodal ? (
         <>
           <ModalRenameFolder
@@ -1959,6 +2048,8 @@ const DataRoom = () => {
           directoryNames={directoryNames}
           setIsFolderExist={setIsFolderExist}
           isFolderExist={isFolderExist}
+          detaUplodingForFOlder={detaUplodingForFOlder}
+          setDetaUplodingForFOlder={setDetaUplodingForFOlder}
         />
       ) : null}
       {showrenameFile && (

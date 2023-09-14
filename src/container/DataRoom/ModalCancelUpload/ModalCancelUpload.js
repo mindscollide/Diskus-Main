@@ -4,24 +4,23 @@ import styles from "./ModalCancelUpload.module.css";
 import { useTranslation } from "react-i18next";
 import { Button, Modal } from "../../../components/elements";
 
-const ModalCancelUpload = ({ ModalTitle, cancellupload, setcancellupload }) => {
+const ModalCancelUpload = ({canselingDetaUplodingForFOlder, setCanselingDetaUplodingForFOlder ,CanceUploadinFromModalTrue}) => {
   const { t } = useTranslation();
   const closebtn = async () => {
-    setcancellupload(false);
+    setCanselingDetaUplodingForFOlder(false);
   };
   return (
     <>
       <Container>
         <Modal
-          show={cancellupload}
+          show={canselingDetaUplodingForFOlder}
           onHide={() => {
-            setcancellupload(false);
+            setCanselingDetaUplodingForFOlder(false);
           }}
-          setShow={setcancellupload}
-          ButtonTitle={ModalTitle}
+          setShow={setCanselingDetaUplodingForFOlder}
           modalFooterClassName="d-block"
           centered
-          size={cancellupload === true ? "md" : "md"}
+          size={canselingDetaUplodingForFOlder === true ? "md" : "md"}
           ModalBody={
             <>
               <Container>
@@ -56,11 +55,13 @@ const ModalCancelUpload = ({ ModalTitle, cancellupload, setcancellupload }) => {
                   <Button
                     text={t("Continue-upload")}
                     className={styles["Continue_Upload_button_UploadFile"]}
+                    onClick={closebtn}
                   />
 
                   <Button
                     text={t("Cancel-upload")}
                     className={styles["Cancel_Upload_button_UploadFile"]}
+                    onClick={CanceUploadinFromModalTrue}
                   />
                 </Col>
               </Row>

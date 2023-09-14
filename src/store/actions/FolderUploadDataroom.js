@@ -420,7 +420,6 @@ const CheckFolderisExist = (navigate, folderName, t) => {
     FolderName: folderName.FolderName,
   };
   return (dispatch) => {
-    // dispatch(FolderisExist_init());
     let form = new FormData();
     form.append("RequestMethod", FolderisExistRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -455,7 +454,6 @@ const CheckFolderisExist = (navigate, folderName, t) => {
                 )
             ) {
               await dispatch(FolderisExist_success(false));
-              // return false;
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -464,7 +462,6 @@ const CheckFolderisExist = (navigate, folderName, t) => {
                 )
             ) {
               await dispatch(FolderisExist_success(false));
-              // return false;
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -486,6 +483,7 @@ const CheckFolderisExist = (navigate, folderName, t) => {
       });
   };
 };
+
 const folderUploadData = (response) => {
   console.log("DataRoomReducer.folderUploadData", response);
   return {
@@ -493,12 +491,14 @@ const folderUploadData = (response) => {
     response: response,
   };
 };
+
 const removeFolderUploadData = (response) => {
   return {
     type: actions.REMOVE_FOLDER_UPLOAD_DATA,
     response: response,
   };
 };
+
 const createFolder = (
   navigate,
   t,
@@ -519,11 +519,9 @@ const createFolder = (
     Type: type,
   };
   return (dispatch) => {
-    // dispatch(createFolder_init());
     if (showbarupload === false) {
       setShowbarupload(true);
     }
-
     let form = new FormData();
     form.append("RequestMethod", createFolderRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -562,22 +560,11 @@ const createFolder = (
               let newDataResponceUD = {
                 FolderName: response.data.responseResult.displayFolderName,
                 FolderID: response.data.responseResult.folderID,
+                DisplayFolderNameOLD: response.data.responseResult.displayFolderNameOLD,
               };
               console.log("detaUplodingForFOlder", newDataResponceUD);
               await dispatch(CreateFolder_success(newDataResponceUD));
-
-              // let newDataResponce = {
-              //   displayFolderName:
-              //     response.data.responseResult.displayFolderName,
-              //   folderID: response.data.responseResult.folderID,
-              // }
-              // await dispatch(folderUploadData(newDataResponce))
               dispatch(FolderisExist_success(null));
-              // if (folderID !== null) {
-              //     dispatch(getFolderDocumentsApi(navigate, folderID, t))
-              // } else {
-              //     dispatch(getDocumentsAndFolderApi(navigate, 3, t))
-              // }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -609,31 +596,10 @@ const createFolder = (
       });
   };
 };
-
 // Upload Documents API
-const uploadFile = (
-  navigate,
-  file,
-  folderID,
-  t
-  // setProgress,
-  // setRemainingTime,
-  // remainingTime,
-  // setShowbarupload,
-  // showbarupload
-  // setTasksAttachments,
-  // cancelToken,
-) => {
+const uploadFile = (navigate, file, folderID, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  console.log("uploadFileFolder", file);
-  let startTime = Date.now();
   return async (dispatch) => {
-    // dispatch(uploadDocument_init())
-    // setProgress(0)
-    // if(showbarupload===false){
-    //   setShowbarupload(true)
-
-    // }
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(file));
@@ -645,115 +611,65 @@ const uploadFile = (
       headers: {
         _token: token,
       },
-      // onUploadProgress: (progressEvent) => {
-      //   setTasksAttachments((prev) => {
-      //     return [...prev, file]
-      //   })
-      //   const percentCompleted = Math.round(
-      //     (progressEvent.loaded * 100) / progressEvent.total
-      //   )
-      //   let currentTime = Date.now()
-      //   let elapsedTime = currentTime - startTime
-      //   let bytesUploaded = progressEvent.loaded
-      //   let bytesTotal = progressEvent.total
-      //   let bytesRemaining = bytesTotal - bytesUploaded
-      //   let bytesPerSecond = bytesUploaded / (elapsedTime / 1000)
-      //   let secondsRemaining = Math.ceil(bytesRemaining / bytesPerSecond)
-      //   setProgress(percentCompleted)
-      //   setRemainingTime(remainingTime + secondsRemaining)
-      // },
     })
       .then(async (response) => {
-        if (axios.isCancel(response)) {
-          console.log("API call was canceled.");
-          // dispatch(clearDataResponseMessage());
-          return;
-        } else {
-          if (response.data.responseCode === 417) {
-            await dispatch(RefreshToken(navigate, t));
-            dispatch(
-              uploadFile(
-                navigate,
-                file,
-                folderID,
-                t
-                // setProgress,
-                // setRemainingTime,
-                // remainingTime,
-                // setShowbarupload,
-                // showbarupload
-                // setTasksAttachments,
-                // cancelToken,
-              )
-            );
-          } else if (response.data.responseCode === 200) {
-            if (response.data.responseResult.isExecuted === true) {
-              if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
-                  )
-              ) {
-                await dispatch(
-                  uploadDocument_success(
-                    response.data.responseResult,
-                    t("Document-uploaded-successfully")
-                  )
-                );
-                await dispatch(
-                  saveFilesandFoldersApi(
-                    navigate,
-                    folderID,
-                    response.data.responseResult,
-                    t,
-                    // setShowbarupload,
-                    // setTasksAttachments,
-                    file.webkitRelativePath
-                  )
-                );
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
-                  )
-              ) {
-                dispatch(uploadDocument_fail(t("Failed-to-update-document")));
-              } else if (
-                response.data.responseResult.responseMessage
-                  .toLowerCase()
-                  .includes(
-                    "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
-                  )
-              ) {
-                dispatch(uploadDocument_fail(t("Something-went-wrong")));
-              }
-            } else {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(uploadFile(navigate, file, folderID, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+                )
+            ) {
+              await dispatch(
+                uploadDocument_success(
+                  response.data.responseResult,
+                  t("Document-uploaded-successfully")
+                )
+              );
+              await dispatch(
+                saveFilesandFoldersApi(
+                  navigate,
+                  folderID,
+                  response.data.responseResult,
+                  t,
+                  file.webkitRelativePath
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+                )
+            ) {
+              dispatch(uploadDocument_fail(t("Failed-to-update-document")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+                )
+            ) {
               dispatch(uploadDocument_fail(t("Something-went-wrong")));
             }
           } else {
             dispatch(uploadDocument_fail(t("Something-went-wrong")));
           }
-        }
-      })
-      .catch((error) => {
-        if (axios.isCancel(error)) {
-          console.log("API call was canceled.");
-          // dispatch(clearDataResponseMessage());
-          return;
         } else {
           dispatch(uploadDocument_fail(t("Something-went-wrong")));
         }
+      })
+      .catch((error) => {
+        dispatch(uploadDocument_fail(t("Something-went-wrong")));
       });
   };
 };
 
-const savefilesandfolders_init = () => {
-  return {
-    type: actions.SAVEFILESANDFOLDERS_INIT,
-  };
-};
 const savefilesandfolders_success = (response, message) => {
   return {
     type: actions.SAVEFILESANDFOLDERS_SUCCESS,
@@ -761,6 +677,7 @@ const savefilesandfolders_success = (response, message) => {
     message: message,
   };
 };
+
 const savefilesandfolders_fail = (message) => {
   return {
     type: actions.SAVEFILESANDFOLDERS_FAIL,
@@ -768,21 +685,10 @@ const savefilesandfolders_fail = (message) => {
   };
 };
 
-const saveFilesandFoldersApi = (
-  navigate,
-  folderID,
-  data,
-  t,
-  // setShowbarupload,
-  // setTasksAttachments,
-  filePath
-) => {
+const saveFilesandFoldersApi = (navigate, folderID, data, t, filePath) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
-  let currentView = localStorage.getItem("setTableView");
-  let viewFolderID = localStorage.getItem("folderID");
-  // let changePathFormat = filePath.
   let Data = {
     FolderID: folderID !== null ? folderID : 0,
     Files: [
@@ -799,7 +705,6 @@ const saveFilesandFoldersApi = (
     Type: 0,
   };
   return async (dispatch) => {
-    // dispatch(savefilesandfolders_init())
     let form = new FormData();
     form.append("RequestMethod", saveFilesandFolderRM.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -815,15 +720,7 @@ const saveFilesandFoldersApi = (
         if (response.data.responseCode === 417) {
           dispatch(RefreshToken(navigate, t));
           dispatch(
-            saveFilesandFoldersApi(
-              navigate,
-              folderID,
-              data,
-              t,
-              // setShowbarupload,
-              // setTasksAttachments,
-              filePath
-            )
+            saveFilesandFoldersApi(navigate, folderID, data, t, filePath)
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -840,13 +737,6 @@ const saveFilesandFoldersApi = (
                   t("Files-saved-successfully")
                 )
               );
-              // let currentView = localStorage.getItem("setTableView")
-              // let viewFolderID = localStorage.getItem("folderID")
-              // if (viewFolderID !== null) {
-              //   await dispatch(getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1));
-              // } else {
-              //   await dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2));
-              // }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -855,8 +745,6 @@ const saveFilesandFoldersApi = (
                 )
             ) {
               dispatch(savefilesandfolders_fail(t("Failed-to-save-any-file")));
-              // setShowbarupload(false)
-              // setTasksAttachments([])
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -865,28 +753,18 @@ const saveFilesandFoldersApi = (
                 )
             ) {
               dispatch(savefilesandfolders_fail(t("Something-went-wrong")));
-              // setShowbarupload(false)
-              // setTasksAttachments([])
             } else {
               dispatch(savefilesandfolders_fail(t("Something-went-wrong")));
-              // setShowbarupload(false)
-              // setTasksAttachments([])
             }
           } else {
             dispatch(savefilesandfolders_fail(t("Something-went-wrong")));
-            // setShowbarupload(false)
-            // setTasksAttachments([])
           }
         } else {
           dispatch(savefilesandfolders_fail(t("Something-went-wrong")));
-          // setShowbarupload(false)
-          // setTasksAttachments([])
         }
       })
       .catch(() => {
         dispatch(savefilesandfolders_fail(t("Something-went-wrong")));
-        // setShowbarupload(false)
-        // setTasksAttachments([])
       });
   };
 };

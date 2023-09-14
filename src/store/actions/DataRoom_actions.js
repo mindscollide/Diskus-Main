@@ -46,11 +46,13 @@ const saveFiles_fail = (message) => {
 // Save Files API
 const saveFilesApi = (
   navigate,
-  data,
   t,
-  setShowbarupload,
+  data,
+  type,
+  newJsonCreateFile,
+  taskId,
   setTasksAttachments,
-  type
+  tasksAttachments
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
@@ -92,11 +94,13 @@ const saveFilesApi = (
           dispatch(
             saveFilesApi(
               navigate,
-              data,
               t,
-              setShowbarupload,
+              data,
+              type,
+              newJsonCreateFile,
+              taskId,
               setTasksAttachments,
-              type
+              tasksAttachments
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -114,23 +118,15 @@ const saveFilesApi = (
                   t("Files-saved-successfully")
                 )
               );
-              setShowbarupload(false);
-              setTasksAttachments([]);
-              // if (folderID !== null) {
-              //   dispatch(getFolderDocumentsApi(navigate, folderID, t))
+              // if (viewFolderID !== null) {
+              //   dispatch(
+              //     getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1)
+              //   );
               // } else {
-              //   dispatch(getDocumentsAndFolderApi(navigate, 1, t))
+              //   dispatch(
+              //     getDocumentsAndFolderApi(navigate, Number(currentView), t, 2)
+              //   );
               // }
-              if (viewFolderID !== null) {
-                dispatch(
-                  getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1)
-                );
-              } else {
-                // dispatch(dataBehaviour(true))
-                dispatch(
-                  getDocumentsAndFolderApi(navigate, Number(currentView), t, 2)
-                );
-              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -139,6 +135,16 @@ const saveFilesApi = (
                 )
             ) {
               dispatch(saveFiles_fail(t("Failed-to-save-any-file")));
+              setTasksAttachments((prevTasks) => ({
+                ...prevTasks,
+                [taskId]: {
+                  ...prevTasks[taskId],
+                  Uploaded: false,
+                  Uploading: false,
+                  UploadingError: true,
+                  Progress:0
+                },
+              }));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -146,17 +152,57 @@ const saveFilesApi = (
                   "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
                 )
             ) {
+              setTasksAttachments((prevTasks) => ({
+                ...prevTasks,
+                [taskId]: {
+                  ...prevTasks[taskId],
+                  Uploaded: false,
+                  Uploading: false,
+                  UploadingError: true,
+                  Progress:0
+                },
+              }));
               dispatch(saveFiles_fail(t("Something-went-wrong")));
             }
           } else {
+            setTasksAttachments((prevTasks) => ({
+              ...prevTasks,
+              [taskId]: {
+                ...prevTasks[taskId],
+                Uploaded: false,
+                Uploading: false,
+                UploadingError: true,
+                Progress:0
+              },
+            }));
             dispatch(saveFiles_fail(t("Something-went-wrong")));
           }
         } else {
+          setTasksAttachments((prevTasks) => ({
+            ...prevTasks,
+            [taskId]: {
+              ...prevTasks[taskId],
+              Uploaded: false,
+              Uploading: false,
+              UploadingError: true,
+              Progress:0
+            },
+          }));
           dispatch(saveFiles_fail(t("Something-went-wrong")));
         }
         console.log(response);
       })
       .catch(() => {
+        setTasksAttachments((prevTasks) => ({
+          ...prevTasks,
+          [taskId]: {
+            ...prevTasks[taskId],
+            Uploaded: false,
+            Uploading: false,
+            UploadingError: true,
+            Progress:0
+          },
+        }));
         dispatch(saveFiles_fail(t("Something-went-wrong")));
       });
   };
@@ -189,28 +235,32 @@ const uploadDocument_fail = (message) => {
 // Upload Documents API
 const uploadDocumentsApi = (
   navigate,
-  file,
   t,
-  setProgress,
-  setRemainingTime,
-  remainingTime,
-  setShowbarupload,
+  newJsonCreateFile,
+  taskId,
   setTasksAttachments,
-  type
-  // cancelToken
+  tasksAttachments,
+  type,
+  setShowbarupload,
+  showbarupload
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let startTime = Date.now();
-  console.log("uploadFileFolder single", file);
-
-  return (dispatch) => {
-    // dispatch(uploadDocument_init())
-    setProgress(0);
+  // Set Uploading to true when starting the upload
+  setTasksAttachments((prevTasks) => ({
+    ...prevTasks,
+    [taskId]: {
+      ...prevTasks[taskId],
+      Uploading: true,
+    },
+  }));
+  if (showbarupload === false) {
     setShowbarupload(true);
+  }
+  return (dispatch) => {
     let form = new FormData();
     form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
-    form.append("RequestData", JSON.stringify(file));
-    form.append("File", file);
+    form.append("RequestData", JSON.stringify(newJsonCreateFile.File));
+    form.append("File", newJsonCreateFile.File);
     axios({
       method: "post",
       url: dataRoomApi,
@@ -219,50 +269,34 @@ const uploadDocumentsApi = (
         _token: token,
       },
       onUploadProgress: (progressEvent) => {
-        setTasksAttachments((prev) => [...prev, file]);
-
         const percentCompleted = Math.round(
           (progressEvent.loaded * 100) / progressEvent.total
         );
-        let currentTime = Date.now();
-        let elapsedTime = currentTime - startTime;
-        let bytesUploaded = progressEvent.loaded;
-        let bytesTotal = progressEvent.total;
-        let bytesRemaining = bytesTotal - bytesUploaded;
-        let bytesPerSecond = bytesUploaded / (elapsedTime / 1000);
-        let secondsRemaining = Math.ceil(bytesRemaining / bytesPerSecond);
-        console.log("secondsRemaining elapsedTime", elapsedTime);
-        console.log("secondsRemaining bytesUploaded", bytesUploaded);
-        console.log("secondsRemaining bytesTotal", bytesTotal);
-        console.log("secondsRemaining bytesRemaining", bytesRemaining);
-        console.log("secondsRemaining bytesPerSecond", bytesPerSecond);
-        console.log("secondsRemaining secondsRemaining", secondsRemaining);
-        console.log("secondsRemaining percentCompleted", percentCompleted);
-        setProgress(percentCompleted);
-        setRemainingTime(remainingTime + secondsRemaining);
+        console.log("percentCompleted", percentCompleted);
+
+        setTasksAttachments((prevTasks) => ({
+          ...prevTasks,
+          [taskId]: {
+            ...prevTasks[taskId],
+            Progress: percentCompleted,
+          },
+        }));
       },
-      // cancelToken: cancelToken.token,
     })
       .then(async (response) => {
-        // if (axios.isCancel(response)) {
-        //   console.log("API call was canceled.");
-        //   return;
-        // }
-        //  else
-        //   {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
             uploadDocumentsApi(
               navigate,
-              file,
               t,
-              setProgress,
-              setRemainingTime,
-              remainingTime,
+              newJsonCreateFile,
+              taskId,
+              setTasksAttachments,
+              tasksAttachments,
+              type,
               setShowbarupload,
-              type
-              // cancelToken
+              showbarupload
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -274,6 +308,14 @@ const uploadDocumentsApi = (
                   "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
                 )
             ) {
+              setTasksAttachments((prevTasks) => ({
+                ...prevTasks,
+                [taskId]: {
+                  ...prevTasks[taskId],
+                  Uploaded: true,
+                  Uploading: false,
+                },
+              }));
               await dispatch(
                 uploadDocument_success(
                   response.data.responseResult,
@@ -283,11 +325,13 @@ const uploadDocumentsApi = (
               await dispatch(
                 saveFilesApi(
                   navigate,
-                  response.data.responseResult,
                   t,
-                  setShowbarupload,
+                  response.data.responseResult,
+                  type,
+                  newJsonCreateFile,
+                  taskId,
                   setTasksAttachments,
-                  type
+                  tasksAttachments
                 )
               );
             } else if (
@@ -298,6 +342,16 @@ const uploadDocumentsApi = (
                 )
             ) {
               dispatch(uploadDocument_fail(t("Failed-to-update-document")));
+              setTasksAttachments((prevTasks) => ({
+                ...prevTasks,
+                [taskId]: {
+                  ...prevTasks[taskId],
+                  Uploaded: false,
+                  Uploading: false,
+                  UploadingError: true,
+                  Progress:0
+                },
+              }));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -305,17 +359,58 @@ const uploadDocumentsApi = (
                   "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
                 )
             ) {
+              setTasksAttachments((prevTasks) => ({
+                ...prevTasks,
+                [taskId]: {
+                  ...prevTasks[taskId],
+                  Uploaded: false,
+                  Uploading: false,
+                  UploadingError: true,
+                  Progress:0
+                },
+              }));
               dispatch(uploadDocument_fail(t("Something-went-wrong")));
             }
           } else {
+            setTasksAttachments((prevTasks) => ({
+              ...prevTasks,
+              [taskId]: {
+                ...prevTasks[taskId],
+                Uploaded: false,
+                Uploading: false,
+                UploadingError: true,
+                Progress:0
+              },
+            }));
             dispatch(uploadDocument_fail(t("Something-went-wrong")));
           }
         } else {
+          setTasksAttachments((prevTasks) => ({
+            ...prevTasks,
+            [taskId]: {
+              ...prevTasks[taskId],
+              Uploaded: false,
+              Uploading: false,
+              UploadingError: true,
+              Progress:0
+            },
+          }));
           dispatch(uploadDocument_fail(t("Something-went-wrong")));
         }
         // }
       })
       .catch((error) => {
+        console.log("prevTasksprevTasks")
+        setTasksAttachments((prevTasks) => ({
+          ...prevTasks,
+          [taskId]: {
+            ...prevTasks[taskId],
+            Uploaded: false,
+            Uploading: false,
+            UploadingError: true,
+            Progress:0
+          },
+        }));
         dispatch(uploadDocument_fail(t("Something-went-wrong")));
       });
   };
@@ -1277,31 +1372,31 @@ const FileisExist_fail = (message) => {
     message: message,
   };
 };
-
+const IsFileisExist = (response) => {
+  return {
+    type: actions.ISFILEISEXIST,
+    response: response,
+  };
+};
 // File Exist API
 const FileisExist = (
   navigate,
-  FileName,
   t,
-  file,
-  setProgress,
-  setRemainingTime,
-  remainingTime,
-  setShowbarupload,
+  newJsonCreateFile,
   setTasksAttachments,
-  setUploadOptionsmodal,
-  setUploadDocumentAgain
-  // cancelToken
+  tasksAttachments,
+  setShowbarupload,
+  showbarupload
 ) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let Data = {
     UserID: JSON.parse(createrID),
     ParentFolderID: 0,
-    FileName: FileName,
+    FileName: newJsonCreateFile.FileName,
   };
   return (dispatch) => {
-    dispatch(FileisExist_init());
+    // dispatch(FileisExist_init());
     let form = new FormData();
     form.append("RequestMethod", FileisExistRequestMethod.RequestMethod);
     form.append("RequestData", JSON.stringify(Data));
@@ -1319,15 +1414,12 @@ const FileisExist = (
           dispatch(
             FileisExist(
               navigate,
-              FileName,
               t,
-              file,
-              setProgress,
-              setRemainingTime,
-              remainingTime,
-              setShowbarupload,
+              newJsonCreateFile,
               setTasksAttachments,
-              setUploadDocumentAgain
+              tasksAttachments,
+              setShowbarupload,
+              showbarupload
             )
           );
         } else if (response.data.responseCode === 200) {
@@ -1340,9 +1432,7 @@ const FileisExist = (
                 )
             ) {
               dispatch(FileisExist_fail(t("File-already-exist")));
-              setUploadOptionsmodal(true);
-              setUploadDocumentAgain(file);
-              localStorage.setItem("fileName", FileName);
+              await dispatch(IsFileisExist(true));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -1359,20 +1449,21 @@ const FileisExist = (
                 )
             ) {
               await dispatch(FileisExist_fail(t("No-duplicate-found")));
-              await dispatch(
+              dispatch(
                 uploadDocumentsApi(
                   navigate,
-                  file,
                   t,
-                  setProgress,
-                  setRemainingTime,
-                  remainingTime,
-                  setShowbarupload,
+                  newJsonCreateFile,
+                  newJsonCreateFile.TaskId,
                   setTasksAttachments,
-                  0
-                  // cancelToken
+                  tasksAttachments,
+                  0,
+                  setShowbarupload,
+                  showbarupload
                 )
               );
+              // await dispatch(IsFileisExist(false));
+              console.log("handleUploadFile");
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -2136,4 +2227,5 @@ export {
   getFolderDocumentsApiScrollBehaviour,
   isFolder,
   searchDocumentsAndFoldersApi,
+  IsFileisExist,
 };

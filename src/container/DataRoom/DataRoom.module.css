@@ -552,7 +552,8 @@ body[dir="rtl"] .Search_Icon {
 .Blue_Strip {
   width: 425px !important;
   height: 43px !important;
-  border-radius: 4px !important;
+  border-top-left-radius: 4px!important;;
+  border-top-right-radius: 4px!important;;
   background: #6172d6;
 }
 
@@ -565,7 +566,7 @@ body[dir="rtl"] .Search_Icon {
   color: #fff !important;
 }
 .progress_bar {
-  width: 80px;
+  /* width: 80px; */
   font-size: 0px !important;
   display: flex;
   justify-content: flex-end;
@@ -745,13 +746,29 @@ body[dir="rtl"] .Data_room_btn {
 body[dir="rtl"] .dataroom_searchinput {
   display: inline-block;
   position: absolute !important;
+  right: 90% !important;
+  width: auto;
+  left: 0;
+  top: 7px;
+  margin-right: 10px;
+}
+.dataroom_searchinput2 {
+  display: inline-block;
+  position: absolute !important;
+  right: 0 !important;
+  width: auto;
+  top: 7px;
+  margin-right: 10px;
+}
+body[dir="rtl"] .dataroom_searchinput2 {
+  display: inline-block;
+  position: absolute !important;
   right: 93% !important;
   width: auto;
   left: 0;
   top: 7px;
   margin-right: 10px;
 }
-
 .delete__Icon {
   width: 25px;
   height: 25px;
@@ -1012,14 +1029,15 @@ body[dir="rtl"] .dataroom_searchinput {
   display: none !important;
   cursor: pointer !important;
 }
+
 .folderProgress {
-  width: 40% !important;
+  width: 20% !important;
 }
 
-.Scroller_bar_of_BarUploder_folder:hover .crossIcon {
+.showUploadBar:hover .crossIcon {
   display: block !important;
 }
-.Scroller_bar_of_BarUploder_folder:hover .folderProgress {
+.showUploadBar:hover .folderProgress {
   display: none !important;
 }
 /* .crossIcon {
@@ -1070,4 +1088,25 @@ body[dir="rtl"] .dataroom_searchinput {
 }
 .showUploadBar {
   height: 45px !important;
+}
+.showUploadBarUploaded {
+  height: 35px !important;
+}
+.GreentickIcon {
+  display: block !important;
+}
+.GreentickIcon_forfile {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+.crossIcon-file {
+  display: none !important;
+  cursor: pointer !important;
+}
+.showUploadBarUploaded-file {
+  height: 35px !important;
+}
+.showUploadBarUploaded-file:hover .crossIcon-file {
+  display: block !important;
 }

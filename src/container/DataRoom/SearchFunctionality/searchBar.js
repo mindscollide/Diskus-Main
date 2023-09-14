@@ -914,7 +914,7 @@ const SearchBarComponent = ({
         inputicon={
           searchTabOpen ? (
             <>
-              <span>
+              <span className="d-flex gap-2">
                 <img
                   src={blackCrossIcon}
                   alt=""

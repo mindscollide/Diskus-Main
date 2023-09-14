@@ -12,6 +12,8 @@ const ModalOptionsisExistFolder = ({
   directoryNames,
   setFolderUploadOptions,
   folderUploadOptions,
+  detaUplodingForFOlder,
+  setDetaUplodingForFOlder,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -21,14 +23,20 @@ const ModalOptionsisExistFolder = ({
       await dispatch(FolderisExist_success(null));
     }
   };
+  const onHideModal = async () => {
+    setIsFolderExist(false);
+    const updatedArray = [...detaUplodingForFOlder]; // Create a shallow copy of the array
+    updatedArray.pop(); // Remove the last object
+    setDetaUplodingForFOlder(updatedArray);
+    await dispatch(FolderisExist_success(null));
+
+  };
   return (
     <>
       <Container>
         <Modal
           show={isFolderExist}
-          onHide={() => {
-            setIsFolderExist(false);
-          }}
+          onHide={() => {onHideModal()}}
           setShow={setIsFolderExist}
           modalFooterClassName="d-block"
           centered
@@ -104,7 +112,7 @@ const ModalOptionsisExistFolder = ({
                   <Button
                     text={t("Cancel")}
                     className={styles["Cancel_button_UploadFile"]}
-                    onClick={() => setIsFolderExist(false)}
+                    onClick={onHideModal}
                   />
 
                   <Button
