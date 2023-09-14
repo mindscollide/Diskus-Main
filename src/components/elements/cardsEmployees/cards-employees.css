@@ -1,11 +1,12 @@
 .cards-container {
   display: inline-block;
-  width: 50%;
+  width: 50% !important;
 }
 .card-employee-image {
   width: 60px !important;
   height: 60px !important;
   border-radius: 4px;
+
   position: relative;
 }
 .card-employee-name {

@@ -691,12 +691,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                           {assignees.map((taskAssignedName, index) => (
                             <span>
                               <div className="dropdown-row-assignee dg-flex align-items-center flex-row">
-                                <div className="d-flex align-items-center position-relative">
+                                <div className="d-flex align-items-center gap-2 mt-1 position-relative">
                                   <img
                                     alt=""
                                     src={`data:image/jpeg;base64,${taskAssignedName.displayProfilePictureName}`}
                                   />
-                                  <p className="p-0 m-0">
+                                  <p className=" m-0">
                                     {taskAssignedName.name}
                                   </p>
                                 </div>

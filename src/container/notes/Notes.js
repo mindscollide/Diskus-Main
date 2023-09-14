@@ -1,83 +1,83 @@
-import React, { useEffect, useState } from "react"
-import { Container, Row, Col } from "react-bootstrap"
-import styles from "./Notes.module.css"
-import IconAttachment from "../../assets/images/Icon-Attachment.png"
-import EditIcon from "../../assets/images/Edit-Icon.png"
-import NotesMainEmpty from "../../assets/images/NotesMain_Empty.svg"
-import ModalViewNote from "../modalViewNote/ModalViewNote"
-import ModalAddNote from "../modalAddNote/ModalAddNote"
-import ModalUpdateNote from "../modalUpdateNote/ModalUpdateNote"
-import ClipIcon from "../../assets/images/AttachmentNotes.svg"
-import StarIcon from "../../assets/images/Star.svg"
-import hollowstar from "../../assets/images/Hollowstar.svg"
-import PlusExpand from "../../assets/images/Plus-notesExpand.svg"
-import MinusExpand from "../../assets/images/close-accordion.svg"
-import EditIconNote from "../../assets/images/EditIconNotes.svg"
-import { Collapse, Pagination } from "antd"
-import FileIcon, { defaultStyles } from "react-file-icon"
-import { useDispatch, useSelector } from "react-redux"
-import { useTranslation } from "react-i18next"
+import React, { useEffect, useState } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import styles from "./Notes.module.css";
+import IconAttachment from "../../assets/images/Icon-Attachment.png";
+import EditIcon from "../../assets/images/Edit-Icon.png";
+import NotesMainEmpty from "../../assets/images/NotesMain_Empty.svg";
+import ModalViewNote from "../modalViewNote/ModalViewNote";
+import ModalAddNote from "../modalAddNote/ModalAddNote";
+import ModalUpdateNote from "../modalUpdateNote/ModalUpdateNote";
+import ClipIcon from "../../assets/images/AttachmentNotes.svg";
+import StarIcon from "../../assets/images/Star.svg";
+import hollowstar from "../../assets/images/Hollowstar.svg";
+import PlusExpand from "../../assets/images/Plus-notesExpand.svg";
+import MinusExpand from "../../assets/images/close-accordion.svg";
+import EditIconNote from "../../assets/images/EditIconNotes.svg";
+import { Collapse, Pagination } from "antd";
+import FileIcon, { defaultStyles } from "react-file-icon";
+import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import {
   ArrowLeft,
   Plus,
   Dash,
   StarFill,
   Paperclip,
-} from "react-bootstrap-icons"
+} from "react-bootstrap-icons";
 import {
   Button,
   Paper,
   Loader,
   TextField,
   Notification,
-} from "../../components/elements"
-import { end, left } from "@popperjs/core"
-import { Accordion, AccordionSummary } from "@material-ui/core"
-import { AccordionDetails, Typography } from "@mui/material"
+} from "../../components/elements";
+import { end, left } from "@popperjs/core";
+import { Accordion, AccordionSummary } from "@material-ui/core";
+import { AccordionDetails, Typography } from "@mui/material";
 import {
   ClearNotesResponseMessage,
   GetNotes,
   GetNotesByIdAPI,
-} from "../../store/actions/Notes_actions"
+} from "../../store/actions/Notes_actions";
 import {
   _justShowDateformat,
   _justShowDay,
-} from "../../commen/functions/date_formater"
-import { useNavigate } from "react-router-dom"
+} from "../../commen/functions/date_formater";
+import { useNavigate } from "react-router-dom";
 
 const Notes = () => {
-  const [editFlag, setEditFlag] = useState(false)
+  const [editFlag, setEditFlag] = useState(false);
   //Test Accordian states start
-  const [updateNotesModal, setUpdateNotesModal] = useState(false)
-  const [selectedMarkerID, setSelectedMarkerID] = useState(0)
-  const [expand, setExpand] = useState(false)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const { NotesReducer, LanguageReducer } = useSelector((state) => state)
-  const { Panel } = Collapse
-  const [input, setInput] = useState("")
-  const [show, setShow] = useState(false)
+  const [updateNotesModal, setUpdateNotesModal] = useState(false);
+  const [selectedMarkerID, setSelectedMarkerID] = useState(0);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { NotesReducer, LanguageReducer } = useSelector((state) => state);
+  const { Panel } = Collapse;
+  const [input, setInput] = useState("");
+  const [show, setShow] = useState(false);
   //Get Current User ID
-  const { t } = useTranslation()
-  let createrID = localStorage.getItem("userID")
-  let OrganizationID = localStorage.getItem("organizationID")
-  let notesPage = JSON.parse(localStorage.getItem("notesPage"))
-  let notesPagesize = localStorage.getItem("notesPageSize")
-  const [totalRecords, setTotalRecords] = useState(0)
+  const { t } = useTranslation();
+  let createrID = localStorage.getItem("userID");
+  let OrganizationID = localStorage.getItem("organizationID");
+  let notesPage = JSON.parse(localStorage.getItem("notesPage"));
+  let notesPagesize = localStorage.getItem("notesPageSize");
+  const [totalRecords, setTotalRecords] = useState(0);
   // for modal Add notes
-  const [addNotes, setAddNotes] = useState(false)
+  const [addNotes, setAddNotes] = useState(false);
 
   const [open, setOpen] = useState({
     open: false,
     message: "",
-  })
-  const [showStarIcon, setStarIcon] = useState(false)
+  });
+  const [showStarIcon, setStarIcon] = useState(false);
   // for modal Update notes
-  const [updateShow, setUpdateShow] = useState(false)
-  const [notes, setNotes] = useState([])
+  const [updateShow, setUpdateShow] = useState(false);
+  const [notes, setNotes] = useState([]);
   //for view modal notes
-  const [viewModalShow, setViewModalShow] = useState(false)
-  const [isExpanded, setExpanded] = useState(false)
+  const [viewModalShow, setViewModalShow] = useState(false);
+  const [isExpanded, setExpanded] = useState(false);
+  const [isExpand, setExpand] = useState(false);
 
   useEffect(() => {
     if (notesPagesize !== null && notesPage !== null) {
@@ -87,48 +87,48 @@ const Notes = () => {
         Title: "",
         PageNumber: JSON.parse(notesPage),
         Length: JSON.parse(notesPagesize),
-      }
-      dispatch(GetNotes(navigate, Data, t))
+      };
+      dispatch(GetNotes(navigate, Data, t));
     } else {
-      localStorage.setItem("notesPage", 1)
-      localStorage.setItem("notesPageSize", 50)
+      localStorage.setItem("notesPage", 1);
+      localStorage.setItem("notesPageSize", 50);
       let Data = {
         UserID: parseInt(createrID),
         OrganizationID: JSON.parse(OrganizationID),
         Title: "",
         PageNumber: 1,
         Length: 50,
-      }
-      dispatch(GetNotes(navigate, Data, t))
+      };
+      dispatch(GetNotes(navigate, Data, t));
     }
-    setAddNotes(false)
-    setViewModalShow(false)
-    setUpdateShow(false)
+    setAddNotes(false);
+    setViewModalShow(false);
+    setUpdateShow(false);
     return () => {
-      localStorage.removeItem("notesPage")
-      localStorage.removeItem("notesPageSize")
-    }
-  }, [])
+      localStorage.removeItem("notesPage");
+      localStorage.removeItem("notesPageSize");
+    };
+  }, []);
 
   // render Notes Data
   useEffect(() => {
-    console.log("check note empty state")
+    console.log("check note empty state");
     try {
       if (
         NotesReducer.GetAllNotesResponse !== null &&
         NotesReducer.GetAllNotesResponse !== undefined
       ) {
-        console.log("check note empty state")
-        setTotalRecords(NotesReducer.GetAllNotesResponse.totalRecords)
+        console.log("check note empty state");
+        setTotalRecords(NotesReducer.GetAllNotesResponse.totalRecords);
         if (NotesReducer.GetAllNotesResponse.getNotes === null) {
-          console.log("check note empty state")
-          setNotes([])
+          console.log("check note empty state");
+          setNotes([]);
         } else if (
           Array.isArray(NotesReducer.GetAllNotesResponse.getNotes) &&
           NotesReducer.GetAllNotesResponse.getNotes.length > 0
         ) {
-          console.log("check note empty state")
-          let notes = []
+          console.log("check note empty state");
+          let notes = [];
           NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
             notes.push({
               date: data.date,
@@ -147,15 +147,15 @@ const Notes = () => {
               time: data.time,
               title: data.title,
               username: data.username,
-            })
-          })
-          setNotes(notes)
+            });
+          });
+          setNotes(notes);
         } else if (
           typeof NotesReducer.GetAllNotesResponse.getNotes === "object" &&
           Object.keys(NotesReducer.GetAllNotesResponse.getNotes).length > 0
         ) {
-          console.log("check note empty state")
-          let notes = []
+          console.log("check note empty state");
+          let notes = [];
           NotesReducer.GetAllNotesResponse.getNotes.map((data, index) => {
             notes.push({
               date: data.date,
@@ -174,12 +174,12 @@ const Notes = () => {
               time: data.time,
               title: data.title,
               username: data.username,
-            })
-          })
-          setNotes(notes)
+            });
+          });
+          setNotes(notes);
         } else {
-          console.log("check note empty state")
-          setNotes([])
+          console.log("check note empty state");
+          setNotes([]);
         }
         // if (Object.keys(NotesReducer.GetAllNotesResponse.getNotes).length > 0) {
         //   let notes = [];
@@ -209,21 +209,21 @@ const Notes = () => {
         //   setNotes([]);
         // }
       } else {
-        console.log("check note empty state")
-        setNotes([])
+        console.log("check note empty state");
+        setNotes([]);
       }
     } catch (error) {
-      console.log("check note empty state", error)
+      console.log("check note empty state", error);
     }
-  }, [NotesReducer.GetAllNotesResponse])
+  }, [NotesReducer.GetAllNotesResponse]);
 
   //for open Add User Notes Modal
   const modalAddUserModal = async (e) => {
-    setAddNotes(true)
-  }
+    setAddNotes(true);
+  };
   // for open Update User Notes Modal
   const editIconModal = async (id) => {
-    console.log(id, "editIconModaleditIconModaleditIconModal")
+    console.log(id, "editIconModaleditIconModaleditIconModal");
     dispatch(
       GetNotesByIdAPI(
         navigate,
@@ -234,8 +234,8 @@ const Notes = () => {
         setUpdateNotesModal,
         2
       )
-    )
-  }
+    );
+  };
 
   //for open View User Notes Modal
   const viewNotesModal = async (id, event) => {
@@ -249,31 +249,41 @@ const Notes = () => {
         setUpdateNotesModal,
         1
       )
-    )
-  }
+    );
+  };
 
   const ColorStarIcon = (id, index) => {
-    setStarIcon(!showStarIcon)
-  }
+    setStarIcon(!showStarIcon);
+  };
 
   const handleChangeExpanded = (id) => (event, newExpanded) => {
-    setExpanded(newExpanded ? id : false)
-  }
+    setExpanded(newExpanded ? id : false);
+  };
+
+  const toggleAcordion = (notesID) => {
+    console.log(notesID, "notesIDnotesIDnotesID");
+    // setExpanded((prev) => (prev === notesID ? true : false));
+    setExpand(!isExpand);
+    setExpanded(notesID);
+  };
+
+  console.log(isExpanded, "isExpandedisExpandedisExpanded");
 
   const handelChangeNotesPagination = async (current, pageSize) => {
-    localStorage.setItem("notesPage", current)
-    localStorage.setItem("notesPageSize", pageSize)
+    localStorage.setItem("notesPage", current);
+    localStorage.setItem("notesPageSize", pageSize);
     let Data = {
       UserID: parseInt(createrID),
       OrganizationID: JSON.parse(OrganizationID),
       Title: "",
       PageNumber: current,
       Length: pageSize,
-    }
-    dispatch(GetNotes(navigate, Data, t))
-  }
+    };
+    dispatch(GetNotes(navigate, Data, t));
+  };
 
   useEffect(() => {
+    console.log("NotesReducerNotesReducer", NotesReducer.ResponseMessage);
     if (
       NotesReducer.ResponseMessage !== "" &&
       NotesReducer.ResponseMessage !== t("Data-available") &&
@@ -283,7 +293,7 @@ const Notes = () => {
         ...open,
         open: true,
         message: NotesReducer.ResponseMessage,
-      })
+      });
       setTimeout(() => {
         setOpen(
           {
@@ -292,11 +302,11 @@ const Notes = () => {
             message: "",
           },
           4000
-        )
-      })
-      dispatch(ClearNotesResponseMessage())
+        );
+      });
+      dispatch(ClearNotesResponseMessage());
     }
-  }, [NotesReducer.ResponseMessage])
+  }, [NotesReducer.ResponseMessage]);
 
   return (
     <>
@@ -331,7 +341,12 @@ const Notes = () => {
                         aria-controls="panel1a-content"
                         id="panel1a-header"
                         className={styles["notes_accordion"]}
-                        expanded={isExpanded === JSON.parse(data?.pK_NotesID)}
+                        expanded={
+                          isExpanded === JSON.parse(data?.pK_NotesID) &&
+                          isExpand
+                            ? true
+                            : false
+                        }
                         key={data?.pK_NotesID}
                         // onChange={handleChangeExpanded(data?.pK_NotesID)}
                       >
@@ -340,8 +355,13 @@ const Notes = () => {
                           disableTouchRipple={true}
                           focusRipple={false}
                           radioGroup={false}
+                          IconButtonProps={{
+                            onClick: () =>
+                              toggleAcordion(JSON.parse(data?.pK_NotesID)),
+                          }}
                           expandIcon={
-                            isExpanded === JSON.parse(data?.pK_NotesID) ? (
+                            isExpanded === JSON.parse(data?.pK_NotesID) &&
+                            isExpand ? (
                               <img
                                 src={MinusExpand}
                                 className={styles["MinusIcon"]}
@@ -433,15 +453,23 @@ const Notes = () => {
                                   data?.modifiedDate + data?.modifiedTime
                                 )}`}
                               </span>
+                              {/* <img
+                                src={EditIconNote}
+                                width={17}
+                                alt=""
+                                className={
+                                  styles["editIcon-In-Collapse-material"]
+                                }
+                                onClick={() => editIconModal(data?.pK_NotesID)}
+                              /> */}
                             </Col>
 
                             <Col
                               lg={3}
                               md={3}
-                              sm={12}
-                              className={`${"d-flex justify-content-end align-items-center"} ${
-                                styles["editIconBox"]
-                              }`}
+                              sm={3}
+                              className={`${"d-flex justify-content-end align-items-center"} 
+                              `}
                             >
                               <img
                                 src={EditIconNote}
@@ -468,9 +496,9 @@ const Notes = () => {
                                 ? data?.notesAttachments.map((file, index) => {
                                     var ext = file.displayAttachmentName
                                       .split(".")
-                                      .pop()
+                                      .pop();
                                     const first =
-                                      file.displayAttachmentName.split(" ")[0]
+                                      file.displayAttachmentName.split(" ")[0];
 
                                     return (
                                       <Col
@@ -565,7 +593,7 @@ const Notes = () => {
                                           {first}
                                         </p>
                                       </Col>
-                                    )
+                                    );
                                   })
                                 : null}
                             </Col>
@@ -574,7 +602,7 @@ const Notes = () => {
                       </Accordion>
                     </Col>
                   </Row>
-                )
+                );
               })
             ) : (
               <Row>
@@ -643,7 +671,7 @@ const Notes = () => {
       />
       {NotesReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
-  )
-}
+  );
+};
 
-export default Notes
+export default Notes;

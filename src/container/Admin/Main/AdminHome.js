@@ -48,11 +48,14 @@ const AdminHome = () => {
       message: "",
     });
   };
-  console.log("isExpiry color", isExpiry, remainingDays, color)
-  console.log("isExpiry color", isExpiry === "true",
+  console.log("isExpiry color", isExpiry, remainingDays, color);
+  console.log(
+    "isExpiry color",
+    isExpiry === "true",
     isExpiry != undefined,
     remainingDays > 0,
-    remainingDays != undefined);
+    remainingDays != undefined
+  );
 
   const onMessageArrived = (msg) => {
     let data = JSON.parse(msg.payloadString);
@@ -156,18 +159,21 @@ const AdminHome = () => {
     }
   }, []);
   useEffect(() => {
-    console.log("isExpiry color", GetSubscriptionPackage.getPackageExpiryDetailResponse)
+    console.log(
+      "isExpiry color",
+      GetSubscriptionPackage.getPackageExpiryDetailResponse
+    );
   }, [GetSubscriptionPackage.getPackageExpiryDetailResponse]);
 
   return (
     <>
       <Header2 />
       {isExpiry === "true" &&
-        isExpiry != null &&
-        isExpiry != undefined &&
-        remainingDays > 0 &&
-        remainingDays != null &&
-        remainingDays != undefined ? (
+      isExpiry !== null &&
+      isExpiry !== undefined &&
+      remainingDays > 0 &&
+      remainingDays !== null &&
+      remainingDays !== undefined ? (
         <Subscriptionwarningline
           color={color}
           text={
