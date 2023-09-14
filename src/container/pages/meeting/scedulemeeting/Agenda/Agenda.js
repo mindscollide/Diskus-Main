@@ -120,7 +120,8 @@ const Agenda = () => {
           selectedOption: null,
           startDate: null,
           endDate: null,
-          files: [
+          subSelectRadio: "0",
+          Subfiles: [
             {
               name: "MeetingAgendas",
             },
@@ -239,6 +240,39 @@ const Agenda = () => {
       selectedOption: null,
       startDate: null,
       endDate: null,
+      subSelectRadio: "0",
+      Subfiles: [
+        {
+          name: "MeetingAgendas",
+        },
+        {
+          name: "DiskusMeetings",
+        },
+        {
+          name: "AxisMeetings",
+        },
+        {
+          name: "Bahria Auditoriom Meetings to be published",
+        },
+        {
+          name: "MeetingAgendas",
+        },
+        {
+          name: "MeetingAgendas",
+        },
+        {
+          name: "MeetingAgendas",
+        },
+        {
+          name: "MeetingAgendas",
+        },
+        {
+          name: "MeetingAgendas",
+        },
+        {
+          name: "MeetingAgendas",
+        },
+      ],
     };
     updatedRows[rowAgendaIndex].subAgenda.push(newSubAgenda);
     setRows(updatedRows);
@@ -395,6 +429,18 @@ const Agenda = () => {
   const handleSubAgendaEndDateChange = (index, subIndex, date) => {
     const updatedRows = [...rows];
     updatedRows[index].subAgenda[subIndex].endDate = date;
+    setRows(updatedRows);
+  };
+
+  // Function to handle changes in sub-agenda radio group
+  const handleSubAgendaRadioChange = (index, subIndex, e) => {
+    let value = e.target.value;
+    const updatedRows = [...rows];
+    updatedRows[index].subAgenda[subIndex].subSelectRadio = value;
+    console.log(
+      updatedRows,
+      "handleSubAgendaRadioChangehandleSubAgendaRadioChange"
+    );
     setRows(updatedRows);
   };
 
@@ -1607,10 +1653,16 @@ const Agenda = () => {
                                                               sm={6}
                                                             >
                                                               <Radio.Group
-                                                                onChange={
-                                                                  subAjendaonChange
+                                                                value={
+                                                                  subAgendaData.subSelectRadio
                                                                 }
-                                                                value={subValue}
+                                                                onChange={(e) =>
+                                                                  handleSubAgendaRadioChange(
+                                                                    index,
+                                                                    subIndex,
+                                                                    e
+                                                                  )
+                                                                }
                                                                 disabled={
                                                                   apllyLockOnParentAgenda(
                                                                     index
@@ -1623,9 +1675,7 @@ const Agenda = () => {
                                                                     : false
                                                                 }
                                                               >
-                                                                <Radio
-                                                                  subValue={1}
-                                                                >
+                                                                <Radio value="1">
                                                                   <span
                                                                     className={
                                                                       styles[
@@ -1638,9 +1688,7 @@ const Agenda = () => {
                                                                     )}
                                                                   </span>
                                                                 </Radio>
-                                                                <Radio
-                                                                  subValue={2}
-                                                                >
+                                                                <Radio value="2">
                                                                   <span
                                                                     className={
                                                                       styles[
@@ -1651,9 +1699,7 @@ const Agenda = () => {
                                                                     {t("URL")}
                                                                   </span>
                                                                 </Radio>
-                                                                <Radio
-                                                                  subValue={3}
-                                                                >
+                                                                <Radio value="3">
                                                                   <span
                                                                     className={
                                                                       styles[
@@ -1757,7 +1803,8 @@ const Agenda = () => {
                                                               />
                                                             </Col>
                                                           </Row>
-                                                          {subValue === 1 ? (
+                                                          {subAgendaData.subSelectRadio ===
+                                                          "1" ? (
                                                             <>
                                                               <Row>
                                                                 <Col
@@ -1771,10 +1818,11 @@ const Agenda = () => {
                                                                   }
                                                                 >
                                                                   <Row>
-                                                                    {data?.files
+                                                                    {subAgendaData
+                                                                      ?.files
                                                                       ?.length >
                                                                     0 ? (
-                                                                      data?.files?.map(
+                                                                      subAgendaData?.files?.map(
                                                                         (
                                                                           subAFiles,
                                                                           index
@@ -1858,8 +1906,8 @@ const Agenda = () => {
                                                                           );
                                                                         }
                                                                       )
-                                                                    ) : subValue ===
-                                                                      2 ? (
+                                                                    ) : subAgendaData.subSelectRadio ===
+                                                                      "2" ? (
                                                                       <>
                                                                         <Row className="mt-2">
                                                                           <Col
@@ -1887,8 +1935,8 @@ const Agenda = () => {
                                                                           </Col>
                                                                         </Row>
                                                                       </>
-                                                                    ) : subValue ===
-                                                                      3 ? (
+                                                                    ) : subAgendaData.subSelectRadio ===
+                                                                      "3" ? (
                                                                       <>
                                                                         <Row className="mt-2">
                                                                           <Col
