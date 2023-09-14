@@ -75,11 +75,42 @@ const Agenda = () => {
   const [rows, setRows] = useState([
     {
       ID: "0",
-      title: null,
+      title: "",
       selectedOption: null,
       startDate: null,
       endDate: null,
-      Notes: "",
+      files: [
+        {
+          name: "MeetingAgendas",
+        },
+        {
+          name: "DiskusMeetings",
+        },
+        {
+          name: "AxisMeetings",
+        },
+        {
+          name: "Bahria Auditoriom Meetings to be published",
+        },
+        {
+          name: "MeetingAgendas",
+        },
+        {
+          name: "MeetingAgendas",
+        },
+        {
+          name: "MeetingAgendas",
+        },
+        {
+          name: "MeetingAgendas",
+        },
+        {
+          name: "MeetingAgendas",
+        },
+        {
+          name: "MeetingAgendas",
+        },
+      ],
       subAgenda: [
         {
           ID: "00",
@@ -118,43 +149,13 @@ const Agenda = () => {
           ],
         },
       ],
-      files: [
-        {
-          name: "MeetingAgendas",
-        },
-        {
-          name: "DiskusMeetings",
-        },
-        {
-          name: "AxisMeetings",
-        },
-        {
-          name: "Bahria Auditoriom Meetings to be published",
-        },
-        {
-          name: "MeetingAgendas",
-        },
-        {
-          name: "MeetingAgendas",
-        },
-        {
-          name: "MeetingAgendas",
-        },
-        {
-          name: "MeetingAgendas",
-        },
-        {
-          name: "MeetingAgendas",
-        },
-        {
-          name: "MeetingAgendas",
-        },
-      ],
     },
   ]);
-  console.log(rows, "rowsrowsrows");
+  console.log(rows.title, "rowsrowsrows");
+  console.log(rows.selectedOption, "rowsrowsrows");
+  console.log(rows.startDate, "rowsrowsrows");
+  console.log(rows.endDate, "rowsrowsrows");
   const [files, setfiles] = useState([]);
-  const [subAjendaRows, setSubAjendaRows] = useState([]);
 
   const onChange = (e) => {
     console.log("radiochecked", e.target.value);
@@ -221,7 +222,6 @@ const Agenda = () => {
         selectedOption: null,
         startDate: null,
         endDate: null,
-        Notes: "",
         subAgenda: [
           {
             subAjendaTitle: null,
@@ -309,16 +309,42 @@ const Agenda = () => {
     return exists;
   };
 
-  const HandleChange = (e, index) => {
-    let name = parseInt(e.target.name);
-    let newValue = e.target.value;
-    console.log("handleNotes", newValue);
-    let valueCheck = regexOnlyForNumberNCharacters(newValue);
-    setRows((prevState) =>
-      prevState.map((item) => {
-        return item.name === name ? { ...item, value: valueCheck } : item;
-      })
-    );
+  // StateManagement of Components
+
+  const handleAgendaItemChange = (index, e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    const updatedAgendaItems = [...rows];
+    if (name === "title") {
+      updatedAgendaItems[index][name] = value;
+    }
+    setRows(updatedAgendaItems);
+  };
+
+  const handleSelectChange = (index, value) => {
+    console.log(value, "valuevaluevalue");
+    const updatedAgendaItems = [...rows];
+    let SelectValue = {
+      value: value.value,
+      label: value.label,
+    };
+    updatedAgendaItems[index].selectedOption = SelectValue;
+    setRows(updatedAgendaItems);
+  };
+
+  // Function to update the startDate for a specific row
+  const handleStartDateChange = (index, date) => {
+    console.log(date, "datedatedatedatedate");
+    const updatedRows = [...rows];
+    updatedRows[index].startDate = date;
+    setRows(updatedRows);
+  };
+
+  // Function to update the endDate for a specific row
+  const handleEndDateChange = (index, date) => {
+    const updatedRows = [...rows];
+    updatedRows[index].endDate = date;
+    setRows(updatedRows);
   };
 
   const [subLockArry, setSubLockArray] = useState([]);
@@ -357,18 +383,6 @@ const Agenda = () => {
     }
 
     setSubLockArray(cloneSubLockArry);
-  };
-
-  const handleNotes = (e) => {
-    let name = parseInt(e.target.name);
-    let newValue = e.target.value;
-    console.log("handleNotes", newValue);
-    let valueCheck = regexOnlyForNumberNCharacters(newValue);
-    setRows((prevState) =>
-      prevState.map((item) => {
-        return item.name === name ? { ...item, value: valueCheck } : item;
-      })
-    );
   };
 
   const handlePreviousAgenda = () => {
@@ -425,6 +439,7 @@ const Agenda = () => {
                   <div {...provided.droppableProps} ref={provided.innerRef}>
                     {rows.length > 0
                       ? rows.map((data, index) => {
+                          console.log("valuevaluevalue", data.title);
                           return (
                             <>
                               <Draggable
@@ -526,14 +541,17 @@ const Agenda = () => {
                                                     applyClass={
                                                       "AgendaTextField"
                                                     }
+                                                    name={"title"}
                                                     labelClass={"d-none"}
                                                     placeholder={t(
                                                       "Agenda-title"
                                                     )}
-                                                    value={data.value}
-                                                    name={data.name}
+                                                    value={data.title}
                                                     change={(e) =>
-                                                      HandleChange(e)
+                                                      handleAgendaItemChange(
+                                                        index,
+                                                        e
+                                                      )
                                                     }
                                                     disable={
                                                       apllyLockOnParentAgenda(
@@ -565,6 +583,12 @@ const Agenda = () => {
                                                   <Select
                                                     options={options}
                                                     value={data.selectedOption}
+                                                    onChange={(value) =>
+                                                      handleSelectChange(
+                                                        index,
+                                                        value
+                                                      )
+                                                    }
                                                     isDisabled={
                                                       apllyLockOnParentAgenda(
                                                         index
@@ -614,6 +638,12 @@ const Agenda = () => {
                                                             hideSeconds
                                                           />,
                                                         ]}
+                                                        onChange={(date) =>
+                                                          handleStartDateChange(
+                                                            index,
+                                                            date
+                                                          )
+                                                        }
                                                         disabled={
                                                           apllyLockOnParentAgenda(
                                                             index
@@ -665,6 +695,12 @@ const Agenda = () => {
                                                             hideSeconds
                                                           />,
                                                         ]}
+                                                        onChange={(date) =>
+                                                          handleEndDateChange(
+                                                            index,
+                                                            date
+                                                          )
+                                                        } // Update end date
                                                         disabled={
                                                           apllyLockOnParentAgenda(
                                                             index
@@ -1000,9 +1036,6 @@ const Agenda = () => {
                                                             as={"textarea"}
                                                             name={data.name}
                                                             value={data.value}
-                                                            change={(e) =>
-                                                              handleNotes(e)
-                                                            }
                                                             rows="4"
                                                             placeholder={t(
                                                               "Enter-notes"
@@ -1448,9 +1481,9 @@ const Agenda = () => {
                                                       </Row>
                                                       {/* Condition for Subajencda */}
                                                       {subexpandIndex ===
-                                                        subIndex &&
-                                                      expandSubIndex ===
                                                         index &&
+                                                      expandSubIndex ===
+                                                        subIndex &&
                                                       subExpand ? (
                                                         <>
                                                           <Row className="mt-3">
