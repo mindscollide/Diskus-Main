@@ -222,6 +222,13 @@
   margin-top: -24.9% !important;
   cursor: pointer !important;
 }
+
+.RedCross_Icon_class_SubAgenda {
+  position: absolute !important;
+  right: -10px !important;
+  top: -8px !important;
+  cursor: pointer !important;
+}
 .RedCross_Icon_class_Main_agenda {
   position: absolute !important;
   right: -10px !important;

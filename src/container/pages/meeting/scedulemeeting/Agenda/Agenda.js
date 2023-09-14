@@ -1744,7 +1744,7 @@ const Agenda = () => {
                                                             width="25px"
                                                             className={
                                                               styles[
-                                                                "RedCross_Icon_class"
+                                                                "RedCross_Icon_class_SubAgenda"
                                                               ]
                                                             }
                                                             onClick={() => {
