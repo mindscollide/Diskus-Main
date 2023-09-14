@@ -4,7 +4,11 @@ import TimePicker from "react-time-picker";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import { Paper } from "@material-ui/core";
-import DatePicker from "react-multi-date-picker";
+import DatePicker, { DateObject } from "react-multi-date-picker";
+import gregorian from "react-date-object/calendars/gregorian";
+import arabic from "react-date-object/calendars/arabic";
+import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian_en from "react-date-object/locales/gregorian_en";
 // import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { useTranslation } from "react-i18next";
 import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
@@ -75,6 +79,8 @@ const ScheduleNewResolution = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
   const [minDate, setMinDate] = useState("");
   const [circulationDate, setCirculationDate] = useState("");
   const [votingDeadLine, setVotingDeadLine] = useState("");
@@ -85,6 +91,7 @@ const ScheduleNewResolution = () => {
   );
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [isVoter, setVoter] = useState(true);
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const [votingMethods, setVotingMethods] = useState([]);
   const [decision, setDecision] = useState({
     label: t("Decision-pending"),
@@ -133,15 +140,17 @@ const ScheduleNewResolution = () => {
   const [circulationDateTime, setCirculationDateTime] = useState({
     date: "",
     time: "",
+    validationDate: "",
   });
-
   const [votingDateTime, setVotingDateTime] = useState({
+    validationDate: "",
     date: "",
     time: "",
   });
   const [decisionDateTime, setDecisionDateTime] = useState({
     date: "",
     time: "",
+    validationDate: "",
   });
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
@@ -169,10 +178,20 @@ const ScheduleNewResolution = () => {
     DecisionAnnouncementDateTime: "",
     IsResolutionPublic: false,
   });
-
+  const currentDate = new Date();
   useEffect(() => {
-    const min_date = new Date();
-    setMinDate(moment(min_date).format("YYYY-MM-DD"));
+    if (currentLanguage !== undefined) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(arabic);
+        setLocalValue(arabic_ar);
+      }
+    }
+  }, [currentLanguage]);
+  useEffect(() => {
+    // setMinDate(moment(min_date).format("YYYY-MM-DD"));
     dispatch(getAllVotingMethods(navigate, t));
     dispatch(getAllResolutionStatus(navigate, t));
     dispatch(allAssignessList(navigate, t));
@@ -180,7 +199,7 @@ const ScheduleNewResolution = () => {
 
   const dateformatYYYYMMDD = (date) => {
     if (!!date && typeof date === "string") {
-      return moment(date).add(1, "days").format("YYYY-MM-DD");
+      return moment(date).add(1, "days").toDate();
     }
   };
 
@@ -221,7 +240,10 @@ const ScheduleNewResolution = () => {
   const resolutioncancell = () => {
     setResolutioncancel(true);
   };
-
+  console.log(
+    moment(circulationDateTime.date + circulationDateTime.time).toDate(),
+    "votingDateTimevotingDateTimevotingDateTimevotingDateTime"
+  );
   const removeUserForVoter = (id, name) => {
     setVoterModalRemove(true);
     setVoterID(id);
@@ -892,6 +914,7 @@ const ScheduleNewResolution = () => {
   const handleChangeDateSelection = (e) => {
     let name = e.target.name;
     let value = e.target.value;
+    console.log(value, "valuevaluevalue");
     if (name === "circulation") {
       setCirculationDateTime({
         ...circulationDateTime,
@@ -931,6 +954,42 @@ const ScheduleNewResolution = () => {
     }
   };
 
+  const circulationDateChangeHandler = (date) => {
+    let meetingDateSaveFormat = new DateObject(date).format("YYYY-MM-DD");
+    setCirculationDateTime({
+      ...circulationDateTime,
+      date: meetingDateSaveFormat,
+    });
+  };
+
+  const votingDateChangeHandler = (date) => {
+    let meetingDateSaveFormat = new DateObject(date).format("YYYY-MM-DD");
+    console.log("meetingDateSaveFormat", meetingDateSaveFormat);
+    setVotingDateTime({
+      ...votingDateTime,
+      date: meetingDateSaveFormat,
+    });
+  };
+
+  const decisionChangeHandler = (date) => {
+    let meetingDateSaveFormat = new DateObject(date).format("YYYY-MM-DD");
+    setDecisionDateTime({
+      ...decisionDateTime,
+      date: meetingDateSaveFormat,
+    });
+  };
+  // DatePicker
+  console.log("date moment().toDate()", moment().toDate());
+  console.log(
+    "date moment().circulationDateTime",
+    moment(circulationDateTime.date + circulationDateTime.time)
+      .day(1, "day")
+      .toDate()
+  );
+  console.log(
+    "date moment().votingDateTime",
+    moment(votingDateTime.date + votingDateTime.time).toDate()
+  );
   return (
     <>
       <section>
@@ -1103,34 +1162,40 @@ const ScheduleNewResolution = () => {
                           lg={6}
                           sm={6}
                           md={6}
-                          className="CreateMeetingReminder resolution-search-input  date_Picker FontArabicRegular "
+                          className="CreateMeetingReminder  "
                         >
-                          <DatePicker
-                            format={"DD/MM/YYYY"}
-                            minDate={moment().toDate()}
-                            placeholder="DD/MM/YYYY"
-                            render={
-                              <InputIcon
-                                placeholder="DD/MM/YYYY"
-                                className="datepicker_input"
-                              />
-                            }
-                            editable={false}
-                            className="datePickerTodoCreate2"
-                            onOpenPickNewDate={false}
-                            inputMode=""
-                            // value={meetingDate}
-                            // calendar={calendarValue}
-                            // locale={localValue}
-                            // onChange={meetingDateHandler}
-                          />
+                          <div className="datepicker align-items-center ">
+                            <DatePicker
+                              format={"DD/MM/YYYY"}
+                              minDate={currentDate}
+                              placeholder="DD/MM/YYYY"
+                              render={
+                                <InputIcon
+                                  placeholder="DD/MM/YYYY"
+                                  className={styles["Resolution_datePicker"]}
+                                />
+                              }
+                              editable={false}
+                              className="datePickerTodoCreate2"
+                              onOpenPickNewDate={false}
+                              containerClassName={
+                                styles["datePicker_Container"]
+                              }
+                              inputMode=""
+                              name="circulation"
+                              // value={meetingDate}
+                              calendar={calendarValue}
+                              locale={localValue}
+                              onChange={circulationDateChangeHandler}
+                            />
+                          </div>
                           {/* <TextFieldDateTime
                             min={minDate}
                             labelClass="d-none"
                             name={"circulation"}
                             applyClass={"search_voterInput"}
                             change={(e) => {
-                              handleChangeDateSelection(e)
+                              handleChangeDateSelection(e);
                             }}
                           /> */}
                           <Row>
@@ -1201,7 +1266,37 @@ const ScheduleNewResolution = () => {
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
-                          <TextFieldDateTime
+                          <div className="datepicker align-items-center ">
+                            <DatePicker
+                              format={"DD/MM/YYYY"}
+                              minDate={dateformatYYYYMMDD(
+                                circulationDateTime.date
+                              )}
+                              // minDate={moment(
+                              //   circulationDateTime.validationDate
+                              // )}
+                              placeholder="DD/MM/YYYY"
+                              render={
+                                <InputIcon
+                                  placeholder="DD/MM/YYYY"
+                                  className={styles["Resolution_datePicker"]}
+                                />
+                              }
+                              editable={false}
+                              className="datePickerTodoCreate2"
+                              onOpenPickNewDate={false}
+                              containerClassName={
+                                styles["datePicker_Container"]
+                              }
+                              inputMode=""
+                              name="voting"
+                              // value={meetingDate}
+                              calendar={calendarValue}
+                              locale={localValue}
+                              onChange={votingDateChangeHandler}
+                            />
+                          </div>
+                          {/* <TextFieldDateTime
                             min={
                               circulationDateTime.date !== ""
                                 ? dateformatYYYYMMDD(circulationDateTime.date)
@@ -1213,7 +1308,7 @@ const ScheduleNewResolution = () => {
                             change={(e) => {
                               handleChangeDateSelection(e);
                             }}
-                          />
+                          /> */}
                           <Row>
                             <Col>
                               <p
@@ -1281,7 +1376,32 @@ const ScheduleNewResolution = () => {
                           md={6}
                           className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                         >
-                          <TextFieldDateTime
+                          <div className="datepicker align-items-center ">
+                            <DatePicker
+                              format={"DD/MM/YYYY"}
+                              minDate={dateformatYYYYMMDD(votingDateTime.date)}
+                              placeholder="DD/MM/YYYY"
+                              render={
+                                <InputIcon
+                                  placeholder="DD/MM/YYYY"
+                                  className={styles["Resolution_datePicker"]}
+                                />
+                              }
+                              editable={false}
+                              className="datePickerTodoCreate2"
+                              onOpenPickNewDate={false}
+                              containerClassName={
+                                styles["datePicker_Container"]
+                              }
+                              inputMode=""
+                              name="decision"
+                              // value={meetingDate}
+                              calendar={calendarValue}
+                              locale={localValue}
+                              onChange={decisionChangeHandler}
+                            />
+                          </div>
+                          {/* <TextFieldDateTime
                             applyClass={"search_voterInput"}
                             min={
                               votingDateTime.date !== ""
@@ -1293,7 +1413,7 @@ const ScheduleNewResolution = () => {
                             change={(e) => {
                               handleChangeDateSelection(e);
                             }}
-                          />
+                          /> */}
                           <Row>
                             <Col>
                               <p
