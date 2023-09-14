@@ -55,24 +55,15 @@ const Agenda = () => {
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const { Dragger } = Upload;
-  const [value, setValue] = useState(1);
-  const [subValue, setSubValue] = useState(0);
   const [expand, setExpand] = useState(true);
   const [subExpand, setSubExpand] = useState(true);
   const [expandSubIndex, setExpandSubIndex] = useState(0);
   const [expandIndex, setExpandIndex] = useState(0);
-  const [subAjendaRowIndex, setsubAjendaRowIndex] = useState(0);
   const [subexpandIndex, setsubexpandIndex] = useState(0);
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
-  const [disbaleFields, setDisbaleFields] = useState(false);
-  const [subMenudisbaleFields, setSubMenuDisbaleFields] = useState(false);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
-  const [subLock, setSubLock] = useState([]);
-  const [open, setOpen] = useState({
-    flag: false,
-    message: "",
-  });
+
   const [rows, setRows] = useState([
     {
       ID: "0",
