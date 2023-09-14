@@ -82,6 +82,8 @@ const Agenda = () => {
       endDate: null,
       selectedRadio: "0",
       urlFieldMain: "",
+      requestContributorURl: "",
+      MainNote: "",
       files: [
         {
           name: "MeetingAgendas",
@@ -235,6 +237,8 @@ const Agenda = () => {
         },
       ],
       urlFieldMain: "",
+      requestContributorURl: "",
+      MainNote: "",
       subAgenda: [
         {
           ID: "0",
@@ -468,6 +472,45 @@ const Agenda = () => {
       "handleSubAgendaRadioChangehandleSubAgendaRadioChange"
     );
     setRows(updatedRows);
+  };
+
+  // Function to handle changes in main agenda additional text field
+  const handleMainAgendaAdditionalFieldChange = (index, e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    const updatedRows = [...rows];
+    if (name === "UrlMainAgenda") {
+      updatedRows[index].urlFieldMain = value;
+    }
+    setRows(updatedRows);
+    console.log(updatedRows, "UrlMainAgendaUrlMainAgenda");
+  };
+
+  // Function to handle changes in main agenda Main Request Contributor Url text field
+  const handleMainAgendaAdditionalFieldChangeRequestContributorURL = (
+    index,
+    e
+  ) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    const updatedRows = [...rows];
+    if (name === "MainRequestContributorName") {
+      updatedRows[index].requestContributorURl = value;
+    }
+    setRows(updatedRows);
+    console.log(updatedRows, "MainRequestContributorName");
+  };
+
+  // Function to handle changes in main agenda additional text field Main Request Contributor Note
+  const handleMainAgendaAdditionalMainReqNotes = (index, e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    const updatedRows = [...rows];
+    if (name === "MainNoteReqContributor") {
+      updatedRows[index].MainNote = value;
+    }
+    setRows(updatedRows);
+    console.log(updatedRows, "MainNoteReqContributor");
   };
 
   const [subLockArry, setSubLockArray] = useState([]);
@@ -1126,6 +1169,18 @@ const Agenda = () => {
                                                             placeholder={t(
                                                               "Enter-url"
                                                             )}
+                                                            name={
+                                                              "UrlMainAgenda"
+                                                            }
+                                                            value={
+                                                              data.urlFieldMain
+                                                            }
+                                                            change={(e) =>
+                                                              handleMainAgendaAdditionalFieldChange(
+                                                                index,
+                                                                e
+                                                              )
+                                                            }
                                                           />
                                                         </Col>
                                                       </Row>
@@ -1152,6 +1207,18 @@ const Agenda = () => {
                                                             placeholder={t(
                                                               "Enter-email-address-here"
                                                             )}
+                                                            name={
+                                                              "MainRequestContributorName"
+                                                            }
+                                                            value={
+                                                              data.requestContributorURl
+                                                            }
+                                                            change={(e) => {
+                                                              handleMainAgendaAdditionalFieldChangeRequestContributorURL(
+                                                                index,
+                                                                e
+                                                              );
+                                                            }}
                                                           />
                                                         </Col>
                                                       </Row>
@@ -1165,8 +1232,18 @@ const Agenda = () => {
                                                             applyClass="text-area-create-resolution"
                                                             type="text"
                                                             as={"textarea"}
-                                                            name={data.name}
-                                                            value={data.value}
+                                                            name={
+                                                              "MainNoteReqContributor"
+                                                            }
+                                                            value={
+                                                              data.MainNote
+                                                            }
+                                                            change={(e) =>
+                                                              handleMainAgendaAdditionalMainReqNotes(
+                                                                index,
+                                                                e
+                                                              )
+                                                            }
                                                             rows="4"
                                                             placeholder={t(
                                                               "Enter-notes"
