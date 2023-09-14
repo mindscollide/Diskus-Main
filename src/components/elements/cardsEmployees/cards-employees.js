@@ -10,6 +10,7 @@ const EmployeeCard = ({
   employeeDesignation,
   organizer,
   IconOnClick,
+  UserProfilePic,
 }) => {
   let UserName = localStorage.getItem("UserName");
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -23,7 +24,11 @@ const EmployeeCard = ({
             xs={12}
             className="p-0 margin-bottom-15margin-bottom-15"
           >
-            <img src={currentUserImage} className="card-employee-image" />
+            <img
+              src={`data:image/jpeg;base64,${UserProfilePic}`}
+              className="card-employee-image"
+              alt=""
+            />
           </Col>
           <Col lg={8} md={8} xs={12}>
             <label

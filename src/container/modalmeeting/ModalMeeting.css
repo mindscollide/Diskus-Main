@@ -150,7 +150,7 @@ fieldset:disabled .btn {
 
 .createmeetingtime-row-1 {
   margin-top: 25px;
-  height: 59px;
+  height: auto;
 }
 
 .createmeetingInput-row {
@@ -480,7 +480,10 @@ body[dir="rtl"] .isAttendee-Schedule-top-btn {
   /* width: 100px !important; */
 }
 
-.modalmeeting-attendees-row .inputSearchFilter .search-container-assignee .dropdown-assignee {
+.modalmeeting-attendees-row
+  .inputSearchFilter
+  .search-container-assignee
+  .dropdown-assignee {
   width: 260px !important;
   top: 29px !important;
 }

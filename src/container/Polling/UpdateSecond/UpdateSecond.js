@@ -1,16 +1,16 @@
-import React from "react";
-import styles from "./UpdateSecond.module.css";
-import { Container, Row, Col } from "react-bootstrap";
-import { Modal, Button, MultiDatePicker } from "../../../components/elements";
-import { useTranslation } from "react-i18next";
-import AlarmClock from "../../../assets/images/AlarmOptions.svg";
-import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
-import gregorian_en from "react-date-object/locales/gregorian_en";
-import CrossIcon from "../../../assets/images/CrossIcon.svg";
-import gregorian from "react-date-object/calendars/gregorian";
-import arabic from "react-date-object/calendars/arabic";
-import profile from "../../../assets/images/profile_polls.svg";
-import { useState } from "react";
+import React from "react"
+import styles from "./UpdateSecond.module.css"
+import { Container, Row, Col } from "react-bootstrap"
+import { Modal, Button, MultiDatePicker } from "../../../components/elements"
+import { useTranslation } from "react-i18next"
+import AlarmClock from "../../../assets/images/AlarmOptions.svg"
+import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg"
+import gregorian_en from "react-date-object/locales/gregorian_en"
+import CrossIcon from "../../../assets/images/CrossIcon.svg"
+import gregorian from "react-date-object/calendars/gregorian"
+import arabic from "react-date-object/calendars/arabic"
+import profile from "../../../assets/images/profile_polls.svg"
+import { useState } from "react"
 
 const UpdateSecond = ({
   showUpdateAfterPublished,
@@ -61,10 +61,10 @@ const UpdateSecond = ({
       id: 12,
       name: "Waseem",
     },
-  ]);
-  const { t } = useTranslation();
-  const [calendarValue, setCalendarValue] = useState(gregorian);
-  const [localValue, setLocalValue] = useState(gregorian_en);
+  ])
+  const { t } = useTranslation()
+  const [calendarValue, setCalendarValue] = useState(gregorian)
+  const [localValue, setLocalValue] = useState(gregorian_en)
   return (
     <Container>
       <Modal
@@ -74,7 +74,7 @@ const UpdateSecond = ({
         modalHeaderClassName={styles["ModalRequestHeader_polling_View_modal"]}
         modalFooterClassName={"d-block"}
         onHide={() => {
-          setShowUpdateAfterPublished(false);
+          setShowUpdateAfterPublished(false)
         }}
         ModalTitle={
           <>
@@ -126,7 +126,7 @@ const UpdateSecond = ({
                   height="16px"
                   className={styles["View_cross_icon"]}
                   onClick={() => {
-                    setShowUpdateAfterPublished(false);
+                    setShowUpdateAfterPublished(false)
                   }}
                 />
               </Col>
@@ -223,6 +223,7 @@ const UpdateSecond = ({
                   >
                     <Row>
                       {viewpollMembers.map((data, index) => {
+                        console.log("datadatadata", data)
                         return (
                           <Col lg={6} md={6} sm={12} className="mt-2">
                             <Row>
@@ -242,7 +243,7 @@ const UpdateSecond = ({
                               </Col>
                             </Row>
                           </Col>
-                        );
+                        )
                       })}
                     </Row>
                   </Col>
@@ -266,7 +267,7 @@ const UpdateSecond = ({
                       text={t("Cancel")}
                       className={styles["Close_btn_ViewPoll"]}
                       onClick={() => {
-                        setShowUpdateAfterPublished(false);
+                        setShowUpdateAfterPublished(false)
                       }}
                     />
                     <Button
@@ -282,7 +283,7 @@ const UpdateSecond = ({
         size={"md"}
       />
     </Container>
-  );
-};
+  )
+}
 
-export default UpdateSecond;
+export default UpdateSecond

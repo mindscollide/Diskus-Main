@@ -1,4 +1,5 @@
 import moment from "moment";
+import { DateObject } from "react-multi-date-picker";
 
 export const removeDashesFromDate = (data) => {
   let value = data.split("-");
@@ -453,8 +454,6 @@ export const createConvert = (dateTime) => {
 
 export const EditmeetingDateFormat = (dateTime) => {
   console.log("convertintoISOconvertintoISO", dateTime);
-  let newDate = new Date(dateTime);
-  let convertintoISO = moment(dateTime, "YYYYMMDDHHmmss").toString();
   let fullDateyear =
     dateTime?.slice(0, 4) +
     "-" +
@@ -468,13 +467,7 @@ export const EditmeetingDateFormat = (dateTime) => {
     ":" +
     dateTime?.slice(12, 14) +
     ".000Z";
-  let _dateTime = new Date(fullDateyear).toString("YYYYMMDDHHmmss");
-  console.log(
-    convertintoISO,
-    _dateTime,
-    moment(_dateTime).format("DD/MM/YYYY"),
-    "convertintoISOconvertintoISO"
-  );
+  let _dateTime = new Date(fullDateyear).toString("DD/MM/YYYY");
   return _dateTime;
 };
 

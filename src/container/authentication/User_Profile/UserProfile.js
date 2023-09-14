@@ -315,7 +315,8 @@ const UserProfileModal = ({
             t,
             setMobileEnable,
             setDesignationEnable,
-            setNameEanble
+            setNameEanble,
+            setUser
           )
         )
       }

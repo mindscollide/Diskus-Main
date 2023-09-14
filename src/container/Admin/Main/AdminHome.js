@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { NavbarAdmin } from "../../../components/layout";
 import Header2 from "../../../components/layout/header2/Header2";
+import ar_EG from "antd/es/locale/ar_EG";
+import en_US from "antd/es/locale/en_US";
 import AttachmentIcon from "../../../assets/images/Icon-Attachment.png";
 import Helper from "../../../commen/functions/history_logout";
 import { getSocketConnection } from "../../../commen/apis/Api_ends_points";
@@ -18,6 +20,7 @@ import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirty
 import { _justShowDateformat } from "../../../commen/functions/date_formater";
 import { setLoader } from "../../../store/actions/Auth2_actions";
 import { mqttConnection } from "../../../commen/functions/mqttconnection";
+import { ConfigProvider } from "antd";
 // import { GetSubscriptionPackages } from "../../../store/reducers";
 
 const AdminHome = () => {
@@ -25,7 +28,7 @@ const AdminHome = () => {
   const navigate = useNavigate();
   const state = useSelector((state) => state);
   const { GetSubscriptionPackage } = state;
-
+  const [currentLanguge, setCurrentLanguage] = useState("en");
   const { t } = useTranslation();
   const [client, setClient] = useState(null);
   let createrID = localStorage.getItem("userID");
@@ -34,6 +37,7 @@ const AdminHome = () => {
   let roleID = JSON.parse(localStorage.getItem("roleID"));
   let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
   let remainingDays = localStorage.getItem("remainingDays");
+  let currentLanguageSelect = localStorage.getItem("i18nextLng");
   let dateOfExpiry = localStorage.getItem("dateOfExpiry");
   const [notificationID, setNotificationID] = useState(0);
   // let subscribeID = createrID!=null&&createrID!=undefined?createrID.toString():0;
@@ -48,11 +52,9 @@ const AdminHome = () => {
       message: "",
     });
   };
-  console.log("isExpiry color", isExpiry, remainingDays, color)
-  console.log("isExpiry color", isExpiry === "true",
-    isExpiry != undefined,
-    remainingDays > 0,
-    remainingDays != undefined);
+  useEffect(() => {
+    setCurrentLanguage(currentLanguageSelect);
+  }, [currentLanguageSelect]);
 
   const onMessageArrived = (msg) => {
     let data = JSON.parse(msg.payloadString);
@@ -151,48 +153,53 @@ const AdminHome = () => {
   //   newClient.onMessageArrived = onMessageArrived;
   // }, []);
   useEffect(() => {
-    if (roleID != 3) {
+    if (roleID !== 3) {
       dispatch(getPackageExpiryDetail(navigate, JSON.parse(OrganizationID), t));
     }
   }, []);
   useEffect(() => {
-    console.log("isExpiry color", GetSubscriptionPackage.getPackageExpiryDetailResponse)
+    console.log(
+      "isExpiry color",
+      GetSubscriptionPackage.getPackageExpiryDetailResponse
+    );
   }, [GetSubscriptionPackage.getPackageExpiryDetailResponse]);
 
   return (
     <>
-      <Header2 />
-      {isExpiry === "true" &&
-        isExpiry != null &&
-        isExpiry != undefined &&
+      <ConfigProvider locale={currentLanguge === "en" ? en_US : ar_EG}>
+        <Header2 />
+        {isExpiry === "true" &&
+        isExpiry !== null &&
+        isExpiry !== undefined &&
         remainingDays > 0 &&
-        remainingDays != null &&
-        remainingDays != undefined ? (
-        <Subscriptionwarningline
-          color={color}
-          text={
-            t("Subscription-package-expiry") +
-            " " +
-            _justShowDateformat(dateOfExpiry + "000000") +
-            " " +
-            t("after") +
-            " " +
-            parseInt(remainingDays) +
-            " " +
-            t("days")
-          }
+        remainingDays !== null &&
+        remainingDays !== undefined ? (
+          <Subscriptionwarningline
+            color={color}
+            text={
+              t("Subscription-package-expiry") +
+              " " +
+              _justShowDateformat(dateOfExpiry + "000000") +
+              " " +
+              t("after") +
+              " " +
+              parseInt(remainingDays) +
+              " " +
+              t("days")
+            }
+          />
+        ) : null}
+        <NavbarAdmin />
+        <NotificationBar
+          iconName={<img src={IconMetroAttachment} />}
+          notificationMessage={notification.message}
+          notificationState={notification.notificationShow}
+          setNotification={setNotification}
+          handleClose={closeNotification}
+          id={notificationID}
         />
-      ) : null}
-      <NavbarAdmin />
-      <NotificationBar
-        iconName={<img src={IconMetroAttachment} />}
-        notificationMessage={notification.message}
-        notificationState={notification.notificationShow}
-        setNotification={setNotification}
-        handleClose={closeNotification}
-        id={notificationID}
-      />
-      <Outlet />
+        <Outlet />
+      </ConfigProvider>
     </>
   );
 };
