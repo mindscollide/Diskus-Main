@@ -630,8 +630,45 @@ const Agenda = () => {
     return exists;
   };
 
+  // const HandleDragDrop = (results) => {
+  //   console.log(results, "Hello There");
+  //   const { source, destination, type } = results;
+
+  //   if (!destination) return;
+
+  //   if (
+  //     source.droppableId === destination.droppableId &&
+  //     source.index === destination.index
+  //   )
+  //     return;
+
+  //   if (type === "group") {
+  //     const updatedRows = [...rows];
+
+  //     if (source.droppableId === "ROOT") {
+  //       // Main Agenda Item Drag and Drop
+  //       const mainAgendaItem = updatedRows[source.index];
+  //       updatedRows.splice(source.index, 1);
+  //       updatedRows.splice(destination.index, 0, mainAgendaItem);
+  //     } else if (source.droppableId === "subAgendaList") {
+  //       // Sub Agenda Item Drag and Drop
+  //       const mainAgendaIndex = parseInt(source.droppableId.split("-")[1]);
+  //       const subAgendaItem =
+  //         updatedRows[mainAgendaIndex].subAgenda[source.index];
+  //       updatedRows[mainAgendaIndex].subAgenda.splice(source.index, 1);
+  //       updatedRows[mainAgendaIndex].subAgenda.splice(
+  //         destination.index,
+  //         0,
+  //         subAgendaItem
+  //       );
+  //     }
+
+  //     setRows(updatedRows);
+  //   }
+  // };
+
   const HandleDragDrop = (results) => {
-    console.log(results, "Hello Threre");
+    console.log(results, "Hello There");
     const { source, destination, type } = results;
 
     if (!destination) return;
@@ -643,12 +680,33 @@ const Agenda = () => {
       return;
 
     if (type === "group") {
-      const reOrderedStructure = [...rows];
-      const SourceIndex = source.index;
-      const desitinationIndex = destination.index;
-      const [removeItems] = reOrderedStructure.splice(SourceIndex, 1);
-      reOrderedStructure.splice(desitinationIndex, 0, removeItems);
-      setRows(reOrderedStructure);
+      const updatedRows = [...rows];
+
+      // Check if the drag-and-drop is in the main agenda list
+      if (source.droppableId === "ROOT") {
+        // Update "ROOT" to your actual droppableId
+        // Main Agenda Item Drag and Drop
+        const mainAgendaItem = updatedRows[source.index];
+        updatedRows.splice(source.index, 1);
+        updatedRows.splice(destination.index, 0, mainAgendaItem);
+      }
+
+      // Add this block to handle sub-agenda drag-and-drop
+      // Check if the drag-and-drop is in the sub-agenda list
+      if (source.droppableId.startsWith("subAgendaList")) {
+        // Update "subAgendaList" to your actual droppableId
+        const mainAgendaIndex = parseInt(source.droppableId.split("-")[1]);
+        const subAgendaItem =
+          updatedRows[mainAgendaIndex].subAgenda[source.index];
+        updatedRows[mainAgendaIndex].subAgenda.splice(source.index, 1);
+        updatedRows[mainAgendaIndex].subAgenda.splice(
+          destination.index,
+          0,
+          subAgendaItem
+        );
+      }
+
+      setRows(updatedRows);
     }
   };
 
@@ -658,7 +716,7 @@ const Agenda = () => {
         <DragDropContext onDragEnd={HandleDragDrop}>
           <Row>
             <Col lg={12} md={12} sm={12} className={styles["Scroller_Agenda"]}>
-              <Droppable droppableId="ROOT" type="group" direction="horizontal">
+              <Droppable droppableId="ROOT" type="group">
                 {(provided) => (
                   <div {...provided.droppableProps} ref={provided.innerRef}>
                     {rows.length > 0
