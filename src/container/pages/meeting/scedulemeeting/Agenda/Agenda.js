@@ -1781,7 +1781,11 @@ const Agenda = () => {
                                                                 );
                                                             }}
                                                           >
-                                                            {t("Show-more")}
+                                                            {subExpand
+                                                              ? t(
+                                                                  "Hide-details"
+                                                                )
+                                                              : t("Show-more")}
                                                           </span>
                                                         </Col>
                                                       </Row>
