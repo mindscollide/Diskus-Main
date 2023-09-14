@@ -4,38 +4,42 @@ import styles from "../ModalUploadOptions_Folder/ModalOptions_Folder.module.css"
 import { useTranslation } from "react-i18next";
 import { Button, Modal } from "../../../components/elements";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { createFolder } from "../../../store/actions/FolderUploadDataroom";
+import { FolderisExist_success } from "../../../store/actions/FolderUploadDataroom";
 
 const ModalOptionsisExistFolder = ({
   isFolderExist,
   setIsFolderExist,
   directoryNames,
+  setFolderUploadOptions,
+  folderUploadOptions,
+  detaUplodingForFOlder,
+  setDetaUplodingForFOlder,
 }) => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [folderUploadOptions, setFolderUploadOptions] = useState(1);
 
   const handleUploadFolder = async () => {
-    await dispatch(
-      createFolder(navigate, t, directoryNames, folderUploadOptions)
-    );
+    if (isFolderExist) {
+      await dispatch(FolderisExist_success(null));
+    }
+  };
+  const onHideModal = async () => {
     setIsFolderExist(false);
+    const updatedArray = [...detaUplodingForFOlder]; // Create a shallow copy of the array
+    updatedArray.pop(); // Remove the last object
+    setDetaUplodingForFOlder(updatedArray);
+    await dispatch(FolderisExist_success(null));
+
   };
   return (
     <>
       <Container>
         <Modal
           show={isFolderExist}
-          onHide={() => {
-            setIsFolderExist(false);
-          }}
+          onHide={() => {onHideModal()}}
           setShow={setIsFolderExist}
-          // ButtonTitle={ModalTitle}
           modalFooterClassName="d-block"
           centered
-          // size={UploadOptions === true ? "md" : "md"}
           ModalBody={
             <>
               <Container>
@@ -108,13 +112,12 @@ const ModalOptionsisExistFolder = ({
                   <Button
                     text={t("Cancel")}
                     className={styles["Cancel_button_UploadFile"]}
-                    onClick={() => setIsFolderExist(false)}
+                    onClick={onHideModal}
                   />
 
                   <Button
                     text={t("Upload")}
                     onClick={handleUploadFolder}
-                    // onClick={uploadOptionsonClickBtn}
                     className={styles["Create_button_UploadFile"]}
                   />
                 </Col>

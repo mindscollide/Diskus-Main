@@ -517,7 +517,7 @@ body[dir="rtl"] .Search_Icon {
   border-radius: 4px !important;
   right: 90px !important;
   border: 1px solid #e1e1e1 !important;
-  height: 110px;
+  height: auto !important;
 }
 
 .Back_ground_For_uploader_active {
@@ -552,7 +552,8 @@ body[dir="rtl"] .Search_Icon {
 .Blue_Strip {
   width: 425px !important;
   height: 43px !important;
-  border-radius: 4px !important;
+  border-top-left-radius: 4px!important;;
+  border-top-right-radius: 4px!important;;
   background: #6172d6;
 }
 
@@ -565,21 +566,24 @@ body[dir="rtl"] .Search_Icon {
   color: #fff !important;
 }
 .progress_bar {
-  width: 80px;
+  /* width: 80px; */
   font-size: 0px !important;
   display: flex;
   justify-content: flex-end;
   /* color: #fff !important; */
 }
 .Scroller_bar_of_BarUploder_folder {
-  height: 9.8vh !important;
+  max-height: 16.8vh !important;
   overflow-x: hidden !important;
   background-color: #fff !important;
-  /* padding-bottom: 10px; */
+  padding: 10px 0px !important;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   transition: ease-in-out 0.3s;
+  overflow-y: auto;
+  display: block;
 }
 /* .Scroller_bar_of_BarUploder_folder:hover {
   background-color: #e1e1e1 !important;
@@ -742,13 +746,29 @@ body[dir="rtl"] .Data_room_btn {
 body[dir="rtl"] .dataroom_searchinput {
   display: inline-block;
   position: absolute !important;
+  right: 90% !important;
+  width: auto;
+  left: 0;
+  top: 7px;
+  margin-right: 10px;
+}
+.dataroom_searchinput2 {
+  display: inline-block;
+  position: absolute !important;
+  right: 0 !important;
+  width: auto;
+  top: 7px;
+  margin-right: 10px;
+}
+body[dir="rtl"] .dataroom_searchinput2 {
+  display: inline-block;
+  position: absolute !important;
   right: 93% !important;
   width: auto;
   left: 0;
   top: 7px;
   margin-right: 10px;
 }
-
 .delete__Icon {
   width: 25px;
   height: 25px;
@@ -1007,15 +1027,17 @@ body[dir="rtl"] .dataroom_searchinput {
 }
 .crossIcon {
   display: none !important;
-}
-.folderProgress {
-  width: 40% !important;
+  cursor: pointer !important;
 }
 
-.Scroller_bar_of_BarUploder_folder:hover .crossIcon {
+.folderProgress {
+  width: 20% !important;
+}
+
+.showUploadBar:hover .crossIcon {
   display: block !important;
 }
-.Scroller_bar_of_BarUploder_folder:hover .folderProgress {
+.showUploadBar:hover .folderProgress {
   display: none !important;
 }
 /* .crossIcon {
@@ -1038,4 +1060,53 @@ body[dir="rtl"] .dataroom_searchinput {
 }
 .folderProgress .ant-progress-inner .ant-progress-text {
   display: none !important;
+}
+.empty-search-state {
+  display: "flex";
+  flex-direction: "column";
+  justify-content: "center";
+  align-items: "center";
+  height: "100vh";
+}
+
+.datepicker-in-search {
+  border: 1px solid #e1e1e1 !important;
+  width: 50% !important;
+  margin-top: 2px !important;
+  background: white !important;
+}
+
+.datepicker_input {
+  height: 39px !important;
+  width: 100% !important;
+  border: 1px solid #e1e1e1 !important;
+  border-radius: 4px !important;
+  outline: none !important;
+}
+.datePickerTodoCreate2 .rmdp-container {
+  width: 100% !important;
+}
+.showUploadBar {
+  height: 45px !important;
+}
+.showUploadBarUploaded {
+  height: 35px !important;
+}
+.GreentickIcon {
+  display: block !important;
+}
+.GreentickIcon_forfile {
+  width: 20px;
+  height: 20px;
+  display: block;
+}
+.crossIcon-file {
+  display: none !important;
+  cursor: pointer !important;
+}
+.showUploadBarUploaded-file {
+  height: 35px !important;
+}
+.showUploadBarUploaded-file:hover .crossIcon-file {
+  display: block !important;
 }

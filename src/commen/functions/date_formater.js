@@ -559,3 +559,15 @@ export const multiDatePickerDateChangIntoUTC = (date) => {
 
   return utcFormatted;
 };
+
+
+// this is for return only MMDDYY
+export function formatDateToMMDDYY(date) {
+  if (!date || isNaN(date.getTime())) {
+    return ''; // Return an empty string for empty or invalid dates
+  }
+  const year = date.getFullYear().toString();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
+  const day = date.getDate().toString().padStart(2, '0');
+  return `${month}${day}${year}`;
+}
