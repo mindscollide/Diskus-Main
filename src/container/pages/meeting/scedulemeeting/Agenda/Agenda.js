@@ -81,6 +81,7 @@ const Agenda = () => {
       startDate: null,
       endDate: null,
       selectedRadio: "0",
+      urlFieldMain: "",
       files: [
         {
           name: "MeetingAgendas",
@@ -160,11 +161,6 @@ const Agenda = () => {
 
   const [files, setfiles] = useState([]);
 
-  const subAjendaonChange = (e) => {
-    console.log("subAjendaonChange", e.target.value);
-    setSubValue(e.target.value);
-  };
-
   const props = {
     name: "file",
     // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
@@ -226,24 +222,39 @@ const Agenda = () => {
   };
 
   const addRow = () => {
-    setRows([
-      ...rows,
-      {
-        ID: rows.length.toString(),
-        title: null,
-        selectedOption: null,
-        startDate: null,
-        endDate: null,
-        subAgenda: [
-          {
-            subAjendaTitle: null,
-            subajendaOptions: null,
-            subAjendaStartDate: null,
-            subAjendaEndDate: null,
-          },
-        ],
-      },
-    ]);
+    const updatedRows = [...rows];
+    const newMainAgenda = {
+      ID: updatedRows.length.toString(),
+      title: "",
+      selectedOption: null,
+      startDate: null,
+      endDate: null,
+      files: [
+        {
+          name: "MeetingAgendas",
+        },
+      ],
+      urlFieldMain: "",
+      subAgenda: [
+        {
+          ID: "0",
+          title: "",
+          selectedOption: null,
+          startDate: null,
+          endDate: null,
+          files: [
+            {
+              name: "MeetingAgendas",
+            },
+            // ... (other file objects)
+          ],
+          subSelectRadio: "0", // Initialize selectedRadio to "0" for sub-agenda
+          additionalField: "", // Initialize additionalField to an empty string
+        },
+      ],
+    };
+    updatedRows.push(newMainAgenda);
+    setRows(updatedRows);
   };
 
   const addSubAjendaRows = (rowAgendaIndex) => {
@@ -255,6 +266,7 @@ const Agenda = () => {
       startDate: null,
       endDate: null,
       subSelectRadio: "0",
+
       Subfiles: [
         {
           name: "MeetingAgendas",
