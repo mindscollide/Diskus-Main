@@ -124,6 +124,7 @@ const Agenda = () => {
           startDate: null,
           endDate: null,
           subSelectRadio: "0",
+          SubAgendaUrlFieldRadio: "",
           Subfiles: [
             {
               name: "MeetingAgendas",
@@ -253,7 +254,7 @@ const Agenda = () => {
             // ... (other file objects)
           ],
           subSelectRadio: "0", // Initialize selectedRadio to "0" for sub-agenda
-          additionalField: "", // Initialize additionalField to an empty string
+          SubAgendaUrlFieldRadio: "",
         },
       ],
     };
@@ -270,7 +271,7 @@ const Agenda = () => {
       startDate: null,
       endDate: null,
       subSelectRadio: "0",
-
+      SubAgendaUrlFieldRadio: "",
       Subfiles: [
         {
           name: "MeetingAgendas",
@@ -511,6 +512,19 @@ const Agenda = () => {
     }
     setRows(updatedRows);
     console.log(updatedRows, "MainNoteReqContributor");
+  };
+
+  // Function to handle changes in sub-agenda additional Enter URl Radio text field
+  const handleSubAgendaUrlEnterUrlField = (index, subIndex, e) => {
+    let name = e.target.value;
+    let value = e.target.value;
+    const updatedRows = [...rows];
+
+    if (name === "SubAgendaUrlRadioField") {
+      updatedRows[index].subAgenda[subIndex].SubAgendaUrlFieldRadio = value;
+    }
+    console.log(updatedRows, "SubAgendaUrlRadioField");
+    setRows(updatedRows);
   };
 
   const [subLockArry, setSubLockArray] = useState([]);
@@ -2016,6 +2030,21 @@ const Agenda = () => {
                                                                     placeholder={t(
                                                                       "Enter-url"
                                                                     )}
+                                                                    name={
+                                                                      "SubAgendaUrlRadioField"
+                                                                    }
+                                                                    value={
+                                                                      subAgendaData.SubAgendaUrlFieldRadio
+                                                                    }
+                                                                    change={(
+                                                                      e
+                                                                    ) =>
+                                                                      handleSubAgendaUrlEnterUrlField(
+                                                                        index,
+                                                                        subIndex,
+                                                                        e
+                                                                      )
+                                                                    }
                                                                   />
                                                                 </Col>
                                                               </Row>
