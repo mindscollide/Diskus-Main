@@ -125,6 +125,8 @@ const Agenda = () => {
           endDate: null,
           subSelectRadio: "0",
           SubAgendaUrlFieldRadio: "",
+          subAgendarequestContributorUrl: "",
+          subAgendarequestContributorEnterNotes: "",
           Subfiles: [
             {
               name: "MeetingAgendas",
@@ -255,6 +257,8 @@ const Agenda = () => {
           ],
           subSelectRadio: "0", // Initialize selectedRadio to "0" for sub-agenda
           SubAgendaUrlFieldRadio: "",
+          subAgendarequestContributorUrl: "",
+          subAgendarequestContributorEnterNotes: "",
         },
       ],
     };
@@ -272,6 +276,8 @@ const Agenda = () => {
       endDate: null,
       subSelectRadio: "0",
       SubAgendaUrlFieldRadio: "",
+      subAgendarequestContributorUrl: "",
+      subAgendarequestContributorEnterNotes: "",
       Subfiles: [
         {
           name: "MeetingAgendas",
@@ -533,6 +539,39 @@ const Agenda = () => {
       );
     }
     console.log(updatedRows, "SubAgendaUrlRadioField");
+    setRows(updatedRows);
+  };
+
+  // Function to handle changes in sub-agenda additional Request Contributor Enter URl Radio text field
+  const handleSubAgendaRequestContributorEnterUrl = (index, subIndex, e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    console.log(value, name, "valuevaluevalue");
+
+    const updatedRows = [...rows];
+
+    if (name === "SubAgendaRequestContributorUrlField") {
+      updatedRows[index].subAgenda[subIndex].subAgendarequestContributorUrl =
+        value;
+    }
+    console.log(updatedRows, "SubAgendaRequestContributorUrlField");
+    setRows(updatedRows);
+  };
+
+  // Function to handle changes in sub-agenda additional Request Contributor Enter Note Radio text field
+  const handleSubAgendaRequestContributorEnterNote = (index, subIndex, e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    console.log(value, name, "valuevaluevalue");
+
+    const updatedRows = [...rows];
+
+    if (name === "SubAgendaRequestContributorEnterNotesFiled") {
+      updatedRows[index].subAgenda[
+        subIndex
+      ].subAgendarequestContributorEnterNotes = value;
+    }
+    console.log(updatedRows, "SubAgendaRequestContributorEnterNotesFiled");
     setRows(updatedRows);
   };
 
@@ -2074,6 +2113,21 @@ const Agenda = () => {
                                                                     placeholder={
                                                                       "Enter-url"
                                                                     }
+                                                                    name={
+                                                                      "SubAgendaRequestContributorUrlField"
+                                                                    }
+                                                                    value={
+                                                                      subAgendaData.subAgendarequestContributorUrl
+                                                                    }
+                                                                    change={(
+                                                                      e
+                                                                    ) => {
+                                                                      handleSubAgendaRequestContributorEnterUrl(
+                                                                        index,
+                                                                        subIndex,
+                                                                        e
+                                                                      );
+                                                                    }}
                                                                   />
                                                                 </Col>
                                                               </Row>
@@ -2093,11 +2147,26 @@ const Agenda = () => {
                                                                     placeholder={t(
                                                                       "Enter-notes"
                                                                     )}
+                                                                    name={
+                                                                      "SubAgendaRequestContributorEnterNotesFiled"
+                                                                    }
                                                                     required={
                                                                       true
                                                                     }
                                                                     maxLength={
                                                                       500
+                                                                    }
+                                                                    value={
+                                                                      subAgendaData.subAgendarequestContributorEnterNotes
+                                                                    }
+                                                                    change={(
+                                                                      e
+                                                                    ) =>
+                                                                      handleSubAgendaRequestContributorEnterNote(
+                                                                        index,
+                                                                        subIndex,
+                                                                        e
+                                                                      )
                                                                     }
                                                                   />
                                                                 </Col>
