@@ -41,6 +41,8 @@ const VideoMaxIncoming = () => {
 
   let currentOrganization = Number(localStorage.getItem('organizationID'))
 
+  let callTypeID = Number(localStorage.getItem('callTypeID'))
+
   console.log('VideoMainReducer', VideoMainReducer)
 
   const [isVisible, setIsVisible] = useState(true)
@@ -66,6 +68,7 @@ const VideoMaxIncoming = () => {
       ReciepentID: currentUserId,
       RoomID: activeCallState === true ? newRoomID : incomingRoomID,
       CallStatusID: 1,
+      CallTypeID: callTypeID,
     }
     dispatch(VideoCallResponse(Data, navigate, t))
     dispatch(incomingVideoCallFlag(false))
@@ -78,12 +81,14 @@ const VideoMaxIncoming = () => {
       OrganizationID: currentOrganization,
       RoomID: incomingRoomID,
       IsCaller: callerID === currentUserId ? true : false,
+      CallTypeID: callTypeID,
     }
     await dispatch(LeaveCall(Data, navigate, t))
     let Data2 = {
       ReciepentID: currentUserId,
       RoomID: newRoomID,
       CallStatusID: 1,
+      CallTypeID: callTypeID,
     }
     dispatch(VideoCallResponse(Data2, navigate, t))
     dispatch(incomingVideoCallFlag(false))
@@ -94,6 +99,7 @@ const VideoMaxIncoming = () => {
       ReciepentID: currentUserId,
       RoomID: incomingRoomID,
       CallStatusID: 2,
+      CallTypeID: callTypeID,
     }
     dispatch(VideoCallResponse(Data, navigate, t))
     dispatch(incomingVideoCallFlag(false))
@@ -105,6 +111,7 @@ const VideoMaxIncoming = () => {
       ReciepentID: currentUserId,
       RoomID: newRoomID,
       CallStatusID: 5,
+      CallTypeID: callTypeID,
     }
     dispatch(VideoCallResponse(Data, navigate, t))
     dispatch(incomingVideoCallFlag(false))
@@ -128,6 +135,7 @@ const VideoMaxIncoming = () => {
         ReciepentID: currentUserId,
         RoomID: incomingRoomID,
         CallStatusID: 3,
+        CallTypeID: callTypeID,
       }
       dispatch(VideoCallResponse(Data, navigate, t))
       dispatch(incomingVideoCallFlag(false))

@@ -202,7 +202,7 @@ p.Notification-text {
 .participants-list {
     background: #fff;
     border-radius: 4px;
-    padding: 10px 0px;
+    padding: 10px 10px;
     position: absolute;
     width: 235px;
     top: 39px;
@@ -234,4 +234,25 @@ p.Notification-text {
 span.text-positioning {
     position: relative;
     top: 2px;
+}
+
+p.participant-name {
+    font-size: 17px;
+    font-family: 'MontserratSemiBold-600';
+    color: #5A5A5A;
+    width: 90px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0;
+}
+
+p.participant-state {
+    font-size: 14px;
+    font-family: 'MontserratMedium';
+    color: #5A5A5A;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: 0;
 }
