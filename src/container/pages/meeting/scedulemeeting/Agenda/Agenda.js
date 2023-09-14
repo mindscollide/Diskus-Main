@@ -516,12 +516,21 @@ const Agenda = () => {
 
   // Function to handle changes in sub-agenda additional Enter URl Radio text field
   const handleSubAgendaUrlEnterUrlField = (index, subIndex, e) => {
-    let name = e.target.value;
+    let name = e.target.name;
     let value = e.target.value;
-    const updatedRows = [...rows];
+    console.log(value, name, "valuevaluevalue");
 
+    const updatedRows = [...rows];
+    console.log(
+      updatedRows[index].subAgenda[subIndex].SubAgendaUrlFieldRadio,
+      "updatedRowsupdatedRows"
+    );
     if (name === "SubAgendaUrlRadioField") {
       updatedRows[index].subAgenda[subIndex].SubAgendaUrlFieldRadio = value;
+      console.log(
+        updatedRows[index].subAgenda[subIndex].SubAgendaUrlFieldRadio,
+        "updatedRowsupdatedRows"
+      );
     }
     console.log(updatedRows, "SubAgendaUrlRadioField");
     setRows(updatedRows);
