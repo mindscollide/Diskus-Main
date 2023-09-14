@@ -1833,10 +1833,10 @@ const Agenda = () => {
                                                                 >
                                                                   <Row>
                                                                     {subAgendaData
-                                                                      .Subfiles
-                                                                      .length >
+                                                                      ?.Subfiles
+                                                                      ?.length >
                                                                     0
-                                                                      ? subAgendaData.Subfiles.map(
+                                                                      ? subAgendaData?.Subfiles?.map(
                                                                           (
                                                                             subAgendaFiles,
                                                                             subAgendaFilesIndex
@@ -1934,6 +1934,22 @@ const Agenda = () => {
                                                           ) : subAgendaData.subSelectRadio ===
                                                             "3" ? (
                                                             <>
+                                                              <Row className="mt-2">
+                                                                <Col
+                                                                  lg={12}
+                                                                  md={12}
+                                                                  sm={12}
+                                                                >
+                                                                  <TextField
+                                                                    labelClass={
+                                                                      "d-none"
+                                                                    }
+                                                                    placeholder={
+                                                                      "Enter-url"
+                                                                    }
+                                                                  />
+                                                                </Col>
+                                                              </Row>
                                                               <Row>
                                                                 <Col
                                                                   lg={12}
