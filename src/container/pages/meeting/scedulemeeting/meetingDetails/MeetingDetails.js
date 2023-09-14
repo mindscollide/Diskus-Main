@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./MeetingDetails.module.css";
 import { useTranslation } from "react-i18next";
-import MeetingVideoChatIcon from "../../../../../assets/images/newElements/Icon feather-video1.png";
+import MeetingVideoChatIcon from "../../../../../assets/images/ColoredVideo.svg";
 import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
