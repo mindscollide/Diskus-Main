@@ -647,11 +647,7 @@ const Agenda = () => {
       const SourceIndex = source.index;
       const desitinationIndex = destination.index;
       const [removeItems] = reOrderedStructure.splice(SourceIndex, 1);
-      console.log(removeItems, "removeItemsremoveItems");
-      console.log(reOrderedStructure, "removeItemsremoveItems");
       reOrderedStructure.splice(desitinationIndex, 0, removeItems);
-      console.log(reOrderedStructure, "removeItemsremoveItems");
-
       setRows(reOrderedStructure);
     }
   };
@@ -662,7 +658,7 @@ const Agenda = () => {
         <DragDropContext onDragEnd={HandleDragDrop}>
           <Row>
             <Col lg={12} md={12} sm={12} className={styles["Scroller_Agenda"]}>
-              <Droppable droppableId="ROOT" type="group">
+              <Droppable droppableId="ROOT" type="group" direction="horizontal">
                 {(provided) => (
                   <div {...provided.droppableProps} ref={provided.innerRef}>
                     {rows.length > 0
