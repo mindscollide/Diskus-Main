@@ -200,6 +200,23 @@
   margin-left: -15px;
 }
 
+.SubAgendaDocScroller {
+  height: 14vh !important;
+  overflow-x: hidden !important;
+}
+
+.SubAgendaDocScroller::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.SubAgendaDocScroller::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
 .RedCross_Icon_class {
   margin-right: -10% !important;
   margin-top: -24.9% !important;
@@ -230,6 +247,17 @@
   font-family: "Montserrat" !important;
 }
 
+.SubagendaFilesName {
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  display: inline-block !important;
+  width: 180px !important;
+  font-family: "Montserrat" !important;
+}
+
 /* card */
 
 .card {
@@ -241,6 +269,14 @@
   padding: 15px 10px;
   border-radius: 4px;
   gap: 10px;
+}
+
+.cardSubAgenda {
+  width: 221px !important;
+  height: 42px !important;
+  border-radius: 4px !important;
+  border: 1px solid #d4d4d4;
+  padding: 0px 15px !important;
 }
 
 .LineStyles {
