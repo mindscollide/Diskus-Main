@@ -375,6 +375,7 @@ const Agenda = () => {
     if (name === "title") {
       updatedAgendaItems[index][name] = value;
     }
+    console.log(updatedAgendaItems, "updatedAgendaItemsupdatedAgendaItems");
     setRows(updatedAgendaItems);
   };
 
