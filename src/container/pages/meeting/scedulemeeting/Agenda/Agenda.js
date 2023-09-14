@@ -47,6 +47,7 @@ import {
 } from "../../../../../commen/functions/regex";
 import ImportPrevious from "./ImportPreviousAgenda/ImportPrevious";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { startCase } from "lodash";
 
 const Agenda = () => {
   const { t } = useTranslation();
@@ -114,8 +115,11 @@ const Agenda = () => {
       ],
       subAgenda: [
         {
-          ID: "00",
-
+          ID: "0",
+          SubTitle: "",
+          selectedOption: null,
+          startDate: null,
+          endDate: null,
           files: [
             {
               name: "MeetingAgendas",
@@ -152,10 +156,7 @@ const Agenda = () => {
       ],
     },
   ]);
-  console.log(rows.title, "rowsrowsrows");
-  console.log(rows.selectedOption, "rowsrowsrows");
-  console.log(rows.startDate, "rowsrowsrows");
-  console.log(rows.endDate, "rowsrowsrows");
+
   const [files, setfiles] = useState([]);
 
   const subAjendaonChange = (e) => {
@@ -231,18 +232,16 @@ const Agenda = () => {
   };
 
   const addSubAjendaRows = (rowAgendaIndex) => {
-    const newItem = {
-      subAjendaTitle: null,
-      subajendaOptions: null,
-      subAjendaStartDate: null,
-      subAjendaEndDate: null,
+    const updatedRows = [...rows];
+    const newSubAgenda = {
+      ID: updatedRows[rowAgendaIndex].subAgenda.length.toString(),
+      SubTitle: "",
+      selectedOption: null,
+      startDate: null,
+      endDate: null,
     };
-
-    setRows((prevRows) => {
-      const updatedRows = [...prevRows];
-      updatedRows[rowAgendaIndex].subAgenda.push(newItem);
-      return updatedRows;
-    });
+    updatedRows[rowAgendaIndex].subAgenda.push(newSubAgenda);
+    setRows(updatedRows);
   };
 
   const handleCrossIcon = (index) => {
@@ -347,6 +346,55 @@ const Agenda = () => {
   const handleRadioChange = (index, value) => {
     const updatedRows = [...rows];
     updatedRows[index].selectedRadio = value;
+    setRows(updatedRows);
+  };
+
+  //SubAgenda Statemanagement
+
+  // Function to handle changes in sub-agenda title
+  const handleSubAgendaTitleChange = (index, subIndex, e) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    console.log(value, "valuevaluevalue");
+    const updatedRows = [...rows];
+    if (name === "SubTitle") {
+      updatedRows[index].subAgenda[subIndex].SubTitle = value;
+    }
+    console.log(updatedRows, "SubAgendaTitleSubAgendaTitle");
+    setRows(updatedRows);
+  };
+
+  // SubAgenda Select Options
+  const SubAgendaoptions = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+  ];
+
+  // Function to handle changes in sub-agenda select
+  const handleSubAgendaSelectChange = (index, subIndex, value) => {
+    const updatedRows = [...rows];
+    let SelectValue = {
+      value: value.value,
+      label: value.label,
+    };
+    updatedRows[index].subAgenda[subIndex].selectedOption = SelectValue;
+    console.log(updatedRows, "SubagendaSelectSubagendaSelect");
+    setRows(updatedRows);
+  };
+
+  // Function to handle changes in sub-agenda start date
+  const handleSubAgendaStartDateChange = (index, subIndex, date) => {
+    const updatedRows = [...rows];
+    updatedRows[index].subAgenda[subIndex].startDate = date;
+    console.log(updatedRows, "startCasestartCasestartCase");
+    setRows(updatedRows);
+  };
+
+  // Function to handle changes in sub-agenda end date
+  const handleSubAgendaEndDateChange = (index, subIndex, date) => {
+    const updatedRows = [...rows];
+    updatedRows[index].subAgenda[subIndex].endDate = date;
     setRows(updatedRows);
   };
 
@@ -456,7 +504,7 @@ const Agenda = () => {
                                     {...provided.draggableProps}
                                     ref={provided.innerRef}
                                   >
-                                    <Row key={index} className="mt-4 m-0 p-0">
+                                    <Row key={data.ID} className="mt-4 m-0 p-0">
                                       <Col
                                         lg={12}
                                         md={12}
@@ -1181,7 +1229,7 @@ const Agenda = () => {
                                           return (
                                             <>
                                               <Row
-                                                key={subIndex}
+                                                key={subAgendaData.ID}
                                                 className="mt-3"
                                               >
                                                 <Col lg={1} md={1} sm={1}></Col>
@@ -1262,6 +1310,7 @@ const Agenda = () => {
                                                             labelClass={
                                                               "d-none"
                                                             }
+                                                            name={"SubTitle"}
                                                             disable={
                                                               apllyLockOnParentAgenda(
                                                                 index
@@ -1277,7 +1326,14 @@ const Agenda = () => {
                                                               "Sub-Agenda-title"
                                                             )}
                                                             value={
-                                                              subAgendaData.subAjendaTitle
+                                                              subAgendaData.SubTitle
+                                                            }
+                                                            change={(e) =>
+                                                              handleSubAgendaTitleChange(
+                                                                index,
+                                                                subIndex,
+                                                                e
+                                                              )
                                                             }
                                                           />
                                                         </Col>
@@ -1304,8 +1360,18 @@ const Agenda = () => {
                                                             </Col>
                                                           </Row>
                                                           <Select
+                                                            options={
+                                                              SubAgendaoptions
+                                                            }
                                                             value={
-                                                              subAgendaData.subajendaOptions
+                                                              subAgendaData.selectedOption
+                                                            }
+                                                            onChange={(value) =>
+                                                              handleSubAgendaSelectChange(
+                                                                index,
+                                                                subIndex,
+                                                                value
+                                                              )
                                                             }
                                                             isDisabled={
                                                               apllyLockOnParentAgenda(
@@ -1370,7 +1436,16 @@ const Agenda = () => {
                                                                 }
                                                                 format="HH:mm A"
                                                                 selected={
-                                                                  subAgendaData.subAjendaStartDate
+                                                                  subAgendaData.startDate
+                                                                }
+                                                                onChange={(
+                                                                  date
+                                                                ) =>
+                                                                  handleSubAgendaStartDateChange(
+                                                                    index,
+                                                                    subIndex,
+                                                                    date
+                                                                  )
                                                                 }
                                                                 plugins={[
                                                                   <TimePicker
@@ -1433,7 +1508,16 @@ const Agenda = () => {
                                                                 }
                                                                 format="HH:mm A"
                                                                 selected={
-                                                                  subAgendaData.subAjendaEndDate
+                                                                  subAgendaData.endDate
+                                                                }
+                                                                onChange={(
+                                                                  date
+                                                                ) =>
+                                                                  handleSubAgendaEndDateChange(
+                                                                    index,
+                                                                    subIndex,
+                                                                    date
+                                                                  )
                                                                 }
                                                                 plugins={[
                                                                   <TimePicker
