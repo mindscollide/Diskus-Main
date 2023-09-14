@@ -621,43 +621,6 @@ const Agenda = () => {
     return exists;
   };
 
-  // const HandleDragDrop = (results) => {
-  //   console.log(results, "Hello There");
-  //   const { source, destination, type } = results;
-
-  //   if (!destination) return;
-
-  //   if (
-  //     source.droppableId === destination.droppableId &&
-  //     source.index === destination.index
-  //   )
-  //     return;
-
-  //   if (type === "group") {
-  //     const updatedRows = [...rows];
-
-  //     if (source.droppableId === "ROOT") {
-  //       // Main Agenda Item Drag and Drop
-  //       const mainAgendaItem = updatedRows[source.index];
-  //       updatedRows.splice(source.index, 1);
-  //       updatedRows.splice(destination.index, 0, mainAgendaItem);
-  //     } else if (source.droppableId === "subAgendaList") {
-  //       // Sub Agenda Item Drag and Drop
-  //       const mainAgendaIndex = parseInt(source.droppableId.split("-")[1]);
-  //       const subAgendaItem =
-  //         updatedRows[mainAgendaIndex].subAgenda[source.index];
-  //       updatedRows[mainAgendaIndex].subAgenda.splice(source.index, 1);
-  //       updatedRows[mainAgendaIndex].subAgenda.splice(
-  //         destination.index,
-  //         0,
-  //         subAgendaItem
-  //       );
-  //     }
-
-  //     setRows(updatedRows);
-  //   }
-  // };
-
   const HandleDragDrop = (results) => {
     console.log(results, "Hello There");
     const { source, destination, type } = results;
