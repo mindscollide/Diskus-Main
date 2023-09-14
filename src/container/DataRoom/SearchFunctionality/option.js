@@ -353,3 +353,59 @@ export const optionsforFile = (t) => [
   { label: t("Download"), value: 5, labelIcon: PDFICON },
   { label: t("Remove"), value: 6, labelIcon: PDFICON },
 ];
+
+export const getIconSource = (extension) => {
+  switch (extension) {
+    case 'pdf':
+      return PDFICON;
+    case 'doc':
+    case 'docx':
+    case 'odt':
+      return documentIcon;
+    case 'xls':
+    case 'xlsx':
+      return spreadsheet;
+    case 'html':
+    case 'htm':
+      return sitesIcon;
+    case 'txt':
+      return documentIcon;
+    case 'gif':
+    case 'jpeg':
+    case 'jpg':
+    case 'png':
+    case 'svg':
+      return images;
+    case 'aif':
+    case 'iff':
+    case 'm3u':
+    case 'm4a':
+    case 'mid':
+    case 'mp3':
+    case 'mpa':
+    case 'wav':
+      return audioIcon;
+    case '3g2':
+    case '3gp':
+    case 'asf':
+    case 'avi':
+    case 'flv':
+    case 'm4v':
+    case 'mov':
+    case 'mp4':
+    case 'mpg':
+    case 'rm':
+    case 'srt':
+    case 'swf':
+    case 'vob':
+    case 'wmv':
+      return video;
+    default:
+      return null;
+  }
+};
+
+export const getFileExtension = (fileName) => {
+  const lowercaseExtension = fileName.toLowerCase().split('.').pop();
+  return lowercaseExtension;
+};

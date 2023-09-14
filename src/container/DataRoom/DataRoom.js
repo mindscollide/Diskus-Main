@@ -19,7 +19,6 @@ import List_Selected from "../../assets/images/resolutions/List_Selected.svg";
 import start from "../../assets/images/Icon feather-star.svg";
 import plus from "../../assets/images/Icon feather-folder.svg";
 import fileupload from "../../assets/images/Group 2891.svg";
-import featherfolder from "../../assets/images/feather-folder.svg";
 import { CircularProgress, Paper } from "@material-ui/core";
 import styles from "./DataRoom.module.css";
 import {
@@ -67,7 +66,6 @@ import ModalShareDocument from "./ModalSharedocument/ModalShareDocument";
 import {
   CheckFolderisExist,
   CreateFolder_success,
-  FolderisExist_success,
   createFolder,
   folderUploadData,
   uploadFile,
@@ -75,19 +73,18 @@ import {
 import ModalRenameFile from "./ModalRenameFile/ModalRenameFile";
 import ModalOptionsisExistFolder from "./ModalUploadFolderisExist/ModalUploadFolderisExist";
 import { DownOutlined } from "@ant-design/icons";
-import docIcon from "../../assets/images/AttachmentIcons/doc.svg";
-import pdfIcon from "../../assets/images/AttachmentIcons/pdf.svg";
-import photosIcon from "../../assets/images/AttachmentIcons/photos.svg";
-import pptIcon from "../../assets/images/AttachmentIcons/ppt.svg";
-import videoIcon from "../../assets/images/AttachmentIcons/video.svg";
-import xlsFileIcon from "../../assets/images/AttachmentIcons/xls-file.svg";
+import folderColor from "../../assets/images/folder_color.svg";
 import { getFolderDocumentsApiScrollBehaviour } from "../../store/actions/DataRoom_actions";
-import axios from "axios";
 import InfiniteScroll from "react-infinite-scroll-component";
 import UploadindUiComponent from "./uploadindPopUp/uploadindUiComponent";
 import SearchBarComponent from "./SearchFunctionality/searchBar";
 import SearchComponent from "./SearchFunctionality/searchComponent";
-import { optionsforFile, optionsforFolder } from "./SearchFunctionality/option";
+import {
+  getFileExtension,
+  getIconSource,
+  optionsforFile,
+  optionsforFolder,
+} from "./SearchFunctionality/option";
 const DataRoom = () => {
   // tooltip
   const dispatch = useDispatch();
@@ -574,7 +571,7 @@ const DataRoom = () => {
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={featherfolder} alt="" />
+                <img src={folderColor} alt="" />
                 <abbr title={text}>
                   <span
                     className={`${
@@ -588,31 +585,14 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            let FindExt = data?.name?.split(".")[1];
             return (
               <>
                 <section className="d-flex gap-2">
                   <img
-                    src={
-                      FindExt === "png" ||
-                      FindExt === "jpg" ||
-                      FindExt === "jpeg"
-                        ? photosIcon
-                        : FindExt === "docx" ||
-                          FindExt === "doc" ||
-                          FindExt === "txt"
-                        ? docIcon
-                        : FindExt === "mp4"
-                        ? videoIcon
-                        : FindExt === "pdf"
-                        ? pdfIcon
-                        : FindExt === "xls" || FindExt === "xlsx"
-                        ? xlsFileIcon
-                        : FindExt === "ppt" || FindExt === "pptx"
-                        ? pptIcon
-                        : null
-                    }
+                    src={getIconSource(getFileExtension(data.name))}
                     alt=""
+                    width={"25px"}
+                    height={"25px"}
                   />
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
@@ -627,7 +607,7 @@ const DataRoom = () => {
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={featherfolder} alt="" />
+                <img src={folderColor} alt="" />
                 <abbr title={text}>
                   <span
                     className={`${
@@ -641,30 +621,15 @@ const DataRoom = () => {
               </div>
             );
           } else {
-            let FindExt = data?.name?.split(".")[1];
             return (
               <>
                 <section className="d-flex gap-2">
-                  {FindExt === "png" ||
-                  FindExt === "jpg" ||
-                  FindExt === "jpeg" ? (
-                    <img src={photosIcon} alt="" />
-                  ) : FindExt === "docx" ||
-                    FindExt === "doc" ||
-                    FindExt === "txt" ? (
-                    <img src={docIcon} alt="" />
-                  ) : FindExt === "mp4" ? (
-                    <img src={videoIcon} alt="" />
-                  ) : FindExt === "xls" || FindExt === "xlsx" ? (
-                    <img src={xlsFileIcon} alt="" />
-                  ) : FindExt === "ppt" || FindExt === "pptx" ? (
-                    <img src={pptIcon} alt="" />
-                  ) : FindExt === undefined ? (
-                    <img src={docIcon} alt="" />
-                  ) : (
-                    <img src={docIcon} alt="" />
-                  )}
-
+                  <img
+                    src={getIconSource(getFileExtension(data.name))}
+                    alt=""
+                    width={"25px"}
+                    height={"25px"}
+                  />
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
                       {text}
@@ -937,7 +902,7 @@ const DataRoom = () => {
         if (record.isFolder) {
           return (
             <div className={`${styles["dataFolderRow"]}`}>
-              <img src={featherfolder} alt="" />
+              <img src={folderColor} alt="" />
               <span
                 className={styles["dataroom_table_heading"]}
                 onClick={() => getFolderDocuments(record.id)}
@@ -947,22 +912,10 @@ const DataRoom = () => {
             </div>
           );
         } else {
-          let FindExt = record.name.split(".")[1];
           return (
             <div className={`${styles["dataFolderRow"]}`}>
-              {FindExt === "png" || FindExt === "jpg" || FindExt === "jpeg" ? (
-                <img src={photosIcon} alt="" />
-              ) : FindExt === "docx" ||
-                FindExt === "doc" ||
-                FindExt === "txt" ? (
-                <img src={docIcon} alt="" />
-              ) : FindExt === "mp4" ? (
-                <img src={videoIcon} alt="" />
-              ) : FindExt === "xls" || FindExt === "xlsx" ? (
-                <img src={xlsFileIcon} alt="" />
-              ) : FindExt === "ppt" || FindExt === "pptx" ? (
-                <img src={pptIcon} alt="" />
-              ) : null}
+              <img src={getIconSource(getFileExtension(record.name))} alt=""     width={"25px"}
+                    height={"25px"} />
               <span
                 className={styles["dataroom_table_heading"]}
                 // onClick={() => getFolderDocuments(data.id)}
@@ -1619,7 +1572,6 @@ const DataRoom = () => {
                                 ? `${styles["allDocuments_btn_active"]}`
                                 : `${styles["allDocuments_btn"]}`
                             }
-                            // onClick={showUploadOptionsModal}
                             onClick={AllDocuments}
                           />
                           <Button
@@ -1629,7 +1581,6 @@ const DataRoom = () => {
                                 ? `${styles["myDocument_btn_active"]}`
                                 : `${styles["myDocument_btn"]}`
                             }
-                            // onClick={showUploadOptionsModal}
                             onClick={MydocumentButtonShow}
                           />
                           <Button

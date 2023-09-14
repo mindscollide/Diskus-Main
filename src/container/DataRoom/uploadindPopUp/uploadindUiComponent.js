@@ -1,7 +1,6 @@
 import { Progress, Space } from "antd";
 import { Col, Row } from "react-bootstrap";
 import styles from "../DataRoom.module.css";
-import featherfolder from "../../../assets/images/feather-folder.svg";
 import chevdown from "../../../assets/images/chevron_down_white.svg";
 import chevronUp from "../../../assets/images/chevron_up.svg";
 import { CircularProgressbar } from "react-circular-progressbar";
@@ -9,10 +8,18 @@ import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import PDFICON from "../../../assets/images/pdf_icon.svg";
 import Greentick from "../../../assets/images/Greentick.svg";
 import ErrorIcon from "../../../assets/images/ErrorIcon.svg";
-import { useTranslation } from "react-i18next";
-import { useEffect } from "react";
+import audioIcon from "../../../assets/images/audioICon.svg";
+import ShareIcon from "../../../assets/images/ShareIcon.svg";
+import sitesIcon from "../../../assets/images/sitesIcon.svg";
+import documentIcon from "../../../assets/images/color document.svg";
+import pdf from "../../../assets/images/color pdf.svg";
+import video from "../../../assets/images/color video.svg";
+import spreadsheet from "../../../assets/images/color spreadsheet.svg";
+import forms from "../../../assets/images/color forms.svg";
 import folderColor from "../../../assets/images/folder_color.svg";
-import { nullFormat } from "numeral";
+import images from "../../../assets/images/Imagesandphotos.svg";
+import { useTranslation } from "react-i18next";
+import { getFileExtension, getIconSource } from "../SearchFunctionality/option";
 
 const UploadindUiComponent = ({
   detaUplodingForFOlder,
@@ -31,6 +38,7 @@ const UploadindUiComponent = ({
   let totalUploadedFiles = 0;
   let totalObjectsToCount = 0;
   let percentageUploaded = 0;
+  const dataArray = Object.values(tasksAttachments);
 
   if (Object.keys(detaUplodingForFOlder).length > 0) {
     // This code will run before the component renders
@@ -44,17 +52,19 @@ const UploadindUiComponent = ({
       }
     }
   }
-  const dataArray = Object.values(tasksAttachments);
-
   if (Object.keys(dataArray).length > 0) {
     // This code will run before the component renders
     for (const item of dataArray) {
-      if ((item.Uploading || item.Uploaded) && item.UploadCancel === false&&item.UploadingError === false) {
+      if (
+        (item.Uploading || item.Uploaded) &&
+        item.UploadCancel === false &&
+        item.UploadingError === false
+      ) {
         totalObjectsToCount += 1;
         totalFileListLength += 1;
       }
       if (item.Uploaded) {
-        totalUploadedFiles +=1;
+        totalUploadedFiles += 1;
       }
     }
   }
@@ -66,13 +76,66 @@ const UploadindUiComponent = ({
   const item = totalObjectsToCount > 1 ? t("Items") : t("item");
   const itemCancel = detaUplodingForFOlder.length > 1 ? t("Items") : t("item");
 
-  function isAnyUploadNotCanceled(data1,data2) {
+  function isAnyUploadNotCanceled(data1, data2) {
     const combinedArray = [...data1, ...data2];
-
     // Check if any object in the combined array has UploadCancel set to true
     return combinedArray.some((obj) => obj.UploadCancel === true);
-    // return data.every((obj) => obj.UploadCancel === true);
   }
+  // const getIconSource = (extension) => {
+  //   switch (extension) {
+  //     case "pdf":
+  //       return PDFICON;
+  //     case "doc":
+  //     case "docx":
+  //     case "odt":
+  //       return documentIcon;
+  //     case "xls":
+  //     case "xlsx":
+  //       return spreadsheet;
+  //     case "html":
+  //     case "htm":
+  //       return sitesIcon;
+  //     case "txt":
+  //       return documentIcon;
+  //     case "gif":
+  //     case "jpeg":
+  //     case "jpg":
+  //     case "png":
+  //     case "svg":
+  //       return images;
+  //     case "aif":
+  //     case "iff":
+  //     case "m3u":
+  //     case "m4a":
+  //     case "mid":
+  //     case "mp3":
+  //     case "mpa":
+  //     case "wav":
+  //       return audioIcon;
+  //     case "3g2":
+  //     case "3gp":
+  //     case "asf":
+  //     case "avi":
+  //     case "flv":
+  //     case "m4v":
+  //     case "mov":
+  //     case "mp4":
+  //     case "mpg":
+  //     case "rm":
+  //     case "srt":
+  //     case "swf":
+  //     case "vob":
+  //     case "wmv":
+  //       return video;
+  //     default:
+  //       return null;
+  //   }
+  // };
+  // const getFileExtension = (fileName) => {
+  //   const lowercaseExtension = fileName.toLowerCase().split(".").pop();
+  //   return lowercaseExtension;
+  // };
+
   console.log("tasksAttachments", tasksAttachments);
   return (
     <>
@@ -96,7 +159,7 @@ const UploadindUiComponent = ({
                   sm={9}
                   className="d-flex justify-content-start gap-3"
                 >
-                  {isAnyUploadNotCanceled(detaUplodingForFOlder,dataArray) ? (
+                  {isAnyUploadNotCanceled(detaUplodingForFOlder, dataArray) ? (
                     <>
                       <span className={styles["Uploading"]}>
                         {`${detaUplodingForFOlder.length} ${itemCancel} ${t(
@@ -251,7 +314,9 @@ const UploadindUiComponent = ({
                               className="d-flex  gap-3 flex-row"
                             >
                               <img
-                                src={PDFICON}
+                                src={getIconSource(
+                                  getFileExtension(data.FileName)
+                                )}
                                 height="20px"
                                 alt=""
                                 width="20px"
@@ -346,7 +411,9 @@ const UploadindUiComponent = ({
               ? dataArray.map((data, index) => {
                   return (
                     <>
-                      {(data.Uploaded === true||data.UploadingError===true) && data.UploadCancel === false ? (
+                      {(data.Uploaded === true ||
+                        data.UploadingError === true) &&
+                      data.UploadCancel === false ? (
                         <Row key={index}>
                           <Col
                             lg={12}
@@ -363,7 +430,9 @@ const UploadindUiComponent = ({
                               className="d-flex  gap-3 flex-row "
                             >
                               <img
-                                src={PDFICON}
+                                src={getIconSource(
+                                  getFileExtension(data.FileName)
+                                )}
                                 height="20px"
                                 alt=""
                                 width="20px"

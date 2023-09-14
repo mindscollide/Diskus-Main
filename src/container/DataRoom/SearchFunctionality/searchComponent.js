@@ -6,7 +6,7 @@ import pptIcon from "../../../assets/images/AttachmentIcons/ppt.svg";
 import videoIcon from "../../../assets/images/AttachmentIcons/video.svg";
 import xlsFileIcon from "../../../assets/images/AttachmentIcons/xls-file.svg";
 import sharedIcon from "../../../assets/images/shared_icon.svg";
-import featherfolder from "../../../assets/images/feather-folder.svg";
+import folderColor from "../../../assets/images/folder_color.svg";
 import CheckIconDropdown from "../../../assets/images/check__sign_dropdown.svg";
 import CrossIconDropdown from "../../../assets/images/cross__sign_dropdown.svg";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -16,6 +16,8 @@ import { Button, Modal, TableToDo } from "../../../components/elements";
 import GridViewDataRoom from "../GridViewDataRoom/GridViewDataRoom";
 import styles from "./searchComponent.module.css";
 import {
+  getFileExtension,
+  getIconSource,
   OptionsDocument,
   optionsforFile,
   optionsforFolder,
@@ -82,7 +84,7 @@ const SearchComponent = ({
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={featherfolder} alt="" />
+                <img src={folderColor} alt="" />
                 <abbr title={text}>
                   <span
                     className={`${
@@ -96,30 +98,11 @@ const SearchComponent = ({
               </div>
             );
           } else {
-            let FindExt = data?.name?.split(".")[1];
             return (
               <>
                 <section className="d-flex gap-2">
                   <img
-                    src={
-                      FindExt === "png" ||
-                      FindExt === "jpg" ||
-                      FindExt === "jpeg"
-                        ? photosIcon
-                        : FindExt === "docx" ||
-                          FindExt === "doc" ||
-                          FindExt === "txt"
-                        ? docIcon
-                        : FindExt === "mp4"
-                        ? videoIcon
-                        : FindExt === "pdf"
-                        ? pdfIcon
-                        : FindExt === "xls" || FindExt === "xlsx"
-                        ? xlsFileIcon
-                        : FindExt === "ppt" || FindExt === "pptx"
-                        ? pptIcon
-                        : null
-                    }
+                    src={getIconSource(getFileExtension(data.name))}
                     alt=""
                   />
                   <abbr title={text}>
@@ -135,7 +118,7 @@ const SearchComponent = ({
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={featherfolder} alt="" />
+                <img src={folderColor} alt="" />
                 <abbr title={text}>
                   <span
                     className={`${
@@ -149,29 +132,13 @@ const SearchComponent = ({
               </div>
             );
           } else {
-            let FindExt = data?.name?.split(".")[1];
             return (
               <>
                 <section className="d-flex gap-2">
-                  {FindExt === "png" ||
-                  FindExt === "jpg" ||
-                  FindExt === "jpeg" ? (
-                    <img src={photosIcon} alt="" />
-                  ) : FindExt === "docx" ||
-                    FindExt === "doc" ||
-                    FindExt === "txt" ? (
-                    <img src={docIcon} alt="" />
-                  ) : FindExt === "mp4" ? (
-                    <img src={videoIcon} alt="" />
-                  ) : FindExt === "xls" || FindExt === "xlsx" ? (
-                    <img src={xlsFileIcon} alt="" />
-                  ) : FindExt === "ppt" || FindExt === "pptx" ? (
-                    <img src={pptIcon} alt="" />
-                  ) : FindExt === undefined ? (
-                    <img src={docIcon} alt="" />
-                  ) : (
-                    <img src={docIcon} alt="" />
-                  )}
+                  <img
+                    src={getIconSource(getFileExtension(data.name))}
+                    alt=""
+                  />
 
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
