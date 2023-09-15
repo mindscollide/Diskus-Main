@@ -719,29 +719,33 @@ const VoteModal = () => {
                                     return (
                                       <>
                                         <>
-                                          <span className="position-relative">
-                                            <TextField
-                                              labelClass={"d-none"}
-                                              applyClass={
-                                                "NewMeetingFileds_withIcon"
-                                              }
-                                              width={"145px"}
-                                              value={data}
-                                              name={"OptionsAdded"}
-                                              iconClassName={
-                                                styles["ResCrossIcon"]
-                                              }
-                                              inputicon={
-                                                <img
-                                                  src={redcrossIcon}
-                                                  height="21.79px"
-                                                  width="21.79px"
-                                                  className="cursor-pointer"
-                                                  onClick={handleCrossBtn}
+                                          {index === 0 ? null : (
+                                            <>
+                                              <span className="position-relative">
+                                                <TextField
+                                                  labelClass={"d-none"}
+                                                  applyClass={
+                                                    "NewMeetingFileds_withIcon"
+                                                  }
+                                                  width={"145px"}
+                                                  value={data}
+                                                  name={"OptionsAdded"}
+                                                  iconClassName={
+                                                    styles["ResCrossIcon"]
+                                                  }
+                                                  inputicon={
+                                                    <img
+                                                      src={redcrossIcon}
+                                                      height="21.79px"
+                                                      width="21.79px"
+                                                      className="cursor-pointer"
+                                                      onClick={handleCrossBtn}
+                                                    />
+                                                  }
                                                 />
-                                              }
-                                            />
-                                          </span>
+                                              </span>
+                                            </>
+                                          )}
                                         </>
                                       </>
                                     );
