@@ -1,86 +1,87 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useRef } from "react";
 import {
   Checkbox,
   Modal,
   Loader,
   Notification,
   MultiDatePickers,
-} from "../../../components/elements"
-import { DateObject } from "react-multi-date-picker"
+} from "../../../components/elements";
+import DatePicker, { DateObject } from "react-multi-date-picker";
+import EditIcon from "../../../assets/images/Edit-Icon.png";
+import styles from "./CreatePolling.module.css";
+import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
+import WhiteCrossIcon from "../../../assets/images/PollCrossIcon.svg";
 
-import styles from "./CreatePolling.module.css"
-import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg"
-import WhiteCrossIcon from "../../../assets/images/PollCrossIcon.svg"
+import { Container, Row, Col } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import AlarmClock from "../../../assets/images/AlarmOptions.svg";
+import { Button, TextField } from "../../../components/elements";
+import gregorian from "react-date-object/calendars/gregorian";
 
-import { Container, Row, Col } from "react-bootstrap"
-import { useTranslation } from "react-i18next"
-import AlarmClock from "../../../assets/images/AlarmOptions.svg"
-import { Button, TextField } from "../../../components/elements"
-import gregorian from "react-date-object/calendars/gregorian"
-
-import arabic from "react-date-object/calendars/arabic"
-import arabic_ar from "react-date-object/locales/arabic_ar"
-import gregorian_en from "react-date-object/locales/gregorian_en"
-import plusFaddes from "../../../assets/images/PlusFadded.svg"
-import CrossIcon from "../../../assets/images/CrossIcon.svg"
-import profile from "../../../assets/images/profile_polls.svg"
-import { useState } from "react"
-import EditIcon from "../../../assets/images/Edit-Icon.png"
-import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
-import GroupIcon from "../../../assets/images/groupdropdown.svg"
-import committeeicon from "../../../assets/images/committeedropdown.svg"
-import { enGB, ar } from "date-fns/locale"
-import profilepic from "../../../assets/images/profiledropdown.svg"
+import arabic from "react-date-object/calendars/arabic";
+import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian_en from "react-date-object/locales/gregorian_en";
+import plusFaddes from "../../../assets/images/PlusFadded.svg";
+import CrossIcon from "../../../assets/images/CrossIcon.svg";
+import profile from "../../../assets/images/profile_polls.svg";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import GroupIcon from "../../../assets/images/groupdropdown.svg";
+import committeeicon from "../../../assets/images/committeedropdown.svg";
+import { enGB, ar } from "date-fns/locale";
+import profilepic from "../../../assets/images/profiledropdown.svg";
 import {
   SavePollsApi,
   getAllCommitteesandGroups,
   setCreatePollModal,
-} from "../../../store/actions/Polls_actions"
-import Select from "react-select"
-import makeAnimated from "react-select/animated"
-import { registerLocale } from "react-datepicker"
-import moment from "moment"
+} from "../../../store/actions/Polls_actions";
+import Select from "react-select";
+import makeAnimated from "react-select/animated";
+import { registerLocale } from "react-datepicker";
+import moment from "moment";
 import {
   multiDatePickerDateChangIntoUTC,
   newDateFormaterAsPerUTC,
-} from "../../../commen/functions/date_formater"
-import gregorian_ar from "react-date-object/locales/gregorian_ar"
+} from "../../../commen/functions/date_formater";
+import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import {
   regexOnlyForNumberNCharacters,
   validateInput,
-} from "../../../commen/functions/regex"
+} from "../../../commen/functions/regex";
 
 const CreatePolling = () => {
-  const animatedComponents = makeAnimated()
-  let currentLanguage = localStorage.getItem("i18nextLng")
-  registerLocale("ar", ar)
-  registerLocale("en", enGB)
+  const datePickerRef = useRef();
+  const animatedComponents = makeAnimated();
+  let dateFormat = "DD/MM/YYYY";
+  let currentLanguage = localStorage.getItem("i18nextLng");
+  registerLocale("ar", ar);
+  registerLocale("en", enGB);
   //For Custom language datepicker
-  const { PollsReducer } = useSelector((state) => state)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const [calendarValue, setCalendarValue] = useState(gregorian)
-  const [localValue, setLocalValue] = useState(gregorian_en)
-  const { t } = useTranslation()
-  const [defineUnsaveModal, setDefineUnsaveModal] = useState(false)
-  const [meetingDate, setMeetingDate] = useState("")
-  const [members, setMembers] = useState([])
-  const [dropdowndata, setDropdowndata] = useState([])
+  const { PollsReducer } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
+  const { t } = useTranslation();
+  const [defineUnsaveModal, setDefineUnsaveModal] = useState(false);
+  const [meetingDate, setMeetingDate] = useState("");
+  const [members, setMembers] = useState([]);
+  const [dropdowndata, setDropdowndata] = useState([]);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
-  })
-  const [selectedsearch, setSelectedsearch] = useState([])
+  });
+  const [selectedsearch, setSelectedsearch] = useState([]);
 
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false);
 
   const [createPollData, setcreatePollData] = useState({
     TypingTitle: "",
     InputSearch: "",
     date: "",
     AllowMultipleAnswers: true,
-  })
+  });
 
   const [options, setOptions] = useState([
     {
@@ -95,47 +96,63 @@ const CreatePolling = () => {
       name: 3,
       value: "",
     },
-  ])
+  ]);
 
-  const allValuesNotEmpty = options.every((item) => item.value !== "")
+  const CustomIcon = () => (
+    <div className="custom-icon-wrapper">
+      <img
+        src={EditIcon}
+        alt="Edit Icon"
+        height="11.11px"
+        width="11.54px"
+        className="custom-icon cursor-pointer"
+      />
+    </div>
+  );
+  const handleIconClick = () => {
+    if (datePickerRef.current) {
+      datePickerRef.current.openCalendar();
+    }
+  };
+  const allValuesNotEmpty = options.every((item) => item.value !== "");
 
   const allValuesNotEmptyAcceptLastOne = options.every((item, index) => {
     if (index === options.length - 1) {
-      return true // Allow the last object's value to be empty
+      return true; // Allow the last object's value to be empty
     }
-    return item.value !== ""
-  })
+    return item.value !== "";
+  });
 
   useEffect(() => {
     if (currentLanguage === "ar") {
-      moment.locale(currentLanguage)
+      moment.locale(currentLanguage);
     } else if (currentLanguage === "fr") {
-      moment.locale(currentLanguage)
+      moment.locale(currentLanguage);
     } else {
-      moment.locale(currentLanguage)
+      moment.locale(currentLanguage);
     }
-  }, [currentLanguage])
+  }, [currentLanguage]);
 
   useEffect(() => {
     if (currentLanguage != undefined) {
       if (currentLanguage === "en") {
-        setCalendarValue(gregorian)
-        setLocalValue(gregorian_en)
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
       } else if (currentLanguage === "ar") {
-        setCalendarValue(gregorian)
-        setLocalValue(gregorian_ar)
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_ar);
       }
     }
-  }, [currentLanguage])
+  }, [currentLanguage]);
 
   useEffect(() => {
-    dispatch(getAllCommitteesandGroups(navigate, t))
-  }, [])
+    dispatch(getAllCommitteesandGroups(navigate, t));
+  }, []);
 
   useEffect(() => {
-    let pollsData = PollsReducer.gellAllCommittesandGroups
+    let pollsData = PollsReducer.gellAllCommittesandGroups;
     if (pollsData !== null && pollsData !== undefined) {
-      let temp = []
+      let temp = [];
       if (Object.keys(pollsData).length > 0) {
         if (Object.keys(pollsData.groups).length > 0) {
           pollsData.groups.map((a, index) => {
@@ -159,9 +176,9 @@ const CreatePolling = () => {
                 </>
               ),
               type: 1,
-            }
-            temp.push(newData)
-          })
+            };
+            temp.push(newData);
+          });
         }
         if (Object.keys(pollsData.committees).length > 0) {
           pollsData.committees.map((a, index) => {
@@ -189,15 +206,15 @@ const CreatePolling = () => {
                 </>
               ),
               type: 2,
-            }
-            temp.push(newData)
-          })
+            };
+            temp.push(newData);
+          });
         }
         if (Object.keys(pollsData.organizationUsers).length > 0) {
           console.log(
             pollsData.organizationUsers,
             "organizationUsersorganizationUsersorganizationUsers"
-          )
+          );
           pollsData.organizationUsers.map((a, index) => {
             let newData = {
               value: a.userID,
@@ -226,147 +243,147 @@ const CreatePolling = () => {
                 </>
               ),
               type: 3,
-            }
-            temp.push(newData)
-          })
+            };
+            temp.push(newData);
+          });
         }
-        setDropdowndata(temp)
+        setDropdowndata(temp);
       } else {
-        setDropdowndata([])
+        setDropdowndata([]);
       }
     }
-  }, [PollsReducer.gellAllCommittesandGroups])
+  }, [PollsReducer.gellAllCommittesandGroups]);
 
   // for selection of data
   const handleSelectValue = (value) => {
-    setSelectedsearch(value)
-  }
-  console.log(members, "temtemtemtemtem")
+    setSelectedsearch(value);
+  };
+  console.log(members, "temtemtemtemtem");
   // for add user for assignes
   const handleAddUsers = () => {
-    let pollsData = PollsReducer.gellAllCommittesandGroups
-    let tem = [...members]
+    let pollsData = PollsReducer.gellAllCommittesandGroups;
+    let tem = [...members];
     if (Object.keys(selectedsearch).length > 0) {
       try {
         selectedsearch.map((seledtedData, index) => {
           console.log(
             seledtedData,
             "seledtedDataseledtedDataseledtedDataseledtedData"
-          )
+          );
           if (seledtedData.type === 1) {
             let check1 = pollsData.groups.find(
               (data, index) => data.groupID === seledtedData.value
-            )
+            );
             if (check1 != undefined) {
-              let groupUsers = check1.groupUsers
+              let groupUsers = check1.groupUsers;
               if (Object.keys(groupUsers).length > 0) {
                 groupUsers.map((gUser, index) => {
                   let check2 = members.find(
                     (data, index) => data.UserID === gUser.userID
-                  )
+                  );
                   if (check2 != undefined) {
                   } else {
                     let newUser = {
                       userName: gUser.userName,
                       userID: gUser.userID,
                       displayPicture: "",
-                    }
-                    tem.push(newUser)
+                    };
+                    tem.push(newUser);
                   }
-                })
+                });
               }
             }
           } else if (seledtedData.type === 2) {
-            console.log("members check")
+            console.log("members check");
             let check1 = pollsData.committees.find(
               (data, index) => data.committeeID === seledtedData.value
-            )
+            );
             if (check1 != undefined) {
-              let committeesUsers = check1.committeeUsers
+              let committeesUsers = check1.committeeUsers;
               if (Object.keys(committeesUsers).length > 0) {
                 committeesUsers.map((cUser, index) => {
                   let check2 = members.find(
                     (data, index) => data.UserID === cUser.userID
-                  )
+                  );
                   if (check2 != undefined) {
                   } else {
                     let newUser = {
                       userName: cUser.userName,
                       userID: cUser.userID,
                       displayPicture: "",
-                    }
-                    tem.push(newUser)
+                    };
+                    tem.push(newUser);
                   }
-                })
+                });
               }
             }
           } else if (seledtedData.type === 3) {
             let check1 = members.find(
               (data, index) => data.UserID === seledtedData.value
-            )
+            );
             if (check1 != undefined) {
             } else {
               let check2 = pollsData.organizationUsers.find(
                 (data, index) => data.userID === seledtedData.value
-              )
-              console.log(check2, "check2check2check2")
+              );
+              console.log(check2, "check2check2check2");
               if (check2 !== undefined) {
                 let newUser = {
                   userName: check2.userName,
                   userID: check2.userID,
                   displayPicture:
                     check2.profilePicture.displayProfilePictureName,
-                }
-                tem.push(newUser)
+                };
+                tem.push(newUser);
               }
             }
           } else {
           }
-        })
+        });
       } catch {
-        console.log("error in add")
+        console.log("error in add");
       }
-      console.log("members check", tem)
-      const uniqueData = new Set(tem.map(JSON.stringify))
+      console.log("members check", tem);
+      const uniqueData = new Set(tem.map(JSON.stringify));
 
       // Convert the Set back to an array of objects
-      const result = Array.from(uniqueData).map(JSON.parse)
-      setMembers(result)
-      setSelectedsearch([])
+      const result = Array.from(uniqueData).map(JSON.parse);
+      setMembers(result);
+      setSelectedsearch([]);
     } else {
       // setopen notionation work here
     }
-  }
+  };
 
   const changeDateStartHandler = (date) => {
-    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY")
-    let DateDate = new Date(date)
-    setMeetingDate(meetingDateValueFormat)
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    let DateDate = new Date(date);
+    setMeetingDate(meetingDateValueFormat);
     setcreatePollData({
       ...createPollData,
       date: DateDate,
-    })
-  }
+    });
+  };
 
   const changeDateStartHandler2 = (date) => {
-    let newDate = moment(date).format("DD MMMM YYYY")
-    return newDate
-  }
+    let newDate = moment(date).format("DD MMMM YYYY");
+    return newDate;
+  };
 
   const checkOptions = (data) => {
     if (data[0].value === "" || data[1].value === "") {
-      return false
+      return false;
     } else {
-      return true
+      return true;
     }
-  }
+  };
 
   // for create polls
   const SavePollsButtonFunc = async (value) => {
-    const organizationid = localStorage.getItem("organizationID")
-    const createrid = localStorage.getItem("userID")
-    let users = []
-    let optionsListData = []
+    const organizationid = localStorage.getItem("organizationID");
+    const createrid = localStorage.getItem("userID");
+    let users = [];
+    let optionsListData = [];
     if (
       createPollData.date != "" &&
       createPollData.TypingTitle != "" &&
@@ -375,13 +392,13 @@ const CreatePolling = () => {
       allValuesNotEmpty
     ) {
       members.map((userdata, index) => {
-        users.push(userdata.userID)
-      })
+        users.push(userdata.userID);
+      });
       options.map((optionData, index) => {
         if (optionData.value != "") {
-          optionsListData.push(optionData.value)
+          optionsListData.push(optionData.value);
         }
-      })
+      });
       let data = {
         PollDetails: {
           PollTitle: createPollData.TypingTitle,
@@ -393,127 +410,127 @@ const CreatePolling = () => {
         },
         ParticipantIDs: users,
         PollAnswers: optionsListData,
-      }
+      };
 
-      await dispatch(SavePollsApi(navigate, data, t))
+      await dispatch(SavePollsApi(navigate, data, t));
     } else {
-      setError(true)
+      setError(true);
 
       if (createPollData.TypingTitle === "") {
         setOpen({
           ...open,
           flag: true,
           message: t("Title-is-required"),
-        })
+        });
       } else if (createPollData.date === "") {
         setOpen({
           ...open,
           flag: true,
           message: t("Select-date"),
-        })
+        });
       } else if (Object.keys(members).length === 0) {
         setOpen({
           ...open,
           flag: true,
           message: t("Atleat-one-member-required"),
-        })
+        });
       } else if (Object.keys(options).length <= 1) {
         setOpen({
           ...open,
           flag: true,
           message: t("Required-atleast-two-options"),
-        })
+        });
       } else if (!allValuesNotEmpty) {
         setOpen({
           ...open,
           flag: true,
           message: t("Please-fill-all-open-option-fields"),
-        })
+        });
       } else {
         setOpen({
           ...open,
           flag: true,
           message: t("Please-fill-all-reqired-fields"),
-        })
+        });
       }
     }
-  }
+  };
 
   const HandleChange = (e, index) => {
-    let name = e.target.name
-    let value = e.target.value
+    let name = e.target.name;
+    let value = e.target.value;
     if (name === "TypingTitle") {
-      let valueCheck = validateInput(value)
+      let valueCheck = validateInput(value);
       if (valueCheck !== "") {
         setcreatePollData({
           ...createPollData,
           TypingTitle: valueCheck,
-        })
+        });
       } else {
         setcreatePollData({
           ...createPollData,
           TypingTitle: "",
-        })
+        });
       }
     }
-  }
+  };
 
   const HandleOptionChange = (e) => {
-    let name = parseInt(e.target.name)
-    let newValue = e.target.value
-    let valueCheck = regexOnlyForNumberNCharacters(newValue)
+    let name = parseInt(e.target.name);
+    let newValue = e.target.value;
+    let valueCheck = regexOnlyForNumberNCharacters(newValue);
     setOptions((prevState) =>
       prevState.map((item) => {
-        return item.name === name ? { ...item, value: valueCheck } : item
+        return item.name === name ? { ...item, value: valueCheck } : item;
       })
-    )
-  }
+    );
+  };
 
   const addNewRow = () => {
     if (options.length > 1) {
       if (allValuesNotEmpty) {
-        let lastIndex = options.length - 1
+        let lastIndex = options.length - 1;
         if (options[lastIndex].value != "") {
-          const randomNumber = Math.floor(Math.random() * 100) + 1
-          let newOptions = { name: randomNumber, value: "" }
-          setOptions([...options, newOptions])
+          const randomNumber = Math.floor(Math.random() * 100) + 1;
+          let newOptions = { name: randomNumber, value: "" };
+          setOptions([...options, newOptions]);
         }
       } else {
         setOpen({
           flag: true,
           message: t("Please-fill-options"),
-        })
+        });
       }
     } else {
       setOpen({
         flag: true,
         message: t("Please-fill-options"),
-      })
+      });
     }
-  }
+  };
 
   const HandleCancelFunction = (index) => {
-    let optionscross = [...options]
-    optionscross.splice(index, 1)
-    setOptions(optionscross)
-  }
+    let optionscross = [...options];
+    optionscross.splice(index, 1);
+    setOptions(optionscross);
+  };
 
   const cancellAnyUser = (index) => {
-    let removeData = [...members]
-    removeData.splice(index, 1)
-    setMembers(removeData)
-  }
+    let removeData = [...members];
+    removeData.splice(index, 1);
+    setMembers(removeData);
+  };
 
   const HandlecancellButton = () => {
-    setDefineUnsaveModal(true)
-  }
+    setDefineUnsaveModal(true);
+  };
 
   const HandleCheck = () => {
     setcreatePollData({
       ...createPollData,
       AllowMultipleAnswers: !createPollData.AllowMultipleAnswers,
-    })
-  }
+    });
+  };
 
   return (
     <>
@@ -525,7 +542,7 @@ const CreatePolling = () => {
           modalHeaderClassName={styles["ModalRequestHeader_polling"]}
           modalFooterClassName={"d-block"}
           onHide={() => {
-            setDefineUnsaveModal(true)
+            setDefineUnsaveModal(true);
             // dispatch(setCreatePollModal(false));
           }}
           ModalTitle={
@@ -546,27 +563,36 @@ const CreatePolling = () => {
                           sm={12}
                           className="d-flex justify-content-center gap-2 align-items-center"
                         >
-                          <img
-                            src={AlarmClock}
-                            width="14.97px"
-                            height="14.66px"
-                            className={styles["classOFImage"]}
-                          />
-                          <span className={styles["Due_Date_heading"]}>
-                            {t("Due-date")}{" "}
-                            {createPollData.date !== ""
-                              ? changeDateStartHandler2(createPollData.date)
-                              : ""}
+                          <span
+                            onClick={handleIconClick}
+                            className="cursor-pointer d-flex gap-2 align-items-center"
+                          >
+                            <img
+                              src={AlarmClock}
+                              width="14.97px"
+                              height="14.66px"
+                              className={styles["classOFImage"]}
+                              alt=""
+                            />
+                            <span className={styles["Due_Date_heading"]}>
+                              {t("Due-date")}{" "}
+                              {createPollData.date !== ""
+                                ? changeDateStartHandler2(createPollData.date)
+                                : ""}
+                            </span>
                           </span>
-                          <MultiDatePickers
-                            value={meetingDate}
+                          <DatePicker
                             highlightToday={false}
                             onOpenPickNewDate={false}
-                            name="MeetingDate"
-                            check={true}
+                            ref={datePickerRef}
+                            render={<CustomIcon />}
+                            onChange={(value) => changeDateStartHandler(value)}
+                            format={dateFormat}
+                            calendarPosition="bottom-center"
+                            minDate={moment().toDate()}
+                            className="datePickerTodoCreate2"
                             calendar={calendarValue}
                             locale={localValue}
-                            onChange={(value) => changeDateStartHandler(value)}
                           />
                         </Col>
                       </Row>
@@ -627,7 +653,7 @@ const CreatePolling = () => {
                         width="16px"
                         height="16px"
                         onClick={() => {
-                          setDefineUnsaveModal(true)
+                          setDefineUnsaveModal(true);
                         }}
                       />
                     </Col>
@@ -749,7 +775,7 @@ const CreatePolling = () => {
                                       </Row>
                                     )}
                                   </>
-                                )
+                                );
                               })
                             : null}
 
@@ -900,7 +926,7 @@ const CreatePolling = () => {
                                     </Col>
                                   </Row>
                                 </Col>
-                              )
+                              );
                             })}
                           </Row>
                         </Col>
@@ -926,15 +952,15 @@ const CreatePolling = () => {
                         text={t("No")}
                         className={styles["No_Btn_polls_delModal"]}
                         onClick={() => {
-                          setDefineUnsaveModal(false)
+                          setDefineUnsaveModal(false);
                         }}
                       />
                       <Button
                         text={t("Yes")}
                         className={styles["Yes_Btn_polls_delModal"]}
                         onClick={() => {
-                          dispatch(setCreatePollModal(false))
-                          setDefineUnsaveModal(false)
+                          dispatch(setCreatePollModal(false));
+                          setDefineUnsaveModal(false);
                         }}
                       />
                     </Col>
@@ -985,7 +1011,7 @@ const CreatePolling = () => {
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
       {/* {PollsReducer.Loading ? <Loader /> : null} */}
     </>
-  )
-}
+  );
+};
 
-export default CreatePolling
+export default CreatePolling;

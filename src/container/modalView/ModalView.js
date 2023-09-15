@@ -794,6 +794,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         disable={true}
                         as={"textarea"}
                         rows="7"
+                        // label={}
                         placeholder={t("Description") + "*"}
                         value={createMeeting.MeetingDescription}
                         required
