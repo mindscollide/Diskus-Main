@@ -191,6 +191,9 @@ const DataRoom = () => {
     isPDF: false,
     isFolders: false,
     isVideos: false,
+    isAudios: false,
+    isSites: false,
+    isImages: false,
     LastModifiedStartDate: "",
     LastModifiedEndDate: "",
     UserIDToSearch: 0,
@@ -914,8 +917,12 @@ const DataRoom = () => {
         } else {
           return (
             <div className={`${styles["dataFolderRow"]}`}>
-              <img src={getIconSource(getFileExtension(record.name))} alt=""     width={"25px"}
-                    height={"25px"} />
+              <img
+                src={getIconSource(getFileExtension(record.name))}
+                alt=""
+                width={"25px"}
+                height={"25px"}
+              />
               <span
                 className={styles["dataroom_table_heading"]}
                 // onClick={() => getFolderDocuments(data.id)}

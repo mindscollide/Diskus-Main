@@ -187,6 +187,9 @@ const SearchBarComponent = ({
       isPDF: false,
       isFolders: false,
       isVideos: false,
+      isAudios: false,
+      isSites: false,
+      isImages: false,
       LastModifiedStartDate: "",
       LastModifiedEndDate: "",
       UserIDToSearch: 0,
@@ -208,7 +211,48 @@ const SearchBarComponent = ({
 
   // this for document selection on search dropdown
   const handleChangeDocuments = (documentID) => {
-    if (documentID === 2) {
+    if (documentID === 1) {
+      setSearchDataFields({
+        ...searchDataFields,
+        isDocument: true,
+        isSpreadSheet: true,
+        isPresentation: true,
+        isForms: true,
+        isPDF: true,
+        isFolders: true,
+        isVideos: true,
+        isAudios: true,
+        isSites: true,
+        isImages: true,
+      });
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        StatusID: 1,
+        Title: "",
+        isDocument: true,
+        isSpreadSheet: true,
+        isPresentation: true,
+        isForms: true,
+        isPDF: true,
+        isFolders: true,
+        isVideos: true,
+        isAudios: true,
+        isSites: true,
+        isImages: true,
+        LastModifiedStartDate: "",
+        LastModifiedEndDate: "",
+        UserIDToSearch: parseInt(userID),
+        isOwnedByMe: false,
+        isNotOwnedByMe: false,
+        isSpecificUser: false,
+        sRow: 0,
+        Length: 50,
+        SortBy: 1,
+        isDescending: false,
+      };
+      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+    } else if (documentID === 2) {
       setSearchDataFields({
         ...searchDataFields,
         isDocument: true,
@@ -218,6 +262,9 @@ const SearchBarComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
       });
       let data = {
         UserID: parseInt(userID),
@@ -231,6 +278,9 @@ const SearchBarComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
         LastModifiedStartDate: "",
         LastModifiedEndDate: "",
         UserIDToSearch: parseInt(userID),
@@ -253,6 +303,9 @@ const SearchBarComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
       });
       let data = {
         UserID: parseInt(userID),
@@ -266,6 +319,9 @@ const SearchBarComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
         LastModifiedStartDate: "",
         LastModifiedEndDate: "",
         UserIDToSearch: parseInt(userID),
@@ -288,6 +344,9 @@ const SearchBarComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
       });
       let data = {
         UserID: parseInt(userID),
@@ -301,6 +360,9 @@ const SearchBarComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
         LastModifiedStartDate: "",
         LastModifiedEndDate: "",
         UserIDToSearch: parseInt(userID),
@@ -323,6 +385,9 @@ const SearchBarComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
       });
       let data = {
         UserID: parseInt(userID),
@@ -336,6 +401,50 @@ const SearchBarComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
+        LastModifiedStartDate: "",
+        LastModifiedEndDate: "",
+        UserIDToSearch: parseInt(userID),
+        isOwnedByMe: false,
+        isNotOwnedByMe: false,
+        isSpecificUser: false,
+        sRow: 0,
+        Length: 50,
+        SortBy: 1,
+        isDescending: false,
+      };
+      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+    } else if (documentID === 6) {
+      setSearchDataFields({
+        ...searchDataFields,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: true,
+      });
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        StatusID: 1,
+        Title: "",
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: true,
         LastModifiedStartDate: "",
         LastModifiedEndDate: "",
         UserIDToSearch: parseInt(userID),
@@ -358,6 +467,9 @@ const SearchBarComponent = ({
         isPDF: true,
         isFolders: false,
         isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
       });
       let data = {
         UserID: parseInt(userID),
@@ -371,41 +483,9 @@ const SearchBarComponent = ({
         isPDF: true,
         isFolders: false,
         isVideos: false,
-        LastModifiedStartDate: "",
-        LastModifiedEndDate: "",
-        UserIDToSearch: parseInt(userID),
-        isOwnedByMe: false,
-        isNotOwnedByMe: false,
-        isSpecificUser: false,
-        sRow: 0,
-        Length: 50,
-        SortBy: 1,
-        isDescending: false,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    } else if (documentID === 10) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: true,
-        isVideos: false,
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: 1,
-        Title: "",
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: true,
-        isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
         LastModifiedStartDate: "",
         LastModifiedEndDate: "",
         UserIDToSearch: parseInt(userID),
@@ -428,6 +508,9 @@ const SearchBarComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: true,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
       });
       let data = {
         UserID: parseInt(userID),
@@ -441,6 +524,132 @@ const SearchBarComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: true,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
+        LastModifiedStartDate: "",
+        LastModifiedEndDate: "",
+        UserIDToSearch: parseInt(userID),
+        isOwnedByMe: false,
+        isNotOwnedByMe: false,
+        isSpecificUser: false,
+        sRow: 0,
+        Length: 50,
+        SortBy: 1,
+        isDescending: false,
+      };
+      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+    } else if (documentID === 10) {
+      setSearchDataFields({
+        ...searchDataFields,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: true,
+        isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
+      });
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        StatusID: 1,
+        Title: "",
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: true,
+        isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
+        LastModifiedStartDate: "",
+        LastModifiedEndDate: "",
+        UserIDToSearch: parseInt(userID),
+        isOwnedByMe: false,
+        isNotOwnedByMe: false,
+        isSpecificUser: false,
+        sRow: 0,
+        Length: 50,
+        SortBy: 1,
+        isDescending: false,
+      };
+      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+    } else if (documentID === 11) {
+      setSearchDataFields({
+        ...searchDataFields,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isAudios: false,
+        isSites: true,
+        isImages: false,
+      });
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        StatusID: 1,
+        Title: "",
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isAudios: false,
+        isSites: true,
+        isImages: false,
+        LastModifiedStartDate: "",
+        LastModifiedEndDate: "",
+        UserIDToSearch: parseInt(userID),
+        isOwnedByMe: false,
+        isNotOwnedByMe: false,
+        isSpecificUser: false,
+        sRow: 0,
+        Length: 50,
+        SortBy: 1,
+        isDescending: false,
+      };
+      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+    } else if (documentID === 12) {
+      setSearchDataFields({
+        ...searchDataFields,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isAudios: true,
+        isSites: false,
+        isImages: false,
+      });
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        StatusID: 1,
+        Title: "",
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isAudios: true,
+        isSites: false,
+        isImages: false,
         LastModifiedStartDate: "",
         LastModifiedEndDate: "",
         UserIDToSearch: parseInt(userID),
@@ -466,6 +675,9 @@ const SearchBarComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isAudios: false,
+        isSites: false,
+        isImages: false,
         LastModifiedStartDate: "",
         LastModifiedEndDate: "",
         UserIDToSearch: parseInt(userID),
@@ -529,6 +741,9 @@ const SearchBarComponent = ({
       isPDF: false,
       isFolders: false,
       isVideos: false,
+      isImages: false,
+      isAudios: false,
+      isSites: false,
       LastModifiedStartDate: "",
       LastModifiedEndDate: "",
       UserIDToSearch: 0,
@@ -558,7 +773,21 @@ const SearchBarComponent = ({
         label: event.label,
       },
     });
-    if (event.value === 2) {
+    if (event.value === 1) {
+      setSearchDataFields({
+        ...searchDataFields,
+        isDocument: true,
+        isSpreadSheet: true,
+        isPresentation: true,
+        isForms: true,
+        isPDF: true,
+        isFolders: true,
+        isVideos: true,
+        isImages: true,
+        isAudios: true,
+        isSites: true,
+      });
+    } else if (event.value === 2) {
       setSearchDataFields({
         ...searchDataFields,
         isDocument: true,
@@ -568,6 +797,9 @@ const SearchBarComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
       });
     } else if (event.value === 3) {
       setSearchDataFields({
@@ -579,6 +811,9 @@ const SearchBarComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
       });
     } else if (event.value === 4) {
       setSearchDataFields({
@@ -590,6 +825,9 @@ const SearchBarComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
       });
     } else if (event.value === 5) {
       setSearchDataFields({
@@ -601,8 +839,25 @@ const SearchBarComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
       });
-    } else if (event.value === 7) {
+    } else if (event.value === 6) {
+      setSearchDataFields({
+        ...searchDataFields,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: true,
+        isAudios: false,
+        isSites: false,
+      });
+    }else if (event.value === 7) {
       setSearchDataFields({
         ...searchDataFields,
         isDocument: false,
@@ -612,17 +867,9 @@ const SearchBarComponent = ({
         isPDF: true,
         isFolders: false,
         isVideos: false,
-      });
-    } else if (event.value === 10) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: true,
-        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
       });
     } else if (event.value === 8) {
       setSearchDataFields({
@@ -634,6 +881,51 @@ const SearchBarComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: true,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+    } else if (event.value === 10) {
+      setSearchDataFields({
+        ...searchDataFields,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: true,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+    }else if (event.value === 11) {
+      setSearchDataFields({
+        ...searchDataFields,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: true,
+      });
+    }else if (event.value === 12) {
+      setSearchDataFields({
+        ...searchDataFields,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: true,
+        isSites: false,
       });
     } else {
     }
@@ -918,7 +1210,7 @@ const SearchBarComponent = ({
                 <img
                   src={blackCrossIcon}
                   alt=""
-                  className="cursor-pointer-cross"
+                  className="cursor-pointer"
                   onClick={resteFunctionality}
                 />
                 <img

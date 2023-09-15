@@ -185,7 +185,7 @@ export const OptionsDocument = (t) => [
           >
             <img src={images} alt="" height="17px" width="17px" />
             <span className={styles["Option_Document_button"]}>
-              {t("Photos")}
+              {t("Images")}
             </span>
           </Col>
         </Row>

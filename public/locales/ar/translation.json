@@ -947,7 +947,7 @@
   "Any-where-in-dataRoom": "Any Where in DataRoom",
   "My-documents": "My Documents",
   "Owned-by-me": "Owned by me",
-  "Not-owned-by-me": "Not-Owned by Me",
+  "Not-owned-by-me": "Not Owned by Me",
   "Specific-person": "Specific Person",
   "Viewer": "Viewer",
   "Last-7-days": "Last 7 days",
@@ -1394,5 +1394,6 @@
   "Multiple-answers-allowed": "Multiple Answers Allowed",
   "Save-and-published": "Save And Published",
   "Update-and-published": "Update And Published",
-  "Please-select-date": "Please Select Date"
+  "Please-select-date": "Please Select Date",
+  "Images":"Images"
 }
