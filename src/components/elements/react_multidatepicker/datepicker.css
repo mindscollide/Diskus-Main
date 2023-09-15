@@ -39,8 +39,8 @@
   width: 100% !important;
   height: 39px !important;
   font-weight: 500;
-  font-size: 13px !important;
-  font-family: "Montserrat", sans-serif !important;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold-600";
   cursor: pointer;
 }
 .datepicker_input:is(:hover, :focus, :focus-visible, :visited) {
@@ -48,4 +48,5 @@
 }
 .datePickerTodoCreate2 {
   border: 1px solid #e1e1e1 !important;
+  font-family: "MontserratSemiBold-600" !important;
 }

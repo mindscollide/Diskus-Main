@@ -560,15 +560,14 @@ export const multiDatePickerDateChangIntoUTC = (date) => {
   return utcFormatted;
 };
 
-
 // this is for return only MMDDYY
 export function formatDateToMMDDYY(date) {
   if (!date || isNaN(date.getTime())) {
-    return ''; // Return an empty string for empty or invalid dates
+    return ""; // Return an empty string for empty or invalid dates
   }
   const year = date.getFullYear().toString();
-  const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
-  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, "0"); // Month is zero-based
+  const day = date.getDate().toString().padStart(2, "0");
   return `${month}${day}${year}`;
 }
 
@@ -583,9 +582,27 @@ export function formatDateToUTC(inputDate) {
     return null;
   }
 
-  const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-  const day = date.getUTCDate().toString().padStart(2, '0');
+  const month = (date.getUTCMonth() + 1).toString().padStart(2, "0");
+  const day = date.getUTCDate().toString().padStart(2, "0");
   const year = date.getUTCFullYear();
 
   return month + day + year;
 }
+
+export const utcConvertintoGMT = (date) => {
+  let fullDateyear =
+    date?.slice(0, 4) +
+    "-" +
+    date?.slice(4, 6) +
+    "-" +
+    date?.slice(6, 8) +
+    "T" +
+    date?.slice(8, 10) +
+    ":" +
+    date?.slice(10, 12) +
+    ":" +
+    date?.slice(12, 14) +
+    ".000Z";
+  let _dateTime = new Date(fullDateyear);
+  return _dateTime;
+};
