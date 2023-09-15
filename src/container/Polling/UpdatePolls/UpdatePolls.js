@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Checkbox,
   Modal,
@@ -17,6 +17,8 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import plusFaddes from "../../../assets/images/PlusFadded.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import profile from "../../../assets/images/profile_polls.svg";
+
+import EditIcon from "../../../assets/images/Edit-Icon.png";
 import GroupIcon from "../../../assets/images/groupdropdown.svg";
 import committeeicon from "../../../assets/images/committeedropdown.svg";
 import profilepic from "../../../assets/images/profiledropdown.svg";
@@ -40,6 +42,7 @@ import {
   regexOnlyForNumberNCharacters,
   validateInput,
 } from "../../../commen/functions/regex";
+import DatePicker from "react-multi-date-picker";
 
 const UpdatePolls = () => {
   const dispatch = useDispatch();
@@ -49,6 +52,8 @@ const UpdatePolls = () => {
   const animatedComponents = makeAnimated();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const { PollsReducer } = useSelector((state) => state);
+  const datePickerRef = useRef();
+  let dateFormat = "DD/MM/YYYY";
   const [polloptions, setPolloptions] = useState([]);
   const [selectedsearch, setSelectedsearch] = useState([]);
   const [dropdowndata, setDropdowndata] = useState([]);
@@ -87,7 +92,7 @@ const UpdatePolls = () => {
   });
 
   useEffect(() => {
-    if (currentLanguage != undefined) {
+    if (currentLanguage !== undefined) {
       if (currentLanguage === "en") {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
@@ -437,6 +442,22 @@ const UpdatePolls = () => {
       AllowMultipleUser: !UpdatePolls.AllowMultipleUser, // Corrected property name
     });
   };
+  const handleIconClick = () => {
+    if (datePickerRef.current) {
+      datePickerRef.current.openCalendar();
+    }
+  };
+  const CustomIcon = () => (
+    <div className="custom-icon-wrapper">
+      <img
+        src={EditIcon}
+        alt="Edit Icon"
+        height="11.11px"
+        width="11.54px"
+        className="custom-icon cursor-pointer"
+      />
+    </div>
+  );
 
   const handleUpdateClick = (value) => {
     const organizationid = localStorage.getItem("organizationID");
@@ -444,8 +465,8 @@ const UpdatePolls = () => {
     let users = [];
     let optionsListData = [];
     if (
-      UpdatePolls.TypingTitle != "" &&
-      UpdatePolls.datepoll != "" &&
+      UpdatePolls.TypingTitle !== "" &&
+      UpdatePolls.datepoll !== "" &&
       Object.keys(pollmembers).length > 0 &&
       Object.keys(options).length >= 2 &&
       (checkForPollStatus || allValuesNotEmpty)
@@ -552,18 +573,41 @@ const UpdatePolls = () => {
                           sm={12}
                           className="d-flex justify-content-center gap-2 align-items-center"
                         >
-                          <img
-                            src={AlarmClock}
-                            width="14.97px"
-                            height="14.66px"
-                          />
-                          <span className={styles["Due_Date_heading"]}>
-                            {t("Due-date-on")}{" "}
-                            <span className={styles["Date_update_poll"]}>
-                              {changeDateStartHandler2(UpdatePolls.date)}
+                          <span
+                            onClick={handleIconClick}
+                            className="cursor-pointer d-flex gap-2 align-items-center"
+                          >
+                            <img
+                              src={AlarmClock}
+                              width="14.97px"
+                              height="14.66px"
+                            />
+                            <span className={styles["Due_Date_heading"]}>
+                              {t("Due-date-on")}{" "}
+                              <span className={styles["Date_update_poll"]}>
+                                {changeDateStartHandler2(UpdatePolls.date)}
+                              </span>
                             </span>
                           </span>
-                          <MultiDatePickers
+                          <DatePicker
+                            highlightToday={false}
+                            onOpenPickNewDate={false}
+                            ref={datePickerRef}
+                            render={<CustomIcon />}
+                            onChange={(value) =>
+                              changeDateStartHandler(
+                                value?.toDate?.().toString()
+                              )
+                            }
+                            format={dateFormat}
+                            value={UpdatePolls.date}
+                            calendarPosition="bottom-center"
+                            minDate={moment().toDate()}
+                            className="datePickerTodoCreate2"
+                            calendar={calendarValue}
+                            locale={localValue}
+                          />
+                          {/* <MultiDatePickers
                             value={UpdatePolls.date}
                             name="MeetingDate"
                             highlightToday={false}
@@ -576,7 +620,7 @@ const UpdatePolls = () => {
                                 value?.toDate?.().toString()
                               )
                             }
-                          />
+                          /> */}
                         </Col>
                       </Row>
                     </Col>

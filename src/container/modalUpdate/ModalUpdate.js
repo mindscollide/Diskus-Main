@@ -313,12 +313,14 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
     console.log("fieldsvalue createmeeting", createMeeting);
     setModalField(false);
     if (
-      createMeeting.MeetingStartTime != "" &&
-      createMeeting.MeetingEndTime != "" &&
-      createMeeting.MeetingDate != "" &&
-      createMeeting.MeetingDescription != "" &&
-      createMeeting.MeetingLocation != "" &&
-      createMeeting.MeetingTitle != ""
+      createMeeting.MeetingStartTime !== "" &&
+      createMeeting.MeetingEndTime !== "" &&
+      createMeeting.MeetingDate !== "" &&
+      createMeeting.MeetingDescription !== "" &&
+      createMeeting.MeetingLocation !== "" &&
+      createMeeting.MeetingTitle !== "" &&
+      createMeetingTime !== "" &&
+      meetingDate !== ""
     ) {
       console.log("fieldsvalue ifcheck");
       setModalField(false);

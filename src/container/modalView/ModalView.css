@@ -66,13 +66,13 @@ button.dataRoom {
 
 .meeting-view-attendee-organizer-tab {
   color: #6172d6 !important;
-  margin-top: 25px !important;
+  margin-top: 10px !important;
   font-size: 20px !important;
   margin-bottom: 10px !important;
 }
 
 .meeting-view-attendee-organizer-list {
-  height: 100px !important;
+  max-height: 100px !important;
   overflow-y: auto !important;
 }
 
@@ -85,7 +85,7 @@ button.dataRoom {
 
 .meeting-view-attendee-participant-tab {
   color: #6172d6 !important;
-  margin-top: 25px !important;
+  margin-top: 5px !important;
   font-size: 20px !important;
   margin-bottom: 10px !important;
 }
@@ -506,5 +506,5 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   word-wrap: break-word !important;
   text-overflow: ellipsis !important;
   white-space: normal !important;
-    margin: 0 10px;
+  margin: 0 10px;
 }
