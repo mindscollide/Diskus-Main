@@ -26,33 +26,6 @@
   color: #fff !important;
 }
 
-.Edit_Button_Organizers {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  font-family: "MontserratMedium-500";
-  border-radius: 4px !important;
-  border: 1px solid #e1e1e1;
-  background: #fff;
-  color: #707070;
-  display: flex;
-  gap: 5px;
-}
-
-.Edit_Button_Organizers:hover,
-.Edit_Button_Organizers:active,
-.Edit_Button_Organizers:focus,
-.Edit_Button_Organizers:focus-visible {
-  padding: 12px 30px !important;
-  font-size: 12px !important;
-  border-radius: 4px !important;
-  display: flex;
-  gap: 5px;
-  border: 1px solid #e1e1e1 !important;
-  background: #fff !important;
-  font-family: "MontserratMedium-500" !important;
-  color: #707070 !important;
-}
-
 .Cancel_Organization {
   padding: 12px 30px !important;
   font-size: 12px !important;
