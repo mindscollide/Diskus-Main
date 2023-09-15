@@ -78,11 +78,12 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
   }, [rows]);
 
   const handleSend = () => {
-    seterror(true);
-    setSelectError(true);
-    setStartDateError(true);
-    setEndDateError(true);
-    // setSendDates(!sendDates);
+    // States For Error Handling
+    // seterror(true);
+    // setSelectError(true);
+    // setStartDateError(true);
+    // setEndDateError(true);
+    setSendDates(!sendDates);
   };
 
   const CancelModal = () => {
@@ -163,94 +164,104 @@ const ProposedMeetingDate = ({ setProposedMeetingDates }) => {
                         </span>
                       </Col>
                     </Row>
-                    <Row className="m-0 p-0 mt-2">
+                    <Row>
                       <Col
                         lg={12}
                         md={12}
                         sm={12}
-                        className={styles["Box_To_Show_Time"]}
+                        className={styles["Scroller_Prposed_Meeting_date"]}
                       >
-                        <Row className={styles["Inner_Send_class"]}>
-                          <Col lg={10} md={10} sm={10}>
-                            <span className={styles["Time_Class"]}>
-                              03:30 pm - 05:30 pm | 17th May, 2020
-                            </span>
+                        <Row className="m-0 p-0 mt-2">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className={styles["Box_To_Show_Time"]}
+                          >
+                            <Row className={styles["Inner_Send_class"]}>
+                              <Col lg={10} md={10} sm={10}>
+                                <span className={styles["Time_Class"]}>
+                                  03:30 pm - 05:30 pm | 17th May, 2020
+                                </span>
+                              </Col>
+                              <Col lg={2} md={2} sm={2}>
+                                <Checkbox
+                                  prefixCls={"ProposedMeeting_Checkbox"}
+                                  classNameCheckBoxP="d-none"
+                                />
+                              </Col>
+                            </Row>
                           </Col>
-                          <Col lg={2} md={2} sm={2}>
-                            <Checkbox
-                              prefixCls={"ProposedMeeting_Checkbox"}
-                              classNameCheckBoxP="d-none"
-                            />
+                        </Row>
+                        <Row className="m-0 p-0 mt-2">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className={styles["Box_To_Show_Time"]}
+                          >
+                            <Row className={styles["Inner_Send_class"]}>
+                              <Col lg={10} md={10} sm={10}>
+                                <span className={styles["Time_Class"]}>
+                                  03:30 pm - 05:30 pm | 17th May, 2020
+                                </span>
+                              </Col>
+                              <Col lg={2} md={2} sm={2}>
+                                <Checkbox
+                                  prefixCls={"ProposedMeeting_Checkbox"}
+                                  classNameCheckBoxP="d-none"
+                                />
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                        <Row className="m-0 p-0 mt-2">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className={styles["Box_To_Show_Time"]}
+                          >
+                            <Row className={styles["Inner_Send_class"]}>
+                              <Col lg={10} md={10} sm={10}>
+                                <span className={styles["Time_Class"]}>
+                                  03:30 pm - 05:30 pm | 17th May, 2020
+                                </span>
+                              </Col>
+                              <Col lg={2} md={2} sm={2}>
+                                <Checkbox
+                                  prefixCls={"ProposedMeeting_Checkbox"}
+                                  classNameCheckBoxP="d-none"
+                                />
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                        <Row className="m-0 p-0 mt-2">
+                          <Col
+                            lg={12}
+                            md={12}
+                            sm={12}
+                            className={styles["Box_To_Show_Time"]}
+                          >
+                            <Row className={styles["Inner_Send_class"]}>
+                              <Col lg={10} md={10} sm={10}>
+                                <span className={styles["Time_Class"]}>
+                                  03:30 pm - 05:30 pm | 17th May, 2020
+                                </span>
+                              </Col>
+                              <Col lg={2} md={2} sm={2}>
+                                <Checkbox
+                                  prefixCls={"ProposedMeeting_Checkbox"}
+                                  classNameCheckBoxP="d-none"
+                                />
+                              </Col>
+                            </Row>
                           </Col>
                         </Row>
                       </Col>
                     </Row>
-                    <Row className="m-0 p-0 mt-2">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Box_To_Show_Time"]}
-                      >
-                        <Row className={styles["Inner_Send_class"]}>
-                          <Col lg={10} md={10} sm={10}>
-                            <span className={styles["Time_Class"]}>
-                              03:30 pm - 05:30 pm | 17th May, 2020
-                            </span>
-                          </Col>
-                          <Col lg={2} md={2} sm={2}>
-                            <Checkbox
-                              prefixCls={"ProposedMeeting_Checkbox"}
-                              classNameCheckBoxP="d-none"
-                            />
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                    <Row className="m-0 p-0 mt-2">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Box_To_Show_Time"]}
-                      >
-                        <Row className={styles["Inner_Send_class"]}>
-                          <Col lg={10} md={10} sm={10}>
-                            <span className={styles["Time_Class"]}>
-                              03:30 pm - 05:30 pm | 17th May, 2020
-                            </span>
-                          </Col>
-                          <Col lg={2} md={2} sm={2}>
-                            <Checkbox
-                              prefixCls={"ProposedMeeting_Checkbox"}
-                              classNameCheckBoxP="d-none"
-                            />
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
-                    <Row className="m-0 p-0 mt-2">
-                      <Col
-                        lg={12}
-                        md={12}
-                        sm={12}
-                        className={styles["Box_To_Show_Time"]}
-                      >
-                        <Row className={styles["Inner_Send_class"]}>
-                          <Col lg={10} md={10} sm={10}>
-                            <span className={styles["Time_Class"]}>
-                              03:30 pm - 05:30 pm | 17th May, 2020
-                            </span>
-                          </Col>
-                          <Col lg={2} md={2} sm={2}>
-                            <Checkbox
-                              prefixCls={"ProposedMeeting_Checkbox"}
-                              classNameCheckBoxP="d-none"
-                            />
-                          </Col>
-                        </Row>
-                      </Col>
-                    </Row>
+
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Prposed_On_Heading"]}>
