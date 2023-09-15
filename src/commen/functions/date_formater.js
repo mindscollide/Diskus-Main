@@ -571,3 +571,21 @@ export function formatDateToMMDDYY(date) {
   const day = date.getDate().toString().padStart(2, '0');
   return `${month}${day}${year}`;
 }
+
+// Example usage: handling both type and convert it into utc using in data room search
+// "15 September, 2023";
+// "Sat Dec 31 2022 00:00:00 GMT+0500 (Pakistan Standard Time)";
+export function formatDateToUTC(inputDate) {
+  const date = new Date(inputDate);
+
+  if (isNaN(date.getTime())) {
+    // Invalid date string
+    return null;
+  }
+
+  const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+  const day = date.getUTCDate().toString().padStart(2, '0');
+  const year = date.getUTCFullYear();
+
+  return month + day + year;
+}

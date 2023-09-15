@@ -118,15 +118,27 @@ const saveFilesApi = (
                   t("Files-saved-successfully")
                 )
               );
-              // if (viewFolderID !== null) {
-              //   dispatch(
-              //     getFolderDocumentsApi(navigate, Number(viewFolderID), t, 1)
-              //   );
-              // } else {
-              //   dispatch(
-              //     getDocumentsAndFolderApi(navigate, Number(currentView), t, 2)
-              //   );
-              // }
+              if (viewFolderID !== null) {
+                dispatch(
+                  getFolderDocumentsApi(
+                    navigate,
+                    Number(viewFolderID),
+                    t,
+                    1,
+                    true
+                  )
+                );
+              } else {
+                dispatch(
+                  getDocumentsAndFolderApi(
+                    navigate,
+                    Number(currentView),
+                    t,
+                    2,
+                    true
+                  )
+                );
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -516,7 +528,7 @@ const getFolerDocuments_fail = (message) => {
 };
 
 // Get Folder Documents Api
-const getFolderDocumentsApi = (navigate, FolderId, t, no) => {
+const getFolderDocumentsApi = (navigate, FolderId, t, no,type) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -531,7 +543,11 @@ const getFolderDocumentsApi = (navigate, FolderId, t, no) => {
   };
   return (dispatch) => {
     if (no !== 1) {
-      dispatch(getFolerDocuments_init());
+      if(type){
+      }else{
+        dispatch(getFolerDocuments_init());
+
+      }
     }
     let form = new FormData();
     form.append("RequestMethod", getFolderDocumentsRequestMethod.RequestMethod);
@@ -755,7 +771,15 @@ const getDocumentsAndFolders_fail = (message) => {
 };
 
 // Get Documents And Folder API
-const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
+const getDocumentsAndFolderApi = (
+  navigate,
+  statusID,
+  t,
+  no,
+  order,
+  sort,
+  flag
+) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -769,7 +793,13 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
     Length: 10,
   };
   return (dispatch) => {
-    dispatch(getDocumentsAndFolders_init());
+      console.log("asdasdasdasdasdasd",flag)
+      if (flag==true) {
+      console.log("asdasdasdasdasdasd",flag)
+    } else {
+      console.log("asdasdasdasdasdasd",flag)
+      dispatch(getDocumentsAndFolders_init());
+    }
     let form = new FormData();
     form.append(
       "RequestMethod",
@@ -788,7 +818,15 @@ const getDocumentsAndFolderApi = (navigate, statusID, t, no, order, sort) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
           dispatch(
-            getDocumentsAndFolderApi(navigate, statusID, t, no, order, sort)
+            getDocumentsAndFolderApi(
+              navigate,
+              statusID,
+              t,
+              no,
+              order,
+              sort,
+              flag
+            )
           );
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
@@ -2119,10 +2157,11 @@ const searchDocumentsAndFoldersApi_init = () => {
 };
 
 // Get Documents and Folders Success
-const searchDocumentsAndFoldersApi_success = (response, message) => {
+const searchDocumentsAndFoldersApi_success = (response, fileCount, message) => {
   return {
     type: actions.SEARCHDOCUMENTSANDFOLDERSAPI_DATAROOM_SUCCESS,
     response: response,
+    fileCount: fileCount,
     message: message,
   };
 };
@@ -2164,11 +2203,12 @@ const searchDocumentsAndFoldersApi = (navigate, t, data) => {
             ) {
               console.log(
                 "DataRoomReducer.SearchFilesAndFoldersResponse",
-                response.data.responseResult.data
+                response.data.responseResult
               );
               dispatch(
                 searchDocumentsAndFoldersApi_success(
                   response.data.responseResult.data,
+                  response.data.responseResult.totalCount,
                   t("Data-available")
                 )
               );

@@ -1428,5 +1428,9 @@
   "Update-and-published": "Update And Published",
   "Please-select-date": "Please Select Date",
   "Images":"Images",
-  "Sub-agenda-title": "Sub Agenda Title"
+  "Sub-agenda-title": "Sub Agenda Title",
+  "Sites":"Sites",
+  "Custom-date-range":"Custom Date Range",
+  "select-end-date": "Select End Date",
+  "select-start-date": "Select Start Date"
 }

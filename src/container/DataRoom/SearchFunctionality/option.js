@@ -324,7 +324,7 @@ export const OptionsOwner = (t) => [
   { value: 1, label: t("Anyone") },
   { value: 2, label: t("Owned-by-me") },
   { value: 3, label: t("Not-owned-by-me") },
-  { value: 4, label: t("Specific-person") },
+  // { value: 4, label: t("Specific-person") },
 ];
 
 export const optionsLastmodified = (t) => [

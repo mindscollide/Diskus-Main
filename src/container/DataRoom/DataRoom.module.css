@@ -1113,6 +1113,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
   border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
   outline: none !important;
+  padding: 0 10px !important;
 }
 .datePickerTodoCreate2 .rmdp-container {
   width: 100% !important;
@@ -1140,4 +1141,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
 }
 .showUploadBarUploaded-file:hover .crossIcon-file {
   display: block !important;
+}
+.datePicker_Container{
+width: 100% !important;
 }
