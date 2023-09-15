@@ -14,7 +14,10 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
-import { regexOnlyForNumberNCharacters } from "../../../../../../commen/functions/regex";
+import {
+  regexOnlyForNumberNCharacters,
+  validateInput,
+} from "../../../../../../commen/functions/regex";
 import WhiteCrossIcon from "../../../../../../assets/images/PollCrossIcon.svg";
 import plusFaddes from "../../../../../../assets/images/NewBluePLus.svg";
 import DatePicker, { DateObject } from "react-multi-date-picker";
@@ -38,6 +41,12 @@ const Createpolls = ({ setCreatepoll }) => {
   const { NewMeetingreducer } = useSelector((state) => state);
   const [savedPolls, setSavedPolls] = useState(false);
   const [savePollsPublished, setSavePollsPublished] = useState(false);
+  const [meetingDate, setMeetingDate] = useState("");
+  const [pollsData, setPollsData] = useState({
+    Title: "",
+    AllowMultipleAnswer: false,
+    date: "",
+  });
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -151,6 +160,42 @@ const Createpolls = ({ setCreatepoll }) => {
     setSavePollsPublished(true);
   };
 
+  const HandleChange = (e, index) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "TitlePolls") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setPollsData({
+          ...pollsData,
+          Title: valueCheck,
+        });
+      } else {
+        setPollsData({
+          ...pollsData,
+          Title: "",
+        });
+      }
+    }
+  };
+
+  const HandleCheckMultipleAnswers = () => {
+    setPollsData({
+      ...pollsData,
+      AllowMultipleAnswer: !pollsData.AllowMultipleAnswer,
+    });
+  };
+
+  const changeDateStartHandler = (date) => {
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    let DateDate = new Date(date);
+    setMeetingDate(meetingDateValueFormat);
+    setPollsData({
+      ...pollsData,
+      date: DateDate,
+    });
+  };
+
   return (
     <>
       {savedPolls ? (
@@ -173,7 +218,12 @@ const Createpolls = ({ setCreatepoll }) => {
                 </Row>
                 <Row className="mt-1">
                   <Col lg={12} md={12} sm={12}>
-                    <TextField labelClass={"d-none"} />
+                    <TextField
+                      labelClass={"d-none"}
+                      name={"TitlePolls"}
+                      value={pollsData.Title}
+                      change={HandleChange}
+                    />
                   </Col>
                 </Row>
                 <Row className="mt-2">
@@ -290,6 +340,7 @@ const Createpolls = ({ setCreatepoll }) => {
                     className="d-flex align-items-center"
                   >
                     <DatePicker
+                      value={meetingDate}
                       format={"DD/MM/YYYY"}
                       minDate={moment().toDate()}
                       placeholder="DD/MM/YYYY"
@@ -306,6 +357,7 @@ const Createpolls = ({ setCreatepoll }) => {
                       calendar={calendarValue}
                       locale={localValue}
                       ref={calendRef}
+                      onChange={(value) => changeDateStartHandler(value)}
                     />
                   </Col>
                   <Col
@@ -321,7 +373,10 @@ const Createpolls = ({ setCreatepoll }) => {
                         sm={12}
                         className="d-flex align-items-center gap-2"
                       >
-                        <Checkbox />
+                        <Checkbox
+                          onChange={HandleCheckMultipleAnswers}
+                          checked={pollsData.AllowMultipleAnswer}
+                        />
                         <p className={styles["CheckBoxTitle"]}>
                           {t("Allow-multiple-answers")}
                         </p>
