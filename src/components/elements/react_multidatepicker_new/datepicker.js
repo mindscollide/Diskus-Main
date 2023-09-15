@@ -11,28 +11,30 @@ const MultiDatePickers = ({
   calendar,
   locale,
   highlightToday,
-  onOpenPickNewDate
+  onOpenPickNewDate,
+  ref,
+  render,
 }) => {
   let dateFormat = "DD/MM/YYYY";
-  const datePickerRef = useRef(null);
+  // const datePickerRef = useRef(null);
 
-  const handleIconClick = () => {
-    if (datePickerRef.current) {
-      datePickerRef.current.openCalendar();
-    }
-  };
+  // const handleIconClick = () => {
+  //   if (datePickerRef.current) {
+  //     datePickerRef.current.openCalendar();
+  //   }
+  // };
 
-  const CustomIcon = () => (
-    <div className="custom-icon-wrapper" onClick={handleIconClick}>
-      <img
-        src={EditIcon}
-        alt="Edit Icon"
-        height="11.11px"
-        width="11.54px"
-        className="custom-icon cursor-pointer"
-      />
-    </div>
-  );
+  // const CustomIcon = () => (
+  //   <div className="custom-icon-wrapper" onClick={handleIconClick}>
+  //     <img
+  //       src={EditIcon}
+  //       alt="Edit Icon"
+  //       height="11.11px"
+  //       width="11.54px"
+  //       className="custom-icon cursor-pointer"
+  //     />
+  //   </div>
+  // );
 
   return (
     <>
@@ -40,8 +42,10 @@ const MultiDatePickers = ({
         <DatePicker
           highlightToday={highlightToday}
           onOpenPickNewDate={onOpenPickNewDate}
-          ref={datePickerRef}
-          render={<CustomIcon />}
+          // ref={ref}
+          // render={<CustomIcon />}
+          ref={ref}
+          render={render}
           onChange={onChange}
           format={dateFormat}
           minDate={moment().toDate()}

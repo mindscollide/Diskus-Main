@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import { Col, Container, Row, Form } from "react-bootstrap";
-import TimePicker from "react-time-picker";
+import { Col, Row } from "react-bootstrap";
 import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import { Paper } from "@material-ui/core";
@@ -11,36 +10,24 @@ import arabic_ar from "react-date-object/locales/arabic_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 // import TimePicker from "react-multi-date-picker/plugins/time_picker";
 import { useTranslation } from "react-i18next";
-import { ScrollMenu, VisibilityContext } from "react-horizontal-scrolling-menu";
 import "react-horizontal-scrolling-menu/dist/styles.css";
 import Select from "react-select";
 import styles from "./ScheduleNewResolution.module.css";
-import userImage from "../../../assets/images/user.png";
 import Leftploygon from "../../../assets/images/Polygon 3.svg";
 import Rightploygon from "../../../assets/images/Polygon right.svg";
-import { CheckOutlined } from "@ant-design/icons";
-import { Space, Switch } from "antd";
-import line from "../../../assets/images/line.png";
 import FileIcon, { defaultStyles } from "react-file-icon";
 import deleteButtonCreateMeeting from "../../../assets/images/cancel_meeting_icon.svg";
 import { FileUploadToDo } from "../../../store/actions/Upload_action";
 import { useDispatch, useSelector } from "react-redux";
-import { InboxOutlined } from "@ant-design/icons";
-import { UploadProps } from "antd";
 import featherupload from "../../../assets/images/featherupload.svg";
-import newprofile from "../../../assets/images/newprofile.png";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
-import { message, Upload } from "antd";
-import dayjs from "dayjs";
+import { Upload } from "antd";
 import {
   TextField,
   Button,
   Checkbox,
-  SelectBox,
   InputSearchFilter,
   Notification,
-  MultiDatePicker,
-  InputDatePicker,
 } from "./../../../components/elements";
 import { useState } from "react";
 import ModalresolutionRemove from "../../../container/ModalresolutionRemove/ModalresolutionRemove";
@@ -55,24 +42,19 @@ import {
   clearResponseMessage,
   createResolutionModal,
 } from "../../../store/actions/Resolution_actions";
-import { stringValidation } from "../../../commen/functions/validations";
 import {
   createConvert,
-  createResolutionDateTime,
-  dateTime,
   removeDashesFromDate,
   RemoveTimeDashes,
 } from "../../../commen/functions/date_formater";
 import moment from "moment";
 import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
 import { useNavigate } from "react-router-dom";
-import TextFieldDateTime from "../input_field_date/Input_field";
 
 import "react-datepicker/dist/react-datepicker.css";
 import TextFieldTime from "../input_field_time/Input_field";
 import { validateInput } from "../../../commen/functions/regex";
 import InputIcon from "react-multi-date-picker/components/input_icon";
-// import TimePickerResolution from "../timePickerNew/timePickerNew";
 
 const ScheduleNewResolution = () => {
   const { Dragger } = Upload;
@@ -81,14 +63,7 @@ const ScheduleNewResolution = () => {
   const navigate = useNavigate();
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
-  const [minDate, setMinDate] = useState("");
-  const [circulationDate, setCirculationDate] = useState("");
-  const [votingDeadLine, setVotingDeadLine] = useState("");
-  const [decisionDate, setDecisionDate] = useState("");
-  const [selectedDate, setSelectedDate] = useState(null);
-  const { ResolutionReducer, assignees, uploadReducer } = useSelector(
-    (state) => state
-  );
+  const { ResolutionReducer, assignees } = useSelector((state) => state);
   const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
   const [isVoter, setVoter] = useState(true);
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -140,17 +115,17 @@ const ScheduleNewResolution = () => {
   const [circulationDateTime, setCirculationDateTime] = useState({
     date: "",
     time: "",
-    validationDate: "",
+    dateValue: "",
   });
   const [votingDateTime, setVotingDateTime] = useState({
-    validationDate: "",
+    dateValue: "",
     date: "",
     time: "",
   });
   const [decisionDateTime, setDecisionDateTime] = useState({
     date: "",
     time: "",
-    validationDate: "",
+    dateValue: "",
   });
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
@@ -240,10 +215,7 @@ const ScheduleNewResolution = () => {
   const resolutioncancell = () => {
     setResolutioncancel(true);
   };
-  console.log(
-    moment(circulationDateTime.date + circulationDateTime.time).toDate(),
-    "votingDateTimevotingDateTimevotingDateTimevotingDateTime"
-  );
+
   const removeUserForVoter = (id, name) => {
     setVoterModalRemove(true);
     setVoterID(id);
@@ -331,10 +303,9 @@ const ScheduleNewResolution = () => {
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
     if (
-      allAssignees != undefined &&
-      allAssignees != null &&
-      allAssignees != NaN &&
-      allAssignees != []
+      allAssignees !== undefined &&
+      allAssignees !== null &&
+      allAssignees.length > 0
     ) {
       return allAssignees
         .filter((item) => {
@@ -476,11 +447,12 @@ const ScheduleNewResolution = () => {
   const resolutionSaveHandler = () => {
     if (
       createResolutionData.Title !== "" &&
-      circulationDateTime.date !== "" &&
-      decisionDateTime.date !== "" &&
-      decisionDateTime.date !== "" &&
-      circulationDateTime.time !== "" &&
+      circulationDateTime.dateValue !== "" &&
+      decisionDateTime.dateValue !== "" &&
+      votingDateTime.dateValue !== "" &&
       decisionDateTime.time !== "" &&
+      circulationDateTime.time !== "" &&
+      votingDateTime.time !== "" &&
       createResolutionData.NotesToVoter !== "" &&
       createResolutionData.FK_ResolutionVotingMethodID !== 0 &&
       createResolutionData.FK_ResolutionReminderFrequency_ID !== 0
@@ -589,11 +561,12 @@ const ScheduleNewResolution = () => {
   const resolutionCirculateHandler = () => {
     if (
       createResolutionData.Title !== "" &&
-      circulationDateTime.date !== "" &&
-      decisionDateTime.date !== "" &&
-      decisionDateTime.date !== "" &&
-      circulationDateTime.time !== "" &&
+      circulationDateTime.dateValue !== "" &&
+      decisionDateTime.dateValue !== "" &&
+      votingDateTime.dateValue !== "" &&
       decisionDateTime.time !== "" &&
+      circulationDateTime.time !== "" &&
+      votingDateTime.time !== "" &&
       createResolutionData.NotesToVoter !== "" &&
       createResolutionData.FK_ResolutionVotingMethodID !== 0 &&
       createResolutionData.FK_ResolutionReminderFrequency_ID !== 0
@@ -956,40 +929,35 @@ const ScheduleNewResolution = () => {
 
   const circulationDateChangeHandler = (date) => {
     let meetingDateSaveFormat = new DateObject(date).format("YYYY-MM-DD");
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     setCirculationDateTime({
       ...circulationDateTime,
       date: meetingDateSaveFormat,
+      dateValue: meetingDateValueFormat,
     });
   };
 
   const votingDateChangeHandler = (date) => {
     let meetingDateSaveFormat = new DateObject(date).format("YYYY-MM-DD");
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     console.log("meetingDateSaveFormat", meetingDateSaveFormat);
     setVotingDateTime({
       ...votingDateTime,
       date: meetingDateSaveFormat,
+      dateValue: meetingDateValueFormat,
     });
   };
 
   const decisionChangeHandler = (date) => {
     let meetingDateSaveFormat = new DateObject(date).format("YYYY-MM-DD");
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
     setDecisionDateTime({
       ...decisionDateTime,
       date: meetingDateSaveFormat,
+      dateValue: meetingDateValueFormat,
     });
   };
-  // DatePicker
-  console.log("date moment().toDate()", moment().toDate());
-  console.log(
-    "date moment().circulationDateTime",
-    moment(circulationDateTime.date + circulationDateTime.time)
-      .day(1, "day")
-      .toDate()
-  );
-  console.log(
-    "date moment().votingDateTime",
-    moment(votingDateTime.date + votingDateTime.time).toDate()
-  );
+
   return (
     <>
       <section>
@@ -1168,7 +1136,7 @@ const ScheduleNewResolution = () => {
                             <DatePicker
                               format={"DD/MM/YYYY"}
                               minDate={currentDate}
-                              placeholder="DD/MM/YYYY"
+                              placeholder="YYYY-MM-DD"
                               render={
                                 <InputIcon
                                   placeholder="DD/MM/YYYY"
@@ -1183,7 +1151,7 @@ const ScheduleNewResolution = () => {
                               }
                               inputMode=""
                               name="circulation"
-                              // value={meetingDate}
+                              value={circulationDateTime.dateValue}
                               calendar={calendarValue}
                               locale={localValue}
                               onChange={circulationDateChangeHandler}
@@ -1268,13 +1236,12 @@ const ScheduleNewResolution = () => {
                         >
                           <div className="datepicker align-items-center ">
                             <DatePicker
-                              format={"DD/MM/YYYY"}
-                              minDate={dateformatYYYYMMDD(
-                                circulationDateTime.date
-                              )}
-                              // minDate={moment(
-                              //   circulationDateTime.validationDate
-                              // )}
+                              format={"YYYY-MM-DD"}
+                              minDate={
+                                circulationDateTime.date !== ""
+                                  ? dateformatYYYYMMDD(circulationDateTime.date)
+                                  : currentDate
+                              }
                               placeholder="DD/MM/YYYY"
                               render={
                                 <InputIcon
@@ -1290,25 +1257,12 @@ const ScheduleNewResolution = () => {
                               }
                               inputMode=""
                               name="voting"
-                              // value={meetingDate}
+                              value={votingDateTime.dateValue}
                               calendar={calendarValue}
                               locale={localValue}
                               onChange={votingDateChangeHandler}
                             />
                           </div>
-                          {/* <TextFieldDateTime
-                            min={
-                              circulationDateTime.date !== ""
-                                ? dateformatYYYYMMDD(circulationDateTime.date)
-                                : minDate
-                            }
-                            name={"voting"}
-                            applyClass={"search_voterInput"}
-                            labelClass="d-none"
-                            change={(e) => {
-                              handleChangeDateSelection(e);
-                            }}
-                          /> */}
                           <Row>
                             <Col>
                               <p
@@ -1378,8 +1332,12 @@ const ScheduleNewResolution = () => {
                         >
                           <div className="datepicker align-items-center ">
                             <DatePicker
-                              format={"DD/MM/YYYY"}
-                              minDate={dateformatYYYYMMDD(votingDateTime.date)}
+                              format={"YYYY-MM-DD"}
+                              minDate={
+                                votingDateTime.date !== ""
+                                  ? dateformatYYYYMMDD(votingDateTime.date)
+                                  : currentDate
+                              }
                               placeholder="DD/MM/YYYY"
                               render={
                                 <InputIcon
@@ -1395,7 +1353,7 @@ const ScheduleNewResolution = () => {
                               }
                               inputMode=""
                               name="decision"
-                              // value={meetingDate}
+                              value={decisionDateTime.dateValue}
                               calendar={calendarValue}
                               locale={localValue}
                               onChange={decisionChangeHandler}

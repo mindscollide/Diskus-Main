@@ -27,6 +27,9 @@ const initialState = {
   isFolder: 0,
   folderUploadData: [],
   isFileExsist: null,
+  SearchFilesAndFoldersResponse: [],
+  SearchFileListCount: 0
+
 };
 
 const DataRoomReducer = (state = initialState, action) => {
@@ -414,6 +417,7 @@ const DataRoomReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         SearchFilesAndFoldersResponse: action.response,
+        SearchFileListCount: action.fileCount,
         ResponseMessage: action.message,
       };
     }
@@ -422,6 +426,7 @@ const DataRoomReducer = (state = initialState, action) => {
         ...state,
         Loading: false,
         SearchFilesAndFoldersResponse: [],
+        SearchFileListCount: 0,
         ResponseMessage: action.message,
       };
     }
