@@ -60,7 +60,12 @@ const VoteModal = () => {
               sm={12}
               className="d-flex justify-content-center"
             >
-              <img src={redcrossIcon} height="21.79px" width="21.79px" />
+              <img
+                src={redcrossIcon}
+                height="21.79px"
+                width="21.79px"
+                className="cursor-pointer"
+              />
             </Col>
           </Row>
         </>
@@ -672,6 +677,7 @@ const VoteModal = () => {
                                                   src={redcrossIcon}
                                                   height="21.79px"
                                                   width="21.79px"
+                                                  className="cursor-pointer"
                                                   onClick={handleCrossBtn}
                                                 />
                                               }
