@@ -789,11 +789,7 @@ const VoteModal = () => {
                         <Select
                           options={optionsIndividualOpenCloseVoting}
                           onChange={dropDownSelectOrganizers}
-                          classNamePrefix={
-                            voteModalAttrbutes.SelectOrganizers
-                              ? "SelectOrganizersSelect"
-                              : "SelectOrganizersSelect_active"
-                          }
+                          classNamePrefix={"SelectOrganizersSelect_active"}
                         />
                       </Col>
                       <Row>
@@ -824,11 +820,7 @@ const VoteModal = () => {
                       <Col lg={12} md={12} sm={12}>
                         <Select
                           options={options}
-                          classNamePrefix={
-                            voteModalAttrbutes.SelectOptions
-                              ? "SelectOptions_drop"
-                              : "SelectOptions_drop_active"
-                          }
+                          classNamePrefix={"SelectOptions_drop_active"}
                           onChange={dropDownSelectOptions}
                         />
                       </Col>
