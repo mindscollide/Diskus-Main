@@ -442,9 +442,12 @@ const VoteModal = () => {
   };
 
   // Function for the Saved Add TExt filed
-  const handleOptionTextChange = (index, newText) => {
+  const handleOptionTextChange = (e) => {
+    let value = e.target.value;
+    console.log(value, "handleOptionTextChangehandleOptionTextChange");
     const updatedOptions = [...saveOptions];
-    updatedOptions[index].text = newText;
+    updatedOptions.text = value;
+    console.log(updatedOptions, "updatedOptionsupdatedOptions");
     setSaveOptions(updatedOptions);
   };
 
@@ -562,9 +565,7 @@ const VoteModal = () => {
                           labelClass={"d-none"}
                           applyClass={"NewMeetingFileds"}
                           value={saveOptions.text}
-                          onChange={(e) =>
-                            handleOptionTextChange(e.target.value)
-                          }
+                          change={(e) => handleOptionTextChange(e)}
                         />
                       </Col>
                       <Col lg={2} md={2} sm={2}>
@@ -666,9 +667,8 @@ const VoteModal = () => {
                                                 "NewMeetingFileds_withIcon"
                                               }
                                               width={"145px"}
-                                              value={saveOptions.text}
+                                              value={data.text}
                                               name={"OptionsAdded"}
-                                              change={HandleChangeOptions}
                                               iconClassName={
                                                 styles["ResCrossIcon"]
                                               }
