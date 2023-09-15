@@ -53,6 +53,10 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
   let currentUserID = Number(localStorage.getItem('userID'))
   let currentOrganization = Number(localStorage.getItem('organizationID'))
   let roomID = localStorage.getItem('RoomID')
+  let callTypeID = Number(localStorage.getItem('callTypeID'))
+  let initiateRoomID = localStorage.getItem('initiateCallRoomID')
+  let callerObject = localStorage.getItem('callerStatusObject')
+  let currentCallType = Number(localStorage.getItem('CallType'))
 
   const dispatch = useDispatch()
 
@@ -67,6 +71,8 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
   const [isParticipantActive, setIsParticipantActive] = useState(false)
 
   const [currentParticipants, setCurrentParticipants] = useState([])
+
+  const [participantStatus, setParticipantStatus] = useState([])
 
   const otoMaximizeVideoPanel = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
@@ -106,6 +112,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
       OrganizationID: currentOrganization,
       RoomID: roomID,
       IsCaller: false,
+      CallTypeID: callTypeID,
     }
     dispatch(LeaveCall(Data, navigate, t))
     dispatch(normalizeVideoPanelFlag(false))
@@ -151,10 +158,14 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
   const leaveCall = () => {
     let Data = {
       OrganizationID: currentOrganization,
-      RoomID: roomID,
-      IsCaller: callerID === currentUserID ? true : false,
+      RoomID: initiateRoomID,
+      IsCaller: true,
+      CallTypeID: callTypeID,
     }
     dispatch(LeaveCall(Data, navigate, t))
+    const emptyArray = []
+    localStorage.setItem('callerStatusObject', JSON.stringify(emptyArray))
+    setParticipantStatus([])
     localStorage.setItem('activeCall', false)
     dispatch(normalizeVideoPanelFlag(false))
     dispatch(maximizeVideoPanelFlag(false))
@@ -195,6 +206,16 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
     }
   }, [VideoMainReducer.GroupCallRecipientsData])
 
+  useEffect(() => {
+    if (callerObject !== undefined && callerObject !== null) {
+      let callerObjectObj = JSON.parse(callerObject)
+      setParticipantStatus((prevStatus) => [callerObjectObj, ...prevStatus])
+      console.log('Hello checking')
+    }
+  }, [callerObject])
+
+  console.log('participantStatus', participantStatus[0])
+
   return (
     <>
       <Row className="mb-4">
@@ -208,7 +229,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                   VideoMainReducer.VideoRecipentData.userName &&
                 Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
                 initiateVideoCallFlag === false
-              ? callerNameInitiate
+              ? VideoMainReducer.VideoRecipentData.userName
               : Object.keys(VideoMainReducer.VideoRecipentData).length === 0
               ? callerName
               : null}
@@ -232,6 +253,81 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
         </Col>
         <>
           <Col lg={5} md={5} sm={12} className="normal-screen-top-icons">
+            <div className="positionRelative">
+              {isParticipantActive ? (
+                <>
+                  <img
+                    className={
+                      videoFeatureReducer.LeaveCallModalFlag === true
+                        ? 'grayScaleImage'
+                        : ''
+                    }
+                    src={ActiveParticipantIcon}
+                    onClick={closeParticipantHandler}
+                    height={30}
+                    width={30}
+                  />
+                  <div className="participants-list" key={Math.random()}>
+                    <Row className="m-0">
+                      <Col className="p-0" lg={8} md={8} sm={12}>
+                        <p className="participant-name">{currentUserName}</p>
+                      </Col>
+                      <Col className="p-0" lg={4} md={4} sm={12}>
+                        <p className="participant-state">Host</p>
+                      </Col>
+                    </Row>
+                    {currentParticipants !== undefined &&
+                    currentParticipants !== null &&
+                    currentParticipants.length > 0
+                      ? currentParticipants.map((participantData, index) => {
+                          console.log('participantStatus', participantStatus[0])
+                          const matchingStatus = participantStatus[0].find(
+                            (status) =>
+                              status.RecipientID === participantData.userID &&
+                              status.RoomID === initiateRoomID,
+                          )
+                          return (
+                            <Row className="m-0" key={index}>
+                              <Col className="p-0" lg={8} md={8} sm={12}>
+                                <p className="participant-name">
+                                  {participantData.userName}
+                                </p>
+                              </Col>
+                              <Col className="p-0" lg={4} md={4} sm={12}>
+                                <p className="participant-state">
+                                  {matchingStatus
+                                    ? matchingStatus.CallStatus
+                                    : 'Calling...'}
+                                </p>
+                              </Col>
+                            </Row>
+                          )
+                        })
+                      : null}
+                    {/* <Button
+                        className="add-participant-button"
+                        text="Add Participants"
+                        icon={
+                          <img src={AddParticipantIcon} alt="participants" />
+                        }
+                        textClass="text-positioning"
+                      /> */}
+                  </div>
+                </>
+              ) : (
+                <img
+                  className={
+                    videoFeatureReducer.LeaveCallModalFlag === true
+                      ? 'grayScaleImage'
+                      : ''
+                  }
+                  src={ParticipantsIcon}
+                  onClick={closeParticipantHandler}
+                  height={20}
+                  width={25}
+                />
+              )}
+            </div>
             <div className="screenShare-Toggle">
               <img
                 className={
@@ -261,8 +357,9 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                 onClick={cancelLeaveCallOption}
                 src={videoEndIcon}
               />
-            ) : videoFeatureReducer.LeaveCallModalFlag === false &&
-              callerID === currentUserID ? (
+            ) : (videoFeatureReducer.LeaveCallModalFlag === false &&
+                callerID === currentUserID) ||
+              callerID === 0 ? (
               <img width={25} src={CallEndRedIcon} onClick={openVideoPanel} />
             ) : videoFeatureReducer.LeaveCallModalFlag === false &&
               callerID !== currentUserID ? (

@@ -41,7 +41,7 @@ const PollDetails = () => {
     let Options = [];
     console.log("handleClosed", vieVotePollDetails);
 
-    if (vieVotePollDetails != undefined && vieVotePollDetails != null) {
+    if (vieVotePollDetails !== undefined && vieVotePollDetails !== null) {
       if (Object.keys(vieVotePollDetails).length > 0) {
         // for poll ID
         setPollId(vieVotePollDetails.pollDetails.pollID);
@@ -215,6 +215,10 @@ const PollDetails = () => {
                     className={styles["Scroller_participants"]}
                   >
                     {pollAttendiesOpptionsVise.map((data, index) => {
+                      console.log(
+                        data,
+                        "pollAttendiesOpptionsVisepollAttendiesOpptionsVisepollAttendiesOpptionsVise"
+                      );
                       return (
                         <>
                           <Row className="mt-2" key={index}>
@@ -232,6 +236,10 @@ const PollDetails = () => {
                             {Object.keys(data.pollParticipants).length > 0
                               ? data.pollParticipants.map(
                                   (innerData, index) => {
+                                    console.log(
+                                      innerData,
+                                      "innerDatainnerDatainnerData"
+                                    );
                                     return (
                                       <>
                                         <Col
@@ -255,9 +263,11 @@ const PollDetails = () => {
                                               >
                                                 <Col sm={12} md={12} lg={12}>
                                                   <img
-                                                    src={profile}
+                                                    src={`data:image/jpeg;base64,${innerData.profilePicture.displayProfilePictureName}`}
                                                     width="33px"
                                                     height="33px"
+                                                    className="rounded-circle"
+                                                    alt=""
                                                   />
                                                   <span
                                                     className={

@@ -142,7 +142,7 @@
 }
 
 .AddMoreBtnAgenda {
-  border: 1px dotted #ccc !important;
+  border: 1px dashed #ccc !important;
   background: #fff !important;
   border-radius: 4px !important;
   height: 39px !important;
@@ -153,7 +153,7 @@
 .AddMoreBtnAgenda:active,
 .AddMoreBtnAgenda:focus,
 .AddMoreBtnAgenda:focus-visible {
-  border: 1px dotted #ccc !important;
+  border: 1px dashed #ccc !important;
   background: #fff !important;
   border-radius: 4px !important;
   height: 39px !important;
@@ -200,9 +200,33 @@
   margin-left: -15px;
 }
 
+.SubAgendaDocScroller {
+  height: 14vh !important;
+  overflow-x: hidden !important;
+}
+
+.SubAgendaDocScroller::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.SubAgendaDocScroller::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+
 .RedCross_Icon_class {
   margin-right: -10% !important;
   margin-top: -24.9% !important;
+  cursor: pointer !important;
+}
+
+.RedCross_Icon_class_SubAgenda {
+  position: absolute !important;
+  right: -10px !important;
+  top: -8px !important;
   cursor: pointer !important;
 }
 .RedCross_Icon_class_Main_agenda {
@@ -230,6 +254,17 @@
   font-family: "Montserrat" !important;
 }
 
+.SubagendaFilesName {
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  font-size: 16px !important;
+  color: #5a5a5a !important;
+  display: inline-block !important;
+  width: 180px !important;
+  font-family: "Montserrat" !important;
+}
+
 /* card */
 
 .card {
@@ -241,6 +276,14 @@
   padding: 15px 10px;
   border-radius: 4px;
   gap: 10px;
+}
+
+.cardSubAgenda {
+  width: 221px !important;
+  height: 42px !important;
+  border-radius: 4px !important;
+  border: 1px solid #d4d4d4;
+  padding: 0px 15px !important;
 }
 
 .LineStyles {
@@ -316,7 +359,7 @@
 }
 
 .Meeting_subAgenda {
-  color: #5a5a5a !important;
+  color: #5f78d6 !important;
   font-size: 12px !important;
   font-family: "MontserratSemiBold" !important;
 }

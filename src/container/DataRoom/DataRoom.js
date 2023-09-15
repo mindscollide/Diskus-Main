@@ -816,18 +816,6 @@ const DataRoom = () => {
                       </span>
                     </Tooltip>
                   ) : null}
-
-                  <Tooltip placement="topRight" title={t("Start")}>
-                    <span className={styles["start__Icon"]}>
-                      <img
-                        src={start}
-                        alt=""
-                        className={styles["start__Icon_img"]}
-                        height="10.71px"
-                        width="15.02px"
-                      />
-                    </span>
-                  </Tooltip>
                 </div>
 
                 <span className={styles["threeDot__Icon"]}>

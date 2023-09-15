@@ -172,3 +172,10 @@
   height: 110px !important;
   resize: none;
 }
+.createTodo_timePicker {
+  height: 39px !important;
+}
+.quick_meeting_time {
+  font-size: 12px !important;
+  height: 39px !important;
+}

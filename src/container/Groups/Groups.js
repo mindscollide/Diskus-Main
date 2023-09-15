@@ -1,19 +1,19 @@
-import { Container, Row, Col } from 'react-bootstrap'
-import styles from './Groups.module.css'
-import { Button, Loader, Modal, Notification } from '../../components/elements'
-import NoGroupsData from '../../assets/images/No-Group.svg'
-import React, { useEffect, useState } from 'react'
-import ModalArchivedGroups from '../ModalArchivedGroups/ModalArchivedGroups'
-import { Pagination } from 'antd'
-import { useTranslation } from 'react-i18next'
-import CreateGroup from '../../components/elements/CreateGroup/CreateGroup'
-import UpdateGroupPage from '../../components/elements/updateGroupPage/UpdateGroupPage'
-import ViewGrouppage from '../../components/elements/ViewGrouppage/ViewGrouppage'
-import archivedbtn from '../../assets/images/archivedbtn.png'
-import ModalActivegroup from '../ModalActiveGroup/ModalActivegroup'
-import Card from '../../components/elements/Card/Card'
-import { useDispatch, useSelector } from 'react-redux'
-import GroupIcon from '../../assets/images/Path 636.png'
+import { Container, Row, Col } from "react-bootstrap";
+import styles from "./Groups.module.css";
+import { Button, Loader, Modal, Notification } from "../../components/elements";
+import NoGroupsData from "../../assets/images/No-Group.svg";
+import React, { useEffect, useState } from "react";
+import ModalArchivedGroups from "../ModalArchivedGroups/ModalArchivedGroups";
+import { Pagination } from "antd";
+import { useTranslation } from "react-i18next";
+import CreateGroup from "../../components/elements/CreateGroup/CreateGroup";
+import UpdateGroupPage from "../../components/elements/updateGroupPage/UpdateGroupPage";
+import ViewGrouppage from "../../components/elements/ViewGrouppage/ViewGrouppage";
+import archivedbtn from "../../assets/images/archivedbtn.png";
+import ModalActivegroup from "../ModalActiveGroup/ModalActivegroup";
+import Card from "../../components/elements/Card/Card";
+import { useDispatch, useSelector } from "react-redux";
+import GroupIcon from "../../assets/images/Path 636.png";
 import {
   clearMessagesGroup,
   getbyGroupID,
@@ -21,87 +21,88 @@ import {
   groupLoader,
   realtimeGroupStatusResponse,
   updateGroupStatus,
-} from '../../store/actions/Groups_actions'
-import { Plus } from 'react-bootstrap-icons'
-import { useNavigate } from 'react-router-dom'
+} from "../../store/actions/Groups_actions";
+import { Plus } from "react-bootstrap-icons";
+import { useNavigate } from "react-router-dom";
 
 const Groups = () => {
-  const { t } = useTranslation()
-  const { GroupsReducer, LanguageReducer } = useSelector((state) => state)
-  const [modalStatusChange, setModalStatusChange] = useState(false)
-  const [showModal, setShowModal] = useState(false)
-  const [statusValue, setStatusValue] = useState('')
-  const [showActiveGroup, setShowActivegroup] = useState(false)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  const [updateComponentpage, setUpdateComponentpage] = useState(false)
-  const [ViewGroupPage, setViewGroupPage] = useState(true)
-  const [creategrouppage, setCreategrouppage] = useState(false)
-  const [groupsData, setgroupsData] = useState([])
+  const { t } = useTranslation();
+  const { GroupsReducer, LanguageReducer } = useSelector((state) => state);
+  const [modalStatusChange, setModalStatusChange] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [statusValue, setStatusValue] = useState("");
+  const [showActiveGroup, setShowActivegroup] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [updateComponentpage, setUpdateComponentpage] = useState(false);
+  const [ViewGroupPage, setViewGroupPage] = useState(true);
+  const [creategrouppage, setCreategrouppage] = useState(false);
+  const [groupsData, setgroupsData] = useState([]);
+  console.log(groupsData, "groupsDatagroupsDatagroupsData");
   const [open, setOpen] = useState({
     open: false,
-    message: '',
-  })
-  const [totalLength, setTotalLength] = useState(0)
+    message: "",
+  });
+  const [totalLength, setTotalLength] = useState(0);
   const [groupStatusUpdateData, setGroupStatusUpdateData] = useState({
     StatusID: 0,
     GroupID: 0,
-  })
-  const [uniqCardID, setUniqCardID] = useState(0)
-  let currentPage = JSON.parse(localStorage.getItem('groupsCurrent'))
-  const creatorID = localStorage.getItem('userID')
+  });
+  const [uniqCardID, setUniqCardID] = useState(0);
+  let currentPage = JSON.parse(localStorage.getItem("groupsCurrent"));
+  const creatorID = localStorage.getItem("userID");
 
   useEffect(() => {
-    setShowModal(false)
-    setUpdateComponentpage(false)
-    setViewGroupPage(false)
-    localStorage.removeItem('groupsArCurrent')
-    localStorage.setItem('groupsCurrent', 1)
-    dispatch(getGroups(navigate, t, 1))
-  }, [])
+    setShowModal(false);
+    setUpdateComponentpage(false);
+    setViewGroupPage(false);
+    localStorage.removeItem("groupsArCurrent");
+    localStorage.setItem("groupsCurrent", 1);
+    dispatch(getGroups(navigate, t, 1));
+  }, []);
 
   useEffect(() => {
     if (GroupsReducer.realtimeGroupStatus !== null) {
-      let status = GroupsReducer.realtimeGroupStatus.groupStatusID
+      let status = GroupsReducer.realtimeGroupStatus.groupStatusID;
       if (status === 2) {
         let findGroupIndex = groupsData.findIndex(
           (data, index) =>
-            data.groupID === GroupsReducer.realtimeGroupStatus.groupID,
-        )
+            data.groupID === GroupsReducer.realtimeGroupStatus.groupID
+        );
         if (findGroupIndex !== -1) {
-          let newArr = [...groupsData]
-          newArr.splice(findGroupIndex, 1)
-          setgroupsData(newArr)
-          dispatch(realtimeGroupStatusResponse(null))
+          let newArr = [...groupsData];
+          newArr.splice(findGroupIndex, 1);
+          setgroupsData(newArr);
+          dispatch(realtimeGroupStatusResponse(null));
         }
       } else {
         let findGroupIndex = groupsData.findIndex(
           (data, index) =>
-            data.groupID === GroupsReducer.realtimeGroupStatus.groupID,
-        )
+            data.groupID === GroupsReducer.realtimeGroupStatus.groupID
+        );
         if (findGroupIndex !== -1) {
           let newArr = groupsData.map((data, index) => {
             if (findGroupIndex === index) {
               let newData = {
                 ...data,
                 groupStatusID: GroupsReducer.realtimeGroupStatus.groupStatusID,
-              }
-              return newData
+              };
+              return newData;
             }
-            return data
-          })
-          setgroupsData(newArr)
+            return data;
+          });
+          setgroupsData(newArr);
         }
       }
     }
-  }, [GroupsReducer.realtimeGroupStatus])
+  }, [GroupsReducer.realtimeGroupStatus]);
 
   useEffect(() => {
     if (GroupsReducer.realtimeGroupCreateResponse !== null) {
-      let groupData = GroupsReducer.realtimeGroupCreateResponse
-      setgroupsData((prev) => [groupsData, ...prev])
+      let MQttgroupData = GroupsReducer.realtimeGroupCreateResponse;
+      setgroupsData([MQttgroupData, ...groupsData]);
     }
-  }, [GroupsReducer.realtimeGroupCreateResponse])
+  }, [GroupsReducer.realtimeGroupCreateResponse]);
 
   useEffect(() => {
     try {
@@ -110,34 +111,34 @@ const Groups = () => {
         GroupsReducer.getAllGroupsResponse !== undefined
       ) {
         if (GroupsReducer.getAllGroupsResponse?.groups?.length > 0) {
-          setTotalLength(GroupsReducer.getAllGroupsResponse.totalRecords)
-          let newArr = []
-          let arr = GroupsReducer.getAllGroupsResponse.groups
+          setTotalLength(GroupsReducer.getAllGroupsResponse.totalRecords);
+          let newArr = [];
+          let arr = GroupsReducer.getAllGroupsResponse.groups;
           arr.map((data, index) => {
-            newArr.push(data)
-          })
-          setgroupsData(newArr)
+            newArr.push(data);
+          });
+          setgroupsData(newArr);
         } else {
-          setgroupsData([])
+          setgroupsData([]);
         }
       } else {
-        setgroupsData([])
+        setgroupsData([]);
       }
     } catch (error) {}
-  }, [GroupsReducer.getAllGroupsResponse])
+  }, [GroupsReducer.getAllGroupsResponse]);
 
   const handlechange = (value) => {
-    localStorage.setItem('groupsCurrent', value)
-    dispatch(getGroups(navigate, t, value))
-  }
+    localStorage.setItem("groupsCurrent", value);
+    dispatch(getGroups(navigate, t, value));
+  };
 
   const archivedmodaluser = (e) => {
-    setShowModal(true)
-  }
+    setShowModal(true);
+  };
 
   const groupModal = async (e) => {
-    setCreategrouppage(true)
-  }
+    setCreategrouppage(true);
+  };
 
   const viewTitleModal = (data) => {
     dispatch(
@@ -147,10 +148,10 @@ const Groups = () => {
         t,
         setViewGroupPage,
         setUpdateComponentpage,
-        1,
-      ),
-    )
-  }
+        1
+      )
+    );
+  };
   const viewmodal = (groupID, statusID) => {
     if (statusID === 1) {
       dispatch(
@@ -160,9 +161,9 @@ const Groups = () => {
           t,
           setViewGroupPage,
           setUpdateComponentpage,
-          statusID,
-        ),
-      )
+          statusID
+        )
+      );
     } else if (statusID === 2) {
     } else if (statusID === 3) {
       dispatch(
@@ -172,68 +173,68 @@ const Groups = () => {
           t,
           setViewGroupPage,
           setUpdateComponentpage,
-          statusID,
-        ),
-      )
+          statusID
+        )
+      );
     }
-  }
+  };
 
   const activegroupmodal = () => {
-    setShowActivegroup(true)
-  }
+    setShowActivegroup(true);
+  };
 
   const changeHandleStatus = (e, CardID, setEditdropdown) => {
-    setStatusValue(e.key)
-    setModalStatusChange(true)
-    setEditdropdown(false)
+    setStatusValue(e.key);
+    setModalStatusChange(true);
+    setEditdropdown(false);
     setGroupStatusUpdateData({
       GroupID: JSON.parse(CardID),
       StatusID: JSON.parse(e.value),
-    })
-  }
+    });
+  };
 
   const handleStatusUpdate = async () => {
-    let OrganizationID = localStorage.getItem('organizationID')
+    let OrganizationID = localStorage.getItem("organizationID");
     let Data = {
       GroupID: groupStatusUpdateData.GroupID,
       GroupStatusId: groupStatusUpdateData.StatusID,
       OrganizationID: JSON.parse(OrganizationID),
-    }
-    await dispatch(updateGroupStatus(navigate, Data, t, setModalStatusChange))
+    };
+    await dispatch(updateGroupStatus(navigate, Data, t, setModalStatusChange));
     setGroupStatusUpdateData({
       GroupID: 0,
       StatusID: 0,
-    })
-    setStatusValue('')
-  }
+    });
+    setStatusValue("");
+  };
 
   useEffect(() => {
     if (
-      GroupsReducer.ResponseMessage !== '' &&
-      GroupsReducer.ResponseMessage !== t('Data-available') &&
-      GroupsReducer.ResponseMessage !== t('No-data-available')
+      GroupsReducer.ResponseMessage !== "" &&
+      GroupsReducer.ResponseMessage !== t("Data-available") &&
+      GroupsReducer.ResponseMessage !== t("No-data-available")
     ) {
       setOpen({
         ...open,
         flag: true,
         message: GroupsReducer.ResponseMessage,
-      })
+      });
       setTimeout(() => {
         setOpen({
           ...open,
           flag: false,
-          message: '',
-        })
-      }, 3000)
-      dispatch(clearMessagesGroup())
+          message: "",
+        });
+      }, 3000);
+      dispatch(clearMessagesGroup());
     } else {
-      dispatch(clearMessagesGroup())
+      dispatch(clearMessagesGroup());
     }
-  }, [GroupsReducer.ResponseMessage])
+  }, [GroupsReducer.ResponseMessage]);
 
   return (
     <>
-      <div className={styles['Groupscontainer']}>
+      <div className={styles["Groupscontainer"]}>
         {creategrouppage ? (
           <>
             <CreateGroup setCreategrouppage={setCreategrouppage} />
@@ -250,12 +251,12 @@ const Groups = () => {
           <>
             <Row className="mt-3">
               <Col md={4} sm={4} lg={4} className="d-flex gap-3 ">
-                <span className={styles['Groups-heading-size']}>
-                  {t('Groups')}
+                <span className={styles["Groups-heading-size"]}>
+                  {t("Groups")}
                 </span>
                 <Button
-                  className={styles['create-Group-btn']}
-                  text={t('Create-new-group')}
+                  className={styles["create-Group-btn"]}
+                  text={t("Create-new-group")}
                   onClick={groupModal}
                   icon={<Plus width={20} height={20} fontWeight={800} />}
                 />
@@ -268,13 +269,13 @@ const Groups = () => {
                 className="d-flex justify-content-end gap-1 mt-2 "
               >
                 <Button
-                  className={styles['Archived-Group-btn']}
-                  text={t('Archived-groups')}
+                  className={styles["Archived-Group-btn"]}
+                  text={t("Archived-groups")}
                   onClick={archivedmodaluser}
                   icon={
                     <img
                       src={archivedbtn}
-                      className={styles['archivedbtnIcon']}
+                      className={styles["archivedbtnIcon"]}
                     />
                   }
                 />
@@ -284,8 +285,8 @@ const Groups = () => {
             <Row>
               <Col lg={12} sm={12} md={12}>
                 <Row
-                  className={`${'d-flex text-center MontserratSemiBold-600 color-5a5a5a m-0 p-0'} ${
-                    styles['groups_box']
+                  className={`${"d-flex text-center MontserratSemiBold-600 color-5a5a5a m-0 p-0"} ${
+                    styles["groups_box"]
                   }`}
                 >
                   <Col sm={12} md={12} lg={12} className="m-0 p-0">
@@ -318,25 +319,25 @@ const Groups = () => {
                                 }
                                 BtnText={
                                   data.groupStatusID === 1
-                                    ? t('View-group')
+                                    ? t("View-group")
                                     : data.groupStatusID === 2
-                                    ? t('View-group')
+                                    ? t("View-group")
                                     : data.groupStatusID === 3
-                                    ? t('Update-group')
-                                    : ''
+                                    ? t("Update-group")
+                                    : ""
                                 }
                                 CardHeading={data?.groupTitle}
                                 changeHandleStatus={changeHandleStatus}
                               />
                             </Col>
-                          )
+                          );
                         })
                       ) : (
                         <Col
                           sm={12}
                           lg={12}
                           md={12}
-                          className={styles['NoGroupsData']}
+                          className={styles["NoGroupsData"]}
                         >
                           <Row>
                             <Col>
@@ -346,17 +347,17 @@ const Groups = () => {
                               sm={12}
                               md={12}
                               lg={12}
-                              className={styles['NoGroupsDataFoundText']}
+                              className={styles["NoGroupsDataFoundText"]}
                             >
-                              {t('You-dont-have-any-group-yet.')}
+                              {t("You-dont-have-any-group-yet.")}
                             </Col>
                             <Col
                               sm={12}
                               md={12}
                               lg={12}
-                              className={styles['NoGroupsDataFoundText']}
+                              className={styles["NoGroupsDataFoundText"]}
                             >
-                              {t('Click-create-new-group-to-get-started.')}
+                              {t("Click-create-new-group-to-get-started.")}
                             </Col>
 
                             <Col
@@ -366,8 +367,8 @@ const Groups = () => {
                               className="d-flex justify-content-center mt-3"
                             >
                               <Button
-                                className={styles['create-Group-btn']}
-                                text={t('Create-new-group')}
+                                className={styles["create-Group-btn"]}
+                                text={t("Create-new-group")}
                                 onClick={groupModal}
                                 icon={
                                   <Plus
@@ -398,12 +399,12 @@ const Groups = () => {
                   className="d-flex justify-content-center "
                 >
                   {/* <Container className={styles["PaginationStyle-Committee"]}> */}
-                  <Row className={styles['PaginationStyle-Committee']}>
+                  <Row className={styles["PaginationStyle-Committee"]}>
                     <Col
                       lg={12}
                       md={12}
                       sm={12}
-                      className={'pagination-groups-table'}
+                      className={"pagination-groups-table"}
                     >
                       <Pagination
                         current={currentPage}
@@ -432,7 +433,7 @@ const Groups = () => {
         <Modal
           show={modalStatusChange}
           onHide={() => {
-            setModalStatusChange(false)
+            setModalStatusChange(false);
           }}
           setShow={setModalStatusChange}
           modalFooterClassName="d-block"
@@ -448,9 +449,9 @@ const Groups = () => {
                     className="d-flex justify-content-center"
                   >
                     <span
-                      className={styles['heading-modal-active-contfirmation']}
+                      className={styles["heading-modal-active-contfirmation"]}
                     >
-                      {t('Are-you-sure-you-want-to')}
+                      {t("Are-you-sure-you-want-to")}
                     </span>
                   </Col>
                 </Row>
@@ -462,9 +463,9 @@ const Groups = () => {
                     className="d-flex justify-content-center"
                   >
                     <span
-                      className={styles['heading-modal-active-contfirmation']}
+                      className={styles["heading-modal-active-contfirmation"]}
                     >
-                      {statusValue || ''} {t('this-group?')}
+                      {statusValue || ""} {t("this-group?")}
                     </span>
                   </Col>
                 </Row>
@@ -481,8 +482,8 @@ const Groups = () => {
                   className="d-flex justify-content-end"
                 >
                   <Button
-                    text={t('Confirm')}
-                    className={styles['Confirm-activegroup-modal']}
+                    text={t("Confirm")}
+                    className={styles["Confirm-activegroup-modal"]}
                     onClick={handleStatusUpdate}
                   />
                 </Col>
@@ -493,8 +494,8 @@ const Groups = () => {
                   className="d-flex justify-content-start"
                 >
                   <Button
-                    text={t('Cancel')}
-                    className={styles['Cancel-activegroup-modal']}
+                    text={t("Cancel")}
+                    className={styles["Cancel-activegroup-modal"]}
                     onClick={() => setModalStatusChange(false)}
                   />
                 </Col>
@@ -518,7 +519,7 @@ const Groups = () => {
       ) : null}
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
-  )
-}
+  );
+};
 
-export default Groups
+export default Groups;
