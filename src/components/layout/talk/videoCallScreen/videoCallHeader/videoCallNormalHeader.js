@@ -33,6 +33,7 @@ import {
   chatEnableNormalFlag,
   minutesMeetingEnableNormalFlag,
   leaveCallModal,
+  participantPopup,
 } from '../../../../../store/actions/VideoFeature_actions'
 import { LeaveCall } from '../../../../../store/actions/VideoMain_actions'
 import { useTranslation } from 'react-i18next'
@@ -68,11 +69,14 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
 
   const [isActiveIcon, setIsActiveIcon] = useState(false)
 
-  const [isParticipantActive, setIsParticipantActive] = useState(false)
+  // const [isParticipantActive, setIsParticipantActive] = useState(false)
 
   const [currentParticipants, setCurrentParticipants] = useState([])
 
   const [participantStatus, setParticipantStatus] = useState([])
+
+  const participantPopupDisable = useRef(null)
+  const leaveModalPopupRef = useRef(null)
 
   const otoMaximizeVideoPanel = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
@@ -135,10 +139,10 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
 
   const closeParticipantHandler = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
-      if (isParticipantActive === false) {
-        setIsParticipantActive(true)
+      if (videoFeatureReducer.ParticipantPopupFlag === false) {
+        dispatch(participantPopup(true))
       } else {
-        setIsParticipantActive(false)
+        dispatch(participantPopup(false))
       }
     }
   }
@@ -177,6 +181,16 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
     setShowNotification(false)
   }
 
+  const handleOutsideClick = (event) => {
+    if (
+      participantPopupDisable.current &&
+      !participantPopupDisable.current.contains(event.target) &&
+      videoFeatureReducer.ParticipantPopupFlag
+    ) {
+      dispatch(participantPopup(false))
+    }
+  }
+
   useEffect(() => {}, [
     VideoMainReducer.VideoRecipentData.userName,
     callerNameInitiate,
@@ -213,6 +227,13 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
       console.log('Hello checking')
     }
   }, [callerObject])
+
+  useEffect(() => {
+    document.addEventListener('click', handleOutsideClick)
+    return () => {
+      document.removeEventListener('click', handleOutsideClick)
+    }
+  }, [videoFeatureReducer.ParticipantPopupFlag])
 
   console.log('participantStatus', participantStatus[0])
 
@@ -253,8 +274,8 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
         </Col>
         <>
           <Col lg={5} md={5} sm={12} className="normal-screen-top-icons">
-            <div className="positionRelative">
-              {isParticipantActive ? (
+            <div className="positionRelative" ref={participantPopupDisable}>
+              {videoFeatureReducer.ParticipantPopupFlag === true ? (
                 <>
                   <img
                     className={
@@ -413,24 +434,25 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
           <Col lg={1} md={1} sm={12}></Col>
         </>
       </Row>
+      <div ref={leaveModalPopupRef}>
+        {videoFeatureReducer.LeaveCallModalFlag === true ? (
+          <div className="leave-meeting-options leave-meeting-options-position">
+            <div className="leave-meeting-options__inner">
+              <Button
+                className="leave-meeting-options__btn leave-meeting-red-button"
+                text="End Call for Everyone"
+                onClick={leaveCall}
+              />
 
-      {videoFeatureReducer.LeaveCallModalFlag === true ? (
-        <div className="leave-meeting-options leave-meeting-options-position">
-          <div className="leave-meeting-options__inner">
-            <Button
-              className="leave-meeting-options__btn leave-meeting-red-button"
-              text="End Call for Everyone"
-              onClick={leaveCall}
-            />
-
-            <Button
-              className="leave-meeting-options__btn leave-meeting-gray-button"
-              text="Cancel"
-              onClick={closeVideoPanel}
-            />
+              <Button
+                className="leave-meeting-options__btn leave-meeting-gray-button"
+                text="Cancel"
+                onClick={closeVideoPanel}
+              />
+            </div>
           </div>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
     </>
   )
 }

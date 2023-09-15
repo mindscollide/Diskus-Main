@@ -28,6 +28,7 @@ const initialState = {
   NormalizeVideoFlag: false,
   IncomingVideoCallFlag: false,
   LeaveCallModalFlag: false,
+  ParticipantPopupFlag: false,
 }
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -245,6 +246,13 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         LeaveCallModalFlag: action.response,
+      }
+    }
+
+    case actions.PARTICIPANT_POPUP_FLAG: {
+      return {
+        ...state,
+        ParticipantPopupFlag: action.response,
       }
     }
 

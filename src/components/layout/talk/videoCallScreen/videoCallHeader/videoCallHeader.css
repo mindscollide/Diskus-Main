@@ -204,11 +204,12 @@ p.Notification-text {
     border-radius: 4px;
     padding: 10px 10px;
     position: absolute;
-    width: 235px;
+    width: 200px;
     top: 39px;
     height: 100px;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
-    left: -100px;
+    left: -85px;
+
 }
 
 .add-participant-button {
@@ -237,7 +238,7 @@ span.text-positioning {
 }
 
 p.participant-name {
-    font-size: 17px;
+    font-size: 15px;
     font-family: 'MontserratSemiBold-600';
     color: #5A5A5A;
     width: 90px;
@@ -248,7 +249,7 @@ p.participant-name {
 }
 
 p.participant-state {
-    font-size: 14px;
+    font-size: 12px;
     font-family: 'MontserratMedium';
     color: #5A5A5A;
     overflow: hidden;
