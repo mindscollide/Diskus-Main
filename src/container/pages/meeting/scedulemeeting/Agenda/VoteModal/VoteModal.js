@@ -368,9 +368,9 @@ const VoteModal = () => {
     dispatch(showVoteConfirmationModal(true));
   };
 
-  const handleCrossBtn = () => {
+  const handleCrossBtn = (index) => {
     let optionscross = [...saveOptions];
-    optionscross.splice(optionscross, 1);
+    optionscross.splice(optionscross, index);
     setSaveOptions(optionscross);
   };
 
@@ -739,7 +739,9 @@ const VoteModal = () => {
                                                       height="21.79px"
                                                       width="21.79px"
                                                       className="cursor-pointer"
-                                                      onClick={handleCrossBtn}
+                                                      onClick={() =>
+                                                        handleCrossBtn(index)
+                                                      }
                                                     />
                                                   }
                                                 />
