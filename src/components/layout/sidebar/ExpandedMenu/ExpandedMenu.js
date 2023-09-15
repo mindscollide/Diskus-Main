@@ -6,6 +6,7 @@ import Tooltip from "../../../elements/tooltip/Tooltip";
 import { useTranslation } from "react-i18next";
 import { getDocumentsAndFolderApi } from "../../../../store/actions/DataRoom_actions";
 import { useDispatch } from "react-redux";
+import { allAssignessList } from "../../../../store/actions/Get_List_Of_Assignees";
 const ExpandedMenu = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -25,10 +26,9 @@ const ExpandedMenu = () => {
             as={Link}
             to="dataroom"
             eventKey="link-5"
-            // onClick={() => {
-            //   dispatch(getDocumentsAndFolderApi(navigate, 3, t));
-            //   localStorage.setItem("setTableView", 3);
-            // }}
+            onClick={() => {
+              dispatch(allAssignessList(navigate, t));
+            }}
             className={
               location.pathname === "/DisKus/dataroom" ||
               location.pathname === "/Diskus/dataroom"
