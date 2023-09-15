@@ -173,7 +173,6 @@
 
 .Add_more_Class {
   color: #fff !important;
-  font-size: 8px !important;
 }
 .Add_more_Class span {
   color: #fff !important;
@@ -185,7 +184,6 @@
 .Add_more_Class:focus,
 .Add_more_Class:focus-visible {
   color: #fff !important;
-  font-size: 8px !important;
 }
 
 .Participant_names {
