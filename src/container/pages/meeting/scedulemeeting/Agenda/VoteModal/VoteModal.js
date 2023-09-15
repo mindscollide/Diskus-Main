@@ -657,6 +657,7 @@ const VoteModal = () => {
 
                               {saveOptions.length > 0
                                 ? saveOptions.map((data, index) => {
+                                    console.log(data, "datadata");
                                     return (
                                       <>
                                         <>
@@ -667,7 +668,7 @@ const VoteModal = () => {
                                                 "NewMeetingFileds_withIcon"
                                               }
                                               width={"145px"}
-                                              value={data.text}
+                                              value={data}
                                               name={"OptionsAdded"}
                                               iconClassName={
                                                 styles["ResCrossIcon"]
