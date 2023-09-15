@@ -38,6 +38,9 @@ const VoteModal = () => {
     OptionsAdded: "",
     SelectOrganizers: 0,
     SelectOptions: 0,
+    YesAnswer: "Yes",
+    NOAnswer: "No",
+    AbstainAnswer: "Abstain",
   });
   const plusButtonFunc = () => {
     setAddOptions(true);
@@ -420,6 +423,48 @@ const VoteModal = () => {
         });
       }
     }
+    if (name === "YesAnswers") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          YesAnswer: valueCheck,
+        });
+      } else {
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          YesAnswer: "",
+        });
+      }
+    }
+    if (name === "Noanswers") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          NOAnswer: valueCheck,
+        });
+      } else {
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          NOAnswer: "",
+        });
+      }
+    }
+    if (name === "AbstainAnswers") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          AbstainAnswer: valueCheck,
+        });
+      } else {
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          AbstainAnswer: "",
+        });
+      }
+    }
   };
 
   const HandleChangeOptions = (e, index) => {
@@ -648,16 +693,29 @@ const VoteModal = () => {
                                 labelClass={"d-none"}
                                 applyClass={"NewMeetingFileds"}
                                 width={"145px"}
+                                name={"YesAnswers"}
+                                value={voteModalAttrbutes.YesAnswer}
+                                change={HandleChange}
                               />
                               <TextField
                                 labelClass={"d-none"}
                                 applyClass={"NewMeetingFileds"}
                                 width={"145px"}
+                                name={"NOAnswers"}
+                                value={voteModalAttrbutes.NOAnswer}
+                                change={HandleChange}
+                              />
+                              <TextField
+                                labelClass={"d-none"}
+                                applyClass={"NewMeetingFileds"}
+                                width={"145px"}
+                                name={"AbstainAnswers"}
+                                value={voteModalAttrbutes.AbstainAnswer}
+                                change={HandleChange}
                               />
 
                               {saveOptions.length > 0
                                 ? saveOptions.map((data, index) => {
-                                    console.log(data, "datadata");
                                     return (
                                       <>
                                         <>
