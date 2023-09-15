@@ -30,7 +30,7 @@ const VoteModal = () => {
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [addOptions, setAddOptions] = useState(false);
-  const [saveOptions, setSaveOptions] = useState([{ Options: null }]);
+  const [saveOptions, setSaveOptions] = useState([{ text: "" }]);
   const [error, setError] = useState(false);
   const [voteModalAttrbutes, setVoteModalAttrbutes] = useState({
     VoteQuestion: "",
@@ -151,7 +151,11 @@ const VoteModal = () => {
 
   const AddOptions = () => {
     setAddOptions(false);
-    setSaveOptions([...saveOptions, { Options: saveOptions.value }]);
+    setSaveOptions([...saveOptions, saveOptions.text]);
+  };
+
+  const handleSaveOption = (index) => {
+    console.log("Saved option:", saveOptions[index].text);
   };
 
   const optionsIndividualOpenCloseVoting = [
@@ -432,6 +436,13 @@ const VoteModal = () => {
     }
   };
 
+  // Function for the Saved Add TExt filed
+  const handleOptionTextChange = (index, newText) => {
+    const updatedOptions = [...saveOptions];
+    updatedOptions[index].text = newText;
+    setSaveOptions(updatedOptions);
+  };
+
   return (
     <section>
       <Modal
@@ -545,9 +556,10 @@ const VoteModal = () => {
                         <TextField
                           labelClass={"d-none"}
                           applyClass={"NewMeetingFileds"}
-                          name={"Answer"}
-                          value={voteModalAttrbutes.Answer}
-                          change={HandleChange}
+                          value={saveOptions.text}
+                          onChange={(e) =>
+                            handleOptionTextChange(e.target.value)
+                          }
                         />
                       </Col>
                       <Col lg={2} md={2} sm={2}>
@@ -649,7 +661,7 @@ const VoteModal = () => {
                                                 "NewMeetingFileds_withIcon"
                                               }
                                               width={"145px"}
-                                              value={saveOptions.Options}
+                                              value={saveOptions.text}
                                               name={"OptionsAdded"}
                                               change={HandleChangeOptions}
                                               iconClassName={
