@@ -48,6 +48,7 @@ import {
 import ImportPrevious from "./ImportPreviousAgenda/ImportPrevious";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { startCase } from "lodash";
+import SaveAgendaView from "./SavedAgendaView/SaveAgendaView";
 
 const Agenda = () => {
   const { t } = useTranslation();
@@ -57,6 +58,7 @@ const Agenda = () => {
   const { Dragger } = Upload;
   const [expand, setExpand] = useState(true);
   const [subExpand, setSubExpand] = useState(true);
+  const [savedViewAgenda, setsavedViewAgenda] = useState(false);
   const [expandSubIndex, setExpandSubIndex] = useState(0);
   const [expandIndex, setExpandIndex] = useState(0);
   const [subexpandIndex, setsubexpandIndex] = useState(0);
@@ -665,329 +667,347 @@ const Agenda = () => {
     }
   };
 
+  const handleSavedViewAgenda = () => {
+    setsavedViewAgenda(true);
+  };
+
   return (
     <>
-      <section>
-        <DragDropContext onDragEnd={HandleDragDrop}>
-          <Row>
-            <Col lg={12} md={12} sm={12} className={styles["Scroller_Agenda"]}>
-              <Droppable droppableId="ROOT" type="group">
-                {(provided) => (
-                  <div {...provided.droppableProps} ref={provided.innerRef}>
-                    {rows.length > 0
-                      ? rows.map((data, index) => {
-                          console.log("valuevaluevalue", data.title);
-                          return (
-                            <>
-                              <Draggable
-                                draggableId={data.ID}
-                                Key={data.ID}
-                                index={index}
-                              >
-                                {(provided) => (
-                                  <div
-                                    {...provided.dragHandleProps}
-                                    {...provided.draggableProps}
-                                    ref={provided.innerRef}
+      {savedViewAgenda ? (
+        <SaveAgendaView />
+      ) : (
+        <>
+          <section>
+            <DragDropContext onDragEnd={HandleDragDrop}>
+              <Row>
+                <Col
+                  lg={12}
+                  md={12}
+                  sm={12}
+                  className={styles["Scroller_Agenda"]}
+                >
+                  <Droppable droppableId="ROOT" type="group">
+                    {(provided) => (
+                      <div {...provided.droppableProps} ref={provided.innerRef}>
+                        {rows.length > 0
+                          ? rows.map((data, index) => {
+                              console.log("valuevaluevalue", data.title);
+                              return (
+                                <>
+                                  <Draggable
+                                    draggableId={data.ID}
+                                    Key={data.ID}
+                                    index={index}
                                   >
-                                    <Row key={data.ID} className="mt-4 m-0 p-0">
-                                      <Col
-                                        lg={12}
-                                        md={12}
-                                        sm={12}
-                                        key={index + 1}
-                                        className={
-                                          apllyLockOnParentAgenda(index)
-                                            ? styles[
-                                                "BackGround_Agenda_InActive"
-                                              ]
-                                            : styles["BackGround_Agenda"]
-                                        }
+                                    {(provided) => (
+                                      <div
+                                        {...provided.dragHandleProps}
+                                        {...provided.draggableProps}
+                                        ref={provided.innerRef}
                                       >
-                                        <Row>
+                                        <Row
+                                          key={data.ID}
+                                          className="mt-4 m-0 p-0"
+                                        >
                                           <Col
-                                            lg={1}
-                                            md={1}
-                                            sm={1}
+                                            lg={12}
+                                            md={12}
+                                            sm={12}
+                                            key={index + 1}
                                             className={
-                                              styles["BackGroundNewImplemented"]
+                                              apllyLockOnParentAgenda(index)
+                                                ? styles[
+                                                    "BackGround_Agenda_InActive"
+                                                  ]
+                                                : styles["BackGround_Agenda"]
                                             }
                                           >
-                                            <Row className="mt-4">
+                                            <Row>
                                               <Col
-                                                lg={12}
-                                                md={12}
-                                                sm={12}
-                                                className="d-flex justify-content-center align-items-center"
+                                                lg={1}
+                                                md={1}
+                                                sm={1}
+                                                className={
+                                                  styles[
+                                                    "BackGroundNewImplemented"
+                                                  ]
+                                                }
                                               >
-                                                <img
-                                                  src={
-                                                    expandIndex === index &&
-                                                    expand === true
-                                                      ? blackArrowUpper
-                                                      : dropmdownblack
-                                                  }
-                                                  width="18.71px"
-                                                  height="9.36px"
-                                                  className={
-                                                    expand === true
-                                                      ? styles["Arrow_Expanded"]
-                                                      : styles["Arrow"]
-                                                  }
-                                                  onClick={() => {
-                                                    handleExpandedBtn(index);
-                                                  }}
-                                                />
-                                              </Col>
-                                            </Row>
-                                          </Col>
-
-                                          <Col lg={11} md={11} sm={11}>
-                                            <section
-                                              className={
-                                                styles["SectionInnerClass"]
-                                              }
-                                            >
-                                              <Row
-                                                key={index + 2}
-                                                className="mt-4"
-                                              >
-                                                <Col lg={5} md={5} sm={12}>
-                                                  <Row>
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                    >
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Meeting_title_heading"
-                                                          ]
-                                                        }
-                                                      >
-                                                        <span>
-                                                          {index + 1}.
-                                                        </span>{" "}
-                                                        {t("Agenda-title")}{" "}
-                                                        <span>{index + 1}</span>
-                                                      </span>
-                                                    </Col>
-                                                  </Row>
-                                                  <TextField
-                                                    applyClass={
-                                                      "AgendaTextField"
-                                                    }
-                                                    name={"title"}
-                                                    labelClass={"d-none"}
-                                                    placeholder={t(
-                                                      "Agenda-title"
-                                                    )}
-                                                    value={data.title}
-                                                    change={(e) =>
-                                                      handleAgendaItemChange(
-                                                        index,
-                                                        e
-                                                      )
-                                                    }
-                                                    disable={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      )
-                                                        ? true
-                                                        : false
-                                                    }
-                                                  />
-                                                </Col>
-                                                <Col lg={3} md={3} sm={12}>
-                                                  <Row>
-                                                    <Col
-                                                      lg={12}
-                                                      md={12}
-                                                      sm={12}
-                                                    >
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Meeting_title_heading"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t("Presenter")}
-                                                      </span>
-                                                    </Col>
-                                                  </Row>
-                                                  <Select
-                                                    options={options}
-                                                    value={data.selectedOption}
-                                                    onChange={(value) =>
-                                                      handleSelectChange(
-                                                        index,
-                                                        value
-                                                      )
-                                                    }
-                                                    isDisabled={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      )
-                                                        ? true
-                                                        : false
-                                                    }
-                                                  />
-                                                </Col>
-                                                <Col
-                                                  sm={12}
-                                                  md={4}
-                                                  lg={4}
-                                                  className="d-flex gap-4 justify-content-start align-items-center"
-                                                >
-                                                  <Row>
-                                                    <Col lg={5} md={5} sm={5}>
-                                                      <Row>
-                                                        <Col
-                                                          lg={12}
-                                                          md={12}
-                                                          sm={12}
-                                                        >
-                                                          <span
-                                                            className={
-                                                              styles[
-                                                                "Meeting_title_heading"
-                                                              ]
-                                                            }
-                                                          >
-                                                            {t("Start-date")}
-                                                          </span>
-                                                        </Col>
-                                                      </Row>
-                                                      <DatePicker
-                                                        arrowClassName="arrowClass"
-                                                        containerClassName="containerClassTimePicker"
-                                                        className="timePicker"
-                                                        disableDayPicker
-                                                        inputClass="inputTImeMeeting"
-                                                        format="HH:mm A"
-                                                        selected={
-                                                          data.startDate
-                                                        }
-                                                        plugins={[
-                                                          <TimePicker
-                                                            hideSeconds
-                                                          />,
-                                                        ]}
-                                                        onChange={(date) =>
-                                                          handleStartDateChange(
-                                                            index,
-                                                            date
-                                                          )
-                                                        }
-                                                        disabled={
-                                                          apllyLockOnParentAgenda(
-                                                            index
-                                                          )
-                                                            ? true
-                                                            : false
-                                                        }
-                                                      />
-                                                    </Col>
-                                                    <Col
-                                                      lg={2}
-                                                      md={2}
-                                                      sm={2}
-                                                      className="d-flex justify-content-center align-items-center"
-                                                    >
-                                                      <img
-                                                        src={desh}
-                                                        width="19.02px"
-                                                      />
-                                                    </Col>
-                                                    <Col lg={5} md={5} sm={5}>
-                                                      <Row>
-                                                        <Col
-                                                          lg={12}
-                                                          md={12}
-                                                          sm={12}
-                                                        >
-                                                          <span
-                                                            className={
-                                                              styles[
-                                                                "Meeting_title_heading"
-                                                              ]
-                                                            }
-                                                          >
-                                                            {t("End-date")}
-                                                          </span>
-                                                        </Col>
-                                                      </Row>
-                                                      <DatePicker
-                                                        arrowClassName="arrowClass"
-                                                        containerClassName="containerClassTimePicker"
-                                                        className="timePicker"
-                                                        disableDayPicker
-                                                        inputClass="inputTImeMeeting"
-                                                        format="HH:mm A"
-                                                        selected={data.endDate}
-                                                        plugins={[
-                                                          <TimePicker
-                                                            hideSeconds
-                                                          />,
-                                                        ]}
-                                                        onChange={(date) =>
-                                                          handleEndDateChange(
-                                                            index,
-                                                            date
-                                                          )
-                                                        } // Update end date
-                                                        disabled={
-                                                          apllyLockOnParentAgenda(
-                                                            index
-                                                          )
-                                                            ? true
-                                                            : false
-                                                        }
-                                                      />
-                                                    </Col>
-                                                  </Row>
-                                                  {index !== 0 && (
+                                                <Row className="mt-4">
+                                                  <Col
+                                                    lg={12}
+                                                    md={12}
+                                                    sm={12}
+                                                    className="d-flex justify-content-center align-items-center"
+                                                  >
                                                     <img
-                                                      src={redcrossIcon}
-                                                      height="25px"
-                                                      width="25px"
+                                                      src={
+                                                        expandIndex === index &&
+                                                        expand === true
+                                                          ? blackArrowUpper
+                                                          : dropmdownblack
+                                                      }
+                                                      width="18.71px"
+                                                      height="9.36px"
                                                       className={
-                                                        styles[
-                                                          "RedCross_Icon_class_Main_agenda"
-                                                        ]
+                                                        expand === true
+                                                          ? styles[
+                                                              "Arrow_Expanded"
+                                                            ]
+                                                          : styles["Arrow"]
                                                       }
                                                       onClick={() => {
-                                                        handleCrossIcon(index);
+                                                        handleExpandedBtn(
+                                                          index
+                                                        );
                                                       }}
                                                     />
-                                                  )}
-                                                </Col>
-                                              </Row>
-                                              <Row className="mt-2">
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles["Show_Details_Tag"]
-                                                    }
-                                                    onClick={() => {
-                                                      handleExpandedBtn(index);
-                                                    }}
-                                                  >
-                                                    {expand === true
-                                                      ? t("Hide-details")
-                                                      : t("Show-details")}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              {expandIndex === index &&
-                                              expand === true ? (
-                                                <>
+                                                  </Col>
+                                                </Row>
+                                              </Col>
+
+                                              <Col lg={11} md={11} sm={11}>
+                                                <section
+                                                  className={
+                                                    styles["SectionInnerClass"]
+                                                  }
+                                                >
                                                   <Row
-                                                    key={index + 3}
-                                                    className="mt-3"
+                                                    key={index + 2}
+                                                    className="mt-4"
                                                   >
+                                                    <Col lg={5} md={5} sm={12}>
+                                                      <Row>
+                                                        <Col
+                                                          lg={12}
+                                                          md={12}
+                                                          sm={12}
+                                                        >
+                                                          <span
+                                                            className={
+                                                              styles[
+                                                                "Meeting_title_heading"
+                                                              ]
+                                                            }
+                                                          >
+                                                            <span>
+                                                              {index + 1}.
+                                                            </span>{" "}
+                                                            {t("Agenda-title")}{" "}
+                                                            <span>
+                                                              {index + 1}
+                                                            </span>
+                                                          </span>
+                                                        </Col>
+                                                      </Row>
+                                                      <TextField
+                                                        applyClass={
+                                                          "AgendaTextField"
+                                                        }
+                                                        name={"title"}
+                                                        labelClass={"d-none"}
+                                                        placeholder={t(
+                                                          "Agenda-title"
+                                                        )}
+                                                        value={data.title}
+                                                        change={(e) =>
+                                                          handleAgendaItemChange(
+                                                            index,
+                                                            e
+                                                          )
+                                                        }
+                                                        disable={
+                                                          apllyLockOnParentAgenda(
+                                                            index
+                                                          )
+                                                            ? true
+                                                            : false
+                                                        }
+                                                      />
+                                                    </Col>
+                                                    <Col lg={3} md={3} sm={12}>
+                                                      <Row>
+                                                        <Col
+                                                          lg={12}
+                                                          md={12}
+                                                          sm={12}
+                                                        >
+                                                          <span
+                                                            className={
+                                                              styles[
+                                                                "Meeting_title_heading"
+                                                              ]
+                                                            }
+                                                          >
+                                                            {t("Presenter")}
+                                                          </span>
+                                                        </Col>
+                                                      </Row>
+                                                      <Select
+                                                        options={options}
+                                                        value={
+                                                          data.selectedOption
+                                                        }
+                                                        onChange={(value) =>
+                                                          handleSelectChange(
+                                                            index,
+                                                            value
+                                                          )
+                                                        }
+                                                        isDisabled={
+                                                          apllyLockOnParentAgenda(
+                                                            index
+                                                          )
+                                                            ? true
+                                                            : false
+                                                        }
+                                                      />
+                                                    </Col>
+                                                    <Col
+                                                      sm={12}
+                                                      md={4}
+                                                      lg={4}
+                                                      className="d-flex gap-4 justify-content-start align-items-center"
+                                                    >
+                                                      <Row>
+                                                        <Col
+                                                          lg={5}
+                                                          md={5}
+                                                          sm={5}
+                                                        >
+                                                          <Row>
+                                                            <Col
+                                                              lg={12}
+                                                              md={12}
+                                                              sm={12}
+                                                            >
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "Meeting_title_heading"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                {t(
+                                                                  "Start-date"
+                                                                )}
+                                                              </span>
+                                                            </Col>
+                                                          </Row>
+                                                          <DatePicker
+                                                            arrowClassName="arrowClass"
+                                                            containerClassName="containerClassTimePicker"
+                                                            className="timePicker"
+                                                            disableDayPicker
+                                                            inputClass="inputTImeMeeting"
+                                                            format="HH:mm A"
+                                                            selected={
+                                                              data.startDate
+                                                            }
+                                                            plugins={[
+                                                              <TimePicker
+                                                                hideSeconds
+                                                              />,
+                                                            ]}
+                                                            onChange={(date) =>
+                                                              handleStartDateChange(
+                                                                index,
+                                                                date
+                                                              )
+                                                            }
+                                                            disabled={
+                                                              apllyLockOnParentAgenda(
+                                                                index
+                                                              )
+                                                                ? true
+                                                                : false
+                                                            }
+                                                          />
+                                                        </Col>
+                                                        <Col
+                                                          lg={2}
+                                                          md={2}
+                                                          sm={2}
+                                                          className="d-flex justify-content-center align-items-center"
+                                                        >
+                                                          <img
+                                                            src={desh}
+                                                            width="19.02px"
+                                                          />
+                                                        </Col>
+                                                        <Col
+                                                          lg={5}
+                                                          md={5}
+                                                          sm={5}
+                                                        >
+                                                          <Row>
+                                                            <Col
+                                                              lg={12}
+                                                              md={12}
+                                                              sm={12}
+                                                            >
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "Meeting_title_heading"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                {t("End-date")}
+                                                              </span>
+                                                            </Col>
+                                                          </Row>
+                                                          <DatePicker
+                                                            arrowClassName="arrowClass"
+                                                            containerClassName="containerClassTimePicker"
+                                                            className="timePicker"
+                                                            disableDayPicker
+                                                            inputClass="inputTImeMeeting"
+                                                            format="HH:mm A"
+                                                            selected={
+                                                              data.endDate
+                                                            }
+                                                            plugins={[
+                                                              <TimePicker
+                                                                hideSeconds
+                                                              />,
+                                                            ]}
+                                                            onChange={(date) =>
+                                                              handleEndDateChange(
+                                                                index,
+                                                                date
+                                                              )
+                                                            } // Update end date
+                                                            disabled={
+                                                              apllyLockOnParentAgenda(
+                                                                index
+                                                              )
+                                                                ? true
+                                                                : false
+                                                            }
+                                                          />
+                                                        </Col>
+                                                      </Row>
+                                                      {index !== 0 && (
+                                                        <img
+                                                          src={redcrossIcon}
+                                                          height="25px"
+                                                          width="25px"
+                                                          className={
+                                                            styles[
+                                                              "RedCross_Icon_class_Main_agenda"
+                                                            ]
+                                                          }
+                                                          onClick={() => {
+                                                            handleCrossIcon(
+                                                              index
+                                                            );
+                                                          }}
+                                                        />
+                                                      )}
+                                                    </Col>
+                                                  </Row>
+                                                  <Row className="mt-2">
                                                     <Col
                                                       lg={12}
                                                       md={12}
@@ -996,233 +1016,26 @@ const Agenda = () => {
                                                       <span
                                                         className={
                                                           styles[
-                                                            "Agenda_Heading"
+                                                            "Show_Details_Tag"
                                                           ]
                                                         }
+                                                        onClick={() => {
+                                                          handleExpandedBtn(
+                                                            index
+                                                          );
+                                                        }}
                                                       >
-                                                        {t("Attachments")}
+                                                        {expand === true
+                                                          ? t("Hide-details")
+                                                          : t("Show-details")}
                                                       </span>
                                                     </Col>
                                                   </Row>
-                                                  <Row
-                                                    key={index + 4}
-                                                    className="mt-3"
-                                                  >
-                                                    <Col lg={6} md={6} sm={6}>
-                                                      <Radio.Group
-                                                        onChange={(e) =>
-                                                          handleRadioChange(
-                                                            index,
-                                                            e.target.value
-                                                          )
-                                                        }
-                                                        value={data.value}
-                                                        disabled={
-                                                          apllyLockOnParentAgenda(
-                                                            index
-                                                          )
-                                                            ? true
-                                                            : false
-                                                        }
-                                                      >
-                                                        <Radio value="1">
-                                                          <span
-                                                            className={
-                                                              styles[
-                                                                "Radio_Button_options"
-                                                              ]
-                                                            }
-                                                          >
-                                                            {t("Document")}
-                                                          </span>
-                                                        </Radio>
-                                                        <Radio value="2">
-                                                          <span
-                                                            className={
-                                                              styles[
-                                                                "Radio_Button_options"
-                                                              ]
-                                                            }
-                                                          >
-                                                            {t("URL")}
-                                                          </span>
-                                                        </Radio>
-                                                        <Radio value="3">
-                                                          <span
-                                                            className={
-                                                              styles[
-                                                                "Radio_Button_options"
-                                                              ]
-                                                            }
-                                                          >
-                                                            {t(
-                                                              "Request from contributor"
-                                                            )}
-                                                          </span>
-                                                        </Radio>
-                                                      </Radio.Group>
-                                                    </Col>
-                                                    <Col
-                                                      lg={6}
-                                                      md={6}
-                                                      sm={6}
-                                                      className="d-flex justify-content-end gap-4 align-items-center"
-                                                    >
-                                                      <img
-                                                        src={Key}
-                                                        width="24.07px"
-                                                        height="24.09px"
-                                                        className="cursor-pointer"
-                                                        onClick={
-                                                          apllyLockOnParentAgenda(
-                                                            index
-                                                          )
-                                                            ? ""
-                                                            : openAdvancePermissionModal
-                                                        }
-                                                      />
-                                                      <img
-                                                        src={Cast}
-                                                        width="25.85px"
-                                                        height="25.89px"
-                                                        className="cursor-pointer"
-                                                        onClick={
-                                                          apllyLockOnParentAgenda(
-                                                            index
-                                                          )
-                                                            ? ""
-                                                            : openVoteMOdal
-                                                        }
-                                                      />
-                                                      <img
-                                                        src={
-                                                          apllyLockOnParentAgenda(
-                                                            index
-                                                          )
-                                                            ? DarkLock
-                                                            : Lock
-                                                        }
-                                                        width="18.87px"
-                                                        className={
-                                                          apllyLockOnParentAgenda(
-                                                            index
-                                                          )
-                                                            ? styles[
-                                                                "lockBtn_inActive"
-                                                              ]
-                                                            : styles["lockBtn"]
-                                                        }
-                                                        height="26.72px"
-                                                        onClick={() =>
-                                                          lockFunctionActive(
-                                                            index
-                                                          )
-                                                        }
-                                                      />
-                                                    </Col>
-                                                  </Row>
-                                                  {data.selectedRadio ===
-                                                  "1" ? (
-                                                    <>
-                                                      <Row key={index + 5}>
-                                                        <Col
-                                                          lg={12}
-                                                          md={12}
-                                                          sm={12}
-                                                          className={
-                                                            styles[
-                                                              "Scroller_document"
-                                                            ]
-                                                          }
-                                                        >
-                                                          <div className="d-flex gap-1 flex-wrap mt-2">
-                                                            {data?.files
-                                                              ?.length > 0
-                                                              ? data?.files?.map(
-                                                                  (
-                                                                    filesData,
-                                                                    index
-                                                                  ) => {
-                                                                    return (
-                                                                      <>
-                                                                        <span
-                                                                          className={
-                                                                            styles[
-                                                                              "card"
-                                                                            ]
-                                                                          }
-                                                                        >
-                                                                          <Row>
-                                                                            <Col
-                                                                              lg={
-                                                                                10
-                                                                              }
-                                                                              md={
-                                                                                10
-                                                                              }
-                                                                              sm={
-                                                                                12
-                                                                              }
-                                                                              className="d-flex gap-1"
-                                                                            >
-                                                                              <img
-                                                                                src={
-                                                                                  PdfIcon
-                                                                                }
-                                                                              />
-                                                                              <span
-                                                                                className={
-                                                                                  styles[
-                                                                                    "TitleFile"
-                                                                                  ]
-                                                                                }
-                                                                              >
-                                                                                {
-                                                                                  filesData.name
-                                                                                }
-                                                                              </span>
-                                                                            </Col>
-                                                                            <Col
-                                                                              lg={
-                                                                                2
-                                                                              }
-                                                                              md={
-                                                                                2
-                                                                              }
-                                                                              sm={
-                                                                                12
-                                                                              }
-                                                                              className="d-flex justify-content-end align-items-center"
-                                                                            >
-                                                                              <img
-                                                                                src={
-                                                                                  redcrossIcon
-                                                                                }
-                                                                                width="15px"
-                                                                                height="15px"
-                                                                                onClick={() => {
-                                                                                  CrossDocument(
-                                                                                    index
-                                                                                  );
-                                                                                }}
-                                                                              />
-                                                                            </Col>
-                                                                          </Row>
-                                                                        </span>
-                                                                      </>
-                                                                    );
-                                                                  }
-                                                                )
-                                                              : null}
-                                                          </div>
-                                                        </Col>
-                                                      </Row>
-                                                    </>
-                                                  ) : data.selectedRadio ===
-                                                    "2" ? (
+                                                  {expandIndex === index &&
+                                                  expand === true ? (
                                                     <>
                                                       <Row
-                                                        key={index + 5}
+                                                        key={index + 3}
                                                         className="mt-3"
                                                       >
                                                         <Col
@@ -1230,618 +1043,637 @@ const Agenda = () => {
                                                           md={12}
                                                           sm={12}
                                                         >
-                                                          <TextField
-                                                            applyClass={
-                                                              "AgendaTextField"
-                                                            }
-                                                            labelClass={
-                                                              "d-none"
-                                                            }
-                                                            placeholder={t(
-                                                              "Enter-url"
-                                                            )}
-                                                            name={
-                                                              "UrlMainAgenda"
-                                                            }
-                                                            value={
-                                                              data.urlFieldMain
-                                                            }
-                                                            change={(e) =>
-                                                              handleMainAgendaAdditionalFieldChange(
-                                                                index,
-                                                                e
-                                                              )
-                                                            }
-                                                          />
-                                                        </Col>
-                                                      </Row>
-                                                    </>
-                                                  ) : data.selectedRadio ===
-                                                    "3" ? (
-                                                    <>
-                                                      <Row
-                                                        key={index + 5}
-                                                        className="mt-2"
-                                                      >
-                                                        <Col
-                                                          lg={12}
-                                                          md={12}
-                                                          sm={12}
-                                                        >
-                                                          <TextField
-                                                            applyClass={
-                                                              "AgendaTextField"
-                                                            }
-                                                            labelClass={
-                                                              "d-none"
-                                                            }
-                                                            placeholder={t(
-                                                              "Enter-email-address-here"
-                                                            )}
-                                                            name={
-                                                              "MainRequestContributorName"
-                                                            }
-                                                            value={
-                                                              data.requestContributorURl
-                                                            }
-                                                            change={(e) => {
-                                                              handleMainAgendaAdditionalFieldChangeRequestContributorURL(
-                                                                index,
-                                                                e
-                                                              );
-                                                            }}
-                                                          />
-                                                        </Col>
-                                                      </Row>
-                                                      <Row>
-                                                        <Col
-                                                          lg={12}
-                                                          md={12}
-                                                          sm={12}
-                                                        >
-                                                          <TextField
-                                                            applyClass="text-area-create-resolution"
-                                                            type="text"
-                                                            as={"textarea"}
-                                                            name={
-                                                              "MainNoteReqContributor"
-                                                            }
-                                                            value={
-                                                              data.MainNote
-                                                            }
-                                                            change={(e) =>
-                                                              handleMainAgendaAdditionalMainReqNotes(
-                                                                index,
-                                                                e
-                                                              )
-                                                            }
-                                                            rows="4"
-                                                            placeholder={t(
-                                                              "Enter-notes"
-                                                            )}
-                                                            required={true}
-                                                            maxLength={500}
-                                                          />
-                                                        </Col>
-                                                      </Row>
-                                                    </>
-                                                  ) : (
-                                                    <>
-                                                      <Row
-                                                        key={index + 5}
-                                                        className="mt-4 mb-2"
-                                                      >
-                                                        <Col
-                                                          lg={12}
-                                                          md={12}
-                                                          sm={12}
-                                                        >
-                                                          <Dragger
-                                                            {...props}
+                                                          <span
                                                             className={
                                                               styles[
-                                                                "dragdrop_attachment_create_resolution"
+                                                                "Agenda_Heading"
                                                               ]
                                                             }
                                                           >
-                                                            <Row>
-                                                              <Col
-                                                                lg={5}
-                                                                md={5}
-                                                                sm={12}
-                                                                className="d-flex justify-content-end align-items-center"
-                                                              >
-                                                                <img
-                                                                  src={
-                                                                    DrapDropIcon
-                                                                  }
-                                                                  width={100}
-                                                                  className={
-                                                                    styles[
-                                                                      "ClassImage"
-                                                                    ]
-                                                                  }
-                                                                />
-                                                              </Col>
-                                                              <Col
-                                                                lg={7}
-                                                                md={7}
-                                                                sm={12}
-                                                              >
-                                                                <Row className="mt-3">
-                                                                  <Col
-                                                                    lg={12}
-                                                                    md={12}
-                                                                    sm={12}
-                                                                    className="d-flex justify-content-start"
-                                                                  >
-                                                                    <span
-                                                                      className={
-                                                                        styles[
-                                                                          "ant-upload-text-Meetings"
-                                                                        ]
-                                                                      }
-                                                                    >
-                                                                      {t(
-                                                                        "Drag-file-here"
-                                                                      )}
-                                                                    </span>
-                                                                  </Col>
-                                                                </Row>
-                                                                <Row>
-                                                                  <Col
-                                                                    lg={12}
-                                                                    md={12}
-                                                                    sm={12}
-                                                                    className="d-flex justify-content-start"
-                                                                  >
-                                                                    <span
-                                                                      className={
-                                                                        styles[
-                                                                          "Choose_file_style-Meeting"
-                                                                        ]
-                                                                      }
-                                                                    >
-                                                                      {t(
-                                                                        "The-following-file-formats-are"
-                                                                      )}
-                                                                    </span>
-                                                                  </Col>
-                                                                </Row>
-                                                                <Row>
-                                                                  <Col
-                                                                    lg={12}
-                                                                    md={12}
-                                                                    sm={12}
-                                                                    className="d-flex justify-content-start"
-                                                                  >
-                                                                    <span
-                                                                      className={
-                                                                        styles[
-                                                                          "Choose_file_style-Meeting"
-                                                                        ]
-                                                                      }
-                                                                    >
-                                                                      {t(
-                                                                        "Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png"
-                                                                      )}
-                                                                    </span>
-                                                                  </Col>
-                                                                </Row>
-                                                              </Col>
-                                                            </Row>
-                                                          </Dragger>
+                                                            {t("Attachments")}
+                                                          </span>
                                                         </Col>
                                                       </Row>
+                                                      <Row
+                                                        key={index + 4}
+                                                        className="mt-3"
+                                                      >
+                                                        <Col
+                                                          lg={6}
+                                                          md={6}
+                                                          sm={6}
+                                                        >
+                                                          <Radio.Group
+                                                            onChange={(e) =>
+                                                              handleRadioChange(
+                                                                index,
+                                                                e.target.value
+                                                              )
+                                                            }
+                                                            value={data.value}
+                                                            disabled={
+                                                              apllyLockOnParentAgenda(
+                                                                index
+                                                              )
+                                                                ? true
+                                                                : false
+                                                            }
+                                                          >
+                                                            <Radio value="1">
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "Radio_Button_options"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                {t("Document")}
+                                                              </span>
+                                                            </Radio>
+                                                            <Radio value="2">
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "Radio_Button_options"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                {t("URL")}
+                                                              </span>
+                                                            </Radio>
+                                                            <Radio value="3">
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "Radio_Button_options"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                {t(
+                                                                  "Request from contributor"
+                                                                )}
+                                                              </span>
+                                                            </Radio>
+                                                          </Radio.Group>
+                                                        </Col>
+                                                        <Col
+                                                          lg={6}
+                                                          md={6}
+                                                          sm={6}
+                                                          className="d-flex justify-content-end gap-4 align-items-center"
+                                                        >
+                                                          <img
+                                                            src={Key}
+                                                            width="24.07px"
+                                                            height="24.09px"
+                                                            className="cursor-pointer"
+                                                            onClick={
+                                                              apllyLockOnParentAgenda(
+                                                                index
+                                                              )
+                                                                ? ""
+                                                                : openAdvancePermissionModal
+                                                            }
+                                                          />
+                                                          <img
+                                                            src={Cast}
+                                                            width="25.85px"
+                                                            height="25.89px"
+                                                            className="cursor-pointer"
+                                                            onClick={
+                                                              apllyLockOnParentAgenda(
+                                                                index
+                                                              )
+                                                                ? ""
+                                                                : openVoteMOdal
+                                                            }
+                                                          />
+                                                          <img
+                                                            src={
+                                                              apllyLockOnParentAgenda(
+                                                                index
+                                                              )
+                                                                ? DarkLock
+                                                                : Lock
+                                                            }
+                                                            width="18.87px"
+                                                            className={
+                                                              apllyLockOnParentAgenda(
+                                                                index
+                                                              )
+                                                                ? styles[
+                                                                    "lockBtn_inActive"
+                                                                  ]
+                                                                : styles[
+                                                                    "lockBtn"
+                                                                  ]
+                                                            }
+                                                            height="26.72px"
+                                                            onClick={() =>
+                                                              lockFunctionActive(
+                                                                index
+                                                              )
+                                                            }
+                                                          />
+                                                        </Col>
+                                                      </Row>
+                                                      {data.selectedRadio ===
+                                                      "1" ? (
+                                                        <>
+                                                          <Row key={index + 5}>
+                                                            <Col
+                                                              lg={12}
+                                                              md={12}
+                                                              sm={12}
+                                                              className={
+                                                                styles[
+                                                                  "Scroller_document"
+                                                                ]
+                                                              }
+                                                            >
+                                                              <div className="d-flex gap-1 flex-wrap mt-2">
+                                                                {data?.files
+                                                                  ?.length > 0
+                                                                  ? data?.files?.map(
+                                                                      (
+                                                                        filesData,
+                                                                        index
+                                                                      ) => {
+                                                                        return (
+                                                                          <>
+                                                                            <span
+                                                                              className={
+                                                                                styles[
+                                                                                  "card"
+                                                                                ]
+                                                                              }
+                                                                            >
+                                                                              <Row>
+                                                                                <Col
+                                                                                  lg={
+                                                                                    10
+                                                                                  }
+                                                                                  md={
+                                                                                    10
+                                                                                  }
+                                                                                  sm={
+                                                                                    12
+                                                                                  }
+                                                                                  className="d-flex gap-1"
+                                                                                >
+                                                                                  <img
+                                                                                    src={
+                                                                                      PdfIcon
+                                                                                    }
+                                                                                  />
+                                                                                  <span
+                                                                                    className={
+                                                                                      styles[
+                                                                                        "TitleFile"
+                                                                                      ]
+                                                                                    }
+                                                                                  >
+                                                                                    {
+                                                                                      filesData.name
+                                                                                    }
+                                                                                  </span>
+                                                                                </Col>
+                                                                                <Col
+                                                                                  lg={
+                                                                                    2
+                                                                                  }
+                                                                                  md={
+                                                                                    2
+                                                                                  }
+                                                                                  sm={
+                                                                                    12
+                                                                                  }
+                                                                                  className="d-flex justify-content-end align-items-center"
+                                                                                >
+                                                                                  <img
+                                                                                    src={
+                                                                                      redcrossIcon
+                                                                                    }
+                                                                                    width="15px"
+                                                                                    height="15px"
+                                                                                    onClick={() => {
+                                                                                      CrossDocument(
+                                                                                        index
+                                                                                      );
+                                                                                    }}
+                                                                                  />
+                                                                                </Col>
+                                                                              </Row>
+                                                                            </span>
+                                                                          </>
+                                                                        );
+                                                                      }
+                                                                    )
+                                                                  : null}
+                                                              </div>
+                                                            </Col>
+                                                          </Row>
+                                                        </>
+                                                      ) : data.selectedRadio ===
+                                                        "2" ? (
+                                                        <>
+                                                          <Row
+                                                            key={index + 5}
+                                                            className="mt-3"
+                                                          >
+                                                            <Col
+                                                              lg={12}
+                                                              md={12}
+                                                              sm={12}
+                                                            >
+                                                              <TextField
+                                                                applyClass={
+                                                                  "AgendaTextField"
+                                                                }
+                                                                labelClass={
+                                                                  "d-none"
+                                                                }
+                                                                placeholder={t(
+                                                                  "Enter-url"
+                                                                )}
+                                                                name={
+                                                                  "UrlMainAgenda"
+                                                                }
+                                                                value={
+                                                                  data.urlFieldMain
+                                                                }
+                                                                change={(e) =>
+                                                                  handleMainAgendaAdditionalFieldChange(
+                                                                    index,
+                                                                    e
+                                                                  )
+                                                                }
+                                                              />
+                                                            </Col>
+                                                          </Row>
+                                                        </>
+                                                      ) : data.selectedRadio ===
+                                                        "3" ? (
+                                                        <>
+                                                          <Row
+                                                            key={index + 5}
+                                                            className="mt-2"
+                                                          >
+                                                            <Col
+                                                              lg={12}
+                                                              md={12}
+                                                              sm={12}
+                                                            >
+                                                              <TextField
+                                                                applyClass={
+                                                                  "AgendaTextField"
+                                                                }
+                                                                labelClass={
+                                                                  "d-none"
+                                                                }
+                                                                placeholder={t(
+                                                                  "Enter-email-address-here"
+                                                                )}
+                                                                name={
+                                                                  "MainRequestContributorName"
+                                                                }
+                                                                value={
+                                                                  data.requestContributorURl
+                                                                }
+                                                                change={(e) => {
+                                                                  handleMainAgendaAdditionalFieldChangeRequestContributorURL(
+                                                                    index,
+                                                                    e
+                                                                  );
+                                                                }}
+                                                              />
+                                                            </Col>
+                                                          </Row>
+                                                          <Row>
+                                                            <Col
+                                                              lg={12}
+                                                              md={12}
+                                                              sm={12}
+                                                            >
+                                                              <TextField
+                                                                applyClass="text-area-create-resolution"
+                                                                type="text"
+                                                                as={"textarea"}
+                                                                name={
+                                                                  "MainNoteReqContributor"
+                                                                }
+                                                                value={
+                                                                  data.MainNote
+                                                                }
+                                                                change={(e) =>
+                                                                  handleMainAgendaAdditionalMainReqNotes(
+                                                                    index,
+                                                                    e
+                                                                  )
+                                                                }
+                                                                rows="4"
+                                                                placeholder={t(
+                                                                  "Enter-notes"
+                                                                )}
+                                                                required={true}
+                                                                maxLength={500}
+                                                              />
+                                                            </Col>
+                                                          </Row>
+                                                        </>
+                                                      ) : (
+                                                        <>
+                                                          <Row
+                                                            key={index + 5}
+                                                            className="mt-4 mb-2"
+                                                          >
+                                                            <Col
+                                                              lg={12}
+                                                              md={12}
+                                                              sm={12}
+                                                            >
+                                                              <Dragger
+                                                                {...props}
+                                                                className={
+                                                                  styles[
+                                                                    "dragdrop_attachment_create_resolution"
+                                                                  ]
+                                                                }
+                                                              >
+                                                                <Row>
+                                                                  <Col
+                                                                    lg={5}
+                                                                    md={5}
+                                                                    sm={12}
+                                                                    className="d-flex justify-content-end align-items-center"
+                                                                  >
+                                                                    <img
+                                                                      src={
+                                                                        DrapDropIcon
+                                                                      }
+                                                                      width={
+                                                                        100
+                                                                      }
+                                                                      className={
+                                                                        styles[
+                                                                          "ClassImage"
+                                                                        ]
+                                                                      }
+                                                                    />
+                                                                  </Col>
+                                                                  <Col
+                                                                    lg={7}
+                                                                    md={7}
+                                                                    sm={12}
+                                                                  >
+                                                                    <Row className="mt-3">
+                                                                      <Col
+                                                                        lg={12}
+                                                                        md={12}
+                                                                        sm={12}
+                                                                        className="d-flex justify-content-start"
+                                                                      >
+                                                                        <span
+                                                                          className={
+                                                                            styles[
+                                                                              "ant-upload-text-Meetings"
+                                                                            ]
+                                                                          }
+                                                                        >
+                                                                          {t(
+                                                                            "Drag-file-here"
+                                                                          )}
+                                                                        </span>
+                                                                      </Col>
+                                                                    </Row>
+                                                                    <Row>
+                                                                      <Col
+                                                                        lg={12}
+                                                                        md={12}
+                                                                        sm={12}
+                                                                        className="d-flex justify-content-start"
+                                                                      >
+                                                                        <span
+                                                                          className={
+                                                                            styles[
+                                                                              "Choose_file_style-Meeting"
+                                                                            ]
+                                                                          }
+                                                                        >
+                                                                          {t(
+                                                                            "The-following-file-formats-are"
+                                                                          )}
+                                                                        </span>
+                                                                      </Col>
+                                                                    </Row>
+                                                                    <Row>
+                                                                      <Col
+                                                                        lg={12}
+                                                                        md={12}
+                                                                        sm={12}
+                                                                        className="d-flex justify-content-start"
+                                                                      >
+                                                                        <span
+                                                                          className={
+                                                                            styles[
+                                                                              "Choose_file_style-Meeting"
+                                                                            ]
+                                                                          }
+                                                                        >
+                                                                          {t(
+                                                                            "Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png"
+                                                                          )}
+                                                                        </span>
+                                                                      </Col>
+                                                                    </Row>
+                                                                  </Col>
+                                                                </Row>
+                                                              </Dragger>
+                                                            </Col>
+                                                          </Row>
+                                                        </>
+                                                      )}
                                                     </>
-                                                  )}
-                                                </>
-                                              ) : null}
-                                            </section>
+                                                  ) : null}
+                                                </section>
+                                              </Col>
+                                            </Row>
                                           </Col>
                                         </Row>
-                                      </Col>
-                                    </Row>
 
-                                    {data.subAgenda.length > 0 &&
-                                      data.subAgenda.map(
-                                        (subAgendaData, subIndex) => {
-                                          return (
-                                            <>
-                                              <Row
-                                                key={subAgendaData.ID}
-                                                className="mt-3"
-                                              >
-                                                <Col lg={1} md={1} sm={1}></Col>
-                                                <Col
-                                                  lg={11}
-                                                  md={11}
-                                                  sm={11}
-                                                  className={
-                                                    apllyLockOnParentAgenda(
-                                                      index
-                                                    ) ||
-                                                    apllyLockOnSubAgenda(
-                                                      index,
-                                                      subIndex
-                                                    )
-                                                      ? styles[
-                                                          "SubajendaBox_Inactive"
-                                                        ]
-                                                      : styles["SubajendaBox"]
-                                                  }
-                                                >
-                                                  <Row>
-                                                    <Col lg={1} md={1} sm={1}>
-                                                      <section
-                                                        className={
-                                                          styles["backGorund"]
-                                                        }
-                                                      ></section>
-                                                    </Col>
+                                        {data.subAgenda.length > 0 &&
+                                          data.subAgenda.map(
+                                            (subAgendaData, subIndex) => {
+                                              return (
+                                                <>
+                                                  <Row
+                                                    key={subAgendaData.ID}
+                                                    className="mt-3"
+                                                  >
+                                                    <Col
+                                                      lg={1}
+                                                      md={1}
+                                                      sm={1}
+                                                    ></Col>
                                                     <Col
                                                       lg={11}
                                                       md={11}
                                                       sm={11}
                                                       className={
-                                                        styles[
-                                                          "SubAgendaSection"
-                                                        ]
+                                                        apllyLockOnParentAgenda(
+                                                          index
+                                                        ) ||
+                                                        apllyLockOnSubAgenda(
+                                                          index,
+                                                          subIndex
+                                                        )
+                                                          ? styles[
+                                                              "SubajendaBox_Inactive"
+                                                            ]
+                                                          : styles[
+                                                              "SubajendaBox"
+                                                            ]
                                                       }
                                                     >
-                                                      <Row className="mt-2 mb-2">
-                                                        <Col
-                                                          lg={5}
-                                                          md={5}
-                                                          sm={12}
-                                                        >
-                                                          <Row>
-                                                            <Col
-                                                              lg={12}
-                                                              md={12}
-                                                              sm={12}
-                                                            >
-                                                              <span
-                                                                className={
-                                                                  styles[
-                                                                    "Meeting_subAgenda"
-                                                                  ]
-                                                                }
-                                                              >
-                                                                <span>
-                                                                  {index + 1}.
-                                                                </span>
-                                                                <span>
-                                                                  {subIndex + 1}
-                                                                </span>{" "}
-                                                                {t(
-                                                                  "Sub-agenda-title"
-                                                                )}{" "}
-                                                                <span>
-                                                                  {subIndex + 1}
-                                                                </span>
-                                                              </span>
-                                                            </Col>
-                                                          </Row>
-                                                          <TextField
-                                                            applyClass={
-                                                              "AgendaTextField"
-                                                            }
-                                                            labelClass={
-                                                              "d-none"
-                                                            }
-                                                            name={"SubTitle"}
-                                                            disable={
-                                                              apllyLockOnParentAgenda(
-                                                                index
-                                                              ) ||
-                                                              apllyLockOnSubAgenda(
-                                                                index,
-                                                                subIndex
-                                                              )
-                                                                ? true
-                                                                : false
-                                                            }
-                                                            placeholder={t(
-                                                              "Sub-Agenda-title"
-                                                            )}
-                                                            value={
-                                                              subAgendaData.SubTitle
-                                                            }
-                                                            change={(e) =>
-                                                              handleSubAgendaTitleChange(
-                                                                index,
-                                                                subIndex,
-                                                                e
-                                                              )
-                                                            }
-                                                          />
-                                                        </Col>
-                                                        <Col
-                                                          lg={3}
-                                                          md={3}
-                                                          sm={12}
-                                                        >
-                                                          <Row>
-                                                            <Col
-                                                              lg={12}
-                                                              md={12}
-                                                              sm={12}
-                                                            >
-                                                              <span
-                                                                className={
-                                                                  styles[
-                                                                    "Meeting_subAgenda"
-                                                                  ]
-                                                                }
-                                                              >
-                                                                {t("Presenter")}
-                                                              </span>
-                                                            </Col>
-                                                          </Row>
-                                                          <Select
-                                                            options={
-                                                              SubAgendaoptions
-                                                            }
-                                                            value={
-                                                              subAgendaData.selectedOption
-                                                            }
-                                                            onChange={(value) =>
-                                                              handleSubAgendaSelectChange(
-                                                                index,
-                                                                subIndex,
-                                                                value
-                                                              )
-                                                            }
-                                                            isDisabled={
-                                                              apllyLockOnParentAgenda(
-                                                                index
-                                                              ) ||
-                                                              apllyLockOnSubAgenda(
-                                                                index,
-                                                                subIndex
-                                                              )
-                                                                ? true
-                                                                : false
-                                                            }
-                                                          />
-                                                        </Col>
-                                                        <Col
-                                                          sm={12}
-                                                          md={4}
-                                                          lg={4}
-                                                          className="d-flex gap-4 justify-content-start align-items-center"
-                                                        >
-                                                          <Row>
-                                                            <Col
-                                                              lg={5}
-                                                              md={5}
-                                                              sm={5}
-                                                            >
-                                                              <Row>
-                                                                <Col
-                                                                  lg={12}
-                                                                  md={12}
-                                                                  sm={12}
-                                                                >
-                                                                  <span
-                                                                    className={
-                                                                      styles[
-                                                                        "Meeting_subAgenda"
-                                                                      ]
-                                                                    }
-                                                                  >
-                                                                    {t(
-                                                                      "Start-date"
-                                                                    )}
-                                                                  </span>
-                                                                </Col>
-                                                              </Row>
-                                                              <DatePicker
-                                                                arrowClassName="arrowClass"
-                                                                containerClassName="containerClassTimePicker"
-                                                                className="timePicker"
-                                                                disableDayPicker
-                                                                inputClass="inputTImeMeeting"
-                                                                disabled={
-                                                                  apllyLockOnParentAgenda(
-                                                                    index
-                                                                  ) ||
-                                                                  apllyLockOnSubAgenda(
-                                                                    index,
-                                                                    subIndex
-                                                                  )
-                                                                    ? true
-                                                                    : false
-                                                                }
-                                                                format="HH:mm A"
-                                                                selected={
-                                                                  subAgendaData.startDate
-                                                                }
-                                                                onChange={(
-                                                                  date
-                                                                ) =>
-                                                                  handleSubAgendaStartDateChange(
-                                                                    index,
-                                                                    subIndex,
-                                                                    date
-                                                                  )
-                                                                }
-                                                                plugins={[
-                                                                  <TimePicker
-                                                                    hideSeconds
-                                                                  />,
-                                                                ]}
-                                                              />
-                                                            </Col>
-                                                            <Col
-                                                              lg={2}
-                                                              md={2}
-                                                              sm={2}
-                                                              className="d-flex justify-content-center align-items-center"
-                                                            >
-                                                              <img
-                                                                src={desh}
-                                                                width="19.02px"
-                                                              />
-                                                            </Col>
-                                                            <Col
-                                                              lg={5}
-                                                              md={5}
-                                                              sm={5}
-                                                            >
-                                                              <Row>
-                                                                <Col
-                                                                  lg={12}
-                                                                  md={12}
-                                                                  sm={12}
-                                                                >
-                                                                  <span
-                                                                    className={
-                                                                      styles[
-                                                                        "Meeting_subAgenda"
-                                                                      ]
-                                                                    }
-                                                                  >
-                                                                    {t(
-                                                                      "End-date"
-                                                                    )}
-                                                                  </span>
-                                                                </Col>
-                                                              </Row>
-                                                              <DatePicker
-                                                                arrowClassName="arrowClass"
-                                                                containerClassName="containerClassTimePicker"
-                                                                className="timePicker"
-                                                                disableDayPicker
-                                                                inputClass="inputTImeMeeting"
-                                                                disabled={
-                                                                  apllyLockOnParentAgenda(
-                                                                    index
-                                                                  ) ||
-                                                                  apllyLockOnSubAgenda(
-                                                                    index,
-                                                                    subIndex
-                                                                  )
-                                                                    ? true
-                                                                    : false
-                                                                }
-                                                                format="HH:mm A"
-                                                                selected={
-                                                                  subAgendaData.endDate
-                                                                }
-                                                                onChange={(
-                                                                  date
-                                                                ) =>
-                                                                  handleSubAgendaEndDateChange(
-                                                                    index,
-                                                                    subIndex,
-                                                                    date
-                                                                  )
-                                                                }
-                                                                plugins={[
-                                                                  <TimePicker
-                                                                    hideSeconds
-                                                                  />,
-                                                                ]}
-                                                              />
-                                                            </Col>
-                                                          </Row>
-                                                          <img
-                                                            src={redcrossIcon}
-                                                            height="25px"
-                                                            width="25px"
-                                                            className={
-                                                              styles[
-                                                                "RedCross_Icon_class_SubAgenda"
-                                                              ]
-                                                            }
-                                                            onClick={() => {
-                                                              apllyLockOnParentAgenda(
-                                                                index
-                                                              ) ||
-                                                                handleCrossSubAjenda(
-                                                                  index,
-                                                                  subIndex
-                                                                );
-                                                            }}
-                                                          />
-                                                        </Col>
-                                                      </Row>
                                                       <Row>
                                                         <Col
-                                                          lg={12}
-                                                          md={12}
-                                                          sm={12}
+                                                          lg={1}
+                                                          md={1}
+                                                          sm={1}
                                                         >
-                                                          <span
+                                                          <section
                                                             className={
                                                               styles[
-                                                                "Show_More_Styles"
+                                                                "backGorund"
                                                               ]
                                                             }
-                                                            onClick={() => {
-                                                              apllyLockOnParentAgenda(
-                                                                index
-                                                              ) ||
-                                                                handleSubMenuExpand(
-                                                                  index,
-                                                                  subIndex
-                                                                );
-                                                            }}
-                                                          >
-                                                            {subExpand
-                                                              ? t(
-                                                                  "Hide-details"
-                                                                )
-                                                              : t("Show-more")}
-                                                          </span>
+                                                          ></section>
                                                         </Col>
-                                                      </Row>
-                                                      {/* Condition for Subajencda */}
-                                                      {subexpandIndex ===
-                                                        index &&
-                                                      expandSubIndex ===
-                                                        subIndex &&
-                                                      subExpand ? (
-                                                        <>
-                                                          <Row className="mt-3">
+                                                        <Col
+                                                          lg={11}
+                                                          md={11}
+                                                          sm={11}
+                                                          className={
+                                                            styles[
+                                                              "SubAgendaSection"
+                                                            ]
+                                                          }
+                                                        >
+                                                          <Row className="mt-2 mb-2">
                                                             <Col
-                                                              lg={12}
-                                                              md={12}
+                                                              lg={5}
+                                                              md={5}
                                                               sm={12}
                                                             >
-                                                              <span
-                                                                className={
-                                                                  styles[
-                                                                    "Agenda_Heading"
-                                                                  ]
+                                                              <Row>
+                                                                <Col
+                                                                  lg={12}
+                                                                  md={12}
+                                                                  sm={12}
+                                                                >
+                                                                  <span
+                                                                    className={
+                                                                      styles[
+                                                                        "Meeting_subAgenda"
+                                                                      ]
+                                                                    }
+                                                                  >
+                                                                    <span>
+                                                                      {index +
+                                                                        1}
+                                                                      .
+                                                                    </span>
+                                                                    <span>
+                                                                      {subIndex +
+                                                                        1}
+                                                                    </span>{" "}
+                                                                    {t(
+                                                                      "Sub-agenda-title"
+                                                                    )}{" "}
+                                                                    <span>
+                                                                      {subIndex +
+                                                                        1}
+                                                                    </span>
+                                                                  </span>
+                                                                </Col>
+                                                              </Row>
+                                                              <TextField
+                                                                applyClass={
+                                                                  "AgendaTextField"
                                                                 }
-                                                              >
-                                                                {t(
-                                                                  "Attachments"
+                                                                labelClass={
+                                                                  "d-none"
+                                                                }
+                                                                name={
+                                                                  "SubTitle"
+                                                                }
+                                                                disable={
+                                                                  apllyLockOnParentAgenda(
+                                                                    index
+                                                                  ) ||
+                                                                  apllyLockOnSubAgenda(
+                                                                    index,
+                                                                    subIndex
+                                                                  )
+                                                                    ? true
+                                                                    : false
+                                                                }
+                                                                placeholder={t(
+                                                                  "Sub-Agenda-title"
                                                                 )}
-                                                              </span>
-                                                            </Col>
-                                                          </Row>
-                                                          <Row className="mt-3">
-                                                            <Col
-                                                              lg={6}
-                                                              md={6}
-                                                              sm={6}
-                                                            >
-                                                              <Radio.Group
                                                                 value={
-                                                                  subAgendaData.subSelectRadio
+                                                                  subAgendaData.SubTitle
                                                                 }
-                                                                onChange={(e) =>
-                                                                  handleSubAgendaRadioChange(
+                                                                change={(e) =>
+                                                                  handleSubAgendaTitleChange(
                                                                     index,
                                                                     subIndex,
                                                                     e
                                                                   )
                                                                 }
-                                                                disabled={
+                                                              />
+                                                            </Col>
+                                                            <Col
+                                                              lg={3}
+                                                              md={3}
+                                                              sm={12}
+                                                            >
+                                                              <Row>
+                                                                <Col
+                                                                  lg={12}
+                                                                  md={12}
+                                                                  sm={12}
+                                                                >
+                                                                  <span
+                                                                    className={
+                                                                      styles[
+                                                                        "Meeting_subAgenda"
+                                                                      ]
+                                                                    }
+                                                                  >
+                                                                    {t(
+                                                                      "Presenter"
+                                                                    )}
+                                                                  </span>
+                                                                </Col>
+                                                              </Row>
+                                                              <Select
+                                                                options={
+                                                                  SubAgendaoptions
+                                                                }
+                                                                value={
+                                                                  subAgendaData.selectedOption
+                                                                }
+                                                                onChange={(
+                                                                  value
+                                                                ) =>
+                                                                  handleSubAgendaSelectChange(
+                                                                    index,
+                                                                    subIndex,
+                                                                    value
+                                                                  )
+                                                                }
+                                                                isDisabled={
                                                                   apllyLockOnParentAgenda(
                                                                     index
                                                                   ) ||
@@ -1852,582 +1684,871 @@ const Agenda = () => {
                                                                     ? true
                                                                     : false
                                                                 }
-                                                              >
-                                                                <Radio value="1">
-                                                                  <span
-                                                                    className={
-                                                                      styles[
-                                                                        "Radio_Button_options"
-                                                                      ]
-                                                                    }
-                                                                  >
-                                                                    {t(
-                                                                      "Document"
-                                                                    )}
-                                                                  </span>
-                                                                </Radio>
-                                                                <Radio value="2">
-                                                                  <span
-                                                                    className={
-                                                                      styles[
-                                                                        "Radio_Button_options"
-                                                                      ]
-                                                                    }
-                                                                  >
-                                                                    {t("URL")}
-                                                                  </span>
-                                                                </Radio>
-                                                                <Radio value="3">
-                                                                  <span
-                                                                    className={
-                                                                      styles[
-                                                                        "Radio_Button_options"
-                                                                      ]
-                                                                    }
-                                                                  >
-                                                                    {t(
-                                                                      "Request from contributor"
-                                                                    )}
-                                                                  </span>
-                                                                </Radio>
-                                                              </Radio.Group>
+                                                              />
                                                             </Col>
                                                             <Col
-                                                              lg={6}
-                                                              md={6}
-                                                              sm={6}
-                                                              className="d-flex justify-content-end gap-4 align-items-center"
+                                                              sm={12}
+                                                              md={4}
+                                                              lg={4}
+                                                              className="d-flex gap-4 justify-content-start align-items-center"
                                                             >
-                                                              <img
-                                                                src={Key}
-                                                                width="24.07px"
-                                                                className="cursor-pointer"
-                                                                height="24.09px"
-                                                                onClick={
-                                                                  apllyLockOnParentAgenda(
-                                                                    index
-                                                                  ) ||
-                                                                  apllyLockOnSubAgenda(
-                                                                    index,
-                                                                    subIndex
-                                                                  )
-                                                                    ? ""
-                                                                    : openAdvancePermissionModal
-                                                                }
-                                                              />
-                                                              <img
-                                                                src={Cast}
-                                                                width="25.85px"
-                                                                height="25.89px"
-                                                                className="cursor-pointer"
-                                                                onClick={
-                                                                  apllyLockOnParentAgenda(
-                                                                    index
-                                                                  ) ||
-                                                                  apllyLockOnSubAgenda(
-                                                                    index,
-                                                                    subIndex
-                                                                  )
-                                                                    ? ""
-                                                                    : openVoteMOdal
-                                                                }
-                                                              />
-                                                              <img
-                                                                src={
-                                                                  apllyLockOnParentAgenda(
-                                                                    index
-                                                                  )
-                                                                    ? closedLocked
-                                                                    : apllyLockOnSubAgenda(
-                                                                        index,
-                                                                        subIndex
-                                                                      )
-                                                                    ? DarkLock
-                                                                    : Lock
-                                                                }
-                                                                width="18.87px"
-                                                                height="26.72px"
-                                                                className={
-                                                                  apllyLockOnParentAgenda(
-                                                                    index
-                                                                  )
-                                                                    ? styles[
-                                                                        "lockBtn_inActive"
-                                                                      ]
-                                                                    : apllyLockOnSubAgenda(
-                                                                        index,
-                                                                        subIndex
-                                                                      )
-                                                                    ? styles[
-                                                                        "lockBtn_inActive_coursor"
-                                                                      ]
-                                                                    : styles[
-                                                                        "lockBtn"
-                                                                      ]
-                                                                }
-                                                                onClick={() => {
-                                                                  if (
-                                                                    apllyLockOnParentAgenda(
-                                                                      index
-                                                                    )
-                                                                  ) {
-                                                                  } else {
-                                                                    lockFunctionActiveSubMenus(
-                                                                      index,
-                                                                      subIndex
-                                                                    );
-                                                                  }
-                                                                }}
-                                                              />
-                                                            </Col>
-                                                          </Row>
-                                                          {subAgendaData.subSelectRadio ===
-                                                          "1" ? (
-                                                            <>
                                                               <Row>
                                                                 <Col
-                                                                  lg={12}
-                                                                  md={12}
-                                                                  sm={12}
-                                                                  className={
-                                                                    styles[
-                                                                      "SubAgendaDocScroller"
-                                                                    ]
-                                                                  }
+                                                                  lg={5}
+                                                                  md={5}
+                                                                  sm={5}
                                                                 >
                                                                   <Row>
-                                                                    {subAgendaData
-                                                                      ?.Subfiles
-                                                                      ?.length >
-                                                                    0
-                                                                      ? subAgendaData?.Subfiles?.map(
-                                                                          (
-                                                                            subAgendaFiles,
-                                                                            subAgendaFilesIndex
-                                                                          ) => {
-                                                                            return (
-                                                                              <>
-                                                                                <Col
-                                                                                  lg={
-                                                                                    3
-                                                                                  }
-                                                                                  md={
-                                                                                    3
-                                                                                  }
-                                                                                  sm={
-                                                                                    3
-                                                                                  }
-                                                                                  className="mt-2"
-                                                                                >
-                                                                                  <section
-                                                                                    className={
-                                                                                      styles[
-                                                                                        "cardSubAgenda"
-                                                                                      ]
-                                                                                    }
-                                                                                  >
-                                                                                    <Row className="mt-2">
-                                                                                      <Col
-                                                                                        lg={
-                                                                                          12
-                                                                                        }
-                                                                                        md={
-                                                                                          12
-                                                                                        }
-                                                                                        sm={
-                                                                                          12
-                                                                                        }
-                                                                                        className="d-flex gap-2 align-items-center"
-                                                                                      >
-                                                                                        <img
-                                                                                          src={
-                                                                                            PdfIcon
-                                                                                          }
-                                                                                          height="25.57px"
-                                                                                          width="25.57px"
-                                                                                        />
-                                                                                        <span
-                                                                                          className={
-                                                                                            styles[
-                                                                                              "SubagendaFilesName"
-                                                                                            ]
-                                                                                          }
-                                                                                        >
-                                                                                          {
-                                                                                            subAgendaFiles.name
-                                                                                          }
-                                                                                        </span>
-                                                                                      </Col>
-                                                                                    </Row>
-                                                                                  </section>
-                                                                                </Col>
-                                                                              </>
-                                                                            );
-                                                                          }
-                                                                        )
-                                                                      : null}
                                                                     <Col
                                                                       lg={12}
                                                                       md={12}
                                                                       sm={12}
-                                                                    ></Col>
+                                                                    >
+                                                                      <span
+                                                                        className={
+                                                                          styles[
+                                                                            "Meeting_subAgenda"
+                                                                          ]
+                                                                        }
+                                                                      >
+                                                                        {t(
+                                                                          "Start-date"
+                                                                        )}
+                                                                      </span>
+                                                                    </Col>
                                                                   </Row>
+                                                                  <DatePicker
+                                                                    arrowClassName="arrowClass"
+                                                                    containerClassName="containerClassTimePicker"
+                                                                    className="timePicker"
+                                                                    disableDayPicker
+                                                                    inputClass="inputTImeMeeting"
+                                                                    disabled={
+                                                                      apllyLockOnParentAgenda(
+                                                                        index
+                                                                      ) ||
+                                                                      apllyLockOnSubAgenda(
+                                                                        index,
+                                                                        subIndex
+                                                                      )
+                                                                        ? true
+                                                                        : false
+                                                                    }
+                                                                    format="HH:mm A"
+                                                                    selected={
+                                                                      subAgendaData.startDate
+                                                                    }
+                                                                    onChange={(
+                                                                      date
+                                                                    ) =>
+                                                                      handleSubAgendaStartDateChange(
+                                                                        index,
+                                                                        subIndex,
+                                                                        date
+                                                                      )
+                                                                    }
+                                                                    plugins={[
+                                                                      <TimePicker
+                                                                        hideSeconds
+                                                                      />,
+                                                                    ]}
+                                                                  />
+                                                                </Col>
+                                                                <Col
+                                                                  lg={2}
+                                                                  md={2}
+                                                                  sm={2}
+                                                                  className="d-flex justify-content-center align-items-center"
+                                                                >
+                                                                  <img
+                                                                    src={desh}
+                                                                    width="19.02px"
+                                                                  />
+                                                                </Col>
+                                                                <Col
+                                                                  lg={5}
+                                                                  md={5}
+                                                                  sm={5}
+                                                                >
+                                                                  <Row>
+                                                                    <Col
+                                                                      lg={12}
+                                                                      md={12}
+                                                                      sm={12}
+                                                                    >
+                                                                      <span
+                                                                        className={
+                                                                          styles[
+                                                                            "Meeting_subAgenda"
+                                                                          ]
+                                                                        }
+                                                                      >
+                                                                        {t(
+                                                                          "End-date"
+                                                                        )}
+                                                                      </span>
+                                                                    </Col>
+                                                                  </Row>
+                                                                  <DatePicker
+                                                                    arrowClassName="arrowClass"
+                                                                    containerClassName="containerClassTimePicker"
+                                                                    className="timePicker"
+                                                                    disableDayPicker
+                                                                    inputClass="inputTImeMeeting"
+                                                                    disabled={
+                                                                      apllyLockOnParentAgenda(
+                                                                        index
+                                                                      ) ||
+                                                                      apllyLockOnSubAgenda(
+                                                                        index,
+                                                                        subIndex
+                                                                      )
+                                                                        ? true
+                                                                        : false
+                                                                    }
+                                                                    format="HH:mm A"
+                                                                    selected={
+                                                                      subAgendaData.endDate
+                                                                    }
+                                                                    onChange={(
+                                                                      date
+                                                                    ) =>
+                                                                      handleSubAgendaEndDateChange(
+                                                                        index,
+                                                                        subIndex,
+                                                                        date
+                                                                      )
+                                                                    }
+                                                                    plugins={[
+                                                                      <TimePicker
+                                                                        hideSeconds
+                                                                      />,
+                                                                    ]}
+                                                                  />
                                                                 </Col>
                                                               </Row>
-                                                            </>
-                                                          ) : subAgendaData.subSelectRadio ===
-                                                            "2" ? (
+                                                              <img
+                                                                src={
+                                                                  redcrossIcon
+                                                                }
+                                                                height="25px"
+                                                                width="25px"
+                                                                className={
+                                                                  styles[
+                                                                    "RedCross_Icon_class_SubAgenda"
+                                                                  ]
+                                                                }
+                                                                onClick={() => {
+                                                                  apllyLockOnParentAgenda(
+                                                                    index
+                                                                  ) ||
+                                                                    handleCrossSubAjenda(
+                                                                      index,
+                                                                      subIndex
+                                                                    );
+                                                                }}
+                                                              />
+                                                            </Col>
+                                                          </Row>
+                                                          <Row>
+                                                            <Col
+                                                              lg={12}
+                                                              md={12}
+                                                              sm={12}
+                                                            >
+                                                              <span
+                                                                className={
+                                                                  styles[
+                                                                    "Show_More_Styles"
+                                                                  ]
+                                                                }
+                                                                onClick={() => {
+                                                                  apllyLockOnParentAgenda(
+                                                                    index
+                                                                  ) ||
+                                                                    handleSubMenuExpand(
+                                                                      index,
+                                                                      subIndex
+                                                                    );
+                                                                }}
+                                                              >
+                                                                {subExpand
+                                                                  ? t(
+                                                                      "Hide-details"
+                                                                    )
+                                                                  : t(
+                                                                      "Show-more"
+                                                                    )}
+                                                              </span>
+                                                            </Col>
+                                                          </Row>
+                                                          {/* Condition for Subajencda */}
+                                                          {subexpandIndex ===
+                                                            index &&
+                                                          expandSubIndex ===
+                                                            subIndex &&
+                                                          subExpand ? (
                                                             <>
-                                                              <Row className="mt-2">
+                                                              <Row className="mt-3">
                                                                 <Col
                                                                   lg={12}
                                                                   md={12}
                                                                   sm={12}
                                                                 >
-                                                                  <TextField
-                                                                    labelClass={
-                                                                      "d-none"
+                                                                  <span
+                                                                    className={
+                                                                      styles[
+                                                                        "Agenda_Heading"
+                                                                      ]
                                                                     }
-                                                                    placeholder={t(
-                                                                      "Enter-url"
+                                                                  >
+                                                                    {t(
+                                                                      "Attachments"
                                                                     )}
-                                                                    name={
-                                                                      "SubAgendaUrlRadioField"
-                                                                    }
+                                                                  </span>
+                                                                </Col>
+                                                              </Row>
+                                                              <Row className="mt-3">
+                                                                <Col
+                                                                  lg={6}
+                                                                  md={6}
+                                                                  sm={6}
+                                                                >
+                                                                  <Radio.Group
                                                                     value={
-                                                                      subAgendaData.SubAgendaUrlFieldRadio
+                                                                      subAgendaData.subSelectRadio
                                                                     }
-                                                                    change={(
+                                                                    onChange={(
                                                                       e
                                                                     ) =>
-                                                                      handleSubAgendaUrlEnterUrlField(
+                                                                      handleSubAgendaRadioChange(
                                                                         index,
                                                                         subIndex,
                                                                         e
                                                                       )
                                                                     }
-                                                                  />
-                                                                </Col>
-                                                              </Row>
-                                                            </>
-                                                          ) : subAgendaData.subSelectRadio ===
-                                                            "3" ? (
-                                                            <>
-                                                              <Row className="mt-2">
-                                                                <Col
-                                                                  lg={12}
-                                                                  md={12}
-                                                                  sm={12}
-                                                                >
-                                                                  <TextField
-                                                                    labelClass={
-                                                                      "d-none"
-                                                                    }
-                                                                    placeholder={
-                                                                      "Enter-url"
-                                                                    }
-                                                                    name={
-                                                                      "SubAgendaRequestContributorUrlField"
-                                                                    }
-                                                                    value={
-                                                                      subAgendaData.subAgendarequestContributorUrl
-                                                                    }
-                                                                    change={(
-                                                                      e
-                                                                    ) => {
-                                                                      handleSubAgendaRequestContributorEnterUrl(
+                                                                    disabled={
+                                                                      apllyLockOnParentAgenda(
+                                                                        index
+                                                                      ) ||
+                                                                      apllyLockOnSubAgenda(
                                                                         index,
-                                                                        subIndex,
-                                                                        e
-                                                                      );
+                                                                        subIndex
+                                                                      )
+                                                                        ? true
+                                                                        : false
+                                                                    }
+                                                                  >
+                                                                    <Radio value="1">
+                                                                      <span
+                                                                        className={
+                                                                          styles[
+                                                                            "Radio_Button_options"
+                                                                          ]
+                                                                        }
+                                                                      >
+                                                                        {t(
+                                                                          "Document"
+                                                                        )}
+                                                                      </span>
+                                                                    </Radio>
+                                                                    <Radio value="2">
+                                                                      <span
+                                                                        className={
+                                                                          styles[
+                                                                            "Radio_Button_options"
+                                                                          ]
+                                                                        }
+                                                                      >
+                                                                        {t(
+                                                                          "URL"
+                                                                        )}
+                                                                      </span>
+                                                                    </Radio>
+                                                                    <Radio value="3">
+                                                                      <span
+                                                                        className={
+                                                                          styles[
+                                                                            "Radio_Button_options"
+                                                                          ]
+                                                                        }
+                                                                      >
+                                                                        {t(
+                                                                          "Request from contributor"
+                                                                        )}
+                                                                      </span>
+                                                                    </Radio>
+                                                                  </Radio.Group>
+                                                                </Col>
+                                                                <Col
+                                                                  lg={6}
+                                                                  md={6}
+                                                                  sm={6}
+                                                                  className="d-flex justify-content-end gap-4 align-items-center"
+                                                                >
+                                                                  <img
+                                                                    src={Key}
+                                                                    width="24.07px"
+                                                                    className="cursor-pointer"
+                                                                    height="24.09px"
+                                                                    onClick={
+                                                                      apllyLockOnParentAgenda(
+                                                                        index
+                                                                      ) ||
+                                                                      apllyLockOnSubAgenda(
+                                                                        index,
+                                                                        subIndex
+                                                                      )
+                                                                        ? ""
+                                                                        : openAdvancePermissionModal
+                                                                    }
+                                                                  />
+                                                                  <img
+                                                                    src={Cast}
+                                                                    width="25.85px"
+                                                                    height="25.89px"
+                                                                    className="cursor-pointer"
+                                                                    onClick={
+                                                                      apllyLockOnParentAgenda(
+                                                                        index
+                                                                      ) ||
+                                                                      apllyLockOnSubAgenda(
+                                                                        index,
+                                                                        subIndex
+                                                                      )
+                                                                        ? ""
+                                                                        : openVoteMOdal
+                                                                    }
+                                                                  />
+                                                                  <img
+                                                                    src={
+                                                                      apllyLockOnParentAgenda(
+                                                                        index
+                                                                      )
+                                                                        ? closedLocked
+                                                                        : apllyLockOnSubAgenda(
+                                                                            index,
+                                                                            subIndex
+                                                                          )
+                                                                        ? DarkLock
+                                                                        : Lock
+                                                                    }
+                                                                    width="18.87px"
+                                                                    height="26.72px"
+                                                                    className={
+                                                                      apllyLockOnParentAgenda(
+                                                                        index
+                                                                      )
+                                                                        ? styles[
+                                                                            "lockBtn_inActive"
+                                                                          ]
+                                                                        : apllyLockOnSubAgenda(
+                                                                            index,
+                                                                            subIndex
+                                                                          )
+                                                                        ? styles[
+                                                                            "lockBtn_inActive_coursor"
+                                                                          ]
+                                                                        : styles[
+                                                                            "lockBtn"
+                                                                          ]
+                                                                    }
+                                                                    onClick={() => {
+                                                                      if (
+                                                                        apllyLockOnParentAgenda(
+                                                                          index
+                                                                        )
+                                                                      ) {
+                                                                      } else {
+                                                                        lockFunctionActiveSubMenus(
+                                                                          index,
+                                                                          subIndex
+                                                                        );
+                                                                      }
                                                                     }}
                                                                   />
                                                                 </Col>
                                                               </Row>
-                                                              <Row>
-                                                                <Col
-                                                                  lg={12}
-                                                                  md={12}
-                                                                  sm={12}
-                                                                >
-                                                                  <TextField
-                                                                    applyClass="text-area-create-resolution"
-                                                                    type="text"
-                                                                    as={
-                                                                      "textarea"
-                                                                    }
-                                                                    rows="4"
-                                                                    placeholder={t(
-                                                                      "Enter-notes"
-                                                                    )}
-                                                                    name={
-                                                                      "SubAgendaRequestContributorEnterNotesFiled"
-                                                                    }
-                                                                    required={
-                                                                      true
-                                                                    }
-                                                                    maxLength={
-                                                                      500
-                                                                    }
-                                                                    value={
-                                                                      subAgendaData.subAgendarequestContributorEnterNotes
-                                                                    }
-                                                                    change={(
-                                                                      e
-                                                                    ) =>
-                                                                      handleSubAgendaRequestContributorEnterNote(
-                                                                        index,
-                                                                        subIndex,
-                                                                        e
-                                                                      )
-                                                                    }
-                                                                  />
-                                                                </Col>
-                                                              </Row>
-                                                            </>
-                                                          ) : (
-                                                            <>
-                                                              <Row className="mt-2">
-                                                                <Col
-                                                                  lg={12}
-                                                                  md={12}
-                                                                  sm={12}
-                                                                >
-                                                                  <Dragger
-                                                                    {...Subprops}
-                                                                    className={
-                                                                      styles[
-                                                                        "dragdrop_attachment_create_resolution"
-                                                                      ]
-                                                                    }
-                                                                  >
-                                                                    <Row>
-                                                                      <Col
-                                                                        lg={5}
-                                                                        md={5}
-                                                                        sm={12}
-                                                                        className="d-flex justify-content-end align-items-center"
-                                                                      >
-                                                                        <img
-                                                                          src={
-                                                                            DrapDropIcon
-                                                                          }
-                                                                          width={
-                                                                            100
-                                                                          }
-                                                                          className={
-                                                                            styles[
-                                                                              "ClassImage"
-                                                                            ]
-                                                                          }
-                                                                        />
-                                                                      </Col>
-                                                                      <Col
-                                                                        lg={7}
-                                                                        md={7}
-                                                                        sm={12}
-                                                                      >
-                                                                        <Row className="mt-3">
-                                                                          <Col
-                                                                            lg={
-                                                                              12
-                                                                            }
-                                                                            md={
-                                                                              12
-                                                                            }
-                                                                            sm={
-                                                                              12
-                                                                            }
-                                                                            className="d-flex justify-content-start"
-                                                                          >
-                                                                            <span
-                                                                              className={
-                                                                                styles[
-                                                                                  "ant-upload-text-Meetings"
-                                                                                ]
+                                                              {subAgendaData.subSelectRadio ===
+                                                              "1" ? (
+                                                                <>
+                                                                  <Row>
+                                                                    <Col
+                                                                      lg={12}
+                                                                      md={12}
+                                                                      sm={12}
+                                                                      className={
+                                                                        styles[
+                                                                          "SubAgendaDocScroller"
+                                                                        ]
+                                                                      }
+                                                                    >
+                                                                      <Row>
+                                                                        {subAgendaData
+                                                                          ?.Subfiles
+                                                                          ?.length >
+                                                                        0
+                                                                          ? subAgendaData?.Subfiles?.map(
+                                                                              (
+                                                                                subAgendaFiles,
+                                                                                subAgendaFilesIndex
+                                                                              ) => {
+                                                                                return (
+                                                                                  <>
+                                                                                    <Col
+                                                                                      lg={
+                                                                                        3
+                                                                                      }
+                                                                                      md={
+                                                                                        3
+                                                                                      }
+                                                                                      sm={
+                                                                                        3
+                                                                                      }
+                                                                                      className="mt-2"
+                                                                                    >
+                                                                                      <section
+                                                                                        className={
+                                                                                          styles[
+                                                                                            "cardSubAgenda"
+                                                                                          ]
+                                                                                        }
+                                                                                      >
+                                                                                        <Row className="mt-2">
+                                                                                          <Col
+                                                                                            lg={
+                                                                                              12
+                                                                                            }
+                                                                                            md={
+                                                                                              12
+                                                                                            }
+                                                                                            sm={
+                                                                                              12
+                                                                                            }
+                                                                                            className="d-flex gap-2 align-items-center"
+                                                                                          >
+                                                                                            <img
+                                                                                              src={
+                                                                                                PdfIcon
+                                                                                              }
+                                                                                              height="25.57px"
+                                                                                              width="25.57px"
+                                                                                            />
+                                                                                            <span
+                                                                                              className={
+                                                                                                styles[
+                                                                                                  "SubagendaFilesName"
+                                                                                                ]
+                                                                                              }
+                                                                                            >
+                                                                                              {
+                                                                                                subAgendaFiles.name
+                                                                                              }
+                                                                                            </span>
+                                                                                          </Col>
+                                                                                        </Row>
+                                                                                      </section>
+                                                                                    </Col>
+                                                                                  </>
+                                                                                );
                                                                               }
-                                                                            >
-                                                                              {t(
-                                                                                "Drag-file-here"
-                                                                              )}
-                                                                            </span>
-                                                                          </Col>
-                                                                        </Row>
+                                                                            )
+                                                                          : null}
+                                                                        <Col
+                                                                          lg={
+                                                                            12
+                                                                          }
+                                                                          md={
+                                                                            12
+                                                                          }
+                                                                          sm={
+                                                                            12
+                                                                          }
+                                                                        ></Col>
+                                                                      </Row>
+                                                                    </Col>
+                                                                  </Row>
+                                                                </>
+                                                              ) : subAgendaData.subSelectRadio ===
+                                                                "2" ? (
+                                                                <>
+                                                                  <Row className="mt-2">
+                                                                    <Col
+                                                                      lg={12}
+                                                                      md={12}
+                                                                      sm={12}
+                                                                    >
+                                                                      <TextField
+                                                                        labelClass={
+                                                                          "d-none"
+                                                                        }
+                                                                        placeholder={t(
+                                                                          "Enter-url"
+                                                                        )}
+                                                                        name={
+                                                                          "SubAgendaUrlRadioField"
+                                                                        }
+                                                                        value={
+                                                                          subAgendaData.SubAgendaUrlFieldRadio
+                                                                        }
+                                                                        change={(
+                                                                          e
+                                                                        ) =>
+                                                                          handleSubAgendaUrlEnterUrlField(
+                                                                            index,
+                                                                            subIndex,
+                                                                            e
+                                                                          )
+                                                                        }
+                                                                      />
+                                                                    </Col>
+                                                                  </Row>
+                                                                </>
+                                                              ) : subAgendaData.subSelectRadio ===
+                                                                "3" ? (
+                                                                <>
+                                                                  <Row className="mt-2">
+                                                                    <Col
+                                                                      lg={12}
+                                                                      md={12}
+                                                                      sm={12}
+                                                                    >
+                                                                      <TextField
+                                                                        labelClass={
+                                                                          "d-none"
+                                                                        }
+                                                                        placeholder={
+                                                                          "Enter-url"
+                                                                        }
+                                                                        name={
+                                                                          "SubAgendaRequestContributorUrlField"
+                                                                        }
+                                                                        value={
+                                                                          subAgendaData.subAgendarequestContributorUrl
+                                                                        }
+                                                                        change={(
+                                                                          e
+                                                                        ) => {
+                                                                          handleSubAgendaRequestContributorEnterUrl(
+                                                                            index,
+                                                                            subIndex,
+                                                                            e
+                                                                          );
+                                                                        }}
+                                                                      />
+                                                                    </Col>
+                                                                  </Row>
+                                                                  <Row>
+                                                                    <Col
+                                                                      lg={12}
+                                                                      md={12}
+                                                                      sm={12}
+                                                                    >
+                                                                      <TextField
+                                                                        applyClass="text-area-create-resolution"
+                                                                        type="text"
+                                                                        as={
+                                                                          "textarea"
+                                                                        }
+                                                                        rows="4"
+                                                                        placeholder={t(
+                                                                          "Enter-notes"
+                                                                        )}
+                                                                        name={
+                                                                          "SubAgendaRequestContributorEnterNotesFiled"
+                                                                        }
+                                                                        required={
+                                                                          true
+                                                                        }
+                                                                        maxLength={
+                                                                          500
+                                                                        }
+                                                                        value={
+                                                                          subAgendaData.subAgendarequestContributorEnterNotes
+                                                                        }
+                                                                        change={(
+                                                                          e
+                                                                        ) =>
+                                                                          handleSubAgendaRequestContributorEnterNote(
+                                                                            index,
+                                                                            subIndex,
+                                                                            e
+                                                                          )
+                                                                        }
+                                                                      />
+                                                                    </Col>
+                                                                  </Row>
+                                                                </>
+                                                              ) : (
+                                                                <>
+                                                                  <Row className="mt-2">
+                                                                    <Col
+                                                                      lg={12}
+                                                                      md={12}
+                                                                      sm={12}
+                                                                    >
+                                                                      <Dragger
+                                                                        {...Subprops}
+                                                                        className={
+                                                                          styles[
+                                                                            "dragdrop_attachment_create_resolution"
+                                                                          ]
+                                                                        }
+                                                                      >
                                                                         <Row>
                                                                           <Col
                                                                             lg={
-                                                                              12
+                                                                              5
                                                                             }
                                                                             md={
-                                                                              12
+                                                                              5
                                                                             }
                                                                             sm={
                                                                               12
                                                                             }
-                                                                            className="d-flex justify-content-start"
+                                                                            className="d-flex justify-content-end align-items-center"
                                                                           >
-                                                                            <span
+                                                                            <img
+                                                                              src={
+                                                                                DrapDropIcon
+                                                                              }
+                                                                              width={
+                                                                                100
+                                                                              }
                                                                               className={
                                                                                 styles[
-                                                                                  "Choose_file_style-Meeting"
+                                                                                  "ClassImage"
                                                                                 ]
                                                                               }
-                                                                            >
-                                                                              {t(
-                                                                                "The-following-file-formats-are"
-                                                                              )}
-                                                                            </span>
+                                                                            />
                                                                           </Col>
-                                                                        </Row>
-                                                                        <Row>
                                                                           <Col
                                                                             lg={
-                                                                              12
+                                                                              7
                                                                             }
                                                                             md={
-                                                                              12
+                                                                              7
                                                                             }
                                                                             sm={
                                                                               12
                                                                             }
-                                                                            className="d-flex justify-content-start"
                                                                           >
-                                                                            <span
-                                                                              className={
-                                                                                styles[
-                                                                                  "Choose_file_style-Meeting"
-                                                                                ]
-                                                                              }
-                                                                            >
-                                                                              {t(
-                                                                                "Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png"
-                                                                              )}
-                                                                            </span>
+                                                                            <Row className="mt-3">
+                                                                              <Col
+                                                                                lg={
+                                                                                  12
+                                                                                }
+                                                                                md={
+                                                                                  12
+                                                                                }
+                                                                                sm={
+                                                                                  12
+                                                                                }
+                                                                                className="d-flex justify-content-start"
+                                                                              >
+                                                                                <span
+                                                                                  className={
+                                                                                    styles[
+                                                                                      "ant-upload-text-Meetings"
+                                                                                    ]
+                                                                                  }
+                                                                                >
+                                                                                  {t(
+                                                                                    "Drag-file-here"
+                                                                                  )}
+                                                                                </span>
+                                                                              </Col>
+                                                                            </Row>
+                                                                            <Row>
+                                                                              <Col
+                                                                                lg={
+                                                                                  12
+                                                                                }
+                                                                                md={
+                                                                                  12
+                                                                                }
+                                                                                sm={
+                                                                                  12
+                                                                                }
+                                                                                className="d-flex justify-content-start"
+                                                                              >
+                                                                                <span
+                                                                                  className={
+                                                                                    styles[
+                                                                                      "Choose_file_style-Meeting"
+                                                                                    ]
+                                                                                  }
+                                                                                >
+                                                                                  {t(
+                                                                                    "The-following-file-formats-are"
+                                                                                  )}
+                                                                                </span>
+                                                                              </Col>
+                                                                            </Row>
+                                                                            <Row>
+                                                                              <Col
+                                                                                lg={
+                                                                                  12
+                                                                                }
+                                                                                md={
+                                                                                  12
+                                                                                }
+                                                                                sm={
+                                                                                  12
+                                                                                }
+                                                                                className="d-flex justify-content-start"
+                                                                              >
+                                                                                <span
+                                                                                  className={
+                                                                                    styles[
+                                                                                      "Choose_file_style-Meeting"
+                                                                                    ]
+                                                                                  }
+                                                                                >
+                                                                                  {t(
+                                                                                    "Docx-ppt-pptx-xls-xlsx-jpeg-jpg-and-png"
+                                                                                  )}
+                                                                                </span>
+                                                                              </Col>
+                                                                            </Row>
                                                                           </Col>
                                                                         </Row>
-                                                                      </Col>
-                                                                    </Row>
-                                                                  </Dragger>
-                                                                </Col>
-                                                              </Row>
+                                                                      </Dragger>
+                                                                    </Col>
+                                                                  </Row>
+                                                                </>
+                                                              )}
                                                             </>
-                                                          )}
-                                                        </>
-                                                      ) : null}
+                                                          ) : null}
+                                                        </Col>
+                                                      </Row>
                                                     </Col>
                                                   </Row>
-                                                </Col>
-                                              </Row>
-                                            </>
-                                          );
-                                        }
-                                      )}
+                                                </>
+                                              );
+                                            }
+                                          )}
 
-                                    {/* sub Ajenda Button */}
-                                    <Row className="mt-3">
-                                      <Col lg={12} md={12} sm={12}>
-                                        <Button
-                                          text={
-                                            <>
-                                              <Row>
-                                                <Col
-                                                  lg={12}
-                                                  md={12}
-                                                  sm={12}
-                                                  className="d-flex justify-content-center gap-2 align-items-center"
-                                                >
-                                                  <img
-                                                    src={plusFaddes}
-                                                    height="10.77px"
-                                                    width="10.77px"
-                                                  />
-                                                  <span
-                                                    className={
-                                                      styles["Add_Agen_Heading"]
-                                                    }
-                                                  >
-                                                    {t("Add-sub-agenda")}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                            </>
-                                          }
-                                          className={styles["AddMoreBtnAgenda"]}
-                                          onClick={() => {
-                                            addSubAjendaRows(index);
-                                          }}
-                                        />
-                                      </Col>
-                                    </Row>
-                                  </div>
-                                )}
-                              </Draggable>
-                              {/* Line Seperator */}
-                              <Row className="mt-3">
-                                <Col lg={12} md={12} sm={12}>
-                                  <img
-                                    src={line}
-                                    className={styles["LineStyles"]}
-                                  />
-                                </Col>
-                              </Row>
-                            </>
-                          );
-                        })
-                      : null}
-                    {provided.placeholder}
-                  </div>
-                )}
-              </Droppable>
-            </Col>
-          </Row>
-        </DragDropContext>
-        {/* Seperator For Footer */}
-        <Row className="mt-3">
-          <Col lg={12} md={12} sm={12}>
-            <Button
-              text={
-                <>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      sm={12}
-                      className="d-flex justify-content-center gap-2 align-items-center"
-                    >
-                      <img src={plusFaddes} height="10.77px" width="10.77px" />
-                      <span className={styles["Add_Agen_Heading"]}>
-                        {t("Add-agenda")}
-                      </span>
-                    </Col>
-                  </Row>
-                </>
-              }
-              className={styles["AddMoreBtnAgenda"]}
-              onClick={addRow}
-            />
-          </Col>
-        </Row>
-        <Row className="mt-5">
-          <Col
-            lg={12}
-            md={12}
-            sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
-            <Button
-              text={t("Import-previous-agenda")}
-              className={styles["Agenda_Buttons"]}
-              onClick={handlePreviousAgenda}
-            />
-            <Button text={t("Cancel")} className={styles["Agenda_Buttons"]} />
-            <Button
-              text={t("Save-and-Next")}
-              className={styles["Save_Agenda_btn"]}
-            />
-          </Col>
-        </Row>
-      </section>
+                                        {/* sub Ajenda Button */}
+                                        <Row className="mt-3">
+                                          <Col lg={12} md={12} sm={12}>
+                                            <Button
+                                              text={
+                                                <>
+                                                  <Row>
+                                                    <Col
+                                                      lg={12}
+                                                      md={12}
+                                                      sm={12}
+                                                      className="d-flex justify-content-center gap-2 align-items-center"
+                                                    >
+                                                      <img
+                                                        src={plusFaddes}
+                                                        height="10.77px"
+                                                        width="10.77px"
+                                                      />
+                                                      <span
+                                                        className={
+                                                          styles[
+                                                            "Add_Agen_Heading"
+                                                          ]
+                                                        }
+                                                      >
+                                                        {t("Add-sub-agenda")}
+                                                      </span>
+                                                    </Col>
+                                                  </Row>
+                                                </>
+                                              }
+                                              className={
+                                                styles["AddMoreBtnAgenda"]
+                                              }
+                                              onClick={() => {
+                                                addSubAjendaRows(index);
+                                              }}
+                                            />
+                                          </Col>
+                                        </Row>
+                                      </div>
+                                    )}
+                                  </Draggable>
+                                  {/* Line Seperator */}
+                                  <Row className="mt-3">
+                                    <Col lg={12} md={12} sm={12}>
+                                      <img
+                                        src={line}
+                                        className={styles["LineStyles"]}
+                                      />
+                                    </Col>
+                                  </Row>
+                                </>
+                              );
+                            })
+                          : null}
+                        {provided.placeholder}
+                      </div>
+                    )}
+                  </Droppable>
+                </Col>
+              </Row>
+            </DragDropContext>
+            {/* Seperator For Footer */}
+            <Row className="mt-3">
+              <Col lg={12} md={12} sm={12}>
+                <Button
+                  text={
+                    <>
+                      <Row>
+                        <Col
+                          lg={12}
+                          md={12}
+                          sm={12}
+                          className="d-flex justify-content-center gap-2 align-items-center"
+                        >
+                          <img
+                            src={plusFaddes}
+                            height="10.77px"
+                            width="10.77px"
+                          />
+                          <span className={styles["Add_Agen_Heading"]}>
+                            {t("Add-agenda")}
+                          </span>
+                        </Col>
+                      </Row>
+                    </>
+                  }
+                  className={styles["AddMoreBtnAgenda"]}
+                  onClick={addRow}
+                />
+              </Col>
+            </Row>
+            <Row className="mt-5">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end gap-2"
+              >
+                <Button
+                  text={t("Import-previous-agenda")}
+                  className={styles["Agenda_Buttons"]}
+                  onClick={handlePreviousAgenda}
+                />
+                <Button
+                  text={t("Cancel")}
+                  className={styles["Agenda_Buttons"]}
+                />
+                <Button
+                  text={t("Save-and-Next")}
+                  className={styles["Save_Agenda_btn"]}
+                  onClick={handleSavedViewAgenda}
+                />
+              </Col>
+            </Row>
+          </section>
+        </>
+      )}
+
       {NewMeetingreducer.agendaItemRemoved && (
         <AgenItemremovedModal
           setRows={setRows}
