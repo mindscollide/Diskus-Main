@@ -142,7 +142,7 @@ const saveFilesApi = (
                   Uploaded: false,
                   Uploading: false,
                   UploadingError: true,
-                  Progress:0
+                  Progress: 0,
                 },
               }));
             } else if (
@@ -159,7 +159,7 @@ const saveFilesApi = (
                   Uploaded: false,
                   Uploading: false,
                   UploadingError: true,
-                  Progress:0
+                  Progress: 0,
                 },
               }));
               dispatch(saveFiles_fail(t("Something-went-wrong")));
@@ -172,7 +172,7 @@ const saveFilesApi = (
                 Uploaded: false,
                 Uploading: false,
                 UploadingError: true,
-                Progress:0
+                Progress: 0,
               },
             }));
             dispatch(saveFiles_fail(t("Something-went-wrong")));
@@ -185,7 +185,7 @@ const saveFilesApi = (
               Uploaded: false,
               Uploading: false,
               UploadingError: true,
-              Progress:0
+              Progress: 0,
             },
           }));
           dispatch(saveFiles_fail(t("Something-went-wrong")));
@@ -200,7 +200,7 @@ const saveFilesApi = (
             Uploaded: false,
             Uploading: false,
             UploadingError: true,
-            Progress:0
+            Progress: 0,
           },
         }));
         dispatch(saveFiles_fail(t("Something-went-wrong")));
@@ -349,7 +349,7 @@ const uploadDocumentsApi = (
                   Uploaded: false,
                   Uploading: false,
                   UploadingError: true,
-                  Progress:0
+                  Progress: 0,
                 },
               }));
             } else if (
@@ -366,7 +366,7 @@ const uploadDocumentsApi = (
                   Uploaded: false,
                   Uploading: false,
                   UploadingError: true,
-                  Progress:0
+                  Progress: 0,
                 },
               }));
               dispatch(uploadDocument_fail(t("Something-went-wrong")));
@@ -379,7 +379,7 @@ const uploadDocumentsApi = (
                 Uploaded: false,
                 Uploading: false,
                 UploadingError: true,
-                Progress:0
+                Progress: 0,
               },
             }));
             dispatch(uploadDocument_fail(t("Something-went-wrong")));
@@ -392,7 +392,7 @@ const uploadDocumentsApi = (
               Uploaded: false,
               Uploading: false,
               UploadingError: true,
-              Progress:0
+              Progress: 0,
             },
           }));
           dispatch(uploadDocument_fail(t("Something-went-wrong")));
@@ -400,7 +400,7 @@ const uploadDocumentsApi = (
         // }
       })
       .catch((error) => {
-        console.log("prevTasksprevTasks")
+        console.log("prevTasksprevTasks");
         setTasksAttachments((prevTasks) => ({
           ...prevTasks,
           [taskId]: {
@@ -408,7 +408,7 @@ const uploadDocumentsApi = (
             Uploaded: false,
             Uploading: false,
             UploadingError: true,
-            Progress:0
+            Progress: 0,
           },
         }));
         dispatch(uploadDocument_fail(t("Something-went-wrong")));

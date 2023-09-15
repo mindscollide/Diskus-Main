@@ -1,42 +1,42 @@
-import React, { useState, useEffect } from "react";
-import styles from "./ResultResolution.module.css";
-import { Paper } from "@material-ui/core";
-import { Col, Row } from "react-bootstrap";
-import result from "../../../assets/images/result.svg";
-import Abstain from "../../../assets/images/Abstain.svg";
-import Clock from "../../../assets/images/Clock.svg";
-import thumbsup from "../../../assets/images/thumbsup.svg";
-import Tie from "../../../assets/images/Tie.svg";
-import thumbsdown from "../../../assets/images/thumbsdown.svg";
-import { useTranslation } from "react-i18next";
-import { Chart } from "react-google-charts";
-import { TextField, Button } from "./../../../components/elements";
-import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
-import { useSelector, useDispatch } from "react-redux";
-import { closeResolutionApi } from "../../../store/actions/Resolution_actions";
-import { resolutionResultTable } from "../../../commen/functions/date_formater";
-import { useNavigate } from "react-router-dom";
-import SeceretBallotingIcon from "../../../assets/images/resolutions/Secret_Balloting_icon.svg";
+import React, { useState, useEffect } from "react"
+import styles from "./ResultResolution.module.css"
+import { Paper } from "@material-ui/core"
+import { Col, Row } from "react-bootstrap"
+import result from "../../../assets/images/result.svg"
+import Abstain from "../../../assets/images/Abstain.svg"
+import Clock from "../../../assets/images/Clock.svg"
+import thumbsup from "../../../assets/images/thumbsup.svg"
+import Tie from "../../../assets/images/Tie.svg"
+import thumbsdown from "../../../assets/images/thumbsdown.svg"
+import { useTranslation } from "react-i18next"
+import { Chart } from "react-google-charts"
+import { TextField, Button } from "./../../../components/elements"
+import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard"
+import { useSelector, useDispatch } from "react-redux"
+import { closeResolutionApi } from "../../../store/actions/Resolution_actions"
+import { resolutionResultTable } from "../../../commen/functions/date_formater"
+import { useNavigate } from "react-router-dom"
+import SeceretBallotingIcon from "../../../assets/images/resolutions/Secret_Balloting_icon.svg"
 
 const ResultResolution = ({ setResultresolution, resultresolution }) => {
-  const { t } = useTranslation();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const { ResolutionReducer } = useSelector((state) => state);
-  let ButtonTab = JSON.parse(localStorage.getItem("ButtonTab"));
-  const [resolutionTitle, setResolutionTitle] = useState("");
-  const [approved, setApproved] = useState(0);
-  const [resolutionID, setResolutionID] = useState(0);
-  const [nonApproved, setNonApproved] = useState(0);
-  const [pending, setPending] = useState(0);
-  const [abstain, setAbstain] = useState(0);
-  const [votingMethod, setVotingMethod] = useState("");
-  console.log(votingMethod, "votingMethodvotingMethod");
-  const [notes, setNotes] = useState("");
-  const [totalVoters, setTotalVoters] = useState(0);
-  const [decisionDateExpiry, setDesicionDateExpiry] = useState(false);
-  const [voter, setVoter] = useState([]);
-  const [decision, setDecision] = useState("");
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const { ResolutionReducer } = useSelector((state) => state)
+  let ButtonTab = JSON.parse(localStorage.getItem("ButtonTab"))
+  const [resolutionTitle, setResolutionTitle] = useState("")
+  const [approved, setApproved] = useState(0)
+  const [resolutionID, setResolutionID] = useState(0)
+  const [nonApproved, setNonApproved] = useState(0)
+  const [pending, setPending] = useState(0)
+  const [abstain, setAbstain] = useState(0)
+  const [votingMethod, setVotingMethod] = useState("")
+  console.log(votingMethod, "votingMethodvotingMethod")
+  const [notes, setNotes] = useState("")
+  const [totalVoters, setTotalVoters] = useState(0)
+  const [decisionDateExpiry, setDesicionDateExpiry] = useState(false)
+  const [voter, setVoter] = useState([])
+  const [decision, setDecision] = useState("")
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
@@ -64,7 +64,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
     bar: {
       groupWidth: "95%",
     },
-  };
+  }
 
   const data = [
     ["Year", "Visitations", { role: "style" }],
@@ -90,7 +90,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
       abstain,
       "stroke-color: #000; stroke-color:#949494;  stroke-width: 4; fill-color: #949494 ; fill-opacity:1",
     ],
-  ];
+  ]
   const closeResolutionHandleClick = () => {
     dispatch(
       closeResolutionApi(
@@ -101,39 +101,39 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
         t,
         setResultresolution
       )
-    );
-  };
+    )
+  }
   useEffect(() => {
     console.log(
       ResolutionReducer.getResolutionResult,
       "ResolutionReducerResolutionReducerResolutionReducer"
-    );
+    )
     try {
       if (ResolutionReducer.getResolutionResult !== null) {
-        let resolutionresult = ResolutionReducer.getResolutionResult;
-        setApproved(resolutionresult.approvedVotes);
-        setAbstain();
+        let resolutionresult = ResolutionReducer.getResolutionResult
+        setApproved(resolutionresult.approvedVotes)
+        setAbstain()
 
-        setVotingMethod(resolutionresult.votingMethod);
-        setPending(resolutionresult.pendingVoters);
-        setNonApproved(resolutionresult.nonApprovedVotes);
-        setTotalVoters(resolutionresult.totalVoters);
-        setDecision(resolutionresult.decision);
-        setVoter(resolutionresult.voters);
-        setResolutionID(resolutionresult.resolutionID);
-        setResolutionTitle(resolutionresult.resolutionTite);
-        let newDate = new Date();
+        setVotingMethod(resolutionresult.votingMethod)
+        setPending(resolutionresult.pendingVoters)
+        setNonApproved(resolutionresult.nonApprovedVotes)
+        setTotalVoters(resolutionresult.totalVoters)
+        setDecision(resolutionresult.decision)
+        setVoter(resolutionresult.voters)
+        setResolutionID(resolutionresult.resolutionID)
+        setResolutionTitle(resolutionresult.resolutionTite)
+        let newDate = new Date()
         let DecisionDateExpiry = resolutionResultTable(
           resolutionresult.decisionAnnouncementDateTime
-        );
+        )
         if (DecisionDateExpiry < newDate) {
-          setDesicionDateExpiry(true);
+          setDesicionDateExpiry(true)
         } else {
-          setDesicionDateExpiry(false);
+          setDesicionDateExpiry(false)
         }
       }
     } catch (error) {}
-  }, [ResolutionReducer.getResolutionResult]);
+  }, [ResolutionReducer.getResolutionResult])
   return (
     <section>
       <Row className="my-2">
@@ -302,7 +302,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                     <Row>
                       {voter.length > 0
                         ? voter.map((data, index) => {
-                            console.log(data, "datadatadata");
+                            console.log(data, "datadatadata")
                             return (
                               <>
                                 <Col
@@ -315,6 +315,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                                   <EmployeeinfoCard
                                     Employeename={data.username}
                                     Employeeemail={data.email}
+                                    EmployeePic={data.base64Img}
                                     Icon={
                                       <img
                                         src={
@@ -336,7 +337,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
                                   />
                                 </Col>
                               </>
-                            );
+                            )
                           })
                         : null}
                     </Row>
@@ -392,7 +393,7 @@ const ResultResolution = ({ setResultresolution, resultresolution }) => {
         </Col>
       </Row>
     </section>
-  );
-};
+  )
+}
 
-export default ResultResolution;
+export default ResultResolution

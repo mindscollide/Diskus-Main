@@ -460,7 +460,27 @@ const Polling = () => {
             {Number(record.pollCreatorID) === Number(userID) ? (
               <>
                 <Row>
-                  <Col sm={12} md={5} lg={5}>
+                  {record.wasPollPublished &&
+                  record.pollStatus.pollStatusId !== 3 ? (
+                    <>
+                      <Col sm={12} md={5} lg={5}>
+                        <Tooltip placement="topRight" title={t("Edit")}>
+                          <img
+                            src={EditIcon}
+                            className="cursor-pointer"
+                            width="21.59px"
+                            height="21.59px"
+                            onClick={() => {
+                              handleEditpollModal(record);
+                            }}
+                          />
+                        </Tooltip>
+                      </Col>
+                    </>
+                  ) : (
+                    <Col sm={12} md={5} lg={5}></Col>
+                  )}
+                  {/* <Col sm={12} md={5} lg={5}>
                     <Tooltip placement="topRight" title={t("Edit")}>
                       <img
                         src={EditIcon}
@@ -472,11 +492,12 @@ const Polling = () => {
                         }}
                       />
                     </Tooltip>
-                  </Col>
+                  </Col> */}
                   <Col sm={12} md={5} lg={5}>
                     <Tooltip placement="topLeft" title={t("Delete")}>
                       <img
                         src={BinIcon}
+                        alt=""
                         className="cursor-pointer"
                         width="21.59px"
                         height="21.59px"

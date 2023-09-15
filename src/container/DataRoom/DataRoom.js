@@ -813,18 +813,6 @@ const DataRoom = () => {
                       </span>
                     </Tooltip>
                   ) : null}
-
-                  <Tooltip placement="topRight" title={t("Start")}>
-                    <span className={styles["start__Icon"]}>
-                      <img
-                        src={start}
-                        alt=""
-                        className={styles["start__Icon_img"]}
-                        height="10.71px"
-                        width="15.02px"
-                      />
-                    </span>
-                  </Tooltip>
                 </div>
 
                 <span className={styles["threeDot__Icon"]}>
@@ -914,8 +902,12 @@ const DataRoom = () => {
         } else {
           return (
             <div className={`${styles["dataFolderRow"]}`}>
-              <img src={getIconSource(getFileExtension(record.name))} alt=""     width={"25px"}
-                    height={"25px"} />
+              <img
+                src={getIconSource(getFileExtension(record.name))}
+                alt=""
+                width={"25px"}
+                height={"25px"}
+              />
               <span
                 className={styles["dataroom_table_heading"]}
                 // onClick={() => getFolderDocuments(data.id)}

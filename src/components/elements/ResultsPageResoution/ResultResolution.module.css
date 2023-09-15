@@ -28,6 +28,7 @@ body[dir="rtl"] .Result_Heading_resolution {
   gap: 5px;
   overflow-x: hidden;
   word-break: break-word;
+  overflow-y: auto;
 }
 
 .results_paper_heading::-webkit-scrollbar {

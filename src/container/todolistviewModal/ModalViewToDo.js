@@ -170,6 +170,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
             mobileNumber: data.mobileNumber,
             creationDate: data.creationDate,
             creationTime: data.creationTime,
+            displayProfilePicture: data.displayProfilePictureName,
             datetimeFormating:
               newTimeFormaterAsPerUTCFullDate(deadlineDateTime),
           })
@@ -401,7 +402,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                                   employeeDesignation={assgineeData.designation}
                                   cardText={assgineeData.datetimeFormating}
                                   cardTextIconStyle="DateTimeViewTodo"
-                                  userImage={userImage}
+                                  userImage={assgineeData.displayProfilePicture}
                                 />
                               )
                             })}
@@ -471,20 +472,22 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                                 <span className="deleteCommentSpinner">
                                   <Spin size="small" />
                                 </span>
-                              ) : (
-                                <img
-                                  src={CrossIcon}
-                                  width={14}
-                                  alt=""
-                                  onClick={() =>
-                                    handleDeleteComments(
-                                      commentData.taskCommentID,
-                                      commentData.TaskID
-                                    )
-                                  }
-                                  className="crossIconTodoComment"
-                                />
-                              )}
+                              ) : commentData.taskCommentID !== 0 ? (
+                                <>
+                                  <img
+                                    src={CrossIcon}
+                                    width={14}
+                                    alt=""
+                                    onClick={() =>
+                                      handleDeleteComments(
+                                        commentData.taskCommentID,
+                                        commentData.TaskID
+                                      )
+                                    }
+                                    className="crossIconTodoComment"
+                                  />
+                                </>
+                              ) : null}
                             </Col>
                           </>
                         )
