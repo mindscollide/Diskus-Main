@@ -173,7 +173,10 @@ const DataRoom = () => {
       spin
     />
   );
-
+  // this is for only file upload states
+  const [tasksAttachments, setTasksAttachments] = useState([]);
+  const [tasksAttachmentsID, setTasksAttachmentsID] = useState(0);
+  // this is for notification
   const [open, setOpen] = useState({
     open: false,
     message: "",
@@ -212,6 +215,7 @@ const DataRoom = () => {
     Location: null,
     People: null,
   });
+
   useEffect(() => {
     try {
       if (performance.navigation.type === 1) {
@@ -239,17 +243,17 @@ const DataRoom = () => {
       });
     } catch {}
     if (currentView !== null) {
-      dispatch(getDocumentsAndFolderApi(navigate, currentView, t));
+      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 1));
     } else {
       localStorage.setItem("setTableView", 3);
-      dispatch(getDocumentsAndFolderApi(navigate, 3, t));
+      dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
     }
     return () => {
       localStorage.removeItem("folderID");
     };
   }, []);
 
-  console.log("asdasdasdasdasdasd",isOnline);
+  console.log("asdasdasdasdasdasd", isOnline);
   useEffect(() => {
     // Add an event listener to track changes in online status
     const handleOnlineStatusChange = () => {
@@ -472,43 +476,6 @@ const DataRoom = () => {
         );
       }
     }
-    // if (sorter.field === "name") {
-    //   if (sorter.order === "ascend") {
-    //     dispatch(
-    //       getDocumentsAndFolderApi(
-    //         navigate,
-    //         Number(currentView),
-    //         t,
-    //         2,
-    //         false,
-    //         1
-    //       )
-    //     );
-    //   } else {
-    //     dispatch(
-    //       getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1)
-    //     );
-    //   }
-    // }
-    // if (sorter.field === "owner") {
-    //   if (sorter.order === "ascend") {
-    //     dispatch(
-    //       getDocumentsAndFolderApi(
-    //         navigate,
-    //         Number(currentView),
-    //         t,
-    //         2,
-    //         false,
-    //         1
-    //       )
-    //     );
-    //   } else {
-    //     dispatch(
-    //       getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1)
-    //     );
-    //   }
-    // }
-    // if (filters.)
     setCurrentSort(sorter?.order);
     fetchDataWithSorting(sorter?.order);
   };
@@ -544,8 +511,6 @@ const DataRoom = () => {
         setFilterValue(4);
         setCurrentFilter(t("Last-open-by-me"));
       }
-      // setSorted(true)
-      // dispatch(dataBehaviour(true))
       dispatch(
         getDocumentsAndFolderApi(
           navigate,
@@ -557,14 +522,6 @@ const DataRoom = () => {
         )
       );
     }
-
-    // if (sorter.field === "modifiedDate") {
-    //   if (sorter.order === "ascend") {
-    //     dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 2));
-    //   } else {
-    //     dispatch(getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 2));
-    //   }
-    // }
   };
 
   const fetchDataWithSorting = async (sortOrder) => {
@@ -962,8 +919,6 @@ const DataRoom = () => {
       },
     },
   ];
-  const [tasksAttachments, setTasksAttachments] = useState([]);
-  const [tasksAttachmentsID, setTasksAttachmentsID] = useState(0);
 
   // this is file Upload
   const handleUploadFile = async ({ file }) => {
@@ -977,7 +932,7 @@ const DataRoom = () => {
       UploadCancel: false,
       Progress: 0,
       UploadingError: false,
-      NetDisconnect:true,
+      NetDisconnect: false,
     };
     if (file.name && Object.keys(file).length > 0) {
       newJsonCreateFile = {
@@ -989,7 +944,7 @@ const DataRoom = () => {
         UploadCancel: newJsonCreateFile.UploadCancel,
         Progress: newJsonCreateFile.Progress,
         UploadingError: newJsonCreateFile.UploadingError,
-        NetDisconnect:true,
+        NetDisconnect: false,
       };
       setTasksAttachmentsID(newJsonCreateFile.TaskId);
       setTasksAttachments((prevTasks) => ({
@@ -1009,35 +964,13 @@ const DataRoom = () => {
       );
     }
   };
-  
+
   // this is for file check
   useEffect(() => {
     // its check that reducer state is not null
     if (DataRoomReducer.isFileExsist === true) {
       setUploadOptionsmodal(true);
     } else {
-      // if (uploadOptionsmodal) {
-      //   setUploadOptionsmodal(false);
-      //   if (
-      //     Object.keys(detaUplodingForFOlder).length > 0 &&
-      //     DataRoomReducer.isFileExsist === null
-      //   ) {
-      //     console.log("handleUploadFile", tasksAttachments);
-      //     dispatch(
-      //       uploadDocumentsApi(
-      //         navigate,
-      //         t,
-      //         tasksAttachments,
-      //         tasksAttachments.TaskId,
-      //         setTasksAttachments,
-      //         tasksAttachments,
-      //         fileUploadOptions
-      //       )
-      //     );
-      //     setFileUploadOptions(1);
-      //     // its call api for create folder
-      //   }
-      // }
     }
   }, [DataRoomReducer.isFileExsist]);
 
@@ -1056,6 +989,41 @@ const DataRoom = () => {
     }));
     // Optionally, you can also cancel the Axios request associated with this task here.
   };
+  // Handle online status changes
+  const handleOnlineStatusChange = (event) => {
+    const isOnline = navigator.onLine;
+
+    // Loop through your attachments and update NetDisconnect
+    for (const taskId in tasksAttachments) {
+      if (tasksAttachments.hasOwnProperty(taskId)) {
+        const attachment = tasksAttachments[taskId];
+        if (attachment.Uploading && !isOnline) {
+          // Update NetDisconnect to true for the file
+          setTasksAttachments((prevTasks) => ({
+            ...prevTasks,
+            [taskId]: {
+              ...attachment,
+              NetDisconnect: true,
+              Uploading: false,
+            },
+          }));
+        }
+      }
+    }
+  };
+  console.log("tasksAttachmentstasksAttachments", tasksAttachments);
+  useEffect(() => {
+    // Listen for online/offline events
+    // window.addEventListener("online", handleOnlineStatusChange);
+    window.addEventListener("offline", handleOnlineStatusChange);
+
+    // Cleanup event listeners when the component unmounts
+    return () => {
+      // window.removeEventListener("online", handleOnlineStatusChange);
+      window.removeEventListener("offline", handleOnlineStatusChange);
+    };
+  }, [tasksAttachments]);
+
   // this fun triger when upload folder triiger
   const handleChangeFolderUpload = ({ directoryName, fileList }) => {
     try {
@@ -1068,7 +1036,7 @@ const DataRoom = () => {
         Uploading: false,
         UploadCancel: false,
         UploadedAttachments: 0,
-        NetDisconnect:true,
+        NetDisconnect: false,
       };
       // this is use to set data in sate of current upload
       if (directoryName) {
@@ -1080,7 +1048,7 @@ const DataRoom = () => {
           Uploading: newJsonCreate.Uploading,
           UploadCancel: newJsonCreate.UploadCancel,
           UploadedAttachments: newJsonCreate.UploadedAttachments,
-          NetDisconnect:true,
+          NetDisconnect: false,
         };
 
         setDirectoryNames(directoryName);
@@ -1094,6 +1062,7 @@ const DataRoom = () => {
       // Handle errors
     }
   };
+
   useEffect(() => {
     // its check that reducer state is not null
     if (DataRoomReducer.FolderisExistCheck === true) {
@@ -1129,7 +1098,6 @@ const DataRoom = () => {
         Object.keys(detaUplodingForFOlder).length > 0 &&
         DataRoomReducer.FolderisExistCheck === false
       ) {
-        console.log("handleChangeFolderUpload");
         const existingIndex = Object.keys(detaUplodingForFOlder).length - 1;
         // iits call api for create folder
         if (existingIndex >= 0) {
@@ -1184,6 +1152,7 @@ const DataRoom = () => {
       // All API calls are complete, you can perform other actions here
     } catch {}
   };
+
   // this hokks triger when folder is created and its updaet its id of anew folder
   useEffect(() => {
     // this is checker of reducer if its not on its initial state
@@ -1255,6 +1224,7 @@ const DataRoom = () => {
     folder.Uploading = false;
     setDetaUplodingForFOlder((prevFolders) => [...prevFolders]);
   };
+
   // this is used for canle all uploadind
   const CanceUpload = () => {
     const dataArray = Object.values(tasksAttachments);
@@ -1301,6 +1271,43 @@ const DataRoom = () => {
       setOptionsFileisShown(false);
     }
   };
+
+  // this is working perfect
+  const checkCondition = () => {
+    const dataArray = Object.values(tasksAttachments);
+    const combinedArray = [...detaUplodingForFOlder, ...dataArray];
+    if (Object.keys(combinedArray).length === 0) {
+      return false;
+    }
+
+    const hasUploadingTrue = combinedArray.some(
+      (obj) => obj.Uploading === true
+    );
+    return hasUploadingTrue;
+  };
+
+  useEffect(() => {
+    const unloadCallback = (event) => {
+      if (checkCondition()) {
+        const e = event || window.event;
+        e.preventDefault();
+        if (e) {
+          e.returnValue = "";
+        }
+        return "";
+      }
+    };
+    // For page refresh or tab close
+    window.onbeforeunload = function () {
+      if (checkCondition()) {
+        return "Data will be lost if you leave the page, are you sure?";
+      }
+    };
+    window.addEventListener("beforeunload", unloadCallback);
+    return () => {
+      window.removeEventListener("beforeunload", unloadCallback);
+    };
+  }, [detaUplodingForFOlder, tasksAttachments]);
 
   // api call onscroll
   const handleScroll = async (e) => {
