@@ -205,7 +205,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== "" &&
       // createMeeting.MeetingReminderID.length != 0 &&
-      createMeeting.MeetingDescription !== "" &&
+      // createMeeting.MeetingDescription !== "" &&
       createMeeting.MeetingLocation !== "" &&
       createMeeting.MeetingTitle !== ""
     ) {
