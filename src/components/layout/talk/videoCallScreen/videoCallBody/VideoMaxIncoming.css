@@ -102,3 +102,8 @@ button.button-active-img.btn.btn-primary img {
   align-items: center !important;
   display: flex;
 }
+
+.incoming-active-text {
+  text-align: center !important;
+  color: #fff !important;
+}

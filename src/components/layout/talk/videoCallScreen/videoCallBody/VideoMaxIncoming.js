@@ -230,6 +230,7 @@ const VideoMaxIncoming = () => {
                           }
                           icon={<img src={BusyIcon} width={50} />}
                           onClick={busyCall}
+                          style={{ marginTop: '10px' }}
                         />
                         <span
                           className={

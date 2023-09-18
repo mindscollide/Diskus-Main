@@ -63,6 +63,25 @@ const VideoOutgoing = () => {
     }
   }, [])
 
+  const [userNameCR, setUserNameCR] = useState('')
+
+  useEffect(() => {
+    if (
+      VideoMainReducer.VideoRecipentData !== undefined &&
+      VideoMainReducer.VideoRecipentData !== null &&
+      Object.keys(VideoMainReducer.VideoRecipentData).length !== 0 &&
+      VideoMainReducer.VideoRecipentData.userName !== undefined
+    ) {
+      setUserNameCR(VideoMainReducer.VideoRecipentData.userName)
+    } else if (
+      VideoMainReducer.VideoRecipentData !== undefined &&
+      VideoMainReducer.VideoRecipentData !== null &&
+      Object.keys(VideoMainReducer.VideoRecipentData).length !== 0
+    ) {
+      setUserNameCR(VideoMainReducer.VideoRecipentData.recipients[0].userName)
+    }
+  }, [])
+
   return (
     <>
       <Row>
@@ -73,12 +92,14 @@ const VideoOutgoing = () => {
                 .length > 0 ? (
                 <>
                   Ringing
-                  {' ' + VideoMainReducer.VideoRecipentData.userName}...
+                  {' ' + userNameCR}
+                  ...
                 </>
               ) : (
                 <>
                   Calling
-                  {' ' + VideoMainReducer.VideoRecipentData.userName}...
+                  {' ' + userNameCR}
+                  ...
                 </>
               )}
             </div>

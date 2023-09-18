@@ -175,6 +175,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
     dispatch(maximizeVideoPanelFlag(false))
     dispatch(minimizeVideoPanelFlag(false))
     dispatch(leaveCallModal(false))
+    dispatch(participantPopup(false))
   }
 
   const closeNotification = () => {
@@ -189,6 +190,13 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
     ) {
       dispatch(participantPopup(false))
     }
+    // if (
+    //   leaveModalPopupRef.current &&
+    //   !leaveModalPopupRef.current.contains(event.target) &&
+    //   videoFeatureReducer.LeaveCallModalFlag
+    // ) {
+    //   dispatch(leaveCallModal(false))
+    // }
   }
 
   useEffect(() => {}, [
@@ -224,7 +232,6 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
     if (callerObject !== undefined && callerObject !== null) {
       let callerObjectObj = JSON.parse(callerObject)
       setParticipantStatus((prevStatus) => [callerObjectObj, ...prevStatus])
-      console.log('Hello checking')
     }
   }, [callerObject])
 
@@ -233,7 +240,10 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
     return () => {
       document.removeEventListener('click', handleOutsideClick)
     }
-  }, [videoFeatureReducer.ParticipantPopupFlag])
+  }, [
+    videoFeatureReducer.ParticipantPopupFlag,
+    // videoFeatureReducer.LeaveCallModalFlag,
+  ])
 
   console.log('participantStatus', participantStatus[0])
 
@@ -245,12 +255,14 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
             {currentUserName !== VideoMainReducer.VideoRecipentData.userName &&
             Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
             initiateVideoCallFlag === true
-              ? VideoMainReducer.VideoRecipentData.userName
+              ? VideoMainReducer.VideoRecipentData.userName ||
+                VideoMainReducer.VideoRecipentData.recipients[0].userName
               : currentUserName !==
                   VideoMainReducer.VideoRecipentData.userName &&
                 Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
                 initiateVideoCallFlag === false
-              ? VideoMainReducer.VideoRecipentData.userName
+              ? VideoMainReducer.VideoRecipentData.userName ||
+                VideoMainReducer.VideoRecipentData.recipients[0].userName
               : Object.keys(VideoMainReducer.VideoRecipentData).length === 0
               ? callerName
               : null}
@@ -274,58 +286,62 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
         </Col>
         <>
           <Col lg={5} md={5} sm={12} className="normal-screen-top-icons">
-            <div className="positionRelative" ref={participantPopupDisable}>
-              {videoFeatureReducer.ParticipantPopupFlag === true ? (
-                <>
-                  <img
-                    className={
-                      videoFeatureReducer.LeaveCallModalFlag === true
-                        ? 'grayScaleImage'
-                        : ''
-                    }
-                    src={ActiveParticipantIcon}
-                    onClick={closeParticipantHandler}
-                    height={30}
-                    width={30}
-                  />
-                  <div className="participants-list" key={Math.random()}>
-                    <Row className="m-0">
-                      <Col className="p-0" lg={8} md={8} sm={12}>
-                        <p className="participant-name">{currentUserName}</p>
-                      </Col>
-                      <Col className="p-0" lg={4} md={4} sm={12}>
-                        <p className="participant-state">Host</p>
-                      </Col>
-                    </Row>
-                    {currentParticipants !== undefined &&
-                    currentParticipants !== null &&
-                    currentParticipants.length > 0
-                      ? currentParticipants.map((participantData, index) => {
-                          console.log('participantStatus', participantStatus[0])
-                          const matchingStatus = participantStatus[0].find(
-                            (status) =>
-                              status.RecipientID === participantData.userID &&
-                              status.RoomID === initiateRoomID,
-                          )
-                          return (
-                            <Row className="m-0" key={index}>
-                              <Col className="p-0" lg={8} md={8} sm={12}>
-                                <p className="participant-name">
-                                  {participantData.userName}
-                                </p>
-                              </Col>
-                              <Col className="p-0" lg={4} md={4} sm={12}>
-                                <p className="participant-state">
-                                  {matchingStatus
-                                    ? matchingStatus.CallStatus
-                                    : 'Calling...'}
-                                </p>
-                              </Col>
-                            </Row>
-                          )
-                        })
-                      : null}
-                    {/* <Button
+            {callerID === currentUserID ? (
+              <div className="positionRelative" ref={participantPopupDisable}>
+                {videoFeatureReducer.ParticipantPopupFlag === true ? (
+                  <>
+                    <img
+                      className={
+                        videoFeatureReducer.LeaveCallModalFlag === true
+                          ? 'grayScaleImage'
+                          : ''
+                      }
+                      src={ActiveParticipantIcon}
+                      onClick={closeParticipantHandler}
+                      height={30}
+                      width={30}
+                    />
+                    <div className="participants-list" key={Math.random()}>
+                      <Row className="m-0">
+                        <Col className="p-0" lg={8} md={8} sm={12}>
+                          <p className="participant-name">{currentUserName}</p>
+                        </Col>
+                        <Col className="p-0" lg={4} md={4} sm={12}>
+                          <p className="participant-state">Host</p>
+                        </Col>
+                      </Row>
+                      {currentParticipants !== undefined &&
+                      currentParticipants !== null &&
+                      currentParticipants.length > 0
+                        ? currentParticipants.map((participantData, index) => {
+                            console.log(
+                              'participantStatus',
+                              participantStatus[0],
+                            )
+                            const matchingStatus = participantStatus[0].find(
+                              (status) =>
+                                status.RecipientID === participantData.userID &&
+                                status.RoomID === initiateRoomID,
+                            )
+                            return (
+                              <Row className="m-0" key={index}>
+                                <Col className="p-0" lg={8} md={8} sm={12}>
+                                  <p className="participant-name">
+                                    {participantData.userName}
+                                  </p>
+                                </Col>
+                                <Col className="p-0" lg={4} md={4} sm={12}>
+                                  <p className="participant-state">
+                                    {matchingStatus
+                                      ? matchingStatus.CallStatus
+                                      : 'Calling...'}
+                                  </p>
+                                </Col>
+                              </Row>
+                            )
+                          })
+                        : null}
+                      {/* <Button
                         className="add-participant-button"
                         text="Add Participants"
                         icon={
@@ -333,22 +349,23 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                         }
                         textClass="text-positioning"
                       /> */}
-                  </div>
-                </>
-              ) : (
-                <img
-                  className={
-                    videoFeatureReducer.LeaveCallModalFlag === true
-                      ? 'grayScaleImage'
-                      : ''
-                  }
-                  src={ParticipantsIcon}
-                  onClick={closeParticipantHandler}
-                  height={20}
-                  width={25}
-                />
-              )}
-            </div>
+                    </div>
+                  </>
+                ) : (
+                  <img
+                    className={
+                      videoFeatureReducer.LeaveCallModalFlag === true
+                        ? 'grayScaleImage'
+                        : ''
+                    }
+                    src={ParticipantsIcon}
+                    onClick={closeParticipantHandler}
+                    height={20}
+                    width={25}
+                  />
+                )}
+              </div>
+            ) : null}
             <div className="screenShare-Toggle">
               <img
                 className={

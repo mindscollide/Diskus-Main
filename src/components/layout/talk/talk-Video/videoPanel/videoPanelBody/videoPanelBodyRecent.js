@@ -20,7 +20,10 @@ import {
   newTimeFormaterAsPerUTCTalkTime,
   newTimeFormaterAsPerUTCTalkDate,
 } from '../../../../../../commen/functions/date_formater'
-import { normalizeVideoPanelFlag } from '../../../../../../store/actions/VideoFeature_actions'
+import {
+  normalizeVideoPanelFlag,
+  videoChatPanel,
+} from '../../../../../../store/actions/VideoFeature_actions'
 import MissedRedIcon from '../../../../../../assets/images/Missed-Red-Icon.png'
 import MissedCallIcon from '../../../../../../assets/images/Missedcall-Icon.png'
 import VideoCallIcon from '../../../../../../assets/images/VideoCall-Icon.png'
@@ -42,6 +45,8 @@ const VideoPanelBodyRecent = () => {
   let currentOrganization = Number(localStorage.getItem('organizationID'))
 
   let currentUserName = localStorage.getItem('name')
+
+  let currentUserID = Number(localStorage.getItem('userID'))
 
   //CURRENT DATE TIME UTC
   let currentDateTime = new Date()
@@ -162,6 +167,53 @@ const VideoPanelBodyRecent = () => {
     totalRecords,
     recentVideoCalls.length <= totalRecords,
   )
+
+  const otoVideoCall = (data) => {
+    // dispatch(videoOutgoingCallFlag(true))
+    console.log('Video Called User Data', data)
+    if (data.callType.callTypeID === 1) {
+      console.log('Video Called OTO DATA', data)
+      let Data = {
+        RecipentIDs:
+          data.callerID === currentUserID
+            ? [data.recipients[0].userID]
+            : [data.callerID],
+        CallTypeID: 1,
+        OrganizationID: currentOrganization,
+      }
+      localStorage.setItem('CallType', Data.CallTypeID)
+      dispatch(InitiateVideoCall(Data, navigate, t))
+      dispatch(getVideoRecipentData(data))
+      dispatch(normalizeVideoPanelFlag(true))
+      dispatch(videoChatPanel(false))
+      console.log('Video Called OTO Request Data', Data)
+    } else if (data.callType.callTypeID === 2) {
+      console.log('Video Called Group DATA', data)
+      const recipientIds = data.recipients.map((recipient) => recipient.userID)
+      let Data = {
+        RecipentIDs: recipientIds,
+        CallTypeID: 2,
+        OrganizationID: currentOrganization,
+      }
+      localStorage.setItem('CallType', Data.CallTypeID)
+      dispatch(InitiateVideoCall(Data, navigate, t))
+      // dispatch(groupCallRecipients(groupCallActiveUsers))
+      dispatch(normalizeVideoPanelFlag(true))
+      dispatch(videoChatPanel(false))
+      console.log('Video Called Group Request Data', Data)
+    }
+    // let Data = {
+    //   RecipentIDs: [userData.userID],
+    //   CallTypeID: 1,
+    //   OrganizationID: currentOrganization,
+    // }
+    // localStorage.setItem('CallType', Data.CallTypeID)
+    // dispatch(InitiateVideoCall(Data, navigate, t))
+    // dispatch(getVideoRecipentData(userData))
+    // dispatch(normalizeVideoPanelFlag(true))
+    // dispatch(videoChatPanel(false))
+    // console.log('Video Called User Data', Data)
+  }
 
   return (
     <>
@@ -290,7 +342,7 @@ const VideoPanelBodyRecent = () => {
                     <Col lg={2} md={2} sm={12} className="mt-4">
                       <img
                         src={VideoCallIcon}
-                        //   onClick={() => anotherVideoPanelHandler(true)}
+                        onClick={() => otoVideoCall(recentCallData)}
                       />
                     </Col>
                   </Row>
