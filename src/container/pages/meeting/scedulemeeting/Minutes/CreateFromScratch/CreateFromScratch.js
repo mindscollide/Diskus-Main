@@ -178,7 +178,7 @@ const CreateFromScratch = () => {
                           />
                           <img
                             src={RedCroseeIcon}
-                            className={styles["RedCrossForEdit"]}
+                            className={styles["RedCrossForEdit_AfterSave"]}
                           />
                         </Col>
                       </Row>

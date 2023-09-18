@@ -80,6 +80,12 @@
   top: -7px !important;
 }
 
+.RedCrossForEdit_AfterSave {
+  position: absolute !important;
+  right: 14px !important;
+  top: -7px !important;
+}
+
 .CancelButtonOnSaveAgendaImport {
   padding: 12px 30px !important;
   font-size: 12px !important;
