@@ -5945,16 +5945,8 @@ input::-webkit-calendar-picker-indicator {
   visibility: hidden !important;
 }
 
-.SelectOrganizersSelect__control.css-13cymwt-control {
-  border: 1px solid #f16b6b !important;
-}
-
 .SelectOptions_drop__control.css-13cymwt-control {
   border: 1px solid #f16b6b !important;
-}
-
-.SelectOrganizersSelect_active__control.css-13cymwt-control {
-  border: 1px solid #e1e1e1 !important;
 }
 
 .SelectOptions_drop_active__control.css-13cymwt-control {

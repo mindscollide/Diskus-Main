@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styles from "./MeetingDetails.module.css";
 import { useTranslation } from "react-i18next";
-import MeetingVideoChatIcon from "../../../../../assets/images/newElements/Icon feather-video1.png";
+import MeetingVideoChatIcon from "../../../../../assets/images/ColoredVideo.svg";
 import Select from "react-select";
 import DatePicker from "react-multi-date-picker";
 import TimePicker from "react-multi-date-picker/plugins/time_picker";
@@ -20,6 +20,7 @@ import { Plus } from "react-bootstrap-icons";
 import desh from "../../../../../assets/images/desh.svg";
 import {
   regexOnlyCharacters,
+  urlPatternValidation,
   validateInput,
 } from "../../../../../commen/functions/regex";
 
@@ -157,12 +158,11 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
         });
       }
     }
-    if (name === "Link") {
-      let valueCheck = validateInput(value);
-      if (valueCheck !== "") {
+    if (name === "Link" && value !== "") {
+      if (urlPatternValidation(value)) {
         setMeetingDetails({
           ...meetingDetails,
-          Link: valueCheck,
+          Link: value,
         });
       } else {
         setMeetingDetails({
