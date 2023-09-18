@@ -15,6 +15,7 @@ import { Row, Col } from "react-bootstrap";
 import { Button, Modal, TableToDo } from "../../../components/elements";
 import GridViewDataRoom from "../GridViewDataRoom/GridViewDataRoom";
 import styles from "./searchComponent.module.css";
+import stylesss from "../DataRoom.module.css";
 import {
   getFileExtension,
   getIconSource,
@@ -31,36 +32,44 @@ import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   formatDateToMMDDYY,
+  formatDateToUTC,
   _justShowDateformat,
 } from "../../../commen/functions/date_formater";
 import DatePicker, { DateObject } from "react-multi-date-picker";
-import { searchDocumentsAndFoldersApi } from "../../../store/actions/DataRoom_actions";
+import {
+  dataBehaviour,
+  searchDocumentsAndFoldersApi,
+} from "../../../store/actions/DataRoom_actions";
 import gregorian from "react-date-object/calendars/gregorian";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import InputIcon from "react-multi-date-picker/components/input_icon";
+import InfiniteScroll from "react-infinite-scroll-component";
 const SearchComponent = ({
   setSearchDataFields,
   searchDataFields,
   getFolderDocuments,
   gridbtnactive,
   listviewactive,
+  setSearchResultFields,
+  searchResultsFields,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const calendRef = useRef();
-  const { DataRoomReducer } = useSelector((state) => state);
+  const { DataRoomReducer, assignees } = useSelector((state) => state);
   const [searchAllData, setSearchAllData] = useState([]);
+  const [sRowsData, setSRowsData] = useState(0);
   const [customRangeVisible, setCustomRangeVisible] = useState(false);
-  const [dateValue, setDateValue] = useState(t("Last-modified"));
-  let lang = localStorage.getItem("i18nextLng");
+  const [dateValue, setDateValue] = useState(t("Date-modified"));
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [calendarValue, setCalendarValue] = useState(gregorian);
-
-  let userID = localStorage.getItem("userID");
-  let organizationID = localStorage.getItem("organizationID");
-
+  // all assignees
+  const [assignessList, setAssignessList] = useState([]);
+  const [totalRecords, setTotalRecords] = useState(0); // Initial filter value
+  const [selectedStartDate, setSelectedStartDate] = useState(null);
+  const [selectedEndDate, setSelectedEndDate] = useState(null);
   const antIcon = (
     <LoadingOutlined
       style={{
@@ -69,7 +78,9 @@ const SearchComponent = ({
       spin
     />
   );
-
+  let userID = localStorage.getItem("userID");
+  let lang = localStorage.getItem("i18nextLng");
+  let organizationID = localStorage.getItem("organizationID");
   // these are search columns
   const searchColumns = [
     {
@@ -219,43 +230,156 @@ const SearchComponent = ({
       }
     }
   }, [lang]);
+
   // this is for deta set into table
   useEffect(() => {
-    console.log(
-      DataRoomReducer.SearchFilesAndFoldersResponse,
-      "DataRoomReducer.SearchFilesAndFoldersResponse"
-    );
     try {
-      if (DataRoomReducer.SearchFilesAndFoldersResponse) {
-        setSearchAllData(DataRoomReducer.SearchFilesAndFoldersResponse);
+      if (
+        DataRoomReducer.SearchFilesAndFoldersResponse !== null &&
+        DataRoomReducer.SearchFilesAndFoldersResponse !== undefined &&
+        DataRoomReducer.SearchFilesAndFoldersResponse.length > 0
+      ) {
+        if (DataRoomReducer.dataBehaviour) {
+          dispatch(dataBehaviour(false));
+          let copyData = [...searchAllData];
+          DataRoomReducer.SearchFilesAndFoldersResponse.map((data, index) => {
+            copyData.push(data);
+          });
+          setSearchAllData(copyData);
+          setTotalRecords(DataRoomReducer.SearchFileListCount);
+          setSRowsData(
+            (prev) =>
+              prev + DataRoomReducer.SearchFilesAndFoldersResponse.length
+          );
+        } else {
+          dispatch(dataBehaviour(false));
+          setSearchAllData(DataRoomReducer.SearchFilesAndFoldersResponse);
+          setTotalRecords(DataRoomReducer.SearchFileListCount);
+          setSRowsData(DataRoomReducer.SearchFilesAndFoldersResponse.length);
+        }
       } else {
-        setSearchAllData([]);
+        // setSearchAllData([]);
       }
     } catch (error) {}
-  }, [DataRoomReducer.SearchFilesAndFoldersResponse]);
+  }, [
+    DataRoomReducer.SearchFilesAndFoldersResponse,
+    DataRoomReducer.SearchFileListCount,
+  ]);
+
+  // Transform the API response to match the options structure
+  const transformedOptions = assignessList.map((user) => ({
+    value: user.pK_UID,
+    label: (
+      <>
+        <span className="d-flex align-items-center gap-2">
+          <img
+            width={"25px"}
+            height="25px"
+            className="rounded-circle  "
+            src={`data:image/jpeg;base64,${user.displayProfilePictureName}`}
+            alt=""
+          />
+          {user.name}
+        </span>
+      </>
+    ),
+  }));
+
+  //this is user list
+  useEffect(() => {
+    try {
+      if (assignees.user) {
+        const filteredApiResponse = assignees.user.filter(
+          (user) => !userID.includes(user.pK_UID)
+        );
+        setAssignessList(filteredApiResponse);
+      }
+    } catch {}
+  }, [assignees.user]);
+
   // api call onscroll
   const handleSortMyDocuments = (pagination, filters, sorter) => {};
-
   const handleScroll = async (e) => {
-    // const { scrollHeight, scrollTop, clientHeight } = e.target;
-    // if (scrollHeight - scrollTop === clientHeight) {
-    //   if (sRowsData < totalRecords) {
-    //     if (DataRoomReducer.dataBehaviour === false) {
-    //       if (
-    //         viewFolderID !== null &&
-    //         viewFolderID !== undefined &&
-    //         Number(viewFolderID) !== 0
-    //       ) {
-    //       } else {
-    //       }
-    //     }
-    //   }
-    // }
+    if (sRowsData <= totalRecords) {
+      await dispatch(dataBehaviour(true));
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        StatusID: searchDataFields.StatusID,
+        Title: searchDataFields.Title,
+        isDocument: searchDataFields.isDocument,
+        isSpreadSheet: searchDataFields.isSpreadSheet,
+        isPresentation: searchDataFields.isPresentation,
+        isForms: searchDataFields.isForms,
+        isPDF: searchDataFields.isPDF,
+        isFolders: searchDataFields.isFolders,
+        isVideos: searchDataFields.isVideos,
+        isImages: searchDataFields.isImages,
+        isAudios: searchDataFields.isAudios,
+        isSites: searchDataFields.isSites,
+        LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
+        LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
+        UserIDToSearch: 0,
+        isOwnedByMe: false,
+        isNotOwnedByMe: false,
+        isSpecificUser: false,
+        sRow: sRowsData,
+        Length: 10,
+        SortBy: 1,
+        isDescending: searchDataFields.isDescending,
+      };
+      await dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+    }
   };
 
-  // this is onchange envent of search component Documnet
+  // this is onchange envent of search modal Documnet
   const handleChangeDocumentsOptions = (event) => {
-    if (event.value === 2) {
+    setSearchResultFields((prevState) => ({
+      ...prevState, // Copy the existing state
+      Type: event, // Update the Type field
+    }));
+    if (event.value === 1) {
+      setSearchDataFields({
+        ...searchDataFields,
+        isDocument: true,
+        isSpreadSheet: true,
+        isPresentation: true,
+        isForms: true,
+        isPDF: true,
+        isFolders: true,
+        isVideos: true,
+        isImages: true,
+        isAudios: true,
+        isSites: true,
+      });
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        StatusID: searchDataFields.StatusID,
+        Title: searchDataFields.Title,
+        isDocument: true,
+        isSpreadSheet: true,
+        isPresentation: true,
+        isForms: true,
+        isPDF: true,
+        isFolders: true,
+        isVideos: true,
+        isImages: true,
+        isAudios: true,
+        isSites: true,
+        LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
+        LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
+        UserIDToSearch: parseInt(userID),
+        isOwnedByMe: searchDataFields.isOwnedByMe,
+        isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
+        isSpecificUser: searchDataFields.isSpecificUser,
+        sRow: 0,
+        Length: 10,
+        SortBy: 1,
+        isDescending: searchDataFields.isDescending,
+      };
+      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+    } else if (event.value === 2) {
       setSearchDataFields({
         ...searchDataFields,
         isDocument: true,
@@ -265,6 +389,9 @@ const SearchComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
       });
       let data = {
         UserID: parseInt(userID),
@@ -278,6 +405,9 @@ const SearchComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
@@ -285,7 +415,7 @@ const SearchComponent = ({
         isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
-        Length: 50,
+        Length: 10,
         SortBy: 1,
         isDescending: searchDataFields.isDescending,
       };
@@ -300,6 +430,9 @@ const SearchComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
       });
       let data = {
         UserID: parseInt(userID),
@@ -313,6 +446,9 @@ const SearchComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
@@ -320,7 +456,7 @@ const SearchComponent = ({
         isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
-        Length: 50,
+        Length: 10,
         SortBy: 1,
         isDescending: searchDataFields.isDescending,
       };
@@ -335,6 +471,9 @@ const SearchComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
       });
       let data = {
         UserID: parseInt(userID),
@@ -348,6 +487,9 @@ const SearchComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
@@ -355,7 +497,7 @@ const SearchComponent = ({
         isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
-        Length: 50,
+        Length: 10,
         SortBy: 1,
         isDescending: searchDataFields.isDescending,
       };
@@ -370,6 +512,9 @@ const SearchComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
       });
       let data = {
         UserID: parseInt(userID),
@@ -383,6 +528,9 @@ const SearchComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
@@ -390,7 +538,48 @@ const SearchComponent = ({
         isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
-        Length: 50,
+        Length: 10,
+        SortBy: 1,
+        isDescending: searchDataFields.isDescending,
+      };
+      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+    } else if (event.value === 6) {
+      setSearchDataFields({
+        ...searchDataFields,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: true,
+        isAudios: false,
+        isSites: false,
+      });
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        StatusID: searchDataFields.StatusID,
+        Title: searchDataFields.Title,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: true,
+        isAudios: false,
+        isSites: false,
+        LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
+        LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
+        UserIDToSearch: parseInt(userID),
+        isOwnedByMe: searchDataFields.isOwnedByMe,
+        isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
+        isSpecificUser: searchDataFields.isSpecificUser,
+        sRow: 0,
+        Length: 10,
         SortBy: 1,
         isDescending: searchDataFields.isDescending,
       };
@@ -405,6 +594,9 @@ const SearchComponent = ({
         isPDF: true,
         isFolders: false,
         isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
       });
       let data = {
         UserID: parseInt(userID),
@@ -418,6 +610,9 @@ const SearchComponent = ({
         isPDF: true,
         isFolders: false,
         isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
@@ -425,42 +620,7 @@ const SearchComponent = ({
         isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
-        Length: 50,
-        SortBy: 1,
-        isDescending: searchDataFields.isDescending,
-      };
-      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
-    } else if (event.value === 10) {
-      setSearchDataFields({
-        ...searchDataFields,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: true,
-        isVideos: false,
-      });
-      let data = {
-        UserID: parseInt(userID),
-        OrganizationID: parseInt(organizationID),
-        StatusID: searchDataFields.StatusID,
-        Title: searchDataFields.Title,
-        isDocument: false,
-        isSpreadSheet: false,
-        isPresentation: false,
-        isForms: false,
-        isPDF: false,
-        isFolders: true,
-        isVideos: false,
-        LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
-        LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
-        UserIDToSearch: parseInt(userID),
-        isOwnedByMe: searchDataFields.isOwnedByMe,
-        isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
-        isSpecificUser: searchDataFields.isSpecificUser,
-        sRow: 0,
-        Length: 50,
+        Length: 10,
         SortBy: 1,
         isDescending: searchDataFields.isDescending,
       };
@@ -475,6 +635,9 @@ const SearchComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: true,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
       });
       let data = {
         UserID: parseInt(userID),
@@ -488,6 +651,9 @@ const SearchComponent = ({
         isPDF: false,
         isFolders: false,
         isVideos: true,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: parseInt(userID),
@@ -495,7 +661,130 @@ const SearchComponent = ({
         isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
         isSpecificUser: searchDataFields.isSpecificUser,
         sRow: 0,
-        Length: 50,
+        Length: 10,
+        SortBy: 1,
+        isDescending: searchDataFields.isDescending,
+      };
+      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+    } else if (event.value === 10) {
+      setSearchDataFields({
+        ...searchDataFields,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: true,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+      });
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        StatusID: searchDataFields.StatusID,
+        Title: searchDataFields.Title,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: true,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: false,
+        LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
+        LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
+        UserIDToSearch: parseInt(userID),
+        isOwnedByMe: searchDataFields.isOwnedByMe,
+        isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
+        isSpecificUser: searchDataFields.isSpecificUser,
+        sRow: 0,
+        Length: 10,
+        SortBy: 1,
+        isDescending: searchDataFields.isDescending,
+      };
+      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+    } else if (event.value === 11) {
+      setSearchDataFields({
+        ...searchDataFields,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: true,
+      });
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        StatusID: searchDataFields.StatusID,
+        Title: searchDataFields.Title,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: false,
+        isSites: true,
+        LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
+        LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
+        UserIDToSearch: parseInt(userID),
+        isOwnedByMe: searchDataFields.isOwnedByMe,
+        isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
+        isSpecificUser: searchDataFields.isSpecificUser,
+        sRow: 0,
+        Length: 10,
+        SortBy: 1,
+        isDescending: searchDataFields.isDescending,
+      };
+      dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+    } else if (event.value === 12) {
+      setSearchDataFields({
+        ...searchDataFields,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: true,
+        isSites: false,
+      });
+      let data = {
+        UserID: parseInt(userID),
+        OrganizationID: parseInt(organizationID),
+        StatusID: searchDataFields.StatusID,
+        Title: searchDataFields.Title,
+        isDocument: false,
+        isSpreadSheet: false,
+        isPresentation: false,
+        isForms: false,
+        isPDF: false,
+        isFolders: false,
+        isVideos: false,
+        isImages: false,
+        isAudios: true,
+        isSites: false,
+        LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
+        LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
+        UserIDToSearch: parseInt(userID),
+        isOwnedByMe: searchDataFields.isOwnedByMe,
+        isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
+        isSpecificUser: searchDataFields.isSpecificUser,
+        sRow: 0,
+        Length: 10,
         SortBy: 1,
         isDescending: searchDataFields.isDescending,
       };
@@ -505,6 +794,10 @@ const SearchComponent = ({
   };
   // this is for Location
   const handleChangeLocationValue = (event) => {
+    setSearchResultFields((prevState) => ({
+      ...prevState, // Copy the existing state
+      Location: event, // Update the Type field
+    }));
     setSearchDataFields({
       ...searchDataFields,
       StatusID: parseInt(event.value),
@@ -521,6 +814,9 @@ const SearchComponent = ({
       isPDF: searchDataFields.isPDF,
       isFolders: searchDataFields.isFolders,
       isVideos: searchDataFields.isVideos,
+      isImages: searchDataFields.isImages,
+      isAudios: searchDataFields.isAudios,
+      isSites: searchDataFields.isSites,
       LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
       LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
       UserIDToSearch: 0,
@@ -528,14 +824,19 @@ const SearchComponent = ({
       isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
       isSpecificUser: searchDataFields.isSpecificUser,
       sRow: 0,
-      Length: 50,
+      Length: 10,
       SortBy: 1,
       isDescending: searchDataFields.isDescending,
     };
     dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
   };
+
   // this is for  people
   const handleChangeStatus = (event) => {
+    setSearchResultFields((prevState) => ({
+      ...prevState, // Copy the existing state
+      People: event, // Update the Type field
+    }));
     if (event.value === 1) {
       setSearchDataFields({
         ...searchDataFields,
@@ -556,6 +857,9 @@ const SearchComponent = ({
         isPDF: searchDataFields.isPDF,
         isFolders: searchDataFields.isFolders,
         isVideos: searchDataFields.isVideos,
+        isImages: searchDataFields.isImages,
+        isAudios: searchDataFields.isAudios,
+        isSites: searchDataFields.isSites,
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         UserIDToSearch: 0,
@@ -563,7 +867,7 @@ const SearchComponent = ({
         isNotOwnedByMe: false,
         isSpecificUser: false,
         sRow: 0,
-        Length: 50,
+        Length: 10,
         SortBy: 1,
         isDescending: searchDataFields.isDescending,
       };
@@ -588,6 +892,9 @@ const SearchComponent = ({
         isPDF: searchDataFields.isPDF,
         isFolders: searchDataFields.isFolders,
         isVideos: searchDataFields.isVideos,
+        isImages: searchDataFields.isImages,
+        isAudios: searchDataFields.isAudios,
+        isSites: searchDataFields.isSites,
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         isOwnedByMe: true,
@@ -595,7 +902,7 @@ const SearchComponent = ({
         isSpecificUser: false,
         UserIDToSearch: 0,
         sRow: 0,
-        Length: 50,
+        Length: 10,
         SortBy: 1,
         isDescending: searchDataFields.isDescending,
       };
@@ -620,6 +927,9 @@ const SearchComponent = ({
         isPDF: searchDataFields.isPDF,
         isFolders: searchDataFields.isFolders,
         isVideos: searchDataFields.isVideos,
+        isImages: searchDataFields.isImages,
+        isAudios: searchDataFields.isAudios,
+        isSites: searchDataFields.isSites,
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         isOwnedByMe: false,
@@ -627,7 +937,7 @@ const SearchComponent = ({
         isSpecificUser: false,
         UserIDToSearch: 0,
         sRow: 0,
-        Length: 50,
+        Length: 10,
         SortBy: 1,
         isDescending: searchDataFields.isDescending,
       };
@@ -638,7 +948,7 @@ const SearchComponent = ({
         isOwnedByMe: false,
         isNotOwnedByMe: false,
         isSpecificUser: true,
-        UserIDToSearch: parseInt(userID),
+        UserIDToSearch: parseInt(event.value),
       });
       let data = {
         UserID: parseInt(userID),
@@ -652,14 +962,17 @@ const SearchComponent = ({
         isPDF: searchDataFields.isPDF,
         isFolders: searchDataFields.isFolders,
         isVideos: searchDataFields.isVideos,
+        isImages: searchDataFields.isImages,
+        isAudios: searchDataFields.isAudios,
+        isSites: searchDataFields.isSites,
         LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
         LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
         isOwnedByMe: false,
         isNotOwnedByMe: false,
         isSpecificUser: true,
-        UserIDToSearch: parseInt(userID),
+        UserIDToSearch: parseInt(event.value),
         sRow: 0,
-        Length: 50,
+        Length: 10,
         SortBy: 1,
         isDescending: searchDataFields.isDescending,
       };
@@ -669,23 +982,51 @@ const SearchComponent = ({
 
   // Search Box Last modified Date handle Change Function
   const handleChangeLastModifedDate = (event) => {
+    setSearchResultFields((prevState) => ({
+      ...prevState, // Copy the existing state
+      Date: event, // Update the Type field
+    }));
     setDateValue(event.label);
     const currentDate = new Date();
     let startDate = null;
     let endDate = null;
-    let DateNewStart = new Date(startDate);
-    const formattedNewDate = formatDateToMMDDYY(DateNewStart);
-    let DateEndStart = new Date(endDate);
-    const formattedEndDate = formatDateToMMDDYY(DateEndStart);
-    const validFormattedNewDate =
-      formattedNewDate !== "NaN" ? formattedNewDate : "";
-    const validFormattedEndDate =
-      formattedEndDate !== "NaN" ? formattedEndDate : "";
     let data = {};
     switch (event.value) {
       case 1: // Any-time
         // No specific date range, so no need to set start and end dates.
         setCustomRangeVisible(false);
+        setSearchDataFields({
+          ...searchDataFields,
+          LastModifiedEndDate: endDate,
+          LastModifiedStartDate: startDate,
+        });
+        data = {
+          UserID: parseInt(userID),
+          OrganizationID: parseInt(organizationID),
+          StatusID: searchDataFields.StatusID,
+          Title: searchDataFields.Title,
+          isDocument: searchDataFields.isDocument,
+          isSpreadSheet: searchDataFields.isSpreadSheet,
+          isPresentation: searchDataFields.isPresentation,
+          isForms: searchDataFields.isForms,
+          isPDF: searchDataFields.isPDF,
+          isFolders: searchDataFields.isFolders,
+          isVideos: searchDataFields.isVideos,
+          isImages: searchDataFields.isImages,
+          isAudios: searchDataFields.isAudios,
+          isSites: searchDataFields.isSites,
+          LastModifiedStartDate: "",
+          LastModifiedEndDate: "",
+          UserIDToSearch: searchDataFields.UserIDToSearch,
+          isOwnedByMe: searchDataFields.isOwnedByMe,
+          isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
+          isSpecificUser: searchDataFields.isSpecificUser,
+          sRow: 0,
+          Length: 10,
+          SortBy: 1,
+          isDescending: searchDataFields.isDescending,
+        };
+        dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
         break;
       case 2: // Today
         startDate = new Date(currentDate);
@@ -708,14 +1049,21 @@ const SearchComponent = ({
           isPDF: searchDataFields.isPDF,
           isFolders: searchDataFields.isFolders,
           isVideos: searchDataFields.isVideos,
-          LastModifiedStartDate: validFormattedNewDate,
-          LastModifiedEndDate: validFormattedEndDate,
+          isImages: searchDataFields.isImages,
+          isAudios: searchDataFields.isAudios,
+          isSites: searchDataFields.isSites,
+          LastModifiedStartDate: formatDateToUTC(startDate)
+            ? formatDateToUTC(startDate)
+            : "",
+          LastModifiedEndDate: formatDateToUTC(endDate)
+            ? formatDateToUTC(endDate)
+            : "",
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
           isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
           isSpecificUser: searchDataFields.isSpecificUser,
           sRow: 0,
-          Length: 50,
+          Length: 10,
           SortBy: 1,
           isDescending: searchDataFields.isDescending,
         };
@@ -744,14 +1092,21 @@ const SearchComponent = ({
           isPDF: searchDataFields.isPDF,
           isFolders: searchDataFields.isFolders,
           isVideos: searchDataFields.isVideos,
-          LastModifiedStartDate: validFormattedNewDate,
-          LastModifiedEndDate: validFormattedEndDate,
+          isImages: searchDataFields.isImages,
+          isAudios: searchDataFields.isAudios,
+          isSites: searchDataFields.isSites,
+          LastModifiedStartDate: formatDateToUTC(startDate)
+            ? formatDateToUTC(startDate)
+            : "",
+          LastModifiedEndDate: formatDateToUTC(endDate)
+            ? formatDateToUTC(endDate)
+            : "",
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
           isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
           isSpecificUser: searchDataFields.isSpecificUser,
           sRow: 0,
-          Length: 50,
+          Length: 10,
           SortBy: 1,
           isDescending: searchDataFields.isDescending,
         };
@@ -779,14 +1134,21 @@ const SearchComponent = ({
           isPDF: searchDataFields.isPDF,
           isFolders: searchDataFields.isFolders,
           isVideos: searchDataFields.isVideos,
-          LastModifiedStartDate: validFormattedNewDate,
-          LastModifiedEndDate: validFormattedEndDate,
+          isImages: searchDataFields.isImages,
+          isAudios: searchDataFields.isAudios,
+          isSites: searchDataFields.isSites,
+          LastModifiedStartDate: formatDateToUTC(startDate)
+            ? formatDateToUTC(startDate)
+            : "",
+          LastModifiedEndDate: formatDateToUTC(endDate)
+            ? formatDateToUTC(endDate)
+            : "",
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
           isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
           isSpecificUser: searchDataFields.isSpecificUser,
           sRow: 0,
-          Length: 50,
+          Length: 10,
           SortBy: 1,
           isDescending: searchDataFields.isDescending,
         };
@@ -813,14 +1175,21 @@ const SearchComponent = ({
           isPDF: searchDataFields.isPDF,
           isFolders: searchDataFields.isFolders,
           isVideos: searchDataFields.isVideos,
-          LastModifiedStartDate: validFormattedNewDate,
-          LastModifiedEndDate: validFormattedEndDate,
+          isImages: searchDataFields.isImages,
+          isAudios: searchDataFields.isAudios,
+          isSites: searchDataFields.isSites,
+          LastModifiedStartDate: formatDateToUTC(startDate)
+            ? formatDateToUTC(startDate)
+            : "",
+          LastModifiedEndDate: formatDateToUTC(endDate)
+            ? formatDateToUTC(endDate)
+            : "",
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
           isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
           isSpecificUser: searchDataFields.isSpecificUser,
           sRow: 0,
-          Length: 50,
+          Length: 10,
           SortBy: 1,
           isDescending: searchDataFields.isDescending,
         };
@@ -847,14 +1216,21 @@ const SearchComponent = ({
           isPDF: searchDataFields.isPDF,
           isFolders: searchDataFields.isFolders,
           isVideos: searchDataFields.isVideos,
-          LastModifiedStartDate: validFormattedNewDate,
-          LastModifiedEndDate: validFormattedEndDate,
+          isImages: searchDataFields.isImages,
+          isAudios: searchDataFields.isAudios,
+          isSites: searchDataFields.isSites,
+          LastModifiedStartDate: formatDateToUTC(startDate)
+            ? formatDateToUTC(startDate)
+            : "",
+          LastModifiedEndDate: formatDateToUTC(endDate)
+            ? formatDateToUTC(endDate)
+            : "",
           UserIDToSearch: searchDataFields.UserIDToSearch,
           isOwnedByMe: searchDataFields.isOwnedByMe,
           isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
           isSpecificUser: searchDataFields.isSpecificUser,
           sRow: 0,
-          Length: 50,
+          Length: 10,
           SortBy: 1,
           isDescending: searchDataFields.isDescending,
         };
@@ -869,15 +1245,15 @@ const SearchComponent = ({
     return { startDate, endDate };
   };
 
-  // thisw is for cleare state
+  // this is for cleare state
   const handleClearAllSearchOptions = () => {
-    setDateValue(t("Last-modified"));
+    setDateValue(t("Date-modified"));
     setSearchDataFields({
       UserID: userID ? parseInt(userID) : 0,
       OrganizationID: organizationID
         ? parseInt(organizationID)
         : organizationID,
-      StatusID: 0,
+      StatusID: 3,
       Title: "",
       isDocument: false,
       isSpreadSheet: false,
@@ -886,6 +1262,9 @@ const SearchComponent = ({
       isPDF: false,
       isFolders: false,
       isVideos: false,
+      isImages: false,
+      isAudios: false,
+      isSites: false,
       LastModifiedStartDate: "",
       LastModifiedEndDate: "",
       UserIDToSearch: 0,
@@ -893,8 +1272,8 @@ const SearchComponent = ({
       isNotOwnedByMe: false,
       isSpecificUser: false,
       sRow: 0,
-      Length: 50,
-      SortBy: 0,
+      Length: 10,
+      SortBy: 1,
       isDescending: false,
     });
     let data = {
@@ -902,7 +1281,7 @@ const SearchComponent = ({
       OrganizationID: organizationID
         ? parseInt(organizationID)
         : organizationID,
-      StatusID: 0,
+      StatusID: 3,
       Title: "",
       isDocument: false,
       isSpreadSheet: false,
@@ -911,6 +1290,9 @@ const SearchComponent = ({
       isPDF: false,
       isFolders: false,
       isVideos: false,
+      isImages: false,
+      isAudios: false,
+      isSites: false,
       LastModifiedStartDate: "",
       LastModifiedEndDate: "",
       UserIDToSearch: 0,
@@ -918,11 +1300,23 @@ const SearchComponent = ({
       isNotOwnedByMe: false,
       isSpecificUser: false,
       sRow: 0,
-      Length: 50,
-      SortBy: 0,
+      Length: 10,
+      SortBy: 1,
       isDescending: false,
     };
     dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+    setSearchResultFields({
+      Date: null,
+      Type: null,
+      Location: {
+        value: 3,
+        label: t("Any-where-in-dataRoom"),
+      },
+      People: null,
+    });
+
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
   };
 
   // this is select for start date
@@ -930,7 +1324,7 @@ const SearchComponent = ({
     const formattedStarttDate = dates
       ? new DateObject(dates).format("DD MMMM, YYYY")
       : "";
-    console.log("handleStartDatePickerChange", formattedStarttDate);
+    setSelectedStartDate(dates);
     setSearchDataFields({
       ...searchDataFields,
       LastModifiedStartDate: formattedStarttDate,
@@ -942,7 +1336,7 @@ const SearchComponent = ({
     const formattedEndtDate = dates
       ? new DateObject(dates).format("DD MMMM, YYYY")
       : "";
-
+    setSelectedEndDate(dates);
     setSearchDataFields({
       ...searchDataFields,
       LastModifiedEndDate: formattedEndtDate,
@@ -951,15 +1345,6 @@ const SearchComponent = ({
 
   // this is search button handler of serach modal
   const handleSearchThroughCustomeRange = async () => {
-    let DateNewStart = new Date(searchDataFields.LastModifiedStartDate);
-    const formattedNewDate = formatDateToMMDDYY(DateNewStart);
-    let DateEndStart = new Date(searchDataFields.LastModifiedEndDate);
-    const formattedEndDate = formatDateToMMDDYY(DateEndStart);
-    const validFormattedNewDate =
-      formattedNewDate !== "NaN" ? formattedNewDate : "";
-    const validFormattedEndDate =
-      formattedEndDate !== "NaN" ? formattedEndDate : "";
-
     let data = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
@@ -972,14 +1357,23 @@ const SearchComponent = ({
       isPDF: searchDataFields.isPDF,
       isFolders: searchDataFields.isFolders,
       isVideos: searchDataFields.isVideos,
-      LastModifiedStartDate: validFormattedNewDate,
-      LastModifiedEndDate: validFormattedEndDate,
+      isImages: searchDataFields.isImages,
+      isAudios: searchDataFields.isAudios,
+      isSites: searchDataFields.isSites,
+      LastModifiedStartDate: formatDateToUTC(
+        searchDataFields.LastModifiedStartDate
+      )
+        ? formatDateToUTC(searchDataFields.LastModifiedStartDate)
+        : "",
+      LastModifiedEndDate: formatDateToUTC(searchDataFields.LastModifiedEndDate)
+        ? formatDateToUTC(searchDataFields.LastModifiedEndDate)
+        : "",
       UserIDToSearch: searchDataFields.UserIDToSearch,
       isOwnedByMe: searchDataFields.isOwnedByMe,
       isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
       isSpecificUser: searchDataFields.isSpecificUser,
       sRow: 0,
-      Length: 50,
+      Length: 10,
       SortBy: searchDataFields.SortBy,
       isDescending: searchDataFields.isDescending,
     };
@@ -989,6 +1383,10 @@ const SearchComponent = ({
 
   // const cross button on documents dropdowns
   const ClearDocumentsType = () => {
+    setSearchResultFields((prevState) => ({
+      ...prevState, // Copy the existing state
+      Type: null, // Update the Type field
+    }));
     let newData = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
@@ -1001,6 +1399,9 @@ const SearchComponent = ({
       isPDF: false,
       isFolders: false,
       isVideos: false,
+      isImages: false,
+      isAudios: false,
+      isSites: false,
       LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
       LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
       UserIDToSearch: searchDataFields.UserIDToSearch,
@@ -1008,11 +1409,10 @@ const SearchComponent = ({
       isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
       isSpecificUser: searchDataFields.isSpecificUser,
       sRow: 0,
-      Length: 50,
+      Length: 10,
       SortBy: 1,
       isDescending: searchDataFields.isDescending,
     };
-    dispatch(searchDocumentsAndFoldersApi(navigate, t, newData));
     setSearchDataFields({
       ...searchDataFields,
       isDocument: false,
@@ -1022,15 +1422,26 @@ const SearchComponent = ({
       isPDF: false,
       isFolders: false,
       isVideos: false,
+      isImages: false,
+      isAudios: false,
+      isSites: false,
     });
+    dispatch(searchDocumentsAndFoldersApi(navigate, t, newData));
   };
 
   // document location clear function
   const ClearDocumentLocation = () => {
+    setSearchResultFields((prevState) => ({
+      ...prevState, // Copy the existing state
+      Location: {
+        value: 3,
+        label: t("Any-where-in-dataRoom"),
+      }, // Update the Type field
+    }));
     let newData = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
-      StatusID: 0,
+      StatusID: 3,
       Title: searchDataFields.Title,
       isDocument: searchDataFields.isDocument,
       isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -1039,6 +1450,9 @@ const SearchComponent = ({
       isPDF: searchDataFields.isPDF,
       isFolders: searchDataFields.isFolders,
       isVideos: searchDataFields.isVideos,
+      isImages: searchDataFields.isImages,
+      isAudios: searchDataFields.isAudios,
+      isSites: searchDataFields.isSites,
       LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
       LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
       UserIDToSearch: searchDataFields.UserIDToSearch,
@@ -1046,7 +1460,7 @@ const SearchComponent = ({
       isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
       isSpecificUser: searchDataFields.isSpecificUser,
       sRow: 0,
-      Length: 50,
+      Length: 10,
       SortBy: 1,
       isDescending: searchDataFields.isDescending,
     };
@@ -1060,10 +1474,14 @@ const SearchComponent = ({
   // document people type
 
   const clearPeopleType = () => {
+    setSearchResultFields((prevState) => ({
+      ...prevState, // Copy the existing state
+      People: null, // Update the Type field
+    }));
     let newData = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
-      StatusID: 0,
+      StatusID: 3,
       Title: searchDataFields.Title,
       isDocument: searchDataFields.isDocument,
       isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -1072,6 +1490,9 @@ const SearchComponent = ({
       isPDF: searchDataFields.isPDF,
       isFolders: searchDataFields.isFolders,
       isVideos: searchDataFields.isVideos,
+      isImages: searchDataFields.isImages,
+      isAudios: searchDataFields.isAudios,
+      isSites: searchDataFields.isSites,
       LastModifiedStartDate: searchDataFields.LastModifiedStartDate,
       LastModifiedEndDate: searchDataFields.LastModifiedEndDate,
       isOwnedByMe: false,
@@ -1079,7 +1500,7 @@ const SearchComponent = ({
       isSpecificUser: false,
       UserIDToSearch: 0,
       sRow: 0,
-      Length: 50,
+      Length: 10,
       SortBy: 1,
       isDescending: searchDataFields.isDescending,
     };
@@ -1098,7 +1519,7 @@ const SearchComponent = ({
     let newData = {
       UserID: parseInt(userID),
       OrganizationID: parseInt(organizationID),
-      StatusID: 0,
+      StatusID: 3,
       Title: searchDataFields.Title,
       isDocument: searchDataFields.isDocument,
       isSpreadSheet: searchDataFields.isSpreadSheet,
@@ -1107,6 +1528,9 @@ const SearchComponent = ({
       isPDF: searchDataFields.isPDF,
       isFolders: searchDataFields.isFolders,
       isVideos: searchDataFields.isVideos,
+      isImages: searchDataFields.isImages,
+      isAudios: searchDataFields.isAudios,
+      isSites: searchDataFields.isSites,
       LastModifiedEndDate: "",
       LastModifiedStartDate: "",
       UserIDToSearch: searchDataFields.UserIDToSearch,
@@ -1114,7 +1538,7 @@ const SearchComponent = ({
       isNotOwnedByMe: searchDataFields.isNotOwnedByMe,
       isSpecificUser: searchDataFields.isSpecificUser,
       sRow: 0,
-      Length: 50,
+      Length: 10,
       SortBy: 1,
       isDescending: searchDataFields.isDescending,
     };
@@ -1124,6 +1548,14 @@ const SearchComponent = ({
       LastModifiedEndDate: "",
       LastModifiedStartDate: "",
     });
+    setSearchResultFields((prevState) => ({
+      ...prevState, // Copy the existing state
+      Date: null, // Update the Type field
+    }));
+    setDateValue(t("Date-modified"));
+
+    setSelectedStartDate(null);
+    setSelectedEndDate(null);
   };
 
   return (
@@ -1149,7 +1581,10 @@ const SearchComponent = ({
           searchDataFields.isForms ||
           searchDataFields.isPDF ||
           searchDataFields.isFolders ||
-          searchDataFields.isVideos ? (
+          searchDataFields.isVideos ||
+          searchDataFields.isImages ||
+          searchDataFields.isAudios ||
+          searchDataFields.isSites ? (
             <div className={styles["dropdown__Document_Value"]}>
               <img width="12px" height="12px" alt="" src={CheckIconDropdown} />
               <p className={styles["overflow-text"]}>
@@ -1167,7 +1602,25 @@ const SearchComponent = ({
                   ? t("Folder")
                   : searchDataFields.isVideos
                   ? t("Videos")
-                  : t("Any")}
+                  : searchDataFields.isVideos
+                  ? t("Audio")
+                  : searchDataFields.isVideos
+                  ? t("Image")
+                  : searchDataFields.isVideos
+                  ? t("Sites")
+                  : searchDataFields.isDocument &&
+                    searchDataFields.isDocument &&
+                    searchDataFields.isSpreadSheet &&
+                    searchDataFields.isPresentation &&
+                    searchDataFields.isForms &&
+                    searchDataFields.isPDF &&
+                    searchDataFields.isFolders &&
+                    searchDataFields.isVideos &&
+                    searchDataFields.isImages &&
+                    searchDataFields.isAudios &&
+                    searchDataFields.isSites
+                  ? t("Any")
+                  : null}
               </p>
               <img
                 width="12px"
@@ -1185,10 +1638,6 @@ const SearchComponent = ({
               placeholder={t("Documents")}
               isSearchable={false}
               onChange={handleChangeDocumentsOptions}
-              // defaultValue={{
-              //   value: searchResultsFields.DocumentType.value,
-              //   label: searchResultsFields.DocumentType.label
-              // }}
             />
           )}
         </Col>
@@ -1224,10 +1673,6 @@ const SearchComponent = ({
               placeholder={t("Location")}
               isSearchable={false}
               onChange={handleChangeLocationValue}
-              // value={{
-              //   value: searchResultsFields.documentLocation.value,
-              //   label: searchResultsFields.documentLocation.label
-              // }}
             />
           )}
         </Col>
@@ -1262,15 +1707,11 @@ const SearchComponent = ({
             </div>
           ) : (
             <Select
-              options={OptionsOwner(t)}
+              options={OptionsOwner(t).concat(transformedOptions)}
               placeholder={t("People")}
               classNamePrefix={"searchResult_Document"}
               onChange={handleChangeStatus}
               isSearchable={false}
-              // value={{
-              //   label: searchResultsFields.userPermission.label,
-              //   value: searchResultsFields.userPermission.value
-              // }}
             />
           )}
         </Col>
@@ -1325,27 +1766,68 @@ const SearchComponent = ({
       searchAllData !== null &&
       gridbtnactive ? (
         <>
-          <GridViewDataRoom
-            data={searchAllData}
-            optionsforFolder={optionsforFolder(t)}
-            optionsforFile={optionsforFile(t)}
-            // sRowsData={sRowsData}
-            // totalRecords={totalRecords}
-            // filter_Value={filterValue}
-          />
+          <InfiniteScroll
+            dataLength={searchAllData.length}
+            next={handleScroll}
+            style={{
+              overflowX: "hidden",
+            }}
+            hasMore={searchAllData.length === totalRecords ? false : true}
+            height={"50vh"}
+            endMessage=""
+            loader={
+              searchAllData.length <= totalRecords && (
+                <Row>
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className="d-flex justify-content-center mt-2"
+                  >
+                    <Spin indicator={antIcon} />
+                  </Col>
+                </Row>
+              )
+            }
+          >
+            <GridViewDataRoom
+              data={searchAllData}
+              optionsforFolder={optionsforFolder(t)}
+              optionsforFile={optionsforFile(t)}
+              // sRowsData={sRowsData}
+              // totalRecords={totalRecords}
+              // filter_Value={filterValue}
+            />
+          </InfiniteScroll>
         </>
       ) : searchAllData &&
         searchAllData !== undefined &&
         searchAllData !== null &&
         listviewactive === true ? (
         <>
-          <section
+          <InfiniteScroll
+            dataLength={searchAllData.length}
+            next={handleScroll}
             style={{
-              height: 380,
-              overflowY: "scroll",
               overflowX: "hidden",
             }}
-            onScroll={handleScroll}
+            hasMore={searchAllData.length === totalRecords ? false : true}
+            height={"57vh"}
+            endMessage=""
+            loader={
+              searchAllData.length <= totalRecords && (
+                <Row>
+                  <Col
+                    sm={12}
+                    md={12}
+                    lg={12}
+                    className="d-flex justify-content-center mt-2"
+                  >
+                    <Spin indicator={antIcon} />
+                  </Col>
+                </Row>
+              )
+            }
           >
             <TableToDo
               sortDirections={["descend", "ascend"]}
@@ -1356,19 +1838,7 @@ const SearchComponent = ({
               onChange={handleSortMyDocuments}
               size={"middle"}
             />
-            {DataRoomReducer.TableSpinner && (
-              <Row>
-                <Col
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  className="d-flex justify-content-center align-items-center my-4"
-                >
-                  <Spin indicator={antIcon} />
-                </Col>
-              </Row>
-            )}
-          </section>
+          </InfiniteScroll>
         </>
       ) : (
         <div className={styles["empty-search-state"]}>
@@ -1388,9 +1858,9 @@ const SearchComponent = ({
       )}
       <Modal
         show={customRangeVisible}
-        onHide={() => {
-          setCustomRangeVisible(false);
-        }}
+        // onHide={() => {
+        //   setCustomRangeVisible(false);
+        // }}
         setShow={setCustomRangeVisible}
         // modalFooterClassName="modalMeetingCreateFooter"
         centered
@@ -1415,20 +1885,24 @@ const SearchComponent = ({
                 className={styles["datePickerTodoCreate2"]}
               >
                 <DatePicker
-                  format={"MM DD, YYYY"}
+                  format={"DD MMM, YYYY"}
                   render={
                     <InputIcon
                       placeholder={t("select-start-date")}
                       className={styles["datepicker_input"]}
                     />
                   }
+                  containerClassName={stylesss["datePicker_Container"]}
+                  onOpenPickNewDate={false}
                   editable={false}
+                  className="datePickerTodoCreate2"
                   // value={searchDataFields.LastModifiedStartDate}
                   onChange={handleStartDatePickerChange}
                   inputMode=""
                   calendar={calendarValue}
                   locale={localValue}
                   ref={calendRef}
+                  maxDate={selectedEndDate}
                 />
               </Col>
               <Col
@@ -1439,13 +1913,16 @@ const SearchComponent = ({
               >
                 {" "}
                 <DatePicker
-                  format={"MM DD, YYYY"}
+                  format={"DD MMM, YYYY"}
                   render={
                     <InputIcon
                       placeholder={t("select-end-date")}
                       className={styles["datepicker_input"]}
                     />
                   }
+                  containerClassName={stylesss["datePicker_Container"]}
+                  className="datePickerTodoCreate2"
+                  onOpenPickNewDate={false}
                   editable={false}
                   inputMode=""
                   onChange={handleEndDatePickerChange}
@@ -1453,6 +1930,7 @@ const SearchComponent = ({
                   // value={searchDataFields.LastModifiedEndDate}
                   locale={localValue}
                   ref={calendRef}
+                  minDate={selectedStartDate}
                 />
               </Col>
             </Row>

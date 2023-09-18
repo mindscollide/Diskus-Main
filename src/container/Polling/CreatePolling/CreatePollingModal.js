@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import {
   Checkbox,
   Modal,
@@ -6,8 +6,8 @@ import {
   Notification,
   MultiDatePickers,
 } from "../../../components/elements";
-import { DateObject } from "react-multi-date-picker";
-
+import DatePicker, { DateObject } from "react-multi-date-picker";
+import EditIcon from "../../../assets/images/Edit-Icon.png";
 import styles from "./CreatePolling.module.css";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import WhiteCrossIcon from "../../../assets/images/PollCrossIcon.svg";
@@ -25,7 +25,6 @@ import plusFaddes from "../../../assets/images/PlusFadded.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
 import profile from "../../../assets/images/profile_polls.svg";
 import { useState } from "react";
-import EditIcon from "../../../assets/images/Edit-Icon.png";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import GroupIcon from "../../../assets/images/groupdropdown.svg";
@@ -52,7 +51,9 @@ import {
 } from "../../../commen/functions/regex";
 
 const CreatePolling = () => {
+  const datePickerRef = useRef();
   const animatedComponents = makeAnimated();
+  let dateFormat = "DD/MM/YYYY";
   let currentLanguage = localStorage.getItem("i18nextLng");
   registerLocale("ar", ar);
   registerLocale("en", enGB);
@@ -97,6 +98,22 @@ const CreatePolling = () => {
     },
   ]);
 
+  const CustomIcon = () => (
+    <div className="custom-icon-wrapper">
+      <img
+        src={EditIcon}
+        alt="Edit Icon"
+        height="11.11px"
+        width="11.54px"
+        className="custom-icon cursor-pointer"
+      />
+    </div>
+  );
+  const handleIconClick = () => {
+    if (datePickerRef.current) {
+      datePickerRef.current.openCalendar();
+    }
+  };
   const allValuesNotEmpty = options.every((item) => item.value !== "");
 
   const allValuesNotEmptyAcceptLastOne = options.every((item, index) => {
@@ -546,27 +563,36 @@ const CreatePolling = () => {
                           sm={12}
                           className="d-flex justify-content-center gap-2 align-items-center"
                         >
-                          <img
-                            src={AlarmClock}
-                            width="14.97px"
-                            height="14.66px"
-                            className={styles["classOFImage"]}
-                          />
-                          <span className={styles["Due_Date_heading"]}>
-                            {t("Due-date")}{" "}
-                            {createPollData.date !== ""
-                              ? changeDateStartHandler2(createPollData.date)
-                              : ""}
+                          <span
+                            onClick={handleIconClick}
+                            className="cursor-pointer d-flex gap-2 align-items-center"
+                          >
+                            <img
+                              src={AlarmClock}
+                              width="14.97px"
+                              height="14.66px"
+                              className={styles["classOFImage"]}
+                              alt=""
+                            />
+                            <span className={styles["Due_Date_heading"]}>
+                              {t("Due-date")}{" "}
+                              {createPollData.date !== ""
+                                ? changeDateStartHandler2(createPollData.date)
+                                : ""}
+                            </span>
                           </span>
-                          <MultiDatePickers
-                            value={meetingDate}
+                          <DatePicker
                             highlightToday={false}
                             onOpenPickNewDate={false}
-                            name="MeetingDate"
-                            check={true}
+                            ref={datePickerRef}
+                            render={<CustomIcon />}
+                            onChange={(value) => changeDateStartHandler(value)}
+                            format={dateFormat}
+                            calendarPosition="bottom-center"
+                            minDate={moment().toDate()}
+                            className="datePickerTodoCreate2"
                             calendar={calendarValue}
                             locale={localValue}
-                            onChange={(value) => changeDateStartHandler(value)}
                           />
                         </Col>
                       </Row>

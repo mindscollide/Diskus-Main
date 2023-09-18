@@ -1,23 +1,25 @@
-import React, { useEffect } from "react"
-import { Col, Container, Row } from "react-bootstrap"
-import { Paper } from "@material-ui/core"
-import { useTranslation } from "react-i18next"
-import styles from "./EditResolution.module.css"
-import line from "../../../assets/images/line.png"
-import FileIcon, { defaultStyles } from "react-file-icon"
-import deleteButtonCreateMeeting from "../../../assets/images/cancel_meeting_icon.svg"
-import userImage from "../../../assets/images/user.png"
-import { FileUploadToDo } from "../../../store/actions/Upload_action"
-import { useDispatch, useSelector } from "react-redux"
-import { InboxOutlined } from "@ant-design/icons"
-import { DatePicker, TimePicker, UploadProps } from "antd"
-import featherupload from "../../../assets/images/featherupload.svg"
-import Leftploygon from "../../../assets/images/Polygon 3.svg"
-import Rightploygon from "../../../assets/images/Polygon right.svg"
-import newprofile from "../../../assets/images/newprofile.png"
-import CrossIcon from "../../../assets/images/CrossIcon.svg"
-import { message, Upload } from "antd"
-import Select from "react-select"
+import React, { useEffect } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import { Paper } from "@material-ui/core";
+import { useTranslation } from "react-i18next";
+import styles from "./EditResolution.module.css";
+import DatePicker, { DateObject } from "react-multi-date-picker";
+
+import line from "../../../assets/images/line.png";
+import FileIcon, { defaultStyles } from "react-file-icon";
+import deleteButtonCreateMeeting from "../../../assets/images/cancel_meeting_icon.svg";
+import userImage from "../../../assets/images/user.png";
+import { FileUploadToDo } from "../../../store/actions/Upload_action";
+import { useDispatch, useSelector } from "react-redux";
+import { InboxOutlined } from "@ant-design/icons";
+import { TimePicker, UploadProps } from "antd";
+import featherupload from "../../../assets/images/featherupload.svg";
+import Leftploygon from "../../../assets/images/Polygon 3.svg";
+import Rightploygon from "../../../assets/images/Polygon right.svg";
+import newprofile from "../../../assets/images/newprofile.png";
+import CrossIcon from "../../../assets/images/CrossIcon.svg";
+import { message, Upload } from "antd";
+import Select from "react-select";
 import {
   TextField,
   Button,
@@ -25,15 +27,15 @@ import {
   SelectBox,
   Notification,
   InputSearchFilter,
-} from "./../../../components/elements"
-import { useState } from "react"
-import ModalresolutionRemove from "../../../container/ModalresolutionRemove/ModalresolutionRemove"
-import ModalCancellResolution from "../../../container/ModalCancellResolution/ModalCancellResolution"
-import ModalUpdateresolution from "../../../container/ModalUpdateResolution/ModalUpdateresolution"
-import MOdalResolutionCirculated from "../../../container/ModalResolutionCirculated/ModalResolutionCirculated"
-import ModalDiscardResolution from "../../../container/ModalDiscardResolution/ModalDiscardResolution"
-import ModalResolutionUpdated from "../../../container/ModalResolutionUpdated/ModalResolutionUpdated"
-import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard"
+} from "./../../../components/elements";
+import { useState } from "react";
+import ModalresolutionRemove from "../../../container/ModalresolutionRemove/ModalresolutionRemove";
+import ModalCancellResolution from "../../../container/ModalCancellResolution/ModalCancellResolution";
+import ModalUpdateresolution from "../../../container/ModalUpdateResolution/ModalUpdateresolution";
+import MOdalResolutionCirculated from "../../../container/ModalResolutionCirculated/ModalResolutionCirculated";
+import ModalDiscardResolution from "../../../container/ModalDiscardResolution/ModalDiscardResolution";
+import ModalResolutionUpdated from "../../../container/ModalResolutionUpdated/ModalResolutionUpdated";
+import EmployeeinfoCard from "../Employeeinfocard/EmployeeinfoCard";
 import {
   createResolution,
   getAllResolutionStatus,
@@ -42,8 +44,8 @@ import {
   closeResolutionApi,
   clearResponseMessage,
   updateResolutionModal,
-} from "../../../store/actions/Resolution_actions"
-import moment from "moment"
+} from "../../../store/actions/Resolution_actions";
+import moment from "moment";
 import {
   createConvert,
   createResolutionDateTime,
@@ -51,47 +53,64 @@ import {
   editResolutionTime,
   removeDashesFromDate,
   RemoveTimeDashes,
-} from "../../../commen/functions/date_formater"
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees"
-import { useNavigate } from "react-router-dom"
-import TextFieldDateTime from "../input_field_date/Input_field"
-import { ArrowLeft } from "react-bootstrap-icons"
-import { validateInput } from "../../../commen/functions/regex"
+  utcConvertintoGMT,
+} from "../../../commen/functions/date_formater";
+import gregorian from "react-date-object/calendars/gregorian";
+import arabic from "react-date-object/calendars/arabic";
+import arabic_ar from "react-date-object/locales/arabic_ar";
+import gregorian_en from "react-date-object/locales/gregorian_en";
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+import { useNavigate } from "react-router-dom";
+import TextFieldDateTime from "../input_field_date/Input_field";
+import { ArrowLeft } from "react-bootstrap-icons";
+import { validateInput } from "../../../commen/functions/regex";
+import InputIcon from "react-multi-date-picker/components/input_icon";
 const EditResolution = ({ setCancelresolution }) => {
-  const { Dragger } = Upload
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const { Dragger } = Upload;
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  let currentLanguage = localStorage.getItem("i18nextLng");
   const { ResolutionReducer, assignees, uploadReducer } = useSelector(
     (state) => state
-  )
-  const [meetingAttendeesList, setMeetingAttendeesList] = useState([])
-  const [resolutionID, setResolutionID] = useState(0)
-  const [minDate, setMinDate] = useState("")
+  );
+  const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
+  const [resolutionID, setResolutionID] = useState(0);
+  const [calendarValue, setCalendarValue] = useState(gregorian);
+  const [localValue, setLocalValue] = useState(gregorian_en);
+  const currentDate = new Date();
 
   useEffect(() => {
-    const min_date = new Date()
-    setMinDate(moment(min_date).format("YYYY-MM-DD"))
-  }, [])
-  const [isVoter, setVoter] = useState(true)
+    if (currentLanguage !== undefined) {
+      if (currentLanguage === "en") {
+        setCalendarValue(gregorian);
+        setLocalValue(gregorian_en);
+      } else if (currentLanguage === "ar") {
+        setCalendarValue(arabic);
+        setLocalValue(arabic_ar);
+      }
+    }
+  }, [currentLanguage]);
+  const [isVoter, setVoter] = useState(true);
   const [open, setOpen] = useState({
     flag: false,
     message: "",
-  })
-  const [votingMethods, setVotingMethods] = useState([])
+  });
+  const [votingMethods, setVotingMethods] = useState([]);
   const [decision, setDecision] = useState({
     label: t("Decision-pending"),
     value: 1,
-  })
-  const [voters, setVoters] = useState([])
-  const [nonVoter, setNonVoters] = useState([])
-  const [votersForView, setVotersForView] = useState([])
-  const [nonVoterForView, setNonVotersForView] = useState([])
-  const [error, setError] = useState(false)
-  const [VoterName, setVoterName] = useState("")
-  const [VoterID, setVoterID] = useState(0)
-  const [isVoterModalRemove, setVoterModalRemove] = useState(false)
-  const [isNonVoterModalRemove, setNonVoterModalRemove] = useState(false)
+  });
+  const [voters, setVoters] = useState([]);
+  const [nonVoter, setNonVoters] = useState([]);
+  const [votersForView, setVotersForView] = useState([]);
+  const [nonVoterForView, setNonVotersForView] = useState([]);
+  const [error, setError] = useState(false);
+  const [VoterName, setVoterName] = useState("");
+  const [VoterID, setVoterID] = useState(0);
+  const [isVoterModalRemove, setVoterModalRemove] = useState(false);
+  const [isNonVoterModalRemove, setNonVoterModalRemove] = useState(false);
   const [reminderData, setReminderData] = useState([
     {
       label: "10 minutes before",
@@ -121,44 +140,47 @@ const EditResolution = ({ setCancelresolution }) => {
       label: "7 days before",
       value: 7,
     },
-  ])
+  ]);
 
   const [circulationDateTime, setCirculationDateTime] = useState({
     date: "",
     time: "",
-  })
+    dateValue: "",
+  });
   const [votingDateTime, setVotingDateTime] = useState({
     date: "",
     time: "",
-  })
+    dateValue: "",
+  });
   const [decisionDateTime, setDecisionDateTime] = useState({
     date: "",
     time: "",
-  })
+    dateValue: "",
+  });
   const [ReminderFrequncyValue, setReminderFrequencyValue] = useState({
     label: "",
     value: 0,
-  })
+  });
   const [votingMethodValue, setVotingMethodValue] = useState({
     label: "",
     value: 0,
-  })
-  const [taskAssignedToInput, setTaskAssignedToInput] = useState("")
-  const [taskAssignedTo, setTaskAssignedTo] = useState(0)
-  const [taskAssignedName, setTaskAssignedName] = useState("")
-  const [emailValue, setEmailValue] = useState("")
-  const [isNonVoter, setNonVoter] = useState(false)
-  const [resolutioncancel, setResolutioncancel] = useState(false)
-  const [showmodal, setShowmodal] = useState(false)
-  const [fileSize, setFileSize] = useState(0)
-  const [cancelResolutionID, setCancelResolutionID] = useState(0)
-  const [fileForSend, setFileForSend] = useState([])
-  const [resolutionupdate, setResolutionupdate] = useState(false)
-  const [resolutionCirculate, setResolutionCirculate] = useState(false)
+  });
+  const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
+  const [taskAssignedTo, setTaskAssignedTo] = useState(0);
+  const [taskAssignedName, setTaskAssignedName] = useState("");
+  const [emailValue, setEmailValue] = useState("");
+  const [isNonVoter, setNonVoter] = useState(false);
+  const [resolutioncancel, setResolutioncancel] = useState(false);
+  const [showmodal, setShowmodal] = useState(false);
+  const [fileSize, setFileSize] = useState(0);
+  const [cancelResolutionID, setCancelResolutionID] = useState(0);
+  const [fileForSend, setFileForSend] = useState([]);
+  const [resolutionupdate, setResolutionupdate] = useState(false);
+  const [resolutionCirculate, setResolutionCirculate] = useState(false);
   const [resolutionUpdateSuccessfully, setResolutionUpdateSuccessfully] =
-    useState(false)
-  const [discardresolution, setDsicardresolution] = useState(false)
-  const [tasksAttachments, setTasksAttachments] = useState([])
+    useState(false);
+  const [discardresolution, setDsicardresolution] = useState(false);
+  const [tasksAttachments, setTasksAttachments] = useState([]);
   const [editResolutionData, setEditResolutionData] = useState({
     FK_ResolutionStatusID: 0,
     FK_ResolutionVotingMethodID: 0,
@@ -173,120 +195,125 @@ const EditResolution = ({ setCancelresolution }) => {
     IsResolutionPublic: false,
     pK_ResolutionID: 0,
     ResolutionStatus: "",
-  })
-  const [onclickFlag, setOnclickFlag] = useState(false)
+  });
+  const [onclickFlag, setOnclickFlag] = useState(false);
 
   const ShowVoter = () => {
-    setVoter(true)
-    setNonVoter(false)
-  }
+    setVoter(true);
+    setNonVoter(false);
+  };
 
   const ShowNonVoters = () => {
-    setVoter(false)
-    setNonVoter(true)
-  }
+    setVoter(false);
+    setNonVoter(true);
+  };
 
   const SlideLeft = () => {
-    var Slider = document.getElementById("Slider")
-    Slider.scrollLeft = Slider.scrollLeft - 300
-  }
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft - 300;
+  };
 
   const Slideright = () => {
-    var Slider = document.getElementById("Slider")
-    Slider.scrollLeft = Slider.scrollLeft + 300
-  }
+    var Slider = document.getElementById("Slider");
+    Slider.scrollLeft = Slider.scrollLeft + 300;
+  };
 
   const resolutiondiscard = () => {
-    setDsicardresolution(true)
-  }
+    setDsicardresolution(true);
+  };
+  const dateformatYYYYMMDD = (date) => {
+    if (!!date && typeof date === "string") {
+      return moment(date).add(1, "days").toDate();
+    }
+  };
 
   const reslotionupdatemodal = () => {
-    setResolutionupdate(true)
-  }
+    setResolutionupdate(true);
+  };
 
   const resolutioncancell = (id) => {
-    setCancelResolutionID(id)
-    setResolutioncancel(true)
-  }
+    setCancelResolutionID(id);
+    setResolutioncancel(true);
+  };
 
   const removeUserForVoter = (id, name) => {
-    setVoterModalRemove(true)
-    setVoterID(id)
-    setVoterName(name)
-  }
+    setVoterModalRemove(true);
+    setVoterID(id);
+    setVoterName(name);
+  };
 
   const removeUserForNonVoter = (id, name) => {
-    setNonVoterModalRemove(true)
-    setVoterID(id)
-    setVoterName(name)
-  }
+    setNonVoterModalRemove(true);
+    setVoterID(id);
+    setVoterName(name);
+  };
 
   const RemoveVoterInfo = () => {
     let findIndexVoter = votersForView.findIndex(
       (data, index) => data.pK_UID === VoterID
-    )
+    );
     let findIndexFromSendData = voters.findIndex(
       (data, index) => data.FK_UID === VoterID
-    )
+    );
     if (findIndexVoter !== -1) {
-      votersForView.splice(findIndexVoter, 1)
-      voters.splice(findIndexFromSendData, 1)
-      setVotersForView([...votersForView])
-      setVoters([...voters])
+      votersForView.splice(findIndexVoter, 1);
+      voters.splice(findIndexFromSendData, 1);
+      setVotersForView([...votersForView]);
+      setVoters([...voters]);
     }
-    setVoterID(0)
-    setVoterName("")
-    setVoterModalRemove(false)
-  }
+    setVoterID(0);
+    setVoterName("");
+    setVoterModalRemove(false);
+  };
 
   const removeNonVoterInfo = () => {
     let findIndexVoter = nonVoterForView.findIndex(
       (data, index) => data.pK_UID === VoterID
-    )
+    );
     let findIndexFromSendData = nonVoter.findIndex(
       (data, index) => data.FK_UID === VoterID
-    )
+    );
     if (findIndexVoter !== -1) {
-      nonVoterForView.splice(findIndexVoter, 1)
-      nonVoter.splice(findIndexFromSendData, 1)
-      setNonVotersForView([...nonVoterForView])
-      setNonVoters([...nonVoter])
+      nonVoterForView.splice(findIndexVoter, 1);
+      nonVoter.splice(findIndexFromSendData, 1);
+      setNonVotersForView([...nonVoterForView]);
+      setNonVoters([...nonVoter]);
     }
-    setNonVoterModalRemove(false)
-    setVoterID(0)
-    setVoterName("")
-  }
+    setNonVoterModalRemove(false);
+    setVoterID(0);
+    setVoterName("");
+  };
 
   //On Click Of Dropdown Value
   const onSearch = (name, id) => {
-    setOnclickFlag(true)
-    setTaskAssignedToInput(name)
-    setTaskAssignedTo(id)
-    setTaskAssignedName(name)
+    setOnclickFlag(true);
+    setTaskAssignedToInput(name);
+    setTaskAssignedTo(id);
+    setTaskAssignedName(name);
     if (meetingAttendeesList.length > 0) {
       let findAttendeeEmail = meetingAttendeesList.find(
         (data, index) => data.pK_UID === id
-      )
-      setEmailValue(findAttendeeEmail.emailAddress)
+      );
+      setEmailValue(findAttendeeEmail.emailAddress);
     }
-  }
+  };
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setOnclickFlag(false)
-    setTaskAssignedToInput(e.target.value.trimStart())
-  }
+    setOnclickFlag(false);
+    setTaskAssignedToInput(e.target.value.trimStart());
+  };
 
   const ReminderChangeHandler = (e) => {
     setEditResolutionData({
       ...editResolutionData,
       FK_ResolutionReminderFrequency_ID: e.value,
-    })
+    });
     setReminderFrequencyValue({
       label: e.label,
       value: e.value,
-    })
-  }
+    });
+  };
 
   //Drop Down Values for voters
   // const searchFilterHandler = (value) => {
@@ -322,7 +349,7 @@ const EditResolution = ({ setCancelresolution }) => {
   //   }
   // };
   const searchFilterHandler = (value) => {
-    let allAssignees = assignees.user
+    let allAssignees = assignees.user;
     if (
       allAssignees !== undefined &&
       allAssignees !== null &&
@@ -330,9 +357,9 @@ const EditResolution = ({ setCancelresolution }) => {
     ) {
       return allAssignees
         .filter((item) => {
-          const searchTerm = value.toLowerCase()
-          const assigneesName = item.name.toLowerCase()
-          return searchTerm && assigneesName.startsWith(searchTerm)
+          const searchTerm = value.toLowerCase();
+          const assigneesName = item.name.toLowerCase();
+          return searchTerm && assigneesName.startsWith(searchTerm);
         })
         .slice(0, 10)
         .map((item) => (
@@ -348,30 +375,30 @@ const EditResolution = ({ setCancelresolution }) => {
             />
             <p className="p-0 m-0">{item.name}</p>
           </div>
-        ))
+        ));
     } else {
     }
-  }
+  };
   const deleteFilefromAttachments = (data, index) => {
-    let fileSizefound = fileSize - data.fileSize
+    let fileSizefound = fileSize - data.fileSize;
     let fileForSendingIndex = fileForSend.findIndex(
       (newData, index) => newData.name === data.DisplayAttachmentName
-    )
-    fileForSend.splice(fileForSendingIndex, 1)
-    setFileForSend(fileForSend)
-    setFileSize(fileSizefound)
-    let searchIndex = tasksAttachments
-    searchIndex.splice(index, 1)
-    setTasksAttachments([...tasksAttachments])
-  }
+    );
+    fileForSend.splice(fileForSendingIndex, 1);
+    setFileForSend(fileForSend);
+    setFileSize(fileSizefound);
+    let searchIndex = tasksAttachments;
+    searchIndex.splice(index, 1);
+    setTasksAttachments([...tasksAttachments]);
+  };
 
   const addVoters = () => {
     let findVoter = voters.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo
-    )
+    );
     let findisAlreadyExist = nonVoter.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo
-    )
+    );
     if (findisAlreadyExist === -1) {
       if (findVoter === -1) {
         if (taskAssignedToInput !== 0) {
@@ -384,11 +411,11 @@ const EditResolution = ({ setCancelresolution }) => {
                   FK_VotingStatus_ID: 3,
                   Notes: "",
                   Email: voeterdata.emailAddress,
-                })
-                votersForView.push(voeterdata)
-              })
-            setVoters([...voters])
-            setVotersForView([...votersForView])
+                });
+                votersForView.push(voeterdata);
+              });
+            setVoters([...voters]);
+            setVotersForView([...votersForView]);
           } else {
           }
         }
@@ -396,28 +423,28 @@ const EditResolution = ({ setCancelresolution }) => {
         setOpen({
           flag: true,
           message: t("This-voter-already-exist"),
-        })
+        });
       }
     } else {
       setOpen({
         flag: true,
         message: t("This-voter-is-already-exist-in-non-voter-list"),
-      })
+      });
     }
 
-    setTaskAssignedToInput("")
-    setTaskAssignedTo(0)
-    setTaskAssignedName("")
-    setEmailValue("")
-  }
+    setTaskAssignedToInput("");
+    setTaskAssignedTo(0);
+    setTaskAssignedName("");
+    setEmailValue("");
+  };
 
   const addNonVoter = () => {
     let findVoter = nonVoter.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo
-    )
+    );
     let findisAlreadyExist = voters.findIndex(
       (data, index) => data.FK_UID === taskAssignedTo
-    )
+    );
     if (findisAlreadyExist === -1) {
       if (findVoter === -1) {
         if (taskAssignedToInput !== 0) {
@@ -430,31 +457,31 @@ const EditResolution = ({ setCancelresolution }) => {
                   FK_VotingStatus_ID: 3,
                   Notes: "",
                   Email: voeterdata.emailAddress,
-                })
-                nonVoterForView.push(voeterdata)
-              })
-            setNonVoters([...nonVoter])
-            setNonVotersForView([...nonVoterForView])
+                });
+                nonVoterForView.push(voeterdata);
+              });
+            setNonVoters([...nonVoter]);
+            setNonVotersForView([...nonVoterForView]);
           }
         }
       } else {
         setOpen({
           flag: true,
           message: t("This-voter-already-exist"),
-        })
+        });
       }
     } else {
       setOpen({
         flag: true,
         message: t("This-user-already-exist-in-voter-list"),
-      })
+      });
     }
 
-    setTaskAssignedToInput("")
-    setTaskAssignedTo(0)
-    setTaskAssignedName("")
-    setEmailValue("")
-  }
+    setTaskAssignedToInput("");
+    setTaskAssignedTo(0);
+    setTaskAssignedName("");
+    setEmailValue("");
+  };
 
   const props = {
     name: "file",
@@ -462,12 +489,12 @@ const EditResolution = ({ setCancelresolution }) => {
     multiple: true,
     showUploadList: false,
     onChange(data) {
-      let fileSizeArr
+      let fileSizeArr;
       if (tasksAttachments.length > 10) {
         setOpen({
           flag: true,
           message: t("Not-allowed-more-than-10-files"),
-        })
+        });
       } else if (fileSize >= 104857600) {
         setTimeout(
           setOpen({
@@ -475,20 +502,20 @@ const EditResolution = ({ setCancelresolution }) => {
             message: t("You-can-not-upload-more-then-100MB-files"),
           }),
           3000
-        )
+        );
       } else if (tasksAttachments.length > 0) {
-        let flag = false
-        let sizezero
-        let size
+        let flag = false;
+        let sizezero;
+        let size;
         tasksAttachments.map((arData, index) => {
           if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
-            flag = true
+            flag = true;
           }
-        })
+        });
         if (data.file.size > 10485760) {
-          size = false
+          size = false;
         } else if (data.file.size === 0) {
-          sizezero = false
+          sizezero = false;
         }
         if (size === false) {
           setTimeout(
@@ -497,7 +524,7 @@ const EditResolution = ({ setCancelresolution }) => {
               message: t("File-size-should-not-be-greater-then-zero"),
             }),
             3000
-          )
+          );
         } else if (sizezero === false) {
           setTimeout(
             setOpen({
@@ -505,7 +532,7 @@ const EditResolution = ({ setCancelresolution }) => {
               message: t("File-size-should-not-be-zero"),
             }),
             3000
-          )
+          );
         } else if (flag === true) {
           setTimeout(
             setOpen({
@@ -513,26 +540,26 @@ const EditResolution = ({ setCancelresolution }) => {
               message: t("File-already-exists"),
             }),
             3000
-          )
+          );
         } else {
           let file = {
             DisplayAttachmentName: data.file.name,
             OriginalAttachmentName: data.file.name,
             fileSize: data.file.originFileObj.size,
-          }
-          setTasksAttachments([...tasksAttachments, file])
-          fileSizeArr = data.file.originFileObj.size + fileSize
-          setFileForSend([...fileForSend, data.file.originFileObj])
-          setFileSize(fileSizeArr)
+          };
+          setTasksAttachments([...tasksAttachments, file]);
+          fileSizeArr = data.file.originFileObj.size + fileSize;
+          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileSize(fileSizeArr);
           // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
         }
       } else {
-        let sizezero
-        let size
+        let sizezero;
+        let size;
         if (data.file.size > 10485760) {
-          size = false
+          size = false;
         } else if (data.file.size === 0) {
-          sizezero = false
+          sizezero = false;
         }
         if (size === false) {
           setTimeout(
@@ -541,7 +568,7 @@ const EditResolution = ({ setCancelresolution }) => {
               message: t("File-size-should-not-be-greater-then-zero"),
             }),
             3000
-          )
+          );
         } else if (sizezero === false) {
           setTimeout(
             setOpen({
@@ -549,32 +576,32 @@ const EditResolution = ({ setCancelresolution }) => {
               message: t("File-size-should-not-be-zero"),
             }),
             3000
-          )
+          );
         } else {
           let file = {
             DisplayAttachmentName: data.file.name,
             OriginalAttachmentName: data.file.name,
             fileSize: data.file.originFileObj.size,
-          }
-          setTasksAttachments([...tasksAttachments, file])
-          fileSizeArr = data.file.originFileObj.size + fileSize
-          setFileForSend([...fileForSend, data.file.originFileObj])
-          setFileSize(fileSizeArr)
+          };
+          setTasksAttachments([...tasksAttachments, file]);
+          fileSizeArr = data.file.originFileObj.size + fileSize;
+          setFileForSend([...fileForSend, data.file.originFileObj]);
+          setFileSize(fileSizeArr);
           // dispatch(FileUploadToDo(navigate, data.file.originFileObj, t));
         }
       }
     },
     onDrop(e) {},
     customRequest() {},
-  }
+  };
 
   const handleCirculateResolution = () => {
     if (fileForSend.length > 0) {
-      let counter = fileForSend.length
+      let counter = fileForSend.length;
       fileForSend.map(async (newData, index) => {
-        await dispatch(FileUploadToDo(navigate, newData, t))
-        counter = counter - 1
-      })
+        await dispatch(FileUploadToDo(navigate, newData, t));
+        counter = counter - 1;
+      });
       let Data = {
         ResolutionModel: {
           FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
@@ -602,7 +629,7 @@ const EditResolution = ({ setCancelresolution }) => {
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
-      }
+      };
       dispatch(
         createResolution(
           navigate,
@@ -614,7 +641,7 @@ const EditResolution = ({ setCancelresolution }) => {
           2,
           2
         )
-      )
+      );
     } else {
       let Data = {
         ResolutionModel: {
@@ -643,7 +670,7 @@ const EditResolution = ({ setCancelresolution }) => {
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
-      }
+      };
       dispatch(
         createResolution(
           navigate,
@@ -655,17 +682,17 @@ const EditResolution = ({ setCancelresolution }) => {
           2,
           2
         )
-      )
+      );
     }
-  }
+  };
 
   const handleUpdateResolution = () => {
     if (fileForSend.length > 0) {
-      let counter = fileForSend.length
+      let counter = fileForSend.length;
       fileForSend.map(async (newData, index) => {
-        await dispatch(FileUploadToDo(navigate, newData, t))
-        counter = counter - 1
-      })
+        await dispatch(FileUploadToDo(navigate, newData, t));
+        counter = counter - 1;
+      });
       let Data = {
         ResolutionModel: {
           FK_ResolutionStatusID: editResolutionData.FK_ResolutionStatusID,
@@ -693,7 +720,7 @@ const EditResolution = ({ setCancelresolution }) => {
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
-      }
+      };
       dispatch(
         createResolution(
           navigate,
@@ -705,7 +732,7 @@ const EditResolution = ({ setCancelresolution }) => {
           2,
           1
         )
-      )
+      );
     } else {
       let Data = {
         ResolutionModel: {
@@ -734,7 +761,7 @@ const EditResolution = ({ setCancelresolution }) => {
           FK_OrganizationID: JSON.parse(localStorage.getItem("organizationID")),
           FK_UID: JSON.parse(localStorage.getItem("userID")),
         },
-      }
+      };
       dispatch(
         createResolution(
           navigate,
@@ -746,9 +773,9 @@ const EditResolution = ({ setCancelresolution }) => {
           2,
           1
         )
-      )
+      );
     }
-  }
+  };
 
   const createResolutionHandleClick = async (id) => {
     if (
@@ -763,79 +790,79 @@ const EditResolution = ({ setCancelresolution }) => {
       editResolutionData.FK_ResolutionReminderFrequency_ID !== 0
     ) {
       if (id === 1) {
-        setResolutionupdate(true)
-        setResolutionCirculate(false)
+        setResolutionupdate(true);
+        setResolutionCirculate(false);
       } else {
         if (id === 2 && Object.keys(voters).length <= 0) {
-          setError(true)
-          setVoter(true)
-          setNonVoter(false)
+          setError(true);
+          setVoter(true);
+          setNonVoter(false);
         } else {
-          setResolutionupdate(false)
-          setResolutionCirculate(true)
+          setResolutionupdate(false);
+          setResolutionCirculate(true);
         }
       }
     } else {
-      setError(true)
+      setError(true);
       setOpen({
         flag: true,
         message: t("Please-fill-all-the-fields"),
-      })
+      });
     }
-  }
+  };
 
   const handleChangeChecker = (e, checked) => {
     setEditResolutionData({
       ...editResolutionData,
       IsResolutionPublic: e.target.checked,
-    })
-  }
+    });
+  };
 
   // Resolution Voting Method ID
   const detailDropDownhandler = (e) => {
     setEditResolutionData({
       ...editResolutionData,
       FK_ResolutionVotingMethodID: e.value,
-    })
+    });
     setVotingMethodValue({
       label: e.label,
       value: e.value,
-    })
-  }
+    });
+  };
 
   // title and description change Handler
   const handleChange = (e) => {
-    let name = e.target.name
-    let value = e.target.value
+    let name = e.target.name;
+    let value = e.target.value;
     if (name === "ResolutionTitle") {
-      let valueCheck = validateInput(value)
+      let valueCheck = validateInput(value);
       if (valueCheck !== "") {
         setEditResolutionData({
           ...editResolutionData,
           Title: valueCheck,
-        })
+        });
       } else {
         setEditResolutionData({
           ...editResolutionData,
           Title: "",
-        })
+        });
       }
     }
     if (name === "ResolutionDescription") {
-      let valueCheck = value.replace(/[^a-zA-Z0-9!@#$%^&*() ]/g, "")
+      let valueCheck = value.replace(/[^a-zA-Z0-9!@#$%^&*() ]/g, "");
       if (valueCheck !== "") {
         setEditResolutionData({
           ...editResolutionData,
           NotesToVoter: valueCheck,
-        })
+        });
       } else {
         setEditResolutionData({
           ...editResolutionData,
           NotesToVoter: "",
-        })
+        });
       }
     }
-  }
+  };
 
   const handleClickCancelResolution = () => {
     if (cancelResolutionID !== 0) {
@@ -847,17 +874,17 @@ const EditResolution = ({ setCancelresolution }) => {
           setResolutioncancel,
           setCancelresolution
         )
-      )
+      );
     }
-  }
+  };
 
   const handleDiscardBtnFunc = () => {
-    setDsicardresolution(false)
-    let resolutionData = ResolutionReducer.getResolutionbyID.resolution
-    let votersResolutionMembers = ResolutionReducer.getResolutionbyID.voters
+    setDsicardresolution(false);
+    let resolutionData = ResolutionReducer.getResolutionbyID.resolution;
+    let votersResolutionMembers = ResolutionReducer.getResolutionbyID.voters;
     let nonVotersResolutionMembers =
-      ResolutionReducer.getResolutionbyID.nonVoters
-    let attachmentsResolution = ResolutionReducer.getResolutionbyID.attachments
+      ResolutionReducer.getResolutionbyID.nonVoters;
+    let attachmentsResolution = ResolutionReducer.getResolutionbyID.attachments;
     setEditResolutionData({
       FK_ResolutionStatusID: resolutionData.fK_ResolutionDecision_ID,
       FK_ResolutionVotingMethodID: resolutionData.fK_ResolutionVotingMethodID,
@@ -872,7 +899,7 @@ const EditResolution = ({ setCancelresolution }) => {
       IsResolutionPublic: resolutionData.isResolutionPublic,
       pK_ResolutionID: resolutionData.pK_ResolutionID,
       ResolutionStatus: resolutionData.status,
-    })
+    });
     reminderData
       .filter(
         (data, index) =>
@@ -882,8 +909,8 @@ const EditResolution = ({ setCancelresolution }) => {
         setReminderFrequencyValue({
           label: reminderData.label,
           value: reminderData.value,
-        })
-      })
+        });
+      });
     votingMethods
       .filter(
         (data, index) =>
@@ -893,34 +920,43 @@ const EditResolution = ({ setCancelresolution }) => {
         setVotingMethodValue({
           label: methodData.label,
           value: methodData.value,
-        })
-      })
+        });
+      });
     setCirculationDateTime({
       date: editResolutionDate(resolutionData.circulationDateTime),
       time: editResolutionTime(resolutionData.circulationDateTime),
-    })
+      dateValue: moment(
+        utcConvertintoGMT(resolutionData.circulationDateTime)
+      ).format("DD/MM/YYYY"),
+    });
     setVotingDateTime({
-      date: editResolutionDate(resolutionData?.deadlineDateTime),
-      time: editResolutionTime(resolutionData?.deadlineDateTime),
-    })
+      date: editResolutionDate(resolutionData?.votingDeadline),
+      time: editResolutionTime(resolutionData?.votingDeadline),
+      dateValue: moment(
+        utcConvertintoGMT(resolutionData?.votingDeadline)
+      ).format("DD/MM/YYYY"),
+    });
     setDecisionDateTime({
       date: editResolutionDate(resolutionData.decisionAnnouncementDateTime),
       time: editResolutionTime(resolutionData.decisionAnnouncementDateTime),
-    })
+      dateValue: moment(
+        utcConvertintoGMT(resolutionData.decisionAnnouncementDateTime)
+      ).format("DD/MM/YYYY"),
+    });
     if (attachmentsResolution.length > 0) {
-      let resolutionAttachment = []
+      let resolutionAttachment = [];
       attachmentsResolution.map((data, index) => {
         resolutionAttachment.push({
           DisplayAttachmentName: data.displayAttachmentName,
           OriginalAttachmentName: data.originalAttachmentName,
           pK_RAID: 0,
-        })
-        setTasksAttachments(resolutionAttachment)
-      })
+        });
+        setTasksAttachments(resolutionAttachment);
+      });
     }
     if (votersResolutionMembers.length > 0) {
-      let viewVoter = []
-      let sendVoter = []
+      let viewVoter = [];
+      let sendVoter = [];
       votersResolutionMembers.map((voterMember, index) => {
         meetingAttendeesList
           .filter(
@@ -932,16 +968,16 @@ const EditResolution = ({ setCancelresolution }) => {
               FK_VotingStatus_ID: 3,
               Notes: "",
               Email: data.emailAddress,
-            })
-            viewVoter.push(data)
-          })
-        setVoters(sendVoter)
-        setVotersForView(viewVoter)
-      })
+            });
+            viewVoter.push(data);
+          });
+        setVoters(sendVoter);
+        setVotersForView(viewVoter);
+      });
     }
     if (nonVotersResolutionMembers.length > 0) {
-      let viewVoter = []
-      let sendVoter = []
+      let viewVoter = [];
+      let sendVoter = [];
       nonVotersResolutionMembers.map((voterMember, index) => {
         meetingAttendeesList
           .filter(
@@ -953,37 +989,37 @@ const EditResolution = ({ setCancelresolution }) => {
               FK_VotingStatus_ID: 3,
               Notes: "",
               Email: data.emailAddress,
-            })
-            viewVoter.push(data)
-          })
-        setNonVoters(sendVoter)
-        setNonVotersForView(viewVoter)
-      })
+            });
+            viewVoter.push(data);
+          });
+        setNonVoters(sendVoter);
+        setNonVotersForView(viewVoter);
+      });
     }
-  }
+  };
 
   // for api reponce of list of all assignees
   useEffect(() => {
     try {
       if (Object.keys(assignees.user).length > 0) {
-        setMeetingAttendeesList(assignees.user)
+        setMeetingAttendeesList(assignees.user);
       }
     } catch (error) {}
-  }, [assignees.user])
+  }, [assignees.user]);
 
   // Get Voting Methods
   useEffect(() => {
     if (ResolutionReducer.GetAllVotingMethods !== null) {
-      let newArr = []
+      let newArr = [];
       ResolutionReducer.GetAllVotingMethods.map((data, index) => {
         newArr.push({
           value: data.pK_ResolutionVotingMethodID,
           label: data.votingMethod,
-        })
-      })
-      setVotingMethods(newArr)
+        });
+      });
+      setVotingMethods(newArr);
     }
-  }, [ResolutionReducer.GetAllVotingMethods])
+  }, [ResolutionReducer.GetAllVotingMethods]);
 
   useEffect(() => {
     if (
@@ -993,32 +1029,33 @@ const EditResolution = ({ setCancelresolution }) => {
       setOpen({
         flag: true,
         message: ResolutionReducer.ResponseMessage,
-      })
+      });
       setTimeout(() => {
         setOpen({
           flag: false,
           message: "",
-        })
-      }, 4000)
-      dispatch(clearResponseMessage())
+        });
+      }, 4000);
+      dispatch(clearResponseMessage());
     }
-  }, [ResolutionReducer.ResponseMessage])
+  }, [ResolutionReducer.ResponseMessage]);
 
   useEffect(() => {
-    dispatch(getAllVotingMethods(navigate, t))
-    dispatch(getAllResolutionStatus(navigate, t))
-    dispatch(allAssignessList(navigate, t))
-  }, [])
+    dispatch(getAllVotingMethods(navigate, t));
+    dispatch(getAllResolutionStatus(navigate, t));
+    dispatch(allAssignessList(navigate, t));
+  }, []);
 
   useEffect(() => {
     try {
       if (ResolutionReducer.getResolutionbyID !== null) {
-        let resolutionData = ResolutionReducer.getResolutionbyID.resolution
-        let votersResolutionMembers = ResolutionReducer.getResolutionbyID.voters
+        let resolutionData = ResolutionReducer.getResolutionbyID.resolution;
+        let votersResolutionMembers =
+          ResolutionReducer.getResolutionbyID.voters;
         let nonVotersResolutionMembers =
-          ResolutionReducer.getResolutionbyID.nonVoters
+          ResolutionReducer.getResolutionbyID.nonVoters;
         let attachmentsResolution =
-          ResolutionReducer.getResolutionbyID.attachments
+          ResolutionReducer.getResolutionbyID.attachments;
         setEditResolutionData({
           FK_ResolutionStatusID: resolutionData.fK_ResolutionStatusID,
           FK_ResolutionVotingMethodID:
@@ -1034,7 +1071,7 @@ const EditResolution = ({ setCancelresolution }) => {
           IsResolutionPublic: resolutionData.isResolutionPublic,
           pK_ResolutionID: resolutionData.pK_ResolutionID,
           ResolutionStatus: resolutionData.status,
-        })
+        });
         reminderData
           .filter(
             (data, index) =>
@@ -1044,8 +1081,8 @@ const EditResolution = ({ setCancelresolution }) => {
             setReminderFrequencyValue({
               label: reminderData.label,
               value: reminderData.value,
-            })
-          })
+            });
+          });
         votingMethods
           .filter(
             (data, index) =>
@@ -1055,38 +1092,47 @@ const EditResolution = ({ setCancelresolution }) => {
             setVotingMethodValue({
               label: methodData.label,
               value: methodData.value,
-            })
-          })
+            });
+          });
         setCirculationDateTime({
           date: editResolutionDate(resolutionData.circulationDateTime),
           time: editResolutionTime(resolutionData.circulationDateTime),
-        })
+          dateValue: moment(
+            utcConvertintoGMT(resolutionData.circulationDateTime)
+          ).format("DD/MM/YYYY"),
+        });
         setVotingDateTime({
           date: editResolutionDate(resolutionData?.votingDeadline),
           time: editResolutionTime(resolutionData?.votingDeadline),
-        })
+          dateValue: moment(
+            utcConvertintoGMT(resolutionData.votingDeadline)
+          ).format("DD/MM/YYYY"),
+        });
         setDecisionDateTime({
           date: editResolutionDate(resolutionData.decisionAnnouncementDateTime),
           time: editResolutionTime(resolutionData.decisionAnnouncementDateTime),
-        })
+          dateValue: moment(
+            utcConvertintoGMT(resolutionData.decisionAnnouncementDateTime)
+          ).format("DD/MM/YYYY"),
+        });
         if (attachmentsResolution.length > 0) {
-          let atCH = []
+          let atCH = [];
           attachmentsResolution.map((data, index) => {
             atCH.push({
               DisplayAttachmentName: data.displayAttachmentName,
               OriginalAttachmentName: data.originalAttachmentName,
               pK_RAID: data.pK_RAID,
-            })
-          })
-          setTasksAttachments(atCH)
+            });
+          });
+          setTasksAttachments(atCH);
           // }
         }
         if (
           votersResolutionMembers.length > 0 &&
           Object.keys(meetingAttendeesList).length > 0
         ) {
-          let vTrs = []
-          let vTrsVie = []
+          let vTrs = [];
+          let vTrsVie = [];
           votersResolutionMembers.map((voterMember, index) => {
             meetingAttendeesList
               .filter(
@@ -1099,17 +1145,17 @@ const EditResolution = ({ setCancelresolution }) => {
                   FK_VotingStatus_ID: 3,
                   Notes: "",
                   Email: data.emailAddress,
-                })
-                vTrsVie.push(data)
-              })
-          })
-          setVoters(vTrs)
-          setVotersForView(vTrsVie)
+                });
+                vTrsVie.push(data);
+              });
+          });
+          setVoters(vTrs);
+          setVotersForView(vTrsVie);
           // }
         }
         if (nonVotersResolutionMembers.length > 0) {
-          let nVtr = []
-          let nVtrVie = []
+          let nVtr = [];
+          let nVtrVie = [];
 
           // if (nonVoterForView.length === 0 && nonVoter.length === 0) {
           nonVotersResolutionMembers.map((voterMember, index) => {
@@ -1124,59 +1170,70 @@ const EditResolution = ({ setCancelresolution }) => {
                   FK_VotingStatus_ID: 3,
                   Notes: "",
                   Email: data.emailAddress,
-                })
-                nVtrVie.push(data)
-              })
-          })
-          setNonVoters(nVtr)
-          setNonVotersForView(nVtrVie)
+                });
+                nVtrVie.push(data);
+              });
+          });
+          setNonVoters(nVtr);
+          setNonVotersForView(nVtrVie);
           // }
         }
       }
     } catch (error) {}
-  }, [ResolutionReducer.getResolutionbyID, meetingAttendeesList])
+  }, [ResolutionReducer.getResolutionbyID, meetingAttendeesList]);
 
-  const handleChangeDateSelection = (e) => {
-    let name = e.target.name
-    let value = e.target.value
-    if (name === "circulation") {
-      setCirculationDateTime({
-        ...circulationDateTime,
-        date: value,
-      })
-    } else if (name === "voting") {
-      setVotingDateTime({
-        ...votingDateTime,
-        date: value,
-      })
-    } else if (name === "decision") {
-      setDecisionDateTime({
-        ...decisionDateTime,
-        date: value,
-      })
-    }
-  }
+  const circulationDateChangeHandler = (date) => {
+    let meetingDateSaveFormat = new DateObject(date).format("YYYY-MM-DD");
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    setCirculationDateTime({
+      ...circulationDateTime,
+      date: meetingDateSaveFormat,
+      dateValue: meetingDateValueFormat,
+    });
+  };
+
+  const votingDateChangeHandler = (date) => {
+    let meetingDateSaveFormat = new DateObject(date).format("YYYY-MM-DD");
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    console.log("meetingDateSaveFormat", meetingDateSaveFormat);
+    setVotingDateTime({
+      ...votingDateTime,
+      date: meetingDateSaveFormat,
+      dateValue: meetingDateValueFormat,
+    });
+  };
+
+  const decisionChangeHandler = (date) => {
+    let meetingDateSaveFormat = new DateObject(date).format("YYYY-MM-DD");
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    setDecisionDateTime({
+      ...decisionDateTime,
+      date: meetingDateSaveFormat,
+      dateValue: meetingDateValueFormat,
+    });
+  };
 
   const handleChangeTimeSelection = (e) => {
-    let name = e.target.name
-    let value = e.target.value
+    let name = e.target.name;
+    let value = e.target.value;
     if (name === "circulation") {
       setCirculationDateTime({
         ...circulationDateTime,
         time: value,
-      })
+      });
     } else if (name === "voting") {
       setVotingDateTime({
         ...votingDateTime,
         time: value,
-      })
+      });
     } else if (name === "decision") {
       setDecisionDateTime({
         ...decisionDateTime,
         time: value,
-      })
+      });
     }
-  }
+  };
+
   return (
     <>
       <section>
@@ -1357,21 +1414,33 @@ const EditResolution = ({ setCancelresolution }) => {
                               md={6}
                               className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
-                              {/* <DatePicker format='YYYY-MM-DD' value={circulationDateTime.date} /> */}
-                              <TextFieldDateTime
-                                min={minDate}
-                                labelClass="d-none"
-                                name="circulation"
-                                applyClass={"search_voterInput"}
-                                value={circulationDateTime.date}
-                                change={(e) => {
-                                  handleChangeDateSelection(e)
-                                  // setCirculationDateTime({
-                                  //   ...circulationDateTime,
-                                  //   date: e.target.value,
-                                  // });
-                                }}
-                              />
+                              <div className="datepicker ">
+                                <DatePicker
+                                  format={"DD/MM/YYYY"}
+                                  minDate={currentDate}
+                                  placeholder="YYYY-MM-DD"
+                                  render={
+                                    <InputIcon
+                                      placeholder="DD/MM/YYYY"
+                                      className={
+                                        styles["Resolution_datePicker"]
+                                      }
+                                    />
+                                  }
+                                  editable={false}
+                                  className="datePickerTodoCreate2"
+                                  onOpenPickNewDate={false}
+                                  containerClassName={
+                                    styles["datePicker_Container"]
+                                  }
+                                  inputMode=""
+                                  name="circulation"
+                                  value={circulationDateTime.dateValue}
+                                  calendar={calendarValue}
+                                  locale={localValue}
+                                  onChange={circulationDateChangeHandler}
+                                />
+                              </div>
                               <Row>
                                 <Col>
                                   <p
@@ -1393,7 +1462,6 @@ const EditResolution = ({ setCancelresolution }) => {
                               className="CreateMeetingReminder resolution-search-input FontArabicRegular"
                             >
                               <TextField
-                                // min={minDate}
                                 type="time"
                                 name="circulation"
                                 labelClass="d-none"
@@ -1401,11 +1469,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                 applyClass={"search_voterInput"}
                                 value={circulationDateTime.time}
                                 change={(e) => {
-                                  handleChangeTimeSelection(e)
-                                  // setCirculationDateTime({
-                                  //   ...circulationDateTime,
-                                  //   time: e.target.value,
-                                  // });
+                                  handleChangeTimeSelection(e);
                                 }}
                               />
                               <Row>
@@ -1442,21 +1506,38 @@ const EditResolution = ({ setCancelresolution }) => {
                               md={6}
                               className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
-                              <TextFieldDateTime
-                                min={minDate}
-                                name="voting"
-                                labelClass="d-none"
-                                applyClass={"search_voterInput"}
-                                value={votingDateTime.date}
-                                change={(e) => {
-                                  handleChangeDateSelection(e)
-                                  // setVotingDateTime({
-                                  //   ...votingDateTime,
-                                  //   date: e.target.value,
-                                  // });
-                                }}
-                              />
-
+                              <div className="datepicker">
+                                <DatePicker
+                                  format={"DD/MM/YYYY"}
+                                  minDate={
+                                    circulationDateTime.date !== ""
+                                      ? dateformatYYYYMMDD(
+                                          circulationDateTime.date
+                                        )
+                                      : currentDate
+                                  }
+                                  render={
+                                    <InputIcon
+                                      placeholder="DD/MM/YYYY"
+                                      className={
+                                        styles["Resolution_datePicker"]
+                                      }
+                                    />
+                                  }
+                                  editable={false}
+                                  className="datePickerTodoCreate2"
+                                  onOpenPickNewDate={false}
+                                  containerClassName={
+                                    styles["datePicker_Container"]
+                                  }
+                                  inputMode=""
+                                  name="voting"
+                                  value={votingDateTime.dateValue}
+                                  calendar={calendarValue}
+                                  locale={localValue}
+                                  onChange={votingDateChangeHandler}
+                                />
+                              </div>
                               <Row>
                                 <Col>
                                   <p
@@ -1485,11 +1566,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                 applyClass={"search_voterInput"}
                                 value={votingDateTime.time}
                                 change={(e) => {
-                                  handleChangeTimeSelection(e)
-                                  // setVotingDateTime({
-                                  //   ...votingDateTime,
-                                  //   time: e.target.value,
-                                  // });
+                                  handleChangeTimeSelection(e);
                                 }}
                               />
                               <Row>
@@ -1528,20 +1605,37 @@ const EditResolution = ({ setCancelresolution }) => {
                               md={6}
                               className="CreateMeetingReminder resolution-search-input FontArabicRegular "
                             >
-                              <TextFieldDateTime
-                                applyClass={"search_voterInput"}
-                                min={minDate}
-                                name="decision"
-                                labelClass="d-none"
-                                value={decisionDateTime.date}
-                                change={(e) => {
-                                  handleChangeDateSelection(e)
-                                  // setDecisionDateTime({
-                                  //   ...decisionDateTime,
-                                  //   date: e.target.value,
-                                  // });
-                                }}
-                              />
+                              <div className="datepicker">
+                                <DatePicker
+                                  format={"DD/MM/YYYY"}
+                                  minDate={
+                                    votingDateTime.date !== ""
+                                      ? dateformatYYYYMMDD(votingDateTime.date)
+                                      : currentDate
+                                  }
+                                  placeholder="YYYY-MM-DD"
+                                  render={
+                                    <InputIcon
+                                      placeholder="DD/MM/YYYY"
+                                      className={
+                                        styles["Resolution_datePicker"]
+                                      }
+                                    />
+                                  }
+                                  editable={false}
+                                  className="datePickerTodoCreate2"
+                                  onOpenPickNewDate={false}
+                                  containerClassName={
+                                    styles["datePicker_Container"]
+                                  }
+                                  inputMode=""
+                                  name="decision"
+                                  value={decisionDateTime.dateValue}
+                                  calendar={calendarValue}
+                                  locale={localValue}
+                                  onChange={decisionChangeHandler}
+                                />
+                              </div>
                               <Row>
                                 <Col>
                                   <p
@@ -1572,11 +1666,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                 applyClass={"search_voterInput"}
                                 value={decisionDateTime.time}
                                 change={(e) => {
-                                  handleChangeTimeSelection(e)
-                                  // setDecisionDateTime({
-                                  //   ...decisionDateTime,
-                                  //   time: e.target.value,
-                                  // });
+                                  handleChangeTimeSelection(e);
                                 }}
                               />
                               <Row>
@@ -1834,7 +1924,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                                         </Row>
                                                       </Col>
                                                     </>
-                                                  )
+                                                  );
                                                 }
                                               )
                                             : null}
@@ -1941,7 +2031,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                                               Employeeemail={
                                                                 data?.emailAddress
                                                               }
-                                                                EmployeePic={
+                                                              EmployeePic={
                                                                 data?.displayProfilePictureName
                                                               }
                                                               Icon={
@@ -1965,7 +2055,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                                         </Row>
                                                       </Col>
                                                     </>
-                                                  )
+                                                  );
                                                 }
                                               )
                                             : null}
@@ -2040,11 +2130,11 @@ const EditResolution = ({ setCancelresolution }) => {
                                                       var ext =
                                                         data?.DisplayAttachmentName?.split(
                                                           "."
-                                                        ).pop()
+                                                        ).pop();
                                                       const first =
                                                         data?.DisplayAttachmentName?.split(
                                                           " "
-                                                        )[0]
+                                                        )[0];
                                                       return (
                                                         <Col
                                                           sm={12}
@@ -2167,7 +2257,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                                             {first}
                                                           </p>
                                                         </Col>
-                                                      )
+                                                      );
                                                     }
                                                   )
                                                 : null}
@@ -2257,7 +2347,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                     <Button
                                       text={<ArrowLeft size={30} />}
                                       onClick={() => {
-                                        dispatch(updateResolutionModal(false))
+                                        dispatch(updateResolutionModal(false));
                                       }}
                                       className={
                                         styles["Go_Back_EditResolution"]
@@ -2372,7 +2462,7 @@ const EditResolution = ({ setCancelresolution }) => {
       )}
       <Notification message={open.message} setOpen={setOpen} open={open.flag} />
     </>
-  )
-}
+  );
+};
 
-export default EditResolution
+export default EditResolution;

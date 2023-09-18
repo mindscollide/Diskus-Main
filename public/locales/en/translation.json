@@ -975,7 +975,7 @@
   "Any-where-in-dataRoom": "Any Where in DataRoom",
   "My-documents": "My Documents",
   "Owned-by-me": "Owned by me",
-  "Not-owned-by-me": "Not-Owned by Me",
+  "Not-owned-by-me": "Not Owned by Me",
   "Specific-person": "Specific Person",
   "Viewer": "Viewer",
   "Last-7-days": "Last 7 days",
@@ -1427,5 +1427,10 @@
   "Save-and-published": "Save And Published",
   "Update-and-published": "Update And Published",
   "Please-select-date": "Please Select Date",
-  "Sub-agenda-title": "Sub Agenda Title"
+  "Images":"Images",
+  "Sub-agenda-title": "Sub Agenda Title",
+  "Sites":"Sites",
+  "Custom-date-range":"Custom Date Range",
+  "select-end-date": "Select End Date",
+  "select-start-date": "Select Start Date"
 }

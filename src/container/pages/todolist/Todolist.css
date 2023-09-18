@@ -407,3 +407,10 @@ body[dir="rtl"] .PaginationStyle-Committee {
   width: auto !important;
   padding: 8px 10px !important;
 }
+.Status-Todo
+  div
+  .rc-virtual-list
+  .rc-virtual-list-holder
+  .rc-virtual-list-holder-inner {
+  display: block !important;
+}

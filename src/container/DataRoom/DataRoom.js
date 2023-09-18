@@ -85,6 +85,7 @@ import {
   optionsforFile,
   optionsforFolder,
 } from "./SearchFunctionality/option";
+import { allAssignessList } from "../../store/actions/Get_List_Of_Assignees";
 const DataRoom = () => {
   // tooltip
   const dispatch = useDispatch();
@@ -182,7 +183,7 @@ const DataRoom = () => {
   const [searchDataFields, setSearchDataFields] = useState({
     UserID: userID ? parseInt(userID) : 0,
     OrganizationID: organizationID ? parseInt(organizationID) : organizationID,
-    StatusID: 0,
+    StatusID: 3,
     Title: "",
     isDocument: false,
     isSpreadSheet: false,
@@ -191,6 +192,9 @@ const DataRoom = () => {
     isPDF: false,
     isFolders: false,
     isVideos: false,
+    isAudios: false,
+    isSites: false,
+    isImages: false,
     LastModifiedStartDate: "",
     LastModifiedEndDate: "",
     UserIDToSearch: 0,
@@ -198,12 +202,21 @@ const DataRoom = () => {
     isNotOwnedByMe: false,
     isSpecificUser: false,
     sRow: 0,
-    Length: 50,
-    SortBy: 0,
+    Length: 10,
+    SortBy: 1,
     isDescending: false,
+  });
+  const [searchResultsFields, setSearchResultFields] = useState({
+    Date: null,
+    Type: null,
+    Location: null,
+    People: null,
   });
   useEffect(() => {
     try {
+      if (performance.navigation.type === 1) {
+        dispatch(allAssignessList(navigate, t));
+      }
       window.addEventListener("click", function (e) {
         let clsname = e.target.className;
         if (typeof clsname === "string") {
@@ -236,10 +249,11 @@ const DataRoom = () => {
     };
   }, []);
 
+  console.log("asdasdasdasdasdasd",isOnline);
   useEffect(() => {
     // Add an event listener to track changes in online status
     const handleOnlineStatusChange = () => {
-      setIsOnline(navigator.onLine);
+      setIsOnline(window.navigator.onLine);
     };
 
     window.addEventListener("online", handleOnlineStatusChange);
@@ -963,6 +977,7 @@ const DataRoom = () => {
       UploadCancel: false,
       Progress: 0,
       UploadingError: false,
+      NetDisconnect:true,
     };
     if (file.name && Object.keys(file).length > 0) {
       newJsonCreateFile = {
@@ -974,6 +989,7 @@ const DataRoom = () => {
         UploadCancel: newJsonCreateFile.UploadCancel,
         Progress: newJsonCreateFile.Progress,
         UploadingError: newJsonCreateFile.UploadingError,
+        NetDisconnect:true,
       };
       setTasksAttachmentsID(newJsonCreateFile.TaskId);
       setTasksAttachments((prevTasks) => ({
@@ -993,8 +1009,7 @@ const DataRoom = () => {
       );
     }
   };
-  console.log("handleUploadFile", tasksAttachments);
-
+  
   // this is for file check
   useEffect(() => {
     // its check that reducer state is not null
@@ -1053,6 +1068,7 @@ const DataRoom = () => {
         Uploading: false,
         UploadCancel: false,
         UploadedAttachments: 0,
+        NetDisconnect:true,
       };
       // this is use to set data in sate of current upload
       if (directoryName) {
@@ -1064,6 +1080,7 @@ const DataRoom = () => {
           Uploading: newJsonCreate.Uploading,
           UploadCancel: newJsonCreate.UploadCancel,
           UploadedAttachments: newJsonCreate.UploadedAttachments,
+          NetDisconnect:true,
         };
 
         setDirectoryNames(directoryName);
@@ -1167,25 +1184,17 @@ const DataRoom = () => {
       // All API calls are complete, you can perform other actions here
     } catch {}
   };
-  console.log("handleChangeFolderUploadexistingIndex", detaUplodingForFOlder);
-
   // this hokks triger when folder is created and its updaet its id of anew folder
   useEffect(() => {
     // this is checker of reducer if its not on its initial state
     try {
       if (DataRoomReducer.CreatedFoldersArray.length > 0) {
-        // const currentIndexForReplaceName = DataRoomReducer.CreatedFoldersArray.findIndex(
-        //   (folder) =>
-        //     folder.DisplayFolderNameOLD === directoryNames);
         const existingIndex = detaUplodingForFOlder.findIndex(
           (folder) =>
             folder.FolderName === directoryNames &&
             folder.Uploading === false &&
             folder.FolderID === 0
         );
-        // const existingIndex = Object.keys(detaUplodingForFOlder).length - 1;
-        console.log("handleChangeFolderUploadexistingIndex", existingIndex);
-
         if (existingIndex >= 0) {
           if (
             detaUplodingForFOlder[existingIndex].Uploaded === false &&
@@ -1201,20 +1210,11 @@ const DataRoom = () => {
               ), // Set the new folder ID here
               Uploading: true,
             };
-            console.log("handleChangeFolderUploadexistingIndex", updatedFolder);
-
             // Update the last object's FolderID with dynamicData
             detaUplodingForFOlder[existingIndex] = updatedFolder;
-            console.log(
-              "handleChangeFolderUploadexistingIndex",
-              detaUplodingForFOlder
-            );
-
             // this is checker if its hase no file in it so dont perform any action futer other wise hot this function for upload files
             if (detaUplodingForFOlder[existingIndex].FileList.length > 0) {
               try {
-                console.log("handleChangeFolderUpload");
-
                 let currentView = localStorage.getItem("setTableView");
                 let viewFolderID = localStorage.getItem("folderID");
                 if (viewFolderID !== null) {
@@ -1237,7 +1237,6 @@ const DataRoom = () => {
                 );
 
                 processArraySequentially(detaUplodingForFOlder[existingIndex]);
-                console.log("handleChangeFolderUpload");
               } catch (error) {
                 console.error(error);
               }
@@ -1496,6 +1495,8 @@ const DataRoom = () => {
                   searchTabOpen={searchTabOpen}
                   setSearchbarshow={setSearchbarshow}
                   searchbarshow={searchbarshow}
+                  setSearchResultFields={setSearchResultFields}
+                  searchResultsFields={searchResultsFields}
                 />
               </Col>
               <Col
@@ -1552,6 +1553,8 @@ const DataRoom = () => {
                       getFolderDocuments={getFolderDocuments}
                       gridbtnactive={gridbtnactive}
                       listviewactive={listviewactive}
+                      setSearchResultFields={setSearchResultFields}
+                      searchResultsFields={searchResultsFields}
                     />
                   ) : (
                     <>
