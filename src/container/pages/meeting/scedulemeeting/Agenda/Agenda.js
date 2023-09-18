@@ -159,6 +159,7 @@ const Agenda = () => {
 
   const [files, setfiles] = useState([]);
 
+  //Uploader For Main Agendas File
   const props = {
     name: "file",
     // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
@@ -173,6 +174,7 @@ const Agenda = () => {
     customRequest() {},
   };
 
+  //Uploader Props For SubAgendas
   const Subprops = {
     name: "file",
     // action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
@@ -213,12 +215,14 @@ const Agenda = () => {
     },
   ];
 
+  // Function For Expanding Main Agenda See More Options
   const handleExpandedBtn = (index) => {
     console.log(index, "recordrecordrecordrecord");
     setExpandIndex(index);
     setExpand(!expand);
   };
 
+  //Function For Adding Main Agendas
   const addRow = () => {
     const updatedRows = [...rows];
     const nextID = updatedRows.length.toString();
@@ -261,6 +265,7 @@ const Agenda = () => {
     console.log(updatedRows, "updatedRowsupdatedRows");
   };
 
+  //Add Function To Add SubAgendas
   const addSubAjendaRows = (rowAgendaIndex) => {
     const updatedRows = [...rows];
     const newSubAgenda = {
@@ -315,12 +320,14 @@ const Agenda = () => {
     setMainAgendaRemovalIndex(index);
   };
 
+  //Function For removing Subagendas
   const handleCrossSubAjenda = (index, subIndex) => {
     dispatch(showAgenItemsRemovedModal(true));
     setAgendaItemRemovedIndex(index);
     setSubajendaRemoval(subIndex);
   };
 
+  //Function For Handling See More For Subagendas
   const handleSubMenuExpand = (index, subIndex) => {
     setsubexpandIndex(index);
     setExpandSubIndex(subIndex);
@@ -342,6 +349,7 @@ const Agenda = () => {
   };
   const [mainLock, setmainLock] = useState([]);
 
+  //Lock Functionality For SubAgendas Only
   const lockFunctionActive = (data) => {
     if (mainLock.length === 0) {
       // If state is empty, add the data
@@ -359,6 +367,7 @@ const Agenda = () => {
     }
   };
 
+  //Lock For Main Agenda Will Locks Its childs Also
   const apllyLockOnParentAgenda = (parentIndex) => {
     const exists = mainLock.some((item) => {
       if (item === parentIndex) {
@@ -371,7 +380,6 @@ const Agenda = () => {
   };
 
   // StateManagement of Components
-
   const handleAgendaItemChange = (index, e) => {
     let name = e.target.name;
     let value = e.target.value;
