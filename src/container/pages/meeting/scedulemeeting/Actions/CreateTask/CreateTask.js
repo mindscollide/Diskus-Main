@@ -30,6 +30,7 @@ const CreateTask = ({ setCreateaTask }) => {
   const [taskAttachments, setTaskAttachments] = useState([]);
   const [onSaveView, setonSaveView] = useState(false);
   const [error, seterror] = useState(false);
+
   const [createTaskDetails, setcreateTaskDetails] = useState({
     ActionsToTake: "",
     SelectMember: 0,
@@ -404,55 +405,61 @@ const CreateTask = ({ setCreateaTask }) => {
                 >
                   {taskAttachments.length > 0 ? (
                     <>
-                      <Row className="ps-3">
-                        {taskAttachments.map((data, index) => {
-                          console.log(data, "datadatadata");
-                          return (
-                            <>
-                              <Col lg={3} md={3} sm={3}>
-                                <section className={styles["box_For_File"]}>
-                                  <Row>
-                                    <Col lg={10} md={10} sm={10}>
-                                      <Row className="mt-2">
+                      <Row>
+                        <Col className={styles["Scroller_Actions_Page"]}>
+                          <Row className="ps-3">
+                            {taskAttachments.map((data, index) => {
+                              console.log(data, "datadatadata");
+                              return (
+                                <>
+                                  <Col lg={3} md={3} sm={3} className="mt-2">
+                                    <section className={styles["box_For_File"]}>
+                                      <Row>
+                                        <Col lg={10} md={10} sm={10}>
+                                          <Row className="mt-2">
+                                            <Col
+                                              lg={12}
+                                              md={12}
+                                              sm={12}
+                                              className="d-flex gap-2 align-items-center"
+                                            >
+                                              <img
+                                                src={PDFIcon}
+                                                height="31.57px"
+                                                width="31.57px"
+                                              />
+                                              <span
+                                                className={styles["FileName"]}
+                                              >
+                                                {data.name}
+                                              </span>
+                                            </Col>
+                                          </Row>
+                                        </Col>
                                         <Col
-                                          lg={12}
-                                          md={12}
-                                          sm={12}
-                                          className="d-flex gap-2 align-items-center"
+                                          lg={2}
+                                          md={2}
+                                          sm={2}
+                                          className="d-flex align-items-center justify-content-start mt-1"
                                         >
                                           <img
-                                            src={PDFIcon}
-                                            height="31.57px"
-                                            width="31.57px"
+                                            src={RedCrossIcon}
+                                            height="20.76px"
+                                            width="20.76px"
+                                            className={styles["CrossIconClass"]}
+                                            onClick={() => {
+                                              removeFileFunction(index);
+                                            }}
                                           />
-                                          <span className={styles["FileName"]}>
-                                            {data.name}
-                                          </span>
                                         </Col>
                                       </Row>
-                                    </Col>
-                                    <Col
-                                      lg={2}
-                                      md={2}
-                                      sm={2}
-                                      className="d-flex align-items-center justify-content-start mt-1"
-                                    >
-                                      <img
-                                        src={RedCrossIcon}
-                                        height="20.76px"
-                                        width="20.76px"
-                                        className={styles["CrossIconClass"]}
-                                        onClick={() => {
-                                          removeFileFunction(index);
-                                        }}
-                                      />
-                                    </Col>
-                                  </Row>
-                                </section>
-                              </Col>
-                            </>
-                          );
-                        })}
+                                    </section>
+                                  </Col>
+                                </>
+                              );
+                            })}
+                          </Row>
+                        </Col>
                       </Row>
                     </>
                   ) : (

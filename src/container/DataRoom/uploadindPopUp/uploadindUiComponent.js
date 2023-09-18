@@ -81,61 +81,6 @@ const UploadindUiComponent = ({
     // Check if any object in the combined array has UploadCancel set to true
     return combinedArray.some((obj) => obj.UploadCancel === true);
   }
-  // const getIconSource = (extension) => {
-  //   switch (extension) {
-  //     case "pdf":
-  //       return PDFICON;
-  //     case "doc":
-  //     case "docx":
-  //     case "odt":
-  //       return documentIcon;
-  //     case "xls":
-  //     case "xlsx":
-  //       return spreadsheet;
-  //     case "html":
-  //     case "htm":
-  //       return sitesIcon;
-  //     case "txt":
-  //       return documentIcon;
-  //     case "gif":
-  //     case "jpeg":
-  //     case "jpg":
-  //     case "png":
-  //     case "svg":
-  //       return images;
-  //     case "aif":
-  //     case "iff":
-  //     case "m3u":
-  //     case "m4a":
-  //     case "mid":
-  //     case "mp3":
-  //     case "mpa":
-  //     case "wav":
-  //       return audioIcon;
-  //     case "3g2":
-  //     case "3gp":
-  //     case "asf":
-  //     case "avi":
-  //     case "flv":
-  //     case "m4v":
-  //     case "mov":
-  //     case "mp4":
-  //     case "mpg":
-  //     case "rm":
-  //     case "srt":
-  //     case "swf":
-  //     case "vob":
-  //     case "wmv":
-  //       return video;
-  //     default:
-  //       return null;
-  //   }
-  // };
-  // const getFileExtension = (fileName) => {
-  //   const lowercaseExtension = fileName.toLowerCase().split(".").pop();
-  //   return lowercaseExtension;
-  // };
-
   console.log("tasksAttachments", tasksAttachments);
   return (
     <>
@@ -412,7 +357,8 @@ const UploadindUiComponent = ({
                   return (
                     <>
                       {(data.Uploaded === true ||
-                        data.UploadingError === true) &&
+                        data.UploadingError === true ||
+                        data.NetDisconnect === true) &&
                       data.UploadCancel === false ? (
                         <Row key={index}>
                           <Col
@@ -442,7 +388,7 @@ const UploadindUiComponent = ({
                                 {`${data.FileName.substring(0, 28)}...`}
                               </span>
                             </Space>
-                            {data.UploadingError ? (
+                            {data.UploadingError || data.NetDisconnect ? (
                               <img
                                 src={ErrorIcon}
                                 alt=""

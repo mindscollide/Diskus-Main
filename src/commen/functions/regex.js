@@ -21,3 +21,12 @@ export const replaceSlashWithBackslash = (inputString) => {
   // Use the global "g" flag in the regular expression to replace all occurrences
   return inputString.replace(/\//g, "\\");
 };
+
+// Validae URL regex
+
+export const urlPatternValidation = (URL) => {
+  const regex = new RegExp(
+    "(https?://)?([\\da-z.-]+)\\.([a-z.]{2,6})[/\\w .-]*/?"
+  );
+  return regex.test(URL);
+};

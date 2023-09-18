@@ -12,7 +12,10 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Col, Row } from "react-bootstrap";
-import { regexOnlyForNumberNCharacters } from "../../../../../../commen/functions/regex";
+import {
+  regexOnlyForNumberNCharacters,
+  validateInput,
+} from "../../../../../../commen/functions/regex";
 import WhiteCrossIcon from "../../../../../../assets/images/PollCrossIcon.svg";
 import plusFaddes from "../../../../../../assets/images/NewBluePLus.svg";
 import DatePicker, { DateObject } from "react-multi-date-picker";
@@ -32,8 +35,12 @@ const EditPollsMeeting = ({ setEditPolls }) => {
   const navigate = useNavigate();
   const animatedComponents = makeAnimated();
   const { NewMeetingreducer } = useSelector((state) => state);
-  const [savedPolls, setSavedPolls] = useState(false);
-  const [savePollsPublished, setSavePollsPublished] = useState(false);
+  const [meetingDate, setMeetingDate] = useState("");
+  const [updatePolls, setupdatePolls] = useState({
+    Title: "",
+    AllowMultipleAnswers: false,
+    dateL: "",
+  });
   //For Custom language datepicker
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
@@ -139,6 +146,42 @@ const EditPollsMeeting = ({ setEditPolls }) => {
     dispatch(showunsavedEditPollsMeetings(true));
   };
 
+  const HandleChangeUpdatePolls = (e, index) => {
+    let name = e.target.name;
+    let value = e.target.value;
+    if (name === "UpdatePollsTitle") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setupdatePolls({
+          ...updatePolls,
+          Title: valueCheck,
+        });
+      } else {
+        setupdatePolls({
+          ...updatePolls,
+          Title: "",
+        });
+      }
+    }
+  };
+
+  const HandleCheckMultipleAnswersUpdatePolls = () => {
+    setupdatePolls({
+      ...updatePolls,
+      AllowMultipleAnswers: !updatePolls.AllowMultipleAnswers,
+    });
+  };
+
+  const changeDateStartHandlerUpdatePolls = (date) => {
+    let meetingDateValueFormat = new DateObject(date).format("DD/MM/YYYY");
+    let DateDate = new Date(date);
+    setMeetingDate(meetingDateValueFormat);
+    setupdatePolls({
+      ...updatePolls,
+      date: DateDate,
+    });
+  };
+
   return (
     <section>
       <Row>
@@ -152,7 +195,12 @@ const EditPollsMeeting = ({ setEditPolls }) => {
           </Row>
           <Row className="mt-1">
             <Col lg={12} md={12} sm={12}>
-              <TextField labelClass={"d-none"} />
+              <TextField
+                labelClass={"d-none"}
+                value={updatePolls.Title}
+                name={"UpdatePollsTitle"}
+                change={HandleChangeUpdatePolls}
+              />
             </Col>
           </Row>
           <Row className="mt-2">
@@ -259,6 +307,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
           <Row className="mt-3">
             <Col lg={6} md={6} sm={6} className="d-flex align-items-center">
               <DatePicker
+                value={meetingDate}
                 format={"DD/MM/YYYY"}
                 minDate={moment().toDate()}
                 placeholder="DD/MM/YYYY"
@@ -275,6 +324,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                 calendar={calendarValue}
                 locale={localValue}
                 ref={calendRef}
+                onChange={(value) => changeDateStartHandlerUpdatePolls(value)}
               />
             </Col>
             <Col lg={6} md={6} sm={6} className="d-flex justify-content-end">
@@ -285,7 +335,10 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                   sm={12}
                   className="d-flex align-items-center gap-2"
                 >
-                  <Checkbox />
+                  <Checkbox
+                    onChange={HandleCheckMultipleAnswersUpdatePolls}
+                    checked={updatePolls.AllowMultipleAnswers}
+                  />
                   <p className={styles["CheckBoxTitle"]}>
                     {t("Allow-multiple-answers")}
                   </p>

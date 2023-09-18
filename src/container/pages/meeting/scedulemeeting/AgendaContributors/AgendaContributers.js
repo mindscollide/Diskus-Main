@@ -358,18 +358,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
               }}
             />
           </Col>
-          <Col
-            lg={8}
-            md={8}
-            sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
-            <Button
-              text={t("Edit")}
-              className={styles["Edit_Button_Organizers"]}
-              icon={<img src={EditIcon} width="11.75px" height="11.75px" />}
-              onClick={enableNotificatoinTable}
-            />
+          <Col lg={8} md={8} sm={12} className="d-flex justify-content-end">
             <Button
               text={t("Add-more")}
               icon={<img src={addmore} />}
@@ -559,6 +548,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
             <Button
               text={t("Publish")}
               className={styles["Cancel_Organization"]}
+              onClick={enableNotificatoinTable}
             />
             <Button
               text={t("Save")}

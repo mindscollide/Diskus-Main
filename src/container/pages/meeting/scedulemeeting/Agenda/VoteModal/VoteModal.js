@@ -30,7 +30,7 @@ const VoteModal = () => {
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [addOptions, setAddOptions] = useState(false);
-  const [saveOptions, setSaveOptions] = useState([{ Options: null }]);
+  const [saveOptions, setSaveOptions] = useState([{ text: "" }]);
   const [error, setError] = useState(false);
   const [voteModalAttrbutes, setVoteModalAttrbutes] = useState({
     VoteQuestion: "",
@@ -38,6 +38,9 @@ const VoteModal = () => {
     OptionsAdded: "",
     SelectOrganizers: 0,
     SelectOptions: 0,
+    YesAnswer: "Yes",
+    NOAnswer: "No",
+    AbstainAnswer: "Abstain",
   });
   const plusButtonFunc = () => {
     setAddOptions(true);
@@ -60,7 +63,12 @@ const VoteModal = () => {
               sm={12}
               className="d-flex justify-content-center"
             >
-              <img src={redcrossIcon} height="21.79px" width="21.79px" />
+              <img
+                src={redcrossIcon}
+                height="21.79px"
+                width="21.79px"
+                className="cursor-pointer"
+              />
             </Col>
           </Row>
         </>
@@ -151,7 +159,11 @@ const VoteModal = () => {
 
   const AddOptions = () => {
     setAddOptions(false);
-    setSaveOptions([...saveOptions, { Options: saveOptions.value }]);
+    setSaveOptions([...saveOptions, saveOptions.text]);
+  };
+
+  const handleSaveOption = (index) => {
+    console.log("Saved option:", saveOptions[index].text);
   };
 
   const optionsIndividualOpenCloseVoting = [
@@ -356,9 +368,9 @@ const VoteModal = () => {
     dispatch(showVoteConfirmationModal(true));
   };
 
-  const handleCrossBtn = () => {
+  const handleCrossBtn = (index) => {
     let optionscross = [...saveOptions];
-    optionscross.splice(optionscross, 1);
+    optionscross.splice(optionscross, index);
     setSaveOptions(optionscross);
   };
 
@@ -411,6 +423,48 @@ const VoteModal = () => {
         });
       }
     }
+    if (name === "YesAnswers") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          YesAnswer: valueCheck,
+        });
+      } else {
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          YesAnswer: "",
+        });
+      }
+    }
+    if (name === "Noanswers") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          NOAnswer: valueCheck,
+        });
+      } else {
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          NOAnswer: "",
+        });
+      }
+    }
+    if (name === "AbstainAnswers") {
+      let valueCheck = validateInput(value);
+      if (valueCheck !== "") {
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          AbstainAnswer: valueCheck,
+        });
+      } else {
+        setVoteModalAttrbutes({
+          ...voteModalAttrbutes,
+          AbstainAnswer: "",
+        });
+      }
+    }
   };
 
   const HandleChangeOptions = (e, index) => {
@@ -430,6 +484,16 @@ const VoteModal = () => {
         });
       }
     }
+  };
+
+  // Function for the Saved Add TExt filed
+  const handleOptionTextChange = (e) => {
+    let value = e.target.value;
+    console.log(value, "handleOptionTextChangehandleOptionTextChange");
+    const updatedOptions = [...saveOptions];
+    updatedOptions.text = value;
+    console.log(updatedOptions, "updatedOptionsupdatedOptions");
+    setSaveOptions(updatedOptions);
   };
 
   return (
@@ -545,9 +609,8 @@ const VoteModal = () => {
                         <TextField
                           labelClass={"d-none"}
                           applyClass={"NewMeetingFileds"}
-                          name={"Answer"}
-                          value={voteModalAttrbutes.Answer}
-                          change={HandleChange}
+                          value={saveOptions.text}
+                          change={(e) => handleOptionTextChange(e)}
                         />
                       </Col>
                       <Col lg={2} md={2} sm={2}>
@@ -630,11 +693,25 @@ const VoteModal = () => {
                                 labelClass={"d-none"}
                                 applyClass={"NewMeetingFileds"}
                                 width={"145px"}
+                                name={"YesAnswers"}
+                                value={voteModalAttrbutes.YesAnswer}
+                                change={HandleChange}
                               />
                               <TextField
                                 labelClass={"d-none"}
                                 applyClass={"NewMeetingFileds"}
                                 width={"145px"}
+                                name={"NOAnswers"}
+                                value={voteModalAttrbutes.NOAnswer}
+                                change={HandleChange}
+                              />
+                              <TextField
+                                labelClass={"d-none"}
+                                applyClass={"NewMeetingFileds"}
+                                width={"145px"}
+                                name={"AbstainAnswers"}
+                                value={voteModalAttrbutes.AbstainAnswer}
+                                change={HandleChange}
                               />
 
                               {saveOptions.length > 0
@@ -642,29 +719,35 @@ const VoteModal = () => {
                                     return (
                                       <>
                                         <>
-                                          <span className="position-relative">
-                                            <TextField
-                                              labelClass={"d-none"}
-                                              applyClass={
-                                                "NewMeetingFileds_withIcon"
-                                              }
-                                              width={"145px"}
-                                              value={saveOptions.Options}
-                                              name={"OptionsAdded"}
-                                              change={HandleChangeOptions}
-                                              iconClassName={
-                                                styles["ResCrossIcon"]
-                                              }
-                                              inputicon={
-                                                <img
-                                                  src={redcrossIcon}
-                                                  height="21.79px"
-                                                  width="21.79px"
-                                                  onClick={handleCrossBtn}
+                                          {index === 0 ? null : (
+                                            <>
+                                              <span className="position-relative">
+                                                <TextField
+                                                  labelClass={"d-none"}
+                                                  applyClass={
+                                                    "NewMeetingFileds_withIcon"
+                                                  }
+                                                  width={"145px"}
+                                                  value={data}
+                                                  name={"OptionsAdded"}
+                                                  iconClassName={
+                                                    styles["ResCrossIcon"]
+                                                  }
+                                                  inputicon={
+                                                    <img
+                                                      src={redcrossIcon}
+                                                      height="21.79px"
+                                                      width="21.79px"
+                                                      className="cursor-pointer"
+                                                      onClick={() =>
+                                                        handleCrossBtn(index)
+                                                      }
+                                                    />
+                                                  }
                                                 />
-                                              }
-                                            />
-                                          </span>
+                                              </span>
+                                            </>
+                                          )}
                                         </>
                                       </>
                                     );
@@ -708,11 +791,7 @@ const VoteModal = () => {
                         <Select
                           options={optionsIndividualOpenCloseVoting}
                           onChange={dropDownSelectOrganizers}
-                          classNamePrefix={
-                            voteModalAttrbutes.SelectOrganizers
-                              ? "SelectOrganizersSelect"
-                              : "SelectOrganizersSelect_active"
-                          }
+                          classNamePrefix={"SelectOrganizersSelect_active"}
                         />
                       </Col>
                       <Row>
@@ -743,11 +822,7 @@ const VoteModal = () => {
                       <Col lg={12} md={12} sm={12}>
                         <Select
                           options={options}
-                          classNamePrefix={
-                            voteModalAttrbutes.SelectOptions
-                              ? "SelectOptions_drop"
-                              : "SelectOptions_drop_active"
-                          }
+                          classNamePrefix={"SelectOptions_drop_active"}
                           onChange={dropDownSelectOptions}
                         />
                       </Col>

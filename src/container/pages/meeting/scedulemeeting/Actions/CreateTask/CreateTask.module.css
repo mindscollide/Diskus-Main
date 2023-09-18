@@ -158,3 +158,20 @@ body[dir="rtl"] .errorMessage-inLogin {
 .option {
   overflow-x: hidden !important;
 }
+
+.Scroller_Actions_Page {
+  height: 13vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_Actions_Page::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_Actions_Page::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}

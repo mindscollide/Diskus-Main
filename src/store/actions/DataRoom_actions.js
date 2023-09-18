@@ -75,95 +75,97 @@ const saveFilesApi = (
     UserID: JSON.parse(createrID),
     Type: type !== null && type !== undefined ? type : 0,
   };
-  return (dispatch) => {
-    // dispatch(saveFiles_init())
-    let form = new FormData();
-    form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
-    form.append("RequestData", JSON.stringify(Data));
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          dispatch(RefreshToken(navigate, t));
-          dispatch(
-            saveFilesApi(
-              navigate,
-              t,
-              data,
-              type,
-              newJsonCreateFile,
-              taskId,
-              setTasksAttachments,
-              tasksAttachments
-            )
-          );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
-                )
-            ) {
-              await dispatch(
-                saveFiles_success(
-                  response.data.responseMessage,
-                  t("Files-saved-successfully")
-                )
-              );
-              if (viewFolderID !== null) {
-                dispatch(
-                  getFolderDocumentsApi(
-                    navigate,
-                    Number(viewFolderID),
-                    t,
-                    1,
-                    true
+  if (tasksAttachments[taskId]?.NetDisconnect) {
+    return (dispatch) => {
+      // dispatch(saveFiles_init())
+      let form = new FormData();
+      form.append("RequestMethod", saveFilesRequestMethod.RequestMethod);
+      form.append("RequestData", JSON.stringify(Data));
+      axios({
+        method: "post",
+        url: dataRoomApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+      })
+        .then(async (response) => {
+          if (response.data.responseCode === 417) {
+            dispatch(RefreshToken(navigate, t));
+            dispatch(
+              saveFilesApi(
+                navigate,
+                t,
+                data,
+                type,
+                newJsonCreateFile,
+                taskId,
+                setTasksAttachments,
+                tasksAttachments
+              )
+            );
+          } else if (response.data.responseCode === 200) {
+            if (response.data.responseResult.isExecuted === true) {
+              if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomServiceManager_SaveFiles_01".toLowerCase()
+                  )
+              ) {
+                await dispatch(
+                  saveFiles_success(
+                    response.data.responseMessage,
+                    t("Files-saved-successfully")
                   )
                 );
-              } else {
-                dispatch(
-                  getDocumentsAndFolderApi(
-                    navigate,
-                    Number(currentView),
-                    t,
-                    2,
-                    true
+                if (viewFolderID !== null) {
+                  dispatch(
+                    getFolderDocumentsApi(navigate, Number(viewFolderID), t)
+                  );
+                } else {
+                  dispatch(
+                    getDocumentsAndFolderApi(navigate, Number(currentView), t)
+                  );
+                }
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
                   )
-                );
+              ) {
+                dispatch(saveFiles_fail(t("Failed-to-save-any-file")));
+                setTasksAttachments((prevTasks) => ({
+                  ...prevTasks,
+                  [taskId]: {
+                    ...prevTasks[taskId],
+                    Uploaded: false,
+                    Uploading: false,
+                    UploadingError: true,
+                    Progress: 0,
+                  },
+                }));
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
+                  )
+              ) {
+                setTasksAttachments((prevTasks) => ({
+                  ...prevTasks,
+                  [taskId]: {
+                    ...prevTasks[taskId],
+                    Uploaded: false,
+                    Uploading: false,
+                    UploadingError: true,
+                    Progress: 0,
+                  },
+                }));
+                dispatch(saveFiles_fail(t("Something-went-wrong")));
               }
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_02".toLowerCase()
-                )
-            ) {
-              dispatch(saveFiles_fail(t("Failed-to-save-any-file")));
-              setTasksAttachments((prevTasks) => ({
-                ...prevTasks,
-                [taskId]: {
-                  ...prevTasks[taskId],
-                  Uploaded: false,
-                  Uploading: false,
-                  UploadingError: true,
-                  Progress: 0,
-                },
-              }));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_SaveFiles_03".toLowerCase()
-                )
-            ) {
+            } else {
               setTasksAttachments((prevTasks) => ({
                 ...prevTasks,
                 [taskId]: {
@@ -189,7 +191,9 @@ const saveFilesApi = (
             }));
             dispatch(saveFiles_fail(t("Something-went-wrong")));
           }
-        } else {
+          console.log(response);
+        })
+        .catch(() => {
           setTasksAttachments((prevTasks) => ({
             ...prevTasks,
             [taskId]: {
@@ -201,23 +205,9 @@ const saveFilesApi = (
             },
           }));
           dispatch(saveFiles_fail(t("Something-went-wrong")));
-        }
-        console.log(response);
-      })
-      .catch(() => {
-        setTasksAttachments((prevTasks) => ({
-          ...prevTasks,
-          [taskId]: {
-            ...prevTasks[taskId],
-            Uploaded: false,
-            Uploading: false,
-            UploadingError: true,
-            Progress: 0,
-          },
-        }));
-        dispatch(saveFiles_fail(t("Something-went-wrong")));
-      });
-  };
+        });
+    };
+  }
 };
 
 // Upload Documents Init
@@ -268,109 +258,123 @@ const uploadDocumentsApi = (
   if (showbarupload === false) {
     setShowbarupload(true);
   }
-  return (dispatch) => {
-    let form = new FormData();
-    form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
-    form.append("RequestData", JSON.stringify(newJsonCreateFile.File));
-    form.append("File", newJsonCreateFile.File);
-    axios({
-      method: "post",
-      url: dataRoomApi,
-      data: form,
-      headers: {
-        _token: token,
-      },
-      onUploadProgress: (progressEvent) => {
-        const percentCompleted = Math.round(
-          (progressEvent.loaded * 100) / progressEvent.total
-        );
-        console.log("percentCompleted", percentCompleted);
-
-        setTasksAttachments((prevTasks) => ({
-          ...prevTasks,
-          [taskId]: {
-            ...prevTasks[taskId],
-            Progress: percentCompleted,
-          },
-        }));
-      },
-    })
-      .then(async (response) => {
-        if (response.data.responseCode === 417) {
-          await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            uploadDocumentsApi(
-              navigate,
-              t,
-              newJsonCreateFile,
-              taskId,
-              setTasksAttachments,
-              tasksAttachments,
-              type,
-              setShowbarupload,
-              showbarupload
-            )
+  if (tasksAttachments[taskId]?.NetDisconnect) {
+    return (dispatch) => {
+      let form = new FormData();
+      form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
+      form.append("RequestData", JSON.stringify(newJsonCreateFile.File));
+      form.append("File", newJsonCreateFile.File);
+      axios({
+        method: "post",
+        url: dataRoomApi,
+        data: form,
+        headers: {
+          _token: token,
+        },
+        onUploadProgress: (progressEvent) => {
+          const percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
           );
-        } else if (response.data.responseCode === 200) {
-          if (response.data.responseResult.isExecuted === true) {
-            if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
-                )
-            ) {
-              setTasksAttachments((prevTasks) => ({
-                ...prevTasks,
-                [taskId]: {
-                  ...prevTasks[taskId],
-                  Uploaded: true,
-                  Uploading: false,
-                },
-              }));
-              await dispatch(
-                uploadDocument_success(
-                  response.data.responseResult,
-                  t("Document-uploaded-successfully")
-                )
-              );
-              await dispatch(
-                saveFilesApi(
-                  navigate,
-                  t,
-                  response.data.responseResult,
-                  type,
-                  newJsonCreateFile,
-                  taskId,
-                  setTasksAttachments,
-                  tasksAttachments
-                )
-              );
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
-                )
-            ) {
-              dispatch(uploadDocument_fail(t("Failed-to-update-document")));
-              setTasksAttachments((prevTasks) => ({
-                ...prevTasks,
-                [taskId]: {
-                  ...prevTasks[taskId],
-                  Uploaded: false,
-                  Uploading: false,
-                  UploadingError: true,
-                  Progress: 0,
-                },
-              }));
-            } else if (
-              response.data.responseResult.responseMessage
-                .toLowerCase()
-                .includes(
-                  "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
-                )
-            ) {
+          console.log("percentCompleted", percentCompleted);
+
+          setTasksAttachments((prevTasks) => ({
+            ...prevTasks,
+            [taskId]: {
+              ...prevTasks[taskId],
+              Progress: percentCompleted,
+            },
+          }));
+        },
+      })
+        .then(async (response) => {
+          if (response.data.responseCode === 417) {
+            await dispatch(RefreshToken(navigate, t));
+            dispatch(
+              uploadDocumentsApi(
+                navigate,
+                t,
+                newJsonCreateFile,
+                taskId,
+                setTasksAttachments,
+                tasksAttachments,
+                type,
+                setShowbarupload,
+                showbarupload
+              )
+            );
+          } else if (response.data.responseCode === 200) {
+            if (response.data.responseResult.isExecuted === true) {
+              if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomServiceManager_UploadDocuments_01".toLowerCase()
+                  )
+              ) {
+                setTasksAttachments((prevTasks) => ({
+                  ...prevTasks,
+                  [taskId]: {
+                    ...prevTasks[taskId],
+                    Uploaded: true,
+                    Uploading: false,
+                  },
+                }));
+                await dispatch(
+                  uploadDocument_success(
+                    response.data.responseResult,
+                    t("Document-uploaded-successfully")
+                  )
+                );
+                await dispatch(
+                  saveFilesApi(
+                    navigate,
+                    t,
+                    response.data.responseResult,
+                    type,
+                    newJsonCreateFile,
+                    taskId,
+                    setTasksAttachments,
+                    tasksAttachments
+                  )
+                );
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomServiceManager_UploadDocuments_02".toLowerCase()
+                  )
+              ) {
+                dispatch(uploadDocument_fail(t("Failed-to-update-document")));
+                setTasksAttachments((prevTasks) => ({
+                  ...prevTasks,
+                  [taskId]: {
+                    ...prevTasks[taskId],
+                    Uploaded: false,
+                    Uploading: false,
+                    UploadingError: true,
+                    Progress: 0,
+                  },
+                }));
+              } else if (
+                response.data.responseResult.responseMessage
+                  .toLowerCase()
+                  .includes(
+                    "DataRoom_DataRoomServiceManager_UploadDocuments_03".toLowerCase()
+                  )
+              ) {
+                setTasksAttachments((prevTasks) => ({
+                  ...prevTasks,
+                  [taskId]: {
+                    ...prevTasks[taskId],
+                    Uploaded: false,
+                    Uploading: false,
+                    UploadingError: true,
+                    Progress: 0,
+                  },
+                }));
+                dispatch(uploadDocument_fail(t("Something-went-wrong")));
+              }
+            } else {
               setTasksAttachments((prevTasks) => ({
                 ...prevTasks,
                 [taskId]: {
@@ -396,7 +400,10 @@ const uploadDocumentsApi = (
             }));
             dispatch(uploadDocument_fail(t("Something-went-wrong")));
           }
-        } else {
+          // }
+        })
+        .catch((error) => {
+          console.log("prevTasksprevTasks");
           setTasksAttachments((prevTasks) => ({
             ...prevTasks,
             [taskId]: {
@@ -408,24 +415,9 @@ const uploadDocumentsApi = (
             },
           }));
           dispatch(uploadDocument_fail(t("Something-went-wrong")));
-        }
-        // }
-      })
-      .catch((error) => {
-        console.log("prevTasksprevTasks");
-        setTasksAttachments((prevTasks) => ({
-          ...prevTasks,
-          [taskId]: {
-            ...prevTasks[taskId],
-            Uploaded: false,
-            Uploading: false,
-            UploadingError: true,
-            Progress: 0,
-          },
-        }));
-        dispatch(uploadDocument_fail(t("Something-went-wrong")));
-      });
-  };
+        });
+    };
+  }
 };
 
 // Save Folder Init
@@ -528,7 +520,7 @@ const getFolerDocuments_fail = (message) => {
 };
 
 // Get Folder Documents Api
-const getFolderDocumentsApi = (navigate, FolderId, t, no,type) => {
+const getFolderDocumentsApi = (navigate, FolderId, t, no) => {
   let token = JSON.parse(localStorage.getItem("token"));
   let createrID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
@@ -543,11 +535,7 @@ const getFolderDocumentsApi = (navigate, FolderId, t, no,type) => {
   };
   return (dispatch) => {
     if (no !== 1) {
-      if(type){
-      }else{
-        dispatch(getFolerDocuments_init());
-
-      }
+      dispatch(getFolerDocuments_init());
     }
     let form = new FormData();
     form.append("RequestMethod", getFolderDocumentsRequestMethod.RequestMethod);
@@ -563,7 +551,7 @@ const getFolderDocumentsApi = (navigate, FolderId, t, no,type) => {
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(getFolderDocumentsApi(navigate, FolderId, t));
+          dispatch(getFolderDocumentsApi(navigate, FolderId, t, no));
         } else if (response.data.responseCode === 200) {
           if (response.data.responseResult.isExecuted === true) {
             if (
@@ -793,11 +781,15 @@ const getDocumentsAndFolderApi = (
     Length: 10,
   };
   return (dispatch) => {
-      console.log("asdasdasdasdasdasd",flag)
-      if (flag==true) {
-      console.log("asdasdasdasdasdasd",flag)
-    } else {
-      console.log("asdasdasdasdasdasd",flag)
+    console.log("asdasdasdasdasdasd", no);
+    // console.log("asdasdasdasdasdasd", flag);
+    // if (flag == true) {
+    //   console.log("asdasdasdasdasdasd", flag);
+    // } else {
+    //   console.log("asdasdasdasdasdasd", flag);
+    //   dispatch(getDocumentsAndFolders_init());
+    // }
+    if (no === 1) {
       dispatch(getDocumentsAndFolders_init());
     }
     let form = new FormData();
@@ -1500,7 +1492,6 @@ const FileisExist = (
                   showbarupload
                 )
               );
-              // await dispatch(IsFileisExist(false));
               console.log("handleUploadFile");
             } else if (
               response.data.responseResult.responseMessage
