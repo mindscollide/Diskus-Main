@@ -190,7 +190,7 @@ const LanguageSelector = () => {
     <section
       className="position-relative"
       ref={languageref}
-      // onClick={() => setLanguageDropdown(!languageDropdown)}
+      onClick={() => setLanguageDropdown(!languageDropdown)}
     >
       <span
         className={

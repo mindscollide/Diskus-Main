@@ -392,33 +392,33 @@ const TodoList = () => {
       filters: [
         {
           text: t("In-progress"),
-          value: t("In-progress"),
+          value: "In Progress",
           // className: currentLanguage,
         },
         {
           text: t("Pending"),
-          value: t("Pending"),
+          value: "Pending",
         },
         {
           text: t("Upcoming"),
-          value: t("Upcoming"),
+          value: "Upcoming",
         },
         {
           text: t("Cancelled"),
-          value: t("Cancelled"),
+          value: "Cancelled",
         },
         {
           text: t("Completed"),
-          value: t("Completed"),
+          value: "Completed",
         },
       ],
-      // defaultFilteredValue: [
-      //   t('In-progress'),
-      //   t('Pending'),
-      //   t('Upcoming'),
-      //   t('Cancelled'),
-      //   t('Completed'),
-      // ],
+      defaultFilteredValue: [
+        "In Progress",
+        "Pending",
+        "Upcoming",
+        "Cancelled",
+        "Completed",
+      ],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
       ),
@@ -636,11 +636,11 @@ const TodoList = () => {
         },
       ],
       defaultFilteredValue: [
-        t("In-progress"),
-        t("Pending"),
-        t("Upcoming"),
-        t("Cancelled"),
-        t("Completed"),
+        "In Progress",
+        "Pending",
+        "Upcoming",
+        "Cancelled",
+        "Completed",
       ],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-todolist" />
@@ -1102,9 +1102,7 @@ const TodoList = () => {
                 rowsToDo !== null ? (
                   <TableToDo
                     sortDirections={["descend", "ascend"]}
-                    column={
-                      currentLanguage === "ar" ? columnsToDoAr : columnsToDo
-                    }
+                    column={columnsToDo}
                     className={"ToDo"}
                     rows={rowsToDo}
                     scroll={{ y: "65vh", x: "scroll" }}

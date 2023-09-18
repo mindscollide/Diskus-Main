@@ -205,7 +205,7 @@ body[dir="rtl"] .Arabic_font_Applied {
 }
 
 .errorNotesMessage {
-  margin: 0px;
+  margin: 5px 0;
   height: 7px;
   color: #f16b6b;
   visibility: visible !important;

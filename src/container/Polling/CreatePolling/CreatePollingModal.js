@@ -580,20 +580,23 @@ const CreatePolling = () => {
                                 ? changeDateStartHandler2(createPollData.date)
                                 : ""}
                             </span>
+                            <DatePicker
+                              highlightToday={false}
+                              onOpenPickNewDate={true}
+                              ref={datePickerRef}
+                              render={<CustomIcon />}
+                              onChange={(value) =>
+                                changeDateStartHandler(value)
+                              }
+                              format={dateFormat}
+                              calendarPosition="bottom-center"
+                              minDate={moment().toDate()}
+                              className="datePickerTodoCreate2"
+                              calendar={calendarValue}
+                              locale={localValue}
+                              onClick={handleIconClick}
+                            />
                           </span>
-                          <DatePicker
-                            highlightToday={false}
-                            onOpenPickNewDate={false}
-                            ref={datePickerRef}
-                            render={<CustomIcon />}
-                            onChange={(value) => changeDateStartHandler(value)}
-                            format={dateFormat}
-                            calendarPosition="bottom-center"
-                            minDate={moment().toDate()}
-                            className="datePickerTodoCreate2"
-                            calendar={calendarValue}
-                            locale={localValue}
-                          />
                         </Col>
                       </Row>
                     </Col>

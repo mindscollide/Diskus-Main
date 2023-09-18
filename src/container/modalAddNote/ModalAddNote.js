@@ -1,69 +1,69 @@
-import React, { useState, useRef, useEffect } from "react"
+import React, { useState, useRef, useEffect } from "react";
 import {
   TextField,
   Button,
   Modal,
   Notification,
-} from "../../components/elements"
-import { Row, Col, Container, Dropdown, Form } from "react-bootstrap"
-import ReactQuill, { Quill } from "react-quill"
-import "react-quill/dist/quill.snow.css"
-import FileIcon, { defaultStyles } from "react-file-icon"
-import "react-quill/dist/quill.snow.css"
-import styles from "./ModalAddNote.module.css"
-import { useDispatch, useSelector } from "react-redux"
+} from "../../components/elements";
+import { Row, Col, Container, Dropdown, Form } from "react-bootstrap";
+import ReactQuill, { Quill } from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import FileIcon, { defaultStyles } from "react-file-icon";
+import "react-quill/dist/quill.snow.css";
+import styles from "./ModalAddNote.module.css";
+import { useDispatch, useSelector } from "react-redux";
 import {
   FileUploadToDo,
   ResetAllFilesUpload,
-} from "../../store/actions/Upload_action"
-import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg"
-import CustomUpload from "./../../components/elements/upload/Upload"
-import moment from "moment"
-import { SaveNotesAPI } from "../../store/actions/Notes_actions"
-import { useTranslation } from "react-i18next"
-import StarIcon from "../../assets/images/Star.svg"
-import hollowstar from "../../assets/images/Hollowstar.svg"
-import { useNavigate } from "react-router-dom"
-import ConfirmationModal from "../../components/elements/confirmationModal/ConfirmationModal"
+} from "../../store/actions/Upload_action";
+import deleteButtonCreateMeeting from "../../assets/images/cancel_meeting_icon.svg";
+import CustomUpload from "./../../components/elements/upload/Upload";
+import moment from "moment";
+import { SaveNotesAPI } from "../../store/actions/Notes_actions";
+import { useTranslation } from "react-i18next";
+import StarIcon from "../../assets/images/Star.svg";
+import hollowstar from "../../assets/images/Hollowstar.svg";
+import { useNavigate } from "react-router-dom";
+import ConfirmationModal from "../../components/elements/confirmationModal/ConfirmationModal";
 import {
   regexOnlyForNumberNCharacters,
   validateInput,
-} from "../../commen/functions/regex"
+} from "../../commen/functions/regex";
 const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
   //For Localization
-  const { uploadReducer } = useSelector((state) => state)
-  let createrID = localStorage.getItem("userID")
-  const navigate = useNavigate()
-  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false)
-  let OrganizationID = localStorage.getItem("organizationID")
-  const [isAddNote, setIsAddNote] = useState(true)
-  const [isCreateNote, setIsCreateNote] = useState(false)
-  const [fileSize, setFileSize] = useState(0)
-  const [fileForSend, setFileForSend] = useState([])
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
-  const NoteTitle = useRef(null)
-  const editorRef = useRef(null)
+  const { uploadReducer } = useSelector((state) => state);
+  let createrID = localStorage.getItem("userID");
+  const navigate = useNavigate();
+  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
+  let OrganizationID = localStorage.getItem("organizationID");
+  const [isAddNote, setIsAddNote] = useState(true);
+  const [isCreateNote, setIsCreateNote] = useState(false);
+  const [fileSize, setFileSize] = useState(0);
+  const [fileForSend, setFileForSend] = useState([]);
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const NoteTitle = useRef(null);
+  const editorRef = useRef(null);
 
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
-  })
+  });
   const [open, setOpen] = useState({
     open: false,
     message: "",
-  })
+  });
 
-  const date = new Date()
-  var Size = Quill.import("attributors/style/size")
-  Size.whitelist = ["14px", "16px", "18px"]
-  Quill.register(Size, true)
-  console.log("fileSizefileSize", fileSize)
-  var FontAttributor = Quill.import("formats/font")
-  var fonts = ["impact", "courier", "comic"]
-  FontAttributor.whitelist = fonts
-  Quill.register(FontAttributor, true)
-  const [isStarrted, setIsStarrted] = useState(false)
+  const date = new Date();
+  var Size = Quill.import("attributors/style/size");
+  Size.whitelist = ["14px", "16px", "18px"];
+  Quill.register(Size, true);
+  console.log("fileSizefileSize", fileSize);
+  var FontAttributor = Quill.import("formats/font");
+  var fonts = ["impact", "courier", "comic"];
+  FontAttributor.whitelist = fonts;
+  Quill.register(FontAttributor, true);
+  const [isStarrted, setIsStarrted] = useState(false);
   // for add notes textfields states
   const [addNoteFields, setAddNoteFields] = useState({
     Title: {
@@ -77,25 +77,25 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       errorStatus: false,
     },
     isStarrted: false,
-  })
+  });
 
   const deleteFilefromAttachments = (data, index) => {
-    let searchIndex = tasksAttachments.TasksAttachments
-    searchIndex.splice(index, 1)
+    let searchIndex = tasksAttachments.TasksAttachments;
+    searchIndex.splice(index, 1);
     setTasksAttachments({
       ...tasksAttachments,
       ["TasksAttachments"]: searchIndex,
-    })
-  }
+    });
+  };
 
   //for textfields validation
   const addNotesFieldHandler = (e) => {
-    let name = e.target.name
-    let value = e.target.value
-    console.log("values", name, value)
+    let name = e.target.name;
+    let value = e.target.value;
+    console.log("values", name, value);
     if (name === "Title" && value !== "") {
-      let valueCheck = validateInput(value)
-      console.log(value, "Titlellee")
+      let valueCheck = validateInput(value);
+      console.log(value, "Titlellee");
 
       if (valueCheck !== "") {
         setAddNoteFields({
@@ -105,7 +105,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
             errorMessage: "",
             errorStatus: false,
           },
-        })
+        });
       }
     } else if (name === "Title" && value === "") {
       setAddNoteFields({
@@ -115,12 +115,12 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           errorMessage: "",
           errorStatus: false,
         },
-      })
+      });
     }
-  }
+  };
 
   const onTextChange = (content, delta, source) => {
-    const plainText = content.replace(/(<([^>]+)>)/gi, "")
+    const plainText = content.replace(/(<([^>]+)>)/gi, "");
     if (source === "user" && plainText != "") {
       setAddNoteFields({
         ...addNoteFields,
@@ -129,7 +129,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           errorMessage: "",
           errorStatus: false,
         },
-      })
+      });
     } else {
       setAddNoteFields({
         ...addNoteFields,
@@ -138,16 +138,16 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           errorMessage: "",
           errorStatus: true,
         },
-      })
+      });
     }
-  }
+  };
 
   // for save button hit
   const notesSaveHandler = async () => {
     try {
       if (addNoteFields.Title.value !== "") {
-        setIsAddNote(false)
-        setIsCreateNote(true)
+        setIsAddNote(false);
+        setIsCreateNote(true);
       } else {
         setAddNoteFields({
           ...addNoteFields,
@@ -168,36 +168,36 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
             errorMessage: "",
             errorStatus: false,
           },
-        })
-        setIsCreateNote(false)
-        setOpen({
-          ...open,
-          open: true,
-          message: t("Field-should-not-be-empty"),
-        })
-        setTimeout(() => {
-          setOpen({
-            ...open,
-            open: false,
-            message: "",
-          })
-        }, 3000)
+        });
+        setIsCreateNote(false);
+        // setOpen({
+        //   ...open,
+        //   open: true,
+        //   message: t("Field-should-not-be-empty"),
+        // })
+        // setTimeout(() => {
+        //   setOpen({
+        //     ...open,
+        //     open: false,
+        //     message: "",
+        //   })
+        // }, 3000)
       }
     } catch (error) {}
-  }
+  };
 
   //Upload File Handler
   const uploadFilesToDo = (data) => {
-    let fileSizeArr
+    let fileSizeArr;
     if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
-      console.log("uploadedFile")
+      console.log("uploadedFile");
       setTimeout(
         setOpen({
           open: true,
           message: t("You-can-not-upload-more-then-10-files"),
         }),
         3000
-      )
+      );
     } else if (fileSize >= 104857600) {
       setTimeout(
         setOpen({
@@ -205,15 +205,15 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           message: t("You-can-not-upload-more-then-100MB-files"),
         }),
         3000
-      )
+      );
     } else {
-      const uploadFilePath = data.target.value
-      const uploadedFile = data.target.files[0]
-      var ext = uploadedFile.name.split(".").pop()
-      console.log("uploadedFile12", uploadedFile.name, ext, uploadedFile.size)
-      let file = tasksAttachments.TasksAttachments
-      console.log("daatadaad", file)
-      console.log(uploadedFile, "daatadaad")
+      const uploadFilePath = data.target.value;
+      const uploadedFile = data.target.files[0];
+      var ext = uploadedFile.name.split(".").pop();
+      console.log("uploadedFile12", uploadedFile.name, ext, uploadedFile.size);
+      let file = tasksAttachments.TasksAttachments;
+      console.log("daatadaad", file);
+      console.log(uploadedFile, "daatadaad");
       if (
         ext === "doc" ||
         ext === "docx" ||
@@ -226,24 +226,24 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         ext === "jpeg" ||
         ext === "gif"
       ) {
-        let data
-        let sizezero
-        let size
+        let data;
+        let sizezero;
+        let size;
         if (file.length > 0) {
           file.map((filename, index) => {
-            console.log("uploadedFile", filename)
+            console.log("uploadedFile", filename);
             if (filename.DisplayAttachmentName === uploadedFile.name) {
               console.log(
                 "uploadedFile",
                 filename.DisplayAttachmentName === uploadedFile.name
-              )
-              data = false
+              );
+              data = false;
             }
-          })
+          });
           if (uploadedFile.size > 10485760) {
-            size = false
+            size = false;
           } else if (uploadedFile.size === 0) {
-            sizezero = false
+            sizezero = false;
           }
           if (data === false) {
             setTimeout(
@@ -252,7 +252,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                 message: t("File-already-exisit"),
               }),
               3000
-            )
+            );
           } else if (size === false) {
             setTimeout(
               setOpen({
@@ -260,7 +260,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                 message: t("File-size-should-not-be-greater-then-zero"),
               }),
               3000
-            )
+            );
           } else if (sizezero === false) {
             setTimeout(
               setOpen({
@@ -268,13 +268,13 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                 message: t("File-size-should-not-be-zero"),
               }),
               3000
-            )
+            );
           } else {
             // dispatch(FileUploadToDo(uploadedFile, t));
-            fileSizeArr = uploadedFile.size + fileSize
-            fileSizeArr = uploadedFile.size + fileSize
-            setFileForSend([...fileForSend, uploadedFile])
-            setFileSize(fileSizeArr)
+            fileSizeArr = uploadedFile.size + fileSize;
+            fileSizeArr = uploadedFile.size + fileSize;
+            setFileForSend([...fileForSend, uploadedFile]);
+            setFileSize(fileSizeArr);
             let FileData = {
               PK_TAID: 0,
               DisplayAttachmentName: uploadedFile.name,
@@ -282,19 +282,19 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
               CreationDateTime: "",
               FK_TID: 0,
               fileSize: uploadedFile.size,
-            }
+            };
             setTasksAttachments({
               ["TasksAttachments"]: [
                 ...tasksAttachments.TasksAttachments,
                 FileData,
               ],
-            })
+            });
           }
         } else {
           if (uploadedFile.size > 10485760) {
-            size = false
+            size = false;
           } else if (uploadedFile.size === 0) {
-            sizezero = false
+            sizezero = false;
           }
           if (size === false) {
             setTimeout(
@@ -303,7 +303,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                 message: t("File-size-should-not-be-greater-then-zero"),
               }),
               3000
-            )
+            );
           } else if (sizezero === false) {
             setTimeout(
               setOpen({
@@ -311,12 +311,12 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                 message: t("File-size-should-not-be-zero"),
               }),
               3000
-            )
+            );
           } else {
             // dispatch(FileUploadToDo(uploadedFile, t));
-            fileSizeArr = uploadedFile.size + fileSize
-            setFileForSend([...fileForSend, uploadedFile])
-            setFileSize(fileSizeArr)
+            fileSizeArr = uploadedFile.size + fileSize;
+            setFileForSend([...fileForSend, uploadedFile]);
+            setFileSize(fileSizeArr);
             let FileData = {
               PK_TAID: 0,
               DisplayAttachmentName: uploadedFile.name,
@@ -324,24 +324,24 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
               CreationDateTime: "",
               FK_TID: 0,
               fileSize: uploadedFile.size,
-            }
+            };
             setTasksAttachments({
               ["TasksAttachments"]: [
                 ...tasksAttachments.TasksAttachments,
                 FileData,
               ],
-            })
+            });
           }
         }
       }
     }
-  }
+  };
 
   const cancelNewNoteModal = () => {
-    setCloseConfirmationBox(true)
-    setIsCreateNote(false)
-    setIsAddNote(false)
-  }
+    setCloseConfirmationBox(true);
+    setIsCreateNote(false);
+    setIsAddNote(false);
+  };
 
   const modules = {
     toolbar: {
@@ -362,29 +362,29 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       ],
       handlers: {},
     },
-  }
+  };
 
   const handleClick = async () => {
     if (addNoteFields.Title.value !== "") {
-      let counter = Object.keys(fileForSend).length - 1
+      let counter = Object.keys(fileForSend).length - 1;
       if (Object.keys(fileForSend).length > 0) {
         const uploadFiles = (fileForSend) => {
           const uploadPromises = fileForSend.map((newData) => {
-            dispatch(FileUploadToDo(navigate, newData, t))
-          })
-          return Promise.all(uploadPromises)
-        }
+            dispatch(FileUploadToDo(navigate, newData, t));
+          });
+          return Promise.all(uploadPromises);
+        };
         uploadFiles(fileForSend)
           .then((response) => {
-            setAddNewModal(false)
-            let notesAttachment = []
+            setAddNewModal(false);
+            let notesAttachment = [];
             if (tasksAttachments.TasksAttachments.length > 0) {
               tasksAttachments.TasksAttachments.map((data, index) => {
                 notesAttachment.push({
                   DisplayAttachmentName: data.DisplayAttachmentName,
                   OriginalAttachmentName: data.OriginalAttachmentName,
-                })
-              })
+                });
+              });
             }
             let Data = {
               Title: addNoteFields.Title.value,
@@ -393,21 +393,21 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
               FK_UserID: JSON.parse(createrID),
               FK_OrganizationID: JSON.parse(OrganizationID),
               NotesAttachments: notesAttachment,
-            }
+            };
 
-            dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal))
+            dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
           })
-          .catch((error) => console.log(error))
+          .catch((error) => console.log(error));
       } else {
-        setAddNewModal(false)
-        let notesAttachment = []
+        setAddNewModal(false);
+        let notesAttachment = [];
         if (tasksAttachments.TasksAttachments.length > 0) {
           tasksAttachments.TasksAttachments.map((data, index) => {
             notesAttachment.push({
               DisplayAttachmentName: data.DisplayAttachmentName,
               OriginalAttachmentName: data.OriginalAttachmentName,
-            })
-          })
+            });
+          });
         }
         let Data = {
           Title: addNoteFields.Title.value,
@@ -416,9 +416,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           FK_UserID: JSON.parse(createrID),
           FK_OrganizationID: JSON.parse(OrganizationID),
           NotesAttachments: notesAttachment,
-        }
+        };
 
-        dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal))
+        dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
       }
     } else {
       setAddNoteFields({
@@ -440,30 +440,30 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
           errorMessage: "",
           errorStatus: false,
         },
-      })
-      setOpen({
-        ...open,
-        open: true,
-        message: t("Field-should-not-be-empty"),
-      })
-      setTimeout(() => {
-        setOpen({
-          ...open,
-          open: false,
-          message: "",
-        })
-      }, 3000)
+      });
+      // setOpen({
+      //   ...open,
+      //   open: true,
+      //   message: t("Field-should-not-be-empty"),
+      // });
+      // setTimeout(() => {
+      //   setOpen({
+      //     ...open,
+      //     open: false,
+      //     message: "",
+      //   });
+      // }, 3000);
     }
-  }
+  };
 
   const enterKeyHandler = (event) => {
     if (event.key === "Tab" && !event.shiftKey) {
-      event.preventDefault()
-      const quill = editorRef.current.getEditor()
-      quill.root.setAttribute("autofocus", "")
-      quill.focus()
+      event.preventDefault();
+      const quill = editorRef.current.getEditor();
+      quill.root.setAttribute("autofocus", "");
+      quill.focus();
     }
-  }
+  };
 
   return (
     <>
@@ -471,9 +471,9 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
         <Modal
           show={addNewModal}
           onHide={() => {
-            setCloseConfirmationBox(true)
-            setIsCreateNote(false)
-            setIsAddNote(false)
+            setCloseConfirmationBox(true);
+            setIsCreateNote(false);
+            setIsAddNote(false);
           }}
           setShow={setAddNewModal}
           ButtonTitle={ModalTitle}
@@ -622,7 +622,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                             <CustomUpload
                               change={uploadFilesToDo}
                               onClick={(event) => {
-                                event.target.value = null
+                                event.target.value = null;
                               }}
                               className="UploadFileButton"
                             />
@@ -640,13 +640,13 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                                         var ext =
                                           data.DisplayAttachmentName.split(
                                             "."
-                                          ).pop()
+                                          ).pop();
 
                                         const first =
                                           data.DisplayAttachmentName.split(
                                             " "
-                                          )[0]
-                                        console.log("extextext", ext)
+                                          )[0];
+                                        console.log("extextext", ext);
                                         // let newext = JSON.parse(ext)
                                         // console.log("extextext", newext)
 
@@ -759,7 +759,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                                               {first}
                                             </p>
                                           </Col>
-                                        )
+                                        );
                                       }
                                     )
                                   : null}
@@ -839,7 +839,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
       </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
     </>
-  )
-}
+  );
+};
 
-export default ModalAddNote
+export default ModalAddNote;
