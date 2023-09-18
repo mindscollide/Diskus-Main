@@ -184,3 +184,20 @@ body[dir="rtl"] .errorMessage-inLogin {
   height: 0px;
   color: #f16b6b;
 }
+
+.Scroller_Prposed_Meeting_date {
+  height: 22vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_Prposed_Meeting_date::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_Prposed_Meeting_date::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}

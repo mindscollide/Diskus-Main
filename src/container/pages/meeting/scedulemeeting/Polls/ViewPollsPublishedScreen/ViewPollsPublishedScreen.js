@@ -120,7 +120,7 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col lg={6} md={6} sm={6}>
+                  <Col lg={12} md={12} sm={12}>
                     <Row>
                       <Col lg={12} md={12} sm={12}>
                         <span className={styles["Date_Heading"]}>
@@ -136,16 +136,6 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
                       </Col>
                     </Row>
                   </Col>
-                  <Col
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    className="d-flex justify-content-end align-items-center"
-                  >
-                    <span className={styles["Multiple_Answers_zstyles"]}>
-                      {t("Multiple-answers-allowed")}
-                    </span>
-                  </Col>
                 </Row>
               </Col>
               <Col lg={1} md={1} sm={1}></Col>
@@ -153,7 +143,7 @@ const ViewPollsPublishedScreen = ({ setSavePollsPublished }) => {
                 <Row className="mt-3">
                   <Col lg={12} md={12} sm={12}>
                     <span className={styles["Participants"]}>
-                      {"Participant"}
+                      {"Participants"}
                     </span>
                   </Col>
                 </Row>
