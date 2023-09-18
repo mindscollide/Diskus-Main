@@ -76,7 +76,7 @@
 
 .RedCrossForEdit {
   position: absolute !important;
-  right: 12px !important;
+  right: 7px !important;
   top: -7px !important;
 }
 
@@ -121,12 +121,12 @@
 }
 
 .CreateAnotherScratchBtn {
-  color: #5f78d6;
+  color: #5f78d6 !important;
   font-size: 12px !important;
   font-family: "MontserratSemiBold" !important;
   width: 100% !important;
   height: 39px !important;
-  border: 1px dotted #e1e1e1;
+  border: 1px dashed #e1e1e1 !important;
   background: #fff !important;
   border-radius: 4px !important;
   margin-right: 0px !important;
@@ -134,12 +134,12 @@
 }
 
 .CreateAnotherScratchBtn:is(:hover, :active, :focus, :focus-visible) {
-  color: #5f78d6;
+  color: #5f78d6 !important;
   font-size: 12px !important;
   font-family: "MontserratSemiBold" !important;
   width: 100% !important;
   height: 39px !important;
-  border: 1px dotted #e1e1e1;
+  border: 1px dashed #e1e1e1 !important;
   background: #fff !important;
   border-radius: 4px !important;
   margin-right: 0px !important;
