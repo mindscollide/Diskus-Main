@@ -962,9 +962,16 @@ const Dashboard = () => {
               CallStatusID: 3,
               CallTypeID: callTypeID,
             }
-            dispatch(VideoCallResponse(Data, navigate, t))
+            if (videoFeatureReducer.IncomingVideoCallFlag === true) {
+              dispatch(VideoCallResponse(Data, navigate, t))
+            }
           }, timeValue)
           localStorage.setItem('newRoomID', data.payload.roomID)
+          let Dataa = {
+            OrganizationID: Number(currentOrganization),
+            RoomID: data.payload.roomID,
+          }
+          dispatch(CallRequestReceived(Dataa, navigate, t))
           dispatch(incomingVideoCallMQTT(data.payload, data.payload.message))
           dispatch(incomingVideoCallFlag(true))
           return () => clearTimeout(timeoutId)
@@ -973,15 +980,18 @@ const Dashboard = () => {
             OrganizationID: Number(currentOrganization),
             RoomID: data.payload.roomID,
           }
-          dispatch(incomingVideoCallMQTT(data.payload, data.payload.message))
-          dispatch(incomingVideoCallFlag(true))
+
           localStorage.setItem('RoomID', data.payload.roomID)
           localStorage.setItem('callerID', data.payload.callerID)
           localStorage.setItem('callerNameInitiate', data.payload.callerName)
           localStorage.setItem('recipentID', data.receiverID[0])
           localStorage.setItem('recipentName', currentUserName)
           // dispatch(normalizeVideoPanelFlag(false))
-          dispatch(CallRequestReceived(Data, navigate, t))
+          if (videoFeatureReducer.IncomingVideoCallFlag === false) {
+            dispatch(incomingVideoCallMQTT(data.payload, data.payload.message))
+            dispatch(incomingVideoCallFlag(true))
+            dispatch(CallRequestReceived(Data, navigate, t))
+          }
         }
         dispatch(callRequestReceivedMQTT({}, ''))
       } else if (

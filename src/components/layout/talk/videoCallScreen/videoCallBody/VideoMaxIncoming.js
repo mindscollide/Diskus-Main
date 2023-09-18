@@ -89,7 +89,7 @@ const VideoMaxIncoming = () => {
       setIsVisible(false)
       audioElement.pause()
       audioElement.currentTime = 0
-    }, 10000)
+    }, timeValue)
 
     // Clear the timer if isTimerRunning becomes false
     console.log('isTimerRunning', isTimerRunning)
@@ -235,7 +235,13 @@ const VideoMaxIncoming = () => {
 
             <Row>
               <Col sm={6} md={6} lg={6}>
-                <div className="d-flex justify-content-end">
+                <div
+                  className={
+                    activeCallState === true
+                      ? 'd-flex justify-content-center'
+                      : 'd-flex justify-content-end'
+                  }
+                >
                   {activeCallState === true ? (
                     <>
                       <div className="incoming-action">
@@ -276,7 +282,13 @@ const VideoMaxIncoming = () => {
               </Col>
 
               <Col sm={6} md={6} lg={6}>
-                <div className="d-flex justify-content-start">
+                <div
+                  className={
+                    activeCallState === true
+                      ? 'd-flex justify-content-center'
+                      : 'd-flex justify-content-start'
+                  }
+                >
                   {activeCallState === true ? (
                     <>
                       <div className="incoming-action">
