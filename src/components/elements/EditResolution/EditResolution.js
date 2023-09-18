@@ -65,6 +65,7 @@ import TextFieldDateTime from "../input_field_date/Input_field";
 import { ArrowLeft } from "react-bootstrap-icons";
 import { validateInput } from "../../../commen/functions/regex";
 import InputIcon from "react-multi-date-picker/components/input_icon";
+import TextFieldTime from "../input_field_time/Input_field";
 const EditResolution = ({ setCancelresolution }) => {
   const { Dragger } = Upload;
   const { t } = useTranslation();
@@ -80,7 +81,9 @@ const EditResolution = ({ setCancelresolution }) => {
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const currentDate = new Date();
-
+  const currentHours = currentDate.getHours().toString().padStart(2, "0");
+  const currentMinutes = currentDate.getMinutes().toString().padStart(2, "0");
+  const getcurrentTime = `${currentHours}:${currentMinutes}`;
   useEffect(() => {
     if (currentLanguage !== undefined) {
       if (currentLanguage === "en") {
@@ -147,6 +150,7 @@ const EditResolution = ({ setCancelresolution }) => {
     time: "",
     dateValue: "",
   });
+  console.log("circulationDateTimecirculationDateTime", circulationDateTime);
   const [votingDateTime, setVotingDateTime] = useState({
     date: "",
     time: "",
@@ -1429,7 +1433,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                   }
                                   editable={false}
                                   className="datePickerTodoCreate2"
-                                  onOpenPickNewDate={false}
+                                  onOpenPickNewDate={true}
                                   containerClassName={
                                     styles["datePicker_Container"]
                                   }
@@ -1461,7 +1465,7 @@ const EditResolution = ({ setCancelresolution }) => {
                               md={6}
                               className="CreateMeetingReminder resolution-search-input FontArabicRegular"
                             >
-                              <TextField
+                              <TextFieldTime
                                 type="time"
                                 name="circulation"
                                 labelClass="d-none"
@@ -1526,7 +1530,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                   }
                                   editable={false}
                                   className="datePickerTodoCreate2"
-                                  onOpenPickNewDate={false}
+                                  onOpenPickNewDate={true}
                                   containerClassName={
                                     styles["datePicker_Container"]
                                   }

@@ -661,7 +661,7 @@ const Sidebar = () => {
                       : "m-0 p-0 iconSidebar"
                   }
                 >
-                  <div className="d-flex flex-column">
+                  <div className="d-flex flex-column noteIcon">
                     <svg
                       id="Group_2034"
                       data-name="Group 2034"

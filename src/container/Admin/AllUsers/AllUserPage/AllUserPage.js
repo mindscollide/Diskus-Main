@@ -743,11 +743,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
             rows={rows}
             column={EditUserColumn}
             scroll={{ y: 400 }}
-            pagination={{
-              pageSize: rowSize,
-              showSizeChanger: true,
-              pageSizeOptions: ["100 ", "150", "200"],
-            }}
+            pagination={false}
             className="AllUserTable"
           />
         </Col>
