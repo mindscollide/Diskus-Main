@@ -1893,7 +1893,7 @@ const SearchComponent = ({
                     />
                   }
                   containerClassName={stylesss["datePicker_Container"]}
-                  onOpenPickNewDate={false}
+                  onOpenPickNewDate={true}
                   editable={false}
                   className="datePickerTodoCreate2"
                   // value={searchDataFields.LastModifiedStartDate}
@@ -1922,7 +1922,7 @@ const SearchComponent = ({
                   }
                   containerClassName={stylesss["datePicker_Container"]}
                   className="datePickerTodoCreate2"
-                  onOpenPickNewDate={false}
+                  onOpenPickNewDate={true}
                   editable={false}
                   inputMode=""
                   onChange={handleEndDatePickerChange}

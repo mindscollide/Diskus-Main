@@ -472,25 +472,27 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                                 <span className="deleteCommentSpinner">
                                   <Spin size="small" />
                                 </span>
-                              ) : commentData.taskCommentID !== 0 ? (
-                                <></>
+                              ) : commentData.taskCommentID === 0 ||
+                                commentData.taskCommentID !== 0 ? (
+                                <>
+                                  <img
+                                    src={CrossIcon}
+                                    width={14}
+                                    alt=""
+                                    onClick={() =>
+                                      handleDeleteComments(
+                                        commentData.taskCommentID,
+                                        commentData.TaskID
+                                      )
+                                    }
+                                    className={
+                                      commentData.taskCommentID !== 0
+                                        ? "crossIconTodoComment"
+                                        : "crossIconTodoComment_disable"
+                                    }
+                                  />
+                                </>
                               ) : null}
-                              <img
-                                src={CrossIcon}
-                                width={14}
-                                alt=""
-                                onClick={() =>
-                                  handleDeleteComments(
-                                    commentData.taskCommentID,
-                                    commentData.TaskID
-                                  )
-                                }
-                                className={
-                                  commentData.taskCommentID !== 0
-                                    ? "crossIconTodoComment"
-                                    : "crossIconTodoComment_disable"
-                                }
-                              />
                             </Col>
                           </>
                         );
@@ -527,7 +529,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
               </Row>
 
               {/* Post Comments  */}
-              <Row className="">
+              <Row className="mt-3">
                 <Form
                   className="d-flex"
                   onSubmit={(e) => handleClickCommentSubmit(e, task.PK_TID)}
@@ -542,6 +544,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                       placeholder={t("Type-in")}
                       applyClass="todoviewmodalcomments"
                       width={"460"}
+                      labelClass={"d-none"}
                       value={assgineeComments}
                       change={(e) => setAssgieeComments(e.target.value)}
                       maxLength={100}

@@ -127,6 +127,7 @@ const ScheduleNewResolution = () => {
     time: "",
     dateValue: "",
   });
+  console.log("votingDateTime", votingDateTime);
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
@@ -154,6 +155,9 @@ const ScheduleNewResolution = () => {
     IsResolutionPublic: false,
   });
   const currentDate = new Date();
+  const currentHours = currentDate.getHours().toString().padStart(2, "0");
+  const currentMinutes = currentDate.getMinutes().toString().padStart(2, "0");
+  const getcurrentTime = `${currentHours}:${currentMinutes}`;
   useEffect(() => {
     if (currentLanguage !== undefined) {
       if (currentLanguage === "en") {
@@ -1145,7 +1149,7 @@ const ScheduleNewResolution = () => {
                               }
                               editable={false}
                               className="datePickerTodoCreate2"
-                              onOpenPickNewDate={false}
+                              onOpenPickNewDate={true}
                               containerClassName={
                                 styles["datePicker_Container"]
                               }
@@ -1192,10 +1196,17 @@ const ScheduleNewResolution = () => {
                             type="time"
                             labelClass="d-none"
                             name="circulation"
+                            value={circulationDateTime.time}
                             onKeyDown={(e) => e.preventDefault()}
                             applyClass={"search_voterInput"}
                             change={(e) => {
                               handleChangeTimeSelection(e);
+                            }}
+                            onFocus={() => {
+                              setCirculationDateTime({
+                                ...circulationDateTime,
+                                time: getcurrentTime,
+                              });
                             }}
                           />
                           <Row>
@@ -1251,7 +1262,7 @@ const ScheduleNewResolution = () => {
                               }
                               editable={false}
                               className="datePickerTodoCreate2"
-                              onOpenPickNewDate={false}
+                              onOpenPickNewDate={true}
                               containerClassName={
                                 styles["datePicker_Container"]
                               }
@@ -1288,10 +1299,17 @@ const ScheduleNewResolution = () => {
                             type="time"
                             applyClass={"search_voterInput"}
                             labelClass="d-none"
+                            value={votingDateTime.time}
                             name="voting"
                             onKeyDown={(e) => e.preventDefault()}
                             change={(e) => {
                               handleChangeTimeSelection(e);
+                            }}
+                            onFocus={() => {
+                              setVotingDateTime({
+                                ...votingDateTime,
+                                time: getcurrentTime,
+                              });
                             }}
                           />
                           <Row>
@@ -1347,7 +1365,7 @@ const ScheduleNewResolution = () => {
                               }
                               editable={false}
                               className="datePickerTodoCreate2"
-                              onOpenPickNewDate={false}
+                              onOpenPickNewDate={true}
                               containerClassName={
                                 styles["datePicker_Container"]
                               }
@@ -1397,10 +1415,17 @@ const ScheduleNewResolution = () => {
                             applyClass={"search_voterInput"}
                             type="time"
                             onKeyDown={(e) => e.preventDefault()}
+                            value={decisionDateTime.time}
                             name="decision"
                             labelClass="d-none"
                             change={(e) => {
                               handleChangeTimeSelection(e);
+                            }}
+                            onFocus={() => {
+                              setDecisionDateTime({
+                                ...decisionDateTime,
+                                time: getcurrentTime,
+                              });
                             }}
                           />
                           <Row>

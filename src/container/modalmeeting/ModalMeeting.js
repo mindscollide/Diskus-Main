@@ -136,6 +136,12 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   const [createMeetingTime, setCreateMeetingTime] = useState("");
   // for Participant options
   const participantOptions = [t("Organizer"), t("Participant")];
+  const currentDate = new Date();
+  const currentHours = currentDate.getHours().toString().padStart(2, "0");
+  const currentMinutes = currentDate.getMinutes().toString().padStart(2, "0");
+  const getcurrentTime = `${currentHours}:${currentMinutes}`;
+
+  console.log(getcurrentTime, "createMeetingTimecreateMeetingTime");
 
   //Reminder Stats
   const [reminderValue, setReminderValue] = useState("");
@@ -347,6 +353,15 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       ["IsChat"]: e.target.checked,
     });
   }
+
+  const handleFocusMeetingTime = () => {
+    setCreateMeeting({
+      ...createMeeting,
+      MeetingStartTime: RemoveTimeDashes(getcurrentTime),
+      MeetingEndTime: RemoveTimeDashes(getcurrentTime),
+    });
+    setCreateMeetingTime(getcurrentTime);
+  };
 
   // for all details handler
   const detailsHandler = (e) => {
@@ -1308,6 +1323,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         applyClass={"quick_meeting_time"}
                         change={detailsHandler}
                         placeholder={"00:00"}
+                        onFocus={handleFocusMeetingTime}
                       />
                       {/* <TimePickers
                         change={detailsHandler}
@@ -1344,7 +1360,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                           }
                           editable={false}
                           className="datePickerTodoCreate2"
-                          onOpenPickNewDate={false}
+                          onOpenPickNewDate={true}
                           inputMode=""
                           value={meetingDate}
                           calendar={calendarValue}

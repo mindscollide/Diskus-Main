@@ -582,7 +582,7 @@ const CreatePolling = () => {
                             </span>
                             <DatePicker
                               highlightToday={false}
-                              onOpenPickNewDate={false}
+                              onOpenPickNewDate={true}
                               ref={datePickerRef}
                               render={<CustomIcon />}
                               onChange={(value) =>

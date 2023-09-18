@@ -244,13 +244,11 @@ textarea.comment-view.text-right.form-control {
 
 .comment-enter-button {
   background: #6172d6 !important;
-  /* height: 37px; */
+  height: 100%;
   text-align: center;
-  margin-top: 20px;
   border-radius: 4px;
-  margin-left: 11px;
+  margin-left: 6px;
   width: 40px;
-  /* padding   : 0px !important; */
 }
 
 .modalTodoViewHeader button.btn-close {

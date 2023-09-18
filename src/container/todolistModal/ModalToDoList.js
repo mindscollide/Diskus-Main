@@ -54,6 +54,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   const [createTodoDate, setCreateTodoDate] = useState("");
   const state = useSelector((state) => state);
   const { toDoListReducer } = state;
+  const currentDate = new Date();
+  const currentHours = currentDate.getHours().toString().padStart(2, "0");
+  const currentMinutes = currentDate.getMinutes().toString().padStart(2, "0");
+  const getcurrentTime = `${currentHours}:${currentMinutes}`;
   //To Display Modal
 
   const dispatch = useDispatch();
@@ -582,7 +586,12 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setTaskAssignedName([]);
     setTaskAssignedTo([]);
   };
-
+  const handleFocusCreateTodo = () => {
+    setTask({
+      ...task,
+      DeadLineTime: getcurrentTime,
+    });
+  };
   // const handleBlur = (event) => {
   //   // Access the selected value when the input field loses focus
   //   const selectedValue = event.target.value;
@@ -632,6 +641,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         name="DeadLineTime"
                         applyClass={"createTodo_timePicker"}
                         inputRef={timePickerRef}
+                        onFocus={handleFocusCreateTodo}
                         // onBlur={handleBlur}
                         // onClick={handleTimeSelect}
                         id="timeInput"
@@ -647,6 +657,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         onChange={toDoDateHandler}
                         // inputClass="datepicker_input"
                         format={"DD/MM/YYYY"}
+                        value={toDoDate}
                         minDate={moment().toDate()}
                         placeholder="DD/MM/YYYY"
                         render={
@@ -659,7 +670,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         className="datePickerTodoCreate2"
                         // disabled={disabled}
                         // name={name}
-                        onOpenPickNewDate={false}
+                        onOpenPickNewDate={true}
                         inputMode=""
                         // value={value}
                         calendar={calendarValue}
