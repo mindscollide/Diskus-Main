@@ -63,6 +63,54 @@ const VideoMaxIncoming = () => {
     }
   }, [VideoMainReducer?.InitiateVideoCallDataMQTT])
 
+  let timeValue = Number(localStorage.getItem('callRingerTimeout'))
+  timeValue = timeValue * 1000
+
+  useEffect(() => {
+    // Create the audio element
+    const audioElement = new Audio('/IncomingCall.wav')
+
+    audioElement.loop = true
+
+    // Play the audio when the component mounts
+    audioElement.play()
+
+    const timer = setTimeout(() => {
+      console.log('Timer Initiated')
+      // Dispatch action to update global state
+      let Data = {
+        ReciepentID: currentUserId,
+        RoomID: incomingRoomID,
+        CallStatusID: 3,
+        CallTypeID: callTypeID,
+      }
+      dispatch(VideoCallResponse(Data, navigate, t))
+      dispatch(incomingVideoCallFlag(false))
+      setIsVisible(false)
+      audioElement.pause()
+      audioElement.currentTime = 0
+    }, 10000)
+
+    // Clear the timer if isTimerRunning becomes false
+    console.log('isTimerRunning', isTimerRunning)
+    if (!isTimerRunning) {
+      console.log('isTimerRunning', isTimerRunning)
+      console.log('Timer Stopped')
+      clearTimeout(timer)
+    }
+
+    return () => {
+      audioElement.pause()
+      audioElement.currentTime = 0
+      clearTimeout(timer)
+      console.log('Timer Stopped in Return Function')
+    }
+  }, [])
+
+  // useEffect(() => {
+
+  // }, [])
+
   const acceptCall = () => {
     let Data = {
       ReciepentID: currentUserId,
@@ -74,6 +122,7 @@ const VideoMaxIncoming = () => {
     dispatch(incomingVideoCallFlag(false))
     dispatch(normalizeVideoPanelFlag(true))
     localStorage.setItem('activeCall', true)
+    setIsTimerRunning(false)
   }
 
   const endAndAccept = async () => {
@@ -92,6 +141,7 @@ const VideoMaxIncoming = () => {
     }
     dispatch(VideoCallResponse(Data2, navigate, t))
     dispatch(incomingVideoCallFlag(false))
+    setIsTimerRunning(false)
   }
 
   const rejectCall = () => {
@@ -104,6 +154,7 @@ const VideoMaxIncoming = () => {
     dispatch(VideoCallResponse(Data, navigate, t))
     dispatch(incomingVideoCallFlag(false))
     localStorage.setItem('activeCall', false)
+    setIsTimerRunning(false)
   }
 
   const busyCall = () => {
@@ -115,46 +166,8 @@ const VideoMaxIncoming = () => {
     }
     dispatch(VideoCallResponse(Data, navigate, t))
     dispatch(incomingVideoCallFlag(false))
+    setIsTimerRunning(false)
   }
-
-  let timeValue = Number(localStorage.getItem('callRingerTimeout'))
-  timeValue = timeValue * 1000
-
-  useEffect(() => {
-    // Create the audio element
-    const audioElement = new Audio('/IncomingCall.wav')
-
-    audioElement.loop = true
-
-    // Play the audio when the component mounts
-    audioElement.play()
-
-    const timer = setTimeout(() => {
-      // Dispatch action to update global state
-      let Data = {
-        ReciepentID: currentUserId,
-        RoomID: incomingRoomID,
-        CallStatusID: 3,
-        CallTypeID: callTypeID,
-      }
-      dispatch(VideoCallResponse(Data, navigate, t))
-      dispatch(incomingVideoCallFlag(false))
-      setIsVisible(false)
-      audioElement.pause()
-      audioElement.currentTime = 0
-    }, timeValue)
-
-    // Clear the timer if isTimerRunning becomes false
-    if (!isTimerRunning) {
-      clearTimeout(timer)
-    }
-
-    return () => {
-      audioElement.pause()
-      audioElement.currentTime = 0
-      clearTimeout(timer)
-    }
-  }, [])
 
   // Use the global state to control whether the timer should run
   useEffect(() => {
@@ -162,6 +175,8 @@ const VideoMaxIncoming = () => {
       setIsTimerRunning(false) // Stop the timer
     }
   }, [videoFeatureReducer.IncomingVideoFlag])
+
+  console.log('isTimerRunning', isTimerRunning)
 
   return (
     <>
@@ -183,7 +198,9 @@ const VideoMaxIncoming = () => {
                       : 'avatar-column-max-call'
                   }
                 >
-                  <img src={videoAvatar} width={150} alt="Avatar video" />
+                  {activeCallState === false ? (
+                    <img src={videoAvatar} width={150} alt="Avatar video" />
+                  ) : null}
                 </div>
               </Col>
             </Row>

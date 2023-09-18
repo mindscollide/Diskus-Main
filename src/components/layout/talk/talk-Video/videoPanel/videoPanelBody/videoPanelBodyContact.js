@@ -14,6 +14,7 @@ import {
   InitiateVideoCall,
   getVideoRecipentData,
   groupCallRecipients,
+  callRequestReceivedMQTT,
 } from '../../../../../../store/actions/VideoMain_actions'
 import {
   videoOutgoingCallFlag,
@@ -34,6 +35,8 @@ const VideoPanelBodyContact = () => {
   const { t } = useTranslation()
 
   let currentOrganization = Number(localStorage.getItem('organizationID'))
+
+  let currentUserID = Number(localStorage.getItem('userID'))
 
   const [searchChatValue, setSearchChatValue] = useState('')
 
@@ -130,6 +133,9 @@ const VideoPanelBodyContact = () => {
     }
     localStorage.setItem('CallType', Data.CallTypeID)
     dispatch(InitiateVideoCall(Data, navigate, t))
+    localStorage.setItem('activeCall', true)
+    localStorage.setItem('callerID', currentUserID)
+    dispatch(callRequestReceivedMQTT({}, ''))
     dispatch(getVideoRecipentData(userData))
     dispatch(normalizeVideoPanelFlag(true))
     dispatch(videoChatPanel(false))
@@ -147,6 +153,9 @@ const VideoPanelBodyContact = () => {
       }
       localStorage.setItem('CallType', Data.CallTypeID)
       dispatch(InitiateVideoCall(Data, navigate, t))
+      localStorage.setItem('activeCall', true)
+      localStorage.setItem('callerID', currentUserID)
+      dispatch(callRequestReceivedMQTT({}, ''))
       dispatch(groupCallRecipients(groupCallActiveUsers))
       // dispatch(getVideoRecipentData(userData))
       dispatch(normalizeVideoPanelFlag(true))

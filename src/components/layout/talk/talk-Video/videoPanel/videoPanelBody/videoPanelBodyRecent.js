@@ -15,6 +15,7 @@ import {
   getVideoRecipentData,
   ScrollRecentCalls,
   GetUserRecentCallsScroll,
+  callRequestReceivedMQTT,
 } from '../../../../../../store/actions/VideoMain_actions'
 import {
   newTimeFormaterAsPerUTCTalkTime,
@@ -183,6 +184,9 @@ const VideoPanelBodyRecent = () => {
       }
       localStorage.setItem('CallType', Data.CallTypeID)
       dispatch(InitiateVideoCall(Data, navigate, t))
+      localStorage.setItem('callerID', currentUserID)
+      localStorage.setItem('activeCall', true)
+      dispatch(callRequestReceivedMQTT({}, ''))
       dispatch(getVideoRecipentData(data))
       dispatch(normalizeVideoPanelFlag(true))
       dispatch(videoChatPanel(false))
@@ -197,6 +201,9 @@ const VideoPanelBodyRecent = () => {
       }
       localStorage.setItem('CallType', Data.CallTypeID)
       dispatch(InitiateVideoCall(Data, navigate, t))
+      localStorage.setItem('callerID', currentUserID)
+      localStorage.setItem('activeCall', true)
+      dispatch(callRequestReceivedMQTT({}, ''))
       // dispatch(groupCallRecipients(groupCallActiveUsers))
       dispatch(normalizeVideoPanelFlag(true))
       dispatch(videoChatPanel(false))
@@ -285,7 +292,7 @@ const VideoPanelBodyRecent = () => {
                       <div className={'video-block'}>
                         {recentCallData.callStatus.status === 'Unanswered' ||
                         recentCallData.callStatus.status === 'Busy' ? (
-                          <p className="Video-chat-username missed m-0">
+                          <p className="Video-chat-username m-0">
                             {recentCallData.callerName === currentUserName
                               ? recentCallData.recipients[0].userName
                               : recentCallData.callerName}

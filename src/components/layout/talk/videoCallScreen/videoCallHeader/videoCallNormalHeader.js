@@ -164,7 +164,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
       OrganizationID: currentOrganization,
       RoomID: initiateRoomID,
       IsCaller: true,
-      CallTypeID: callTypeID,
+      CallTypeID: currentCallType,
     }
     dispatch(LeaveCall(Data, navigate, t))
     const emptyArray = []

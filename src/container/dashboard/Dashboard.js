@@ -980,7 +980,7 @@ const Dashboard = () => {
           localStorage.setItem('callerNameInitiate', data.payload.callerName)
           localStorage.setItem('recipentID', data.receiverID[0])
           localStorage.setItem('recipentName', currentUserName)
-          dispatch(normalizeVideoPanelFlag(false))
+          // dispatch(normalizeVideoPanelFlag(false))
           dispatch(CallRequestReceived(Data, navigate, t))
         }
         dispatch(callRequestReceivedMQTT({}, ''))
@@ -1095,7 +1095,7 @@ const Dashboard = () => {
         setNotification({
           ...notification,
           notificationShow: true,
-          message: `The call has been rejected`,
+          message: `${data.payload.recepientName} has declined the call`,
         })
         setNotificationID(id)
         dispatch(callRequestReceivedMQTT({}, ''))
@@ -1106,8 +1106,11 @@ const Dashboard = () => {
         let callTypeID = Number(localStorage.getItem('callTypeID'))
         if (Number(data.senderID) !== Number(createrID)) {
           if (callTypeID === 1) {
-            dispatch(videoOutgoingCallFlag(false))
-            dispatch(normalizeVideoPanelFlag(false))
+            // dispatch(videoOutgoingCallFlag(false))
+            // dispatch(normalizeVideoPanelFlag(false))
+          }
+          if (Number(createrID) !== data.payload.recepientID) {
+            localStorage.setItem('unansweredFlag', true)
           }
           setNotification({
             ...notification,
@@ -1115,63 +1118,40 @@ const Dashboard = () => {
             message: `The call was unanswered`,
           })
           setNotificationID(id)
-          localStorage.setItem('activeCall', false)
-          // const emptyArray = []
-          // localStorage.setItem('callerStatusObject', JSON.stringify(emptyArray))
-          // let existingData =
-          //   JSON.parse(localStorage.getItem('callerStatusObject')) || []
-          // existingData.push({
-          //   RecipientName: data.payload.recepientName,
-          //   RecipientID: data.payload.recepientID,
-          //   CallStatus: 'Unanswered',
-          //   RoomID: data.payload.roomID,
-          // })
-          // localStorage.setItem(
-          //   'callerStatusObject',
-          //   JSON.stringify(existingData),
-          // )
-          // Get the existing data from localStorage
+          // localStorage.setItem('activeCall', false)
           let existingData =
             JSON.parse(localStorage.getItem('callerStatusObject')) || []
-
-          // Define the new data to be pushed
           let newData = {
             RecipientName: data.payload.recepientName,
             RecipientID: data.payload.recepientID,
             CallStatus: 'Unanswered',
             RoomID: data.payload.roomID,
           }
-
-          // Find an existing object that matches the criteria
           let existingObjectIndex = existingData.findIndex(
             (item) =>
               item.RecipientName === newData.RecipientName &&
               item.RecipientID === newData.RecipientID &&
               item.RoomID === newData.RoomID,
           )
-
-          // If an existing object was found, update it; otherwise, push the new data
           if (existingObjectIndex !== -1) {
             existingData[existingObjectIndex] = newData
           } else {
             existingData.push(newData)
           }
-
-          // Save the updated data back to localStorage
           localStorage.setItem(
             'callerStatusObject',
             JSON.stringify(existingData),
           )
         }
 
-        dispatch(callRequestReceivedMQTT({}, ''))
+        dispatch(callRequestReceivedMQTT(data.payload, data.payload.message))
         localStorage.setItem('initiateVideoCall', false)
       } else if (
         data.payload.message.toLowerCase() ===
         'VIDEO_CALL_RINGING'.toLowerCase()
       ) {
         dispatch(callRequestReceivedMQTT(data.payload, data.payload.message))
-        localStorage.setItem('activeCall', false)
+        // localStorage.setItem('activeCall', false)
         localStorage.setItem('initiateVideoCall', true)
         // const emptyArray = []
         // localStorage.setItem('callerStatusObject', JSON.stringify(emptyArray))
@@ -1227,7 +1207,7 @@ const Dashboard = () => {
         setNotification({
           ...notification,
           notificationShow: true,
-          message: `Call has been disconnected by the caller`,
+          message: `Call has been disconnected by ${data.payload.callerName}`,
         })
         setNotificationID(id)
       } else if (
@@ -1274,7 +1254,7 @@ const Dashboard = () => {
         setNotification({
           ...notification,
           notificationShow: true,
-          message: `Call has been disconnected by the recipient`,
+          message: `${data.payload.recipientName} has left the call`,
         })
         setNotificationID(id)
       } else if (
@@ -1292,7 +1272,7 @@ const Dashboard = () => {
           setNotification({
             ...notification,
             notificationShow: true,
-            message: `User Is Busy`,
+            message: `${data.payload.recepientName} is currently Busy`,
           })
           setNotificationID(id)
           // const emptyArray = []

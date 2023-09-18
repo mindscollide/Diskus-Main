@@ -89,7 +89,14 @@ const VideoOutgoing = () => {
           {currentCallType === 1 ? (
             <div className="Caller-Status">
               {Object.keys(VideoMainReducer.CallRequestReceivedMQTTData)
-                .length > 0 ? (
+                .length > 0 &&
+              VideoMainReducer.CallRequestReceivedMQTTData.message ===
+                'VIDEO_CALL_UNANSWERED' ? (
+                <>{userNameCR} is unavailable</>
+              ) : Object.keys(VideoMainReducer.CallRequestReceivedMQTTData)
+                  .length > 0 &&
+                VideoMainReducer.CallRequestReceivedMQTTData.message ===
+                  'VIDEO_CALL_RINGING' ? (
                 <>
                   Ringing
                   {' ' + userNameCR}
