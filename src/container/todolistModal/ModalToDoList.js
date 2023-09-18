@@ -99,7 +99,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     DeadLineTime: "",
     CreationDateTime: "",
   });
-  console.log(task, "tasktasktask");
   //To Set task Creater ID
   const [TaskCreatorID, setTaskCreatorID] = useState(0);
 
@@ -139,6 +138,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setTaskCreatorID(parseInt(createrID));
   }, []);
 
+  console.log(timePickerRef, "timePickerReftimePickerReftimePickerRef");
   //task Handler aka Input fields
   const taskHandler = (e) => {
     let name = e.target.name;
@@ -583,6 +583,10 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setTaskAssignedTo([]);
   };
 
+  const handleFocusTime = (e) => {
+    console.log(e.target, "handleFocusTimehandleFocusTime");
+  };
+
   return (
     <>
       <Container>
@@ -620,6 +624,8 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         placeholder={"00:00"}
                         name="DeadLineTime"
                         applyClass={"createTodo_timePicker"}
+                        inputRef={timePickerRef}
+                        onBlur={handleFocusTime}
                       />
                       {/* <TimePickers
                         change={taskHandler}

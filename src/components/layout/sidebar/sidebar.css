@@ -189,11 +189,19 @@ body[dir="rtl"] .iconSidebar-active-sidebar {
   fill: #fff !important;
 }
 
-.iconSidebar-active-sidebar svg rect#Rectangle_831 {
+a:hover .iconSidebar-active-sidebar svg rect#Rectangle_830 {
   fill: #fff !important;
 }
 
-a.m-0.p-0.iconSidebar-active-sidebar.nav-link.active rect#Rectangle_830 {
+a:hover .iconSidebar-active-sidebar svg rect#Rectangle_832 {
+  fill: #fff !important;
+}
+
+a:hover .iconSidebar-active-sidebar svg rect#Rectangle_831 {
+  fill: #fff !important;
+}
+
+a:hover .iconSidebar-active-sidebar.nav-link.active rect#Rectangle_830 {
   fill: #fff !important;
 }
 
@@ -378,11 +386,11 @@ a.m-0.p-0.icon_expand.nav-link:hover {
   width: 99% !important;
 }
 
-a.m-0.p-0.icon_expand.nav-link:hover svg path {
+a.m-0.p-0.icon_expand.nav-link:is(:hover, :focus) svg path {
   fill: #fff !important;
 }
 
-a.m-0.p-0.icon_expand.nav-link:hover span {
+a.m-0.p-0.icon_expand.nav-link:is(:hover, :focus) span {
   color: #fff !important;
 }
 
@@ -391,5 +399,15 @@ a.m-0.p-0.icon_expand.nav-link svg path {
 }
 
 a.icon-active-sidebar_expand.nav-link svg path {
+  fill: #fff !important;
+}
+/* iconSidebar */
+.iconSidebar:hover .noteIcon svg rect#Rectangle_830 {
+  fill: #fff !important;
+}
+.iconSidebar:hover .noteIcon svg rect#Rectangle_831 {
+  fill: #fff !important;
+}
+.iconSidebar:hover .noteIcon svg rect#Rectangle_832 {
   fill: #fff !important;
 }

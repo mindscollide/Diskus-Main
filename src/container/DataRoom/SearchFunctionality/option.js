@@ -10,7 +10,7 @@ import forms from "../../../assets/images/color forms.svg";
 import folderColor from "../../../assets/images/folder_color.svg";
 import images from "../../../assets/images/Imagesandphotos.svg";
 import PDFICON from "../../../assets/images/pdf_icon.svg";
-
+import PowerPointIcon from "../../../assets/images/AttachmentIcons/ppt.svg";
 import { Row } from "react-bootstrap";
 import { Col } from "rsuite";
 import styles from "../DataRoom.module.css";
@@ -356,56 +356,68 @@ export const optionsforFile = (t) => [
 
 export const getIconSource = (extension) => {
   switch (extension) {
-    case 'pdf':
+    case "pdf":
       return PDFICON;
-    case 'doc':
-    case 'docx':
-    case 'odt':
+    case "doc":
+    case "docx":
+    case "odt":
       return documentIcon;
-    case 'xls':
-    case 'xlsx':
+    case "xls":
+    case "xlsx":
       return spreadsheet;
-    case 'html':
-    case 'htm':
+    case "html":
+    case "htm":
       return sitesIcon;
-    case 'txt':
+    case "txt":
       return documentIcon;
-    case 'gif':
-    case 'jpeg':
-    case 'jpg':
-    case 'png':
-    case 'svg':
+    case "gif":
+    case "jpeg":
+    case "jpg":
+    case "png":
+    case "svg":
       return images;
-    case 'aif':
-    case 'iff':
-    case 'm3u':
-    case 'm4a':
-    case 'mid':
-    case 'mp3':
-    case 'mpa':
-    case 'wav':
+    case "aif":
+    case "iff":
+    case "m3u":
+    case "m4a":
+    case "mid":
+    case "mp3":
+    case "mpa":
+    case "wav":
       return audioIcon;
-    case '3g2':
-    case '3gp':
-    case 'asf':
-    case 'avi':
-    case 'flv':
-    case 'm4v':
-    case 'mov':
-    case 'mp4':
-    case 'mpg':
-    case 'rm':
-    case 'srt':
-    case 'swf':
-    case 'vob':
-    case 'wmv':
+    case "3g2":
+    case "3gp":
+    case "asf":
+    case "avi":
+    case "flv":
+    case "m4v":
+    case "mov":
+    case "mp4":
+    case "mpg":
+    case "rm":
+    case "srt":
+    case "swf":
+    case "vob":
+    case "wmv":
       return video;
+    case "ppt":
+    case "pptx":
+    case "pptm":
+    case "potx":
+    case "potm":
+    case "ppam":
+    case "ppsx":
+    case "ppsm":
+    case "sldx":
+    case "sldm":
+    case "pa":
+      return PowerPointIcon;
     default:
       return null;
   }
 };
 
 export const getFileExtension = (fileName) => {
-  const lowercaseExtension = fileName.toLowerCase().split('.').pop();
+  const lowercaseExtension = fileName.toLowerCase().split(".").pop();
   return lowercaseExtension;
 };

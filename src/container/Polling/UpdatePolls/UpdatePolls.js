@@ -581,6 +581,7 @@ const UpdatePolls = () => {
                               src={AlarmClock}
                               width="14.97px"
                               height="14.66px"
+                              alt=""
                             />
                             <span className={styles["Due_Date_heading"]}>
                               {t("Due-date-on")}{" "}
@@ -588,25 +589,26 @@ const UpdatePolls = () => {
                                 {changeDateStartHandler2(UpdatePolls.date)}
                               </span>
                             </span>
+                            <DatePicker
+                              highlightToday={false}
+                              onOpenPickNewDate={false}
+                              ref={datePickerRef}
+                              render={<CustomIcon />}
+                              onChange={(value) =>
+                                changeDateStartHandler(
+                                  value?.toDate?.().toString()
+                                )
+                              }
+                              format={dateFormat}
+                              value={UpdatePolls.date}
+                              calendarPosition="bottom-center"
+                              minDate={moment().toDate()}
+                              className="datePickerTodoCreate2"
+                              calendar={calendarValue}
+                              locale={localValue}
+                            />
                           </span>
-                          <DatePicker
-                            highlightToday={false}
-                            onOpenPickNewDate={false}
-                            ref={datePickerRef}
-                            render={<CustomIcon />}
-                            onChange={(value) =>
-                              changeDateStartHandler(
-                                value?.toDate?.().toString()
-                              )
-                            }
-                            format={dateFormat}
-                            value={UpdatePolls.date}
-                            calendarPosition="bottom-center"
-                            minDate={moment().toDate()}
-                            className="datePickerTodoCreate2"
-                            calendar={calendarValue}
-                            locale={localValue}
-                          />
+
                           {/* <MultiDatePickers
                             value={UpdatePolls.date}
                             name="MeetingDate"
