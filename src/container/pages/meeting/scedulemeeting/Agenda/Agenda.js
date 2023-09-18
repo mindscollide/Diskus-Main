@@ -221,8 +221,9 @@ const Agenda = () => {
 
   const addRow = () => {
     const updatedRows = [...rows];
+    const nextID = updatedRows.length.toString();
     const newMainAgenda = {
-      ID: updatedRows.length.toString(),
+      ID: nextID,
       title: "",
       selectedOption: null,
       startDate: null,
@@ -257,6 +258,7 @@ const Agenda = () => {
     };
     updatedRows.push(newMainAgenda);
     setRows(updatedRows);
+    console.log(updatedRows, "updatedRowsupdatedRows");
   };
 
   const addSubAjendaRows = (rowAgendaIndex) => {
@@ -625,7 +627,7 @@ const Agenda = () => {
   };
 
   const HandleDragDrop = (results) => {
-    console.log(results, "Hello There");
+    console.log(results, "HelloThere");
     const { source, destination, type } = results;
 
     if (!destination) return;
@@ -638,37 +640,24 @@ const Agenda = () => {
 
     if (type === "group") {
       const updatedRows = [...rows];
-
-      // Check if the drag-and-drop is in the main agenda list
-      if (source.droppableId === "ROOT") {
-        // Update "ROOT" to your actual droppableId
-        // Main Agenda Item Drag and Drop
-        const mainAgendaItem = updatedRows[source.index];
-        updatedRows.splice(source.index, 1);
-        updatedRows.splice(destination.index, 0, mainAgendaItem);
-      }
-
-      // Add this block to handle sub-agenda drag-and-drop
-      // Check if the drag-and-drop is in the sub-agenda list
-      if (source.droppableId.startsWith("subAgendaList")) {
-        // Update "subAgendaList" to your actual droppableId
-        const mainAgendaIndex = parseInt(source.droppableId.split("-")[1]);
-        const subAgendaItem =
-          updatedRows[mainAgendaIndex].subAgenda[source.index];
-        updatedRows[mainAgendaIndex].subAgenda.splice(source.index, 1);
-        updatedRows[mainAgendaIndex].subAgenda.splice(
-          destination.index,
-          0,
-          subAgendaItem
-        );
-      }
-
+      const [removed] = updatedRows.splice(results.source.index, 1);
+      updatedRows.splice(results.destination.index, 0, removed);
       setRows(updatedRows);
     }
   };
 
   const handleSavedViewAgenda = () => {
     setsavedViewAgenda(true);
+  };
+
+  const onDragEnd = (result) => {
+    if (!result.destination) return; // Item dropped outside the list
+
+    const reorderedRows = [...rows];
+    const [movedRow] = reorderedRows.splice(result.source.index, 1);
+    reorderedRows.splice(result.destination.index, 0, movedRow);
+
+    setRows(reorderedRows);
   };
 
   return (
@@ -678,7 +667,7 @@ const Agenda = () => {
       ) : (
         <>
           <section>
-            <DragDropContext onDragEnd={HandleDragDrop}>
+            <DragDropContext onDragEnd={onDragEnd}>
               <Row>
                 <Col
                   lg={12}
@@ -686,7 +675,7 @@ const Agenda = () => {
                   sm={12}
                   className={styles["Scroller_Agenda"]}
                 >
-                  <Droppable droppableId="ROOT" type="group">
+                  <Droppable droppableId="itemList" direction="vertical">
                     {(provided) => (
                       <div {...provided.droppableProps} ref={provided.innerRef}>
                         {rows.length > 0
@@ -695,15 +684,15 @@ const Agenda = () => {
                               return (
                                 <>
                                   <Draggable
+                                    key={data.ID}
                                     draggableId={data.ID}
-                                    Key={data.ID}
                                     index={index}
                                   >
                                     {(provided) => (
                                       <div
-                                        {...provided.dragHandleProps}
-                                        {...provided.draggableProps}
                                         ref={provided.innerRef}
+                                        {...provided.draggableProps}
+                                        {...provided.dragHandleProps}
                                       >
                                         <Row
                                           key={data.ID}
