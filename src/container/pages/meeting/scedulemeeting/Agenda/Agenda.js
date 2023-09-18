@@ -634,26 +634,6 @@ const Agenda = () => {
     return exists;
   };
 
-  const HandleDragDrop = (results) => {
-    console.log(results, "HelloThere");
-    const { source, destination, type } = results;
-
-    if (!destination) return;
-
-    if (
-      source.droppableId === destination.droppableId &&
-      source.index === destination.index
-    )
-      return;
-
-    if (type === "group") {
-      const updatedRows = [...rows];
-      const [removed] = updatedRows.splice(results.source.index, 1);
-      updatedRows.splice(results.destination.index, 0, removed);
-      setRows(updatedRows);
-    }
-  };
-
   const handleSavedViewAgenda = () => {
     setsavedViewAgenda(true);
   };
