@@ -24,9 +24,9 @@ const TextFieldTime = ({
   inputRef,
   onFocus,
   onBlur,
+  onClick,
+  id,
 }) => {
-  console.log("applyClassapplyClass", applyClass);
-  console.log("applyClassapplyClass", min);
   return (
     <>
       <FormGroup className={styles[formParentClass]}>
@@ -44,39 +44,19 @@ const TextFieldTime = ({
           type="time"
           disabled={disable}
           min={min}
-          max={min} // Ensure that the min prop is passed correctly
+          max={max} // Ensure that the min prop is passed correctly
           required={required ? true : false}
           onKeyDown={onKeyDown}
           ref={inputRef}
           onFocus={onFocus}
           onBlur={onBlur}
+          onClick={onClick}
+          id={id}
         />
         <FormControl.Feedback className={iconClassName} onClick={clickIcon}>
           {inputicon}
         </FormControl.Feedback>
       </FormGroup>
-      {/* <FormGroup className={styles[formParentClass]}>
-        <Form.Label className={labelClass}>{label}</Form.Label>
-        <Form.Control
-          className={
-            applyClass != undefined && applyClass != null
-              ? styles[applyClass]
-              : "form-control2 Saved_money_Tagline"
-          }
-          name={name && name}
-          onChange={change}
-          value={value === null ? "" : value}
-          label={label && <small>{label}</small>}
-          type="time"
-          disabled={disable}
-          min={min}
-          required={required ? true : false}
-          onKeyDown={onKeyDown}
-        />
-        <FormControl.Feedback className={iconClassName} onClick={clickIcon}>
-          {inputicon}
-        </FormControl.Feedback>
-      </FormGroup> */}
     </>
   );
 };

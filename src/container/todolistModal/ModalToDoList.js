@@ -583,10 +583,17 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setTaskAssignedTo([]);
   };
 
-  const handleFocusTime = (e) => {
-    console.log(e.target, "handleFocusTimehandleFocusTime");
-  };
-
+  // const handleBlur = (event) => {
+  //   // Access the selected value when the input field loses focus
+  //   const selectedValue = event.target.value;
+  //   console.log("Selected Value:", selectedValue);
+  // };
+  // const handleTimeSelect = () => {
+  //   const inputElement = document.getElementById("timeInput");
+  //   if (inputElement) {
+  //     inputElement.blur();
+  //   }
+  // };
   return (
     <>
       <Container>
@@ -625,7 +632,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         name="DeadLineTime"
                         applyClass={"createTodo_timePicker"}
                         inputRef={timePickerRef}
-                        onBlur={handleFocusTime}
+                        // onBlur={handleBlur}
+                        // onClick={handleTimeSelect}
+                        id="timeInput"
                       />
                       {/* <TimePickers
                         change={taskHandler}

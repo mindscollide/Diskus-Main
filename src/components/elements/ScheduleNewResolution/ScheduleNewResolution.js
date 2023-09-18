@@ -1236,7 +1236,7 @@ const ScheduleNewResolution = () => {
                         >
                           <div className="datepicker align-items-center ">
                             <DatePicker
-                              format={"YYYY-MM-DD"}
+                              format={"DD/MM/YYYY"}
                               minDate={
                                 circulationDateTime.date !== ""
                                   ? dateformatYYYYMMDD(circulationDateTime.date)
@@ -1332,7 +1332,7 @@ const ScheduleNewResolution = () => {
                         >
                           <div className="datepicker align-items-center ">
                             <DatePicker
-                              format={"YYYY-MM-DD"}
+                              format={"DD/MM/YYYY"}
                               minDate={
                                 votingDateTime.date !== ""
                                   ? dateformatYYYYMMDD(votingDateTime.date)

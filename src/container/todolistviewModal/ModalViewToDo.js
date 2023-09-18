@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from "react"
-import "./ModalViewToDo.css"
-import FileIcon, { defaultStyles } from "react-file-icon"
-import { LoadingOutlined } from "@ant-design/icons"
-import moment from "moment"
-import { ChevronRight, ChevronLeft } from "react-bootstrap-icons"
-import Form from "react-bootstrap/Form"
-import CrossIcon from "../../assets/images/CrossIcon.svg"
+import React, { useState, useEffect, useRef } from "react";
+import "./ModalViewToDo.css";
+import FileIcon, { defaultStyles } from "react-file-icon";
+import { LoadingOutlined } from "@ant-design/icons";
+import moment from "moment";
+import { ChevronRight, ChevronLeft } from "react-bootstrap-icons";
+import Form from "react-bootstrap/Form";
+import CrossIcon from "../../assets/images/CrossIcon.svg";
 import {
   TextField,
   Modal,
@@ -13,55 +13,55 @@ import {
   TodoAssgineeEmployeeCard,
   TextArea,
   Button,
-} from "./../../components/elements"
-import userImage from "../../assets/images/user.png"
+} from "./../../components/elements";
+import userImage from "../../assets/images/user.png";
 import {
   newTimeFormaterAsPerUTCFullDate,
   RemoveTimeDashes,
-} from "./../../commen/functions/date_formater"
-import { Row, Col, Container } from "react-bootstrap"
+} from "./../../commen/functions/date_formater";
+import { Row, Col, Container } from "react-bootstrap";
 import {
   GetAllAssigneesToDoList,
   clearState,
   ViewToDoList,
   deleteCommentApi,
-} from "./../../store/actions/ToDoList_action"
+} from "./../../store/actions/ToDoList_action";
 
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux";
 import {
   postAssgineeComment,
   HideNotificationTodoComment,
-} from "../../store/actions/Post_AssigneeComments"
-import { DownloadFile } from "../../store/actions/Download_action"
-import { useTranslation } from "react-i18next"
-import { useNavigate } from "react-router-dom"
-import { Spin } from "antd"
+} from "../../store/actions/Post_AssigneeComments";
+import { DownloadFile } from "../../store/actions/Download_action";
+import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
+import { Spin } from "antd";
 
 const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   //For Localization
-  const { t } = useTranslation()
-  let currentLanguage = localStorage.getItem("i18nextLng")
+  const { t } = useTranslation();
+  let currentLanguage = localStorage.getItem("i18nextLng");
 
-  const state = useSelector((state) => state)
-  const { toDoListReducer, postAssigneeComments } = state
-  const [commentID, setCommentID] = useState(0)
-  const { Comments } = postAssigneeComments
+  const state = useSelector((state) => state);
+  const { toDoListReducer, postAssigneeComments } = state;
+  const [commentID, setCommentID] = useState(0);
+  const { Comments } = postAssigneeComments;
   console.log(
     postAssigneeComments,
     "postAssigneeCommentspostAssigneeCommentspostAssigneeComments"
-  )
+  );
   //To Display Modal
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   //Notification State
   const [open, setOpen] = useState({
     flag: false,
     message: "",
-  })
+  });
 
   //Get Current User ID
-  let createrID = localStorage.getItem("userID")
+  let createrID = localStorage.getItem("userID");
 
   //task Object
   const [task, setTask] = useState({
@@ -72,31 +72,31 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
     DeadLineDate: "",
     DeadLineTime: "",
     CreationDateTime: "",
-  })
+  });
 
   //Current Date
-  const date = new Date()
-  let currentDateTime = new Date()
-  let changeDateFormat = moment(currentDateTime).utc()
-  let convertFormation = moment(changeDateFormat).format("YYYYMMDDHHmmss")
+  const date = new Date();
+  let currentDateTime = new Date();
+  let changeDateFormat = moment(currentDateTime).utc();
+  let convertFormation = moment(changeDateFormat).format("YYYYMMDDHHmmss");
   console.log(
     newTimeFormaterAsPerUTCFullDate(convertFormation),
     changeDateFormat,
     convertFormation,
     "changeDateFormatchangeDateFormatchangeDateFormat"
-  )
-  const year = currentDateTime.getFullYear()
-  const month = (currentDateTime.getMonth() + 1).toString().padStart(2, "0")
-  const day = currentDateTime.getDate().toString().padStart(2, "0")
-  const hour = currentDateTime.getHours().toString().padStart(2, "0")
-  const minute = currentDateTime.getMinutes().toString().padStart(2, "0")
-  const second = currentDateTime.getSeconds().toString().padStart(2, "0")
-  console.log("currentDateTimecurrentDateTimecurrentDateTime", currentDateTime)
-  let getFullDateFormat = `${year}${month}${day}${hour}${minute}${second}`
+  );
+  const year = currentDateTime.getFullYear();
+  const month = (currentDateTime.getMonth() + 1).toString().padStart(2, "0");
+  const day = currentDateTime.getDate().toString().padStart(2, "0");
+  const hour = currentDateTime.getHours().toString().padStart(2, "0");
+  const minute = currentDateTime.getMinutes().toString().padStart(2, "0");
+  const second = currentDateTime.getSeconds().toString().padStart(2, "0");
+  console.log("currentDateTimecurrentDateTimecurrentDateTime", currentDateTime);
+  let getFullDateFormat = `${year}${month}${day}${hour}${minute}${second}`;
   //Current Time
   let currentTime =
-    date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds()
-  currentTime = RemoveTimeDashes(currentTime)
+    date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+  currentTime = RemoveTimeDashes(currentTime);
 
   const antIcon = (
     <LoadingOutlined
@@ -105,33 +105,33 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
       }}
       spin
     />
-  )
+  );
   //To Set task Creater ID
-  const [TaskCreatorID, setTaskCreatorID] = useState(0)
-  const todoComments = useRef()
+  const [TaskCreatorID, setTaskCreatorID] = useState(0);
+  const todoComments = useRef();
   //task Asignees
-  const [TaskAssignedTo, setTaskAssignedTo] = useState([])
-  const [taskAssignedName, setTaskAssignedName] = useState([])
-  const [taskAssigneeComments, setTaskAssigneeComments] = useState([])
-  const [assgineeComments, setAssgieeComments] = useState("")
-  const [deleteCommentsId, setDeleteCommentsId] = useState(0)
+  const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
+  const [taskAssignedName, setTaskAssignedName] = useState([]);
+  const [taskAssigneeComments, setTaskAssigneeComments] = useState([]);
+  const [assgineeComments, setAssgieeComments] = useState("");
+  const [deleteCommentsId, setDeleteCommentsId] = useState(0);
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
-  })
-  const UserName = localStorage.getItem("name")
+  });
+  const UserName = localStorage.getItem("name");
   //To Set task Creater ID
   useEffect(() => {
-    setTaskCreatorID(parseInt(createrID))
-  }, [])
+    setTaskCreatorID(parseInt(createrID));
+  }, []);
   useEffect(() => {
-    todoComments.current?.scrollIntoView({ behavior: "smooth" })
-  }, [taskAssigneeComments, assgineeComments])
+    todoComments.current?.scrollIntoView({ behavior: "smooth" });
+  }, [taskAssigneeComments, assgineeComments]);
 
   useEffect(() => {
     if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
-      console.log("ViewToDoDetails", toDoListReducer.ToDoDetails)
-      let viewData = toDoListReducer.ToDoDetails
+      console.log("ViewToDoDetails", toDoListReducer.ToDoDetails);
+      let viewData = toDoListReducer.ToDoDetails;
       setTask({
         ...task,
         PK_TID: viewData.pK_TID,
@@ -141,25 +141,25 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
         DeadLineDate: viewData.deadlineDate,
         DeadLineTime: viewData.deadlineTime,
         CreationDateTime: viewData.creationDateTime,
-      })
-      let deadlineDateTime = viewData.deadlineDate + viewData.deadlineTime
+      });
+      let deadlineDateTime = viewData.deadlineDate + viewData.deadlineTime;
       if (viewData.taskAssignedTo !== undefined) {
         viewData.taskAssignedTo.map((data, index) => {
-          console.log("taskAssignedToMap", data)
+          console.log("taskAssignedToMap", data);
           if (data.pK_UID === TaskAssignedTo) {
-            console.log("Mapping Answer", data.name)
+            console.log("Mapping Answer", data.name);
           }
-        })
+        });
       }
-      let listOfAssignees = toDoListReducer.ToDoDetails.taskAssignedTo
-      console.log("listOfAssigneeslistOfAssignees", listOfAssignees)
+      let listOfAssignees = toDoListReducer.ToDoDetails.taskAssignedTo;
+      console.log("listOfAssigneeslistOfAssignees", listOfAssignees);
       if (listOfAssignees !== undefined) {
-        let tem = []
-        let assigneedetails = []
-        let temid = []
+        let tem = [];
+        let assigneedetails = [];
+        let temid = [];
         listOfAssignees.map((data, index) => {
-          tem.push(data.name)
-          temid.push(data.pK_UID)
+          tem.push(data.name);
+          temid.push(data.pK_UID);
           assigneedetails.push({
             pK_UID: JSON.parse(data.pK_UID),
             name: data.name,
@@ -173,15 +173,15 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
             displayProfilePicture: data.displayProfilePictureName,
             datetimeFormating:
               newTimeFormaterAsPerUTCFullDate(deadlineDateTime),
-          })
-        })
-        console.log("assigneedetailsassigneedetails", assigneedetails)
-        setTaskAssignedTo(assigneedetails)
-        setTaskAssignedName(tem)
+          });
+        });
+        console.log("assigneedetailsassigneedetails", assigneedetails);
+        setTaskAssignedTo(assigneedetails);
+        setTaskAssignedName(tem);
       }
-      let filesUploaded = toDoListReducer.ToDoDetails.taskAttachments
+      let filesUploaded = toDoListReducer.ToDoDetails.taskAttachments;
       if (filesUploaded !== undefined) {
-        let tem = []
+        let tem = [];
         filesUploaded.map((data, index) => {
           tem.push({
             PK_MAAID: data.pK_TAID,
@@ -189,14 +189,14 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
             OriginalAttachmentName: data.originalAttachmentName,
             CreationDateTime: data.creationDateTime,
             FK_TID: data.fK_TID,
-          })
-        })
-        console.log("responseaaaaa 1234", tem)
-        setTasksAttachments({ ["TasksAttachments"]: tem })
+          });
+        });
+        console.log("responseaaaaa 1234", tem);
+        setTasksAttachments({ ["TasksAttachments"]: tem });
       }
-      let assgineeeComments = toDoListReducer.ToDoDetails.taskComments
+      let assgineeeComments = toDoListReducer.ToDoDetails.taskComments;
       if (assgineeeComments !== undefined) {
-        let assigneescommentsArr = []
+        let assigneescommentsArr = [];
         assgineeeComments.map((assgineeData) => {
           assigneescommentsArr.push({
             userID: assgineeData.fK_UID,
@@ -205,31 +205,31 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
             taskCommentID: assgineeData.pK_TCID,
             taskCommentUserName: assgineeData.userName,
             DateTime: assgineeData.dateTime,
-          })
-        })
-        setTaskAssigneeComments([...assigneescommentsArr])
+          });
+        });
+        setTaskAssigneeComments([...assigneescommentsArr]);
       }
     }
-  }, [toDoListReducer.ToDoDetails])
+  }, [toDoListReducer.ToDoDetails]);
 
   // for comment from socket
   useEffect(() => {
     if (Object.keys(Comments).length > 0) {
       let findNewIndex = taskAssigneeComments.findIndex(
         (data, index) => data.taskCommentID === 0
-      )
+      );
       if (findNewIndex !== -1) {
         let newArr = taskAssigneeComments.map((comments, index) => {
           if (index === findNewIndex) {
             const newData = {
               ...comments,
               taskCommentID: Number(Comments.pK_TCID),
-            }
-            return newData
+            };
+            return newData;
           }
-          return comments
-        })
-        setTaskAssigneeComments(newArr)
+          return comments;
+        });
+        setTaskAssigneeComments(newArr);
       } else {
         let newComment = {
           userID: parseInt(Comments.fK_UID),
@@ -238,11 +238,11 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
           taskCommentID: Number(Comments.pK_TCID),
           taskCommentUserName: Comments.userName,
           DateTime: Comments.dateTime,
-        }
-        setTaskAssigneeComments([...taskAssigneeComments, newComment])
+        };
+        setTaskAssigneeComments([...taskAssigneeComments, newComment]);
       }
     }
-  }, [Comments])
+  }, [Comments]);
 
   // for Comment delete from MQTT Notification
   useEffect(() => {
@@ -254,31 +254,31 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
         postAssigneeComments.DeleteCommentsId.commentID !== 0 &&
         postAssigneeComments.DeleteCommentsId.commentID !== null
       ) {
-        let commentsData = [...taskAssigneeComments]
+        let commentsData = [...taskAssigneeComments];
         let deleteComments = commentsData.filter(
           (data, index) =>
             data.taskCommentID !==
             postAssigneeComments.DeleteCommentsId.commentID
-        )
-        setTaskAssigneeComments(deleteComments)
+        );
+        setTaskAssigneeComments(deleteComments);
       }
     }
-  }, [postAssigneeComments.DeleteCommentsId])
+  }, [postAssigneeComments.DeleteCommentsId]);
 
   console.log(
     postAssigneeComments,
     "DeleteCommentsIdDeleteCommentsIdDeleteCommentsId"
-  )
+  );
   // for comment update
-  useEffect(() => {}, [taskAssigneeComments])
+  useEffect(() => {}, [taskAssigneeComments]);
 
   //Get All Assignees API hit
   useEffect(() => {
     if (viewFlagToDo) {
-      dispatch(GetAllAssigneesToDoList(navigate, 1, t))
+      dispatch(GetAllAssigneesToDoList(navigate, 1, t));
     } else {
-      setViewFlagToDo(false)
-      dispatch(clearState())
+      setViewFlagToDo(false);
+      dispatch(clearState());
       setTask({
         ...task,
         PK_TID: 1,
@@ -288,28 +288,28 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
         DeadLineDate: "",
         DeadLineTime: "",
         CreationDateTime: "",
-      })
+      });
       // setToDoTime("");
-      setTaskAssignedTo([])
-      setTasksAttachments({ ["TasksAttachments"]: [] })
-      setTaskAssignedName([])
-      setTaskAssigneeComments([])
-      setAssgieeComments("")
+      setTaskAssignedTo([]);
+      setTasksAttachments({ ["TasksAttachments"]: [] });
+      setTaskAssignedName([]);
+      setTaskAssigneeComments([]);
+      setAssgieeComments("");
     }
-  }, [viewFlagToDo])
+  }, [viewFlagToDo]);
 
   // download file
   const downloadClick = (e, record) => {
     let data = {
       OriginalFileName: record.OriginalAttachmentName,
       DisplayFileName: record.DisplayAttachmentName,
-    }
-    console.log("DownloadFile", data)
-    dispatch(DownloadFile(navigate, data))
-  }
+    };
+    console.log("DownloadFile", data);
+    dispatch(DownloadFile(navigate, data));
+  };
 
   const handleClickCommentSubmit = async (e, id) => {
-    e.preventDefault()
+    e.preventDefault();
     if (assgineeComments !== "" && assgineeComments.trim() !== "") {
       let commentData = {
         PK_TCID: 1,
@@ -317,8 +317,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
         FK_TID: id,
         FK_UID: Number(TaskCreatorID),
         DateTime: "",
-      }
-      await dispatch(postAssgineeComment(navigate, commentData, t))
+      };
+      await dispatch(postAssgineeComment(navigate, commentData, t));
       let newComment = {
         userID: parseInt(TaskCreatorID),
         TaskID: parseInt(id),
@@ -326,19 +326,19 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
         taskCommentID: 0,
         taskCommentUserName: UserName,
         DateTime: convertFormation,
-      }
-      setTaskAssigneeComments([...taskAssigneeComments, newComment])
-      setAssgieeComments("")
+      };
+      setTaskAssigneeComments([...taskAssigneeComments, newComment]);
+      setAssgieeComments("");
     }
-  }
+  };
 
   const handleDeleteComments = (commentID, taskID) => {
-    setDeleteCommentsId(commentID)
-    dispatch(deleteCommentApi(navigate, t, commentID, taskID))
-  }
+    setDeleteCommentsId(commentID);
+    dispatch(deleteCommentApi(navigate, t, commentID, taskID));
+  };
   // useEffect(() => { }, [toDoListReducer.ToDoDetails]);
 
-  console.log("postAssigneeComments", postAssigneeComments)
+  console.log("postAssigneeComments", postAssigneeComments);
 
   useEffect(() => {
     if (
@@ -350,17 +350,17 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
         ...open,
         flag: true,
         message: postAssigneeComments.ResponseMessage,
-      })
+      });
     }
-    dispatch(HideNotificationTodoComment())
-  }, [postAssigneeComments.ResponseMessage])
+    dispatch(HideNotificationTodoComment());
+  }, [postAssigneeComments.ResponseMessage]);
 
   return (
     <>
       <Container>
         <Modal
           onHide={() => {
-            setViewFlagToDo(false)
+            setViewFlagToDo(false);
           }}
           show={viewFlagToDo}
           setShow={setViewFlagToDo}
@@ -395,7 +395,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                               console.log(
                                 "assgineeDataassgineeData",
                                 assgineeData
-                              )
+                              );
                               return (
                                 <TodoAssgineeEmployeeCard
                                   employeeName={assgineeData.name}
@@ -404,7 +404,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                                   cardTextIconStyle="DateTimeViewTodo"
                                   userImage={assgineeData.displayProfilePicture}
                                 />
-                              )
+                              );
                             })}
                           </span>
                         </>
@@ -442,7 +442,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                         "commentDatacommentData",
                         Number(commentData.userID) === Number(createrID),
                         commentData
-                      )
+                      );
                       if (Number(commentData.userID) === Number(createrID)) {
                         return (
                           <>
@@ -473,24 +473,27 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                                   <Spin size="small" />
                                 </span>
                               ) : commentData.taskCommentID !== 0 ? (
-                                <>
-                                  <img
-                                    src={CrossIcon}
-                                    width={14}
-                                    alt=""
-                                    onClick={() =>
-                                      handleDeleteComments(
-                                        commentData.taskCommentID,
-                                        commentData.TaskID
-                                      )
-                                    }
-                                    className="crossIconTodoComment"
-                                  />
-                                </>
+                                <></>
                               ) : null}
+                              <img
+                                src={CrossIcon}
+                                width={14}
+                                alt=""
+                                onClick={() =>
+                                  handleDeleteComments(
+                                    commentData.taskCommentID,
+                                    commentData.TaskID
+                                  )
+                                }
+                                className={
+                                  commentData.taskCommentID !== 0
+                                    ? "crossIconTodoComment"
+                                    : "crossIconTodoComment_disable"
+                                }
+                              />
                             </Col>
                           </>
-                        )
+                        );
                       } else {
                         return (
                           <>
@@ -516,7 +519,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                               />
                             </Col>
                           </>
-                        )
+                        );
                       }
                     })
                   : null}
@@ -592,11 +595,11 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                           var ext =
                             modalviewAttachmentFiles.DisplayAttachmentName.split(
                               "."
-                            ).pop()
+                            ).pop();
                           const first =
                             modalviewAttachmentFiles.DisplayAttachmentName.split(
                               " "
-                            )[0]
+                            )[0];
                           return (
                             <Col
                               sm={12}
@@ -686,7 +689,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                                 {first}
                               </p>
                             </Col>
-                          )
+                          );
                         }
                       )
                     : null}
@@ -713,7 +716,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
       </Container>
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
-  )
-}
+  );
+};
 
-export default ModalViewToDo
+export default ModalViewToDo;
