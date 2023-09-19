@@ -62,14 +62,14 @@ span.incoming-text {
 
 .videoIncoming-active-call {
   position: fixed;
-  top: 50%;
+  top: 55%;
   right: 0 !important;
-  transform: translate(-10%, 33%);
-  height: 260px;
-  width: 300px;
+  transform: translate(-18%, 33%);
+  height: 230px;
+  width: 260px;
   background-color: #707070 !important;
   z-index: 9;
-  padding-top: 15px;
+  padding-top: 45px;
   border-radius: 4px;
 }
 
@@ -82,12 +82,9 @@ span.incoming-text {
 }
 
 .outgoing-call-text-active-call {
-  font-size: 14px !important;
+  font-size: 16px !important;
   color: #fff !important;
   font-weight: 600;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  margin-left: 8px;
 }
 
 .button-active-img {
@@ -101,4 +98,14 @@ button.button-active-img.btn.btn-primary img {
   justify-content: center !important;
   align-items: center !important;
   display: flex;
+}
+
+.incoming-active-text {
+  text-align: center !important;
+  color: #fff !important;
+}
+
+button.button-active-img.btn.btn-primary span {
+  text-align: center !important;
+  display: inline-block;
 }

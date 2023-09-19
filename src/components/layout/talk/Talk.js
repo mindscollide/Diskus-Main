@@ -13,6 +13,7 @@ import {
   chatBoxActiveFlag,
 } from '../../../store/actions/Talk_Feature_actions'
 import {
+  participantPopup,
   videoChatPanel,
   recentVideoFlag,
   contactVideoFlag,
@@ -219,6 +220,7 @@ const Talk = () => {
     ) {
       setActiveVideoIcon(false)
       dispatch(videoChatPanel(false))
+      // dispatch(participantPopup(false))
     }
     console.log('This Event got Clicked')
   }

@@ -189,6 +189,13 @@ const leaveCallModal = (response) => {
   }
 }
 
+const participantPopup = (response) => {
+  return {
+    type: actions.PARTICIPANT_POPUP_FLAG,
+    response: response,
+  }
+}
+
 //Aun Work
 
 // const videoMaximizePanel = (response) => {
@@ -233,4 +240,5 @@ export {
   maximizeVideoPanelFlag,
   incomingVideoCallFlag,
   leaveCallModal,
+  participantPopup,
 }

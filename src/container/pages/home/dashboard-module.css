@@ -148,7 +148,8 @@ body[dir="rtl"] .DashboardTodoTable span.ant-typography.labelTitle {
   /* margin-top: 7px !important; */
 }
 
-.DashboardTodoTable ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
+.DashboardTodoTable
+  ul.ant-pagination.ant-table-pagination.ant-table-pagination-right {
   position: absolute;
   top: -42px;
   right: 0;
@@ -519,7 +520,11 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
     border-left: 14px solid #505050 !important;
     border-bottom: 8px solid transparent !important;
 } */
-.ant-table-wrapper.dashboard-todo .ant-table .ant-table-container .ant-table-content thead.ant-table-thead {
+.ant-table-wrapper.dashboard-todo
+  .ant-table
+  .ant-table-container
+  .ant-table-content
+  thead.ant-table-thead {
   background: none !important;
 }
 
@@ -527,7 +532,7 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   background: none !important;
 }
 
-.ant-table-wrapper.dashboard-todo .ant-table-tbody>tr>td {
+.ant-table-wrapper.dashboard-todo .ant-table-tbody > tr > td {
   background: #fff !important;
 }
 
@@ -542,7 +547,7 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   /* border           : none !important; */
 }
 
-.ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead>tr>th {
+.ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead > tr > th {
   background: none !important;
   border-bottom: none !important;
   font-family: "MontserratSemiBold-600";
@@ -589,7 +594,9 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   display: none !important;
 }
 
-.DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.titleDashboard {
+.DashboardTodoTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell.titleDashboard {
   border-left: 1px solid #e1e1e1 !important;
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
@@ -601,7 +608,9 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   text-transform: capitalize;
 }
 
-.DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.deadlineDashboard {
+.DashboardTodoTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell.deadlineDashboard {
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
   font-size: calc(16px - 20%) !important;
@@ -622,7 +631,9 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   width: 16px !important;
 }
 
-.DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.statusDashboard {
+.DashboardTodoTable
+  tr.ant-table-row.ant-table-row-level-0
+  td.ant-table-cell.statusDashboard {
   border-right: 1px solid #e1e1e1 !important;
   border-top: 1px solid #e1e1e1 !important;
   border-bottom: 1px solid #e1e1e1 !important;
@@ -653,7 +664,9 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
   background-repeat: no-repeat;
 }
 
-.DashboardTodoTable li.ant-pagination-next button.ant-pagination-item-link:disabled {
+.DashboardTodoTable
+  li.ant-pagination-next
+  button.ant-pagination-item-link:disabled {
   background-color: transparent !important;
   border: none;
   background-image: url("./../../../assets/images/Polygon-2.png");
@@ -735,7 +748,7 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
 }
 
 @media screen and (max-width: 1100px) {
-  .ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead>tr>th {
+  .ant-table-wrapper.dashboard-todo .ant-table .ant-table-thead > tr > th {
     background: none !important;
     border-bottom: none !important;
     font-weight: 600 !important;
@@ -848,7 +861,9 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
 
   /* for todo data */
 
-  .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.titleDashboard {
+  .DashboardTodoTable
+    tr.ant-table-row.ant-table-row-level-0
+    td.ant-table-cell.titleDashboard {
     border-left: 1px solid #e1e1e1 !important;
     border-top: 1px solid #e1e1e1 !important;
     border-bottom: 1px solid #e1e1e1 !important;
@@ -857,7 +872,9 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
     font-size: 9px !important;
   }
 
-  .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.statusDashboard {
+  .DashboardTodoTable
+    tr.ant-table-row.ant-table-row-level-0
+    td.ant-table-cell.statusDashboard {
     border-right: 1px solid #e1e1e1 !important;
     border-top: 1px solid #e1e1e1 !important;
     border-bottom: 1px solid #e1e1e1 !important;
@@ -866,7 +883,9 @@ body[dir="rtl"] .Dashboard-Calendar .rmdp-day span {
     font-size: 9px !important;
   }
 
-  .DashboardTodoTable tr.ant-table-row.ant-table-row-level-0 td.ant-table-cell.deadlineDashboard {
+  .DashboardTodoTable
+    tr.ant-table-row.ant-table-row-level-0
+    td.ant-table-cell.deadlineDashboard {
     border-top: 1px solid #e1e1e1 !important;
     border-bottom: 1px solid #e1e1e1 !important;
     font-size: 9px !important;
@@ -1212,7 +1231,6 @@ body[dir="rtl"] h1.noteheading {
   justify-content: center;
   align-items: center;
   height: 34vh !important;
-
 }
 
 .todayEvent {
@@ -1238,4 +1256,9 @@ body[dir="rtl"] h1.noteheading {
 .dashboard-col-1 {
   height: 88vh !important;
   /* background-color: #fff !important; */
+}
+.ViewMoreLink_notes {
+  cursor: pointer;
+  font-size: 12px !important;
+  font-family: "MontserratSemiBold-600";
 }

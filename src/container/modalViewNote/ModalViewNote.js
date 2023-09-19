@@ -23,7 +23,13 @@ import { useTranslation } from "react-i18next";
 
 // import { countryName } from "../../AllUsers/AddUser/CountryJson";
 
-const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
+const ModalViewNote = ({
+  ModalTitle,
+  viewNotes,
+  setViewNotes,
+  setGetNoteID,
+  flag,
+}) => {
   const [notesData, setNotesData] = useState({
     date: "",
     description: "",
@@ -86,6 +92,12 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
     open: false,
     message: "",
   });
+  const handleCloseViewModal = () => {
+    if (flag) {
+      setGetNoteID(0);
+    }
+    setViewNotes(false);
+  };
 
   return (
     <>
@@ -301,7 +313,7 @@ const ModalViewNote = ({ ModalTitle, viewNotes, setViewNotes }) => {
                   <Button
                     text={t("Close")}
                     className={styles["close-note-modal-btn"]}
-                    onClick={() => setViewNotes(false)}
+                    onClick={handleCloseViewModal}
                   />
                 </Col>
               </Row>

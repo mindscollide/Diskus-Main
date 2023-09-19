@@ -33,6 +33,7 @@ import {
   chatEnableNormalFlag,
   minutesMeetingEnableNormalFlag,
   leaveCallModal,
+  participantPopup,
 } from '../../../../../store/actions/VideoFeature_actions'
 import { LeaveCall } from '../../../../../store/actions/VideoMain_actions'
 import { useTranslation } from 'react-i18next'
@@ -68,11 +69,14 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
 
   const [isActiveIcon, setIsActiveIcon] = useState(false)
 
-  const [isParticipantActive, setIsParticipantActive] = useState(false)
+  // const [isParticipantActive, setIsParticipantActive] = useState(false)
 
   const [currentParticipants, setCurrentParticipants] = useState([])
 
   const [participantStatus, setParticipantStatus] = useState([])
+
+  const participantPopupDisable = useRef(null)
+  const leaveModalPopupRef = useRef(null)
 
   const otoMaximizeVideoPanel = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
@@ -135,10 +139,10 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
 
   const closeParticipantHandler = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
-      if (isParticipantActive === false) {
-        setIsParticipantActive(true)
+      if (videoFeatureReducer.ParticipantPopupFlag === false) {
+        dispatch(participantPopup(true))
       } else {
-        setIsParticipantActive(false)
+        dispatch(participantPopup(false))
       }
     }
   }
@@ -160,7 +164,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
       OrganizationID: currentOrganization,
       RoomID: initiateRoomID,
       IsCaller: true,
-      CallTypeID: callTypeID,
+      CallTypeID: currentCallType,
     }
     dispatch(LeaveCall(Data, navigate, t))
     const emptyArray = []
@@ -171,10 +175,28 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
     dispatch(maximizeVideoPanelFlag(false))
     dispatch(minimizeVideoPanelFlag(false))
     dispatch(leaveCallModal(false))
+    dispatch(participantPopup(false))
   }
 
   const closeNotification = () => {
     setShowNotification(false)
+  }
+
+  const handleOutsideClick = (event) => {
+    if (
+      participantPopupDisable.current &&
+      !participantPopupDisable.current.contains(event.target) &&
+      videoFeatureReducer.ParticipantPopupFlag
+    ) {
+      dispatch(participantPopup(false))
+    }
+    // if (
+    //   leaveModalPopupRef.current &&
+    //   !leaveModalPopupRef.current.contains(event.target) &&
+    //   videoFeatureReducer.LeaveCallModalFlag
+    // ) {
+    //   dispatch(leaveCallModal(false))
+    // }
   }
 
   useEffect(() => {}, [
@@ -210,9 +232,18 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
     if (callerObject !== undefined && callerObject !== null) {
       let callerObjectObj = JSON.parse(callerObject)
       setParticipantStatus((prevStatus) => [callerObjectObj, ...prevStatus])
-      console.log('Hello checking')
     }
   }, [callerObject])
+
+  useEffect(() => {
+    document.addEventListener('click', handleOutsideClick)
+    return () => {
+      document.removeEventListener('click', handleOutsideClick)
+    }
+  }, [
+    videoFeatureReducer.ParticipantPopupFlag,
+    // videoFeatureReducer.LeaveCallModalFlag,
+  ])
 
   console.log('participantStatus', participantStatus[0])
 
@@ -224,12 +255,14 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
             {currentUserName !== VideoMainReducer.VideoRecipentData.userName &&
             Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
             initiateVideoCallFlag === true
-              ? VideoMainReducer.VideoRecipentData.userName
+              ? VideoMainReducer.VideoRecipentData.userName ||
+                VideoMainReducer.VideoRecipentData.recipients[0].userName
               : currentUserName !==
                   VideoMainReducer.VideoRecipentData.userName &&
                 Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
                 initiateVideoCallFlag === false
-              ? VideoMainReducer.VideoRecipentData.userName
+              ? VideoMainReducer.VideoRecipentData.userName ||
+                VideoMainReducer.VideoRecipentData.recipients[0].userName
               : Object.keys(VideoMainReducer.VideoRecipentData).length === 0
               ? callerName
               : null}
@@ -253,58 +286,62 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
         </Col>
         <>
           <Col lg={5} md={5} sm={12} className="normal-screen-top-icons">
-            <div className="positionRelative">
-              {isParticipantActive ? (
-                <>
-                  <img
-                    className={
-                      videoFeatureReducer.LeaveCallModalFlag === true
-                        ? 'grayScaleImage'
-                        : ''
-                    }
-                    src={ActiveParticipantIcon}
-                    onClick={closeParticipantHandler}
-                    height={30}
-                    width={30}
-                  />
-                  <div className="participants-list" key={Math.random()}>
-                    <Row className="m-0">
-                      <Col className="p-0" lg={8} md={8} sm={12}>
-                        <p className="participant-name">{currentUserName}</p>
-                      </Col>
-                      <Col className="p-0" lg={4} md={4} sm={12}>
-                        <p className="participant-state">Host</p>
-                      </Col>
-                    </Row>
-                    {currentParticipants !== undefined &&
-                    currentParticipants !== null &&
-                    currentParticipants.length > 0
-                      ? currentParticipants.map((participantData, index) => {
-                          console.log('participantStatus', participantStatus[0])
-                          const matchingStatus = participantStatus[0].find(
-                            (status) =>
-                              status.RecipientID === participantData.userID &&
-                              status.RoomID === initiateRoomID,
-                          )
-                          return (
-                            <Row className="m-0" key={index}>
-                              <Col className="p-0" lg={8} md={8} sm={12}>
-                                <p className="participant-name">
-                                  {participantData.userName}
-                                </p>
-                              </Col>
-                              <Col className="p-0" lg={4} md={4} sm={12}>
-                                <p className="participant-state">
-                                  {matchingStatus
-                                    ? matchingStatus.CallStatus
-                                    : 'Calling...'}
-                                </p>
-                              </Col>
-                            </Row>
-                          )
-                        })
-                      : null}
-                    {/* <Button
+            {callerID === currentUserID ? (
+              <div className="positionRelative" ref={participantPopupDisable}>
+                {videoFeatureReducer.ParticipantPopupFlag === true ? (
+                  <>
+                    <img
+                      className={
+                        videoFeatureReducer.LeaveCallModalFlag === true
+                          ? 'grayScaleImage'
+                          : ''
+                      }
+                      src={ActiveParticipantIcon}
+                      onClick={closeParticipantHandler}
+                      height={30}
+                      width={30}
+                    />
+                    <div className="participants-list" key={Math.random()}>
+                      <Row className="m-0">
+                        <Col className="p-0" lg={8} md={8} sm={12}>
+                          <p className="participant-name">{currentUserName}</p>
+                        </Col>
+                        <Col className="p-0" lg={4} md={4} sm={12}>
+                          <p className="participant-state">Host</p>
+                        </Col>
+                      </Row>
+                      {currentParticipants !== undefined &&
+                      currentParticipants !== null &&
+                      currentParticipants.length > 0
+                        ? currentParticipants.map((participantData, index) => {
+                            console.log(
+                              'participantStatus',
+                              participantStatus[0],
+                            )
+                            const matchingStatus = participantStatus[0].find(
+                              (status) =>
+                                status.RecipientID === participantData.userID &&
+                                status.RoomID === initiateRoomID,
+                            )
+                            return (
+                              <Row className="m-0" key={index}>
+                                <Col className="p-0" lg={8} md={8} sm={12}>
+                                  <p className="participant-name">
+                                    {participantData.userName}
+                                  </p>
+                                </Col>
+                                <Col className="p-0" lg={4} md={4} sm={12}>
+                                  <p className="participant-state">
+                                    {matchingStatus
+                                      ? matchingStatus.CallStatus
+                                      : 'Calling...'}
+                                  </p>
+                                </Col>
+                              </Row>
+                            )
+                          })
+                        : null}
+                      {/* <Button
                         className="add-participant-button"
                         text="Add Participants"
                         icon={
@@ -312,22 +349,23 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                         }
                         textClass="text-positioning"
                       /> */}
-                  </div>
-                </>
-              ) : (
-                <img
-                  className={
-                    videoFeatureReducer.LeaveCallModalFlag === true
-                      ? 'grayScaleImage'
-                      : ''
-                  }
-                  src={ParticipantsIcon}
-                  onClick={closeParticipantHandler}
-                  height={20}
-                  width={25}
-                />
-              )}
-            </div>
+                    </div>
+                  </>
+                ) : (
+                  <img
+                    className={
+                      videoFeatureReducer.LeaveCallModalFlag === true
+                        ? 'grayScaleImage'
+                        : ''
+                    }
+                    src={ParticipantsIcon}
+                    onClick={closeParticipantHandler}
+                    height={20}
+                    width={25}
+                  />
+                )}
+              </div>
+            ) : null}
             <div className="screenShare-Toggle">
               <img
                 className={
@@ -413,24 +451,25 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
           <Col lg={1} md={1} sm={12}></Col>
         </>
       </Row>
+      <div ref={leaveModalPopupRef}>
+        {videoFeatureReducer.LeaveCallModalFlag === true ? (
+          <div className="leave-meeting-options leave-meeting-options-position">
+            <div className="leave-meeting-options__inner">
+              <Button
+                className="leave-meeting-options__btn leave-meeting-red-button"
+                text="End Call for Everyone"
+                onClick={leaveCall}
+              />
 
-      {videoFeatureReducer.LeaveCallModalFlag === true ? (
-        <div className="leave-meeting-options leave-meeting-options-position">
-          <div className="leave-meeting-options__inner">
-            <Button
-              className="leave-meeting-options__btn leave-meeting-red-button"
-              text="End Call for Everyone"
-              onClick={leaveCall}
-            />
-
-            <Button
-              className="leave-meeting-options__btn leave-meeting-gray-button"
-              text="Cancel"
-              onClick={closeVideoPanel}
-            />
+              <Button
+                className="leave-meeting-options__btn leave-meeting-gray-button"
+                text="Cancel"
+                onClick={closeVideoPanel}
+              />
+            </div>
           </div>
-        </div>
-      ) : null}
+        ) : null}
+      </div>
     </>
   )
 }

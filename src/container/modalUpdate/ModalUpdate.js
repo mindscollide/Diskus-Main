@@ -2112,7 +2112,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
                         }
                         editable={false}
                         className="datePickerTodoCreate2"
-                        onOpenPickNewDate={false}
+                        onOpenPickNewDate={true}
                         inputMode=""
                         value={meetingDate}
                         calendar={calendarValue}

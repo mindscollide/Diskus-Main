@@ -352,7 +352,7 @@ const Createpolls = ({ setCreatepoll }) => {
                       }
                       editable={false}
                       className="datePickerTodoCreate2"
-                      onOpenPickNewDate={false}
+                      onOpenPickNewDate={true}
                       inputMode=""
                       calendar={calendarValue}
                       locale={localValue}
