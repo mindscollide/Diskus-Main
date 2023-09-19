@@ -648,7 +648,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         name="DeadLineTime"
                         applyClass={"createTodo_timePicker"}
                         inputRef={timePickerRef}
-                        onFocus={handleFocusCreateTodo}
+                        onClick={handleFocusCreateTodo}
                         id="timeInput"
                       />
 

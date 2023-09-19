@@ -303,7 +303,7 @@ const Dashboard = () => {
           setNotification({
             notificationShow: true,
             message: changeMQTTJSONOne(
-              t("TDOD_STATUS_EDITED"),
+              t("TDOD_STATUS_DELETED"),
               "[Task Title]",
               data.payload.todoTitle
             ),
@@ -1435,7 +1435,11 @@ const Dashboard = () => {
   let currentLanguageSelect = localStorage.getItem("i18nextLng");
 
   useEffect(() => {
-    setCurrentLanguage(currentLanguageSelect);
+    if (currentLanguageSelect !== null && currentLanguageSelect !== undefined) {
+      setCurrentLanguage(currentLanguageSelect);
+    } else {
+      setCurrentLanguage("en");
+    }
   }, [currentLanguageSelect]);
 
   return (

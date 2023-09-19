@@ -1323,15 +1323,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         applyClass={"quick_meeting_time"}
                         change={detailsHandler}
                         placeholder={"00:00"}
-                        onFocus={handleFocusMeetingTime}
+                        onClick={handleFocusMeetingTime}
                       />
-                      {/* <TimePickers
-                        change={detailsHandler}
-                        placeholder={"00:00"}
-                        name="MeetingStartTime"
-                        value={createMeetingTime}
-                        required
-                      /> */}
                       <div className="height-10">
                         {modalField === true &&
                         createMeeting.MeetingStartTime === "" ? (
