@@ -177,7 +177,8 @@ const UploadindUiComponent = ({
               ? detaUplodingForFOlder.map((data, index) => {
                   return (
                     <>
-                      {data.Uploaded !== true || data.UploadCancel ? (
+                      {(data.Uploaded !== true || data.UploadCancel) &&
+                      data.NetDisconnect === false ? (
                         <Row key={index}>
                           <Col
                             sm={12}
@@ -243,7 +244,8 @@ const UploadindUiComponent = ({
                   return (
                     <>
                       {(data.Uploaded !== true || data.UploadCancel) &&
-                      data.UploadingError === false ? (
+                      data.UploadingError === false &&
+                      data.NetDisconnect === false ? (
                         <Row key={index}>
                           <Col
                             lg={12}
@@ -309,7 +311,9 @@ const UploadindUiComponent = ({
               ? detaUplodingForFOlder.map((data, index) => {
                   return (
                     <>
-                      {data.Uploaded === true && data.UploadCancel === false ? (
+                      {(data.Uploaded === true &&
+                        data.UploadCancel === false) ||
+                      data.NetDisconnect === true ? (
                         <Row key={index}>
                           <Col
                             sm={12}
@@ -338,11 +342,19 @@ const UploadindUiComponent = ({
                                 lg={3}
                                 className={styles["progress_bar"]}
                               >
-                                <img
-                                  src={Greentick}
-                                  alt=""
-                                  className={styles["GreentickIcon"]}
-                                />
+                                {data.NetDisconnect ? (
+                                  <img
+                                    src={ErrorIcon}
+                                    alt=""
+                                    className={styles["GreentickIcon_forfile"]}
+                                  />
+                                ) : (
+                                  <img
+                                    src={Greentick}
+                                    alt=""
+                                    className={styles["GreentickIcon"]}
+                                  />
+                                )}
                               </Col>
                             </Row>
                           </Col>
