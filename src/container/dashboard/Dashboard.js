@@ -1435,11 +1435,7 @@ const Dashboard = () => {
   let currentLanguageSelect = localStorage.getItem("i18nextLng");
 
   useEffect(() => {
-    if (currentLanguageSelect !== null && currentLanguageSelect !== undefined) {
-      setCurrentLanguage(currentLanguageSelect);
-    } else {
-      setCurrentLanguage("en");
-    }
+    setCurrentLanguage(currentLanguageSelect);
   }, [currentLanguageSelect]);
 
   return (
