@@ -99,6 +99,8 @@ const TodoList = () => {
   //Get Current User ID
   let createrID = localStorage.getItem("userID");
 
+  console.log("socketTodoStatusData", socketTodoStatusData);
+
   // GET TODOS STATUS
   useEffect(() => {
     dispatch(getTodoStatus(navigate, t));
@@ -175,7 +177,10 @@ const TodoList = () => {
 
   // for Socket Update meeting status update
   useEffect(() => {
-    if (Object.keys(toDoListReducer.socketTodoStatusData).length > 0) {
+    if (
+      toDoListReducer.socketTodoStatusData &&
+      Object.keys(toDoListReducer.socketTodoStatusData).length > 0
+    ) {
       let tableRowsData = [...rowsToDo];
       var foundIndex = tableRowsData.findIndex(
         (x) => x.pK_TID === toDoListReducer.socketTodoStatusData.todoid

@@ -399,7 +399,7 @@ const DataRoom = () => {
   const SharewithmeButonShow = async () => {
     setSRowsData(0);
     localStorage.setItem("setTableView", 2);
-    await dispatch(getDocumentsAndFolderApi(navigate, 2, t));
+    await dispatch(getDocumentsAndFolderApi(navigate, 2, t, 1));
     setGetAllData([]);
     setSharedwithmebtn(true);
     localStorage.removeItem("folderID");
@@ -411,7 +411,7 @@ const DataRoom = () => {
   const MydocumentButtonShow = async () => {
     setSRowsData(0);
     localStorage.setItem("setTableView", 1);
-    await dispatch(getDocumentsAndFolderApi(navigate, 1, t));
+    await dispatch(getDocumentsAndFolderApi(navigate, 1, t, 1));
     setGetAllData([]);
     localStorage.removeItem("folderID");
     setSharedwithmebtn(false);
@@ -423,7 +423,7 @@ const DataRoom = () => {
   const AllDocuments = async () => {
     setSRowsData(0);
     localStorage.setItem("setTableView", 3);
-    await dispatch(getDocumentsAndFolderApi(navigate, 3, t));
+    await dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
     setGetAllData([]);
     localStorage.removeItem("folderID");
     setSharedwithmebtn(false);
@@ -436,9 +436,10 @@ const DataRoom = () => {
     setFolderModal(true);
   };
 
-  const getFolderDocuments = (folderid) => {
+  const getFolderDocuments = async (folderid) => {
     localStorage.setItem("folderID", folderid);
-    dispatch(getFolderDocumentsApi(navigate, folderid, t));
+    await dispatch(getFolderDocumentsApi(navigate, folderid, t));
+    setSearchTabOpen(false);
   };
 
   const fileOptionsSelect = (data, record) => {
@@ -468,11 +469,11 @@ const DataRoom = () => {
     if (sorter.field === "sharedDate") {
       if (sorter.order === "ascend") {
         dispatch(
-          getDocumentsAndFolderApi(navigate, currentView, t, 2, false, 2)
+          getDocumentsAndFolderApi(navigate, currentView, t, 1, 2, false)
         );
       } else {
         dispatch(
-          getDocumentsAndFolderApi(navigate, currentView, t, 2, true, 2)
+          getDocumentsAndFolderApi(navigate, currentView, t, 1, 2, true)
         );
       }
     }
@@ -488,14 +489,14 @@ const DataRoom = () => {
             navigate,
             Number(currentView),
             t,
+            1,
             2,
-            false,
-            1
+            false
           )
         );
       } else {
         dispatch(
-          getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1)
+          getDocumentsAndFolderApi(navigate, Number(currentView), t, 1, 2, true)
         );
       }
     }
@@ -516,9 +517,9 @@ const DataRoom = () => {
           navigate,
           Number(currentView),
           t,
-          2,
-          true,
-          filterValue
+          1,
+          Number(getFilterValue),
+          true
         )
       );
     }
@@ -1562,6 +1563,7 @@ const DataRoom = () => {
                       listviewactive={listviewactive}
                       setSearchResultFields={setSearchResultFields}
                       searchResultsFields={searchResultsFields}
+                      setSearchTabOpen={setSearchTabOpen}
                     />
                   ) : (
                     <>
