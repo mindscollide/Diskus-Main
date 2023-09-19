@@ -53,7 +53,11 @@ const AdminHome = () => {
     });
   };
   useEffect(() => {
-    setCurrentLanguage(currentLanguageSelect);
+    if (currentLanguageSelect !== null && currentLanguageSelect !== undefined) {
+      setCurrentLanguage(currentLanguageSelect);
+    } else {
+      setCurrentLanguage("en");
+    }
   }, [currentLanguageSelect]);
 
   const onMessageArrived = (msg) => {
