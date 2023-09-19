@@ -655,11 +655,9 @@ const Agenda = () => {
 
   const onDragEnd = (result) => {
     if (!result.destination) return; // Item dropped outside the list
-
     const reorderedRows = [...rows];
     const [movedRow] = reorderedRows.splice(result.source.index, 1);
     reorderedRows.splice(result.destination.index, 0, movedRow);
-
     setRows(reorderedRows);
   };
 
