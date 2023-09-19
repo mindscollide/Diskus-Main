@@ -79,34 +79,48 @@ const Agenda = () => {
       MainNote: "",
       files: [
         {
+          FileID: "0",
           name: "MeetingAgendas",
         },
         {
-          name: "DiskusMeetings",
+          FileID: "1",
+          name: "Saif Meeting",
         },
         {
-          name: "AxisMeetings",
+          FileID: "2",
+          name: "Owais Meeting",
         },
         {
-          name: "Bahria Auditoriom Meetings to be published",
+          FileID: "3",
+          name: "Tresmark",
         },
         {
-          name: "MeetingAgendas",
+          FileID: "4",
+          name: "Minds Collide",
         },
         {
-          name: "MeetingAgendas",
+          FileID: "5",
+          name: "Aun File",
         },
         {
-          name: "MeetingAgendas",
+          FileID: "6",
+          name: "Ali Raza Mamdani",
         },
         {
-          name: "MeetingAgendas",
+          FileID: "7",
+          name: "Talha",
         },
         {
-          name: "MeetingAgendas",
+          FileID: "8",
+          name: "Jawad Faisal",
         },
         {
-          name: "MeetingAgendas",
+          FileID: "9",
+          name: "Fahad Hassan",
+        },
+        {
+          FileID: "10",
+          name: "Saroush Yahyas",
         },
       ],
       subAgenda: [
@@ -648,6 +662,41 @@ const Agenda = () => {
     setRows(reorderedRows);
   };
 
+  const handleFilesDrag = (result) => {
+    if (!result.destination) return; // Item dropped outside the list
+
+    const { source, destination, draggableId } = result;
+    const updatedRows = [...rows];
+
+    const sourceRowIndex = rows.findIndex(
+      (row) => row.ID === source.droppableId
+    );
+    const destinationRowIndex = rows.findIndex(
+      (row) => row.ID === destination.droppableId
+    );
+
+    // Find the source file and destination file
+    const sourceFile = updatedRows[sourceRowIndex].files.find(
+      (file) => file.FileID === draggableId
+    );
+    const destinationFile =
+      updatedRows[destinationRowIndex].files[destination.index];
+
+    // Remove the source file from the source files array
+    updatedRows[sourceRowIndex].files = updatedRows[
+      sourceRowIndex
+    ].files.filter((file) => file.FileID !== draggableId);
+
+    // Insert the source file at the destination position
+    updatedRows[destinationRowIndex].files.splice(
+      destination.index,
+      0,
+      sourceFile
+    );
+
+    setRows(updatedRows);
+  };
+
   return (
     <>
       {savedViewAgenda ? (
@@ -682,6 +731,7 @@ const Agenda = () => {
                                         {...provided.draggableProps}
                                         {...provided.dragHandleProps}
                                       >
+                                        {/* Main Agenda Items Mapping */}
                                         <Row
                                           key={data.ID}
                                           className="mt-4 m-0 p-0"
@@ -1168,86 +1218,141 @@ const Agenda = () => {
                                                                 ]
                                                               }
                                                             >
-                                                              <div className="d-flex gap-1 flex-wrap mt-2">
-                                                                {data?.files
-                                                                  ?.length > 0
-                                                                  ? data?.files?.map(
-                                                                      (
-                                                                        filesData,
-                                                                        index
-                                                                      ) => {
-                                                                        return (
-                                                                          <>
-                                                                            <span
-                                                                              className={
-                                                                                styles[
-                                                                                  "card"
-                                                                                ]
-                                                                              }
-                                                                            >
-                                                                              <Row>
-                                                                                <Col
-                                                                                  lg={
-                                                                                    10
-                                                                                  }
-                                                                                  md={
-                                                                                    10
-                                                                                  }
-                                                                                  sm={
-                                                                                    12
-                                                                                  }
-                                                                                  className="d-flex gap-1"
-                                                                                >
-                                                                                  <img
-                                                                                    src={
-                                                                                      PdfIcon
-                                                                                    }
-                                                                                  />
-                                                                                  <span
-                                                                                    className={
-                                                                                      styles[
-                                                                                        "TitleFile"
-                                                                                      ]
-                                                                                    }
-                                                                                  >
-                                                                                    {
-                                                                                      filesData.name
-                                                                                    }
-                                                                                  </span>
-                                                                                </Col>
-                                                                                <Col
-                                                                                  lg={
-                                                                                    2
-                                                                                  }
-                                                                                  md={
-                                                                                    2
-                                                                                  }
-                                                                                  sm={
-                                                                                    12
-                                                                                  }
-                                                                                  className="d-flex justify-content-end align-items-center"
-                                                                                >
-                                                                                  <img
-                                                                                    src={
-                                                                                      redcrossIcon
-                                                                                    }
-                                                                                    width="15px"
-                                                                                    height="15px"
-                                                                                    onClick={() => {
-                                                                                      CrossDocument(
-                                                                                        index
-                                                                                      );
-                                                                                    }}
-                                                                                  />
-                                                                                </Col>
-                                                                              </Row>
-                                                                            </span>
-                                                                          </>
-                                                                        );
+                                                              <DragDropContext
+                                                                onDragEnd={
+                                                                  handleFilesDrag
+                                                                }
+                                                              >
+                                                                <Droppable
+                                                                  droppableId={
+                                                                    data.ID
+                                                                  }
+                                                                  type="file"
+                                                                  direction="horizontal"
+                                                                >
+                                                                  {(
+                                                                    innerProvided
+                                                                  ) => (
+                                                                    <div
+                                                                      {...innerProvided.droppableProps}
+                                                                      ref={
+                                                                        innerProvided.innerRef
                                                                       }
-                                                                    )
-                                                                  : null}
-                                                              </div>
+                                                                      style={{
+                                                                        display:
+                                                                          "flex",
+                                                                      }}
+                                                                    >
+                                                                      <div className="d-flex gap-2 flex-wrap  mt-2">
+                                                                        {data
+                                                                          ?.files
+                                                                          ?.length >
+                                                                        0
+                                                                          ? data?.files?.map(
+                                                                              (
+                                                                                filesData,
+                                                                                Fileindex
+                                                                              ) => {
+                                                                                return (
+                                                                                  <>
+                                                                                    <Draggable
+                                                                                      key={
+                                                                                        filesData.FileID
+                                                                                      }
+                                                                                      draggableId={
+                                                                                        filesData.FileID
+                                                                                      }
+                                                                                      index={
+                                                                                        Fileindex
+                                                                                      }
+                                                                                    >
+                                                                                      {(
+                                                                                        innerProvided
+                                                                                      ) => (
+                                                                                        <div
+                                                                                          {...innerProvided.draggableProps}
+                                                                                          {...innerProvided.dragHandleProps}
+                                                                                          ref={
+                                                                                            innerProvided.innerRef
+                                                                                          }
+                                                                                        >
+                                                                                          <span
+                                                                                            className={
+                                                                                              styles[
+                                                                                                "card"
+                                                                                              ]
+                                                                                            }
+                                                                                          >
+                                                                                            <Row>
+                                                                                              <Col
+                                                                                                lg={
+                                                                                                  10
+                                                                                                }
+                                                                                                md={
+                                                                                                  10
+                                                                                                }
+                                                                                                sm={
+                                                                                                  12
+                                                                                                }
+                                                                                                className="d-flex gap-2"
+                                                                                              >
+                                                                                                <img
+                                                                                                  src={
+                                                                                                    PdfIcon
+                                                                                                  }
+                                                                                                />
+                                                                                                <span
+                                                                                                  className={
+                                                                                                    styles[
+                                                                                                      "TitleFile"
+                                                                                                    ]
+                                                                                                  }
+                                                                                                >
+                                                                                                  {
+                                                                                                    filesData.name
+                                                                                                  }
+                                                                                                </span>
+                                                                                              </Col>
+                                                                                              <Col
+                                                                                                lg={
+                                                                                                  2
+                                                                                                }
+                                                                                                md={
+                                                                                                  2
+                                                                                                }
+                                                                                                sm={
+                                                                                                  12
+                                                                                                }
+                                                                                                className="d-flex justify-content-end align-items-center"
+                                                                                              >
+                                                                                                <img
+                                                                                                  src={
+                                                                                                    redcrossIcon
+                                                                                                  }
+                                                                                                  width="15px"
+                                                                                                  height="15px"
+                                                                                                  onClick={() => {
+                                                                                                    CrossDocument(
+                                                                                                      index
+                                                                                                    );
+                                                                                                  }}
+                                                                                                />
+                                                                                              </Col>
+                                                                                            </Row>
+                                                                                          </span>
+                                                                                        </div>
+                                                                                      )}
+                                                                                    </Draggable>
+                                                                                  </>
+                                                                                );
+                                                                              }
+                                                                            )
+                                                                          : null}
+                                                                      </div>
+                                                                    </div>
+                                                                  )}
+                                                                </Droppable>
+                                                              </DragDropContext>
                                                             </Col>
                                                           </Row>
                                                         </>
@@ -1477,7 +1582,7 @@ const Agenda = () => {
                                             </Row>
                                           </Col>
                                         </Row>
-
+                                        {/* SubAgenda Mapping */}
                                         {data.subAgenda.length > 0 &&
                                           data.subAgenda.map(
                                             (subAgendaData, subIndex) => {
