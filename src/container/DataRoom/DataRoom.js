@@ -990,9 +990,12 @@ const DataRoom = () => {
     }));
     // Optionally, you can also cancel the Axios request associated with this task here.
   };
+  // const isOnline = navigator.onLine;
+
   // Handle online status changes
   const handleOnlineStatusChange = (event) => {
-    const isOnline = navigator.onLine;
+    let isOnline = navigator.onLine;
+    console.log("detaUplodingForFOlder isOnline", isOnline);
 
     // Loop through your attachments and update NetDisconnect
     for (const taskId in tasksAttachments) {
@@ -1011,8 +1014,23 @@ const DataRoom = () => {
         }
       }
     }
+    if (!isOnline) {
+      // Loop through your detaUplodingForFOlder array and update NetDisconnect
+      const updatedFolders = detaUplodingForFOlder.map((folder) => {
+        if (folder.Uploading && folder.Uploaded === false) {
+          return {
+            ...folder,
+            NetDisconnect: true,
+            Uploading: false,
+          };
+        }
+        return folder;
+      });
+
+      setDetaUplodingForFOlder(updatedFolders);
+    }
   };
-  console.log("tasksAttachmentstasksAttachments", tasksAttachments);
+
   useEffect(() => {
     // Listen for online/offline events
     // window.addEventListener("online", handleOnlineStatusChange);
@@ -1023,7 +1041,7 @@ const DataRoom = () => {
       // window.removeEventListener("online", handleOnlineStatusChange);
       window.removeEventListener("offline", handleOnlineStatusChange);
     };
-  }, [tasksAttachments]);
+  }, [tasksAttachments, detaUplodingForFOlder]);
 
   // this fun triger when upload folder triiger
   const handleChangeFolderUpload = ({ directoryName, fileList }) => {
@@ -1116,21 +1134,34 @@ const DataRoom = () => {
       }
     }
   }, [DataRoomReducer.FolderisExistCheck]);
+  console.log("detaUplodingForFOlder", detaUplodingForFOlder);
 
   // this function call for current files which is in the folder
   const processArraySequentially = async (folder) => {
-    if (folder.UploadCancel) {
-      // Skip the upload for this folder if it's canceled
+    let isOnline = navigator.onLine;
+    if (folder.UploadCancel || folder.NetDisconnect) {
+      // Skip the upload for this folder if it's canceled or there's a network disconnect
       return;
     }
     try {
-      // let shouldContinue = true; // Flag to control API calls
+      let continueUploading = true; // Flag to control API calls
       if (folder.FileList.length > 0) {
         for (const file of folder.FileList) {
           try {
-            if (folder.Uploaded === false && folder.UploadCancel === false) {
+            if (
+              folder.Uploaded === false &&
+              folder.UploadCancel === false &&
+              folder.NetDisconnect === false &&
+              continueUploading
+            ) {
               const result = await dispatch(
-                uploadFile(navigate, file, folder.FolderID, t)
+                uploadFile(
+                  navigate,
+                  file,
+                  folder.FolderID,
+                  t,
+                  folder.NetDisconnect
+                )
               );
               // Perform other actions with the result
               folder.UploadedAttachments = folder.UploadedAttachments + 1; // Update the count
@@ -1138,13 +1169,26 @@ const DataRoom = () => {
 
               // You can wait for some time before proceeding to the next item
               await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait for 1 second
+            } else {
+              continueUploading = false;
             }
+
+            // Check for network disconnect and stop uploading if it occurs
+            if (!navigator.onLine) {
+              continueUploading = false;
+            }
+
             // Call your API for the current item
           } catch (error) {
             console.error("handleChangeFolderUpload API call error:", error);
           }
+          // If continueUploading is false, break out of the loop
+          if (!continueUploading) {
+            break;
+          }
         }
       }
+
       setDirectoryNames("");
       folder.Uploaded = true;
       folder.Uploading = false;
@@ -1201,11 +1245,6 @@ const DataRoom = () => {
                     )
                   );
                 }
-                console.log(
-                  "handleChangeFolderUploadexistingIndex",
-                  detaUplodingForFOlder[existingIndex]
-                );
-
                 processArraySequentially(detaUplodingForFOlder[existingIndex]);
               } catch (error) {
                 console.error(error);
