@@ -1203,13 +1203,18 @@ const Dashboard = () => {
 
         // Save the updated data back to localStorage
         localStorage.setItem('callerStatusObject', JSON.stringify(existingData))
+        let Dataa = {
+          OrganizationID: Number(currentOrganization),
+          RoomID: data.payload.roomID,
+        }
+        dispatch(CallRequestReceived(Dataa, navigate, t))
       } else if (
         data.payload.message.toLowerCase() ===
         'VIDEO_CALL_DISCONNECTED_CALLER'.toLowerCase()
       ) {
         localStorage.setItem('activeCall', false)
         localStorage.setItem('initiateVideoCall', false)
-        dispatch(normalizeVideoPanelFlag(false))
+        // dispatch(normalizeVideoPanelFlag(false))
         dispatch(maximizeVideoPanelFlag(false))
         dispatch(minimizeVideoPanelFlag(false))
         dispatch(leaveCallModal(false))
