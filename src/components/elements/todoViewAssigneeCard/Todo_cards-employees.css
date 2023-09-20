@@ -23,3 +23,7 @@
   font-size: 11px;
   color: #505050 !important;
 }
+.cardTextIconStyle {
+  white-space: pre-wrap;
+  /* word-wrap: break-word; */
+}

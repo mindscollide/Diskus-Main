@@ -34,7 +34,7 @@ import {
 } from "../../store/actions/Post_AssigneeComments";
 import { DownloadFile } from "../../store/actions/Download_action";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Spin } from "antd";
 
 const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
@@ -381,35 +381,24 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                       </p>
                     </Col>
                   </Row>
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      xs={12}
-                      className="ViewModalEmployeeCard"
-                    >
-                      {TaskAssignedTo.length > 0 ? (
-                        <>
-                          <span>
-                            {TaskAssignedTo.map((assgineeData, index) => {
-                              console.log(
-                                "assgineeDataassgineeData",
-                                assgineeData
-                              );
-                              return (
-                                <TodoAssgineeEmployeeCard
-                                  employeeName={assgineeData.name}
-                                  employeeDesignation={assgineeData.designation}
-                                  cardText={assgineeData.datetimeFormating}
-                                  cardTextIconStyle="DateTimeViewTodo"
-                                  userImage={assgineeData.displayProfilePicture}
-                                />
-                              );
-                            })}
-                          </span>
-                        </>
-                      ) : null}
-                    </Col>
+                  <Row className="view_todo_assignees">
+                    {TaskAssignedTo.length > 0 ? (
+                      <>
+                        {TaskAssignedTo.map((assgineeData, index) => {
+                          return (
+                            <Col sm={6} md={6} lg={6}>
+                              <TodoAssgineeEmployeeCard
+                                employeeName={assgineeData.name}
+                                employeeDesignation={assgineeData.designation}
+                                cardText={assgineeData.datetimeFormating}
+                                cardTextIconStyle="DateTimeViewTodo"
+                                userImage={assgineeData.displayProfilePicture}
+                              />
+                            </Col>
+                          );
+                        })}
+                      </>
+                    ) : null}
                   </Row>
                 </Col>
               </Row>
@@ -603,15 +592,24 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                             modalviewAttachmentFiles.DisplayAttachmentName.split(
                               " "
                             )[0];
+                          console.log(
+                            "modalviewAttachmentFilesmodalviewAttachmentFiles",
+                            modalviewAttachmentFiles
+                          );
+                          const pdfData = {
+                            taskId: modalviewAttachmentFiles.FK_TID,
+                            attachmentID: modalviewAttachmentFiles.PK_MAAID,
+                          };
+                          const pdfDataJson = JSON.stringify(pdfData);
                           return (
                             <Col
                               sm={12}
                               lg={2}
                               md={2}
                               className="fileIconBoxView"
-                              onClick={(e) =>
-                                downloadClick(e, modalviewAttachmentFiles)
-                              }
+                              // onClick={(e) =>
+                              //   downloadClick(e, modalviewAttachmentFiles)
+                              // }
                             >
                               {ext === "doc" ? (
                                 <FileIcon
@@ -642,11 +640,19 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                                   labelColor={"rgba(16, 121, 63)"}
                                 />
                               ) : ext === "pdf" ? (
-                                <FileIcon
-                                  extension={"pdf"}
-                                  size={78}
-                                  {...defaultStyles.pdf}
-                                />
+                                <Link
+                                  to={`/DisKus/documentViewer?pdfData=${encodeURIComponent(
+                                    pdfDataJson
+                                  )}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  <FileIcon
+                                    extension={"pdf"}
+                                    size={78}
+                                    {...defaultStyles.pdf}
+                                  />
+                                </Link>
                               ) : ext === "png" ? (
                                 <FileIcon
                                   extension={"png"}

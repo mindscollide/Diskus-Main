@@ -61,11 +61,7 @@ const ResetAllFilesUpload = () => {
 };
 
 //File Upload
-const FileUploadToDo = (
-  navigate,
-  data,
-  t,
-) => {
+const FileUploadToDo = (navigate, data, t, newfile) => {
   let token = JSON.parse(localStorage.getItem("token"));
   console.log("uploadedFile:", data);
   let form = new FormData();
@@ -86,17 +82,15 @@ const FileUploadToDo = (
       .then(async (response) => {
         if (response.data.responseCode === 417) {
           await dispatch(RefreshToken(navigate, t));
-          dispatch(
-            FileUploadToDo(
-              navigate,
-              data,
-              t,
-            )
-          );
+          dispatch(FileUploadToDo(navigate, data, t));
         } else if (response.data.responseCode === 200) {
-          console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
+          console.log(
+            "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
+          );
           if (response.data.responseResult.isExecuted === true) {
-            console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
+            console.log(
+              "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
+            );
             if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -104,15 +98,32 @@ const FileUploadToDo = (
                   "Settings_SettingsServiceManager_UploadDocument_01".toLowerCase()
                 )
             ) {
-              console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
+              console.log(
+                "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList",
+                response.data.responseResult
+              );
               dispatch(
                 uploadDocumentSuccess(
                   response.data.responseResult,
                   t("valid-data")
                 )
               );
-
-
+              if (newfile) {
+                let dataResultdisplayFileName =
+                  response.data.responseResult.displayFileName;
+                let dataResultoriginalFileName =
+                  response.data.responseResult.originalFileName;
+                let dataresponce = {
+                  FK_TID: 0,
+                  PK_TAID: 0,
+                  CreationDateTime: "",
+                  DisplayAttachmentName: dataResultdisplayFileName,
+                  OriginalAttachmentName: dataResultoriginalFileName,
+                  fileSize:data.size
+                };
+                await  newfile.push(dataresponce);
+                console.log("newfilenewfile", newfile);
+              }
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -120,7 +131,9 @@ const FileUploadToDo = (
                   "Settings_SettingsServiceManager_UploadDocument_02".toLowerCase()
                 )
             ) {
-              console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
+              console.log(
+                "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
+              );
               await dispatch(uploadDocumentFail(t("Invalid-data")));
             } else if (
               response.data.responseResult.responseMessage
@@ -129,33 +142,35 @@ const FileUploadToDo = (
                   "Settings_SettingsServiceManager_UploadDocument_03".toLowerCase()
                 )
             ) {
-              console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
+              console.log(
+                "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
+              );
               await dispatch(uploadDocumentFail(t("Something-went-wrong")));
             }
           } else {
-            console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
+            console.log(
+              "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
+            );
             await dispatch(uploadDocumentFail(t("Something-went-wrong")));
           }
         } else {
-          console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
+          console.log(
+            "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
+          );
           await dispatch(uploadDocumentFail(t("Something-went-wrong")));
         }
       })
       .catch((response) => {
-        console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
+        console.log(
+          "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
+        );
         dispatch(uploadDocumentFail(t("Something-went-wrong")));
       });
   };
 };
 
-
-
 //File Upload
-const FileUploadToDo2 = (
-  navigate,
-  data,
-  t,
-) => {
+const FileUploadToDo2 = (navigate, data, t) => {
   let token = JSON.parse(localStorage.getItem("token"));
   console.log("uploadedFile:", data);
   let form = new FormData();
@@ -172,69 +187,83 @@ const FileUploadToDo2 = (
       headers: {
         _token: token,
       },
-    }).then(async (response) => {
-      if (response.data.responseCode === 417) {
-        await dispatch(RefreshToken(navigate, t));
-        dispatch(
-          FileUploadToDo(
-            navigate,
-            data,
-            t,
-          )
-        );
-      } else if (response.data.responseCode === 200) {
-        console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
-        if (response.data.responseResult.isExecuted === true) {
-          console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
-          if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "Settings_SettingsServiceManager_UploadDocument_01".toLowerCase()
-              )
-          ) {
-            console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
-            dispatch(
-              uploadDocumentSuccess(
-                response.data.responseResult,
-                t("valid-data")
-              )
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(FileUploadToDo(navigate, data, t));
+        } else if (response.data.responseCode === 200) {
+          console.log(
+            "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
+          );
+          if (response.data.responseResult.isExecuted === true) {
+            console.log(
+              "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
             );
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "Settings_SettingsServiceManager_UploadDocument_02".toLowerCase()
-              )
-          ) {
-            console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
-            await dispatch(uploadDocumentFail(t("Invalid-data")));
-          } else if (
-            response.data.responseResult.responseMessage
-              .toLowerCase()
-              .includes(
-                "Settings_SettingsServiceManager_UploadDocument_03".toLowerCase()
-              )
-          ) {
-            console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Settings_SettingsServiceManager_UploadDocument_01".toLowerCase()
+                )
+            ) {
+              console.log(
+                "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
+              );
+              dispatch(
+                uploadDocumentSuccess(
+                  response.data.responseResult,
+                  t("valid-data")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Settings_SettingsServiceManager_UploadDocument_02".toLowerCase()
+                )
+            ) {
+              console.log(
+                "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
+              );
+              await dispatch(uploadDocumentFail(t("Invalid-data")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Settings_SettingsServiceManager_UploadDocument_03".toLowerCase()
+                )
+            ) {
+              console.log(
+                "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
+              );
+              await dispatch(uploadDocumentFail(t("Something-went-wrong")));
+            }
+          } else {
+            console.log(
+              "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
+            );
             await dispatch(uploadDocumentFail(t("Something-went-wrong")));
           }
         } else {
-          console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
+          console.log(
+            "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
+          );
           await dispatch(uploadDocumentFail(t("Something-went-wrong")));
         }
-      } else {
-        console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
-        await dispatch(uploadDocumentFail(t("Something-went-wrong")));
-      }
-    })
+      })
       .catch((response) => {
-        console.log("uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList");
+        console.log(
+          "uploadReducer.uploadDocumentsListuploadReducer.uploadDocumentsList"
+        );
         dispatch(uploadDocumentFail(t("Something-went-wrong")));
       });
-
   };
 };
 
-
-export { FileUploadToDo, ResetAllFilesUpload, uploadResponseEmpty, FileUploadToDo2 };
+export {
+  FileUploadToDo,
+  ResetAllFilesUpload,
+  uploadResponseEmpty,
+  FileUploadToDo2,
+};
