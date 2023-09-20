@@ -7,12 +7,12 @@
 .meeting-title {
   cursor: pointer;
   color: #2197d7 !important;
-  font-weight: normal;
-  font-style: normal;
+  font-weight: normal !important;
+  font-style: normal !important;
   font-size: calc(17px - 20%);
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
   font-family: "MontserratSemiBold-600";
 }
 
@@ -180,9 +180,15 @@ body[dir="rtl"] .start-meeting-btn {
 }
 
 .ant-table-wrapper.hello table tbody tr td:nth-child(2) {
-  margin: 0 !important;
-  padding: 0 !important;
-  font-family: "MontserratRegular";
+  cursor: pointer;
+  color: #2197d7 !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  font-size: calc(17px - 20%);
+  overflow: hidden !important;
+  white-space: nowrap !important;
+  text-overflow: ellipsis !important;
+  font-family: "MontserratSemiBold-600";
 }
 
 .meeting-table-attachment-icon {
@@ -348,15 +354,19 @@ body[dir="rtl"] .meeting-searchfileds {
   color: #bbbbbb !important;
 }
 
-.hello .ant-select.ant-pagination-options-size-changer.ant-select-single.ant-select-show-arrow {
+.hello
+  .ant-select.ant-pagination-options-size-changer.ant-select-single.ant-select-show-arrow {
   width: 110px;
 }
 
-body[dir="rtl"] .meeting-schedulenewmeeting-btn.col-lg-3.col-md-3.col-sm-4.col-12 {
+body[dir="rtl"]
+  .meeting-schedulenewmeeting-btn.col-lg-3.col-md-3.col-sm-4.col-12 {
   margin-right: -40px;
 }
 
-body[dir="rtl"] .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] .MuiAutocomplete-endAdornment {
+body[dir="rtl"]
+  .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]
+  .MuiAutocomplete-endAdornment {
   right: auto !important;
   left: 9px !important;
 }
@@ -373,7 +383,8 @@ body[dir="rtl"] .modalmeeting-participant-scroll {
   border-bottom-color: #fff !important;
 }
 
-.react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle::after {
+.react-datepicker-popper[data-placement^="bottom"]
+  .react-datepicker__triangle::after {
   border-bottom-color: #fff !important;
 }
 

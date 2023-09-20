@@ -5,11 +5,57 @@ const initialState = {
   Loading: false,
   ResponseMessage: "",
   Spinner: false,
+  getEventTypeIds: [],
+  eventsDetails: null,
 };
 
 const calendarReducer = (state = initialState, action) => {
   console.log("calendar Reducer", state);
   switch (action.type) {
+    case actions.GETEVENTSDETAILS_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETEVENTSDETAILS_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        eventsDetails: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETEVENTSDETAILS_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        eventsDetails: null,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETEVENTSTYPES_INIT: {
+      return {
+        ...state,
+        Loading: true,
+      };
+    }
+    case actions.GETEVENTSTYPES_SUCCESS: {
+      return {
+        ...state,
+        Loading: false,
+        getEventTypeIds: action.response,
+        ResponseMessage: action.message,
+      };
+    }
+    case actions.GETEVENTSTYPES_FAIL: {
+      return {
+        ...state,
+        Loading: false,
+        getEventTypeIds: [],
+        ResponseMessage: action.message,
+      };
+    }
     case actions.GET_DATA_FOR_CALENDAR_INIT: {
       return {
         ...state,
