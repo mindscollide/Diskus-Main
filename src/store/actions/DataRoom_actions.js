@@ -75,7 +75,7 @@ const saveFilesApi = (
     UserID: JSON.parse(createrID),
     Type: type !== null && type !== undefined ? type : 0,
   };
-  if (tasksAttachments[taskId]?.NetDisconnect) {
+  if (!tasksAttachments[taskId]?.NetDisconnect) {
     return (dispatch) => {
       // dispatch(saveFiles_init())
       let form = new FormData();
@@ -258,7 +258,7 @@ const uploadDocumentsApi = (
   if (showbarupload === false) {
     setShowbarupload(true);
   }
-  if (tasksAttachments[taskId]?.NetDisconnect) {
+  if (!tasksAttachments[taskId]?.NetDisconnect) {
     return (dispatch) => {
       let form = new FormData();
       form.append("RequestMethod", uploadDocumentsRequestMethod.RequestMethod);
