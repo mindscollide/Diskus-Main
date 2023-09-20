@@ -47,7 +47,7 @@ import {
 } from "../../../../../commen/functions/regex";
 import ImportPrevious from "./ImportPreviousAgenda/ImportPrevious";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { startCase } from "lodash";
+import { result, startCase } from "lodash";
 import SaveAgendaView from "./SavedAgendaView/SaveAgendaView";
 
 const Agenda = () => {
@@ -697,8 +697,34 @@ const Agenda = () => {
   };
 
   //Function For Dragging the SubAgendaItems
-  const onSubAgendaDragEnd = (result) => {
-    console.log(result, "resultresultresult");
+  // const onSubAgendaDragEnd = (result) => {
+  //   console.log(result, "resultresultresult");
+  //   if (!result.destination) return; // Dropped outside the list
+
+  //   const { source, destination } = result;
+
+  //   // Clone the entire rows array
+  //   const updatedRows = [...rows];
+
+  //   // Find the source and destination indices
+  //   const sourceIndex = source.index;
+  //   const destinationIndex = destination.index;
+
+  //   // Get the dragged item
+  //   const draggedItem = updatedRows[0].subAgenda[sourceIndex];
+
+  //   // Remove the item from the source index
+  //   updatedRows[0].subAgenda.splice(sourceIndex, 1);
+
+  //   // Insert the item at the correct destination index
+  //   updatedRows[0].subAgenda.splice(destinationIndex, 0, draggedItem);
+
+  //   // Update state with the reordered data
+  //   setRows(updatedRows);
+  // };
+
+  const onSubAgendaDragEnd = (result, index) => {
+    console.log(result, index, "resultresultresult");
     if (!result.destination) return; // Dropped outside the list
 
     const { source, destination } = result;
@@ -711,13 +737,13 @@ const Agenda = () => {
     const destinationIndex = destination.index;
 
     // Get the dragged item
-    const draggedItem = updatedRows[0].subAgenda[sourceIndex];
-
+    const draggedItem = updatedRows[index].subAgenda[sourceIndex];
+    console.log(draggedItem, "draggedItemdraggedItem");
     // Remove the item from the source index
-    updatedRows[0].subAgenda.splice(sourceIndex, 1);
+    updatedRows[index].subAgenda.splice(sourceIndex, 1);
 
     // Insert the item at the correct destination index
-    updatedRows[0].subAgenda.splice(destinationIndex, 0, draggedItem);
+    updatedRows[index].subAgenda.splice(destinationIndex, 0, draggedItem);
 
     // Update state with the reordered data
     setRows(updatedRows);
@@ -726,7 +752,9 @@ const Agenda = () => {
   const SubAgendaMappingDragging = (data, index) => {
     return (
       <>
-        <DragDropContext onDragEnd={onSubAgendaDragEnd}>
+        <DragDropContext
+          onDragEnd={(result) => onSubAgendaDragEnd(result, index)}
+        >
           <Droppable droppableId="subAgendaDroppable" direction="vertical">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
