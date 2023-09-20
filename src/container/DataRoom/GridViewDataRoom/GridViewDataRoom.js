@@ -60,7 +60,6 @@ const GridViewDataRoom = ({
     label: t("Name"),
     value: 1,
   });
-  const viewFolderId = localStorage.getItem("folderID");
   const [filterShareTabValue, setFilteShareTabrValue] = useState({
     label: t("Name"),
     value: 2,
@@ -84,42 +83,6 @@ const GridViewDataRoom = ({
     console.log(folderid, "folderidfolderidfolderidfolderid");
     localStorage.setItem("folderID", folderid);
     dispatch(getFolderDocumentsApi(navigate, folderid, t));
-  };
-  console.log(viewFolderId, "viewFolderIdviewFolderId");
-  // api call onscroll
-  const handleScroll = async (e) => {
-    if (sRowsData < totalRecords) {
-      dispatch(dataBehaviour(true));
-      if (DataRoomReducer.dataBehaviour === false) {
-        if (
-          viewFolderId !== null &&
-          viewFolderId !== undefined &&
-          viewFolderId !== 0
-        ) {
-          await dispatch(
-            getFolderDocumentsApiScrollBehaviour(
-              navigate,
-              Number(viewFolderId),
-              t,
-              2,
-              Number(sRowsData),
-              Number(filter_Value),
-              true
-            )
-          );
-        } else {
-          await dispatch(
-            getDocumentsAndFolderApiScrollbehaviour(
-              navigate,
-              currentView,
-              t,
-              Number(sRowsData),
-              Number(filter_Value)
-            )
-          );
-        }
-      }
-    }
   };
 
   const handleClickFilter = (filterValue) => {
@@ -187,14 +150,6 @@ const GridViewDataRoom = ({
       getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1)
     );
   };
-  const antIcon = (
-    <LoadingOutlined
-      style={{
-        fontSize: 36,
-      }}
-      spin
-    />
-  );
 
   const handleClickforFile = (dataId, record) => {
     setFolderId(dataId.value);

@@ -1202,7 +1202,7 @@ const ScheduleNewResolution = () => {
                             change={(e) => {
                               handleChangeTimeSelection(e);
                             }}
-                            onFocus={() => {
+                            onClick={() => {
                               setCirculationDateTime({
                                 ...circulationDateTime,
                                 time: getcurrentTime,
@@ -1305,7 +1305,7 @@ const ScheduleNewResolution = () => {
                             change={(e) => {
                               handleChangeTimeSelection(e);
                             }}
-                            onFocus={() => {
+                            onClick={() => {
                               setVotingDateTime({
                                 ...votingDateTime,
                                 time: getcurrentTime,
@@ -1421,7 +1421,7 @@ const ScheduleNewResolution = () => {
                             change={(e) => {
                               handleChangeTimeSelection(e);
                             }}
-                            onFocus={() => {
+                            onClick={() => {
                               setDecisionDateTime({
                                 ...decisionDateTime,
                                 time: getcurrentTime,
