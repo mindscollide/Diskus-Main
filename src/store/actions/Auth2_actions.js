@@ -522,6 +522,8 @@ const enterPasswordvalidation = (value, navigate, t) => {
               localStorage.setItem('activeOtoChatID', 0)
               localStorage.setItem('activeCall', false)
               localStorage.setItem('initiateVideoCall', false)
+              localStorage.setItem('newRoomID', 0)
+              localStorage.setItem('newCallerID', 0)
               const emptyArray = []
               localStorage.setItem(
                 'callerStatusObject',
