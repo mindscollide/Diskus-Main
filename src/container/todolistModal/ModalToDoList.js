@@ -520,63 +520,63 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
           // Return the promise from FileUploadToDo
           return dispatch(FileUploadToDo(navigate, newData, t, newfile));
         });
-  
+
         // Wait for all uploadPromises to resolve
         await Promise.all(uploadPromises);
         // uploadFiles(fileForSend)
-          // .then((response) => {
-            console.log("newfilenewfile", typeof newfile);
-            console.log("newfilenewfile", typeof TasksAttachments);
-            console.log("newfilenewfile", newfile.length);
-            console.log("newfilenewfile", Object.keys(TasksAttachments).length);
-            let Data;
-            TasksAttachments = newfile;
-            if (TaskAssignedTo.length > 0) {
-              Data = {
-                Task,
-                TaskCreatorID,
-                TaskAssignedTo,
-                TasksAttachments,
-              };
-            } else {
-              Data = {
-                Task,
-                TaskCreatorID,
-                TaskAssignedTo: taskAssignedTO,
-                TasksAttachments,
-              };
-            }
-            // let Data = {
-            //   Task,
-            //   TaskCreatorID,
-            //   TaskAssignedTo,
-            //   TasksAttachments,
-            // }
-            dispatch(CreateToDoList(navigate, Data, t));
-            setShow(false);
-            setTask({
-              ...task,
-              PK_TID: 1,
-              Title: "",
-              Description: "",
-              IsMainTask: true,
-              DeadLineDate: "",
-              DeadLineTime: "",
-              CreationDateTime: "",
-            });
-            setCreateTodoDate("");
-            setCreateTodoTime("");
-            setTaskAssignedTo([]);
-            setAssignees([]);
-            setTasksAttachments({ ["TasksAttachments"]: [] });
-            setTaskAssignedName([]);
-            setToDoDate("");
-            setFileForSend([]);
-            setFileSize(0);
-          // })
-          // .catch((error) => {
-          //   console.log(error);
-          // });
+        // .then((response) => {
+        console.log("newfilenewfile", newfile);
+        console.log("newfilenewfile", TasksAttachments);
+        console.log("newfilenewfile", newfile.length);
+        console.log("newfilenewfile", Object.keys(TasksAttachments).length);
+        let Data;
+        TasksAttachments = newfile;
+        if (TaskAssignedTo.length > 0) {
+          Data = {
+            Task,
+            TaskCreatorID,
+            TaskAssignedTo,
+            TasksAttachments,
+          };
+        } else {
+          Data = {
+            Task,
+            TaskCreatorID,
+            TaskAssignedTo: taskAssignedTO,
+            TasksAttachments,
+          };
+        }
+        // let Data = {
+        //   Task,
+        //   TaskCreatorID,
+        //   TaskAssignedTo,
+        //   TasksAttachments,
+        // }
+        dispatch(CreateToDoList(navigate, Data, t));
+        setShow(false);
+        setTask({
+          ...task,
+          PK_TID: 1,
+          Title: "",
+          Description: "",
+          IsMainTask: true,
+          DeadLineDate: "",
+          DeadLineTime: "",
+          CreationDateTime: "",
+        });
+        setCreateTodoDate("");
+        setCreateTodoTime("");
+        setTaskAssignedTo([]);
+        setAssignees([]);
+        setTasksAttachments({ ["TasksAttachments"]: [] });
+        setTaskAssignedName([]);
+        setToDoDate("");
+        setFileForSend([]);
+        setFileSize(0);
+        // })
+        // .catch((error) => {
+        //   console.log(error);
+        // });
       } else {
         let Data;
         if (TaskAssignedTo.length > 0) {
