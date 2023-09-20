@@ -368,7 +368,7 @@ const DataRoom = () => {
   };
 
   const showRequestingAccessModal = () => {
-    setRequestingAccess(true);
+    // setRequestingAccess(true);
   };
 
   const showShareFolderModal = (id, name) => {
