@@ -183,23 +183,6 @@
   margin-left: -15px;
 }
 
-.Subagenda_Scroller {
-  height: 20vh !important;
-  overflow-x: hidden !important;
-}
-
-.Subagenda_Scroller::-webkit-scrollbar {
-  width: 0.5rem;
-  border-radius: 20px;
-  background-color: #f2f2f2;
-}
-
-.Subagenda_Scroller::-webkit-scrollbar-thumb {
-  border-radius: 20px;
-  background: #ccc;
-  margin-left: -15px;
-}
-
 .Scroller_document {
   height: 14vh !important;
   overflow-x: hidden !important;
