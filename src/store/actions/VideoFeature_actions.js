@@ -176,6 +176,7 @@ const maximizeVideoPanelFlag = (response) => {
 }
 
 const incomingVideoCallFlag = (response) => {
+  console.log(response, 'responseresponse')
   return {
     type: actions.INCOMING_VIDEO_FLAG,
     response: response,
