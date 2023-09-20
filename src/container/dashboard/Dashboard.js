@@ -139,6 +139,7 @@ const Dashboard = () => {
   }
 
   const onMessageArrived = (msg) => {
+    console.log('IncomingVideoFlag', videoFeatureReducer.IncomingVideoCallFlag)
     var min = 10000
     var max = 90000
     var id = min + Math.random() * (max - min)
@@ -964,10 +965,23 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         'NEW_VIDEO_CALL_INITIATED'.toLowerCase()
       ) {
+        console.log('VideoFeatureIncoming Dashboard', videoFeatureReducer)
         let callStatus = JSON.parse(localStorage.getItem('activeCall'))
         localStorage.setItem('callType', data.payload.callType)
         localStorage.setItem('callTypeID', data.payload.callTypeID)
+        localStorage.setItem('newCallerID', data.payload.callerID)
+        let Dataa = {
+          OrganizationID: Number(currentOrganization),
+          RoomID: data.payload.roomID,
+        }
+        dispatch(CallRequestReceived(Dataa, navigate, t))
         if (callStatus === true) {
+          console.log(
+            'VideoFeatureIncoming Dashboard CallStatusTrue',
+            videoFeatureReducer,
+          )
+          dispatch(incomingVideoCallMQTT(data.payload, data.payload.message))
+          dispatch(incomingVideoCallFlag(true))
           let timeValue = Number(localStorage.getItem('callRingerTimeout'))
           let callTypeID = Number(localStorage.getItem('callTypeID'))
           timeValue = timeValue * 1000
@@ -983,31 +997,19 @@ const Dashboard = () => {
             }
           }, timeValue)
           localStorage.setItem('newRoomID', data.payload.roomID)
-          let Dataa = {
-            OrganizationID: Number(currentOrganization),
-            RoomID: data.payload.roomID,
-          }
-          dispatch(CallRequestReceived(Dataa, navigate, t))
-          dispatch(incomingVideoCallMQTT(data.payload, data.payload.message))
-          dispatch(incomingVideoCallFlag(true))
           return () => clearTimeout(timeoutId)
-        } else if (callStatus === false) {
-          let Data = {
-            OrganizationID: Number(currentOrganization),
-            RoomID: data.payload.roomID,
-          }
-
+        } else if (
+          callStatus === false &&
+          videoFeatureReducer.IncomingVideoCallFlag === false
+        ) {
+          dispatch(incomingVideoCallFlag(true))
+          dispatch(incomingVideoCallMQTT(data.payload, data.payload.message))
           localStorage.setItem('RoomID', data.payload.roomID)
+          localStorage.setItem('acceptedRoomID', 0)
           localStorage.setItem('callerID', data.payload.callerID)
           localStorage.setItem('callerNameInitiate', data.payload.callerName)
           localStorage.setItem('recipentID', data.receiverID[0])
           localStorage.setItem('recipentName', currentUserName)
-          // dispatch(normalizeVideoPanelFlag(false))
-          if (videoFeatureReducer.IncomingVideoCallFlag === false) {
-            dispatch(incomingVideoCallMQTT(data.payload, data.payload.message))
-            dispatch(incomingVideoCallFlag(true))
-            dispatch(CallRequestReceived(Data, navigate, t))
-          }
         }
         dispatch(callRequestReceivedMQTT({}, ''))
       } else if (
@@ -1023,6 +1025,8 @@ const Dashboard = () => {
         localStorage.setItem('recipentID', data.payload.recepientID)
         localStorage.setItem('recipentName', data.payload.recepientName)
         localStorage.setItem('activeCall', true)
+        localStorage.setItem('newRoomID', data.payload.roomID)
+
         if (data.payload.recepientID === Number(createrID)) {
           localStorage.setItem('initiateVideoCall', false)
         }
@@ -1230,7 +1234,7 @@ const Dashboard = () => {
       ) {
         localStorage.setItem('activeCall', false)
         localStorage.setItem('initiateVideoCall', false)
-        // dispatch(normalizeVideoPanelFlag(false))
+        dispatch(normalizeVideoPanelFlag(false))
         dispatch(maximizeVideoPanelFlag(false))
         dispatch(minimizeVideoPanelFlag(false))
         dispatch(leaveCallModal(false))
@@ -1247,6 +1251,7 @@ const Dashboard = () => {
       ) {
         localStorage.setItem('activeCall', false)
         localStorage.setItem('initiateVideoCall', false)
+
         let existingData =
           JSON.parse(localStorage.getItem('callerStatusObject')) || []
 
@@ -1374,7 +1379,7 @@ const Dashboard = () => {
       newClient.onConnectionLost = onConnectionLost
       newClient.onMessageArrived = onMessageArrived
     }
-  }, [newClient])
+  }, [newClient, videoFeatureReducer.IncomingVideoCallFlag])
 
   useEffect(() => {
     if (Blur != undefined) {
