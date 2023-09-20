@@ -806,6 +806,7 @@ body[dir="rtl"] .dataroom_searchinput2 {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .delete__Icon:hover {
@@ -818,10 +819,18 @@ body[dir="rtl"] .dataroom_searchinput2 {
   align-items: center;
 }
 
+.delete__Icon_img_hover {
+  display: none;
+}
 .delete__Icon_img {
   cursor: pointer;
 }
-
+.delete__Icon:hover .delete__Icon_img {
+  display: none;
+}
+.delete__Icon:hover .delete__Icon_img_hover {
+  display: block;
+}
 .share__Icon {
   width: 25px;
   height: 25px;
@@ -1142,6 +1151,6 @@ body[dir="rtl"] .dataroom_searchinput2 {
 .showUploadBarUploaded-file:hover .crossIcon-file {
   display: block !important;
 }
-.datePicker_Container{
-width: 100% !important;
+.datePicker_Container {
+  width: 100% !important;
 }
