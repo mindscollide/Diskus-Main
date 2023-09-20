@@ -697,31 +697,57 @@ const Agenda = () => {
   };
 
   //Function For Dragging the SubAgendaItems
-  const DragSubAgendaItems = (result) => {
-    if (!result.destination) return; // The item was dropped outside the list
+  // const DragSubAgendaItems = (result) => {
+  //   if (!result.destination) return;
 
-    const updatedRows = [...rows]; // Copy the rows array
+  //   const updatedRows = [...rows];
+  //   const sourceIndex = result.source.index;
+  //   const destinationIndex = result.destination.index;
+
+  //   const sourceRow = updatedRows.find((row) =>
+  //     row.subAgenda.some((item) => item.SubAgendaID === result.draggableId)
+  //   );
+
+  //   if (!sourceRow) return;
+
+  //   const draggedItem = sourceRow.subAgenda.find(
+  //     (item) => item.SubAgendaID === result.draggableId
+  //   );
+
+  //   // Remove the dragged item from the source row's subAgenda
+  //   sourceRow.subAgenda.splice(sourceIndex, 1);
+
+  //   // Insert the dragged item into the destination row's subAgenda
+  //   sourceRow.subAgenda.splice(destinationIndex, 0, draggedItem);
+
+  //   // Update the state with the reordered rows array
+  //   setRows(updatedRows);
+  // };
+
+  //check function for subagendas
+  const DragSubAgendaItems = (result) => {
+    if (!result.destination) return; // Dropped outside the list
+
     const sourceIndex = result.source.index;
     const destinationIndex = result.destination.index;
+    const subAgendaItemID = result.draggableId;
 
-    const sourceRow = updatedRows.find((row) =>
-      row.subAgenda.some((item) => item.SubAgendaID === result.draggableId)
-    );
+    // Create a deep copy of the main agenda and sub-agenda data
+    const updatedMainAgenda = [...rows];
+    const mainAgendaItem = updatedMainAgenda[sourceIndex];
+    const updatedSubAgenda = [...mainAgendaItem.subAgenda];
 
-    if (!sourceRow) return;
+    // Remove the dragged item from the source index
+    const [draggedItem] = updatedSubAgenda.splice(sourceIndex, 1);
 
-    const draggedItem = sourceRow.subAgenda.find(
-      (item) => item.SubAgendaID === result.draggableId
-    );
+    // Insert the dragged item at the destination index
+    updatedSubAgenda.splice(destinationIndex, 0, draggedItem);
 
-    // Remove the dragged item from the source row's subAgenda
-    sourceRow.subAgenda.splice(sourceIndex, 1);
+    // Update the sub-agenda of the corresponding main agenda item
+    mainAgendaItem.subAgenda = updatedSubAgenda;
 
-    // Insert the dragged item into the destination row's subAgenda
-    sourceRow.subAgenda.splice(destinationIndex, 0, draggedItem);
-
-    // Update the state with the reordered rows array
-    setRows(updatedRows);
+    // Update the state with the reordered main agenda
+    setRows(updatedMainAgenda);
   };
 
   const SubAgendaMappingDragging = (data, index) => {
