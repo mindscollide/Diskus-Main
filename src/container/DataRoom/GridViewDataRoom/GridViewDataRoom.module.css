@@ -60,7 +60,8 @@
 }
 
 .folderContainer {
-  height: 62vh !important;
+  min-height: 50vh !important;
+  height: auto !important;
   /* overflow-y: auto; */
   overflow-x: hidden;
 }

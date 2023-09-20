@@ -289,9 +289,7 @@ const Meeting = () => {
       key: "title",
       width: "200px",
       align: "left",
-      className: "titleClassMeeting",
-      sorter: (a, b) =>
-        a.title.toLowerCase().localeCompare(b.title.toLowerCase()),
+      sortDirections: ["descend", "ascend"],
       render: (text, record) => (
         <i
           className="meeting-title"
@@ -300,6 +298,9 @@ const Meeting = () => {
           {text}
         </i>
       ),
+      sorter: (a, b) => {
+        return a?.title.toLowerCase().localeCompare(b?.title.toLowerCase());
+      },
     },
     {
       title: t("Status"),
@@ -332,6 +333,8 @@ const Meeting = () => {
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-meeting" />
       ),
+      onFilter: (value, record) =>
+        record.status.toLowerCase().includes(value.toLowerCase()),
       render: (text, record) => {
         if (text === "1") {
           return (
@@ -372,6 +375,8 @@ const Meeting = () => {
       key: "host",
       width: "10rem",
       filters: tableFilterValue,
+      onFilter: (value, record) =>
+        record.host.toLowerCase().includes(value.toLowerCase()),
       filterIcon: (filtered) => (
         <ChevronDown
           className={filtered ? "filter-chevron-icon-meeting" : null}
@@ -392,20 +397,9 @@ const Meeting = () => {
         }
       },
       sorter: (a, b, sortOrder) => {
-        if (a !== null && b !== null) {
-          return moment(a.dateOfMeeting, "YYYYMMDD")
-            .format("Do MMM, YYYY")
-            .localeCompare(
-              moment(b.dateOfMeeting, "YYYYMMDD").format("Do MMM, YYYY")
-            );
-        }
-        if (a.dateOfMeeting) {
-          return sortOrder === "ascend" ? 1 : -1;
-        }
-        if (b.dateOfMeeting) {
-          return sortOrder === "ascend" ? -1 : 1;
-        }
-        return 0;
+        const dateA = moment(a?.dateOfMeeting, "YYYYMMDD");
+        const dateB = moment(b?.dateOfMeeting, "YYYYMMDD");
+        return dateA < dateB;
       },
     },
     {
@@ -781,52 +775,52 @@ const Meeting = () => {
     }
   };
 
-  const tableChangeHandler = (pagination, organizerfilter) => {
-    let newArray = [];
-    let { status, host } = organizerfilter;
-    if (status != null && status.length > 0 && host === null) {
-      status.map((statusData, index) => {
-        AllMeetingIdData.map((data, index) => {
-          if (data.status === statusData) {
-            newArray.push(data);
-          }
-        });
-      });
-    } else if (host != null && host.length > 1 && status === null) {
-      host.map((hostData, index) => {
-        AllMeetingIdData.map((data, index) => {
-          if (hostData === data.host) {
-            newArray.push(data);
-          }
-        });
-      });
-    } else if (
-      host != null &&
-      host.length > 0 &&
-      status != null &&
-      status.length > 0
-    ) {
-      let newData = [];
-      status.map((statusData, index) => {
-        AllMeetingIdData.map((data, index) => {
-          if (data.status === statusData) {
-            newData.push(data);
-          }
-        });
-      });
-      host.map((hostData, index) => {
-        AllMeetingIdData.map((data, index) => {
-          if (hostData === data.host) {
-            newData.push(data);
-          }
-        });
-      });
-      newArray = newData;
-    } else {
-      newArray = AllMeetingIdData;
-    }
-    setRow(newArray);
-  };
+  // const tableChangeHandler = (pagination, organizerfilter) => {
+  //   let newArray = [];
+  //   let { status, host } = organizerfilter;
+  //   if (status != null && status.length > 0 && host === null) {
+  //     status.map((statusData, index) => {
+  //       AllMeetingIdData.map((data, index) => {
+  //         if (data.status === statusData) {
+  //           newArray.push(data);
+  //         }
+  //       });
+  //     });
+  //   } else if (host != null && host.length > 1 && status === null) {
+  //     host.map((hostData, index) => {
+  //       AllMeetingIdData.map((data, index) => {
+  //         if (hostData === data.host) {
+  //           newArray.push(data);
+  //         }
+  //       });
+  //     });
+  //   } else if (
+  //     host != null &&
+  //     host.length > 0 &&
+  //     status != null &&
+  //     status.length > 0
+  //   ) {
+  //     let newData = [];
+  //     status.map((statusData, index) => {
+  //       AllMeetingIdData.map((data, index) => {
+  //         if (data.status === statusData) {
+  //           newData.push(data);
+  //         }
+  //       });
+  //     });
+  //     host.map((hostData, index) => {
+  //       AllMeetingIdData.map((data, index) => {
+  //         if (hostData === data.host) {
+  //           newData.push(data);
+  //         }
+  //       });
+  //     });
+  //     newArray = newData;
+  //   } else {
+  //     newArray = AllMeetingIdData;
+  //   }
+  //   setRow(newArray);
+  // };
 
   const paginationChangeHandlerMeeting = (current, pageSize) => {
     localStorage.setItem("MeetingPageRows", pageSize);
@@ -1035,7 +1029,7 @@ const Meeting = () => {
                     <Table
                       column={columns}
                       className="hello"
-                      onChange={tableChangeHandler}
+                      // onChange={tableChangeHandler}
                       rows={rows}
                       scroll={{ y: "50vh" }}
                       pagination={false}

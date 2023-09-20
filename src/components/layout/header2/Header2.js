@@ -308,7 +308,7 @@ const Header2 = () => {
                         className="d-flex text-black FontClass"
                       >
                         {/* Change Password */}
-                        {t("Setting")}
+                        {t("Settings")}
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item
@@ -522,7 +522,7 @@ const Header2 = () => {
                         className="d-flex text-black FontClass"
                       >
                         {/* Change Password */}
-                        {t("Setting")}
+                        {t("Settings")}
                       </Nav.Link>
                     </Dropdown.Item>
                     <Dropdown.Item

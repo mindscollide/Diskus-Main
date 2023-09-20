@@ -1072,7 +1072,7 @@ const OrganizationLevelSetting = () => {
                             : styles["Options_headings"]
                         }
                       >
-                        {t("Committee")}
+                        {t("Committees")}
                       </span>
                     </Col>
                   </Row>
@@ -1096,7 +1096,7 @@ const OrganizationLevelSetting = () => {
                             : styles["Options_headings"]
                         }
                       >
-                        {t("Group")}
+                        {t("Groups")}
                       </span>
                     </Col>
                   </Row>
@@ -1120,7 +1120,7 @@ const OrganizationLevelSetting = () => {
                             : styles["Options_headings"]
                         }
                       >
-                        {t("Resolution")}
+                        {t("Resolutions")}
                       </span>
                     </Col>
                   </Row>
