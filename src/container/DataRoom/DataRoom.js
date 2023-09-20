@@ -3,6 +3,7 @@ import "react-dropzone-uploader/dist/styles.css";
 import { Progress, Space, Spin, Tooltip } from "antd";
 import "react-circular-progressbar/dist/styles.css";
 import Cancellicon from "../../assets/images/cross_dataroom.svg";
+import hoverdelete from "../../assets/images/hover_delete.svg";
 import { LoadingOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -367,7 +368,7 @@ const DataRoom = () => {
   };
 
   const showRequestingAccessModal = () => {
-    setRequestingAccess(true);
+    // setRequestingAccess(true);
   };
 
   const showShareFolderModal = (id, name) => {
@@ -440,6 +441,7 @@ const DataRoom = () => {
     localStorage.setItem("folderID", folderid);
     await dispatch(getFolderDocumentsApi(navigate, folderid, t));
     setSearchTabOpen(false);
+    localStorage.setItem("setTableView", 3);
   };
 
   const fileOptionsSelect = (data, record) => {
@@ -746,6 +748,22 @@ const DataRoom = () => {
                     <Tooltip placement="topRight" title={t("Delete")}>
                       <span className={styles["delete__Icon"]}>
                         <img
+                          src={hoverdelete}
+                          height="10.71px"
+                          alt=""
+                          width="15.02px"
+                          className={styles["delete__Icon_img_hover"]}
+                          onClick={() => {
+                            if (record.isFolder) {
+                              dispatch(deleteFolder(navigate, record.id, t));
+                            } else {
+                              dispatch(
+                                deleteFileDataroom(navigate, record.id, t)
+                              );
+                            }
+                          }}
+                        />
+                        <img
                           src={del}
                           height="10.71px"
                           alt=""
@@ -766,6 +784,22 @@ const DataRoom = () => {
                   ) : record.isShared === false ? (
                     <Tooltip placement="topRight" title={t("Delete")}>
                       <span className={styles["delete__Icon"]}>
+                        <img
+                          src={hoverdelete}
+                          height="10.71px"
+                          alt=""
+                          width="15.02px"
+                          className={styles["delete__Icon_img_hover"]}
+                          onClick={() => {
+                            if (record.isFolder) {
+                              dispatch(deleteFolder(navigate, record.id, t));
+                            } else {
+                              dispatch(
+                                deleteFileDataroom(navigate, record.id, t)
+                              );
+                            }
+                          }}
+                        />
                         <img
                           src={del}
                           height="10.71px"
@@ -1658,21 +1692,19 @@ const DataRoom = () => {
                                         ? false
                                         : true
                                     }
-                                    height={"57vh"}
+                                    height={"55vh"}
                                     endMessage=""
                                     loader={
-                                      getAllData.length <= totalRecords && (
-                                        <Row>
-                                          <Col
-                                            sm={12}
-                                            md={12}
-                                            lg={12}
-                                            className="d-flex justify-content-center mt-2"
-                                          >
-                                            <Spin indicator={antIcon} />
-                                          </Col>
-                                        </Row>
-                                      )
+                                      <Row>
+                                        <Col
+                                          sm={12}
+                                          md={12}
+                                          lg={12}
+                                          className="d-flex justify-content-center mt-2"
+                                        >
+                                          <Spin indicator={antIcon} />
+                                        </Col>
+                                      </Row>
                                     }
                                   >
                                     <GridViewDataRoom
@@ -1798,21 +1830,19 @@ const DataRoom = () => {
                                         ? false
                                         : true
                                     }
-                                    height={"57vh"}
+                                    height={"55vh"}
                                     endMessage=""
                                     loader={
-                                      getAllData.length <= totalRecords && (
-                                        <Row>
-                                          <Col
-                                            sm={12}
-                                            md={12}
-                                            lg={12}
-                                            className="d-flex justify-content-center mt-2"
-                                          >
-                                            <Spin indicator={antIcon} />
-                                          </Col>
-                                        </Row>
-                                      )
+                                      <Row>
+                                        <Col
+                                          sm={12}
+                                          md={12}
+                                          lg={12}
+                                          className="d-flex justify-content-center mt-2"
+                                        >
+                                          <Spin indicator={antIcon} />
+                                        </Col>
+                                      </Row>
                                     }
                                   >
                                     <GridViewDataRoom

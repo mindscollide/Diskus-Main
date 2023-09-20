@@ -489,6 +489,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         };
         uploadFiles(fileForSend)
           .then((response) => {
+            console.log(response, "responseresponseuploadFiles");
             let Data;
             if (TaskAssignedTo.length > 0) {
               Data = {
