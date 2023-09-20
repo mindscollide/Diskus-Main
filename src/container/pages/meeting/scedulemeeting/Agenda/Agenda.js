@@ -697,32 +697,6 @@ const Agenda = () => {
   };
 
   //Function For Dragging the SubAgendaItems
-  // const onSubAgendaDragEnd = (result) => {
-  //   console.log(result, "resultresultresult");
-  //   if (!result.destination) return; // Dropped outside the list
-
-  //   const { source, destination } = result;
-
-  //   // Clone the entire rows array
-  //   const updatedRows = [...rows];
-
-  //   // Find the source and destination indices
-  //   const sourceIndex = source.index;
-  //   const destinationIndex = destination.index;
-
-  //   // Get the dragged item
-  //   const draggedItem = updatedRows[0].subAgenda[sourceIndex];
-
-  //   // Remove the item from the source index
-  //   updatedRows[0].subAgenda.splice(sourceIndex, 1);
-
-  //   // Insert the item at the correct destination index
-  //   updatedRows[0].subAgenda.splice(destinationIndex, 0, draggedItem);
-
-  //   // Update state with the reordered data
-  //   setRows(updatedRows);
-  // };
-
   const onSubAgendaDragEnd = (result, index) => {
     console.log(result, index, "resultresultresult");
     if (!result.destination) return; // Dropped outside the list
@@ -756,8 +730,11 @@ const Agenda = () => {
           onDragEnd={(result) => onSubAgendaDragEnd(result, index)}
         >
           <Droppable droppableId="subAgendaDroppable" direction="vertical">
-            {(provided) => (
-              <div ref={provided.innerRef} {...provided.droppableProps}>
+            {(innerProvided) => (
+              <div
+                ref={innerProvided.innerRef}
+                {...innerProvided.droppableProps}
+              >
                 {data.subAgenda.length > 0 &&
                   data.subAgenda.map((subAgendaData, subIndex) => {
                     return (
@@ -767,11 +744,11 @@ const Agenda = () => {
                           draggableId={subAgendaData.SubAgendaID}
                           index={subIndex}
                         >
-                          {(provided) => (
+                          {(innerProvided) => (
                             <div
-                              ref={provided.innerRef}
-                              {...provided.draggableProps}
-                              {...provided.dragHandleProps}
+                              ref={innerProvided.innerRef}
+                              {...innerProvided.draggableProps}
+                              {...innerProvided.dragHandleProps}
                             >
                               <Row>
                                 <Col
@@ -1535,10 +1512,10 @@ const Agenda = () => {
                             </div>
                           )}
                         </Draggable>
-                        {provided.placeholder}
                       </>
                     );
                   })}
+                {innerProvided.placeholder}
               </div>
             )}
           </Droppable>
@@ -2556,8 +2533,8 @@ const Agenda = () => {
                                 );
                               })
                             : null}
-                          {provided.placeholder}
                         </section>
+                        {provided.placeholder}
                       </div>
                     )}
                   </Droppable>
