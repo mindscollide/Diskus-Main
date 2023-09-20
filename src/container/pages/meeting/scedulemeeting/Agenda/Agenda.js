@@ -700,12 +700,28 @@ const Agenda = () => {
   const DragSubAgendaItems = (result) => {
     if (!result.destination) return; // The item was dropped outside the list
 
-    const updatedSubAgenda = [...rows[0].subAgenda]; // Copy the subAgenda array
-    const [reorderedItem] = updatedSubAgenda.splice(result.source.index, 1); // Remove the dragged item
-    updatedSubAgenda.splice(result.destination.index, 0, reorderedItem); // Insert the item at the new position
+    const updatedRows = [...rows]; // Copy the rows array
+    const sourceIndex = result.source.index;
+    const destinationIndex = result.destination.index;
 
-    // Update the state with the reordered subAgenda array
-    setRows([{ ...rows[0], subAgenda: updatedSubAgenda }]);
+    const sourceRow = updatedRows.find((row) =>
+      row.subAgenda.some((item) => item.SubAgendaID === result.draggableId)
+    );
+
+    if (!sourceRow) return;
+
+    const draggedItem = sourceRow.subAgenda.find(
+      (item) => item.SubAgendaID === result.draggableId
+    );
+
+    // Remove the dragged item from the source row's subAgenda
+    sourceRow.subAgenda.splice(sourceIndex, 1);
+
+    // Insert the dragged item into the destination row's subAgenda
+    sourceRow.subAgenda.splice(destinationIndex, 0, draggedItem);
+
+    // Update the state with the reordered rows array
+    setRows(updatedRows);
   };
 
   const SubAgendaMappingDragging = (data, index) => {
