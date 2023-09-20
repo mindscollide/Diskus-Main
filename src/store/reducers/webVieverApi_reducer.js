@@ -3,8 +3,8 @@ import * as actions from "../action_types";
 const initialState = {
   Loading: false,
   ResponseMessage: "",
-  xfdfData: null,
-  attachmentBlob:null,
+  xfdfData: "",
+  attachmentBlob: "",
 };
 
 const webViewerReducer = (state = initialState, action) => {
@@ -23,10 +23,11 @@ const webViewerReducer = (state = initialState, action) => {
       };
     }
     case actions.GETANNOTATIONSOFTODOATTACHEMENT_SUCCESS: {
+      console.log("blobToUint8Array", action);
       return {
         ...state,
         Loading: false,
-        xfdfData:action.xfdfData,
+        xfdfData: action.xfdfData,
         attachmentBlob: action.attachmentBlob,
         ResponseMessage: action.meessage,
       };

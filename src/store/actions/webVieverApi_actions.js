@@ -1,6 +1,9 @@
 import * as actions from "../action_types";
 import { toDoListApi } from "../../commen/apis/Api_ends_points";
-import { addAnnotationOnToDoAttachement, getAnnotationOfToDoAttachement } from "../../commen/apis/Api_config";
+import {
+  addAnnotationOnToDoAttachement,
+  getAnnotationOfToDoAttachement,
+} from "../../commen/apis/Api_config";
 import { RefreshToken } from "./Auth_action";
 import axios from "axios";
 // for get annotations
@@ -10,10 +13,15 @@ const GetAnnotationsOfToDoAttachementinit = () => {
   };
 };
 
-const GetAnnotationsOfToDoAttachementSuccess = (message, xfdfData,attachmentBlob) => {
+const GetAnnotationsOfToDoAttachementSuccess = (
+  message,
+  xfdfData,
+  attachmentBlob
+) => {
+  console.log("blobToUint8Array", xfdfData, attachmentBlob);
   return {
     type: actions.GETANNOTATIONSOFTODOATTACHEMENT_SUCCESS,
-    xfdfData:xfdfData,
+    xfdfData: xfdfData,
     attachmentBlob: attachmentBlob,
     message: message,
   };
@@ -54,8 +62,10 @@ const getAnnotationsOfToDoAttachement = (navigate, t, data) => {
                   "ToDoList_ToDoListServiceManager_GetAnnotationOfToDoAttachement_01".toLowerCase()
                 )
             ) {
+              console.log("blobToUint8Array", response.data.responseResult);
               let xfdfData = response.data.responseResult.annotationString;
               let attachmentBlob = response.data.responseResult.attachmentBlob;
+              console.log("blobToUint8Array", xfdfData, attachmentBlob);
               dispatch(
                 GetAnnotationsOfToDoAttachementSuccess(
                   t("Successful"),
@@ -151,27 +161,37 @@ const addAnnotationsOnToDoAttachement = (navigate, t, data) => {
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_GetAnnotationOfToDoAttachement_01".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_AddAnnotationOnToDoAttachement_01".toLowerCase()
                 )
             ) {
-              dispatch(AddAnnotationsOnToDoAttachementSuccess(t("Successful")));
+              dispatch(AddAnnotationsOnToDoAttachementSuccess(t("Annotation-added")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_GetAnnotationOfToDoAttachement_02".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_AddAnnotationOnToDoAttachement_02".toLowerCase()
                 )
             ) {
-              dispatch(AddAnnotationsOnToDoAttachementFail(t("UnSuccessful")));
+              dispatch(AddAnnotationsOnToDoAttachementFail(t("Annotation-updated")));
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
                 .includes(
-                  "ToDoList_ToDoListServiceManager_GetAnnotationOfToDoAttachement_03".toLowerCase()
+                  "ToDoList_ToDoListServiceManager_AddAnnotationOnToDoAttachement_03".toLowerCase()
                 )
             ) {
               dispatch(
-                AddAnnotationsOnToDoAttachementFail(t("Something-went-wrong"))
+                AddAnnotationsOnToDoAttachementFail(t("No-record-inserted"))
+              );
+            }else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "ToDoList_ToDoListServiceManager_AddAnnotationOnToDoAttachement_04".toLowerCase()
+                )
+            ) {
+              dispatch(
+                AddAnnotationsOnToDoAttachementFail(t("No-record-updated"))
               );
             } else {
               dispatch(

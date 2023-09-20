@@ -22,13 +22,14 @@ const DocumentViewer = () => {
   const pdfDataJson = new URLSearchParams(location.search).get("pdfData");
   // Deserialize the JSON string into an object
   const pdfData = JSON.parse(pdfDataJson);
-  const { taskId, attachmentID } = pdfData;
+  const { taskId, attachmentID, fileName } = pdfData;
   const [pdfResponceData, setPdfResponceData] = useState({
     xfdfData: "",
     attachmentBlob: "",
   });
   console.log("DocumentViewer", taskId);
   console.log("DocumentViewer", attachmentID);
+  console.log("DocumentViewer", fileName);
 
   useEffect(() => {
     if (taskId && attachmentID) {
@@ -41,46 +42,45 @@ const DocumentViewer = () => {
     }
   }, []);
 
-  const blobToUint8Array = async (blob) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const arrayBuffer = reader.result;
-        const uint8Array = new Uint8Array(arrayBuffer);
-        resolve(uint8Array);
-      };
-      reader.onerror = reject;
-      reader.readAsArrayBuffer(blob);
-    });
+  function base64ToBlob(base64) {
+    const binaryString = window.atob(base64);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; ++i) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+  
+    return new Blob([bytes], { type: 'application/pdf' });
   };
-console.log("blobToUint8Array",pdfResponceData)
+  console.log("DocumentViewer", pdfResponceData);
   useEffect(() => {
-    // if (webViewer.attachmentBlob && webViewer.xfdfData) {
-    if (webViewer.attachmentBlob && webViewer.xfdfData) {
-      const pdfUint8Array = blobToUint8Array(webViewer.attachmentBlob);
-      let pdfUrls = pdfUint8Array;
-      // let pdfUrls = "/files/BLANCSPACE DISCUSSION.pdf";
-      let xfdfData = webViewer.xfdfData;
+    if (webViewer.attachmentBlob) {
       setPdfResponceData({
         ...pdfResponceData,
-        xfdfData: xfdfData,
-        pdfUrls: pdfUrls,
+        xfdfData: webViewer.xfdfData,
+        pdfUrls: webViewer.attachmentBlob,
       });
     }
-  }, [webViewer.xfdfData]);
+  }, [webViewer.xfdfData, webViewer.attachmentBlob]);
 
   // if using a class, equivalent of componentDidMount
   useEffect(() => {
-    if (webViewer.xfdfData) {
+    if (webViewer.xfdfData || webViewer.attachmentBlob) {
+      console.log("DocumentViewer", webViewer.attachmentBlob);
+      console.log("DocumentViewer", webViewer.xfdfData);
       WebViewer(
         {
           path: "/webviewer/lib",
-          initialDoc: pdfResponceData.pdfUrls,
+          // initialDoc: webViewer.attachmentBlob,
+          // extension: "pdf",
           licenseKey:
             "1693909073058:7c3553ec030000000025c35b7559d8f130f298d30d4b45c2bfd67217fd", // sign up to get a free trial key at https://dev.apryse.com
         },
         viewer.current
       ).then((instance) => {
+        instance.UI.loadDocument(base64ToBlob(webViewer.attachmentBlob), {
+          filename: fileName,
+        });
         const { documentViewer, annotationManager, Annotations } =
           instance.Core;
         const annotManager = documentViewer.getAnnotationManager();
@@ -91,13 +91,13 @@ console.log("blobToUint8Array",pdfResponceData)
             img: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>',
             onClick: async () => {
               // save the annotations
-              const doc = documentViewer.getDocument();
+              // const doc = documentViewer.getDocument();
               const xfdfString = await annotationManager.exportAnnotations();
-              const data = await doc.getFileData({
-                // saves the document with annotations in it
-                xfdfString,
-              });
-              const arr = new Uint8Array(data);
+              // const data = await doc.getFileData({
+              //   // saves the document with annotations in it
+              //   xfdfString,
+              // });
+              // const arr = new Uint8Array(data);
               // const blob = new Blob([arr], { type: "application/pdf" });
               const apiData = {
                 TaskID: taskId, // Assuming taskId is defined in your component
@@ -118,6 +118,7 @@ console.log("blobToUint8Array",pdfResponceData)
             },
           });
         });
+
         documentViewer.addEventListener("documentLoaded", async () => {
           annotManager.setCurrentUser(name);
           const rectangleAnnot = new Annotations.RectangleAnnotation({
@@ -133,20 +134,14 @@ console.log("blobToUint8Array",pdfResponceData)
           annotationManager.addAnnotation(rectangleAnnot);
           // need to draw the annotation otherwise it won't show up until the page is refreshed
 
-          if (pdfResponceData.xfdfData !== "") {
-            const parser = new DOMParser();
-            console.log("pdfResponceData", pdfResponceData);
-            const xfdfXML = parser.parseFromString(
-              pdfResponceData.xfdfData,
-              "text/xml"
-            );
-            annotManager.importAnnotations(pdfResponceData.xfdfData);
-            annotationManager.redrawAnnotation(pdfResponceData.xfdfData);
+          if (webViewer.xfdfData !== "") {
+            annotManager.importAnnotations(webViewer.xfdfData);
+            annotationManager.redrawAnnotation(webViewer.xfdfData);
           }
         });
       });
     }
-  }, [pdfResponceData.xfdfData]);
+  }, [webViewer.xfdfData, webViewer.attachmentBlob]);
 
   return (
     <div className="documnetviewer">

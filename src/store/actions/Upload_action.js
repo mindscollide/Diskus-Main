@@ -119,7 +119,7 @@ const FileUploadToDo = (navigate, data, t, newfile) => {
                   CreationDateTime: "",
                   DisplayAttachmentName: dataResultdisplayFileName,
                   OriginalAttachmentName: dataResultoriginalFileName,
-                  fileSize:data.size
+                  // fileSize:data.size
                 };
                 await  newfile.push(dataresponce);
                 console.log("newfilenewfile", newfile);
