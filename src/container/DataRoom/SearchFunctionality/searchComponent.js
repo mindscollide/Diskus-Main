@@ -328,7 +328,7 @@ const SearchComponent = ({
         SortBy: 1,
         isDescending: searchDataFields.isDescending,
       };
-      await dispatch(searchDocumentsAndFoldersApi(navigate, t, data));
+      await dispatch(searchDocumentsAndFoldersApi(navigate, t, data, 1));
     }
   };
 
@@ -1771,9 +1771,10 @@ const SearchComponent = ({
             next={handleScroll}
             style={{
               overflowX: "hidden",
+              overflowY: "auto",
             }}
             hasMore={searchAllData.length === totalRecords ? false : true}
-            height={"50vh"}
+            height={"54vh"}
             endMessage=""
             loader={
               searchAllData.length <= totalRecords && (
@@ -1794,9 +1795,6 @@ const SearchComponent = ({
               data={searchAllData}
               optionsforFolder={optionsforFolder(t)}
               optionsforFile={optionsforFile(t)}
-              // sRowsData={sRowsData}
-              // totalRecords={totalRecords}
-              // filter_Value={filterValue}
             />
           </InfiniteScroll>
         </>

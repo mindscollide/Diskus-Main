@@ -296,6 +296,22 @@ const Dashboard = () => {
         }
         setNotificationID(id)
       } else if (
+        data.payload.message.toLowerCase() ===
+        'TDOD_STATUS_DELETED'.toLowerCase()
+      ) {
+        if (data.viewable) {
+          setNotification({
+            notificationShow: true,
+            message: changeMQTTJSONOne(
+              t('TDOD_STATUS_DELETED'),
+              '[Task Title]',
+              data.payload.todoTitle,
+            ),
+          })
+          setNotificationID(id)
+        }
+        dispatch(setTodoStatusDataFormSocket(data.payload))
+      } else if (
         data.payload.message.toLowerCase() === 'NEW_TODO_DELETED'.toLowerCase()
       ) {
       } else if (

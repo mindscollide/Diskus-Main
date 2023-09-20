@@ -2166,11 +2166,13 @@ const searchDocumentsAndFoldersApi_fail = (message) => {
 };
 
 // Get Documents And Folder API
-const searchDocumentsAndFoldersApi = (navigate, t, data) => {
+const searchDocumentsAndFoldersApi = (navigate, t, data, no) => {
   let token = JSON.parse(localStorage.getItem("token"));
 
   return (dispatch) => {
-    dispatch(searchDocumentsAndFoldersApi_init());
+    if (no !== 1) {
+      dispatch(searchDocumentsAndFoldersApi_init());
+    }
     let form = new FormData();
     form.append("RequestMethod", searchDocumentsFoldersAPI.RequestMethod);
     form.append("RequestData", JSON.stringify(data));

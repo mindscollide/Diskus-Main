@@ -941,7 +941,7 @@ const Home = () => {
                           </strong>
                         </div>
                         <div className="home-meetingcount-text Saved_money_Tagline">
-                          {t("Meeting")} <br />
+                          {t("Meetings")} <br />
                           {t("This-month")}
                         </div>
                       </CustomTextProgressbar>

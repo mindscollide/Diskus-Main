@@ -537,7 +537,7 @@ const Sidebar = () => {
                           : "Meeting_Side_bar_Tag"
                       }
                     >
-                      {t("Meeting")}
+                      {t("Meetings")}
                     </span>
                   </div>
                 </Nav.Link>

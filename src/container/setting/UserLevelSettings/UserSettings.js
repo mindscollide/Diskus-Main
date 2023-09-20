@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styles from "./UserSettings.module.css";
 import { Col, Row } from "react-bootstrap";
 import { Loader, Button } from "../../../components/elements";
-import backbutton from "../../../assets/images/backbutton.svg";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -18,11 +17,7 @@ import ResolutionIcon from "../../../assets/images/new_ResolutionIcon2.svg";
 import line from "../../../assets/images/Line 27.svg";
 import { getUserSetting } from "../../../store/actions/GetUserSetting";
 import { useEffect } from "react";
-import {
-  GoogleOAuthProvider,
-  useGoogleLogin,
-  useGoogleLogout,
-} from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import {
   getGoogleValidToken,
   revokeToken,
@@ -745,7 +740,7 @@ const UserSettings = () => {
   };
 
   const updateOrganizationLevelSettings = async () => {
-    if (signUpCodeToken != "") {
+    if (signUpCodeToken !== "") {
       await dispatch(
         getGoogleValidToken(navigate, signUpCodeToken, userOptionsSettings, t)
       );
@@ -861,6 +856,7 @@ const UserSettings = () => {
                         src={SecurityIcon}
                         width="25.51px"
                         height="30.69px"
+                        alt=""
                       />
                     </Col>
                     <Col lg={10} md={10} sm={12}>
@@ -885,7 +881,7 @@ const UserSettings = () => {
                       sm={12}
                       className="d-flex align-items-center"
                     >
-                      <img src={TodoIcon} width="30px" height="30px" />
+                      <img src={TodoIcon} alt="" width="30px" height="30px" />
                     </Col>
                     <Col lg={10} md={10} sm={12}>
                       <span
@@ -909,7 +905,12 @@ const UserSettings = () => {
                       sm={12}
                       className="d-flex align-items-center"
                     >
-                      <img src={MeetingIcon} width="35.79px" height="27.3px" />
+                      <img
+                        src={MeetingIcon}
+                        alt=""
+                        width="35.79px"
+                        height="27.3px"
+                      />
                     </Col>
                     <Col lg={10} md={10} ms={12}>
                       <span
@@ -933,7 +934,12 @@ const UserSettings = () => {
                       sm={12}
                       className="d-flex align-items-center"
                     >
-                      <img src={Calender} width="28.47px" height="28.47px" />
+                      <img
+                        src={Calender}
+                        alt=""
+                        width="28.47px"
+                        height="28.47px"
+                      />
                     </Col>
                     <Col lg={10} md={10} ms={12}>
                       <span
@@ -957,7 +963,12 @@ const UserSettings = () => {
                       sm={12}
                       className="d-flex align-items-center"
                     >
-                      <img src={Committee} width="35.8px" height="34.63px" />
+                      <img
+                        src={Committee}
+                        alt=""
+                        width="35.8px"
+                        height="34.63px"
+                      />
                     </Col>
                     <Col lg={10} md={10} ms={12}>
                       <span
@@ -967,7 +978,7 @@ const UserSettings = () => {
                             : styles["Options_headings"]
                         }
                       >
-                        {t("Committee")}
+                        {t("Committees")}
                       </span>
                     </Col>
                   </Row>
@@ -981,7 +992,12 @@ const UserSettings = () => {
                       sm={12}
                       className="d-flex align-items-center"
                     >
-                      <img src={GroupIcon} width="29px" height="26.04px" />
+                      <img
+                        src={GroupIcon}
+                        width="29px"
+                        height="26.04px"
+                        alt=""
+                      />
                     </Col>
                     <Col lg={10} md={10} ms={12}>
                       <span
@@ -991,7 +1007,7 @@ const UserSettings = () => {
                             : styles["Options_headings"]
                         }
                       >
-                        {t("Group")}
+                        {t("Groups")}
                       </span>
                     </Col>
                   </Row>
@@ -1009,6 +1025,7 @@ const UserSettings = () => {
                         src={ResolutionIcon}
                         width={"30px"}
                         height="31.18px"
+                        alt=""
                       />
                     </Col>
                     <Col lg={10} md={10} ms={12}>
@@ -1019,7 +1036,7 @@ const UserSettings = () => {
                             : styles["Options_headings"]
                         }
                       >
-                        {t("Resolution")}
+                        {t("Resolutions")}
                       </span>
                     </Col>
                   </Row>
@@ -1033,7 +1050,12 @@ const UserSettings = () => {
                       sm={12}
                       className="d-flex align-items-center"
                     >
-                      <img src={pollsIcon} width="33.52px" height="34.59px" />
+                      <img
+                        src={pollsIcon}
+                        alt=""
+                        width="33.52px"
+                        height="34.59px"
+                      />
                     </Col>
                     <Col lg={10} md={10} ms={12}>
                       <span
@@ -1055,7 +1077,7 @@ const UserSettings = () => {
                 sm={1}
                 className="d-flex justify-content-center"
               >
-                <img src={line} className={styles["user-setting-row"]} />
+                <img src={line} className={styles["user-setting-row"]} alt="" />
               </Col>
               <Col
                 lg={4}
