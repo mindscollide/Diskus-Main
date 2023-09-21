@@ -37,7 +37,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useNavigate } from "react-router-dom";
 import { Spin } from "antd";
 
-const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
+const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
   //For Localization
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -179,14 +179,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
           });
         });
         listOfAssignees.forEach((data, index) => {
-          console.log(
-            data,
-            Number(createrID),
-            "listOfAssigneeslistOfAssigneeslistOfAssignees"
-          );
-
           if (data.pK_UID === Number(createrID)) {
-            console.log(data, "listOfAssigneeslistOfAssigneeslistOfAssignees");
             assigneeinfo.push(data);
           }
         });
@@ -208,7 +201,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
             FK_TID: data.fK_TID,
           });
         });
-        console.log("responseaaaaa 1234", tem);
         setTasksAttachments({ ["TasksAttachments"]: tem });
       }
       let assgineeeComments = toDoListReducer.ToDoDetails.taskComments;
@@ -282,10 +274,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
     }
   }, [postAssigneeComments.DeleteCommentsId]);
 
-  console.log(
-    postAssigneeComments,
-    "DeleteCommentsIdDeleteCommentsIdDeleteCommentsId"
-  );
   // for comment update
   useEffect(() => {}, [taskAssigneeComments]);
 
