@@ -116,7 +116,7 @@ const VideoMainReducer = (state = initialState, action) => {
     case actions.INCOMING_VIDEO_CALL_ACCEPTED_MQTT: {
       localStorage.setItem('acceptedRecipientID', action.response.recepientID)
       localStorage.setItem('acceptedRoomID', action.response.roomID)
-      localStorage.setItem('newRoomID', action.response.roomID)
+      localStorage.setItem('activeRoomID', action.response.roomID)
 
       return {
         ...state,
