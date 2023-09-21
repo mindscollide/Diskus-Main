@@ -164,7 +164,7 @@ const VideoPanelBodyContact = () => {
     }
   }
 
-  let buttonText = 'Group Call'
+  let buttonText = t('Group-call')
 
   if (groupCallUsers.length > 0) {
     const formattedLength = String(groupCallUsers.length).padStart(2, '0')
@@ -233,7 +233,7 @@ const VideoPanelBodyContact = () => {
         ) : VideoMainReducer.Loading === true ? (
           <>
             <LoaderPanel
-              message={'Safeguarding your data to enhance the experience'}
+              message={'Safeguarding your data to enhance the experience'}
             />
           </>
         ) : (

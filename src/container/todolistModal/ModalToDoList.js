@@ -113,13 +113,34 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   console.log("TaskAssignedToTaskAssignedTo", TaskAssignedTo);
   const [taskAssignedName, setTaskAssignedName] = useState([]);
   const [assignees, setAssignees] = useState([]);
-  console.log(assignees, "taskAssignedNametaskAssignedNametaskAssignedName");
   const [taskAssigneeLength, setTaskAssigneeLength] = useState(false);
+  const [taskAssigneeApiData, setTaskAssigneeApiData] = useState([]);
 
   //Upload File States
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
   });
+
+  //To Set task Creater ID
+  useEffect(() => {
+    setTaskCreatorID(parseInt(createrID));
+  }, []);
+
+  //To Set task Creater ID
+  useEffect(() => {
+    let data = [...toDoListReducer.AllAssigneesData];
+    if (
+      data !== undefined &&
+      data !== null &&
+      data !== [] &&
+      Object(data).length > 0
+    ) {
+      const filterData = data.filter(
+        (obj) => parseInt(obj.pK_UID) !== parseInt(createrID)
+      );
+      setTaskAssigneeApiData(filterData);
+    }
+  }, [toDoListReducer.AllAssigneesData]);
 
   const deleteFilefromAttachments = (data, index) => {
     let fileSizefound = fileSize - data.fileSize;
@@ -136,11 +157,6 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       ["TasksAttachments"]: searchIndex,
     });
   };
-
-  //To Set task Creater ID
-  useEffect(() => {
-    setTaskCreatorID(parseInt(createrID));
-  }, []);
 
   //task Handler aka Input fields
   const taskHandler = (e) => {
@@ -345,10 +361,11 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
 
   //On Click Of Dropdown Value
   const onSearch = (name, id, users) => {
-    if (taskAssignedName.length === 1) {
+    let findisExist = TaskAssignedTo.findIndex((data, index) => data === id);
+    if (findisExist !== -1) {
       setOpen({
         flag: true,
-        message: t("Only-one-assignee-allow"),
+        message: t("User-already-exist"),
       });
       setTaskAssignedToInput("");
     } else {
@@ -362,6 +379,15 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       setTaskAssignedToInput("");
       setAssignees([...assignees, users]);
     }
+    // if (taskAssignedName.length === 1) {
+    //   setOpen({
+    //     flag: true,
+    //     message: t("Only-one-assignee-allow"),
+    //   });
+    //   setTaskAssignedToInput("");
+    // } else {
+
+    // }
   };
 
   //Input Field Assignee Change
@@ -369,21 +395,9 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
     setTaskAssignedToInput(e.target.value.trimStart());
   };
 
-  useEffect(() => {
-    if (taskAssignedName.length > 1) {
-      setOpen({
-        flag: true,
-        message: t("Only-one-assignee-allow"),
-      });
-    } else {
-      setTaskAssigneeLength(false);
-    }
-  }, [taskAssignedName.length]);
-
   //Drop Down Values
   const searchFilterHandler = (value) => {
-    let allAssignees = toDoListReducer.AllAssigneesData;
-    console.log(allAssignees, "allAssigneesallAssigneesallAssignees");
+    let allAssignees = taskAssigneeApiData;
     if (
       allAssignees !== undefined &&
       allAssignees !== null &&
@@ -393,10 +407,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
-          return (
-            searchTerm && assigneesName.startsWith(searchTerm)
-            // assigneesName !== searchTerm.toLowerCase()
-          );
+          return searchTerm && assigneesName.startsWith(searchTerm);
         })
         .slice(0, 10)
         .map((item) => (
@@ -431,7 +442,30 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       calendRef.current.closeCalendar();
     }
   };
+  const uploadFiles = async (fileForSend) => {
+    try {
+      const uploadPromises = fileForSend.map((newData) => {
+        return dispatch(FileUploadToDo(navigate, newData, t));
+      });
 
+      const responses = await Promise.all(uploadPromises);
+
+      // responses is an array of responses from FileUploadToDo for each file
+      // You can process each response here as needed
+      responses.forEach((response, index) => {
+        console.log(`Response for file ${index + 1}:`, response);
+
+        // Handle the response for each file here
+        // For example, you can update your state with the response data
+      });
+
+      // Return the array of responses if needed
+      return responses;
+    } catch (error) {
+      console.error("Error uploading files:", error);
+      // Handle errors if necessary
+    }
+  };
   //Save To-Do List Function
   const createToDoList = async () => {
     let TasksAttachments = tasksAttachments.TasksAttachments;
@@ -481,61 +515,68 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       });
     } else {
       if (Object.keys(fileForSend).length > 0) {
-        const uploadFiles = (fileForSend) => {
-          const uploadPromises = fileForSend.map((newData) => {
-            dispatch(FileUploadToDo(navigate, newData, t));
-          });
-          return Promise.all(uploadPromises);
-        };
-        uploadFiles(fileForSend)
-          .then((response) => {
-            let Data;
-            if (TaskAssignedTo.length > 0) {
-              Data = {
-                Task,
-                TaskCreatorID,
-                TaskAssignedTo,
-                TasksAttachments,
-              };
-            } else {
-              Data = {
-                Task,
-                TaskCreatorID,
-                TaskAssignedTo: taskAssignedTO,
-                TasksAttachments,
-              };
-            }
-            // let Data = {
-            //   Task,
-            //   TaskCreatorID,
-            //   TaskAssignedTo,
-            //   TasksAttachments,
-            // }
-            dispatch(CreateToDoList(navigate, Data, t));
-            setShow(false);
-            setTask({
-              ...task,
-              PK_TID: 1,
-              Title: "",
-              Description: "",
-              IsMainTask: true,
-              DeadLineDate: "",
-              DeadLineTime: "",
-              CreationDateTime: "",
-            });
-            setCreateTodoDate("");
-            setCreateTodoTime("");
-            setTaskAssignedTo([]);
-            setAssignees([]);
-            setTasksAttachments({ ["TasksAttachments"]: [] });
-            setTaskAssignedName([]);
-            setToDoDate("");
-            setFileForSend([]);
-            setFileSize(0);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+        let newfile = [];
+        const uploadPromises = fileForSend.map((newData) => {
+          // Return the promise from FileUploadToDo
+          return dispatch(FileUploadToDo(navigate, newData, t, newfile));
+        });
+
+        // Wait for all uploadPromises to resolve
+        await Promise.all(uploadPromises);
+        // uploadFiles(fileForSend)
+        // .then((response) => {
+        console.log("newfilenewfile", newfile);
+        console.log("newfilenewfile", TasksAttachments);
+        console.log("newfilenewfile", newfile.length);
+        console.log("newfilenewfile", Object.keys(TasksAttachments).length);
+        let Data;
+        TasksAttachments = newfile;
+        if (TaskAssignedTo.length > 0) {
+          Data = {
+            Task,
+            TaskCreatorID,
+            TaskAssignedTo,
+            TasksAttachments,
+          };
+        } else {
+          Data = {
+            Task,
+            TaskCreatorID,
+            TaskAssignedTo: taskAssignedTO,
+            TasksAttachments,
+          };
+        }
+        // let Data = {
+        //   Task,
+        //   TaskCreatorID,
+        //   TaskAssignedTo,
+        //   TasksAttachments,
+        // }
+        dispatch(CreateToDoList(navigate, Data, t));
+        setShow(false);
+        setTask({
+          ...task,
+          PK_TID: 1,
+          Title: "",
+          Description: "",
+          IsMainTask: true,
+          DeadLineDate: "",
+          DeadLineTime: "",
+          CreationDateTime: "",
+        });
+        setCreateTodoDate("");
+        setCreateTodoTime("");
+        setTaskAssignedTo([]);
+        setAssignees([]);
+        setTasksAttachments({ ["TasksAttachments"]: [] });
+        setTaskAssignedName([]);
+        setToDoDate("");
+        setFileForSend([]);
+        setFileSize(0);
+        // })
+        // .catch((error) => {
+        //   console.log(error);
+        // });
       } else {
         let Data;
         if (TaskAssignedTo.length > 0) {
@@ -579,11 +620,16 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
   };
 
   const handleDeleteAttendee = (data, index) => {
+    let newDataAssignees = [...assignees];
+    newDataAssignees.splice(index, 1);
+    let newDataTaskAssignedTo = [...TaskAssignedTo];
+    newDataTaskAssignedTo.splice(index, 1);
+
     // TaskAssignedTo.splice(index, 1)
     // taskAssignedName.splice(index, 1)
-    setAssignees([]);
+    setAssignees(newDataAssignees);
     setTaskAssignedName([]);
-    setTaskAssignedTo([]);
+    setTaskAssignedTo(newDataTaskAssignedTo);
   };
 
   const createTodoTimeChangeHandler = (e) => {
@@ -711,41 +757,41 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                         disable={taskAssigneeLength}
                         change={onChangeSearch}
                       />
-                      {assignees ? (
-                        <>
-                          {assignees.map((taskAssignedName, index) => (
-                            <span>
-                              <div className="dropdown-row-assignee dg-flex align-items-center flex-row">
-                                <div className="d-flex align-items-center gap-2 mt-1 position-relative">
-                                  <img
-                                    alt=""
-                                    src={`data:image/jpeg;base64,${taskAssignedName.displayProfilePictureName}`}
-                                  />
-                                  <p className=" m-0">
-                                    {taskAssignedName.name}
-                                  </p>
-                                </div>
-                                <span className="todolist-remove-assignee-icon">
-                                  <img
-                                    width={20}
-                                    className="remove"
-                                    height={20}
-                                    alt=""
-                                    src={deleteButtonCreateMeeting}
-                                    onClick={() =>
-                                      handleDeleteAttendee(
-                                        taskAssignedName,
-                                        index
-                                      )
-                                    }
-                                  />
-                                </span>
-                              </div>
-                            </span>
-                          ))}
-                        </>
-                      ) : null}
                     </Col>
+                  </Row>
+                  <Row className="create_todo_assignee">
+                    {assignees ? (
+                      <>
+                        {assignees.map((taskAssignedName, index) => (
+                          <Col sm={12} md={6} lg={6}>
+                            <div className="dropdown-row-assignee dg-flex align-items-center flex-row">
+                              <div className="d-flex align-items-center gap-2 mt-1 position-relative">
+                                <img
+                                  alt=""
+                                  src={`data:image/jpeg;base64,${taskAssignedName.displayProfilePictureName}`}
+                                />
+                                <p className=" m-0">{taskAssignedName.name}</p>
+                              </div>
+                              <span className="todolist-remove-assignee-icon">
+                                <img
+                                  width={20}
+                                  className="remove"
+                                  height={20}
+                                  alt=""
+                                  src={deleteButtonCreateMeeting}
+                                  onClick={() =>
+                                    handleDeleteAttendee(
+                                      taskAssignedName,
+                                      index
+                                    )
+                                  }
+                                />
+                              </span>
+                            </div>
+                          </Col>
+                        ))}
+                      </>
+                    ) : null}
                   </Row>
                   <Row className="my-0">
                     <Col

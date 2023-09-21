@@ -33,6 +33,7 @@ const GridViewDataRoom = ({
   sRowsData,
   totalRecords,
   filter_Value,
+  setSearchTabOpen,
 }) => {
   console.log(totalRecords, "totalRecordstotalRecords");
   console.log(filter_Value, "ValueValueValue");
@@ -46,7 +47,7 @@ const GridViewDataRoom = ({
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [sharefoldermodal, setSharefoldermodal] = useState(false);
-  const currentView = JSON.parse(localStorage.getItem("setTableView"));
+  const currentView = Number(localStorage.getItem("setTableView"));
   const [showrenameFile, setShowRenameFile] = useState(false);
   const [shareFileModal, setShareFileModal] = useState(false);
   const [sortIon, setSortIcon] = useState(false);
@@ -83,6 +84,12 @@ const GridViewDataRoom = ({
     console.log(folderid, "folderidfolderidfolderidfolderid");
     localStorage.setItem("folderID", folderid);
     dispatch(getFolderDocumentsApi(navigate, folderid, t));
+    setSearchTabOpen(false);
+    if (currentView !== null) {
+      localStorage.setItem("setTableView", currentView);
+    } else {
+      localStorage.setItem("setTableView", 3);
+    }
   };
 
   const handleClickFilter = (filterValue) => {
@@ -91,33 +98,21 @@ const GridViewDataRoom = ({
       value: filterValue.value,
     });
     if (filterValue.value === 1) {
-      dispatch(
-        getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1)
-      );
+      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, 1));
     } else if (filterValue.value === 2) {
-      dispatch(
-        getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 2)
-      );
+      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, 2));
     } else if (filterValue.value === 3) {
-      dispatch(
-        getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 3)
-      );
+      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, 3));
     } else if (filterValue.value === 4) {
-      dispatch(
-        getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 4)
-      );
+      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, 4));
     }
   };
 
   const handleShareTabFilter = (filterValue) => {
     if (filterValue.value === 1) {
-      dispatch(
-        getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1)
-      );
+      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, 1));
     } else if (filterValue.value === 2) {
-      dispatch(
-        getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 2)
-      );
+      dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, 2));
     }
     setFilteShareTabrValue({
       label: filterValue.label,
@@ -140,15 +135,11 @@ const GridViewDataRoom = ({
 
   const handleClickSortDecsending = () => {
     setSortIcon(false);
-    dispatch(
-      getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, true, 1)
-    );
+    dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, true, 1));
   };
   const handleClickSortAscending = () => {
     setSortIcon(true);
-    dispatch(
-      getDocumentsAndFolderApi(navigate, Number(currentView), t, 2, false, 1)
-    );
+    dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, 1));
   };
 
   const handleClickforFile = (dataId, record) => {
@@ -169,6 +160,7 @@ const GridViewDataRoom = ({
       setDataForGrid(data);
     }
   }, [data]);
+  console.log("currentViewcurrentViewcurrentView", currentView);
   return (
     <>
       <Row>
@@ -180,7 +172,7 @@ const GridViewDataRoom = ({
               lg={12}
               className="d-flex gap-2 align-items-center justify-content-start"
             >
-              {currentView === 1 && currentView === 3 ? (
+              {currentView === 1 || currentView === 3 ? (
                 <>
                   <Dropdown
                     drop="down"

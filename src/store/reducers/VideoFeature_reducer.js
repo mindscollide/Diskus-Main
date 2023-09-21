@@ -236,6 +236,7 @@ const videoFeatureReducer = (state = initialState, action) => {
     }
 
     case actions.INCOMING_VIDEO_FLAG: {
+      console.log(action, 'responseresponse')
       return {
         ...state,
         IncomingVideoCallFlag: action.response,

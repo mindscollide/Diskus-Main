@@ -53,6 +53,7 @@ const SearchComponent = ({
   listviewactive,
   setSearchResultFields,
   searchResultsFields,
+  setSearchTabOpen,
 }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -271,7 +272,7 @@ const SearchComponent = ({
     value: user.pK_UID,
     label: (
       <>
-        <span className="d-flex align-items-center gap-2">
+        <span className="d-flex align-items-center gap-2" key={user.pK_UID}>
           <img
             width={"25px"}
             height="25px"
@@ -1795,6 +1796,7 @@ const SearchComponent = ({
               data={searchAllData}
               optionsforFolder={optionsforFolder(t)}
               optionsforFile={optionsforFile(t)}
+              setSearchTabOpen={setSearchTabOpen}
             />
           </InfiniteScroll>
         </>

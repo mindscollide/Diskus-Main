@@ -1,56 +1,54 @@
-import ImgCrop from "antd-img-crop"
-import React, { useEffect, useState } from "react"
-import { Upload, Button, Modal } from "antd"
-import styles from "./imageUploader.module.css"
-import { updateUserProfilePicture } from "../../../store/actions/UpdateUserProfile"
-import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
-import { useTranslation } from "react-i18next"
-import { base64UrlToFile, getBase64 } from "../../../commen/functions/getBase64"
-import { PlusLg } from "react-bootstrap-icons"
+import ImgCrop from "antd-img-crop";
+import React, { useEffect, useState } from "react";
+import { Upload, Button, Modal, Spin } from "antd";
+import styles from "./imageUploader.module.css";
+import { updateUserProfilePicture } from "../../../store/actions/UpdateUserProfile";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import {
+  base64UrlToFile,
+  getBase64,
+} from "../../../commen/functions/getBase64";
+import { PlusLg } from "react-bootstrap-icons";
 
 const AvatarEditorComponent = ({ pictureObj }) => {
-  const [fileList, setFileList] = useState([])
-  const [onHold, setOnHold] = useState([])
-  const dispatch = useDispatch()
-  const { t } = useTranslation()
-  const navigate = useNavigate()
-  const [previewOpen, setPreviewOpen] = useState(false)
-  const [previewImage, setPreviewImage] = useState(null)
-  console.log(
-    previewOpen,
-    previewImage,
-    "previewImagepreviewImagepreviewImagepreviewImage"
-  )
+  const [fileList, setFileList] = useState([]);
+  const [onHold, setOnHold] = useState([]);
+  const dispatch = useDispatch();
+  const { Authreducer } = useSelector((state) => state);
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
 
   const handlePreview = async (file) => {
-    setPreviewImage(file.url)
-    setPreviewOpen(true)
-  }
-  const handleCancel = () => setPreviewOpen(false)
+    setPreviewImage(file.url);
+    setPreviewOpen(true);
+  };
+  const handleCancel = () => setPreviewOpen(false);
 
   const uploadProfilePic = ({ file }) => {
-    console.log(file, "uploadProfilePicuploadProfilePicuploadProfilePic")
+    console.log(file, "uploadProfilePicuploadProfilePicuploadProfilePic");
     getBase64(file)
       .then((res) => {
-        console.log("Test")
-        setFileList([file])
-        let fileUrL = res.split(",")[1]
-        dispatch(updateUserProfilePicture(navigate, t, file.name, fileUrL))
+        console.log("Test");
+        // setFileList([file])
+        let fileUrL = res.split(",")[1];
+        dispatch(updateUserProfilePicture(navigate, t, file.name, fileUrL));
       })
-      .catch((err) => console.log(err, "newFileListnewFileList"))
-  }
+      .catch((err) => console.log(err, "newFileListnewFileList"));
+  };
 
   useEffect(() => {
     let file = {
       uid: "1",
       name: "image.png",
       url: `data:image/jpeg;base64,${pictureObj.DisplayProfilePictureName}`,
-    } // Set the base64 data as the URL
-    setFileList([file])
-  }, [pictureObj])
+    }; // Set the base64 data as the URL
+    setFileList([file]);
+  }, [pictureObj]);
 
-  console.log(onHold, "fileListfileList")
   return (
     <>
       <ImgCrop
@@ -71,7 +69,9 @@ const AvatarEditorComponent = ({ pictureObj }) => {
           onRemove={() => setFileList([])}
           className={styles["image_uploader_box"]}
         >
-          {fileList.length === 0 ? (
+          {Authreducer.Loading ? (
+            <Spin />
+          ) : fileList.length === 0 ? (
             <>
               <span className="d-flex align-items-center gap-1">
                 <PlusLg /> Upload
@@ -96,7 +96,7 @@ const AvatarEditorComponent = ({ pictureObj }) => {
         </Modal>
       </ImgCrop>
     </>
-  )
-}
+  );
+};
 
-export default AvatarEditorComponent
+export default AvatarEditorComponent;

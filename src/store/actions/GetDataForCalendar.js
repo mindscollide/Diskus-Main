@@ -1,5 +1,9 @@
 import * as actions from "../action_types";
-import { calendarDataRequest } from "../../commen/apis/Api_config";
+import {
+  calendarDataRequest,
+  getEventsTypeRM,
+  GetDiskusEventDetailsRM,
+} from "../../commen/apis/Api_config";
 import { getCalender } from "../../commen/apis/Api_ends_points";
 import axios from "axios";
 import { RefreshToken } from "./Auth_action";
@@ -106,4 +110,181 @@ const HideNotificationCalendarData = () => {
   };
 };
 
-export { getCalendarDataResponse, HideNotificationCalendarData, getCalendarDataInit };
+const getEventsType_init = () => {
+  return {
+    type: actions.GETEVENTSTYPES_INIT,
+  };
+};
+const getEventsType_success = (response, message) => {
+  return {
+    type: actions.GETEVENTSTYPES_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getEventsType_fail = (message) => {
+  return {
+    type: actions.GETEVENTSTYPES_FAIL,
+    message: message,
+  };
+};
+const getEventsTypes = (navigate, t) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(getEventsType_init());
+    let form = new FormData();
+    form.append("RequestMethod", getEventsTypeRM.RequestMethod);
+    axios({
+      method: "post",
+      url: getCalender,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getEventsTypes(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Calender_CalenderServiceManager_GetAllEventTypes_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getEventsType_success(
+                  response.data.responseResult.eventTypes,
+                  t("Data-available")
+                )
+              );
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Calender_CalenderServiceManager_GetAllEventTypes_02".toLowerCase()
+                )
+            ) {
+              dispatch(getEventsType_fail(t("No-data-available")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Calender_CalenderServiceManager_GetAllEventTypes_03".toLowerCase()
+                )
+            ) {
+              dispatch(getEventsType_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(getEventsType_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getEventsType_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getEventsType_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch(() => {
+        dispatch(getEventsType_fail(t("Something-went-wrong")));
+      });
+  };
+};
+
+const getEventsDetails_init = () => {
+  return {
+    type: actions.GETEVENTSDETAILS_INIT,
+  };
+};
+const getEventsDetails_success = (response, message) => {
+  return {
+    type: actions.GETEVENTSDETAILS_SUCCESS,
+    response: response,
+    message: message,
+  };
+};
+const getEventsDetails_fail = (message) => {
+  return {
+    type: actions.GETEVENTSDETAILS_FAIL,
+    message: message,
+  };
+};
+const getEventsDetails = (navigate, Data, t, setCalendarViewModal) => {
+  let token = JSON.parse(localStorage.getItem("token"));
+
+  return (dispatch) => {
+    dispatch(getEventsDetails_init());
+    let form = new FormData();
+    form.append("RequestMethod", GetDiskusEventDetailsRM.RequestMethod);
+    form.append("RequestData", JSON.stringify(Data));
+    axios({
+      method: "post",
+      url: getCalender,
+      data: form,
+      headers: {
+        _token: token,
+      },
+    })
+      .then(async (response) => {
+        if (response.data.responseCode === 417) {
+          await dispatch(RefreshToken(navigate, t));
+          dispatch(getEventsDetails(navigate, t));
+        } else if (response.data.responseCode === 200) {
+          if (response.data.responseResult.isExecuted === true) {
+            if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Calender_CalenderServiceManager_GetDiskusEventDetails_01".toLowerCase()
+                )
+            ) {
+              dispatch(
+                getEventsDetails_success(
+                  response.data.responseResult,
+                  t("Data-available")
+                )
+              );
+              if (Data.CalendarEventTypeId === 2) {
+                setCalendarViewModal(true);
+              }
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Calender_CalenderServiceManager_GetDiskusEventDetails_02".toLowerCase()
+                )
+            ) {
+              dispatch(getEventsDetails_fail(t("No-data-available")));
+            } else if (
+              response.data.responseResult.responseMessage
+                .toLowerCase()
+                .includes(
+                  "Calender_CalenderServiceManager_GetDiskusEventDetails_03".toLowerCase()
+                )
+            ) {
+              dispatch(getEventsDetails_fail(t("Something-went-wrong")));
+            } else {
+              dispatch(getEventsDetails_fail(t("Something-went-wrong")));
+            }
+          } else {
+            dispatch(getEventsDetails_fail(t("Something-went-wrong")));
+          }
+        } else {
+          dispatch(getEventsDetails_fail(t("Something-went-wrong")));
+        }
+      })
+      .catch(() => {
+        dispatch(getEventsDetails_fail(t("Something-went-wrong")));
+      });
+  };
+};
+export {
+  getCalendarDataResponse,
+  HideNotificationCalendarData,
+  getCalendarDataInit,
+  getEventsTypes,
+  getEventsDetails,
+};

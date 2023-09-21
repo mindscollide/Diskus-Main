@@ -33,9 +33,9 @@ const VideoMaxIncoming = () => {
 
   let currentUserId = Number(localStorage.getItem('userID'))
 
-  let incomingRoomID = localStorage.getItem('RoomID')
+  let incomingRoomID = localStorage.getItem('NewRoomID')
 
-  let newRoomID = localStorage.getItem('newRoomID')
+  let activeRoomID = localStorage.getItem('activeRoomID')
 
   let callerID = Number(localStorage.getItem('callerID'))
 
@@ -114,7 +114,7 @@ const VideoMaxIncoming = () => {
   const acceptCall = () => {
     let Data = {
       ReciepentID: currentUserId,
-      RoomID: activeCallState === true ? newRoomID : incomingRoomID,
+      RoomID: activeCallState === true ? activeRoomID : incomingRoomID,
       CallStatusID: 1,
       CallTypeID: callTypeID,
     }
@@ -135,7 +135,7 @@ const VideoMaxIncoming = () => {
     await dispatch(LeaveCall(Data, navigate, t))
     let Data2 = {
       ReciepentID: currentUserId,
-      RoomID: newRoomID,
+      RoomID: activeRoomID,
       CallStatusID: 1,
       CallTypeID: callTypeID,
     }
@@ -160,7 +160,7 @@ const VideoMaxIncoming = () => {
   const busyCall = () => {
     let Data = {
       ReciepentID: currentUserId,
-      RoomID: newRoomID,
+      RoomID: activeRoomID,
       CallStatusID: 5,
       CallTypeID: callTypeID,
     }

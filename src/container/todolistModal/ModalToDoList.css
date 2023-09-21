@@ -193,3 +193,8 @@ body[dir="rtl"] .ArabicFontSemiBold {
   font-family: "MontserratSemiBold-600";
   border: 1px solid #e1e1e1 !important;
 }
+
+.create_todo_assignee {
+  max-height: 7vh !important;
+  overflow-y: auto;
+}
