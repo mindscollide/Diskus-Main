@@ -226,7 +226,8 @@ const Home = () => {
     dispatch(getusernotificationinit());
     dispatch(getCalendarDataInit(true));
     dispatch(getNotes_Init());
-    await dispatch(getUserSetting(navigate, t));
+    // console.log("getUserSettinggetUserSetting")
+    // await dispatch(getUserSetting(navigate, t));
     let Data = {
       UserID: parseInt(createrID),
       OrganizationID: JSON.parse(OrganizationID),
@@ -1545,89 +1546,89 @@ const Home = () => {
         </Row>
       </Container>
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
-      <ModalMeeting
-        show={show}
-        setShow={setShow}
-        editFlag={editFlag}
-        setEditFlag={setEditFlag}
-      />
-      <Modal
-        show={activateBlur}
-        setShow={() => {
-          setActivateBlur();
-        }}
-        ButtonTitle={"Block"}
-        centered
-        size={"md"}
-        modalHeaderClassName="d-none"
-        ModalBody={
-          <>
+      {show ? (
+        <ModalMeeting
+          show={show}
+          setShow={setShow}
+          editFlag={editFlag}
+          setEditFlag={setEditFlag}
+        />
+      ) : activateBlur ? (
+        <Modal
+          show={activateBlur}
+          setShow={() => {
+            setActivateBlur();
+          }}
+          ButtonTitle={"Block"}
+          centered
+          size={"md"}
+          modalHeaderClassName="d-none"
+          ModalBody={
             <>
-              <Row className="mb-1">
-                <Col lg={12} md={12} xs={12} sm={12}>
-                  <Row>
-                    <Col className="d-flex justify-content-center">
-                      <img
-                        src={VerificationFailedIcon}
-                        width={60}
-                        className={"allowModalIcon"}
-                      />
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col className="text-center mt-4">
-                      <label className={"allow-limit-modal-p"}>
-                        {t(
-                          "The-organization-subscription-is-not-active-please-contact-your-admin"
-                        )}
-                      </label>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
+              <>
+                <Row className="mb-1">
+                  <Col lg={12} md={12} xs={12} sm={12}>
+                    <Row>
+                      <Col className="d-flex justify-content-center">
+                        <img
+                          src={VerificationFailedIcon}
+                          width={60}
+                          className={"allowModalIcon"}
+                        />
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col className="text-center mt-4">
+                        <label className={"allow-limit-modal-p"}>
+                          {t(
+                            "The-organization-subscription-is-not-active-please-contact-your-admin"
+                          )}
+                        </label>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              </>
             </>
-          </>
-        }
-        ModalFooter={
-          <>
-            <Col sm={12} md={12} lg={12}>
-              <Row className="mb-3">
-                <Col
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  className="d-flex justify-content-center"
-                >
-                  <Button
-                    className={"Ok-Successfull-btn"}
-                    text={t("Ok")}
-                    onClick={closeModal}
-                  />
-                </Col>
-              </Row>
-            </Col>
-          </>
-        }
-      />
-
-      {updateNotesModalHomePage ? (
+          }
+          ModalFooter={
+            <>
+              <Col sm={12} md={12} lg={12}>
+                <Row className="mb-3">
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className="d-flex justify-content-center"
+                  >
+                    <Button
+                      className={"Ok-Successfull-btn"}
+                      text={t("Ok")}
+                      onClick={closeModal}
+                    />
+                  </Col>
+                </Row>
+              </Col>
+            </>
+          }
+        />
+      ) : updateNotesModalHomePage ? (
         <ModalViewNote
           viewNotes={updateNotesModalHomePage}
           setViewNotes={setUpdateNotesModalHomePage}
           flag={true}
           setGetNoteID={setGetNoteID}
         />
-      ) : null}
-      {modalNote ? (
+      ) : modalNote ? (
         <ModalAddNote addNewModal={modalNote} setAddNewModal={setModalNote} />
-      ) : null}
-
-      {eventModal && (
-        <EventsModal
-          events={events}
-          eventModal={eventModal}
-          setEventsModal={setEventsModal}
-        />
+      ) : (
+        eventModal && (
+          <EventsModal
+            events={events}
+            eventModal={eventModal}
+            setEventsModal={setEventsModal}
+          />
+        )
       )}
       {settingReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
