@@ -308,3 +308,27 @@ body[dir="rtl"] .min-to-normal-icon,
 body[dir="rtl"] .min-to-max-icon {
     transform: rotateY(180deg) !important;
 }
+
+.minimize-leave-meeting-options {
+    background: #fff;
+    border-radius: 4px;
+    padding: 16px;
+    position: absolute;
+    width: 248px;
+    bottom: 50px;
+    left: 280px;
+    height: 130px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+body[dir="rtl"] .minimize-leave-meeting-options {
+    background: #fff;
+    border-radius: 4px;
+    padding: 16px;
+    position: absolute;
+    width: 248px;
+    bottom: 50px;
+    right: 270px;
+    height: 130px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
