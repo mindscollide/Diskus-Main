@@ -123,7 +123,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   const [tasksAttachments, setTasksAttachments] = useState({
     TasksAttachments: [],
   });
-  console.log(tasksAttachments, "tasksAttachmentstasksAttachments");
 
   const deleteFilefromAttachments = (data, index) => {
     let searchIndex = tasksAttachments.TasksAttachments;
@@ -416,58 +415,60 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     }
   };
 
-  const notesSaveHandler = async () => {
+  const notesSaveHandler = () => {
     try {
       if (addNoteFields.Title.value !== "") {
-        // let counter = fileForSend.length;
+        let counter = fileForSend.length;
         if (Object.keys(fileForSend).length > 0) {
-          let notesAttachment = [...tasksAttachments.TasksAttachments];
-          const uploadPromises = fileForSend.map((newData) => {
-            return dispatch(
-              FileUploadToDo(navigate, newData, t, notesAttachment)
-            );
-          });
-          await Promise.all(uploadPromises);
-          console.log(notesAttachment, "notesAttachmentnotesAttachmentUpdate");
-
-          // let createrID = localStorage.getItem("userID");
-          // let OrganizationID = localStorage.getItem("organizationID");
-          // let notesAttachment = [];
-          // if (tasksAttachments.TasksAttachments.length > 0) {
-          //   tasksAttachments.TasksAttachments.map((data, index) => {
-          //     console.log("datadata", data);
-          //     notesAttachment.push({
-          //       DisplayAttachmentName: data.displayAttachmentName,
-          //       OriginalAttachmentName: data.originalAttachmentName,
-          //     });
-          //   });
-          // }
-
-          let Data = {
-            PK_NotesID: addNoteFields.PK_NotesID,
-            Title: addNoteFields.Title.value,
-            Description: addNoteFields.Description.value,
-            isStarred: isStarred,
-            FK_UserID: JSON.parse(createrID),
-            FK_OrganizationID: JSON.parse(OrganizationID),
-            FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
-            NotesAttachments: notesAttachment,
+          const uploadFiles = (fileForSend) => {
+            const uploadPromises = fileForSend.map((newData) => {
+              dispatch(FileUploadToDo(navigate, newData, t));
+            });
+            return Promise.all(uploadPromises);
           };
+          uploadFiles(fileForSend)
+            .then((response) => {
+              setErrorBar(false);
+              let createrID = localStorage.getItem("userID");
+              let OrganizationID = localStorage.getItem("organizationID");
+              let notesAttachment = [];
+              if (tasksAttachments.TasksAttachments.length > 0) {
+                tasksAttachments.TasksAttachments.map((data, index) => {
+                  console.log("datadata", data);
+                  notesAttachment.push({
+                    DisplayAttachmentName: data.displayAttachmentName,
+                    OriginalAttachmentName: data.originalAttachmentName,
+                  });
+                });
+              }
+              console.log("check2");
 
-          dispatch(
-            UpdateNotesAPI(
-              navigate,
-              Data,
-              t,
-              setIsUpdateNote,
-              setIsDeleteNote,
-              setUpdateNotes
-            )
-          );
-          // })
-          // .catch((error) => {
-          //   console.log(error);
-          // });
+              let Data = {
+                PK_NotesID: addNoteFields.PK_NotesID,
+                Title: addNoteFields.Title.value,
+                Description: addNoteFields.Description.value,
+                isStarred: isStarred,
+                FK_UserID: JSON.parse(createrID),
+                FK_OrganizationID: JSON.parse(OrganizationID),
+                FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
+                NotesAttachments: notesAttachment,
+              };
+              console.log("check2");
+
+              dispatch(
+                UpdateNotesAPI(
+                  navigate,
+                  Data,
+                  t,
+                  setIsUpdateNote,
+                  setIsDeleteNote,
+                  setUpdateNotes
+                )
+              );
+            })
+            .catch((error) => {
+              console.log(error);
+            });
         } else {
           setErrorBar(false);
           // setUpdateNotesModalHomePage(false);

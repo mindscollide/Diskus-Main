@@ -996,5 +996,11 @@
   "select-start-date": "Select Start Date",
   "View-more": "View more",
   "Settings": "Settings",
-  "Profile-picture-updated": "Profile picture updated"
+  "Profile-picture-updated": "Profile picture updated",
+  "10-minutes-before": "10 minutes before",
+  "30-minutes-before": "30 minutes before",
+  "1-hour-before": "1 hour before",
+  "5-hours-before": "5 hours before",
+  "1-day-before": "1 day before",
+  "7-days-before": "7 days before"
 }
