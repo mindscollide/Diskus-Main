@@ -703,26 +703,32 @@ const Agenda = () => {
     }
 
     const updatedRows = [...rows];
-    const sourceSubAgendaId = source.droppableId;
-    const destinationSubAgendaId = destination.droppableId;
-    const sourceSubFileIndex = source.index;
-    const destinationSubFileIndex = destination.index;
 
-    // Find source and destination sub-agendas
-    const sourceRow = updatedRows.find((row) => row.ID === sourceSubAgendaId);
+    const sourceRowId = source.droppableId;
+    const destinationRowId = destination.droppableId;
+
+    const sourceIndex = source.index;
+    const destinationIndex = destination.index;
+
+    const [sourceAgendaId, sourceFileIndex] = sourceRowId.split("-");
+    const [destinationAgendaId, destinationFileIndex] =
+      destinationRowId.split("-");
+
+    // Find the source and destination rows
+    const sourceRow = updatedRows.find((row) => row.ID === sourceAgendaId);
     const destinationRow = updatedRows.find(
-      (row) => row.ID === destinationSubAgendaId
+      (row) => row.ID === destinationAgendaId
     );
 
     // Find the dragged sub-file
-    const draggedSubFile = sourceRow.subAgenda[0].Subfiles[sourceSubFileIndex];
+    const draggedSubFile = sourceRow.subAgenda[0].Subfiles[sourceIndex];
 
     // Remove the sub-file from the source sub-agenda
-    sourceRow.subAgenda[0].Subfiles.splice(sourceSubFileIndex, 1);
+    sourceRow.subAgenda[0].Subfiles.splice(sourceIndex, 1);
 
     // Insert the sub-file into the destination sub-agenda at the specified index
     destinationRow.subAgenda[0].Subfiles.splice(
-      destinationSubFileIndex,
+      destinationIndex,
       0,
       draggedSubFile
     );
