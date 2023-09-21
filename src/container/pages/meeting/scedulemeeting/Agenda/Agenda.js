@@ -695,39 +695,39 @@ const Agenda = () => {
   };
 
   //Function For Dragging the File Attachments of the SubAgendas
-  const handleFilesDragSubAgenda = (result, subAgendaIndex) => {
-    const { source, destination, draggableId } = result;
-    console.log(result, "handleFilesDragSubAgenda");
+  const handleFilesDragSubAgenda = (result) => {
+    const { source, destination } = result;
 
-    if (!result.destination) {
-      return; // Item was dropped outside the list
+    if (!destination) {
+      return; // Dropped outside a valid droppable
     }
 
-    // Deep copy of the rows state
-    const updatedRows = cloneDeep(rows);
+    const updatedRows = [...rows];
+    const sourceSubAgendaId = source.droppableId;
+    const destinationSubAgendaId = destination.droppableId;
+    const sourceSubFileIndex = source.index;
+    const destinationSubFileIndex = destination.index;
 
-    // Find the source subAgenda item and destination subAgenda item
-    const sourceSubAgendaItem = updatedRows[0].subAgenda[subAgendaIndex];
-    const destinationSubAgendaItem = updatedRows[0].subAgenda[subAgendaIndex];
+    // Find source and destination sub-agendas
+    const sourceRow = updatedRows.find((row) => row.ID === sourceSubAgendaId);
+    const destinationRow = updatedRows.find(
+      (row) => row.ID === destinationSubAgendaId
+    );
 
-    const sourceIndex = result.source.index;
-    const destinationIndex = result.destination.index;
+    // Find the dragged sub-file
+    const draggedSubFile = sourceRow.subAgenda[0].Subfiles[sourceSubFileIndex];
 
-    // Find the source subfile
-    const movedSubfile = sourceSubAgendaItem.Subfiles[sourceIndex];
+    // Remove the sub-file from the source sub-agenda
+    sourceRow.subAgenda[0].Subfiles.splice(sourceSubFileIndex, 1);
 
-    // Remove the source subfile from the source Subfiles array
-    sourceSubAgendaItem.Subfiles.splice(sourceIndex, 1);
+    // Insert the sub-file into the destination sub-agenda at the specified index
+    destinationRow.subAgenda[0].Subfiles.splice(
+      destinationSubFileIndex,
+      0,
+      draggedSubFile
+    );
 
-    // Insert the movedSubfile at the destination position in the destination Subfiles array
-    destinationSubAgendaItem.Subfiles.splice(destinationIndex, 0, movedSubfile);
-
-    // Log the source and destination objects
-    console.log("Source:", sourceSubAgendaItem);
-    console.log("Destination:", destinationSubAgendaItem);
-
-    // Update state with the deep-copied array
-    setRows(updatedRows);
+    setRows(updatedRows); // Update the state with the modified data
   };
 
   //Function For Dragging the SubAgendaItems
@@ -1300,134 +1300,135 @@ const Agenda = () => {
                                                           }
                                                         >
                                                           <DragDropContext
-                                                            onDragEnd={(
-                                                              result,
-                                                              subIndex
-                                                            ) =>
-                                                              handleFilesDragSubAgenda(
-                                                                result,
-                                                                subIndex
-                                                              )
+                                                            onDragEnd={
+                                                              handleFilesDragSubAgenda
                                                             }
                                                           >
-                                                            <Droppable
-                                                              droppableId={
-                                                                subAgendaData.SubAgendaID
-                                                              }
-                                                              type="file"
-                                                              direction="horizontal"
-                                                            >
-                                                              {(
-                                                                innerProvided
-                                                              ) => (
-                                                                <div
-                                                                  {...innerProvided.droppableProps}
-                                                                  ref={
-                                                                    innerProvided.innerRef
-                                                                  }
-                                                                >
-                                                                  <div className="d-flex gap-2 flex-wrap">
-                                                                    {subAgendaData
-                                                                      ?.Subfiles
-                                                                      ?.length >
-                                                                    0
-                                                                      ? subAgendaData?.Subfiles?.map(
-                                                                          (
-                                                                            subAgendaFiles,
-                                                                            subAgendaFilesIndex
-                                                                          ) => {
-                                                                            return (
-                                                                              <>
-                                                                                <Draggable
-                                                                                  key={
-                                                                                    subAgendaFiles.SubFilesID
-                                                                                  }
-                                                                                  draggableId={
-                                                                                    subAgendaFiles.SubFilesID
-                                                                                  }
-                                                                                  index={
-                                                                                    subAgendaFilesIndex
-                                                                                  }
-                                                                                >
-                                                                                  {(
-                                                                                    innerProvided
-                                                                                  ) => (
-                                                                                    <div
-                                                                                      {...innerProvided.draggableProps}
-                                                                                      {...innerProvided.dragHandleProps}
-                                                                                      ref={
-                                                                                        innerProvided.innerRef
-                                                                                      }
-                                                                                      key={
-                                                                                        subAgendaFilesIndex
+                                                            {rows.map((row) => (
+                                                              <Droppable
+                                                                key={row.ID}
+                                                                droppableId={
+                                                                  row.ID
+                                                                }
+                                                                type="file"
+                                                                direction="horizontal"
+                                                              >
+                                                                {(provided) => (
+                                                                  <div
+                                                                    ref={
+                                                                      provided.innerRef
+                                                                    }
+                                                                    {...provided.droppableProps}
+                                                                  >
+                                                                    <div className="d-flex gap-2 flex-wrap">
+                                                                      {row.subAgenda[0].Subfiles.map(
+                                                                        (
+                                                                          subFile,
+                                                                          index
+                                                                        ) => (
+                                                                          <Draggable
+                                                                            key={
+                                                                              subFile.SubFilesID
+                                                                            }
+                                                                            draggableId={`subFile-${subFile.SubFilesID}`}
+                                                                            index={
+                                                                              index
+                                                                            }
+                                                                          >
+                                                                            {(
+                                                                              provided
+                                                                            ) => (
+                                                                              <div
+                                                                                ref={
+                                                                                  provided.innerRef
+                                                                                }
+                                                                                {...provided.draggableProps}
+                                                                                {...provided.dragHandleProps}
+                                                                              >
+                                                                                {/* Render your sub-file content here */}
+                                                                                <Row>
+                                                                                  <Col
+                                                                                    sm={
+                                                                                      12
+                                                                                    }
+                                                                                    md={
+                                                                                      12
+                                                                                    }
+                                                                                    lg={
+                                                                                      12
+                                                                                    }
+                                                                                  >
+                                                                                    <span
+                                                                                      className={
+                                                                                        styles[
+                                                                                          "card"
+                                                                                        ]
                                                                                       }
                                                                                     >
-                                                                                      <Col
-                                                                                        lg={
-                                                                                          3
-                                                                                        }
-                                                                                        md={
-                                                                                          3
-                                                                                        }
-                                                                                        sm={
-                                                                                          3
-                                                                                        }
-                                                                                        className="d-flex mt-2"
-                                                                                      >
-                                                                                        <section
-                                                                                          className={
-                                                                                            styles[
-                                                                                              "cardSubAgenda"
-                                                                                            ]
+                                                                                      <Row>
+                                                                                        <Col
+                                                                                          lg={
+                                                                                            10
                                                                                           }
+                                                                                          md={
+                                                                                            10
+                                                                                          }
+                                                                                          sm={
+                                                                                            12
+                                                                                          }
+                                                                                          className="d-flex gap-2"
                                                                                         >
-                                                                                          <Row className="mt-2">
-                                                                                            <Col
-                                                                                              lg={
-                                                                                                12
-                                                                                              }
-                                                                                              md={
-                                                                                                12
-                                                                                              }
-                                                                                              sm={
-                                                                                                12
-                                                                                              }
-                                                                                              className="d-flex gap-2 align-items-center"
-                                                                                            >
-                                                                                              <img
-                                                                                                src={
-                                                                                                  PdfIcon
-                                                                                                }
-                                                                                                height="25.57px"
-                                                                                                width="25.57px"
-                                                                                              />
-                                                                                              <span
-                                                                                                className={
-                                                                                                  styles[
-                                                                                                    "SubagendaFilesName"
-                                                                                                  ]
-                                                                                                }
-                                                                                              >
-                                                                                                {
-                                                                                                  subAgendaFiles.name
-                                                                                                }
-                                                                                              </span>
-                                                                                            </Col>
-                                                                                          </Row>
-                                                                                        </section>
-                                                                                      </Col>
-                                                                                    </div>
-                                                                                  )}
-                                                                                </Draggable>
-                                                                              </>
-                                                                            );
-                                                                          }
+                                                                                          <img
+                                                                                            src={
+                                                                                              PdfIcon
+                                                                                            }
+                                                                                          />
+                                                                                          <span
+                                                                                            className={
+                                                                                              styles[
+                                                                                                "TitleFile"
+                                                                                              ]
+                                                                                            }
+                                                                                          >
+                                                                                            {
+                                                                                              subFile.name
+                                                                                            }
+                                                                                          </span>
+                                                                                        </Col>
+                                                                                        <Col
+                                                                                          lg={
+                                                                                            2
+                                                                                          }
+                                                                                          md={
+                                                                                            2
+                                                                                          }
+                                                                                          sm={
+                                                                                            12
+                                                                                          }
+                                                                                          className="d-flex justify-content-end align-items-center"
+                                                                                        >
+                                                                                          <img
+                                                                                            src={
+                                                                                              redcrossIcon
+                                                                                            }
+                                                                                            width="15px"
+                                                                                            height="15px"
+                                                                                          />
+                                                                                        </Col>
+                                                                                      </Row>
+                                                                                    </span>
+                                                                                  </Col>
+                                                                                </Row>
+                                                                              </div>
+                                                                            )}
+                                                                          </Draggable>
                                                                         )
-                                                                      : null}
+                                                                      )}
+                                                                    </div>
                                                                   </div>
-                                                                </div>
-                                                              )}
-                                                            </Droppable>
+                                                                )}
+                                                              </Droppable>
+                                                            ))}
                                                           </DragDropContext>
                                                         </Col>
                                                       </Row>
