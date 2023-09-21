@@ -17,7 +17,6 @@ const DocumentViewer = () => {
   const { webViewer } = state;
   const viewer = useRef(null);
   let name = localStorage.getItem("name");
-  let userID = localStorage.getItem("userID");
   // Parse the URL parameters to get the data
   const pdfDataJson = new URLSearchParams(location.search).get("pdfData");
   // Deserialize the JSON string into an object
@@ -27,9 +26,6 @@ const DocumentViewer = () => {
     xfdfData: "",
     attachmentBlob: "",
   });
-  console.log("DocumentViewer", taskId);
-  console.log("DocumentViewer", attachmentID);
-  console.log("DocumentViewer", fileName);
 
   useEffect(() => {
     if (taskId && attachmentID) {
@@ -49,10 +45,10 @@ const DocumentViewer = () => {
     for (let i = 0; i < len; ++i) {
       bytes[i] = binaryString.charCodeAt(i);
     }
-  
-    return new Blob([bytes], { type: 'application/pdf' });
-  };
-  console.log("DocumentViewer", pdfResponceData);
+
+    return new Blob([bytes], { type: "application/pdf" });
+  }
+
   useEffect(() => {
     if (webViewer.attachmentBlob) {
       setPdfResponceData({
@@ -66,8 +62,6 @@ const DocumentViewer = () => {
   // if using a class, equivalent of componentDidMount
   useEffect(() => {
     if (webViewer.xfdfData || webViewer.attachmentBlob) {
-      console.log("DocumentViewer", webViewer.attachmentBlob);
-      console.log("DocumentViewer", webViewer.xfdfData);
       WebViewer(
         {
           path: "/webviewer/lib",
