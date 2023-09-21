@@ -239,9 +239,8 @@ const TodoList = () => {
 
   // for view modal  handler
   const viewModalHandler = (id) => {
-    // setViewFlagToDo(true);
     let Data = { ToDoListID: id };
-    dispatch(ViewToDoList(navigate, Data, t));
+    dispatch(ViewToDoList(navigate, Data, t,setViewFlagToDo));
   };
 
   // for search Date handler
@@ -433,61 +432,61 @@ const TodoList = () => {
         return record.status.status.toLowerCase().includes(value.toLowerCase());
       },
       render: (text, record) => {
-        return record.taskAssignedTo.map((newdata, index) => {
-          if (newdata.pK_UID === parseInt(createrID)) {
-            return (
-              <Select
-                defaultValue={text.status}
-                bordered={false}
-                dropdownClassName="Status-Todo"
-                className={
-                  text.pK_TSID === 1
-                    ? "InProgress MontserratSemiBold "
-                    : text.pK_TSID === 2
-                    ? "Pending MontserratSemiBold "
-                    : text.pK_TSID === 3
-                    ? "Upcoming MontserratSemiBold "
-                    : text.pK_TSID === 4
-                    ? "Cancelled MontserratSemiBold "
-                    : text.pK_TSID === 5
-                    ? "Completed MontserratSemiBold "
-                    : null
-                }
-                onChange={(e) => statusChangeHandler(e, record.pK_TID)}
-              >
-                {statusOptions.map((optValue, index) => {
-                  return (
-                    <option key={optValue.id} value={optValue.id}>
-                      {optValue.status}
-                    </option>
-                  );
-                })}
-              </Select>
-            );
-          } else {
-            if (index === 0) {
+        if (Number(record.taskCreator.pK_UID) === Number(createrID)) {
+          return (
+            <p
+              className={
+                text.pK_TSID === 1
+                  ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
+                  : text.pK_TSID === 2
+                  ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                  : text.pK_TSID === 3
+                  ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                  : text.pK_TSID === 4
+                  ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                  : text.pK_TSID === 5
+                  ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                  : null
+              }
+            >
+              {text.status}
+            </p>
+          );
+        } else {
+          return record.taskAssignedTo.map((newdata, index) => {
+            if (Number(newdata.pK_UID) === Number(createrID)) {
               return (
-                <p
+                <Select
+                  defaultValue={text.status}
+                  bordered={false}
+                  dropdownClassName="Status-Todo"
                   className={
                     text.pK_TSID === 1
-                      ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
+                      ? "InProgress MontserratSemiBold "
                       : text.pK_TSID === 2
-                      ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                      ? "Pending MontserratSemiBold "
                       : text.pK_TSID === 3
-                      ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                      ? "Upcoming MontserratSemiBold "
                       : text.pK_TSID === 4
-                      ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                      ? "Cancelled MontserratSemiBold "
                       : text.pK_TSID === 5
-                      ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                      ? "Completed MontserratSemiBold "
                       : null
                   }
+                  onChange={(e) => statusChangeHandler(e, record.pK_TID)}
                 >
-                  {text.status}
-                </p>
+                  {statusOptions.map((optValue, index) => {
+                    return (
+                      <option key={optValue.id} value={optValue.id}>
+                        {optValue.status}
+                      </option>
+                    );
+                  })}
+                </Select>
               );
             }
-          }
-        });
+          });
+        }
       },
       filterMultiple: true,
     },
@@ -513,7 +512,7 @@ const TodoList = () => {
       },
     },
   ];
-  console.log("rowsToDorowsToDo", rowsToDo);
+  
   useEffect(() => {
     setViewFlagToDo(false);
     if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
@@ -521,7 +520,8 @@ const TodoList = () => {
         setUpdateFlagToDo(true);
         setModalsflag(false);
       } else {
-        setViewFlagToDo(true);
+        console.log("setViewFlagToDosetViewFlagToDo")
+        // setViewFlagToDo(true);
       }
     }
   }, [toDoListReducer.ToDoDetails]);

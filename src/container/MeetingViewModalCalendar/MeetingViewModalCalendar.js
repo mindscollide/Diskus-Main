@@ -467,7 +467,7 @@ const MeetingViewModalCalendar = ({
     } catch (error) {
       console.log("data filter from api responce error");
     }
-  }, [assignees.ViewMeetingDetails]);
+  }, [data]);
 
   // for list of all assignees
   useEffect(() => {

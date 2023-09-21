@@ -167,7 +167,7 @@
 }
 
 .Scroller_Agenda {
-  height: 70vh !important;
+  height: 90vh !important;
   overflow-x: hidden !important;
 }
 
@@ -184,7 +184,7 @@
 }
 
 .Scroller_document {
-  height: 14vh !important;
+  height: 30vh !important;
   overflow-x: hidden !important;
 }
 
@@ -268,7 +268,7 @@
 /* card */
 
 .card {
-  width: 19.6%;
+  width: 89.6%;
   max-width: 100%;
   display: flex;
   justify-content: space-between;
@@ -374,6 +374,7 @@
 .SubAgendaSection {
   width: 96% !important;
   margin-left: 36px !important;
+  z-index: 1;
 }
 
 .Show_Details_Tag {
@@ -381,4 +382,51 @@
   font-size: 12px !important;
   font-family: "MontserratSemiBold" !important;
   cursor: pointer !important;
+}
+
+/* .Padding_SubAgenda {
+  padding: 0px 20px !important;
+} */
+
+.Padding_mainAgenda {
+  padding: 0px 20px !important;
+}
+
+.Connecetor {
+  height: auto !important;
+  min-height: 160px !important;
+  width: 6px !important;
+  background-color: #6172d6 !important;
+  position: absolute !important;
+  left: 43px !important;
+  top: -18px !important;
+  z-index: 2;
+}
+
+.Connecetor_Expand {
+  height: auto !important;
+  min-height: 160px !important;
+  max-height: auto !important;
+  width: 6px !important;
+  background-color: #6172d6 !important;
+  position: absolute !important;
+  left: 43px !important;
+  top: -18px !important;
+  z-index: 2;
+}
+
+.Connector_subAgenda {
+  width: auto !important;
+  min-width: 6% !important;
+  max-width: auto !important;
+  height: 3px !important;
+  position: absolute !important;
+  background-color: #4adede !important;
+  left: 49.5px !important;
+  top: 94.5px !important;
+  z-index: 2;
+  overflow: hidden;
+}
+
+.Connecetor_Expand {
 }
