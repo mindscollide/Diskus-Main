@@ -434,7 +434,7 @@ const TodoList = () => {
       },
       render: (text, record) => {
         return record.taskAssignedTo.map((newdata, index) => {
-          if (newdata.pK_UID === parseInt(createrID)) {
+          if (Number(newdata.pK_UID) === Number(createrID)) {
             return (
               <Select
                 defaultValue={text.status}
@@ -465,7 +465,7 @@ const TodoList = () => {
               </Select>
             );
           } else {
-            if (index === 0) {
+            if (Number(record.taskCreator.pK_UID) === Number(createrID)) {
               return (
                 <p
                   className={
