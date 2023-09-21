@@ -1,10 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import docIcon from "../../../assets/images/AttachmentIcons/doc.svg";
-import pdfIcon from "../../../assets/images/AttachmentIcons/pdf.svg";
-import photosIcon from "../../../assets/images/AttachmentIcons/photos.svg";
-import pptIcon from "../../../assets/images/AttachmentIcons/ppt.svg";
-import videoIcon from "../../../assets/images/AttachmentIcons/video.svg";
-import xlsFileIcon from "../../../assets/images/AttachmentIcons/xls-file.svg";
 import sharedIcon from "../../../assets/images/shared_icon.svg";
 import folderColor from "../../../assets/images/folder_color.svg";
 import CheckIconDropdown from "../../../assets/images/check__sign_dropdown.svg";

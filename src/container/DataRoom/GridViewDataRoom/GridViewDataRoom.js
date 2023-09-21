@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, NavDropdown, MenuItem, Dropdown } from "react-bootstrap";
 import styles from "./GridViewDataRoom.module.css";
-import folder_icon_gridview from "../../../assets/images/folder_icon_gridview.svg";
+import folderColor from "../../../assets/images/folder_color.svg";
+
 import file_image from "../../../assets/images/file_image.svg";
 import {
   getFolderDocumentsApi,
@@ -25,6 +26,7 @@ import ModalRenameFile from "../ModalRenameFile/ModalRenameFile";
 import { Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { getFileExtension, getIconSource } from "../SearchFunctionality/option";
 
 const GridViewDataRoom = ({
   data,
@@ -71,7 +73,6 @@ const GridViewDataRoom = ({
     { label: t("Last-modified-by-me"), value: 3 },
     { label: t("Last-open-by-me"), value: 4 },
   ];
-
   const filterOptionsShareTab = [
     { label: t("Share-date"), value: 2 },
     { label: t("Name"), value: 1 },
@@ -137,6 +138,7 @@ const GridViewDataRoom = ({
     setSortIcon(false);
     dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, true, 1));
   };
+
   const handleClickSortAscending = () => {
     setSortIcon(true);
     dispatch(getDocumentsAndFolderApi(navigate, currentView, t, 2, false, 1));
@@ -155,12 +157,13 @@ const GridViewDataRoom = ({
     }
     console.log(dataId);
   };
+
   useEffect(() => {
     if (data !== null && data !== undefined) {
       setDataForGrid(data);
     }
   }, [data]);
-  console.log("currentViewcurrentViewcurrentView", currentView);
+
   return (
     <>
       <Row>
@@ -291,7 +294,7 @@ const GridViewDataRoom = ({
                               className={styles["folderName__text"]}
                               onClick={() => getFolderDocuments(fileData.id)}
                             >
-                              <img src={folder_icon_gridview} alt="" />{" "}
+                              <img src={folderColor} alt="" />{" "}
                               {fileData.name}
                             </span>
                             {!fileData.isShared && (
@@ -361,7 +364,7 @@ const GridViewDataRoom = ({
                               <Col sm={12} md={12} lg={12}>
                                 <div className={styles["gridViewFile__name"]}>
                                   <span className={styles["folderFile__text"]}>
-                                    <img src={folder_icon_gridview} alt="" />{" "}
+                                    <img src={getIconSource(getFileExtension(fileData.name))} alt="" />{" "}
                                     {fileData.name}
                                   </span>
                                   {!fileData.isShared && (
