@@ -31,3 +31,27 @@
   white-space: nowrap;
   width: 125px !important;
 }
+
+.Scroller {
+  height: 55vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
+.meeting_material_row {
+  border-bottom: 2px solid #e1e1e1 !important;
+  padding: 10px 0;
+}
+.meeting_material_row:last-child {
+  border: none !important;
+}
