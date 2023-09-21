@@ -256,8 +256,8 @@ const Resolution = () => {
     }
   };
 
-  const createresolution = () => {
-    dispatch(createResolutionModal(true));
+  const createresolution = async () => {
+    await dispatch(createResolutionModal(true));
     setAllSearchInput("");
     setSearchModalDates({
       circulationDate: "",
@@ -1211,7 +1211,7 @@ const Resolution = () => {
                           className="align-items-center"
                         />
                       }
-                      onClick={createresolution}
+                      onClick={() => createresolution()}
                     />
                     <Button
                       className={

@@ -159,7 +159,7 @@ const ScheduleNewResolution = () => {
   const currentMinutes = currentDate.getMinutes().toString().padStart(2, "0");
   const getcurrentTime = `${currentHours}:${currentMinutes}`;
   useEffect(() => {
-    if (currentLanguage !== undefined) {
+    if (currentLanguage !== null && currentLanguage !== undefined) {
       if (currentLanguage === "en") {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
@@ -174,6 +174,7 @@ const ScheduleNewResolution = () => {
     dispatch(getAllVotingMethods(navigate, t));
     dispatch(getAllResolutionStatus(navigate, t));
     dispatch(allAssignessList(navigate, t));
+    return;
   }, []);
 
   const dateformatYYYYMMDD = (date) => {
@@ -206,18 +207,6 @@ const ScheduleNewResolution = () => {
     setTaskAssignedTo(0);
     setTaskAssignedName("");
     setEmailValue("");
-  };
-
-  const resolutiondiscard = () => {
-    setDsicardresolution(true);
-  };
-
-  const reslotionupdatemodal = () => {
-    setResolutionupdate(true);
-  };
-
-  const resolutioncancell = () => {
-    setResolutioncancel(true);
   };
 
   const removeUserForVoter = (id, name) => {
@@ -976,8 +965,7 @@ const ScheduleNewResolution = () => {
               </Col>
             </Row>
             <Paper className={styles["Create_new_resolution_paper"]}>
-              {/* Resolution Status */}
-              <Row>
+              {/* <Row>
                 <Col lg={12} md={12} sm={12} className={styles["IN_draft_Box"]}>
                   <Row className="mt-1">
                     <Col lg={12} md={12} sm={12}>
@@ -987,7 +975,7 @@ const ScheduleNewResolution = () => {
                     </Col>
                   </Row>
                 </Col>
-              </Row>
+              </Row> */}
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
@@ -1377,19 +1365,6 @@ const ScheduleNewResolution = () => {
                               onChange={decisionChangeHandler}
                             />
                           </div>
-                          {/* <TextFieldDateTime
-                            applyClass={"search_voterInput"}
-                            min={
-                              votingDateTime.date !== ""
-                                ? dateformatYYYYMMDD(votingDateTime.date)
-                                : minDate
-                            }
-                            labelClass="d-none"
-                            name={"decision"}
-                            change={(e) => {
-                              handleChangeDateSelection(e);
-                            }}
-                          /> */}
                           <Row>
                             <Col>
                               <p
@@ -1568,9 +1543,9 @@ const ScheduleNewResolution = () => {
                                     placeholder={`${t("Add-attendees")}*`}
                                     className="taskassignee"
                                     value={taskAssignedToInput}
-                                    filteredDataHandler={searchFilterHandler(
-                                      taskAssignedToInput
-                                    )}
+                                    filteredDataHandler={() =>
+                                      searchFilterHandler(taskAssignedToInput)
+                                    }
                                     applyClass={"search_voterInput"}
                                     change={onChangeSearch}
                                     onclickFlag={onclickFlag}
@@ -1693,7 +1668,7 @@ const ScheduleNewResolution = () => {
                                       taskAssignedToInput
                                     )}
                                     change={onChangeSearch}
-                                    onclickFlag={onclickFlag}
+                                    // onclickFlag={onclickFlag}
                                   />
                                 </Col>
 
