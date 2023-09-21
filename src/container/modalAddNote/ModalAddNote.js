@@ -284,7 +284,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
               fileSize: uploadedFile.size,
             };
             setTasksAttachments({
-              ["TasksAttachments"]: [
+              TasksAttachments: [
                 ...tasksAttachments.TasksAttachments,
                 FileData,
               ],
@@ -326,7 +326,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
               fileSize: uploadedFile.size,
             };
             setTasksAttachments({
-              ["TasksAttachments"]: [
+              TasksAttachments: [
                 ...tasksAttachments.TasksAttachments,
                 FileData,
               ],
@@ -366,49 +366,25 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
   const handleClick = async () => {
     if (addNoteFields.Title.value !== "") {
-      let counter = Object.keys(fileForSend).length - 1;
       if (Object.keys(fileForSend).length > 0) {
-        const uploadFiles = (fileForSend) => {
-          const uploadPromises = fileForSend.map((newData) => {
-            dispatch(FileUploadToDo(navigate, newData, t));
-          });
-          return Promise.all(uploadPromises);
+        let newfile = [];
+        const uploadPromises = fileForSend.map((newData) => {
+          return dispatch(FileUploadToDo(navigate, newData, t, newfile));
+        });
+        await Promise.all(uploadPromises);
+        let notesAttachment = newfile;
+        let Data = {
+          Title: addNoteFields.Title.value,
+          Description: addNoteFields.Description.value,
+          isStarred: isStarrted,
+          FK_UserID: JSON.parse(createrID),
+          FK_OrganizationID: JSON.parse(OrganizationID),
+          NotesAttachments: notesAttachment,
         };
-        uploadFiles(fileForSend)
-          .then((response) => {
-            setAddNewModal(false);
-            let notesAttachment = [];
-            if (tasksAttachments.TasksAttachments.length > 0) {
-              tasksAttachments.TasksAttachments.map((data, index) => {
-                notesAttachment.push({
-                  DisplayAttachmentName: data.DisplayAttachmentName,
-                  OriginalAttachmentName: data.OriginalAttachmentName,
-                });
-              });
-            }
-            let Data = {
-              Title: addNoteFields.Title.value,
-              Description: addNoteFields.Description.value,
-              isStarred: isStarrted,
-              FK_UserID: JSON.parse(createrID),
-              FK_OrganizationID: JSON.parse(OrganizationID),
-              NotesAttachments: notesAttachment,
-            };
-
-            dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
-          })
-          .catch((error) => console.log(error));
+        dispatch(SaveNotesAPI(navigate, Data, t, setAddNewModal));
       } else {
         setAddNewModal(false);
         let notesAttachment = [];
-        if (tasksAttachments.TasksAttachments.length > 0) {
-          tasksAttachments.TasksAttachments.map((data, index) => {
-            notesAttachment.push({
-              DisplayAttachmentName: data.DisplayAttachmentName,
-              OriginalAttachmentName: data.OriginalAttachmentName,
-            });
-          });
-        }
         let Data = {
           Title: addNoteFields.Title.value,
           Description: addNoteFields.Description.value,

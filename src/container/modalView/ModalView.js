@@ -728,53 +728,35 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
               </Row>
               {isDetails ? (
                 <>
-                  <Row className="margin-top=10">
+                  <Row className="my-4">
                     <Col
                       lg={12}
                       md={12}
                       xs={12}
-                      className="MontserratRegular MeetingViewDateTimeTextField mt-4"
+                      className="MontserratRegular d-flex flex-column lh-sm my-3"
                     >
-                      <TextField
-                        name="MeetingDateTime"
-                        applyClass="MeetingViewText"
-                        type="text"
-                        disable={true}
-                        value={createMeeting.MeetingDate}
-                        required
-                      />
+                      <span className="MeetingViewDateTimeTextField">
+                        {createMeeting.MeetingDate}
+                      </span>
+                      <span className="MeetingViewLocationText_Field">
+                        {createMeeting.MeetingLocation}
+                      </span>
                     </Col>
                   </Row>
-
                   <Row>
                     <Col
                       lg={12}
                       md={12}
                       xs={12}
-                      className="MontserratSemiBold-600 MeetingViewLocationTextField"
-                    >
-                      <TextField
-                        change={detailsHandler}
-                        name="MeetingLocation"
-                        applyClass="form-control2"
-                        type="text"
-                        disable={true}
-                        placeholder={t("Location") + "*"}
-                        value={createMeeting.MeetingLocation}
-                        required
-                      />
-                    </Col>
-                  </Row>
-
-                  <Row>
-                    <Col
-                      lg={12}
-                      md={12}
-                      xs={12}
-                      className="MontserratSemiBold-600 MeetingViewTitleTextField"
+                      className="MontserratSemiBold-600 MeetingViewTitleTextField p-0"
                     >
                       <p className="viewModalTitle">
-                        {createMeeting.MeetingTitle}
+                        {createMeeting.MeetingTitle.length < 100
+                          ? `${createMeeting.MeetingTitle}`
+                          : `${createMeeting.MeetingTitle.substring(
+                              0,
+                              110
+                            )}...`}
                       </p>
                     </Col>
                   </Row>
@@ -784,7 +766,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                       lg={12}
                       md={12}
                       xs={12}
-                      className="MontserratRegular textAreaDivView"
+                      className="MontserratRegular textAreaDivView p-0"
                     >
                       <TextField
                         change={detailsHandler}
@@ -795,7 +777,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                         as={"textarea"}
                         rows="7"
                         // label={}
-                        placeholder={t("Description") + "*"}
+                        // placeholder={t("Description") + "*"}
                         value={createMeeting.MeetingDescription}
                         required
                       />
