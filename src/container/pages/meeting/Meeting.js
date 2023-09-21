@@ -291,12 +291,12 @@ const Meeting = () => {
       align: "left",
       sortDirections: ["descend", "ascend"],
       render: (text, record) => (
-        <i
+        <span
           className="meeting-title"
           onClick={(e) => viewModalHandler(record.pK_MDID)}
         >
           {text}
-        </i>
+        </span>
       ),
       sorter: (a, b) => {
         return a?.title.toLowerCase().localeCompare(b?.title.toLowerCase());
