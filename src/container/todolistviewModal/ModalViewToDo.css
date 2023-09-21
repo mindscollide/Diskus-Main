@@ -313,3 +313,7 @@ body[dir="rtl"] label.MontserratSemiBold-600.todo-employee-name-card {
   cursor: pointer !important;
   right: 9px !important;
 }
+.view_todo_assignees {
+  max-height: 9vh !important;
+  overflow-y: auto;
+}

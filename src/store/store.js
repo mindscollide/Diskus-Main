@@ -39,6 +39,7 @@ import { assigneesReducer } from './reducers'
 import { calendarReducer } from './reducers'
 import { OnBoardModalStates } from './reducers'
 import { RoleListReducer } from './reducers'
+import { webViewerReducer } from './reducers'
 
 import downloadReducer from './reducers/Download_reducer'
 
@@ -80,6 +81,7 @@ const AppReducer = combineReducers({
   NewMeetingreducer: NewMeetingReducer,
   LanguageReducer: LanguageReducer,
   VideoMainReducer: VideoMainReducer,
+  webViewer: webViewerReducer,
 })
 
 const rootReducer = (state, action) => {
