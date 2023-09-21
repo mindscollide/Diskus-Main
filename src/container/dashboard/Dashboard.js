@@ -112,7 +112,7 @@ const Dashboard = () => {
   //State For Meeting Data
   const [activateBlur, setActivateBlur] = useState(false)
   const [notificationID, setNotificationID] = useState(0)
-  const [currentLanguge, setCurrentLanguage] = useState('en')
+  const [currentLanguage, setCurrentLanguage] = useState('en')
   let Blur = localStorage.getItem('blur')
 
   const [currentActiveChat, setCurrentActiveChat] = useState([])
@@ -995,7 +995,7 @@ const Dashboard = () => {
             if (videoFeatureReducer.IncomingVideoCallFlag === true) {
               dispatch(VideoCallResponse(Data, navigate, t))
             }
-          }, timeValue)
+          }, 500000000)
           localStorage.setItem('activeRoomID', data.payload.roomID)
           return () => clearTimeout(timeoutId)
         } else if (
@@ -1365,15 +1365,17 @@ const Dashboard = () => {
   }, [])
 
   console.log('VideoMainReducer', VideoMainReducer)
-  let currentLanguageSelect = localStorage.getItem('i18nextLng')
+
+  let i18nextLng = localStorage.getItem('i18nextLng')
 
   useEffect(() => {
-    setCurrentLanguage(currentLanguageSelect)
-  }, [currentLanguageSelect])
+    setCurrentLanguage(i18nextLng)
+    console.log('Current Language UseEffect', currentLanguage)
+  }, [i18nextLng])
 
   return (
     <>
-      <ConfigProvider locale={currentLanguge === 'en' ? en_US : ar_EG}>
+      <ConfigProvider locale={currentLanguage === 'en' ? en_US : ar_EG}>
         {videoFeatureReducer.IncomingVideoCallFlag === true && (
           <div className="overlay-incoming-videocall" />
         )}

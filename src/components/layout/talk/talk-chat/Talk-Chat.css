@@ -132,6 +132,10 @@ body[dir="rtl"] .chat-block {
   font-weight: 600;
 }
 
+body[dir="rtl"] .chat-inner-content .ant-select-selection-item {
+  padding-right: 0 !important;
+}
+
 .chatFilter .ant-select-selector {
   background: linear-gradient(to left, #4ADEDE 0%, #6172D6 100%) !important;
   border: none !important;
@@ -149,8 +153,9 @@ body[dir="rtl"] .chat-block {
 
 body[dir="rtl"] .chat-inner-content span.ant-select-arrow {
   color: #fff !important;
-  right: 115px;
-  top: 15px;
+  right: auto;
+  top: 18px;
+  left: 30px;
 }
 
 .single-chat.row:hover {

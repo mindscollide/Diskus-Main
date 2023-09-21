@@ -102,3 +102,7 @@
   background: linear-gradient(to left, #4ADEDE 0%, #6172d6 100%) !important;
   color: #fff !important;
 }
+
+body[dir="rtl"] .Caller-Status {
+  background: linear-gradient(to left, #6172d6 0%, #4ADEDE 100%) !important;
+}

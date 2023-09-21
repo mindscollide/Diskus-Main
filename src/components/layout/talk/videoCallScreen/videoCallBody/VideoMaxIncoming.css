@@ -109,3 +109,17 @@ button.button-active-img.btn.btn-primary span {
   text-align: center !important;
   display: inline-block;
 }
+
+body[dir="rtl"] .videoIncoming-active-call {
+  right: auto !important;
+  position: fixed;
+  top: 50% !important;
+  left: 65px !important;
+  transform: translate(-18%, 33%);
+  height: 230px;
+  width: 260px;
+  background-color: #707070 !important;
+  z-index: 9;
+  padding-top: 45px;
+  border-radius: 4px;
+}
