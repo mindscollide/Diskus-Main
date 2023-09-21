@@ -763,7 +763,10 @@ const Agenda = () => {
                                     <span className="position-relative">
                                       <span
                                         className={
-                                          data.subAgenda.length > 1
+                                          data.subAgenda.length > 1 &&
+                                          subexpandIndex === index &&
+                                          expandSubIndex === subIndex &&
+                                          subExpand
                                             ? styles["Connecetor_Expand"]
                                             : styles["Connecetor"]
                                         }
