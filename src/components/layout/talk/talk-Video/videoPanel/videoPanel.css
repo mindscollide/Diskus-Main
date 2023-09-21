@@ -17,3 +17,46 @@ span.triangle-overlay-video {
     background: #fff;
     z-index: 1;
 }
+
+body[dir="rtl"] span.triangle-overlay-video {
+    position: fixed !important;
+    height: 13px !important;
+    width: 2px !important;
+    bottom: 134px !important;
+    background: #fff !important;
+    z-index: 1 !important;
+    left: 84px !important;
+    right: auto !important;
+}
+
+body[dir="rtl"] svg.pointer-video-icon {
+    position: fixed !important;
+    bottom: 135px !important;
+    left: 74px !important;
+    transform: rotate(270deg) !important;
+    background: #fff !important;
+    color: #6172d6 !important;
+    border-left: none !important;
+    right: auto !important
+}
+
+body[dir="rtl"] .group-btn-gray {
+    position: absolute;
+    height: 40px !important;
+    width: 150px;
+    bottom: 3%;
+    right: auto;
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: 'MontserratRegular';
+    filter: grayscale(1);
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    left: 3%;
+}
+
+body[dir="rtl"] .group-btn-gray span img {
+    transform: rotate(180deg);
+}
