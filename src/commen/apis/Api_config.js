@@ -836,6 +836,13 @@ const leaveCall = {
   RequestMethod: "ServiceManager.LeaveCall",
 };
 
+const getAnnotationOfToDoAttachement = {
+  RequestMethod: "ServiceManager.GetAnnotationOfToDoAttachement",
+};
+const addAnnotationOnToDoAttachement = {
+  RequestMethod: "ServiceManager.AddAnnotationOnToDoAttachement",
+};
+
 const getEventsTypeRM = {
   RequestMethod: "ServiceManager.GetAllEventTypes",
 };
@@ -1068,6 +1075,8 @@ export {
   getUserMissedCallCount,
   searchDocumentsFoldersAPI,
   leaveCall,
+  getAnnotationOfToDoAttachement,
+  addAnnotationOnToDoAttachement,
   getEventsTypeRM,
   GetDiskusEventDetailsRM,
 };

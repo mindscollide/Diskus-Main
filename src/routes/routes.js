@@ -74,6 +74,7 @@ import NewMeeting from "../container/pages/meeting/MeetingTwo";
 import UserSettings from "../container/setting/UserLevelSettings/UserSettings";
 import OrganizationLevelSetting from "../container/setting/OrganizationLevelSetting/OrganizationLevelSetting";
 import EmptyState from "../container/Admin/Subscriptions/PackageDetail/EmptyStatePage/EmptyState";
+import DocumentViewer from "../components/elements/webviewer/DocumentViewer";
 
 export const router = createHashRouter(
   createRoutesFromElements(
@@ -115,6 +116,7 @@ export const router = createHashRouter(
           <Route path="" element={<Home />} />
           <Route path="home" element={<Home />} />
           <Route path="todolist" element={<TodoList />} />
+          <Route path="documentViewer" element={<DocumentViewer />} />
           <Route path="forgotpassword" element={<ForgotPassword />} />
           <Route path="calendar" element={<CalendarPage />} />
           <Route path="meeting" element={<Meeting />} />

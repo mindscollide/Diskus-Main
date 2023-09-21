@@ -53,7 +53,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
   let callerID = Number(localStorage.getItem('callerID'))
   let currentUserID = Number(localStorage.getItem('userID'))
   let currentOrganization = Number(localStorage.getItem('organizationID'))
-  let roomID = localStorage.getItem('RoomID')
+  let roomID = localStorage.getItem('acceptedRoomID')
   let callTypeID = Number(localStorage.getItem('callTypeID'))
   let initiateRoomID = localStorage.getItem('initiateCallRoomID')
   let callerObject = localStorage.getItem('callerStatusObject')

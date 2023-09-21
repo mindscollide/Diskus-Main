@@ -175,10 +175,7 @@ const TodoList = () => {
   const modalHandler = (e) => {
     setShow(true);
   };
-  console.log(
-    toDoListReducer.socketTodoStatusData,
-    "socketTodoStatusDatasocketTodoStatusData"
-  );
+
   // for Socket Update meeting status update
   useEffect(() => {
     if (
@@ -468,25 +465,27 @@ const TodoList = () => {
               </Select>
             );
           } else {
-            return (
-              <p
-                className={
-                  text.pK_TSID === 1
-                    ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
-                    : text.pK_TSID === 2
-                    ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
-                    : text.pK_TSID === 3
-                    ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
-                    : text.pK_TSID === 4
-                    ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
-                    : text.pK_TSID === 5
-                    ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
-                    : null
-                }
-              >
-                {text.status}
-              </p>
-            );
+            if (index === 0) {
+              return (
+                <p
+                  className={
+                    text.pK_TSID === 1
+                      ? "InProgress  MontserratSemiBold color-5a5a5a text-center  my-1"
+                      : text.pK_TSID === 2
+                      ? "Pending  MontserratSemiBold color-5a5a5a text-center my-1"
+                      : text.pK_TSID === 3
+                      ? "Upcoming MontserratSemiBold color-5a5a5a text-center  my-1"
+                      : text.pK_TSID === 4
+                      ? "Cancelled  MontserratSemiBold color-5a5a5a text-center my-1"
+                      : text.pK_TSID === 5
+                      ? "Completed  MontserratSemiBold color-5a5a5a  text-center my-1"
+                      : null
+                  }
+                >
+                  {text.status}
+                </p>
+              );
+            }
           }
         });
       },
@@ -514,7 +513,7 @@ const TodoList = () => {
       },
     },
   ];
-
+  console.log("rowsToDorowsToDo", rowsToDo);
   useEffect(() => {
     setViewFlagToDo(false);
     if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
@@ -665,10 +664,7 @@ const TodoList = () => {
       dispatch(clearResponseMessage());
     }
   }, [toDoListReducer.ResponseMessage, assignees.ResponseMessage]);
-  console.log(
-    getTodosStatus.UpdateTodoStatusMessage,
-    " UpdateTodoStatusMessageUpdateTodoStatusMessageUpdateTodoStatusMessage"
-  );
+
   useEffect(() => {
     if (removeTodo !== 0) {
       if (
@@ -684,6 +680,7 @@ const TodoList = () => {
       }
     }
   }, [getTodosStatus.UpdateTodoStatusMessage, removeTodo]);
+
   useEffect(() => {
     if (
       getTodosStatus.ResponseMessage !== "" &&
@@ -964,6 +961,8 @@ const TodoList = () => {
             </Row>
           </Col>
         </Row>
+      </div>
+      {show ? (
         <ModalToDoList
           show={show}
           setShow={setShow}
@@ -971,16 +970,18 @@ const TodoList = () => {
           setUpdateFlagToDo={setUpdateFlagToDo}
           className="toDoViewModal"
         />
+      ) : viewFlagToDo ? (
         <ModalViewToDo
           viewFlagToDo={viewFlagToDo}
           setViewFlagToDo={setViewFlagToDo}
         />
+      ) : updateFlagToDo ? (
         <ModalUpdateToDo
           updateFlagToDo={updateFlagToDo}
           setUpdateFlagToDo={setUpdateFlagToDo}
           setModalsflag={setModalsflag}
         />
-      </div>
+      ) : null}
       <Notification setOpen={setOpen} open={open.open} message={open.message} />
 
       {toDoListReducer.Loading ||
