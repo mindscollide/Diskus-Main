@@ -382,7 +382,7 @@ const ViewToDoFail = (message) => {
 
 //View To-Do
 
-const ViewToDoList = (navigate, object, t) => {
+const ViewToDoList = (navigate, object, t,setViewFlagToDo) => {
   let token = JSON.parse(localStorage.getItem("token"))
   return (dispatch) => {
     dispatch(toDoListLoaderStart())
@@ -412,6 +412,7 @@ const ViewToDoList = (navigate, object, t) => {
             ) {
               await dispatch(ShowNotification(t("Record-found")))
               await dispatch(ViewToDoSuccess(response.data.responseResult))
+              setViewFlagToDo(true)
               await dispatch(SetLoaderFalse())
             } else if (
               response.data.responseResult.responseMessage
