@@ -67,18 +67,22 @@ const VideoCallMinimizeHeader = () => {
         </Col>
         <Col lg={7} md={7} sm={12}>
           <div className="minimize-screen-on-bottom">
-            <img src={MinimizeVideoIcon} />
+            <img src={MinimizeVideoIcon} className="minimize-video-icon" />
             <img src={MinimizeMicIcon} />
             <img src={CallEndRedIcon} onClick={closeVideoPanel} />
           </div>
         </Col>
         <Col lg={2} md={2} sm={12}>
           <div className="minimizeGroup-expand-icon">
-            <img src={MinToNormalIcon} onClick={normalizePanel} />
+            <img
+              src={MinToNormalIcon}
+              className="min-to-normal-icon"
+              onClick={normalizePanel}
+            />
 
             <img
               src={MinimizeExpandIcon}
-              // className="minimize-expand-icon"
+              className="min-to-max-icon"
               onClick={maximizePanel}
             />
           </div>

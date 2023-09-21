@@ -995,7 +995,7 @@ const Dashboard = () => {
             if (videoFeatureReducer.IncomingVideoCallFlag === true) {
               dispatch(VideoCallResponse(Data, navigate, t))
             }
-          }, timeValue)
+          }, 500000000)
           localStorage.setItem('activeRoomID', data.payload.roomID)
           return () => clearTimeout(timeoutId)
         } else if (

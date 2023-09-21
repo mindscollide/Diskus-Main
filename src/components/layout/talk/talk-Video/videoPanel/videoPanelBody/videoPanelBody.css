@@ -42,7 +42,8 @@ body[dir="rtl"] p.Video-chat-username.m-0 {
     margin-top: 15px !important;
     font-size: 14px;
     font-weight: 600;
-    margin-right: 20px !important;
+    margin-right: 8px !important;
+    margin-left: auto !important;
 }
 
 p.video-chat-date {
@@ -58,14 +59,23 @@ p.video-chat-date {
 }
 
 body[dir="rtl"] p.video-chat-date {
-    text-align: left !important;
+    text-align: right !important;
     font-size: 10px;
+    margin-left: auto;
+    margin-right: 8px !important;
 }
 
 span.call-status-icon {
     position: relative;
     left: 7px;
     top: -1px;
+}
+
+body[dir="rtl"] span.call-status-icon {
+    position: relative;
+    left: auto;
+    top: -1px;
+    right: 7px;
 }
 
 .recent-scroll {
@@ -94,4 +104,26 @@ span.call-status-icon {
 .emptyRecentCalls .ant-result-title {
     font-size: 14px;
     color: #5a5a5a;
+}
+
+body[dir="rtl"] .video-profile-icon {
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%);
+    padding: 10px;
+    margin-top: 8px;
+    border-radius: 50%;
+    width: 44px !important;
+    height: 44px !important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative !important;
+    margin-bottom: 10px;
+    margin-left: auto !important;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin-right: 5px !important;
+}
+
+body[dir="rtl"] .video_call_icon img {
+    transform: rotate(180deg);
 }

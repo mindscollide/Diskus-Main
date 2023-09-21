@@ -346,7 +346,7 @@ const VideoPanelBodyRecent = () => {
                         </p>
                       </div>
                     </Col>
-                    <Col lg={2} md={2} sm={12} className="mt-4">
+                    <Col lg={2} md={2} sm={12} className="video_call_icon mt-4">
                       <img
                         src={VideoCallIcon}
                         onClick={() => otoVideoCall(recentCallData)}
