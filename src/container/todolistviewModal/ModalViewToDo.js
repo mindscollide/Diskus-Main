@@ -42,6 +42,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   const { t } = useTranslation();
   let currentLanguage = localStorage.getItem("i18nextLng");
 
+  //Get Current User ID
+  let createrID = localStorage.getItem("userID");
   const state = useSelector((state) => state);
   const { toDoListReducer, postAssigneeComments } = state;
   const [commentID, setCommentID] = useState(0);
@@ -59,9 +61,6 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
     flag: false,
     message: "",
   });
-
-  //Get Current User ID
-  let createrID = localStorage.getItem("userID");
 
   //task Object
   const [task, setTask] = useState({
@@ -111,7 +110,10 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
   const todoComments = useRef();
   //task Asignees
   const [TaskAssignedTo, setTaskAssignedTo] = useState([]);
+  const [todoCreator, setTodoCreator] = useState(null);
   const [taskAssignedName, setTaskAssignedName] = useState([]);
+  const [assigeeDetails, setAssigneeDetails] = useState(null);
+  console.log(assigeeDetails, "assigeeDetailsassigeeDetails");
   const [taskAssigneeComments, setTaskAssigneeComments] = useState([]);
   const [assgineeComments, setAssgieeComments] = useState("");
   const [deleteCommentsId, setDeleteCommentsId] = useState(0);
@@ -156,6 +158,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
       if (listOfAssignees !== undefined) {
         let tem = [];
         let assigneedetails = [];
+        let assigneeinfo = [];
         let temid = [];
         listOfAssignees.map((data, index) => {
           tem.push(data.name);
@@ -175,10 +178,24 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
               newTimeFormaterAsPerUTCFullDate(deadlineDateTime),
           });
         });
-        console.log("assigneedetailsassigneedetails", assigneedetails);
+        listOfAssignees.forEach((data, index) => {
+          console.log(
+            data,
+            Number(createrID),
+            "listOfAssigneeslistOfAssigneeslistOfAssignees"
+          );
+
+          if (data.pK_UID === Number(createrID)) {
+            console.log(data, "listOfAssigneeslistOfAssigneeslistOfAssignees");
+            assigneeinfo.push(data);
+          }
+        });
+        setAssigneeDetails(assigneeinfo);
         setTaskAssignedTo(assigneedetails);
         setTaskAssignedName(tem);
       }
+      let todoCreator = toDoListReducer.ToDoDetails.taskCreator;
+      setTodoCreator(todoCreator);
       let filesUploaded = toDoListReducer.ToDoDetails.taskAttachments;
       if (filesUploaded !== undefined) {
         let tem = [];
@@ -382,20 +399,46 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                     </Col>
                   </Row>
                   <Row className="view_todo_assignees">
-                    {TaskAssignedTo.length > 0 ? (
+                    {TaskAssignedTo.length > 0 && todoCreator !== null ? (
                       <>
                         {TaskAssignedTo.map((assgineeData, index) => {
-                          return (
-                            <Col sm={6} md={6} lg={6}>
-                              <TodoAssgineeEmployeeCard
-                                employeeName={assgineeData.name}
-                                employeeDesignation={assgineeData.designation}
-                                cardText={assgineeData.datetimeFormating}
-                                cardTextIconStyle="DateTimeViewTodo"
-                                userImage={assgineeData.displayProfilePicture}
-                              />
-                            </Col>
-                          );
+                          if (
+                            Number(
+                              toDoListReducer.ToDoDetails.taskCreator.pK_UID
+                            ) === Number(createrID)
+                          ) {
+                            return (
+                              <Col sm={6} md={6} lg={6}>
+                                <TodoAssgineeEmployeeCard
+                                  employeeName={assgineeData.name}
+                                  employeeDesignation={assgineeData.designation}
+                                  cardText={assgineeData.datetimeFormating}
+                                  cardTextIconStyle="DateTimeViewTodo"
+                                  userImage={assgineeData.displayProfilePicture}
+                                />
+                              </Col>
+                            );
+                          } else {
+                            if (
+                              Number(assgineeData.pK_UID) === Number(createrID)
+                            ) {
+                              return (
+                                <Col sm={6} md={6} lg={6}>
+                                  <TodoAssgineeEmployeeCard
+                                    employeeName={assgineeData.name}
+                                    employeeDesignation={
+                                      assgineeData.designation
+                                    }
+                                    cardText={assgineeData.datetimeFormating}
+                                    cardTextIconStyle="DateTimeViewTodo"
+                                    userImage={
+                                      assgineeData.displayProfilePicture
+                                    }
+                                  />
+                                </Col>
+                              );
+                            }
+                          }
                         })}
                       </>
                     ) : null}
@@ -599,7 +642,8 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo, ModalTitle }) => {
                           const pdfData = {
                             taskId: modalviewAttachmentFiles.FK_TID,
                             attachmentID: modalviewAttachmentFiles.PK_MAAID,
-                            fileName:modalviewAttachmentFiles.DisplayAttachmentName
+                            fileName:
+                              modalviewAttachmentFiles.DisplayAttachmentName,
                           };
                           const pdfDataJson = JSON.stringify(pdfData);
                           return (
