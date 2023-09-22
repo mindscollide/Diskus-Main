@@ -87,6 +87,7 @@ import {
   optionsforFolder,
 } from "./SearchFunctionality/option";
 import { allAssignessList } from "../../store/actions/Get_List_Of_Assignees";
+import axios from "axios";
 const DataRoom = () => {
   // tooltip
   const dispatch = useDispatch();
@@ -958,6 +959,7 @@ const DataRoom = () => {
   // this is file Upload
   const handleUploadFile = async ({ file }) => {
     const taskId = Math.floor(Math.random() * 1000000);
+    const axiosCancelSource = axios.CancelToken.source();
     let newJsonCreateFile = {
       TaskId: taskId,
       FileName: "",
@@ -968,6 +970,7 @@ const DataRoom = () => {
       Progress: 0,
       UploadingError: false,
       NetDisconnect: false,
+      axiosCancelToken: axiosCancelSource,
     };
     if (file.name && Object.keys(file).length > 0) {
       newJsonCreateFile = {
@@ -980,6 +983,7 @@ const DataRoom = () => {
         Progress: newJsonCreateFile.Progress,
         UploadingError: newJsonCreateFile.UploadingError,
         NetDisconnect: false,
+        axiosCancelToken: axiosCancelSource,
       };
       setTasksAttachmentsID(newJsonCreateFile.TaskId);
       setTasksAttachments((prevTasks) => ({
@@ -999,6 +1003,7 @@ const DataRoom = () => {
       );
     }
   };
+  console.log("tasksAttachments", tasksAttachments);
 
   // this is for file check
   useEffect(() => {
@@ -1011,6 +1016,11 @@ const DataRoom = () => {
 
   // cancel file upload
   const cancelFileUpload = (data) => {
+    console.log("cancelFileUpload", data);
+    if (data.axiosCancelToken) {
+      data.axiosCancelToken.cancel("Upload canceled");
+      console.log("cancelFileUpload", data);
+    }
     console.log("cancelFileUpload", data);
     setTasksAttachments((prevTasks) => ({
       ...prevTasks,

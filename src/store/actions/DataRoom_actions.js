@@ -285,6 +285,7 @@ const uploadDocumentsApi = (
             },
           }));
         },
+        cancelToken: newJsonCreateFile.axiosCancelToken.token,
       })
         .then(async (response) => {
           if (response.data.responseCode === 417) {
@@ -404,16 +405,23 @@ const uploadDocumentsApi = (
         })
         .catch((error) => {
           console.log("prevTasksprevTasks");
-          setTasksAttachments((prevTasks) => ({
-            ...prevTasks,
-            [taskId]: {
-              ...prevTasks[taskId],
-              Uploaded: false,
-              Uploading: false,
-              UploadingError: true,
-              Progress: 0,
-            },
-          }));
+          if (axios.isCancel(error)) {
+            console.log("Upload canceled");
+            // Handle cancellation as needed
+          } else {
+            setTasksAttachments((prevTasks) => ({
+              ...prevTasks,
+              [taskId]: {
+                ...prevTasks[taskId],
+                Uploaded: false,
+                Uploading: false,
+                UploadingError: true,
+                Progress: 0,
+              },
+            }));
+            // Handle other errors as needed
+          }
+
           dispatch(uploadDocument_fail(t("Something-went-wrong")));
         });
     };
