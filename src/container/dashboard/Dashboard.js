@@ -11,6 +11,7 @@ import { setRecentActivityDataNotification } from '../../store/actions/GetUserSe
 import VideoCallScreen from '../../components/layout/talk/videoCallScreen/VideoCallScreen'
 import VideoMaxIncoming from '../../components/layout/talk/videoCallScreen/videoCallBody/VideoMaxIncoming'
 import VideoOutgoing from '../../components/layout/talk/videoCallScreen/videoCallBody/VideoMaxOutgoing'
+import TalkChat2 from '../../components/layout/talk/talk-chat/talkChatBox/chat'
 import {
   incomingVideoCallFlag,
   videoOutgoingCallFlag,
@@ -1396,6 +1397,8 @@ const Dashboard = () => {
             {videoFeatureReducer.IncomingVideoCallFlag === true ? (
               <VideoMaxIncoming />
             ) : null}
+            <TalkChat2 chatMessageClass="chat-message-video-head" />
+            {/* {talkFeatureStates.ChatBoxActiveFlag === true ? <TalkChat2 /> : null} */}
             {/* {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
             <VideoOutgoing />
           ) : null} */}

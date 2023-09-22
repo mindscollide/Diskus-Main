@@ -286,7 +286,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
         </Col>
         <>
           <Col lg={5} md={5} sm={12} className="normal-screen-top-icons">
-            {callerID === currentUserID ? (
+            {callerID === currentUserID && currentCallType === 2 ? (
               <div
                 className="positionRelative flipHorizontal"
                 ref={participantPopupDisable}

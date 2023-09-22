@@ -4,11 +4,11 @@ import ChatFooter from './chatFooter/chatFooter'
 import ChatHeader from './chatHeader/chatHeader'
 import ChatMainBody from './chatMain/chatMain'
 
-const TalkChat2 = () => {
+const TalkChat2 = ({ chatMessageClass }) => {
   return (
     <>
       <div className="positionRelative">
-        <div className="chat-messenger-head">
+        <div className={chatMessageClass}>
           <Container>
             {/* <ChatHeader /> */}
             <ChatMainBody />
