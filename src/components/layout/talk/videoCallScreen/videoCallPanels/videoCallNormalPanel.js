@@ -272,9 +272,9 @@ const VideoPanelNormal = () => {
                 <Row>
                   <Col lg={8} md={8} sm={12}></Col>
                   <Col lg={4} md={4} sm={12}>
-                    {videoFeatureReducer.VideoChatNormalFlag === true ? (
+                    {/* {videoFeatureReducer.VideoChatNormalFlag === true ? (
                       <VideoPanelNormalChat />
-                    ) : null}
+                    ) : null} */}
 
                     {videoFeatureReducer.VideoAgendaNormalFlag === true ? (
                       <VideoPanelNormalAgenda />

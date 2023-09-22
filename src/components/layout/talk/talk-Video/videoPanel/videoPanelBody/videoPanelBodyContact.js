@@ -135,6 +135,7 @@ const VideoPanelBodyContact = () => {
     dispatch(InitiateVideoCall(Data, navigate, t))
     localStorage.setItem('activeCall', true)
     localStorage.setItem('callerID', currentUserID)
+    localStorage.setItem('recipentCalledID', userData.userID)
     dispatch(callRequestReceivedMQTT({}, ''))
     dispatch(getVideoRecipentData(userData))
     dispatch(normalizeVideoPanelFlag(true))

@@ -1000,7 +1000,7 @@ const Dashboard = () => {
             if (videoFeatureReducer.IncomingVideoCallFlag === true) {
               dispatch(VideoCallResponse(Data, navigate, t))
             }
-          }, 500000000)
+          }, timeValue)
           localStorage.setItem('activeRoomID', data.payload.roomID)
           return () => clearTimeout(timeoutId)
         } else if (
@@ -1378,6 +1378,8 @@ const Dashboard = () => {
     console.log('Current Language UseEffect', currentLanguage)
   }, [i18nextLng])
 
+  console.log('talkStateData', talkStateData)
+
   return (
     <>
       <ConfigProvider locale={currentLanguage === 'en' ? en_US : ar_EG}>
@@ -1401,11 +1403,12 @@ const Dashboard = () => {
             {videoFeatureReducer.IncomingVideoCallFlag === true ? (
               <VideoMaxIncoming />
             ) : null}
-            <TalkChat2 chatMessageClass="chat-messenger-head-video" />
-            {/* {talkFeatureStates.ChatBoxActiveFlag === true ? <TalkChat2 /> : null} */}
-            {/* {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
-            <VideoOutgoing />
-          ) : null} */}
+            {videoFeatureReducer.VideoChatMessagesFlag === true ? (
+              <TalkChat2
+                chatParentHead="chat-messenger-head-video"
+                chatMessageClass="chat-messenger-head-video"
+              />
+            ) : null}
             {videoFeatureReducer.NormalizeVideoFlag === true ||
             videoFeatureReducer.MinimizeVideoFlag === true ||
             videoFeatureReducer.MaximizeVideoFlag === true ? (
