@@ -4,14 +4,14 @@ import ChatFooter from './chatFooter/chatFooter'
 import ChatHeader from './chatHeader/chatHeader'
 import ChatMainBody from './chatMain/chatMain'
 
-const TalkChat2 = () => {
+const TalkChat2 = ({ chatParentHead, chatMessageClass }) => {
   return (
     <>
       <div className="positionRelative">
-        <div className="chat-messenger-head">
+        <div className={chatParentHead}>
           <Container>
             {/* <ChatHeader /> */}
-            <ChatMainBody />
+            <ChatMainBody chatMessageClass={chatMessageClass} />
             {/* <ChatFooter /> */}
           </Container>
         </div>

@@ -29,6 +29,8 @@ const initialState = {
   IncomingVideoCallFlag: false,
   LeaveCallModalFlag: false,
   ParticipantPopupFlag: false,
+  MinimizeParticipantPopupFlag: false,
+  VideoChatMessagesFlag: false,
 }
 
 const videoFeatureReducer = (state = initialState, action) => {
@@ -254,6 +256,20 @@ const videoFeatureReducer = (state = initialState, action) => {
       return {
         ...state,
         ParticipantPopupFlag: action.response,
+      }
+    }
+
+    case actions.MINIMIZE_PARTICIPANT_POPUP_FLAG: {
+      return {
+        ...state,
+        MinimizeParticipantPopupFlag: action.response,
+      }
+    }
+
+    case actions.VIDEO_CHAT_MESSAGES_FLAG: {
+      return {
+        ...state,
+        VideoChatMessagesFlag: action.response,
       }
     }
 

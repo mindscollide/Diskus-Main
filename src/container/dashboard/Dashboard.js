@@ -1,3 +1,4 @@
+import TalkChat2 from "../../components/layout/talk/talk-chat/talkChatBox/chat";
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Sidebar, Talk } from "../../components/layout";
@@ -995,7 +996,7 @@ const Dashboard = () => {
             if (videoFeatureReducer.IncomingVideoCallFlag === true) {
               dispatch(VideoCallResponse(Data, navigate, t));
             }
-          }, 500000000);
+          }, timeValue);
           localStorage.setItem("activeRoomID", data.payload.roomID);
           return () => clearTimeout(timeoutId);
         } else if (
@@ -1411,9 +1412,12 @@ const Dashboard = () => {
             {videoFeatureReducer.IncomingVideoCallFlag === true ? (
               <VideoMaxIncoming />
             ) : null}
-            {/* {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
-            <VideoOutgoing />
-          ) : null} */}
+            {videoFeatureReducer.VideoChatMessagesFlag === true ? (
+              <TalkChat2
+                chatParentHead="chat-messenger-head-video"
+                chatMessageClass="chat-messenger-head-video"
+              />
+            ) : null}
             {videoFeatureReducer.NormalizeVideoFlag === true ||
             videoFeatureReducer.MinimizeVideoFlag === true ||
             videoFeatureReducer.MaximizeVideoFlag === true ? (

@@ -99,6 +99,19 @@ body[dir="rtl"] .chat-block {
   background: #fff;
   border: 1px solid #6172d6;
   border-radius: 4px;
+  z-index: 9999999;
+}
+
+.chat-messenger-head-video {
+  z-index: 9999999;
+  height: 45.7vh;
+  position: fixed;
+  bottom: 35px;
+  right: 35px;
+  width: 325px;
+  background: #fff;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
 }
 
 .chatFilter {
