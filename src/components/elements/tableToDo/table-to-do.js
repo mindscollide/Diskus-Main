@@ -8,13 +8,13 @@ const CustomTableToDo = ({
   pagination,
   loading,
   onChange,
-  Locale,
+  locale,
   id,
   scroll,
   labelTitle,
   size,
   rowSelection,
-  onRow
+  onRow,
 }) => {
   console.log("CustomTableToDO", className);
 
@@ -34,17 +34,17 @@ const CustomTableToDo = ({
         onRow={onRow}
         // bordered
         scroll={scroll}
-        locale={Locale}
+        locale={locale}
         rowSelection={rowSelection}
         size={size}
         pagination={pagination}
-      // filterDropdown={(filterProps) => (
-      //   <div>
-      //     {/* filter dropdown content */}
-      //     <Button onClick={filterProps.confirmFilter}>Custom OK Text</Button>
-      //   </div>
-      // )}
-      // scroll={scroll}
+        // filterDropdown={(filterProps) => (
+        //   <div>
+        //     {/* filter dropdown content */}
+        //     <Button onClick={filterProps.confirmFilter}>Custom OK Text</Button>
+        //   </div>
+        // )}
+        // scroll={scroll}
       />
     </>
   );

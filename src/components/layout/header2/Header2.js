@@ -1,17 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Container,
-  Nav,
-  Navbar,
-  DropdownButton,
-  Row,
-  Col,
-} from "react-bootstrap";
+import { Nav, Navbar, DropdownButton, Row, Col } from "react-bootstrap";
 import Dropdown from "react-bootstrap/Dropdown";
 import { useNavigate, Link } from "react-router-dom";
 import DiskusLogoHeader from "../../../assets/images/newElements/diskus_newheader.svg";
-import DiskusHeaderSetting from "../../../assets/images/newElements/Diskus_newSetting.svg";
 import DiskusHeaderInfo from "../../../assets/images/newElements/Diskus-infoIcon.svg";
 import DiskusNotificationIcon from "../../../assets/images/newElements/Diskus-notification_icon.svg";
 import "./Header.css";
@@ -22,15 +14,9 @@ import {
   getUserDetails,
   getUserSetting,
 } from "../../../store/actions/GetUserSetting";
-import currentUserImage from "../../../assets/images/avatar.png";
-import LanguageIcon from "../../../assets/images/Language.svg";
 import { useLocation } from "react-router-dom";
 import { getPackageExpiryDetail } from "../../../store/actions/GetPackageExpirtyDetails";
-import { Button, Loader, Modal } from "../../../components/elements";
 import UserProfile from "../../../container/authentication/User_Profile/UserProfile";
-import { Select } from "antd";
-import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
-import { useRef } from "react";
 import LanguageSelector from "../../elements/languageSelector/Language-selector";
 import ModalMeeting from "../../../container/modalmeeting/ModalMeeting";
 
@@ -39,8 +25,7 @@ const Header2 = () => {
   // const languageref = useRef()
   const state = useSelector((state) => state);
   const { settingReducer } = state;
-  const { NotificationData, UserProfileData, GetUserDetailsResponse } =
-    settingReducer;
+  const { UserProfileData } = settingReducer;
   const navigate = useNavigate();
   const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const dispatch = useDispatch();
@@ -50,37 +35,19 @@ const Header2 = () => {
   //for dropdown
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activateBlur, setActivateBlur] = useState(false);
-  let roleID = localStorage.getItem("roleID");
 
   // for userProfile
   const [userProfileModal, setUserProfileModal] = useState(false);
   //for userprofile edit modal
   const [editFlag, setEditFlag] = useState(false);
-  const [modalsflag, setModalsflag] = useState(false);
-  // const [languageforView, setLanguageforView] = useState("")
   let Blur = localStorage.getItem("blur");
-  // const [languageDropdown, setLanguageDropdown] = useState(false)
-  // Languages
-  // const languages = [
-  //   { name: "English", code: "en" },
-  //   // { name: "日本語", code: "ja" },
-  //   { name: "Français", code: "fr" },
-  //   { name: "العربية", code: "ar", dir: "rtl" },
-  // ];
 
-  // const currentLocale = Cookies.get("i18next");
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [show, setShow] = useState(false);
-  const { t, i18n } = useTranslation();
-  // useEffect(() => {
-  //   if (currentLanguage !== null) {
-  //     let currentLanguageForView = languages.filter((data, index) => data.code === currentLanguage)
-  //     console.log(currentLanguageForView, "currentLanguageForViewcurrentLanguageForViewcurrentLanguageForView")
-  //     setLanguageforView(currentLanguageForView[0].name)
-  //   }
-  // }, [])
+  const { t } = useTranslation();
+
   useEffect(() => {
-    if (Blur != undefined) {
+    if (Blur !== null) {
       console.log("Blur", Blur);
 
       setActivateBlur(true);
@@ -111,32 +78,9 @@ const Header2 = () => {
     }
   }, [UserProfileData]);
 
-  // const [language, setLanguage] = useState(currentLanguage);
-
   const forgotPasswordCheck = () => {
     localStorage.setItem("globalPassowrdChecker", true);
   };
-
-  // const handleChangeLocale = (lang) => {
-  //   setLanguageDropdown(false)
-  //   setLanguage(lang);
-  //   let currentLanguageForView = languages.filter((data, index) => data.code === lang)
-  //   console.log(currentLanguageForView, "currentLanguageForViewcurrentLanguageForViewcurrentLanguageForView")
-  //   setLanguageforView(currentLanguageForView[0].name)
-  //   localStorage.setItem("i18nextLng", lang);
-  //   window.location.reload();
-  // };
-  // const currentLangObj = languages.find((lang) => lang.code === language);
-
-  // useEffect(() => {
-  //   let currentLanguage = localStorage.getItem("i18nextLng");
-  //   if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-  //     setTimeout(() => {
-  //       i18n.changeLanguage(currentLanguage);
-  //       document.body.dir = currentLangObj.dir || "ltr";
-  //     }, 1000);
-  //   }
-  // }, [i18n]);
 
   const dropDownMenuFunction = () => {
     setDropdownOpen(!dropdownOpen);
@@ -169,22 +113,11 @@ const Header2 = () => {
     console.log("openMeetingModal");
     setCreateMeetingModal(true);
   };
-  // const handleOutsideClick = (event) => {
-  //   if (
-  //     languageref.current &&
-  //     !languageref.current.contains(event.target) &&
-  //     languageDropdown
-  //   ) {
-  //     setLanguageDropdown(false)
-  //   }
-  // }
 
-  // useEffect(() => {
-  //   document.addEventListener('click', handleOutsideClick)
-  //   return () => {
-  //     document.removeEventListener('click', handleOutsideClick)
-  //   }
-  // }, [languageDropdown])
+  const RecentFilesTab = () => {
+    navigate("/DisKus/dataroom");
+    localStorage.setItem("setTableView", 4);
+  };
 
   return (
     <>
@@ -227,21 +160,6 @@ const Header2 = () => {
                     <Dropdown.Item className="d-flex title-className">
                       {t("Recently-added-files")}
                     </Dropdown.Item>
-                    {/* <Dropdown.Item className="title-className">
-                      {t("Upload-documents")}
-                    </Dropdown.Item>
-                    <Dropdown.Item className="title-className">
-                      {t("Create-a-meeting")}
-                    </Dropdown.Item>
-                    <Dropdown.Item className="title-className">
-                      {t("Data-room")}
-                    </Dropdown.Item>
-                    <Dropdown.Item className="title-className">
-                      {t("Pending-tasks")}
-                    </Dropdown.Item>
-                    <Dropdown.Item className="title-language-className">
-                      {t("Language")}
-                    </Dropdown.Item> */}
                   </DropdownButton>
                 </div>
               </Nav.Link>
@@ -396,34 +314,6 @@ const Header2 = () => {
             </Navbar.Brand>
             <Nav className="ml-auto align-items-center">
               <LanguageSelector />
-              {/* <section className="position-relative" ref={languageref}>
-                <span className="text-white d-flex gap-2 align-items-center position-relative" onClick={() => setLanguageDropdown(!languageDropdown)}>
-                  <img src={LanguageIcon} />
-                  {languageforView}
-                  {languageDropdown ? <ChevronUp fontWeight={"bold"} /> : < ChevronDown fontWeight={"bold"} />}
-                </span>
-                <div className={!languageDropdown ? "language-options" : "language-options active"}>
-                  {languages.map((data, index) => {
-                    return <span onClick={() => handleChangeLocale(data.code)}>{data.name}</span>
-                  }
-                  )}</div>
-              </section> */}
-              {/* <select
-                className={"language-dropdown" + " " + currentLanguage}
-                onChange={handleChangeLocale}
-                value={language}
-              >
-                {languages.map(({ name, code }) => (
-                  <option
-                    className="language-dropdown-value"
-                    key={code}
-                    value={code}
-                    defaultValue={code}
-                  >
-                    {name}
-                  </option>
-                ))}
-              </select> */}
               <Nav.Link className="me-2">
                 <div className="dropdown-btn_dotted">
                   <DropdownButton
@@ -443,24 +333,12 @@ const Header2 = () => {
                     <Dropdown.Item className="d-flex title-className">
                       {t("Upload-document")}
                     </Dropdown.Item>
-                    <Dropdown.Item className="d-flex title-className">
+                    <Dropdown.Item
+                      className="d-flex title-className"
+                      onClick={RecentFilesTab}
+                    >
                       {t("Recently-added-files")}
                     </Dropdown.Item>
-                    {/* <Dropdown.Item className="title-className">
-                      {t("Upload-documents")}
-                    </Dropdown.Item>
-                    <Dropdown.Item className="title-className">
-                      {t("Create-a-meeting")}
-                    </Dropdown.Item>
-                    <Dropdown.Item className="title-className">
-                      {t("Data-room")}
-                    </Dropdown.Item>
-                    <Dropdown.Item className="title-className">
-                      {t("Pending-tasks")}
-                    </Dropdown.Item>
-                    <Dropdown.Item className="title-language-className">
-                      {t("Language")}
-                    </Dropdown.Item> */}
                   </DropdownButton>
                 </div>
               </Nav.Link>
