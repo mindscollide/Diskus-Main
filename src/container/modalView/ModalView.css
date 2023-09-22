@@ -466,16 +466,16 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   /* .minutes-upper-btn {} */
 }
 
-.MeetingViewLocationTextField input {
+.MeetingViewLocationTextField {
   font-weight: 600;
   color: #505050;
   font-size: 17px !important;
   border: none !important;
 }
 
-.MeetingViewTitleTextField input[type="text"] {
+.MeetingViewTitleTextField span {
   font-size: 20px !important;
-  margin: 15px 0px 0px 0px;
+  /* margin: 15px 0px 0px 0px; */
   border: none !important;
 }
 
@@ -483,6 +483,7 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
   border: none !important;
   height: 200px;
   overflow: auto;
+  font-size: 16px !important;
 }
 
 .textAreaDivView textarea::-webkit-scrollbar-thumb {
@@ -498,13 +499,25 @@ body[dir="rtl"] .isDataRoom-View-top-btn {
 }
 
 .viewModalTitle {
-  border: none;
   font-size: 16px !important;
-  font-family: "MontserratSemiBold-600";
+  font-family: "MontserratSemiBold-600" !important;
   color: #5f78d6 !important;
-  overflow: hidden !important;
   word-wrap: break-word !important;
   text-overflow: ellipsis !important;
   white-space: normal !important;
-  margin: 0 10px;
+  font-size: 25px !important;
+  line-height: 32px !important;
+  max-height: 100px !important;
+  height: 93px !important;
+  margin: 0 10px !important;
+}
+.MeetingViewDateTimeTextField {
+  font-family: "Montserrat" !important;
+  font-size: 14px !important;
+}
+.MeetingViewLocationText_Field {
+  color: #505050;
+  font-size: 16px !important;
+  border: none !important;
+  font-family: "MontserratSemiBold-600";
 }

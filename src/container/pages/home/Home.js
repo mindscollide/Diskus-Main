@@ -54,6 +54,7 @@ import {
   GetWeeklyToDoCount,
   HideNotificationTodo,
   SetSpinnersTrue,
+  ViewToDoList,
 } from "../../../store/actions/ToDoList_action";
 import { HideNotificationAuth } from "../../../store/actions/Auth_action";
 import {
@@ -75,6 +76,7 @@ import VerificationFailedIcon from "./../../../assets/images/failed.png";
 import {
   GetNotes,
   GetNotesByIdAPI,
+  GetNotesById_Init,
   getNotes_Init,
 } from "../../../store/actions/Notes_actions";
 import ModalAddNote from "../../modalAddNote/ModalAddNote";
@@ -82,6 +84,8 @@ import ModalUpdateNote from "../../modalUpdateNote/ModalUpdateNote";
 import { getUserSetting } from "../../../store/actions/GetUserSetting";
 import EventsModal from "../../EventsModal/EventsModal";
 import ModalViewNote from "../../modalViewNote/ModalViewNote";
+import ModalViewToDo from "../../todolistviewModal/ModalViewToDo";
+// import Todolis from "../../modalView/ModalView";
 
 const Home = () => {
   const dCheck = useLoaderData();
@@ -121,6 +125,8 @@ const Home = () => {
 
   //for view modal notes
   const [viewModalShow, setViewModalShow] = useState(false);
+
+  const [viewFlagToDo, setViewFlagToDo] = useState(false);
   const calendarRef = useRef();
   const navigate = useNavigate();
   const [calenderData, setCalenderData] = useState([]);
@@ -152,6 +158,7 @@ const Home = () => {
   const [calendarValue, setCalendarValue] = useState(gregorian);
   const [localValue, setLocalValue] = useState(gregorian_en);
   const [eventModal, setEventsModal] = useState(false);
+  const [todoViewModal, setTodoViewModal] = useState(false);
   let lang = localStorage.getItem("i18nextLng");
   const [getNoteID, setGetNoteID] = useState(0);
   console.log(getNoteID, "getNoteIDgetNoteIDgetNoteID");
@@ -165,8 +172,8 @@ const Home = () => {
   const userID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let CalenderMonthsSpan =
-    localStorage.getItem("calenderMonthsSpan") != undefined &&
-    localStorage.getItem("calenderMonthsSpan") != null
+    localStorage.getItem("calenderMonthsSpan") !== undefined &&
+    localStorage.getItem("calenderMonthsSpan") !== null
       ? localStorage.getItem("calenderMonthsSpan")
       : 1;
   let currentDate = new Date(); // Get the current date
@@ -417,7 +424,12 @@ const Home = () => {
       setRowToDo([]);
     }
   }, [toDoListReducer.AllTodolistData]);
-
+  const viewTodoModal = (id) => {
+    let Data = { ToDoListID: id };
+    dispatch(
+      ViewToDoList(navigate, Data, t, setViewFlagToDo, setTodoViewModal)
+    );
+  };
   const columnsToDo = [
     {
       title: t("Task"),
@@ -426,6 +438,14 @@ const Home = () => {
       width: "35%",
       className: "titleDashboard",
       ellipsis: true,
+      render: (text, record) => (
+        <span
+          className="cursor-pointer"
+          onClick={() => viewTodoModal(record.pK_TID)}
+        >
+          {text}
+        </span>
+      ),
       // render: (text) => <span className="fw-bold">{text}</span>,
     },
     {
@@ -791,8 +811,9 @@ const Home = () => {
     );
   };
 
-  const OpenUpdateNotesModal = (id) => {
+  const OpenUpdateNotesModal = async (id) => {
     setGetNoteID(id);
+    await dispatch(GetNotesById_Init());
     dispatch(
       GetNotesByIdAPI(
         navigate,
@@ -1403,6 +1424,7 @@ const Home = () => {
                       src={PlusButton}
                       onClick={handleClickNoteModal}
                       className="cursor-pointer"
+                      alt=""
                     />
                   </Col>
                 </Row>
@@ -1433,18 +1455,16 @@ const Home = () => {
                           return (
                             <>
                               <div
-                                className="notesdescription"
+                                className="notesdescription cursor-pointer"
                                 key={data.pK_NotesID}
+                                onClick={() =>
+                                  OpenUpdateNotesModal(data.pK_NotesID)
+                                }
                               >
                                 <Row>
                                   <Col lg={12} md={12} sm={12}>
                                     {/* <p className="notescontent" > */}
-                                    <p
-                                      className="notescontent"
-                                      onClick={() =>
-                                        OpenUpdateNotesModal(data.pK_NotesID)
-                                      }
-                                    >
+                                    <p className="notescontent">
                                       {data.title.slice(0, 100)}
                                     </p>
                                   </Col>
@@ -1531,7 +1551,12 @@ const Home = () => {
                           md={12}
                           className="d-flex justify-content-center align-items-center flex-column"
                         >
-                          <img src={NotesMainEmpty} width={150} height={150} />
+                          <img
+                            src={NotesMainEmpty}
+                            width={150}
+                            alt=""
+                            height={150}
+                          />
                           <p className="emptystateNotesDashboard">
                             {t("You-dont-have-any-notes")}
                           </p>
@@ -1621,16 +1646,23 @@ const Home = () => {
         />
       ) : modalNote ? (
         <ModalAddNote addNewModal={modalNote} setAddNewModal={setModalNote} />
-      ) : (
-        eventModal && (
-          <EventsModal
-            events={events}
-            eventModal={eventModal}
-            setEventsModal={setEventsModal}
-          />
-        )
-      )}
-      {settingReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      ) : eventModal ? (
+        <EventsModal
+          events={events}
+          eventModal={eventModal}
+          setEventsModal={setEventsModal}
+        />
+      ) : todoViewModal ? (
+        <ModalViewToDo
+          viewFlagToDo={todoViewModal}
+          setViewFlagToDo={setTodoViewModal}
+        />
+      ) : null}
+      {settingReducer.Loading ||
+      LanguageReducer.Loading ||
+      (NotesReducer.Loading && getNoteID !== 0) ? (
+        <Loader />
+      ) : null}
     </>
   );
 };
