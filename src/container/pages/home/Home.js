@@ -76,6 +76,7 @@ import VerificationFailedIcon from "./../../../assets/images/failed.png";
 import {
   GetNotes,
   GetNotesByIdAPI,
+  GetNotesById_Init,
   getNotes_Init,
 } from "../../../store/actions/Notes_actions";
 import ModalAddNote from "../../modalAddNote/ModalAddNote";
@@ -171,8 +172,8 @@ const Home = () => {
   const userID = localStorage.getItem("userID");
   let OrganizationID = localStorage.getItem("organizationID");
   let CalenderMonthsSpan =
-    localStorage.getItem("calenderMonthsSpan") != undefined &&
-    localStorage.getItem("calenderMonthsSpan") != null
+    localStorage.getItem("calenderMonthsSpan") !== undefined &&
+    localStorage.getItem("calenderMonthsSpan") !== null
       ? localStorage.getItem("calenderMonthsSpan")
       : 1;
   let currentDate = new Date(); // Get the current date
@@ -810,8 +811,9 @@ const Home = () => {
     );
   };
 
-  const OpenUpdateNotesModal = (id) => {
+  const OpenUpdateNotesModal = async (id) => {
     setGetNoteID(id);
+    await dispatch(GetNotesById_Init());
     dispatch(
       GetNotesByIdAPI(
         navigate,
@@ -1422,6 +1424,7 @@ const Home = () => {
                       src={PlusButton}
                       onClick={handleClickNoteModal}
                       className="cursor-pointer"
+                      alt=""
                     />
                   </Col>
                 </Row>
@@ -1655,7 +1658,11 @@ const Home = () => {
           setViewFlagToDo={setTodoViewModal}
         />
       ) : null}
-      {settingReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
+      {settingReducer.Loading ||
+      LanguageReducer.Loading ||
+      (NotesReducer.Loading && getNoteID !== 0) ? (
+        <Loader />
+      ) : null}
     </>
   );
 };
