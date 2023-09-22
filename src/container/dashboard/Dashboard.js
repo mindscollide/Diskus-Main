@@ -1384,7 +1384,10 @@ const Dashboard = () => {
     setCurrentLanguage(i18nextLng);
     console.log("Current Language UseEffect", currentLanguage);
   }, [i18nextLng]);
-
+  console.log(
+    assignees.meetingcreatedashboardLoader,
+    "meetingcreatedashboardLoadermeetingcreatedashboardLoader"
+  );
   return (
     <>
       <ConfigProvider locale={currentLanguage === "en" ? en_US : ar_EG}>
@@ -1418,7 +1421,7 @@ const Dashboard = () => {
             ) : null}
             {activateBlur === false ? <Talk /> : null}
 
-            {assignees.Loading && <Loader />}
+            {assignees.meetingcreatedashboardLoader && <Loader />}
           </Layout>
           {/* </Content> */}
         </Layout>
