@@ -429,6 +429,8 @@ const ViewToDoList = (
                 )
             ) {
               await dispatch(ViewToDoFail(t("No-records-found")));
+              setViewFlagToDo(false);
+              setTodoViewModal(false);
             } else if (
               response.data.responseResult.responseMessage
                 .toLowerCase()
@@ -436,17 +438,25 @@ const ViewToDoList = (
                   "ToDoList_ToDoListServiceManager_GetToDoListByToDoListID_03".toLowerCase()
                 )
             ) {
+              setViewFlagToDo(false);
+              setTodoViewModal(false);
               await dispatch(ViewToDoFail(t("Something-went-wrong")));
             }
           } else {
             dispatch(ViewToDoFail(t("Something-went-wrong")));
+            setViewFlagToDo(false);
+            setTodoViewModal(false);
           }
         } else {
           dispatch(ViewToDoFail(t("Something-went-wrong")));
+          setViewFlagToDo(false);
+          setTodoViewModal(false);
         }
       })
       .catch((response) => {
         dispatch(ViewToDoFail(t("Something-went-wrong")));
+        setViewFlagToDo(false);
+        setTodoViewModal(false);
       });
   };
 };
@@ -922,4 +932,5 @@ export {
   getTodoListInit,
   SetSpinnersTrue,
   deleteCommentApi,
+  toDoListLoaderStart,
 };

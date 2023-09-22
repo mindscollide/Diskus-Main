@@ -433,6 +433,17 @@ const DataRoom = () => {
       setSearchoptions(false);
     }
   };
+  const RecentTab = async () => {
+    setSRowsData(0);
+    localStorage.setItem("setTableView", 4);
+    // await dispatch(getDocumentsAndFolderApi(navigate, 3, t, 1));
+    // setGetAllData([]);
+    // localStorage.removeItem("folderID");
+    // setSharedwithmebtn(false);
+    // if (searchoptions) {
+    // setSearchoptions(false);
+    // }
+  };
 
   const openFolderModal = () => {
     setFolderModal(true);
@@ -532,6 +543,333 @@ const DataRoom = () => {
     // Call your API with the selected sort order and current filter value
     // Update the data state with the response data
   };
+  const MyRecentTab = [
+    {
+      title: t("Name"),
+      dataIndex: "name",
+      key: "name",
+      width: "200px",
+
+      render: (text, data) => {
+        if (data.isShared) {
+          if (data.isFolder) {
+            return (
+              <div className={`${styles["dataFolderRow"]}`}>
+                <img src={folderColor} alt="" />
+                <abbr title={text}>
+                  <span
+                    className={`${
+                      styles["dataroom_table_heading"]
+                    } ${"cursor-pointer"}`}
+                    onClick={() => getFolderDocuments(data.id)}
+                  >
+                    {text} <img src={sharedIcon} alt="" />
+                  </span>
+                </abbr>
+              </div>
+            );
+          } else {
+            return (
+              <>
+                <section className="d-flex gap-2">
+                  <img
+                    src={getIconSource(getFileExtension(data.name))}
+                    alt=""
+                    width={"25px"}
+                    height={"25px"}
+                  />
+                  <abbr title={text}>
+                    <span className={styles["dataroom_table_heading"]}>
+                      {text} <img src={sharedIcon} alt="" />
+                    </span>
+                  </abbr>
+                </section>
+              </>
+            );
+          }
+        } else {
+          if (data.isFolder) {
+            return (
+              <div className={`${styles["dataFolderRow"]}`}>
+                <img src={folderColor} alt="" />
+                <abbr title={text}>
+                  <span
+                    className={`${
+                      styles["dataroom_table_heading"]
+                    } ${"cursor-pointer"}`}
+                    onClick={() => getFolderDocuments(data.id)}
+                  >
+                    {text}{" "}
+                  </span>
+                </abbr>
+              </div>
+            );
+          } else {
+            return (
+              <>
+                <section className="d-flex gap-2">
+                  <img
+                    src={getIconSource(getFileExtension(data.name))}
+                    alt=""
+                    width={"25px"}
+                    height={"25px"}
+                  />
+                  <abbr title={text}>
+                    <span className={styles["dataroom_table_heading"]}>
+                      {text}
+                    </span>
+                  </abbr>
+                </section>
+              </>
+            );
+          }
+        }
+      },
+    },
+    {
+      title: t("Owner"),
+      dataIndex: "owner",
+      key: "owner",
+      width: "90px",
+      sortDirections: ["descend", "ascend"],
+      render: (text, record) => {
+        return <span className={styles["ownerName"]}>{text}</span>;
+      },
+    },
+    {
+      title: currentFilter,
+      dataIndex: "modifiedDate",
+      key: "modifiedDate",
+      width: "110px",
+      align: "center",
+
+      render: (text, data) => {
+        return (
+          <span className={styles["dataroom_table_heading"]}>
+            {_justShowDateformat(text)}
+          </span>
+        );
+      },
+    },
+    {
+      title: t("File-size"),
+      dataIndex: "fileSize",
+      key: "fileSize",
+      width: "90px",
+      render: (text, record) => {
+        return <span className={styles["ownerName"]}>{text}</span>;
+      },
+    },
+    {
+      title: (
+        <span className={styles["dataroom_location"]}>{t("Location")}</span>
+      ),
+      dataIndex: "location",
+      key: "location",
+      width: "90px",
+      render: (text, record) => {
+        return (
+          <span className={styles["Dataroom__mydocument_location"]}>
+            {text}
+          </span>
+        );
+      },
+    },
+    {
+      dataIndex: "OtherStuff",
+      key: "OtherStuff",
+      width: "180px",
+      render: (text, record) => {
+        return (
+          <>
+            <Row>
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end gap-2 position-relative otherstuff"
+              >
+                <div className="tablerowFeatures">
+                  <Tooltip placement="topRight" title={t("Share")}>
+                    <span className={styles["share__Icon"]}>
+                      <svg
+                        className={styles["share__Icon_img"]}
+                        onClick={() => {
+                          if (record.isFolder) {
+                            showShareFolderModal(record.id, record.name);
+                          } else {
+                            showShareFileModal(record.id, record.name);
+                          }
+                        }}
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16.022"
+                        height="11.71"
+                        viewBox="0 0 16.022 11.71"
+                      >
+                        <path
+                          id="Icon_material-group-add"
+                          data-name="Icon material-group-add"
+                          d="M6.325,11.619H3.953V9.148H2.372v2.472H0v1.648H2.372v2.472H3.953V13.267H6.325Zm3.953.824a2.413,2.413,0,0,0,2.364-2.472,2.37,2.37,0,1,0-4.736,0A2.42,2.42,0,0,0,10.278,12.443Zm0,1.648c-1.581,0-4.744.824-4.744,2.472V18.21h9.488V16.562C15.022,14.915,11.859,14.091,10.278,14.091Z"
+                          transform="translate(0.5 -7)"
+                          fill="none"
+                          stroke="#5a5a5a"
+                        />
+                      </svg>
+                    </span>
+                  </Tooltip>
+                  <Tooltip placement="topRight" title={t("Download")}>
+                    <span className={styles["download__Icon"]}>
+                      <img
+                        src={download}
+                        alt=""
+                        height="10.71px"
+                        width="15.02px"
+                        className={styles["download__Icon_img"]}
+                        onClick={showRequestingAccessModal}
+                      />
+                    </span>
+                  </Tooltip>
+                  {record.isShared === true && record.permissionID === 1 ? (
+                    <Tooltip placement="topRight" title={t("Delete")}>
+                      <span className={styles["delete__Icon"]}>
+                        <img
+                          src={hoverdelete}
+                          height="10.71px"
+                          alt=""
+                          width="15.02px"
+                          className={styles["delete__Icon_img_hover"]}
+                          onClick={() => {
+                            if (record.isFolder) {
+                              dispatch(deleteFolder(navigate, record.id, t));
+                            } else {
+                              dispatch(
+                                deleteFileDataroom(navigate, record.id, t)
+                              );
+                            }
+                          }}
+                        />
+                        <img
+                          src={del}
+                          height="10.71px"
+                          alt=""
+                          width="15.02px"
+                          className={styles["delete__Icon_img"]}
+                          onClick={() => {
+                            if (record.isFolder) {
+                              dispatch(deleteFolder(navigate, record.id, t));
+                            } else {
+                              dispatch(
+                                deleteFileDataroom(navigate, record.id, t)
+                              );
+                            }
+                          }}
+                        />
+                      </span>
+                    </Tooltip>
+                  ) : record.isShared === false ? (
+                    <Tooltip placement="topRight" title={t("Delete")}>
+                      <span className={styles["delete__Icon"]}>
+                        <img
+                          src={hoverdelete}
+                          height="10.71px"
+                          alt=""
+                          width="15.02px"
+                          className={styles["delete__Icon_img_hover"]}
+                          onClick={() => {
+                            if (record.isFolder) {
+                              dispatch(deleteFolder(navigate, record.id, t));
+                            } else {
+                              dispatch(
+                                deleteFileDataroom(navigate, record.id, t)
+                              );
+                            }
+                          }}
+                        />
+                        <img
+                          src={del}
+                          height="10.71px"
+                          alt=""
+                          width="15.02px"
+                          className={styles["delete__Icon_img"]}
+                          onClick={() => {
+                            if (record.isFolder) {
+                              dispatch(deleteFolder(navigate, record.id, t));
+                            } else {
+                              dispatch(
+                                deleteFileDataroom(navigate, record.id, t)
+                              );
+                            }
+                          }}
+                        />
+                      </span>
+                    </Tooltip>
+                  ) : null}
+                </div>
+
+                <span className={styles["threeDot__Icon"]}>
+                  {record.isFolder ? (
+                    <Dropdown
+                      className={`${
+                        styles["options_dropdown"]
+                      } ${"dataroom_options"}`}
+                    >
+                      <Dropdown.Toggle id="dropdown-autoclose-true">
+                        <img
+                          src={dot}
+                          alt=""
+                          width="15.02px"
+                          height="10.71px"
+                        />
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {optionsforFolder(t).map((data, index) => {
+                          return (
+                            <Dropdown.Item
+                              key={index}
+                              onClick={() => folderOptionsSelect(data, record)}
+                            >
+                              {data.label}
+                            </Dropdown.Item>
+                          );
+                        })}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  ) : (
+                    <Dropdown
+                      className={`${
+                        styles["options_dropdown"]
+                      } ${"dataroom_options"}`}
+                    >
+                      <Dropdown.Toggle id="dropdown-autoclose-true">
+                        <img
+                          src={dot}
+                          alt=""
+                          width="15.02px"
+                          height="10.71px"
+                        />
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {optionsforFile(t).map((data, index) => {
+                          return (
+                            <Dropdown.Item
+                              key={index}
+                              onClick={() => fileOptionsSelect(data, record)}
+                            >
+                              {data.label}
+                            </Dropdown.Item>
+                          );
+                        })}
+                      </Dropdown.Menu>
+                    </Dropdown>
+                  )}
+                </span>
+              </Col>
+            </Row>
+          </>
+        );
+      },
+    },
+  ];
 
   const MyDocumentsColumns = [
     {
@@ -1653,6 +1991,15 @@ const DataRoom = () => {
                       <Row>
                         <Col lg={12} md={12} sm={12} className="d-flex gap-3">
                           <Button
+                            text={t("Recently-added")}
+                            className={
+                              currentView === 4
+                                ? `${styles["allDocuments_btn_active"]}`
+                                : `${styles["allDocuments_btn"]}`
+                            }
+                            onClick={RecentTab}
+                          />
+                          <Button
                             text={t("All")}
                             className={
                               currentView === 3
@@ -1812,6 +2159,63 @@ const DataRoom = () => {
                                         }
                                       >
                                         {t("With-you")}
+                                      </span>
+                                    </Col>
+                                  </Row>
+                                </>
+                              )}
+                            </Col>
+                          </Row>
+                        </>
+                      ) : currentView === 4 ? (
+                        <>
+                          <Row className="mt-3">
+                            <Col lg={12} sm={12} md={12}>
+                              {gridbtnactive ? (
+                                <>
+                                  <GridViewDataRoom
+                                    data={getAllData}
+                                    optionsforFolder={optionsforFolder(t)}
+                                    optionsforFile={optionsforFile(t)}
+                                    sRowsData={sRowsData}
+                                    totalRecords={totalRecords}
+                                    filter_Value={filterValue}
+                                  />
+                                </>
+                              ) : listviewactive === true ? (
+                                <TableToDo
+                                  sortDirections={["descend", "ascend"]}
+                                  column={MyRecentTab}
+                                  className={"DataRoom_Table"}
+                                  // rows={getAllData}
+                                  pagination={false}
+                                  locale={{
+                                    emptyText: (
+                                      <span className="vh-100">
+                                        <p>
+                                          {/* <Icon type="like" /> */}
+                                          No Recent Data Found
+                                        </p>
+                                      </span>
+                                    ),
+                                  }}
+                                  // onChange={handleSortMyDocuments}
+                                  // rowSelection={rowSelection}
+                                  size={"middle"}
+                                />
+                              ) : (
+                                <>
+                                  <Row className="mt-2">
+                                    <Col
+                                      lg={12}
+                                      md={12}
+                                      sm={12}
+                                      className="d-flex justify-content-center h-100 align-items-center"
+                                    >
+                                      <span
+                                        className={styles["Messege_nofiles"]}
+                                      >
+                                        {t("There-are-no-items-here")}
                                       </span>
                                     </Col>
                                   </Row>

@@ -354,11 +354,7 @@ const EditResolution = ({ setCancelresolution }) => {
   // };
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
-    if (
-      allAssignees !== undefined &&
-      allAssignees !== null &&
-      allAssignees !== []
-    ) {
+    if (allAssignees !== undefined && allAssignees !== null) {
       return allAssignees
         .filter((item) => {
           const searchTerm = value.toLowerCase();

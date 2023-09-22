@@ -54,6 +54,7 @@ import {
   GetWeeklyToDoCount,
   HideNotificationTodo,
   SetSpinnersTrue,
+  toDoListLoaderStart,
   ViewToDoList,
 } from "../../../store/actions/ToDoList_action";
 import { HideNotificationAuth } from "../../../store/actions/Auth_action";
@@ -161,7 +162,9 @@ const Home = () => {
   const [todoViewModal, setTodoViewModal] = useState(false);
   let lang = localStorage.getItem("i18nextLng");
   const [getNoteID, setGetNoteID] = useState(0);
-  console.log(getNoteID, "getNoteIDgetNoteIDgetNoteID");
+  const [getTodoID, setTodoID] = useState(0);
+  const [todolistLoader, setTodoListLoader] = useState(false);
+  console.log(todolistLoader, todoViewModal, "todolistLoadertodolistLoader");
   let valueMeeting = meetingCountThisWeek - upcomingMeetingCountThisWeek;
   let toDoValue = todoListThisWeek - todoListAssignedThisWeek;
   const [show, setShow] = useState(false);
@@ -177,7 +180,15 @@ const Home = () => {
       ? localStorage.getItem("calenderMonthsSpan")
       : 1;
   let currentDate = new Date(); // Get the current date
-
+  useEffect(() => {
+    if (todoViewModal) {
+      setTodoID(0);
+      setTodoListLoader(false);
+    } else if (todoViewModal === false) {
+      setTodoID(0);
+      setTodoListLoader(false);
+    }
+  }, [todoViewModal]);
   // Add CalenderMonthsSpan months and set the day to the last day of the month
   let startDate =
     CalenderMonthsSpan &&
@@ -415,21 +426,23 @@ const Home = () => {
 
   //get todolist reducer
   useEffect(() => {
-    if (
-      Object.keys(toDoListReducer.AllTodolistData).length > 0 &&
-      toDoListReducer.AllTodolistData !== undefined
-    ) {
+    if (Object.keys(toDoListReducer.AllTodolistData).length > 0) {
       setRowToDo(toDoListReducer.AllTodolistData);
     } else {
       setRowToDo([]);
     }
   }, [toDoListReducer.AllTodolistData]);
   const viewTodoModal = (id) => {
+    setTodoID(id);
+    // setTodoListLoader(true);
+    // dispatch(getTodoListInit());
     let Data = { ToDoListID: id };
     dispatch(
       ViewToDoList(navigate, Data, t, setViewFlagToDo, setTodoViewModal)
     );
   };
+  console.log(rowsToDo, toDoListReducer.AllTodolistData, "rowsToDorowsToDo");
+
   const columnsToDo = [
     {
       title: t("Task"),
@@ -454,8 +467,15 @@ const Home = () => {
       key: "deadlineDateTime",
       width: "40%",
       className: "deadlineDashboard",
-      render: (text) => {
-        return _justShowDateformat(text);
+      render: (text, record) => {
+        return (
+          <span
+            className="cursor-pointer"
+            onClick={() => viewTodoModal(record.pK_TID)}
+          >
+            {_justShowDateformat(text)}
+          </span>
+        );
       },
     },
     {
@@ -464,43 +484,61 @@ const Home = () => {
       key: "status",
       width: "25%",
       className: "statusDashboard",
-      render: (text) => {
+      render: (text, record) => {
         // console.log("texttexttexttext", text);
         return toDoListReducer.AllTodolistData.map((data, index) => {
           if (index === 0) {
             if (text.pK_TSID === 1) {
               return (
-                <span className="MontserratSemiBold-600 InProgress">
+                <span
+                  className="MontserratSemiBold-600 InProgress cursor-pointer"
+                  onClick={() => viewTodoModal(record.pK_TID)}
+                >
                   {text.status}
                 </span>
               );
             } else if (text.pK_TSID === 2) {
               return (
-                <span className="MontserratSemiBold-600 Pending">
+                <span
+                  className="MontserratSemiBold-600 Pending cursor-pointer"
+                  onClick={() => viewTodoModal(record.pK_TID)}
+                >
                   {text.status}
                 </span>
               );
             } else if (text.pK_TSID === 3) {
               return (
-                <span className="MontserratSemiBold-600 Upcoming">
+                <span
+                  className="MontserratSemiBold-600 Upcoming cursor-pointer"
+                  onClick={() => viewTodoModal(record.pK_TID)}
+                >
                   {text.status}
                 </span>
               );
             } else if (text.pK_TSID === 4) {
               return (
-                <span className="MontserratSemiBold-600 Cancelled">
+                <span
+                  className="MontserratSemiBold-600 Cancelled cursor-pointer"
+                  onClick={() => viewTodoModal(record.pK_TID)}
+                >
                   {text.status}
                 </span>
               );
             } else if (text.pK_TSID === 5) {
               return (
-                <span className="MontserratSemiBold-600 Completed">
+                <span
+                  className="MontserratSemiBold-600 Completed cursor-pointer"
+                  onClick={() => viewTodoModal(record.pK_TID)}
+                >
                   {text.status}
                 </span>
               );
             } else if (text.pK_TSID === 6) {
               return (
-                <span className="MontserratSemiBold-600 color-F68732">
+                <span
+                  className="MontserratSemiBold-600 color-F68732 cursor-pointer"
+                  onClick={() => viewTodoModal(record.pK_TID)}
+                >
                   {text.status}
                 </span>
               );
@@ -851,14 +889,6 @@ const Home = () => {
           ),
         1
       );
-
-      // const date = new Date(dateString);
-      // let updateStartDate = new Date(
-      //   date.getFullYear(),
-      //   date.getMonth() -
-      //     parseInt(CalenderMonthsSpan === 0 ? CalenderMonthsSpan : 1),
-      //   1
-      // );
       let calendarData = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(OrganizationID),
@@ -878,10 +908,6 @@ const Home = () => {
           ),
         0
       );
-      console.log(
-        "handleMonthChangehandleMonthChangehandleMonthChange past ",
-        updateEndDate
-      );
       let calendarData = {
         UserID: parseInt(userID),
         OrganizationID: parseInt(OrganizationID),
@@ -895,17 +921,7 @@ const Home = () => {
 
   // console.log(dateFocused, dateClicked.toDate().getDate(), "onFocusedDateChangeonFocusedDateChangeonFocusedDateChange")
   const handleClickonDate = (dateObject, dateSelect) => {
-    console.log(
-      dateSelect,
-      dateObject,
-      "handleClickonDatehandleClickonDatehandleClickonDate"
-    );
     let selectDate = dateSelect.toString().split("/").join("");
-    console.log(
-      selectDate,
-      "handleClickonDatehandleClickonDatehandleClickonDate"
-    );
-
     if (
       calendarReducer.CalenderData.length !== null &&
       calendarReducer.CalenderData !== undefined &&
@@ -916,11 +932,6 @@ const Home = () => {
           startDateTimeMeetingCalendar(data.eventDate + data.startTime) ===
           selectDate
       );
-      console.log(
-        findData,
-        "handleClickonDatehandleClickonDatehandleClickonDate"
-      );
-
       if (findData.length > 0) {
         setEvents(findData);
         setEventsModal(true);
@@ -933,7 +944,7 @@ const Home = () => {
       }
     }
   };
-
+  // const handleChangeTodoTable = () => {};
   return (
     <>
       <Container fluid className="Dashboard-Main-Container">
@@ -1075,7 +1086,7 @@ const Home = () => {
             </Row>
             <Row>
               <Col lg={12} md={12} sm={12} className="DashboardTodoTable ">
-                {toDoListReducer.TableSpinner === true ? (
+                {toDoListReducer.TableSpinner === true && getTodoID === 0 ? (
                   <CustomTableToDoDashboard
                     loading={{
                       spinning: true,
@@ -1097,6 +1108,7 @@ const Home = () => {
                     labelTitle={t("Todo-list")}
                     scroll={{ y: "49vh" }}
                     pagination={false}
+                    // onChange={handleChangeTodoTable}
                   />
                 ) : (
                   <Paper>
@@ -1105,9 +1117,14 @@ const Home = () => {
                     </h1>
                     <ResultMessage
                       icon={
-                        <img src={TodoMessageIcon1} height={210} width={250} />
+                        <img
+                          src={TodoMessageIcon1}
+                          height={210}
+                          width={250}
+                          alt=""
+                        />
                       }
-                      title="NO TASK"
+                      title={t("No-task")}
                       className="NoTask"
                     />
                   </Paper>
@@ -1660,7 +1677,8 @@ const Home = () => {
       ) : null}
       {settingReducer.Loading ||
       LanguageReducer.Loading ||
-      (NotesReducer.Loading && getNoteID !== 0) ? (
+      (NotesReducer.Loading && getNoteID !== 0) ||
+      (toDoListReducer.Loading && getTodoID !== 0) ? (
         <Loader />
       ) : null}
     </>
