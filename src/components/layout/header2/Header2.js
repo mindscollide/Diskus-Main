@@ -32,6 +32,7 @@ import { Select } from "antd";
 import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
 import { useRef } from "react";
 import LanguageSelector from "../../elements/languageSelector/Language-selector";
+import ModalMeeting from "../../../container/modalmeeting/ModalMeeting";
 
 const Header2 = () => {
   const location = useLocation();
@@ -41,6 +42,7 @@ const Header2 = () => {
   const { NotificationData, UserProfileData, GetUserDetailsResponse } =
     settingReducer;
   const navigate = useNavigate();
+  const [createMeetingModal, setCreateMeetingModal] = useState(false);
   const dispatch = useDispatch();
   const [reload, setReload] = useState(false);
   const [currentUserName, setCurrentUserName] = useState("");
@@ -162,6 +164,11 @@ const Header2 = () => {
   const logoutFunction = () => {
     dispatch(signOut(navigate));
   };
+
+  const openMeetingModal = () => {
+    console.log("openMeetingModal");
+    setCreateMeetingModal(true);
+  };
   // const handleOutsideClick = (event) => {
   //   if (
   //     languageref.current &&
@@ -208,8 +215,11 @@ const Header2 = () => {
                     }
                     onClick={dropDownMenuFunction}
                   >
-                    <Dropdown.Item className="d-flex title-className">
-                      {t("Quick-meeting")}
+                    <Dropdown.Item
+                      className="d-flex title-className"
+                      onClick={openMeetingModal}
+                    >
+                      <span>{t("Quick-meeting")}</span>
                     </Dropdown.Item>
                     <Dropdown.Item className="d-flex title-className">
                       {t("Upload-document")}
@@ -424,7 +434,10 @@ const Header2 = () => {
                     }
                     onClick={dropDownMenuFunction}
                   >
-                    <Dropdown.Item className="d-flex title-className">
+                    <Dropdown.Item
+                      className="d-flex title-className"
+                      onClick={openMeetingModal}
+                    >
                       {t("Quick-meeting")}
                     </Dropdown.Item>
                     <Dropdown.Item className="d-flex title-className">
@@ -650,6 +663,12 @@ const Header2 = () => {
           setEditFlag={setEditFlag}
         />
       ) : null}
+      {createMeetingModal && (
+        <ModalMeeting
+          show={createMeetingModal}
+          setShow={setCreateMeetingModal}
+        />
+      )}
     </>
   );
 };
