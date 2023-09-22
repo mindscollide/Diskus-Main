@@ -354,11 +354,7 @@ const EditResolution = ({ setCancelresolution }) => {
   // };
   const searchFilterHandler = (value) => {
     let allAssignees = assignees.user;
-    if (
-      allAssignees !== undefined &&
-      allAssignees !== null &&
-      allAssignees !== []
-    ) {
+    if (allAssignees !== undefined && allAssignees !== null) {
       return allAssignees
         .filter((item) => {
           const searchTerm = value.toLowerCase();
@@ -376,6 +372,7 @@ const EditResolution = ({ setCancelresolution }) => {
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
               alt=""
               className="user-img"
+              draggable="false"
             />
             <p className="p-0 m-0">{item.name}</p>
           </div>
@@ -1921,6 +1918,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                                                       data.name
                                                                     )
                                                                   }
+                                                                  draggable="false"
                                                                 />
                                                               }
                                                             />
@@ -2052,6 +2050,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                                                       data.name
                                                                     )
                                                                   }
+                                                                  draggable="false"
                                                                 />
                                                               }
                                                             />
@@ -2114,6 +2113,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                                 className={
                                                   styles["Leftpolygon"]
                                                 }
+                                                draggable="false"
                                               />
                                             </>
                                           ) : null}
@@ -2255,6 +2255,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                                                   index
                                                                 )
                                                               }
+                                                              draggable="false"
                                                             />
                                                           </span>
                                                           <p className="modaltodolist-attachment-text  FontArabicRegular">
@@ -2283,6 +2284,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                                     width="20px"
                                                     height="15px"
                                                     alt=""
+                                                    draggable="false"
                                                   />
                                                 }
                                                 onClick={Slideright}
@@ -2317,6 +2319,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                             width="18.87px"
                                             height="18.87px"
                                             alt=""
+                                            draggable="false"
                                           />
                                         </span>
                                       </p>

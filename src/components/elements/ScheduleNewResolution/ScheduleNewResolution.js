@@ -294,13 +294,8 @@ const ScheduleNewResolution = () => {
   };
 
   const searchFilterHandler = (value) => {
-    let allAssignees = assignees.user;
-    if (
-      allAssignees !== undefined &&
-      allAssignees !== null &&
-      allAssignees.length > 0
-    ) {
-      return allAssignees
+    if (meetingAttendeesList !== undefined && meetingAttendeesList !== null) {
+      return meetingAttendeesList
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
@@ -320,41 +315,7 @@ const ScheduleNewResolution = () => {
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
               alt=""
               className="user-img"
-            />
-            <p className="p-0 m-0">{item.name}</p>
-          </div>
-        ));
-    } else {
-      setEmailValue("");
-    }
-  };
-  const searchFilterHandlerforVoter = (value) => {
-    let allAssignees = assignees.user;
-    if (
-      allAssignees !== undefined &&
-      allAssignees !== null &&
-      allAssignees.length > 0
-    ) {
-      return allAssignees
-        .filter((item) => {
-          const searchTerm = value.toLowerCase();
-          const assigneesName = item.name.toLowerCase();
-          return (
-            searchTerm && assigneesName.startsWith(searchTerm)
-            // assigneesName !== searchTerm.toLowerCase()
-          );
-        })
-        .slice(0, 10)
-        .map((item) => (
-          <div
-            onClick={() => onSearch(item.name, item.pK_UID)}
-            className="dropdown-row-assignee d-flex align-items-center flex-row"
-            key={item.pK_UID}
-          >
-            <img
-              src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
-              alt=""
-              className="user-img"
+              draggable="false"
             />
             <p className="p-0 m-0">{item.name}</p>
           </div>
@@ -1580,11 +1541,9 @@ const ScheduleNewResolution = () => {
                                     placeholder={`${t("Add-attendees")}*`}
                                     className="taskassignee"
                                     value={taskAssignedToInput}
-                                    filteredDataHandler={() =>
-                                      searchFilterHandlerforVoter(
-                                        taskAssignedToInput
-                                      )
-                                    }
+                                    filteredDataHandler={searchFilterHandler(
+                                      taskAssignedToInput
+                                    )}
                                     applyClass={"search_voterInput"}
                                     change={onChangeSearch}
                                     onclickFlag={onclickFlag}
@@ -1675,6 +1634,7 @@ const ScheduleNewResolution = () => {
                                                               data.name
                                                             )
                                                           }
+                                                          draggable="false"
                                                         />
                                                       }
                                                     />
@@ -1707,7 +1667,7 @@ const ScheduleNewResolution = () => {
                                       taskAssignedToInput
                                     )}
                                     change={onChangeSearch}
-                                    // onclickFlag={onclickFlag}
+                                    onclickFlag={onclickFlag}
                                   />
                                 </Col>
 
@@ -1781,6 +1741,7 @@ const ScheduleNewResolution = () => {
                                                               data.name
                                                             )
                                                           }
+                                                          draggable="false"
                                                         />
                                                       }
                                                     />
@@ -1828,6 +1789,7 @@ const ScheduleNewResolution = () => {
                                               src={Leftploygon}
                                               width="20px"
                                               height="15px"
+                                              draggable="false"
                                             />
                                           }
                                           onClick={SlideLeft}
@@ -1967,6 +1929,7 @@ const ScheduleNewResolution = () => {
                                                             index
                                                           )
                                                         }
+                                                        draggable="false"
                                                       />
                                                     </span>
                                                     <p className="modaltodolist-attachment-text">
@@ -1989,6 +1952,7 @@ const ScheduleNewResolution = () => {
                                               src={Rightploygon}
                                               width="20px"
                                               height="15px"
+                                              draggable="false"
                                             />
                                           }
                                           onClick={Slideright}
@@ -2020,6 +1984,7 @@ const ScheduleNewResolution = () => {
                                       src={featherupload}
                                       width="18.87px"
                                       height="18.87px"
+                                      draggable="false"
                                     />
                                   </span>
                                 </p>

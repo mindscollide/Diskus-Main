@@ -24,17 +24,8 @@ const Welcome = (props) => {
         <Col className={styles["overlay"]}></Col>
         <Col className={styles["overlay-content"]}>
           <h3>{t("Welcome-to")}</h3>
-          <img src={DiskusLogo}/>
+          <img draggable="false" src={DiskusLogo} />
           <p>{t("Your-one-stop-solution-to-meeting-management")}</p>
-          {/* <Row className="w-75">
-            <Col sm={12}>
-              <ArrowRight
-                fontSize={52}
-                cursor="pointer"
-                onClick={increaseStep}
-              />
-            </Col>
-          </Row> */}
         </Col>
       </Row>
     </Container>

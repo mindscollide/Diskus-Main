@@ -360,6 +360,7 @@ const VerifyEmailOTP = () => {
                     className="d-flex justify-content-center "
                   >
                     <img
+                      draggable="false"
                       src={DiskusLogo}
                       alt="diskus_logo"
                       width="225px"
@@ -453,6 +454,7 @@ const VerifyEmailOTP = () => {
             </Col>
             <Col md={4} lg={4} sm={12} className="position-relative">
               <img
+                draggable="false"
                 src={DiskusAuthPageLogo}
                 alt="auth_icon"
                 width="600px"

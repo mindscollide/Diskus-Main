@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react"
-import { Container, Row, Col } from "react-bootstrap"
-import { useTranslation } from "react-i18next"
-import Newprofile from "../../../assets/images/newprofile.png"
-import { Paper } from "@material-ui/core"
+import React, { useEffect, useState } from "react";
+import { Container, Row, Col } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import Newprofile from "../../../assets/images/newprofile.png";
+import { Paper } from "@material-ui/core";
 import {
   TextField,
   Button,
@@ -10,40 +10,40 @@ import {
   SelectBox,
   InputSearchFilter,
   Notification,
-} from "./../../../components/elements"
-import userImage from "../../../assets/images/user.png"
-import styles from "./UpadateGroup.module.css"
-import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg"
-import Groups from "../../../container/Groups/Groups"
-import { useDispatch, useSelector } from "react-redux"
+} from "./../../../components/elements";
+import userImage from "../../../assets/images/user.png";
+import styles from "./UpadateGroup.module.css";
+import CrossIcon from "../../../assets/images/cancel_meeting_icon.svg";
+import Groups from "../../../container/Groups/Groups";
+import { useDispatch, useSelector } from "react-redux";
 import {
   getGroupMembersRoles,
   getOrganizationGroupTypes,
   updateGroup,
-} from "../../../store/actions/Groups_actions"
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees"
-import { useNavigate } from "react-router-dom"
-import CustomModal from "../modal/Modal"
-import ConfirmationModal from "../confirmationModal/ConfirmationModal"
+} from "../../../store/actions/Groups_actions";
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+import { useNavigate } from "react-router-dom";
+import CustomModal from "../modal/Modal";
+import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 const UpdateGroupPage = ({ setUpdateComponentpage }) => {
-  const creatorID = JSON.parse(localStorage.getItem("userID"))
-  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false)
-  const navigate = useNavigate()
-  const [viewUpdateGroup, setViewUpdateGroup] = useState(true)
-  const { t } = useTranslation()
+  const creatorID = JSON.parse(localStorage.getItem("userID"));
+  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
+  const navigate = useNavigate();
+  const [viewUpdateGroup, setViewUpdateGroup] = useState(true);
+  const { t } = useTranslation();
   const [open, setOpen] = useState({
     flag: false,
     message: "",
-  })
-  const [erorbar, setErrorBar] = useState(false)
-  const { assignees, GroupsReducer } = useSelector((state) => state)
-  const dispatch = useDispatch()
+  });
+  const [erorbar, setErrorBar] = useState(false);
+  const { assignees, GroupsReducer } = useSelector((state) => state);
+  const dispatch = useDispatch();
   // for meatings  Attendees List
-  const [meetingAttendeesList, setMeetingAttendeesList] = useState([])
-  const [taskAssignedToInput, setTaskAssignedToInput] = useState("")
-  const [taskAssignedTo, setTaskAssignedTo] = useState(0)
-  const [taskAssignedName, setTaskAssignedName] = useState("")
-  const [attendees, setAttendees] = useState([])
+  const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
+  const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
+  const [taskAssignedTo, setTaskAssignedTo] = useState(0);
+  const [taskAssignedName, setTaskAssignedName] = useState("");
+  const [attendees, setAttendees] = useState([]);
   const [GroupDetails, setGroupDetails] = useState({
     Title: "",
     GroupID: 0,
@@ -52,33 +52,33 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     isGroupChat: true,
     GroupTypeID: 0,
     GroupStatusID: 0,
-  })
-  console.log("GroupDetailsGroupDetails", GroupDetails)
-  const [onclickFlag, setOnclickFlag] = useState(false)
-  const [membersData, setMembersData] = useState([])
-  const [groupMembers, setGroupMembers] = useState([])
+  });
+  console.log("GroupDetailsGroupDetails", GroupDetails);
+  const [onclickFlag, setOnclickFlag] = useState(false);
+  const [membersData, setMembersData] = useState([]);
+  const [groupMembers, setGroupMembers] = useState([]);
   // for   select participant Role Name
-  const [participantRoleName, setParticipantRoleName] = useState("")
-  const participantOptions = [t("Head"), t("Regular")]
-  const [groupTypeOptions, setGroupTypeOptions] = useState([])
-  const [participantRoles, setParticipantRoles] = useState([])
-  const [groupTypeValue, setGroupTypeValue] = useState("")
-  const [organizationGroupType, setOrganizationGroupType] = useState([])
+  const [participantRoleName, setParticipantRoleName] = useState("");
+  const participantOptions = [t("Head"), t("Regular")];
+  const [groupTypeOptions, setGroupTypeOptions] = useState([]);
+  const [participantRoles, setParticipantRoles] = useState([]);
+  const [groupTypeValue, setGroupTypeValue] = useState("");
+  const [organizationGroupType, setOrganizationGroupType] = useState([]);
   // for Participant id's
   const participantOptionsWithIDs = [
     { label: t("Head"), id: 2 },
     { label: t("Regular"), id: 1 },
-  ]
+  ];
 
   useEffect(() => {
-    let organizationID = JSON.parse(localStorage.getItem("organizationID"))
+    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
       OrganizationID: organizationID,
-    }
-    dispatch(allAssignessList(navigate, t))
-    dispatch(getGroupMembersRoles(navigate, Data, t))
-    dispatch(getOrganizationGroupTypes(navigate, Data, t))
-  }, [])
+    };
+    dispatch(allAssignessList(navigate, t));
+    dispatch(getGroupMembersRoles(navigate, Data, t));
+    dispatch(getOrganizationGroupTypes(navigate, Data, t));
+  }, []);
 
   //Drop Down Values
   // const searchFilterHandler = (value) => {
@@ -114,8 +114,8 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
   //   }
   // };
   const searchFilterHandler = (value) => {
-    let allAssignees = assignees.user
-    console.log("Input Value", allAssignees)
+    let allAssignees = assignees.user;
+    console.log("Input Value", allAssignees);
     if (
       allAssignees != undefined &&
       allAssignees != null &&
@@ -124,15 +124,15 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
     ) {
       return allAssignees
         .filter((item) => {
-          const searchTerm = value.toLowerCase()
-          const assigneesName = item.name.toLowerCase()
-          console.log("Input Value in searchTerm", searchTerm)
-          console.log("Input Value in assigneesName", assigneesName)
+          const searchTerm = value.toLowerCase();
+          const assigneesName = item.name.toLowerCase();
+          console.log("Input Value in searchTerm", searchTerm);
+          console.log("Input Value in assigneesName", assigneesName);
 
           return (
             searchTerm && assigneesName.startsWith(searchTerm)
             // assigneesName !== searchTerm.toLowerCase()
-          )
+          );
         })
         .slice(0, 10)
         .map((item) => (
@@ -146,134 +146,137 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
               alt=""
               className="user-img"
+              draggable="false"
             />
             <p className="p-0 m-0">{item.name}</p>
           </div>
-        ))
+        ));
     } else {
-      console.log("not found")
+      console.log("not found");
     }
-  }
+  };
 
   const onSearch = (name, id) => {
-    setOnclickFlag(true)
-    setTaskAssignedToInput(name)
-    setTaskAssignedTo(id)
-    setTaskAssignedName(name)
-  }
+    setOnclickFlag(true);
+    setTaskAssignedToInput(name);
+    setTaskAssignedTo(id);
+    setTaskAssignedName(name);
+  };
 
   // for meatings  Attendees
 
   // for attendies Role handler
   const assigntRoleAttendies = (e, value) => {
-    setParticipantRoleName(value)
-  }
+    setParticipantRoleName(value);
+  };
 
   const handleAddAttendees = () => {
-    console.log("taskAssignedTo", taskAssignedTo)
+    console.log("taskAssignedTo", taskAssignedTo);
 
     if (taskAssignedTo != 0 && attendees.length > 0) {
-      console.log("taskAssignedTo", taskAssignedTo)
+      console.log("taskAssignedTo", taskAssignedTo);
 
       setOpen({
         flag: true,
         message: t("You-can-add-data-only-from-one-form-option-at-a-time"),
-      })
-      setAttendees([])
-      setTaskAssignedTo(0)
-      setParticipantRoleName("")
-      setTaskAssignedToInput("")
+      });
+      setAttendees([]);
+      setTaskAssignedTo(0);
+      setParticipantRoleName("");
+      setTaskAssignedToInput("");
     } else if (taskAssignedTo != 0) {
-      var foundIndex = membersData.findIndex((x) => x.FK_UID === taskAssignedTo)
-      console.log("taskAssignedTo", membersData)
-      console.log("taskAssignedTo", foundIndex)
+      var foundIndex = membersData.findIndex(
+        (x) => x.FK_UID === taskAssignedTo
+      );
+      console.log("taskAssignedTo", membersData);
+      console.log("taskAssignedTo", foundIndex);
       if (participantRoleName === "") {
         setOpen({
           flag: true,
           message: t("Please-select-group-member-type-also"),
-        })
+        });
       } else {
         if (foundIndex === -1) {
-          let roleID
+          let roleID;
           participantRoles.map((data, index) => {
-            console.log("taskAssignedTo12", data)
-            console.log("taskAssignedTo12", participantRoleName)
+            console.log("taskAssignedTo12", data);
+            console.log("taskAssignedTo12", participantRoleName);
 
             if (data.label === participantRoleName) {
-              roleID = data.id
-              console.log("taskAssignedTo12", roleID)
+              roleID = data.id;
+              console.log("taskAssignedTo12", roleID);
 
               membersData.push({
                 FK_UID: taskAssignedTo, //userid
                 FK_GRMRID: data.id, //group member role id
                 FK_GRID: 0, //group id
-              })
-              console.log("taskAssignedTo12", membersData)
+              });
+              console.log("taskAssignedTo12", membersData);
 
-              setMembersData([...membersData])
+              setMembersData([...membersData]);
             }
             setGroupDetails({
               ...GroupDetails,
               GroupMembers: membersData,
-            })
-          })
+            });
+          });
           if (meetingAttendeesList.length > 0) {
             meetingAttendeesList.map((data, index) => {
-              console.log("taskAssignedTo13", meetingAttendeesList)
-              console.log("taskAssignedTo13", data)
+              console.log("taskAssignedTo13", meetingAttendeesList);
+              console.log("taskAssignedTo13", data);
 
               if (data.pK_UID === taskAssignedTo) {
-                console.log("taskAssignedTo13", data.pK_UID)
+                console.log("taskAssignedTo13", data.pK_UID);
 
                 groupMembers.push({
                   data,
                   role: roleID,
-                })
-                console.log("taskAssignedTo13", groupMembers)
+                });
+                console.log("taskAssignedTo13", groupMembers);
 
-                setGroupMembers([...groupMembers])
+                setGroupMembers([...groupMembers]);
               }
-            })
+            });
           }
 
-          setTaskAssignedTo(0)
-          setParticipantRoleName("")
-          setTaskAssignedToInput("")
+          setTaskAssignedTo(0);
+          setParticipantRoleName("");
+          setTaskAssignedToInput("");
         } else {
-          console.log("taskAssignedTo", foundIndex)
+          console.log("taskAssignedTo", foundIndex);
           setOpen({
             flag: true,
             message: t("User-already-exist"),
-          })
-          setTaskAssignedTo(0)
-          setParticipantRoleName("")
-          setTaskAssignedToInput("")
+          });
+          setTaskAssignedTo(0);
+          setParticipantRoleName("");
+          setTaskAssignedToInput("");
         }
       }
     } else if (attendees.length > 0) {
-      console.log("taskAssignedTo", taskAssignedTo)
+      console.log("taskAssignedTo", taskAssignedTo);
 
-      let check = false
+      let check = false;
       let participantOptionsWithID =
         participantOptionsWithIDs &&
         participantOptionsWithIDs.find(
           (data, index) => data.label === participantRoleName
-        )
+        );
       attendees.map((data, index) => {
         membersData.map((data2, index) => {
-          console.log("found2found2found2", data, data2, data === data2.FK_UID)
+          console.log("found2found2found2", data, data2, data === data2.FK_UID);
           if (data === data2.FK_UID) {
-            check = true
+            check = true;
           }
-        })
-      })
+        });
+      });
       if (check === true) {
         setOpen({
           flag: true,
           message: t("User-already-exist"),
-        })
-        setAttendees([])
-        setParticipantRoleName("")
+        });
+        setAttendees([]);
+        setParticipantRoleName("");
       } else {
         if (participantOptionsWithID !== undefined) {
           attendees.map((dataID, index) => {
@@ -281,60 +284,60 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
               FK_UID: dataID, //userid
               FK_GRMRID: participantOptionsWithID.id, //group member role id
               FK_GRID: 0, //group id
-            })
-            setMembersData([...membersData])
+            });
+            setMembersData([...membersData]);
             meetingAttendeesList.map((data, index) => {
-              console.log("meetingAttendeesmeetingAttendees", data)
+              console.log("meetingAttendeesmeetingAttendees", data);
               if (data.pK_UID === dataID) {
-                console.log("meetingAttendeesmeetingAttendees", data)
+                console.log("meetingAttendeesmeetingAttendees", data);
                 groupMembers.push({
                   data,
                   role: participantOptionsWithID.id,
-                })
-                setGroupMembers([...groupMembers])
+                });
+                setGroupMembers([...groupMembers]);
               }
-            })
+            });
             setGroupDetails({
               ...GroupDetails,
               GroupMembers: membersData,
-            })
-            setAttendees([])
-            setParticipantRoleName("")
-          })
+            });
+            setAttendees([]);
+            setParticipantRoleName("");
+          });
         } else {
           setOpen({
             flag: true,
             message: t("Please-select-group-member-type-also"),
-          })
+          });
         }
       }
     } else {
-      console.log("taskAssignedTo", taskAssignedTo)
+      console.log("taskAssignedTo", taskAssignedTo);
 
       setOpen({
         flag: true,
         message: t("Please-select-atleast-one-members"),
-      })
+      });
     }
-  }
+  };
 
   const groupTypeChangeHandler = (e, value) => {
-    setGroupTypeValue(value)
+    setGroupTypeValue(value);
     let findID = organizationGroupType.find(
       (data, index) => data.label === value
-    )
+    );
     setGroupDetails({
       ...GroupDetails,
       GroupStatusID: findID.id,
-    })
-  }
+    });
+  };
 
   // for api reponce of list of all assignees
   useEffect(() => {
     if (assignees.user.length > 0) {
-      setMeetingAttendeesList(assignees.user)
+      setMeetingAttendeesList(assignees.user);
     }
-  }, [assignees.user])
+  }, [assignees.user]);
 
   // for api response of list group roles
   useEffect(() => {
@@ -342,108 +345,108 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       GroupsReducer.getOrganizationGroupRoles !== null &&
       GroupsReducer.getOrganizationGroupRoles.length > 0
     ) {
-      let newArr = []
+      let newArr = [];
       GroupsReducer.getOrganizationGroupRoles.map((data, index) => {
         newArr.push({
           label: data.role,
           id: data.groupRoleID,
-        })
-      })
-      setParticipantRoles([...newArr])
+        });
+      });
+      setParticipantRoles([...newArr]);
     }
-  }, [GroupsReducer.getOrganizationGroupRoles])
+  }, [GroupsReducer.getOrganizationGroupRoles]);
 
   // for api response of list group Types
   useEffect(() => {
     if (GroupsReducer.getOrganizationGroupTypes !== null) {
-      let newArr = []
-      let newArrGroupType = []
+      let newArr = [];
+      let newArrGroupType = [];
       GroupsReducer.getOrganizationGroupTypes.map((data, index) => {
         newArr.push({
           label: data.type,
           id: data.groupTypeID,
-        })
-        newArrGroupType.push(data.type)
-      })
-      setGroupTypeOptions([...newArrGroupType])
-      setOrganizationGroupType([...newArr])
+        });
+        newArrGroupType.push(data.type);
+      });
+      setGroupTypeOptions([...newArrGroupType]);
+      setOrganizationGroupType([...newArr]);
     }
-  }, [GroupsReducer.getOrganizationGroupTypes])
+  }, [GroupsReducer.getOrganizationGroupTypes]);
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setOnclickFlag(false)
+    setOnclickFlag(false);
     if (e.target.value.trimStart() != "") {
-      setTaskAssignedToInput(e.target.value.trimStart())
+      setTaskAssignedToInput(e.target.value.trimStart());
     } else {
-      setTaskAssignedToInput("")
-      setTaskAssignedTo(0)
-      setTaskAssignedName("")
+      setTaskAssignedToInput("");
+      setTaskAssignedTo(0);
+      setTaskAssignedName("");
     }
-  }
+  };
 
   // onChange Function for set input values in state
   const onChangeFunc = (e) => {
-    let name = e.target.name
-    let value = e.target.value
+    let name = e.target.name;
+    let value = e.target.value;
     if (name === "tasktitle") {
       setGroupDetails({
         ...GroupDetails,
         Title: value,
-      })
+      });
     }
     if (name === "groupdescription") {
       setGroupDetails({
         ...GroupDetails,
         Description: value,
-      })
+      });
     }
-  }
+  };
 
   // onChange function for group chat
   const CheckBoxHandler = (e) => {
     setGroupDetails({
       ...GroupDetails,
       isGroupChat: e.target.checked,
-    })
-  }
+    });
+  };
 
   const removeMemberHandler = (id) => {
     let getGroupMemberIndex = groupMembers.findIndex(
       (groupmemberdata, index) => groupmemberdata.data.pK_UID === id
-    )
+    );
     let getIndexCreateGroupDetails = membersData.findIndex(
       (data, index) => data.FK_UID === id
-    )
-    groupMembers.splice(getGroupMemberIndex, 1)
-    membersData.splice(getIndexCreateGroupDetails, 1)
-    setGroupMembers([...groupMembers])
-    setMembersData([...membersData])
-  }
-  console.log("splicesplicesplice", groupMembers)
-  console.log("splicesplicesplice", membersData)
+    );
+    groupMembers.splice(getGroupMemberIndex, 1);
+    membersData.splice(getIndexCreateGroupDetails, 1);
+    setGroupMembers([...groupMembers]);
+    setMembersData([...membersData]);
+  };
+  console.log("splicesplicesplice", groupMembers);
+  console.log("splicesplicesplice", membersData);
 
   const checkGroupMembers = (GroupMembers) => {
-    console.log("checkGroupMembers", GroupMembers)
+    console.log("checkGroupMembers", GroupMembers);
     if (Object.keys(GroupMembers).length > 0) {
-      let flag1 = GroupMembers.find((data, index) => data.FK_GRMRID === 1)
-      let flag2 = GroupMembers.find((data, index) => data.FK_GRMRID === 2)
-      console.log("checkGroupMembers", flag1, flag2)
+      let flag1 = GroupMembers.find((data, index) => data.FK_GRMRID === 1);
+      let flag2 = GroupMembers.find((data, index) => data.FK_GRMRID === 2);
+      console.log("checkGroupMembers", flag1, flag2);
 
       if (flag1 != undefined && flag2 != undefined) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     } else {
-      return false
+      return false;
     }
-  }
+  };
 
   const checkGroupHead = (groupMembers) => {
-    let flag1 = groupMembers.findIndex((data, index) => data.FK_GRMRID === 2)
-    return flag1
-  }
+    let flag1 = groupMembers.findIndex((data, index) => data.FK_GRMRID === 2);
+    return flag1;
+  };
 
   const handleUpdateGroup = () => {
     if (
@@ -455,21 +458,21 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         setOpen({
           flag: true,
           message: t("Please-add-atleast-one-group-head-and-one-group-member"),
-        })
+        });
       } else {
         if (!checkGroupMembers(membersData)) {
-          console.log("checkGroupMembers", checkGroupMembers(membersData))
+          console.log("checkGroupMembers", checkGroupMembers(membersData));
           setOpen({
             flag: true,
             message: t(
               "Please-add-atleast-one-group-head-and-one-group-member"
             ),
-          })
+          });
         } else {
-          setErrorBar(false)
+          setErrorBar(false);
           let OrganizationID = JSON.parse(
             localStorage.getItem("organizationID")
-          )
+          );
           let Data = {
             GroupDetails: {
               CreatorID: GroupDetails.CreatorID,
@@ -482,63 +485,63 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
               OrganizationID: OrganizationID,
             },
             GroupMembers: membersData,
-          }
-          dispatch(updateGroup(navigate, Data, t, setUpdateComponentpage))
+          };
+          dispatch(updateGroup(navigate, Data, t, setUpdateComponentpage));
         }
       }
     } else {
-      setErrorBar(true)
+      setErrorBar(true);
       setOpen({
         flag: true,
         message: t("Please-fill-all-the-fields"),
-      })
+      });
     }
-  }
+  };
   const checkAttendeeBox = (data, id, index) => {
     if (attendees.includes(id)) {
-      let attendIndex = attendees.findIndex((data, index) => data === id)
+      let attendIndex = attendees.findIndex((data, index) => data === id);
       if (attendIndex !== -1) {
-        attendees.splice(attendIndex, 1)
-        setAttendees([...attendees])
+        attendees.splice(attendIndex, 1);
+        setAttendees([...attendees]);
       }
     } else {
-      attendees.push(id)
-      setAttendees([...attendees])
+      attendees.push(id);
+      setAttendees([...attendees]);
     }
-  }
+  };
 
   useEffect(() => {
     if (GroupsReducer.getGroupByGroupIdResponse !== null) {
-      let groupDetails = GroupsReducer.getGroupByGroupIdResponse
-      console.log(groupDetails, "groupDetailsgroupDetailsgroupDetails")
+      let groupDetails = GroupsReducer.getGroupByGroupIdResponse;
+      console.log(groupDetails, "groupDetailsgroupDetailsgroupDetails");
       console.log(
         GroupsReducer.getGroupByGroupIdResponse.isTalk,
         "groupDetailsgroupDetailsgroupDetails"
-      )
-      let newArr = []
-      let newData = []
+      );
+      let newArr = [];
+      let newData = [];
       if (groupDetails.groupMembers.length > 0) {
         groupDetails.groupMembers.map((memberData, index) => {
           newArr.push({
             FK_UID: memberData.pK_UID,
             FK_GRMRID: memberData.groupRole.groupRoleID,
             FK_GRID: memberData.groupID,
-          })
+          });
           if (meetingAttendeesList.length > 0) {
             meetingAttendeesList.map((data, index) => {
               if (data.pK_UID === memberData.pK_UID) {
                 return newData.push({
                   data,
                   role: memberData.groupRole.groupRoleID,
-                })
+                });
               }
-            })
+            });
           }
-        })
+        });
       }
-      setMembersData(newArr)
-      setGroupMembers(newData)
-      setGroupTypeValue(groupDetails.groupType.type)
+      setMembersData(newArr);
+      setGroupMembers(newData);
+      setGroupTypeValue(groupDetails.groupType.type);
       setGroupDetails({
         CreatorID: groupDetails.creatorID,
         GroupID: groupDetails.groupID,
@@ -547,9 +550,9 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
         isGroupChat: groupDetails.isTalk,
         GroupTypeID: groupDetails.groupType.groupTypeID,
         GroupStatusID: groupDetails.groupStatus.groupStatusID,
-      })
+      });
     }
-  }, [GroupsReducer.getGroupByGroupIdResponse, meetingAttendeesList])
+  }, [GroupsReducer.getGroupByGroupIdResponse, meetingAttendeesList]);
 
   return (
     <>
@@ -743,6 +746,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                             width={50}
                                             height={50}
                                             alt=""
+                                            draggable="false"
                                           />
                                         </Col>
                                         <Col
@@ -819,13 +823,14 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                   data.data.pK_UID
                                                 )
                                               }
+                                              draggable="false"
                                             />
                                           </Col>
                                         </>
                                         {/* )} */}
                                       </Row>
                                     </Col>
-                                  )
+                                  );
                                 }
                               })
                             ) : (
@@ -862,6 +867,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                             width={50}
                                             height={50}
                                             alt=""
+                                            draggable="false"
                                           />
                                         </Col>
                                         <Col
@@ -936,11 +942,12 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                 data.data.pK_UID
                                               )
                                             }
+                                            draggable="false"
                                           />
                                         </Col>
                                       </Row>
                                     </Col>
-                                  )
+                                  );
                                 }
                               })
                             ) : (
@@ -1039,6 +1046,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                   src={`data:image/jpeg;base64,${attendeelist.displayProfilePictureName}`}
                                                   width={50}
                                                   height={50}
+                                                  draggable="false"
                                                 />
                                               </Col>
 
@@ -1125,7 +1133,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
                                                 />
                                               </Col>
                                             </Row>
-                                          )
+                                          );
                                         }
                                       )
                                     : null}
@@ -1172,7 +1180,7 @@ const UpdateGroupPage = ({ setUpdateComponentpage }) => {
       />
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
-  )
-}
+  );
+};
 
-export default UpdateGroupPage
+export default UpdateGroupPage;

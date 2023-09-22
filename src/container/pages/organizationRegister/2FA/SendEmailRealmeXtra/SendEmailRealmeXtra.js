@@ -200,7 +200,7 @@ const SendEmailRealmeXtra = () => {
               </option>
             ))}
           </select>
-          <img
+          <img draggable="false"
             src={LanguageChangeIcon}
             className="languageIcon_sendmailwithdevice"
           />
@@ -235,7 +235,12 @@ const SendEmailRealmeXtra = () => {
                         lg={12}
                         className="d-flex justify-content-center "
                       >
-                        <img src={img1} width={220} alt="diskus_logo" />
+                        <img
+                          draggable="false"
+                          src={img1}
+                          width={220}
+                          alt="diskus_logo"
+                        />
                       </Col>
                     </Row>
 
@@ -261,6 +266,7 @@ const SendEmailRealmeXtra = () => {
                           <Row>
                             <Col sm={12} md={1} lg={1}>
                               <img
+                                draggable="false"
                                 width={"15px"}
                                 className={
                                   !xtrazoom
@@ -298,6 +304,7 @@ const SendEmailRealmeXtra = () => {
                           <Row className="my-2">
                             <Col sm={12} md={1} lg={1}>
                               <img
+                                draggable="false"
                                 width={"17px"}
                                 className={
                                   !codeemail
@@ -333,6 +340,7 @@ const SendEmailRealmeXtra = () => {
                           <Row>
                             <Col sm={12} md={1} lg={1}>
                               <img
+                                draggable="false"
                                 width={"17px"}
                                 className={
                                   !codesms
@@ -392,6 +400,7 @@ const SendEmailRealmeXtra = () => {
             <Row>
               <Col sm={12} md={6} lg={6} className="position-relative">
                 <img
+                  draggable="false"
                   src={img2}
                   alt="auth_icon"
                   width="380px"
@@ -400,6 +409,7 @@ const SendEmailRealmeXtra = () => {
               </Col>
               <Col sm={12} md={6} lg={6} className="position-relative vh-100">
                 <img
+                  draggable="false"
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
                   width="600px"

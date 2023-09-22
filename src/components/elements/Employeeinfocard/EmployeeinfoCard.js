@@ -1,8 +1,8 @@
-import { Col, Row, Container } from "react-bootstrap"
-import userImage from "./../../../assets/images/user.png"
-import newprofile from "../../../assets/images/newprofile.png"
-import thumbsup from "../../../assets/images/thumbsup.svg"
-import styles from "./EmployeeinfoCard.module.css"
+import { Col, Row, Container } from "react-bootstrap";
+import userImage from "./../../../assets/images/user.png";
+import newprofile from "../../../assets/images/newprofile.png";
+import thumbsup from "../../../assets/images/thumbsup.svg";
+import styles from "./EmployeeinfoCard.module.css";
 
 const EmployeeinfoCard = ({
   Employeename,
@@ -11,9 +11,9 @@ const EmployeeinfoCard = ({
   EmployeePic,
   IconOnClick,
 }) => {
-  console.log(EmployeePic, "EmployeePicEmployeePicEmployeePic")
+  console.log(EmployeePic, "EmployeePicEmployeePicEmployeePic");
   //   let UserName = localStorage.getItem("UserName");
-  let currentLanguage = localStorage.getItem("i18nextLng")
+  let currentLanguage = localStorage.getItem("i18nextLng");
   return (
     <>
       <Row>
@@ -24,6 +24,7 @@ const EmployeeinfoCard = ({
             height="50px"
             className="rounded-circle"
             alt=""
+            draggable="false"
           />
         </Col>
         <Col lg={7} md={12} sm={12} className={styles["Lineheight"]}>
@@ -51,6 +52,6 @@ const EmployeeinfoCard = ({
         </Col>
       </Row>
     </>
-  )
-}
-export default EmployeeinfoCard
+  );
+};
+export default EmployeeinfoCard;

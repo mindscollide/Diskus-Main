@@ -120,7 +120,12 @@ const TwoFactor = () => {
                   lg={12}
                   className="d-flex justify-content-center "
                 >
-                  <img src={DiskusLogo} alt="diskus_logo" width={220} />
+                  <img
+                    draggable="false"
+                    src={DiskusLogo}
+                    alt="diskus_logo"
+                    width={220}
+                  />
                 </Col>
               </Row>
 
@@ -147,6 +152,7 @@ const TwoFactor = () => {
                       <Col sm={12} md={1} lg={1}>
                         {" "}
                         <img
+                          draggable="false"
                           width={"15px"}
                           className={
                             !sendCodeEmailPhone
@@ -186,6 +192,7 @@ const TwoFactor = () => {
                     <Row className="mt-1">
                       <Col sm={12} md={1} lg={1}>
                         <img
+                          draggable="false"
                           width={"17px"}
                           src={img5}
                           className={
@@ -254,6 +261,7 @@ const TwoFactor = () => {
             <Row>
               <Col sm={12} md={6} lg={6} className="position-relative">
                 <img
+                  draggable="false"
                   src={img2}
                   alt="auth_icon"
                   width="380px"
@@ -262,6 +270,7 @@ const TwoFactor = () => {
               </Col>
               <Col sm={12} md={6} lg={6} className="position-relative vh-100">
                 <img
+                  draggable="false"
                   src={img3}
                   alt="auth_icon"
                   width="600px"

@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react"
-import { Container, Row, Col, Form } from "react-bootstrap"
-import { useTranslation } from "react-i18next"
-import Newprofile from "../../../assets/images/newprofile.png"
-import { Paper } from "@material-ui/core"
-import userImage from "../../../assets/images/user.png"
-import deleteButtonCreateMeeting from "../../../assets/images/cancel_meeting_icon.svg"
+import React, { useEffect, useState } from "react";
+import { Container, Row, Col, Form } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import Newprofile from "../../../assets/images/newprofile.png";
+import { Paper } from "@material-ui/core";
+import userImage from "../../../assets/images/user.png";
+import deleteButtonCreateMeeting from "../../../assets/images/cancel_meeting_icon.svg";
 import {
   TextField,
   Button,
@@ -13,38 +13,38 @@ import {
   InputSearchFilter,
   Notification,
   Loader,
-} from "./../../../components/elements"
-import styles from "./CreateGroup.module.css"
-import { useSelector, useDispatch } from "react-redux"
+} from "./../../../components/elements";
+import styles from "./CreateGroup.module.css";
+import { useSelector, useDispatch } from "react-redux";
 import {
   createGroup,
   getGroupMembersRoles,
   getOrganizationGroupTypes,
-} from "../../../store/actions/Groups_actions"
-import { render } from "@testing-library/react"
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees"
-import { useRef } from "react"
-import { useNavigate } from "react-router-dom"
-import ConfirmationModal from "../confirmationModal/ConfirmationModal"
+} from "../../../store/actions/Groups_actions";
+import { render } from "@testing-library/react";
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 const CreateGroup = ({ setCreategrouppage }) => {
-  const { t } = useTranslation()
+  const { t } = useTranslation();
   const [open, setOpen] = useState({
     flag: false,
     message: "",
-  })
-  const { assignees, GroupsReducer } = useSelector((state) => state)
-  console.log("GroupsReducerGroupsReducer", GroupsReducer)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
-  let creatorID = JSON.parse(localStorage.getItem("userID"))
+  });
+  const { assignees, GroupsReducer } = useSelector((state) => state);
+  console.log("GroupsReducerGroupsReducer", GroupsReducer);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  let creatorID = JSON.parse(localStorage.getItem("userID"));
   // for meatings  Attendees List
-  const [meetingAttendeesList, setMeetingAttendeesList] = useState([])
-  const [taskAssignedToInput, setTaskAssignedToInput] = useState("")
-  const [taskAssignedTo, setTaskAssignedTo] = useState(0)
-  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false)
-  const [taskAssignedName, setTaskAssignedName] = useState("")
-  const [erorbar, setErrorBar] = useState(false)
-  const [attendees, setAttendees] = useState([])
+  const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
+  const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
+  const [taskAssignedTo, setTaskAssignedTo] = useState(0);
+  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
+  const [taskAssignedName, setTaskAssignedName] = useState("");
+  const [erorbar, setErrorBar] = useState(false);
+  const [attendees, setAttendees] = useState([]);
   const [createGroupDetails, setCreateGroupDetails] = useState({
     Title: "",
     Description: "",
@@ -53,35 +53,35 @@ const CreateGroup = ({ setCreategrouppage }) => {
     CreatorID: 0,
     GroupStatusID: 0,
     GroupMembers: [],
-  })
-  console.log("createGroupDetails", createGroupDetails)
-  const GroupeTitle = useRef(null)
-  const [groupMembers, setGroupMembers] = useState([])
+  });
+  console.log("createGroupDetails", createGroupDetails);
+  const GroupeTitle = useRef(null);
+  const [groupMembers, setGroupMembers] = useState([]);
   // for   select participant Role Name
-  const [participantRoleName, setParticipantRoleName] = useState(t("Regular"))
-  const participantOptions = [t("Head"), t("Regular")]
-  const [groupTypeOptions, setGroupTypeOptions] = useState([])
-  const [participantRoles, setParticipantRoles] = useState([])
-  const [groupTypeValue, setGroupTypeValue] = useState("")
-  const [organizationGroupType, setOrganizationGroupType] = useState([])
-  const [meetingAttendees, setMeetingAttendees] = useState([])
-  console.log(meetingAttendees, "attendeesattendeesattendees")
-  const [onclickFlag, setOnclickFlag] = useState(false)
+  const [participantRoleName, setParticipantRoleName] = useState(t("Regular"));
+  const participantOptions = [t("Head"), t("Regular")];
+  const [groupTypeOptions, setGroupTypeOptions] = useState([]);
+  const [participantRoles, setParticipantRoles] = useState([]);
+  const [groupTypeValue, setGroupTypeValue] = useState("");
+  const [organizationGroupType, setOrganizationGroupType] = useState([]);
+  const [meetingAttendees, setMeetingAttendees] = useState([]);
+  console.log(meetingAttendees, "attendeesattendeesattendees");
+  const [onclickFlag, setOnclickFlag] = useState(false);
   // for Participant id's
   const participantOptionsWithIDs = [
     { label: t("Head"), id: 2 },
     { label: t("Regular"), id: 1 },
-  ]
+  ];
   useEffect(() => {
-    let organizationID = JSON.parse(localStorage.getItem("organizationID"))
-    GroupeTitle.current.focus()
+    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
+    GroupeTitle.current.focus();
     let Data = {
       OrganizationID: organizationID,
-    }
-    dispatch(allAssignessList(navigate, t))
-    dispatch(getGroupMembersRoles(navigate, Data, t))
-    dispatch(getOrganizationGroupTypes(navigate, Data, t))
-  }, [])
+    };
+    dispatch(allAssignessList(navigate, t));
+    dispatch(getGroupMembersRoles(navigate, Data, t));
+    dispatch(getOrganizationGroupTypes(navigate, Data, t));
+  }, []);
 
   //Drop Down Values
   // const searchFilterHandler = (value) => {
@@ -117,8 +117,8 @@ const CreateGroup = ({ setCreategrouppage }) => {
   //   }
   // };
   const searchFilterHandler = (value) => {
-    let allAssignees = assignees.user
-    console.log("Input Value", allAssignees)
+    let allAssignees = assignees.user;
+    console.log("Input Value", allAssignees);
     if (
       allAssignees != undefined &&
       allAssignees != null &&
@@ -127,15 +127,15 @@ const CreateGroup = ({ setCreategrouppage }) => {
     ) {
       return allAssignees
         .filter((item) => {
-          const searchTerm = value.toLowerCase()
-          const assigneesName = item.name.toLowerCase()
-          console.log("Input Value in searchTerm", searchTerm)
-          console.log("Input Value in assigneesName", assigneesName)
+          const searchTerm = value.toLowerCase();
+          const assigneesName = item.name.toLowerCase();
+          console.log("Input Value in searchTerm", searchTerm);
+          console.log("Input Value in assigneesName", assigneesName);
 
           return (
             searchTerm && assigneesName.startsWith(searchTerm)
             // assigneesName !== searchTerm.toLowerCase()
-          )
+          );
         })
         .slice(0, 10)
         .map((item) => (
@@ -149,39 +149,40 @@ const CreateGroup = ({ setCreategrouppage }) => {
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
               alt=""
               className="user-img"
+              draggable="false"
             />
             <p className="p-0 m-0">{item.name}</p>
           </div>
-        ))
+        ));
     } else {
-      console.log("not found")
+      console.log("not found");
     }
-  }
+  };
   const onSearch = (name, id) => {
-    console.log("name id", name, id)
-    setOnclickFlag(true)
-    setTaskAssignedToInput(name)
-    setTaskAssignedTo(id)
-    setTaskAssignedName(name)
-  }
-  console.log("name id", taskAssignedTo)
+    console.log("name id", name, id);
+    setOnclickFlag(true);
+    setTaskAssignedToInput(name);
+    setTaskAssignedTo(id);
+    setTaskAssignedName(name);
+  };
+  console.log("name id", taskAssignedTo);
 
   // for meatings  Attendees
 
   // for attendies Role handler
   const assigntRoleAttendies = (e, value) => {
-    console.log(value, "valuevaluevaluevalue")
-    setParticipantRoleName(value)
-  }
+    console.log(value, "valuevaluevaluevalue");
+    setParticipantRoleName(value);
+  };
 
   // for api reponce of list of all assignees
   useEffect(() => {
     try {
       if (Object.keys(assignees.user).length > 0) {
-        setMeetingAttendeesList(assignees.user)
+        setMeetingAttendeesList(assignees.user);
       }
     } catch (error) {}
-  }, [assignees.user])
+  }, [assignees.user]);
 
   // for api response of list group roles
   useEffect(() => {
@@ -189,40 +190,40 @@ const CreateGroup = ({ setCreategrouppage }) => {
       GroupsReducer.getOrganizationGroupRoles !== null &&
       GroupsReducer.getOrganizationGroupRoles.length > 0
     ) {
-      let newArr = []
+      let newArr = [];
       GroupsReducer.getOrganizationGroupRoles.map((data, index) => {
         // if (data.groupRoleID != 3) {
         newArr.push({
           label: data.role,
           id: data.groupRoleID,
-        })
+        });
         // }
-      })
+      });
       console.log(
         "GroupsReducer.getOrganizationGroupRoles",
         GroupsReducer.getOrganizationGroupRoles
-      )
-      setParticipantRoles([...newArr])
+      );
+      setParticipantRoles([...newArr]);
     }
-  }, [GroupsReducer.getOrganizationGroupRoles])
+  }, [GroupsReducer.getOrganizationGroupRoles]);
 
   // for api response of list group Types
   useEffect(() => {
     if (GroupsReducer.getOrganizationGroupTypes !== null) {
-      let newArr = []
-      let newArrGroupType = []
+      let newArr = [];
+      let newArrGroupType = [];
       GroupsReducer.getOrganizationGroupTypes.map((data, index) => {
-        console.log("datadatagetOrganizationGroupTypes", data)
+        console.log("datadatagetOrganizationGroupTypes", data);
         newArr.push({
           label: data.type,
           id: data.groupTypeID,
-        })
-        newArrGroupType.push(data.type)
-      })
-      setGroupTypeOptions([...newArrGroupType])
-      setOrganizationGroupType([...newArr])
+        });
+        newArrGroupType.push(data.type);
+      });
+      setGroupTypeOptions([...newArrGroupType]);
+      setOrganizationGroupType([...newArr]);
     }
-  }, [GroupsReducer.getOrganizationGroupTypes])
+  }, [GroupsReducer.getOrganizationGroupTypes]);
 
   // set Meeting Attendees By default creator
   useEffect(() => {
@@ -234,9 +235,9 @@ const CreateGroup = ({ setCreategrouppage }) => {
       setCreateGroupDetails({
         ...createGroupDetails,
         CreatorID: creatorID,
-      })
+      });
     }
-  }, [meetingAttendeesList])
+  }, [meetingAttendeesList]);
 
   // Add Attendees Hanlder
   const handleAddAttendees = () => {
@@ -244,72 +245,72 @@ const CreateGroup = ({ setCreategrouppage }) => {
       setOpen({
         flag: true,
         message: t("You-can-add-data-only-from-one-form-option-at-a-time"),
-      })
-      setAttendees([])
-      setTaskAssignedTo(0)
-      setParticipantRoleName("")
-      setTaskAssignedToInput("")
+      });
+      setAttendees([]);
+      setTaskAssignedTo(0);
+      setParticipantRoleName("");
+      setTaskAssignedToInput("");
     } else if (participantRoleName === "") {
       setOpen({
         flag: true,
         message: t("Please-select-group-member-type-also"),
-      })
+      });
     } else if (taskAssignedTo != 0) {
       let foundIndex = meetingAttendees.findIndex(
         (x) => x.FK_UID === taskAssignedTo
-      )
-      console.log("taskAssignedTo", foundIndex)
+      );
+      console.log("taskAssignedTo", foundIndex);
       if (foundIndex === -1) {
-        let roleID
+        let roleID;
         participantRoles.map((data, index) => {
           if (data.label === participantRoleName) {
-            roleID = data.id
+            roleID = data.id;
             meetingAttendees.push({
               FK_UID: taskAssignedTo, //userid
               FK_GRMRID: data.id, //group member role id
               FK_GRID: 0, //group id
-            })
-            setMeetingAttendees([...meetingAttendees])
+            });
+            setMeetingAttendees([...meetingAttendees]);
           }
           setCreateGroupDetails({
             ...createGroupDetails,
             GroupMembers: meetingAttendees,
-          })
-        })
+          });
+        });
         if (meetingAttendeesList.length > 0) {
           meetingAttendeesList.map((data, index) => {
-            console.log("groupMembers", groupMembers)
+            console.log("groupMembers", groupMembers);
             if (data.pK_UID === taskAssignedTo) {
               groupMembers.push({
                 data,
                 role: roleID,
-              })
-              setGroupMembers([...groupMembers])
+              });
+              setGroupMembers([...groupMembers]);
             }
-          })
+          });
         }
-        setTaskAssignedTo(0)
-        setParticipantRoleName("")
-        setTaskAssignedToInput("")
-        setAttendees([])
+        setTaskAssignedTo(0);
+        setParticipantRoleName("");
+        setTaskAssignedToInput("");
+        setAttendees([]);
       } else {
         setOpen({
           flag: true,
           message: t("User-already-exist"),
-        })
-        setTaskAssignedTo(0)
-        setParticipantRoleName("")
-        setTaskAssignedToInput("")
-        setAttendees([])
+        });
+        setTaskAssignedTo(0);
+        setParticipantRoleName("");
+        setTaskAssignedToInput("");
+        setAttendees([]);
       }
     } else if (attendees.length > 0) {
-      let check = false
+      let check = false;
       let participantOptionsWithID =
         participantOptionsWithIDs &&
         participantOptionsWithIDs.find(
           (data, index) => data.label === participantRoleName
-        )
-      console.log("found2found2found2", attendees)
+        );
+      console.log("found2found2found2", attendees);
       groupMembers.map((data, index) => {
         attendees.map((data2, index) => {
           console.log(
@@ -318,23 +319,23 @@ const CreateGroup = ({ setCreategrouppage }) => {
             data2,
             data.data.pK_UID,
             data2.FK_UID
-          )
+          );
           if (data.data.pK_UID === data2) {
-            check = true
+            check = true;
           }
-        })
-      })
+        });
+      });
       if (check === true) {
-        console.log("found2found2found2")
+        console.log("found2found2found2");
 
         setOpen({
           flag: true,
           message: t("User-already-exist"),
-        })
-        setAttendees([])
-        setTaskAssignedTo(0)
-        setParticipantRoleName("")
-        setTaskAssignedToInput("")
+        });
+        setAttendees([]);
+        setTaskAssignedTo(0);
+        setParticipantRoleName("");
+        setTaskAssignedToInput("");
       } else {
         if (participantOptionsWithID !== undefined) {
           attendees.map((dataID, index) => {
@@ -342,101 +343,101 @@ const CreateGroup = ({ setCreategrouppage }) => {
               FK_UID: dataID, //userid
               FK_GRMRID: participantOptionsWithID.id, //group member role id
               FK_GRID: 0, //group id
-            })
-            setMeetingAttendees([...meetingAttendees])
+            });
+            setMeetingAttendees([...meetingAttendees]);
             meetingAttendeesList.map((data, index) => {
-              console.log("meetingAttendeesmeetingAttendees", data)
+              console.log("meetingAttendeesmeetingAttendees", data);
               if (data.pK_UID === dataID) {
-                console.log("meetingAttendeesmeetingAttendees", data)
+                console.log("meetingAttendeesmeetingAttendees", data);
                 groupMembers.push({
                   data,
                   role: participantOptionsWithID.id,
-                })
-                setGroupMembers([...groupMembers])
+                });
+                setGroupMembers([...groupMembers]);
               }
-            })
+            });
             setCreateGroupDetails({
               ...createGroupDetails,
               GroupMembers: meetingAttendees,
-            })
-            setAttendees([])
-            setParticipantRoleName("")
-          })
+            });
+            setAttendees([]);
+            setParticipantRoleName("");
+          });
         } else {
           setOpen({
             flag: true,
             message: t("Please-select-group-member-type-also"),
-          })
-          setTaskAssignedTo(0)
-          setParticipantRoleName("")
-          setTaskAssignedToInput("")
-          setAttendees([])
+          });
+          setTaskAssignedTo(0);
+          setParticipantRoleName("");
+          setTaskAssignedToInput("");
+          setAttendees([]);
         }
       }
     } else {
       setOpen({
         flag: true,
         message: t("Please-select-atleast-one-members"),
-      })
-      setTaskAssignedTo(0)
-      setParticipantRoleName("")
-      setTaskAssignedToInput("")
-      setAttendees([])
+      });
+      setTaskAssignedTo(0);
+      setParticipantRoleName("");
+      setTaskAssignedToInput("");
+      setAttendees([]);
     }
-  }
+  };
 
   // Group type Change Handler
   const groupTypeChangeHandler = (e, value) => {
-    setGroupTypeValue(value)
-    console.log(e.target.name, value, "groupTypeChangeHandler")
+    setGroupTypeValue(value);
+    console.log(e.target.name, value, "groupTypeChangeHandler");
     let findID = organizationGroupType.find(
       (data, index) => data.label === value
-    )
-    console.log(findID, "findIDfindIDfindIDfindID")
+    );
+    console.log(findID, "findIDfindIDfindIDfindID");
     setCreateGroupDetails({
       ...createGroupDetails,
       GroupTypeID: findID.id,
-    })
-  }
+    });
+  };
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setOnclickFlag(false)
+    setOnclickFlag(false);
     if (e.target.value.trimStart() != "") {
-      setTaskAssignedToInput(e.target.value.trimStart())
+      setTaskAssignedToInput(e.target.value.trimStart());
     } else {
-      setTaskAssignedToInput("")
-      setTaskAssignedTo(0)
-      setTaskAssignedName("")
+      setTaskAssignedToInput("");
+      setTaskAssignedTo(0);
+      setTaskAssignedName("");
     }
-    console.log("setTaskAssignedToInput", e.target.value.trimStart())
-  }
+    console.log("setTaskAssignedToInput", e.target.value.trimStart());
+  };
 
   // onChange Function for set input values in state
   const onChangeFunc = (e) => {
-    let name = e.target.name
-    let value = e.target.value
-    console.log(name, value, "onChangeFunconChangeFunconChangeFunc")
+    let name = e.target.name;
+    let value = e.target.value;
+    console.log(name, value, "onChangeFunconChangeFunconChangeFunc");
     if (name === "tasktitle") {
       setCreateGroupDetails({
         ...createGroupDetails,
         Title: value,
-      })
+      });
     }
     if (name === "groupdescription") {
       setCreateGroupDetails({
         ...createGroupDetails,
         Description: value,
-      })
+      });
     }
-  }
+  };
 
   // onChange function for group chat
   const CheckBoxHandler = (e) => {
     setCreateGroupDetails({
       ...createGroupDetails,
       isGroupChat: e.target.checked,
-    })
-  }
+    });
+  };
 
   // remove member handler
   const removeMemberHandler = (id) => {
@@ -445,44 +446,44 @@ const CreateGroup = ({ setCreategrouppage }) => {
       GroupMembers: createGroupDetails.GroupMembers.filter(
         (item) => item.FK_UID !== id
       ),
-    }
+    };
     const meeetingAttendeesdata = meetingAttendees.filter(
       (item) => item.FK_UID !== id
-    )
-    setMeetingAttendees(meeetingAttendeesdata)
-    console.log(id, "updatedCreateGroupDetailsupdatedCreateGroupDetails")
+    );
+    setMeetingAttendees(meeetingAttendeesdata);
+    console.log(id, "updatedCreateGroupDetailsupdatedCreateGroupDetails");
     console.log(
       updatedCreateGroupDetails,
       "updatedCreateGroupDetailsupdatedCreateGroupDetails"
-    )
+    );
     console.log(
       updatedCreateGroupDetails.GroupMembers,
       "updatedCreateGroupDetailsupdatedCreateGroupDetails"
-    )
-    setCreateGroupDetails(updatedCreateGroupDetails)
+    );
+    setCreateGroupDetails(updatedCreateGroupDetails);
     const updatedGroupMembers = groupMembers.filter(
       (item) => item.data.pK_UID !== id
-    )
-    setGroupMembers(updatedGroupMembers)
-  }
-  console.log(groupMembers, "attendeesattendeesattendees 3")
-  console.log(meetingAttendees, "attendeesattendeesattendees 1")
-  console.log(createGroupDetails.GroupMembers, "attendeesattendeesattendees 5")
+    );
+    setGroupMembers(updatedGroupMembers);
+  };
+  console.log(groupMembers, "attendeesattendeesattendees 3");
+  console.log(meetingAttendees, "attendeesattendeesattendees 1");
+  console.log(createGroupDetails.GroupMembers, "attendeesattendeesattendees 5");
 
   const checkGroupMembers = (GroupMembers) => {
     if (Object.keys(GroupMembers).length > 0) {
       // let flag1 = GroupMembers.find((data, index) => data.FK_GRMRID === 1);
-      let flag2 = GroupMembers.find((data, index) => data.FK_GRMRID === 2)
+      let flag2 = GroupMembers.find((data, index) => data.FK_GRMRID === 2);
 
       if (flag2 != undefined) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     } else {
-      return false
+      return false;
     }
-  }
+  };
 
   const handleSubmitCreateGroup = async () => {
     if (
@@ -495,10 +496,10 @@ const CreateGroup = ({ setCreategrouppage }) => {
         setOpen({
           flag: true,
           message: t("Please-add-atleast-one-group-head"),
-        })
+        });
       } else {
-        setErrorBar(false)
-        let OrganizationID = JSON.parse(localStorage.getItem("organizationID"))
+        setErrorBar(false);
+        let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
         let Data = {
           GroupDetails: {
             CreatorID: createGroupDetails.CreatorID,
@@ -510,34 +511,34 @@ const CreateGroup = ({ setCreategrouppage }) => {
             OrganizationID: OrganizationID,
           },
           GroupMembers: meetingAttendees,
-        }
-        console.log("createGroupecheck", Data)
-        dispatch(createGroup(navigate, Data, t, setCreategrouppage))
+        };
+        console.log("createGroupecheck", Data);
+        dispatch(createGroup(navigate, Data, t, setCreategrouppage));
       }
     } else {
-      setErrorBar(true)
+      setErrorBar(true);
       setOpen({
         flag: true,
         message: t("Please-fill-all-the-fields"),
-      })
+      });
     }
-  }
+  };
 
   const checkAttendeeBox = (data, id, index) => {
-    console.log("found2found2found2", attendees)
+    console.log("found2found2found2", attendees);
 
     if (attendees.includes(id)) {
-      let attendIndex = attendees.findIndex((data, index) => data === id)
-      console.log("found2found2found2", attendIndex)
+      let attendIndex = attendees.findIndex((data, index) => data === id);
+      console.log("found2found2found2", attendIndex);
       if (attendIndex !== -1) {
-        attendees.splice(attendIndex, 1)
-        setAttendees([...attendees])
+        attendees.splice(attendIndex, 1);
+        setAttendees([...attendees]);
       }
     } else {
-      attendees.push(id)
-      setAttendees([...attendees])
+      attendees.push(id);
+      setAttendees([...attendees]);
     }
-  }
+  };
 
   return (
     <>
@@ -714,7 +715,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                           <Row className="mt-2">
                             {groupMembers.length > 0 ? (
                               groupMembers.map((renderdata, index) => {
-                                console.log(renderdata, "renderdatarenderdata")
+                                console.log(renderdata, "renderdatarenderdata");
                                 if (renderdata.role === 2) {
                                   return (
                                     <Col lg={4} md={4} sm={4} className="mb-3">
@@ -724,6 +725,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                             src={`data:image/jpeg;base64,${renderdata.data.displayProfilePictureName}`}
                                             width={50}
                                             height={50}
+                                            draggable="false"
                                           />
                                         </Col>
                                         <Col
@@ -787,11 +789,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                 renderdata.data.pK_UID
                                               )
                                             }
+                                            draggable="false"
                                           />
                                         </Col>
                                       </Row>
                                     </Col>
-                                  )
+                                  );
                                 }
                               })
                             ) : (
@@ -822,7 +825,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                 console.log(
                                   data,
                                   "datadatadatadatagroupMembers"
-                                )
+                                );
                                 if (data.role === 1) {
                                   return (
                                     <Col lg={4} md={4} sm={4} className="mb-3">
@@ -833,6 +836,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                             width={50}
                                             alt=""
                                             height={50}
+                                            draggable="false"
                                           />
                                         </Col>
                                         <Col
@@ -894,11 +898,12 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                 data.data.pK_UID
                                               )
                                             }
+                                            draggable="false"
                                           />
                                         </Col>
                                       </Row>
                                     </Col>
-                                  )
+                                  );
                                 }
                               })
                             ) : (
@@ -993,6 +998,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                   width={50}
                                                   height={50}
                                                   alt=""
+                                                  draggable="false"
                                                 />
                                               </Col>
 
@@ -1079,7 +1085,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
                                                 />
                                               </Col>
                                             </Row>
-                                          )
+                                          );
                                         }
                                       )
                                     : null}
@@ -1127,7 +1133,7 @@ const CreateGroup = ({ setCreategrouppage }) => {
       />
       <Notification setOpen={setOpen} open={open.flag} message={open.message} />
     </>
-  )
-}
+  );
+};
 
-export default CreateGroup
+export default CreateGroup;

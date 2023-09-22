@@ -106,7 +106,7 @@ const UpdatePasswordSuccessfully = () => {
                     lg={12}
                     className="d-flex justify-content-center"
                   >
-                    <img src={DiskusLogo} width={220} alt="diskus_logo" />
+                    <img draggable="false" src={DiskusLogo} width={220} alt="diskus_logo" />
                   </Col>
                 </Row>
                 <Form>
@@ -172,7 +172,7 @@ const UpdatePasswordSuccessfully = () => {
               <h1 className={styles["heading-1"]}>{t("Prioritize")}</h1>
             </Col>
             <Col md={4} lg={4} sm={12} className="position-relative">
-              <img
+              <img draggable="false"
                 src={DiskusAuthPageLogo}
                 alt="auth_icon"
                 width="600px"

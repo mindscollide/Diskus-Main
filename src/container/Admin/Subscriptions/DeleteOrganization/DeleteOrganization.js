@@ -96,7 +96,7 @@ const DeleteOrganization = () => {
                 md={12}
                 className={styles["DeleteOrganization_content"]}
               >
-                <img src={FailedIcon} />
+                <img draggable="false" src={FailedIcon} />
                 <p>
                   {t("Opting-to")}
                   <span className={styles["title"]}>

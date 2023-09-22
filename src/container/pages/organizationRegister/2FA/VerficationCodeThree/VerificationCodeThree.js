@@ -203,7 +203,7 @@ const VerificationCodeThree = () => {
               </option>
             ))}
           </select>
-          <img
+          <img draggable="false"
             src={LanguageChangeIcon}
             className="languageIcon_2FAverificationdevieotp"
           />
@@ -237,6 +237,7 @@ const VerificationCodeThree = () => {
                     className="d-flex justify-content-center "
                   >
                     <img
+                      draggable="false"
                       src={img1}
                       width="220px"
                       height="69px"
@@ -263,7 +264,13 @@ const VerificationCodeThree = () => {
                     lg={12}
                     className="mt-2 d-flex justify-content-center"
                   >
-                    <img width="47.2px" height="65.76px" src={img10} alt="" />
+                    <img
+                      draggable="false"
+                      width="47.2px"
+                      height="65.76px"
+                      src={img10}
+                      alt=""
+                    />
                   </Col>
                 </Row>
 
@@ -339,6 +346,7 @@ const VerificationCodeThree = () => {
             <Row>
               <Col sm={12} md={6} lg={6} className="position-relative">
                 <img
+                  draggable="false"
                   src={img9}
                   alt="auth_icon"
                   className="phone-image"
@@ -348,6 +356,7 @@ const VerificationCodeThree = () => {
               </Col>
               <Col sm={12} md={6} lg={6} className="position-relative vh-100">
                 <img
+                  draggable="false"
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
                   width="600px"
@@ -362,7 +371,7 @@ const VerificationCodeThree = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100 roundspinner-image"
           >
-            <img
+            <img draggable="false"
               src={img9}
               alt="auth_icon"
               className="mobile_image_two"

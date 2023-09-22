@@ -322,6 +322,7 @@ const TodoList = () => {
           <p className="m-0 MontserratRegular color-5a5a5a FontArabicRegular">
             {" "}
             <img
+              draggable="false"
               className="data-img"
               src={`data:image/jpeg;base64,${record.displayProfilePictureName}`}
               alt="userimage"
@@ -355,6 +356,7 @@ const TodoList = () => {
                 {currentLanguage === "ar" ? (
                   <>
                     <img
+                      draggable="false"
                       className="data-img"
                       src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
                       alt="userimage"
@@ -365,6 +367,7 @@ const TodoList = () => {
                 ) : (
                   <>
                     <img
+                      draggable="false"
                       className="data-img"
                       src={`data:image/jpeg;base64,${text[0].displayProfilePictureName}`}
                       alt="userimage"
@@ -507,7 +510,7 @@ const TodoList = () => {
               className="meeting-editbutton"
               onClick={(e) => deleteTodolist(index)}
             >
-              <img src={del} alt="" />
+              <img draggable="false" src={del} alt="" />
             </i>
           );
         } else {
@@ -912,7 +915,13 @@ const TodoList = () => {
                 ) : (
                   <Paper>
                     <ResultMessage
-                      icon={<img src={TodoMessageIcon1} width={250} />}
+                      icon={
+                        <img
+                          draggable="false"
+                          src={TodoMessageIcon1}
+                          width={250}
+                        />
+                      }
                       title="No-Task"
                       className="NoTaskTodo"
                     />

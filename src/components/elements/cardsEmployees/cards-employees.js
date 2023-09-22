@@ -28,6 +28,7 @@ const EmployeeCard = ({
               src={`data:image/jpeg;base64,${UserProfilePic}`}
               className="card-employee-image"
               alt=""
+              draggable="false"
             />
           </Col>
           <Col lg={8} md={8} xs={12}>
@@ -58,6 +59,7 @@ const EmployeeCard = ({
                   height={20}
                   src={deleteButtonCreateMeeting}
                   onClick={IconOnClick}
+                  draggable="false"
                 />
               </span>
             ) : null

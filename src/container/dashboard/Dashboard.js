@@ -1,7 +1,8 @@
+import TalkChat2 from '../../components/layout/talk/talk-chat/talkChatBox/chat'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Sidebar, Talk } from '../../components/layout'
-import { LoaderPanel } from '../../components/elements'
+import { Loader, LoaderPanel } from '../../components/elements'
 import Header2 from '../../components/layout/header2/Header2'
 import { ConfigProvider, Layout } from 'antd'
 import ar_EG from 'antd/es/locale/ar_EG'
@@ -11,7 +12,6 @@ import { setRecentActivityDataNotification } from '../../store/actions/GetUserSe
 import VideoCallScreen from '../../components/layout/talk/videoCallScreen/VideoCallScreen'
 import VideoMaxIncoming from '../../components/layout/talk/videoCallScreen/videoCallBody/VideoMaxIncoming'
 import VideoOutgoing from '../../components/layout/talk/videoCallScreen/videoCallBody/VideoMaxOutgoing'
-import TalkChat2 from '../../components/layout/talk/talk-chat/talkChatBox/chat'
 import {
   incomingVideoCallFlag,
   videoOutgoingCallFlag,
@@ -88,9 +88,13 @@ import {
 
 const Dashboard = () => {
   const location = useLocation()
-  const { talkStateData, videoFeatureReducer, VideoMainReducer } = useSelector(
-    (state) => state,
-  )
+  const {
+    talkStateData,
+    videoFeatureReducer,
+    VideoMainReducer,
+    assignees,
+  } = useSelector((state) => state)
+  console.log(assignees, 'meetingIdReducermeetingIdReducer')
   // const [socket, setSocket] = useState(Helper.socket);
   const navigate = useNavigate()
   let createrID = localStorage.getItem('userID')
@@ -1408,6 +1412,8 @@ const Dashboard = () => {
               <VideoCallScreen />
             ) : null}
             {activateBlur === false ? <Talk /> : null}
+
+            {assignees.Loading && <Loader />}
           </Layout>
           {/* </Content> */}
         </Layout>

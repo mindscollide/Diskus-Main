@@ -19,7 +19,7 @@ const SecurityEncryption = () => {
     <Row className="encryption-box">
       <Col lg={12} md={12} sm={12} className="text-end">
         <span style={{ cursor: 'pointer' }} onClick={closeSecurityDialogue}>
-          <img src={CrossIcon} style={{ width: '10px' }} />
+          <img draggable="false" src={CrossIcon} style={{ width: '10px' }} />
         </span>
       </Col>
       <Col lg={12} md={12} sm={12}>
@@ -32,7 +32,7 @@ const SecurityEncryption = () => {
               <p className="level">{t('NIAP-+-PQC')}</p>
               <span className="securityicon-box">
                 {' '}
-                <img src={SecurityIconMessasgeBox} style={{ width: '17px' }} />
+                <img draggable="false" src={SecurityIconMessasgeBox} style={{ width: '17px' }} />
               </span>
             </Col>
           </Row>

@@ -715,6 +715,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           />
           <div className={styles["filterModal"]}>
             <img
+              draggable="false"
               src={Paymenthistoryhamberge}
               width={18}
               height={18}

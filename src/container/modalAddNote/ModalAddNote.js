@@ -490,12 +490,14 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
                       </h2>
                       {isStarrted ? (
                         <img
+                          draggable="false"
                           src={hollowstar}
                           className={styles["star-addnote-modal"]}
                           onClick={() => setIsStarrted(!isStarrted)}
                         />
                       ) : (
                         <img
+                          draggable="false"
                           src={StarIcon}
                           className={styles["star-addnote-modal"]}
                           onClick={() => setIsStarrted(!isStarrted)}
@@ -719,6 +721,7 @@ const ModalAddNote = ({ ModalTitle, addNewModal, setAddNewModal }) => {
 
                                             <span className="deleteBtn">
                                               <img
+                                                draggable="false"
                                                 src={deleteButtonCreateMeeting}
                                                 width={15}
                                                 height={15}

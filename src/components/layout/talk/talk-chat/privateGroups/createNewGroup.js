@@ -155,7 +155,7 @@ const CreateNewGroup = () => {
 
           <Col lg={1} md={1} sm={12} className="p-0">
             <div className="close-addChat-filter" onClick={closeAddGroupScreen}>
-              <img src={CloseChatIcon} />
+              <img draggable="false" src={CloseChatIcon} />
             </div>
           </Col>
         </Row>

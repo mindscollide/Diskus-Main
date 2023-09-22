@@ -536,18 +536,18 @@ const RecentChats = () => {
                 <div className="chat-profile-icon">
                   {dataItem.messageType === 'O' ? (
                     <>
-                      <img src={SingleIcon} width={25} />
+                      <img draggable="false" src={SingleIcon} width={25} />
                     </>
                   ) : dataItem.messageType === 'G' ? (
                     <>
-                      <img src={GroupIcon} width={35} />
+                      <img draggable="false" src={GroupIcon} width={35} />
                     </>
                   ) : dataItem.messageType === 'B' ? (
                     <>
-                      <img src={ShoutIcon} width={25} />
+                      <img draggable="false" src={ShoutIcon} width={25} />
                     </>
                   ) : (
-                    <img src={SingleIcon} width={25} />
+                    <img draggable="false" src={SingleIcon} width={25} />
                   )}
                 </div>
               </Col>
@@ -569,17 +569,17 @@ const RecentChats = () => {
                       dataItem.sentDate === '' &&
                       dataItem.receivedDate === '' &&
                       dataItem.seenDate === '' ? (
-                        <img src={TimerIcon} className="img-cover" />
+                        <img draggable="false" src={TimerIcon} className="img-cover" />
                       ) : dataItem.senderID === parseInt(currentUserId) &&
                         dataItem.sentDate !== '' &&
                         dataItem.receivedDate === '' &&
                         dataItem.seenDate === '' ? (
-                        <img src={SingleTickIcon} className="img-cover" />
+                        <img draggable="false" src={SingleTickIcon} className="img-cover" />
                       ) : dataItem.senderID === parseInt(currentUserId) &&
                         dataItem.sentDate !== '' &&
                         dataItem.receivedDate !== '' &&
                         dataItem.seenDate === '' ? (
-                        <img
+                        <img draggable="false"
                           src={DoubleTickDeliveredIcon}
                           className="img-cover"
                         />
@@ -587,7 +587,7 @@ const RecentChats = () => {
                         dataItem.sentDate !== '' &&
                         dataItem.receivedDate !== '' &&
                         dataItem.seenDate !== '' ? (
-                        <img src={DoubleTickIcon} className="img-cover" />
+                        <img draggable="false" src={DoubleTickIcon} className="img-cover" />
                       ) : null}
                     </span>
 
@@ -595,7 +595,7 @@ const RecentChats = () => {
                     dataItem.attachmentLocation !== '' ? (
                       <>
                         <span className="attachment-recent-chat">
-                          <img src={ClipIcon} alt="" />
+                          <img draggable="false" src={ClipIcon} alt="" />
                           {dataItem.attachmentLocation
                             .substring(
                               dataItem.attachmentLocation.lastIndexOf('/') + 1,
@@ -642,7 +642,7 @@ const RecentChats = () => {
                     </span>
                   ) : null}
                   <div className="chathead-box-icons">
-                    <img
+                    <img draggable="false"
                       src={DropDownIcon}
                       onClick={() => activateChatHeadMenu(dataItem.id)}
                     />

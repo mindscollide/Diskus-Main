@@ -41,16 +41,19 @@ const CustomAccordion = ({ data, columns, ToggleButton }) => {
                           className="data-img"
                           alt="pin"
                           src={tabledata.assignedto}
+                          draggable="false"
                         />
                         <img
                           className="data-img"
                           alt="pin"
                           src={tabledata.assignedto}
+                          draggable="false"
                         />
                         <img
                           className="data-img"
                           alt="pin"
                           src={tabledata.assignedto}
+                          draggable="false"
                         />
                       </Col>
                       <Col sm={1}>{tabledata.attached}</Col>
@@ -73,16 +76,19 @@ const CustomAccordion = ({ data, columns, ToggleButton }) => {
                               className="data-img"
                               src={child.assignedto}
                               alt="pin"
+                              draggable="false"
                             />
                             <img
                               className="data-img"
                               src={child.assignedto}
                               alt="pin"
+                              draggable="false"
                             />
                             <img
                               className="data-img"
                               src={child.assignedto}
                               alt="pin"
+                              draggable="false"
                             />
                           </Col>
                           <Col sm={1}>{child.attachedPin}</Col>

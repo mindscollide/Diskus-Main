@@ -181,13 +181,13 @@ const ChatHeader = () => {
               <Col lg={1} md={1} sm={12}>
                 <div className="chat-profile-icon">
                   {talkStateData?.ActiveChatData?.messageType === 'O' ? (
-                    <img src={SingleIcon} width={25} />
+                    <img draggable="false" src={SingleIcon} width={25} />
                   ) : talkStateData?.ActiveChatData?.messageType === 'G' ? (
-                    <img src={GroupIcon} width={30} />
+                    <img draggable="false" src={GroupIcon} width={30} />
                   ) : talkStateData?.ActiveChatData?.messageType === 'B' ? (
-                    <img src={ShoutIcon} width={20} />
+                    <img draggable="false" src={ShoutIcon} width={20} />
                   ) : null}
-                  {/* <img src={SingleIcon} width={20} /> */}
+                  {/* <img draggable="false" src={SingleIcon} width={20} /> */}
                   {/* <span className="user-active-status"></span> */}
                 </div>
               </Col>
@@ -199,13 +199,13 @@ const ChatHeader = () => {
               <Col lg={1} md={1} sm={12}>
                 {' '}
                 <div className="chat-box-icons">
-                  <img src={SecurityIcon} />
+                  <img draggable="false" src={SecurityIcon} />
                 </div>
               </Col>
               <Col lg={1} md={1} sm={12}>
                 {' '}
                 <div className="chat-box-icons">
-                  <img onClick={showChatSearchHandler} src={SearchChatIcon} />
+                  <img draggable="false" onClick={showChatSearchHandler} src={SearchChatIcon} />
                 </div>
               </Col>
               <Col lg={1} md={1} sm={12}>
@@ -214,7 +214,7 @@ const ChatHeader = () => {
                   className="chat-box-icons positionRelative"
                   ref={chatMenuRef}
                 >
-                  <img src={MenuIcon} onClick={activateChatMenu} />
+                  <img draggable="false" src={MenuIcon} onClick={activateChatMenu} />
                   {chatMenuActive && (
                     <div className="dropdown-menus-chat">
                       {talkStateData?.ActiveChatData?.messageType === 'O' && (
@@ -325,13 +325,13 @@ const ChatHeader = () => {
               <Col lg={1} md={1} sm={12}>
                 {' '}
                 <div className="chat-box-icons">
-                  <img src={VideoCallIcon} />
+                  <img draggable="false" src={VideoCallIcon} />
                 </div>
               </Col>
               <Col lg={1} md={1} sm={12}>
                 {' '}
                 <div className="chat-box-icons" onClick={closeChat}>
-                  <img
+                  <img draggable="false"
                     src={CloseChatIcon}
                     // className="img-cover"
                     // style={{ width: "20px", marginTop: "16px" }}
@@ -353,7 +353,7 @@ const ChatHeader = () => {
                 <p className="level">{t('NIAP-+-PQC')}</p>
 
                 <span className="securityicon-box">
-                  <img
+                  <img draggable="false"
                     src={SecurityIconMessasgeBox}
                     style={{ width: '17px' }}
                   />

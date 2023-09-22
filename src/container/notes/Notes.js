@@ -363,12 +363,14 @@ const Notes = () => {
                             isExpanded === JSON.parse(data?.pK_NotesID) &&
                             isExpand ? (
                               <img
+                                draggable="false"
                                 src={MinusExpand}
                                 className={styles["MinusIcon"]}
                                 alt=""
                               />
                             ) : (
                               <img
+                                draggable="false"
                                 src={PlusExpand}
                                 alt=""
                                 className={styles["PlusIcon"]}
@@ -407,6 +409,7 @@ const Notes = () => {
                               >
                                 {data.isStarred ? (
                                   <img
+                                    draggable="false"
                                     src={hollowstar}
                                     width="15.86px"
                                     height="15.19px"
@@ -416,6 +419,7 @@ const Notes = () => {
                                   />
                                 ) : (
                                   <img
+                                    draggable="false"
                                     src={StarIcon}
                                     width="15.86px"
                                     height="15.19px"
@@ -428,6 +432,7 @@ const Notes = () => {
                               {data?.isAttachment ? (
                                 <span>
                                   <img
+                                    draggable="false"
                                     src={ClipIcon}
                                     width="15.96px"
                                     height="14.68px"
@@ -438,7 +443,7 @@ const Notes = () => {
                                 </span>
                               ) : (
                                 <span>
-                                  <img width={15} />
+                                  <img draggable="false" width={15} />
                                 </span>
                               )}
 
@@ -453,7 +458,7 @@ const Notes = () => {
                                   data?.modifiedDate + data?.modifiedTime
                                 )}`}
                               </span>
-                              {/* <img
+                              {/* <img draggable="false"
                                 src={EditIconNote}
                                 width={17}
                                 alt=""
@@ -472,6 +477,7 @@ const Notes = () => {
                               `}
                             >
                               <img
+                                draggable="false"
                                 src={EditIconNote}
                                 width={17}
                                 alt=""
@@ -612,7 +618,7 @@ const Notes = () => {
                   lg={12}
                   className={styles["emptyNotesState"]}
                 >
-                  <img src={NotesMainEmpty} />
+                  <img draggable="false" src={NotesMainEmpty} />
                   <p className={styles["emptystatetext"]}>
                     {t("Notes-you-add-appear-here")}
                   </p>

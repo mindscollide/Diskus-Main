@@ -42,10 +42,10 @@ const CustomMiscellaneous = () => {
   return (
     <>
       <Container className="mt-4">
-        {fAQsReducer.AllFAQsData.map((data) => {
+        {fAQsReducer.AllFAQsData.map((data,index) => {
           return (
             <>
-              <Row className="mb-3">
+              <Row className="mb-3" key={index}>
                 <Col lg={6} md={6} xs={6}>
                   <Accordian
                     // defaultActiveKey={"0"}
