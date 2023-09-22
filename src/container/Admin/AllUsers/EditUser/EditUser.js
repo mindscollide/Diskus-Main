@@ -44,7 +44,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [deleteEditModal, setDeleteEditModal] = useState(false);
   const [errorBar, setErrorBar] = useState(false);
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const state = useSelector((state) => state);
   const { adminReducer, roleListReducer } = state;
 
@@ -81,7 +81,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
   const [organaizationRolesOptions, setOrganaizationRolesOptions] = useState(
     []
   );
-  const [isUserNotUpdate, setIsUserNotUpdate] = useState(false)
+  const [isUserNotUpdate, setIsUserNotUpdate] = useState(false);
   const [editOrganization, setEditOrganization] = useState([]);
   const [editUserStatus, setEditUserStatus] = useState([]);
   const [editUserRole, setEditUserRole] = useState([]);
@@ -349,7 +349,14 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       FK_NumberWorldCountryID: editUserSection.FK_CCID,
     };
     await dispatch(
-      editUserAction(navigate, setIsUpdateSuccessfully, setEditModal, updateData, t, setIsUserNotUpdate)
+      editUserAction(
+        navigate,
+        setIsUpdateSuccessfully,
+        setEditModal,
+        updateData,
+        t,
+        setIsUserNotUpdate
+      )
     );
     let OrganizationID = localStorage.getItem("organizationID");
     let RequestingUserID = localStorage.getItem("userID");
@@ -485,8 +492,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
         if (record.UserStatus === "Closed") {
           return (
             <p
-              className={`${"Disabled-Close"} ${styles["Edit-title-col-Name-Bold"]
-                }`}
+              className={`${"Disabled-Close"} ${
+                styles["Edit-title-col-Name-Bold"]
+              }`}
             >
               {text}
             </p>
@@ -655,7 +663,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                   className="edit-icon-edituser icon-edit-list icon-size-one beachGreen"
                 >
                   <i>
-                    <img src={EditIcon2} />
+                    <img draggable="false" src={EditIcon2} />
                   </i>
                 </div>
                 <i style={{ cursor: "pointer", color: "#000" }}>
@@ -682,13 +690,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       return (
         (filterFieldSection.Names != ""
           ? a.Names.toLowerCase().includes(
-            filterFieldSection.Names.toLowerCase()
-          )
+              filterFieldSection.Names.toLowerCase()
+            )
           : a.Names) &&
         (filterFieldSection.Emails.value != ""
           ? a.Emails.toLowerCase().includes(
-            filterFieldSection.Emails.value.toLowerCase()
-          )
+              filterFieldSection.Emails.value.toLowerCase()
+            )
           : a.Emails) &&
         (filterFieldSection.OrganizationRoles != ""
           ? a.OrganizationRole === filterFieldSection.OrganizationRoles
@@ -858,11 +866,11 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     if (
       adminReducer.UpdateOrganizationMessageResponseMessage !== "" &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-      t("Record-found") &&
+        t("Record-found") &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-      t("Data-available") &&
+        t("Data-available") &&
       adminReducer.UpdateOrganizationMessageResponseMessage !==
-      t("The-user-has-been-edited-successfully")
+        t("The-user-has-been-edited-successfully")
     ) {
       console.log("checkreponce");
       setOpen({
@@ -884,7 +892,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.AllOrganizationResponseMessage !== t("Record-found") &&
       adminReducer.AllOrganizationResponseMessage !== t("Data-available") &&
       adminReducer.AllOrganizationResponseMessage !==
-      t("The-user-has-been-edited-successfully")
+        t("The-user-has-been-edited-successfully")
     ) {
       console.log("checkreponce");
 
@@ -905,9 +913,9 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
     } else if (
       adminReducer.DeleteOrganizationMessageResponseMessage !== "" &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-      t("Record-found") &&
+        t("Record-found") &&
       adminReducer.DeleteOrganizationMessageResponseMessage !==
-      t("Data-available")
+        t("Data-available")
     ) {
       console.log("checkreponce");
 
@@ -929,8 +937,10 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       adminReducer.ResponseMessage !== "" &&
       adminReducer.ResponseMessage !== t("Record-found") &&
       adminReducer.ResponseMessage !== t("Data-available") &&
-      adminReducer.ResponseMessage !== t("The-user-has-been-edited-successfully") &&
-      adminReducer.ResponseMessage !== t("The-user-has-been-updated-but-the-status-has-not-been-updated")
+      adminReducer.ResponseMessage !==
+        t("The-user-has-been-edited-successfully") &&
+      adminReducer.ResponseMessage !==
+        t("The-user-has-been-updated-but-the-status-has-not-been-updated")
     ) {
       console.log("checkreponce");
 
@@ -1259,6 +1269,7 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
           />
           <div className={styles["filterModal"]}>
             <img
+              draggable="false"
               src={Paymenthistoryhamberge}
               width={18}
               height={18}
@@ -1283,22 +1294,26 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
       {adminReducer.Loading ? <Loader /> : null}
       <Modal
         show={
-          editModal || isUpdateSuccessfully || filterBarModal || deleteEditModal || isUserNotUpdate
+          editModal ||
+          isUpdateSuccessfully ||
+          filterBarModal ||
+          deleteEditModal ||
+          isUserNotUpdate
         }
         setShow={() => {
           setEditModal();
           setFilterBarModal();
           setIsUpdateSuccessfully();
           setDeleteEditModal();
-          setIsUserNotUpdate()
+          setIsUserNotUpdate();
         }}
         ButtonTitle={ModalTitle}
         centered
         size={
           editModal &&
-            isUpdateSuccessfully &&
-            filterBarModal &&
-            deleteEditModal === "sm"
+          isUpdateSuccessfully &&
+          filterBarModal &&
+          deleteEditModal === "sm"
             ? filterBarModal && deleteEditModal === "sm"
             : "md"
         }
@@ -1432,8 +1447,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                             placeholder={"Select Co...."}
                             customLabels={countryName}
                             searchable={true}
-                          // onChange={(phone) => PhoneHandler({ phone })}
-                          // className={styles["react-flag"]}
+                            // onChange={(phone) => PhoneHandler({ phone })}
+                            // className={styles["react-flag"]}
                           />
                         </Col>
                         <Col sm={12} md={9} lg={9}>
@@ -1724,8 +1739,12 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                     sm={12}
                     className="d-flex justify-content-center"
                   >
-                    <label className={styles["successfull-label-status-not-updated"]}>
-                      {t("Upgrade-your-package-to-enable-the-user-other-changes-if-any-are-updated")}
+                    <label
+                      className={styles["successfull-label-status-not-updated"]}
+                    >
+                      {t(
+                        "Upgrade-your-package-to-enable-the-user-other-changes-if-any-are-updated"
+                      )}
                     </label>
                   </Col>
                 </Row>
@@ -1782,13 +1801,13 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       text={t("Reset")}
                       className={styles["icon-modal-ResetBtn"]}
                       onClick={editResetHandler}
-                    // onClick={closeOnUpdateBtn}
+                      // onClick={closeOnUpdateBtn}
                     />
                     <Button
                       className={styles["icon-modal-SearchBtn"]}
                       text={t("Search")}
                       onClick={searchFunc}
-                    // onClick={openDeleteModal}
+                      // onClick={openDeleteModal}
                     />
                   </Col>
                 </Row>
@@ -1842,7 +1861,8 @@ const EditUser = ({ show, setShow, ModalTitle }) => {
                       />
                     </Col>
                   </Row>
-                </Col></>
+                </Col>
+              </>
             ) : null}
           </>
         }

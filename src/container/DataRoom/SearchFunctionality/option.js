@@ -85,7 +85,7 @@ export const OptionsDocument = (t) => [
             sm={12}
             className="d-flex align-items-center gap-2"
           >
-            <img src={""} alt="" height="17px" width="17px" />
+            <img draggable="false" src={""} alt="" height="17px" width="17px" />
             <span className={styles["Option_Document_button"]}>{t("Any")}</span>
           </Col>
         </Row>
@@ -103,7 +103,13 @@ export const OptionsDocument = (t) => [
             sm={12}
             className="d-flex align-items-center gap-2"
           >
-            <img src={documentIcon} alt="" height="17px" width="17px" />
+            <img
+              draggable="false"
+              src={documentIcon}
+              alt=""
+              height="17px"
+              width="17px"
+            />
             <span className={styles["Option_Document_button"]}>
               {t("Document")}
             </span>
@@ -123,7 +129,13 @@ export const OptionsDocument = (t) => [
             sm={12}
             className="d-flex align-items-center gap-2"
           >
-            <img src={spreadsheet} alt="" height="17px" width="17px" />
+            <img
+              draggable="false"
+              src={spreadsheet}
+              alt=""
+              height="17px"
+              width="17px"
+            />
             <span className={styles["Option_Document_button"]}>
               {t("Spreadsheets")}
             </span>
@@ -143,7 +155,13 @@ export const OptionsDocument = (t) => [
             sm={12}
             className="d-flex align-items-center gap-2"
           >
-            <img src={video} alt="" height="17px" width="17px" />
+            <img
+              draggable="false"
+              src={video}
+              alt=""
+              height="17px"
+              width="17px"
+            />
             <span className={styles["Option_Document_button"]}>
               {t("Presentaion")}
             </span>
@@ -163,7 +181,13 @@ export const OptionsDocument = (t) => [
             sm={12}
             className="d-flex align-items-center gap-2"
           >
-            <img src={forms} alt="" height="17px" width="17px" />
+            <img
+              draggable="false"
+              src={forms}
+              alt=""
+              height="17px"
+              width="17px"
+            />
             <span className={styles["Option_Document_button"]}>
               {t("Forms")}
             </span>
@@ -183,7 +207,13 @@ export const OptionsDocument = (t) => [
             sm={12}
             className="d-flex align-items-center gap-2"
           >
-            <img src={images} alt="" height="17px" width="17px" />
+            <img
+              draggable="false"
+              src={images}
+              alt=""
+              height="17px"
+              width="17px"
+            />
             <span className={styles["Option_Document_button"]}>
               {t("Images")}
             </span>
@@ -203,7 +233,13 @@ export const OptionsDocument = (t) => [
             sm={12}
             className="d-flex align-items-center gap-2"
           >
-            <img src={pdf} alt="" height="17px" width="17px" />
+            <img
+              draggable="false"
+              src={pdf}
+              alt=""
+              height="17px"
+              width="17px"
+            />
             <span className={styles["Option_Document_button"]}>
               {t("PDFs")}
             </span>
@@ -223,7 +259,13 @@ export const OptionsDocument = (t) => [
             sm={12}
             className="d-flex align-items-center gap-2"
           >
-            <img src={video} alt="" height="17px" width="17px" />
+            <img
+              draggable="false"
+              src={video}
+              alt=""
+              height="17px"
+              width="17px"
+            />
             <span className={styles["Option_Document_button"]}>
               {t("Videos")}
             </span>
@@ -243,7 +285,13 @@ export const OptionsDocument = (t) => [
             sm={12}
             className="d-flex align-items-center gap-2"
           >
-            <img src={ShareIcon} alt="" height="17px" width="17px" />
+            <img
+              draggable="false"
+              src={ShareIcon}
+              alt=""
+              height="17px"
+              width="17px"
+            />
             <span className={styles["Option_Document_button"]}>
               {t("Share")}
             </span>
@@ -263,7 +311,13 @@ export const OptionsDocument = (t) => [
             sm={12}
             className="d-flex align-items-center gap-2"
           >
-            <img src={folderColor} alt="" height="17px" width="17px" />
+            <img
+              draggable="false"
+              src={folderColor}
+              alt=""
+              height="17px"
+              width="17px"
+            />
             <span className={styles["Option_Document_button"]}>
               {t("Folder")}
             </span>
@@ -283,7 +337,13 @@ export const OptionsDocument = (t) => [
             sm={12}
             className="d-flex align-items-center gap-2"
           >
-            <img src={sitesIcon} alt="" height="17px" width="17px" />
+            <img
+              draggable="false"
+              src={sitesIcon}
+              alt=""
+              height="17px"
+              width="17px"
+            />
             <span className={styles["Option_Document_button"]}>
               {t("Sites")}
             </span>
@@ -303,7 +363,13 @@ export const OptionsDocument = (t) => [
             sm={12}
             className="d-flex align-items-center gap-2"
           >
-            <img src={audioIcon} alt="" height="17px" width="17px" />
+            <img
+              draggable="false"
+              src={audioIcon}
+              alt=""
+              height="17px"
+              width="17px"
+            />
             <span className={styles["Option_Document_button"]}>
               {t("Audio")}
             </span>

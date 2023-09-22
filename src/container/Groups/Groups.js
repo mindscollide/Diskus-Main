@@ -274,6 +274,7 @@ const Groups = () => {
                   onClick={archivedmodaluser}
                   icon={
                     <img
+                      draggable="false"
                       src={archivedbtn}
                       className={styles["archivedbtnIcon"]}
                     />
@@ -307,6 +308,7 @@ const Groups = () => {
                                 flag={false}
                                 Icon={
                                   <img
+                                    draggable="false"
                                     src={GroupIcon}
                                     height="29.23px"
                                     width="32.39px"
@@ -341,7 +343,7 @@ const Groups = () => {
                         >
                           <Row>
                             <Col>
-                              <img src={NoGroupsData} />
+                              <img draggable="false" src={NoGroupsData} />
                             </Col>
                             <Col
                               sm={12}

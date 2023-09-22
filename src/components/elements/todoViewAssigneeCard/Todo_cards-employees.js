@@ -17,6 +17,7 @@ const TodoAssgineeEmployeeCard = ({
               src={`data:image/jpeg;base64,${userImage}`}
               className="todo-employee-name-image"
               alt=""
+              draggable="false"
             />
           </Col>
           <Col

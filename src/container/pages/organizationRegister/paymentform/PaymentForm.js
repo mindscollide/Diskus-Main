@@ -154,7 +154,7 @@ const PaymentForm = () => {
       <Container className={styles["paymentformBackground"]}>
         <Row className="position-relative">
           <Col sm={12} md={12} lg={12} className={styles["bg_roundimage"]}>
-            <img src={DiskusnewRoundIconSignUp} alt="" />
+            <img draggable="false" src={DiskusnewRoundIconSignUp} alt="" />
           </Col>
           <Col
             sm={12}
@@ -408,19 +408,19 @@ const PaymentForm = () => {
                       >
                         <div>
                           <figure>
-                            <img src={BitcoinPaymentCardLogo} />
+                            <img draggable="false" src={BitcoinPaymentCardLogo} />
                             <figcaption className="MontserratMedium-500 font-sizepaymentmethodcaption">
                               {t("Bitcoin")}
                             </figcaption>
                           </figure>
                           <figure>
-                            <img src={EtherumPaymentCardLogo} />
+                            <img draggable="false" src={EtherumPaymentCardLogo} />
                             <figcaption className="MontserratMedium-500 font-sizepaymentmethodcaption">
                               {t("Ethereum")}
                             </figcaption>
                           </figure>
                           <figure>
-                            <img src={BinancePaymentCardLogo} />
+                            <img draggable="false" src={BinancePaymentCardLogo} />
                             <figcaption className="MontserratMedium-500 font-sizepaymentmethodcaption">
                               {t("Binance")}
                             </figcaption>
@@ -428,13 +428,13 @@ const PaymentForm = () => {
                         </div>
                         <div>
                           <figure>
-                            <img src={PaypalPaymentLogo} />
+                            <img draggable="false" src={PaypalPaymentLogo} />
                             <figcaption></figcaption>
                           </figure>
                         </div>
                         <div>
                           <figure>
-                            <img src={MasterCard} />
+                            <img draggable="false" src={MasterCard} />
                             <figcaption></figcaption>
                           </figure>
                         </div>

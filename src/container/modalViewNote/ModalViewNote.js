@@ -130,6 +130,7 @@ const ModalViewNote = ({
                     </p>
                     {notesData.isStarred ? (
                       <img
+                        draggable="false"
                         src={hollowstar}
                         width={17}
                         height={17}
@@ -137,6 +138,7 @@ const ModalViewNote = ({
                       />
                     ) : (
                       <img
+                        draggable="false"
                         className={styles["star-addnote"]}
                         width={17}
                         height={17}

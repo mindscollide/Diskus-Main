@@ -372,7 +372,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
               className="edit-icon-edituser icon-edit-list icon-size-one beachGreen "
             >
               <i>
-                <img src={EditIcon2} />
+                <img draggable="false" src={EditIcon2} />
               </i>
             </div>
             <i style={{ cursor: "pointer", color: "#000" }}>
@@ -782,6 +782,7 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
             />
             <div className={styles["MeetingfilterModal"]}>
               <img
+                draggable="false"
                 src={Paymenthistoryhamberge}
                 width={18}
                 height={18}
@@ -797,7 +798,11 @@ const AllMeetings = ({ show, setShow, ModalTitle }) => {
               <>
                 <ResultMessage
                   icon={
-                    <img src={NoMeetingsIcon} className="nodata-table-icon" />
+                    <img
+                      draggable="false"
+                      src={NoMeetingsIcon}
+                      className="nodata-table-icon"
+                    />
                   }
                   title={
                     adminReducer.searchRecordFound === true

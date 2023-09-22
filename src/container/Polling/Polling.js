@@ -475,6 +475,7 @@ const Polling = () => {
                                 onClick={() => {
                                   handleEditpollModal(record);
                                 }}
+                                draggable="false"
                               />
                             </Tooltip>
                           </Col>
@@ -494,6 +495,7 @@ const Polling = () => {
                                 onClick={() => {
                                   deletePollingModal(record);
                                 }}
+                                draggable="false"
                               />
                             </Tooltip>
                           </Col>
@@ -513,6 +515,7 @@ const Polling = () => {
                             onClick={() => {
                               handleEditpollModal(record);
                             }}
+                            draggable="false"
                           />
                         </Tooltip>
                       </Col>
@@ -527,6 +530,7 @@ const Polling = () => {
                             onClick={() => {
                               deletePollingModal(record);
                             }}
+                            draggable="false"
                           />
                         </Tooltip>
                       </Col>
@@ -712,6 +716,7 @@ const Polling = () => {
                   height="7.6px"
                   width="7.6px"
                   className="align-items-center"
+                  draggable="false"
                 />
               }
               onClick={() =>
@@ -735,6 +740,7 @@ const Polling = () => {
                   <img
                     src={searchicon}
                     className={styles["Search_Bar_icon_class"]}
+                    draggable="false"
                   />
                 }
                 iconClassName={styles["polling_searchinput"]}
@@ -761,6 +767,7 @@ const Polling = () => {
                             width="16px"
                             height="16px"
                             onClick={HandleCloseSearchModal}
+                            draggable="false"
                           />
                         </Col>
                       </Row>
@@ -833,7 +840,7 @@ const Polling = () => {
                     lg={12}
                     className="d-flex justify-content-center align-items-center flex-column"
                   >
-                    <img src={PollsEmpty} alt="poll_icon" />
+                    <img src={PollsEmpty} alt="poll_icon" draggable="false" />
                     <span className={styles["No_Poll_Heading"]}>
                       {t("No-polls")}
                     </span>

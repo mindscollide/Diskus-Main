@@ -149,6 +149,7 @@ const ModalArchivedCommittee = ({
                       <Button
                         icon={
                           <img
+                            draggable="false"
                             src={right}
                             width="16.5px"
                             height="33px"
@@ -192,7 +193,13 @@ const ModalArchivedCommittee = ({
                             }
                             StatusID={data.committeeStatusID}
                             profile={data.committeeMembers}
-                            Icon={<img src={CommitteeICon} width={30} />}
+                            Icon={
+                              <img
+                                draggable="false"
+                                src={CommitteeICon}
+                                width={30}
+                              />
+                            }
                             BtnText={
                               data.committeeStatusID === 2 &&
                               t("View-committee")

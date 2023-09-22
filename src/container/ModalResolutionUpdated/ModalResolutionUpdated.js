@@ -40,10 +40,20 @@ const ModalResolutionUpdated = ({
                     className="d-flex justify-content-center"
                   >
                     <span>
-                      <img src={upcircle} width="80px" height="80px" />
+                      <img
+                        draggable="false"
+                        src={upcircle}
+                        width="80px"
+                        height="80px"
+                      />
                     </span>
                     <span className={styles["Tik_arrow"]}>
-                      <img src={updatetik} width="41.09px" height="35.02px" />
+                      <img
+                        draggable="false"
+                        src={updatetik}
+                        width="41.09px"
+                        height="35.02px"
+                      />
                     </span>
                   </Col>
                 </Row>

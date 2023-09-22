@@ -119,7 +119,12 @@ const ViewActions = () => {
                     sm={12}
                     className="d-flex gap-2 align-items-center"
                   >
-                    <img src={PDFIcon} height="31.57px" width="31.57px" />
+                    <img
+                      draggable="false"
+                      src={PDFIcon}
+                      height="31.57px"
+                      width="31.57px"
+                    />
                     <span className={styles["FileName"]}>
                       Meetings Agenda.pdf
                     </span>

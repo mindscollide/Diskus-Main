@@ -1,7 +1,7 @@
-import React from "react"
-import styles from "./ParticpantInfoShareFolder.module.css"
-import newprofile from "../../../assets/images/Mask Group 67.svg"
-import { Col, Container, Row } from "react-bootstrap"
+import React from "react";
+import styles from "./ParticpantInfoShareFolder.module.css";
+import newprofile from "../../../assets/images/Mask Group 67.svg";
+import { Col, Container, Row } from "react-bootstrap";
 const ParticipantInfoShareFolder = ({
   participantname,
   particiapantdesignation,
@@ -18,6 +18,7 @@ const ParticipantInfoShareFolder = ({
           alt=""
           height="35px"
           className={styles["profile_image_shareFolder_modal"]}
+          draggable="false"
         />
       </Col>
       <Col lg={8} md={8} sm={8} className={styles["Space_limit"]}>
@@ -38,7 +39,7 @@ const ParticipantInfoShareFolder = ({
         {icon}
       </Col>
     </Row>
-  )
-}
+  );
+};
 
-export default ParticipantInfoShareFolder
+export default ParticipantInfoShareFolder;

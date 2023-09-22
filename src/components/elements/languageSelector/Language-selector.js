@@ -1,56 +1,56 @@
-import React from 'react'
-import { useEffect, useState, useRef } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { ChevronDown, ChevronUp } from 'react-bootstrap-icons'
-import LanguageIcon from '../../../assets/images/Language.svg'
-import LanguageArrowDown from '../../../assets/images/New folder/LanguaugeSelector_Down.svg'
-import LanguageArrowUp from '../../../assets/images/New folder/LanguaugeSelector_Up.svg'
-import LanguageArrowDownBlack from '../../../assets/images/New folder/Language_ArrowDown.svg'
-import LanguageArrowUpBlack from '../../../assets/images/New folder/Language_ArrowUp.svg'
-import LanguageBlack from '../../../assets/images/Language_Black.svg'
-import styles from './Language-selector.module.css'
-import { useTranslation } from 'react-i18next'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { Loader } from './../../elements'
-import Cookies from 'js-cookie'
-import numeral from 'numeral'
+import React from "react";
+import { useEffect, useState, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { ChevronDown, ChevronUp } from "react-bootstrap-icons";
+import LanguageIcon from "../../../assets/images/Language.svg";
+import LanguageArrowDown from "../../../assets/images/New folder/LanguaugeSelector_Down.svg";
+import LanguageArrowUp from "../../../assets/images/New folder/LanguaugeSelector_Up.svg";
+import LanguageArrowDownBlack from "../../../assets/images/New folder/Language_ArrowDown.svg";
+import LanguageArrowUpBlack from "../../../assets/images/New folder/Language_ArrowUp.svg";
+import LanguageBlack from "../../../assets/images/Language_Black.svg";
+import styles from "./Language-selector.module.css";
+import { useTranslation } from "react-i18next";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Loader } from "./../../elements";
+import Cookies from "js-cookie";
+import numeral from "numeral";
 import {
   getAllLanguages,
   getSelectedLanguage,
   changeNewLanguage,
-} from '../../../store/actions/Language_actions'
+} from "../../../store/actions/Language_actions";
 
 const LanguageSelector = () => {
-  const { LanguageReducer } = useSelector((state) => state)
+  const { LanguageReducer } = useSelector((state) => state);
 
-  console.log('LanguageReducer', LanguageReducer)
+  console.log("LanguageReducer", LanguageReducer);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  let currentUserID = Number(localStorage.getItem('userID'))
+  let currentUserID = Number(localStorage.getItem("userID"));
 
-  const languageref = useRef()
-  const location = useLocation()
-  let currentLanguage = localStorage.getItem('i18nextLng')
-  const [languageDropdown, setLanguageDropdown] = useState(false)
-  const [languageforView, setLanguageforView] = useState('')
-  const currentLocale = Cookies.get('i18next') || 'en'
-  const [language, setLanguage] = useState(currentLocale)
-  const { t, i18n } = useTranslation()
+  const languageref = useRef();
+  const location = useLocation();
+  let currentLanguage = localStorage.getItem("i18nextLng");
+  const [languageDropdown, setLanguageDropdown] = useState(false);
+  const [languageforView, setLanguageforView] = useState("");
+  const currentLocale = Cookies.get("i18next") || "en";
+  const [language, setLanguage] = useState(currentLocale);
+  const { t, i18n } = useTranslation();
 
-  const [languages, setLanguages] = useState([])
-  console.log(languages, 'languageslanguageslanguages')
+  const [languages, setLanguages] = useState([]);
+  console.log(languages, "languageslanguageslanguages");
   const [selectedLanguage, setSelectedLanguage] = useState({
     systemSupportedLanguageID: 1,
-    languageTitle: 'English',
-    code: 'en',
-  })
+    languageTitle: "English",
+    code: "en",
+  });
 
   useEffect(() => {
-    dispatch(getAllLanguages(navigate, t))
-  }, [])
+    dispatch(getAllLanguages(navigate, t));
+  }, []);
 
   useEffect(() => {
     if (
@@ -58,10 +58,10 @@ const LanguageSelector = () => {
       currentUserID !== undefined &&
       currentUserID !== 0
     ) {
-      let data = { UserID: currentUserID }
-      dispatch(getSelectedLanguage(data, navigate, t))
+      let data = { UserID: currentUserID };
+      dispatch(getSelectedLanguage(data, navigate, t));
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     if (
@@ -69,9 +69,9 @@ const LanguageSelector = () => {
       LanguageReducer.AllLanguagesData !== undefined &&
       LanguageReducer.AllLanguagesData.length !== 0
     ) {
-      setLanguages(LanguageReducer?.AllLanguagesData)
+      setLanguages(LanguageReducer?.AllLanguagesData);
     }
-  }, [LanguageReducer.AllLanguagesData])
+  }, [LanguageReducer.AllLanguagesData]);
 
   useEffect(() => {
     if (
@@ -86,60 +86,60 @@ const LanguageSelector = () => {
         languageTitle: LanguageReducer.SetLanguageData.languageTitle,
         code:
           LanguageReducer.SetLanguageData.systemSupportedLanguageID === 1
-            ? 'en'
+            ? "en"
             : LanguageReducer.SetLanguageData.systemSupportedLanguageID === 2
-            ? 'ar'
+            ? "ar"
             : LanguageReducer.SetLanguageData.systemSupportedLanguageID === 3
-            ? 'fr'
-            : '',
-      })
+            ? "fr"
+            : "",
+      });
     }
-  }, [LanguageReducer.SetLanguageData])
+  }, [LanguageReducer.SetLanguageData]);
 
   const handleChangeLocale = (lang) => {
-    setLanguageDropdown(false)
+    setLanguageDropdown(false);
     // setLanguage(lang)
     let data = {
       UserID: currentUserID,
       SystemSupportedLanguageID: lang,
-    }
-    dispatch(changeNewLanguage(data, navigate, t))
+    };
+    dispatch(changeNewLanguage(data, navigate, t));
     if (lang === 1) {
       setSelectedLanguage({
-        languageTitle: 'English',
+        languageTitle: "English",
         systemSupportedLanguageID: 1,
-        code: 'en',
-      })
-      localStorage.setItem('i18nextLng', 'en')
+        code: "en",
+      });
+      localStorage.setItem("i18nextLng", "en");
       setTimeout(() => {
         // window.location.reload()
-        i18n.changeLanguage('en')
-      }, 100)
+        i18n.changeLanguage("en");
+      }, 100);
     } else if (lang === 2) {
       setSelectedLanguage({
-        languageTitle: 'Arabic',
+        languageTitle: "Arabic",
         systemSupportedLanguageID: 2,
-        code: 'ar',
-      })
-      localStorage.setItem('i18nextLng', 'ar')
+        code: "ar",
+      });
+      localStorage.setItem("i18nextLng", "ar");
 
       setTimeout(() => {
         // window.location.reload()
-        i18n.changeLanguage('ar')
-      }, 100)
+        i18n.changeLanguage("ar");
+      }, 100);
     } else {
       setSelectedLanguage({
-        languageTitle: 'French',
+        languageTitle: "French",
         systemSupportedLanguageID: 3,
-        code: 'fr',
-      })
-      localStorage.setItem('i18nextLng', 'fr')
+        code: "fr",
+      });
+      localStorage.setItem("i18nextLng", "fr");
       setTimeout(() => {
         // window.location.reload()
-        i18n.changeLanguage('fr')
-      }, 1000)
+        i18n.changeLanguage("fr");
+      }, 1000);
     }
-  }
+  };
 
   const handleOutsideClick = (event) => {
     if (
@@ -147,15 +147,15 @@ const LanguageSelector = () => {
       !languageref.current.contains(event.target) &&
       languageDropdown
     ) {
-      setLanguageDropdown(false)
+      setLanguageDropdown(false);
     }
-  }
+  };
   useEffect(() => {
-    document.addEventListener('click', handleOutsideClick)
+    document.addEventListener("click", handleOutsideClick);
     return () => {
-      document.removeEventListener('click', handleOutsideClick)
-    }
-  }, [languageDropdown])
+      document.removeEventListener("click", handleOutsideClick);
+    };
+  }, [languageDropdown]);
 
   // useEffect(() => {
   //   let currentLanguage = localStorage.getItem("i18nextLng");
@@ -179,17 +179,17 @@ const LanguageSelector = () => {
   // }, [i18n]);
 
   useEffect(() => {
-    if (currentLanguage === 'ar') {
-      document.body.dir = 'rtl'
-      i18n.changeLanguage('ar')
-    } else if (currentLanguage === 'fr') {
-      document.body.dir = 'ltr'
-      i18n.changeLanguage('fr')
+    if (currentLanguage === "ar") {
+      document.body.dir = "rtl";
+      i18n.changeLanguage("ar");
+    } else if (currentLanguage === "fr") {
+      document.body.dir = "ltr";
+      i18n.changeLanguage("fr");
     } else {
-      document.body.dir = 'ltr'
-      i18n.changeLanguage('en')
+      document.body.dir = "ltr";
+      i18n.changeLanguage("en");
     }
-  }, [currentLanguage])
+  }, [currentLanguage]);
 
   return (
     <section
@@ -199,62 +199,65 @@ const LanguageSelector = () => {
     >
       <span
         className={
-          location.pathname.includes('/DisKus/') ||
-          location.pathname.includes('/paymentForm') ||
-          location.pathname.includes('/signuporganization') ||
-          location.pathname.includes('/Diskus/Admin')
-            ? 'text-white d-flex gap-2 align-items-center position-relative cursor-pointer'
-            : 'text-black d-flex gap-2 align-items-center position-relative cursor-pointer'
+          location.pathname.includes("/DisKus/") ||
+          location.pathname.includes("/paymentForm") ||
+          location.pathname.includes("/signuporganization") ||
+          location.pathname.includes("/Diskus/Admin")
+            ? "text-white d-flex gap-2 align-items-center position-relative cursor-pointer"
+            : "text-black d-flex gap-2 align-items-center position-relative cursor-pointer"
         }
       >
         <img
           src={
-            location.pathname.includes('/DisKus/') ||
-            location.pathname.includes('/paymentForm') ||
-            location.pathname.includes('/signuporganization') ||
-            location.pathname.includes('/Diskus/Admin')
+            location.pathname.includes("/DisKus/") ||
+            location.pathname.includes("/paymentForm") ||
+            location.pathname.includes("/signuporganization") ||
+            location.pathname.includes("/Diskus/Admin")
               ? LanguageIcon
               : LanguageBlack
           }
           alt=""
+          draggable="false"
         />
         {/* {selectedLanguage.languageTitle} */}
-        {currentLanguage === 'en'
-          ? 'English'
-          : currentLanguage === 'ar'
-          ? 'Arabic'
-          : currentLanguage === 'fr'
-          ? 'French'
-          : 'English'}
+        {currentLanguage === "en"
+          ? "English"
+          : currentLanguage === "ar"
+          ? "Arabic"
+          : currentLanguage === "fr"
+          ? "French"
+          : "English"}
         {languageDropdown ? (
           <img
             src={
-              location.pathname.includes('/DisKus') ||
-              location.pathname.includes('/Diskus')
+              location.pathname.includes("/DisKus") ||
+              location.pathname.includes("/Diskus")
                 ? LanguageArrowUp
                 : LanguageArrowUpBlack
             }
             onClick={() => setLanguageDropdown(!languageDropdown)}
             alt=""
+            draggable="false"
           />
         ) : (
           <img
             src={
-              location.pathname.includes('/DisKus') ||
-              location.pathname.includes('/Diskus')
+              location.pathname.includes("/DisKus") ||
+              location.pathname.includes("/Diskus")
                 ? LanguageArrowDown
                 : LanguageArrowDownBlack
             }
             onClick={() => setLanguageDropdown(!languageDropdown)}
             alt=""
+            draggable="false"
           />
         )}
       </span>
       <div
         className={
           !languageDropdown
-            ? styles['language_options']
-            : styles['language_options_active']
+            ? styles["language_options"]
+            : styles["language_options_active"]
         }
       >
         {languages.length > 0 &&
@@ -269,12 +272,12 @@ const LanguageSelector = () => {
               >
                 {data.languageTitle}
               </span>
-            )
+            );
           })}
       </div>
       {/* {LanguageReducer.Loading === true ? <Loader /> : null} */}
     </section>
-  )
-}
+  );
+};
 
-export default LanguageSelector
+export default LanguageSelector;

@@ -1,65 +1,65 @@
-import React, { useEffect, useState } from "react"
-import { Col, Container, Row } from "react-bootstrap"
+import React, { useEffect, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
 import {
   Modal,
   Button,
   Checkbox,
   CustomRadio2,
   TextField,
-} from "../../../../components/elements"
-import AlarmClock from "../../../../assets/images/AlarmOptions.svg"
-import styles from "./ViewPollProgress.module.css"
-import profile from "../../../../assets/images/profile_polls.svg"
-import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg"
-import { Progress } from "antd"
-import { useTranslation } from "react-i18next"
+} from "../../../../components/elements";
+import AlarmClock from "../../../../assets/images/AlarmOptions.svg";
+import styles from "./ViewPollProgress.module.css";
+import profile from "../../../../assets/images/profile_polls.svg";
+import BlackCrossIcon from "../../../../assets/images/BlackCrossIconModals.svg";
+import { Progress } from "antd";
+import { useTranslation } from "react-i18next";
 import {
   setviewpollProgressModal,
   viewVotesApi,
-} from "../../../../store/actions/Polls_actions"
-import { useDispatch, useSelector } from "react-redux"
-import { useNavigate } from "react-router-dom"
-import moment from "moment"
+} from "../../../../store/actions/Polls_actions";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const ViewPollProgress = () => {
-  const dispatch = useDispatch()
-  const { t } = useTranslation()
-  const navigate = useNavigate()
-  const { PollsReducer } = useSelector((state) => state)
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { PollsReducer } = useSelector((state) => state);
   const [viewProgressPollsDetails, setViewProgressPollsDetails] = useState({
     PollID: 0,
     PollTitle: "",
     Date: "",
     AllowMultipleAnswers: false,
-  })
+  });
   const [checkboxesState, setCheckboxesState] = useState({
     checkedYes: true,
-  })
-  const [viewpollMembers, setViewPollmembers] = useState([])
-  const [pollsOption, setPollsOption] = useState([])
+  });
+  const [viewpollMembers, setViewPollmembers] = useState([]);
+  const [pollsOption, setPollsOption] = useState([]);
 
   useEffect(() => {
     if (PollsReducer.Allpolls !== null && PollsReducer.Allpolls !== undefined) {
-      let pollData = PollsReducer.Allpolls.poll
-      let pollDetails = pollData.pollDetails
-      let pollParticipants = pollData.pollParticipants
-      let pollOptions = pollData.pollOptions
-      let pollSelectedAnswers = pollData.selectedAnswers
+      let pollData = PollsReducer.Allpolls.poll;
+      let pollDetails = pollData.pollDetails;
+      let pollParticipants = pollData.pollParticipants;
+      let pollOptions = pollData.pollOptions;
+      let pollSelectedAnswers = pollData.selectedAnswers;
 
-      let memberpollsprogressView = []
-      let newOption = []
+      let memberpollsprogressView = [];
+      let newOption = [];
 
       if (Object.keys(pollParticipants).length > 0) {
         pollParticipants.map((data, index) => {
-          memberpollsprogressView.push(data)
-        })
+          memberpollsprogressView.push(data);
+        });
       }
 
       if (pollSelectedAnswers.length > 0) {
         pollOptions.map((newdata, index) => {
           let find = pollSelectedAnswers.find(
             (data, index) => data.pollAnswerID === newdata.pollAnswerID
-          )
+          );
           if (find != undefined) {
             let changeOptionData = {
               answer: newdata.answer,
@@ -67,8 +67,8 @@ const ViewPollProgress = () => {
               totalVotes: newdata.totalVotes,
               votePercentage: newdata.votePercentage,
               voted: true,
-            }
-            newOption.push(changeOptionData)
+            };
+            newOption.push(changeOptionData);
           } else {
             let changeOptionData = {
               answer: newdata.answer,
@@ -76,11 +76,11 @@ const ViewPollProgress = () => {
               totalVotes: newdata.totalVotes,
               votePercentage: newdata.votePercentage,
               voted: false,
-            }
-            newOption.push(changeOptionData)
+            };
+            newOption.push(changeOptionData);
           }
-        })
-        setPollsOption(newOption)
+        });
+        setPollsOption(newOption);
       } else {
         pollOptions.map((newdata, index) => {
           let changeOptionData = {
@@ -89,34 +89,34 @@ const ViewPollProgress = () => {
             totalVotes: newdata.totalVotes,
             votePercentage: newdata.votePercentage,
             voted: false,
-          }
-          newOption.push(changeOptionData)
-        })
-        setPollsOption(newOption)
+          };
+          newOption.push(changeOptionData);
+        });
+        setPollsOption(newOption);
       }
-      setViewPollmembers(memberpollsprogressView)
+      setViewPollmembers(memberpollsprogressView);
       setViewProgressPollsDetails({
         ...viewProgressPollsDetails,
         PollTitle: pollDetails.pollTitle,
         Date: pollDetails.dueDate,
         AllowMultipleAnswers: pollDetails.allowMultipleAnswers,
         PollID: pollDetails.pollID,
-      })
+      });
     }
-  }, [PollsReducer.Allpolls])
+  }, [PollsReducer.Allpolls]);
 
   const changeDateStartHandler2 = (date) => {
-    let newDate = moment(date).format("DD MMMM YYYY")
+    let newDate = moment(date).format("DD MMMM YYYY");
 
-    return newDate
-  }
+    return newDate;
+  };
 
   const handleViewVotes = () => {
     let data = {
       PollID: viewProgressPollsDetails.PollID,
-    }
-    dispatch(viewVotesApi(navigate, data, t))
-  }
+    };
+    dispatch(viewVotesApi(navigate, data, t));
+  };
 
   return (
     <Container>
@@ -129,7 +129,7 @@ const ViewPollProgress = () => {
         }
         modalFooterClassName={"d-block"}
         onHide={() => {
-          dispatch(setviewpollProgressModal(false))
+          dispatch(setviewpollProgressModal(false));
         }}
         ModalTitle={
           <>
@@ -147,7 +147,12 @@ const ViewPollProgress = () => {
                     sm={12}
                     className="d-flex justify-content-center gap-2"
                   >
-                    <img src={AlarmClock} width="14.97px" height="14.66px" />
+                    <img
+                      draggable="false"
+                      src={AlarmClock}
+                      width="14.97px"
+                      height="14.66px"
+                    />
                     <span className={styles["ViewPRogressDueDate"]}>
                       {t("Due-date-on")}{" "}
                       <span>
@@ -170,12 +175,13 @@ const ViewPollProgress = () => {
                 className="d-flex justify-content-end"
               >
                 <img
+                  draggable="false"
                   src={BlackCrossIcon}
                   width="16px"
                   height="16px"
                   className={styles["View_cross_icon"]}
                   onClick={() => {
-                    dispatch(setviewpollProgressModal(false))
+                    dispatch(setviewpollProgressModal(false));
                   }}
                 />
               </Col>
@@ -281,7 +287,7 @@ const ViewPollProgress = () => {
                                   </Col>
                                 </Row>
                               </>
-                            )
+                            );
                           })
                         : null}
                     </Col>
@@ -361,7 +367,7 @@ const ViewPollProgress = () => {
                                   </Col>
                                 </Row>
                               </>
-                            )
+                            );
                           })
                         : null}
                     </Col>
@@ -400,7 +406,7 @@ const ViewPollProgress = () => {
                   >
                     <Row>
                       {viewpollMembers.map((data, index) => {
-                        console.log("datadatadata", data)
+                        console.log("datadatadata", data);
                         return (
                           <Col
                             key={index}
@@ -414,6 +420,7 @@ const ViewPollProgress = () => {
                                 <Row className={styles["Card_border2"]}>
                                   <Col sm={12} md={12} lg={12}>
                                     <img
+                                      draggable="false"
                                       src={`data:image/jpeg;base64,${data.profilePicture.displayProfilePictureName}`}
                                       width="33px"
                                       height="33px"
@@ -427,7 +434,7 @@ const ViewPollProgress = () => {
                               </Col>
                             </Row>
                           </Col>
-                        )
+                        );
                       })}
                     </Row>
                   </Col>
@@ -456,7 +463,7 @@ const ViewPollProgress = () => {
                       text={t("Close")}
                       className={styles["Close_Button_viewprogress"]}
                       onClick={() => {
-                        dispatch(setviewpollProgressModal(false))
+                        dispatch(setviewpollProgressModal(false));
                       }}
                     />
                     <Button
@@ -473,7 +480,7 @@ const ViewPollProgress = () => {
         size={"md"}
       />
     </Container>
-  )
-}
+  );
+};
 
-export default ViewPollProgress
+export default ViewPollProgress;

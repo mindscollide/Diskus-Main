@@ -417,6 +417,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
             key={item.pK_UID}
           >
             <img
+              draggable="false"
               src={`data:image/jpeg;base64,${item?.displayProfilePictureName}`}
               alt=""
               className="user-img"
@@ -767,6 +768,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                             <div className="dropdown-row-assignee dg-flex align-items-center flex-row">
                               <div className="d-flex align-items-center gap-2 mt-1 position-relative">
                                 <img
+                                  draggable="false"
                                   alt=""
                                   src={`data:image/jpeg;base64,${taskAssignedName.displayProfilePictureName}`}
                                 />
@@ -774,6 +776,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                               </div>
                               <span className="todolist-remove-assignee-icon">
                                 <img
+                                  draggable="false"
                                   width={20}
                                   className="remove"
                                   height={20}
@@ -945,6 +948,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
                                         )}
                                         <span className="deleteBtn">
                                           <img
+                                            draggable="false"
                                             src={deleteButtonCreateMeeting}
                                             width={15}
                                             height={15}

@@ -191,7 +191,7 @@ const AdminHome = () => {
         ) : null}
         <NavbarAdmin />
         <NotificationBar
-          iconName={<img src={IconMetroAttachment} />}
+          iconName={<img draggable="false" src={IconMetroAttachment} />}
           notificationMessage={notification.message}
           notificationState={notification.notificationShow}
           setNotification={setNotification}

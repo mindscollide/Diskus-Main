@@ -1055,7 +1055,7 @@ const OtoMessages = () => {
                         }
                         ref={chatMessageRefs}
                       >
-                        <img className="dropdown-icon" src={DropDownIcon} />
+                        <img draggable="false" className="dropdown-icon" src={DropDownIcon} />
                         {chatFeatureActive === messageData.messageID ? (
                           <div className="dropdown-menus-chatmessage">
                             <span
@@ -1111,7 +1111,7 @@ const OtoMessages = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
-                                <img
+                                <img draggable="false"
                                   src={messageData.attachmentLocation}
                                   alt=""
                                 />
@@ -1126,7 +1126,7 @@ const OtoMessages = () => {
                               ext === 'txt' ||
                               ext === 'gif') ? (
                             <div className="file-uploaded-chat">
-                              <img src={DocumentIcon} alt="" />
+                              <img draggable="false" src={DocumentIcon} alt="" />
                               <span className="attached-file">
                                 {messageData.attachmentLocation
                                   .substring(
@@ -1143,7 +1143,7 @@ const OtoMessages = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
-                                <img src={DownloadIcon} alt="" />
+                                <img draggable="false" src={DownloadIcon} alt="" />
                               </a>
                             </div>
                           ) : messageData.attachmentLocation !== '' &&
@@ -1158,7 +1158,7 @@ const OtoMessages = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
-                                <img
+                                <img draggable="false"
                                   src={
                                     filesUrlTalk +
                                     messageData.attachmentLocation
@@ -1186,7 +1186,7 @@ const OtoMessages = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
-                                <img
+                                <img draggable="false"
                                   src={
                                     filesUrlTalk +
                                     messageData.attachmentLocation
@@ -1204,7 +1204,7 @@ const OtoMessages = () => {
                               ext === 'txt' ||
                               ext === 'gif') ? (
                             <div className="file-uploaded-chat">
-                              <img src={DocumentIcon} alt="" />
+                              <img draggable="false" src={DocumentIcon} alt="" />
                               <span className="attached-file">
                                 {messageData.attachmentLocation
                                   .substring(
@@ -1221,7 +1221,7 @@ const OtoMessages = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
-                                <img src={DownloadIcon} alt="" />
+                                <img draggable="false" src={DownloadIcon} alt="" />
                               </a>
                             </div>
                           ) : (
@@ -1250,7 +1250,7 @@ const OtoMessages = () => {
                         <div className="star-time-status ml-auto text-end">
                           <span className="starred-status">
                             {messageData.isFlag === 1 ? (
-                              <img src={StarredMessageIcon} alt="" />
+                              <img draggable="false" src={StarredMessageIcon} alt="" />
                             ) : null}
                           </span>
                           <span className="direct-chat-sent-time chat-datetime">
@@ -1279,13 +1279,13 @@ const OtoMessages = () => {
                           </span>
                           <div className="message-status">
                             {messageData.messageStatus === 'Sent' ? (
-                              <img src={SingleTickIcon} alt="" />
+                              <img draggable="false" src={SingleTickIcon} alt="" />
                             ) : messageData.messageStatus === 'Delivered' ? (
-                              <img src={DoubleTickDeliveredIcon} alt="" />
+                              <img draggable="false" src={DoubleTickDeliveredIcon} alt="" />
                             ) : messageData.messageStatus === 'Seen' ? (
-                              <img src={DoubleTickIcon} alt="" />
+                              <img draggable="false" src={DoubleTickIcon} alt="" />
                             ) : messageData.messageStatus === 'Undelivered' ? (
-                              <img src={TimerIcon} alt="" />
+                              <img draggable="false" src={TimerIcon} alt="" />
                             ) : null}
                           </div>
                         </div>
@@ -1356,7 +1356,7 @@ const OtoMessages = () => {
                         // }
                         ref={chatMessageRefs}
                       >
-                        <img className="dropdown-icon" src={DropDownChatIcon} />
+                        <img draggable="false" className="dropdown-icon" src={DropDownChatIcon} />
                         {chatFeatureActive === messageData.messageID ? (
                           <div className="dropdown-menus-chatmessage">
                             <span
@@ -1411,7 +1411,7 @@ const OtoMessages = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
-                                <img
+                                <img draggable="false"
                                   src={
                                     filesUrlTalk +
                                     messageData.attachmentLocation
@@ -1429,7 +1429,7 @@ const OtoMessages = () => {
                               ext === 'txt' ||
                               ext === 'gif') ? (
                             <div className="file-uploaded-chat received">
-                              <img src={DocumentIcon} alt="" />
+                              <img draggable="false" src={DocumentIcon} alt="" />
                               <span className="attached-file">
                                 {messageData.attachmentLocation
                                   .substring(
@@ -1446,7 +1446,7 @@ const OtoMessages = () => {
                                 target="_blank"
                                 rel="noopener noreferrer"
                               >
-                                <img src={DownloadIcon} alt="" />
+                                <img draggable="false" src={DownloadIcon} alt="" />
                               </a>
                             </div>
                           ) : null}
@@ -1477,7 +1477,7 @@ const OtoMessages = () => {
                         <div className="star-time-status ml-auto text-end">
                           <span className="starred-status">
                             {messageData.isFlag === 1 ? (
-                              <img src={StarredMessageIcon} alt="" />
+                              <img draggable="false" src={StarredMessageIcon} alt="" />
                             ) : null}
                           </span>
                           <span className="direct-chat-sent-time chat-datetime">

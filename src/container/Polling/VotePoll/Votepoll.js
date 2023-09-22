@@ -96,7 +96,7 @@ const Votepoll = () => {
   };
 
   const handleForCheck = (value) => {
-    console.log("handleForCheck",value)
+    console.log("handleForCheck", value);
     let findID = viewProgressPollsDetails.answer.find(
       (data, index) => data === value
     );
@@ -144,6 +144,7 @@ const Votepoll = () => {
                   className="d-flex justify-content-end"
                 >
                   <img
+                    draggable="false"
                     src={BlackCrossIcon}
                     className={styles["Vote_Poll_cross_ICon"]}
                     height="16px"
