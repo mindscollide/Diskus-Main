@@ -5,10 +5,10 @@ const FileImageUpload = ({ file, removeFileFunction }) => {
   return (
     <>
       <div className="removeImage-thumbnail">
-        <img onClick={removeFileFunction} src={CrossIcon} />
+        <img draggable="false" onClick={removeFileFunction} src={CrossIcon} />
       </div>
       <div className="image-thumbnail">
-        <img className="img-cover thumbnailImage" src={file} />
+        <img draggable="false" className="img-cover thumbnailImage" src={file} />
       </div>
     </>
   )

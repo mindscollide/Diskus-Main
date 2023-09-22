@@ -73,7 +73,7 @@ const StarredMessagesList = () => {
               <Row key={index}>
                 <Col lg={1} md={1} sm={1}>
                   <div className="chat-profile-icon starred-message">
-                    <img src={SingleIcon} width={10} />
+                    <img draggable="false" src={SingleIcon} width={10} />
                   </div>
                 </Col>
                 <Col lg={7} md={7} sm={7}>
@@ -95,7 +95,7 @@ const StarredMessagesList = () => {
                     <p className="m-0">{dataItem.messageBody}</p>
                     <div className="starred-icon-date">
                       <span>
-                        <img src={StarredMessageIcon} alt="" />
+                        <img draggable="false" src={StarredMessageIcon} alt="" />
                       </span>
                       <p className="m-0">
                         {' '}

@@ -177,9 +177,9 @@ const ChangePassword = () => {
                   placeholder={t("Old-password")}
                   inputicon={
                     showOldPassword ? (
-                      <img src={PasswordHideEyeIcon} />
+                      <img draggable="false" src={PasswordHideEyeIcon} />
                     ) : (
-                      <img src={PasswordEyeIcon} />
+                      <img draggable="false" src={PasswordEyeIcon} />
                     )
                   }
                   iconClassName="eye_icon"
@@ -217,9 +217,9 @@ const ChangePassword = () => {
                   placeholder={t("New-password")}
                   inputicon={
                     showNewPasswordIcon ? (
-                      <img src={PasswordHideEyeIcon} />
+                      <img draggable="false" src={PasswordHideEyeIcon} />
                     ) : (
-                      <img src={PasswordEyeIcon} />
+                      <img draggable="false" src={PasswordEyeIcon} />
                     )
                   }
                   iconClassName="eye_icon"
@@ -264,9 +264,9 @@ const ChangePassword = () => {
                   placeholder={t("Confirm-password")}
                   inputicon={
                     showConfirmPasswordIcon ? (
-                      <img src={PasswordHideEyeIcon} />
+                      <img draggable="false" src={PasswordHideEyeIcon} />
                     ) : (
-                      <img src={PasswordEyeIcon} />
+                      <img draggable="false" src={PasswordEyeIcon} />
                     )
                   }
                   iconClassName="eye_icon"
@@ -359,7 +359,7 @@ const ChangePassword = () => {
               <>
                 <Row>
                   <Col lg={12} md={12} sm={12} className="text-center">
-                    <img src={PasswordUpdatedIcon} alt="" />
+                    <img draggable="false" src={PasswordUpdatedIcon} alt="" />
                     <p className={styles["modalUpdateText"]}>
                       {t("Your-password-has-been-changed-successfully")}
                     </p>

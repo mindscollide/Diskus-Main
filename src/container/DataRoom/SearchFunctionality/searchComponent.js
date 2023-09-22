@@ -90,7 +90,7 @@ const SearchComponent = ({
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={folderColor} alt="" />
+                <img draggable="false" src={folderColor} alt="" />
                 <abbr title={text}>
                   <span
                     className={`${
@@ -98,7 +98,7 @@ const SearchComponent = ({
                     } ${"cursor-pointer"}`}
                     onClick={() => getFolderDocuments(data.id)}
                   >
-                    {text} <img src={sharedIcon} alt="" />
+                    {text} <img draggable="false" src={sharedIcon} alt="" />
                   </span>
                 </abbr>
               </div>
@@ -108,12 +108,13 @@ const SearchComponent = ({
               <>
                 <section className="d-flex gap-2">
                   <img
+                    draggable="false"
                     src={getIconSource(getFileExtension(data.name))}
                     alt=""
                   />
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
-                      {text} <img src={sharedIcon} alt="" />
+                      {text} <img draggable="false" src={sharedIcon} alt="" />
                     </span>
                   </abbr>
                 </section>
@@ -124,7 +125,7 @@ const SearchComponent = ({
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={folderColor} alt="" />
+                <img draggable="false" src={folderColor} alt="" />
                 <abbr title={text}>
                   <span
                     className={`${
@@ -142,6 +143,7 @@ const SearchComponent = ({
               <>
                 <section className="d-flex gap-2">
                   <img
+                    draggable="false"
                     src={getIconSource(getFileExtension(data.name))}
                     alt=""
                   />
@@ -268,6 +270,7 @@ const SearchComponent = ({
       <>
         <span className="d-flex align-items-center gap-2" key={user.pK_UID}>
           <img
+            draggable="false"
             width={"25px"}
             height="25px"
             className="rounded-circle  "
@@ -1581,7 +1584,13 @@ const SearchComponent = ({
           searchDataFields.isAudios ||
           searchDataFields.isSites ? (
             <div className={styles["dropdown__Document_Value"]}>
-              <img width="12px" height="12px" alt="" src={CheckIconDropdown} />
+              <img
+                draggable="false"
+                width="12px"
+                height="12px"
+                alt=""
+                src={CheckIconDropdown}
+              />
               <p className={styles["overflow-text"]}>
                 {searchDataFields.isDocument
                   ? t("Document")
@@ -1618,6 +1627,7 @@ const SearchComponent = ({
                   : null}
               </p>
               <img
+                draggable="false"
                 width="12px"
                 height="12px"
                 alt=""
@@ -1644,7 +1654,13 @@ const SearchComponent = ({
         >
           {searchDataFields.StatusID !== 0 ? (
             <div className={styles["dropdown__Document_Value"]}>
-              <img width="12px" height="12px" alt="" src={CheckIconDropdown} />
+              <img
+                draggable="false"
+                width="12px"
+                height="12px"
+                alt=""
+                src={CheckIconDropdown}
+              />
               <p className={styles["overflow-text"]}>
                 {searchDataFields.StatusID === 1
                   ? t("My-documents")
@@ -1653,6 +1669,7 @@ const SearchComponent = ({
                   : t("Any-where-in-dataRoom")}
               </p>
               <img
+                draggable="false"
                 width="12px"
                 height="12px"
                 alt=""
@@ -1681,7 +1698,13 @@ const SearchComponent = ({
           searchDataFields.isNotOwnedByMe ||
           searchDataFields.isSpecificUser ? (
             <div className={styles["dropdown__Document_Value"]}>
-              <img width="12px" alt="" height="12px" src={CheckIconDropdown} />
+              <img
+                draggable="false"
+                width="12px"
+                alt=""
+                height="12px"
+                src={CheckIconDropdown}
+              />
               <p className={styles["overflow-text"]}>
                 {searchDataFields.isOwnedByMe
                   ? t("Owned-by-me")
@@ -1692,6 +1715,7 @@ const SearchComponent = ({
                   : t("Anyone")}
               </p>
               <img
+                draggable="false"
                 width="12px"
                 height="12px"
                 alt=""
@@ -1719,9 +1743,16 @@ const SearchComponent = ({
           {searchDataFields.LastModifiedStartDate !== "" &&
           searchDataFields.LastModifiedEndDate !== "" ? (
             <div className={styles["dropdown__Document_Value"]}>
-              <img width="12px" height="12px" alt="" src={CheckIconDropdown} />
+              <img
+                draggable="false"
+                width="12px"
+                height="12px"
+                alt=""
+                src={CheckIconDropdown}
+              />
               <p className={styles["overflow-text"]}> {dateValue}</p>
               <img
+                draggable="false"
                 width="12px"
                 height="12px"
                 src={CrossIconDropdown}

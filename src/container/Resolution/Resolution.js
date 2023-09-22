@@ -452,6 +452,7 @@ const Resolution = () => {
           if (votingDeadline < newDate) {
             return (
               <img
+                draggable="false"
                 src={ResultResolutionIcon}
                 onClick={() => getResultHandle(data.resolutionID)}
                 className={styles["Result_icon"]}
@@ -465,6 +466,7 @@ const Resolution = () => {
           if (votingDeadline < newDate) {
             return (
               <img
+                draggable="false"
                 src={ResultResolutionIcon}
                 onClick={() => getResultHandle(data.resolutionID)}
                 className={styles["Result_icon"]}
@@ -487,6 +489,7 @@ const Resolution = () => {
           return (
             <span className={styles["Edit_Icon_moderator"]}>
               <img
+                draggable="false"
                 src={CrossResolution}
                 width={22}
                 height={22}
@@ -498,6 +501,7 @@ const Resolution = () => {
         } else {
           return (
             <img
+              draggable="false"
               src={EditResolutionIcon}
               onClick={() => handleUpdateResolutionAction(data.resolutionID)}
               className={styles["Edit_Icon_moderator"]}
@@ -620,6 +624,7 @@ const Resolution = () => {
         if (votingDeadline < newDate) {
           return (
             <img
+              draggable="false"
               className={styles["Result_Icon_cursor_pointer"]}
               src={ResultResolutionIcon}
               alt=""
@@ -702,6 +707,7 @@ const Resolution = () => {
           return (
             <span className="d-flex justify-content-center">
               <img
+                draggable="false"
                 className="text-center cursor-pointer"
                 src={AttachmentIcon}
                 alt=""
@@ -725,13 +731,13 @@ const Resolution = () => {
             if (data.fK_VotingStatus_ID === 1) {
               return (
                 <span className="d-flex justify-content-center">
-                  <img src={thumbsup} alt="" />
+                  <img draggable="false" src={thumbsup} alt="" />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 2) {
               return (
                 <span className="d-flex justify-content-center">
-                  <img src={thumbsdown} alt="" />
+                  <img draggable="false" src={thumbsdown} alt="" />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 3) {
@@ -745,7 +751,7 @@ const Resolution = () => {
             } else if (data.fK_VotingStatus_ID === 4) {
               return (
                 <span className="d-flex justify-content-center">
-                  <img src={AbstainvoterIcon} alt="" />
+                  <img draggable="false" src={AbstainvoterIcon} alt="" />
                 </span>
               );
             }
@@ -844,6 +850,7 @@ const Resolution = () => {
         if (data.isAttachmentAvailable) {
           return (
             <img
+              draggable="false"
               className="text-center cursor-pointer"
               src={AttachmentIcon}
               onClick={() => viewAttachmentHandle(data.attachments)}
@@ -866,13 +873,13 @@ const Resolution = () => {
             if (data.fK_VotingStatus_ID === 1) {
               return (
                 <span className="d-flex justify-content-center">
-                  <img src={thumbsup} alt="" />
+                  <img draggable="false" src={thumbsup} alt="" />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 2) {
               return (
                 <span className="d-flex justify-content-center">
-                  <img src={thumbsdown} alt="" />
+                  <img draggable="false" src={thumbsdown} alt="" />
                 </span>
               );
             } else if (data.fK_VotingStatus_ID === 3) {
@@ -880,7 +887,7 @@ const Resolution = () => {
             } else if (data.fK_VotingStatus_ID === 4) {
               return (
                 <span className="d-flex justify-content-center">
-                  <img src={AbstainvoterIcon} alt="" />
+                  <img draggable="false" src={AbstainvoterIcon} alt="" />
                 </span>
               );
             }
@@ -1204,6 +1211,7 @@ const Resolution = () => {
                       }
                       icon={
                         <img
+                          draggable="false"
                           src={plusbutton}
                           height="7.6px"
                           width="7.6px"
@@ -1260,7 +1268,9 @@ const Resolution = () => {
                         onKeyDown={handleClickSearch}
                         applyClass={"resolution-search-input"}
                         iconClassName={styles["Search_Icon"]}
-                        inputicon={<img src={searchicon} alt="" />}
+                        inputicon={
+                          <img draggable="false" src={searchicon} alt="" />
+                        }
                         clickIcon={openSearchBox}
                       />
                       {/* <SearchInputSuggestion /> */}
@@ -1285,6 +1295,7 @@ const Resolution = () => {
                             >
                               <span>
                                 <img
+                                  draggable="false"
                                   src={Cross}
                                   height="16px"
                                   alt=""
@@ -1478,7 +1489,7 @@ const Resolution = () => {
                         lg={12}
                         className={styles["empty_Resolutions"]}
                       >
-                        <img src={EmptyResolution} alt="" />
+                        <img draggable="false" src={EmptyResolution} alt="" />
                         <h2 className={styles["NoResolutionHeading"]}>
                           {t("No-resolution-to-display")}
                         </h2>
@@ -1551,7 +1562,7 @@ const Resolution = () => {
                         lg={12}
                         className={styles["empty_Resolutions"]}
                       >
-                        <img src={EmptyResolution} alt="" />
+                        <img draggable="false" src={EmptyResolution} alt="" />
                         <h2 className={styles["NoResolutionHeading"]}>
                           {t("No-resolution-to-display")}
                         </h2>

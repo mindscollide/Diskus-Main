@@ -164,6 +164,7 @@ const ModalShareFolder = ({
           >
             {console.log("itemitem", item)}
             <img
+              draggable="false"
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
               alt=""
               className="user-img"
@@ -342,7 +343,12 @@ const ModalShareFolder = ({
                           sm={12}
                           className="d-flex justify-content-center gap-3"
                         >
-                          <img src={clock} height="14.66px" width="14.97px" />
+                          <img
+                            draggable="false"
+                            src={clock}
+                            height="14.66px"
+                            width="14.97px"
+                          />
                           <span
                             className={styles["Text_for_header_expiration"]}
                           >
@@ -356,12 +362,14 @@ const ModalShareFolder = ({
                               className="d-flex gap-2"
                             >
                               <img
+                                draggable="false"
                                 src={EditIconNote}
                                 height="11.11px"
                                 width="11.54px"
                                 onClick={showcalender}
                               />
                               <img
+                                draggable="false"
                                 src={DeleteiCon}
                                 width="9.47px"
                                 height="11.75px"
@@ -455,7 +463,12 @@ const ModalShareFolder = ({
 
                     <Row className="mt-3">
                       <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                        <img src={newprofile} height="40px" width="41px" />
+                        <img
+                          draggable="false"
+                          src={newprofile}
+                          height="40px"
+                          width="41px"
+                        />
                         <Row className="mt-1">
                           <Col
                             lg={12}
@@ -506,7 +519,12 @@ const ModalShareFolder = ({
                                 sm={10}
                                 className="d-flex justify-content-start gap-2 "
                               >
-                                <img src={pdf} height="16px" width="14.23px" />
+                                <img
+                                  draggable="false"
+                                  src={pdf}
+                                  height="16px"
+                                  width="14.23px"
+                                />
                                 <span className={styles["File_name"]}>
                                   Merger proposal for ABC Industries.pdf
                                 </span>
@@ -518,11 +536,13 @@ const ModalShareFolder = ({
                                 className="d-flex justify-content-end gap-2 mt-1"
                               >
                                 <img
+                                  draggable="false"
                                   src={download}
                                   height="11px"
                                   width="12.15px"
                                 />
                                 <img
+                                  draggable="false"
                                   src={star}
                                   height="10.22px"
                                   width="12.07px"
@@ -567,6 +587,7 @@ const ModalShareFolder = ({
                               {permissionID.label}
                             </span>
                             <img
+                              draggable="false"
                               width="12px"
                               height="12px"
                               onClick={() => {
@@ -595,6 +616,7 @@ const ModalShareFolder = ({
                               {generalAccess.label}
                             </span>
                             <img
+                              draggable="false"
                               width="12px"
                               height="12px"
                               onClick={() => {
@@ -642,6 +664,7 @@ const ModalShareFolder = ({
                                       userPic={data.displayProfilePictureName}
                                       icon={
                                         <img
+                                          draggable="false"
                                           src={crossIcon}
                                           height="14px"
                                           width="14px"
@@ -661,7 +684,7 @@ const ModalShareFolder = ({
                               participantname="Saad Fudda"
                               particiapantdesignation="Owner"
                               icon={
-                                <img
+                                <img draggable="false"
                                   src={crossIcon}
                                   height="14px"
                                   width="14px"

@@ -1,8 +1,8 @@
-import React from 'react'
-import styles from './chat.upload.module.css'
-import Button from '@material-ui/core/Button'
-import { Box } from '@material-ui/core'
-import UploadChatIcon from '../../../assets/images/Upload-Chat-Icon.png'
+import React from "react";
+import styles from "./chat.upload.module.css";
+import Button from "@material-ui/core/Button";
+import { Box } from "@material-ui/core";
+import UploadChatIcon from "../../../assets/images/Upload-Chat-Icon.png";
 
 const CustomUploadChat = ({
   onChange,
@@ -31,11 +31,11 @@ const CustomUploadChat = ({
           component="span"
           className={className}
         >
-          <img src={uploadIcon} alt="" />
+          <img src={uploadIcon} alt="" draggable="false" />
         </Button>
       </label>
     </Box>
-  )
-}
+  );
+};
 
-export default CustomUploadChat
+export default CustomUploadChat;

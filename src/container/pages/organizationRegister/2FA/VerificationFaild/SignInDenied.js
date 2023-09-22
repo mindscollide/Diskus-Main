@@ -185,7 +185,7 @@ const SigninDenied = () => {
               </option>
             ))}
           </select>
-          <img
+          <img draggable="false"
             src={LanguageChangeIcon}
             className="languageIcon_2FAverificationdevieotp"
           />
@@ -193,7 +193,7 @@ const SigninDenied = () => {
       </Row> */}
       <Container fluid className="SigninDenied">
         <Row className="position-relative">
-          <Col className="languageSelector" >
+          <Col className="languageSelector">
             <LanguageSelector />
           </Col>
         </Row>
@@ -219,6 +219,7 @@ const SigninDenied = () => {
                     className="d-flex justify-content-center "
                   >
                     <img
+                      draggable="false"
                       src={img1}
                       width="220px"
                       height="69px"
@@ -248,6 +249,7 @@ const SigninDenied = () => {
                     className="d-flex justify-content-center align-item-center mt-2"
                   >
                     <img
+                      draggable="false"
                       width="116px"
                       height="120.92px"
                       src={logo}
@@ -279,6 +281,7 @@ const SigninDenied = () => {
             <Row>
               <Col sm={12} md={6} lg={6} className="position-relative">
                 <img
+                  draggable="false"
                   src={img9}
                   alt="auth_icon"
                   className="phone-image"
@@ -288,6 +291,7 @@ const SigninDenied = () => {
               </Col>
               <Col sm={12} md={6} lg={6} className="position-relative vh-100">
                 <img
+                  draggable="false"
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
                   width="600px"
@@ -303,7 +307,7 @@ const SigninDenied = () => {
             sm={12}
             className="d-flex justify-content-center align-items-center min-vh-100 roundspinner-image-SigninDenied"
           >
-            <img
+            <img draggable="false"
               src={img9}
               alt="auth_icon"
               className="mobile_image_two"

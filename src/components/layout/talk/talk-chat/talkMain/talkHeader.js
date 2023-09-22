@@ -189,18 +189,18 @@ const TalkHeader = () => {
           <Col lg={1} md={1} sm={12} className="p-0">
             <div className="chat-icons">
               <span style={{ cursor: 'pointer' }} onClick={securityDialogue}>
-                <img src={SecurityIcon} className="img-cover" />
+                <img draggable="false" src={SecurityIcon} className="img-cover" />
               </span>
             </div>
           </Col>
           <Col lg={1} md={1} sm={12} className="p-0">
             <div className="chat-icons" onClick={activateGlobalSearch}>
-              <img src={SearchIcon} className="img-cover" />
+              <img draggable="false" src={SearchIcon} className="img-cover" />
             </div>
           </Col>
           <Col lg={1} md={1} sm={12} className="p-0">
             <div className="chat-icons">
-              <img src={FullScreenIcon} className="img-cover" />
+              <img draggable="false" src={FullScreenIcon} className="img-cover" />
             </div>
           </Col>
         </Row>

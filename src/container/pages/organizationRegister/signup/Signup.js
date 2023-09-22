@@ -1130,6 +1130,7 @@ const Signup = () => {
           </Col>
           <Col sm={12} lg={5} md={5} className={styles["signUp_rightSection"]}>
             <img
+              draggable="false"
               src={DiskusnewRoundIconSignUp}
               width="600px"
               className={styles["rightsection_roundLogo"]}

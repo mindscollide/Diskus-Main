@@ -30,7 +30,12 @@ const EmptyState = () => {
                 sm={12}
                 className="d-flex justify-content-center"
               >
-                <img src={emptyState} height="205.59px" width="344.2px" />
+                <img
+                  draggable="false"
+                  src={emptyState}
+                  height="205.59px"
+                  width="344.2px"
+                />
               </Col>
             </Row>
             <Row className="mt-3">

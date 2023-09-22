@@ -59,6 +59,7 @@ const Sidebar = ({ Links, ui }) => {
               onClick={() => setCurrentStep(2)}
             >
               <img
+                draggable="false"
                 src={MeetingIconSvg}
                 data-tut="meeting-icon"
                 className="meeting-icon-tut"
@@ -72,6 +73,7 @@ const Sidebar = ({ Links, ui }) => {
               className="m-0 p-0 ms-4"
             >
               <img
+                draggable="false"
                 src={NewTodoIcon}
                 data-tut="meeting-icon"
                 className="meeting-icon-tut"
@@ -86,6 +88,7 @@ const Sidebar = ({ Links, ui }) => {
               className="m-0 p-0 ms-4"
             >
               <img
+                draggable="false"
                 src={NewCalendarIcon}
                 data-tut="meeting-icon"
                 className="meeting-icon-tut"
@@ -102,6 +105,7 @@ const Sidebar = ({ Links, ui }) => {
               // onClick={() => setCurrentStep(currentStep + 1)}
             >
               <img
+                draggable="false"
                 src={NewLockIcon}
                 data-tut="meeting-icon"
                 className="meeting-icon-tut"

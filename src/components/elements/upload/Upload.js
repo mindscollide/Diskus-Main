@@ -2,10 +2,15 @@ import React from "react";
 import styles from "./upload.module.css";
 import Button from "@material-ui/core/Button";
 import { Box } from "@material-ui/core";
-import AttachmentIcon from '../../../assets/images/Attachment_Icon.svg'
+import AttachmentIcon from "../../../assets/images/Attachment_Icon.svg";
 
-const CustomUpload = ({ change, onClick, className, disable, attachmentIconClass }) => {
-
+const CustomUpload = ({
+  change,
+  onClick,
+  className,
+  disable,
+  attachmentIconClass,
+}) => {
   return (
     <Box display="flex">
       {/* <Input value={file} disabled={file ? false : true} /> */}
@@ -27,8 +32,11 @@ const CustomUpload = ({ change, onClick, className, disable, attachmentIconClass
         disabled={disable}
       />
       <label htmlFor="contained-button-file">
-
-        <img className="cursor-pointer" src={AttachmentIcon}></img>
+        <img
+          className="cursor-pointer"
+          src={AttachmentIcon}
+          draggable="false"
+        ></img>
       </label>
     </Box>
   );
