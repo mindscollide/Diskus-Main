@@ -8,10 +8,10 @@ const TalkChat2 = ({ chatMessageClass }) => {
   return (
     <>
       <div className="positionRelative">
-        <div className={chatMessageClass}>
+        <div className="chat-messenger-head">
           <Container>
             {/* <ChatHeader /> */}
-            <ChatMainBody />
+            <ChatMainBody chatMessageClass={chatMessageClass} />
             {/* <ChatFooter /> */}
           </Container>
         </div>

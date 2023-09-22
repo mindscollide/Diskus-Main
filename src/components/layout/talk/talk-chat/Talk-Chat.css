@@ -101,6 +101,17 @@ body[dir="rtl"] .chat-block {
   border-radius: 4px;
 }
 
+.chat-messenger-head-video {
+  height: 53vh;
+  position: fixed;
+  bottom: 7px;
+  right: 85px;
+  width: 325px;
+  background: #fff;
+  border: 1px solid #6172d6;
+  border-radius: 4px;
+}
+
 .chatFilter {
   margin-top: 10px;
   width: 160px;

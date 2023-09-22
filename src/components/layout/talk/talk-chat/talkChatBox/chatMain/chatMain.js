@@ -84,7 +84,7 @@ import { useTranslation } from 'react-i18next'
 import { filesUrlTalk } from '../../../../../../commen/apis/Api_ends_points'
 import enUS from 'antd/es/date-picker/locale/en_US'
 
-const ChatMainBody = () => {
+const ChatMainBody = ({ chatMessageClass }) => {
   //Use Navigate
   const navigate = useNavigate()
 
@@ -3798,7 +3798,7 @@ const ChatMainBody = () => {
   return (
     <>
       <div className="positionRelative">
-        <div className="chat-messenger-head">
+        <div className={chatMessageClass}>
           <Container>
             <Row>
               <Col lg={12} md={12} sm={12}>

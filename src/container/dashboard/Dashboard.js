@@ -1397,7 +1397,7 @@ const Dashboard = () => {
             {videoFeatureReducer.IncomingVideoCallFlag === true ? (
               <VideoMaxIncoming />
             ) : null}
-            <TalkChat2 chatMessageClass="chat-message-video-head" />
+            <TalkChat2 chatMessageClass="chat-messenger-head-video" />
             {/* {talkFeatureStates.ChatBoxActiveFlag === true ? <TalkChat2 /> : null} */}
             {/* {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
             <VideoOutgoing />
