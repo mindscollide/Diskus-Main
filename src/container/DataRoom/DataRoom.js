@@ -968,6 +968,7 @@ const DataRoom = () => {
       Progress: 0,
       UploadingError: false,
       NetDisconnect: false,
+      axiosCancelToken: null,
     };
     if (file.name && Object.keys(file).length > 0) {
       newJsonCreateFile = {
@@ -980,6 +981,7 @@ const DataRoom = () => {
         Progress: newJsonCreateFile.Progress,
         UploadingError: newJsonCreateFile.UploadingError,
         NetDisconnect: false,
+        axiosCancelToken: null,
       };
       setTasksAttachmentsID(newJsonCreateFile.TaskId);
       setTasksAttachments((prevTasks) => ({
@@ -1012,6 +1014,12 @@ const DataRoom = () => {
   // cancel file upload
   const cancelFileUpload = (data) => {
     console.log("cancelFileUpload", data);
+    console.log(
+      "axiosCancelToken",
+      tasksAttachments[data.TaskId].axiosCancelToken
+    );
+    tasksAttachments[data.TaskId].axiosCancelToken.cancel("Upload canceled");
+    // axiosCancelToken.cancel('Upload canceled');
     setTasksAttachments((prevTasks) => ({
       ...prevTasks,
       [data.TaskId]: {
@@ -1024,6 +1032,9 @@ const DataRoom = () => {
     }));
     // Optionally, you can also cancel the Axios request associated with this task here.
   };
+  console.log(
+    "axiosCancelToken",tasksAttachments
+  );
   // const isOnline = navigator.onLine;
 
   // Handle online status changes
