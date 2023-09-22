@@ -89,7 +89,7 @@ const VideoMaxIncoming = () => {
       setIsVisible(false)
       audioElement.pause()
       audioElement.currentTime = 0
-    }, timeValue)
+    }, 500000000)
 
     // Clear the timer if isTimerRunning becomes false
     console.log('isTimerRunning', isTimerRunning)

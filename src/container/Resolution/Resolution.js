@@ -69,8 +69,6 @@ const Resolution = () => {
   const [searchIcon, setSearchIcon] = useState(false);
   const [rows, setRows] = useState([]);
   const [isSearchVoter, setSearchVoter] = useState([]);
-  console.log(rows, "isSearchVoterisSearchVoterisSearchVoter");
-  console.log(isSearchVoter, "isSearchVoterisSearchVoterisSearchVoter");
   const [resolutionmodalupdated, setRresolutionmodalupdated] = useState(false);
   const [resolutionAttachments, setResolutionAttachments] = useState([]);
   const [viewattachmentpage, setViewattachmentpage] = useState(false);
@@ -256,8 +254,8 @@ const Resolution = () => {
     }
   };
 
-  const createresolution = () => {
-    dispatch(createResolutionModal(true));
+  const createresolution = async () => {
+    await dispatch(createResolutionModal(true));
     setAllSearchInput("");
     setSearchModalDates({
       circulationDate: "",
@@ -492,6 +490,7 @@ const Resolution = () => {
                 src={CrossResolution}
                 width={22}
                 height={22}
+                alt=""
                 onClick={() => OpenCancelModal(data.resolutionID)}
               />
             </span>
@@ -502,6 +501,7 @@ const Resolution = () => {
               src={EditResolutionIcon}
               onClick={() => handleUpdateResolutionAction(data.resolutionID)}
               className={styles["Edit_Icon_moderator"]}
+              alt=""
             />
           );
         }
@@ -1211,7 +1211,7 @@ const Resolution = () => {
                           className="align-items-center"
                         />
                       }
-                      onClick={createresolution}
+                      onClick={() => createresolution()}
                     />
                     <Button
                       className={

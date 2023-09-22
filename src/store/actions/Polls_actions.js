@@ -112,8 +112,6 @@ const LoaderState = () => {
 // search Polls
 const searchPollsApi = (navigate, t, data) => {
   let token = JSON.parse(localStorage.getItem("token"));
-  let createrID = parseInt(localStorage.getItem("userID"));
-  let OrganizationID = parseInt(localStorage.getItem("organizationID"));
 
   return (dispatch) => {
     dispatch(searchPolls_init());

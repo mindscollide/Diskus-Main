@@ -179,7 +179,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   const onTextChange = (content, delta, source) => {
     console.log("content", content);
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
-    if (source === "user" && plainText != "") {
+    if (source === "user" && plainText !== "") {
       setAddNoteFields({
         ...addNoteFields,
         Description: {

@@ -81,6 +81,8 @@ const TodoList = () => {
   const [show, setShow] = useState(false);
   const [updateFlagToDo, setUpdateFlagToDo] = useState(false);
   const [viewFlagToDo, setViewFlagToDo] = useState(false);
+
+  const [todoViewModal, setTodoViewModal] = useState(false);
   const [modalsflag, setModalsflag] = useState(false);
   const [removeTodo, setRemoveTodo] = useState(0);
   const [searchData, setSearchData] = useState({
@@ -240,7 +242,9 @@ const TodoList = () => {
   // for view modal  handler
   const viewModalHandler = (id) => {
     let Data = { ToDoListID: id };
-    dispatch(ViewToDoList(navigate, Data, t,setViewFlagToDo));
+    dispatch(
+      ViewToDoList(navigate, Data, t, setViewFlagToDo, setTodoViewModal)
+    );
   };
 
   // for search Date handler
@@ -512,7 +516,7 @@ const TodoList = () => {
       },
     },
   ];
-  
+
   useEffect(() => {
     setViewFlagToDo(false);
     if (Object.keys(toDoListReducer.ToDoDetails).length > 0) {
@@ -520,7 +524,7 @@ const TodoList = () => {
         setUpdateFlagToDo(true);
         setModalsflag(false);
       } else {
-        console.log("setViewFlagToDosetViewFlagToDo")
+        console.log("setViewFlagToDosetViewFlagToDo");
         // setViewFlagToDo(true);
       }
     }
