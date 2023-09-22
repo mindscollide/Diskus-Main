@@ -40,6 +40,7 @@ import {
   activeMessage,
   downloadChatEmptyObject,
 } from '../../../../../../store/actions/Talk_action'
+import { videoChatMessagesFlag } from '../../../../../../store/actions/VideoFeature_actions'
 import { resetCloseChatFlags } from '../../../../../../store/actions/Talk_Feature_actions'
 import {
   newTimeFormaterAsPerUTCTalkTime,
@@ -84,7 +85,7 @@ import { useTranslation } from 'react-i18next'
 import { filesUrlTalk } from '../../../../../../commen/apis/Api_ends_points'
 import enUS from 'antd/es/date-picker/locale/en_US'
 
-const ChatMainBody = () => {
+const ChatMainBody = ({ chatMessageClass }) => {
   //Use Navigate
   const navigate = useNavigate()
 
@@ -740,6 +741,7 @@ const ChatMainBody = () => {
   }
 
   const closeChat = () => {
+    dispatch(videoChatMessagesFlag(false))
     dispatch(resetCloseChatFlags())
     setChatOpen(false)
     setSave(false)
@@ -3798,7 +3800,7 @@ const ChatMainBody = () => {
   return (
     <>
       <div className="positionRelative">
-        <div className="chat-messenger-head">
+        <div className={chatMessageClass}>
           <Container>
             <Row>
               <Col lg={12} md={12} sm={12}>
@@ -3839,7 +3841,8 @@ const ChatMainBody = () => {
                     <Col lg={1} md={1} sm={12}>
                       {' '}
                       <div className="chat-box-icons">
-                        <img draggable="false"
+                        <img
+                          draggable="false"
                           onClick={showChatSearchHandler}
                           src={SearchChatIcon}
                         />
@@ -3851,7 +3854,11 @@ const ChatMainBody = () => {
                         className="chat-box-icons positionRelative"
                         ref={chatMenuRef}
                       >
-                        <img draggable="false" src={MenuIcon} onClick={activateChatMenu} />
+                        <img
+                          draggable="false"
+                          src={MenuIcon}
+                          onClick={activateChatMenu}
+                        />
                         {chatMenuActive && (
                           <div className="dropdown-menus-chat">
                             {talkStateData.ActiveChatData.messageType ===
@@ -3989,7 +3996,8 @@ const ChatMainBody = () => {
                     <Col lg={1} md={1} sm={12}>
                       {' '}
                       <div className="chat-box-icons" onClick={closeChat}>
-                        <img draggable="false"
+                        <img
+                          draggable="false"
                           src={CloseChatIcon}
                           // className="img-cover"
                           // style={{ width: "20px", marginTop: "16px" }}
@@ -4011,7 +4019,8 @@ const ChatMainBody = () => {
                       <p className="level">{t('NIAP-+-PQC')}</p>
 
                       <span className="securityicon-box">
-                        <img draggable="false"
+                        <img
+                          draggable="false"
                           src={SecurityIconMessasgeBox}
                           style={{ width: '17px' }}
                         />
@@ -4095,7 +4104,8 @@ const ChatMainBody = () => {
                                               ]
                                             }
                                           >
-                                            <img draggable="false"
+                                            <img
+                                              draggable="false"
                                               className="dropdown-icon"
                                               src={DropDownIcon}
                                             />
@@ -4180,7 +4190,8 @@ const ChatMainBody = () => {
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                   >
-                                                    <img draggable="false"
+                                                    <img
+                                                      draggable="false"
                                                       src={
                                                         filesUrlTalk +
                                                         messageData.attachmentLocation
@@ -4199,7 +4210,8 @@ const ChatMainBody = () => {
                                                   ext === 'txt' ||
                                                   ext === 'gif') ? (
                                                 <div className="file-uploaded-chat">
-                                                  <img draggable="false"
+                                                  <img
+                                                    draggable="false"
                                                     src={DocumentIcon}
                                                     alt=""
                                                   />
@@ -4220,7 +4232,8 @@ const ChatMainBody = () => {
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                   >
-                                                    <img draggable="false"
+                                                    <img
+                                                      draggable="false"
                                                       src={DownloadIcon}
                                                       alt=""
                                                     />
@@ -4253,7 +4266,8 @@ const ChatMainBody = () => {
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                   >
-                                                    <img draggable="false"
+                                                    <img
+                                                      draggable="false"
                                                       src={
                                                         filesUrlTalk +
                                                         messageData.attachmentLocation
@@ -4272,7 +4286,8 @@ const ChatMainBody = () => {
                                                   ext === 'txt' ||
                                                   ext === 'gif') ? (
                                                 <div className="file-uploaded-chat">
-                                                  <img draggable="false"
+                                                  <img
+                                                    draggable="false"
                                                     src={DocumentIcon}
                                                     alt=""
                                                   />
@@ -4293,7 +4308,8 @@ const ChatMainBody = () => {
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                   >
-                                                    <img draggable="false"
+                                                    <img
+                                                      draggable="false"
                                                       src={DownloadIcon}
                                                       alt=""
                                                     />
@@ -4348,7 +4364,8 @@ const ChatMainBody = () => {
                                             <div className="star-time-status ml-auto text-end">
                                               <span className="starred-status">
                                                 {messageData.isFlag === 1 ? (
-                                                  <img draggable="false"
+                                                  <img
+                                                    draggable="false"
                                                     src={StarredMessageIcon}
                                                     alt=""
                                                   />
@@ -4386,13 +4403,15 @@ const ChatMainBody = () => {
                                               <div className="message-status">
                                                 {messageData.messageStatus ===
                                                 'Sent' ? (
-                                                  <img draggable="false"
+                                                  <img
+                                                    draggable="false"
                                                     src={SingleTickIcon}
                                                     alt=""
                                                   />
                                                 ) : messageData.messageStatus ===
                                                   'Delivered' ? (
-                                                  <img draggable="false"
+                                                  <img
+                                                    draggable="false"
                                                     src={
                                                       DoubleTickDeliveredIcon
                                                     }
@@ -4400,13 +4419,18 @@ const ChatMainBody = () => {
                                                   />
                                                 ) : messageData.messageStatus ===
                                                   'Seen' ? (
-                                                  <img draggable="false"
+                                                  <img
+                                                    draggable="false"
                                                     src={DoubleTickIcon}
                                                     alt=""
                                                   />
                                                 ) : messageData.messageStatus ===
                                                   'Undelivered' ? (
-                                                  <img draggable="false" src={TimerIcon} alt="" />
+                                                  <img
+                                                    draggable="false"
+                                                    src={TimerIcon}
+                                                    alt=""
+                                                  />
                                                 ) : null}
                                               </div>
                                             </div>
@@ -4474,7 +4498,8 @@ const ChatMainBody = () => {
                                             ]
                                           }
                                         >
-                                          <img draggable="false"
+                                          <img
+                                            draggable="false"
                                             className="dropdown-icon"
                                             src={DropDownChatIcon}
                                           />
@@ -4552,7 +4577,8 @@ const ChatMainBody = () => {
                                                   target="_blank"
                                                   rel="noopener noreferrer"
                                                 >
-                                                  <img draggable="false"
+                                                  <img
+                                                    draggable="false"
                                                     src={
                                                       filesUrlTalk +
                                                       messageData.attachmentLocation
@@ -4571,7 +4597,8 @@ const ChatMainBody = () => {
                                                 ext === 'txt' ||
                                                 ext === 'gif') ? (
                                               <div className="file-uploaded-chat received">
-                                                <img draggable="false"
+                                                <img
+                                                  draggable="false"
                                                   src={DocumentIcon}
                                                   alt=""
                                                 />
@@ -4592,7 +4619,8 @@ const ChatMainBody = () => {
                                                   target="_blank"
                                                   rel="noopener noreferrer"
                                                 >
-                                                  <img draggable="false"
+                                                  <img
+                                                    draggable="false"
                                                     src={DownloadIcon}
                                                     alt=""
                                                   />
@@ -4632,7 +4660,8 @@ const ChatMainBody = () => {
                                           <div className="star-time-status ml-auto text-end">
                                             <span className="starred-status">
                                               {messageData.isFlag === 1 ? (
-                                                <img draggable="false"
+                                                <img
+                                                  draggable="false"
                                                   src={StarredMessageIcon}
                                                   alt=""
                                                 />
@@ -4707,7 +4736,8 @@ const ChatMainBody = () => {
                                             ]
                                           }
                                         >
-                                          <img draggable="false"
+                                          <img
+                                            draggable="false"
                                             className="dropdown-icon"
                                             src={DropDownIcon}
                                           />
@@ -4785,7 +4815,8 @@ const ChatMainBody = () => {
                                                   target="_blank"
                                                   rel="noopener noreferrer"
                                                 >
-                                                  <img draggable="false"
+                                                  <img
+                                                    draggable="false"
                                                     src={
                                                       filesUrlTalk +
                                                       messageData.attachmentLocation
@@ -4804,7 +4835,8 @@ const ChatMainBody = () => {
                                                 ext === 'txt' ||
                                                 ext === 'gif') ? (
                                               <div className="file-uploaded-chat">
-                                                <img draggable="false"
+                                                <img
+                                                  draggable="false"
                                                   src={DocumentIcon}
                                                   alt=""
                                                 />
@@ -4825,7 +4857,8 @@ const ChatMainBody = () => {
                                                   target="_blank"
                                                   rel="noopener noreferrer"
                                                 >
-                                                  <img draggable="false"
+                                                  <img
+                                                    draggable="false"
                                                     src={DownloadIcon}
                                                     alt=""
                                                   />
@@ -4865,7 +4898,8 @@ const ChatMainBody = () => {
                                           <div className="star-time-status ml-auto text-end">
                                             <span className="starred-status">
                                               {messageData.isFlag === 1 ? (
-                                                <img draggable="false"
+                                                <img
+                                                  draggable="false"
                                                   src={StarredMessageIcon}
                                                   alt=""
                                                 />
@@ -4902,25 +4936,32 @@ const ChatMainBody = () => {
                                             <div className="message-status">
                                               {messageData.messageStatus ===
                                               'Sent' ? (
-                                                <img draggable="false"
+                                                <img
+                                                  draggable="false"
                                                   src={SingleTickIcon}
                                                   alt=""
                                                 />
                                               ) : messageData.messageStatus ===
                                                 'Delivered' ? (
-                                                <img draggable="false"
+                                                <img
+                                                  draggable="false"
                                                   src={DoubleTickDeliveredIcon}
                                                   alt=""
                                                 />
                                               ) : messageData.messageStatus ===
                                                 'Seen' ? (
-                                                <img draggable="false"
+                                                <img
+                                                  draggable="false"
                                                   src={DoubleTickIcon}
                                                   alt=""
                                                 />
                                               ) : messageData.messageStatus ===
                                                 'Undelivered' ? (
-                                                <img draggable="false" src={TimerIcon} alt="" />
+                                                <img
+                                                  draggable="false"
+                                                  src={TimerIcon}
+                                                  alt=""
+                                                />
                                               ) : null}
                                             </div>
                                           </div>
@@ -4983,7 +5024,8 @@ const ChatMainBody = () => {
                                             ]
                                           }
                                         >
-                                          <img draggable="false"
+                                          <img
+                                            draggable="false"
                                             className="dropdown-icon"
                                             src={DropDownChatIcon}
                                           />
@@ -5086,7 +5128,8 @@ const ChatMainBody = () => {
                                           <div className="star-time-status ml-auto text-end">
                                             <span className="starred-status">
                                               {messageData.isFlag === 1 ? (
-                                                <img draggable="false"
+                                                <img
+                                                  draggable="false"
                                                   src={StarredMessageIcon}
                                                   alt=""
                                                 />
@@ -5161,7 +5204,8 @@ const ChatMainBody = () => {
                                               ]
                                             }
                                           >
-                                            <img draggable="false"
+                                            <img
+                                              draggable="false"
                                               className="dropdown-icon"
                                               src={DropDownIcon}
                                             />
@@ -5241,7 +5285,8 @@ const ChatMainBody = () => {
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                   >
-                                                    <img draggable="false"
+                                                    <img
+                                                      draggable="false"
                                                       src={
                                                         filesUrlTalk +
                                                         messageData.attachmentLocation
@@ -5260,7 +5305,8 @@ const ChatMainBody = () => {
                                                   ext === 'txt' ||
                                                   ext === 'gif') ? (
                                                 <div className="file-uploaded-chat">
-                                                  <img draggable="false"
+                                                  <img
+                                                    draggable="false"
                                                     src={DocumentIcon}
                                                     alt=""
                                                   />
@@ -5281,7 +5327,8 @@ const ChatMainBody = () => {
                                                     target="_blank"
                                                     rel="noopener noreferrer"
                                                   >
-                                                    <img draggable="false"
+                                                    <img
+                                                      draggable="false"
                                                       src={DownloadIcon}
                                                       alt=""
                                                     />
@@ -5324,7 +5371,8 @@ const ChatMainBody = () => {
                                             <div className="star-time-status ml-auto text-end">
                                               <span className="starred-status">
                                                 {messageData.isFlag === 1 ? (
-                                                  <img draggable="false"
+                                                  <img
+                                                    draggable="false"
                                                     src={StarredMessageIcon}
                                                     alt=""
                                                   />
@@ -5362,13 +5410,15 @@ const ChatMainBody = () => {
                                               <div className="message-status">
                                                 {messageData.messageStatus ===
                                                 'Sent' ? (
-                                                  <img draggable="false"
+                                                  <img
+                                                    draggable="false"
                                                     src={SingleTickIcon}
                                                     alt=""
                                                   />
                                                 ) : messageData.messageStatus ===
                                                   'Delivered' ? (
-                                                  <img draggable="false"
+                                                  <img
+                                                    draggable="false"
                                                     src={
                                                       DoubleTickDeliveredIcon
                                                     }
@@ -5376,13 +5426,18 @@ const ChatMainBody = () => {
                                                   />
                                                 ) : messageData.messageStatus ===
                                                   'Seen' ? (
-                                                  <img draggable="false"
+                                                  <img
+                                                    draggable="false"
                                                     src={DoubleTickIcon}
                                                     alt=""
                                                   />
                                                 ) : messageData.messageStatus ===
                                                   'Undelivered' ? (
-                                                  <img draggable="false" src={TimerIcon} alt="" />
+                                                  <img
+                                                    draggable="false"
+                                                    src={TimerIcon}
+                                                    alt=""
+                                                  />
                                                 ) : null}
                                               </div>
                                             </div>
@@ -5426,13 +5481,15 @@ const ChatMainBody = () => {
                         ) : (
                           <>
                             <div className="removeImage-thumbnail">
-                              <img draggable="false"
+                              <img
+                                draggable="false"
                                 onClick={removeFileFunction}
                                 src={CrossIcon}
                               />
                             </div>
                             <div className="image-thumbnail">
-                              <img draggable="false"
+                              <img
+                                draggable="false"
                                 className="img-cover thumbnailImage"
                                 src={file}
                               />
@@ -5459,7 +5516,8 @@ const ChatMainBody = () => {
                             </div>
                           </div>
                           <div className="remove-chat-feature">
-                            <img draggable="false"
+                            <img
+                              draggable="false"
                               src={DeleteChatFeature}
                               className="Remove-feature"
                               onClick={replyFeatureHandler}
@@ -5854,7 +5912,8 @@ const ChatMainBody = () => {
                                               md={3}
                                               className="chat-upload-icon"
                                             >
-                                              <img draggable="false"
+                                              <img
+                                                draggable="false"
                                                 src={DocumentIcon}
                                                 className="attachment-icon"
                                                 extension={ext}
@@ -5863,7 +5922,8 @@ const ChatMainBody = () => {
                                                 {first}
                                               </p>
                                               <div className="delete-uplaoded-file">
-                                                <img draggable="false"
+                                                <img
+                                                  draggable="false"
                                                   src={DeleteUploadIcon}
                                                   className="delete-upload-file"
                                                   onClick={() =>
@@ -5902,7 +5962,8 @@ const ChatMainBody = () => {
                               ref={uploadFileRef}
                             >
                               <span className="custom-upload-input">
-                                <img draggable="false"
+                                <img
+                                  draggable="false"
                                   src={UploadChatIcon}
                                   onClick={showUploadOptions}
                                 />
@@ -5913,7 +5974,11 @@ const ChatMainBody = () => {
                                         className="image-upload"
                                         htmlFor="document-upload"
                                       >
-                                        <img draggable="false" src={UploadContact} alt="" />
+                                        <img
+                                          draggable="false"
+                                          src={UploadContact}
+                                          alt=""
+                                        />
                                       </label>
                                       <input
                                         id="document-upload"
@@ -5934,7 +5999,11 @@ const ChatMainBody = () => {
                                         className="image-upload"
                                         htmlFor="document-upload"
                                       >
-                                        <img draggable="false" src={UploadDocument} alt="" />
+                                        <img
+                                          draggable="false"
+                                          src={UploadDocument}
+                                          alt=""
+                                        />
                                       </label>
                                       <input
                                         id="document-upload"
@@ -5955,7 +6024,11 @@ const ChatMainBody = () => {
                                         className="image-upload"
                                         htmlFor="sticker-upload"
                                       >
-                                        <img draggable="false" src={UploadSticker} alt="" />
+                                        <img
+                                          draggable="false"
+                                          src={UploadSticker}
+                                          alt=""
+                                        />
                                       </label>
                                       <input
                                         id="sticker-upload"
@@ -5976,7 +6049,11 @@ const ChatMainBody = () => {
                                         className="image-upload"
                                         htmlFor="image-upload"
                                       >
-                                        <img draggable="false" src={UploadPicVid} alt="" />
+                                        <img
+                                          draggable="false"
+                                          src={UploadPicVid}
+                                          alt=""
+                                        />
                                       </label>
                                       <input
                                         id="image-upload"
@@ -6036,7 +6113,12 @@ const ChatMainBody = () => {
                             </Form>
                           </div>
                           <div className="sendChat-click">
-                            <img draggable="false" onClick={sendChat} src={ChatSendIcon} alt="" />
+                            <img
+                              draggable="false"
+                              onClick={sendChat}
+                              src={ChatSendIcon}
+                              alt=""
+                            />
                           </div>
                         </>
                       ) : (
@@ -6065,7 +6147,8 @@ const ChatMainBody = () => {
                   <div className="message-heading d-flex mb-2">
                     <span className="text-left heading-info">Message info</span>
                     <span className="text-right ml-auto">
-                      <img draggable="false"
+                      <img
+                        draggable="false"
                         onClick={handleCancel}
                         src={CloseChatIcon}
                         alt=""
@@ -6094,7 +6177,11 @@ const ChatMainBody = () => {
                   <div className="message-info-item">
                     <div className="Sent-with-icon">
                       <div className="heading-info status">Delivered</div>
-                      <img draggable="false" src={DoubleTickDeliveredIcon} alt="" />
+                      <img
+                        draggable="false"
+                        src={DoubleTickDeliveredIcon}
+                        alt=""
+                      />
                     </div>
                     <div className="time-info">
                       {messageInfoData.receivedDate === undefined ? (
@@ -6140,7 +6227,8 @@ const ChatMainBody = () => {
                     <p className="fw-bold">Forward to:</p>
                   </Col>
                   <Col lg={6} md={6} sm={12} className="text-end">
-                    <img draggable="false"
+                    <img
+                      draggable="false"
                       onClick={cancelForwardSection}
                       src={CloseChatIcon}
                       width={10}
@@ -6196,18 +6284,34 @@ const ChatMainBody = () => {
                                 <div className="chat-profile-icon forward">
                                   {dataItem.messageType === 'O' ? (
                                     <>
-                                      <img draggable="false" src={SingleIcon} width={15} />
+                                      <img
+                                        draggable="false"
+                                        src={SingleIcon}
+                                        width={15}
+                                      />
                                     </>
                                   ) : dataItem.messageType === 'G' ? (
                                     <>
-                                      <img draggable="false" src={GroupIcon} width={15} />
+                                      <img
+                                        draggable="false"
+                                        src={GroupIcon}
+                                        width={15}
+                                      />
                                     </>
                                   ) : dataItem.messageType === 'B' ? (
                                     <>
-                                      <img draggable="false" src={ShoutIcon} width={15} />
+                                      <img
+                                        draggable="false"
+                                        src={ShoutIcon}
+                                        width={15}
+                                      />
                                     </>
                                   ) : (
-                                    <img draggable="false" src={SingleIcon} width={15} />
+                                    <img
+                                      draggable="false"
+                                      src={SingleIcon}
+                                      width={15}
+                                    />
                                   )}
                                 </div>
                                 <p className=" m-0">{dataItem.name}</p>
@@ -6248,7 +6352,8 @@ const ChatMainBody = () => {
                     </div>
                   </Col>
                   <Col lg={4} md={4} sm={12} className="text-end">
-                    <img draggable="false"
+                    <img
+                      draggable="false"
                       onClick={handleCancel}
                       src={CloseChatIcon}
                       width={10}
@@ -6308,7 +6413,11 @@ const ChatMainBody = () => {
                             >
                               <div className="users-groupinfo">
                                 <div className="chat-profile-icon groupinfo">
-                                  <img draggable="false" src={SingleIcon} width={15} />
+                                  <img
+                                    draggable="false"
+                                    src={SingleIcon}
+                                    width={15}
+                                  />
                                 </div>
                                 <p className="groupinfo-groupusersname m-0">
                                   {dataItem.userName}
@@ -6346,7 +6455,8 @@ const ChatMainBody = () => {
                     </div>
                   </Col>
                   <Col lg={4} md={4} sm={12} className="text-end">
-                    <img draggable="false"
+                    <img
+                      draggable="false"
                       onClick={handleCancel}
                       src={CloseChatIcon}
                       width={10}
@@ -6367,7 +6477,8 @@ const ChatMainBody = () => {
                           ? groupName
                           : null}
                       </p>
-                      <img draggable="false"
+                      <img
+                        draggable="false"
                         onClick={editGroupTitle}
                         className="Edit-Group-Title-Icon"
                         src={EditIcon}
@@ -6447,7 +6558,11 @@ const ChatMainBody = () => {
                                   className="group-edit-users-add"
                                 />
                                 <div className="chat-profile-icon groupinfo">
-                                  <img draggable="false" src={SingleIcon} width={15} />
+                                  <img
+                                    draggable="false"
+                                    src={SingleIcon}
+                                    width={15}
+                                  />
                                 </div>
                                 <p className="groupinfo-groupusersname m-0">
                                   {dataItem.fullName}
@@ -6490,7 +6605,8 @@ const ChatMainBody = () => {
                     </div>
                   </Col>
                   <Col lg={4} md={4} sm={12} className="text-end">
-                    <img draggable="false"
+                    <img
+                      draggable="false"
                       onClick={handleCancel}
                       src={CloseChatIcon}
                       width={10}
@@ -6511,7 +6627,8 @@ const ChatMainBody = () => {
                           ? shoutName
                           : null}
                       </p>
-                      <img draggable="false"
+                      <img
+                        draggable="false"
                         onClick={editShoutTitle}
                         className="Edit-Group-Title-Icon"
                         src={EditIcon}
@@ -6591,7 +6708,11 @@ const ChatMainBody = () => {
                                   className="group-edit-users-add"
                                 />
                                 <div className="chat-profile-icon groupinfo">
-                                  <img draggable="false" src={SingleIcon} width={15} />
+                                  <img
+                                    draggable="false"
+                                    src={SingleIcon}
+                                    width={15}
+                                  />
                                 </div>
                                 <p className="groupinfo-groupusersname m-0">
                                   {dataItem.fullName}

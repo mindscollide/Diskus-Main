@@ -197,6 +197,20 @@ const participantPopup = (response) => {
   }
 }
 
+const minimizeParticipantPopup = (response) => {
+  return {
+    type: actions.MINIMIZE_PARTICIPANT_POPUP_FLAG,
+    response: response,
+  }
+}
+
+const videoChatMessagesFlag = (response) => {
+  return {
+    type: actions.VIDEO_CHAT_MESSAGES_FLAG,
+    response: response,
+  }
+}
+
 //Aun Work
 
 // const videoMaximizePanel = (response) => {
@@ -242,4 +256,6 @@ export {
   incomingVideoCallFlag,
   leaveCallModal,
   participantPopup,
+  minimizeParticipantPopup,
+  videoChatMessagesFlag,
 }
