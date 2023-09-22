@@ -97,7 +97,7 @@ const ShoutAll = () => {
                   <div className="chat-profile-icon">
                     {dataItem.messageType === 'B' ? (
                       <>
-                        <img src={ShoutIcon} width={25} />
+                        <img draggable="false" src={ShoutIcon} width={25} />
                       </>
                     ) : null}
                   </div>
@@ -120,17 +120,17 @@ const ShoutAll = () => {
                         dataItem.sentDate === '' &&
                         dataItem.receivedDate === '' &&
                         dataItem.seenDate === '' ? (
-                          <img src={TimerIcon} className="img-cover" />
+                          <img draggable="false" src={TimerIcon} className="img-cover" />
                         ) : dataItem.senderID === currentUserId &&
                           dataItem.sentDate !== '' &&
                           dataItem.receivedDate === '' &&
                           dataItem.seenDate === '' ? (
-                          <img src={SingleTickIcon} className="img-cover" />
+                          <img draggable="false" src={SingleTickIcon} className="img-cover" />
                         ) : dataItem.senderID === currentUserId &&
                           dataItem.sentDate !== '' &&
                           dataItem.receivedDate !== '' &&
                           dataItem.seenDate === '' ? (
-                          <img
+                          <img draggable="false"
                             src={DoubleTickDeliveredIcon}
                             className="img-cover"
                           />
@@ -138,7 +138,7 @@ const ShoutAll = () => {
                           dataItem.sentDate !== '' &&
                           dataItem.receivedDate !== '' &&
                           dataItem.seenDate !== '' ? (
-                          <img src={DoubleTickIcon} className="img-cover" />
+                          <img draggable="false" src={DoubleTickIcon} className="img-cover" />
                         ) : null}
                       </span>
                       {dataItem.messageBody}

@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from "react"
-import { Container, Row, Col, Form } from "react-bootstrap"
-import { useTranslation } from "react-i18next"
-import Newprofile from "../../../assets/images/newprofile.png"
-import { Paper } from "@material-ui/core"
-import CrossIcon from "../../../assets/images/CrossIcon.svg"
-import userImage from "../../../assets/images/user.png"
+import React, { useEffect, useRef, useState } from "react";
+import { Container, Row, Col, Form } from "react-bootstrap";
+import { useTranslation } from "react-i18next";
+import Newprofile from "../../../assets/images/newprofile.png";
+import { Paper } from "@material-ui/core";
+import CrossIcon from "../../../assets/images/CrossIcon.svg";
+import userImage from "../../../assets/images/user.png";
 import {
   TextField,
   Button,
@@ -12,53 +12,53 @@ import {
   SelectBox,
   InputSearchFilter,
   Notification,
-} from "./../../../components/elements"
-import styles from "./CreateCommittee.module.css"
-import Committee from "../../../container/Committee/Committee"
+} from "./../../../components/elements";
+import styles from "./CreateCommittee.module.css";
+import Committee from "../../../container/Committee/Committee";
 
-import { useSelector, useDispatch } from "react-redux"
+import { useSelector, useDispatch } from "react-redux";
 import {
   createcommittee,
   getCommitteeMembersRole,
   getCommitteeTypes,
-} from "../../../store/actions/Committee_actions"
-import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees"
-import { useNavigate } from "react-router-dom"
-import ConfirmationModal from "../confirmationModal/ConfirmationModal"
-import { Spin } from "antd"
+} from "../../../store/actions/Committee_actions";
+import { allAssignessList } from "../../../store/actions/Get_List_Of_Assignees";
+import { useNavigate } from "react-router-dom";
+import ConfirmationModal from "../confirmationModal/ConfirmationModal";
+import { Spin } from "antd";
 const CreateCommittee = ({ setCreategrouppage }) => {
-  const navigate = useNavigate()
-  const [viewCreateCommittee, setViewCreateCommittee] = useState(true)
-  const { assignees, CommitteeReducer } = useSelector((state) => state)
+  const navigate = useNavigate();
+  const [viewCreateCommittee, setViewCreateCommittee] = useState(true);
+  const { assignees, CommitteeReducer } = useSelector((state) => state);
   // for meatings  Attendees List
-  const [meetingAttendeesList, setMeetingAttendeesList] = useState([])
-  const [groupMembers, setGroupMembers] = useState([])
-  const [erorbar, setErrorBar] = useState(false)
-  const [attendees, setAttendees] = useState([])
-  const [taskAssignedToInput, setTaskAssignedToInput] = useState("")
-  const [taskAssignedTo, setTaskAssignedTo] = useState(0)
-  const [taskAssignedName, setTaskAssignedName] = useState("")
-  const [meetingAttendees, setMeetingAttendees] = useState([])
-  const [committeeTypeValue, setCommitteeTypeValue] = useState("")
-  const [committeeTypesOptions, setCommitteeTypesOptions] = useState([])
-  const [committeeTypesValues, setCommitteeTypesValues] = useState([])
+  const [meetingAttendeesList, setMeetingAttendeesList] = useState([]);
+  const [groupMembers, setGroupMembers] = useState([]);
+  const [erorbar, setErrorBar] = useState(false);
+  const [attendees, setAttendees] = useState([]);
+  const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
+  const [taskAssignedTo, setTaskAssignedTo] = useState(0);
+  const [taskAssignedName, setTaskAssignedName] = useState("");
+  const [meetingAttendees, setMeetingAttendees] = useState([]);
+  const [committeeTypeValue, setCommitteeTypeValue] = useState("");
+  const [committeeTypesOptions, setCommitteeTypesOptions] = useState([]);
+  const [committeeTypesValues, setCommitteeTypesValues] = useState([]);
   const [committeeMemberRolesOptions, setCommitteeMemberRolesOptions] =
-    useState([])
+    useState([]);
   const [committeeMemberRolesValues, setCommitteeMemberRolesValues] = useState(
     []
-  )
-  const [onclickFlag, setOnclickFlag] = useState(false)
-  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false)
-  const CommitteeTitle = useRef(null)
+  );
+  const [onclickFlag, setOnclickFlag] = useState(false);
+  const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
+  const CommitteeTitle = useRef(null);
   // for   select participant Role Name
-  const [participantRoleName, setParticipantRoleName] = useState("Regular")
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
-  let creatorID = JSON.parse(localStorage.getItem("userID"))
+  const [participantRoleName, setParticipantRoleName] = useState("Regular");
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  let creatorID = JSON.parse(localStorage.getItem("userID"));
   const [open, setOpen] = useState({
     flag: false,
     message: "",
-  })
+  });
 
   // for initial State
   const [createCommitteeDetails, setCreateCommitteeDetails] = useState({
@@ -71,58 +71,58 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     OrganizationID: 0,
     CreatorID: 0,
     CommitteeMembers: [],
-  })
+  });
 
   useEffect(() => {
     try {
-      dispatch(allAssignessList(navigate, t))
+      dispatch(allAssignessList(navigate, t));
     } catch {}
     // dispatch(allAssignessList(navigate, t));
-  }, [])
+  }, []);
   useEffect(() => {
-    CommitteeTitle.current.focus()
-    let organizationID = JSON.parse(localStorage.getItem("organizationID"))
+    CommitteeTitle.current.focus();
+    let organizationID = JSON.parse(localStorage.getItem("organizationID"));
     let Data = {
       OrganizationID: organizationID,
-    }
-    dispatch(getCommitteeTypes(navigate, Data, t))
-    dispatch(getCommitteeMembersRole(navigate, Data, t))
-  }, [])
+    };
+    dispatch(getCommitteeTypes(navigate, Data, t));
+    dispatch(getCommitteeMembersRole(navigate, Data, t));
+  }, []);
 
   // for api response of list group roles
   useEffect(() => {
     if (CommitteeReducer.getCommitteeMembersRoles !== null) {
-      let committeeMembersRoleValues = []
-      let committeeMembersRoleOptions = []
+      let committeeMembersRoleValues = [];
+      let committeeMembersRoleOptions = [];
       CommitteeReducer.getCommitteeMembersRoles.map((data, index) => {
         committeeMembersRoleOptions.push({
           label: data.role,
           id: data.committeeRoleID,
-        })
-        committeeMembersRoleValues.push(data.role)
-      })
+        });
+        committeeMembersRoleValues.push(data.role);
+      });
 
-      setCommitteeMemberRolesOptions(committeeMembersRoleOptions)
-      setCommitteeMemberRolesValues(committeeMembersRoleValues)
+      setCommitteeMemberRolesOptions(committeeMembersRoleOptions);
+      setCommitteeMemberRolesValues(committeeMembersRoleValues);
     }
-  }, [CommitteeReducer.getCommitteeMembersRoles])
+  }, [CommitteeReducer.getCommitteeMembersRoles]);
 
   // for api response of list group Types
   useEffect(() => {
     if (CommitteeReducer.getCommitteeTypes !== null) {
-      let committeeTypeValues = []
-      let committeeTypeOptions = []
+      let committeeTypeValues = [];
+      let committeeTypeOptions = [];
       CommitteeReducer.getCommitteeTypes.map((data, index) => {
         committeeTypeOptions.push({
           label: data.type,
           id: data.committeeTypeId,
-        })
-        committeeTypeValues.push(data.type)
-      })
-      setCommitteeTypesOptions(committeeTypeOptions)
-      setCommitteeTypesValues(committeeTypeValues)
+        });
+        committeeTypeValues.push(data.type);
+      });
+      setCommitteeTypesOptions(committeeTypeOptions);
+      setCommitteeTypesValues(committeeTypeValues);
     }
-  }, [CommitteeReducer.getCommitteeTypes])
+  }, [CommitteeReducer.getCommitteeTypes]);
 
   const searchFilterHandler = (value) => {
     if (
@@ -133,12 +133,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
     ) {
       return meetingAttendeesList
         .filter((item) => {
-          const searchTerm = value.toLowerCase()
-          const assigneesName = item.name.toLowerCase()
+          const searchTerm = value.toLowerCase();
+          const assigneesName = item.name.toLowerCase();
           return (
             searchTerm && assigneesName.startsWith(searchTerm)
             // assigneesName !== searchTerm.toLowerCase()
-          )
+          );
         })
         .slice(0, 10)
         .map((item) => (
@@ -151,50 +151,51 @@ const CreateCommittee = ({ setCreategrouppage }) => {
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
               alt=""
               className="user-img"
+              draggable="false"
             />
             <p className="p-0 m-0">{item.name}</p>
           </div>
-        ))
+        ));
     } else {
     }
-  }
+  };
   // Group type Change Handler
   const CommitteeTypeChangeHandler = (e, value) => {
-    setCommitteeTypeValue(value)
+    setCommitteeTypeValue(value);
     let findID = committeeTypesOptions.find(
       (data, index) => data.label === value
-    )
+    );
     setCreateCommitteeDetails({
       ...createCommitteeDetails,
       CommitteeType: findID.id,
-    })
-  }
+    });
+  };
 
   // on Search filter for add members
   const onSearch = (name, id) => {
-    setOnclickFlag(true)
-    setTaskAssignedToInput(name)
-    setTaskAssignedTo(id)
-    setTaskAssignedName(name)
-  }
+    setOnclickFlag(true);
+    setTaskAssignedToInput(name);
+    setTaskAssignedTo(id);
+    setTaskAssignedName(name);
+  };
 
   // onChange Function for set input values in state
   const onChangeFunc = (e) => {
-    let name = e.target.name
-    let value = e.target.value
+    let name = e.target.name;
+    let value = e.target.value;
     if (name === "committeetitle") {
       setCreateCommitteeDetails({
         ...createCommitteeDetails,
         CommitteesTitle: value,
-      })
+      });
     }
     if (name === "committeedescription") {
       setCreateCommitteeDetails({
         ...createCommitteeDetails,
         CommitteesDescription: value,
-      })
+      });
     }
-  }
+  };
 
   // remove member handler
   const removeMemberHandler = (id) => {
@@ -203,108 +204,108 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       CommitteeMembers: createCommitteeDetails.CommitteeMembers.filter(
         (item) => item.FK_UID !== id
       ),
-    }
-    setCreateCommitteeDetails(updatedCreateCommitteeDetails)
+    };
+    setCreateCommitteeDetails(updatedCreateCommitteeDetails);
     const meetingAttendeesMembers = meetingAttendees.filter(
       (item) => item.FK_UID !== id
-    )
-    setMeetingAttendees(meetingAttendeesMembers)
+    );
+    setMeetingAttendees(meetingAttendeesMembers);
     const updatedCommitteeMembers = groupMembers.filter(
       (item) => item.data.pK_UID !== id
-    )
-    setGroupMembers(updatedCommitteeMembers)
-  }
+    );
+    setGroupMembers(updatedCommitteeMembers);
+  };
 
   // change handler changeHandlerCommitteeMemberRole
   const changeHandlerCommitteeMemberRole = (e, value) => {
-    setParticipantRoleName(value)
-  }
+    setParticipantRoleName(value);
+  };
   // Add Attendees Hanlder
   const handleAddAttendees = () => {
     if (taskAssignedTo != 0 && attendees.length > 0) {
       setOpen({
         flag: true,
         message: t("You-can-add-data-only-from-one-form-option-at-a-time"),
-      })
-      setAttendees([])
-      setTaskAssignedTo(0)
-      setParticipantRoleName("")
-      setTaskAssignedToInput("")
+      });
+      setAttendees([]);
+      setTaskAssignedTo(0);
+      setParticipantRoleName("");
+      setTaskAssignedToInput("");
     } else if (taskAssignedTo != 0) {
       var foundIndex = meetingAttendees.findIndex(
         (x) => x.FK_UID === taskAssignedTo
-      )
+      );
       if (participantRoleName !== "") {
         if (foundIndex === -1) {
-          let roleID
+          let roleID;
           committeeMemberRolesOptions.map((data, index) => {
             if (data.label === participantRoleName) {
-              roleID = data.id
+              roleID = data.id;
               meetingAttendees.push({
                 FK_UID: taskAssignedTo, //userid
                 FK_CMMRID: data.id, //group member role id
                 FK_CMID: 0, //group id
-              })
-              setMeetingAttendees([...meetingAttendees])
+              });
+              setMeetingAttendees([...meetingAttendees]);
             }
             setCreateCommitteeDetails({
               ...createCommitteeDetails,
               CommitteeMembers: meetingAttendees,
-            })
-          })
+            });
+          });
           if (meetingAttendeesList.length > 0) {
             meetingAttendeesList.map((data, index) => {
               if (data.pK_UID === taskAssignedTo) {
                 groupMembers.push({
                   data,
                   role: roleID,
-                })
-                setGroupMembers([...groupMembers])
+                });
+                setGroupMembers([...groupMembers]);
               }
-            })
+            });
           }
-          setAttendees([])
-          setTaskAssignedTo(0)
-          setParticipantRoleName("")
-          setTaskAssignedToInput("")
+          setAttendees([]);
+          setTaskAssignedTo(0);
+          setParticipantRoleName("");
+          setTaskAssignedToInput("");
         } else {
           setOpen({
             flag: true,
             message: t("User-already-exist"),
-          })
+          });
 
-          setAttendees([])
-          setTaskAssignedTo(0)
-          setParticipantRoleName("")
-          setTaskAssignedToInput("")
+          setAttendees([]);
+          setTaskAssignedTo(0);
+          setParticipantRoleName("");
+          setTaskAssignedToInput("");
         }
       } else {
         setOpen({
           flag: true,
           message: t("Please-select-committee-member-type-also"),
-        })
+        });
       }
     } else if (attendees.length > 0) {
-      let check = false
+      let check = false;
       let participantOptionsWithID =
         committeeMemberRolesOptions &&
         committeeMemberRolesOptions.find(
           (data, index) => data.label === participantRoleName
-        )
+        );
       attendees.map((data, index) => {
         meetingAttendees.map((data2, index) => {
           if (data === data2.FK_UID) {
-            check = true
+            check = true;
           }
-        })
-      })
+        });
+      });
       if (check === true) {
         setOpen({
           flag: true,
           message: t("User-already-exist"),
-        })
-        setAttendees([])
-        setParticipantRoleName("")
+        });
+        setAttendees([]);
+        setParticipantRoleName("");
       } else {
         if (participantOptionsWithID !== undefined) {
           attendees.map((dataID, index) => {
@@ -312,106 +313,106 @@ const CreateCommittee = ({ setCreategrouppage }) => {
               FK_UID: dataID, //userid
               FK_CMMRID: participantOptionsWithID.id, //group member role id
               FK_CMID: 0, //group id
-            })
-            setMeetingAttendees([...meetingAttendees])
+            });
+            setMeetingAttendees([...meetingAttendees]);
             meetingAttendeesList.map((data, index) => {
               if (data.pK_UID === dataID) {
                 groupMembers.push({
                   data,
                   role: participantOptionsWithID.id,
-                })
-                setGroupMembers([...groupMembers])
+                });
+                setGroupMembers([...groupMembers]);
               }
-            })
+            });
             setCreateCommitteeDetails({
               ...createCommitteeDetails,
               CommitteeMembers: meetingAttendees,
-            })
-            setAttendees([])
-            setTaskAssignedTo(0)
-            setParticipantRoleName("")
-            setTaskAssignedToInput("")
-          })
+            });
+            setAttendees([]);
+            setTaskAssignedTo(0);
+            setParticipantRoleName("");
+            setTaskAssignedToInput("");
+          });
         } else {
           setOpen({
             flag: true,
             message: t("Please-select-committee-member-type-also"),
-          })
+          });
         }
       }
     } else {
       setOpen({
         flag: true,
         message: t("Please-select-atleast-one-members"),
-      })
-      setAttendees([])
-      setTaskAssignedTo(0)
-      setParticipantRoleName("")
-      setTaskAssignedToInput("")
+      });
+      setAttendees([]);
+      setTaskAssignedTo(0);
+      setParticipantRoleName("");
+      setTaskAssignedToInput("");
     }
-  }
-  console.log(groupMembers, "MemberData")
-  console.log(meetingAttendees, "MemberData")
-  console.log(createCommitteeDetails, "MemberData")
+  };
+  console.log(groupMembers, "MemberData");
+  console.log(meetingAttendees, "MemberData");
+  console.log(createCommitteeDetails, "MemberData");
 
   //Input Field Assignee Change
   const onChangeSearch = (e) => {
-    setOnclickFlag(false)
+    setOnclickFlag(false);
     if (e.target.value.trimStart() != "") {
-      setTaskAssignedToInput(e.target.value.trimStart())
+      setTaskAssignedToInput(e.target.value.trimStart());
     } else {
-      setTaskAssignedToInput("")
-      setTaskAssignedTo(0)
-      setTaskAssignedName("")
+      setTaskAssignedToInput("");
+      setTaskAssignedTo(0);
+      setTaskAssignedName("");
     }
-  }
+  };
 
   // onChange function for group chat
   const CheckBoxHandler = (e) => {
     setCreateCommitteeDetails({
       ...createCommitteeDetails,
       ISTalkChatGroup: e.target.checked,
-    })
-  }
+    });
+  };
 
   const handleCloseBtn = () => {
-    setCreategrouppage(false)
-  }
+    setCreategrouppage(false);
+  };
 
   const checkAttendeeBox = (data, id, index) => {
     if (attendees.includes(id)) {
-      let attendIndex = attendees.findIndex((data, index) => data === id)
+      let attendIndex = attendees.findIndex((data, index) => data === id);
       if (attendIndex !== -1) {
-        attendees.splice(attendIndex, 1)
-        setAttendees([...attendees])
+        attendees.splice(attendIndex, 1);
+        setAttendees([...attendees]);
       }
     } else {
-      attendees.push(id)
-      setAttendees([...attendees])
+      attendees.push(id);
+      setAttendees([...attendees]);
     }
-  }
+  };
 
   // for api reponce of list of all assignees
   useEffect(() => {
     try {
       if (Object.keys(assignees.user).length > 0) {
-        setMeetingAttendeesList(assignees.user)
+        setMeetingAttendeesList(assignees.user);
       }
     } catch (error) {}
-  }, [assignees.user])
+  }, [assignees.user]);
 
   const checkGroupMembers = (GroupMembers) => {
     if (Object.keys(GroupMembers).length > 0) {
-      let flag2 = GroupMembers.find((data, index) => data.FK_CMMRID === 2)
+      let flag2 = GroupMembers.find((data, index) => data.FK_CMMRID === 2);
       if (flag2 != undefined) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     } else {
-      return false
+      return false;
     }
-  }
+  };
 
   const handleSubmitCreateGroup = async () => {
     if (
@@ -424,10 +425,10 @@ const CreateCommittee = ({ setCreategrouppage }) => {
         setOpen({
           flag: true,
           message: t("Please-add-atleast-one-executive-member"),
-        })
+        });
       } else {
-        setErrorBar(false)
-        let OrganizationID = JSON.parse(localStorage.getItem("organizationID"))
+        setErrorBar(false);
+        let OrganizationID = JSON.parse(localStorage.getItem("organizationID"));
         let Data = {
           CommitteeDetails: {
             CreatorID: createCommitteeDetails.CreatorID,
@@ -440,25 +441,25 @@ const CreateCommittee = ({ setCreategrouppage }) => {
             OrganizationID: OrganizationID,
           },
           CommitteeMembers: createCommitteeDetails.CommitteeMembers,
-        }
-        dispatch(createcommittee(navigate, Data, t, setCreategrouppage))
+        };
+        dispatch(createcommittee(navigate, Data, t, setCreategrouppage));
       }
     } else {
-      setErrorBar(true)
+      setErrorBar(true);
       setOpen({
         flag: true,
         message: t("Please fill all the fields"),
-      })
+      });
     }
-  }
+  };
 
   // // set Meeting Attendees By default creator
   useEffect(() => {
     setCreateCommitteeDetails({
       ...createCommitteeDetails,
       CreatorID: creatorID,
-    })
-  }, [meetingAttendeesList])
+    });
+  }, [meetingAttendeesList]);
 
   return (
     <>
@@ -650,6 +651,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                             width={50}
                                             height={50}
                                             alt=""
+                                            draggable="false"
                                           />
                                         </Col>
                                         <Col
@@ -717,11 +719,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                 data.data.pK_UID
                                               )
                                             }
+                                            draggable="false"
                                           />
                                         </Col>
                                       </Row>
                                     </Col>
-                                  )
+                                  );
                                 } else {
                                 }
                               })
@@ -762,6 +765,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                             width={50}
                                             height={50}
                                             alt=""
+                                            draggable="false"
                                           />
                                         </Col>
                                         <Col
@@ -829,11 +833,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                 data.data.pK_UID
                                               )
                                             }
+                                            draggable="false"
                                           />
                                         </Col>
                                       </Row>
                                     </Col>
-                                  )
+                                  );
                                 } else {
                                 }
                               })
@@ -875,6 +880,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                             width={50}
                                             height={50}
                                             alt=""
+                                            draggable="false"
                                           />
                                         </Col>
                                         <Col
@@ -942,11 +948,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                 data.data.pK_UID
                                               )
                                             }
+                                            draggable="false"
                                           />
                                         </Col>
                                       </Row>
                                     </Col>
-                                  )
+                                  );
                                 } else {
                                 }
                               })
@@ -988,6 +995,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                             width={50}
                                             height={50}
                                             alt=""
+                                            draggable="false"
                                           />
                                         </Col>
                                         <Col
@@ -1055,11 +1063,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                 data.data.pK_UID
                                               )
                                             }
+                                            draggable="false"
                                           />
                                         </Col>
                                       </Row>
                                     </Col>
-                                  )
+                                  );
                                 } else {
                                 }
                               })
@@ -1101,6 +1110,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                             width={50}
                                             height={50}
                                             alt=""
+                                            draggable="false"
                                           />
                                         </Col>
                                         <Col
@@ -1168,11 +1178,12 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                 data.data.pK_UID
                                               )
                                             }
+                                            draggable="false"
                                           />
                                         </Col>
                                       </Row>
                                     </Col>
-                                  )
+                                  );
                                 } else {
                                 }
                               })
@@ -1283,6 +1294,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                                 width={50}
                                                 height={50}
                                                 alt=""
+                                                draggable="false"
                                               />
                                             </Col>
                                             <Col
@@ -1372,7 +1384,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
                                           </Row>
                                         </Col>
                                       </Row>
-                                    )
+                                    );
                                   }
                                 )
                               ) : (
@@ -1419,7 +1431,7 @@ const CreateCommittee = ({ setCreategrouppage }) => {
       />
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
-  )
-}
+  );
+};
 
-export default CreateCommittee
+export default CreateCommittee;

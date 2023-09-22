@@ -157,7 +157,7 @@ const CreateNewShoutAll = () => {
               className="close-addChat-filter"
               onClick={closeAddShoutAllScreen}
             >
-              <img src={CloseChatIcon} />
+              <img draggable="false" src={CloseChatIcon} />
             </div>
           </Col>
         </Row>

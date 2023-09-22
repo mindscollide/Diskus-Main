@@ -90,7 +90,7 @@ const PollDetails = () => {
                 sm={12}
                 className="d-flex justify-content-end"
               >
-                <img
+                <img draggable="false"
                   src={BlackCrossIcon}
                   className={styles["Cross_Icon_poll_Details"]}
                   width="16px"
@@ -262,7 +262,7 @@ const PollDetails = () => {
                                                 }
                                               >
                                                 <Col sm={12} md={12} lg={12}>
-                                                  <img
+                                                  <img draggable="false"
                                                     src={`data:image/jpeg;base64,${innerData.profilePicture.displayProfilePictureName}`}
                                                     width="33px"
                                                     height="33px"

@@ -121,7 +121,12 @@ const UpdatePolls = () => {
                       sm={12}
                       className="d-flex gap-2 align-items-center"
                     >
-                      <img src={GroupIcon} height="16.45px" width="18.32px" />
+                      <img
+                        src={GroupIcon}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                      />
                       <span className={styles["NameDropDown"]}>
                         {a.groupName}
                       </span>
@@ -151,6 +156,7 @@ const UpdatePolls = () => {
                         src={committeeicon}
                         width="21.71px"
                         height="18.61px"
+                        draggable="false"
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.committeeName}
@@ -183,6 +189,7 @@ const UpdatePolls = () => {
                         width="18px"
                         height="18px"
                         alt=""
+                        draggable="false"
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.userName}
@@ -455,6 +462,7 @@ const UpdatePolls = () => {
         height="11.11px"
         width="11.54px"
         className="custom-icon cursor-pointer"
+        draggable="false"
       />
     </div>
   );
@@ -582,6 +590,7 @@ const UpdatePolls = () => {
                               width="14.97px"
                               height="14.66px"
                               alt=""
+                              draggable="false"
                             />
                             <span className={styles["Due_Date_heading"]}>
                               {t("Due-date-on")}{" "}
@@ -684,6 +693,7 @@ const UpdatePolls = () => {
                         onClick={() => {
                           setDefineUnsaveModal(true);
                         }}
+                        draggable="false"
                       />
                     </Col>
                   </Row>
@@ -849,6 +859,7 @@ const UpdatePolls = () => {
                                                   }
                                                   inputicon={
                                                     <img
+                                                      draggable="false"
                                                       src={WhiteCrossIcon}
                                                       width="31.76px"
                                                       height="31.76px"
@@ -897,6 +908,7 @@ const UpdatePolls = () => {
                                               width="15.87px"
                                               height="15.87px"
                                               alt=""
+                                              draggable="false"
                                             />
                                             <span>
                                               {t("Add-another-field")}
@@ -1033,6 +1045,7 @@ const UpdatePolls = () => {
                                             height="33px"
                                             className="rounded-circle"
                                             alt=""
+                                            draggable="false"
                                           />
                                           <span
                                             className={styles["Name_cards"]}
@@ -1048,6 +1061,8 @@ const UpdatePolls = () => {
                                               width="14px"
                                               height="14px"
                                               onClick={cancellAnyUser}
+                                              draggable="false"
+                                              style={{ cursor: 'pointer' }}
                                             />
                                           </Col>
                                         ) : (

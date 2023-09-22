@@ -133,7 +133,12 @@ const Header2 = () => {
                   : "/DisKus/home"
               }
             >
-              <img src={DiskusLogoHeader} alt="" width={120} />
+              <img
+                src={DiskusLogoHeader}
+                alt=""
+                width={120}
+                draggable="false"
+              />
             </Navbar.Brand>
             <Nav className="ml-auto align-items-center">
               <LanguageSelector />
@@ -144,7 +149,12 @@ const Header2 = () => {
                     className="dropdown-btn_dotted"
                     disabled={true}
                     title={
-                      <img src={DiskusNotificationIcon} alt="" width={28} />
+                      <img
+                        src={DiskusNotificationIcon}
+                        alt=""
+                        width={28}
+                        draggable="false"
+                      />
                     }
                     onClick={dropDownMenuFunction}
                   >
@@ -170,6 +180,7 @@ const Header2 = () => {
                     className="user-img me-3 "
                     width={30}
                     alt=""
+                    draggable="false"
                   />
 
                   <p className={`${"user-name me-2"} ${currentLanguage}`}>
@@ -287,7 +298,12 @@ const Header2 = () => {
                 }
                 className="mx-3"
               >
-                <img src={DiskusHeaderInfo} alt="" width={28} />
+                <img
+                  src={DiskusHeaderInfo}
+                  alt=""
+                  width={28}
+                  draggable="false"
+                />
               </Nav.Link>
               {/* {roleID != 2 && roleID != 1 ? (
                 <Nav.Link className="me-2" as={Link} to="setting">
@@ -310,7 +326,12 @@ const Header2 = () => {
                   : "/DisKus/home"
               }
             >
-              <img src={DiskusLogoHeader} alt="" width={120} />
+              <img
+                src={DiskusLogoHeader}
+                alt=""
+                width={120}
+                draggable="false"
+              />
             </Navbar.Brand>
             <Nav className="ml-auto align-items-center">
               <LanguageSelector />
@@ -320,7 +341,12 @@ const Header2 = () => {
                     id="dropdown-btn_dotted"
                     className="dropdown-btn_dotted"
                     title={
-                      <img src={DiskusNotificationIcon} alt="" width={28} />
+                      <img
+                        src={DiskusNotificationIcon}
+                        alt=""
+                        width={28}
+                        draggable="false"
+                      />
                     }
                     onClick={dropDownMenuFunction}
                   >
@@ -349,6 +375,7 @@ const Header2 = () => {
                     className="user-img me-3 "
                     width={30}
                     alt=""
+                    draggable="false"
                   />
 
                   <p className={`${"user-name me-2"} ${currentLanguage}`}>
@@ -463,7 +490,7 @@ const Header2 = () => {
                 }
                 className="mx-3"
               >
-                <img src={DiskusHeaderInfo} width={28} />
+                <img src={DiskusHeaderInfo} width={28} draggable="false" />
               </Nav.Link>
               {/* {roleID != 2 && roleID != 1 ? (
                 <Nav.Link className="me-2" as={Link} to="setting">

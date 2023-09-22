@@ -149,7 +149,11 @@ const UpdateCommittee = () => {
                                 <Col lg={4} md={4} sm={12}>
                                   <Row>
                                     <Col lg={3} md={3} sm={12}>
-                                      <img src={Newprofile} width={50} />
+                                      <img
+                                        draggable="false"
+                                        src={Newprofile}
+                                        width={50}
+                                      />
                                     </Col>
                                     <Col
                                       lg={7}
@@ -214,14 +218,22 @@ const UpdateCommittee = () => {
                                       sm={12}
                                       className="mt-0  d-flex justify-content-center"
                                     >
-                                      <img src={CrossIcon} width={18} />
+                                      <img
+                                        draggable="false"
+                                        src={CrossIcon}
+                                        width={18}
+                                      />
                                     </Col>
                                   </Row>
                                 </Col>
                                 <Col lg={4} md={4} sm={12}>
                                   <Row>
                                     <Col lg={3} md={3} sm={12}>
-                                      <img src={Newprofile} width={50} />
+                                      <img
+                                        draggable="false"
+                                        src={Newprofile}
+                                        width={50}
+                                      />
                                     </Col>
                                     <Col
                                       lg={7}
@@ -286,14 +298,22 @@ const UpdateCommittee = () => {
                                       sm={12}
                                       className="mt-0  d-flex justify-content-center"
                                     >
-                                      <img src={CrossIcon} width={18} />
+                                      <img
+                                        draggable="false"
+                                        src={CrossIcon}
+                                        width={18}
+                                      />
                                     </Col>
                                   </Row>
                                 </Col>
                                 <Col lg={4} md={4} sm={12}>
                                   <Row>
                                     <Col lg={3} md={3} sm={12}>
-                                      <img src={Newprofile} width={50} />
+                                      <img
+                                        draggable="false"
+                                        src={Newprofile}
+                                        width={50}
+                                      />
                                     </Col>
                                     <Col
                                       lg={7}
@@ -358,7 +378,11 @@ const UpdateCommittee = () => {
                                       sm={12}
                                       className="mt-0  d-flex justify-content-center"
                                     >
-                                      <img src={CrossIcon} width={18} />
+                                      <img
+                                        draggable="false"
+                                        src={CrossIcon}
+                                        width={18}
+                                      />
                                     </Col>
                                   </Row>
                                 </Col>
@@ -379,7 +403,11 @@ const UpdateCommittee = () => {
                                 <Col lg={4} md={4} sm={4}>
                                   <Row>
                                     <Col lg={3} md={3} sm={12}>
-                                      <img src={Newprofile} width={50} />
+                                      <img
+                                        draggable="false"
+                                        src={Newprofile}
+                                        width={50}
+                                      />
                                     </Col>
                                     <Col
                                       lg={7}
@@ -444,14 +472,22 @@ const UpdateCommittee = () => {
                                       sm={12}
                                       className="mt-0  d-flex justify-content-center"
                                     >
-                                      <img src={CrossIcon} width={18} />
+                                      <img
+                                        draggable="false"
+                                        src={CrossIcon}
+                                        width={18}
+                                      />
                                     </Col>
                                   </Row>
                                 </Col>
                                 <Col lg={4} md={4} sm={4}>
                                   <Row>
                                     <Col lg={3} md={3} sm={12}>
-                                      <img src={Newprofile} width={50} />
+                                      <img
+                                        draggable="false"
+                                        src={Newprofile}
+                                        width={50}
+                                      />
                                     </Col>
                                     <Col
                                       lg={7}
@@ -516,14 +552,22 @@ const UpdateCommittee = () => {
                                       sm={12}
                                       className="mt-0  d-flex justify-content-center"
                                     >
-                                      <img src={CrossIcon} width={18} />
+                                      <img
+                                        draggable="false"
+                                        src={CrossIcon}
+                                        width={18}
+                                      />
                                     </Col>
                                   </Row>
                                 </Col>
                                 <Col lg={4} md={4} sm={4}>
                                   <Row>
                                     <Col lg={3} md={3} sm={12}>
-                                      <img src={Newprofile} width={50} />
+                                      <img
+                                        draggable="false"
+                                        src={Newprofile}
+                                        width={50}
+                                      />
                                     </Col>
                                     <Col
                                       lg={7}
@@ -588,7 +632,11 @@ const UpdateCommittee = () => {
                                       sm={12}
                                       className="mt-0  d-flex justify-content-center"
                                     >
-                                      <img src={CrossIcon} width={18} />
+                                      <img
+                                        draggable="false"
+                                        src={CrossIcon}
+                                        width={18}
+                                      />
                                     </Col>
                                   </Row>
                                 </Col>
@@ -597,7 +645,11 @@ const UpdateCommittee = () => {
                                 <Col lg={4} md={4} sm={4}>
                                   <Row>
                                     <Col lg={3} md={3} sm={12}>
-                                      <img src={Newprofile} width={50} />
+                                      <img
+                                        draggable="false"
+                                        src={Newprofile}
+                                        width={50}
+                                      />
                                     </Col>
                                     <Col
                                       lg={7}
@@ -662,14 +714,22 @@ const UpdateCommittee = () => {
                                       sm={12}
                                       className="mt-0  d-flex justify-content-center"
                                     >
-                                      <img src={CrossIcon} width={18} />
+                                      <img
+                                        draggable="false"
+                                        src={CrossIcon}
+                                        width={18}
+                                      />
                                     </Col>
                                   </Row>
                                 </Col>
                                 <Col lg={4} md={4} sm={4}>
                                   <Row>
                                     <Col lg={3} md={3} sm={12}>
-                                      <img src={Newprofile} width={50} />
+                                      <img
+                                        draggable="false"
+                                        src={Newprofile}
+                                        width={50}
+                                      />
                                     </Col>
                                     <Col
                                       lg={7}
@@ -734,14 +794,22 @@ const UpdateCommittee = () => {
                                       sm={12}
                                       className="mt-0  d-flex justify-content-center"
                                     >
-                                      <img src={CrossIcon} width={18} />
+                                      <img
+                                        draggable="false"
+                                        src={CrossIcon}
+                                        width={18}
+                                      />
                                     </Col>
                                   </Row>
                                 </Col>
                                 <Col lg={4} md={4} sm={4}>
                                   <Row>
                                     <Col lg={3} md={3} sm={12}>
-                                      <img src={Newprofile} width={50} />
+                                      <img
+                                        draggable="false"
+                                        src={Newprofile}
+                                        width={50}
+                                      />
                                     </Col>
                                     <Col
                                       lg={7}
@@ -806,7 +874,11 @@ const UpdateCommittee = () => {
                                       sm={12}
                                       className="mt-0  d-flex justify-content-center"
                                     >
-                                      <img src={CrossIcon} width={18} />
+                                      <img
+                                        draggable="false"
+                                        src={CrossIcon}
+                                        width={18}
+                                      />
                                     </Col>
                                   </Row>
                                 </Col>
@@ -886,7 +958,11 @@ const UpdateCommittee = () => {
                                     <Col lg={12} md={12} sm={12}>
                                       <Row className="d-flex gap-2">
                                         <Col lg={2} md={2} sm={12}>
-                                          <img src={Newprofile} width={50} />
+                                          <img
+                                            draggable="false"
+                                            src={Newprofile}
+                                            width={50}
+                                          />
                                         </Col>
 
                                         <Col
@@ -959,7 +1035,11 @@ const UpdateCommittee = () => {
                                     <Col lg={12} md={12} sm={12}>
                                       <Row className="d-flex gap-2">
                                         <Col lg={2} md={2} sm={12}>
-                                          <img src={Newprofile} width={50} />
+                                          <img
+                                            draggable="false"
+                                            src={Newprofile}
+                                            width={50}
+                                          />
                                         </Col>
 
                                         <Col
@@ -1032,7 +1112,11 @@ const UpdateCommittee = () => {
                                     <Col lg={12} md={12} sm={12}>
                                       <Row className="d-flex gap-2">
                                         <Col lg={2} md={2} sm={12}>
-                                          <img src={Newprofile} width={50} />
+                                          <img
+                                            draggable="false"
+                                            src={Newprofile}
+                                            width={50}
+                                          />
                                         </Col>
 
                                         <Col
@@ -1105,7 +1189,11 @@ const UpdateCommittee = () => {
                                     <Col lg={12} md={12} sm={12}>
                                       <Row className="d-flex gap-2">
                                         <Col lg={2} md={2} sm={12}>
-                                          <img src={Newprofile} width={50} />
+                                          <img
+                                            draggable="false"
+                                            src={Newprofile}
+                                            width={50}
+                                          />
                                         </Col>
 
                                         <Col
@@ -1178,7 +1266,11 @@ const UpdateCommittee = () => {
                                     <Col lg={12} md={12} sm={12}>
                                       <Row className="d-flex gap-2">
                                         <Col lg={2} md={2} sm={12}>
-                                          <img src={Newprofile} width={50} />
+                                          <img
+                                            draggable="false"
+                                            src={Newprofile}
+                                            width={50}
+                                          />
                                         </Col>
 
                                         <Col

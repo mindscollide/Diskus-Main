@@ -853,6 +853,7 @@ const UserSettings = () => {
                       className="d-flex align-items-center"
                     >
                       <img
+                        draggable="false"
                         src={SecurityIcon}
                         width="25.51px"
                         height="30.69px"
@@ -881,7 +882,13 @@ const UserSettings = () => {
                       sm={12}
                       className="d-flex align-items-center"
                     >
-                      <img src={TodoIcon} alt="" width="30px" height="30px" />
+                      <img
+                        draggable="false"
+                        src={TodoIcon}
+                        alt=""
+                        width="30px"
+                        height="30px"
+                      />
                     </Col>
                     <Col lg={10} md={10} sm={12}>
                       <span
@@ -906,6 +913,7 @@ const UserSettings = () => {
                       className="d-flex align-items-center"
                     >
                       <img
+                        draggable="false"
                         src={MeetingIcon}
                         alt=""
                         width="35.79px"
@@ -935,6 +943,7 @@ const UserSettings = () => {
                       className="d-flex align-items-center"
                     >
                       <img
+                        draggable="false"
                         src={Calender}
                         alt=""
                         width="28.47px"
@@ -964,6 +973,7 @@ const UserSettings = () => {
                       className="d-flex align-items-center"
                     >
                       <img
+                        draggable="false"
                         src={Committee}
                         alt=""
                         width="35.8px"
@@ -993,6 +1003,7 @@ const UserSettings = () => {
                       className="d-flex align-items-center"
                     >
                       <img
+                        draggable="false"
                         src={GroupIcon}
                         width="29px"
                         height="26.04px"
@@ -1022,6 +1033,7 @@ const UserSettings = () => {
                       className="d-flex align-items-center"
                     >
                       <img
+                        draggable="false"
                         src={ResolutionIcon}
                         width={"30px"}
                         height="31.18px"
@@ -1051,6 +1063,7 @@ const UserSettings = () => {
                       className="d-flex align-items-center"
                     >
                       <img
+                        draggable="false"
                         src={pollsIcon}
                         alt=""
                         width="33.52px"
@@ -1077,7 +1090,12 @@ const UserSettings = () => {
                 sm={1}
                 className="d-flex justify-content-center"
               >
-                <img src={line} className={styles["user-setting-row"]} alt="" />
+                <img
+                  draggable="false"
+                  src={line}
+                  className={styles["user-setting-row"]}
+                  alt=""
+                />
               </Col>
               <Col
                 lg={4}
@@ -1960,7 +1978,11 @@ const UserSettings = () => {
                 sm={1}
                 className="d-flex justify-content-center"
               >
-                <img src={line} className={styles["user-setting-row"]} />
+                <img
+                  draggable="false"
+                  src={line}
+                  className={styles["user-setting-row"]}
+                />
               </Col>
               <Col lg={3} md={3} sm={3}>
                 {calender ? (

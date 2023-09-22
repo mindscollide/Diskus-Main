@@ -201,7 +201,7 @@ const TwoFacSendEmail = () => {
               </option>
             ))}
           </select>
-          <img
+          <img draggable="false"
             src={LanguageChangeIcon}
             className="languageIcon_twofacmultidevice"
           />
@@ -236,7 +236,12 @@ const TwoFacSendEmail = () => {
                         lg={12}
                         className="d-flex justify-content-center "
                       >
-                        <img src={img1} width={220} alt="diskus_logo" />
+                        <img
+                          draggable="false"
+                          src={img1}
+                          width={220}
+                          alt="diskus_logo"
+                        />
                       </Col>
                     </Row>
 
@@ -262,6 +267,7 @@ const TwoFacSendEmail = () => {
                           <Row>
                             <Col sm={12} md={1} lg={1}>
                               <img
+                                draggable="false"
                                 width={"15px"}
                                 className={
                                   !notificationdevice
@@ -298,6 +304,7 @@ const TwoFacSendEmail = () => {
                           <Row className="my-2">
                             <Col sm={12} md={1} lg={1}>
                               <img
+                                draggable="false"
                                 width={"17px"}
                                 className={
                                   !notificationemail
@@ -336,6 +343,7 @@ const TwoFacSendEmail = () => {
                             <Col sm={12} md={1} lg={1}>
                               {" "}
                               <img
+                                draggable="false"
                                 width={"17px"}
                                 className={
                                   !notificationsms
@@ -405,6 +413,7 @@ const TwoFacSendEmail = () => {
             <Row>
               <Col sm={12} md={6} lg={6} className="position-relative">
                 <img
+                  draggable="false"
                   src={img2}
                   alt="auth_icon"
                   width="380px"
@@ -413,6 +422,7 @@ const TwoFacSendEmail = () => {
               </Col>
               <Col sm={12} md={6} lg={6} className="position-relative vh-100">
                 <img
+                  draggable="false"
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
                   width="600px"

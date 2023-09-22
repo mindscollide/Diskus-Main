@@ -1904,6 +1904,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                         <FormControl.Feedback className={styles["IconStyle"]}>
                           {isEmailUnique && addUserSection.Email.value != "" ? (
                             <img
+                              draggable="false"
                               src={EmailVeriFyIcon}
                               className={styles["isEmailUnique"]}
                             />
@@ -2045,6 +2046,7 @@ const AddUser = ({ show, setShow, ModalTitle }) => {
                               className="d-flex justify-content-center"
                             >
                               <img
+                                draggable="false"
                                 src={VerificationFailedIcon}
                                 width={60}
                                 className={styles["allowModalIcon"]}

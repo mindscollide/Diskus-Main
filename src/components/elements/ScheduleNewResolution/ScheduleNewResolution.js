@@ -315,6 +315,7 @@ const ScheduleNewResolution = () => {
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
               alt=""
               className="user-img"
+              draggable="false"
             />
             <p className="p-0 m-0">{item.name}</p>
           </div>
@@ -1633,6 +1634,7 @@ const ScheduleNewResolution = () => {
                                                               data.name
                                                             )
                                                           }
+                                                          draggable="false"
                                                         />
                                                       }
                                                     />
@@ -1739,6 +1741,7 @@ const ScheduleNewResolution = () => {
                                                               data.name
                                                             )
                                                           }
+                                                          draggable="false"
                                                         />
                                                       }
                                                     />
@@ -1786,6 +1789,7 @@ const ScheduleNewResolution = () => {
                                               src={Leftploygon}
                                               width="20px"
                                               height="15px"
+                                              draggable="false"
                                             />
                                           }
                                           onClick={SlideLeft}
@@ -1925,6 +1929,7 @@ const ScheduleNewResolution = () => {
                                                             index
                                                           )
                                                         }
+                                                        draggable="false"
                                                       />
                                                     </span>
                                                     <p className="modaltodolist-attachment-text">
@@ -1947,6 +1952,7 @@ const ScheduleNewResolution = () => {
                                               src={Rightploygon}
                                               width="20px"
                                               height="15px"
+                                              draggable="false"
                                             />
                                           }
                                           onClick={Slideright}
@@ -1978,6 +1984,7 @@ const ScheduleNewResolution = () => {
                                       src={featherupload}
                                       width="18.87px"
                                       height="18.87px"
+                                      draggable="false"
                                     />
                                   </span>
                                 </p>

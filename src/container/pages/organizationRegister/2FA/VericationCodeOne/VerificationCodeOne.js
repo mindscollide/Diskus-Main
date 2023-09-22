@@ -258,7 +258,7 @@ const VerificationCodeOne = () => {
               </option>
             ))}
           </select>
-          <img
+          <img draggable="false"
             src={LanguageChangeIcon}
             className="languageIcon_2FAverificationotp"
           />
@@ -286,7 +286,12 @@ const VerificationCodeOne = () => {
                     lg={12}
                     className="d-flex justify-content-center mb-3"
                   >
-                    <img src={DiskusLogo} alt="diskus_logo" width={220} />
+                    <img
+                      draggable="false"
+                      src={DiskusLogo}
+                      alt="diskus_logo"
+                      width={220}
+                    />
                   </Col>
                 </Row>
 
@@ -405,6 +410,7 @@ const VerificationCodeOne = () => {
             <Row>
               <Col sm={12} md={6} lg={6} className="position-relative">
                 <img
+                  draggable="false"
                   src={img2}
                   alt="auth_icon"
                   width="380px"
@@ -413,6 +419,7 @@ const VerificationCodeOne = () => {
               </Col>
               <Col sm={12} md={6} lg={6} className="position-relative vh-100">
                 <img
+                  draggable="false"
                   src={DiskusAuthPageLogo}
                   alt="auth_icon"
                   width="600px"

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ForgotPassword.module.css";
 import { Container, Row, Col, Form } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import ErrorBar from "../../../../authentication/sign_up/errorbar/ErrorBar";
 import { validationEmail } from "../../../../../commen/functions/validations";
 import LanguageSelector from "../../../../../components/elements/languageSelector/Language-selector";
+import Cookies from "js-cookie";
 const ForgotPassword = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -85,11 +86,9 @@ const ForgotPassword = () => {
     <>
       <Container>
         <Row className="position-relative">
-          <Col className={styles["languageSelector"]} >
+          <Col className={styles["languageSelector"]}>
             <LanguageSelector />
-
           </Col>
-
         </Row>
         <Row>
           <Col
@@ -112,7 +111,7 @@ const ForgotPassword = () => {
                     lg={12}
                     className="d-flex justify-content-center"
                   >
-                    <img src={DiskusLogo} alt="diskus_logo" />
+                    <img draggable="false" src={DiskusLogo} alt="diskus_logo" />
                   </Col>
                 </Row>
                 <Row className="my-3 text-center">

@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Container, Row, Col, Nav } from 'react-bootstrap'
-import Dropdown from 'react-bootstrap/Dropdown'
-import { useNavigate, Link } from 'react-router-dom'
-import TimeAgo from 'timeago-react'
-import Cookies from 'js-cookie'
-import MeetingChangesSvg from '../../../assets/images/meeting_changes-icon.svg'
-import './Header.css'
-import { useTour } from '@reactour/tour'
-import TextField from '../../elements/input_field/Input_field'
-import '../../../i18n.js'
-import { useTranslation } from 'react-i18next'
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Container, Row, Col, Nav } from "react-bootstrap";
+import Dropdown from "react-bootstrap/Dropdown";
+import { useNavigate, Link } from "react-router-dom";
+import TimeAgo from "timeago-react";
+import Cookies from "js-cookie";
+import MeetingChangesSvg from "../../../assets/images/meeting_changes-icon.svg";
+import "./Header.css";
+import { useTour } from "@reactour/tour";
+import TextField from "../../elements/input_field/Input_field";
+import "../../../i18n.js";
+import { useTranslation } from "react-i18next";
 import {
   Bell,
   Search,
@@ -18,80 +18,80 @@ import {
   Paperclip,
   ChatSquareText,
   X,
-} from 'react-bootstrap-icons'
-import { CustomDatePicker, ResultMessage } from '../../elements'
-import CancelMeetingSvg from '../../../assets/images/cancel_meeting_icon.svg'
-import { signOut } from '../../../store/actions/Auth_Sign_Out'
-import { dateTime } from '../../../commen/functions/date_formater'
-import { getNotifications } from '../../../store/actions/GetUserNotification'
-import { getUserSetting } from '../../../store/actions/GetUserSetting'
+} from "react-bootstrap-icons";
+import { CustomDatePicker, ResultMessage } from "../../elements";
+import CancelMeetingSvg from "../../../assets/images/cancel_meeting_icon.svg";
+import { signOut } from "../../../store/actions/Auth_Sign_Out";
+import { dateTime } from "../../../commen/functions/date_formater";
+import { getNotifications } from "../../../store/actions/GetUserNotification";
+import { getUserSetting } from "../../../store/actions/GetUserSetting";
 
 const Header = ({ currentUserImage }) => {
-  const state = useSelector((state) => state)
-  const { settingReducer } = state
-  const { NotificationData, UserProfileData } = settingReducer
-  const { LanguageReducer } = useSelector((state) => state)
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const [reload, setReload] = useState(false)
-  const [currentUserName, setCurrentUserName] = useState('')
+  const state = useSelector((state) => state);
+  const { settingReducer } = state;
+  const { NotificationData, UserProfileData } = settingReducer;
+  const { LanguageReducer } = useSelector((state) => state);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [reload, setReload] = useState(false);
+  const [currentUserName, setCurrentUserName] = useState("");
 
   useEffect(() => {
     if (reload === false) {
-      setReload(true)
+      setReload(true);
     }
-  }, [])
+  }, []);
   useEffect(() => {
-    let currentUserID = localStorage.getItem('userID')
+    let currentUserID = localStorage.getItem("userID");
     if (reload === true) {
-      dispatch(getNotifications(navigate, JSON.parse(currentUserID)))
-      dispatch(getUserSetting(navigate, JSON.parse(currentUserID)))
-      setReload(false)
+      dispatch(getNotifications(navigate, JSON.parse(currentUserID)));
+      dispatch(getUserSetting(navigate, JSON.parse(currentUserID)));
+      setReload(false);
     }
-  }, [reload])
+  }, [reload]);
 
   useEffect(() => {
     if (UserProfileData !== undefined && UserProfileData !== null) {
-      setCurrentUserName(UserProfileData.userProfile.name)
+      setCurrentUserName(UserProfileData.userProfile.name);
     }
-  }, [UserProfileData])
+  }, [UserProfileData]);
   const forgotPasswordCheck = () => {
-    localStorage.setItem('globalPassowrdChecker', true)
-  }
+    localStorage.setItem("globalPassowrdChecker", true);
+  };
 
-  console.log('NotificationData', settingReducer)
+  console.log("NotificationData", settingReducer);
 
-  const { t, i18n } = useTranslation()
+  const { t, i18n } = useTranslation();
 
   // Languages
   const languages = [
-    { name: 'English', code: 'en' },
+    { name: "English", code: "en" },
     // { name: "日本語", code: "ja" },
-    { name: 'Français', code: 'fr' },
-    { name: 'العربية', code: 'ar', dir: 'rtl' },
-  ]
+    { name: "Français", code: "fr" },
+    { name: "العربية", code: "ar", dir: "rtl" },
+  ];
 
-  const currentLocale = Cookies.get('i18next') || 'en'
+  const currentLocale = Cookies.get("i18next") || "en";
 
-  const [language, setLanguage] = useState(currentLocale)
+  const [language, setLanguage] = useState(currentLocale);
 
   const handleChangeLocale = (e) => {
-    const lang = e.target.value
-    setLanguage(lang)
-    localStorage.setItem('i18nextLng', lang)
-    i18n.changeLanguage(lang)
-  }
+    const lang = e.target.value;
+    setLanguage(lang);
+    localStorage.setItem("i18nextLng", lang);
+    i18n.changeLanguage(lang);
+  };
 
-  const currentLangObj = languages.find((lang) => lang.code === currentLocale)
+  const currentLangObj = languages.find((lang) => lang.code === currentLocale);
 
   useEffect(() => {
-    document.body.dir = currentLangObj.dir || 'ltr'
+    document.body.dir = currentLangObj.dir || "ltr";
     // document.title = t("app_title");
-  }, [currentLangObj, t])
+  }, [currentLangObj, t]);
 
-  let currentLanguage = localStorage.getItem('i18nextLng')
+  let currentLanguage = localStorage.getItem("i18nextLng");
 
-  console.log('LanguageReducer', LanguageReducer)
+  console.log("LanguageReducer", LanguageReducer);
 
   return (
     <>
@@ -112,7 +112,7 @@ const Header = ({ currentUserImage }) => {
                 <Bell width="24px" height="24" />
               </Dropdown.Toggle>
               <Dropdown.Menu
-                className={'notification-dropdown_menu' + ' ' + currentLanguage}
+                className={"notification-dropdown_menu" + " " + currentLanguage}
               >
                 {NotificationData !== null &&
                 NotificationData !== undefined &&
@@ -130,6 +130,7 @@ const Header = ({ currentUserImage }) => {
                                   <img
                                     src={MeetingChangesSvg}
                                     className="icon-class"
+                                    draggable="false"
                                   />
                                 </div>
                               ) : notificationData.notificationTypes.pK_NTID ===
@@ -138,6 +139,7 @@ const Header = ({ currentUserImage }) => {
                                   <img
                                     src={MeetingChangesSvg}
                                     className="icon-class"
+                                    draggable="false"
                                   />
                                 </div>
                               ) : notificationData.notificationTypes.pK_NTID ===
@@ -151,6 +153,7 @@ const Header = ({ currentUserImage }) => {
                                   <img
                                     src={CancelMeetingSvg}
                                     className="icon-class"
+                                    draggable="false"
                                   />
                                 </div>
                               ) : notificationData.notificationTypes.pK_NTID ===
@@ -200,7 +203,7 @@ const Header = ({ currentUserImage }) => {
                                 {
                                   <TimeAgo
                                     datetime={dateTime(
-                                      notificationData.creationDateTime,
+                                      notificationData.creationDateTime
                                     )}
                                     locale="en"
                                   />
@@ -210,7 +213,7 @@ const Header = ({ currentUserImage }) => {
                           </Row>
                         </Dropdown.Item>
                       </>
-                    )
+                    );
                   })
                 ) : (
                   <ResultMessage
@@ -224,7 +227,7 @@ const Header = ({ currentUserImage }) => {
 
             {/* <span>{t("languages")}</span>{" "} */}
             <select
-              className={'language-dropdown' + ' ' + currentLanguage}
+              className={"language-dropdown" + " " + currentLanguage}
               onChange={handleChangeLocale}
               value={language}
             >
@@ -241,9 +244,13 @@ const Header = ({ currentUserImage }) => {
 
             <Dropdown className="profilebtn-dropdown">
               <Dropdown.Toggle className="dropdown-toggle">
-                <img src={currentUserImage} className="user-img " />
+                <img
+                  src={currentUserImage}
+                  className="user-img "
+                  draggable="false"
+                />
 
-                <p className={'user-name' + ' ' + currentLanguage}>
+                <p className={"user-name" + " " + currentLanguage}>
                   {currentUserName}
                 </p>
               </Dropdown.Toggle>
@@ -251,12 +258,12 @@ const Header = ({ currentUserImage }) => {
               <Dropdown.Menu className="dropdown_menu">
                 <Dropdown.Item
                   href="forgotpassword"
-                  className={'my-2' + ' ' + currentLanguage}
+                  className={"my-2" + " " + currentLanguage}
                   onClick={() => forgotPasswordCheck()}
                 >
                   <Nav.Link as={Link} to="forgotpassword">
                     {/* Change Password */}
-                    {t('Change-password')}
+                    {t("Change-password")}
                   </Nav.Link>
                 </Dropdown.Item>
                 <Dropdown.Item
@@ -264,7 +271,7 @@ const Header = ({ currentUserImage }) => {
                   onClick={() => dispatch(signOut(navigate))}
                 >
                   {/* Sign Out */}
-                  {t('Sign-out')}
+                  {t("Sign-out")}
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
@@ -272,7 +279,7 @@ const Header = ({ currentUserImage }) => {
         </Row>
       </Container>
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

@@ -1392,6 +1392,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
           >
             {console.log("itemitem", item)}
             <img
+              draggable="false"
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
               alt=""
               className="user-img"
@@ -2486,6 +2487,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
                                               )}
                                               <span className="deleteBtn">
                                                 <img
+                                                  draggable="false"
                                                   src={
                                                     deleteButtonCreateMeeting
                                                   }

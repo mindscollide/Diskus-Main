@@ -332,7 +332,7 @@ const EmailValidation = () => {
                     lg={12}
                     className="d-flex justify-content-center"
                   >
-                    <img src={DiskusLogo} alt="diskus_logo" />
+                    <img draggable="false" src={DiskusLogo} alt="diskus_logo" />
                   </Col>
                 </Row>
                 <Row className="mt-3 mb-4 text-center">
@@ -448,6 +448,7 @@ const EmailValidation = () => {
             </Col>
             <Col md={4} lg={4} sm={12} className="position-relative">
               <img
+                draggable="false"
                 src={DiskusAuthPageLogo}
                 alt="auth_icon"
                 width="600px"

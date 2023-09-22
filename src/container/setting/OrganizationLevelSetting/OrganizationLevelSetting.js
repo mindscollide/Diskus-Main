@@ -963,6 +963,7 @@ const OrganizationLevelSetting = () => {
                       className="d-flex align-items-center"
                     >
                       <img
+                        draggable="false"
                         src={SecurityIcon}
                         width="25.51px"
                         height="30.69px"
@@ -990,7 +991,12 @@ const OrganizationLevelSetting = () => {
                       sm={12}
                       className="d-flex align-items-center"
                     >
-                      <img src={TodoIcon} width="30px" height="30px" />
+                      <img
+                        draggable="false"
+                        src={TodoIcon}
+                        width="30px"
+                        height="30px"
+                      />
                     </Col>
                     <Col lg={10} md={10} sm={12}>
                       <span
@@ -1014,7 +1020,12 @@ const OrganizationLevelSetting = () => {
                       sm={12}
                       className="d-flex align-items-center"
                     >
-                      <img src={MeetingIcon} width="35.79px" height="27.3px" />
+                      <img
+                        draggable="false"
+                        src={MeetingIcon}
+                        width="35.79px"
+                        height="27.3px"
+                      />
                     </Col>
                     <Col lg={10} md={10} ms={12}>
                       <span
@@ -1038,7 +1049,12 @@ const OrganizationLevelSetting = () => {
                       sm={12}
                       className="d-flex align-items-center"
                     >
-                      <img src={Calender} width="28.47px" height="28.47px" />
+                      <img
+                        draggable="false"
+                        src={Calender}
+                        width="28.47px"
+                        height="28.47px"
+                      />
                     </Col>
                     <Col lg={10} md={10} ms={12}>
                       <span
@@ -1062,7 +1078,12 @@ const OrganizationLevelSetting = () => {
                       sm={12}
                       className="d-flex align-items-center"
                     >
-                      <img src={Committee} width="35.8px" height="34.63px" />
+                      <img
+                        draggable="false"
+                        src={Committee}
+                        width="35.8px"
+                        height="34.63px"
+                      />
                     </Col>
                     <Col lg={10} md={10} ms={12}>
                       <span
@@ -1086,7 +1107,12 @@ const OrganizationLevelSetting = () => {
                       sm={12}
                       className="d-flex align-items-center"
                     >
-                      <img src={GroupIcon} width="29px" height="26.04px" />
+                      <img
+                        draggable="false"
+                        src={GroupIcon}
+                        width="29px"
+                        height="26.04px"
+                      />
                     </Col>
                     <Col lg={10} md={10} ms={12}>
                       <span
@@ -1110,7 +1136,12 @@ const OrganizationLevelSetting = () => {
                       sm={12}
                       className="d-flex align-items-center"
                     >
-                      <img src={ResolutionIcon} width="30px" height="31.18px" />
+                      <img
+                        draggable="false"
+                        src={ResolutionIcon}
+                        width="30px"
+                        height="31.18px"
+                      />
                     </Col>
                     <Col lg={10} md={10} ms={12}>
                       <span
@@ -1134,7 +1165,12 @@ const OrganizationLevelSetting = () => {
                       sm={12}
                       className="d-flex align-items-center"
                     >
-                      <img src={pollsIcon} width="33.52px" height="34.59px" />
+                      <img
+                        draggable="false"
+                        src={pollsIcon}
+                        width="33.52px"
+                        height="34.59px"
+                      />
                     </Col>
                     <Col lg={10} md={10} ms={12}>
                       <span
@@ -1156,7 +1192,11 @@ const OrganizationLevelSetting = () => {
                 sm={1}
                 className="d-flex justify-content-center"
               >
-                <img src={line} className={styles["user-setting-row"]} />
+                <img
+                  draggable="false"
+                  src={line}
+                  className={styles["user-setting-row"]}
+                />
               </Col>
               <Col
                 lg={4}
@@ -2057,7 +2097,11 @@ const OrganizationLevelSetting = () => {
                 sm={1}
                 className="d-flex justify-content-center"
               >
-                <img src={line} className={styles["user-setting-row"]} />
+                <img
+                  draggable="false"
+                  src={line}
+                  className={styles["user-setting-row"]}
+                />
               </Col>
               <Col lg={3} md={3} sm={3} className="m-0 p-0">
                 {calender ? (
