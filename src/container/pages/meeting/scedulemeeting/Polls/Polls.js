@@ -161,7 +161,7 @@ const Polls = () => {
             >
               <Button
                 text={t("Create-polls")}
-                icon={<img src={addmore} />}
+                icon={<img src={addmore} draggable="false" alt="" />}
                 className={styles["Create_polls_Button"]}
                 onClick={handleCreatepolls}
               />
@@ -178,7 +178,13 @@ const Polls = () => {
                       sm={12}
                       className="d-flex justify-content-center"
                     >
-                      <img src={emtystate} height="230px" width="293.93px" />
+                      <img
+                        src={emtystate}
+                        height="230px"
+                        width="293.93px"
+                        draggable="false"
+                        alt=""
+                      />
                     </Col>
                   </Row>
                   <Row className="mt-2">

@@ -1401,7 +1401,7 @@ const Dashboard = () => {
           {/* <Content className="MainContainer"> */}
           <Layout className="positionRelative">
             <NotificationBar
-              iconName={<img src={IconMetroAttachment} />}
+              iconName={<img src={IconMetroAttachment} draggable="false" />}
               notificationMessage={notification.message}
               notificationState={notification.notificationShow}
               setNotification={setNotification}
