@@ -159,7 +159,7 @@ const ScheduleNewResolution = () => {
   const currentMinutes = currentDate.getMinutes().toString().padStart(2, "0");
   const getcurrentTime = `${currentHours}:${currentMinutes}`;
   useEffect(() => {
-    if (currentLanguage !== undefined) {
+    if (currentLanguage !== null && currentLanguage !== undefined) {
       if (currentLanguage === "en") {
         setCalendarValue(gregorian);
         setLocalValue(gregorian_en);
@@ -174,6 +174,7 @@ const ScheduleNewResolution = () => {
     dispatch(getAllVotingMethods(navigate, t));
     dispatch(getAllResolutionStatus(navigate, t));
     dispatch(allAssignessList(navigate, t));
+    return;
   }, []);
 
   const dateformatYYYYMMDD = (date) => {
@@ -206,18 +207,6 @@ const ScheduleNewResolution = () => {
     setTaskAssignedTo(0);
     setTaskAssignedName("");
     setEmailValue("");
-  };
-
-  const resolutiondiscard = () => {
-    setDsicardresolution(true);
-  };
-
-  const reslotionupdatemodal = () => {
-    setResolutionupdate(true);
-  };
-
-  const resolutioncancell = () => {
-    setResolutioncancel(true);
   };
 
   const removeUserForVoter = (id, name) => {
@@ -305,13 +294,8 @@ const ScheduleNewResolution = () => {
   };
 
   const searchFilterHandler = (value) => {
-    let allAssignees = assignees.user;
-    if (
-      allAssignees !== undefined &&
-      allAssignees !== null &&
-      allAssignees.length > 0
-    ) {
-      return allAssignees
+    if (meetingAttendeesList !== undefined && meetingAttendeesList !== null) {
+      return meetingAttendeesList
         .filter((item) => {
           const searchTerm = value.toLowerCase();
           const assigneesName = item.name.toLowerCase();
@@ -331,6 +315,7 @@ const ScheduleNewResolution = () => {
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
               alt=""
               className="user-img"
+              draggable="false"
             />
             <p className="p-0 m-0">{item.name}</p>
           </div>
@@ -448,7 +433,7 @@ const ScheduleNewResolution = () => {
     setEmailValue("");
   };
 
-  const resolutionSaveHandler = () => {
+  const resolutionSaveHandler = async () => {
     if (
       createResolutionData.Title !== "" &&
       circulationDateTime.dateValue !== "" &&
@@ -462,11 +447,12 @@ const ScheduleNewResolution = () => {
       createResolutionData.FK_ResolutionReminderFrequency_ID !== 0
     ) {
       if (fileForSend.length > 0) {
-        let counter = fileForSend.length;
-        fileForSend.map(async (newData, index) => {
-          await dispatch(FileUploadToDo(navigate, newData, t));
-          counter = counter - 1;
+        let newfile = [];
+        const uploadPromises = fileForSend.map((newData) => {
+          return dispatch(FileUploadToDo(navigate, newData, t, newfile));
         });
+        await Promise.all(uploadPromises);
+        let tasksAttachments = newfile;
         let Data = {
           ResolutionModel: {
             FK_ResolutionStatusID: 1,
@@ -562,7 +548,7 @@ const ScheduleNewResolution = () => {
     }
   };
 
-  const resolutionCirculateHandler = () => {
+  const resolutionCirculateHandler = async () => {
     if (
       createResolutionData.Title !== "" &&
       circulationDateTime.dateValue !== "" &&
@@ -577,11 +563,12 @@ const ScheduleNewResolution = () => {
       // voters.length > 0
     ) {
       if (fileForSend.length > 0) {
-        let counter = fileForSend.length;
-        fileForSend.map(async (newData, index) => {
-          await dispatch(FileUploadToDo(navigate, newData, t));
-          counter = counter - 1;
+        let newfile = [];
+        const uploadPromises = fileForSend.map((newData) => {
+          return dispatch(FileUploadToDo(navigate, newData, t, newfile));
         });
+        await Promise.all(uploadPromises);
+        let tasksAttachments = newfile;
         let Data = {
           ResolutionModel: {
             FK_ResolutionStatusID: 2,
@@ -976,8 +963,7 @@ const ScheduleNewResolution = () => {
               </Col>
             </Row>
             <Paper className={styles["Create_new_resolution_paper"]}>
-              {/* Resolution Status */}
-              <Row>
+              {/* <Row>
                 <Col lg={12} md={12} sm={12} className={styles["IN_draft_Box"]}>
                   <Row className="mt-1">
                     <Col lg={12} md={12} sm={12}>
@@ -987,7 +973,7 @@ const ScheduleNewResolution = () => {
                     </Col>
                   </Row>
                 </Col>
-              </Row>
+              </Row> */}
               <Row>
                 <Col lg={12} md={12} sm={12}>
                   <Row>
@@ -1377,19 +1363,6 @@ const ScheduleNewResolution = () => {
                               onChange={decisionChangeHandler}
                             />
                           </div>
-                          {/* <TextFieldDateTime
-                            applyClass={"search_voterInput"}
-                            min={
-                              votingDateTime.date !== ""
-                                ? dateformatYYYYMMDD(votingDateTime.date)
-                                : minDate
-                            }
-                            labelClass="d-none"
-                            name={"decision"}
-                            change={(e) => {
-                              handleChangeDateSelection(e);
-                            }}
-                          /> */}
                           <Row>
                             <Col>
                               <p
@@ -1661,6 +1634,7 @@ const ScheduleNewResolution = () => {
                                                               data.name
                                                             )
                                                           }
+                                                          draggable="false"
                                                         />
                                                       }
                                                     />
@@ -1767,6 +1741,7 @@ const ScheduleNewResolution = () => {
                                                               data.name
                                                             )
                                                           }
+                                                          draggable="false"
                                                         />
                                                       }
                                                     />
@@ -1814,6 +1789,7 @@ const ScheduleNewResolution = () => {
                                               src={Leftploygon}
                                               width="20px"
                                               height="15px"
+                                              draggable="false"
                                             />
                                           }
                                           onClick={SlideLeft}
@@ -1953,6 +1929,7 @@ const ScheduleNewResolution = () => {
                                                             index
                                                           )
                                                         }
+                                                        draggable="false"
                                                       />
                                                     </span>
                                                     <p className="modaltodolist-attachment-text">
@@ -1975,6 +1952,7 @@ const ScheduleNewResolution = () => {
                                               src={Rightploygon}
                                               width="20px"
                                               height="15px"
+                                              draggable="false"
                                             />
                                           }
                                           onClick={Slideright}
@@ -2006,6 +1984,7 @@ const ScheduleNewResolution = () => {
                                       src={featherupload}
                                       width="18.87px"
                                       height="18.87px"
+                                      draggable="false"
                                     />
                                   </span>
                                 </p>

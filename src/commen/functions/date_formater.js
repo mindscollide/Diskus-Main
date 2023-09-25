@@ -421,10 +421,7 @@ export const resolutionResultTable = (dateTime) => {
     ".000Z";
 
   let convertTime = new Date(fullDateYear);
-  console.log(
-    "convertTimeconvertTimeconvertTimeconvertTimeconvertTime",
-    convertTime
-  );
+
   return convertTime;
 };
 

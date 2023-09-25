@@ -9,6 +9,18 @@
     border-radius: 4px;
 }
 
+body[dir="rtl"] .chatmedium-messenger-IsOpen {
+    height: 47vh;
+    position: absolute;
+    bottom: 10px;
+    right: auto;
+    width: 30%;
+    background: #fff;
+    border: 1px solid #6172d6;
+    border-radius: 4px;
+    left: 115px;
+}
+
 .video-chat-group-icon {
     position: absolute;
     top: 5px;

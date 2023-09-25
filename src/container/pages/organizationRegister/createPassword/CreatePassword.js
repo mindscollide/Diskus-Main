@@ -393,7 +393,12 @@ const CreatePassword = () => {
                     lg={12}
                     className="d-flex justify-content-center"
                   >
-                    <img src={DiskusLogo} width={220} alt="diskus_logo" />
+                    <img
+                      draggable="false"
+                      src={DiskusLogo}
+                      width={220}
+                      alt="diskus_logo"
+                    />
                   </Col>
                 </Row>
                 <Row className="mt-4 mb-3">
@@ -428,9 +433,9 @@ const CreatePassword = () => {
                         onClick={showNewPassowrd}
                       >
                         {showNewPasswordIcon ? (
-                          <img src={PasswordHideEyeIcon} />
+                          <img draggable="false" src={PasswordHideEyeIcon} />
                         ) : (
-                          <img src={PasswordEyeIcon} />
+                          <img draggable="false" src={PasswordEyeIcon} />
                         )}
                       </span>
                     </Col>
@@ -456,9 +461,9 @@ const CreatePassword = () => {
                         onClick={showConfirmPassowrd}
                       >
                         {showConfirmPasswordIcon ? (
-                          <img src={PasswordHideEyeIcon} />
+                          <img draggable="false" src={PasswordHideEyeIcon} />
                         ) : (
-                          <img src={PasswordEyeIcon} />
+                          <img draggable="false" src={PasswordEyeIcon} />
                         )}
                       </span>
                     </Col>
@@ -558,6 +563,7 @@ const CreatePassword = () => {
             </Col>
             <Col md={4} lg={4} sm={12} className="position-relative">
               <img
+                draggable="false"
                 src={DiskusAuthPageLogo}
                 alt="auth_icon"
                 width="600px"

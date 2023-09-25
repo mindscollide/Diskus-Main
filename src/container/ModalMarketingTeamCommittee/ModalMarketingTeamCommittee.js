@@ -1,21 +1,21 @@
-import React, { useState, useEffect } from "react"
-import { Col, Container, Row } from "react-bootstrap"
-import styles from "./ModalMarketingTeamCommittee.module.css"
-import userImage from "../../assets/images/user.png"
+import React, { useState, useEffect } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import styles from "./ModalMarketingTeamCommittee.module.css";
+import userImage from "../../assets/images/user.png";
 import {
   Button,
   InputSearchFilter,
   Modal,
   Notification,
-} from "../../components/elements"
-import { style } from "@mui/system"
-import Crossicon from "../../assets/images/CrossIcon.svg"
-import { useTranslation } from "react-i18next"
-import { getAllGroups } from "../../store/actions/Groups_actions"
-import Group_Icon from "../../assets/images/Path 636.png"
-import { useDispatch, useSelector } from "react-redux"
-import { assignGroups } from "../../store/actions/Committee_actions"
-import { useNavigate } from "react-router-dom"
+} from "../../components/elements";
+import { style } from "@mui/system";
+import Crossicon from "../../assets/images/CrossIcon.svg";
+import { useTranslation } from "react-i18next";
+import { getAllGroups } from "../../store/actions/Groups_actions";
+import Group_Icon from "../../assets/images/Path 636.png";
+import { useDispatch, useSelector } from "react-redux";
+import { assignGroups } from "../../store/actions/Committee_actions";
+import { useNavigate } from "react-router-dom";
 const ModalMarketingTeamCommittee = ({
   ModalTitle,
   MarketingTeam,
@@ -23,35 +23,35 @@ const ModalMarketingTeamCommittee = ({
   committeeID,
   mapgroupsData,
 }) => {
-  const { GroupsReducer } = useSelector((state) => state)
-  console.log("GroupsReducerGroupsReducer", GroupsReducer)
-  const [Groups, setGroups] = useState([])
-  const [groupName, setGroupName] = useState("")
-  const [committeeData, setCommitteeData] = useState(null)
-  const [groupID, setGroupID] = useState(0)
-  const [groupData, setGroupData] = useState([])
-  const [data, setData] = useState([])
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const { GroupsReducer } = useSelector((state) => state);
+  console.log("GroupsReducerGroupsReducer", GroupsReducer);
+  const [Groups, setGroups] = useState([]);
+  const [groupName, setGroupName] = useState("");
+  const [committeeData, setCommitteeData] = useState(null);
+  const [groupID, setGroupID] = useState(0);
+  const [groupData, setGroupData] = useState([]);
+  const [data, setData] = useState([]);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [open, setOpen] = useState({
     flag: false,
     message: "",
-  })
-  const { t } = useTranslation()
-  console.log(groupData, data, "dasdasdasdasdasd")
+  });
+  const { t } = useTranslation();
+  console.log(groupData, data, "dasdasdasdasdasd");
 
   useEffect(() => {
     if (mapgroupsData !== null && mapgroupsData !== undefined) {
-      setCommitteeData(mapgroupsData)
+      setCommitteeData(mapgroupsData);
     }
-  }, [mapgroupsData])
+  }, [mapgroupsData]);
   const closebtn = async () => {
-    setMarketingTeam(false)
-  }
+    setMarketingTeam(false);
+  };
   //Drop Down Values
   const searchFilterHandler = (value) => {
-    let getAllGroupsData = GroupsReducer.getAllGroups
-    console.log("getAllGroupsDatagetAllGroupsData", getAllGroupsData)
+    let getAllGroupsData = GroupsReducer.getAllGroups;
+    console.log("getAllGroupsDatagetAllGroupsData", getAllGroupsData);
     if (
       GroupsReducer.getAllGroups != undefined &&
       GroupsReducer.getAllGroups != null &&
@@ -60,13 +60,13 @@ const ModalMarketingTeamCommittee = ({
     ) {
       return getAllGroupsData
         .filter((item) => {
-          const searchTerm = value.toLowerCase()
-          const assigneesName = item.title.toLowerCase()
+          const searchTerm = value.toLowerCase();
+          const assigneesName = item.title.toLowerCase();
           return (
             searchTerm &&
             assigneesName.startsWith(searchTerm) &&
             assigneesName !== searchTerm
-          )
+          );
         })
         .map((item) => (
           <div
@@ -75,66 +75,67 @@ const ModalMarketingTeamCommittee = ({
             key={item.pK_GRID}
           >
             <img
+              draggable="false"
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
               alt=""
               className="user-img"
             />
             <p className="p-0 m-0">{item.title}</p>
           </div>
-        ))
+        ));
     } else {
     }
-  }
+  };
 
   // on Search filter for add members
   const onSearch = (name, id) => {
-    console.log("name id", name, id)
-    setGroupName(name)
-    setGroupID(id)
-  }
+    console.log("name id", name, id);
+    setGroupName(name);
+    setGroupID(id);
+  };
 
   // on Search filter for add members
   const onChangeSearch = (e) => {
-    setGroupName(e.target.value.trimStart())
-  }
+    setGroupName(e.target.value.trimStart());
+  };
 
   const handleAdd = () => {
     let findIndexGroupID = data.findIndex(
       (data, index) => data.GroupID === groupID
-    )
+    );
     if (groupID !== 0 && committeeID !== 0) {
       if (findIndexGroupID !== -1) {
         setOpen({
           flag: true,
           message: "This group already Exist is lit",
-        })
-        setGroupName("")
-        setGroupID(0)
+        });
+        setGroupName("");
+        setGroupID(0);
       } else {
         data.push({
           GroupID: groupID,
           CommitteeId: committeeID,
           CommitteeMappingID: 0,
-        })
+        });
         groupData.push({
           GroupID: groupID,
           GroupName: groupName,
           CommitteeMappingID: 0,
-        })
-        setData([...data])
-        setGroupData([...groupData])
-        setGroupName("")
-        setGroupID(0)
+        });
+        setData([...data]);
+        setGroupData([...groupData]);
+        setGroupName("");
+        setGroupID(0);
       }
     }
-  }
+  };
 
   const removeHandler = (id) => {
     let newDatafindDex = committeeData[0].listOfGroups.find(
       (data, index) => data.groupID === id
-    )
-    console.log(newDatafindDex, "newDatafindDexnewDatafindDex")
-    let newGroupData = groupData.filter((data, index) => data.GroupID !== id)
+    );
+    console.log(newDatafindDex, "newDatafindDexnewDatafindDex");
+    let newGroupData = groupData.filter((data, index) => data.GroupID !== id);
     if (newDatafindDex !== undefined) {
       let newData2 = data.map((items, index) => {
         if (newDatafindDex.committeeMappingID === items.CommitteeMappingID) {
@@ -143,81 +144,81 @@ const ModalMarketingTeamCommittee = ({
             GroupID: 0,
             CommitteeId: 0,
             CommitteeMappingID: items.CommitteeMappingID,
-          }
-          return newData
+          };
+          return newData;
         }
-        return items
-      })
-      setData(newData2)
+        return items;
+      });
+      setData(newData2);
     } else {
-      let newGroupData = data.filter((data, index) => data.GroupID !== id)
-      setData(newGroupData)
+      let newGroupData = data.filter((data, index) => data.GroupID !== id);
+      setData(newGroupData);
     }
-    setGroupData(newGroupData)
-  }
-  console.log(data, "newGroupDatanewGroupData")
-  console.log(groupData, "newGroupDatanewGroupData")
+    setGroupData(newGroupData);
+  };
+  console.log(data, "newGroupDatanewGroupData");
+  console.log(groupData, "newGroupDatanewGroupData");
   useEffect(() => {
-    console.log(committeeData, "committeeDatacommitteeData")
+    console.log(committeeData, "committeeDatacommitteeData");
     if (committeeData !== null && committeeData !== undefined) {
       if (committeeData[0].listOfGroups.length > 0) {
-        console.log("Test")
-        let newDataforSend = []
-        let newDataforView = []
+        console.log("Test");
+        let newDataforSend = [];
+        let newDataforView = [];
         committeeData[0].listOfGroups.map((listgroupsData, index) => {
           newDataforSend.push({
             GroupID: listgroupsData.groupID,
             CommitteeId: listgroupsData.committeeID,
             CommitteeMappingID: listgroupsData.committeeMappingID,
-          })
-          console.log("Test")
+          });
+          console.log("Test");
           newDataforView.push({
             GroupID: listgroupsData.groupID,
             GroupName: listgroupsData.groupTitle,
             CommitteeMappingID: listgroupsData.committeeMappingID,
-          })
-        })
-        console.log("Test")
-        setGroupData(newDataforView)
-        setData(newDataforSend)
+          });
+        });
+        console.log("Test");
+        setGroupData(newDataforView);
+        setData(newDataforSend);
       }
     }
-  }, [committeeData])
+  }, [committeeData]);
   const handleUpdate = () => {
     if (data.length > 0) {
       let Data = {
         committeeGroupMapping: data,
-      }
-      dispatch(assignGroups(navigate, Data, t, setMarketingTeam))
-      console.log("DataData", Data)
+      };
+      dispatch(assignGroups(navigate, Data, t, setMarketingTeam));
+      console.log("DataData", Data);
     } else {
     }
-  }
+  };
   useEffect(() => {
     try {
-      dispatch(getAllGroups(navigate, t))
+      dispatch(getAllGroups(navigate, t));
     } catch (error) {}
-  }, [])
+  }, []);
   useEffect(() => {
     if (GroupsReducer.getAllGroups !== null) {
-      let newArr = []
+      let newArr = [];
       GroupsReducer.getAllGroups.map((data, index) => {
         newArr.push({
           GroupID: data.pK_GRID,
           GroupTitle: data.title,
           GroupStatus: data.fK_GRSID,
-        })
-      })
-      setGroups(newArr)
+        });
+      });
+      setGroups(newArr);
     }
-  }, [GroupsReducer.getAllGroups])
+  }, [GroupsReducer.getAllGroups]);
   return (
     <>
       <Container>
         <Modal
           show={MarketingTeam}
           onHide={() => {
-            setMarketingTeam(false)
+            setMarketingTeam(false);
           }}
           setShow={setMarketingTeam}
           ButtonTitle={ModalTitle}
@@ -274,6 +275,7 @@ const ModalMarketingTeamCommittee = ({
                                   <Col sm={1} md={1} lg={1}>
                                     <span className={styles["group_Icon_Box"]}>
                                       <img
+                                        draggable="false"
                                         src={Group_Icon}
                                         width={30}
                                         height={30}
@@ -292,6 +294,7 @@ const ModalMarketingTeamCommittee = ({
                                     className="d-flex justify-content-end"
                                   >
                                     <img
+                                      draggable="false"
                                       src={Crossicon}
                                       onClick={() =>
                                         removeHandler(data.GroupID)
@@ -301,7 +304,7 @@ const ModalMarketingTeamCommittee = ({
                                 </Row>
                               </Col>
                             </Row>
-                          )
+                          );
                         })
                       : null}
                   </section>
@@ -336,7 +339,7 @@ const ModalMarketingTeamCommittee = ({
       </Container>
       <Notification open={open.flag} message={open.message} setOpen={setOpen} />
     </>
-  )
-}
+  );
+};
 
-export default ModalMarketingTeamCommittee
+export default ModalMarketingTeamCommittee;

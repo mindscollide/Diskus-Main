@@ -6,7 +6,11 @@ const subscriptionwarninglimit = ({ text, rowClassNameWarning, textStyle }) => {
   return (
     <Row className={rowClassNameWarning}>
       <Col className="MontserratMedium-500 d-flex justify-content-center my-2">
-        <img src={LimitExceedIcon} className={styles["warningIcon"]} />
+        <img
+          src={LimitExceedIcon}
+          className={styles["warningIcon"]}
+          draggable="false"
+        />
         <span className={textStyle}>{text}</span>
       </Col>
     </Row>

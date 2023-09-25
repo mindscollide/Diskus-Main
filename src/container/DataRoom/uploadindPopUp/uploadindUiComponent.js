@@ -146,6 +146,7 @@ const UploadindUiComponent = ({
                 >
                   {collapes ? (
                     <img
+                      draggable="false"
                       src={chevronUp}
                       width={9}
                       alt=""
@@ -154,6 +155,7 @@ const UploadindUiComponent = ({
                     />
                   ) : (
                     <img
+                      draggable="false"
                       src={chevdown}
                       alt=""
                       width={9}
@@ -162,6 +164,7 @@ const UploadindUiComponent = ({
                     />
                   )}
                   <img
+                    draggable="false"
                     src={Cancellicon}
                     width={9}
                     alt=""
@@ -194,7 +197,12 @@ const UploadindUiComponent = ({
                                 className="d-flex justify-content-between align-items-center gap-3"
                               >
                                 <div className="d-flex align-items-center gap-3">
-                                  <img src={folderColor} width={20} alt="" />
+                                  <img
+                                    draggable="false"
+                                    src={folderColor}
+                                    width={20}
+                                    alt=""
+                                  />
                                   <span> {data.FolderName}</span>
                                   {data.UploadCancel ? null : (
                                     <span>
@@ -223,6 +231,7 @@ const UploadindUiComponent = ({
                                       // value={progress}
                                     />
                                     <img
+                                      draggable="false"
                                       src={CrossIcon}
                                       alt=""
                                       onClick={() => cancelUpload(data)}
@@ -261,6 +270,7 @@ const UploadindUiComponent = ({
                               className="d-flex  gap-3 flex-row"
                             >
                               <img
+                                draggable="false"
                                 src={getIconSource(
                                   getFileExtension(data.FileName)
                                 )}
@@ -278,12 +288,14 @@ const UploadindUiComponent = ({
                             ) : data.Progress === 100 &&
                               data.UploadCancel !== true ? (
                               <img
+                                draggable="false"
                                 src={Greentick}
                                 alt=""
                                 className={styles["GreentickIcon_forfile"]}
                               />
                             ) : data.Progress < 100 ? (
                               <img
+                                draggable="false"
                                 src={CrossIcon}
                                 width={"20px"}
                                 height={"20px"}
@@ -328,7 +340,12 @@ const UploadindUiComponent = ({
                                 lg={9}
                                 className="d-flex align-items-center gap-3"
                               >
-                                <img src={folderColor} width={20} alt="" />
+                                <img
+                                  draggable="false"
+                                  src={folderColor}
+                                  width={20}
+                                  alt=""
+                                />
                                 <span> {data.FolderName}</span>
                                 <span>
                                   {`${data.UploadedAttachments}  ${"Of"}  ${
@@ -344,12 +361,14 @@ const UploadindUiComponent = ({
                               >
                                 {data.NetDisconnect ? (
                                   <img
+                                    draggable="false"
                                     src={ErrorIcon}
                                     alt=""
                                     className={styles["GreentickIcon_forfile"]}
                                   />
                                 ) : (
                                   <img
+                                    draggable="false"
                                     src={Greentick}
                                     alt=""
                                     className={styles["GreentickIcon"]}
@@ -388,6 +407,7 @@ const UploadindUiComponent = ({
                               className="d-flex  gap-3 flex-row "
                             >
                               <img
+                                draggable="false"
                                 src={getIconSource(
                                   getFileExtension(data.FileName)
                                 )}
@@ -402,12 +422,14 @@ const UploadindUiComponent = ({
                             </Space>
                             {data.UploadingError || data.NetDisconnect ? (
                               <img
+                                draggable="false"
                                 src={ErrorIcon}
                                 alt=""
                                 className={styles["GreentickIcon_forfile"]}
                               />
                             ) : data.Progress === 100 ? (
                               <img
+                                draggable="false"
                                 src={Greentick}
                                 alt=""
                                 className={styles["GreentickIcon_forfile"]}

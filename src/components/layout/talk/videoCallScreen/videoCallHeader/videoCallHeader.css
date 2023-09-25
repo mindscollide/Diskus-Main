@@ -3,17 +3,18 @@
     align-items: baseline;
     justify-content: start;
     font-size: 22px !important;
-    color: #6172D6 !important;
+    color: #6172d6 !important;
     margin: auto;
-    font-family: 'MontserratSemiBold';
+    font-family: "MontserratSemiBold";
 }
 
 .minimize-screen-on-bottom {
     display: flex;
     align-items: center;
-    justify-content: start;
+    justify-content: end;
     vertical-align: top;
-    gap: 25px;
+    gap: 20px;
+    margin: 0px 40px;
 }
 
 .minimizeGroup-expand-icon {
@@ -57,11 +58,40 @@
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
 }
 
+/* Aun work on RTL in video screens */
+
+body[dir="rtl"] .videoCallGroupScreen-minmizeVideoCall {
+    position: absolute;
+    right: 70px;
+    width: 55%;
+    height: 50px;
+    background: linear-gradient(to left, #6172d6 0%, #49dbdb 100%) !important;
+    bottom: 0;
+    border: 1px solid #b4b4b4;
+    border-radius: 4px !important;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+}
+
 .videoCallGroupScreen-minmizeVideoCall .title-heading {
     font-size: 13px !important;
     font-weight: 600;
     color: #fff !important;
     margin-left: 15px !important;
+}
+
+/* Aun work on RTL in video screens */
+body[dir="rtl"] .videoCallGroupScreen-minmizeVideoCall .title-heading {
+    font-size: 13px !important;
+    font-weight: 600;
+    color: #fff !important;
+    margin-right: 15px !important;
+}
+
+/* Aun work on RTL in video screens */
+body[dir="rtl"] .minimize-video-icon,
+body[dir="rtl"] .min-to-normal-icon,
+body[dir="rtl"] .min-to-max-icon {
+    transform: rotateY(180deg) !important;
 }
 
 img.normalize-Icon-Large {
@@ -97,6 +127,37 @@ img.normalize-Icon-Large {
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
 }
 
+.minimize-leave-meeting-options {
+    background: #fff;
+    border-radius: 4px;
+    padding: 16px;
+    position: absolute;
+    width: 248px;
+    bottom: 50px;
+    left: 50%;
+    /* Use left: 50% to horizontally center the popup relative to the icon */
+    transform: translateX(-50%);
+    /* Use transform to center the popup precisely */
+    height: 130px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+body[dir="rtl"] .minimize-leave-meeting-options {
+    background: #fff;
+    border-radius: 4px;
+    padding: 16px;
+    position: absolute;
+    width: 248px;
+    /* Adjust the positioning based on the icon's position */
+    bottom: 50px;
+    right: 33%;
+    /* Use left: 50% to horizontally center the popup relative to the icon */
+    transform: translateX(-50%);
+    /* Use transform to center the popup precisely */
+    height: 130px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+}
+
 .leave-meeting-options__inner {
     text-align: center;
 }
@@ -110,12 +171,12 @@ img.normalize-Icon-Large {
     white-space: nowrap;
     width: 75%;
     font-size: 12px;
-    font-family: 'MontserratMedium-500';
+    font-family: "MontserratMedium-500";
     text-align: center !important;
 }
 
 .leave-meeting-red-button {
-    background: #F16B6B;
+    background: #f16b6b;
     border: none;
     color: #fff;
     margin-bottom: 10px;
@@ -125,7 +186,7 @@ img.normalize-Icon-Large {
 .leave-meeting-red-button:focus-visible,
 .leave-meeting-red-button:hover,
 .leave-meeting-red-button:active {
-    background: #F16b6b !important;
+    background: #f16b6b !important;
     border: none !important;
     color: #fff !important;
 }
@@ -133,7 +194,7 @@ img.normalize-Icon-Large {
 .leave-meeting-gray-button {
     background: #fff;
     color: #5a5a5a;
-    border: 1px solid #E1E1E1;
+    border: 1px solid #e1e1e1;
     margin-bottom: 10px;
 }
 
@@ -143,7 +204,7 @@ img.normalize-Icon-Large {
 .leave-meeting-gray-button:active {
     background: #fff !important;
     color: #5a5a5a !important;
-    border: 1px solid #E1E1E1 !important;
+    border: 1px solid #e1e1e1 !important;
     margin-bottom: 10px;
 }
 
@@ -182,7 +243,7 @@ img.normalize-Icon-Large {
 .Notification-maximize {
     gap: 12px;
     border-radius: 4px;
-    background: #6172D6;
+    background: #6172d6;
     width: 275px;
     height: 40px;
     text-align: center;
@@ -196,7 +257,7 @@ p.Notification-text {
     margin: 0 !important;
     font-size: 12px;
     color: #fff;
-    font-family: 'MontserratMedium';
+    font-family: "MontserratMedium";
 }
 
 .participants-list {
@@ -209,7 +270,19 @@ p.Notification-text {
     height: 100px;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
     left: -85px;
+}
 
+/* Aun work on minimize Participant List */
+.minimize-participants-list {
+    background: #fff;
+    border-radius: 4px;
+    padding: 10px 10px;
+    position: absolute;
+    width: 200px;
+    bottom: 40px;
+    height: 100px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    left: -85px;
 }
 
 .add-participant-button {
@@ -220,8 +293,8 @@ p.Notification-text {
     white-space: nowrap;
     width: 75%;
     font-size: 11px;
-    font-family: 'MontserratMedium-500';
-    background: #6172D6 !important;
+    font-family: "MontserratMedium-500";
+    background: #6172d6 !important;
     border: none;
     color: #fff;
     text-align: center !important;
@@ -239,8 +312,8 @@ span.text-positioning {
 
 p.participant-name {
     font-size: 15px;
-    font-family: 'MontserratSemiBold-600';
-    color: #5A5A5A;
+    font-family: "MontserratSemiBold-600";
+    color: #5a5a5a;
     width: 90px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -250,10 +323,43 @@ p.participant-name {
 
 p.participant-state {
     font-size: 12px;
-    font-family: 'MontserratMedium';
-    color: #5A5A5A;
+    font-family: "MontserratMedium";
+    color: #5a5a5a;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     margin: 0;
+}
+
+body[dir="rtl"] .video_maximize_icon img {
+    transform: rotate(-90deg);
+}
+
+.minimize-Participant-Toggle {
+    border-color: transparent;
+    padding: 8px;
+    outline: none;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.minimize-Participant-Toggle:focus,
+.minimize-Participant-Toggle:visited,
+.minimize-Participant-Toggle:focus-visible {
+    background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
+    border-color: transparent;
+    padding: 8px;
+    outline: none;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    vertical-align: middle;
+    align-items: center;
+    justify-content: center;
+    display: flex;
 }

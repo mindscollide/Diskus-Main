@@ -496,6 +496,7 @@ const ModalViewToDo = ({ viewFlagToDo, setViewFlagToDo }) => {
                                 commentData.taskCommentID !== 0 ? (
                                 <>
                                   <img
+                                    draggable="false"
                                     src={CrossIcon}
                                     width={14}
                                     alt=""

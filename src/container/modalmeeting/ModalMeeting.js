@@ -229,7 +229,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== "" &&
       // createMeeting.MeetingReminderID.length > 0 &&
-      createMeeting.MeetingDescription !== "" &&
       createMeeting.MeetingLocation !== "" &&
       createMeeting.MeetingTitle !== "" &&
       createMeeting.MeetingAgendas.length > 0
@@ -244,7 +243,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       createMeeting.MeetingEndTime === "" ||
       createMeeting.MeetingDate === "" ||
       // createMeeting.MeetingReminderID.length === 0 ||
-      createMeeting.MeetingDescription === "" ||
       createMeeting.MeetingLocation === "" ||
       createMeeting.MeetingTitle === ""
     ) {
@@ -844,6 +842,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
         setReminder("");
         setReminderValue("");
         setMeetingDate("");
+        setCreateMeetingTime("");
       }
     } catch (error) {
       console.log("allAssignessList error");
@@ -1149,6 +1148,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setMeetingReminderValue("");
     setMeetingReminderID([]);
     setAddedParticipantNameList([]);
+    setCreateMeetingTime("");
   };
 
   const handleCancel = () => {
@@ -1508,6 +1508,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                         placeholder={t("Description")}
                         value={createMeeting.MeetingDescription}
                         required={true}
+                        maxLength={500}
                       />
                       {/* {modalField === true &&
                       createMeeting.MeetingDescription === "" ? (

@@ -53,7 +53,7 @@ const TalkFooter = () => {
         <Row>
           <Col>
             <div className="add-chat" onClick={createBehaviorAction}>
-              <img src={AddChatIcon} alt="" />
+              <img draggable="false" src={AddChatIcon} alt="" />
             </div>
           </Col>
         </Row>

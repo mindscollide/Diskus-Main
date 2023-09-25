@@ -611,14 +611,14 @@ const ChatFooter = ({ allOtoMessages, setAllOtoMessages }) => {
                             md={3}
                             className="chat-upload-icon"
                           >
-                            <img
+                            <img draggable="false"
                               src={DocumentIcon}
                               className="attachment-icon"
                               extension={ext}
                             />
                             <p className="chat-upload-text">{first}</p>
                             <div className="delete-uplaoded-file">
-                              <img
+                              <img draggable="false"
                                 src={DeleteUploadIcon}
                                 className="delete-upload-file"
                                 onClick={() =>
@@ -637,7 +637,7 @@ const ChatFooter = ({ allOtoMessages, setAllOtoMessages }) => {
           ) : null}
           <div className="emoji-section" ref={emojiMenuRef}>
             <div className="emoji-click" onClick={emojiClick}>
-              <img src={EmojiIcon} alt="" />
+              <img draggable="false" src={EmojiIcon} alt="" />
             </div>
             {emojiActive === true ? (
               <Picker
@@ -650,12 +650,12 @@ const ChatFooter = ({ allOtoMessages, setAllOtoMessages }) => {
           {talkFeatureStates.FileUploadFlag === false ? (
             <div className="upload-click positionRelative" ref={uploadFileRef}>
               <span className="custom-upload-input">
-                <img src={UploadChatIcon} onClick={showUploadOptions} />
+                <img draggable="false" src={UploadChatIcon} onClick={showUploadOptions} />
                 {uploadOptions === true ? (
                   <div className="upload-options">
                     <div className="file-upload-options">
                       <label className="image-upload" htmlFor="document-upload">
-                        <img src={UploadContact} alt="" />
+                        <img draggable="false" src={UploadContact} alt="" />
                       </label>
                       <input
                         id="document-upload"
@@ -673,7 +673,7 @@ const ChatFooter = ({ allOtoMessages, setAllOtoMessages }) => {
                     </div>
                     <div className="file-upload-options">
                       <label className="image-upload" htmlFor="document-upload">
-                        <img src={UploadDocument} alt="" />
+                        <img draggable="false" src={UploadDocument} alt="" />
                       </label>
                       <input
                         id="document-upload"
@@ -691,7 +691,7 @@ const ChatFooter = ({ allOtoMessages, setAllOtoMessages }) => {
                     </div>
                     <div className="file-upload-options">
                       <label className="image-upload" htmlFor="sticker-upload">
-                        <img src={UploadSticker} alt="" />
+                        <img draggable="false" src={UploadSticker} alt="" />
                       </label>
                       <input
                         id="sticker-upload"
@@ -709,7 +709,7 @@ const ChatFooter = ({ allOtoMessages, setAllOtoMessages }) => {
                     </div>
                     <div className="file-upload-options">
                       <label className="image-upload" htmlFor="image-upload">
-                        <img src={UploadPicVid} alt="" />
+                        <img draggable="false" src={UploadPicVid} alt="" />
                       </label>
                       <input
                         id="image-upload"
@@ -765,7 +765,7 @@ const ChatFooter = ({ allOtoMessages, setAllOtoMessages }) => {
             </Form>
           </div>
           <div className="sendChat-click">
-            <img onClick={sendChat} src={ChatSendIcon} alt="" />
+            <img draggable="false" onClick={sendChat} src={ChatSendIcon} alt="" />
           </div>
         </div>
       </Col>

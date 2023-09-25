@@ -1,36 +1,24 @@
 import React, { useEffect, useRef } from "react";
-import {
-  Checkbox,
-  Modal,
-  Loader,
-  Notification,
-  MultiDatePickers,
-} from "../../../components/elements";
+import { Checkbox, Modal, Notification } from "../../../components/elements";
 import DatePicker, { DateObject } from "react-multi-date-picker";
 import EditIcon from "../../../assets/images/Edit-Icon.png";
 import styles from "./CreatePolling.module.css";
 import BlackCrossIcon from "../../../assets/images/BlackCrossIconModals.svg";
 import WhiteCrossIcon from "../../../assets/images/PollCrossIcon.svg";
-
 import { Container, Row, Col } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import AlarmClock from "../../../assets/images/AlarmOptions.svg";
 import { Button, TextField } from "../../../components/elements";
 import gregorian from "react-date-object/calendars/gregorian";
-
-import arabic from "react-date-object/calendars/arabic";
-import arabic_ar from "react-date-object/locales/arabic_ar";
 import gregorian_en from "react-date-object/locales/gregorian_en";
 import plusFaddes from "../../../assets/images/PlusFadded.svg";
 import CrossIcon from "../../../assets/images/CrossIcon.svg";
-import profile from "../../../assets/images/profile_polls.svg";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import GroupIcon from "../../../assets/images/groupdropdown.svg";
 import committeeicon from "../../../assets/images/committeedropdown.svg";
 import { enGB, ar } from "date-fns/locale";
-import profilepic from "../../../assets/images/profiledropdown.svg";
 import {
   SavePollsApi,
   getAllCommitteesandGroups,
@@ -40,10 +28,7 @@ import Select from "react-select";
 import makeAnimated from "react-select/animated";
 import { registerLocale } from "react-datepicker";
 import moment from "moment";
-import {
-  multiDatePickerDateChangIntoUTC,
-  newDateFormaterAsPerUTC,
-} from "../../../commen/functions/date_formater";
+import { multiDatePickerDateChangIntoUTC } from "../../../commen/functions/date_formater";
 import gregorian_ar from "react-date-object/locales/gregorian_ar";
 import {
   regexOnlyForNumberNCharacters,
@@ -106,6 +91,7 @@ const CreatePolling = () => {
         height="11.11px"
         width="11.54px"
         className="custom-icon cursor-pointer"
+        draggable="false"
       />
     </div>
   );
@@ -167,7 +153,12 @@ const CreatePolling = () => {
                       sm={12}
                       className="d-flex gap-2 align-items-center"
                     >
-                      <img src={GroupIcon} height="16.45px" width="18.32px" />
+                      <img
+                        src={GroupIcon}
+                        height="16.45px"
+                        width="18.32px"
+                        draggable="false"
+                      />
                       <span className={styles["NameDropDown"]}>
                         {a.groupName}
                       </span>
@@ -197,6 +188,7 @@ const CreatePolling = () => {
                         src={committeeicon}
                         width="21.71px"
                         height="18.61px"
+                        draggable="false"
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.committeeName}
@@ -234,6 +226,7 @@ const CreatePolling = () => {
                         className={styles["UserProfilepic"]}
                         width="18px"
                         height="18px"
+                        draggable="false"
                       />
                       <span className={styles["NameDropDown"]}>
                         {a.userName}
@@ -573,6 +566,7 @@ const CreatePolling = () => {
                               height="14.66px"
                               className={styles["classOFImage"]}
                               alt=""
+                              draggable="false"
                             />
                             <span className={styles["Due_Date_heading"]}>
                               {t("Due-date")}{" "}
@@ -658,6 +652,7 @@ const CreatePolling = () => {
                         onClick={() => {
                           setDefineUnsaveModal(true);
                         }}
+                        draggable="false"
                       />
                     </Col>
                   </Row>
@@ -765,6 +760,7 @@ const CreatePolling = () => {
                                                       "Cross-icon-Create_poll"
                                                     ]
                                                   }
+                                                  draggable="false"
                                                 />
                                               }
                                               iconClassName={
@@ -798,6 +794,7 @@ const CreatePolling = () => {
                                           src={plusFaddes}
                                           width="15.87px"
                                           height="15.87px"
+                                          draggable="false"
                                         />
                                         <span>{t("Add-another-field")}</span>
                                       </Col>
@@ -910,6 +907,7 @@ const CreatePolling = () => {
                                             width="33px"
                                             height="33px"
                                             alt=""
+                                            draggable="false"
                                           />
                                           <span
                                             className={styles["Name_cards"]}
@@ -923,7 +921,9 @@ const CreatePolling = () => {
                                             width="14px"
                                             height="14px"
                                             onClick={cancellAnyUser}
-                                          />
+                                            draggable="false"
+                                            style={{ cursor: 'pointer' }}
+                                            />
                                         </Col>
                                       </Row>
                                     </Col>

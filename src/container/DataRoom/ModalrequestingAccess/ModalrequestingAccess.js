@@ -48,6 +48,7 @@ const ModalrequestingAccess = ({
                     className="d-flex justify-content-center gap-2"
                   >
                     <img
+                      draggable="false"
                       src={failed}
                       height="18px"
                       width="20px"
@@ -75,9 +76,19 @@ const ModalrequestingAccess = ({
               </Row>
               <Row className="mt-3">
                 <Col lg={12} md={12} sm={12} className="d-flex gap-2">
-                  <img src={newprofile} height="29px" width="29px" />
+                  <img
+                    draggable="false"
+                    src={newprofile}
+                    height="29px"
+                    width="29px"
+                  />
                   <Row>
-                    <Col lg={12} md={12} sm={12} className="MontserratSemiBold-600">
+                    <Col
+                      lg={12}
+                      md={12}
+                      sm={12}
+                      className="MontserratSemiBold-600"
+                    >
                       <span className={styles["Accessrequest"]}>
                         Saad Fudda {t("Is") + " "}
                         <span className={styles["Bold_heading"]}>
@@ -107,14 +118,19 @@ const ModalrequestingAccess = ({
                       sm={12}
                       className={styles["Box_Folder"]}
                     >
-                      <Row >
+                      <Row>
                         <Col
                           lg={12}
                           md={12}
                           sm={12}
                           className="d-flex justify-content-center align-items-center gap-2"
                         >
-                          <img src={folder} height="12.46px" width="14.95px" />
+                          <img
+                            draggable="false"
+                            src={folder}
+                            height="12.46px"
+                            width="14.95px"
+                          />
                           <span className={styles["Folder_name"]}>
                             Folder 2
                           </span>

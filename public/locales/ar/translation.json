@@ -1439,5 +1439,14 @@
   "NEW_GROUP_CREATED": "You have been added in Talk Group for [FullName]",
   "GROUP_MODIFIED": "Group [FullName] has updated",
   "NEW_BROADCAST_MESSAGE": "You have sent a message in broadcast list [BroadcastName]",
-  "MESSAGE_DELETED": "Message Deleted"
+  "MESSAGE_DELETED": "Message Deleted",
+  "10-minutes-before": "10 minutes before",
+  "30-minutes-before": "30 minutes before",
+  "1-hour-before": "1 hour before",
+  "5-hours-before": "5 hours before",
+  "1-day-before": "1 day before",
+  "7-days-before": "7 days before",
+  "Recently-added": "Recently Added",
+  "Your-subscription-will-expire-soon":"Your subscription will expire soon",
+  "Your-one-step-solution-to-meeting-management":"Your one-step solution to meeting management"
 }

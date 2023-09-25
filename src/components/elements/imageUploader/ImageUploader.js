@@ -92,7 +92,8 @@ const AvatarEditorComponent = ({ pictureObj }) => {
               width: "100%",
             }}
             src={previewImage}
-          />
+            draggable="false"
+            />
         </Modal>
       </ImgCrop>
     </>

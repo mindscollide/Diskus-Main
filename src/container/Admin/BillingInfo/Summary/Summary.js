@@ -421,6 +421,7 @@ const Summary = () => {
                     <Row>
                       <Col className="d-flex justify-content-center">
                         <img
+                          draggable="false"
                           src={VerificationFailedIcon}
                           className={styles["allowModalIcon"]}
                           width={60}

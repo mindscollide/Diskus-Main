@@ -100,6 +100,7 @@ const SearchBarComponent = ({
       <>
         <span className="d-flex align-items-center gap-2">
           <img
+            draggable="false"
             width={"25px"}
             height="25px"
             className="rounded-circle  "
@@ -1244,12 +1245,14 @@ const SearchBarComponent = ({
             <>
               <span className="d-flex gap-2">
                 <img
+                  draggable="false"
                   src={blackCrossIcon}
                   alt=""
                   className="cursor-pointer"
                   onClick={resteFunctionality}
                 />
                 <img
+                  draggable="false"
                   src={searchicon}
                   alt=""
                   className="cursor-pointer"
@@ -1259,6 +1262,7 @@ const SearchBarComponent = ({
             </>
           ) : (
             <img
+              draggable="false"
               src={searchicon}
               alt=""
               className="cursor-pointer"
@@ -1293,6 +1297,7 @@ const SearchBarComponent = ({
                     className={styles["CrossButton"]}
                     icon={
                       <img
+                        draggable="false"
                         className="cursor-pointer"
                         src={Cross}
                         width="10.35px"
@@ -1485,6 +1490,7 @@ const SearchBarComponent = ({
                             className="cursor-pointer"
                           >
                             <img
+                              draggable="false"
                               src={data.imgSrc}
                               height="19.25px"
                               alt=""

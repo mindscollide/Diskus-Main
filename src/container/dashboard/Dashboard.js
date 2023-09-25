@@ -1,7 +1,8 @@
+import TalkChat2 from '../../components/layout/talk/talk-chat/talkChatBox/chat'
 import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Sidebar, Talk } from '../../components/layout'
-import { LoaderPanel } from '../../components/elements'
+import { Loader, LoaderPanel } from '../../components/elements'
 import Header2 from '../../components/layout/header2/Header2'
 import { ConfigProvider, Layout } from 'antd'
 import ar_EG from 'antd/es/locale/ar_EG'
@@ -87,9 +88,13 @@ import {
 
 const Dashboard = () => {
   const location = useLocation()
-  const { talkStateData, videoFeatureReducer, VideoMainReducer } = useSelector(
-    (state) => state,
-  )
+  const {
+    talkStateData,
+    videoFeatureReducer,
+    VideoMainReducer,
+    assignees,
+  } = useSelector((state) => state)
+  console.log(assignees, 'meetingIdReducermeetingIdReducer')
   // const [socket, setSocket] = useState(Helper.socket);
   const navigate = useNavigate()
   let createrID = localStorage.getItem('userID')
@@ -112,7 +117,7 @@ const Dashboard = () => {
   //State For Meeting Data
   const [activateBlur, setActivateBlur] = useState(false)
   const [notificationID, setNotificationID] = useState(0)
-  const [currentLanguge, setCurrentLanguage] = useState('en')
+  const [currentLanguage, setCurrentLanguage] = useState('en')
   let Blur = localStorage.getItem('blur')
 
   const [currentActiveChat, setCurrentActiveChat] = useState([])
@@ -1365,15 +1370,19 @@ const Dashboard = () => {
   }, [])
 
   console.log('VideoMainReducer', VideoMainReducer)
-  let currentLanguageSelect = localStorage.getItem('i18nextLng')
+
+  let i18nextLng = localStorage.getItem('i18nextLng')
 
   useEffect(() => {
-    setCurrentLanguage(currentLanguageSelect)
-  }, [currentLanguageSelect])
+    setCurrentLanguage(i18nextLng)
+    console.log('Current Language UseEffect', currentLanguage)
+  }, [i18nextLng])
+
+  console.log('talkStateData', talkStateData)
 
   return (
     <>
-      <ConfigProvider locale={currentLanguge === 'en' ? en_US : ar_EG}>
+      <ConfigProvider locale={currentLanguage === 'en' ? en_US : ar_EG}>
         {videoFeatureReducer.IncomingVideoCallFlag === true && (
           <div className="overlay-incoming-videocall" />
         )}
@@ -1394,15 +1403,20 @@ const Dashboard = () => {
             {videoFeatureReducer.IncomingVideoCallFlag === true ? (
               <VideoMaxIncoming />
             ) : null}
-            {/* {videoFeatureReducer.VideoOutgoingCallFlag === true ? (
-            <VideoOutgoing />
-          ) : null} */}
+            {videoFeatureReducer.VideoChatMessagesFlag === true ? (
+              <TalkChat2
+                chatParentHead="chat-messenger-head-video"
+                chatMessageClass="chat-messenger-head-video"
+              />
+            ) : null}
             {videoFeatureReducer.NormalizeVideoFlag === true ||
             videoFeatureReducer.MinimizeVideoFlag === true ||
             videoFeatureReducer.MaximizeVideoFlag === true ? (
               <VideoCallScreen />
             ) : null}
             {activateBlur === false ? <Talk /> : null}
+
+            {assignees.Loading && <Loader />}
           </Layout>
           {/* </Content> */}
         </Layout>

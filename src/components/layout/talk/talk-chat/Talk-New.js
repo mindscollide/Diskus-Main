@@ -9,7 +9,12 @@ const TalkNew = () => {
   return (
     <>
       <MainChatWindow />
-      {talkFeatureStates.ChatBoxActiveFlag === true ? <TalkChat2 /> : null}
+      {talkFeatureStates.ChatBoxActiveFlag === true ? (
+        <TalkChat2
+          chatParentHead="chat-messenger-head"
+          chatMessageClass="chat-messenger-head"
+        />
+      ) : null}
     </>
   )
 }

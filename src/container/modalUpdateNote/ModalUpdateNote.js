@@ -179,7 +179,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   const onTextChange = (content, delta, source) => {
     console.log("content", content);
     const plainText = content.replace(/(<([^>]+)>)/gi, "");
-    if (source === "user" && plainText != "") {
+    if (source === "user" && plainText !== "") {
       setAddNoteFields({
         ...addNoteFields,
         Description: {
@@ -579,12 +579,14 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       </p>
                       {isStarred ? (
                         <img
+                          draggable="false"
                           src={hollowstar}
                           className={styles["star-updatenote"]}
                           onClick={() => setIsStarrted(!isStarred)}
                         />
                       ) : (
                         <img
+                          draggable="false"
                           className={styles["star-updatenote"]}
                           src={StarIcon}
                           onClick={() => setIsStarrted(!isStarred)}
@@ -837,6 +839,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                                         }
                                       >
                                         <img
+                                          draggable="false"
                                           src={deleteButtonCreateMeeting}
                                           width={15}
                                           height={15}

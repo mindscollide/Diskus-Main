@@ -228,7 +228,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
       createMeeting.MeetingEndTime != "" &&
       createMeeting.MeetingDate != "" &&
       // createMeeting.MeetingReminderID.length != 0 &&
-      createMeeting.MeetingDescription != "" &&
+      // createMeeting.MeetingDescription != "" &&
       createMeeting.MeetingLocation != "" &&
       createMeeting.MeetingTitle != ""
     ) {
@@ -254,13 +254,13 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
     console.log("fieldsvalue createmeeting", createMeeting);
     setModalField(false);
     if (
-      createMeeting.MeetingStartTime != "" &&
-      createMeeting.MeetingEndTime != "" &&
-      createMeeting.MeetingDate != "" &&
+      createMeeting.MeetingStartTime !== "" &&
+      createMeeting.MeetingEndTime !== "" &&
+      createMeeting.MeetingDate !== "" &&
       // createMeeting.MeetingReminderID.length != 0 &&
-      createMeeting.MeetingDescription != "" &&
-      createMeeting.MeetingLocation != "" &&
-      createMeeting.MeetingTitle != ""
+      // createMeeting.MeetingDescription != "" &&
+      createMeeting.MeetingLocation !== "" &&
+      createMeeting.MeetingTitle !== ""
     ) {
       console.log("fieldsvalue ifcheck");
       setModalField(false);
@@ -287,7 +287,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
       createMeeting.MeetingStartTime != "" &&
       createMeeting.MeetingEndTime != "" &&
       createMeeting.MeetingDate != "" &&
-      createMeeting.MeetingDescription != "" &&
+      // createMeeting.MeetingDescription != "" &&
       createMeeting.MeetingLocation != "" &&
       createMeeting.MeetingTitle != ""
     ) {
@@ -316,7 +316,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
       createMeeting.MeetingStartTime !== "" &&
       createMeeting.MeetingEndTime !== "" &&
       createMeeting.MeetingDate !== "" &&
-      createMeeting.MeetingDescription !== "" &&
+      // createMeeting.MeetingDescription !== "" &&
       createMeeting.MeetingLocation !== "" &&
       createMeeting.MeetingTitle !== "" &&
       createMeetingTime !== "" &&
@@ -1392,6 +1392,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
           >
             {console.log("itemitem", item)}
             <img
+              draggable="false"
               src={`data:image/jpeg;base64,${item.displayProfilePictureName}`}
               alt=""
               className="user-img"
@@ -2486,6 +2487,7 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
                                               )}
                                               <span className="deleteBtn">
                                                 <img
+                                                  draggable="false"
                                                   src={
                                                     deleteButtonCreateMeeting
                                                   }

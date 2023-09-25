@@ -157,32 +157,37 @@ const LanguageSelector = () => {
     };
   }, [languageDropdown]);
 
-  useEffect(() => {
-    let currentLanguage = localStorage.getItem("i18nextLng");
-    const currentLangObj = languages.find(
-      (lang) => lang.systemSupportedLanguageID === Number(currentLanguage)
-    );
-    let currentLanguageforDiskus =
-      currentLangObj?.systemSupportedLanguageID === 1
-        ? "en"
-        : currentLangObj?.systemSupportedLanguageID === 2
-        ? "ar"
-        : currentLangObj?.systemSupportedLanguageID === 3
-        ? "fr"
-        : "";
-    // if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-    //   setTimeout(() => {
-    //     i18n.changeLanguage(currentLanguageforDiskus)
-    //     document.body.dir = currentLanguageforDiskus.dir || 'ltr'
-    //   }, 1000)
-    // }
-  }, [i18n]);
+  // useEffect(() => {
+  //   let currentLanguage = localStorage.getItem("i18nextLng");
+  //   const currentLangObj = languages.find(
+  //     (lang) => lang.systemSupportedLanguageID === Number(currentLanguage)
+  //   );
+  //   let currentLanguageforDiskus =
+  //     currentLangObj?.systemSupportedLanguageID === 1
+  //       ? "en"
+  //       : currentLangObj?.systemSupportedLanguageID === 2
+  //       ? "ar"
+  //       : currentLangObj?.systemSupportedLanguageID === 3
+  //       ? "fr"
+  //       : "";
+  //   // if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+  //   //   setTimeout(() => {
+  //   //     i18n.changeLanguage(currentLanguageforDiskus)
+  //   //     document.body.dir = currentLanguageforDiskus.dir || 'ltr'
+  //   //   }, 1000)
+  //   // }
+  // }, [i18n]);
 
   useEffect(() => {
     if (currentLanguage === "ar") {
       document.body.dir = "rtl";
+      i18n.changeLanguage("ar");
+    } else if (currentLanguage === "fr") {
+      document.body.dir = "ltr";
+      i18n.changeLanguage("fr");
     } else {
       document.body.dir = "ltr";
+      i18n.changeLanguage("en");
     }
   }, [currentLanguage]);
 
@@ -212,6 +217,7 @@ const LanguageSelector = () => {
               : LanguageBlack
           }
           alt=""
+          draggable="false"
         />
         {/* {selectedLanguage.languageTitle} */}
         {currentLanguage === "en"
@@ -231,6 +237,7 @@ const LanguageSelector = () => {
             }
             onClick={() => setLanguageDropdown(!languageDropdown)}
             alt=""
+            draggable="false"
           />
         ) : (
           <img
@@ -242,6 +249,7 @@ const LanguageSelector = () => {
             }
             onClick={() => setLanguageDropdown(!languageDropdown)}
             alt=""
+            draggable="false"
           />
         )}
       </span>

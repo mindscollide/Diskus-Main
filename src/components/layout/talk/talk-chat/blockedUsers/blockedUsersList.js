@@ -71,7 +71,7 @@ const BlockedUsersList = () => {
               <Row className="single-chat">
                 <Col lg={2} md={2} sm={2} className="bottom-border">
                   <div className="chat-profile-icon">
-                    <img src={SingleIcon} width={25} />
+                    <img draggable="false" src={SingleIcon} width={25} />
                   </div>
                 </Col>
                 <Col lg={10} md={10} sm={10} className="bottom-border">

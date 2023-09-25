@@ -92,7 +92,12 @@ const ViewPoll = () => {
                     sm={12}
                     className="d-flex justify-content-center gap-2"
                   >
-                    <img src={AlarmClock} width="14.97px" height="14.66px" />
+                    <img
+                      draggable="false"
+                      src={AlarmClock}
+                      width="14.97px"
+                      height="14.66px"
+                    />
                     <span className={styles["Due_Date_viewPoll"]}>
                       {t("Due-date-on")}{" "}
                       <span>
@@ -115,6 +120,7 @@ const ViewPoll = () => {
                 className="d-flex justify-content-end"
               >
                 <img
+                  draggable="false"
                   src={BlackCrossIcon}
                   width="16px"
                   height="16px"
@@ -228,6 +234,7 @@ const ViewPoll = () => {
                                 <Row className={styles["Card_border2"]}>
                                   <Col sm={12} md={12} lg={12}>
                                     <img
+                                      draggable="false"
                                       src={`data:image/jpeg;base64,${data.profilePic.displayProfilePictureName}`}
                                       width="33px"
                                       height="33px"

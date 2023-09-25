@@ -34,12 +34,14 @@ import {
   minutesMeetingEnableNormalFlag,
   leaveCallModal,
   participantPopup,
+  videoChatMessagesFlag,
 } from '../../../../../store/actions/VideoFeature_actions'
+import { GetOTOUserMessages } from '../../../../../store/actions/Talk_action'
 import { LeaveCall } from '../../../../../store/actions/VideoMain_actions'
 import { useTranslation } from 'react-i18next'
 
 const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
-  const { videoFeatureReducer, VideoMainReducer } = useSelector(
+  const { videoFeatureReducer, VideoMainReducer, talkStateData } = useSelector(
     (state) => state,
   )
 
@@ -49,8 +51,10 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
   let initiateVideoCallFlag = JSON.parse(
     localStorage.getItem('initiateVideoCall'),
   )
+  let recipentCalledID = Number(localStorage.getItem('recipentCalledID'))
 
   let callerID = Number(localStorage.getItem('callerID'))
+  let recipentID = Number(localStorage.getItem('recipentID'))
   let currentUserID = Number(localStorage.getItem('userID'))
   let currentOrganization = Number(localStorage.getItem('organizationID'))
   let roomID = localStorage.getItem('acceptedRoomID')
@@ -127,15 +131,33 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
 
   const onClickCloseChatHandler = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
-      if (isActiveIcon === false) {
-        dispatch(chatEnableNormalFlag(true))
-        setIsActiveIcon(true)
+      if (videoFeatureReducer.VideoChatMessagesFlag === false) {
+        // dispatch(chatEnableNormalFlag(true))
+        // setIsActiveIcon(true)
+        // let chatOTOData = {
+        //   UserID: currentUserID,
+        //   ChannelID: currentOrganization,
+        //   OpponentUserId:
+        //     callerID !== currentUserID ? callerID : recipentCalledID,
+        //   NumberOfMessages: 50,
+        //   OffsetMessage: 0,
+        // }
+        dispatch(videoChatMessagesFlag(true))
+        // dispatch(GetOTOUserMessages(navigate, chatOTOData, t))
+        // localStorage.setItem('ActiveChatType', 'O')
+        // localStorage.setItem(
+        //   'activeOtoChatID',
+        //   callerID !== currentUserID ? callerID : recipentCalledID,
+        // )
       } else {
-        dispatch(chatEnableNormalFlag(false))
-        setIsActiveIcon(false)
+        // dispatch(chatEnableNormalFlag(false))
+        // setIsActiveIcon(false)
+        dispatch(videoChatMessagesFlag(false))
       }
     }
   }
+
+  console.log('talkStateData', talkStateData)
 
   const closeParticipantHandler = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
@@ -286,8 +308,11 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
         </Col>
         <>
           <Col lg={5} md={5} sm={12} className="normal-screen-top-icons">
-            {callerID === currentUserID ? (
-              <div className="positionRelative" ref={participantPopupDisable}>
+            {callerID === currentUserID && currentCallType === 2 ? (
+              <div
+                className="positionRelative flipHorizontal"
+                ref={participantPopupDisable}
+              >
                 {videoFeatureReducer.ParticipantPopupFlag === true ? (
                   <>
                     <img
@@ -366,7 +391,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                 )}
               </div>
             ) : null}
-            <div className="screenShare-Toggle">
+            <div className="screenShare-Toggle flipHorizontal">
               <img
                 className={
                   videoFeatureReducer.LeaveCallModalFlag === true
@@ -377,7 +402,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                 src={NonActiveScreenShare}
               />
             </div>
-            <div className="screenShare-Toggle">
+            <div className="screenShare-Toggle flipHorizontal">
               <img
                 className={
                   videoFeatureReducer.LeaveCallModalFlag === true
@@ -420,29 +445,33 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
             {videoFeatureReducer.NormalizeVideoFlag === true &&
             videoFeatureReducer.MinimizeVideoFlag === false &&
             videoFeatureReducer.MaximizeVideoFlag === false ? (
-              <img
-                src={ExpandIcon}
-                onClick={otoMaximizeVideoPanel}
-                className={
-                  videoFeatureReducer.LeaveCallModalFlag === true
-                    ? 'grayScaleImage'
-                    : ''
-                }
-              />
+              <div className="video_maximize_icon">
+                <img
+                  src={ExpandIcon}
+                  onClick={otoMaximizeVideoPanel}
+                  className={
+                    videoFeatureReducer.LeaveCallModalFlag === true
+                      ? 'grayScaleImage'
+                      : ''
+                  }
+                />
+              </div>
             ) : videoFeatureReducer.NormalizeVideoFlag === false &&
               videoFeatureReducer.MinimizeVideoFlag === false &&
               videoFeatureReducer.MaximizeVideoFlag === true ? (
-              <img
-                width={17}
-                src={NormalizeIcon}
-                alt="Maximize Icon"
-                className={
-                  videoFeatureReducer.LeaveCallModalFlag === true
-                    ? 'normalize-Icon-Large grayScaleImage'
-                    : 'normalize-Icon-Large'
-                }
-                onClick={normalizeScreen}
-              />
+              <div className="normalize_video_icon">
+                <img
+                  width={17}
+                  src={NormalizeIcon}
+                  alt="Maximize Icon"
+                  className={
+                    videoFeatureReducer.LeaveCallModalFlag === true
+                      ? 'normalize-Icon-Large grayScaleImage'
+                      : 'normalize-Icon-Large'
+                  }
+                  onClick={normalizeScreen}
+                />
+              </div>
             ) : null}
           </Col>
         </>
