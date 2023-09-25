@@ -1,6 +1,7 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { TextField } from "../../../../../components/elements";
+import { useTranslation } from "react-i18next";
 
 const SubRequestContributor = ({
   setRows,
@@ -9,6 +10,8 @@ const SubRequestContributor = ({
   index,
   subIndex,
 }) => {
+  const { t } = useTranslation();
+
   // Function to handle changes in sub-agenda additional Request Contributor Enter URl Radio text field
   const handleSubAgendaRequestContributorEnterUrl = (index, subIndex, e) => {
     let name = e.target.name;

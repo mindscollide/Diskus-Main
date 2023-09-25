@@ -1,8 +1,10 @@
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { TextField } from "../../../../../components/elements";
+import { useTranslation } from "react-i18next";
 
 const SubUrls = ({ subAgendaData, rows, setRows, index, subIndex }) => {
+  const { t } = useTranslation();
   // Function to handle changes in sub-agenda additional Enter URl Radio text field
   const handleSubAgendaUrlEnterUrlField = (index, subIndex, e) => {
     let name = e.target.name;
