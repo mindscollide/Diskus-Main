@@ -468,7 +468,7 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
   useEffect(() => {
     try {
       if (viewFlag) {
-        dispatch(allAssignessList(navigate, t));
+        // dispatch(allAssignessList(navigate, t));
       } else {
         setViewFlag(false);
         dispatch(cleareAssigneesState());
@@ -636,8 +636,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   <Button
                     className={
                       isAgenda
-                        ? "MontserratSemiBold-600 btn btn-primary isAgenda-View-top-btn"
-                        : "MontserratSemiBold-600 btn btn-outline-primary isAgenda-View-top-btn-Outline"
+                        ? "MontserratSemiBold-600 btn btn-primary d-flex align-items-center isAgenda-View-top-btn"
+                        : "MontserratSemiBold-600 btn btn-outline-primary  d-flex align-items-center isAgenda-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Agendas")}
@@ -660,8 +660,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   <Button
                     className={
                       isAttendees
-                        ? "MontserratSemiBold-600 btn btn-primary isAttendee-View-top-btn"
-                        : "MontserratSemiBold-600 btn btn-outline-primary isAttendee-View-top-btn-Outline"
+                        ? "MontserratSemiBold-600 btn btn-primary d-flex align-items-center isAttendee-View-top-btn"
+                        : "MontserratSemiBold-600 btn btn-outline-primary d-flex align-items-center isAttendee-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Attendees")}
@@ -684,8 +684,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                     <Button
                       className={
                         isMinutes
-                          ? "MontserratSemiBold-600 btn btn-primary isMinutes-View-top-btn"
-                          : "MontserratSemiBold-600 btn btn-outline-primary isMinutes-View-top-btn-Outline"
+                          ? "MontserratSemiBold-600 btn btn-primary d-flex align-items-center isMinutes-View-top-btn"
+                          : "MontserratSemiBold-600 btn btn-outline-primary d-flex align-items-center isMinutes-View-top-btn-Outline"
                       }
                       variant={"Primary"}
                       text={t("Minutes")}

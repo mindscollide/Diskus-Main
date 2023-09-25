@@ -8,7 +8,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import download from "../../assets/images/Icon feather-download.svg";
-import del from "../../assets/images/Icon material-delete.svg";
+import del from "../../assets/images/delete_dataroom.png";
 import dot from "../../assets/images/Group 2898.svg";
 import DrapDropIcon from "../../assets/images/DrapDropIcon.svg";
 import EmptyStateSharewithme from "../../assets/images/SharewithmeEmptyIcon.svg";
@@ -750,9 +750,9 @@ const DataRoom = () => {
                         />
                         <img
                           src={del}
-                          height="10.71px"
+                          height="12.17px"
                           alt=""
-                          width="15.02px"
+                          width="9.47px"
                           className={styles["delete__Icon_img"]}
                           onClick={() => {
                             if (record.isFolder) {
@@ -787,9 +787,9 @@ const DataRoom = () => {
                         />
                         <img
                           src={del}
-                          height="10.71px"
+                          height="12.17px"
                           alt=""
-                          width="15.02px"
+                          width="9.47px"
                           className={styles["delete__Icon_img"]}
                           onClick={() => {
                             if (record.isFolder) {
@@ -1104,9 +1104,9 @@ const DataRoom = () => {
                         />
                         <img
                           src={del}
-                          height="10.71px"
+                          height="12.17px"
                           alt=""
-                          width="15.02px"
+                          width="9.47px"
                           className={styles["delete__Icon_img"]}
                           onClick={() => {
                             if (record.isFolder) {
@@ -1141,9 +1141,9 @@ const DataRoom = () => {
                         />
                         <img
                           src={del}
-                          height="10.71px"
+                          height="12.17px"
                           alt=""
-                          width="15.02px"
+                          width="9.47px"
                           className={styles["delete__Icon_img"]}
                           onClick={() => {
                             if (record.isFolder) {
@@ -2058,16 +2058,18 @@ const DataRoom = () => {
                                     height={"55vh"}
                                     endMessage=""
                                     loader={
-                                      <Row>
-                                        <Col
-                                          sm={12}
-                                          md={12}
-                                          lg={12}
-                                          className="d-flex justify-content-center mt-2"
-                                        >
-                                          <Spin indicator={antIcon} />
-                                        </Col>
-                                      </Row>
+                                      getAllData.length <= totalRecords && (
+                                        <Row>
+                                          <Col
+                                            sm={12}
+                                            md={12}
+                                            lg={12}
+                                            className="d-flex justify-content-center mt-2"
+                                          >
+                                            <Spin indicator={antIcon} />
+                                          </Col>
+                                        </Row>
+                                      )
                                     }
                                   >
                                     <GridViewDataRoom
@@ -2257,16 +2259,18 @@ const DataRoom = () => {
                                     height={"55vh"}
                                     endMessage=""
                                     loader={
-                                      <Row>
-                                        <Col
-                                          sm={12}
-                                          md={12}
-                                          lg={12}
-                                          className="d-flex justify-content-center mt-2"
-                                        >
-                                          <Spin indicator={antIcon} />
-                                        </Col>
-                                      </Row>
+                                      getAllData.length <= totalRecords && (
+                                        <Row>
+                                          <Col
+                                            sm={12}
+                                            md={12}
+                                            lg={12}
+                                            className="d-flex justify-content-center mt-2"
+                                          >
+                                            <Spin indicator={antIcon} />
+                                          </Col>
+                                        </Row>
+                                      )
                                     }
                                   >
                                     <GridViewDataRoom
