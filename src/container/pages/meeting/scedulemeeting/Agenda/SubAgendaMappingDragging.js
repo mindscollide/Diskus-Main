@@ -22,6 +22,8 @@ import SubDocumnets from "./SubDocumnets";
 import SubUrls from "./SubUrls";
 import SubRequestContributor from "./SubRequestContributor";
 import SubDedaultDragger from "./SubDedaultDragger";
+import dropmdownblack from "../../../../../assets/images/whitedown.png";
+import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 
 const SubAgendaMappingDragging = ({
   data,
@@ -250,7 +252,37 @@ const SubAgendaMappingDragging = ({
                                         <Col lg={1} md={1} sm={1}>
                                           <section
                                             className={styles["backGorund"]}
-                                          ></section>
+                                          >
+                                            <img
+                                              width="18.71px"
+                                              height="9.36px"
+                                              src={
+                                                subexpandIndex === index &&
+                                                expandSubIndex === subIndex &&
+                                                subExpand
+                                                  ? blackArrowUpper
+                                                  : dropmdownblack
+                                              }
+                                              className={
+                                                subexpandIndex === index &&
+                                                expandSubIndex === subIndex &&
+                                                subExpand
+                                                  ? styles[
+                                                      "subAgendaArrowExpand"
+                                                    ]
+                                                  : styles["SubAgendaArrow"]
+                                              }
+                                              onClick={() => {
+                                                apllyLockOnParentAgenda(
+                                                  index
+                                                ) ||
+                                                  handleSubMenuExpand(
+                                                    index,
+                                                    subIndex
+                                                  );
+                                              }}
+                                            />
+                                          </section>
                                         </Col>
                                         <Col
                                           lg={11}

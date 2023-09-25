@@ -59,7 +59,7 @@ const Agenda = () => {
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
   const [expandSubIndex, setExpandSubIndex] = useState(0);
   const [expandIndex, setExpandIndex] = useState(0);
-  const [subexpandIndex, setsubexpandIndex] = useState(0);
+  const [subexpandIndex, setsubexpandIndex] = useState(1);
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);

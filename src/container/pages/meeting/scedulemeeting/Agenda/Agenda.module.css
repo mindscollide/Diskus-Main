@@ -313,11 +313,27 @@
   margin-top: 38px !important;
 }
 
+.SubAgendaArrow {
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 58px !important;
+  margin-left: 6px !important;
+}
+
 .Arrow_Expanded {
   cursor: pointer !important;
   display: flex !important;
   align-items: center !important;
   margin-top: 120px !important;
+}
+
+.subAgendaArrowExpand {
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  margin-top: 120px !important;
+  margin-left: 6px !important;
 }
 
 .Meeting_title_heading {
@@ -350,7 +366,7 @@
 .backGorund {
   background: #4adede !important;
   height: 100% !important;
-  width: 23px !important;
+  width: 30px !important;
   position: absolute !important;
   left: 0;
   top: 0;
