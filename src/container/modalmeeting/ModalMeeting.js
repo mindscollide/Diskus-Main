@@ -337,7 +337,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   function onChange(e) {
     setCreateMeeting({
       ...createMeeting,
-      ["IsChat"]: e.target.checked,
+      IsChat: e.target.checked,
     });
   }
 
@@ -352,11 +352,6 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
 
   // for all details handler
   const detailsHandler = (e) => {
-    console.log(
-      "dateHandler",
-      e.target.value,
-      RemoveTimeDashes(e.target.value)
-    );
     let name = e.target.name;
     let value = e.target.value;
     var valueCheck = value.replace(/^\s/g, "");

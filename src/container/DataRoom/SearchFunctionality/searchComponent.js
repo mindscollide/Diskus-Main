@@ -89,7 +89,7 @@ const SearchComponent = ({
         if (data.isShared) {
           if (data.isFolder) {
             return (
-              <div className={`${styles["dataFolderRow"]}`}>
+              <div className={`${styles["dataFolderRow"]} ${"d-flex gap-2"}`}>
                 <img draggable="false" src={folderColor} alt="" />
                 <abbr title={text}>
                   <span
@@ -124,7 +124,7 @@ const SearchComponent = ({
         } else {
           if (data.isFolder) {
             return (
-              <div className={`${styles["dataFolderRow"]}`}>
+              <div className={`${styles["dataFolderRow"]} ${"d-flex gap-2"}`}>
                 <img draggable="false" src={folderColor} alt="" />
                 <abbr title={text}>
                   <span

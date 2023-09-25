@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import styles from "./Agenda.module.css";
 import { Col, Row } from "react-bootstrap";
 import { Button, TextField } from "../../../../../components/elements";
-import { DownOutlined } from "@ant-design/icons";
-import { Tree } from "antd";
 import { useTranslation } from "react-i18next";
 import { Radio } from "antd";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,18 +14,13 @@ import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
 import { useNavigate } from "react-router-dom";
 import { message, Upload } from "antd";
 import Lock from "../../../../../assets/images/LOCK.svg";
-import featherupload from "../../../../../assets/images/featherupload.svg";
 import DarkLock from "../../../../../assets/images/BlackLock.svg";
-import DrapDropIcon from "../../../../../assets/images/DrapDropIcon.svg";
 import Key from "../../../../../assets/images/KEY.svg";
 import plusFaddes from "../../../../../assets/images/PlusFadded.svg";
 import Cast from "../../../../../assets/images/CAST.svg";
 import profile from "../../../../../assets/images/newprofile.png";
 import redcrossIcon from "../../../../../assets/images/Artboard 9.png";
 import line from "../../../../../assets/images/LineAgenda.svg";
-import PdfIcon from "../../../../../assets/images/pdf_icon.svg";
-import closedLocked from "../../../../../assets/images/CloseLocked.svg";
-import lineBLue from "../../../../../assets/images/BlueLine.png";
 import AgenItemremovedModal from "./AgendaItemRemovedModal/AgenItemremovedModal";
 import {
   showAdvancePermissionModal,
@@ -66,7 +59,7 @@ const Agenda = () => {
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
   const [expandSubIndex, setExpandSubIndex] = useState(0);
   const [expandIndex, setExpandIndex] = useState(0);
-  const [subexpandIndex, setsubexpandIndex] = useState(0);
+  const [subexpandIndex, setsubexpandIndex] = useState(1);
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
@@ -492,15 +485,15 @@ const Agenda = () => {
                                                           draggable={false}
                                                           src={
                                                             expandIndex ===
-                                                              index &&
-                                                            expand === true
+                                                              index && expand
                                                               ? blackArrowUpper
                                                               : dropmdownblack
                                                           }
                                                           width="18.71px"
                                                           height="9.36px"
                                                           className={
-                                                            expand === true
+                                                            expandIndex ===
+                                                              index && expand
                                                               ? styles[
                                                                   "Arrow_Expanded"
                                                                 ]
@@ -810,7 +803,7 @@ const Agenda = () => {
                                                         </Col>
                                                       </Row>
                                                       {expandIndex === index &&
-                                                      expand === true ? (
+                                                      expand ? (
                                                         <>
                                                           <Row
                                                             key={index + 3}

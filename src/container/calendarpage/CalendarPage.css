@@ -37,17 +37,45 @@
   margin: 2px;
 }
 
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected .ant-picker-calendar-date,
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected:hover .ant-picker-calendar-date,
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected .ant-picker-calendar-date-today,
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected:hover .ant-picker-calendar-date-today {
+.ant-picker-calendar-full
+  .ant-picker-panel
+  .ant-picker-cell-selected
+  .ant-picker-calendar-date,
+.ant-picker-calendar-full
+  .ant-picker-panel
+  .ant-picker-cell-selected:hover
+  .ant-picker-calendar-date,
+.ant-picker-calendar-full
+  .ant-picker-panel
+  .ant-picker-cell-selected
+  .ant-picker-calendar-date-today,
+.ant-picker-calendar-full
+  .ant-picker-panel
+  .ant-picker-cell-selected:hover
+  .ant-picker-calendar-date-today {
   background: #0000ff;
 }
 
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected .ant-picker-calendar-date .ant-picker-calendar-date-value,
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected:hover .ant-picker-calendar-date .ant-picker-calendar-date-value,
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected .ant-picker-calendar-date-today .ant-picker-calendar-date-value,
-.ant-picker-calendar-full .ant-picker-panel .ant-picker-cell-selected:hover .ant-picker-calendar-date-today .ant-picker-calendar-date-value {
+.ant-picker-calendar-full
+  .ant-picker-panel
+  .ant-picker-cell-selected
+  .ant-picker-calendar-date
+  .ant-picker-calendar-date-value,
+.ant-picker-calendar-full
+  .ant-picker-panel
+  .ant-picker-cell-selected:hover
+  .ant-picker-calendar-date
+  .ant-picker-calendar-date-value,
+.ant-picker-calendar-full
+  .ant-picker-panel
+  .ant-picker-cell-selected
+  .ant-picker-calendar-date-today
+  .ant-picker-calendar-date-value,
+.ant-picker-calendar-full
+  .ant-picker-panel
+  .ant-picker-cell-selected:hover
+  .ant-picker-calendar-date-today
+  .ant-picker-calendar-date-value {
   color: #ffffff;
 }
 
@@ -107,16 +135,34 @@
   color: #fff !important;
 }
 
-body[dir="rtl"] .calendar .rbc-month-view .rbc-month-row .rbc-row-bg .rbc-day-bg:hover {
+body[dir="rtl"]
+  .calendar
+  .rbc-month-view
+  .rbc-month-row
+  .rbc-row-bg
+  .rbc-day-bg:hover {
   background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
 }
 
-.calendar .rbc-month-view .rbc-month-row .rbc-row.content .rbc-row .rbc-date-cell button:hover {
+.calendar
+  .rbc-month-view
+  .rbc-month-row
+  .rbc-row.content
+  .rbc-row
+  .rbc-date-cell
+  button:hover {
   background: linear-gradient(to left, #4adede 0%, #6172d6 100%) !important;
   color: #fff !important;
 }
 
-body[dir="rtl"] .calendar .rbc-month-view .rbc-month-row .rbc-row.content .rbc-row .rbc-date-cell button:hover {
+body[dir="rtl"]
+  .calendar
+  .rbc-month-view
+  .rbc-month-row
+  .rbc-row.content
+  .rbc-row
+  .rbc-date-cell
+  button:hover {
   background: linear-gradient(to right, #4adede 0%, #6172d6 100%) !important;
 }
 
@@ -124,7 +170,13 @@ body[dir="rtl"] .calendar .rbc-month-view .rbc-month-row .rbc-row.content .rbc-r
   background-color: #036ab2 !important;
 }
 
-.calendar .rbc-month-view .rbc-month-row .rbc-row-content .rbc-row .rbc-row-segment .rbc-event {
+.calendar
+  .rbc-month-view
+  .rbc-month-row
+  .rbc-row-content
+  .rbc-row
+  .rbc-row-segment
+  .rbc-event {
   background-color: #fff !important;
   /* border: 2px solid #4adede !important; */
   color: #000 !important;
@@ -192,13 +244,15 @@ body[dir="rtl"] .rbc-header span {
   font-family: "IBMPlexSansArabic-SemiBold" !important;
 }
 
-.bg-primary.text-white.add-event.calendar-dropdown.dropdown button.dropdown-toggle.btn.btn-primary {
+.bg-primary.text-white.add-event.calendar-dropdown.dropdown
+  button.dropdown-toggle.btn.btn-primary {
   background-color: #6172d6 !important;
   border-color: #6172d6 !important;
   /* border-radius   : 0.375rem !important; */
 }
 
-.bg-primary.text-white.add-event.calendar-dropdown.dropdown:hover button.dropdown-toggle.btn.btn-primary {
+.bg-primary.text-white.add-event.calendar-dropdown.dropdown:hover
+  button.dropdown-toggle.btn.btn-primary {
   background-color: #0a58ca !important;
   border-color: #0a58ca !important;
   /* border-radius   : 0.375rem !important; */
@@ -473,12 +527,11 @@ body[dir="rtl"] .heading_button {
   margin-top: 10px !important;
 }
 
-.rbc-button-link {
-  color: #000 !important;
-}
-
 .calendar_container {
   width: 90% !important;
   margin: 0 auto !important;
   height: 91vh;
+}
+.rbc-day-bg:is(:focus, :hover, :focus-visible, :visited) {
+  background: linear-gradient(to left, #49dbdb 0%, #6172d6 100%) !important;
 }
