@@ -2186,7 +2186,7 @@ const DataRoom = () => {
                               {gridbtnactive ? (
                                 <>
                                   <GridViewDataRoom
-                                    data={getAllData}
+                                    data={[]}
                                     optionsforFolder={optionsforFolder(t)}
                                     optionsforFile={optionsforFile(t)}
                                     sRowsData={sRowsData}
