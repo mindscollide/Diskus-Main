@@ -24,6 +24,7 @@ import SubRequestContributor from "./SubRequestContributor";
 import SubDedaultDragger from "./SubDedaultDragger";
 import dropmdownblack from "../../../../../assets/images/whitedown.png";
 import blackArrowUpper from "../../../../../assets/images/whiteupper.png";
+import { useEffect } from "react";
 
 const SubAgendaMappingDragging = ({
   data,
@@ -144,11 +145,47 @@ const SubAgendaMappingDragging = ({
     setSubajendaRemoval(subIndex);
   };
 
+  // Initialize the subExpand state based on the number of rows and subAgendas
+  useEffect(() => {
+    const initialState = rows.map((row) =>
+      Array(row.subAgenda.length).fill(false)
+    );
+    setSubExpand(initialState);
+  }, [rows]);
+
   //Function For Handling See More For Subagendas
   const handleSubMenuExpand = (index, subIndex) => {
-    setsubexpandIndex(index);
-    setExpandSubIndex(subIndex);
-    setSubExpand(!subExpand);
+    // Close all subAgendas in the current row except the one you're expanding
+    // const updatedSubExpand = Array(rows[index].subAgenda.length).fill(false);
+    // updatedSubExpand[subIndex] = true;
+
+    // setsubexpandIndex(index);
+    // setExpandSubIndex(subIndex);
+    // setSubExpand(updatedSubExpand);
+    // Close all subAgendas in the current row except the one you're expanding
+    // If the clicked subAgenda is already open, close it
+    const isAlreadyExpanded = subExpand[index][subIndex];
+
+    // Close the clicked subAgenda if it's already expanded
+    if (isAlreadyExpanded) {
+      setSubExpand((prevSubExpand) => {
+        const updatedSubExpand = [...prevSubExpand];
+        updatedSubExpand[index][subIndex] = false;
+        return updatedSubExpand;
+      });
+      setsubexpandIndex(-1);
+      setExpandSubIndex(-1);
+    } else {
+      // Close all other subAgendas in the current row except the one you're expanding
+      const updatedSubExpand = rows.map((row, i) =>
+        i === index ? Array(row.subAgenda.length).fill(false) : subExpand[i]
+      );
+      updatedSubExpand[index][subIndex] = true;
+
+      setSubExpand(updatedSubExpand);
+      setsubexpandIndex(index);
+      setExpandSubIndex(subIndex);
+    }
   };
 
   // Function to handle changes in sub-agenda radio group
@@ -549,200 +586,206 @@ const SubAgendaMappingDragging = ({
                                           </Row>
                                           {/* Condition for Subajencda */}
                                           {subexpandIndex === index &&
-                                          expandSubIndex === subIndex &&
-                                          subExpand ? (
-                                            <>
-                                              <Row className="mt-3">
-                                                <Col lg={12} md={12} sm={12}>
-                                                  <span
-                                                    className={
-                                                      styles["Agenda_Heading"]
-                                                    }
+                                            expandSubIndex === subIndex &&
+                                            subExpand && (
+                                              <>
+                                                <Row className="mt-3">
+                                                  <Col lg={12} md={12} sm={12}>
+                                                    <span
+                                                      className={
+                                                        styles["Agenda_Heading"]
+                                                      }
+                                                    >
+                                                      {t("Attachments")}
+                                                    </span>
+                                                  </Col>
+                                                </Row>
+                                                <Row className="mt-3">
+                                                  <Col lg={6} md={6} sm={6}>
+                                                    <Radio.Group
+                                                      value={
+                                                        subAgendaData.subSelectRadio
+                                                      }
+                                                      onChange={(e) =>
+                                                        handleSubAgendaRadioChange(
+                                                          index,
+                                                          subIndex,
+                                                          e
+                                                        )
+                                                      }
+                                                      disabled={
+                                                        apllyLockOnParentAgenda(
+                                                          index
+                                                        ) ||
+                                                        apllyLockOnSubAgenda(
+                                                          index,
+                                                          subIndex
+                                                        )
+                                                          ? true
+                                                          : false
+                                                      }
+                                                    >
+                                                      <Radio value="1">
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "Radio_Button_options"
+                                                            ]
+                                                          }
+                                                        >
+                                                          {t("Document")}
+                                                        </span>
+                                                      </Radio>
+                                                      <Radio value="2">
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "Radio_Button_options"
+                                                            ]
+                                                          }
+                                                        >
+                                                          {t("URL")}
+                                                        </span>
+                                                      </Radio>
+                                                      <Radio value="3">
+                                                        <span
+                                                          className={
+                                                            styles[
+                                                              "Radio_Button_options"
+                                                            ]
+                                                          }
+                                                        >
+                                                          {t(
+                                                            "Request from contributor"
+                                                          )}
+                                                        </span>
+                                                      </Radio>
+                                                    </Radio.Group>
+                                                  </Col>
+                                                  <Col
+                                                    lg={6}
+                                                    md={6}
+                                                    sm={6}
+                                                    className="d-flex justify-content-end gap-4 align-items-center"
                                                   >
-                                                    {t("Attachments")}
-                                                  </span>
-                                                </Col>
-                                              </Row>
-                                              <Row className="mt-3">
-                                                <Col lg={6} md={6} sm={6}>
-                                                  <Radio.Group
-                                                    value={
-                                                      subAgendaData.subSelectRadio
-                                                    }
-                                                    onChange={(e) =>
-                                                      handleSubAgendaRadioChange(
-                                                        index,
-                                                        subIndex,
-                                                        e
-                                                      )
-                                                    }
-                                                    disabled={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      ) ||
-                                                      apllyLockOnSubAgenda(
-                                                        index,
-                                                        subIndex
-                                                      )
-                                                        ? true
-                                                        : false
-                                                    }
-                                                  >
-                                                    <Radio value="1">
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Radio_Button_options"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t("Document")}
-                                                      </span>
-                                                    </Radio>
-                                                    <Radio value="2">
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Radio_Button_options"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t("URL")}
-                                                      </span>
-                                                    </Radio>
-                                                    <Radio value="3">
-                                                      <span
-                                                        className={
-                                                          styles[
-                                                            "Radio_Button_options"
-                                                          ]
-                                                        }
-                                                      >
-                                                        {t(
-                                                          "Request from contributor"
-                                                        )}
-                                                      </span>
-                                                    </Radio>
-                                                  </Radio.Group>
-                                                </Col>
-                                                <Col
-                                                  lg={6}
-                                                  md={6}
-                                                  sm={6}
-                                                  className="d-flex justify-content-end gap-4 align-items-center"
-                                                >
-                                                  <img
-                                                    draggable={false}
-                                                    src={Key}
-                                                    width="24.07px"
-                                                    className="cursor-pointer"
-                                                    height="24.09px"
-                                                    onClick={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      ) ||
-                                                      apllyLockOnSubAgenda(
-                                                        index,
-                                                        subIndex
-                                                      )
-                                                        ? ""
-                                                        : openAdvancePermissionModal
-                                                    }
-                                                  />
-                                                  <img
-                                                    draggable={false}
-                                                    src={Cast}
-                                                    width="25.85px"
-                                                    height="25.89px"
-                                                    className="cursor-pointer"
-                                                    onClick={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      ) ||
-                                                      apllyLockOnSubAgenda(
-                                                        index,
-                                                        subIndex
-                                                      )
-                                                        ? ""
-                                                        : openVoteMOdal
-                                                    }
-                                                  />
-                                                  <img
-                                                    draggable={false}
-                                                    src={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      )
-                                                        ? closedLocked
-                                                        : apllyLockOnSubAgenda(
-                                                            index,
-                                                            subIndex
-                                                          )
-                                                        ? DarkLock
-                                                        : Lock
-                                                    }
-                                                    width="18.87px"
-                                                    height="26.72px"
-                                                    className={
-                                                      apllyLockOnParentAgenda(
-                                                        index
-                                                      )
-                                                        ? styles[
-                                                            "lockBtn_inActive"
-                                                          ]
-                                                        : apllyLockOnSubAgenda(
-                                                            index,
-                                                            subIndex
-                                                          )
-                                                        ? styles[
-                                                            "lockBtn_inActive_coursor"
-                                                          ]
-                                                        : styles["lockBtn"]
-                                                    }
-                                                    onClick={() => {
-                                                      if (
+                                                    <img
+                                                      draggable={false}
+                                                      src={Key}
+                                                      width="24.07px"
+                                                      className="cursor-pointer"
+                                                      height="24.09px"
+                                                      onClick={
+                                                        apllyLockOnParentAgenda(
+                                                          index
+                                                        ) ||
+                                                        apllyLockOnSubAgenda(
+                                                          index,
+                                                          subIndex
+                                                        )
+                                                          ? ""
+                                                          : openAdvancePermissionModal
+                                                      }
+                                                    />
+                                                    <img
+                                                      draggable={false}
+                                                      src={Cast}
+                                                      width="25.85px"
+                                                      height="25.89px"
+                                                      className="cursor-pointer"
+                                                      onClick={
+                                                        apllyLockOnParentAgenda(
+                                                          index
+                                                        ) ||
+                                                        apllyLockOnSubAgenda(
+                                                          index,
+                                                          subIndex
+                                                        )
+                                                          ? ""
+                                                          : openVoteMOdal
+                                                      }
+                                                    />
+                                                    <img
+                                                      draggable={false}
+                                                      src={
                                                         apllyLockOnParentAgenda(
                                                           index
                                                         )
-                                                      ) {
-                                                      } else {
-                                                        lockFunctionActiveSubMenus(
-                                                          index,
-                                                          subIndex
-                                                        );
+                                                          ? closedLocked
+                                                          : apllyLockOnSubAgenda(
+                                                              index,
+                                                              subIndex
+                                                            )
+                                                          ? DarkLock
+                                                          : Lock
                                                       }
-                                                    }}
+                                                      width="18.87px"
+                                                      height="26.72px"
+                                                      className={
+                                                        apllyLockOnParentAgenda(
+                                                          index
+                                                        )
+                                                          ? styles[
+                                                              "lockBtn_inActive"
+                                                            ]
+                                                          : apllyLockOnSubAgenda(
+                                                              index,
+                                                              subIndex
+                                                            )
+                                                          ? styles[
+                                                              "lockBtn_inActive_coursor"
+                                                            ]
+                                                          : styles["lockBtn"]
+                                                      }
+                                                      onClick={() => {
+                                                        if (
+                                                          apllyLockOnParentAgenda(
+                                                            index
+                                                          )
+                                                        ) {
+                                                        } else {
+                                                          lockFunctionActiveSubMenus(
+                                                            index,
+                                                            subIndex
+                                                          );
+                                                        }
+                                                      }}
+                                                    />
+                                                  </Col>
+                                                </Row>
+                                                {subAgendaData.subSelectRadio ===
+                                                "1" ? (
+                                                  <SubDocumnets
+                                                    subAgendaData={
+                                                      subAgendaData
+                                                    }
                                                   />
-                                                </Col>
-                                              </Row>
-                                              {subAgendaData.subSelectRadio ===
-                                              "1" ? (
-                                                <SubDocumnets
-                                                  subAgendaData={subAgendaData}
-                                                />
-                                              ) : subAgendaData.subSelectRadio ===
-                                                "2" ? (
-                                                <SubUrls
-                                                  subAgendaData={subAgendaData}
-                                                  rows={rows}
-                                                  setRows={setRows}
-                                                  index={index}
-                                                  subIndex={subIndex}
-                                                />
-                                              ) : subAgendaData.subSelectRadio ===
-                                                "3" ? (
-                                                <SubRequestContributor
-                                                  subAgendaData={subAgendaData}
-                                                  rows={rows}
-                                                  setRows={setRows}
-                                                  index={index}
-                                                  subIndex={subIndex}
-                                                />
-                                              ) : (
-                                                <SubDedaultDragger />
-                                              )}
-                                            </>
-                                          ) : null}
+                                                ) : subAgendaData.subSelectRadio ===
+                                                  "2" ? (
+                                                  <SubUrls
+                                                    subAgendaData={
+                                                      subAgendaData
+                                                    }
+                                                    rows={rows}
+                                                    setRows={setRows}
+                                                    index={index}
+                                                    subIndex={subIndex}
+                                                  />
+                                                ) : subAgendaData.subSelectRadio ===
+                                                  "3" ? (
+                                                  <SubRequestContributor
+                                                    subAgendaData={
+                                                      subAgendaData
+                                                    }
+                                                    rows={rows}
+                                                    setRows={setRows}
+                                                    index={index}
+                                                    subIndex={subIndex}
+                                                  />
+                                                ) : (
+                                                  <SubDedaultDragger />
+                                                )}
+                                              </>
+                                            )}
                                         </Col>
                                       </Row>
                                     </Col>

@@ -55,7 +55,7 @@ const Agenda = () => {
   const { NewMeetingreducer } = useSelector((state) => state);
   const { Dragger } = Upload;
   const [expand, setExpand] = useState(true);
-  const [subExpand, setSubExpand] = useState(true);
+  const [subExpand, setSubExpand] = useState([]);
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
   const [expandSubIndex, setExpandSubIndex] = useState(0);
   const [expandIndex, setExpandIndex] = useState(-1);
