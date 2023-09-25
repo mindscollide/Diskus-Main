@@ -316,4 +316,6 @@ body[dir="rtl"] label.MontserratSemiBold-600.todo-employee-name-card {
 .view_todo_assignees {
   max-height: 9vh !important;
   overflow-y: auto;
+  display: flex;
+  align-items: flex-start;
 }

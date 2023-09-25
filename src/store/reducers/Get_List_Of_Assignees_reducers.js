@@ -12,12 +12,20 @@ const initialState = {
   EndMeetingData: [],
   RemindersData: [],
   ShowNotification: false,
-  SearchMeetingData: null
+  SearchMeetingData: null,
+  meetingcreatedashboardLoader: false,
 };
 
 const assigneesReducer = (state = initialState, action) => {
   console.log("ASSIGNESS_LIST_INIT", state);
   switch (action.type) {
+    case actions.LOADER_CREATEMEETING_DASHBOARD: {
+      console.log(
+        action,
+        "meetingcreatedashboardLoadermeetingcreatedashboardLoader"
+      );
+      return { ...state, meetingcreatedashboardLoader: action.response };
+    }
     case actions.SHOW:
       return {
         ...state,
@@ -39,7 +47,7 @@ const assigneesReducer = (state = initialState, action) => {
       };
     }
     case actions.ASSIGNESS_LIST_SUCCESS: {
-      console.log("allassignesslistsuccess")
+      console.log("allassignesslistsuccess");
 
       return {
         ...state,
@@ -194,7 +202,7 @@ const assigneesReducer = (state = initialState, action) => {
       };
 
     case actions.GET_REMINDERS_SUCCESS: {
-      console.log("allassignesslistsuccess12")
+      console.log("allassignesslistsuccess12");
       return {
         ...state,
         RemindersData: action.response.meetingReminders,
@@ -220,24 +228,24 @@ const assigneesReducer = (state = initialState, action) => {
     case actions.SEARCH_USER_MEETINGS_INIT: {
       return {
         ...state,
-        Loading: true
-      }
+        Loading: true,
+      };
     }
     case actions.SEARCH_USER_MEETINGS_SUCCESS: {
       return {
         ...state,
         Loading: false,
         SearchMeetingData: action.response,
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     case actions.SEARCH_USER_MEETINGS_FAIL: {
       return {
         ...state,
         Loading: false,
         SearchMeetingData: [],
-        ResponseMessage: action.message
-      }
+        ResponseMessage: action.message,
+      };
     }
     default:
       return { ...state };

@@ -617,8 +617,8 @@ const ModalView = ({ viewFlag, setViewFlag, ModalTitle }) => {
                   <Button
                     className={
                       isDetails
-                        ? "MontserratSemiBold-600 btn btn-primary isDetail-View-top-btn"
-                        : "MontserratSemiBold-600 btn btn-outline-primary isDetail-View-top-btn-Outline"
+                        ? "MontserratSemiBold-600 btn btn-primary d-flex align-items-center isDetail-View-top-btn"
+                        : "MontserratSemiBold-600 btn btn-outline-primary d-flex align-items-center isDetail-View-top-btn-Outline"
                     }
                     variant={"Primary"}
                     text={t("Details")}

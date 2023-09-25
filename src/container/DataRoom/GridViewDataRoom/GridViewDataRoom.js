@@ -294,7 +294,7 @@ const GridViewDataRoom = ({
                               className={styles["folderName__text"]}
                               onClick={() => getFolderDocuments(fileData.id)}
                             >
-                              <img src={folderColor} alt="" />{" "}
+                              <img src={folderColor} alt="" draggable="false" />{" "}
                               {fileData.name}
                             </span>
                             {!fileData.isShared && (
@@ -359,12 +359,23 @@ const GridViewDataRoom = ({
                           <div className={styles["fileview__Box"]}>
                             <Row>
                               <Col sm={12} md={12} lg={12}>
-                                <img src={file_image} width={"100%"} alt="" />
+                                <img
+                                  src={file_image}
+                                  width={"100%"}
+                                  alt=""
+                                  draggable="false"
+                                />
                               </Col>
                               <Col sm={12} md={12} lg={12}>
                                 <div className={styles["gridViewFile__name"]}>
                                   <span className={styles["folderFile__text"]}>
-                                    <img src={getIconSource(getFileExtension(fileData.name))} alt="" />{" "}
+                                    <img
+                                      src={getIconSource(
+                                        getFileExtension(fileData.name)
+                                      )}
+                                      alt=""
+                                      draggable="false"
+                                    />{" "}
                                     {fileData.name}
                                   </span>
                                   {!fileData.isShared && (
