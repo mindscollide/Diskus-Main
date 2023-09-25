@@ -87,7 +87,7 @@ function CustomCalendar({
   const [rightToLeft, setRightToLeft] = useState(false);
   const [prevCheck, setPrevCheck] = useState(false);
   const [nextCheck, setNextCheck] = useState(false);
-
+  const [popupOffset, setPopupOffset] = useState({ x: 0, y: 0 });
   let currentLanguage = localStorage.getItem("i18nextLng");
   const { t } = useTranslation();
   const todayDate = new Date();
@@ -127,68 +127,68 @@ function CustomCalendar({
 
     return (
       // <Container>
-        <Row className="d-flex justify-content-center calendar-header">
-          <Col lg={3} md={3} sm={false}></Col>
-          <Col
-            lg={1}
-            md={1}
-            sm={3}
-            className={
-              "d-flex justify-content-end align-items-center" +
-              " " +
-              currentLanguage
-            }
+      <Row className="d-flex justify-content-center calendar-header">
+        <Col lg={3} md={3} sm={false}></Col>
+        <Col
+          lg={1}
+          md={1}
+          sm={3}
+          className={
+            "d-flex justify-content-end align-items-center" +
+            " " +
+            currentLanguage
+          }
+        >
+          {" "}
+          <ChevronLeft className={styles["icon"]} onClick={goPrev} />
+        </Col>
+        <Col lg={3} md={3} sm={6} className="d-flex justify-content-center">
+          <div className={"clickbox"}>
+            <DatePicker
+              onChange={(e) => {
+                onChange(e);
+                setCalendarView(false);
+              }}
+              onPanelChange={handleMonthChange}
+              open={calendarView}
+              className="date-picker-style"
+            />
+          </div>
+          <h3
+            onClick={() => handleAddEvent()}
+            className={styles["calendar-add-event-label"]}
           >
             {" "}
-            <ChevronLeft className={styles["icon"]} onClick={goPrev} />
-          </Col>
-          <Col lg={3} md={3} sm={6} className="d-flex justify-content-center">
-            <div className={"clickbox"}>
-              <DatePicker
-                onChange={(e) => {
-                  onChange(e);
-                  setCalendarView(false);
-                }}
-                onPanelChange={handleMonthChange}
-                open={calendarView}
-                className="date-picker-style"
-              />
-            </div>
-            <h3
-              onClick={() => handleAddEvent()}
-              className={styles["calendar-add-event-label"]}
-            >
-              {" "}
-              {props.label}
-            </h3>
-          </Col>
-          <Col
-            lg={1}
-            md={1}
-            sm={3}
-            className={
-              "d-flex justify-content-start align-items-center" +
-              " " +
-              currentLanguage
-            }
-          >
-            <ChevronRight className={styles["icon"]} onClick={goNext} />
-          </Col>
-          <Col lg={1} md={1} sm={false}></Col>
+            {props.label}
+          </h3>
+        </Col>
+        <Col
+          lg={1}
+          md={1}
+          sm={3}
+          className={
+            "d-flex justify-content-start align-items-center" +
+            " " +
+            currentLanguage
+          }
+        >
+          <ChevronRight className={styles["icon"]} onClick={goNext} />
+        </Col>
+        <Col lg={1} md={1} sm={false}></Col>
 
-          <Col
-            lg={3}
-            md={3}
-            sm={12}
-            className={"TodayButton text-end p-0" + " " + currentLanguage}
-          >
-            <Button
-              className="btn calendar-today"
-              text={t("Today")}
-              onClick={handleCurrent}
-            />
-          </Col>
-        </Row>
+        <Col
+          lg={3}
+          md={3}
+          sm={12}
+          className={"TodayButton text-end p-0" + " " + currentLanguage}
+        >
+          <Button
+            className="btn calendar-today"
+            text={t("Today")}
+            onClick={handleCurrent}
+          />
+        </Col>
+      </Row>
       // </Container>
     );
   };
@@ -310,18 +310,10 @@ function CustomCalendar({
       style: style,
     };
   };
-  // const dayPropGetter = (date) => {
-  //   const isPastDate = date < currentDate;
-  //   let className = "";
 
-  //   if (isPastDate) {
-  //     className += " rbc-day-bg rbc-off-range-bg"; // Add classes for past dates
-  //   }
-
-  //   return {
-  //     className: className,
-  //   };
-  // };
+  const showMoreEvents = (dates) => {
+    console.log("datesshowMoreEvents", dates);
+  };
 
   return (
     <div className="bg-white border-radius-4 border">
@@ -333,6 +325,7 @@ function CustomCalendar({
           events={events}
           startAccessor="start"
           endAccessor="end"
+          popupOffset={popupOffset}
           views={true}
           date={defaultValue}
           onSelectEvent={handleEventSelect}
@@ -347,10 +340,15 @@ function CustomCalendar({
           onNavigate={onNavigate}
           step={15}
           timeslots={15}
-          popup={true}
           culture={culture}
+          popup={true}
+          onShowMore={(events, date) => showMoreEvents(events)}
           messages={messages}
           rtl={rightToLeft}
+          enableAutoScroll={true}
+          style={{
+            position: "relative",
+          }}
         />
         <CalendarFooter />
       </Col>
