@@ -989,6 +989,7 @@ const Dashboard = () => {
           dispatch(incomingVideoCallFlag(true))
           let timeValue = Number(localStorage.getItem('callRingerTimeout'))
           let callTypeID = Number(localStorage.getItem('callTypeID'))
+          localStorage.setItem('NewRoomID', data.payload.roomID)
           timeValue = timeValue * 1000
           const timeoutId = setTimeout(() => {
             let Data = {
@@ -999,6 +1000,7 @@ const Dashboard = () => {
             }
             if (videoFeatureReducer.IncomingVideoCallFlag === true) {
               dispatch(VideoCallResponse(Data, navigate, t))
+              console.log('VideoCallResponse Dashboard HIT')
             }
           }, timeValue)
           localStorage.setItem('activeRoomID', data.payload.roomID)
@@ -1193,42 +1195,60 @@ const Dashboard = () => {
         data.payload.message.toLowerCase() ===
         'VIDEO_CALL_DISCONNECTED_CALLER'.toLowerCase()
       ) {
-        let callerID = Number(localStorage.getItem('callerID'))
-        let newCallerID = Number(localStorage.getItem('newCallerID'))
-        if (callerID === newCallerID) {
-          localStorage.setItem('activeCall', false)
-        }
-        localStorage.setItem('newCallerID', callerID)
-        localStorage.setItem('initiateVideoCall', false)
-        let roomID = Number(localStorage.getItem('NewRoomID'))
-        let acceptedRoomID = Number(localStorage.getItem('acceptedRoomID'))
-        let activeRoomID = Number(localStorage.getItem('activeRoomID'))
-        console.log(
-          'Current Room, New Room, Accepted Room',
-          roomID,
-          activeRoomID,
-          acceptedRoomID,
-        )
-        dispatch(incomingVideoCallFlag(false))
-        if (activeRoomID !== acceptedRoomID) {
-          dispatch(incomingVideoCallFlag(false))
-          localStorage.setItem('activeRoomID', acceptedRoomID)
-        }
-        if (activeRoomID === acceptedRoomID) {
-          if (
-            videoFeatureReducer.NormalizeVideoFlag === true ||
-            videoFeatureReducer.IncomingVideoCallFlag === true
-          ) {
-            setNotification({
-              ...notification,
-              notificationShow: true,
-              message: `Call has been disconnected by ${data.payload.callerName}`,
-            })
-            setNotificationID(id)
+        if (videoFeatureReducer.IncomingVideoCallFlag === false) {
+          console.log('WENT IN TO THE FALSE CHECK')
+          let callerID = Number(localStorage.getItem('callerID'))
+          let newCallerID = Number(localStorage.getItem('newCallerID'))
+          if (callerID === newCallerID) {
+            localStorage.setItem('activeCall', false)
           }
+          localStorage.setItem('newCallerID', callerID)
+          localStorage.setItem('initiateVideoCall', false)
+          let roomID = Number(localStorage.getItem('NewRoomID'))
+          let acceptedRoomID = Number(localStorage.getItem('acceptedRoomID'))
+          let activeRoomID = Number(localStorage.getItem('activeRoomID'))
+          console.log(
+            'Current Room, New Room, Accepted Room',
+            roomID,
+            activeRoomID,
+            acceptedRoomID,
+          )
+          dispatch(incomingVideoCallFlag(false))
+          if (activeRoomID !== acceptedRoomID) {
+            dispatch(incomingVideoCallFlag(false))
+            localStorage.setItem('activeRoomID', acceptedRoomID)
+          }
+          if (activeRoomID === acceptedRoomID) {
+            if (
+              videoFeatureReducer.NormalizeVideoFlag === true ||
+              videoFeatureReducer.IncomingVideoCallFlag === true
+            ) {
+              setNotification({
+                ...notification,
+                notificationShow: true,
+                message: `Call has been disconnected by ${data.payload.callerName}`,
+              })
+              setNotificationID(id)
+            }
+            dispatch(normalizeVideoPanelFlag(false))
+            dispatch(maximizeVideoPanelFlag(false))
+            dispatch(minimizeVideoPanelFlag(false))
+          }
+          dispatch(leaveCallModal(false))
+        } else if (videoFeatureReducer.IncomingVideoCallFlag === true) {
+          console.log('WENT IN TO THE TRUE CHECK')
           dispatch(normalizeVideoPanelFlag(false))
           dispatch(maximizeVideoPanelFlag(false))
           dispatch(minimizeVideoPanelFlag(false))
+          localStorage.setItem('activeCall', false)
+          // localStorage.setItem('newCallerID', callerID)
+          // localStorage.setItem('initiateVideoCall', false)
+          // setNotification({
+          //   ...notification,
+          //   notificationShow: true,
+          //   message: `Call has been disconnected by ${data.payload.callerName}`,
+          // })
+          // setNotificationID(id)
         }
         dispatch(leaveCallModal(false))
       } else if (

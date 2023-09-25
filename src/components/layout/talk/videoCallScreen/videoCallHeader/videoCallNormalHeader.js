@@ -335,14 +335,6 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                       width={30}
                     />
                     <div className="participants-list" key={Math.random()}>
-                      <Row className="m-0">
-                        <Col className="p-0" lg={8} md={8} sm={12}>
-                          <p className="participant-name">{currentUserName}</p>
-                        </Col>
-                        <Col className="p-0" lg={4} md={4} sm={12}>
-                          <p className="participant-state">Host</p>
-                        </Col>
-                      </Row>
                       {currentParticipants !== undefined &&
                       currentParticipants !== null &&
                       currentParticipants.length > 0
@@ -358,12 +350,12 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                             )
                             return (
                               <Row className="m-0" key={index}>
-                                <Col className="p-0" lg={8} md={8} sm={12}>
+                                <Col className="p-0" lg={7} md={7} sm={12}>
                                   <p className="participant-name">
                                     {participantData.userName}
                                   </p>
                                 </Col>
-                                <Col className="p-0" lg={4} md={4} sm={12}>
+                                <Col className="p-0" lg={5} md={5} sm={12}>
                                   <p className="participant-state">
                                     {matchingStatus
                                       ? matchingStatus.CallStatus
@@ -374,6 +366,14 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                             )
                           })
                         : null}
+                      <Row className="hostBorder m-0">
+                        <Col className="p-0" lg={7} md={7} sm={12}>
+                          <p className="participant-name">{currentUserName}</p>
+                        </Col>
+                        <Col className="p-0" lg={5} md={5} sm={12}>
+                          <p className="participant-state">Host</p>
+                        </Col>
+                      </Row>
                       {/* <Button
                         className="add-participant-button"
                         text="Add Participants"

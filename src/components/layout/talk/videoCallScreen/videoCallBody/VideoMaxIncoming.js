@@ -87,6 +87,7 @@ const VideoMaxIncoming = () => {
         CallTypeID: callTypeID,
       }
       dispatch(VideoCallResponse(Data, navigate, t))
+      console.log('VideoCallResponse Incoming HIT')
       dispatch(incomingVideoCallFlag(false))
       setIsVisible(false)
       audioElement.pause()
@@ -179,6 +180,8 @@ const VideoMaxIncoming = () => {
   }, [videoFeatureReducer.IncomingVideoFlag])
 
   console.log('isTimerRunning', isTimerRunning)
+
+  useEffect(() => {}, [activeCallState])
 
   return (
     <>
