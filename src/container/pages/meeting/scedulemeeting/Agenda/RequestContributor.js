@@ -49,7 +49,7 @@ const RequestContributor = ({ data, index, setRows, rows }) => {
           />
         </Col>
       </Row>
-      <Row>
+      <Row className="mb-2">
         <Col lg={12} md={12} sm={12}>
           <TextField
             applyClass="text-area-create-resolution"
