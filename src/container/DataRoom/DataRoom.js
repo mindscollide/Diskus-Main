@@ -555,7 +555,7 @@ const DataRoom = () => {
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={folderColor} alt="" />
+                <img src={folderColor} alt="" draggable="false" />
                 <abbr title={text}>
                   <span
                     className={`${
@@ -563,7 +563,7 @@ const DataRoom = () => {
                     } ${"cursor-pointer"}`}
                     onClick={() => getFolderDocuments(data.id)}
                   >
-                    {text} <img src={sharedIcon} alt="" />
+                    {text} <img src={sharedIcon} alt="" draggable="false" />
                   </span>
                 </abbr>
               </div>
@@ -580,7 +580,7 @@ const DataRoom = () => {
                   />
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
-                      {text} <img src={sharedIcon} alt="" />
+                      {text} <img src={sharedIcon} alt="" draggable="false" />
                     </span>
                   </abbr>
                 </section>
@@ -591,7 +591,7 @@ const DataRoom = () => {
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={folderColor} alt="" />
+                <img src={folderColor} alt="" draggable="false" />
                 <abbr title={text}>
                   <span
                     className={`${
@@ -884,7 +884,7 @@ const DataRoom = () => {
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={folderColor} alt="" />
+                <img src={folderColor} alt="" draggable="false" />
                 <abbr title={text}>
                   <span
                     className={`${
@@ -892,7 +892,7 @@ const DataRoom = () => {
                     } ${"cursor-pointer"}`}
                     onClick={() => getFolderDocuments(data.id)}
                   >
-                    {text} <img src={sharedIcon} alt="" />
+                    {text} <img src={sharedIcon} alt="" draggable="false" />
                   </span>
                 </abbr>
               </div>
@@ -909,7 +909,7 @@ const DataRoom = () => {
                   />
                   <abbr title={text}>
                     <span className={styles["dataroom_table_heading"]}>
-                      {text} <img src={sharedIcon} alt="" />
+                      {text} <img src={sharedIcon} alt="" draggable="false" />
                     </span>
                   </abbr>
                 </section>
@@ -920,7 +920,7 @@ const DataRoom = () => {
           if (data.isFolder) {
             return (
               <div className={`${styles["dataFolderRow"]}`}>
-                <img src={folderColor} alt="" />
+                <img src={folderColor} alt="" draggable="false" />
                 <abbr title={text}>
                   <span
                     className={`${
@@ -1235,12 +1235,12 @@ const DataRoom = () => {
         if (record.isFolder) {
           return (
             <div className={`${styles["dataFolderRow"]}`}>
-              <img src={folderColor} alt="" />
+              <img src={folderColor} alt="" draggable="false" />
               <span
                 className={styles["dataroom_table_heading"]}
                 onClick={() => getFolderDocuments(record.id)}
               >
-                {text} <img src={sharedIcon} alt="" />
+                {text} <img src={sharedIcon} alt="" draggable="false" />
               </span>
             </div>
           );
@@ -1257,7 +1257,7 @@ const DataRoom = () => {
                 className={styles["dataroom_table_heading"]}
                 // onClick={() => getFolderDocuments(data.id)}
               >
-                {text} <img src={sharedIcon} alt="" />
+                {text} <img src={sharedIcon} alt="" draggable="false" />
               </span>
             </div>
           );
@@ -1898,7 +1898,13 @@ const DataRoom = () => {
                           sm={12}
                           className=" d-flex gap-1 align-items-center"
                         >
-                          <img src={plus} height="10.8" alt="" width="12px" />
+                          <img
+                            src={plus}
+                            height="10.8"
+                            alt=""
+                            width="12px"
+                            draggable="false"
+                          />
                           <UploadDataFolder
                             title={t("Folder-upload")}
                             setProgress={setProgress}
@@ -2127,7 +2133,11 @@ const DataRoom = () => {
                                       sm={12}
                                       className="d-flex justify-content-center"
                                     >
-                                      <img src={EmptyStateSharewithme} alt="" />
+                                      <img
+                                        src={EmptyStateSharewithme}
+                                        alt=""
+                                        draggable="false"
+                                      />
                                     </Col>
                                   </Row>
                                   <Row className="mt-4">

@@ -75,7 +75,7 @@ const ViewUpdateCommittee = () => {
                     <Col lg={12} md={12} sm={12}>
                       <Row>
                         <Col lg={1} md={1} sm={12}>
-                          <img src={Newprofile} width={50} />
+                          <img src={Newprofile} width={50} draggable="false" />
                         </Col>
                         <Col
                           lg={11}
@@ -137,7 +137,7 @@ const ViewUpdateCommittee = () => {
                     <Col lg={4} md={4} sm={4}>
                       <Row>
                         <Col lg={3} md={3} sm={12}>
-                          <img src={Newprofile} width={50} />
+                          <img src={Newprofile} width={50} draggable="false" />
                         </Col>
                         <Col
                           lg={9}
@@ -180,7 +180,7 @@ const ViewUpdateCommittee = () => {
                     <Col lg={4} md={4} sm={4}>
                       <Row>
                         <Col lg={3} md={3} sm={12}>
-                          <img src={Newprofile} width={50} />
+                          <img src={Newprofile} width={50} draggable="false" />
                         </Col>
                         <Col
                           lg={9}
@@ -223,7 +223,7 @@ const ViewUpdateCommittee = () => {
                     <Col lg={4} md={4} sm={4}>
                       <Row>
                         <Col lg={3} md={3} sm={12}>
-                          <img src={Newprofile} width={50} />
+                          <img src={Newprofile} width={50} draggable="false" />
                         </Col>
                         <Col
                           lg={9}
@@ -268,7 +268,7 @@ const ViewUpdateCommittee = () => {
                     <Col lg={4} md={4} sm={4}>
                       <Row>
                         <Col lg={3} md={3} sm={12}>
-                          <img src={Newprofile} width={50} />
+                          <img src={Newprofile} width={50} draggable="false" />
                         </Col>
                         <Col
                           lg={9}
@@ -311,7 +311,7 @@ const ViewUpdateCommittee = () => {
                     <Col lg={4} md={4} sm={4}>
                       <Row>
                         <Col lg={3} md={3} sm={12}>
-                          <img src={Newprofile} width={50} />
+                          <img src={Newprofile} width={50} draggable="false" />
                         </Col>
                         <Col
                           lg={9}
@@ -354,7 +354,7 @@ const ViewUpdateCommittee = () => {
                     <Col lg={4} md={4} sm={4}>
                       <Row>
                         <Col lg={3} md={3} sm={12}>
-                          <img src={Newprofile} width={50} />
+                          <img src={Newprofile} width={50} draggable="false" />
                         </Col>
                         <Col
                           lg={9}

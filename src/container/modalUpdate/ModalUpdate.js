@@ -1407,21 +1407,10 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
 
   // for add Attendees handler
   const addAttendees = () => {
-    console.log(
-      "Attendees values",
-      taskAssignedToInput,
-      taskAssignedName,
-      taskAssignedTo
-    );
-    // let value = e.target.value;
     let user1 = createMeeting.MeetingAttendees;
     let List = addedParticipantNameList;
-    let externaluser = externalMeetingAttendees;
 
     let found = user1.find((element) => element.User.PK_UID === taskAssignedTo);
-    let found2 = externaluser.find(
-      (element) => element.EmailAddress === taskAssignedToInput
-    );
 
     if (taskAssignedTo !== 0) {
       if (found !== undefined) {
@@ -1481,81 +1470,24 @@ const ModalUpdate = ({ editFlag, setEditFlag, ModalTitle }) => {
         setTaskAssignedToInput("");
       }
     } else {
-      if (validateEmail(taskAssignedToInput)) {
-        if (found2 === undefined) {
-          if (meetingAttendees.MeetingAttendeeRole.PK_MARID === 2) {
-            externaluser.push({
-              PK_EMAID: 0,
-              EmailAddress: taskAssignedToInput,
-              FK_MDID: 0,
-            });
-            List.push({
-              name: taskAssignedToInput,
-              designation: "Default Designation",
-              profilePicture: "Default Picture",
-              organization: "Default Organization",
-              role: meetingAttendees.MeetingAttendeeRole.PK_MARID,
-            });
-
-            setCreateMeeting({
-              ...createMeeting,
-              ["ExternalMeetingAttendees"]: externaluser,
-            });
-            setAddedParticipantNameList(List);
-            let newData = {
-              User: {
-                PK_UID: 0,
-              },
-              MeetingAttendeeRole: {
-                PK_MARID: 0,
-              },
-              AttendeeAvailability: {
-                PK_AAID: 1,
-              },
-            };
-            setMeetingAttendees(newData);
-            setTaskAssignedTo(0);
-            setTaskAssignedName("");
-            setParticipantRoleName("");
-            setTaskAssignedToInput("");
-          } else {
-            setOpen({
-              ...open,
-              flag: true,
-              message: t("External-attendees-cant-be-organizer"),
-            });
-            setTaskAssignedTo(0);
-            setTaskAssignedName("");
-            setParticipantRoleName("");
-            setTaskAssignedToInput("");
-          }
-        } else {
+      if (found === undefined) {
+        setOpen({
+          message: t("Please-add-valid-user"),
+          flag: true,
+        });
+        setTimeout(() => {
           setOpen({
             ...open,
-            flag: true,
-            message: t("Email-already-exist"),
+            message: "",
+            flag: false,
           });
-          setTaskAssignedTo(0);
-          setTaskAssignedName("");
-          setParticipantRoleName("");
-          setTaskAssignedToInput("");
-        }
-      } else {
+        }, 4000);
         setTaskAssignedTo(0);
         setTaskAssignedName("");
         setParticipantRoleName("");
         setTaskAssignedToInput("");
-        setOpen({
-          ...open,
-          flag: true,
-          message: t("Enter-valid-email-address"),
-        });
       }
     }
-    console.log(
-      createMeeting.MeetingAttendees,
-      "createMeetingMeetingAttendeescreateMeetingMeetingAttendees "
-    );
   };
 
   // for attendies handler

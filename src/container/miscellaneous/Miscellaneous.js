@@ -41,8 +41,8 @@ const CustomMiscellaneous = () => {
 
   return (
     <>
-      <Container className="mt-4">
-        {fAQsReducer.AllFAQsData.map((data,index) => {
+      <section className="faqs_container">
+        {fAQsReducer.AllFAQsData.map((data, index) => {
           return (
             <>
               <Row className="mb-3" key={index}>
@@ -66,7 +66,7 @@ const CustomMiscellaneous = () => {
             </>
           );
         })}
-      </Container>
+      </section>
       {fAQsReducer.Loading || LanguageReducer.Loading ? <Loader /> : null}
     </>
   );

@@ -1,47 +1,47 @@
-import React, { useEffect, useState } from "react"
-import { Col, Container, Row } from "react-bootstrap"
-import thumbsup from "../../assets/images/thumbsup.svg"
-import thumbsdown from "../../assets/images/thumbsdown.svg"
-import result from "../../assets/images/result.svg"
-import { Paper } from "@material-ui/core"
-import Clock from "../../assets/images/Clock.svg"
-import line from "../../assets/images/line.png"
-import VoterSecretBalloting from "../../assets/images/Voter_Secret_Balloting.svg"
-import Abstain from "../../assets/images/Abstain.svg"
-import { Chart } from "react-google-charts"
-import { Button, Notification } from "./../../components/elements"
-import { useTranslation } from "react-i18next"
-import styles from "./VotingPage.module.css"
-import EmployeeinfoCard from "../../components/elements/Employeeinfocard/EmployeeinfoCard"
-import SeceretBallotingIcon from "../../assets/images/resolutions/Secret_Balloting_icon.svg"
-import { useSelector, useDispatch } from "react-redux"
-import { updateVoteApi } from "../../store/actions/Resolution_actions"
-import { useNavigate } from "react-router-dom"
+import React, { useEffect, useState } from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import thumbsup from "../../assets/images/thumbsup.svg";
+import thumbsdown from "../../assets/images/thumbsdown.svg";
+import result from "../../assets/images/result.svg";
+import { Paper } from "@material-ui/core";
+import Clock from "../../assets/images/Clock.svg";
+import line from "../../assets/images/line.png";
+import VoterSecretBalloting from "../../assets/images/Voter_Secret_Balloting.svg";
+import Abstain from "../../assets/images/Abstain.svg";
+import { Chart } from "react-google-charts";
+import { Button, Notification } from "./../../components/elements";
+import { useTranslation } from "react-i18next";
+import styles from "./VotingPage.module.css";
+import EmployeeinfoCard from "../../components/elements/Employeeinfocard/EmployeeinfoCard";
+import SeceretBallotingIcon from "../../assets/images/resolutions/Secret_Balloting_icon.svg";
+import { useSelector, useDispatch } from "react-redux";
+import { updateVoteApi } from "../../store/actions/Resolution_actions";
+import { useNavigate } from "react-router-dom";
 const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
-  const { t } = useTranslation()
-  const { ResolutionReducer } = useSelector((state) => state)
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  const { t } = useTranslation();
+  const { ResolutionReducer } = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [voteDetails, setVoteDetails] = useState({
     ResolutionTitle: "",
     ResolutionMethod: "",
-  })
+  });
   // const [voterID, setVoterID] = useState(0);
-  const [approved, setApproved] = useState(0)
-  const [nonApproved, setNonApproved] = useState(0)
-  const [pending, setPending] = useState(0)
-  const [abstain, setAbstain] = useState(0)
-  const [totalVoters, setTotalVoters] = useState(0)
-  const [isResolutionTitle, setResolutionTitle] = useState("")
-  const [isVotingMethod, setVotingMethod] = useState("")
-  const [voteId, setVoteId] = useState(1)
-  const [voter, setVoter] = useState([])
-  const userID = JSON.parse(localStorage.getItem("userID"))
-  const [decision, setDecision] = useState("")
+  const [approved, setApproved] = useState(0);
+  const [nonApproved, setNonApproved] = useState(0);
+  const [pending, setPending] = useState(0);
+  const [abstain, setAbstain] = useState(0);
+  const [totalVoters, setTotalVoters] = useState(0);
+  const [isResolutionTitle, setResolutionTitle] = useState("");
+  const [isVotingMethod, setVotingMethod] = useState("");
+  const [voteId, setVoteId] = useState(1);
+  const [voter, setVoter] = useState([]);
+  const userID = JSON.parse(localStorage.getItem("userID"));
+  const [decision, setDecision] = useState("");
   const [open, setOpen] = useState({
     flag: false,
     message: "",
-  })
+  });
   const options = {
     backgroundColor: "transparent",
     border: "1px solid #ffffff",
@@ -69,7 +69,7 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
     bar: {
       groupWidth: "95%",
     },
-  }
+  };
   const data = [
     ["Year", "Visitations", { role: "style" }],
     [
@@ -94,38 +94,38 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
       abstain,
       "stroke-color: #000; stroke-color:#949494;  stroke-width: 4; fill-color: #949494 ; fill-opacity:1",
     ],
-  ]
-  console.log(voterID, "voterIDvoterIDvoterID")
+  ];
+  console.log(voterID, "voterIDvoterIDvoterID");
   const isApprovedBtn = (statusID) => {
-    setVoteId(statusID)
-  }
+    setVoteId(statusID);
+  };
   const isNotApprovedBtn = (statusID) => {
-    setVoteId(statusID)
-  }
+    setVoteId(statusID);
+  };
   const isAbstainBtn = (statusID) => {
-    setVoteId(statusID)
-  }
+    setVoteId(statusID);
+  };
   const handleUpdateVote = () => {
     let Data = {
       PK_RV_ID: voterID,
       FK_VotingStatusID: voteId,
-    }
-    dispatch(updateVoteApi(navigate, Data, t, setVoteresolution))
-  }
+    };
+    dispatch(updateVoteApi(navigate, Data, t, setVoteresolution));
+  };
   useEffect(() => {
     if (ResolutionReducer.getVoteDetailsByID !== null) {
-      let getVoteresult = ResolutionReducer.getVoteDetailsByID
-      setResolutionTitle(getVoteresult.resolutionTite)
-      setVotingMethod(getVoteresult.votingMethod)
-      setApproved(getVoteresult.approvedVotes)
-      setAbstain()
-      setPending(getVoteresult.pendingVoters)
-      setNonApproved(getVoteresult.nonApprovedVotes)
-      setTotalVoters(getVoteresult.totalVoters)
-      setDecision(getVoteresult.decision)
-      setVoter(getVoteresult.voters)
+      let getVoteresult = ResolutionReducer.getVoteDetailsByID;
+      setResolutionTitle(getVoteresult.resolutionTite);
+      setVotingMethod(getVoteresult.votingMethod);
+      setApproved(getVoteresult.approvedVotes);
+      setAbstain();
+      setPending(getVoteresult.pendingVoters);
+      setNonApproved(getVoteresult.nonApprovedVotes);
+      setTotalVoters(getVoteresult.totalVoters);
+      setDecision(getVoteresult.decision);
+      setVoter(getVoteresult.voters);
     }
-  }, [ResolutionReducer.getVoteDetailsByID])
+  }, [ResolutionReducer.getVoteDetailsByID]);
   return (
     <>
       <section>
@@ -158,7 +158,13 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                             width="23.19px"
                           />
                         ) : (
-                          <img src={result} height="23.19px" width="23.19px" />
+                          <img
+                            src={result}
+                            height="23.19px"
+                            width="23.19px"
+                            draggable="false"
+                            alt=""
+                          />
                         )}
                         {/* <img src={result} height="23.19px" width="23.19px" /> */}
                       </span>
@@ -287,7 +293,11 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                               lg={12}
                               className={styles["VotingMethods_box"]}
                             >
-                              <img src={VoterSecretBalloting} alt="" />
+                              <img
+                                src={VoterSecretBalloting}
+                                alt=""
+                                draggable="false"
+                              />
                               <span>
                                 {t("Voting-method")} {isVotingMethod || ""}
                               </span>
@@ -347,7 +357,7 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
                                             />
                                           </Col>
                                         </>
-                                      )
+                                      );
                                     })
                                   : null}
                               </Row>
@@ -480,7 +490,7 @@ const VotingPage = ({ setVoteresolution, voteresolution, voterID }) => {
       </section>
       <Notification message={open.message} open={open.flag} setOpen={setOpen} />
     </>
-  )
-}
+  );
+};
 
-export default VotingPage
+export default VotingPage;
