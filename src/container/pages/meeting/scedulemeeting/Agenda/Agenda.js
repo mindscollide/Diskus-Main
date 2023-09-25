@@ -485,7 +485,7 @@ const Agenda = () => {
                                                           draggable={false}
                                                           src={
                                                             expandIndex ===
-                                                            index
+                                                              index && expand
                                                               ? blackArrowUpper
                                                               : dropmdownblack
                                                           }
@@ -493,7 +493,7 @@ const Agenda = () => {
                                                           height="9.36px"
                                                           className={
                                                             expandIndex ===
-                                                            index
+                                                              index && expand
                                                               ? styles[
                                                                   "Arrow_Expanded"
                                                                 ]
@@ -802,7 +802,8 @@ const Agenda = () => {
                                                           </span>
                                                         </Col>
                                                       </Row>
-                                                      {expandIndex === index ? (
+                                                      {expandIndex === index &&
+                                                      expand ? (
                                                         <>
                                                           <Row
                                                             key={index + 3}
