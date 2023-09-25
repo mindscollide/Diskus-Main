@@ -37,6 +37,8 @@ const VideoMaxIncoming = () => {
 
   let activeRoomID = localStorage.getItem('activeRoomID')
 
+  let acceptedRoomID = localStorage.getItem('acceptedRoomID')
+
   let callerID = Number(localStorage.getItem('callerID'))
 
   let currentOrganization = Number(localStorage.getItem('organizationID'))
@@ -128,7 +130,7 @@ const VideoMaxIncoming = () => {
   const endAndAccept = async () => {
     let Data = {
       OrganizationID: currentOrganization,
-      RoomID: incomingRoomID,
+      RoomID: acceptedRoomID,
       IsCaller: callerID === currentUserId ? true : false,
       CallTypeID: callTypeID,
     }
@@ -199,7 +201,17 @@ const VideoMaxIncoming = () => {
                   }
                 >
                   {activeCallState === false ? (
-                    <img src={videoAvatar} width={150} alt="Avatar video" />
+                    // <img
+                    //   src={`data:image/jpeg;base64,${incomingCallerData.callerProfilePicture}`}
+                    //   width={150}
+                    //   alt="Avatar video"
+                    // />
+                    <div
+                      className="video-incoming-icon"
+                      style={{
+                        backgroundImage: `url('data:image/jpeg;base64,${incomingCallerData.callerProfilePicture}')`,
+                      }}
+                    ></div>
                   ) : null}
                 </div>
               </Col>

@@ -272,24 +272,32 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
   return (
     <>
       <Row className="mb-4">
-        <Col lg={3} md={3} sm={12} className="mt-1">
-          <p className="title-heading">
-            {currentUserName !== VideoMainReducer.VideoRecipentData.userName &&
-            Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
-            initiateVideoCallFlag === true
-              ? VideoMainReducer.VideoRecipentData.userName ||
-                VideoMainReducer.VideoRecipentData.recipients[0].userName
-              : currentUserName !==
-                  VideoMainReducer.VideoRecipentData.userName &&
-                Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
-                initiateVideoCallFlag === false
-              ? VideoMainReducer.VideoRecipentData.userName ||
-                VideoMainReducer.VideoRecipentData.recipients[0].userName
-              : Object.keys(VideoMainReducer.VideoRecipentData).length === 0
-              ? callerName
-              : null}
-          </p>
-        </Col>
+        {currentCallType === 2 || callTypeID === 2 ? (
+          <Col lg={3} md={3} sm={12} className="mt-1">
+            <p className="title-heading">{t('Group-call')}</p>
+          </Col>
+        ) : (
+          <Col lg={3} md={3} sm={12} className="mt-1">
+            <p className="title-heading">
+              {currentUserName !==
+                VideoMainReducer.VideoRecipentData.userName &&
+              Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
+              initiateVideoCallFlag === true
+                ? VideoMainReducer.VideoRecipentData.userName ||
+                  VideoMainReducer.VideoRecipentData.recipients[0].userName
+                : currentUserName !==
+                    VideoMainReducer.VideoRecipentData.userName &&
+                  Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
+                  initiateVideoCallFlag === false
+                ? VideoMainReducer.VideoRecipentData.userName ||
+                  VideoMainReducer.VideoRecipentData.recipients[0].userName
+                : Object.keys(VideoMainReducer.VideoRecipentData).length === 0
+                ? callerName
+                : null}
+            </p>
+          </Col>
+        )}
+
         <Col
           lg={4}
           md={4}

@@ -25,6 +25,10 @@
 
 .avatar-column-max-call {
   text-align: center;
+  display: flex;
+  justify-content: center;
+  vertical-align: middle;
+  align-items: center;
 }
 
 .someone-calling-title-max-call {
@@ -122,4 +126,15 @@ body[dir="rtl"] .videoIncoming-active-call {
   z-index: 9;
   padding-top: 45px;
   border-radius: 4px;
+}
+
+.video-incoming-icon {
+  padding: 10px;
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  position: relative !important;
+  margin-left: 5px;
+  background-size: cover;
+  background-repeat: no-repeat;
 }

@@ -12,8 +12,8 @@
     margin-bottom: 10px;
     margin-left: 5px;
     background-size: cover;
-    /* Ensure the image covers the entire div */
     background-repeat: no-repeat;
+    /* Ensure the image covers the entire div */
     /* Prevent image from repeating */
 }
 
