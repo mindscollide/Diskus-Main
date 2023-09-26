@@ -45,6 +45,8 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     groupChat: false,
     AllowRSPV: false,
     NotifyMeetingOrganizer: false,
+    RecurringOptions: 0,
+    Location: 0,
   });
 
   const handleSelectChange = (selectedOption) => {
@@ -53,6 +55,14 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
 
   const handleMeetingSelectChange = (selectedOption) => {
     setOptions({ ...options, selectedOption });
+  };
+
+  const handleRecurringSelectoptions = (selectedOption) => {
+    setMeetingDetails({ ...meetingDetails, RecurringOptions: selectedOption });
+  };
+
+  const handleMeetingLocationChange = (selectedOption) => {
+    setMeetingDetails({ ...meetingDetails, Location: selectedOption });
   };
 
   const handleStartDateChange = (date) => {
@@ -198,6 +208,22 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     });
   };
 
+  const SelectLocations = [
+    { value: "ConferenceRoom", label: t("Conference-room") },
+    { value: "MeetingRoom", label: t("Meeting-room") },
+    { value: "BoardRoom", label: t("Board-room") },
+    { value: "LoungeArea", label: t("Lounge-area") },
+  ];
+
+  const selectRecurringOptions = [
+    { value: "nonRecurring", label: t("Non-recurring") },
+    { value: "weekly", label: t("Weekly") },
+    { value: "biWeekly", label: t("Bi-weekly") },
+    { value: "Monthly", label: t("Monthly") },
+    { value: "Quaterly", label: t("Quaterly") },
+    { value: "sixmonthly", label: t("Six-monthly") },
+  ];
+
   console.log(rows, "optionsoptionsoptions");
   return (
     <section>
@@ -275,20 +301,17 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
               </Row>
               <Row>
                 <Col lg={12} md={12} sm={12}>
-                  <TextField
-                    width={"350px"}
-                    placeholder={t("Location")}
-                    applyClass={"meetinInnerSearch"}
-                    name={"Location"}
-                    change={HandleChange}
-                    labelClass="d-none"
-                    value={meetingDetails.Location}
+                  <Select
+                    value={rows.Location}
+                    onChange={handleMeetingLocationChange}
+                    isSearchable={false}
+                    options={SelectLocations}
                   />
                   <Row>
                     <Col>
                       <p
                         className={
-                          error && meetingDetails.Location === ""
+                          error && meetingDetails.Location === 0
                             ? ` ${styles["errorMessage-inLogin"]} `
                             : `${styles["errorMessage-inLogin_hidden"]}`
                         }
@@ -706,7 +729,11 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
           </Row>
           <Row className="mt-2">
             <Col lg={12} md={12} sm={12}>
-              <Select />
+              <Select
+                value={rows.RecurringOptions}
+                onChange={handleRecurringSelectoptions}
+                options={selectRecurringOptions}
+              />
             </Col>
           </Row>
           <Row className="mt-5">
