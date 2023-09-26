@@ -27,12 +27,14 @@ import {
 import ModalOrganizor from "./ModalAddUserOrganizer/ModalOrganizor";
 import ModalCrossIcon from "./ModalCrossIconClick/ModalCrossIcon";
 import NotifyOrganizers from "./NotifyOrganizers/NotifyOrganizers";
+import OrganizersViewPage from "./OrganizerViewPage/OrganizersViewPage";
 const Organizers = ({ setAgendaContributors, setorganizers }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let currentLanguage = localStorage.getItem("i18nextLng");
   const [notifcationTable, setNotifcationTable] = useState(false);
+  const [viewOrganizers, setviewOrganizers] = useState(false);
   const [rspvtable, setrspvtable] = useState(false);
   const { NewMeetingreducer } = useSelector((state) => state);
   const openCrossIconModal = () => {
@@ -355,94 +357,106 @@ const Organizers = ({ setAgendaContributors, setorganizers }) => {
     setrspvtable(!rspvtable);
   };
 
+  const EnableOrganizersView = () => {
+    setviewOrganizers(!viewOrganizers);
+  };
+
   return (
     <>
-      <section>
-        <Row className="mt-4 m-0 p-0">
-          <Col
-            lg={12}
-            md={12}
-            sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
-            <Button
-              text={t("Notification1")}
-              className={styles["Notification_button"]}
-              icon={<img src={mail} width="17.18px" height="12.08px" />}
-              onClick={enableNotificationTable}
-            />
-            <Button
-              text={t("Edit")}
-              className={styles["Edit_Button_Organizers"]}
-              icon={<img src={EditIcon} width="11.75px" height="11.75px" />}
-              onClick={enableRspvTable}
-            />
-            <Button
-              text={t("Add-more")}
-              icon={<img src={addmore} />}
-              className={styles["AddMoreBtn"]}
-              onClick={openAddUserModal}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            {notifcationTable ? (
-              <>
-                <Table
-                  column={NotifcatoinColoumns}
-                  scroll={{ y: "62vh" }}
-                  pagination={false}
-                  className="Polling_table"
-                  rows={notificationRows}
+      {viewOrganizers ? (
+        <OrganizersViewPage />
+      ) : (
+        <>
+          <section>
+            <Row className="mt-4 m-0 p-0">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end gap-2"
+              >
+                <Button
+                  text={t("Notification1")}
+                  className={styles["Notification_button"]}
+                  icon={<img src={mail} width="17.18px" height="12.08px" />}
+                  onClick={enableNotificationTable}
                 />
-              </>
-            ) : rspvtable ? (
-              <>
-                <Table
-                  column={rspvColoumns}
-                  scroll={{ y: "62vh" }}
-                  pagination={false}
-                  className="Polling_table"
-                  rows={rspvRows}
+                <Button
+                  text={t("Edit")}
+                  className={styles["Edit_Button_Organizers"]}
+                  icon={<img src={EditIcon} width="11.75px" height="11.75px" />}
+                  onClick={enableRspvTable}
                 />
-              </>
-            ) : (
-              <>
-                <Table
-                  column={MeetingColoumns}
-                  scroll={{ y: "62vh" }}
-                  pagination={false}
-                  className="Polling_table"
-                  rows={rowsData}
+                <Button
+                  text={t("Add-more")}
+                  icon={<img src={addmore} />}
+                  className={styles["AddMoreBtn"]}
+                  onClick={openAddUserModal}
                 />
-              </>
-            )}
-          </Col>
-        </Row>
-        <Row className="mt-4">
-          <Col
-            lg={12}
-            md={12}
-            sm={12}
-            className="d-flex gap-2 justify-content-end"
-          >
-            <Button
-              text={t("Cancel")}
-              className={styles["Cancel_Organization"]}
-            />
-            <Button
-              text={t("Publish")}
-              className={styles["Cancel_Organization"]}
-            />
-            <Button
-              text={t("Next")}
-              className={styles["Next_Organization"]}
-              onClick={handleNextButton}
-            />
-          </Col>
-        </Row>
-      </section>
+              </Col>
+            </Row>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                {notifcationTable ? (
+                  <>
+                    <Table
+                      column={NotifcatoinColoumns}
+                      scroll={{ y: "62vh" }}
+                      pagination={false}
+                      className="Polling_table"
+                      rows={notificationRows}
+                    />
+                  </>
+                ) : rspvtable ? (
+                  <>
+                    <Table
+                      column={rspvColoumns}
+                      scroll={{ y: "62vh" }}
+                      pagination={false}
+                      className="Polling_table"
+                      rows={rspvRows}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Table
+                      column={MeetingColoumns}
+                      scroll={{ y: "62vh" }}
+                      pagination={false}
+                      className="Polling_table"
+                      rows={rowsData}
+                    />
+                  </>
+                )}
+              </Col>
+            </Row>
+            <Row className="mt-4">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex gap-2 justify-content-end"
+              >
+                <Button
+                  text={t("Cancel")}
+                  className={styles["Cancel_Organization"]}
+                />
+                <Button
+                  text={t("Publish")}
+                  className={styles["Cancel_Organization"]}
+                  onClick={EnableOrganizersView}
+                />
+                <Button
+                  text={t("Next")}
+                  className={styles["Next_Organization"]}
+                  onClick={handleNextButton}
+                />
+              </Col>
+            </Row>
+          </section>
+        </>
+      )}
+
       {NewMeetingreducer.adduserModal && <ModalOrganizor />}
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
       {NewMeetingreducer.notifyOrganizors && <NotifyOrganizers />}

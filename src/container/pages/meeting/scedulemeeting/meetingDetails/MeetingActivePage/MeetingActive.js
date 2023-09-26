@@ -152,6 +152,23 @@ const MeetingActive = () => {
           </Row>
         </Col>
       </Row>
+      <Row className="mt-2">
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className="d-flex justify-content-end gap-2"
+        >
+          <Button
+            text={t("Cancel")}
+            className={styles["Cancel_Meeting_SaveMeeting"]}
+          />
+          <Button
+            text={t("Next")}
+            className={styles["Next_Meeting_SaveMeeting"]}
+          />
+        </Col>
+      </Row>
     </section>
   );
 };
