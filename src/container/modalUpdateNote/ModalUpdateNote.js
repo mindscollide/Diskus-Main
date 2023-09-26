@@ -333,7 +333,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
             setTimeout(
               setOpen({
                 open: true,
-                message: t("File-already-exisit"),
+                message: t("File-already-exists"),
               }),
               3000
             );
