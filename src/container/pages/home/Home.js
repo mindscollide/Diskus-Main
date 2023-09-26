@@ -70,7 +70,10 @@ import {
   getusernotificationinit,
   HideNotificationUserNotificationData,
 } from "../../../store/actions/GetUserNotification";
-import { HideNotification } from "../../../store/actions/Get_List_Of_Assignees";
+import {
+  cleareAssigneesState,
+  HideNotification,
+} from "../../../store/actions/Get_List_Of_Assignees";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { cleareMessage, setLoader } from "../../../store/actions/Auth2_actions";
 import VerificationFailedIcon from "./../../../assets/images/failed.png";
@@ -325,6 +328,9 @@ const Home = () => {
   useEffect(() => {
     console.log("getCalendarDataResponse123123");
     callApi();
+    return () => {
+      dispatch(cleareAssigneesState());
+    };
   }, []);
 
   useEffect(() => {

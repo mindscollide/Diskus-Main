@@ -239,7 +239,6 @@ const Meeting = () => {
         2
       )
     );
-    await dispatch(GetAllReminders(t));
     // setModalsflag(true);
   };
 

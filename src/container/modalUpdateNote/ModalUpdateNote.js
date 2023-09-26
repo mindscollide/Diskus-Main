@@ -36,15 +36,16 @@ import { validateInput } from "../../commen/functions/regex";
 
 const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   //For Localization
-  const { NotesReducer } = useSelector((state) => state);
+  const { NotesReducer, uploadReducer } = useSelector((state) => state);
   const [isUpdateNote, setIsUpdateNote] = useState(true);
+  const [updateConfirmation, setUpdateConfirmation] = useState(false);
   const [closeConfirmationBox, setCloseConfirmationBox] = useState(false);
   const [isDeleteNote, setIsDeleteNote] = useState(false);
   const [erorbar, setErrorBar] = useState(false);
   const { t } = useTranslation();
-  const [isCreateNote, setIsCreateNote] = useState(false);
   const [fileSize, setFileSize] = useState(0);
   const [fileForSend, setFileForSend] = useState([]);
+  const [attachments, setAttachments] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const deleteNoteModalHandler = async () => {
@@ -250,6 +251,23 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
     } catch (error) {}
   }, [NotesReducer.GetNotesByNotesId]);
 
+  useEffect(() => {
+    if (
+      uploadReducer.uploadDocumentsList !== null &&
+      uploadReducer.uploadDocumentsList !== undefined
+    ) {
+      let uploadDocument = uploadReducer.uploadDocumentsList;
+      let data = {
+        displayAttachmentName: uploadDocument.displayFileName,
+        originalAttachmentName: uploadDocument.originalFileName,
+      };
+      setTasksAttachments({
+        TasksAttachments: [...tasksAttachments.TasksAttachments, data],
+      });
+    }
+  }, [uploadReducer.uploadDocumentsList]);
+
+  console.log(tasksAttachments, "tasksAttachmentstasksAttachments");
   const uploadFilesToDo = (data) => {
     let fileSizeArr;
     if (Object.keys(tasksAttachments.TasksAttachments).length === 10) {
@@ -418,7 +436,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
   const notesSaveHandler = () => {
     try {
       if (addNoteFields.Title.value !== "") {
-        let counter = fileForSend.length;
         if (Object.keys(fileForSend).length > 0) {
           const uploadFiles = (fileForSend) => {
             const uploadPromises = fileForSend.map((newData) => {
@@ -434,14 +451,12 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
               let notesAttachment = [];
               if (tasksAttachments.TasksAttachments.length > 0) {
                 tasksAttachments.TasksAttachments.map((data, index) => {
-                  console.log("datadata", data);
                   notesAttachment.push({
                     DisplayAttachmentName: data.displayAttachmentName,
                     OriginalAttachmentName: data.originalAttachmentName,
                   });
                 });
               }
-              console.log("check2");
 
               let Data = {
                 PK_NotesID: addNoteFields.PK_NotesID,
@@ -453,7 +468,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                 FK_NotesStatusID: addNoteFields.FK_NotesStatusID,
                 NotesAttachments: notesAttachment,
               };
-              console.log("check2");
 
               dispatch(
                 UpdateNotesAPI(
@@ -475,17 +489,6 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
           let createrID = localStorage.getItem("userID");
           let OrganizationID = localStorage.getItem("organizationID");
           let notesAttachment = [];
-          console.log("setIsUpdateNotesetIsUpdateNote");
-
-          if (tasksAttachments.TasksAttachments.length > 0) {
-            tasksAttachments.TasksAttachments.map((data, index) => {
-              console.log("datadata", data);
-              notesAttachment.push({
-                DisplayAttachmentName: data.displayAttachmentName,
-                OriginalAttachmentName: data.originalAttachmentName,
-              });
-            });
-          }
           let Data = {
             PK_NotesID: addNoteFields.PK_NotesID,
             Title: addNoteFields.Title.value,
@@ -539,7 +542,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
             setIsUpdateNote(false);
           }}
           modalHeaderClassName={
-            isDeleteNote === true
+            isDeleteNote === true || updateConfirmation === true
               ? "d-none"
               : isDeleteNote === false
               ? styles["header-UpdateNotesModal-close-btn"]
@@ -557,7 +560,7 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
               ? "md"
               : updateNotes === true
               ? "md"
-              : closeConfirmationBox
+              : closeConfirmationBox || updateConfirmation
               ? null
               : "md"
           }
@@ -892,6 +895,17 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                     </Col>
                   </Row>
                 </>
+              ) : updateConfirmation ? (
+                <Row>
+                  <Col
+                    lg={12}
+                    md={12}
+                    sm={12}
+                    className={styles["delete-note-modal-text"]}
+                  >
+                    <p>{t("Are-you-sure-you-want-to-update-this-note")}?</p>
+                  </Col>
+                </Row>
               ) : null}
             </>
           }
@@ -924,7 +938,13 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                     <Button
                       text={t("Update")}
                       type="submit"
-                      onClick={notesSaveHandler}
+                      onClick={() => {
+                        setCloseConfirmationBox(false);
+                        setIsDeleteNote(false);
+                        setIsUpdateNote(false);
+                        setUpdateConfirmation(true);
+                      }}
+                      // onClick={notesSaveHandler}
                       className={styles["Update-notes-Button"]}
                     />
                   </Col>
@@ -974,16 +994,51 @@ const ModalUpdateNote = ({ ModalTitle, setUpdateNotes, updateNotes, flag }) => {
                       <Button
                         onClick={() => setIsUpdateNote(true)}
                         className={styles["cancel-Update-notes"]}
-                        text={"Cancel"}
+                        text={t("Cancel")}
                       />
                       <Button
                         onClick={() => setUpdateNotes(false)}
                         className={styles["Update-notes-Button"]}
-                        text={"Close"}
+                        text={t("Close")}
                       />
                     </Col>
                   </Row>
                 </>
+              ) : updateConfirmation ? (
+                <Row className={styles["modal-row"]}>
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    className="d-flex justify-content-end "
+                  >
+                    <Button
+                      text={t("Cancel")}
+                      className={styles["cancel-note-modal-btn"]}
+                      onClick={() => {
+                        setCloseConfirmationBox(false);
+                        setIsDeleteNote(false);
+                        setIsUpdateNote(true);
+                        setUpdateConfirmation(false);
+                      }}
+                      // onClick={handleClickCancelDeleteModal}
+                    />
+                  </Col>
+                  <Col
+                    lg={6}
+                    md={6}
+                    sm={6}
+                    xs={12}
+                    className="d-flex justify-content-start "
+                  >
+                    <Button
+                      text={t("Update")}
+                      className={styles["delete-note-modal-btn"]}
+                      onClick={notesSaveHandler}
+                    />
+                  </Col>
+                </Row>
               ) : null}
             </>
           }

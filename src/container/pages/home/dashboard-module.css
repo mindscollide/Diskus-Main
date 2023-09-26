@@ -32,13 +32,13 @@
 }
 
 .home-meetingcount-text {
-  font-size: calc(19px - 20%) !important;
+  font-size: calc(17px - 20%) !important;
   font-family: "MontserratSemiBold" !important;
   line-height: 1.3 !important;
 }
 
 .home-todocount-text {
-  font-size: calc(19px - 20%) !important;
+  font-size: calc(17px - 20%) !important;
   font-family: "MontserratSemiBold" !important;
   line-height: 1.3 !important;
 }

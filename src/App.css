@@ -5423,6 +5423,8 @@ span.package-icon-style {
 
 .rbc-overlay {
   max-width: 100px !important;
+  max-height: 145px !important;
+  overflow-y: auto;
 }
 
 body[dir="rtl"] .SignupOrganization input.form-control {
@@ -6065,4 +6067,9 @@ input[type="time"]::-webkit-inner-spin-button {
 /* adjust clear button */
 input[type="time"]::-webkit-clear-button {
   z-index: 1;
+}
+.rmdp-header-values {
+  color: #5a5a5a;
+  font-family: "MontserratSemiBold-600";
+  font-size: calc(19px - 20%);
 }
