@@ -51,6 +51,10 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     setOptions({ ...options, selectedOption });
   };
 
+  const handleMeetingSelectChange = (selectedOption) => {
+    setOptions({ ...options, selectedOption });
+  };
+
   const handleStartDateChange = (date) => {
     setOptions({ ...options, startDate: date });
   };
@@ -237,14 +241,13 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
               </Row>
               <Row>
                 <Col lg={12} md={12} sm={12}>
-                  <TextField
-                    placeholder={t("Meeting-type")}
-                    applyClass={"meetinInnerSearch"}
-                    name={"MeetingType"}
-                    change={HandleChange}
-                    labelClass="d-none"
-                    value={meetingDetails.MeetingType}
+                  {/* TO BE CHANGED */}
+                  <Select
+                    value={rows.MeetingType}
+                    onChange={handleMeetingSelectChange}
+                    isSearchable={false}
                   />
+
                   <Row>
                     <Col>
                       <p
