@@ -89,7 +89,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
       ),
     },
   ];
-  const [rowsData, setRowsData] = useState(0);
+  const [rowsData, setRowsData] = useState(data);
 
   const AgendaColoumns = [
     {
@@ -358,13 +358,26 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
               }}
             />
           </Col>
-          <Col lg={8} md={8} sm={12} className="d-flex justify-content-end">
+          <Col
+            lg={8}
+            md={8}
+            sm={12}
+            className="d-flex justify-content-end gap-3"
+          >
             <Button
               text={t("Add-more")}
               icon={<img src={addmore} />}
               className={styles["AddMoreBtn"]}
               onClick={openAddAgendaModal}
             />
+            {selectedOption !== null ? (
+              <>
+                <Button text={"Save"} />
+                <Button text={"Cancel"} />
+              </>
+            ) : (
+              <></>
+            )}
           </Col>
         </Row>
         <Row>

@@ -224,7 +224,6 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
     { value: "sixmonthly", label: t("Six-monthly") },
   ];
 
-  console.log(rows, "optionsoptionsoptions");
   return (
     <section>
       <Row>
