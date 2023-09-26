@@ -2614,19 +2614,43 @@ p.publishMessageModal {
   vertical-align: middle !important;
   align-items: center !important;
   /* margin-top    : -10px !important; */
-  margin-left: 35px !important;
+  /* margin-left: 35px !important; */
 }
 
-body[dir="rtl"] .expandableMenuSearch {
-  margin-right: -30px;
+.expandableMenuSearch_Meeting {
+  display: inline-flex !important;
+  vertical-align: middle !important;
+  align-items: center !important;
+  /* margin-top    : -10px !important; */
+  /* margin-left: 35px !important; */
+}
+body[dir="rtl"] .expandableMenuSearch_Meeting {
+  margin-right: 0 !important;
+  margin-left: auto !important;
 }
 
+.expandableMenuSearch_Meeting label.textFieldSearch.form-label {
+  display: none !important;
+}
+
+.expandableMenuSearch_Meeting input {
+  margin-right: 15px !important;
+}
 .expandableMenuSearch label.textFieldSearch.form-label {
   display: none !important;
 }
 
 .expandableMenuSearch input {
   margin-right: 15px !important;
+}
+svg.search-Icon.toExpandSearch.Meeting {
+  position: relative !important;
+  width: 24px;
+  height: 24px;
+  z-index: 1 !important;
+  /* top     : -5px; */
+  /* left: 30px; */
+  cursor: pointer;
 }
 
 svg.search-Icon.toExpandSearch.Meeting {
@@ -2635,7 +2659,7 @@ svg.search-Icon.toExpandSearch.Meeting {
   height: 24px;
   z-index: 1 !important;
   /* top     : -5px; */
-  left: 30px;
+  /* left: 30px; */
   cursor: pointer;
 }
 

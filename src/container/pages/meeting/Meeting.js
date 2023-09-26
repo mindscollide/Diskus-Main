@@ -856,17 +856,11 @@ const Meeting = () => {
   return (
     <>
       <div className="meeting_container">
-        <Row className="d-flex justify-content-start align-items-center margin-bottom-15 mt-2">
+        <Row className="d-flex justify-content-around align-items-center margin-bottom-15 ">
           <Col lg={2} md={2} sm={2} className="meeting-heading mt-1">
             {t("Meetings")}
           </Col>
-          <Col
-            lg={2}
-            md={2}
-            sm={2}
-            // xs={12}
-            className="meeting-schedulenewmeeting-btn"
-          >
+          <Col lg={2} md={2} sm={12} className="meeting-schedulenewmeeting-btn">
             <Button
               className={"ScheduleAMeeting"}
               variant={"Primary"}
@@ -881,7 +875,7 @@ const Meeting = () => {
             lg={6}
             sm={6}
             // xs={12}
-            className="meeting-fields p-0 meeting-searchfileds"
+            className="meeting-fields p-0 "
           >
             <Search
               className="search-Icon toExpandSearch Meeting"
@@ -890,7 +884,7 @@ const Meeting = () => {
             {isExpand && (
               <>
                 {currentLanguage === "ar" ? (
-                  <div className="expandableMenuSearch">
+                  <div className="expandableMenuSearch_Meeting">
                     <Form className="d-flex">
                       {currentLanguage === "ar" ? (
                         <CustomDatePicker
@@ -948,7 +942,7 @@ const Meeting = () => {
                     </Form>
                   </div>
                 ) : (
-                  <div className="expandableMenuSearch">
+                  <div className="expandableMenuSearch_Meeting">
                     <Form className="d-flex gap-2 ">
                       {currentLanguage === "ar" ? (
                         <CustomDatePicker

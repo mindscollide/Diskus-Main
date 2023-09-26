@@ -392,8 +392,6 @@ button.btn.btn-primary.start-meeting-button.ar.btn.btn-primary {
 
 body[dir="rtl"] .todolist-search-row {
   margin-left: 0 !important;
-  /* margin-top  : 5px !important; */
-  margin-right: 20px !important;
 }
 
 body[dir="rtl"] i.icon-add-square.uploadfile {
