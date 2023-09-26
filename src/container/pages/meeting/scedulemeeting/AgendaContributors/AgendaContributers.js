@@ -24,6 +24,7 @@ import ModalCrossIcon from "../Organizers/ModalCrossIconClick/ModalCrossIcon";
 import tick from "../../../../../assets/images/PNG tick.png";
 import NotifyAgendaModal from "./NotifyAgendaContributors/NotifyAgendaModal";
 import { notification } from "antd";
+import AgendaContributorView from "./AgendaContributorsView/AgendaContributorView";
 const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
   const [notificationTable, setNotificationTable] = useState(false);
   const [rspvTable, setrspvTable] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
-
+  const [viewAgendaContributors, setViewAgendaContributors] = useState(false);
   const shownotifyAgendaContrubutors = () => {
     dispatch(showAgendaContributorsModals(true));
   };
@@ -343,239 +344,257 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
     setrspvTable(!rspvTable);
   };
 
+  const EnableViewAgendaContributors = () => {
+    setViewAgendaContributors(!viewAgendaContributors);
+  };
+
   return (
     <>
-      <section>
-        <Row className="mt-5">
-          <Col lg={4} md={4} sm={12}>
-            <Select
-              options={options}
-              value={selectedOption}
-              onChange={handleOptionSelect}
-              isSearchable={false}
-              components={{
-                Option: CustomOption,
-              }}
-            />
-          </Col>
-          <Col
-            lg={8}
-            md={8}
-            sm={12}
-            className="d-flex justify-content-end gap-3"
-          >
-            <Button
-              text={t("Add-more")}
-              icon={<img src={addmore} />}
-              className={styles["AddMoreBtn"]}
-              onClick={openAddAgendaModal}
-            />
-            {selectedOption !== null ? (
-              <>
-                <Button text={"Save"} />
-                <Button text={"Cancel"} />
-              </>
-            ) : (
-              <></>
-            )}
-          </Col>
-        </Row>
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            {notificationTable ? (
-              <>
-                <Table
-                  column={notificationColoumn}
-                  scroll={{ y: "62vh" }}
-                  pagination={false}
-                  className="Polling_table"
-                  locale={{
-                    emptyText: (
-                      <>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <img
-                              src={emptyContributorState}
-                              width="274.05px"
-                              height="230.96px"
-                            />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <span className={styles["Empty_state_heading"]}>
-                              {t("No-agenda-contributor")}
-                            </span>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <span className={styles["Empty_state_Subheading"]}>
-                              {t("There-are-no-agenda-contributors")}
-                            </span>
-                          </Col>
-                        </Row>
-                      </>
-                    ),
+      {viewAgendaContributors ? (
+        <AgendaContributorView />
+      ) : (
+        <>
+          <section>
+            <Row className="mt-5">
+              <Col lg={4} md={4} sm={12}>
+                <Select
+                  options={options}
+                  value={selectedOption}
+                  onChange={handleOptionSelect}
+                  isSearchable={false}
+                  components={{
+                    Option: CustomOption,
                   }}
-                  rows={notificationRows}
                 />
-              </>
-            ) : rspvTable ? (
-              <>
-                <Table
-                  column={rspvColoumn}
-                  scroll={{ y: "62vh" }}
-                  pagination={false}
-                  className="Polling_table"
-                  locale={{
-                    emptyText: (
-                      <>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <img
-                              src={emptyContributorState}
-                              width="274.05px"
-                              height="230.96px"
-                            />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <span className={styles["Empty_state_heading"]}>
-                              {t("No-agenda-contributor")}
-                            </span>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <span className={styles["Empty_state_Subheading"]}>
-                              {t("There-are-no-agenda-contributors")}
-                            </span>
-                          </Col>
-                        </Row>
-                      </>
-                    ),
-                  }}
-                  rows={rspvRows}
+              </Col>
+              <Col
+                lg={8}
+                md={8}
+                sm={12}
+                className="d-flex justify-content-end gap-3"
+              >
+                <Button
+                  text={t("Add-more")}
+                  icon={<img src={addmore} />}
+                  className={styles["AddMoreBtn"]}
+                  onClick={openAddAgendaModal}
                 />
-              </>
-            ) : (
-              <>
-                <Table
-                  column={AgendaColoumns}
-                  scroll={{ y: "62vh" }}
-                  pagination={false}
-                  locale={{
-                    emptyText: (
-                      <>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <img
-                              src={emptyContributorState}
-                              width="274.05px"
-                              height="230.96px"
-                            />
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <span className={styles["Empty_state_heading"]}>
-                              {t("No-agenda-contributor")}
-                            </span>
-                          </Col>
-                        </Row>
-                        <Row>
-                          <Col
-                            lg={12}
-                            md={12}
-                            sm={12}
-                            className="d-flex justify-content-center"
-                          >
-                            <span className={styles["Empty_state_Subheading"]}>
-                              {t("There-are-no-agenda-contributors")}
-                            </span>
-                          </Col>
-                        </Row>
-                      </>
-                    ),
-                  }}
-                  className="Polling_table"
-                  rows={rowsData}
+                {selectedOption !== null ? (
+                  <>
+                    <Button text={"Save"} />
+                    <Button text={"Cancel"} />
+                  </>
+                ) : (
+                  <></>
+                )}
+              </Col>
+            </Row>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                {notificationTable ? (
+                  <>
+                    <Table
+                      column={notificationColoumn}
+                      scroll={{ y: "62vh" }}
+                      pagination={false}
+                      className="Polling_table"
+                      locale={{
+                        emptyText: (
+                          <>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <img
+                                  src={emptyContributorState}
+                                  width="274.05px"
+                                  height="230.96px"
+                                />
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <span className={styles["Empty_state_heading"]}>
+                                  {t("No-agenda-contributor")}
+                                </span>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <span
+                                  className={styles["Empty_state_Subheading"]}
+                                >
+                                  {t("There-are-no-agenda-contributors")}
+                                </span>
+                              </Col>
+                            </Row>
+                          </>
+                        ),
+                      }}
+                      rows={notificationRows}
+                    />
+                  </>
+                ) : rspvTable ? (
+                  <>
+                    <Table
+                      column={rspvColoumn}
+                      scroll={{ y: "62vh" }}
+                      pagination={false}
+                      className="Polling_table"
+                      locale={{
+                        emptyText: (
+                          <>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <img
+                                  src={emptyContributorState}
+                                  width="274.05px"
+                                  height="230.96px"
+                                />
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <span className={styles["Empty_state_heading"]}>
+                                  {t("No-agenda-contributor")}
+                                </span>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <span
+                                  className={styles["Empty_state_Subheading"]}
+                                >
+                                  {t("There-are-no-agenda-contributors")}
+                                </span>
+                              </Col>
+                            </Row>
+                          </>
+                        ),
+                      }}
+                      rows={rspvRows}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Table
+                      column={AgendaColoumns}
+                      scroll={{ y: "62vh" }}
+                      pagination={false}
+                      locale={{
+                        emptyText: (
+                          <>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <img
+                                  src={emptyContributorState}
+                                  width="274.05px"
+                                  height="230.96px"
+                                />
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <span className={styles["Empty_state_heading"]}>
+                                  {t("No-agenda-contributor")}
+                                </span>
+                              </Col>
+                            </Row>
+                            <Row>
+                              <Col
+                                lg={12}
+                                md={12}
+                                sm={12}
+                                className="d-flex justify-content-center"
+                              >
+                                <span
+                                  className={styles["Empty_state_Subheading"]}
+                                >
+                                  {t("There-are-no-agenda-contributors")}
+                                </span>
+                              </Col>
+                            </Row>
+                          </>
+                        ),
+                      }}
+                      className="Polling_table"
+                      rows={rowsData}
+                    />
+                  </>
+                )}
+              </Col>
+            </Row>
+            <Row className="mt-5">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex gap-2 justify-content-end"
+              >
+                <Button
+                  text={t("Cancel")}
+                  className={styles["Cancel_Organization"]}
+                  onClick={EnableViewAgendaContributors}
                 />
-              </>
-            )}
-          </Col>
-        </Row>
-        <Row className="mt-5">
-          <Col
-            lg={12}
-            md={12}
-            sm={12}
-            className="d-flex gap-2 justify-content-end"
-          >
-            <Button
-              text={t("Cancel")}
-              className={styles["Cancel_Organization"]}
-            />
-            <Button
-              text={t("Publish")}
-              className={styles["Cancel_Organization"]}
-              onClick={enableNotificatoinTable}
-            />
-            <Button
-              text={t("Save")}
-              className={styles["Next_Organization"]}
-              onClick={handleNextButton}
-            />
-            <Button
-              text={t("Next")}
-              className={styles["Next_Organization"]}
-              onClick={handleNextButton}
-            />
-          </Col>
-        </Row>
-      </section>
+                <Button
+                  text={t("Publish")}
+                  className={styles["Cancel_Organization"]}
+                  onClick={enableNotificatoinTable}
+                />
+                <Button
+                  text={t("Save")}
+                  className={styles["Next_Organization"]}
+                  onClick={handleNextButton}
+                />
+                <Button
+                  text={t("Next")}
+                  className={styles["Next_Organization"]}
+                  onClick={handleNextButton}
+                />
+              </Col>
+            </Row>
+          </section>
+        </>
+      )}
+
       {NewMeetingreducer.agendaContributors && <AgendaContributorsModal />}
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
       {NewMeetingreducer.notifyAgendaContributors && <NotifyAgendaModal />}

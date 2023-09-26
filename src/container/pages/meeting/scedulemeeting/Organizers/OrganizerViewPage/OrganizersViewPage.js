@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styles from "./OrganizersViewPage.module.css";
-import { Table } from "../../../../../../components/elements";
+import { Button, Table } from "../../../../../../components/elements";
 import { Col, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -68,6 +68,24 @@ const OrganizersViewPage = () => {
             pagination={false}
             className="Polling_table"
             rows={notificationRows}
+          />
+        </Col>
+      </Row>
+
+      <Row className="mt-5">
+        <Col
+          lg={12}
+          md={12}
+          sm={12}
+          className="d-flex justify-content-end gap-2"
+        >
+          <Button
+            text={t("Cancel")}
+            className={styles["Cancel_Button_Organizers_view"]}
+          />
+          <Button
+            text={t("Next")}
+            className={styles["Next_Button_Organizers_view"]}
           />
         </Col>
       </Row>
