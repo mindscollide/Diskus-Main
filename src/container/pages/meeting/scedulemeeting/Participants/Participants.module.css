@@ -29,10 +29,10 @@
 .Cancel_Organization {
   padding: 12px 30px !important;
   font-size: 12px !important;
-  border: 1px solid #e1e1e1;
+  border: 1px solid #e1e1e1 !important;
   border-radius: 4px !important;
-  background: #fff;
-  color: #5a5a5a;
+  background: #fff !important;
+  color: #5a5a5a !important;
   font-family: "MontserratSemiBold" !important;
 }
 

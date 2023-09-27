@@ -23,6 +23,7 @@ import {
   showCrossConfirmationModal,
 } from "../../../../../store/actions/NewMeetingActions";
 import AddParticipantModal from "./AddParticipantModal/AddParticipantModal";
+import ParticipantsView from "./ParticpantsView/ParticipantsView";
 
 const Participants = ({
   setParticipants,
@@ -35,7 +36,7 @@ const Participants = ({
   const navigate = useNavigate();
   const { NewMeetingreducer } = useSelector((state) => state);
   const [rspvTable, setrspvTable] = useState(false);
-
+  const [particiapntsView, setParticiapntsView] = useState(false);
   const openCrossIconModal = () => {
     dispatch(showCrossConfirmationModal(true));
   };
@@ -220,85 +221,97 @@ const Participants = ({
     setProposedMeetingDates(true);
   };
 
+  const EnableParticipantsViewPage = () => {
+    setParticiapntsView(true);
+  };
+
   return (
     <>
-      <section>
-        <Row className="mt-3">
-          <Col
-            lg={12}
-            md={12}
-            sm={12}
-            className="d-flex justify-content-end gap-2"
-          >
-            <Button
-              text={t("Edit")}
-              className={styles["Edit_Button_Organizers"]}
-              icon={<img src={EditIcon} width="11.75px" height="11.75px" />}
-              onClick={enableRspvTable}
-            />
-
-            <Button
-              text={t("Add-more")}
-              icon={<img src={addmore} />}
-              className={styles["AddMoreBtn"]}
-              onClick={openAddPartcipantModal}
-            />
-          </Col>
-        </Row>
-        <Row>
-          <Col lg={12} md={12} sm={12}>
-            {rspvTable ? (
-              <>
-                <Table
-                  column={rspvColoumns}
-                  scroll={{ y: "62vh" }}
-                  pagination={false}
-                  className="Polling_table"
-                  rows={rspvRows}
+      {particiapntsView ? (
+        <ParticipantsView />
+      ) : (
+        <>
+          <section>
+            <Row className="mt-3">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex justify-content-end gap-2"
+              >
+                <Button
+                  text={t("Edit")}
+                  className={styles["Edit_Button_Organizers"]}
+                  icon={<img src={EditIcon} width="11.75px" height="11.75px" />}
+                  onClick={enableRspvTable}
                 />
-              </>
-            ) : (
-              <>
-                <Table
-                  column={ParticipantsColoumn}
-                  scroll={{ y: "62vh" }}
-                  pagination={false}
-                  className="Polling_table"
-                  rows={rowsData}
-                />
-              </>
-            )}
-          </Col>
-        </Row>
-        <Row className="mt-5">
-          <Col
-            lg={12}
-            md={12}
-            sm={12}
-            className="d-flex gap-2 justify-content-end"
-          >
-            <Button
-              text={t("Cancel")}
-              className={styles["Cancel_Organization"]}
-            />
-            <Button
-              text={t("Propose-meeting-dates")}
-              className={styles["Cancel_Organization"]}
-              onClick={handleProposedmeetingDates}
-            />
-            <Button
-              text={t("Publish")}
-              className={styles["Cancel_Organization"]}
-            />
 
-            <Button
-              text={t("Next")}
-              className={styles["Next_Organization"]}
-              onClick={handleNextButton}
-            />
-          </Col>
-        </Row>
-      </section>
+                <Button
+                  text={t("Add-more")}
+                  icon={<img src={addmore} />}
+                  className={styles["AddMoreBtn"]}
+                  onClick={openAddPartcipantModal}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col lg={12} md={12} sm={12}>
+                {rspvTable ? (
+                  <>
+                    <Table
+                      column={rspvColoumns}
+                      scroll={{ y: "62vh" }}
+                      pagination={false}
+                      className="Polling_table"
+                      rows={rspvRows}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Table
+                      column={ParticipantsColoumn}
+                      scroll={{ y: "62vh" }}
+                      pagination={false}
+                      className="Polling_table"
+                      rows={rowsData}
+                    />
+                  </>
+                )}
+              </Col>
+            </Row>
+            <Row className="mt-5">
+              <Col
+                lg={12}
+                md={12}
+                sm={12}
+                className="d-flex gap-2 justify-content-end"
+              >
+                <Button
+                  text={t("Cancel")}
+                  className={styles["Cancel_Organization"]}
+                />
+                <Button
+                  text={t("Propose-meeting-dates")}
+                  className={styles["Cancel_Organization"]}
+                  onClick={handleProposedmeetingDates}
+                />
+                <Button
+                  text={t("Publish")}
+                  className={styles["Cancel_Organization"]}
+                  onClick={EnableParticipantsViewPage}
+                />
+
+                <Button
+                  text={t("Next")}
+                  className={styles["Next_Organization"]}
+                  onClick={handleNextButton}
+                />
+              </Col>
+            </Row>
+          </section>
+        </>
+      )}
+
       {NewMeetingreducer.crossConfirmation && <ModalCrossIcon />}
       {NewMeetingreducer.participantModal && <AddParticipantModal />}
       {/* {proposeMeeting && } */}
