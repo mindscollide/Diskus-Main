@@ -55,11 +55,11 @@ const Agenda = () => {
   const { NewMeetingreducer } = useSelector((state) => state);
   const { Dragger } = Upload;
   const [expand, setExpand] = useState(true);
-  const [subExpand, setSubExpand] = useState(true);
+  const [subExpand, setSubExpand] = useState([]);
   const [savedViewAgenda, setsavedViewAgenda] = useState(false);
   const [expandSubIndex, setExpandSubIndex] = useState(0);
-  const [expandIndex, setExpandIndex] = useState(0);
-  const [subexpandIndex, setsubexpandIndex] = useState(1);
+  const [expandIndex, setExpandIndex] = useState(-1);
+  const [subexpandIndex, setsubexpandIndex] = useState(-1);
   const [agendaItemRemovedIndex, setAgendaItemRemovedIndex] = useState(0);
   const [mainAgendaRemovalIndex, setMainAgendaRemovalIndex] = useState(0);
   const [subajendaRemoval, setSubajendaRemoval] = useState(0);
@@ -200,8 +200,9 @@ const Agenda = () => {
   // Function For Expanding Main Agenda See More Options
   const handleExpandedBtn = (index) => {
     console.log(index, "recordrecordrecordrecord");
-    setExpandIndex(index);
-    setExpand(!expand);
+    setExpandIndex((prevIndex) => (prevIndex === index ? -1 : index));
+    // setExpandIndex(index);
+    // setExpand(!expand);
   };
 
   //Function For Adding Main Agendas
