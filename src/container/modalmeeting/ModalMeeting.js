@@ -54,6 +54,7 @@ import { useNavigate } from "react-router-dom";
 import TextFieldTime from "../../components/elements/input_field_time/Input_field";
 import InputIcon from "react-multi-date-picker/components/input_icon";
 import { settingApi } from "../../commen/apis/Api_ends_points";
+import { UPDATE_RESOLUTION_BY_RESOLUTION_ID_FAIL } from "../../store/action_types";
 
 const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   //For Localization
@@ -105,6 +106,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       PK_AAID: 1,
     },
   });
+
   // for edit agenda
   const [editRecordFlag, seteditRecordFlag] = useState(false);
   const [editRecordIndex, seteditRecordIndex] = useState(null);
@@ -120,6 +122,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
 
   //Attendees States
   const [taskAssignedToInput, setTaskAssignedToInput] = useState("");
+  const [attachments, setAttachments] = useState([]);
+  const [forUpdateAttachments, setForUpdateAttachent] = useState([]);
   const [taskAssignedTo, setTaskAssignedTo] = useState(0);
   const [taskAssignedName, setTaskAssignedName] = useState("");
   const [createMeetingTime, setCreateMeetingTime] = useState("");
@@ -429,98 +433,137 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     }
   };
 
+  const [fileForSend, setFileForSend] = useState([]);
+  const [fileSize, setFileSize] = useState(0);
+
   // for add another agenda main inputs handler
   const uploadFilesAgenda = (data) => {
-    const uploadFilePath = data.target.value;
-    const uploadedFile = data.target.files[0];
-    var ext = uploadedFile.name.split(".").pop();
-    let file = meetingAgendaAttachments.MeetingAgendaAttachments;
-    if (
-      ext === "doc" ||
-      ext === "docx" ||
-      ext === "xls" ||
-      ext === "xlsx" ||
-      ext === "pdf" ||
-      ext === "png" ||
-      ext === "txt" ||
-      ext === "jpg" ||
-      ext === "jpeg" ||
-      ext === "gif"
-    ) {
-      let data;
-      let sizezero;
-      let size;
-      if (file.length > 0) {
-        file.map((filename, index) => {
-          if (filename.DisplayFileName === uploadedFile.name) {
-            data = false;
-          }
-        });
-        if (uploadedFile.size > 10485760) {
-          size = false;
-        } else if (uploadedFile.size === 0) {
-          sizezero = false;
-        }
-        if (data === false) {
-        } else if (size === false) {
-        } else if (sizezero === false) {
-        } else {
-          dispatch(FileUploadToDo(navigate, uploadedFile, t));
-        }
-      } else {
-        let size;
+    let fileSizeArr;
+    if (Object.keys(fileForSend).length === 10) {
+      setTimeout(
+        setOpen({
+          flag: true,
+          message: t("You-can-not-upload-more-then-10-files"),
+        }),
+        3000
+      );
+    } else if (fileSize >= 104857600) {
+      setTimeout(
+        setOpen({
+          flag: true,
+          message: t("You-can-not-upload-more-then-100MB-files"),
+        }),
+        3000
+      );
+    } else {
+      const uploadedFile = data.target.files[0];
+      var ext = uploadedFile.name.split(".").pop();
+      let file = attachments;
+
+      if (
+        ext === "doc" ||
+        ext === "docx" ||
+        ext === "xls" ||
+        ext === "xlsx" ||
+        ext === "pdf" ||
+        ext === "png" ||
+        ext === "txt" ||
+        ext === "jpg" ||
+        ext === "jpeg" ||
+        ext === "gif"
+      ) {
+        let data;
         let sizezero;
-        if (uploadedFile.size === 0) {
-          setOpen({
-            ...open,
-            flag: true,
-            message: t("File-size-is-0mb"),
+        let size;
+        if (file.length > 0) {
+          file.map((filename, index) => {
+            if (filename.DisplayAttachmentName === uploadedFile.name) {
+              data = false;
+            }
           });
-          sizezero = false;
-        }
-        if (size === false) {
-        } else if (sizezero === false) {
+          if (uploadedFile.size > 10485760) {
+            size = false;
+          } else if (uploadedFile.size === 0) {
+            sizezero = false;
+          }
+          if (data === false) {
+            setOpen({
+              ...open,
+              message: "This File Already Exist",
+              flag: true,
+            });
+          } else if (size === false) {
+          } else if (sizezero === false) {
+          } else {
+            let fileData = {
+              PK_MAAID: 0,
+              DisplayAttachmentName: uploadedFile.name,
+              OriginalAttachmentName: uploadedFile.name,
+              CreationDateTime: "111111",
+              FK_MAID: 0,
+            };
+            setAttachments((prev) => [...prev, fileData]);
+            fileSizeArr = uploadedFile.size + fileSize;
+            setFileForSend([...fileForSend, uploadedFile]);
+            setFileSize(fileSizeArr);
+          }
         } else {
-          dispatch(FileUploadToDo(navigate, uploadedFile, t));
+          let size;
+          let sizezero;
+          if (uploadedFile.size === 0) {
+            setOpen({
+              ...open,
+              flag: true,
+              message: t("File-size-is-0mb"),
+            });
+            sizezero = false;
+          }
+          if (size === false) {
+          } else if (sizezero === false) {
+          } else {
+            let fileData = {
+              PK_MAAID: 0,
+              DisplayAttachmentName: uploadedFile.name,
+              OriginalAttachmentName: uploadedFile.name,
+              CreationDateTime: "111111",
+              FK_MAID: 0,
+            };
+            setAttachments((prev) => [...prev, fileData]);
+            fileSizeArr = uploadedFile.size + fileSize;
+            setFileForSend([...fileForSend, uploadedFile]);
+            setFileSize(fileSizeArr);
+          }
         }
       }
     }
   };
 
-  useEffect(() => {
-    try {
-      let newData = uploadReducer.uploadDocumentsList;
-      let MeetingAgendaAttachment =
-        meetingAgendaAttachments.MeetingAgendaAttachments;
-      if (newData != undefined && newData.length != 0) {
-        console.log("uploadDocumentsList error", newData);
-
-        MeetingAgendaAttachment.push({
-          PK_MAAID: 0,
-          DisplayAttachmentName: newData.displayFileName,
-          OriginalAttachmentName: newData.originalFileName,
-          CreationDateTime: "111111",
-          FK_MAID: 0,
-        });
-        setMeetingAgendaAttachments({
-          ...meetingAgendaAttachments,
-          ["MeetingAgendaAttachments"]: MeetingAgendaAttachment,
-        });
-        dispatch(ResetAllFilesUpload());
-      }
-    } catch (error) {
-      console.log("uploadDocumentsList error");
-    }
-  }, [uploadReducer.uploadDocumentsList]);
-
   const editGrid = (datarecord, dataindex) => {
+    console.log(datarecord, "editGrideditGrideditGrideditGrid");
+    console.log(dataindex, "editGrideditGrideditGrideditGrid");
+    console.log(datarecord, "editGrideditGrideditGrideditGrid");
     seteditRecordIndex(dataindex);
     seteditRecordFlag(true);
     setObjMeetingAgenda(datarecord.ObjMeetingAgenda);
-    setMeetingAgendaAttachments({
-      ...meetingAgendaAttachments,
-      ["MeetingAgendaAttachments"]: datarecord.MeetingAgendaAttachments,
-    });
+    let filesData = [];
+    if (datarecord.MeetingAgendaAttachments.length > 0) {
+      datarecord.MeetingAgendaAttachments.map((uploadedFile, index) => {
+        filesData.push({
+          PK_MAAID: 0,
+          DisplayAttachmentName: uploadedFile.DisplayAttachmentName,
+          OriginalAttachmentName: uploadedFile.OriginalAttachmentName,
+          CreationDateTime: "111111",
+          FK_MAID: 0,
+        });
+      });
+    }
+    setAttachments(filesData);
+    setForUpdateAttachent(filesData);
+    console.log(filesData, "filesDatafilesData");
+    // setMeetingAgendaAttachments({
+    //   ...meetingAgendaAttachments,
+    //   ["MeetingAgendaAttachments"]: datarecord.MeetingAgendaAttachments,
+    // });
   };
 
   const deleteGrid = (datarecord, dataindex) => {
@@ -532,13 +575,139 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   };
 
   // for add another agenda main inputs handler
-  const addAnOtherAgenda = (e) => {
+  const addAnOtherAgenda = async (e) => {
     e.preventDefault();
     let previousAdendas = createMeeting.MeetingAgendas;
-    if (editRecordFlag != null && editRecordFlag === true) {
+    if (editRecordFlag !== null && editRecordFlag === true) {
       if (objMeetingAgenda.Title !== "") {
         if (objMeetingAgenda.URLs !== "") {
           if (urlPatternValidation(objMeetingAgenda.URLs)) {
+            if (fileForSend.length > 0) {
+              setModalField(false);
+              let fileforSend = [
+                ...meetingAgendaAttachments.MeetingAgendaAttachments,
+              ];
+              console.log(fileforSend, "fileforSendfileforSend");
+              let newfile = [];
+              const uploadPromises = fileForSend.map((newData) => {
+                // Return the promise from FileUploadToDo
+                return dispatch(FileUploadToDo(navigate, newData, t, newfile));
+              });
+              // Wait for all uploadPromises to resolve
+              await Promise.all(uploadPromises);
+              console.log(newfile, "fileforSendfileforSend");
+              newfile.forEach((fileData, index) => {
+                fileforSend.push({
+                  PK_MAAID: 0,
+                  DisplayAttachmentName: fileData.DisplayAttachmentName,
+                  OriginalAttachmentName: fileData.OriginalAttachmentName,
+                  CreationDateTime: "111111",
+                  FK_MAID: 0,
+                });
+              });
+              let newData = {
+                ObjMeetingAgenda: objMeetingAgenda,
+                MeetingAgendaAttachments: fileforSend,
+              };
+              previousAdendas[editRecordIndex] = newData;
+              console.log(newData, "fileforSendfileforSend");
+              setCreateMeeting({
+                ...createMeeting,
+                ["MeetingAgendas"]: previousAdendas,
+              });
+              seteditRecordIndex(null);
+              seteditRecordFlag(false);
+              setObjMeetingAgenda({
+                Title: "",
+                PresenterName: "",
+                URLs: "",
+                FK_MDID: 0,
+              });
+              setMeetingAgendaAttachments({
+                MeetingAgendaAttachments: [],
+              });
+              setFileForSend([]);
+              setAttachments([]);
+            } else {
+              let newData = {
+                ObjMeetingAgenda: objMeetingAgenda,
+                MeetingAgendaAttachments:
+                  meetingAgendaAttachments.MeetingAgendaAttachments,
+              };
+              console.log(newData, "fileforSendfileforSend");
+              previousAdendas[editRecordIndex] = newData;
+              setCreateMeeting({
+                ...createMeeting,
+                ["MeetingAgendas"]: previousAdendas,
+              });
+              seteditRecordIndex(null);
+              seteditRecordFlag(false);
+              setObjMeetingAgenda({
+                Title: "",
+                PresenterName: "",
+                URLs: "",
+                FK_MDID: 0,
+              });
+              setMeetingAgendaAttachments({
+                MeetingAgendaAttachments: [],
+              });
+            }
+          } else {
+            setModalField(false);
+            setOpen({
+              ...open,
+              flag: true,
+              message: t("Enter-valid-url"),
+            });
+          }
+        } else {
+          if (fileForSend.length > 0) {
+            setModalField(false);
+            let fileforSend = [...forUpdateAttachments];
+            console.log(fileforSend, "update agenda attachment");
+            let newfile = [];
+            const uploadPromises = fileForSend.map((newData) => {
+              // Return the promise from FileUploadToDo
+              return dispatch(FileUploadToDo(navigate, newData, t, newfile));
+            });
+            // Wait for all uploadPromises to resolve
+            await Promise.all(uploadPromises);
+
+            newfile.forEach((fileData, index) => {
+              fileforSend.push({
+                PK_MAAID: 0,
+                DisplayAttachmentName: fileData.DisplayAttachmentName,
+                OriginalAttachmentName: fileData.OriginalAttachmentName,
+                CreationDateTime: "111111",
+                FK_MAID: 0,
+              });
+            });
+            console.log(newfile, "update agenda attachment");
+            let newData = {
+              ObjMeetingAgenda: objMeetingAgenda,
+              MeetingAgendaAttachments: fileforSend,
+            };
+            console.log(newData, "update agenda attachment");
+            previousAdendas[editRecordIndex] = newData;
+            setCreateMeeting({
+              ...createMeeting,
+              MeetingAgendas: previousAdendas,
+            });
+            seteditRecordIndex(null);
+            seteditRecordFlag(false);
+            setObjMeetingAgenda({
+              Title: "",
+              PresenterName: "",
+              URLs: "",
+              FK_MDID: 0,
+            });
+            setMeetingAgendaAttachments({
+              MeetingAgendaAttachments: [],
+            });
+            setAttachments([]);
+            setFileForSend([]);
+            setForUpdateAttachent([]);
+          } else {
             let newData = {
               ObjMeetingAgenda: objMeetingAgenda,
               MeetingAgendaAttachments:
@@ -560,36 +729,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
             setMeetingAgendaAttachments({
               MeetingAgendaAttachments: [],
             });
-          } else {
-            setModalField(false);
-            setOpen({
-              ...open,
-              flag: true,
-              message: t("Enter-valid-url"),
-            });
           }
-        } else {
-          let newData = {
-            ObjMeetingAgenda: objMeetingAgenda,
-            MeetingAgendaAttachments:
-              meetingAgendaAttachments.MeetingAgendaAttachments,
-          };
-          previousAdendas[editRecordIndex] = newData;
-          setCreateMeeting({
-            ...createMeeting,
-            ["MeetingAgendas"]: previousAdendas,
-          });
-          seteditRecordIndex(null);
-          seteditRecordFlag(false);
-          setObjMeetingAgenda({
-            Title: "",
-            PresenterName: "",
-            URLs: "",
-            FK_MDID: 0,
-          });
-          setMeetingAgendaAttachments({
-            MeetingAgendaAttachments: [],
-          });
         }
       } else {
         setModalField(true);
@@ -604,27 +744,67 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       if (objMeetingAgenda.Title !== "") {
         if (objMeetingAgenda.URLs !== "") {
           if (urlPatternValidation(objMeetingAgenda.URLs)) {
-            setModalField(false);
-            let previousAdendas = createMeeting.MeetingAgendas;
-            let newData = {
-              ObjMeetingAgenda: objMeetingAgenda,
-              MeetingAgendaAttachments:
-                meetingAgendaAttachments.MeetingAgendaAttachments,
-            };
-            previousAdendas.push(newData);
-            setCreateMeeting({
-              ...createMeeting,
-              ["MeetingAgendas"]: previousAdendas,
-            });
-            setObjMeetingAgenda({
-              Title: "",
-              PresenterName: "",
-              URLs: "",
-              FK_MDID: 0,
-            });
-            setMeetingAgendaAttachments({
-              MeetingAgendaAttachments: [],
-            });
+            if (fileForSend.length > 0) {
+              setModalField(false);
+              let fileforSend = [];
+              let newfile = [];
+              const uploadPromises = fileForSend.map((newData) => {
+                // Return the promise from FileUploadToDo
+                return dispatch(FileUploadToDo(navigate, newData, t, newfile));
+              });
+              // Wait for all uploadPromises to resolve
+              await Promise.all(uploadPromises);
+              newfile.forEach((fileData, index) => {
+                fileforSend.push({
+                  PK_MAAID: 0,
+                  DisplayAttachmentName: fileData.DisplayAttachmentName,
+                  OriginalAttachmentName: fileData.OriginalAttachmentName,
+                  CreationDateTime: "111111",
+                  FK_MAID: 0,
+                });
+              });
+              let previousAdendas = [...createMeeting.MeetingAgendas];
+
+              let newData = {
+                ObjMeetingAgenda: objMeetingAgenda,
+                MeetingAgendaAttachments: fileforSend,
+              };
+              previousAdendas.push(newData);
+              setCreateMeeting({
+                ...createMeeting,
+                MeetingAgendas: previousAdendas,
+              });
+              setObjMeetingAgenda({
+                Title: "",
+                PresenterName: "",
+                URLs: "",
+                FK_MDID: 0,
+              });
+              setFileForSend([]);
+              setMeetingAgendaAttachments({
+                ...meetingAgendaAttachments,
+                MeetingAgendaAttachments: [],
+              });
+              setAttachments([]);
+            } else {
+              setModalField(false);
+              let previousAdendas = [...createMeeting.MeetingAgendas];
+              let newData = {
+                ObjMeetingAgenda: objMeetingAgenda,
+                MeetingAgendaAttachments: [],
+              };
+              previousAdendas.push(newData);
+              setCreateMeeting({
+                ...createMeeting,
+                MeetingAgendas: previousAdendas,
+              });
+              setObjMeetingAgenda({
+                Title: "",
+                PresenterName: "",
+                URLs: "",
+                FK_MDID: 0,
+              });
+            }
           } else {
             setModalField(false);
             setOpen({
@@ -634,27 +814,73 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
             });
           }
         } else {
-          setModalField(false);
-          let previousAdendas = createMeeting.MeetingAgendas;
-          let newData = {
-            ObjMeetingAgenda: objMeetingAgenda,
-            MeetingAgendaAttachments:
-              meetingAgendaAttachments.MeetingAgendaAttachments,
-          };
-          previousAdendas.push(newData);
-          setCreateMeeting({
-            ...createMeeting,
-            ["MeetingAgendas"]: previousAdendas,
-          });
-          setObjMeetingAgenda({
-            Title: "",
-            PresenterName: "",
-            URLs: "",
-            FK_MDID: 0,
-          });
-          setMeetingAgendaAttachments({
-            MeetingAgendaAttachments: [],
-          });
+          if (fileForSend.length > 0) {
+            setModalField(false);
+            let fileforSend = [];
+            let newfile = [];
+
+            const uploadPromises = fileForSend.map((newData) => {
+              // Return the promise from FileUploadToDo
+              return dispatch(FileUploadToDo(navigate, newData, t, newfile));
+            });
+            // Wait for all uploadPromises to resolve
+            await Promise.all(uploadPromises);
+            newfile.forEach((fileData, index) => {
+              fileforSend.push({
+                PK_MAAID: 0,
+                DisplayAttachmentName: fileData.DisplayAttachmentName,
+                OriginalAttachmentName: fileData.OriginalAttachmentName,
+                CreationDateTime: "111111",
+                FK_MAID: 0,
+              });
+            });
+            console.log(fileforSend, "fileforSendfileforSendfileforSend");
+            let previousAdendas = [...createMeeting.MeetingAgendas];
+            let newData = {
+              ObjMeetingAgenda: objMeetingAgenda,
+              MeetingAgendaAttachments: fileforSend,
+            };
+            previousAdendas.push(newData);
+            setCreateMeeting({
+              ...createMeeting,
+              MeetingAgendas: previousAdendas,
+            });
+            setObjMeetingAgenda({
+              Title: "",
+              PresenterName: "",
+              URLs: "",
+              FK_MDID: 0,
+            });
+            setFileForSend([]);
+            setMeetingAgendaAttachments({
+              ...meetingAgendaAttachments,
+              MeetingAgendaAttachments: [],
+            });
+            setAttachments([]);
+          } else {
+            setModalField(false);
+            let previousAdendas = [...createMeeting.MeetingAgendas];
+            let newData = {
+              ObjMeetingAgenda: objMeetingAgenda,
+              MeetingAgendaAttachments: [],
+            };
+            previousAdendas.push(newData);
+            setCreateMeeting({
+              ...createMeeting,
+              MeetingAgendas: previousAdendas,
+            });
+            setObjMeetingAgenda({
+              Title: "",
+              PresenterName: "",
+              URLs: "",
+              FK_MDID: 0,
+            });
+            setMeetingAgendaAttachments({
+              ...meetingAgendaAttachments,
+              MeetingAgendaAttachments: [],
+            });
+            setAttachments([]);
+          }
         }
       } else {
         setModalField(true);
@@ -666,19 +892,13 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
       }
     }
   };
-  function videoEnableButton() {
-    if (createMeeting.IsVideoCall === true) {
-      setCreateMeeting({
-        ...createMeeting,
-        ["IsVideoCall"]: false,
-      });
-    } else {
-      setCreateMeeting({
-        ...createMeeting,
-        ["IsVideoCall"]: true,
-      });
-    }
-  }
+
+  const videoEnableButton = () => {
+    setCreateMeeting({
+      ...createMeeting,
+      ["IsVideoCall"]: !createMeeting.IsVideoCall,
+    });
+  };
 
   useEffect(() => {
     try {
@@ -980,6 +1200,8 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
 
   // for attendies handler
   const handleSubmit = async () => {
+    let uploadMeetingAttachments = [...createMeeting.MeetingAgendas];
+    console.log(uploadMeetingAttachments, "uploadMeetingAttachments");
     let finalDateTime = createConvert(
       createMeeting.MeetingDate + createMeeting.MeetingStartTime
     );
@@ -1100,7 +1322,14 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
   };
 
   const deleteFilefromAttachments = (data, index) => {
+    console.log(data, "datadatadatadeleteFilefromAttachments");
     let searchIndex = meetingAgendaAttachments.MeetingAgendaAttachments;
+    let newAttachments = attachments.filter(
+      (fileData, index) =>
+        fileData.DisplayAttachmentName !== data.DisplayAttachmentName
+    );
+    console.log(newAttachments, "datadatadatadeleteFilefromAttachments");
+    setAttachments(newAttachments);
     searchIndex.splice(index, 1);
     setMeetingAgendaAttachments({
       ...meetingAgendaAttachments,
@@ -1115,7 +1344,7 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
     setAddedParticipantNameList(addedParticipantNameList);
     setCreateMeeting({ ...createMeeting, ["MeetingAttendees"]: user1 });
   };
-
+  console.log(createMeeting, "createMeetingcreateMeetingcreateMeeting");
   return (
     <>
       <Container>
@@ -1512,98 +1741,98 @@ const ModalMeeting = ({ ModalTitle, setShow, show, calenderFlag }) => {
                       />
                     </Form>
                     <Row>
-                      {meetingAgendaAttachments.MeetingAgendaAttachments
-                        .length > 0
-                        ? meetingAgendaAttachments.MeetingAgendaAttachments.map(
-                            (data, index) => {
-                              var ext =
-                                data.DisplayAttachmentName.split(".").pop();
-                              const first =
-                                data.DisplayAttachmentName.split(" ")[0];
-                              return (
-                                <Col
-                                  sm={12}
-                                  lg={3}
-                                  md={3}
-                                  className="file-icon-modalmeeting"
-                                >
-                                  {ext === "doc" ? (
-                                    <FileIcon
-                                      extension={"docx"}
-                                      size={78}
-                                      labelColor={"rgba(16, 121, 63)"}
-                                    />
-                                  ) : ext === "xlsx" ? (
-                                    <FileIcon
-                                      extension={"xls"}
-                                      type={"spreadsheet"}
-                                      size={78}
-                                      labelColor={"rgba(16, 121, 63)"}
-                                    />
-                                  ) : ext === "pdf" ? (
-                                    <FileIcon
-                                      extension={"pdf"}
-                                      size={78}
-                                      {...defaultStyles.pdf}
-                                    />
-                                  ) : ext === "png" ? (
-                                    <FileIcon
-                                      extension={"png"}
-                                      size={78}
-                                      type={"image"}
-                                      labelColor={"rgba(102, 102, 224)"}
-                                    />
-                                  ) : ext === "txt" ? (
-                                    <FileIcon
-                                      extension={"txt"}
-                                      size={78}
-                                      type={"document"}
-                                      labelColor={"rgba(52, 120, 199)"}
-                                    />
-                                  ) : ext === "jpg" ? (
-                                    <FileIcon
-                                      extension={"jpg"}
-                                      size={78}
-                                      type={"image"}
-                                      labelColor={"rgba(102, 102, 224)"}
-                                    />
-                                  ) : ext === "jpeg" ? (
-                                    <FileIcon
-                                      extension={"jpeg"}
-                                      size={78}
-                                      type={"image"}
-                                      labelColor={"rgba(102, 102, 224)"}
-                                    />
-                                  ) : ext === "gif" ? (
-                                    <FileIcon
-                                      extension={"gif"}
-                                      size={78}
-                                      {...defaultStyles.gif}
-                                    />
-                                  ) : (
-                                    <FileIcon
-                                      extension={ext}
-                                      size={78}
-                                      {...defaultStyles.ext}
-                                    />
-                                  )}
-                                  <span className="deleteBtn">
-                                    <img
-                                      src={deleteButtonCreateMeeting}
-                                      width={15}
-                                      height={15}
-                                      onClick={() =>
-                                        deleteFilefromAttachments(data, index)
-                                      }
-                                    />
-                                  </span>
-                                  <p className="file-icon-modalmeeting-p">
-                                    {first}
-                                  </p>
-                                </Col>
-                              );
-                            }
-                          )
+                      {attachments.length > 0
+                        ? attachments.map((data, index) => {
+                            console.log(data, "datadatadatadata");
+                            let ext =
+                              data.DisplayAttachmentName !== undefined &&
+                              data.DisplayAttachmentName.split(".").pop();
+                            const first =
+                              data.DisplayAttachmentName !== undefined &&
+                              data.DisplayAttachmentName.split(" ")[0];
+                            return (
+                              <Col
+                                sm={12}
+                                lg={3}
+                                md={3}
+                                className="file-icon-modalmeeting"
+                              >
+                                {ext === "doc" ? (
+                                  <FileIcon
+                                    extension={"docx"}
+                                    size={78}
+                                    labelColor={"rgba(16, 121, 63)"}
+                                  />
+                                ) : ext === "xlsx" ? (
+                                  <FileIcon
+                                    extension={"xls"}
+                                    type={"spreadsheet"}
+                                    size={78}
+                                    labelColor={"rgba(16, 121, 63)"}
+                                  />
+                                ) : ext === "pdf" ? (
+                                  <FileIcon
+                                    extension={"pdf"}
+                                    size={78}
+                                    {...defaultStyles.pdf}
+                                  />
+                                ) : ext === "png" ? (
+                                  <FileIcon
+                                    extension={"png"}
+                                    size={78}
+                                    type={"image"}
+                                    labelColor={"rgba(102, 102, 224)"}
+                                  />
+                                ) : ext === "txt" ? (
+                                  <FileIcon
+                                    extension={"txt"}
+                                    size={78}
+                                    type={"document"}
+                                    labelColor={"rgba(52, 120, 199)"}
+                                  />
+                                ) : ext === "jpg" ? (
+                                  <FileIcon
+                                    extension={"jpg"}
+                                    size={78}
+                                    type={"image"}
+                                    labelColor={"rgba(102, 102, 224)"}
+                                  />
+                                ) : ext === "jpeg" ? (
+                                  <FileIcon
+                                    extension={"jpeg"}
+                                    size={78}
+                                    type={"image"}
+                                    labelColor={"rgba(102, 102, 224)"}
+                                  />
+                                ) : ext === "gif" ? (
+                                  <FileIcon
+                                    extension={"gif"}
+                                    size={78}
+                                    {...defaultStyles.gif}
+                                  />
+                                ) : (
+                                  <FileIcon
+                                    extension={ext}
+                                    size={78}
+                                    {...defaultStyles.ext}
+                                  />
+                                )}
+                                <span className="deleteBtn">
+                                  <img
+                                    src={deleteButtonCreateMeeting}
+                                    width={15}
+                                    height={15}
+                                    onClick={() =>
+                                      deleteFilefromAttachments(data, index)
+                                    }
+                                  />
+                                </span>
+                                <p className="file-icon-modalmeeting-p">
+                                  {first}
+                                </p>
+                              </Col>
+                            );
+                          })
                         : null}
                     </Row>
                   </div>
