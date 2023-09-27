@@ -1,31 +1,29 @@
 import React, { useState } from "react";
-import styles from "./AgendaContributorView.module.css";
-import { Col, Row } from "react-bootstrap";
+import styles from "./ParticipantsView.module.css";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Col, Row } from "react-bootstrap";
 import { Button, Table } from "../../../../../../components/elements";
-const AgendaContributorView = () => {
+const ParticipantsView = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const AgendaContributorViewData = [
+  const ParticipantsViewData = [
     {
       key: "1",
-      Name: <label className={styles["Title_desc"]}>Saad Fudda</label>,
+      Name: <label className={styles["Title_desc"]}>Muahmmad Saif</label>,
       Email: (
         <label className="column-boldness">Saifiiyousuf4002@gmail.com</label>
       ),
-      ContributorTitle: (
-        <label className="column-boldness">Content Writer</label>
-      ),
+      Participanttitle: <label>Content Writer</label>,
+      Role: <label>Participant</label>,
     },
   ];
 
-  const [agendaContributorsViewRows, setAgendaContributorsViewRows] = useState(
-    AgendaContributorViewData
-  );
-  const AgendaContributorViewColoumns = [
+  const [participantsViewRows, setParticipantsViewRows] =
+    useState(ParticipantsViewData);
+  const ParticipantsViewColoumn = [
     {
       title: (
         <>
@@ -38,39 +36,40 @@ const AgendaContributorView = () => {
       ),
       dataIndex: "Name",
       key: "Name",
-      width: "300px",
+      width: "260px",
     },
 
     {
       title: t("Email"),
       dataIndex: "Email",
       key: "Email",
-      width: "400px",
+      width: "280px",
     },
     {
-      title: t("Contributor-title"),
-      dataIndex: "ContributorTitle",
-      key: "ContributorTitle",
+      title: t("Participant-title"),
+      dataIndex: "Participanttitle",
+      key: "Participanttitle",
       width: "300px",
     },
+
+    {
+      title: t("Role"),
+      dataIndex: "Role",
+      key: "Role",
+      width: "249px",
+    },
   ];
+
   return (
     <section>
-      <Row className="mt-4">
-        <Col lg={12} md={12} sm={12}>
-          <span className={styles["Grant_Access_Styles"]}>
-            Grant access to their own agenda items and files only
-          </span>
-        </Col>
-      </Row>
-      <Row className="mt-2">
+      <Row>
         <Col lg={12} md={12} sm={12}>
           <Table
-            column={AgendaContributorViewColoumns}
+            column={ParticipantsViewColoumn}
             scroll={{ y: "62vh" }}
             pagination={false}
             className="Polling_table"
-            rows={agendaContributorsViewRows}
+            rows={participantsViewRows}
           />
         </Col>
       </Row>
@@ -95,4 +94,4 @@ const AgendaContributorView = () => {
   );
 };
 
-export default AgendaContributorView;
+export default ParticipantsView;

@@ -1491,5 +1491,7 @@
   "Bi-weekly": "Bi Weekly",
   "Quaterly": "Quaterly",
   "Six-monthly": "Six Monthly",
-  "Leave-meeting": "Leave Meeting"
+  "Leave-meeting": "Leave Meeting",
+  "Contributor-title": "Contributor Title",
+  "Participant-title": "Participant Title"
 }
