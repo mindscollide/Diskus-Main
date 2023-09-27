@@ -3253,6 +3253,7 @@ const ChatMainBody = ({ chatMessageClass }) => {
   //Send Chat
   const sendChat = async () => {
     // e.preventDefault()
+    console.log('Message Sent Striked')
     if (
       (messageSendData.Body !== '' && uploadFileTalk !== {}) ||
       (messageSendData.Body === '' && uploadFileTalk !== {}) ||
