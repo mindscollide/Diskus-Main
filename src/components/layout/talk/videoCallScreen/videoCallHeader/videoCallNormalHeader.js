@@ -272,24 +272,32 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
   return (
     <>
       <Row className="mb-4">
-        <Col lg={3} md={3} sm={12} className="mt-1">
-          <p className="title-heading">
-            {currentUserName !== VideoMainReducer.VideoRecipentData.userName &&
-            Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
-            initiateVideoCallFlag === true
-              ? VideoMainReducer.VideoRecipentData.userName ||
-                VideoMainReducer.VideoRecipentData.recipients[0].userName
-              : currentUserName !==
-                  VideoMainReducer.VideoRecipentData.userName &&
-                Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
-                initiateVideoCallFlag === false
-              ? VideoMainReducer.VideoRecipentData.userName ||
-                VideoMainReducer.VideoRecipentData.recipients[0].userName
-              : Object.keys(VideoMainReducer.VideoRecipentData).length === 0
-              ? callerName
-              : null}
-          </p>
-        </Col>
+        {currentCallType === 2 || callTypeID === 2 ? (
+          <Col lg={3} md={3} sm={12} className="mt-1">
+            <p className="title-heading">{t('Group-call')}</p>
+          </Col>
+        ) : (
+          <Col lg={3} md={3} sm={12} className="mt-1">
+            <p className="title-heading">
+              {currentUserName !==
+                VideoMainReducer.VideoRecipentData.userName &&
+              Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
+              initiateVideoCallFlag === true
+                ? VideoMainReducer.VideoRecipentData.userName ||
+                  VideoMainReducer.VideoRecipentData.recipients[0].userName
+                : currentUserName !==
+                    VideoMainReducer.VideoRecipentData.userName &&
+                  Object.keys(VideoMainReducer.VideoRecipentData).length > 0 &&
+                  initiateVideoCallFlag === false
+                ? VideoMainReducer.VideoRecipentData.userName ||
+                  VideoMainReducer.VideoRecipentData.recipients[0].userName
+                : Object.keys(VideoMainReducer.VideoRecipentData).length === 0
+                ? callerName
+                : null}
+            </p>
+          </Col>
+        )}
+
         <Col
           lg={4}
           md={4}
@@ -327,14 +335,6 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                       width={30}
                     />
                     <div className="participants-list" key={Math.random()}>
-                      <Row className="m-0">
-                        <Col className="p-0" lg={8} md={8} sm={12}>
-                          <p className="participant-name">{currentUserName}</p>
-                        </Col>
-                        <Col className="p-0" lg={4} md={4} sm={12}>
-                          <p className="participant-state">Host</p>
-                        </Col>
-                      </Row>
                       {currentParticipants !== undefined &&
                       currentParticipants !== null &&
                       currentParticipants.length > 0
@@ -350,12 +350,12 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                             )
                             return (
                               <Row className="m-0" key={index}>
-                                <Col className="p-0" lg={8} md={8} sm={12}>
+                                <Col className="p-0" lg={7} md={7} sm={12}>
                                   <p className="participant-name">
                                     {participantData.userName}
                                   </p>
                                 </Col>
-                                <Col className="p-0" lg={4} md={4} sm={12}>
+                                <Col className="p-0" lg={5} md={5} sm={12}>
                                   <p className="participant-state">
                                     {matchingStatus
                                       ? matchingStatus.CallStatus
@@ -366,6 +366,14 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
                             )
                           })
                         : null}
+                      <Row className="hostBorder m-0">
+                        <Col className="p-0" lg={7} md={7} sm={12}>
+                          <p className="participant-name">{currentUserName}</p>
+                        </Col>
+                        <Col className="p-0" lg={5} md={5} sm={12}>
+                          <p className="participant-state">Host</p>
+                        </Col>
+                      </Row>
                       {/* <Button
                         className="add-participant-button"
                         text="Add Participants"
