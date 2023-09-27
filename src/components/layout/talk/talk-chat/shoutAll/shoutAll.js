@@ -7,6 +7,7 @@ import {
   newTimeFormaterAsPerUTCTalkTime,
   newTimeFormaterAsPerUTCTalkDate,
 } from '../../../../../commen/functions/date_formater'
+import { ResultMessage } from '../../../../elements'
 import {
   chatBoxActiveFlag,
   shoutallChatFlag,
@@ -26,6 +27,7 @@ import DoubleTickDeliveredIcon from '../../../../../assets/images/DoubleTickDeli
 import SingleTickIcon from '../../../../../assets/images/SingleTick-Icon.png'
 import TimerIcon from '../../../../../assets/images/Timer-Icon.png'
 import DropDownIcon from '../../../../../assets/images/dropdown-icon.png'
+import ShoutAllIcon from '../../../../../assets/images/ShoutAll.png'
 import { useTranslation } from 'react-i18next'
 
 const ShoutAll = () => {
@@ -89,89 +91,105 @@ const ShoutAll = () => {
     <>
       {shoutAllData !== undefined &&
       shoutAllData !== null &&
-      shoutAllData.length > 0
-        ? shoutAllData.map((dataItem) => {
-            return (
-              <Row className="single-chat">
-                <Col lg={2} md={2} sm={2} className="bottom-border">
-                  <div className="chat-profile-icon">
-                    {dataItem.messageType === 'B' ? (
-                      <>
-                        <img draggable="false" src={ShoutIcon} width={25} />
-                      </>
-                    ) : null}
-                  </div>
-                </Col>
-                <Col lg={10} md={10} sm={10} className="bottom-border">
-                  <div className={'chat-block'}>
-                    <p
-                      onClick={() => chatClick(dataItem)}
-                      className="chat-username m-0"
-                    >
-                      {' '}
-                      {dataItem.fullName}
-                    </p>
-                    <p
-                      onClick={() => chatClick(dataItem)}
-                      className="chat-message m-0"
-                    >
-                      <span className="chat-tick-icon">
-                        {dataItem.senderID === currentUserId &&
-                        dataItem.sentDate === '' &&
+      shoutAllData.length > 0 ? (
+        shoutAllData.map((dataItem) => {
+          return (
+            <Row className="single-chat">
+              <Col lg={2} md={2} sm={2} className="bottom-border">
+                <div className="chat-profile-icon">
+                  {dataItem.messageType === 'B' ? (
+                    <>
+                      <img draggable="false" src={ShoutIcon} width={25} />
+                    </>
+                  ) : null}
+                </div>
+              </Col>
+              <Col lg={10} md={10} sm={10} className="bottom-border">
+                <div className={'chat-block'}>
+                  <p
+                    onClick={() => chatClick(dataItem)}
+                    className="chat-username m-0"
+                  >
+                    {' '}
+                    {dataItem.fullName}
+                  </p>
+                  <p
+                    onClick={() => chatClick(dataItem)}
+                    className="chat-message m-0"
+                  >
+                    <span className="chat-tick-icon">
+                      {dataItem.senderID === currentUserId &&
+                      dataItem.sentDate === '' &&
+                      dataItem.receivedDate === '' &&
+                      dataItem.seenDate === '' ? (
+                        <img
+                          draggable="false"
+                          src={TimerIcon}
+                          className="img-cover"
+                        />
+                      ) : dataItem.senderID === currentUserId &&
+                        dataItem.sentDate !== '' &&
                         dataItem.receivedDate === '' &&
                         dataItem.seenDate === '' ? (
-                          <img draggable="false" src={TimerIcon} className="img-cover" />
-                        ) : dataItem.senderID === currentUserId &&
-                          dataItem.sentDate !== '' &&
-                          dataItem.receivedDate === '' &&
-                          dataItem.seenDate === '' ? (
-                          <img draggable="false" src={SingleTickIcon} className="img-cover" />
-                        ) : dataItem.senderID === currentUserId &&
-                          dataItem.sentDate !== '' &&
-                          dataItem.receivedDate !== '' &&
-                          dataItem.seenDate === '' ? (
-                          <img draggable="false"
-                            src={DoubleTickDeliveredIcon}
-                            className="img-cover"
-                          />
-                        ) : dataItem.senderID === currentUserId &&
-                          dataItem.sentDate !== '' &&
-                          dataItem.receivedDate !== '' &&
-                          dataItem.seenDate !== '' ? (
-                          <img draggable="false" src={DoubleTickIcon} className="img-cover" />
-                        ) : null}
-                      </span>
-                      {dataItem.messageBody}
-                    </p>
-                    <p className="chat-date m-0">
-                      {dataItem.messageDate.slice(0, 8) === currentUtcDate ? (
-                        <>
-                          {newTimeFormaterAsPerUTCTalkTime(
-                            dataItem.messageDate,
-                          )}
-                        </>
-                      ) : dataItem.messageDate.slice(0, 8) ===
-                        yesterdayDateUtc ? (
-                        <>
-                          {newTimeFormaterAsPerUTCTalkDate(
-                            dataItem.messageDate,
-                          ) + ' '}
-                          | {t('Yesterday')}
-                        </>
-                      ) : (
-                        <>
-                          {newTimeFormaterAsPerUTCTalkDate(
-                            dataItem.messageDate,
-                          )}
-                        </>
-                      )}
-                    </p>
-                  </div>
-                </Col>
-              </Row>
-            )
-          })
-        : null}
+                        <img
+                          draggable="false"
+                          src={SingleTickIcon}
+                          className="img-cover"
+                        />
+                      ) : dataItem.senderID === currentUserId &&
+                        dataItem.sentDate !== '' &&
+                        dataItem.receivedDate !== '' &&
+                        dataItem.seenDate === '' ? (
+                        <img
+                          draggable="false"
+                          src={DoubleTickDeliveredIcon}
+                          className="img-cover"
+                        />
+                      ) : dataItem.senderID === currentUserId &&
+                        dataItem.sentDate !== '' &&
+                        dataItem.receivedDate !== '' &&
+                        dataItem.seenDate !== '' ? (
+                        <img
+                          draggable="false"
+                          src={DoubleTickIcon}
+                          className="img-cover"
+                        />
+                      ) : null}
+                    </span>
+                    {dataItem.messageBody}
+                  </p>
+                  <p className="chat-date m-0">
+                    {dataItem.messageDate.slice(0, 8) === currentUtcDate ? (
+                      <>
+                        {newTimeFormaterAsPerUTCTalkTime(dataItem.messageDate)}
+                      </>
+                    ) : dataItem.messageDate.slice(0, 8) ===
+                      yesterdayDateUtc ? (
+                      <>
+                        {newTimeFormaterAsPerUTCTalkDate(dataItem.messageDate) +
+                          ' '}
+                        | {t('Yesterday')}
+                      </>
+                    ) : (
+                      <>
+                        {newTimeFormaterAsPerUTCTalkDate(dataItem.messageDate)}
+                      </>
+                    )}
+                  </p>
+                </div>
+              </Col>
+            </Row>
+          )
+        })
+      ) : (
+        <ResultMessage
+          icon={<img src={ShoutAllIcon} width={250} />}
+          title={
+            'No announcements to make? Shout to all your contacts and make your voice heard'
+          }
+          className="emptyRecentChats"
+        />
+      )}
     </>
   )
 }

@@ -20,7 +20,7 @@ import {
   GetAllUserChats,
 } from '../../../../../store/actions/Talk_action'
 import { Spin } from 'antd'
-import { TextField } from '../../../../elements'
+import { TextField, ResultMessage } from '../../../../elements'
 import SingleIcon from '../../../../../assets/images/Single-Icon.png'
 import GroupIcon from '../../../../../assets/images/Group-Icon.png'
 import ShoutIcon from '../../../../../assets/images/Shout-Icon.png'
@@ -30,6 +30,7 @@ import SingleTickIcon from '../../../../../assets/images/SingleTick-Icon.png'
 import TimerIcon from '../../../../../assets/images/Timer-Icon.png'
 import DropDownIcon from '../../../../../assets/images/dropdown-icon.png'
 import ClipIcon from '../../../../../assets/images/ClipIcon.png'
+import NoRecentChatsIcon from '../../../../../assets/images/No-Recent-Chats.png'
 import { useTranslation } from 'react-i18next'
 
 const RecentChats = () => {
@@ -569,17 +570,26 @@ const RecentChats = () => {
                       dataItem.sentDate === '' &&
                       dataItem.receivedDate === '' &&
                       dataItem.seenDate === '' ? (
-                        <img draggable="false" src={TimerIcon} className="img-cover" />
+                        <img
+                          draggable="false"
+                          src={TimerIcon}
+                          className="img-cover"
+                        />
                       ) : dataItem.senderID === parseInt(currentUserId) &&
                         dataItem.sentDate !== '' &&
                         dataItem.receivedDate === '' &&
                         dataItem.seenDate === '' ? (
-                        <img draggable="false" src={SingleTickIcon} className="img-cover" />
+                        <img
+                          draggable="false"
+                          src={SingleTickIcon}
+                          className="img-cover"
+                        />
                       ) : dataItem.senderID === parseInt(currentUserId) &&
                         dataItem.sentDate !== '' &&
                         dataItem.receivedDate !== '' &&
                         dataItem.seenDate === '' ? (
-                        <img draggable="false"
+                        <img
+                          draggable="false"
                           src={DoubleTickDeliveredIcon}
                           className="img-cover"
                         />
@@ -587,7 +597,11 @@ const RecentChats = () => {
                         dataItem.sentDate !== '' &&
                         dataItem.receivedDate !== '' &&
                         dataItem.seenDate !== '' ? (
-                        <img draggable="false" src={DoubleTickIcon} className="img-cover" />
+                        <img
+                          draggable="false"
+                          src={DoubleTickIcon}
+                          className="img-cover"
+                        />
                       ) : null}
                     </span>
 
@@ -642,7 +656,8 @@ const RecentChats = () => {
                     </span>
                   ) : null}
                   <div className="chathead-box-icons">
-                    <img draggable="false"
+                    <img
+                      draggable="false"
                       src={DropDownIcon}
                       onClick={() => activateChatHeadMenu(dataItem.id)}
                     />
@@ -693,7 +708,12 @@ const RecentChats = () => {
         })
       ) : talkStateData.AllUserChats.Loading === false &&
         allChatData.length === 0 ? (
-        <p>{t('No-Chats-Available')}</p>
+        // <p>{t('No-Chats-Available')}</p>
+        <ResultMessage
+          icon={<img src={NoRecentChatsIcon} width={250} />}
+          title={"It looks like you haven't made any recent chats"}
+          className="emptyRecentChats"
+        />
       ) : null}
     </>
   )

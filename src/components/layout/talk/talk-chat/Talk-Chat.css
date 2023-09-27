@@ -1871,3 +1871,12 @@ textarea.chat-message-input.form-control::-webkit-scrollbar-thumb {
   vertical-align: middle;
   justify-content: center;
 }
+
+.ant-result.ant-result-info.emptyRecentChats {
+  transform: translate(0px, 80px);
+}
+
+.emptyRecentChats .ant-result-title {
+  font-size: 14px;
+  color: #5a5a5a;
+}

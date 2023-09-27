@@ -8,6 +8,8 @@ import { Spin } from 'antd'
 import { GetAllStarredMessages } from '../../../../../store/actions/Talk_action'
 import SingleIcon from '../../../../../assets/images/Single-Icon.png'
 import StarredMessageIcon from '../../../../../assets/images/Starred-Message-Icon.png'
+import StarredMessages from '../../../../../assets/images/Starred-Messages.png'
+import { ResultMessage } from '../../../../elements'
 
 const StarredMessagesList = () => {
   const dispatch = useDispatch()
@@ -95,7 +97,11 @@ const StarredMessagesList = () => {
                     <p className="m-0">{dataItem.messageBody}</p>
                     <div className="starred-icon-date">
                       <span>
-                        <img draggable="false" src={StarredMessageIcon} alt="" />
+                        <img
+                          draggable="false"
+                          src={StarredMessageIcon}
+                          alt=""
+                        />
                       </span>
                       <p className="m-0">
                         {' '}
@@ -112,7 +118,13 @@ const StarredMessagesList = () => {
         })
       ) : talkStateData.AllStarMessagesData.Loading === false &&
         allStarredMessagesData.length === 0 ? (
-        <p>No Starred Messages</p>
+        <ResultMessage
+          icon={<img src={StarredMessages} width={250} />}
+          title={
+            "You haven't starred any messages yet. Mark important messages for quick access"
+          }
+          className="emptyRecentChats"
+        />
       ) : null}
     </>
   )
