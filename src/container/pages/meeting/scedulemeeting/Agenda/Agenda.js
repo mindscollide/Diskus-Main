@@ -1093,7 +1093,7 @@ const Agenda = () => {
               </Row>
             </DragDropContext>
             {/* Seperator For Footer */}
-            <Row className="mt-3">
+            <Row className="mt-1">
               <Col lg={12} md={12} sm={12}>
                 <Button
                   text={
@@ -1123,7 +1123,7 @@ const Agenda = () => {
                 />
               </Col>
             </Row>
-            <Row className="mt-5">
+            <Row className="mt-4">
               <Col
                 lg={12}
                 md={12}

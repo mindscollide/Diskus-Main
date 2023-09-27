@@ -354,7 +354,7 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
         <AgendaContributorView />
       ) : (
         <>
-          <section>
+          <section className="position-relative">
             <Row className="mt-5">
               <Col lg={4} md={4} sm={12}>
                 <Select
@@ -562,13 +562,10 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                 )}
               </Col>
             </Row>
-            <Row className="mt-5">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex gap-2 justify-content-end"
-              >
+          </section>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <section className={styles["Footer_Class"]}>
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Organization"]}
@@ -589,9 +586,9 @@ const AgendaContributers = ({ setParticipants, setAgendaContributors }) => {
                   className={styles["Next_Organization"]}
                   onClick={handleNextButton}
                 />
-              </Col>
-            </Row>
-          </section>
+              </section>
+            </Col>
+          </Row>
         </>
       )}
 

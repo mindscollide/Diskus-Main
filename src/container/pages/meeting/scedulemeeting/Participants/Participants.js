@@ -231,7 +231,7 @@ const Participants = ({
         <ParticipantsView />
       ) : (
         <>
-          <section>
+          <section className="position-relative">
             <Row className="mt-3">
               <Col
                 lg={12}
@@ -279,13 +279,10 @@ const Participants = ({
                 )}
               </Col>
             </Row>
-            <Row className="mt-5">
-              <Col
-                lg={12}
-                md={12}
-                sm={12}
-                className="d-flex gap-2 justify-content-end"
-              >
+          </section>
+          <Row>
+            <Col lg={12} md={12} sm={12}>
+              <section className={styles["Footer_Class"]}>
                 <Button
                   text={t("Cancel")}
                   className={styles["Cancel_Organization"]}
@@ -306,9 +303,9 @@ const Participants = ({
                   className={styles["Next_Organization"]}
                   onClick={handleNextButton}
                 />
-              </Col>
-            </Row>
-          </section>
+              </section>
+            </Col>
+          </Row>
         </>
       )}
 

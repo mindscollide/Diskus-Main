@@ -191,3 +191,20 @@ body[dir="rtl"] .White_Icon_class {
   margin-right: -4.5px !important;
   margin-top: 1px !important;
 }
+
+.Scroller_meeting_detials {
+  height: 52vh !important;
+  overflow-x: hidden !important;
+}
+
+.Scroller_meeting_detials::-webkit-scrollbar {
+  width: 0.5rem;
+  border-radius: 20px;
+  background-color: #f2f2f2;
+}
+
+.Scroller_meeting_detials::-webkit-scrollbar-thumb {
+  border-radius: 20px;
+  background: #ccc;
+  margin-left: -15px;
+}
