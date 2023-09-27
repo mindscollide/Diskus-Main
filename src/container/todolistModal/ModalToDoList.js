@@ -443,30 +443,7 @@ const ModalToDoList = ({ ModalTitle, setShow, show }) => {
       calendRef.current.closeCalendar();
     }
   };
-  const uploadFiles = async (fileForSend) => {
-    try {
-      const uploadPromises = fileForSend.map((newData) => {
-        return dispatch(FileUploadToDo(navigate, newData, t));
-      });
 
-      const responses = await Promise.all(uploadPromises);
-
-      // responses is an array of responses from FileUploadToDo for each file
-      // You can process each response here as needed
-      responses.forEach((response, index) => {
-        console.log(`Response for file ${index + 1}:`, response);
-
-        // Handle the response for each file here
-        // For example, you can update your state with the response data
-      });
-
-      // Return the array of responses if needed
-      return responses;
-    } catch (error) {
-      console.error("Error uploading files:", error);
-      // Handle errors if necessary
-    }
-  };
   //Save To-Do List Function
   const createToDoList = async () => {
     let TasksAttachments = tasksAttachments.TasksAttachments;

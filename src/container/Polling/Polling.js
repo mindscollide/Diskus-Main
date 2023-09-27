@@ -650,6 +650,8 @@ const Polling = () => {
       PageNumber: Number(current),
       Length: Number(pageSize),
     };
+    localStorage.setItem("pollingPage", Number(current));
+    localStorage.setItem("pollingPageSize", Number(pageSize));
     dispatch(searchPollsApi(navigate, t, data));
   };
 

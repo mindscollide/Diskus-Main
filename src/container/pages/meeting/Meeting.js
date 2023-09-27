@@ -58,6 +58,7 @@ import { enGB, ar } from "date-fns/locale";
 import {
   newTimeFormaterAsPerUTC,
   newTimeFormaterAsPerUTCFullDate,
+  utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 import { Pagination, Select } from "antd";
 const { Option } = Select;
@@ -126,7 +127,7 @@ const Meeting = () => {
 
   useEffect(() => {
     let organzier = [];
-    if (assignees !== null && assignees !== undefined) {
+    if (assignees.user !== null && assignees.user !== undefined) {
       assignees.user.map((data, index) => {
         return organzier.push({
           text: data.name,
@@ -135,7 +136,7 @@ const Meeting = () => {
       });
       setTableFilterValue(organzier);
     }
-  }, [assignees]);
+  }, [assignees.user]);
 
   // for Socket Update meeting and edit meeting
   useEffect(() => {
@@ -328,6 +329,14 @@ const Meeting = () => {
           text: t("Reschedule"),
           value: "5",
         },
+        {
+          text: t("Close"),
+          value: "6",
+        },
+        {
+          text: t("Delete"),
+          value: "7",
+        },
       ],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-meeting" />
@@ -365,6 +374,18 @@ const Meeting = () => {
               <span className="activebtn">{t("Reschedule")}</span>
             </div>
           );
+        } else if (text === "6") {
+          return (
+            <div className="activebtn ">
+              <span className="activebtn">{t("Close")}</span>
+            </div>
+          );
+        } else if (text === "7") {
+          return (
+            <div className="activebtn ">
+              <span className="activebtn">{t("Delete")}</span>
+            </div>
+          );
         }
       },
     },
@@ -396,9 +417,13 @@ const Meeting = () => {
         }
       },
       sorter: (a, b, sortOrder) => {
-        const dateA = moment(a?.dateOfMeeting, "YYYYMMDD");
-        const dateB = moment(b?.dateOfMeeting, "YYYYMMDD");
-        return dateA < dateB;
+        const dateA = utcConvertintoGMT(
+          `${a?.dateOfMeeting}${a?.meetingStartTime}`
+        );
+        const dateB = utcConvertintoGMT(
+          `${b?.dateOfMeeting}${b?.meetingStartTime}`
+        );
+        return dateA - dateB;
       },
     },
     {
