@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Row, Col } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom'
-import { Button } from '../../../../elements'
+import { Button, ResultMessage } from '../../../../elements'
 import {
   GetBlockedUsers,
   BlockUnblockUser,
 } from '../../../../../store/actions/Talk_action'
 import { Spin } from 'antd'
 import SingleIcon from '../../../../../assets/images/Single-Icon.png'
+import BlockedContactsIcon from '../../../../../assets/images/Blocked-Contacts.png'
 import { useTranslation } from 'react-i18next'
 
 const BlockedUsersList = () => {
@@ -93,7 +94,11 @@ const BlockedUsersList = () => {
         })
       ) : talkStateData.BlockedUsers.Loading === false &&
         blockedUsersData.length === 0 ? (
-        <p>{t('No-Blocked-Users')}</p>
+        <ResultMessage
+          icon={<img src={BlockedContactsIcon} width={250} />}
+          title={'Your blocked list is empty'}
+          className="emptyRecentChats"
+        />
       ) : null}
     </>
   )

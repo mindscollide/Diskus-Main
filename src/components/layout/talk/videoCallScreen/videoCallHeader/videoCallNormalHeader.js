@@ -25,6 +25,7 @@ import CloseNotification from '../../../../../assets/images/Close-Notification.p
 import ActiveParticipantIcon from '../../../../../assets/images/Active-Participant-Icon.png'
 import AddParticipantIcon from '../../../../../assets/images/Add-Participant-Icon.png'
 import ParticipantsIcon from '../../../../../assets/images/Participants-Icon.png'
+import { activeChat } from '../../../../../store/actions/Talk_action'
 import {
   maximizeVideoPanelFlag,
   minimizeVideoPanelFlag,
@@ -46,6 +47,7 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
   )
 
   let callerNameInitiate = localStorage.getItem('callerNameInitiate')
+  let organizationName = localStorage.getItem('OrganizatioName')
   let currentUserName = localStorage.getItem('name')
   let callerName = localStorage.getItem('callerName')
   let initiateVideoCallFlag = JSON.parse(
@@ -132,23 +134,65 @@ const VideoCallNormalHeader = ({ isScreenActive, screenShareButton }) => {
   const onClickCloseChatHandler = () => {
     if (videoFeatureReducer.LeaveCallModalFlag === false) {
       if (videoFeatureReducer.VideoChatMessagesFlag === false) {
-        // dispatch(chatEnableNormalFlag(true))
-        // setIsActiveIcon(true)
-        // let chatOTOData = {
-        //   UserID: currentUserID,
-        //   ChannelID: currentOrganization,
-        //   OpponentUserId:
-        //     callerID !== currentUserID ? callerID : recipentCalledID,
-        //   NumberOfMessages: 50,
-        //   OffsetMessage: 0,
-        // }
+        if (callerID === currentUserID) {
+          let activeChatData = {
+            id: VideoMainReducer.VideoRecipentData.userID,
+            fullName: VideoMainReducer.VideoRecipentData.userName,
+            imgURL: '',
+            messageBody: '',
+            messageDate: '',
+            notiCount: 0,
+            messageType: 'O',
+            isOnline: false,
+            companyName: organizationName,
+            sentDate: '',
+            receivedDate: '',
+            seenDate: '',
+            attachmentLocation: '',
+            senderID: currentUserID,
+            admin: 0,
+            isBlock: 0,
+          }
+          dispatch(activeChat(activeChatData))
+        } else if (callerID !== currentUserID) {
+          let activeChatData = {
+            id: callerID,
+            fullName: callerNameInitiate,
+            imgURL: '',
+            messageBody: '',
+            messageDate: '',
+            notiCount: 0,
+            messageType: 'O',
+            isOnline: false,
+            companyName: organizationName,
+            sentDate: '',
+            receivedDate: '',
+            seenDate: '',
+            attachmentLocation: '',
+            senderID: currentUserID,
+            admin: 0,
+            isBlock: 0,
+          }
+          dispatch(activeChat(activeChatData))
+        }
+        localStorage.setItem('ActiveChatType', 'O')
+        dispatch(chatEnableNormalFlag(true))
+        setIsActiveIcon(true)
+        let chatOTOData = {
+          UserID: currentUserID,
+          ChannelID: currentOrganization,
+          OpponentUserId:
+            callerID !== currentUserID ? callerID : recipentCalledID,
+          NumberOfMessages: 50,
+          OffsetMessage: 0,
+        }
         dispatch(videoChatMessagesFlag(true))
-        // dispatch(GetOTOUserMessages(navigate, chatOTOData, t))
-        // localStorage.setItem('ActiveChatType', 'O')
-        // localStorage.setItem(
-        //   'activeOtoChatID',
-        //   callerID !== currentUserID ? callerID : recipentCalledID,
-        // )
+        dispatch(GetOTOUserMessages(navigate, chatOTOData, t))
+        localStorage.setItem('ActiveChatType', 'O')
+        localStorage.setItem(
+          'activeOtoChatID',
+          callerID !== currentUserID ? callerID : recipentCalledID,
+        )
       } else {
         // dispatch(chatEnableNormalFlag(false))
         // setIsActiveIcon(false)
