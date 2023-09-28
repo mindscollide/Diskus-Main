@@ -6,8 +6,10 @@
 
 .Scedule_meeting_paper {
   width: 100% !important;
-  height: 78vh !important;
+  height: auto !important;
+  min-height: 78vh !important;
   padding: 40px 40px !important;
+  margin-bottom: 20px !important;
 }
 
 .Schedule_meetings_options {

@@ -31,7 +31,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
   const [proposedMeetingDates, setProposedMeetingDates] = useState(false);
   const [actionsPage, setactionsPage] = useState(false);
   const [polls, setPolls] = useState(false);
-
+  console.log(polls, "pollspollspolls");
   const showMeetingDeitals = () => {
     setmeetingDetails(true);
     setorganizers(false);
@@ -167,7 +167,7 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
               </Col>
             </Row>
             <Row>
-              <Col lg={12} md={12} sm={12}>
+              <Col lg={12} md={12} sm={12} className="mb-4">
                 <Paper className={styles["Scedule_meeting_paper"]}>
                   <Row>
                     <Col
@@ -223,22 +223,38 @@ const SceduleMeeting = ({ setProposeMeetingDate }) => {
                       />
                       <Button
                         text={t("Meeting-material")}
-                        className={styles["Schedule_meetings_options"]}
+                        className={
+                          meetingMaterial === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
                         onClick={showMeetingMaterial}
                       />
                       <Button
                         text={t("Minutes")}
-                        className={styles["Schedule_meetings_options"]}
+                        className={
+                          minutes === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
                         onClick={showMinutes}
                       />
                       <Button
                         text={t("Actions")}
-                        className={styles["Schedule_meetings_options"]}
+                        className={
+                          actionsPage === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
                         onClick={showActions}
                       />
                       <Button
                         text={t("Polls")}
-                        className={styles["Schedule_meetings_options"]}
+                        className={
+                          polls === true
+                            ? styles["Schedule_meetings_options_active"]
+                            : styles["Schedule_meetings_options"]
+                        }
                         onClick={ShowPolls}
                       />
                     </Col>
