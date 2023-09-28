@@ -95,6 +95,8 @@ const EditResolution = ({ setCancelresolution }) => {
       }
     }
   }, [currentLanguage]);
+  const [attachments, setAttachments] = useState([]);
+  console.log(attachments, "attachmentsattachmentsattachments");
   const [isVoter, setVoter] = useState(true);
   const [open, setOpen] = useState({
     flag: false,
@@ -382,12 +384,19 @@ const EditResolution = ({ setCancelresolution }) => {
   };
   const deleteFilefromAttachments = (data, index) => {
     let fileSizefound = fileSize - data.fileSize;
+    let removeFilefromAttachments = attachments.findIndex(
+      (attacData, index) =>
+        data.displayAttachmentName === attacData.displayAttachmentName
+    );
+    let copyattachments = [...attachments];
     let fileForSendingIndex = fileForSend.findIndex(
       (newData, index) => newData.name === data.DisplayAttachmentName
     );
+    copyattachments.splice(removeFilefromAttachments, 1);
     fileForSend.splice(fileForSendingIndex, 1);
     setFileForSend(fileForSend);
     setFileSize(fileSizefound);
+    setAttachments(copyattachments);
     let searchIndex = tasksAttachments;
     searchIndex.splice(index, 1);
     setTasksAttachments([...tasksAttachments]);
@@ -491,7 +500,7 @@ const EditResolution = ({ setCancelresolution }) => {
     showUploadList: false,
     onChange(data) {
       let fileSizeArr;
-      if (tasksAttachments.length > 10) {
+      if (attachments.length > 10) {
         setOpen({
           flag: true,
           message: t("Not-allowed-more-than-10-files"),
@@ -504,12 +513,12 @@ const EditResolution = ({ setCancelresolution }) => {
           }),
           3000
         );
-      } else if (tasksAttachments.length > 0) {
+      } else if (attachments.length > 0) {
         let flag = false;
         let sizezero;
         let size;
-        tasksAttachments.map((arData, index) => {
-          if (arData.DisplayAttachmentName === data.file.originFileObj.name) {
+        attachments.map((arData, index) => {
+          if (arData.displayAttachmentName === data.file.originFileObj.name) {
             flag = true;
           }
         });
@@ -543,12 +552,13 @@ const EditResolution = ({ setCancelresolution }) => {
             3000
           );
         } else {
-          let file = {
-            DisplayAttachmentName: data.file.name,
-            OriginalAttachmentName: data.file.name,
+          console.log(data, "datadatadata");
+          let newdata = {
+            displayAttachmentName: data.file.originFileObj.name,
+            originalAttachmentName: data.file.originFileObj.name,
             fileSize: data.file.originFileObj.size,
           };
-          setTasksAttachments([...tasksAttachments, file]);
+          setAttachments([...attachments, newdata]);
           fileSizeArr = data.file.originFileObj.size + fileSize;
           setFileForSend([...fileForSend, data.file.originFileObj]);
           setFileSize(fileSizeArr);
@@ -579,12 +589,18 @@ const EditResolution = ({ setCancelresolution }) => {
             3000
           );
         } else {
-          let file = {
-            DisplayAttachmentName: data.file.name,
-            OriginalAttachmentName: data.file.name,
+          // let file = {
+          //   DisplayAttachmentName: data.file.name,
+          //   OriginalAttachmentName: data.file.name,
+          //   fileSize: data.file.originFileObj.size,
+          // };
+          let newdata = {
+            displayAttachmentName: data.file.originFileObj.name,
+            originalAttachmentName: data.file.originFileObj.name,
             fileSize: data.file.originFileObj.size,
           };
-          setTasksAttachments([...tasksAttachments, file]);
+          setAttachments([...attachments, newdata]);
+          // setTasksAttachments([...tasksAttachments, file]);
           fileSizeArr = data.file.originFileObj.size + fileSize;
           setFileForSend([...fileForSend, data.file.originFileObj]);
           setFileSize(fileSizeArr);
@@ -596,12 +612,22 @@ const EditResolution = ({ setCancelresolution }) => {
     customRequest() {},
   };
 
-  const handleCirculateResolution = () => {
+  const handleCirculateResolution = async () => {
     if (fileForSend.length > 0) {
-      let counter = fileForSend.length;
-      fileForSend.map(async (newData, index) => {
-        await dispatch(FileUploadToDo(navigate, newData, t));
-        counter = counter - 1;
+      let newfiles = [...tasksAttachments];
+      let tasksAttachmentsData = [];
+      const uploadPromises = fileForSend.map((newData) => {
+        // Return the promise from FileUploadToDo
+        return dispatch(FileUploadToDo(navigate, newData, t, newfiles));
+      });
+
+      // Wait for all uploadPromises to resolve
+      await Promise.all(uploadPromises);
+      newfiles.map((attachmentData, index) => {
+        tasksAttachmentsData.push({
+          DisplayAttachmentName: attachmentData.DisplayAttachmentName,
+          OriginalAttachmentName: attachmentData.OriginalAttachmentName,
+        });
       });
       let Data = {
         ResolutionModel: {
@@ -637,7 +663,7 @@ const EditResolution = ({ setCancelresolution }) => {
           Data,
           voters,
           nonVoter,
-          tasksAttachments,
+          tasksAttachmentsData,
           t,
           2,
           2
@@ -687,12 +713,22 @@ const EditResolution = ({ setCancelresolution }) => {
     }
   };
 
-  const handleUpdateResolution = () => {
+  const handleUpdateResolution = async () => {
     if (fileForSend.length > 0) {
-      let counter = fileForSend.length;
-      fileForSend.map(async (newData, index) => {
-        await dispatch(FileUploadToDo(navigate, newData, t));
-        counter = counter - 1;
+      let newfiles = [...tasksAttachments];
+      let tasksAttachmentsData = [];
+      const uploadPromises = fileForSend.map((newData) => {
+        // Return the promise from FileUploadToDo
+        return dispatch(FileUploadToDo(navigate, newData, t, newfiles));
+      });
+
+      // Wait for all uploadPromises to resolve
+      await Promise.all(uploadPromises);
+      newfiles.map((attachmentData, index) => {
+        tasksAttachmentsData.push({
+          DisplayAttachmentName: attachmentData.DisplayAttachmentName,
+          OriginalAttachmentName: attachmentData.OriginalAttachmentName,
+        });
       });
       let Data = {
         ResolutionModel: {
@@ -728,7 +764,7 @@ const EditResolution = ({ setCancelresolution }) => {
           Data,
           voters,
           nonVoter,
-          tasksAttachments,
+          tasksAttachmentsData,
           t,
           2,
           1
@@ -945,15 +981,22 @@ const EditResolution = ({ setCancelresolution }) => {
       ).format("DD/MM/YYYY"),
     });
     if (attachmentsResolution.length > 0) {
-      let resolutionAttachment = [];
+      let atCH = [];
+      let newData = [];
       attachmentsResolution.map((data, index) => {
-        resolutionAttachment.push({
+        atCH.push({
           DisplayAttachmentName: data.displayAttachmentName,
           OriginalAttachmentName: data.originalAttachmentName,
-          pK_RAID: 0,
+          pK_RAID: data.pK_RAID,
         });
-        setTasksAttachments(resolutionAttachment);
+        newData.push({
+          displayAttachmentName: data.displayAttachmentName,
+          originalAttachmentName: data.originalAttachmentName,
+        });
       });
+      setAttachments(newData);
+      setTasksAttachments(atCH);
+      // }
     }
     if (votersResolutionMembers.length > 0) {
       let viewVoter = [];
@@ -1118,13 +1161,19 @@ const EditResolution = ({ setCancelresolution }) => {
         });
         if (attachmentsResolution.length > 0) {
           let atCH = [];
+          let newData = [];
           attachmentsResolution.map((data, index) => {
             atCH.push({
               DisplayAttachmentName: data.displayAttachmentName,
               OriginalAttachmentName: data.originalAttachmentName,
               pK_RAID: data.pK_RAID,
             });
+            newData.push({
+              displayAttachmentName: data.displayAttachmentName,
+              originalAttachmentName: data.originalAttachmentName,
+            });
           });
+          setAttachments(newData);
           setTasksAttachments(atCH);
           // }
         }
@@ -2098,7 +2147,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                           sm={1}
                                           className="mt-4"
                                         >
-                                          {tasksAttachments.length > 6 ? (
+                                          {attachments.length > 6 ? (
                                             <>
                                               <Button
                                                 icon={
@@ -2128,15 +2177,15 @@ const EditResolution = ({ setCancelresolution }) => {
                                               className="Scroller-x-resolution"
                                               id="Slider"
                                             >
-                                              {tasksAttachments.length > 0
-                                                ? tasksAttachments.map(
+                                              {attachments.length > 0
+                                                ? attachments.map(
                                                     (data, index) => {
                                                       var ext =
-                                                        data?.DisplayAttachmentName?.split(
-                                                          "."
-                                                        ).pop();
+                                                        data?.displayAttachmentName
+                                                          ?.split(".")
+                                                          .pop();
                                                       const first =
-                                                        data?.DisplayAttachmentName?.split(
+                                                        data?.displayAttachmentName?.split(
                                                           " "
                                                         )[0];
                                                       return (
@@ -2275,7 +2324,7 @@ const EditResolution = ({ setCancelresolution }) => {
                                           sm={1}
                                           className="mt-4"
                                         >
-                                          {tasksAttachments.length > 6 ? (
+                                          {attachments.length > 6 ? (
                                             <>
                                               <Button
                                                 icon={

@@ -58,6 +58,7 @@ import { enGB, ar } from "date-fns/locale";
 import {
   newTimeFormaterAsPerUTC,
   newTimeFormaterAsPerUTCFullDate,
+  utcConvertintoGMT,
 } from "../../../commen/functions/date_formater";
 import { Pagination, Select } from "antd";
 const { Option } = Select;
@@ -126,7 +127,7 @@ const Meeting = () => {
 
   useEffect(() => {
     let organzier = [];
-    if (assignees !== null && assignees !== undefined) {
+    if (assignees.user !== null && assignees.user !== undefined) {
       assignees.user.map((data, index) => {
         return organzier.push({
           text: data.name,
@@ -135,7 +136,7 @@ const Meeting = () => {
       });
       setTableFilterValue(organzier);
     }
-  }, [assignees]);
+  }, [assignees.user]);
 
   // for Socket Update meeting and edit meeting
   useEffect(() => {
@@ -328,6 +329,14 @@ const Meeting = () => {
           text: t("Reschedule"),
           value: "5",
         },
+        {
+          text: t("Close"),
+          value: "6",
+        },
+        {
+          text: t("Delete"),
+          value: "7",
+        },
       ],
       filterIcon: (filtered) => (
         <ChevronDown className="filter-chevron-icon-meeting" />
@@ -365,6 +374,18 @@ const Meeting = () => {
               <span className="activebtn">{t("Reschedule")}</span>
             </div>
           );
+        } else if (text === "6") {
+          return (
+            <div className="activebtn ">
+              <span className="activebtn">{t("Close")}</span>
+            </div>
+          );
+        } else if (text === "7") {
+          return (
+            <div className="activebtn ">
+              <span className="activebtn">{t("Delete")}</span>
+            </div>
+          );
         }
       },
     },
@@ -396,9 +417,13 @@ const Meeting = () => {
         }
       },
       sorter: (a, b, sortOrder) => {
-        const dateA = moment(a?.dateOfMeeting, "YYYYMMDD");
-        const dateB = moment(b?.dateOfMeeting, "YYYYMMDD");
-        return dateA < dateB;
+        const dateA = utcConvertintoGMT(
+          `${a?.dateOfMeeting}${a?.meetingStartTime}`
+        );
+        const dateB = utcConvertintoGMT(
+          `${b?.dateOfMeeting}${b?.meetingStartTime}`
+        );
+        return dateA - dateB;
       },
     },
     {
@@ -856,17 +881,11 @@ const Meeting = () => {
   return (
     <>
       <div className="meeting_container">
-        <Row className="d-flex justify-content-start align-items-center margin-bottom-15 mt-2">
+        <Row className="d-flex justify-content-around align-items-center margin-bottom-15 ">
           <Col lg={2} md={2} sm={2} className="meeting-heading mt-1">
             {t("Meetings")}
           </Col>
-          <Col
-            lg={2}
-            md={2}
-            sm={2}
-            // xs={12}
-            className="meeting-schedulenewmeeting-btn"
-          >
+          <Col lg={2} md={2} sm={12} className="meeting-schedulenewmeeting-btn">
             <Button
               className={"ScheduleAMeeting"}
               variant={"Primary"}
@@ -881,7 +900,7 @@ const Meeting = () => {
             lg={6}
             sm={6}
             // xs={12}
-            className="meeting-fields p-0 meeting-searchfileds"
+            className="meeting-fields p-0 "
           >
             <Search
               className="search-Icon toExpandSearch Meeting"
@@ -890,7 +909,7 @@ const Meeting = () => {
             {isExpand && (
               <>
                 {currentLanguage === "ar" ? (
-                  <div className="expandableMenuSearch">
+                  <div className="expandableMenuSearch_Meeting">
                     <Form className="d-flex">
                       {currentLanguage === "ar" ? (
                         <CustomDatePicker
@@ -948,7 +967,7 @@ const Meeting = () => {
                     </Form>
                   </div>
                 ) : (
-                  <div className="expandableMenuSearch">
+                  <div className="expandableMenuSearch_Meeting">
                     <Form className="d-flex gap-2 ">
                       {currentLanguage === "ar" ? (
                         <CustomDatePicker
