@@ -467,7 +467,7 @@ const MeetingDetails = ({ setorganizers, setmeetingDetails }) => {
                                         <Col
                                           lg={3}
                                           md={3}
-                                          sm={12}
+                                          sm={3}
                                           className="timePicker"
                                         >
                                           <DatePicker

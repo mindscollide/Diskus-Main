@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import profile from "../../../../../../assets/images/newprofile.png";
 import PDFIcon from "../../../../../../assets/images/pdf_icon.svg";
+import SubAgendaView from "./SubAgendaView/SubAgendaView";
 const AgendaView = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -28,6 +29,28 @@ const AgendaView = () => {
         },
         {
           MainFileName: "Diskus File",
+        },
+      ],
+      SubAgendaView: [
+        {
+          SubagendaTitle: "Hello there I am subAgenda Title",
+          subAgendaParticipant: "Huzaifa jahangir",
+          SubAgendaStartDate: "1:30AM",
+          subAgendaEndDate: "5:00PM",
+          subAgendaFiles: [
+            {
+              subAgendaFileName: "Axis SubAgenda",
+            },
+            {
+              subAgendaFileName: "Diskus SubAgenda",
+            },
+            {
+              subAgendaFileName: "Bandwidgth SubAgenda",
+            },
+            {
+              subAgendaFileName: "Bandwidgth SubAgenda",
+            },
+          ],
         },
       ],
     },
@@ -120,7 +143,9 @@ const AgendaView = () => {
                                         className={styles["Show_more_Class"]}
                                         onClick={handleExpandMainAgendaView}
                                       >
-                                        {t("Show-more")}
+                                        {expandMainAgenda
+                                          ? t("Hide-details")
+                                          : t("Show-more")}
                                       </span>
                                     </Col>
                                   </Row>
@@ -275,6 +300,11 @@ const AgendaView = () => {
                           </Row>
                         </section>
                       </Col>
+                      <Row className="m-0 p-0">
+                        <Col lg={12} md={12} sm={12} className="mt-2">
+                          <SubAgendaView MainAgendaData={MainAgendaData} />
+                        </Col>
+                      </Row>
                     </>
                   );
                 })

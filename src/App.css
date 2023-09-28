@@ -6045,8 +6045,8 @@ body[dir="rtl"] .bg-white.border-radius-4.border {
   display: block !important;
 }
 
-.Polls_Meeting__control.css-13cymwt-control {
-  width: 529px;
+.group-fields .css-b62m3t-container {
+  width: 100% !important;
 }
 .MuiAccordionSummary-expandIcon {
   width: 4vw !important;
