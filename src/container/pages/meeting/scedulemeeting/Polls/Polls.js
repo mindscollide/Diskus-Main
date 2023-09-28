@@ -67,6 +67,7 @@ const Polls = () => {
           <Row>
             <Col lf={12} md={12} sm={12}>
               <img
+                draggable={false}
                 src={EditIcon}
                 className="cursor-pointer"
                 onClick={handleEditPollsMeeting}
@@ -161,7 +162,7 @@ const Polls = () => {
             >
               <Button
                 text={t("Create-polls")}
-                icon={<img src={addmore} draggable="false" alt="" />}
+                icon={<img draggable={false} src={addmore} alt="" />}
                 className={styles["Create_polls_Button"]}
                 onClick={handleCreatepolls}
               />
@@ -179,10 +180,10 @@ const Polls = () => {
                       className="d-flex justify-content-center"
                     >
                       <img
+                        draggable={false}
                         src={emtystate}
                         height="230px"
                         width="293.93px"
-                        draggable="false"
                         alt=""
                       />
                     </Col>

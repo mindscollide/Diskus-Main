@@ -77,6 +77,7 @@ const MeetingMaterial = () => {
                         className="d-flex align-items-center justify-content-end"
                       >
                         <img
+                          draggable={false}
                           src={
                             expandIndex === index && introductionFiles
                               ? upArrow
@@ -110,6 +111,7 @@ const MeetingMaterial = () => {
                                                 className="d-flex gap-2 align-items-center"
                                               >
                                                 <img
+                                                  draggable={false}
                                                   src={PDFIcon}
                                                   height="31.57px"
                                                   width="31.57px"

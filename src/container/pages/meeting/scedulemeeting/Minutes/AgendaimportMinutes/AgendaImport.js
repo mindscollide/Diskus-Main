@@ -211,6 +211,7 @@ const AgendaImport = () => {
                                   className={styles["quill-height-addNote"]}
                                 />
                                 <img
+                                  draggable={false}
                                   src={RedCroseeIcon}
                                   className={styles["RedCrossForEdit"]}
                                 />
@@ -297,6 +298,7 @@ const AgendaImport = () => {
                                                       }
                                                     />
                                                     <img
+                                                      draggable={false}
                                                       src={RedCroseeIcon}
                                                       className={
                                                         styles[

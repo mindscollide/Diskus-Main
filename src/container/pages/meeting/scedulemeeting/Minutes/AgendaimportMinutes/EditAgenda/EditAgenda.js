@@ -127,6 +127,7 @@ const EditAgenda = ({ AgendaData }) => {
                                         }
                                       />
                                       <img
+                                        draggable={false}
                                         src={RedCroseeIcon}
                                         className={styles["RedCrossForEdit"]}
                                       />
@@ -192,6 +193,7 @@ const EditAgenda = ({ AgendaData }) => {
                                     <Row className="d-flex justify-content-end">
                                       <Col lg={2} md={2} sm={2}>
                                         <img
+                                          draggable={false}
                                           src={profile}
                                           height="39px"
                                           width="39px"
@@ -230,6 +232,7 @@ const EditAgenda = ({ AgendaData }) => {
                                         className="d-flex justify-content-start align-items-center"
                                       >
                                         <img
+                                          draggable={false}
                                           src={Editicon}
                                           height="21.55px"
                                           width="21.55px"
@@ -243,6 +246,7 @@ const EditAgenda = ({ AgendaData }) => {
                                   </Col>
                                 </Row>
                                 <img
+                                  draggable={false}
                                   src={RedCroseeIcon}
                                   height="20.76px"
                                   width="20.76px"
@@ -334,6 +338,9 @@ const EditAgenda = ({ AgendaData }) => {
                                                                 }
                                                               />
                                                               <img
+                                                                draggable={
+                                                                  false
+                                                                }
                                                                 src={
                                                                   RedCroseeIcon
                                                                 }
@@ -487,6 +494,9 @@ const EditAgenda = ({ AgendaData }) => {
                                                                     sm={2}
                                                                   >
                                                                     <img
+                                                                      draggable={
+                                                                        false
+                                                                      }
                                                                       src={
                                                                         profile
                                                                       }
@@ -554,6 +564,9 @@ const EditAgenda = ({ AgendaData }) => {
                                                                     className="d-flex justify-content-start align-items-center"
                                                                   >
                                                                     <img
+                                                                      draggable={
+                                                                        false
+                                                                      }
                                                                       src={
                                                                         Editicon
                                                                       }
@@ -569,6 +582,9 @@ const EditAgenda = ({ AgendaData }) => {
                                                                     />
 
                                                                     <img
+                                                                      draggable={
+                                                                        false
+                                                                      }
                                                                       src={
                                                                         RedCroseeIcon
                                                                       }

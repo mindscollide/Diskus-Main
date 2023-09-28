@@ -255,6 +255,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                                   change={(e) => HandleOptionChange(e)}
                                   inputicon={
                                     <img
+                                      draggable={false}
                                       src={WhiteCrossIcon}
                                       width="31.76px"
                                       height="31.76px"
@@ -288,6 +289,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                     <Row className="mt-1">
                       <Col lg={12} md={12} sm={12} className="d-flex gap-2">
                         <img
+                          draggable={false}
                           src={plusFaddes}
                           width="15.87px"
                           height="15.87px"
@@ -392,6 +394,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                                       className="d-flex gap-2 align-items-center"
                                     >
                                       <img
+                                        draggable={false}
                                         src={Profile}
                                         height="33px"
                                         width="33px"
@@ -408,6 +411,7 @@ const EditPollsMeeting = ({ setEditPolls }) => {
                                       className="d-flex align-items-center"
                                     >
                                       <img
+                                        draggable={false}
                                         src={RedCross}
                                         height="14px"
                                         width="14px"

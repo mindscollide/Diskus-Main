@@ -278,6 +278,7 @@ const Createpolls = ({ setCreatepoll }) => {
                                         change={(e) => HandleOptionChange(e)}
                                         inputicon={
                                           <img
+                                            draggable={false}
                                             src={WhiteCrossIcon}
                                             width="31.76px"
                                             height="31.76px"
@@ -316,6 +317,7 @@ const Createpolls = ({ setCreatepoll }) => {
                               className="d-flex gap-2"
                             >
                               <img
+                                draggable={false}
                                 src={plusFaddes}
                                 width="15.87px"
                                 height="15.87px"
@@ -440,6 +442,7 @@ const Createpolls = ({ setCreatepoll }) => {
                                             className="d-flex gap-2 align-items-center"
                                           >
                                             <img
+                                              draggable={false}
                                               src={Profile}
                                               height="33px"
                                               width="33px"
@@ -460,6 +463,7 @@ const Createpolls = ({ setCreatepoll }) => {
                                             className="d-flex align-items-center"
                                           >
                                             <img
+                                              draggable={false}
                                               src={RedCross}
                                               height="14px"
                                               width="14px"
